@@ -1,0 +1,75 @@
+import streamlit as st
+import os, glob, time, shutil, csv, re, yaml
+from datetime import datetime
+import pandas as pd
+from llama_parse import LlamaParse
+
+# --- 설정 로드 ---
+def load_config():
+    try:
+        with open("config.yaml", "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except:
+        return {"language_settings": {"parsing_instructions": ""}}
+
+config = load_config()
+
+# 레이아웃 구성
+st.set_page_config(page_title="DBMA Ministry Knowledge OS", layout="wide")
+st.title("🛡️ DBMA 데이터 제련 파이프라인 (Ministry OS)")
+
+with st.sidebar:
+    st.subheader("⚙️ 시스템 설정")
+    llama_api_key = st.text_input("LlamaCloud API Key", type="password")
+    target_dir = st.text_input("RAW 폴더", value="/Users/David/DBMA/RAW")
+    output_base_dir = st.text_input("완성본 폴더", value="/Users/David/DBMA/제련완성본")
+    
+    st.subheader("📊 파라미터")
+    chunk_size = st.slider("청크 크기", 200, 2000, 1200)
+    chunk_overlap = st.slider("중복 구간", 0, 500, 150)
+
+# 파일 리스트 스캔 및 선택 UI
+if os.path.exists(target_dir):
+    all_files = sorted(glob.glob(os.path.join(target_dir, "*.pdf")))
+    df = pd.DataFrame([{"선택": False, "파일명": os.path.basename(p), "경로": p} for p in all_files])
+    
+    st.markdown("### 📂 처리할 자산 선택")
+    edited_df = st.data_editor(df, use_container_width=True, hide_index=True)
+    selected_files = edited_df[edited_df["선택"] == True]["경로"].tolist()
+
+# 프로세스 실행
+if st.button("🚀 제련 공정 개시", type="primary"):
+    if not llama_api_key:
+        st.error("API Key를 입력해주세요.")
+    elif not selected_files:
+        st.warning("선택된 파일이 없습니다.")
+    else:
+        os.makedirs(output_base_dir, exist_ok=True)
+        instructions = config.get("language_settings", {}).get("parsing_instructions", "")
+        
+        for pdf_path in selected_files:
+            file_name = os.path.basename(pdf_path)
+            try:
+                # 1. API 세션 격리 파싱
+                parser = LlamaParse(api_key=llama_api_key, result_type="markdown", parsing_instruction=instructions)
+                st.info(f"파싱 중: {file_name}")
+                docs = parser.load_data(pdf_path)
+                text = "".join([d.text for d in docs])
+                
+                # 2. 결과물 저장
+                shutil.copy2(pdf_path, os.path.join(output_base_dir, file_name))
+                with open(os.path.join(output_base_dir, file_name.replace(".pdf", ".md")), "w", encoding="utf-8") as f:
+                    f.write(text)
+                
+                # 3. 청크 분할 및 저장
+                chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size - chunk_overlap)]
+                with open(os.path.join(output_base_dir, file_name.replace(".pdf", "_chunks.txt")), "w", encoding="utf-8") as f:
+                    for i, c in enumerate(chunks): f.write(f"--- CHUNK {i} ---\n{c}\n\n")
+                
+                # 4. 마무리
+                os.remove(pdf_path)
+                st.success(f"완료: {file_name}")
+                time.sleep(1) # API 보호
+                
+            except Exception as e:
+                st.error(f"결함 발생 ({file_name}): {str(e)}")

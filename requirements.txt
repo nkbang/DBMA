@@ -1,0 +1,14 @@
+# requirements.txt (강제 버전 지정)
+
+streamlit==1.28.0
+docling==2.30.0
+langchain-text-splitters==0.0.1
+easyocr==1.7.0
+transformers==4.33.0
+torch==2.0.1
+numpy==1.24.3
+pandas==2.0.3
+python-docx
+ebooklib
+beautifulsoup4
+striprtf

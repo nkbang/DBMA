@@ -1,0 +1,13 @@
+# config.yaml
+language_settings:
+  mode: "academic_theological"
+  languages: ["ko", "en", "he", "el", "la"]
+  parsing_instructions: >
+    This is an academic theological document. It contains multilingual content 
+    including Hebrew, Greek, and Latin. You must accurately transcribe 
+    Hebrew characters, Greek diacritics, and Latin liturgical terms. 
+    Preserve the integrity of all original language citations and academic formatting.
+
+parsing_config:
+  result_type: "markdown"
+  num_workers: 1
