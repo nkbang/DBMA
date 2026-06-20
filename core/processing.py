@@ -1,109 +1,137 @@
+# core/processing.py
 import os
+import json
 import shutil
 import datetime
-from typing import Dict, List, Tuple
-from .extractors import extract_text_from_file
-from .utils import detect_langs, calculate_noise_score, noise_label, make_safe_stem
+from pathlib import Path
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from docling.document_converter import DocumentConverter
+
+from core.extractors import extract_text_from_file
+from core.utils import make_safe_stem, calculate_noise_score
+from core.chunking_optimizer import optimize_chunks, save_optimized_md
 
 
-def save_md(stem: str, source_name: str, text: str, noise: Dict, output_dir: str) -> str:
-    md_path = os.path.join(output_dir, f"{stem}.md")
-    lang_list = detect_langs(text)
-    has_rtl = "he" in lang_list
-    header = f"""---
-source: {source_name}
-created: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-pipeline: DBMA v3.3
-languages: {', '.join(lang_list) if lang_list else 'unknown'}
-rtl_content: {'true' if has_rtl else 'false'}
-noise_score: {noise['total']}
-noise_status: {noise_label(noise['total'])}
-char_count: {noise['charcount']}
-word_count: {noise['wordcount']}
----
-
-"""
-    with open(md_path, "w", encoding="utf-8") as fh:
-        fh.write(header + text)
-    return md_path
+def build_converter(use_ocr=False):
+    return DocumentConverter()
 
 
-def save_chunks(stem: str, source_name: str, chunks: List[str], output_dir: str, chunk_size: int, chunk_overlap: int) -> str:
-    txt_path = os.path.join(output_dir, f"{stem}_chunks.txt")
-    total_c = len(chunks)
-    with open(txt_path, "w", encoding="utf-8") as fh:
-        fh.write(
-            f"DBMA Chunk File\n"
-            f"source: {source_name}\n"
-            f"created: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-            f"chunks: {total_c}\n"
-            f"chunk_size: {int(chunk_size)}\n"
-            f"overlap: {int(chunk_overlap)}\n\n"
-        )
-        for i, chunk in enumerate(chunks, 1):
-            fh.write(f"======== CHUNK {i:03d}/{total_c:03d} ========\n")
-            fh.write(chunk.strip())
-            fh.write("\n\n")
-    return txt_path
-
-
-def build_converter(use_ocr: bool):
-    from docling.document_converter import DocumentConverter, PdfFormatOption
-    from docling.datamodel.pipeline_options import PdfPipelineOptions, EasyOcrOptions
-
-    pipeline_options = PdfPipelineOptions()
-    if use_ocr:
-        pipeline_options.do_ocr = True
-        pipeline_options.ocr_options = EasyOcrOptions(lang=["ko", "en", "he", "el"], use_gpu=False)
-    else:
-        pipeline_options.do_ocr = False
-
-    return DocumentConverter(format_options={"pdf": PdfFormatOption(pipeline_options=pipeline_options)})
-
-
-def build_splitter(chunk_size: int, chunk_overlap: int):
-    from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-    separators = ["\n\n", "\n", ". ", "。", "? ", "! ", ", ", " ", ""]
+def build_splitter(chunk_size, chunk_overlap):
+    """기존 호환용: UI(tabs.py)에서 여전히 호출 가능"""
     return RecursiveCharacterTextSplitter(
-        chunk_size=int(chunk_size),
-        chunk_overlap=int(chunk_overlap),
-        separators=separators,
-        keep_separator=True,
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
     )
 
 
-def process_one_file(file_info: Dict, converter, splitter, output_dir: str, chunk_size: int, chunk_overlap: int) -> Tuple[List[Dict], bool]:
+def save_md(output_dir, stem, source_name, text, noise, source_type):
+    path = os.path.join(output_dir, f"{stem}.md")
+    frontmatter = [
+        "---",
+        f"source: {source_name}",
+        f"source_type: {source_type}",
+        f"created_at: {datetime.datetime.now().isoformat()}",
+        f"noise_score: {noise['score']}",
+        f"noise_mode: {noise.get('mode', '-')}",
+        "---",
+        "",
+        text,
+    ]
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(frontmatter))
+    return path
+
+
+def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap):
+    """기존 RAG 파이프라인 호환용: txt + meta.json 저장 유지"""
+    txt_path = os.path.join(output_dir, f"{stem}_chunks.txt")
+    meta_path = os.path.join(output_dir, f"{stem}_chunks_meta.json")
+
+    with open(txt_path, "w", encoding="utf-8") as f:
+        for i, ch in enumerate(chunks, 1):
+            f.write(f"[chunk {i}]\n{ch}\n\n")
+
+    meta = {
+        "source": source_name,
+        "chunks": len(chunks),
+        "chunk_size": chunk_size,
+        "chunk_overlap": chunk_overlap,
+    }
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+
+    return txt_path, meta_path
+
+
+def move_source_file(src_path, output_dir):
+    dst = os.path.join(output_dir, os.path.basename(src_path))
+    if os.path.abspath(src_path) != os.path.abspath(dst) and not os.path.exists(dst):
+        shutil.move(src_path, dst)
+        return dst
+    return src_path
+
+
+def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap):
+    """
+    수정된 버전: 옵티마이저 우선, 폴백은 기존 splitter
+    반환: (logs, success)
+    """
     logs = []
-    name = file_info["name"]
-    safe_stem = make_safe_stem(name)
-    src_path = file_info["path"]
-    ext = os.path.splitext(name)[1].lower()
-    dest_path = os.path.join(output_dir, name)
+    src_path    = file_info["path"]
+    source_name = file_info["name"]
+    ext         = file_info["ext"].lower().replace(".", "")
+    stem        = make_safe_stem(source_name)
 
-    full_text = extract_text_from_file(src_path, converter=converter)
+    result    = extract_text_from_file(src_path, converter=converter)
+    full_text = result.get("text", "") or ""
+    is_ocr    = result.get("is_ocr", False)
+
     if not full_text.strip():
-        raise ValueError(f"{name} 추출 결과가 비어 있습니다.")
+        logs.append({"cls": "log-warn", "msg": f"{source_name}: 추출 텍스트 없음"})
+        return logs, False
 
-    noise = calculate_noise_score(full_text)
-    lang_list = detect_langs(full_text)
-    lang_found = ", ".join({"ko": "KO", "en": "EN", "he": "HE", "el": "EL"}.get(l, l) for l in lang_list) or "-"
+    noise      = calculate_noise_score(full_text, file_type=ext, is_ocr=is_ocr)
+    final_text = noise["cleaned_text"]
 
-    logs.append({"cls": "log-info", "msg": f"형식: {ext}"})
-    logs.append({"cls": "log-info", "msg": f"언어: {lang_found}"})
-    logs.append({"cls": "log-info", "msg": f"노이즈: {noise['total']:.1f} / {noise_label(noise['total'])}"})
+    if not final_text.strip():
+        logs.append({"cls": "log-warn", "msg": f"{source_name}: 정제 후 텍스트 없음"})
+        return logs, False
 
-    md_path = save_md(safe_stem, name, full_text, noise, output_dir)
-    logs.append({"cls": "log-ok", "msg": f"MD 저장: {os.path.basename(md_path)}"})
+    # ── MD 저장 (기존 동일) ──────────────────────────────────────────────
+    md_path = save_md(output_dir, stem, source_name, final_text, noise, ext)
 
-    chunks = splitter.split_text(full_text)
-    txt_path = save_chunks(safe_stem, name, chunks, output_dir, int(chunk_size), int(chunk_overlap))
-    logs.append({"cls": "log-ok", "msg": f"CHUNKS 저장: {os.path.basename(txt_path)} / {len(chunks)} chunks"})
+    # ── 청킹: 옵티마이저 우선, 폴백은 기존 splitter ─────────────────────
+    chunk_result = optimize_chunks(final_text, ext)
+    chunks       = chunk_result.chunks
+    if not chunks:                          # 옵티마이저 결과가 비어있으면 폴백
+        chunks = splitter.split_text(final_text)
 
-    shutil.move(src_path, dest_path)
-    logs.append({"cls": "log-ok", "msg": f"원본 이동: {name}"})
+    # 기존 txt 저장 (RAG 파이프라인 호환 유지)
+    save_chunks(output_dir, stem, source_name, chunks,
+                chunk_result.params["chunk_size"],
+                chunk_result.params["chunk_overlap"])
 
-    if noise["total"] > 40:
-        logs.append({"cls": "log-warn", "msg": f"{name} 노이즈 높음"})
+    # 최적화 마크다운 저장 (신규)
+    opt_md_path = save_optimized_md(
+        result      = chunk_result,
+        source_name = source_name,
+        output_dir  = Path(output_dir),
+        stem        = stem,
+    )
+
+    moved_to = move_source_file(src_path, output_dir)
+
+    logs.append({"cls": "log-ok",   "msg": f"{source_name} 처리 완료"})
+    logs.append({"cls": "log-info", "msg": f"MD 저장: {md_path}"})
+    logs.append({"cls": "log-info", "msg": f"청크 최적화 MD: {opt_md_path}"})
+    logs.append({"cls": "log-info", "msg": f"청크 수: {len(chunks)} / params: {chunk_result.params}"})
+    logs.append({"cls": "log-info", "msg": f"원본 이동: {moved_to}"})
+
+    # 품질 경고
+    if not chunk_result.passed:
+        logs.append({"cls": "log-warn",
+                     "msg": f"⚠️ 청킹 품질 미달 (avg_noise={chunk_result.quality.avg_noise:.1f}, "
+                            f"avg_dup={chunk_result.quality.avg_dup:.2f}) — 재검토 권장"})
 
     return logs, True
