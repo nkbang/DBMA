@@ -374,4 +374,3 @@ with tab2:
                                 f"답변 생성 실패: {e}\n"
                                 f"`ollama serve`가 실행 중인지, `ollama pull {ollama_model}`로 모델을 받아두었는지 확인하세요."
                             )
-

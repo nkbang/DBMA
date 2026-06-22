@@ -3,33 +3,42 @@ from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
 
 
 def render_sidebar():
-    with st.sidebar:
-        st.markdown("### 경로 설정")
-        st.markdown("---")
-        target_dir = st.text_input("RAW 폴더", value=DEFAULT_RAW_DIR)
-        output_dir = st.text_input("출력 폴더", value=DEFAULT_OUTPUT_DIR)
-        st.caption("지원 형식: PDF, TXT, MD, DOCX, EPUB, HTML, HTM, RTF")
-        st.markdown("---")
+    st.sidebar.header("설정")
 
-        st.markdown("### 분절 설정")
-        chunk_size = st.number_input("Chunk Size", value=1000, min_value=100, step=100)
-        chunk_overlap = st.number_input("Chunk Overlap", value=200, min_value=0, step=50)
-        st.markdown("---")
+    target_dir = st.sidebar.text_input(
+        "RAW 폴더",
+        value=DEFAULT_RAW_DIR,
+        help="처리할 원본 파일이 있는 폴더 경로",
+    )
 
-        st.markdown("### OCR")
-        use_ocr = st.checkbox("OCR for PDF", value=False, help="스캔형 PDF나 이미지 기반 PDF에만 사용하세요.")
-        if use_ocr:
-            st.info("EasyOCR: ko, en, he, el")
+    output_dir = st.sidebar.text_input(
+        "출력 폴더",
+        value=DEFAULT_OUTPUT_DIR,
+        help="Markdown, chunk, 이동된 원본 파일이 저장될 폴더 경로",
+    )
 
-        st.markdown("---")
-        st.markdown(
-            """
-<div style="font-family:JetBrains Mono,monospace;font-size:0.72rem;color:#3fb950;padding:8px 10px;background:#0d2b1a;border-radius:6px;border:1px solid #1a4a2a;">
-다중 문서 형식 지원<br><br>
-PDF / TXT / MD / DOCX / EPUB / HTML / RTF
-</div>
-""",
-            unsafe_allow_html=True,
-        )
+    chunk_size = st.sidebar.number_input(
+        "Chunk Size",
+        min_value=200,
+        max_value=5000,
+        value=1200,
+        step=100,
+        help="문서를 나눌 기본 청크 크기",
+    )
 
-    return target_dir, output_dir, int(chunk_size), int(chunk_overlap), use_ocr
+    chunk_overlap = st.sidebar.number_input(
+        "Chunk Overlap",
+        min_value=0,
+        max_value=1000,
+        value=200,
+        step=50,
+        help="청크 간 겹침 크기",
+    )
+
+    use_ocr = st.sidebar.checkbox(
+        "PDF OCR 사용",
+        value=False,
+        help="스캔 PDF나 텍스트 추출이 어려운 PDF에 OCR을 사용합니다",
+    )
+
+    return target_dir, output_dir, chunk_size, chunk_overlap, use_ocr

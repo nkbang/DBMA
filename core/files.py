@@ -1,54 +1,70 @@
 import os
 import glob
-import datetime
-import re
-from typing import Dict, List, Optional
-from .config import SUPPORTED_EXTENSIONS
-from .utils import fmt_size
+import json
+import streamlit as st
+
+from core.config import SUPPORTED_EXTENSIONS
+from core.utils import fmt_size
 
 
-def scan_directory(directory: str) -> List[Dict]:
-    if not os.path.isdir(directory):
+@st.cache_data(show_spinner=False)
+def scan_directory(target_dir):
+    if not os.path.isdir(target_dir):
         return []
+
     files = []
-    for ext in SUPPORTED_EXTENSIONS:
-        for fp in glob.glob(os.path.join(directory, f"*{ext}")):
-            if not os.path.isfile(fp):
-                continue
-            s = os.stat(fp)
-            files.append({
-                "path": fp,
-                "name": os.path.basename(fp),
-                "size_b": s.st_size,
-                "size_str": fmt_size(s.st_size),
-                "mtime": datetime.datetime.fromtimestamp(s.st_mtime).strftime("%Y-%m-%d %H:%M"),
-                "ext": os.path.splitext(fp)[1].lower().replace(".", ""),
-            })
+    for name in os.listdir(target_dir):
+        path = os.path.join(target_dir, name)
+        if not os.path.isfile(path):
+            continue
+
+        ext = os.path.splitext(name)[1].lower()
+        if ext not in SUPPORTED_EXTENSIONS:
+            continue
+
+        stat = os.stat(path)
+        files.append({
+            "name": name,
+            "path": path,
+            "size": stat.st_size,
+            "size_str": fmt_size(stat.st_size),
+            "mtime": str(int(stat.st_mtime)),
+            "ext": ext.replace(".", ""),
+        })
+
     files.sort(key=lambda x: x["name"].lower())
     return files
 
 
-def scan_md_files(directory: str) -> List[Dict]:
-    if not os.path.isdir(directory):
+@st.cache_data(show_spinner=False)
+def scan_md_files(output_dir):
+    if not os.path.isdir(output_dir):
         return []
-    result = []
-    for fp in sorted(glob.glob(os.path.join(directory, "*.md"))):
-        s = os.stat(fp)
-        result.append({
-            "path": fp,
-            "name": os.path.basename(fp),
-            "size_str": fmt_size(s.st_size),
-            "mtime": datetime.datetime.fromtimestamp(s.st_mtime).strftime("%Y-%m-%d %H:%M"),
+
+    md_files = []
+    for path in glob.glob(os.path.join(output_dir, "*.md")):
+        name = os.path.basename(path)
+        stat = os.stat(path)
+        md_files.append({
+            "name": name,
+            "path": path,
+            "size": stat.st_size,
+            "size_str": fmt_size(stat.st_size),
+            "mtime": str(int(stat.st_mtime)),
         })
-    return result
+
+    md_files.sort(key=lambda x: x["name"].lower())
+    return md_files
 
 
-def load_chunks_info(directory: str, stem: str) -> Optional[List[str]]:
-    txt_path = os.path.join(directory, f"{stem}_chunks.txt")
-    if not os.path.exists(txt_path):
+def load_chunks_info(output_dir, md_name):
+    stem = os.path.splitext(md_name)[0]
+    meta_path = os.path.join(output_dir, f"{stem}_chunks_meta.json")
+    if not os.path.exists(meta_path):
         return None
-    with open(txt_path, encoding="utf-8") as fh:
-        raw = fh.read()
-    blocks = re.split(r"======== CHUNK \d+/\d+ ========", raw)
-    chunks = [b.strip().rstrip("=").strip() for b in blocks if b.strip() and not b.startswith("DBMA Chunk File")]
-    return chunks if chunks else None
+
+    try:
+        with open(meta_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None

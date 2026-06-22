@@ -10,4 +10,4 @@ qdrant-client[fastembed]>=1.14.2
 fastembed>=0.8.0
 sentence-transformers
 pdf2image
-pytesseract
+python-tesseract

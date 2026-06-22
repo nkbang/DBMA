@@ -33,12 +33,18 @@ def parse_frontmatter(content: str):
 def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use_ocr):
     st.subheader("처리")
 
+    # Log entry point
+    st.info("render_processing_tab 시작")
+    
     if not os.path.isdir(target_dir):
         st.error(f"RAW 폴더가 없습니다: {target_dir}")
         return
 
     os.makedirs(output_dir, exist_ok=True)
     file_list = scan_directory(target_dir)
+    
+    # Log file list
+    st.info(f"파일 목록 수집 완료: {len(file_list)} 파일")
 
     if "selected_names" not in st.session_state:
         st.session_state["selected_names"] = []
@@ -105,6 +111,9 @@ def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use
             st.warning("선택된 파일이 없습니다.")
             return
 
+        # Log before creating converter and splitter
+        st.info(f"파싱 시작: {len(selected_files)} 파일")
+        
         converter = build_converter(use_ocr)
         splitter = build_splitter(chunk_size, chunk_overlap)
 
@@ -116,6 +125,10 @@ def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use
 
         for idx, file_info in enumerate(selected_files, 1):
             status_box.info(f"[{idx}/{len(selected_files)}] 처리 중: {file_info['name']}")
+            
+            # Log before calling process_one_file
+            st.info(f"process_one_file 호출 시작: {file_info['name']}")
+            
             try:
                 logs, success = process_one_file(
                     file_info=file_info,
@@ -125,27 +138,30 @@ def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use
                     chunk_size=chunk_size,
                     chunk_overlap=chunk_overlap,
                 )
+                
+                # Log after process_one_file returns
+                st.info(f"process_one_file 호출 완료: {file_info['name']}")
 
-               for log in logs:
-    if log["cls"] == "log-ok":
-        st.success(log["msg"])
-    elif log["cls"] == "log-warn":
-        st.warning(log["msg"])
-    else:
-        st.info(log["msg"])
+                for log in logs:
+                    if log["cls"] == "log-ok":
+                        st.success(log["msg"])
+                    elif log["cls"] == "log-warn":
+                        st.warning(log["msg"])
+                    else:
+                        st.info(log["msg"])
 
-# --- 추가: 청킹 품질 표시 (선택적) ---
-if success:
-    st.info("✅ 파싱 완료")
-    # process_one_file 이 logs 밖으로 chunk_params 를 반환하지 않으므로,
-    # 현재 단계에서는 logs 속에 이미 들어있는 "청크 최적화 MD" / "청크 수" 로그만 표시됨.
-    # UI 에서 직접 chunk_params 를 보려면 process_one_file 결과를 dict 로 받도록
-    # dbma.py 파이프라인만 수정하고, tabs.py 는 기존 로그 출력만 유지해도 충분합니다.
+                # --- 추가: 청킹 품질 표시 (선택적) ---
+                if success:
+                    st.info("✅ 파싱 완료")
+                    # process_one_file 이 logs 밖으로 chunk_params 를 반환하지 않으므로,
+                    # 현재 단계에서는 logs 속에 이미 들어있는 "청크 최적화 MD" / "청크 수" 로그만 표시됨.
+                    # UI 에서 직접 chunk_params 를 보려면 process_one_file 결과를 dict 로 받도록
+                    # dbma.py 파이프라인만 수정하고, tabs.py 는 기존 로그 출력만 유지해도 충분합니다.
 
-if success:
-    ok_count += 1
-else:
-    fail_count += 1
+                if success:
+                    ok_count += 1
+                else:
+                    fail_count += 1
 
             except Exception as e:
                 fail_count += 1
@@ -226,13 +242,13 @@ def render_analysis_tab(output_dir):
     )
 
    if chunks_info:
-    c4, c5, c6 = st.columns(3)
-    with c4:
-        st.metric("청크 수", chunks_info.get("chunks", "-"))
-    with c5:
-        st.metric("Chunk Size", chunks_info.get("chunk_size", "-"))
-    with c6:
-        st.metric("Chunk Overlap", chunks_info.get("chunk_overlap", "-"))
+        c4, c5, c6 = st.columns(3)
+        with c4:
+            st.metric("청크 수", chunks_info.get("chunks", "-"))
+        with c5:
+            st.metric("Chunk Size", chunks_info.get("chunk_size", "-"))
+        with c6:
+            st.metric("Chunk Overlap", chunks_info.get("chunk_overlap", "-"))
 
-    with st.expander("본문 미리보기", expanded=True):
-        st.text_area("preview", body[:5000], height=320, label_visibility="collapsed")
+        with st.expander("본문 미리보기", expanded=True):
+            st.text_area("preview", body[:5000], height=320, label_visibility="collapsed")

@@ -1,113 +1,194 @@
+import os
 import re
-import unicodedata
-import streamlit as st
-from typing import Dict, List
+import hashlib
+from collections import Counter
 
 
-def fmt_size(b: int) -> str:
-    for u in ["B", "KB", "MB", "GB"]:
-        if b < 1024:
-            return f"{b:.1f} {u}"
-        b /= 1024
-    return f"{b:.1f} TB"
+def fmt_size(num):
+    step = 1024.0
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
+        if num < step:
+            return f"{num:.1f} {unit}" if unit != "B" else f"{int(num)} {unit}"
+        num /= step
+    return f"{num:.1f} PB"
 
 
 def make_safe_stem(filename: str) -> str:
-    import os
-    name, ext = os.path.splitext(filename)
-    return f"{name}__{ext.lower().replace('.', '')}"
+    stem, ext = os.path.splitext(filename)
+    stem = re.sub(r"\s+", " ", stem).strip()
+    stem = re.sub(r"[^\w\-.가-힣 ]+", "_", stem)
+    ext_clean = ext.lower().replace(".", "")
+    return f"{stem}_{ext_clean}" if ext_clean else stem
+
+
+def stable_file_id(path: str) -> str:
+    return hashlib.md5(path.encode("utf-8")).hexdigest()[:12]
+
+
+def file_checkbox_key(file_info: dict) -> str:
+    return f"sel_{stable_file_id(file_info['path'])}"
 
 
 def noise_color(score: float) -> str:
-    if score <= 20:
-        return "#3fb950"
-    if score <= 40:
-        return "#d29922"
-    return "#f85149"
+    if score >= 60:
+        return "#d9534f"
+    if score >= 35:
+        return "#f0ad4e"
+    return "#5cb85c"
 
 
 def noise_label(score: float) -> str:
-    if score <= 20:
-        return "GOOD"
-    if score <= 40:
-        return "WARN"
-    return "BAD"
+    if score >= 60:
+        return "높음"
+    if score >= 35:
+        return "주의"
+    return "양호"
 
 
-def apply_select_all() -> None:
-    newval = st.session_state.select_all
-    for key in list(st.session_state.keys()):
-        if key.startswith("sel_"):
-            st.session_state[key] = newval
+def normalize_text_basic(text: str) -> str:
+    if not text:
+        return ""
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = text.replace("\t", " ")
+    text = re.sub(r"[ \u00A0]+", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
-def on_item_change() -> None:
-    selkeys = [k for k in st.session_state if k.startswith("sel_")]
-    if selkeys:
-        st.session_state.select_all = all(st.session_state[k] for k in selkeys)
+def clean_text_for_plain_text(text: str) -> str:
+    return normalize_text_basic(text)
 
 
-def calculate_noise_score(text: str) -> Dict:
-    if not text or len(text) < 50:
-        return {
-            "total": 100.0,
-            "symbolratio": 40.0,
-            "shortline": 30.0,
-            "blankratio": 15.0,
-            "repeatratio": 15.0,
-            "charcount": len(text) if text else 0,
-            "linecount": 1,
-            "wordcount": 0,
-            "langdetected": "",
-        }
+def clean_text_for_rich_text(text: str) -> str:
+    text = normalize_text_basic(text)
+    text = re.sub(r"\\[[0-9]{1,3}\\]", "", text)
+    text = re.sub(r"\\(\\s\*[0-9]{1,3}\\s\*\\)", "", text)
+    return text.strip()
 
-    text = unicodedata.normalize("NFC", text)
-    lines = text.splitlines()
-    charcount = len(text)
-    wordcount = len(text.split())
-    linecount = len(lines)
 
-    has_korean = bool(re.search(r"[가-힣]", text))
-    has_hebrew = bool(re.search(r"[\u05b0-\u05ea\u0591-\u05f4]", text))
-    has_greek = bool(re.search(r"[\u0370-\u03ff\u1f00-\u1fff]", text))
-    has_english = bool(re.search(r"[a-zA-Z]", text))
-    langdetected = "ko" if has_korean else "he" if has_hebrew else "el" if has_greek else "en" if has_english else ""
+def clean_text_for_pdf(text: str, is_ocr: bool = False) -> str:
+    text = normalize_text_basic(text)
+    text = re.sub(r"(?m)^[ \t]*\d+[ \t]*$", "", text)
+    text = re.sub(r"(?m)^[ \t]*page\s+\d+[ \t]*$", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"(\w)-\n(\w)", r"\1\2", text)
 
-    allowed = re.compile(r"[가-힣a-zA-Z\u05b0-\u05ea\u0591-\u05f4\u0370-\u03ff\u1f00-\u1fff0-9\s\.,!?\-:;\\(\\)\\[\\]\{\}\'\"/\\%&@#\*\+=_]")
-    nonallowed = sum(1 for ch in text if not allowed.match(ch))
-    symscore = min((nonallowed / max(charcount, 1)) * 40 * 5, 40.0)
+    if is_ocr:
+        text = re.sub(r"[|¦]{2,}", " ", text)
+        text = re.sub(r"[~`^]{2,}", " ", text)
+        text = re.sub(r"(?m)^[^\w가-힣]{3,}$", "", text)
 
-    shortlines = sum(1 for ln in lines if 0 < len(ln.strip()) < 20)
-    slscore = min((shortlines / max(linecount, 1)) * 30 * 2, 30.0)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
-    blanklines = sum(1 for ln in lines if not ln.strip())
-    blscore = min((blanklines / max(linecount, 1)) * 15 * 3, 15.0)
 
-    repeats = len(re.findall(r"(.)\1{3,14}", text))
-    rpscore = min(repeats * 3.0, 15.0)
+def detect_symbol_ratio(text: str) -> float:
+    if not text:
+        return 0.0
+    symbols = re.findall(r"[^\w\s가-힣]", text)
+    return len(symbols) / max(len(text), 1)
 
-    total = symscore + slscore + blscore + rpscore
+
+def detect_short_line_ratio(text: str) -> float:
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    if not lines:
+        return 0.0
+    short_lines = [ln for ln in lines if len(ln) <= 3]
+    return len(short_lines) / len(lines)
+
+
+def detect_broken_line_ratio(text: str) -> float:
+    lines = [ln.rstrip() for ln in text.splitlines() if ln.strip()]
+    if len(lines) < 2:
+        return 0.0
+    broken = 0
+    for ln in lines[:-1]:
+        if re.search(r"[A-Za-z가-힣0-9]$", ln) and not re.search(r"[.!?)]$", ln):
+            broken += 1
+    return broken / len(lines)
+
+
+def detect_repeated_punct_ratio(text: str) -> float:
+    if not text:
+        return 0.0
+    repeated = re.findall(r"([^\w\s가-힣])\1{2,}", text)
+    return len(repeated) / max(len(text), 1)
+
+
+def detect_pdf_ocr_like_noise(text: str) -> float:
+    if not text:
+        return 0.0
+    strange = re.findall(r"[^\w\s가-힣.,;:!?()\"'\\-]", text)
+    return len(strange) / max(len(text), 1)
+
+
+def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) -> dict:
+    original = text or ""
+    file_type = (file_type or "").lower().replace(".", "")
+
+    text_like = {"txt", "md"}
+    rich_text = {"docx", "epub", "html", "htm", "rtf"}
+    pdf_types = {"pdf"}
+
+    if file_type in text_like:
+        cleaned = clean_text_for_plain_text(original)
+        symbol_ratio = detect_symbol_ratio(cleaned)
+        short_line_ratio = detect_short_line_ratio(cleaned)
+        broken_line_ratio = 0.0
+        repeated_punct_ratio = 0.0
+        ocr_noise_ratio = 0.0
+        score_raw = symbol_ratio * 25 + short_line_ratio * 12
+        mode = "plain_text"
+
+    elif file_type in rich_text:
+        cleaned = clean_text_for_rich_text(original)
+        symbol_ratio = detect_symbol_ratio(cleaned)
+        short_line_ratio = detect_short_line_ratio(cleaned)
+        broken_line_ratio = detect_broken_line_ratio(cleaned)
+        repeated_punct_ratio = 0.0
+        ocr_noise_ratio = 0.0
+        score_raw = symbol_ratio * 18 + short_line_ratio * 10 + broken_line_ratio * 12
+        mode = "rich_text"
+
+    elif file_type in pdf_types:
+        cleaned = clean_text_for_pdf(original, is_ocr=is_ocr)
+        symbol_ratio = detect_symbol_ratio(cleaned)
+        short_line_ratio = detect_short_line_ratio(cleaned)
+        broken_line_ratio = detect_broken_line_ratio(cleaned)
+        repeated_punct_ratio = detect_repeated_punct_ratio(cleaned)
+        ocr_noise_ratio = detect_pdf_ocr_like_noise(cleaned) if is_ocr else 0.0
+
+        score_raw = (
+            symbol_ratio * 10
+            + short_line_ratio * 10
+            + broken_line_ratio * 15
+            + repeated_punct_ratio * 10
+            + ocr_noise_ratio * 15
+        )
+        mode = "pdf_ocr" if is_ocr else "pdf_text"
+
+    else:
+        cleaned = normalize_text_basic(original)
+        symbol_ratio = detect_symbol_ratio(cleaned)
+        short_line_ratio = detect_short_line_ratio(cleaned)
+        broken_line_ratio = 0.0
+        repeated_punct_ratio = 0.0
+        ocr_noise_ratio = 0.0
+        score_raw = symbol_ratio * 20 + short_line_ratio * 10
+        mode = "generic"
+
+    score = max(0.0, min(score_raw * 3.5, 100.0))
+
     return {
-        "total": round(total, 2),
-        "symbolratio": round(symscore, 2),
-        "shortline": round(slscore, 2),
-        "blankratio": round(blscore, 2),
-        "repeatratio": round(rpscore, 2),
-        "charcount": charcount,
-        "linecount": linecount,
-        "wordcount": wordcount,
-        "langdetected": langdetected,
+        "score": round(score, 2),
+        "mode": mode,
+        "file_type": file_type,
+        "charcount": len(cleaned),
+        "symbol_ratio": round(symbol_ratio * 100, 2),
+        "short_line_ratio": round(short_line_ratio * 100, 2),
+        "broken_line_ratio": round(broken_line_ratio * 100, 2),
+        "repeated_punct_ratio": round(repeated_punct_ratio * 100, 2),
+        "ocr_noise_ratio": round(ocr_noise_ratio * 100, 2),
+        "cleaned_text": cleaned,
+        "counter": Counter(cleaned).most_common(10),
     }
 
-
-def detect_langs(text: str) -> List[str]:
-    found = []
-    if any("\u0600" <= c <= "\u06ff" or "\u05b0" <= c <= "\u05ea" for c in text):
-        found.append("he")
-    if any("\u0370" <= c <= "\u03ff" or "\u1f00" <= c <= "\u1fff" for c in text):
-        found.append("el")
-    if any("가" <= c <= "힣" for c in text):
-        found.append("ko")
-    if any(c.isascii() and c.isalpha() for c in text[:5000]):
-        found.append("en")
-    return found

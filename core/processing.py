@@ -5,8 +5,9 @@ import shutil
 import datetime
 from pathlib import Path
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter, SentenceTransformersTokenTextSplitter
 from docling.document_converter import DocumentConverter
+from sentence_transformers import SentenceTransformer
 
 from core.extractors import extract_text_from_file
 from core.utils import make_safe_stem, calculate_noise_score
@@ -18,19 +19,43 @@ def build_converter(use_ocr=False):
 
 
 def build_splitter(chunk_size, chunk_overlap):
-    """기존 호환용: UI(tabs.py)에서 여전히 호출 가능"""
-    return RecursiveCharacterTextSplitter(
+    """기존 호환용: UI(tabs.py) 에서 여전히 호출 가능
+    Language-agnostic text splitting using SentenceSplitter for Hebrew/Greek support
+    """
+    # Using SentenceTransformersTokenTextSplitter for language-agnostic splitting
+    return SentenceTransformersTokenTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
+        model_name="BAAI/bge-m3"  # BGE-M3 model for multilingual support
     )
 
 
-def save_md(output_dir, stem, source_name, text, noise, source_type):
+def detect_language(text):
+    """Simple language detection based on script characters"""
+    # Basic Hebrew character detection (Unicode range)
+    hebrew_chars = sum(1 for c in text if '\u0590' <= c <= '\u05FF')
+    
+    # Basic Greek character detection (Unicode range) 
+    greek_chars = sum(1 for c in text if '\u0370' <= c <= '\u03FF')
+    
+    # If more than 10% of characters are Hebrew, consider it Hebrew
+    total_chars = len(text)
+    if total_chars > 0 and hebrew_chars / total_chars > 0.1:
+        return "he"
+    # If more than 10% of characters are Greek, consider it Greek
+    elif total_chars > 0 and greek_chars / total_chars > 0.1:
+        return "grc"
+    else:
+        return "en"  # Default to English
+
+def save_md_with_language(output_dir, stem, source_name, text, noise, source_type, language):
+    """Save markdown with language metadata"""
     path = os.path.join(output_dir, f"{stem}.md")
     frontmatter = [
         "---",
         f"source: {source_name}",
         f"source_type: {source_type}",
+        f"language: {language}",  # Add language metadata
         f"created_at: {datetime.datetime.now().isoformat()}",
         f"noise_score: {noise['score']}",
         f"noise_mode: {noise.get('mode', '-')}",
@@ -83,55 +108,83 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
     ext         = file_info["ext"].lower().replace(".", "")
     stem        = make_safe_stem(source_name)
 
-    result    = extract_text_from_file(src_path, converter=converter)
-    full_text = result.get("text", "") or ""
-    is_ocr    = result.get("is_ocr", False)
+    try:
+        # Log entry point
+        logs.append({"cls": "log-info", "msg": f"process_one_file 시작: {source_name}"})
+        
+        # ── 텍스트 추출 ─────────────────────────────────────────────
+        logs.append({"cls": "log-info", "msg": f"텍스트 추출 시작: {source_name}"})
+        result    = extract_text_from_file(src_path, converter=converter)
+        full_text = result.get("text", "") or ""
+        is_ocr    = result.get("is_ocr", False)
+        logs.append({"cls": "log-info", "msg": f"텍스트 추출 완료: {len(full_text)} characters"})
+        
+        # ── 언어 감지 및 메타데이터 추가 ─────────────────────────────
+        language = detect_language(full_text)
+        logs.append({"cls": "log-info", "msg": f"감지된 언어: {language}"})
 
-    if not full_text.strip():
-        logs.append({"cls": "log-warn", "msg": f"{source_name}: 추출 텍스트 없음"})
+        if not full_text.strip():
+            logs.append({"cls": "log-warn", "msg": f"{source_name}: 추출 텍스트 없음"})
+            return logs, False
+
+        # ── 노이즈 정제 ─────────────────────────────────────────────
+        logs.append({"cls": "log-info", "msg": f"노이즈 정제 시작: {source_name}"})
+        noise      = calculate_noise_score(full_text, file_type=ext, is_ocr=is_ocr)
+        final_text = noise["cleaned_text"]
+        logs.append({"cls": "log-info", "msg": f"노이즈 정제 완료: {len(final_text)} characters"})
+
+        if not final_text.strip():
+            logs.append({"cls": "log-warn", "msg": f"{source_name}: 정제 후 텍스트 없음"})
+            return logs, False
+
+        # ── MD 저장 (기존 동일) ──────────────────────────────────────────────
+        logs.append({"cls": "log-info", "msg": f"MD 저장 시작: {source_name}"})
+        # Add language metadata to the markdown file
+        md_path = save_md_with_language(output_dir, stem, source_name, final_text, noise, ext, language)
+        logs.append({"cls": "log-info", "msg": f"MD 저장 완료: {md_path}"})
+
+        # ── 청킹: 옵티마이저 우선, 폴백은 기존 splitter ─────────────────────
+        logs.append({"cls": "log-info", "msg": f"청킹 시작: {source_name}"})
+        chunk_result = optimize_chunks(final_text, ext)
+        chunks       = chunk_result.chunks
+        logs.append({"cls": "log-info", "msg": f"옵티마이저 실행 완료: {len(chunks)} chunks"})
+        if not chunks:                          # 옵티마이저 결과가 비어있으면 폴백
+            logs.append({"cls": "log-info", "msg": f"옵티마이저 결과 없음, 기존 splitter 사용: {source_name}"})
+            chunks = splitter.split_text(final_text)
+
+        # 기존 txt 저장 (RAG 파이프라인 호환 유지)
+        logs.append({"cls": "log-info", "msg": f"기존 txt 저장 시작: {source_name}"})
+        save_chunks(output_dir, stem, source_name, chunks,
+                    chunk_result.params["chunk_size"],
+                    chunk_result.params["chunk_overlap"])
+        logs.append({"cls": "log-info", "msg": f"기존 txt 저장 완료: {source_name}"})
+
+        # 최적화 마크다운 저장 (신규) — try 블록 내부
+        logs.append({"cls": "log-info", "msg": f"최적화 MD 저장 시작: {source_name}"})
+        opt_md_path = save_optimized_md(
+            result      = chunk_result,
+            source_name = source_name,
+            output_dir  = Path(output_dir),
+            stem        = stem,
+        )
+        logs.append({"cls": "log-info", "msg": f"최적화 MD 저장 완료: {opt_md_path}"})
+
+        logs.append({"cls": "log-info", "msg": f"원본 파일 이동 시작: {source_name}"})
+        moved_to = move_source_file(src_path, output_dir)
+        logs.append({"cls": "log-info", "msg": f"원본 파일 이동 완료: {moved_to}"})
+
+        logs.append({"cls": "log-ok",   "msg": f"{source_name} 처리 완료"})
+        
+        # 품질 경고
+        if not chunk_result.passed:
+            logs.append({"cls": "log-warn",
+                         "msg": f"⚠️ 청킹 품질 미달 (avg_noise={chunk_result.quality.avg_noise:.1f}, "
+                                f"avg_dup={chunk_result.quality.avg_dup:.2f}) — 재검토 권장"})
+
+        return logs, True
+    
+    except Exception as e:
+        logs.append({"cls": "log-warn", "msg": f"{source_name}: 처리 실패 — {e}"})
+        import traceback
+        logs.append({"cls": "log-warn", "msg": f"Traceback: {traceback.format_exc()}"})
         return logs, False
-
-    noise      = calculate_noise_score(full_text, file_type=ext, is_ocr=is_ocr)
-    final_text = noise["cleaned_text"]
-
-    if not final_text.strip():
-        logs.append({"cls": "log-warn", "msg": f"{source_name}: 정제 후 텍스트 없음"})
-        return logs, False
-
-    # ── MD 저장 (기존 동일) ──────────────────────────────────────────────
-    md_path = save_md(output_dir, stem, source_name, final_text, noise, ext)
-
-    # ── 청킹: 옵티마이저 우선, 폴백은 기존 splitter ─────────────────────
-    chunk_result = optimize_chunks(final_text, ext)
-    chunks       = chunk_result.chunks
-    if not chunks:                          # 옵티마이저 결과가 비어있으면 폴백
-        chunks = splitter.split_text(final_text)
-
-    # 기존 txt 저장 (RAG 파이프라인 호환 유지)
-    save_chunks(output_dir, stem, source_name, chunks,
-                chunk_result.params["chunk_size"],
-                chunk_result.params["chunk_overlap"])
-
-    # 최적화 마크다운 저장 (신규)
-    opt_md_path = save_optimized_md(
-        result      = chunk_result,
-        source_name = source_name,
-        output_dir  = Path(output_dir),
-        stem        = stem,
-    )
-
-    moved_to = move_source_file(src_path, output_dir)
-
-    logs.append({"cls": "log-ok",   "msg": f"{source_name} 처리 완료"})
-    logs.append({"cls": "log-info", "msg": f"MD 저장: {md_path}"})
-    logs.append({"cls": "log-info", "msg": f"청크 최적화 MD: {opt_md_path}"})
-    logs.append({"cls": "log-info", "msg": f"청크 수: {len(chunks)} / params: {chunk_result.params}"})
-    logs.append({"cls": "log-info", "msg": f"원본 이동: {moved_to}"})
-
-    # 품질 경고
-    if not chunk_result.passed:
-        logs.append({"cls": "log-warn",
-                     "msg": f"⚠️ 청킹 품질 미달 (avg_noise={chunk_result.quality.avg_noise:.1f}, "
-                            f"avg_dup={chunk_result.quality.avg_dup:.2f}) — 재검토 권장"})
-
-    return logs, True
