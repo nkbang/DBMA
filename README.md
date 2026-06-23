@@ -135,3 +135,11 @@ pip install pdf2image python-tesseract
   - BGE-M3 embedding model for multilingual document processing
   - Language-agnostic text splitting using SentenceSplitter
   - Tesseract OCR support for scanned PDFs in Hebrew and Greek
+
+## Project Analysis
+
+This project has been analyzed and documented in the `analysis/` directory:
+- `analysis/technology.md`: Detailed technical analysis of the project components and architecture
+- `analysis/summary.md`: Comprehensive overview of the project structure, functionality, and key features
+
+The system is built with Python and Streamlit, featuring a modular architecture with separate components for text extraction, chunking optimization, utility functions, and user interface.

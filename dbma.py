@@ -18,7 +18,8 @@ from docx import Document
 from ebooklib import ITEM_DOCUMENT, epub
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from striprtf.striprtf import rtf_to_text
-from core.chunking_optimizer import optimize_chunks, save_optimized_md
+from core.chunking_optimizer import optimize_chunks, save_optimized_md  
+from core.processing import build_converter, build_splitter, process_one_file  
 st.set_page_config(page_title="DBMAr", layout="wide")
 
 if not logging.getLogger().handlers:
@@ -35,7 +36,7 @@ def safe_log_exception(msg: str):
 APP_VERSION = "0.6.4"
 PROJECT_ROOT = Path(__file__).resolve().parent
 RAW_DIR = PROJECT_ROOT / "data" / "RAW"
-OUTPUT_DIR = PROJECT_ROOT / "data" / "제련완성본"
+OUTPUT_DIR = PROJECT_ROOT / "data" / "제련완성본"
 DOCS_DIR = PROJECT_ROOT / "docs"
 LOGS_DIR = PROJECT_ROOT / "logs"
 TODO_MD = DOCS_DIR / "dbmar_todo_progress_board.md"
@@ -429,75 +430,6 @@ def move_source(src: Path):
     except Exception as e:
         safe_log_exception(f"move_source failed: {e}")
         return src
-
-
-def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap):
-    """
-    수정된 버전: 옵티마이저 우선, 폴백은 기존 splitter
-    반환: (logs, success)
-    """
-    logs = []
-    src_path    = file_info["path"]
-    source_name = file_info["name"]
-    ext         = file_info["ext"].lower().replace(".", "")
-    stem        = safe_stem(source_name)
-
-    try:
-        # ── 텍스트 추출 ─────────────────────────────────────────────
-        result    = extract_text(src_path, use_ocr=file_info.get("use_ocr", False))
-        full_text = result or ""
-        is_ocr    = False  # This would need to be determined from result if available
-
-        if not full_text.strip():
-            logs.append({"cls": "log-warn", "msg": f"{source_name}: 추출 텍스트 없음"})
-            return logs, False
-
-        # ── 노이즈 정제 ─────────────────────────────────────────────
-        noise      = estimate_noise_score(full_text)
-        final_text = noise["cleaned_text"]
-
-        if not final_text.strip():
-            logs.append({"cls": "log-warn", "msg": f"{source_name}: 정제 후 텍스트 없음"})
-            return logs, False
-
-        # ── MD 저장 (기존 동일) ──────────────────────────────────────────────
-        md_path = OUTPUT_DIR / f"{stem}.md"
-        md_path.write_text(final_text, encoding="utf-8")
-
-        # ── 청킹: 옵티마이저 우선, 폴백은 기존 splitter ─────────────────────
-        doc_type = ext
-        chunk_result = optimize_chunks(final_text, doc_type)
-        chunks       = chunk_result.chunks
-        if not chunks:                          # 옵티마이저 결과가 비어있으면 폴백
-            chunks = splitter.split_text(final_text)
-
-        # 기존 txt 저장 (RAG 파이프라인 호환 유지)
-        chunk_path = OUTPUT_DIR / f"{stem}_chunks.txt"
-        chunk_path.write_text("\n\n".join(f"[CHUNK {i+1}]\n{c}" for i, c in enumerate(chunks)), encoding="utf-8")
-
-        # 최적화 마크다운 저장 (신규) — try 블록 내부
-        save_optimized_md(chunk_result, source_name, OUTPUT_DIR, stem)
-
-        moved_to = move_source(src_path)
-        
-        logs.append({"cls": "log-ok",   "msg": f"{source_name} 처리 완료"})
-        logs.append({"cls": "log-info", "msg": f"MD 저장: {md_path}"})
-        logs.append({"cls": "log-info", "msg": f"청크 수: {len(chunks)} / params: {chunk_result.params}"})
-        logs.append({"cls": "log-info", "msg": f"원본 이동: {moved_to}"})
-
-        # 품질 경고
-        if not chunk_result.passed:
-            logs.append({"cls": "log-warn",
-                         "msg": f"⚠️ 청킹 품질 미달 (avg_noise={chunk_result.quality.avg_noise:.1f}, "
-                                f"avg_dup={chunk_result.quality.avg_dup:.2f}) — 재검토 권장"})
-
-        return logs, True
-    
-    except Exception as e:
-        logs.append({"cls": "log-warn", "msg": f"{source_name}: 처리 실패 — {e}"})
-        import traceback
-        logs.append({"cls": "log-warn", "msg": f"Traceback: {traceback.format_exc()}"})
-        return logs, False
 
 
 def scan_raw_files():
@@ -916,7 +848,6 @@ def render_monitor_tab():
     except Exception as e:
         safe_log_exception(f"render_monitor_tab failed: {e}")
 
-
 def render_processing_tab(use_ocr: bool, chunk_size: int, chunk_overlap: int):
     if st.session_state.get("is_processing", False):
         st.info("이미 처리 중입니다.")
@@ -932,18 +863,19 @@ def render_processing_tab(use_ocr: bool, chunk_size: int, chunk_overlap: int):
         selected = st.multiselect(
             "처리할 파일",
             [p.name for p in files],
-            default=[p.name for p in files[:min(5, len(files))]]
+            default=[p.name for p in files[:min(5, len(files))]],
         )
 
         c1, c2 = st.columns(2)
         with c1:
             start_parse = st.button("Parse 시작", use_container_width=True)
         with c2:
-            clear_after = st.checkbox("처리 후 재실행", value=True)
+            clear_after = st.checkbox("처리 후 재실행", value=False)
 
         status_box = st.empty()
         progress_box = st.progress(0, text="대기 중")
         live_box = st.empty()
+        results_box = st.empty()
 
         if start_parse:
             st.session_state["is_processing"] = True
@@ -953,44 +885,64 @@ def render_processing_tab(use_ocr: bool, chunk_size: int, chunk_overlap: int):
 
                 for idx, name in enumerate(selected, start=1):
                     path = RAW_DIR / name
-                    if path.exists():
-                        status_box.info(f"처리 중: {name}")
-                        st.session_state["current_file"] = name
-                        st.session_state["current_stage"] = "start"
+                    if not path.exists():
+                        status_box.warning(f"파일 없음: {name}")
+                        continue
 
-                        converter = build_converter(use_ocr)
-                        splitter = build_splitter(chunk_size, chunk_overlap)
+                    status_box.info(f"처리 중: {name}")
+                    st.session_state["current_file"] = name
+                    st.session_state["current_stage"] = "start"
 
-                        file_info = {
-                            "path": path,
-                            "name": name,
-                            "ext": path.suffix,
-                            "use_ocr": use_ocr,
-                        }
+                    converter = build_converter(use_ocr)
+                    splitter = build_splitter(chunk_size, chunk_overlap)
 
-                        result = process_one_file(
-                            file_info=file_info,
-                            converter=converter,
-                            splitter=splitter,
-                            output_dir=str(OUTPUT_DIR),
-                            chunk_size=chunk_size,
-                            chunk_overlap=chunk_overlap
-                        )
-                        results.append(result)
+                    file_info = {
+                        "path": path,
+                        "name": name,
+                        "ext": path.suffix,
+                        "use_ocr": use_ocr,
+                    }
 
-                        progress_box.progress(idx / total, text=f"{idx}/{total} 처리 완료")
-                        live_box.write(
-                            f"현재 파일: {st.session_state.get('current_file','-')} | "
-                            f"단계: {st.session_state.get('current_stage','-')}"
-                        )
-                        time.sleep(0.05)
+                    logs, success = process_one_file(
+                        file_info=file_info,
+                        converter=converter,
+                        splitter=splitter,
+                        output_dir=str(OUTPUT_DIR),
+                        chunk_size=chunk_size,
+                        chunk_overlap=chunk_overlap,
+                    )
+
+                    results.append({
+                        "file": name,
+                        "success": success,
+                        "log_count": len(logs),
+                    })
+
+                    with st.expander(f"로그: {name}", expanded=not success):
+                        for item in logs:
+                            cls = item.get("cls", "log-info")
+                            msg = item.get("msg", "")
+                            if cls == "log-ok":
+                                st.success(msg)
+                            elif cls == "log-warn":
+                                st.warning(msg)
+                            else:
+                                st.write(msg)
+
+                    progress_box.progress(idx / total, text=f"{idx}/{total} 처리 완료")
+                    live_box.write(
+                        f"현재 파일: {st.session_state.get('current_file', '-') } | "
+                        f"단계: {st.session_state.get('current_stage', '-')}"
+                    )
+                    time.sleep(0.05)
 
                 if results:
                     st.success(f"{len(results)}개 처리 완료")
-                    st.dataframe(pd.DataFrame(results), use_container_width=True, hide_index=True)
-                    if clear_after:
-                        st.session_state["pending_rerun"] = True
-                        st.rerun()
+                    results_box.dataframe(pd.DataFrame(results), use_container_width=True, hide_index=True)
+
+                if clear_after:
+                    st.caption("처리 후 자동 재실행은 꺼져 있습니다. 필요하면 버튼을 다시 누르세요.")
+
             finally:
                 st.session_state["is_processing"] = False
 
@@ -1050,8 +1002,7 @@ def render_analysis_tab():
 
 def main():
     ensure_dirs()
-    if "pending_rerun" not in st.session_state:
-        st.session_state["pending_rerun"] = False
+
     if "is_processing" not in st.session_state:
         st.session_state["is_processing"] = False
     if "embed_model" not in st.session_state:
@@ -1069,38 +1020,65 @@ def main():
 
     st.title(f"DBMAr {APP_VERSION}")
     st.caption("Document parsing / cleaning / chunking / monitoring / RAG / trendy chat")
+
     with st.sidebar:
         st.header("Settings")
         use_ocr = st.checkbox("Use OCR", value=False)
         dynamic_models = list_ollama_models()
         embed_choices = dynamic_models or EMBED_MODEL_OPTIONS
         gen_choices = dynamic_models or GEN_MODEL_OPTIONS
+
         if st.session_state["embed_model"] not in embed_choices:
             st.session_state["embed_model"] = embed_choices[0]
         if st.session_state["gen_model"] not in gen_choices:
             st.session_state["gen_model"] = gen_choices[0]
-        st.session_state["embed_model"] = st.selectbox("Embedding model", embed_choices, index=embed_choices.index(st.session_state["embed_model"]))
-        st.session_state["gen_model"] = st.selectbox("LLM model", gen_choices, index=gen_choices.index(st.session_state["gen_model"]))
-        st.session_state["chunk_size"] = st.number_input("Chunk Size", value=int(st.session_state["chunk_size"]), min_value=100, step=100)
-        st.session_state["chunk_overlap"] = st.number_input("Chunk Overlap", value=int(st.session_state["chunk_overlap"]), min_value=0, step=10)
-        st.session_state["top_k"] = st.slider("Top K", min_value=1, max_value=10, value=int(st.session_state["top_k"]))
-        st.session_state["temperature"] = st.slider("Temperature", min_value=0.0, max_value=1.5, value=float(st.session_state["temperature"]), step=0.05)
+
+        st.session_state["embed_model"] = st.selectbox(
+            "Embedding model",
+            embed_choices,
+            index=embed_choices.index(st.session_state["embed_model"]),
+        )
+        st.session_state["gen_model"] = st.selectbox(
+            "LLM model",
+            gen_choices,
+            index=gen_choices.index(st.session_state["gen_model"]),
+        )
+        st.session_state["chunk_size"] = st.number_input(
+            "Chunk Size",
+            value=int(st.session_state["chunk_size"]),
+            min_value=100,
+            step=100,
+        )
+        st.session_state["chunk_overlap"] = st.number_input(
+            "Chunk Overlap",
+            value=int(st.session_state["chunk_overlap"]),
+            min_value=0,
+            step=10,
+        )
+        st.session_state["top_k"] = st.slider(
+            "Top K",
+            min_value=1,
+            max_value=10,
+            value=int(st.session_state["top_k"]),
+        )
+        st.session_state["temperature"] = st.slider(
+            "Temperature",
+            min_value=0.0,
+            max_value=1.5,
+            value=float(st.session_state["temperature"]),
+            step=0.05,
+        )
         st.caption(f"Collection: {COLLECTION_NAME}")
         if st.button("Cache Clear"):
             cleanup_cache()
             st.success("Cache cleared")
-            st.session_state["pending_rerun"] = True
-            st.rerun()
-
-    if st.session_state.get("pending_rerun"):
-        st.session_state["pending_rerun"] = False
 
     tab1, tab2, tab3, tab4 = st.tabs(["Parse", "Analyze", "Project", "RAG"])
     with tab1:
         render_processing_tab(
             use_ocr=use_ocr,
             chunk_size=int(st.session_state["chunk_size"]),
-            chunk_overlap=int(st.session_state["chunk_overlap"])
+            chunk_overlap=int(st.session_state["chunk_overlap"]),
         )
     with tab2:
         render_analysis_tab()
@@ -1116,7 +1094,5 @@ def main():
             temperature=float(st.session_state["temperature"]),
         )
 
-
 if __name__ == "__main__":
     main()
-
