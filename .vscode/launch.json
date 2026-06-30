@@ -2,23 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "DBMA: Streamlit Debug",
-      "type": "debugpy",
+      "name": "DBMA-RAG Streamlit",
+      "type": "python",
       "request": "launch",
-      "python": "/Users/David/envs/rag/bin/python",
-      "module": "streamlit",
-      "args": [
-        "run",
-        "dbma.py",
-        "--server.headless",
-        "true"
-      ],
-      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/dbma_rag.py",
       "console": "integratedTerminal",
-      "justMyCode": true,
-      "redirectOutput": true,
+      "args": [
+        "run"
+      ],
       "env": {
-        "PYTHONUNBUFFERED": "1"
+        "PYTHONPATH": "${workspaceFolder}"
       }
     }
   ]

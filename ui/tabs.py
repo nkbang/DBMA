@@ -191,14 +191,13 @@ def render_analysis_tab(output_dir):
         return
 
     md_files = scan_md_files(output_dir)
-
     if not md_files:
         st.info("분석할 md 파일이 없습니다.")
         return
 
+    # ── 파일 선택 ──
     selected_md = st.selectbox("파일 선택", options=[m["name"] for m in md_files])
     item = next((m for m in md_files if m["name"] == selected_md), None)
-
     if item is None:
         st.warning("선택한 파일을 찾을 수 없습니다.")
         return
@@ -213,6 +212,7 @@ def render_analysis_tab(output_dir):
     noise = calculate_noise_score(body, file_type=source_type, is_ocr=is_ocr)
     chunks_info = load_chunks_info(output_dir, item["name"])
 
+    # ── 노이즈 메트릭 ──
     c1, c2, c3 = st.columns(3)
     with c1:
         st.metric("노이즈", f"{noise['score']:.1f}")
@@ -224,8 +224,9 @@ def render_analysis_tab(output_dir):
     st.markdown(
         f"""
 <div style="margin:8px 0 16px 0;">
-    <span style="display:inline-block;padding:6px 12px;border-radius:12px;background:{noise_color(noise['score'])};color:white;font-weight:600;">
-        {noise_label(noise['score'])}
+    <span style="display:inline-block;padding:6px 12px;border-radius:12px;
+                 background:{noise_color(noise['score'])};color:white;font-weight:600;">
+        {noise_label(noise["score"])}
     </span>
 </div>
 """,
@@ -241,7 +242,7 @@ def render_analysis_tab(output_dir):
         f"repeated={noise.get('repeated_punct_ratio', 0):.1f}%"
     )
 
-   if chunks_info:
+    if chunks_info:
         c4, c5, c6 = st.columns(3)
         with c4:
             st.metric("청크 수", chunks_info.get("chunks", "-"))
@@ -250,5 +251,56 @@ def render_analysis_tab(output_dir):
         with c6:
             st.metric("Chunk Overlap", chunks_info.get("chunk_overlap", "-"))
 
-        with st.expander("본문 미리보기", expanded=True):
-            st.text_area("preview", body[:5000], height=320, label_visibility="collapsed")
+    # ── 본문 편집 ──
+    with st.expander("본문 편집", expanded=True):
+        edited_body = st.text_area(
+            "md 내용 편집",
+            content,
+            height=400,
+            label_visibility="collapsed",
+            key=f"edit_{item['name']}",
+        )
+
+    st.divider()
+
+    # ── 저장 + RAG 반영 버튼 ──
+    col_save, col_skip = st.columns([2, 1])
+
+    with col_save:
+        if st.button("💾 저장 및 RAG 반영", type="primary", use_container_width=True):
+            from core.md_manager import save_md_with_change_detection, reindex_md_to_qdrant
+            changed = save_md_with_change_detection(item["path"], edited_body)
+            if changed:
+                with st.spinner("🔄 RAG 재인덱싱 중..."):
+                    result = reindex_md_to_qdrant(item["path"], edited_body)
+
+                if result["status"] == "upserted":
+                    st.success(
+                        f"✅ 저장 완료 + RAG 반영 | "
+                        f"{result['nodes']}개 노드 인덱싱"
+                    )
+                elif result["status"] == "skipped":
+                    st.info("저장 완료 (청킹 결과 없어 RAG 생략)")
+                else:
+                    st.error(f"⚠️ 저장은 완료, RAG 오류: {result['message']}")
+            else:
+                st.info("ℹ️ 내용 변경 없음 — RAG 재인덱싱 생략")
+
+    with col_skip:
+        if st.button("저장만 (RAG 제외)", use_container_width=True):
+            Path(item["path"]).write_text(edited_body, encoding="utf-8")
+            st.success("저장 완료 (RAG 미반영)")
+
+    # ── 재인덱싱 이력 ──
+    with st.expander("📋 RAG 반영 이력", expanded=False):
+        from core.md_manager import load_reindex_log
+        logs = load_reindex_log(limit=20)
+        if not logs:
+            st.info("재인덱싱 이력이 없습니다.")
+        else:
+            import pandas as pd
+            df = pd.DataFrame(logs)
+            display_cols = [c for c in
+                ["timestamp", "file", "nodes", "status", "error"]
+                if c in df.columns]
+            st.dataframe(df[display_cols], use_container_width=True)

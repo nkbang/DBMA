@@ -34,8 +34,8 @@ def build_splitter(chunk_size, chunk_overlap):
 def detect_language(text):
     """Simple language detection based on script characters"""
     hebrew_chars = sum(1 for c in text if '\u0590' <= c <= '\u05FF')
-    greek_chars = sum(1 for c in text if '\u0370' <= c <= '\u03FF')
-    total_chars = len(text)
+    greek_chars  = sum(1 for c in text if '\u0370' <= c <= '\u03FF')
+    total_chars  = len(text)
     if total_chars > 0 and hebrew_chars / total_chars > 0.1:
         return "he"
     elif total_chars > 0 and greek_chars / total_chars > 0.1:
@@ -66,7 +66,7 @@ def save_md_with_language(output_dir, stem, source_name, text, noise, source_typ
 
 def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap):
     """기존 RAG 파이프라인 호환용: txt + meta.json 저장 유지"""
-    txt_path = os.path.join(output_dir, f"{stem}_chunks.txt")
+    txt_path  = os.path.join(output_dir, f"{stem}_chunks.txt")
     meta_path = os.path.join(output_dir, f"{stem}_chunks_meta.json")
 
     with open(txt_path, "w", encoding="utf-8") as f:
@@ -95,24 +95,37 @@ def move_source_file(src_path, output_dir):
 
 def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap):
     """
-    수정된 버전: 옵티마이저 우선, 폴백은 기존 splitter
+    파일 1개를 파싱 → 청킹 → MD/청크 저장까지 처리한다.
     반환: (logs, success)
+
+    수정 이력:
+      BUG-FIX  extract_text_from_file은 str 반환 — dict 가정 제거
+      BUG-FIX  optimize_chunks() 기반 청킹 파이프라인 연결
     """
     logs = []
-    src_path = file_info["path"]
+    src_path    = file_info["path"]
     source_name = file_info["name"]
-    ext = file_info["ext"].lower().replace(".", "")
-    stem = make_safe_stem(source_name)
+    ext         = file_info["ext"].lower().replace(".", "")
+    stem        = make_safe_stem(source_name)
 
     try:
         logs.append({"cls": "log-info", "msg": f"process_one_file 시작: {source_name}"})
 
+        # ── 텍스트 추출 ──────────────────────────────────────────
         logs.append({"cls": "log-info", "msg": f"텍스트 추출 시작: {source_name}"})
-        result = extract_text_from_file(src_path, converter=converter)
-        full_text = result.get("text", "") or ""
-        is_ocr = result.get("is_ocr", False)
+        raw_result = extract_text_from_file(src_path, converter=converter)
+
+        # extract_text_from_file은 str을 반환 (dict 아님) — 방어적 처리
+        if isinstance(raw_result, dict):
+            full_text = raw_result.get("text", "") or ""
+            is_ocr    = raw_result.get("is_ocr", False)
+        else:
+            full_text = str(raw_result) if raw_result else ""
+            is_ocr    = False
+
         logs.append({"cls": "log-info", "msg": f"텍스트 추출 완료: {len(full_text)} characters"})
 
+        # ── 언어 감지 ─────────────────────────────────────────────
         language = detect_language(full_text)
         logs.append({"cls": "log-info", "msg": f"감지된 언어: {language}"})
 
@@ -120,8 +133,9 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             logs.append({"cls": "log-warn", "msg": f"{source_name}: 추출 텍스트 없음"})
             return logs, False
 
+        # ── 노이즈 점검 ───────────────────────────────────────────
         logs.append({"cls": "log-info", "msg": f"노이즈 점검 시작: {source_name}"})
-        noise = calculate_noise_score(full_text, file_type=ext, is_ocr=is_ocr)
+        noise      = calculate_noise_score(full_text, file_type=ext, is_ocr=is_ocr)
         final_text = full_text
         logs.append({"cls": "log-info", "msg": f"노이즈 점검 완료: score={noise['score']}"})
 
@@ -129,28 +143,37 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             logs.append({"cls": "log-warn", "msg": f"{source_name}: 정제 후 텍스트 없음"})
             return logs, False
 
+        # ── MD 저장 ───────────────────────────────────────────────
         logs.append({"cls": "log-info", "msg": f"MD 저장 시작: {source_name}"})
-        md_path = save_md_with_language(output_dir, stem, source_name, final_text, noise, ext, language)
+        md_path = save_md_with_language(
+            output_dir, stem, source_name, final_text, noise, ext, language
+        )
         logs.append({"cls": "log-info", "msg": f"MD 저장 완료: {md_path}"})
 
+        # ── 청킹 (옵티마이저 우선, fallback → splitter) ───────────
         logs.append({"cls": "log-info", "msg": f"청킹 시작: {source_name}"})
         chunk_result = optimize_chunks(final_text, ext)
-        chunks = chunk_result.chunks
+        chunks       = chunk_result.chunks
         logs.append({"cls": "log-info", "msg": f"옵티마이저 실행 완료: {len(chunks)} chunks"})
 
         if not chunks:
-            logs.append({"cls": "log-info", "msg": f"옵티마이저 결과 없음, 기존 splitter 사용: {source_name}"})
-            chunks = splitter.split_text(final_text)
-            chunk_size_used = chunk_size
+            logs.append({
+                "cls": "log-info",
+                "msg": f"옵티마이저 결과 없음, 기존 splitter 사용: {source_name}",
+            })
+            chunks             = splitter.split_text(final_text)
+            chunk_size_used    = chunk_size
             chunk_overlap_used = chunk_overlap
         else:
-            chunk_size_used = chunk_result.params["chunk_size"]
+            chunk_size_used    = chunk_result.params["chunk_size"]
             chunk_overlap_used = chunk_result.params["chunk_overlap"]
 
+        # ── 청크 txt + meta.json 저장 ─────────────────────────────
         logs.append({"cls": "log-info", "msg": f"기존 txt 저장 시작: {source_name}"})
         save_chunks(output_dir, stem, source_name, chunks, chunk_size_used, chunk_overlap_used)
         logs.append({"cls": "log-info", "msg": f"기존 txt 저장 완료: {source_name}"})
 
+        # ── 최적화 MD 저장 ────────────────────────────────────────
         logs.append({"cls": "log-info", "msg": f"최적화 MD 저장 시작: {source_name}"})
         if chunks:
             opt_md_path = save_optimized_md(
@@ -160,21 +183,30 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                 stem=stem,
             )
             logs.append({"cls": "log-info", "msg": f"최적화 MD 저장 완료: {opt_md_path}"})
-            logs.append({"cls": "log-info", "msg": f"MD exists: {Path(opt_md_path).exists()} | {opt_md_path}"})
+            logs.append({
+                "cls": "log-info",
+                "msg": f"MD exists: {Path(opt_md_path).exists()} | {opt_md_path}",
+            })
         else:
-            logs.append({"cls": "log-warn", "msg": f"chunks 가 빈하여 MD 저장 건너뜁니다: {source_name}"})
+            logs.append({
+                "cls": "log-warn",
+                "msg": f"chunks 가 비어 MD 저장 건너뜁니다: {source_name}",
+            })
 
+        # ── 원본 파일 이동 ────────────────────────────────────────
         logs.append({"cls": "log-info", "msg": f"원본 파일 이동 시작: {source_name}"})
         moved_to = move_source_file(src_path, output_dir)
         logs.append({"cls": "log-info", "msg": f"원본 파일 이동 완료: {moved_to}"})
 
         logs.append({"cls": "log-ok", "msg": f"{source_name} 처리 완료"})
 
+        # ── 청킹 품질 경고 ────────────────────────────────────────
         if chunks and not chunk_result.passed:
             logs.append({
                 "cls": "log-warn",
                 "msg": (
-                    f"⚠️ 청킹 품질 미달 (avg_noise={chunk_result.quality.avg_noise:.1f}, "
+                    f"⚠️ 청킹 품질 미달 "
+                    f"(avg_noise={chunk_result.quality.avg_noise:.1f}, "
                     f"avg_dup={chunk_result.quality.avg_dup:.2f}) — 재검토 권장"
                 ),
             })

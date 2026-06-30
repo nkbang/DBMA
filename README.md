@@ -60,7 +60,7 @@ pip install -r requirements.txt
 1. `data/RAW` 디렉토리에 처리할 문서를 추가합니다.
 2. `dbma.py`를 실행하여 문서 처리를 시작합니다:
    ```bash
-   python dbma.py
+   streamlit run dbma.py
    ```
 3. Streamlit UI에서 결과를 확인하고 RAG 채팅 기능을 사용합니다.
 

@@ -8,6 +8,12 @@ import re
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+try:
+    from core.text_normalizer import normalize_pipeline_text, split_sentences
+except ImportError:
+    normalize_pipeline_text = None
+    split_sentences = None
+
 
 # ─── 프리셋: 문서 유형별 기본 파라미터 ──────────────────────────────────────
 PRESETS: dict[str, dict] = {
@@ -145,8 +151,36 @@ def _split(text: str, chunk_size: int, chunk_overlap: int) -> list[str]:
 # ─── 공개 API ─────────────────────────────────────────────────────────────
 def chunk_once(text: str, chunk_size: int, chunk_overlap: int) -> ChunkResult:
     """단일 파라미터 조합으로 청킹 + 품질 평가"""
-    params  = {"chunk_size": chunk_size, "chunk_overlap": chunk_overlap}
-    chunks  = _split(text, chunk_size, chunk_overlap)
+    params = {"chunk_size": chunk_size, "chunk_overlap": chunk_overlap}
+
+    if normalize_pipeline_text is None:
+        raise RuntimeError(
+            "normalize_pipeline_text import failed. core/text_normalizer.py를 확인하세요."
+        )
+
+    text = normalize_pipeline_text(text or "")
+
+    if split_sentences is None:
+        sentences = []
+    else:
+        sentences = split_sentences(text)
+
+    if sentences:
+        chunks = []
+        buf = []
+        buf_len = 0
+        for s in sentences:
+            if buf and buf_len + 1 + len(s) > chunk_size:
+                chunks.append(" ".join(buf).strip())
+                buf = buf[-1:] if chunk_overlap > 0 and buf else []
+                buf_len = len(" ".join(buf))
+            buf.append(s)
+            buf_len += len(s) + 1
+        if buf:
+            chunks.append(" ".join(buf).strip())
+    else:
+        chunks = _split(text, chunk_size, chunk_overlap)
+
     quality = _evaluate(chunks)
     return ChunkResult(chunks=chunks, params=params, quality=quality)
 
@@ -166,7 +200,7 @@ def optimize_chunks(text: str, doc_type: str) -> ChunkResult:
     best: ChunkResult | None = None
     for cs in GRID_SIZES:
         for co in GRID_OVERLAPS:
-            if co >= cs:          # overlap ≥ size 는 의미 없음
+            if co >= cs:
                 continue
             r = chunk_once(text, cs, co)
             if not r.passed:
@@ -174,7 +208,7 @@ def optimize_chunks(text: str, doc_type: str) -> ChunkResult:
             if best is None or (r.quality.avg_noise, r.quality.avg_dup) < \
                                (best.quality.avg_noise, best.quality.avg_dup):
                 best = r
-    return best if best else result  # 전부 실패 → 프리셋 결과라도 반환
+    return best if best else result
 
 
 def save_optimized_md(
