@@ -60,8 +60,8 @@ def clean_text_for_plain_text(text: str) -> str:
 
 def clean_text_for_rich_text(text: str) -> str:
     text = normalize_text_basic(text)
-    text = re.sub(r"\\\[[0-9]{1,3}\\\\]", "", text)
-    text = re.sub(r"\\\(\\\\s\\\\\*[0-9]{1,3}\\\\s\\\\\*\\\\)", "", text)
+    text = re.sub(r"\\\\[[0-9]{1,3}\\\\\\\\\\]", "", text)
+    text = re.sub(r"\\\\(\\s\*\\\*[0-9]{1,3}\\s\*\\\*\\\\\\)", "", text)
     return text.strip()
 
 
@@ -95,14 +95,10 @@ def clean_text_for_pdf(text: str, is_ocr: bool = False) -> str:
     """
     text = normalize_text_basic(text)
 
-    # 단독 페이지 번호/쪽수 제거
     text = re.sub(r"(?m)^[ \t]*\d+[ \t]*$", "", text)
     text = re.sub(r"(?m)^[ \t]*page\s+\d+[ \t]*$", "", text, flags=re.IGNORECASE)
-
-    # 하이픈 줄바꿈 복원
     text = re.sub(r"(\w)-\n(\w)", r"\1\2", text)
 
-    # OCR 특유의 분절 공백 복원
     if is_ocr:
         text = _fix_ocr_word_splits(text)
         text = re.sub(r"[|¦]{2,}", " ", text)
@@ -155,10 +151,6 @@ def detect_pdf_ocr_like_noise(text: str) -> float:
 
 
 def detect_word_split_ratio(text: str) -> float:
-    """
-    OCR에서 자주 생기는 단어 분절 신호를 간단히 측정.
-    예: T he, m em bers, com m entary, o f
-    """
     if not text:
         return 0.0
     patterns = [
@@ -173,9 +165,6 @@ def detect_word_split_ratio(text: str) -> float:
 
 
 def detect_page_artifact_ratio(text: str) -> float:
-    """
-    페이지 머리말/꼬리말/쪽수 같은 artifact 비율.
-    """
     if not text:
         return 0.0
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
@@ -187,20 +176,9 @@ def detect_page_artifact_ratio(text: str) -> float:
             artifact_lines += 1
         elif re.fullmatch(r"page\s+\d+", ln, flags=re.IGNORECASE):
             artifact_lines += 1
-        elif len(ln) <= 4 and re.fullmatch(r"[|¦~`^·•※◆▶→←↑↓]+", ln):
+        elif len(ln) <= 4 and re.fullmatch(r"[\-–—_]+", ln):
             artifact_lines += 1
     return artifact_lines / len(lines)
-
-
-def clean_text_for_pdf_ocr(text: str) -> str:
-    """
-    OCR 전용 정리 함수.
-    clean_text_for_pdf보다 더 공격적으로 잡음을 제거한다.
-    """
-    text = clean_text_for_pdf(text, is_ocr=True)
-    text = re.sub(r"(?m)^\s*[|¦~`^·•※◆▶→←↑↓]+\s*$", "", text)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    return text.strip()
 
 
 def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) -> dict:
@@ -210,6 +188,21 @@ def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) 
     """
     original = text or ""
     file_type = (file_type or "").lower().replace(".", "")
+
+    if not original.strip():
+        return {
+            "score": 100.0,
+            "mode": "empty",
+            "cleaned": "",
+            "charcount": 0,
+            "symbol_ratio": 0.0,
+            "short_line_ratio": 0.0,
+            "broken_line_ratio": 0.0,
+            "repeated_punct_ratio": 0.0,
+            "ocr_noise_ratio": 0.0,
+            "word_split_ratio": 0.0,
+            "page_artifact_ratio": 0.0,
+        }
 
     text_like = {"txt", "md"}
     rich_text = {"docx", "epub", "html", "htm", "rtf"}
@@ -240,11 +233,7 @@ def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) 
         mode = "rich_text"
 
     elif file_type in pdf_types:
-        if is_ocr:
-            cleaned = clean_text_for_pdf_ocr(original)
-        else:
-            cleaned = clean_text_for_pdf(original, is_ocr=False)
-
+        cleaned = clean_text_for_pdf(original, is_ocr=is_ocr)
         symbol_ratio = detect_symbol_ratio(cleaned)
         short_line_ratio = detect_short_line_ratio(cleaned)
         broken_line_ratio = detect_broken_line_ratio(cleaned)
@@ -252,7 +241,6 @@ def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) 
         ocr_noise_ratio = detect_pdf_ocr_like_noise(cleaned) if is_ocr else 0.0
         word_split_ratio = detect_word_split_ratio(original) if is_ocr else 0.0
         page_artifact_ratio = detect_page_artifact_ratio(original)
-
         score_raw = (
             symbol_ratio * 10
             + short_line_ratio * 8
@@ -276,7 +264,7 @@ def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) 
         score_raw = symbol_ratio * 20 + short_line_ratio * 10 + broken_line_ratio * 10
         mode = "unknown"
 
-    score = min(100.0, round(score_raw * 100, 1))
+    score = min(100.0, round(max(score_raw * 100, 3.0), 1))
 
     return {
         "score": score,

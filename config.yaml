@@ -1,4 +1,10 @@
-# config.yaml
+# config.yaml — DBMA 단일 설정 소스 (Source of Truth)
+
+# ── App Metadata ────────────────────────────────────────
+app:
+  name: "DBMAr"
+  version: "0.6.4"
+
 language_settings:
   mode: "academic_theological"
   languages: ["ko", "en", "he", "el", "la"]
@@ -11,3 +17,92 @@ language_settings:
 parsing_config:
   result_type: "markdown"
   num_workers: 1
+
+# ── Directory Settings ──────────────────────────────────
+directories:
+  raw_dir: "data/raw"
+  # output_dir: 처리 결과물 저장 위치 (dbma.py / dbma_rag.py 에서 동적 로드)
+  # 기존 호환성: data/제련완성본
+  output_dir: "data/제련완성본"
+  logs_dir: "logs"
+  chroma_db_path: "chroma_db"
+
+# ── Chunking Defaults ──────────────────────────────────
+chunking:
+  default_size: 1200
+  default_overlap: 120
+  min_chunk_size: 200
+  max_chunk_size: 5000
+
+# ── Vector Database (Primary) ──────────────────────────
+vector_db:
+  primary: "chroma"
+  chroma:
+    collection_name: "dbmar_docs"
+    persist_directory: "chroma_db"
+  qdrant:
+    url: "http://localhost:6333"
+    collections:
+      sermon: "dbma_sermon"
+      chunks: "dbma_chunks"
+
+# ── Embedding Model ────────────────────────────────────
+# LangChain 기반 임베딩 (legacy)
+embedding:
+  model: "all-MiniLM-L6-v2"
+  dimension: 384
+
+# ── Ollama Models (dbma.py UI용) ─────────────────────
+ollama:
+  default_embed_model: "bge-m3:latest"
+  default_gen_model: "llama3.1"
+  embed_model_options:
+    - "bge-m3:latest"
+    - "nomic-embed-text"
+    - "mxbai-embed-large"
+  gen_model_options:
+    - "llama3.1"
+    - "gemma3:4b"
+    - "llama3:8b"
+
+# ── Progress Tracking Defaults ─────────────────────────
+progress_defaults:
+  - area: "멀티 포맷 추출"
+    progress: 75
+    status: "DOING"
+  - area: "텍스트 정제"
+    progress: 60
+    status: "DOING"
+  - area: "청킹 전략"
+    progress: 45
+    status: "DOING"
+  - area: "임베딩/인덱싱"
+    progress: 50
+    status: "DOING"
+  - area: "평가 루프"
+    progress: 35
+    status: "DOING"
+  - area: "로그/추적성"
+    progress: 30
+    status: "TODO"
+  - area: "UI/탭 구조"
+    progress: 25
+    status: "TODO"
+  - area: "문서화/운영"
+    progress: 65
+    status: "DOING"
+
+# ── RAG Settings ───────────────────────────────────────
+rag:
+  min_length: 80
+  max_noise: 70.0
+  top_k: 4
+  default_temperature: 0.2
+  chunk_size: 1200
+  chunk_overlap: 120
+
+# ── UI Defaults ────────────────────────────────────────
+ui:
+  chunk_size: 1200
+  chunk_overlap: 120
+  use_ocr: false

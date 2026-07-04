@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Optional
 
 from core.config import BASE_DIR
-from core.embedder import embed
 
 logger = logging.getLogger(__name__)
 
@@ -188,6 +187,7 @@ def reindex_md_to_qdrant(filepath: str, content: Optional[str] = None) -> dict:
         # 컬렉션 없으면 자동 생성
         existing = [c.name for c in client.get_collections().collections]
         if COLLECTION_NAME not in existing:
+            from core.embedder import embed
             sample_vec = embed(nodes[0]["text"])
             client.create_collection(
                 collection_name=COLLECTION_NAME,
@@ -208,6 +208,7 @@ def reindex_md_to_qdrant(filepath: str, content: Optional[str] = None) -> dict:
         )
 
         # 새 포인트 임베딩 후 삽입
+        from core.embedder import embed
         points = []
         for node in nodes:
             vector = embed(node["text"])

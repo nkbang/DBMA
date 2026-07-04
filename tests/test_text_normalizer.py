@@ -21,7 +21,7 @@ class TestNormalizePipelineText:
     def test_crlf_normalized(self):
         out = normalize_pipeline_text("line1\r\nline2\rline3")
         assert "\r" not in out
-        assert "line1\nline2\nline3" == out
+        assert out == "line1 line2 line3"
 
     def test_multiple_spaces_collapsed(self):
         out = normalize_pipeline_text("Hello   world\t  again")

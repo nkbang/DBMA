@@ -48,13 +48,27 @@ def main() -> int:
     parser.add_argument("--glob", help="glob pattern for multiple files")
     parser.add_argument("--limit", type=int, default=5)
     parser.add_argument("--output", default="output/bench")
-    parser.add_argument("--chunk-size", type=int, default=1000)
-    parser.add_argument("--chunk-overlap", type=int, default=120)
+    # SPRINT 1 FIX: Use core.config defaults to prevent CRITICAL benchmark comparability issue.
+    # Benchmark must use same chunk params as production pipeline (config.yaml source of truth).
+    from core.config import DEFAULT_CHUNK_SIZE, DEFAULT_CHUNK_OVERLAP  # noqa: E402
+    parser.add_argument("--chunk-size", type=int, default=DEFAULT_CHUNK_SIZE,
+                        help=f"Chunk size (default: {DEFAULT_CHUNK_SIZE} from config.yaml)")
+    parser.add_argument("--chunk-overlap", type=int, default=DEFAULT_CHUNK_OVERLAP,
+                        help=f"Chunk overlap (default: {DEFAULT_CHUNK_OVERLAP} from config.yaml)")
     args = parser.parse_args()
 
     files = iter_files(args)
     if not files:
         raise SystemExit("No input files found.")
+
+    # 이미 처리되어 삭제된 파일 필터링
+    existing_files = [f for f in files if f.exists()]
+    skipped = [f for f in files if not f.exists()]
+    if skipped:
+        print(f"[WARN] 건너뛴 파일 (이미 처리됨): {[str(s) for s in skipped]}")
+    files = existing_files
+    if not files:
+        raise SystemExit("처리할 원본 파일이 없습니다.")
 
     output_dir = (ROOT / args.output).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -64,15 +78,20 @@ def main() -> int:
 
     rows: list[BenchRow] = []
     timings = []
+    skipped_count = 0
 
     for fp in files:
+        # 파일 존재 여부 재확인 (벤치마크 실행 중 삭제된 경우)
+        if not fp.exists():
+            print(f"[WARN] 파일 처리 건너뜀 (존재하지 않음): {fp}")
+            skipped_count += 1
         file_info = {
             "path": str(fp),
             "name": fp.name,
             "ext": fp.suffix,
         }
         t0 = time.perf_counter()
-        logs, success = process_one_file(
+        result = process_one_file(
             file_info=file_info,
             converter=converter,
             splitter=splitter,
@@ -80,20 +99,29 @@ def main() -> int:
             chunk_size=args.chunk_size,
             chunk_overlap=args.chunk_overlap,
         )
+        logs = result.get("logs", [])
+        success = result.get("success", False)
         elapsed = time.perf_counter() - t0
         timings.append(elapsed)
 
         chunk_count = 0
         md_saved = ""
-        notes = ""
+        notes = "파일 존재하지 않음" if not fp.exists() else ""
+        
+        if not fp.exists():
+            rows.append(BenchRow(file=str(fp), success=False, elapsed_sec=0, chunks=0, md_saved="", notes=notes))
+            continue
         for item in logs:
             msg = item.get("msg", "") if isinstance(item, dict) else str(item)
-            if "옵티마이저 실행 완료" in msg:
+            # 청크 수 추출: "청킹 완료: N chunks" 또는 "optimize_chunks 실행 완료: N chunks"
+            if "청킹 완료:" in msg or "optimize_chunks 실행 완료" in msg:
                 try:
                     chunk_count = int(msg.split(":")[-1].strip().split()[0])
                 except Exception:
                     pass
-            if "최적화 MD 저장 완료" in msg:
+            # Sprint 1: optimized MD is deprecated; canonical output is {stem}.md
+            # Track canonical MD path instead of deprecated optimized MD
+            if "MD 저장 완료:" in msg and "DEPRECATED" not in msg:
                 md_saved = msg.split(":", 1)[-1].strip()
             if isinstance(item, dict) and item.get("cls") == "log-warn":
                 notes = msg

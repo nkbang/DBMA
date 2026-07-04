@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 import streamlit as st
 
 from core.files import scan_directory, scan_md_files, load_chunks_info
@@ -10,6 +12,14 @@ from core.utils import (
     calculate_noise_score,
     file_checkbox_key,
 )
+
+
+def get_converter(use_ocr: bool = False):
+    return build_converter(use_ocr=use_ocr)
+
+
+def get_splitter(chunk_size: int, chunk_overlap: int):
+    return build_splitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 
 
 def parse_frontmatter(content: str):
@@ -30,22 +40,41 @@ def parse_frontmatter(content: str):
     return meta, body
 
 
+def _render_noise_badge(score: float):
+    label = noise_label(score)
+    color = noise_color(score)
+    st.markdown(
+        f"""
+        <div style="
+            display:inline-block;
+            padding:0.45rem 0.75rem;
+            border-radius:0.6rem;
+            border:1px solid {color};
+            background:{color}22;
+            color:{color};
+            font-weight:700;
+            line-height:1.2;
+        ">
+            노이즈 {label} ({score:.1f})
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use_ocr):
     st.subheader("처리")
 
-    # Log entry point
-    st.info("render_processing_tab 시작")
-    
     if not os.path.isdir(target_dir):
         st.error(f"RAW 폴더가 없습니다: {target_dir}")
         return
 
     os.makedirs(output_dir, exist_ok=True)
-    file_list = scan_directory(target_dir)
-    
-    # Log file list
-    st.info(f"파일 목록 수집 완료: {len(file_list)} 파일")
 
+    converter = get_converter(use_ocr=use_ocr)
+    splitter = get_splitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+
+    file_list = scan_directory(target_dir)
     if "selected_names" not in st.session_state:
         st.session_state["selected_names"] = []
 
@@ -63,8 +92,7 @@ def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use
     b1, b2, b3 = st.columns([1, 1, 3])
     with b1:
         if st.button("전체 선택", use_container_width=True):
-            all_names = [f["name"] for f in file_list]
-            st.session_state["selected_names"] = all_names
+            st.session_state["selected_names"] = [f["name"] for f in file_list]
             for f in file_list:
                 st.session_state[file_checkbox_key(f)] = True
             st.rerun()
@@ -80,7 +108,6 @@ def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use
         st.caption("개별 선택은 즉시 반영됩니다 → 바로 파싱 시작 가능")
 
     current_selected = []
-
     for f in file_list:
         key = file_checkbox_key(f)
         checked = st.checkbox(
@@ -106,201 +133,71 @@ def render_processing_tab(target_dir, output_dir, chunk_size, chunk_overlap, use
 
     st.divider()
 
+    progress_bar = st.progress(0)
+    status_box = st.empty()
+
+    def report(stage, message, progress=None):
+        status_box.info(f"[{stage}] {message}")
+        if progress is not None:
+            progress_bar.progress(min(max(progress, 0.0), 1.0))
+
     if st.button("파싱 시작", type="primary", use_container_width=True):
         if not selected_files:
             st.warning("선택된 파일이 없습니다.")
-            return
-
-        # Log before creating converter and splitter
-        st.info(f"파싱 시작: {len(selected_files)} 파일")
-        
-        converter = build_converter(use_ocr)
-        splitter = build_splitter(chunk_size, chunk_overlap)
-
-        progress = st.progress(0)
-        status_box = st.empty()
-
-        ok_count = 0
-        fail_count = 0
-
-        for idx, file_info in enumerate(selected_files, 1):
-            status_box.info(f"[{idx}/{len(selected_files)}] 처리 중: {file_info['name']}")
-            
-            # Log before calling process_one_file
-            st.info(f"process_one_file 호출 시작: {file_info['name']}")
-            
-            try:
-                logs, success = process_one_file(
-                    file_info=file_info,
-                    converter=converter,
-                    splitter=splitter,
-                    output_dir=output_dir,
-                    chunk_size=chunk_size,
-                    chunk_overlap=chunk_overlap,
-                )
-                
-                # Log after process_one_file returns
-                st.info(f"process_one_file 호출 완료: {file_info['name']}")
-
-                for log in logs:
-                    if log["cls"] == "log-ok":
-                        st.success(log["msg"])
-                    elif log["cls"] == "log-warn":
-                        st.warning(log["msg"])
-                    else:
-                        st.info(log["msg"])
-
-                # --- 추가: 청킹 품질 표시 (선택적) ---
-                if success:
-                    st.info("✅ 파싱 완료")
-                    # process_one_file 이 logs 밖으로 chunk_params 를 반환하지 않으므로,
-                    # 현재 단계에서는 logs 속에 이미 들어있는 "청크 최적화 MD" / "청크 수" 로그만 표시됨.
-                    # UI 에서 직접 chunk_params 를 보려면 process_one_file 결과를 dict 로 받도록
-                    # dbma.py 파이프라인만 수정하고, tabs.py 는 기존 로그 출력만 유지해도 충분합니다.
-
-                if success:
-                    ok_count += 1
-                else:
-                    fail_count += 1
-
-            except Exception as e:
-                fail_count += 1
-                st.error(f"{file_info['name']} 실패: {e}")
-
-            progress.progress(idx / len(selected_files))
-
-        status_box.success(f"완료: 성공 {ok_count} / 실패 {fail_count}")
-
-        scan_directory.clear()
-        scan_md_files.clear()
-        st.session_state["selected_names"] = []
-
-        for f in file_list:
-            key = file_checkbox_key(f)
-            if key in st.session_state:
-                st.session_state[key] = False
-
-        st.rerun()
-
-
-def render_analysis_tab(output_dir):
-    st.subheader("분석")
-
-    if not os.path.isdir(output_dir):
-        st.warning(f"결과 폴더가 없습니다: {output_dir}")
-        return
-
-    md_files = scan_md_files(output_dir)
-    if not md_files:
-        st.info("분석할 md 파일이 없습니다.")
-        return
-
-    # ── 파일 선택 ──
-    selected_md = st.selectbox("파일 선택", options=[m["name"] for m in md_files])
-    item = next((m for m in md_files if m["name"] == selected_md), None)
-    if item is None:
-        st.warning("선택한 파일을 찾을 수 없습니다.")
-        return
-
-    with open(item["path"], "r", encoding="utf-8") as fh:
-        content = fh.read()
-
-    meta, body = parse_frontmatter(content)
-    source_type = meta.get("source_type", "md").lower()
-    is_ocr = "ocr" in meta.get("noise_mode", "").lower()
-
-    noise = calculate_noise_score(body, file_type=source_type, is_ocr=is_ocr)
-    chunks_info = load_chunks_info(output_dir, item["name"])
-
-    # ── 노이즈 메트릭 ──
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.metric("노이즈", f"{noise['score']:.1f}")
-    with c2:
-        st.metric("상태", noise_label(noise["score"]))
-    with c3:
-        st.metric("문자수", noise["charcount"])
-
-    st.markdown(
-        f"""
-<div style="margin:8px 0 16px 0;">
-    <span style="display:inline-block;padding:6px 12px;border-radius:12px;
-                 background:{noise_color(noise['score'])};color:white;font-weight:600;">
-        {noise_label(noise["score"])}
-    </span>
-</div>
-""",
-        unsafe_allow_html=True,
-    )
-
-    st.caption(
-        f"source_type={source_type}, "
-        f"mode={noise.get('mode', '-')}, "
-        f"symbol={noise.get('symbol_ratio', 0):.1f}%, "
-        f"short_line={noise.get('short_line_ratio', 0):.1f}%, "
-        f"broken_line={noise.get('broken_line_ratio', 0):.1f}%, "
-        f"repeated={noise.get('repeated_punct_ratio', 0):.1f}%"
-    )
-
-    if chunks_info:
-        c4, c5, c6 = st.columns(3)
-        with c4:
-            st.metric("청크 수", chunks_info.get("chunks", "-"))
-        with c5:
-            st.metric("Chunk Size", chunks_info.get("chunk_size", "-"))
-        with c6:
-            st.metric("Chunk Overlap", chunks_info.get("chunk_overlap", "-"))
-
-    # ── 본문 편집 ──
-    with st.expander("본문 편집", expanded=True):
-        edited_body = st.text_area(
-            "md 내용 편집",
-            content,
-            height=400,
-            label_visibility="collapsed",
-            key=f"edit_{item['name']}",
-        )
-
-    st.divider()
-
-    # ── 저장 + RAG 반영 버튼 ──
-    col_save, col_skip = st.columns([2, 1])
-
-    with col_save:
-        if st.button("💾 저장 및 RAG 반영", type="primary", use_container_width=True):
-            from core.md_manager import save_md_with_change_detection, reindex_md_to_qdrant
-            changed = save_md_with_change_detection(item["path"], edited_body)
-            if changed:
-                with st.spinner("🔄 RAG 재인덱싱 중..."):
-                    result = reindex_md_to_qdrant(item["path"], edited_body)
-
-                if result["status"] == "upserted":
-                    st.success(
-                        f"✅ 저장 완료 + RAG 반영 | "
-                        f"{result['nodes']}개 노드 인덱싱"
-                    )
-                elif result["status"] == "skipped":
-                    st.info("저장 완료 (청킹 결과 없어 RAG 생략)")
-                else:
-                    st.error(f"⚠️ 저장은 완료, RAG 오류: {result['message']}")
-            else:
-                st.info("ℹ️ 내용 변경 없음 — RAG 재인덱싱 생략")
-
-    with col_skip:
-        if st.button("저장만 (RAG 제외)", use_container_width=True):
-            Path(item["path"]).write_text(edited_body, encoding="utf-8")
-            st.success("저장 완료 (RAG 미반영)")
-
-    # ── 재인덱싱 이력 ──
-    with st.expander("📋 RAG 반영 이력", expanded=False):
-        from core.md_manager import load_reindex_log
-        logs = load_reindex_log(limit=20)
-        if not logs:
-            st.info("재인덱싱 이력이 없습니다.")
         else:
-            import pandas as pd
-            df = pd.DataFrame(logs)
-            display_cols = [c for c in
-                ["timestamp", "file", "nodes", "status", "error"]
-                if c in df.columns]
-            st.dataframe(df[display_cols], use_container_width=True)
+            ok_count = 0
+            fail_count = 0
+
+            for idx, file_info in enumerate(selected_files, 1):
+                status_box.info(f"[{idx}/{len(selected_files)}] 처리 중: {file_info['name']}")
+                st.info(f"process_one_file 호출 시작: {file_info['name']}")
+
+                try:
+                    result = process_one_file(
+                        file_info=file_info,
+                        converter=converter,
+                        splitter=splitter,
+                        output_dir=output_dir,
+                        chunk_size=chunk_size,
+                        chunk_overlap=chunk_overlap,
+                        report=report,
+                    )
+
+                    st.info(f"process_one_file 호출 완료: {file_info['name']}")
+
+                    for log in result["logs"]:
+                        if log["cls"] == "log-ok":
+                            st.success(log["msg"])
+                        elif log["cls"] == "log-warn":
+                            st.warning(log["msg"])
+                        else:
+                            st.info(log["msg"])
+
+                    if result["success"]:
+                        st.info("✅ 파싱 완료")
+                        noise = result["metrics"]["noise"]
+                        c_noise, c_mode = st.columns([1, 1])
+                        with c_noise:
+                            _render_noise_badge(noise["score"])
+                        with c_mode:
+                            st.metric("노이즈 모드", noise["mode"])
+                        st.caption(
+                            f"chunks={result['metrics']['chunk_count']}, "
+                            f"language={result['metrics']['language']}"
+                        )
+                        if result["artifacts"].get("opt_md_path"):
+                            st.caption(f"RAG 대상 MD: {result['artifacts']['opt_md_path']}")
+                        ok_count += 1
+                    else:
+                        fail_count += 1
+                        st.error(
+                            f"❌ 처리 실패 | stage={result.get('failed_stage')} | reason={result.get('reason')}"
+                        )
+
+                except Exception as e:
+                    fail_count += 1
+                    st.error(f"{file_info['name']} 실패: {e}")
+
+                progress_bar.progress(idx / len(selected_files))
+
+            status_box.success(f"완료: 성공 {ok_count} / 실패 {fail_count}")

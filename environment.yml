@@ -1,0 +1,68 @@
+# DBMA Sprint 1 — Conda Environment Specification
+# Generated: 2026-07-04
+# 
+# Installation:
+#   conda env create -f environment.yml
+#   conda activate dbma-sprint1
+#   pip install -r requirements-sprint1.txt  # For packages not on conda-forge
+#
+# Alternative (no conda):
+#   python3.11 -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements-sprint1.txt
+
+name: dbma-sprint1
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+
+dependencies:
+  # ── Python Runtime ──────────────────────────────────────
+  - python==3.11.9          # Minimum supported; 3.12.x also works
+                            # NOT 3.13+ (docling/pyobjc-core fails to build)
+  
+  # ── PyTorch (CPU by default, GPU optional) ──────────────
+  - pytorch==2.2.2          # Last version before torch.load security requirement change; install from pytorch channel
+  
+  # ── System Dependencies (via conda) ─────────────────────
+  - poppler                 # Required by pdf2image for PDF rendering
+  - tesseract               # Required by pytesseract for OCR
+  
+  # ── Core Python Packages (installed via pip below) ──────
+  # Listed here for reference only; actual install via requirements-sprint1.txt
+  # streamlit==1.28.0
+  # chromadb==0.5.23
+  # ollama
+  # sentence-transformers==4.0.2
+  # docling==2.99.0
+  # transformers==4.46.2
+  # numpy==1.26.4
+  # Pillow>=10.4.0,<12.0.0
+  # PyMuPDF==1.24.14
+  # easyocr==1.7.0
+
+  # ── pip-only dependencies ───────────────────────────────
+  - pip
+  - pip:
+    - streamlit==1.28.0
+    - chromadb==0.5.23
+    - ollama
+    - langchain-text-splitters==1.1.2
+    - beautifulsoup4==4.15.0
+    - python-docx==1.2.0
+    - ebooklib==0.20
+    - striprtf==0.0.32
+    - pdf2image==1.17.0
+    - pytesseract==0.3.13
+    - Pillow>=10.4.0,<12.0.0
+    - numpy==1.26.4
+    - PyMuPDF==1.24.14
+    - pypdf==4.3.1
+    - easyocr==1.7.0
+    - docling==2.99.0
+    - transformers==4.46.2
+    - sentence-transformers==4.0.2
+    - qdrant-client==1.7.3
+    - watchdog==4.0.1
+    - pandas==2.2.2
+    - requests==2.32.3

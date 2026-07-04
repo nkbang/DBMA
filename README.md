@@ -42,10 +42,14 @@ DBMA는 문서 기반 메모리 어시스턴트로, 다양한 형식의 문서�
    - 문서를 적절한 크기로 분할하고 최적화된 청킹 전략 적용
 
 3. **RAG (Retrieval-Augmented Generation) 기능**:
-   - 벡터 데이터베이스를 통한 문서 검색 및 LLM을 통한 답변 생성
+   - ChromaDB 벡터 저장소를 통한 문서 임베딩 및 검색
+   - ollama 연동 LLM 답변 생성 (선택사항)
 
 4. **문서 품질 평가**:
    - 문서의 노이즈 수준을 평가하여 품질 판단
+
+5. **설정 중앙화**:
+   - `config.yaml`에서 모든 설정을统一管理 (디렉토리, 청킹, 벡터DB, 임베딩 모델)
 
 ## 의존성
 
@@ -66,18 +70,24 @@ pip install -r requirements.txt
 
 ## 테스트
 
-단위 테스트를 실행하려면:
+pytest를 사용하여 테스트를 실행합니다:
 
 ```bash
-python test_dbma.py
+python -m pytest tests/ -v
 ```
+
+주요 테스트 파일:
+- `tests/test_processing_pipeline.py` — 문서 처리 파이프라인 smoke 테스트
+- `tests/test_chunking_optimizer.py` — 청킹 최적화 회귀 테스트
+- `tests/test_text_normalizer.py` — 텍스트 정규화 테스트
+- `tests/test_utils_noise.py` — 노이즈 점수 평가 테스트
 
 ## 개발 정보
 
-- **버전**: 0.6.4
-- **LLM 모델**: llama3.1, gemma3:4b, etc.
-- **임베딩 모델**: bge-m3, nomic-embed-text, mxbai-embed-large
-- **벡터 데이터베이스**: ChromaDB
+- **버전**: 0.3.1
+- **주요 임베딩 모델**: all-MiniLM-L6-v2 (`config.yaml`에서 변경 가능)
+- **주요 벡터 데이터베이스**: ChromaDB (Qdrant은 별도 서비스로 제공)
+- **설정 파일**: `config.yaml` — 모든 설정의 단일 소스 (Source of Truth)
 
 ## 구성 요소 설명
 
@@ -130,9 +140,11 @@ pip install pdf2image python-tesseract
   - pypdf fallback — pure Python
 - **Text Preprocessing**: Noise filtering, Unicode cleanup, line break restoration
 - **Chunking Optimization**: Intelligent chunk size selection and overlap optimization
-- **RAG Pipeline**: Vector store integration with Qdrant
+- **RAG Pipeline**: Vector store with ChromaDB (primary), Qdrant (optional external service)
+- **Embedded Models**: all-MiniLM-L6-v2 for text embeddings (config.yaml에서 변경 가능)
+- **Configuration**: Centralized settings in `config.yaml` (directories, chunking, vectorDB, embedding)
 - **Hebrew/Greek Support**:
-  - BGE-M3 embedding model for multilingual document processing
+  - BGE-M3 or nomic-embed-text embedding models for multilingual document processing
   - Language-agnostic text splitting using SentenceSplitter
   - Tesseract OCR support for scanned PDFs in Hebrew and Greek
 

@@ -1,5 +1,5 @@
-# core/chunking_optimizer.py
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from pathlib import Path
 import hashlib
@@ -7,17 +7,36 @@ import json
 import re
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from core.utils import calculate_noise_score
 
 try:
-    from core.text_normalizer import normalize_pipeline_text, split_sentences
+    from core.text_normalizer import (
+        normalize_pipeline_text,
+        split_paragraphs,
+        split_sentences,
+        detect_paragraph_language,
+        split_sentences_mixed,
+        _merge_sentence_fragments,
+    )
 except ImportError:
     normalize_pipeline_text = None
+    split_paragraphs = None
     split_sentences = None
+    detect_paragraph_language = None
+    split_sentences_mixed = None
+    _merge_sentence_fragments = None
 
 
-# ─── 프리셋: 문서 유형별 기본 파라미터 ──────────────────────────────────────
+# ── SPRINT 1: Config-driven chunking (config.yaml is single source of truth) ──
+# PRESETS and GRID_SIZES/OVERLAPS are isolated for Sprint 2.
+# For Sprint 1, optimize_chunks() uses config.yaml defaults exclusively.
+# To re-enable dynamic presets/grid-search for Sprint 2, set SPRINT1_USE_CONFIG_DEFAULTS = False.
+
+SPRINT1_USE_CONFIG_DEFAULTS = True
+
+# Sprint 2 fallback presets (isolated — not used in Sprint 1)
 PRESETS: dict[str, dict] = {
-    "pdf":     {"chunk_size": 800,  "chunk_overlap": 100},
+    "pdf":     {"chunk_size": 900,  "chunk_overlap": 120},
     "txt":     {"chunk_size": 1000, "chunk_overlap": 120},
     "md":      {"chunk_size": 1200, "chunk_overlap": 150},
     "docx":    {"chunk_size": 1000, "chunk_overlap": 120},
@@ -28,21 +47,25 @@ PRESETS: dict[str, dict] = {
     "default": {"chunk_size": 1200, "chunk_overlap": 200},
 }
 
-# ─── 그리드 서치 후보 ──────────────────────────────────────────────────────
-GRID_SIZES    = [500, 800, 1000, 1200, 1500]
-GRID_OVERLAPS = [50, 100, 150, 200]
+# Sprint 2 fallback grid search (isolated — not used in Sprint 1)
+GRID_SIZES = [600, 800, 900, 1000, 1200, 1500]
+GRID_OVERLAPS = [50, 80, 100, 120, 150, 200]
 
-# ─── 품질 임계값 ──────────────────────────────────────────────────────────
-NOISE_THRESHOLD  = 18.0   # Cleaner Engine 기준
-MAX_DUP_RATIO    = 0.30   # 인접 청크 Jaccard 중복 상한
-MIN_CHUNK_CHARS  = 80     # 너무 짧은 청크 제외
+NOISE_THRESHOLD = 18.0
+MAX_DUP_RATIO = 0.30
+MIN_CHUNK_CHARS = 80
+SHORT_CHUNK_RATIO_LIMIT = 0.20
+
+_RE_MULTISPACE = re.compile(r"[ \t]+")
+_RE_BULLET_LINE = re.compile(r"^\s*(?:[-•*]|\d+[.)])\s+")
+_RE_WEAK_SENT_END = re.compile(r"[.!?。！？]|다\.|니다\.|요\.|이다\.|였다\.|합니다\.|입니다\.$")
 
 
-# ─── 데이터 클래스 ────────────────────────────────────────────────────────
 @dataclass
 class ChunkQuality:
     noise_scores: list[float] = field(default_factory=list)
-    dup_ratios:   list[float] = field(default_factory=list)
+    dup_ratios: list[float] = field(default_factory=list)
+    short_ratio: float = 0.0
 
     @property
     def avg_noise(self) -> float:
@@ -58,14 +81,21 @@ class ChunkQuality:
 
     @property
     def passed(self) -> bool:
-        return self.max_noise <= NOISE_THRESHOLD and self.avg_dup <= MAX_DUP_RATIO
+        return (
+            self.max_noise <= NOISE_THRESHOLD
+            and self.avg_dup <= MAX_DUP_RATIO
+            and self.short_ratio <= SHORT_CHUNK_RATIO_LIMIT
+        )
 
 
 @dataclass
 class ChunkResult:
-    chunks:  list[str]
-    params:  dict
+    chunks: list[str]
+    params: dict
     quality: ChunkQuality
+    strategy: str = "unknown"
+    raw_len: int = 0
+    clean_len: int = 0
 
     @property
     def passed(self) -> bool:
@@ -73,55 +103,44 @@ class ChunkResult:
 
     @property
     def params_hash(self) -> str:
-        return hashlib.md5(
-            json.dumps(self.params, sort_keys=True).encode()
-        ).hexdigest()[:8]
+        return hashlib.md5(json.dumps(self.params, sort_keys=True).encode()).hexdigest()[:8]
 
     def to_markdown(self, source_name: str) -> str:
         lines = [
             "---",
             f"source: {source_name}",
+            f"strategy: {self.strategy}",
             f"chunk_size: {self.params['chunk_size']}",
             f"chunk_overlap: {self.params['chunk_overlap']}",
             f"num_chunks: {len(self.chunks)}",
+            f"raw_len: {self.raw_len}",
+            f"clean_len: {self.clean_len}",
             f"avg_noise: {self.quality.avg_noise:.1f}",
             f"avg_dup: {self.quality.avg_dup:.2f}",
+            f"short_ratio: {self.quality.short_ratio:.2f}",
             f"passed: {self.passed}",
             "---",
             "",
         ]
         for i, ch in enumerate(self.chunks, 1):
-            ns = self.quality.noise_scores[i-1] if i-1 < len(self.quality.noise_scores) else 0
-            dr = self.quality.dup_ratios[i-1]   if i-1 < len(self.quality.dup_ratios)   else 0
-            lines.append(f"## Chunk {i}  _(noise={ns:.1f}, dup={dr:.2f})_")
+            ns = self.quality.noise_scores[i - 1] if i - 1 < len(self.quality.noise_scores) else None
+            dr = self.quality.dup_ratios[i - 1] if i - 1 < len(self.quality.dup_ratios) else None
+            noise_text = f"{ns:.1f}" if ns is not None else "N/A"
+            dup_text = f"{dr:.2f}" if dr is not None else "N/A"
+            lines.append(f"## Chunk {i}  _(noise={noise_text}, dup={dup_text})_")
             lines.append(ch)
             lines.append("")
         return "\n".join(lines)
 
 
-# ─── 내부 유틸 ────────────────────────────────────────────────────────────
 def _separators() -> list[str]:
-    """한국어 + 일반 문장 구분자 우선순위"""
-    return ["\n\n", "\n", "다.\n", "요.\n", "다. ", "요. ",
-            ". ", "! ", "? ", " ", ""]
+    return ["\n\n", "\n", "다. ", "요. ", ". ", "! ", "? ", " ", ""]
 
 
 def _simple_noise(chunk: str) -> float:
-    """
-    간단 휴리스틱 노이즈 점수 (0~100).
-    기존 calculate_noise_score() 결과가 있으면 그것을 우선 사용.
-    여기서는 특수문자·짧은 줄·URL 비율로 근사.
-    """
     if not chunk:
         return 100.0
-    lines = chunk.splitlines()
-    if not lines:
-        return 100.0
-    short   = sum(1 for l in lines if len(l.strip()) < 10) / len(lines)
-    special = len(re.findall(r"[^\w\s가-힣]", chunk)) / max(len(chunk), 1)
-    urls    = len(re.findall(r"https?://\S+", chunk)) * 5
-    score   = (short * 30 + special * 50 + urls)
-    return min(round(score, 1), 100.0)
+    return calculate_noise_score(chunk, file_type="txt")["score"]
 
 
 def _dup_ratio(prev: str, curr: str) -> float:
@@ -134,93 +153,148 @@ def _dup_ratio(prev: str, curr: str) -> float:
 
 def _evaluate(chunks: list[str]) -> ChunkQuality:
     noise = [_simple_noise(c) for c in chunks]
-    dups  = [0.0] + [_dup_ratio(chunks[i-1], chunks[i]) for i in range(1, len(chunks))]
-    return ChunkQuality(noise_scores=noise, dup_ratios=dups)
+    dups = [0.0] + [_dup_ratio(chunks[i - 1], chunks[i]) for i in range(1, len(chunks))]
+    short_ratio = sum(1 for c in chunks if len(c.strip()) < MIN_CHUNK_CHARS) / max(len(chunks), 1)
+    return ChunkQuality(noise_scores=noise, dup_ratios=dups, short_ratio=short_ratio)
 
 
-def _split(text: str, chunk_size: int, chunk_overlap: int) -> list[str]:
+def _split_recursive(text: str, chunk_size: int, chunk_overlap: int) -> list[str]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
         separators=_separators(),
         length_function=len,
     )
-    return [c for c in splitter.split_text(text) if len(c) >= MIN_CHUNK_CHARS]
+    return [c.strip() for c in splitter.split_text(text) if len(c.strip()) >= MIN_CHUNK_CHARS]
 
 
-# ─── 공개 API ─────────────────────────────────────────────────────────────
+def _split_by_paragraphs(text: str, chunk_size: int, chunk_overlap: int) -> tuple[list[str], str]:
+    if split_paragraphs is None:
+        return _split_recursive(text, chunk_size, chunk_overlap), "recursive-fallback"
+
+    paras = split_paragraphs(text)
+    if not paras:
+        return _split_recursive(text, chunk_size, chunk_overlap), "recursive-empty"
+
+    chunks: list[str] = []
+    buf: list[str] = []
+    buf_len = 0
+
+    def flush() -> None:
+        nonlocal buf, buf_len
+        if buf:
+            chunk = "\n\n".join(buf).strip()
+            if len(chunk) >= MIN_CHUNK_CHARS:
+                chunks.append(chunk)
+        buf = []
+        buf_len = 0
+
+    for p in paras:
+        p = p.strip()
+        if not p:
+            continue
+
+        lang = detect_paragraph_language(p).label if detect_paragraph_language is not None else "other"
+
+        if len(p) > int(chunk_size * 1.5) or lang == "mixed":
+            flush()
+            sents = split_sentences_mixed(p) if split_sentences_mixed is not None else (split_sentences(p) if split_sentences is not None else [])
+            if sents:
+                if lang == "mixed":
+                    for s in sents:
+                        if len(s) <= chunk_size:
+                            chunks.append(s)
+                        else:
+                            chunks.extend([s[i:i + chunk_size] for i in range(0, len(s), chunk_size)])
+                    continue
+
+                para_chunks = _merge_sentence_fragments(sents, max_chars=chunk_size)
+                if para_chunks and len(para_chunks[-1]) < MIN_CHUNK_CHARS and len(para_chunks) > 1:
+                    tail = para_chunks.pop()
+                    para_chunks[-1] = f"{para_chunks[-1]} {tail}".strip()
+                chunks.extend(para_chunks)
+                continue
+
+            chunks.extend(_split_recursive(p, chunk_size, chunk_overlap))
+            continue
+
+        next_len = len(p) if not buf else buf_len + 2 + len(p)
+        if buf and next_len > chunk_size:
+            flush()
+        buf.append(p)
+        buf_len = len("\n\n".join(buf))
+
+    flush()
+    return chunks if chunks else _split_recursive(text, chunk_size, chunk_overlap), "paragraph-first"
+
+
 def chunk_once(text: str, chunk_size: int, chunk_overlap: int) -> ChunkResult:
-    """단일 파라미터 조합으로 청킹 + 품질 평가"""
     params = {"chunk_size": chunk_size, "chunk_overlap": chunk_overlap}
 
     if normalize_pipeline_text is None:
-        raise RuntimeError(
-            "normalize_pipeline_text import failed. core/text_normalizer.py를 확인하세요."
-        )
+        raise RuntimeError("normalize_pipeline_text import failed. core/text_normalizer.py를 확인하세요.")
 
-    text = normalize_pipeline_text(text or "")
+    raw_text = text or ""
+    clean_text = normalize_pipeline_text(raw_text)
 
-    if split_sentences is None:
-        sentences = []
-    else:
-        sentences = split_sentences(text)
-
-    if sentences:
-        chunks = []
-        buf = []
-        buf_len = 0
-        for s in sentences:
-            if buf and buf_len + 1 + len(s) > chunk_size:
-                chunks.append(" ".join(buf).strip())
-                buf = buf[-1:] if chunk_overlap > 0 and buf else []
-                buf_len = len(" ".join(buf))
-            buf.append(s)
-            buf_len += len(s) + 1
-        if buf:
-            chunks.append(" ".join(buf).strip())
-    else:
-        chunks = _split(text, chunk_size, chunk_overlap)
-
+    chunks, strategy = _split_by_paragraphs(clean_text, chunk_size, chunk_overlap)
     quality = _evaluate(chunks)
-    return ChunkResult(chunks=chunks, params=params, quality=quality)
+
+    return ChunkResult(
+        chunks=chunks,
+        params=params,
+        quality=quality,
+        strategy=strategy,
+        raw_len=len(raw_text),
+        clean_len=len(clean_text),
+    )
+
+
+def _candidate_score(r: ChunkResult) -> tuple[bool, float, float, float, int]:
+    return (
+        not r.passed,
+        r.quality.avg_noise,
+        r.quality.avg_dup,
+        r.quality.short_ratio,
+        len(r.chunks),
+    )
 
 
 def optimize_chunks(text: str, doc_type: str) -> ChunkResult:
+    """Sprint 1: Use config.yaml defaults exclusively (single source of truth).
+    
+    Sprint 2: Dynamic presets/grid-search will be re-enabled by setting
+    SPRINT1_USE_CONFIG_DEFAULTS = False.
     """
-    1) 문서 유형 프리셋 시도
-    2) 실패 시 그리드 서치 → 품질 기준 통과 + 최소 노이즈 조합 반환
-    3) 전부 실패해도 최선 결과 반환 (never raise)
-    """
-    ext    = doc_type.lower().lstrip(".")
-    preset = PRESETS.get(ext, PRESETS["default"])
-    result = chunk_once(text, preset["chunk_size"], preset["chunk_overlap"])
-    if result.passed:
-        return result
+    # Sprint 1: bypass PRESETS and GRID search; use config.yaml only
+    if SPRINT1_USE_CONFIG_DEFAULTS:
+        from core.config import DEFAULT_CHUNK_SIZE, DEFAULT_CHUNK_OVERLAP
+        chunk_size = DEFAULT_CHUNK_SIZE
+        chunk_overlap = DEFAULT_CHUNK_OVERLAP
+    else:
+        # Sprint 2: restore dynamic presets and grid search
+        ext = doc_type.lower().lstrip(".")
+        preset = PRESETS.get(ext, PRESETS["default"])
+        chunk_size = preset["chunk_size"]
+        chunk_overlap = preset["chunk_overlap"]
 
-    best: ChunkResult | None = None
+    if SPRINT1_USE_CONFIG_DEFAULTS:
+        # Sprint 1: single-pass with config defaults (no grid search)
+        return chunk_once(text, chunk_size, chunk_overlap)
+
+    # Sprint 2: restore grid search
+    candidates: list[ChunkResult] = [chunk_once(text, chunk_size, chunk_overlap)]
+
     for cs in GRID_SIZES:
         for co in GRID_OVERLAPS:
             if co >= cs:
                 continue
-            r = chunk_once(text, cs, co)
-            if not r.passed:
-                continue
-            if best is None or (r.quality.avg_noise, r.quality.avg_dup) < \
-                               (best.quality.avg_noise, best.quality.avg_dup):
-                best = r
-    return best if best else result
+            candidates.append(chunk_once(text, cs, co))
+
+    return min(candidates, key=_candidate_score)
 
 
-def save_optimized_md(
-    result:      ChunkResult,
-    source_name: str,
-    output_dir:  Path,
-    stem:        str,
-) -> Path:
-    """
-    {stem}_chunks_{params_hash}.md 로 저장.
-    기존 {stem}_chunks.txt 와 병존 가능 (덮어쓰지 않음).
-    """
+def save_optimized_md(result: ChunkResult, source_name: str, output_dir: Path, stem: str) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     md_path = output_dir / f"{stem}_chunks_{result.params_hash}.md"
     md_path.write_text(result.to_markdown(source_name), encoding="utf-8")

@@ -1,0 +1,29 @@
+## DBMA git checklist
+
+```bash
+cd /Users/David/DBMA
+git status
+git add .
+git commit -m "your message"
+git pull --rebase origin main
+git push origin main
+```
+
+## 충돌 나면
+
+```bash
+git status
+# 파일 수정
+git add .
+git rebase --continue
+git push origin main
+```
+
+## 한 줄 원칙
+
+- 작업 전: `git status`.
+- 푸시 전: `git pull --rebase origin main`.
+- 충돌 시: 수정 후 `git rebase --continue`.
+- DBMA의 기본 원칙: force push는 피하기.
+
+

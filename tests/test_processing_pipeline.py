@@ -18,45 +18,57 @@ def splitter():
     return build_splitter(1000, 120)
 
 
+def _run(file_info, converter, splitter, output_dir):
+    return process_one_file(
+        file_info=file_info,
+        converter=converter,
+        splitter=splitter,
+        output_dir=output_dir,
+        chunk_size=1000,
+        chunk_overlap=120,
+    )
+
+
 # ─── smoke test ──────────────────────────────────────────────────────────────
 
 class TestProcessOneFileSmoke:
 
-    def test_returns_tuple(self, tmp_path, converter, splitter):
+    def test_returns_dict(self, tmp_path, converter, splitter):
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        result = process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
-        assert isinstance(result, tuple)
-        assert len(result) == 2
+        result = _run(file_info, converter, splitter, str(tmp_path))
+        assert isinstance(result, dict)
+        assert "success" in result
+        assert "logs" in result
 
     def test_success_is_bool(self, tmp_path, converter, splitter):
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        logs, success = process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
-        assert isinstance(success, bool)
+        result = _run(file_info, converter, splitter, str(tmp_path))
+        assert isinstance(result["success"], bool)
 
     def test_logs_is_list(self, tmp_path, converter, splitter):
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        logs, _ = process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
-        assert isinstance(logs, list)
+        result = _run(file_info, converter, splitter, str(tmp_path))
+        assert isinstance(result["logs"], list)
 
     def test_success_true_for_valid_input(self, tmp_path, converter, splitter):
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        logs, success = process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
-        assert success is True
+        result = _run(file_info, converter, splitter, str(tmp_path))
+        assert result["success"] is True
 
     def test_completion_log_present(self, tmp_path, converter, splitter):
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        logs, _ = process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
-        messages = [item.get("msg", "") for item in logs if isinstance(item, dict)]
+        result = _run(file_info, converter, splitter, str(tmp_path))
+        messages = [item.get("msg", "") for item in result["logs"] if isinstance(item, dict)]
         assert any("처리 완료" in msg for msg in messages)
 
 
@@ -68,7 +80,7 @@ class TestProcessOneFileOutputs:
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
+        _run(file_info, converter, splitter, str(tmp_path))
         md_files = list(tmp_path.glob("*.md"))
         assert len(md_files) > 0
 
@@ -76,7 +88,7 @@ class TestProcessOneFileOutputs:
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
+        _run(file_info, converter, splitter, str(tmp_path))
         txt_files = list(tmp_path.glob("*_chunks.txt"))
         assert len(txt_files) > 0
 
@@ -84,7 +96,7 @@ class TestProcessOneFileOutputs:
         sample = tmp_path / "sample.txt"
         sample.write_text("This is a test sentence for DBMA. " * 50, encoding="utf-8")
         file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
-        process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
+        _run(file_info, converter, splitter, str(tmp_path))
         json_files = list(tmp_path.glob("*_chunks_meta.json"))
         assert len(json_files) > 0
 
@@ -99,8 +111,8 @@ class TestProcessOneFileDefensive:
             "name": "nonexistent.txt",
             "ext": ".txt",
         }
-        logs, success = process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
-        assert success is False
+        result = _run(file_info, converter, splitter, str(tmp_path))
+        assert result["success"] is False
 
     def test_logs_contain_failure_message(self, tmp_path, converter, splitter):
         file_info = {
@@ -108,6 +120,6 @@ class TestProcessOneFileDefensive:
             "name": "nonexistent.txt",
             "ext": ".txt",
         }
-        logs, _ = process_one_file(file_info, converter, splitter, str(tmp_path), 1000, 120)
-        messages = [item.get("msg", "") for item in logs if isinstance(item, dict)]
-        assert any("처리 실패" in msg or "NameError" in msg or len(msg) > 0 for msg in messages)
+        result = _run(file_info, converter, splitter, str(tmp_path))
+        messages = [item.get("msg", "") for item in result["logs"] if isinstance(item, dict)]
+        assert any("처리 실패" in msg or "추출" in msg or len(msg) > 0 for msg in messages)

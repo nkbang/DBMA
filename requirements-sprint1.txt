@@ -1,0 +1,36 @@
+# DBMA Sprint 1 — Runtime Environment (Stable)
+# Generated: 2026-07-04
+# Target Python: 3.11 (minimum), 3.12 supported
+# NOT compatible with Python 3.13+ due to docling/pyobjc-core build failure
+
+# ── Core Pipeline Dependencies ──────────────────────────────
+streamlit==1.28.0
+chromadb==0.5.23
+ollama
+langchain-text-splitters==1.1.2
+beautifulsoup4==4.15.0
+python-docx==1.2.0
+ebooklib==0.20
+striprtf==0.0.32
+pdf2image==1.17.0
+pytesseract==0.3.13
+
+# ── Image / PDF Processing ──────────────────────────────────
+Pillow>=10.4.0,<12.0.0          # >=12.0 breaks with some numpy versions
+numpy==1.26.4                   # MUST be <2 for Pillow compatibility; opencv-python conflict documented below
+PyMuPDF==1.24.14               # Latest proven stable version
+pypdf==4.3.1                   # Stable PDF text extraction
+easyocr==1.7.0                  # Latest stable with torch 2.x support
+
+# ── Document Pipeline (docling) ─────────────────────────────
+docling==2.99.0                 # docling 2.100+ introduces pyobjc-core dependency (fails on Python <3.12 macOS)
+transformers==4.46.2            # Compatible with sentence-transformers 4.x and torch 2.2
+
+# ── Embedding / Vector ─────────────────────────────────────
+sentence-transformers==4.0.2    # Last version compatible with torch 2.2 (5.x requires torch>=2.6)
+qdrant-client==1.7.3            # Stable API for Sprint 2 activation
+
+# ── Utilities ───────────────────────────────────────────────
+watchdog==4.0.1                 # File watcher for live ingestion
+pandas==2.2.2                  # Data analysis utilities
+requests==2.32.3               # HTTP client

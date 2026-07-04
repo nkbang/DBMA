@@ -430,7 +430,7 @@ def extract_text_from_file(
     path: str,
     converter=None,
     use_ocr: bool = False,
-) -> str:
+) -> dict:
     """
     파일 확장자에 따라 적절한 추출 함수를 호출한다.
 
@@ -442,26 +442,32 @@ def extract_text_from_file(
         use_ocr:   True 이면 Tesseract OCR 활성화
 
     Returns:
-        추출된 텍스트 문자열
+        dict: {"text": str, "is_ocr": bool, "source_type": str}
     """
     ext = os.path.splitext(path)[1].lower()
 
+    text = ""
+    is_ocr = False
+
     if ext == ".pdf":
-        return extract_text_from_pdf(path, converter=converter, use_ocr=use_ocr)
+        text = extract_text_from_pdf(path, converter=converter, use_ocr=use_ocr)
+        is_ocr = use_ocr or _detect_ocr_flag(converter) if converter else use_ocr
     elif ext == ".txt":
-        return extract_text_from_txt(path)
+        text = extract_text_from_txt(path)
     elif ext == ".md":
-        return extract_text_from_md(path)
+        text = extract_text_from_md(path)
     elif ext == ".docx":
-        return extract_text_from_docx(path)
+        text = extract_text_from_docx(path)
     elif ext == ".epub":
-        return extract_text_from_epub(path)
+        text = extract_text_from_epub(path)
     elif ext in (".html", ".htm"):
-        return extract_text_from_html(path)
+        text = extract_text_from_html(path)
     elif ext == ".rtf":
-        return extract_text_from_rtf(path)
+        text = extract_text_from_rtf(path)
     else:
         raise ValueError(
             f"지원하지 않는 파일 형식: '{ext}'\n"
             f"지원 형식: pdf, txt, md, docx, epub, html, htm, rtf"
         )
+
+    return {"text": text, "is_ocr": is_ocr, "source_type": ext.lstrip(".")}

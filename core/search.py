@@ -1,23 +1,33 @@
 """
-search.py — Qdrant 벡터 검색 + 메타데이터 반환
+search.py — Qdrant 벡터 검색 + 메타데이터 반환 (안전한 import)
+
+이 모듈은 import 시점에 외부 서비스 연결을 시도하지 않습니다.
+search() 함수 호출 시에만 연결합니다.
 """
 
 from core.embedder import embed
-from qdrant_client import QdrantClient
 
-client = QdrantClient(url="http://localhost:6333")
 COLLECTION_NAME = "dbma_sermon"
+DEFAULT_QDRANT_URL = "http://localhost:6333"
 
 
-def search(query: str, limit: int = 5) -> list:
+def search(query: str, limit: int = 5, url: str = DEFAULT_QDRANT_URL) -> list:
     """
     쿼리를 임베딩하여 Qdrant에서 유사 노드를 검색한다.
+
+    Args:
+        query: 검색 쿼리 텍스트
+        limit: 반환할 결과 수
+        url: Qdrant 서버 URL
 
     Returns:
         [{"score": float, "text": str, "source": str,
           "section": str, "header_level": int, "filepath": str}, ...]
     """
+    from qdrant_client import QdrantClient
+
     v = embed(query)
+    client = QdrantClient(url=url)
 
     try:
         res = client.search(
