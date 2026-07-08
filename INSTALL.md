@@ -71,14 +71,14 @@ pip install --upgrade pip
 ### Step 3: Install Python Dependencies
 
 ```bash
-pip install -r requirements-sprint1.txt
+pip install -r requirements.txt
 ```
 
 ### Step 4: Verify Installation
 
 ```bash
-# Run verification script
-python VERIFY_ENVIRONMENT.py
+# Verify core imports resolve correctly
+python -c "import streamlit; import chromadb; import docling; print('OK')"
 
 # Or manually:
 python -c "from core.config import DEFAULT_CHUNK_SIZE; print(f'OK: chunk={DEFAULT_CHUNK_SIZE}')"
@@ -118,13 +118,13 @@ pip install --upgrade pip
 ### Step 3: Install Python Dependencies
 
 ```bash
-pip install -r requirements-sprint1.txt
+pip install -r requirements.txt
 ```
 
 ### Step 4: Verify Installation
 
 ```bash
-python -c "from core.config import DEFAULT_CHUNK_SIZE; print(f'OK: chunk={DEFAULT_CHUNK_SIZE}')"
+python -c "import streamlit; import chromadb; import docling; print('OK')"
 ```
 
 ---
@@ -156,7 +156,7 @@ pip install --upgrade pip
 ### Step 3: Install Python Dependencies
 
 ```cmd
-pip install -r requirements-sprint1.txt
+pip install -r requirements.txt
 ```
 
 ### Step 4: Configure Tesseract Path (if not auto-detected)

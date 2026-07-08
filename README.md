@@ -84,7 +84,7 @@ python -m pytest tests/ -v
 
 ## 개발 정보
 
-- **버전**: 0.3.1
+- **버전**: 1.0.0
 - **주요 임베딩 모델**: all-MiniLM-L6-v2 (`config.yaml`에서 변경 가능)
 - **주요 벡터 데이터베이스**: ChromaDB (Qdrant은 별도 서비스로 제공)
 - **설정 파일**: `config.yaml` — 모든 설정의 단일 소스 (Source of Truth)
