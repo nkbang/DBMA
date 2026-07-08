@@ -20,7 +20,7 @@ parsing_config:
 
 # ── Directory Settings ──────────────────────────────────
 directories:
-  raw_dir: "data/raw"
+  raw_dir: "data/RAW"
   # output_dir: 처리 결과물 저장 위치 (dbma.py / dbma_rag.py 에서 동적 로드)
   # 기존 호환성: data/제련완성본
   output_dir: "data/제련완성본"
