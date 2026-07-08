@@ -1,7 +1,51 @@
+# Data directories (runtime/generated)
 data/
 storage/
 rag_index/
+
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+
+# OS
 .DS_Store
+
+# IDE
 .vscode/
+
+# Temp / build artifacts
+temp/
+*.swp
+*.swo
+*~
+
+# Virtual environments
+env/
+venv/
+ENV/
+.env/
+.venv/
+.venv_311/
+.venv311/
+.tsu_venv/
+
+# Backup directory (legacy launchers)
+archive/
+
+# Sprint validation outputs (sprint artifacts, not production)
+output/SPRINT5_ENGINEERING_VALIDATION/
+
+# Chroma DB cache
+chroma_db/
+
+# Graph/embedding caches
+cache/embeddings/
+*.dot
+*.png
+
+# Log files
+logs/*.jsonl
+
+# Backup .git directories
+.git.bak.*/
