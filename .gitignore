@@ -49,3 +49,4 @@ logs/*.jsonl
 
 # Backup .git directories
 .git.bak.*/
+.idea/
