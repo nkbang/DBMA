@@ -320,19 +320,28 @@ class QueryParser:
         """Parse a raw query into structured metadata."""
         parsed = ParsedQuery(original_query=query, intent="unknown")
 
-        # 1. Intent detection
+        # 1. Intent detection (existing)
         parsed.intent = self._detect_intent(query)
 
-        # 2. Scripture reference detection
+        # 2. Standalone book detection (NEW — P0 fix for PT-RESEARCH-004)
+        standalone_books = self._detect_books_standalone(query)
+
+        # 3. Scripture reference detection (existing, unmodified)
         parsed.scripture_refs = self._extract_scripture_refs(query)
-        parsed.detected_books = [r.book_id for r in parsed.scripture_refs]
+
+        # 4. Merge: detected_books = scripture refs + standalone books (UNIQUE by BOOK_ID)
+        detected: list[str] = [r.book_id for r in parsed.scripture_refs]
+        for b in standalone_books:
+            if b not in detected:
+                detected.append(b)
+        parsed.detected_books = detected
         if parsed.detected_books:
             parsed.source_book = parsed.detected_books[0]
 
-        # 3. Theme extraction
+        # 5. Theme extraction (existing, unmodified)
         parsed.themes = self._extract_themes(query)
 
-        # 4. Keyword extraction
+        # 6. Keyword extraction (existing, unmodified)
         parsed.keywords = self._extract_keywords(query)
 
         return parsed
@@ -443,6 +452,31 @@ class QueryParser:
                 unique_keywords.append(kw)
 
         return unique_keywords[:20]  # Cap at 20 keywords
+
+    def _detect_books_standalone(self, query: str) -> list[str]:
+        """Detect BOOK IDs from a query WITHOUT requiring chapter:verse.
+
+        Scans the entire query for known EN + KO aliases using longest-match-first strategy.
+        Returns unique book IDs in order of first appearance.
+        """
+        if not hasattr(self, '_alias_cache'):
+            all_names: list[tuple[str, str]] = []
+            for book_id, names in BOOK_ID_TO_NAMES.items():
+                for name in names:
+                    all_names.append((name.lower().strip(), book_id))
+            all_names.sort(key=lambda x: len(x[0]), reverse=True)
+            self._alias_cache = all_names
+
+        result: list[str] = []
+        cleaned = re.sub(r'\d+장|\d+\s*:?\s*\d*', '', query.lower()).strip()
+
+        seen: set[str] = set()
+        for alias, book_id in self._alias_cache:
+            if alias in cleaned:
+                if book_id not in seen:
+                    seen.add(book_id)
+                    result.append(book_id)
+        return result
 
     def _resolve_book_name(self, name: str) -> Optional[str]:
         """Resolve a full Bible book name to its abbreviation."""
