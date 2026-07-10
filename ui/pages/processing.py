@@ -3,7 +3,12 @@
 Document ingestion and processing workflow interface.
 """
 
-from typing import Optional
+import os
+import json
+import logging
+from datetime import datetime
+from pathlib import Path
+from typing import Optional, Any, Dict, List
 
 import streamlit as st
 from pathlib import Path
@@ -13,6 +18,14 @@ from ui.theme.colors import THEME
 from ui.components.status import progress_indicator, status_badge
 from ui.state.store import StateStore
 from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.processing import (
+    build_converter,
+    build_splitter,
+    process_batch,
+    get_processed_files,
+)
+
+logger = logging.getLogger(__name__)
 
 
 def render_processing_page() -> None:
@@ -21,7 +34,7 @@ def render_processing_page() -> None:
     page.render_header()
 
     # ── Ingestion Form ─────────────────────────────────────────
-    page.render_section("문서 처리", icon="📥")
+    page.render_section("문書 처리", icon="📥")
     _render_ingestion_form()
 
     # ── Processing Queue ───────────────────────────────────────
@@ -33,6 +46,46 @@ def render_processing_page() -> None:
     _render_processing_history()
 
     page.render_footer()
+
+
+def _build_file_list(target_dir: str, force_reingest: bool) -> List[Dict[str, Any]]:
+    """Build file list from target directory, respecting force_reingest flag."""
+    raw_path = Path(target_dir)
+    if not raw_path.exists():
+        return []
+
+    supported_exts = {".pdf", ".txt", ".md", ".docx"}
+    files = []
+
+    for f in sorted(raw_path.iterdir()):
+        if f.suffix.lower() not in supported_exts:
+            continue
+        if not f.is_file():
+            continue
+
+        name = f.name
+        use_ocr = False
+        ext = f.suffix.lower().replace(".", "")
+
+        # Check batch_state for already processed files
+        output_path = Path(DEFAULT_OUTPUT_DIR)
+        state_file = output_path / ".batch_state.json"
+        if state_file.exists() and not force_reingest:
+            try:
+                data = json.loads(state_file.read_text(encoding="utf-8"))
+                if name in data.get("processed", []):
+                    continue  # Skip already processed files unless force_reingest
+            except (json.JSONDecodeError, OSError):
+                pass
+
+        files.append({
+            "path": str(f),
+            "name": name,
+            "ext": ext,
+            "use_ocr": use_ocr,
+        })
+
+    return files
 
 
 def _render_ingestion_form() -> None:
@@ -60,7 +113,7 @@ def _render_ingestion_form() -> None:
         store.set("chunk_size", chunk_size)
 
     # Additional options
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         overlap = st.number_input(
             "오버랩 (문자)",
@@ -74,12 +127,30 @@ def _render_ingestion_form() -> None:
         use_ocr = st.checkbox("OCR 사용", value=False, key="use_ocr")
     with col3:
         force_reingest = st.checkbox("강제 재처리", value=False, key="force_reingest")
+    with col4:
+        store.set("use_ocr", use_ocr)
+        store.set("force_reingest", force_reingest)
+
+    # Count pending files
+    raw_path = Path(target_dir)
+    supported_exts = {".pdf", ".txt", ".md", ".docx"}
+    pending_count = 0
+    if raw_path.exists():
+        for f in raw_path.iterdir():
+            if f.suffix.lower() in supported_exts and f.is_file():
+                pending_count += 1
 
     # Start processing button
     st.divider()
-    if st.button("🚀 문서 처리 시작", type="primary", use_container_width=True):
-        st.info("문서 처리가 시작되었습니다...")
-        # TODO: trigger processing pipeline
+    
+    if pending_count == 0:
+        st.info("처리할 문서가 없습니다.")
+        st.button("🚀 문서 처리 시작", type="primary", use_container_width=True, disabled=True)
+    else:
+        st.caption(f"처리 가능: {pending_count}개 문서")
+        
+        if st.button("🚀 문서 처리 시작", type="primary", use_container_width=True):
+            _execute_processing(target_dir, chunk_size, overlap, use_ocr, force_reingest)
 
 
 def _render_processing_queue() -> None:
@@ -139,7 +210,6 @@ def _render_processing_history() -> None:
         return
 
     # Show recent processing history (last 5)
-    from datetime import datetime
     file_times = []
     for f in md_files:
         try:
@@ -171,3 +241,85 @@ def _render_processing_history() -> None:
         </div>
         """
         st.markdown(html, unsafe_allow_html=True)
+
+
+def _execute_processing(
+    target_dir: str,
+    chunk_size: int,
+    overlap: int,
+    use_ocr: bool,
+    force_reingest: bool,
+) -> None:
+    """Execute the document processing pipeline."""
+    
+    # Build file list
+    file_list = _build_file_list(target_dir, force_reingest)
+    
+    if not file_list:
+        st.info("처리할 파일이 없습니다. (이미 처리되었거나 파일이 없는 경우)")
+        return
+    
+    total_files = len(file_list)
+    st.info(f"문서 처리가 시작되었습니다... ({total_files}개 파일)")
+    
+    # Create progress container
+    progress_container = st.container()
+    with progress_container:
+        progress_bar = st.progress(0)
+        status_text = st.empty()
+        
+        # Define report callback for inline progress updates
+        def report_callback(stage: str, message: str, progress: Optional[float] = None):
+            if stage == "done":
+                status_text.success(f"✅ {message}")
+                progress_bar.progress(1.0)
+            elif stage.startswith("extract"):
+                status_text.info(f"📖 추출 중: {message}")
+                p = progress or 0.2
+                progress_bar.progress(p * total_files / total_files)
+            elif stage == "chunk_done":
+                status_text.info(f"✂️ 청킹 중: {message}")
+            else:
+                status_text.info(f"⏳ {message}")
+        
+        # Build processing pipeline components
+        converter = build_converter(use_ocr=use_ocr)
+        splitter = build_splitter(chunk_size=chunk_size, chunk_overlap=overlap)
+        
+        output_dir = DEFAULT_OUTPUT_DIR
+        
+        # Execute batch processing
+        try:
+            results = process_batch(
+                file_list=file_list,
+                converter=converter,
+                splitter=splitter,
+                output_dir=output_dir,
+                chunk_size=chunk_size,
+                chunk_overlap=overlap,
+                report=report_callback,
+            )
+            
+            # Summarize results
+            success_count = sum(1 for r in results if r.get("success", False))
+            skipped_count = sum(1 for r in results if r.get("skipped", False))
+            fail_count = total_files - success_count - skipped_count
+            
+            st.success(f"처리 완료: {success_count}개 성공, {skipped_count}개 건너뜀, {fail_count}개 실패")
+            
+            # Show failed files
+            if fail_count > 0:
+                with st.expander("실패한 파일 보기"):
+                    for r in results:
+                        if not r.get("success", False):
+                            logs = r.get("logs", [])
+                            for log in logs:
+                                msg = log.get("msg", "")
+                                st.error(f"❌ {msg}")
+            
+            # Refresh the page state
+            st.rerun()
+            
+        except Exception as e:
+            logger.exception("Processing pipeline failed")
+            st.error(f"처리 중 오류가 발생했습니다: {str(e)}")

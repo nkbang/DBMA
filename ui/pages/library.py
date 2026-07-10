@@ -3,6 +3,7 @@
 Document library browsing, search, and management interface.
 """
 
+import unicodedata
 from typing import Optional
 
 import streamlit as st
@@ -89,14 +90,15 @@ def _render_document_collection() -> None:
     total_count = len(all_documents)
     shown_total_before_search = len(documents)
 
-    # ── Search Query Filtering (FAT-HUMAN-008) ──────────────
+    # ── Search Query Filtering (FAT-HUMAN-008 + PT-SEARCH-001 Unicode NFC fix) ──
     search_query = st.session_state.get("library_search", "").strip()
     if search_query:
-        query_lower = search_query.lower()
+        # Normalize query to NFC to match macOS NFD filenames consistently
+        query_normalized = unicodedata.normalize("NFC", search_query).lower()
         documents = [
             d for d in documents
             if any(
-                query_lower in str(d.get(k, "")).lower()
+                query_normalized in unicodedata.normalize("NFC", str(d.get(k, ""))).lower()
                 for k in ("title", "type", "path", "modified")
             )
         ]
@@ -171,30 +173,72 @@ def _render_document_detail_panel() -> None:
         st.markdown(f"**경로:** {selected_doc.get('path', 'N/A')}")
         st.markdown(f"**수정일:** {selected_doc.get('modified', 'N/A')}")
     
-    # Add clear selection button
-    if st.button(
+    # Add clear selection button — uses on_click callback for full page sync
+    st.button(
         "✕ 선택 해제",
         key="clear_selection_btn",
         type="secondary",
         use_container_width=True,
-    ):
-        _clear_selected_document()
+        on_click=_clear_document_selection,
+    )
 
 
 def _clear_selected_document() -> None:
-    """Clear the selected document from StateStore."""
+    """Clear the selected document from StateStore.
+    
+    Note: This is the direct-clear path (called without rerun). The clear button in the
+    detail panel should ideally use on_click=_clear_document_selection for full sync, but
+    this function is retained for backward compatibility with any existing direct callers.
+    """
     store = StateStore()
     store.delete("library_selected_doc")
+
+
+def _select_document(doc_path: str, doc_title: str, doc_type: str, doc_size: str, doc_modified: str):
+    """Callback for document selection — updates StateStore and triggers full page rerun.
+    
+    This is the Patch 3 fix (DEFECT-PT-HUMAN-010 Patch 3) that replaces the flawed
+    Patch 2 pending-selection approach. Instead of relying on in-cycle session state writes
+    (which Streamlit does not re-evaluate after button rendering), we use an explicit
+    `on_click` callback that fires AFTER the render cycle, then calls `st.rerun()` to force
+    a full page redraw with correct highlight + detail panel synchronization.
+    """
+    store = StateStore()
+    doc = {
+        "path": doc_path,
+        "title": doc_title,
+        "type": doc_type,
+        "size": doc_size,
+        "modified": doc_modified,
+    }
+    # Write selection to both StateStore (cross-page persistence) and session state (highlight)
+    store.set("library_selected_doc", doc)
+    st.session_state["_library_selected_path"] = doc_path
+    # Force full page rerun so all visual elements update in sync
+    st.rerun()
+
+
+def _clear_document_selection():
+    """Callback for document deselection — clears StateStore and session state."""
+    store = StateStore()
+    store.delete("library_selected_doc")
+    if "_library_selected_path" in st.session_state:
+        del st.session_state["_library_selected_path"]
+    st.rerun()
 
 
 def _render_document_rows(documents: list[dict]) -> None:
     """Render each document as a selectable row with a selection button.
     
-    When the selection button is clicked, stores the document in StateStore
-    so the Detail Panel can display it immediately.
+    When the selection button is clicked, the on_click callback (_select_document)
+    updates StateStore + session state, then triggers st.rerun() for full-page sync.
+    
+    Fix (DEFECT-PT-HUMAN-010 Patch 3): Replaced Patch 2's flawed pending-selection approach
+    with explicit Streamlit callback mechanism. The `on_click` callback fires after the render
+    cycle completes, then st.rerun() forces a full page redraw where all visual elements
+    (gray highlight, button state, detail panel) are synchronized on the same pass.
     """
     store = StateStore()
-    selected_doc = store.get("library_selected_doc")
 
     for i, doc in enumerate(documents):
         # Build a unique key for this document's selection button
@@ -202,8 +246,9 @@ def _render_document_rows(documents: list[dict]) -> None:
         
         cols = st.columns([5, 1])
         with cols[0]:
-            # Highlight the selected row subtly
-            is_selected = selected_doc is not None and selected_doc.get("path") == doc.get("path")
+            # Compute is_selected from session state _library_selected_path (set by callback)
+            selected_path = st.session_state.get("_library_selected_path")
+            is_selected = selected_path == doc.get("path")
             label = f"📄 {doc.get('title', 'Unknown')}  •  {doc.get('type', '?')}  •  {doc.get('size', '?')}  •  {doc.get('modified', '?')}"
             if is_selected:
                 st.markdown(f'<div style="padding: 6px 12px; background: #e3f2fd; border-radius: 4px; border-left: 3px solid #1976d2;">{label}</div>', unsafe_allow_html=True)
@@ -212,13 +257,20 @@ def _render_document_rows(documents: list[dict]) -> None:
         
         with cols[1]:
             sel_label = "✓ 선택됨" if is_selected else "선택"
-            if st.button(
+            st.button(
                 sel_label,
                 key=btn_key,
                 type="primary" if is_selected else "secondary",
                 use_container_width=True,
-            ):
-                store.set("library_selected_doc", doc)
+                on_click=_select_document,
+                args=(
+                    doc.get("path", ""),
+                    doc.get("title", "Unknown"),
+                    doc.get("type", "?"),
+                    doc.get("size", "?"),
+                    doc.get("modified", "?"),
+                ),
+            )
 
 
 def _get_documents_list() -> list[dict]:

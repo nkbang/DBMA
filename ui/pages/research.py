@@ -1,6 +1,7 @@
 """DBMA Design System — Research Workspace Page.
 
 Search, retrieval, and document analysis interface for research workflow.
+Connects UI to production Retrieval Engine (core/retrieval.py).
 """
 
 from typing import Optional
@@ -13,6 +14,9 @@ from ui.theme.colors import THEME
 from ui.components.tables import search_results_table
 from ui.state.store import StateStore
 from core.config import DEFAULT_OUTPUT_DIR
+
+# Production retrieval imports (LOOP 3 — binding)
+from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate
 
 
 def render_research_page() -> None:
@@ -33,6 +37,98 @@ def render_research_page() -> None:
     _render_query_analysis()
 
     page.render_footer()
+
+
+def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object | None, str]:
+    """
+    Execute a research query through the production Retrieval Engine.
+
+    This is the primary binding function connecting Research UI to core/retrieval.py.
+
+    Args:
+        query: User's research query string.
+        top_k: Number of results to return.
+
+    Returns:
+        (results_list, response_object, status_message) tuple.
+        On success: ([formatted_results], ResponsePackage, "검색 완료")
+        On error/empty: ([], None, "에러: {message}" or "쿼리를 입력하세요")
+    """
+    # Validate query
+    if not query or not query.strip():
+        return [], None, "쿼리를 입력하세요"
+
+    query = query.strip()
+
+    try:
+        # Initialize production retrieval processor (cached in session state)
+        if "research_processor" not in st.session_state:
+            st.session_state["research_processor"] = QueryProcessor()
+
+        processor: QueryProcessor = st.session_state["research_processor"]
+
+        # Execute retrieval pipeline
+        response = processor.process(query, query_id="research-ui", k=top_k)
+
+        # Check for results
+        if not response.top_k_results:
+            return [], None, f"결과 없음 (쿼리: {query})"
+
+        # Format candidates for UI display
+        results = []
+        for candidate in response.top_k_results:
+            formatted = _format_candidate(candidate, response.parsed_query)
+            results.append(formatted)
+
+        return results, response, f"검색 완료 ({len(results)}개 결과)"
+
+    except FileNotFoundError as e:
+        return [], None, f"에러: TSU 데이터셋을 찾을 수 없습니다 — {str(e)}"
+    except Exception as e:
+        return [], None, f"에러: 검색 실행 중 오류 발생 — {str(e)}"
+
+
+def _format_candidate(candidate: RankedCandidate, parsed_query) -> dict:
+    """
+    Map a production RankedCandidate to UI display format.
+
+    Transforms core/retrieval.py data models into the dictionary format
+    expected by search_results_table() component.
+    """
+    # Build verse reference string from metadata
+    vm = candidate.metadata.get("verse_mapping", {})
+    if vm and vm.get("book_id"):
+        book_id = vm["book_id"]
+        chapter = vm.get("chapter", "?")
+        v_start = vm.get("verse_start", "?")
+        v_end = vm.get("verse_end", v_start)
+        verse_ref = f"{book_id} {chapter}:{v_start}"
+        if v_end and v_end != v_start:
+            verse_ref += f"-{v_end}"
+    else:
+        verse_ref = "Unmapped passage"
+
+    # Build title from reference + content preview
+    content_preview = candidate.content[:120].replace("\n", " ")
+    title = f"{verse_ref} — {content_preview}..."
+
+    # Get source file from metadata
+    source_file = candidate.metadata.get("source_file", "Unknown source")
+
+    return {
+        "title": title,
+        "score": candidate.final_score,
+        "type": "tsu",
+        "snippet": candidate.content[:300].replace("\n", " "),
+        "source": source_file,
+        # Extended metadata for detailed display
+        "tsu_id": candidate.tsu_id,
+        "bm25_score": candidate.bm25_score,
+        "vector_score": candidate.vector_score,
+        "theological_score": candidate.theological_score,
+        "verse_mapping": verse_ref,
+        "explanation": candidate.explanation,
+    }
 
 
 def _render_search_interface() -> None:
@@ -64,7 +160,7 @@ def _render_search_interface() -> None:
     with c2:
         method = st.selectbox(
             "검색 방법",
-            options=["RRF", "BM25", "Vector", "Hybrid"],
+            options=["Hybrid", "BM25", "Vector", "RRF"],
             key="search_method",
         )
     with c3:
@@ -72,26 +168,46 @@ def _render_search_interface() -> None:
             "최소 점수",
             min_value=0.0,
             max_value=1.0,
-            value=0.1,
+            value=0.0,
             step=0.05,
             key="min_score",
         )
 
-    # Execute search button
+    # Execute search button — connected to production retrieval (LOOP 3)
     st.divider()
     col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("🔍 검색 실행", type="primary", use_container_width=True):
-            st.success("검색이 완료되었습니다!")
-            # TODO: trigger retrieval pipeline
+            user_query = st.session_state.get("research_query", "")
+            user_top_k = st.session_state.get("research_top_k", 10)
+
+            # Execute production retrieval
+            results, response_obj, status_msg = _execute_research_query(user_query, user_top_k)
+
+            # Store results in session state for display
+            st.session_state["research_results"] = results
+            st.session_state["search_status"] = status_msg
+            st.session_state["research_response"] = response_obj  # For query analysis
+
+            # Show visual feedback
+            if "에러" in status_msg:
+                st.error(status_msg)
+            elif "결과 없음" in status_msg:
+                st.warning(status_msg)
+            else:
+                st.success(status_msg)
 
 
 def _render_search_results() -> None:
-    """Render the search results display."""
-    # Simulated search results (replace with actual pipeline output)
-    results = _get_simulated_results()
+    """Render the search results display from production retrieval."""
+    # Read results from session state (set by search button click)
+    results = st.session_state.get("research_results", [])
 
     if not results:
+        status = st.session_state.get("search_status", "")
+        if status:
+            # Status already displayed in search interface
+            pass
         st.info("검색 결과를 확인하세요.")
         return
 
@@ -131,43 +247,34 @@ def _render_query_analysis() -> None:
         st.metric("단어 수", len(query.split()))
     with c3:
         st.metric("검색어 분리", len([w for w in query.split() if len(w) > 1]))
+
+    # Intent detection from production pipeline (if available)
+    intent = "unknown"
+    detected_books = []
+    if "research_response" in st.session_state:
+        resp = st.session_state["research_response"]
+        if hasattr(resp, "parsed_query"):
+            intent = getattr(resp.parsed_query, "intent", "unknown")
+            detected_books = getattr(resp.parsed_query, "detected_books", [])
+
     with c4:
-        st.metric("추출된 엔티티", "3")
+        intent_display = intent.upper() if intent != "unknown" else "—"
+        st.metric("인식된 의도", intent_display)
 
     # Query expansion suggestions
     st.markdown("### 💡 검색어 확장 제안")
+    first_word = query.split()[0] if query.split() else ""
     suggestions = [
         f"{query} 관련 문헌",
-        f"{query.split()[0] if query.split() else ''} 논평",
+        f"{first_word} 논평",
         f"{query} 신학적 분석",
     ]
     for s in suggestions:
         st.caption(f"• {s}")
 
-
-def _get_simulated_results() -> list[dict]:
-    """Get simulated search results (replace with actual pipeline)."""
-    query = st.session_state.get("research_query", "")
-
-    if not query:
-        return []
-
-    # Simulated results based on output directory
-    output_dir = Path(DEFAULT_OUTPUT_DIR)
-    results = []
-
-    if output_dir.exists():
-        for md_file in list(output_dir.rglob("*.md"))[:5]:
-            stem = md_file.stem
-            if stem.endswith("_chunks"):
-                stem = stem[:-7]
-
-            results.append({
-                "title": stem,
-                "score": 0.85 - (results.__len__() * 0.05),
-                "type": "md",
-                "snippet": f"이 문서는 {stem}에 대한 내용을 포함하고 있습니다...",
-                "source": str(md_file.relative_to(Path.cwd())),
-            })
-
-    return results
+    # Display scripture references if detected (LOOP 3 enhancement)
+    if detected_books:
+        st.markdown("### 📖 감지된 성서 도서")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.caption(f"감지된 도서: {', '.join(detected_books)}")

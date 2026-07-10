@@ -28,6 +28,26 @@ from core.extractors import extract_text_from_file
 from core.utils import make_safe_stem, calculate_noise_score
 from core.chunking_optimizer import optimize_chunks, save_optimized_md
 
+# [PT-PROCESSING-008] Document identity integration
+from core.document_identity import (
+    generate_document_id,
+    compute_content_hash,
+    generate_chunk_id,
+    build_document_metadata,
+)
+
+# [PT-PROCESSING-010/012] Identity registry + incremental ingest
+from core.identity_registry import (
+    load_identity_registry,
+    register_document,
+    save_identity_registry,
+    find_by_document_id,
+    find_by_file_hash,
+    classify_ingest_decision,
+    update_content_hash,
+    transition_ingest_status,
+)
+
 logger = logging.getLogger(__name__)
 
 _splitter_cache: dict[tuple[int, int], Any] = {}
@@ -428,6 +448,33 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             emit("noise_fail", f"{source_name}: 정제 후 텍스트 없음", 1.0, level="warn")
             return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage, "reason": reason}
 
+        # ── [PT-PROCESSING-008] Document Identity Generation (Point A) ──
+        document_id = generate_document_id(content=final_text, source_file=source_name)
+        file_hash = compute_content_hash(final_text)
+        emit("identity", f"Document identity: {document_id[:16]}...", 0.42)
+
+        # ── [PT-PROCESSING-012] Incremental ingest decision gate ────
+        registry_dir = os.path.join(output_dir, "registry")
+        registry_path = os.path.join(registry_dir, "documents.json")
+        _registry = load_identity_registry(registry_path)
+
+        # Pre-processing: classify ingest decision (PROCESS/SKIP/REPROCESS/RETRY)
+        decision, existing_record = classify_ingest_decision(_registry, document_id, file_hash)
+        
+        if decision == "SKIP":
+            _prev_src = existing_record.get("source_file", "") if existing_record else ""
+            emit("skip", f"UNCHANGED: {_prev_src or source_name}", 1.0, level="ok")
+            return {"success": True, "skipped": True, "ingest_decision": "SKIP", "logs": logs, "metrics": metrics, "artifacts": artifacts}
+
+        if decision == "RETRY":
+            _prev_retries = existing_record.get("retry_count", 0) if existing_record else 0
+            emit("retry", f"Retry ingest (attempt {_prev_retries + 1}/3)", 1.0, level="warn")
+
+        if decision == "REPROCESS":
+            _prev_src = existing_record.get("source_file", "") if existing_record else ""
+            emit("reprocess", f"MODIFIED content detected (reprocessing): {_prev_src or source_name}", 1.0, level="warn")
+
+
         # ── [3] MD 저장 ────────────────────────────────────
         emit("save_md", f"MD 저장 시작: {source_name}", 0.5)
         md_path = save_md_with_language(output_dir, stem, source_name, final_text, noise, ext, language)
@@ -473,6 +520,10 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         emit("chunk_done", f"청킹 완료: {len(chunks)} chunks", 0.75)
         logger.info("[SPRINT1] chunking completed: %s (%d chunks, size=%d, overlap=%d)", source_name, len(chunks), chunk_size_used, chunk_overlap_used)
 
+        # ── [PT-PROCESSING-008] Chunk ID Assignment (Point B) ──
+        chunk_ids = [generate_chunk_id(document_id, idx) for idx in range(len(chunks))]
+        emit("identity", f"Chunk IDs assigned: {len(chunk_ids)}", 0.76)
+
         # ── [5] 청크 저장 + 검증 ───────────────────────────
         meta = {"source": source_name, "chunks": len(chunks), "chunk_size": chunk_size_used, "chunk_overlap": chunk_overlap_used}
         emit("validate", f"청크 검증 시작: {source_name}", 0.79)
@@ -497,12 +548,33 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         mark_processed(output_dir, source_name)
         emit("move_done", f"원본 파일 이동 완료: {moved_to}", 0.99)
 
+        # ── [PT-PROCESSING-008] Complete Document Metadata (Point C) ──
+        document_meta = build_document_metadata(
+            content=final_text, source_file=source_name,
+            language=language, noise_score=noise["score"],
+            noise_mode=noise.get("mode", "-"), source_type=ext,
+            is_ocr=is_ocr, chunk_count=len(chunks),
+        )
+
+        # ── [PT-PROCESSING-012] Update content hash on success ──────
+        _hash_updated = update_content_hash(_registry, document_id, file_hash)
+        
+        # ── [PT-PROCESSING-010-C/012] Persist identity registry ────
+        record, is_new = register_document(_registry, document_meta, output_dir)
+        persisted_ok = save_identity_registry(_registry, registry_path)
+        if persisted_ok:
+            emit("identity_persist", f"Identity registered: {document_id[:16]}..." if is_new else "Identity synced to registry", 0.98)
+
         metrics = {
             "language": language, "noise": noise, "chunk_count": len(chunks),
             "chunk_size_used": chunk_size_used, "chunk_overlap_used": chunk_overlap_used,
             "chunk_passed": getattr(chunk_result, "passed", None) if chunk_result else None,
             "validation": validation.summary() if OUTPUT_VALIDATE_ENABLED else None,
             "is_ocr": is_ocr, "source_type": ext,
+            # [PT-PROCESSING-008] Document identity fields
+            "document_id": document_id,
+            "file_hash": file_hash,
+            "metadata": document_meta,  # Per METADATA_CONTRACT_v1
         }
         artifacts = {
             "source_path": src_path, "moved_path": moved_to, "md_path": md_path,
@@ -519,10 +591,21 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         return {"success": True, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": None, "reason": None}
 
     except Exception as e:
-        reason = str(e)
-        logs.append({"cls": "log-warn", "msg": f"처리 실패 — {reason}"})
+        _failure_reason = str(e)
+        
+        # [PT-PROCESSING-012] Track failure in registry
+        if document_id and file_hash:
+            try:
+                _fail_decision, _fail_record = classify_ingest_decision(_registry, document_id, file_hash)
+                if _fail_decision != "PROCESS" and _fail_record is not None:
+                    transition_ingest_status(_registry, document_id, "FAILED", failure_reason=_failure_reason)
+                    save_identity_registry(_registry, registry_path)
+            except Exception:
+                pass  # Don't let registry update failures mask the original error
+        
+        logs.append({"cls": "log-warn", "msg": f"처리 실패 — {_failure_reason}"})
         logs.append({"cls": "log-warn", "msg": f"Traceback: {traceback.format_exc()}"})
-        return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage or "unexpected", "reason": reason}
+        return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage or "unexpected", "reason": _failure_reason}
 
 
 def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None):
