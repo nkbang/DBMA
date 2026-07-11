@@ -1,0 +1,284 @@
+"""core/runtime_state.py — Pipeline Runtime State Reader
+
+Dashboard Processing Pipeline Status를 위한 런타임 상태 판독기.
+
+데이터원:
+  1. logs/project_events.jsonl  — 처리 이벤트 로그 (parse/clean/chunk 완료)
+  2. output/{output_dir}/.batch_state.json  — BatchState (처리된 파일 목록)
+  3. output/tsu/tsu_dataset.json  — TSU 데이터셋 존재 여부 (임베딩/인덱싱 상태)
+  4. chroma_db persist directory — 벡터DB 인덱스 존재 여부
+
+Pipeline 단계:
+  extract → chunk → embedding → indexing → search
+
+각 단계의 상태는 "pending", "active", "complete" 중 하나이며,
+진행률(progress)은 이벤트 수와 파일 수 기반 계산.
+"""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any, Dict, Optional
+
+
+# ── 데이터 모델 ─────────────────────────────────────────────
+
+class PipelineStageState:
+    """단일 파이프라인 단계 상태."""
+    
+    PENDING = "pending"
+    ACTIVE = "active"
+    COMPLETE = "complete"
+    
+    def __init__(self, stage: str, status: str, progress: int, detail: str = "") -> None:
+        self.stage = stage
+        self.status = status
+        self.progress = progress
+        self.detail = detail
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "stage": self.stage,
+            "status": self.status,
+            "progress": self.progress,
+            "detail": self.detail,
+        }
+
+
+# ── 이벤트 로그 판독 ───────────────────────────────────────
+
+def _read_event_log(log_path: Path) -> list[dict]:
+    """project_events.jsonl에서 이벤트를 읽는다."""
+    if not log_path.exists():
+        return []
+    try:
+        events = []
+        for line in log_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                events.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+        return events
+    except Exception:
+        return []
+
+
+def _count_events_by_type(events: list[dict], event_prefix: str) -> int:
+    """이벤트 타입별 개수를 세고, 완료 상태인 것만 필터."""
+    count = 0
+    for e in events:
+        evt = e.get("event", "")
+        if evt.startswith(event_prefix) and e.get("status") == "DONE":
+            count += 1
+    return count
+
+
+# ── BatchState 판독 ────────────────────────────────────────
+
+def _load_batch_state(output_dir: Path) -> Dict[str, Any]:
+    """.batch_state.json을 로드한다. 없으면 빈 딕셔너리."""
+    state_file = output_dir / ".batch_state.json"
+    if not state_file.exists():
+        return {}
+    try:
+        data = json.loads(state_file.read_text(encoding="utf-8"))
+        return {
+            "processed": data.get("processed", []),
+            "failed": data.get("failed", []),
+            "timestamp": data.get("timestamp", ""),
+        }
+    except Exception:
+        return {}
+
+
+# ── TSU 데이터셋 판독 ─────────────────────────────────────
+
+def _check_tsu_dataset(output_dir: Path) -> tuple[bool, int]:
+    """TSU 데이터셋 존재 여부 + 문서 수."""
+    tsu_path = output_dir / "tsu" / "tsu_dataset.json"
+    if tsu_path.exists():
+        try:
+            data = json.loads(tsu_path.read_text(encoding="utf-8"))
+            doc_count = len(data) if isinstance(data, list) else 0
+            return True, doc_count
+        except Exception:
+            return False, 0
+    return False, 0
+
+
+# ── 벡터DB 인덱스 판독 ─────────────────────────────────────
+
+def _check_vector_index(base_dir: Path) -> bool:
+    """ChromaDB 인덱스 존재 여부."""
+    chroma_dirs = [
+        base_dir / "chroma_db",
+        base_dir / "VectorDB",
+    ]
+    for d in chroma_dirs:
+        if d.exists() and any(d.rglob("*")):
+            return True
+    return False
+
+
+# ── 메인 상태 계산 함수 ───────────────────────────────────
+
+def get_pipeline_status(
+    base_dir: Optional[Path] = None,
+    output_dir: Optional[Path] = None,
+    event_log_path: Optional[Path] = None,
+) -> list[PipelineStageState]:
+    """파이프라인 전단계의 런타임 상태를 계산한다.
+
+    Args:
+        base_dir: DBMA 프로젝트 루트 디렉토리 (기본: 현재 디렉토리)
+        output_dir: 처리 출력 디렉토리 (기본: {base_dir}/output)
+        event_log_path: 이벤트 로그 파일 경로 (기본: {base_dir}/logs/project_events.jsonl)
+
+    Returns:
+        PipelineStageState 목록 (extract → chunk → embedding → indexing → search 순)
+    """
+    if base_dir is None:
+        base_dir = Path.cwd()
+    if output_dir is None:
+        output_dir = base_dir / "output"
+    if event_log_path is None:
+        event_log_path = base_dir / "logs" / "project_events.jsonl"
+
+    # 이벤트 로그 읽기
+    events = _read_event_log(event_log_path)
+    
+    # BatchState 읽기
+    batch_state = _load_batch_state(output_dir)
+    processed_count = len(batch_state.get("processed", []))
+    failed_count = len(batch_state.get("failed", []))
+    
+    # TSU 데이터셋 체크
+    tsu_exists, tsu_doc_count = _check_tsu_dataset(output_dir)
+    
+    # 벡터DB 인덱스 체크
+    vector_index_exists = _check_vector_index(base_dir)
+
+    # RAW 디렉토리에서 전체 문서 수 계산
+    from core.config import DEFAULT_RAW_DIR, SUPPORTED_EXTENSIONS
+    raw_dir = Path(DEFAULT_RAW_DIR)
+    total_docs = 0
+    if raw_dir.exists():
+        total_docs = len([
+            f for f in raw_dir.rglob("*")
+            if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
+        ])
+
+    # 각 단계별 상태 계산
+    stages: list[PipelineStageState] = []
+
+    # 1. 추출 (Extract)
+    extract_events = _count_events_by_type(events, "parse_completed")
+    if total_docs > 0 and processed_count >= total_docs:
+        extract_status = PipelineStageState.COMPLETE
+        extract_progress = 100
+    elif extract_events > 0:
+        extract_status = PipelineStageState.ACTIVE
+        extract_progress = min(100, int((extract_events / max(total_docs, 1)) * 100))
+    elif processed_count > 0:
+        extract_status = PipelineStageState.ACTIVE
+        extract_progress = min(100, int((processed_count / max(total_docs, 1)) * 100))
+    else:
+        extract_status = PipelineStageState.PENDING
+        extract_progress = 0
+
+    stages.append(PipelineStageState(
+        stage="extract",
+        status=extract_status,
+        progress=extract_progress,
+        detail=f"{extract_events} events, {processed_count} files processed",
+    ))
+
+    # 2. 청킹 (Chunk)
+    chunk_events = _count_events_by_type(events, "chunk_completed")
+    if total_docs > 0 and extract_status == PipelineStageState.COMPLETE:
+        chunk_status = PipelineStageState.ACTIVE if chunk_events < total_docs else PipelineStageState.COMPLETE
+        chunk_progress = min(100, int((chunk_events / max(total_docs, 1)) * 100)) if total_docs > 0 else 0
+    elif chunk_events > 0:
+        chunk_status = PipelineStageState.ACTIVE
+        chunk_progress = min(100, int((chunk_events / max(total_docs, 1)) * 100))
+    elif extract_status == PipelineStageState.COMPLETE:
+        chunk_status = PipelineStageState.ACTIVE
+        chunk_progress = 50  # extract complete but no chunk events yet
+    else:
+        chunk_status = PipelineStageState.PENDING if extract_status == PipelineStageState.PENDING else PipelineStageState.ACTIVE
+        chunk_progress = 0
+
+    stages.append(PipelineStageState(
+        stage="chunk",
+        status=chunk_status,
+        progress=chunk_progress,
+        detail=f"{chunk_events} chunk events",
+    ))
+
+    # 3. 임베딩 (Embedding)
+    if tsu_exists and tsu_doc_count > 0:
+        embedding_status = PipelineStageState.COMPLETE
+        embedding_progress = 100
+    elif chunk_status == PipelineStageState.COMPLETE:
+        embedding_status = PipelineStageState.ACTIVE
+        embedding_progress = 30  # just started
+    else:
+        embedding_status = PipelineStageState.PENDING if chunk_status == PipelineStageState.PENDING else PipelineStageState.ACTIVE
+        embedding_progress = 0
+
+    stages.append(PipelineStageState(
+        stage="embedding",
+        status=embedding_status,
+        progress=embedding_progress,
+        detail=f"TSU: {tsu_doc_count} docs" if tsu_exists else "TSU not found",
+    ))
+
+    # 4. 인덱싱 (Indexing)
+    if vector_index_exists:
+        indexing_status = PipelineStageState.COMPLETE
+        indexing_progress = 100
+    elif embedding_status == PipelineStageState.COMPLETE:
+        indexing_status = PipelineStageState.ACTIVE
+        indexing_progress = 50
+    else:
+        indexing_status = PipelineStageState.PENDING if embedding_status == PipelineStageState.PENDING else PipelineStageState.ACTIVE
+        indexing_progress = 0
+
+    stages.append(PipelineStageState(
+        stage="indexing",
+        status=indexing_status,
+        progress=indexing_progress,
+        detail=f"Vector index: {'found' if vector_index_exists else 'not found'}",
+    ))
+
+    # 5. 검색 (Search) — retrieval 모듈 가용성 기반
+    try:
+        from core.retrieval import RetrievalEngine
+        search_status = PipelineStageState.COMPLETE
+        search_progress = 100
+    except ImportError:
+        search_status = PipelineStageState.PENDING
+        search_progress = 0
+
+    stages.append(PipelineStageState(
+        stage="search",
+        status=search_status,
+        progress=search_progress,
+        detail="RetrievalEngine 가용" if search_status == PipelineStageState.COMPLETE else "RetrievalEngine 미로드",
+    ))
+
+    return stages
+
+
+def get_pipeline_status_dict(
+    base_dir: Optional[Path] = None,
+    output_dir: Optional[Path] = None,
+    event_log_path: Optional[Path] = None,
+) -> Dict[str, Any]:
+    """파이프라인 상태를 딕셔너리 형태로 반환 (Dashboard용)."""
+    stages = get_pipeline_status(base_dir, output_dir, event_log_path)
+    return {s.stage: s.to_dict() for s in stages}

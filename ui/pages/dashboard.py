@@ -12,6 +12,7 @@ from pathlib import Path
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.runtime_state import get_pipeline_status
 
 
 def render_dashboard_page() -> None:
@@ -79,13 +80,27 @@ def _render_corpus_statistics() -> None:
 
 
 def _render_pipeline_status() -> None:
-    """Render processing pipeline status."""
+    """Render processing pipeline status from runtime state."""
+    # Get real pipeline status from engine
+    runtime_stages = get_pipeline_status()
+    
+    # Korean label mapping for UI
+    STAGE_LABELS = {
+        "extract": "추출",
+        "chunk": "청킹", 
+        "embedding": "임베딩",
+        "indexing": "인덱싱",
+        "search": "검색",
+    }
+    
+    # Transform to format compatible with existing UI rendering
     stages = [
-        {"label": "추출", "status": "complete", "progress": 100},
-        {"label": "청킹", "status": "complete", "progress": 100},
-        {"label": "임베딩", "status": "complete", "progress": 100},
-        {"label": "인덱싱", "status": "complete", "progress": 100},
-        {"label": "검색", "status": "active", "progress": 75},
+        {
+            "label": STAGE_LABELS.get(s.stage, s.stage),
+            "status": s.status,
+            "progress": s.progress,
+        }
+        for s in runtime_stages
     ]
 
     cols = st.columns(len(stages) + (len(stages) - 1))
