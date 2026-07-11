@@ -197,13 +197,13 @@ _NUMBERED_BOOK_ALIASES: dict[str, list[str]] = {
 # Korean-specific aliases for numbered books — disambiguated order
 _KOREAN_NUMBERED_ALIASES: dict[str, list[str]] = {
     # 1 Thessalonians — must come before generic "전서" matches
-    "1TH": ["살전", "살례전", "살레전"],
+    "1TH": ["살전", "살례전", "살레전", "데살전", "데살로니가전서"],
     # 2 Thessalonians
     "2TH": ["살후", "살례후", "살레후"],
     # 1 Peter
-    "1PE": ["베드로전", "베드로"],
+    "1PE": ["베드로전서", "베드로전", "베드로"],
     # 2 Peter
-    "2PE": ["베드로후", "베드로 후"],
+    "2PE": ["베드로후서", "베드로후", "베드로 후"],
     # 1 John
     "1JN": ["요일"],
     # 2 John
@@ -211,9 +211,44 @@ _KOREAN_NUMBERED_ALIASES: dict[str, list[str]] = {
     # 3 John
     "3JN": ["요삼"],
     # 1 Timothy
-    "1TI": ["디모전", "디모데 전"],
+    "1TI": ["디모데전서", "디모전", "디모데 전"],
     # 2 Timothy
-    "2TI": ["디모후", "디모데 후"],
+    "2TI": ["디모데후서", "디모후", "디모데 후"],
+    # Romans (full name)
+    "ROM": ["로마서"],
+    # Matthew (full name already in KO_ABBR_TO_BOOK as 마태복음)
+}
+
+# PT-RESEARCH-006.2 Loop 3: Additional Korean full-book aliases for reference parsing
+_KOREAN_FULL_NAMES: dict[str, str] = {
+    "로마서": "ROM",
+    "고린도전서": "1CO",
+    "고린도후서": "2CO",
+    "갈라디아서": "GAL",
+    "에베소서": "EPH",
+    "빌립보서": "PHP",
+    "골로새서": "COL",
+    "데살로니가전서": "1TH",
+    "데살로니가후서": "2TH",
+    "디모데전서": "1TI",
+    "디모데후서": "2TI",
+    "디도서": "TIT",
+    "빌레몬서": "PHM",
+    "히브리서": "HEB",
+    "야고보서": "JAS",
+    "베드로전서": "1PE",
+    "베드로후서": "2PE",
+    "요한일서": "1JN",
+    "요한이서": "2JN",
+    "요한삼서": "3JN",
+    "유다서": "JUD",
+    "마태복음": "MAT",
+    "마가복음": "MRK",
+    "누가복음": "LUK",
+    "요한복음": "JHN",
+    # Additional Korean book names (numbered)
+    "역대하": "2CH",  # 2 Chronicles (not in base alias but needed)
+    "역대상": "1CH",
 }
 
 
@@ -275,6 +310,9 @@ class EnhancedBookDetector:
         Detect book IDs from query text using numbered patterns first, then aliases.
 
         Returns unique book IDs in order of first appearance.
+        
+        PT-RESEARCH-006.2 Loop 2 Fix: Global `seen` set persists across ALL detection
+        steps to prevent duplicate book_id entries (DEFECT-001/002).
         """
         result: list[str] = []
         seen: set[str] = set()
@@ -299,16 +337,30 @@ class EnhancedBookDetector:
                             seen.add(book_id)
                             result.append(book_id)
 
+            # PT-RESEARCH-006.2 Loop 3 Fix: Also check _KOREAN_FULL_NAMES for Korean full names
+            # This covers "역대하", "마태복음", etc. which are in KO_ABBR_TO_BOOK but not _KOREAN_NUMBERED_ALIASES
+            for ko_full, book_id in _KOREAN_FULL_NAMES.items():
+                if ko_full.lower() in cleaned_query:
+                    if book_id not in seen:
+                        seen.add(book_id)
+                        result.append(book_id)
+
         # Step 3: Fall back to extended alias lookup (covers "first peter", etc.)
+        # PT-RESEARCH-006.2 Loop 3 Fix: Increased minimum length from 4 to 5 for Korean aliases
+        # to prevent false positives from short aliases like "전서" or "후서"
         for alias, book_id in self._alias_lookup.items():
-            if len(alias) >= 4 and alias in cleaned_query:
+            min_len = 5 if any('\uAC00' <= c <= '\uDBFF' for c in alias) else 4
+            if len(alias) >= min_len and alias in cleaned_query:
                 if book_id not in seen:
                     seen.add(book_id)
                     result.append(book_id)
 
         # Step 4: Also check base NAME_TO_BOOK_ID aliases (from retrieval.py)
+        # PT-RESEARCH-006.2 Loop 3 Fix: Increased minimum length to 5 for Korean aliases
+        # to prevent false positives from single/double characters like "나", "전", "서"
         for alias, book_id in NAME_TO_BOOK_ID.items():
-            if len(alias) >= 3 and alias in cleaned_query:
+            min_len = 5 if any('\uAC00' <= c <= '\uDBFF' for c in alias) else 3
+            if len(alias) >= min_len and alias in cleaned_query:
                 if book_id not in seen:
                     seen.add(book_id)
                     result.append(book_id)
@@ -371,7 +423,7 @@ class EnhancedReferenceParser:
     }
 
     KO_PATTERN = re.compile(
-        r'(' + '|'.join(re.escape(k) for k in KO_ABBR_TO_BOOK.keys()) + r')\s*(장|\s*[:：]?\s*)(\d{1,3})',
+        r'(' + '|'.join(re.escape(k) for k in KO_ABBR_TO_BOOK.keys()) + r')\s*(\d{1,3})\s*장\s*(절|[:：])?\s*(\d{1,3})?',
         re.IGNORECASE
     )
 
@@ -384,6 +436,8 @@ class EnhancedReferenceParser:
         - "Romans 8" → ScriptureReference(ROM, 8, None)
         - "마태복음 5장" → ScriptureReference(MAT, 5, None)
         - "롬 8장" → ScriptureReference(ROM, 8, None)
+        - "로마서 8장" → ScriptureReference(ROM, 8, None)           [Loop 4]
+        - "로마서 8장 28절" → ScriptureReference(ROM, 8, 28)       [Loop 4]
         """
         refs: list[ScriptureReference] = []
         cleaned = query.lower().strip()
@@ -401,22 +455,74 @@ class EnhancedReferenceParser:
                     verse_end=None,
                 ))
 
-        # Korean chapter pattern
+        # Korean chapter pattern (abbreviation based)
+        # Groups: 1=book abbr, 2=chapter number, 3=verse separator (optional), 4=verse number (optional)
         for match in self.KO_PATTERN.finditer(query):
             ko_abbr = match.group(1).lower()
-            chapter_str = match.group(3)
+            chapter_str = match.group(2)
+            verse_str = match.group(4)   # optional
             try:
                 chapter = int(chapter_str)
             except ValueError:
                 continue
             book_id = self.KO_ABBR_TO_BOOK.get(ko_abbr)
-            if book_id:
-                refs.append(ScriptureReference(
-                    book_id=book_id,
-                    chapter=chapter,
-                    verse_start=0,
-                    verse_end=None,
-                ))
+            if not book_id:
+                continue
+            
+            verse_start = 0
+            verse_end = None
+            if verse_str:
+                try:
+                    verse_start = int(verse_str)
+                    verse_end = verse_start
+                except ValueError:
+                    pass
+            
+            refs.append(ScriptureReference(
+                book_id=book_id,
+                chapter=chapter,
+                verse_start=verse_start,
+                verse_end=verse_end,
+            ))
+
+        # PT-RESEARCH-006.2 Loop 4: Korean full name pattern support
+        # Pattern A: BOOK CHAPTER장 VERSE절 (e.g., "로마서 8장", "로마서 8장 28절")
+        # Key: Use \s+ (one or more) after book name to ensure at least one space boundary
+        korean_full_pattern = re.compile(
+            r'(' + '|'.join(re.escape(k) for k in sorted(_KOREAN_FULL_NAMES.keys(), key=len, reverse=True)) + r')\s+(\d{1,3})\s*장\s*(절|[:：])?\s*(\d{1,3})?',
+            re.IGNORECASE
+        )
+        
+        for match in korean_full_pattern.finditer(query):
+            ko_full_name = match.group(1)
+            chapter_str = match.group(2)
+            verse_sep = match.group(3)   # "절" or ":" (optional)
+            verse_str = match.group(4)   # verse number (optional)
+            
+            try:
+                chapter = int(chapter_str)
+            except ValueError:
+                continue
+            
+            book_id = _KOREAN_FULL_NAMES.get(ko_full_name)
+            if not book_id:
+                continue
+            
+            verse_start = 0
+            verse_end = None
+            if verse_str:
+                try:
+                    verse_start = int(verse_str)
+                    verse_end = verse_start
+                except ValueError:
+                    pass
+            
+            refs.append(ScriptureReference(
+                book_id=book_id,
+                chapter=chapter,
+                verse_start=verse_start,
+                verse_end=verse_end,
+            ))
 
         return refs
 
@@ -441,7 +547,16 @@ class EnhancedQueryParser(QueryParser):
         self._ref_parser = EnhancedReferenceParser()
 
     def parse(self, query: str) -> ParsedQuery:
-        """Enhanced parse with P0 fixes."""
+        """Enhanced parse with P0 fixes.
+        
+        PT-RESEARCH-006.2 Loop 5 Fix: Cross-layer deduplication.
+        
+        The parent QueryParser.parse() and EnhancedBookDetector.detect_books()
+        can both find the same book_id (e.g. "로마서" → ROM). Previously each
+        had its own internal seen-set, but when combined they produced duplicate
+        entries like ['ROM', 'ROM']. This fix applies a final deduplication pass
+        after all sources are merged.
+        """
         # Run original parser first (preserves all existing behavior)
         parsed = super().parse(query)
 
@@ -451,13 +566,31 @@ class EnhancedQueryParser(QueryParser):
             if bid not in parsed.detected_books:
                 parsed.detected_books.append(bid)
 
-        # P0 FIX 2: Add chapter-only reference parsing
+        # PT-RESEARCH-006.2 Loop 5 Fix: Cross-layer deduplication pass
+        # This prevents ['ROM', 'ROM'] when both parent parser and detector find the same book
+        seen_books = []
+        for bid in parsed.detected_books:
+            if bid not in seen_books:
+                seen_books.append(bid)
+        parsed.detected_books = seen_books
+
+        # P0 FIX 2: Add chapter-only reference parsing with cross-layer deduplication
         chapter_refs = self._ref_parser.parse_chapter_only(query)
         for cref in chapter_refs:
             # Only add if not already captured by verse parser
             existing_chapters = [(r.book_id, r.chapter) for r in parsed.scripture_refs]
             if (cref.book_id, cref.chapter) not in existing_chapters:
                 parsed.scripture_refs.append(cref)
+
+        # PT-RESEARCH-006.2 Loop 5 Fix: Deduplicate scripture_refs by (book_id, chapter, verse_start)
+        seen_refs = []
+        unique_refs = []
+        for ref in parsed.scripture_refs:
+            key = (ref.book_id, ref.chapter, ref.verse_start or 0)
+            if key not in seen_refs:
+                seen_refs.append(key)
+                unique_refs.append(ref)
+        parsed.scripture_refs = unique_refs
 
         return parsed
 

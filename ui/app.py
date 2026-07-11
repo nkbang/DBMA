@@ -1,4 +1,4 @@
-"""DBMA v1.0.0 — Personal Knowledge Operating System.
+"""DBMA v1.1.0 — Personal Knowledge Operating System.
 
 Main application entry point with navigation across all pages.
 """
@@ -97,8 +97,8 @@ def _render_app_header() -> None:
     with col3:
         st.markdown(f"""
         <div style="text-align: right; padding: 0.5rem 0;">
-            <span style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
-                v1.0.0
+                <span style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
+                v1.1.0
             </span>
         </div>
         """, unsafe_allow_html=True)
@@ -142,8 +142,8 @@ def _render_sidebar() -> str:
         # Version info
         st.markdown(f"""
         <div style="text-align: center; padding: 0.5rem 0;">
-            <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
-                DBMA v1.0.0
+                <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
+                DBMA v1.1.0
             </span>
             <br>
             <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">

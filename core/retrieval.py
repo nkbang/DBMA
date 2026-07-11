@@ -1578,3 +1578,20 @@ if __name__ == "__main__":
             print(f"  {k}: {v:.2f}")
         else:
             print(f"  {k}: {v}")
+
+
+# ============================================================
+# PT-RESEARCH-006.1: Query Enhancement Layer Integration
+# ============================================================
+# Production enhancement layer — overrides QueryParser with PT-006 P0 fixes:
+#   1. Numbered book detection (1 Peter, 2 Chronicles, 1 Thessalonians, etc.)
+#   2. Korean alias disambiguation (살전 → 1TH, 베드로전서 → 1PE, etc.)
+#   3. Chapter-only reference parsing (Matthew 5 → MAT chapter=5)
+#   4. Negative query confidence boundary checking
+#
+# If query_enhancements.py is missing or fails to import, falls back
+# to the original QueryParser defined in this file.
+try:
+    from core.query_enhancements import EnhancedQueryParser as QueryParser
+except ImportError:
+    pass  # Enhancement module unavailable; use built-in QueryParser
