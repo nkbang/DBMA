@@ -175,7 +175,7 @@ def validate_chunks(
     meta: Dict[str, Any],
     min_chars: int = MIN_CHUNK_CHARS,
 ) -> ChunkValidationResult:
-    """청크 출력物を 검증합니다.
+    """청크 출력物을 검증합니다.
 
     검증 항목:
     - 빈 청크 필터링
@@ -594,7 +594,8 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         _failure_reason = str(e)
         
         # [PT-PROCESSING-012] Track failure in registry
-        if document_id and file_hash:
+        # FIXED: Check if document_id and file_hash are defined before using them
+        if 'document_id' in locals() and 'file_hash' in locals() and document_id and file_hash:
             try:
                 _fail_decision, _fail_record = classify_ingest_decision(_registry, document_id, file_hash)
                 if _fail_decision != "PROCESS" and _fail_record is not None:
