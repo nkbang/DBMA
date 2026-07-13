@@ -50,3 +50,17 @@ logs/*.jsonl
 # Backup .git directories
 .git.bak.*/
 .idea/
+
+# AI agent runtime state
+.cline/
+.dbma/
+
+# Local workspace
+*.code-workspace
+
+# AI agent runtime state
+.cline/
+.dbma/
+
+# Local VS Code workspace files
+*.code-workspace

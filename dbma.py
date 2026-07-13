@@ -943,6 +943,17 @@ def render_processing_tab(use_ocr: bool, chunk_size: int, chunk_overlap: int):
                     st.success(f"{ok_count}/{len(results)}개 처리 완료")
                     results_box.dataframe(pd.DataFrame(results), use_container_width=True, hide_index=True)
 
+                    # Display output file paths prominently (SPRINT 2: make output location visible)
+                    if ok_count > 0:
+                        st.markdown("**Output files:**")
+                        for r in results:
+                            if r["success"]:
+                                md_stem = r.get("file", "")
+                                # Canonical MD is named {stem}_md.md where stem = source_name with dots replaced by underscore
+                                stem_safe = md_stem.replace(".", "_")
+                                canonical_md = f"output/{stem_safe}_md.md"
+                                st.caption(f"  ✓ `{canonical_md}` (canonical markdown)")
+
             finally:
                 st.session_state["is_processing"] = False
                 progress_box.progress(1.0, text="처리 완료")

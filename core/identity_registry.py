@@ -198,6 +198,18 @@ def migrate_registry_schema(registry: dict) -> bool:
 
         if "last_processed_at" not in record:
             record["last_processed_at"] = record.get("updated_at", record.get("created_at"))
+
+        # Sprint 2 pipeline completion flags (additive — never modifies existing fields)
+        if "pipeline_flags" not in record:
+            record["pipeline_flags"] = {
+                "ingested": False,
+                "copied": False,
+                "extracted": False,
+                "cleaned": False,
+                "chunked": False,
+                "output_generated": False,
+                "verified": False,
+            }
             changed = True
 
     return changed
@@ -329,6 +341,43 @@ def transition_ingest_status(
         record["last_failure_reason"] = failure_reason
     # ABANDONED: no additional side effects
 
+    return True
+
+
+
+
+def update_pipeline_flags(
+    registry: dict,
+    doc_id: str,
+    flags_to_set: dict,
+) -> bool:
+    """Update pipeline completion flags for a document in the registry.
+
+    Args:
+        registry: Registry dict (mutated if found)
+        doc_id: Document ID to update
+        flags_to_set: Dict of flag names → boolean values to set
+
+    Returns:
+        True if record was found and updated, False otherwise
+    """
+    record = registry["documents"].get(doc_id)
+    if record is None:
+        return False
+
+    if "pipeline_flags" not in record:
+        record["pipeline_flags"] = {
+            "ingested": False,
+            "copied": False,
+            "extracted": False,
+            "cleaned": False,
+            "chunked": False,
+            "output_generated": False,
+            "verified": False,
+        }
+
+    record["pipeline_flags"].update(flags_to_set)
+    record["last_processed_at"] = datetime.datetime.now().isoformat(timespec="seconds")
     return True
 
 

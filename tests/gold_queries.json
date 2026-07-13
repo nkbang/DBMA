@@ -1,0 +1,919 @@
+{
+  "version": "1.0.0",
+  "created": "2026-07-10",
+  "purpose": "PT-RESEARCH-007: Gold Standard Dataset for Research Engine Ranking Evaluation",
+  "total_queries": 100,
+  "categories": {
+    "book_reference": {"count": 15, "description": "Scripture book/chapter/verse queries"},
+    "theme": {"count": 15, "description": "Thematic concept queries"},
+    "doctrine": {"count": 12, "description": "Theological doctrine queries"},
+    "original_language": {"count": 8, "description": "Greek/Hebrew word studies"},
+    "historical": {"count": 10, "description": "Historical/event queries"},
+    "mission_pastoral": {"count": 8, "description": "Mission/pastoral application queries"},
+    "korean": {"count": 8, "description": "Korean language queries"},
+    "negative": {"count": 10, "description": "Non-biblical/irrelevant queries"},
+    "ambiguous": {"count": 14, "description": "Ambiguous/multi-intent queries"}
+  },
+  "queries": [
+    {
+      "id": "BK001",
+      "category": "book_reference",
+      "query": "Romans 8:28",
+      "expected_books": ["ROM"],
+      "expected_documents": ["Romans chapter 8 theological content"],
+      "expected_ranking_priority": "Book-chapter match > verse proximity > general Romans content",
+      "notes": "Reference query with explicit book/chapter/verse"
+    },
+    {
+      "id": "BK002",
+      "category": "book_reference",
+      "query": "Matthew 5",
+      "expected_books": ["MAT"],
+      "expected_documents": ["Sermon on the Mount Beatitudes content"],
+      "expected_ranking_priority": "Matthew chapter 5 Beatitudes first",
+      "notes": "Chapter-only reference (no verse)"
+    },
+    {
+      "id": "BK003",
+      "category": "book_reference",
+      "query": "1 Peter 5:7",
+      "expected_books": ["1PE"],
+      "expected_documents": ["1 Peter chapter 5 anxiety casting content"],
+      "expected_ranking_priority": "1PE book match > Matthew 5:7 (incorrect ROM match should be penalized)",
+      "notes": "Numbered book detection test"
+    },
+    {
+      "id": "BK004",
+      "category": "book_reference",
+      "query": "Genesis 1:1",
+      "expected_books": ["GEN"],
+      "expected_documents": ["Creation narrative inchi content"],
+      "expected_ranking_priority": "GEN chapter 1 first",
+      "notes": "Old Testament reference"
+    },
+    {
+      "id": "BK005",
+      "category": "book_reference",
+      "query": "Psalm 23",
+      "expected_books": ["PSA"],
+      "expected_documents": ["The Lord is my shepherd content"],
+      "expected_ranking_priority": "PSA 23 top",
+      "notes": "Single book Psalms"
+    },
+    {
+      "id": "BK006",
+      "category": "book_reference",
+      "query": "John 3:16",
+      "expected_books": ["JHN"],
+      "expected_documents": ["For God so loved the world content"],
+      "expected_ranking_priority": "JHN chapter 3 first",
+      "notes": "Most famous verse reference"
+    },
+    {
+      "id": "BK007",
+      "category": "book_reference",
+      "query": "Revelation 21",
+      "expected_books": ["REV"],
+      "expected_documents": ["New heaven and new earth content"],
+      "expected_ranking_priority": "REV chapter 21 first",
+      "notes": "Prophetic/eschatological book"
+    },
+    {
+      "id": "BK008",
+      "category": "book_reference",
+      "query": "Isaiah 53",
+      "expected_books": ["ISA"],
+      "expected_documents": ["Suffering servant content"],
+      "expected_ranking_priority": "ISA chapter 53 first",
+      "notes": "Messiah prophecy"
+    },
+    {
+      "id": "BK009",
+      "category": "book_reference",
+      "query": "Romans 5:3",
+      "expected_books": ["ROM"],
+      "expected_documents": ["Suffering produces perseverance content"],
+      "expected_ranking_priority": "ROM chapter 5 first",
+      "notes": "Same book as BK001 different chapter"
+    },
+    {
+      "id": "BK010",
+      "category": "book_reference",
+      "query": "1 Corinthians 13",
+      "expected_books": ["1CO"],
+      "expected_documents": ["Love chapter content"],
+      "expected_ranking_priority": "1CO chapter 13 first",
+      "notes": "Numbered book + love theme overlap"
+    },
+    {
+      "id": "BK011",
+      "category": "book_reference",
+      "query": "Philippians 4:13",
+      "expected_books": ["PHP"],
+      "expected_documents": ["I can do all things content"],
+      "expected_ranking_priority": "PHP chapter 4 first",
+      "notes": "Pauline epistle"
+    },
+    {
+      "id": "BK012",
+      "category": "book_reference",
+      "query": "James 1:2-4",
+      "expected_books": ["JAS"],
+      "expected_documents": ["Testing of faith produces perseverance content"],
+      "expected_ranking_priority": "JAS chapter 1 first",
+      "notes": "Verse range test"
+    },
+    {
+      "id": "BK013",
+      "category": "book_reference",
+      "query": "Hebrews 11",
+      "expected_books": ["HEB"],
+      "expected_documents": "Faith chapter heroes of faith content",
+      "expected_ranking_priority": "HEB chapter 11 first",
+      "notes": "Old Testament book name New Testament"
+    },
+    {
+      "id": "BK014",
+      "category": "book_reference",
+      "query": "Galatians 5:19-21",
+      "expected_books": ["GAL"],
+      "expected_documents": "Works of the flesh content",
+      "expected_ranking_priority": "GAL chapter 5 first",
+      "notes": "Verse range with book"
+    },
+    {
+      "id": "BK015",
+      "category": "book_reference",
+      "query": "Ephesians 2:8-9",
+      "expected_books": ["EPH"],
+      "expected_documents": "By grace you have been saved content",
+      "expected_ranking_priority": "EPH chapter 2 first",
+      "notes": "Grace/salvation theme overlap with reference"
+    },
+    {
+      "id": "TH001",
+      "category": "theme",
+      "query": "faith",
+      "expected_books": ["ROM", "HEB", "JAS", "EBR", "PHP"],
+      "expected_documents": "Faith/the pistis concept across corpus",
+      "expected_ranking_priority": "Thematic relevance > book order",
+      "notes": "Pure theme query no book filter"
+    },
+    {
+      "id": "TH002",
+      "category": "theme",
+      "query": "grace",
+      "expected_books": ["ROM", "GAL", "EPH", "HEB"],
+      "expected_documents": "Charis concept Pauline theology content",
+      "expected_ranking_priority": "Pauline epistles with highest grace frequency",
+      "notes": "No book filter should activate"
+    },
+    {
+      "id": "TH003",
+      "category": "theme",
+      "query": "suffering",
+      "expected_books": ["ROM", "1PE", "PHP", "2CO"],
+      "expected_documents": "Pathema concept theological content",
+      "expected_ranking_priority": "Peter and Paul epistles first",
+      "notes": "Theological theme"
+    },
+    {
+      "id": "TH004",
+      "category": "theme",
+      "query": "salvation",
+      "expected_books": ["ROM", "PHP", "HEB"],
+      "expected_documents": "Soteria concept theological content",
+      "expected_ranking_priority": "Romans and Philippians first",
+      "notes": "Core theological theme"
+    },
+    {
+      "id": "TH005",
+      "category": "theme",
+      "query": "sanctification",
+      "expected_books": ["1CO", "2CO", "JN", "ROM"],
+      "expected_documents": "Hagiazō concept holiness content",
+      "expected_ranking_priority": "Pauline sanctification passages first",
+      "notes": "Doctrinal theme"
+    },
+    {
+      "id": "TH006",
+      "category": "theme",
+      "query": "love",
+      "expected_books": ["1JN", "ROM", "1CO", "JN"],
+      "expected_documents": "Agape/philia/stergew content",
+      "expected_ranking_priority": "John epistles and 1 Corinthians 13 first",
+      "notes": "Overlaps with 1CO 13 book reference"
+    },
+    {
+      "id": "TH007",
+      "category": "theme",
+      "query": "wisdom",
+      "expected_books": ["JAS", "PRO", "JAM"],
+      "expected_documents": "Sophia concept wisdom literature content",
+      "expected_ranking_priority": "Proverbs and James first",
+      "notes": "Wisdom tradition theme"
+    },
+    {
+      "id": "TH008",
+      "category": "theme",
+      "query": "kingdom of God",
+      "expected_books": ["MAT", "MRK", "LKE"],
+      "expected_documents": "Basileia tou theou content",
+      "expected_ranking_priority": "Synoptic gospels first",
+      "notes": "Central Jesus teaching theme"
+    },
+    {
+      "id": "TH009",
+      "category": "theme",
+      "query": "covenant",
+      "expected_books": ["GEN", "HEB", "EXO"],
+      "expected_documents": "Brit/berith concept biblical theology content",
+      "expected_ranking_priority": "Genesis and Hebrews first",
+      "notes": "Covenant theology theme"
+    },
+    {
+      "id": "TH010",
+      "category": "theme",
+      "query": "redemption",
+      "expected_books": ["ROM", "GAL", "EPH", "HEB"],
+      "expected_documents": "Apolytrōsis concept ransom content",
+      "expected_ranking_priority": "Pauline epistles first",
+      "notes": "Redemption theme"
+    },
+    {
+      "id": "TH011",
+      "category": "theme",
+      "query": "righteousness",
+      "expected_books": ["ROM", "GAL", "PHP"],
+      "expected_documents": "Dikaiosune concept Pauline theology content",
+      "expected_ranking_priority": "Romans first",
+      "notes": "Justification theme"
+    },
+    {
+      "id": "TH012",
+      "category": "theme",
+      "query": "spirit truth",
+      "expected_books": ["JN", "1CO", "ROM"],
+      "expected_documents": "Pneuma aletheia concept Johannine content",
+      "expected_ranking_priority": "John gospel first",
+      "notes": "Multi-word theme"
+    },
+    {
+      "id": "TH013",
+      "category": "theme",
+      "query": "resurrection life",
+      "expected_books": ["1CO", "ROM", "JN", "PHP"],
+      "expected_documents": "Anastasis concept eternal life content",
+      "expected_ranking_priority": "1 Corinthians 15 and John first",
+      "notes": "Compound theme"
+    },
+    {
+      "id": "TH014",
+      "category": "theme",
+      "query": "mercy justice",
+      "expected_books": ["MIK", "MAT", "HEB"],
+      "expected_documents": "Chesed/spraw concept dual theme content",
+      "expected_ranking_priority": "Micah and Matthew first",
+      "notes": "Dual theme"
+    },
+    {
+      "id": "TH015",
+      "category": "theme",
+      "query": "priest kingdom",
+      "expected_books": ["REV", "EXO", "HEB"],
+      "expected_documents": "Hierateuma basileia concept priestly content",
+      "expected_ranking_priority": "Revelation and Exodus first",
+      "notes": "Royal priesthood theme"
+    },
+    {
+      "id": "DO001",
+      "category": "doctrine",
+      "query": "what is justification by faith",
+      "expected_books": ["ROM", "GAL"],
+      "expected_documents": "Dikaiosis ek pisteos content",
+      "expected_ranking_priority": "Romans 3-5 first then Galatians",
+      "notes": "Core Protestant doctrine"
+    },
+    {
+      "id": "DO002",
+      "category": "doctrine",
+      "query": "theology of the cross",
+      "expected_books": ["ROM", "GAL", "CO"],
+      "expected_documents": "Cross crucifixion theology content",
+      "expected_ranking_priority": "Romans and Galatians first",
+      "notes": "Lutheran theological concept"
+    },
+    {
+      "id": "DO003",
+      "category": "doctrine",
+      "query": "trinity doctrine",
+      "expected_books": ["MAT", "2CO", "JN"],
+      "expected_documents": "Trias concept Father Son Spirit content",
+      "expected_ranking_priority": "Matthew 28:19 and 2 Corinthians 13:14 first",
+      "notes": "Trinitarian passages"
+    },
+    {
+      "id": "DO004",
+      "category": "doctrine",
+      "query": "original sin",
+      "expected_books": ["ROM", "GEN"],
+      "expected_documents": "Adam fallen nature content",
+      "expected_ranking_priority": "Romans 5:12-21 first Genesis 3 second",
+      "notes": "Augustinian doctrine foundation"
+    },
+    {
+      "id": "DO005",
+      "category": "doctrine",
+      "query": "resurrection meaning",
+      "expected_books": ["1CO", "ROM", "JN", "ACT"],
+      "expected_documents": "Anastosis Christological content",
+      "expected_ranking_priority": "1 Corinthians 15 first",
+      "notes": "Christological doctrine"
+    },
+    {
+      "id": "DO006",
+      "category": "doctrine",
+      "query": "nature of Christ",
+      "expected_books": ["JN", "PHP", "HEB", "CO"],
+      "expected_documents": "Hypostasis incarnate content",
+      "expected_ranking_priority": "John 1 and Philippians 2 first",
+      "notes": "Christological doctrine"
+    },
+    {
+      "id": "DO007",
+      "category": "doctrine",
+      "query": "role of the Holy Spirit",
+      "expected_books": ["JN", "ROM", "ACT", "1CO"],
+      "expected_documents": "Pneuma hagion paraclete content",
+      "expected_ranking_priority": "John 14-16 (Farewell discourse) first",
+      "notes": "Pneumatological doctrine"
+    },
+    {
+      "id": "DO008",
+      "category": "doctrine",
+      "query": "eschatology end times",
+      "expected_books": ["REV", "MAT", "1TH", "2TH"],
+      "expected_documents": "Eschaton parousia content",
+      "expected_ranking_priority": "Matthew 24 and Revelation first",
+      "notes": "Eschatological doctrine"
+    },
+    {
+      "id": "DO009",
+      "category": "doctrine",
+      "query": "predestination election",
+      "expected_books": ["ROM", "GAL", "EPH"],
+      "expected_documents": "Proorizō eklekto content",
+      "expected_ranking_priority": "Romans 8-9 and Ephesians 1 first",
+      "notes": "Calvinist/Arminian doctrine"
+    },
+    {
+      "id": "DO010",
+      "category": "doctrine",
+      "query": "biblical authority scripture",
+      "expected_books": ["2TI", "2PE", "MAT", "JN"],
+      "expected_documents": "Theopneustos utilitarian content",
+      "expected_ranking_priority": "2 Timothy 3:16 first",
+      "notes": "Sola scriptura doctrine"
+    },
+    {
+      "id": "DO011",
+      "category": "doctrine",
+      "query": "baptism meaning",
+      "expected_books": ["MAT", "ACT", "ROM", "1PE"],
+      "expected_documents": "Baptizo concept theological content",
+      "expected_ranking_priority": "Matthew 28:19 and Romans 6 first",
+      "notes": "Sacramental doctrine"
+    },
+    {
+      "id": "DO012",
+      "category": "doctrine",
+      "query": "communion Lord's supper",
+      "expected_books": ["1CO", "MAT", "MRK", "LKE"],
+      "expected_documents": "Eucharistia hostia content",
+      "expected_ranking_priority": "1 Corinthians 11 first",
+      "notes": "Sacramental doctrine"
+    },
+    {
+      "id": "OG001",
+      "category": "original_language",
+      "query": "what does logoi mean in John 1",
+      "expected_books": ["JN"],
+      "expected_documents": "Logos λόγος Johannine prologue content",
+      "expected_ranking_priority": "John 1:1-18 first Greek analysis second",
+      "notes": "Greek word study"
+    },
+    {
+      "id": "OG002",
+      "category": "original_language",
+      "query": "kabod Hebrew glory meaning",
+      "expected_books": ["GEN", "EXO", "ISA", "PSA"],
+      "expected_documents": "כבוד kâbôd glory weight content",
+      "expected_ranking_priority": "Exodus and Isaiah glory passages first",
+      "notes": "Hebrew word study"
+    },
+    {
+      "id": "OG003",
+      "category": "original_language",
+      "query": "agape vs phileo love",
+      "expected_books": ["JN"],
+      "expected_documents": "ἀγάπη φιλέω John 21 content",
+      "expected_ranking_priority": "John 21:15-17 first",
+      "notes": "Greek lexical comparison"
+    },
+    {
+      "id": "OG004",
+      "category": "original_language",
+      "query": "tike in Greek New Testament",
+      "expected_books": ["ROM", "GAL", "EPH"],
+      "expected_documents": "Charis χάρις grace content",
+      "expected_ranking_priority": "Pauline grace passages first",
+      "notes": "Greek word study possibly misremembered"
+    },
+    {
+      "id": "OG005",
+      "category": "original_language",
+      "query": "berit covenant Hebrew",
+      "expected_books": ["GEN", "EXO", "HEB", "JER"],
+      "expected_documents": "בְּרִית berîyth covenant content",
+      "expected_ranking_priority": "Genesis and Hebrews first",
+      "notes": "Hebrew word study"
+    },
+    {
+      "id": "OG006",
+      "category": "original_language",
+      "query": "hilasterion propitiation meaning",
+      "expected_books": ["ROM", "1JN"],
+      "expected_documents": "ἱλαστήριον hilastērion propitation content",
+      "expected_ranking_priority": "Romans 3:25 first 1 John 2:2 second",
+      "notes": "Greek theological term"
+    },
+    {
+      "id": "OG007",
+      "category": "original_language",
+      "query": "matia Son of Man Greek",
+      "expected_books": ["MAT", "MRK", "LKE"],
+      "expected_documents": "Human Son of man content",
+      "expected_ranking_priority": "Synoptic gospels first",
+      "notes": "Greek title study"
+    },
+    {
+      "id": "OG008",
+      "category": "original_language",
+      "query": "nomos law Greek New Testament",
+      "expected_books": ["ROM", "GAL", "JAS"],
+      "expected_documents": "νόμος nomos law Torah content",
+      "expected_ranking_priority": "Romans 7-8 first Galatians second",
+      "notes": "Greek theological concept"
+    },
+    {
+      "id": "HI001",
+      "category": "historical",
+      "query": "exodus from Egypt history",
+      "expected_books": ["EXO", "LEV", "HEB"],
+      "expected_documents": "Exodos departure Egypt content",
+      "expected_ranking_priority": "Exodus narrative first",
+      "notes": "Historical event"
+    },
+    {
+      "id": "HI002",
+      "category": "historical",
+      "query": "Babylonian exile timeline",
+      "expected_books": ["2KI", "2CH", "JER", "EZK"],
+      "expected_documents": "Galut exile Babylon content",
+      "expected_ranking_priority": "2 Kings and Jeremiah first",
+      "notes": "Historical period"
+    },
+    {
+      "id": "HI003",
+      "category": "historical",
+      "query": "temple construction Solomon",
+      "expected_books": ["1KI", "2CH"],
+      "expected_documents": "Temple building content",
+      "expected_ranking_priority": "1 Kings 6 and 2 Chronicles 3 first",
+      "notes": "Historical building project"
+    },
+    {
+      "id": "HI004",
+      "category": "historical",
+      "query": "Paul missionary journeys",
+      "expected_books": ["ACT"],
+      "expected_documents": "Paulas apostolos travel content",
+      "expected_ranking_priority": "Acts 13-28 first",
+      "notes": "Historical travels"
+    },
+    {
+      "id": "HI005",
+      "category": "historical",
+      "query": "David king of Israel",
+      "expected_books": ["1SA", "2SA", "PSA"],
+      "expected_documents": "Davidou basileus content",
+      "expected_ranking_priority": "1 Samuel 16-31 and 2 Samuel first",
+      "notes": "Historical monarch"
+    },
+    {
+      "id": "HI006",
+      "category": "historical",
+      "query": "destruction of Jerusalem 586 BC",
+      "expected_books": ["2KI", "JER", "PSA"],
+      "expected_documents": "City destruction content",
+      "expected_ranking_priority": "2 Kings 25 and Jeremiah 52 first",
+      "notes": "Historical catastrophe"
+    },
+    {
+      "id": "HI007",
+      "category": "historical",
+      "query": "return from Babylon Ezra Nehemiah",
+      "expected_books": ["EZRA", "NEH"],
+      "expected_documents": "Shuv return rebuilding content",
+      "expected_ranking_priority": "Ezra and Nehemiah first",
+      "notes": "Historical restoration"
+    },
+    {
+      "id": "HI008",
+      "category": "historical",
+      "query": "Roman Empire New Testament context",
+      "expected_books": ["LUK", "JN", "ACT"],
+      "expected_documents": "Rome imperium Pontius Pilate content",
+      "expected_ranking_priority": "Luke and Acts first",
+      "notes": "Historical political context"
+    },
+    {
+      "id": "HI009",
+      "category": "historical",
+      "query": "Tower of Babel story",
+      "expected_books": ["GEN"],
+      "expected_documents": "Bavel tower confusion content",
+      "expected_ranking_priority": "Genesis 11 first",
+      "notes": "Primeval history"
+    },
+    {
+      "id": "HI010",
+      "category": "historical",
+      "query": "Daniel in the lion's den",
+      "expected_books": ["DAN"],
+      "expected_documents": "Arioy lion's den content",
+      "expected_ranking_priority": "Daniel 6 first",
+      "notes": "Prophetic narrative"
+    },
+    {
+      "id": "MP001",
+      "category": "mission_pastoral",
+      "query": "Great Commission Matthew 28",
+      "expected_books": ["MAT"],
+      "expected_documents": "Poreuthentes poiesate mathētās content",
+      "expected_ranking_priority": "Matthew 28:18-20 first",
+      "notes": "Missiological foundation"
+    },
+    {
+      "id": "MP002",
+      "category": "mission_pastoral",
+      "query": "servant leadership Mark 10",
+      "expected_books": ["MRK"],
+      "expected_documents": " diakonos servus content",
+      "expected_ranking_priority": "Mark 10:42-45 first",
+      "notes": "Pastoral leadership model"
+    },
+    {
+      "id": "MP003",
+      "category": "mission_pastoral",
+      "query": "good Samaritan parable lesson",
+      "expected_books": ["LKE"],
+      "expected_documents": "Samarias parabolē content",
+      "expected_ranking_priority": "Luke 10:25-37 first",
+      "notes": "Jesus parable ethical teaching"
+    },
+    {
+      "id": "MP004",
+      "category": "mission_pastoral",
+      "query": "pastoral care elders",
+      "expected_books": ["1TI", "2TI", "TIT", "1PE"],
+      "expected_documents": "Presbyteros poimēn pastoral content",
+      "expected_ranking_priority": "1 Timothy and Titus first Peter second",
+      "notes": "Ecclesiastical leadership"
+    },
+    {
+      "id": "MP005",
+      "category": "mission_pastoral",
+      "query": "fruit of the Spirit",
+      "expected_books": ["GAL", "EPH", "ROM"],
+      "expected_documents": "Karpos pneumatos content",
+      "expected_ranking_priority": "Galatians 5:22-23 first",
+      "notes": "Spiritual character formation"
+    },
+    {
+      "id": "MP006",
+      "category": "mission_pastoral",
+      "query": "armor of God",
+      "expected_books": ["EPH"],
+      "expected_documents": "Panoplia stratiōtēs content",
+      "expected_ranking_priority": "Ephesians 6:10-18 first",
+      "notes": "Spiritual warfare"
+    },
+    {
+      "id": "MP007",
+      "category": "mission_pastoral",
+      "query": "worship in spirit and truth",
+      "expected_books": ["JN", "ROM", "PHP"],
+      "expected_documents": "Proskuneō pneuma altheia content",
+      "expected_ranking_priority": "John 4:23-24 first",
+      "notes": "Worship theology"
+    },
+    {
+      "id": "MP008",
+      "category": "mission_pastoral",
+      "query": "unity of the body",
+      "expected_books": ["1CO", "EPH", "ROM"],
+      "expected_documents": "Sōma Christou henōsis content",
+      "expected_ranking_priority": "1 Corinthians 12 and Ephesians 4 first",
+      "notes": "Ecclesiology theme"
+    },
+    {
+      "id": "KO001",
+      "category": "korean",
+      "query": "로마서 8장 28절",
+      "expected_books": ["ROM"],
+      "expected_documents": "Romans 8:28 Korean translation content",
+      "expected_ranking_priority": "Book detection ROM chapter 8 first",
+      "notes": "Korean book name + chapter reference"
+    },
+    {
+      "id": "KO002",
+      "category": "korean",
+      "query": "마태복음 5장 설교",
+      "expected_books": ["MAT"],
+      "expected_documents": "Sermon on the Mount Korean content",
+      "expected_ranking_priority": "Book detection MAT chapter 5 first",
+      "notes": "Korean book name + chapter keyword"
+    },
+    {
+      "id": "KO003",
+      "category": "korean",
+      "query": "은혜 은혜 은혜",
+      "expected_books": [],
+      "expected_documents": "Grace theme Korean content",
+      "expected_ranking_priority": "Theme query no book filter",
+      "notes": "Korean thematic word repetition"
+    },
+    {
+      "id": "KO004",
+      "category": "korean",
+      "query": "베드로전서 5장 7절",
+      "expected_books": ["1PE"],
+      "expected_documents": "1 Peter 5:7 Korean content anxiety casting",
+      "expected_ranking_priority": "Book detection 1PE chapter 5 first",
+      "notes": "Korean book name numbered + verse"
+    },
+    {
+      "id": "KO005",
+      "category": "korean",
+      "query": "믿음 faith",
+      "expected_books": [],
+      "expected_documents": "Pistis faith theme bilingual content",
+      "expected_ranking_priority": "Theme query no book filter",
+      "notes": "Bilingual Korean-English theme"
+    },
+    {
+      "id": "KO006",
+      "category": "korean",
+      "query": "예수 그리스도 사랑",
+      "expected_books": [],
+      "expected_documents": "Jesus Christ love theme Korean content",
+      "expected_ranking_priority": "Thematic relevance John epistles first",
+      "notes": "Korean proper names"
+    },
+    {
+      "id": "KO007",
+      "category": "korean",
+      "query": "성령님의 역사",
+      "expected_books": [],
+      "expected_documents": "Holy Spirit work Pneuma content",
+      "expected_ranking_priority": "Theme Johannine and Pauline first",
+      "notes": "Korean theological term"
+    },
+    {
+      "id": "KO008",
+      "category": "korean",
+      "query": "계시록 21장 새 하늘 새 땅",
+      "expected_books": ["REV"],
+      "expected_documents": "Revelation 21 Korean New heaven content",
+      "expected_ranking_priority": "Book detection REV chapter 21 first",
+      "notes": "Korean prophetic book + chapter"
+    },
+    {
+      "id": "NG001",
+      "category": "negative",
+      "query": "zzqqxx999",
+      "expected_books": [],
+      "expected_documents": "No matches expected",
+      "expected_ranking_priority": "Confidence 0.0 no results or irrelevant only",
+      "notes": "Random alphanumeric - should produce zero confidence"
+    },
+    {
+      "id": "NG002",
+      "category": "negative",
+      "query": "random theological sentence",
+      "expected_books": [],
+      "expected_documents": "No meaningful matches expected",
+      "expected_ranking_priority": "Confidence low no book filter",
+      "notes": "English words but non-biblical"
+    },
+    {
+      "id": "NG003",
+      "category": "negative",
+      "query": "Power and Fury",
+      "expected_books": [],
+      "expected_documents": "No biblical matches expected unrelated book title",
+      "expected_ranking_priority": "Confidence 0.0 no book filter",
+      "notes": "Unrelated proper noun"
+    },
+    {
+      "id": "NG004",
+      "category": "negative",
+      "query": "qwerty123456",
+      "expected_books": [],
+      "expected_documents": "No matches expected keyboard pattern",
+      "expected_ranking_priority": "Confidence 0.0 no results",
+      "notes": "Keyboard walk pattern"
+    },
+    {
+      "id": "NG005",
+      "category": "negative",
+      "query": "asdf medieval armor",
+      "expected_books": [],
+      "expected_documents": "No biblical matches expected unrelated historical topic",
+      "expected_ranking_priority": "Low confidence no book filter",
+      "notes": "Unrelated historical query"
+    },
+    {
+      "id": "NG006",
+      "category": "negative",
+      "query": "xxx",
+      "expected_books": [],
+      "expected_documents": "No matches expected",
+      "expected_ranking_priority": "Confidence 0.0",
+      "notes": "Single repeated character"
+    },
+    {
+      "id": "NG007",
+      "category": "negative",
+      "query": "bitcoin cryptocurrency blockchain",
+      "expected_books": [],
+      "expected_documents": "No biblical matches expected modern finance topic",
+      "expected_ranking_priority": "Low confidence no book filter",
+      "notes": "Modern technology unrelated"
+    },
+    {
+      "id": "NG008",
+      "category": "negative",
+      "query": "量子 물리학 양자역학",
+      "expected_books": [],
+      "expected_documents": "No biblical matches expected physics topic mixed language",
+      "expected_ranking_priority": "Low confidence no book filter",
+      "notes": "Mixed English-Korean-Chinese scientific query"
+    },
+    {
+      "id": "NG009",
+      "category": "negative",
+      "query": "",
+      "expected_books": [],
+      "expected_documents": "Empty input no results expected",
+      "expected_ranking_priority": "Confidence 0.0 handled by short query protection",
+      "notes": "Empty string edge case"
+    },
+    {
+      "id": "NG010",
+      "category": "negative",
+      "query": "a b c d e f g h i j k l m n o p q r s t u v w x y z",
+      "expected_books": [],
+      "expected_documents": "Single letters should not trigger meaningful retrieval",
+      "expected_ranking_priority": "Low confidence short word protection",
+      "notes": "Alphabet single characters"
+    },
+    {
+      "id": "AM001",
+      "category": "ambiguous",
+      "query": "what does the bible say about light",
+      "expected_books": ["JN", "GEN", "PSA", "2CO"],
+      "expected_documents": "Phōs light darkness dual theme content",
+      "expected_ranking_priority": "John 1 and 2 Corinthians 4 first (spiritual light) Psalm 119 second (physical light)",
+      "notes": "Ambiguous physical vs spiritual"
+    },
+    {
+      "id": "AM002",
+      "category": "ambiguous",
+      "query": "spirit meaning",
+      "expected_books": ["JN", "ROM", "GAL"],
+      "expected_documents": "Pneuma spirit versus flesh content",
+      "expected_ranking_priority": "Romans 8 first (pneuma hagion) John second",
+      "notes": "Ambiguous pneuma spiritual vs breath"
+    },
+    {
+      "id": "AM003",
+      "category": "ambiguous",
+      "query": "truth what is",
+      "expected_books": ["JN", "JN"],
+      "expected_documents": "Altheia truth Johannine content",
+      "expected_ranking_priority": "John 14-17 first (Jesus as truth)",
+      "notes": "Philosophical theological ambiguity"
+    },
+    {
+      "id": "AM004",
+      "category": "ambiguous",
+      "query": "faith and works",
+      "expected_books": ["JAS", "ROM", "GAL"],
+      "expected_documents": "Pistis erga justification content",
+      "expected_ranking_priority": "James 2 first Romans 3 second",
+      "notes": "Protestant Reformation theme"
+    },
+    {
+      "id": "AM005",
+      "category": "ambiguous",
+      "query": "power of God",
+      "expected_books": ["ROM", "1CO", "EPH", "2CO"],
+      "expected_documents": "Dynamis ischy kratos divine power content",
+      "expected_ranking_priority": "Romans 1 and Ephesians 1 first (divine power)",
+      "notes": "Ambiguous physical vs divine"
+    },
+    {
+      "id": "AM006",
+      "category": "ambiguous",
+      "query": "shepherd",
+      "expected_books": ["PSA", "JN", "1PE"],
+      "expected_documents": "Poimēn shepherd metaphor content",
+      "expected_ranking_priority": "Psalm 23 and John 10 first",
+      "notes": "Metaphorical pastoral"
+    },
+    {
+      "id": "AM007",
+      "category": "ambiguous",
+      "query": "kingdom",
+      "expected_books": ["MAT", "MRK", "LKE", "REV"],
+      "expected_documents": "Basileia kingdom God earth content",
+      "expected_ranking_priority": "Synoptic gospels first Revelation second",
+      "notes": "Political vs spiritual"
+    },
+    {
+      "id": "AM008",
+      "category": "ambiguous",
+      "query": "water life",
+      "expected_books": ["JN", "EXO", "PSA"],
+      "expected_documents": "Hyōr zōē water living content",
+      "expected_ranking_priority": "John 4 (living water) first John 7 second",
+      "notes": "Literal vs sacramental"
+    },
+    {
+      "id": "AM009",
+      "category": "ambiguous",
+      "query": "hand of God",
+      "expected_books": ["EXO", "ISA", "ACT"],
+      "expected_documents": "Cheir hand divine action content",
+      "expected_ranking_priority": "Exodus and Acts first",
+      "notes": "Metaphorical anatomical"
+    },
+    {
+      "id": "AM010",
+      "category": "ambiguous",
+      "query": "eye of God",
+      "expected_books": ["PSA", "PRO", "JER"],
+      "expected_documents": "Omma optalmos eye divine providence content",
+      "expected_ranking_priority": "Psalms and Proverbs first",
+      "notes": "Metaphorical vision"
+    },
+    {
+      "id": "AM011",
+      "category": "ambiguous",
+      "query": "mouth of the Lord",
+      "expected_books": ["ISA", "HEZ", "ACT"],
+      "expected_documents": "Stoma mouth prophetic content",
+      "expected_ranking_priority": "Isaiah and Ezekiel first Acts second",
+      "notes": "Prophetic idiom"
+    },
+    {
+      "id": "AM012",
+      "category": "ambiguous",
+      "query": "right hand left hand",
+      "expected_books": ["PSA", "MAT", "EPH"],
+      "expected_documents": "Dexios cheir right hand position content",
+      "expected_ranking_priority": "Psalm 110 and Matthew 25 first",
+      "notes": "Positional metaphor"
+    },
+    {
+      "id": "AM013",
+      "category": "ambiguous",
+      "query": "heart of man",
+      "expected_books": ["GEN", "JER", "ROM"],
+      "expected_documents": "Kardia heart human nature content",
+      "expected_ranking_priority": "Jeremiah 17:9 first Genesis second",
+      "notes": "Anatomical theological"
+    },
+    {
+      "id": "AM014",
+      "category": "ambiguous",
+      "query": "voice of God",
+      "expected_books": ["GEN", "EXO", "JN", "REV"],
+      "expected_documents": "Phōnē voice divine communication content",
+      "expected_ranking_priority": "Genesis 3 and John 10 first Exodus second",
+      "notes": "Auditory metaphorical"
+    }
+  ]
+}

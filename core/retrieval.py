@@ -232,24 +232,24 @@ BOOK_ID_TO_NAMES: dict[str, list[str]] = {
     "ZCH": ["zechariah", "zch", "스브리아", "스바"],
     "MAL": ["malachi", "mal", "말라기", "말라"],
     # New Testament — Gospels
-    "MAT": ["matthew", "mat", "마태복음", "마태", "마타", "마"],
-    "MRK": ["mark", "mrk", "mar", "마르코복음", "마르코", "막", "막달"],
-    "LUK": ["luke", "luk", "루카복음", "루카", "눋", "누가"],
-    "JHN": ["john", "jhn", "요한복음", "요한", "요한", "요복", "요"],
+    "MAT": ["matthew", "matt", "mt", "mat", "마태복음", "마태", "마타", "마"],
+    "MRK": ["mark", "mk", "mrk", "mar", "마르코복음", "마르코", "막", "막달"],
+    "LUK": ["luke", "lk", "luk", "루카복음", "루카", "눋", "누가"],
+    "JHN": ["john", "jn", "jhn", "요한복음", "요한", "요한", "요복", "요"],
     # New Testament — History
     "ACT": ["acts", "act", "사도행전", "사도", "사행"],
     # New Testament — Pauline Epistles
-    "ROM": ["romans", "rom", "로마서", "로마", "롬"],
+    "ROM": ["romans", "rom", "ro", "로마서", "로마", "롬"],
     "1CO": ["1 corinthians", "1 cor", "1 co", "1co", "고린도전서", "고린도전", "고전"],
     "2CO": ["2 corinthians", "2 cor", "2 co", "2co", "고린도후서", "고린도후", "고후"],
     "GAL": ["galatians", "gal", "갈라티아", "갈", "갈서"],
     "EPH": ["ephesians", "eph", "에베소서", "에베", "엡"],
-    "PHP": ["philippians", "php", "phl", "빌립보서", "빌립", "빌립보", "빌"],
+    "PHP": ["philippians", "phil", "php", "phl", "빌립보서", "빌립", "빌립보", "빌"],
     "COL": ["colossians", "col", "골로새서", "골라", "골"],
-    "1TH": ["1 thessalonians", "1 th", "1the", "1th", "살례전서", "살례전", "살전"],
-    "2TH": ["2 thessalonians", "2 th", "2the", "2th", "살례후서", "살례후", "살후"],
-    "1TI": ["1 timothy", "1 ti", "1ti", "디모데전서", "디모데전", "전"],
-    "2TI": ["2 timothy", "2 ti", "2ti", "디모데후서", "디모데후", "후"],
+    "1TH": ["1 thessalonians", "1 thess", "1 th", "1the", "1th", "살례전서", "살례전", "살전"],
+    "2TH": ["2 thessalonians", "2 thess", "2 th", "2the", "2th", "살례후서", "살례후", "살후"],
+    "1TI": ["1 timothy", "1 tim", "1 ti", "1ti", "디모데전서", "디모데전", "전"],
+    "2TI": ["2 timothy", "2 tim", "2 ti", "2ti", "디모데후서", "디모데후", "후"],
     "TIT": ["titus", "tit", "디도서", "디도"],
     "PHM": ["philemon", "phm", "빌레몬서", "빌레몬"],
     # New Testament — General Epistles
@@ -1051,6 +1051,12 @@ class RetrievalEngine:
         # Top-K by BM25 for next stages
         bm25_top_k_indices = sorted(bm25_scores.items(), key=lambda x: x[1], reverse=True)[:self.candidate_k]
 
+        # P0 FIX: If BM25 produced no hits within the metadata-filtered pool,
+        # fall back to ALL metadata-filtered candidates. This prevents pipeline
+        # collapse when Korean TSU content lacks English book-name keywords.
+        if not bm25_top_k_indices:
+            bm25_top_k_indices = [(idx, 0.0) for idx in candidate_pool]
+
         # --- STEP 3: Vector search ---
         t0 = time.perf_counter()
         vector_similarities: dict[int, float] = {}
@@ -1067,34 +1073,62 @@ class RetrievalEngine:
 
         # --- STEP 4: Theological scoring ---
         t0 = time.perf_counter()
+        
+        # P0 FIX: Score ALL ranking candidates, not just vector_similarities.
+        # When BM25 produces no hits (Korean content), fallback pool needs
+        # full theological coverage to prevent empty scores.
+        score_targets = set(vector_similarities.keys()) if vector_similarities else candidate_pool
+        score_targets = set(score_targets)  # deduplicate
+        
         theological_scores: dict[int, float] = {}
         theological_breakdowns: dict[int, dict[str, Any]] = {}
-        for idx, _ in vector_similarities.items():
+        for idx in score_targets:
             tsu = self.tsus[idx]
             score, breakdown = compute_theological_score(
                 parsed_query.original_query, tsu
             )
             theological_scores[idx] = score
             theological_breakdowns[idx] = breakdown
+        
+        # Ensure all ranking_indices have theological scores (may be missing if 
+        # fallback pool differs from score_targets)
+        for idx in set(candidate_pool):
+            if idx not in theological_scores:
+                tsu = self.tsus[idx]
+                score, breakdown = compute_theological_score(
+                    parsed_query.original_query, tsu
+                )
+                theological_scores[idx] = score
+                theological_breakdowns[idx] = breakdown
+        
         metrics.theological_scoring_ms = (time.perf_counter() - t0) * 1000
 
         # --- STEP 5: Hybrid ranking ---
         t0 = time.perf_counter()
-        candidates: list[RankedCandidate] = []
-        max_bm25 = max(bm25_scores.values()) if bm25_scores else 1.0
-        max_vector = max(vector_similarities.values()) if vector_similarities else 1.0
-        max_theo = max(theological_scores.values()) if theological_scores else 1.0
+        
+        # P0 FIX: Build the candidate index set from the actual pool used,
+        # not just bm25_scores. This prevents zero-candidate output when
+        # BM25 produces no hits (e.g., Korean TSU content with English query).
+        ranking_indices = set(bm25_scores.keys()) if bm25_scores else candidate_pool
+        ranking_indices = set(ranking_indices)  # deduplicate
+        
+        max_bm25 = max(bm25_scores.values()) if bm25_scores else 0.0
+        max_vector = max(vector_similarities.values()) if vector_similarities else 0.0
+        max_theo = max(theological_scores.values()) if theological_scores else 0.0
 
-        # Normalize to [0, 1]
-        for idx, bm25_val in bm25_scores.items():
-            norm_bm25 = bm25_val / max_bm25 if max_bm25 > 0 else 0
-            norm_vector = vector_similarities.get(idx, 0.0) / max_vector if max_vector > 0 else 0
+        candidates: list[RankedCandidate] = []
+        
+        # Normalize to [0, 1] (use min-max normalization; handle zero-max case)
+        for idx in ranking_indices:
+            tsu = self.tsus[idx]
+            
+            norm_bm25 = bm25_scores.get(idx, 0.0) / max_bm25 if max_bm25 > 0 else 0.5
+            norm_vector = vector_similarities.get(idx, 0.0) / max_vector if max_vector > 0 else 0.0
             norm_theo = theological_scores.get(idx, 0.0)
 
             # Hybrid score: 0.30 * BM25 + 0.25 * vector + 0.45 * theological
             final_score = (0.30 * norm_bm25 + 0.25 * norm_vector + 0.45 * norm_theo)
 
-            tsu = self.tsus[idx]
             breakdown = theological_breakdowns.get(idx, {})
 
             explanation = (

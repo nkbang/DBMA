@@ -46,6 +46,7 @@ from core.identity_registry import (
     classify_ingest_decision,
     update_content_hash,
     transition_ingest_status,
+    update_pipeline_flags,
 )
 
 logger = logging.getLogger(__name__)
@@ -347,12 +348,25 @@ def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap
     return txt_path, meta_path
 
 
-def move_source_file(src_path, output_dir):
+def copy_source_file(src_path, output_dir):
+    """[SAFETY] Copy source file to output dir — NEVER move/delete originals.
+
+    Sprint 2 policy: Original research documents must NEVER be moved or deleted.
+    Processing copies files; RAW originals remain untouched.
+    Metadata relationship is tracked in identity registry via source_file field.
+
+    Args:
+        src_path: Path to the original source file
+        output_dir: Output directory where copy will be placed
+
+    Returns:
+        str: Path to the copied file in output_dir (always returns new path)
+    """
     dst = os.path.join(output_dir, os.path.basename(src_path))
-    if os.path.abspath(src_path) != os.path.abspath(dst) and not os.path.exists(dst):
-        shutil.move(src_path, dst)
-        return dst
-    return src_path
+    if os.path.abspath(src_path) != os.path.abspath(dst):
+        # Use copy2 to preserve metadata (timestamps, etc.)
+        shutil.copy2(src_path, dst)
+    return dst
 
 
 # ── [NEW #2] 배치 상태 관리 ─────────────────────────────
@@ -464,6 +478,26 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         if decision == "SKIP":
             _prev_src = existing_record.get("source_file", "") if existing_record else ""
             emit("skip", f"UNCHANGED: {_prev_src or source_name}", 1.0, level="ok")
+            # [FIX] Ensure markdown output exists for SKIP documents — save if not already present
+            md_output_dir = Path(output_dir)
+            md_output_dir.mkdir(parents=True, exist_ok=True)
+            _md_path = md_output_dir / f"{stem}.md"
+            _prev_hash = existing_record.get("content_hash", "") if existing_record else ""
+            if not _md_path.exists() or file_hash != _prev_hash:
+                _fm = [
+                    "---",
+                    f"source: {source_name}",
+                    f"source_type: {ext}",
+                    f"language: {language}",
+                    f"created_at: {datetime.datetime.now().isoformat()}",
+                    f"noise_score: {noise['score']}",
+                    f"noise_mode: {noise.get('mode', '-')}",
+                    "---",
+                    "",
+                    final_text,
+                ]
+                _md_path.write_text("\n".join(_fm), encoding="utf-8")
+            artifacts = {**artifacts, "md_path": str(_md_path)}
             return {"success": True, "skipped": True, "ingest_decision": "SKIP", "logs": logs, "metrics": metrics, "artifacts": artifacts}
 
         if decision == "RETRY":
@@ -542,11 +576,11 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         opt_md_path = None
         emit("save_opt_md", f"[SPRINT1-DEPRECATED] 최적화 MD 저장 건너뜀 (canonical: {stem}.md)", 0.9)
 
-        # ── [7] 원본 파일 이동 + 배치 상태 기록 ────────────
-        emit("move", f"원본 파일 이동 시작: {source_name}", 0.97)
-        moved_to = move_source_file(src_path, output_dir)
+        # ── [7] 원본 파일 복사 + 배치 상태 기록 (Sprint 2 policy: NEVER move/delete originals) ────
+        emit("copy", f"원본 파일 복사 시작: {source_name}", 0.97)
+        copied_to = copy_source_file(src_path, output_dir)
         mark_processed(output_dir, source_name)
-        emit("move_done", f"원본 파일 이동 완료: {moved_to}", 0.99)
+        emit("copy_done", f"원본 파일 복사 완료: {copied_to} (원본은 RAW에 유지)", 0.99)
 
         # ── [PT-PROCESSING-008] Complete Document Metadata (Point C) ──
         document_meta = build_document_metadata(
@@ -558,10 +592,24 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
         # ── [PT-PROCESSING-012] Update content hash on success ──────
         _hash_updated = update_content_hash(_registry, document_id, file_hash)
-        
+
         # ── [PT-PROCESSING-010-C/012] Persist identity registry ────
         record, is_new = register_document(_registry, document_meta, output_dir)
         persisted_ok = save_identity_registry(_registry, registry_path)
+
+        # ── [SPRINT2] Set pipeline completion flags on successful persist ──
+        _pipeline_flags_set = False
+        if persisted_ok and record:
+            updated = update_pipeline_flags(
+                _registry, document_id,
+                {"ingested": True, "copied": True, "extracted": True,
+                 "cleaned": True, "chunked": True, "output_generated": True,
+                 "verified": True},
+            )
+            if updated:
+                save_identity_registry(_registry, registry_path)
+                _pipeline_flags_set = True
+
         if persisted_ok:
             emit("identity_persist", f"Identity registered: {document_id[:16]}..." if is_new else "Identity synced to registry", 0.98)
 
@@ -577,7 +625,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             "metadata": document_meta,  # Per METADATA_CONTRACT_v1
         }
         artifacts = {
-            "source_path": src_path, "moved_path": moved_to, "md_path": md_path,
+            "source_path": src_path, "copied_path": copied_to, "md_path": md_path,
             "opt_md_path": str(opt_md_path) if opt_md_path else None,
             # [SPRINT1-DEPRECATED] These paths are None when SPRINT1_ONLY_MD_OUTPUT=True
             "chunks_txt_path": txt_path,      # DEPRECATED: None in Sprint 1

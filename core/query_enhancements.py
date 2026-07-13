@@ -220,7 +220,57 @@ _KOREAN_NUMBERED_ALIASES: dict[str, list[str]] = {
 }
 
 # PT-RESEARCH-006.2 Loop 3: Additional Korean full-book aliases for reference parsing
+# NOTE: Must include all Korean book names NOT in KO_ABBR_TO_BOOK (e.g., 창세기, 출애굽기, etc.)
 _KOREAN_FULL_NAMES: dict[str, str] = {
+    # Old Testament - Pentateuch
+    "창세기": "GEN",
+    "출애굽기": "EXO",
+    "레위기": "LEV",
+    "민수기": "NUM",
+    "신명기": "DEU",
+    # Historical books
+    "여호수아": "JOS",
+    "사사기": "JDG",
+    "룻": "RUT",
+    "사무엘상": "1SA",
+    "사무엘하": "2SA",
+    "열왕기상": "1KI",
+    "열왕기하": "2KI",
+    "역대상": "1CH",
+    "역대하": "2CH",
+    "에스라": "EZR",
+    "느헤미야": "NEH",
+    "에스더": "EST",
+    # Wisdom/Poetry
+    "욥": "JOB",
+    "시편": "PSA",
+    "잠언": "PRO",
+    "전도서": "ECC",
+    "아가": "SOT",
+    # Prophets - Major
+    "이사야": "ISA",
+    "예레미야": "JER",
+    "예레미애": "LAM",
+    "에스겔": "EZE",
+    "다니엘": "DAN",
+    # Prophets - Minor
+    "호세아": "HOS",
+    "요엘": "JOEL",
+    "아모스": "AMOS",
+    "오바댜": "OBA",
+    "요나": "JON",
+    "미가": "MIC",
+    "나훔": "NAM",
+    "학개": "HAG",
+    "스게론": "ZEC",
+    "말라기": "MAL",
+    # New Testament - Gospels
+    "마태복음": "MAT",
+    "마가복음": "MRK",
+    "누가복음": "LUK",
+    "요한복음": "JHN",
+    # Acts & Epistles
+    "사도행전": "ACT",
     "로마서": "ROM",
     "고린도전서": "1CO",
     "고린도후서": "2CO",
@@ -242,13 +292,9 @@ _KOREAN_FULL_NAMES: dict[str, str] = {
     "요한이서": "2JN",
     "요한삼서": "3JN",
     "유다서": "JUD",
-    "마태복음": "MAT",
-    "마가복음": "MRK",
-    "누가복음": "LUK",
-    "요한복음": "JHN",
-    # Additional Korean book names (numbered)
-    "역대하": "2CH",  # 2 Chronicles (not in base alias but needed)
-    "역대상": "1CH",
+    # Revelation
+    "요한계시록": "REV",
+    "묵시록": "REV",
 }
 
 
@@ -328,39 +374,35 @@ class EnhancedBookDetector:
         # Step 2: Try Korean specific aliases
         has_korean = any('\uAC00' <= c <= '\uDBFF' for c in query)
         
-        if has_korean:
-            # Check Korean numbered aliases explicitly
-            for book_id, aliases in _KOREAN_NUMBERED_ALIASES.items():
-                for alias in aliases:
-                    if alias.lower() in cleaned_query:
-                        if book_id not in seen:
-                            seen.add(book_id)
-                            result.append(book_id)
+        # Step 3: Check Korean full-book names (covers "역대하", "창세기", "마태복음", etc.)
+        for ko_full, book_id in _KOREAN_FULL_NAMES.items():
+            if ko_full.lower() in cleaned_query and book_id not in seen:
+                seen.add(book_id)
+                result.append(book_id)
 
-            # PT-RESEARCH-006.2 Loop 3 Fix: Also check _KOREAN_FULL_NAMES for Korean full names
-            # This covers "역대하", "마태복음", etc. which are in KO_ABBR_TO_BOOK but not _KOREAN_NUMBERED_ALIASES
-            for ko_full, book_id in _KOREAN_FULL_NAMES.items():
-                if ko_full.lower() in cleaned_query:
-                    if book_id not in seen:
-                        seen.add(book_id)
-                        result.append(book_id)
-
-        # Step 3: Fall back to extended alias lookup (covers "first peter", etc.)
-        # PT-RESEARCH-006.2 Loop 3 Fix: Increased minimum length from 4 to 5 for Korean aliases
-        # to prevent false positives from short aliases like "전서" or "후서"
-        for alias, book_id in self._alias_lookup.items():
-            min_len = 5 if any('\uAC00' <= c <= '\uDBFF' for c in alias) else 4
-            if len(alias) >= min_len and alias in cleaned_query:
-                if book_id not in seen:
+        # Step 4: Check NAME_TO_BOOK_ID directly for Korean entries (e.g., "창세기" -> GEN)
+        # This catches Korean names that exist only in the base dict, not in _KOREAN_FULL_NAMES
+        for name, book_id in NAME_TO_BOOK_ID.items():
+            if any('\uAC00' <= c <= '\uDBFF' for c in name):
+                if name.lower() in cleaned_query and book_id not in seen:
                     seen.add(book_id)
                     result.append(book_id)
 
-        # Step 4: Also check base NAME_TO_BOOK_ID aliases (from retrieval.py)
-        # PT-RESEARCH-006.2 Loop 3 Fix: Increased minimum length to 5 for Korean aliases
-        # to prevent false positives from single/double characters like "나", "전", "서"
-        for alias, book_id in NAME_TO_BOOK_ID.items():
-            min_len = 5 if any('\uAC00' <= c <= '\uDBFF' for c in alias) else 3
-            if len(alias) >= min_len and alias in cleaned_query:
+        # Step 5: Check _alias_lookup for Korean aliases (e.g., "베드로" -> 1PE)
+        # min_len=6 filter prevents short Korean substrings from matching inside longer Korean words
+        for alias, book_id in self._alias_lookup.items():
+            has_korean_alias = any('\uAC00' <= c <= '\uDBFF' for c in alias)
+            
+            if has_korean:
+                # min_len=6 prevents 3-4 char substrings from matching inside Korean words
+                if len(alias) < 6:
+                    continue
+            else:
+                # Pure English query: standard min_len=3
+                if not has_korean and len(alias) < 3:
+                    continue
+            
+            if alias in cleaned_query:
                 if book_id not in seen:
                     seen.add(book_id)
                     result.append(book_id)
