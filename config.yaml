@@ -47,7 +47,8 @@ vector_db:
       chunks: "dbma_chunks"
 
 # ── Embedding Model ────────────────────────────────────
-# LangChain 기반 임베딩 (legacy)
+# LangChain 기반 임베딩 — legacy/폴백 전용 (기본 백엔드 아님)
+# 기본 백엔드는 ollama.default_embed_model(BGE-M3, 다국어 강세) — core/embedder.py get_embedder() 참고
 embedding:
   model: "all-MiniLM-L6-v2"
   dimension: 384
