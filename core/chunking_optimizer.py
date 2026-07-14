@@ -59,6 +59,8 @@ SHORT_CHUNK_RATIO_LIMIT = 0.20
 _RE_MULTISPACE = re.compile(r"[ \t]+")
 _RE_BULLET_LINE = re.compile(r"^\s*(?:[-•*]|\d+[.)])\s+")
 _RE_WEAK_SENT_END = re.compile(r"[.!?。！？]|다\.|니다\.|요\.|이다\.|였다\.|합니다\.|입니다\.$")
+_RE_HEBREW_PUNCTUATION = re.compile(r"[\u0590-\u05FF]")
+_RE_GREEK_PUNCTUATION = re.compile(r"[\u0370-\u03FF]")
 
 
 @dataclass
@@ -134,7 +136,8 @@ class ChunkResult:
 
 
 def _separators() -> list[str]:
-    return ["\n\n", "\n", "다. ", "요. ", ". ", "! ", "? ", " ", ""]
+    # Add Hebrew Sof Pasuq and Greek punctuation to separators for better chunk splitting
+    return ["\n\n", "\n", "다. ", "요. ", ". ", "! ", "? ", ":", ";", "،", "؛", "۔", " ", ""]
 
 
 def _simple_noise(chunk: str) -> float:

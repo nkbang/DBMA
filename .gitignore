@@ -64,3 +64,19 @@ logs/*.jsonl
 
 # Local VS Code workspace files
 *.code-workspace
+
+# Runtime outputs
+output/
+output_sav/
+reports/
+
+# Backup snapshots
+*.bak_*
+
+# Runtime outputs
+output/
+output_sav/
+reports/
+
+# Backup snapshots
+*.bak_*

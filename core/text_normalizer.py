@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, Dict
 
 
 _RE_MULTISPACE = re.compile(r"[ \t]+")
@@ -13,6 +13,8 @@ _RE_KOREAN_CHARS = re.compile(r"[가-힣]")
 _RE_KOREAN_FUNCTION_END = re.compile(r"(?:다|니다|요|이다|했다|하였다|됩니다|입니다|같다|라고|하며|하면|하지만|그래서|그러나)$")
 _RE_HANGUL = re.compile(r"[가-힣]")
 _RE_LATIN = re.compile(r"[A-Za-z]")
+_RE_HEBREW = re.compile(r"[\u0590-\u05FF]")
+_RE_GREEK = re.compile(r"[\u0370-\u03FF]")
 _RE_BULLET_LINE = re.compile(r"^\s*(?:[-•*]|\d+[.)])\s+")
 _RE_KO_SENT_END = re.compile(r"(?:다|니다|요|이다|였다|합니다|입니다|했다|하였다|됩니다|같다|라고|하며|하면|하지만|그래서|그러나)$")
 _RE_EN_SENT_END = re.compile(r"[.!?]$")
@@ -30,6 +32,11 @@ class ParagraphLanguage:
     hangul_count: int
     latin_count: int
     text_length: int
+    script_ratios: Dict[str, float] = None
+    
+    def __post_init__(self):
+        if self.script_ratios is None:
+            object.__setattr__(self, 'script_ratios', {})
 
 
 def normalize_extracted_text(text: str) -> str:
@@ -142,6 +149,14 @@ def _count_latin(text: str) -> int:
     return len(_RE_LATIN.findall(text))
 
 
+def _count_hebrew(text: str) -> int:
+    return len(_RE_HEBREW.findall(text))
+
+
+def _count_greek(text: str) -> int:
+    return len(_RE_GREEK.findall(text))
+
+
 def _clean_line(line: str) -> str:
     return _RE_MULTISPACE.sub(" ", line.strip())
 
@@ -157,36 +172,60 @@ def detect_paragraph_language(
 
     hangul_count = _count_hangul(text)
     latin_count = _count_latin(text)
+    hebrew_count = _count_hebrew(text)
+    greek_count = _count_greek(text)
     text_length = len(text)
-    denom = max(hangul_count + latin_count, 1)
-    ko_ratio = hangul_count / denom
-    en_ratio = latin_count / denom
+    
+    # Calculate script ratios
+    total_script_chars = hangul_count + latin_count + hebrew_count + greek_count
+    denom = max(total_script_chars, 1)
+    
+    ko_ratio = hangul_count / denom if denom > 0 else 0.0
+    en_ratio = latin_count / denom if denom > 0 else 0.0
+    he_ratio = hebrew_count / denom if denom > 0 else 0.0
+    el_ratio = greek_count / denom if denom > 0 else 0.0
+    
+    # Build script ratios dict for backward compatibility
+    script_ratios = {
+        "hangul": ko_ratio,
+        "latin": en_ratio,
+        "hebrew": he_ratio,
+        "greek": el_ratio
+    }
 
     if text_length < min_significant_chars:
-        if hangul_count and not latin_count:
-            return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
-        if latin_count and not hangul_count:
-            return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+        if hangul_count and not latin_count and not hebrew_count and not greek_count:
+            return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
+        if latin_count and not hangul_count and not hebrew_count and not greek_count:
+            return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
         if hangul_count and latin_count:
-            return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
-        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length)
+            return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
+        if hebrew_count or greek_count:
+            # If we have Hebrew or Greek but no Korean/English, treat as mixed
+            return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
+        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length, script_ratios)
 
-    if hangul_count == 0 and latin_count == 0:
-        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length)
+    if total_script_chars == 0:
+        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length, script_ratios)
 
-    if hangul_count > 0 and latin_count == 0:
-        return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+    if hangul_count > 0 and latin_count == 0 and hebrew_count == 0 and greek_count == 0:
+        return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
 
-    if latin_count > 0 and hangul_count == 0:
-        return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+    if latin_count > 0 and hangul_count == 0 and hebrew_count == 0 and greek_count == 0:
+        return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
 
     if ko_ratio >= 1.0 - mixed_threshold:
-        return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+        return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
 
     if en_ratio >= 1.0 - mixed_threshold:
-        return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+        return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
 
-    return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+    # Handle Hebrew and Greek cases
+    if hebrew_count > 0 or greek_count > 0:
+        # If we have significant Hebrew or Greek content, treat as mixed
+        return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
+
+    return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length, script_ratios)
 
 
 def _looks_like_korean_sentence_end(line: str) -> bool:
