@@ -6,7 +6,7 @@ Prepares for capability-based feature control
 # ─── SPRINT 2 FEATURE FLAG ───────────────────────────────
 # Sprint 1 = False → PURE DATA LAYER ONLY (parse → clean → chunk → store .md)
 # Sprint 2+ = True  → Re-enable embedding, vector DB, LLM, RAG
-SPRINT2_FEATURES = False  # Set True to enable all features
+SPRINT2_FEATURES = True  # Set True to enable all features
 
 
 def feature_enabled(name: str) -> bool:

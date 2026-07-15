@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional
 # ─── SPRINT 2 FEATURE FLAG ───────────────────────────────
 # Sprint 1 = False → PURE DATA LAYER ONLY (parse → clean → chunk → store .md)
 # Sprint 2+ = True  → Re-enable embedding, vector DB, LLM, RAG
-SPRINT2_FEATURES = False  # Set True to enable all features
+SPRINT2_FEATURES = True  # Set True to enable all features
 
 # ─── FEATURE FLAG HELPER ───────────────────────────────
 # Introducing capability-based feature flag system
@@ -1054,29 +1054,33 @@ def main():
         st.header("Settings")
         use_ocr = st.checkbox("Use OCR", value=False)
 
-    # [SPRINT1] Embedding/LLM model options — Sprint 1 shows placeholder
-    if feature_enabled("embedding"):
-        dynamic_models = list_ollama_models()
-        embed_choices = dynamic_models or EMBED_MODEL_OPTIONS
-        gen_choices = dynamic_models or GEN_MODEL_OPTIONS
-        if st.session_state["embed_model"] not in embed_choices:
-            st.session_state["embed_model"] = embed_choices[0]
-        if st.session_state["gen_model"] not in gen_choices:
-            st.session_state["gen_model"] = gen_choices[0]
-        st.session_state["embed_model"] = st.selectbox("Embedding model", embed_choices, index=embed_choices.index(st.session_state["embed_model"]))
-        st.session_state["gen_model"] = st.selectbox("LLM model", gen_choices, index=gen_choices.index(st.session_state["gen_model"]))
-    else:
-        st.info("[Sprint 1] Embedding/LLM settings disabled — will be enabled in Sprint 2")
-        st.session_state["embed_model"] = "n/a"
-        st.session_state["gen_model"] = "n/a"
+        # [SPRINT1] Embedding/LLM model options — Sprint 1 shows placeholder
+        if feature_enabled("embedding"):
+            dynamic_models = list_ollama_models()
+            embed_choices = dynamic_models or EMBED_MODEL_OPTIONS
+            gen_choices = dynamic_models or GEN_MODEL_OPTIONS
+            if st.session_state["embed_model"] not in embed_choices:
+                st.session_state["embed_model"] = embed_choices[0]
+            if st.session_state["gen_model"] not in gen_choices:
+                st.session_state["gen_model"] = gen_choices[0]
+            st.session_state["embed_model"] = st.selectbox("Embedding model", embed_choices, index=embed_choices.index(st.session_state["embed_model"]))
+            st.session_state["gen_model"] = st.selectbox("LLM model", gen_choices, index=gen_choices.index(st.session_state["gen_model"]))
+        else:
+            st.info("[Sprint 1] Embedding/LLM settings disabled — will be enabled in Sprint 2")
+            st.session_state["embed_model"] = "n/a"
+            st.session_state["gen_model"] = "n/a"
 
+        # Chunk size/overlap apply in both Sprint 1 and Sprint 2 — no longer
+        # nested under the embedding-disabled branch, where they previously
+        # failed to render at all once SPRINT2_FEATURES was True.
         st.session_state["chunk_size"] = st.number_input("Chunk Size", value=int(st.session_state["chunk_size"]), min_value=100, step=100)
         st.session_state["chunk_overlap"] = st.number_input("Chunk Overlap", value=int(st.session_state["chunk_overlap"]), min_value=0, step=10)
 
         if feature_enabled("rag"):
             st.session_state["top_k"] = st.slider("Top K", min_value=1, max_value=10, value=int(st.session_state["top_k"]))
             st.session_state["temperature"] = st.slider("Temperature", min_value=0.0, max_value=1.5, value=float(st.session_state["temperature"]), step=0.05)
-            st.caption(f"Collection: {COLLECTION_NAME}")
+            if feature_enabled("vector_db"):
+                st.caption(f"Collection: {COLLECTION_NAME}")
 
         if st.button("Cache Clear"):
             cleanup_cache()
