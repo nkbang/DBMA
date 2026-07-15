@@ -126,14 +126,33 @@ def detect_short_line_ratio(text: str) -> float:
 
 
 def detect_broken_line_ratio(text: str) -> float:
-    lines = [ln.rstrip() for ln in text.splitlines() if ln.strip()]
-    if len(lines) < 2:
+    """Fraction of sentences that don't end in terminal punctuation.
+
+    PDF text extraction wraps lines at the page width, so most raw physical
+    lines legitimately end mid-sentence — that is not corruption. This
+    reuses core.text_normalizer.split_sentences_mixed(), which already
+    merges wrapped lines into sentences (only splitting on an actual
+    Korean/English sentence-ending or a bullet), so the ratio reflects real
+    truncated/garbled content rather than ordinary PDF line-wrapping.
+    """
+    if not text or not text.strip():
         return 0.0
+
+    from core.text_normalizer import split_sentences_mixed, _looks_like_korean_sentence_end, _looks_like_english_sentence_end
+
+    sentences = split_sentences_mixed(text)
+    if len(sentences) < 2:
+        return 0.0
+
     broken = 0
-    for ln in lines[:-1]:
-        if re.search(r"[A-Za-z가-힣0-9]$", ln) and not re.search(r"[.!?)]$", ln):
+    for s in sentences[:-1]:  # last sentence may legitimately be cut off at document end
+        if re.search(r"[A-Za-z가-힣0-9]$", s) and not (
+            re.search(r"[.!?)]$", s)
+            or _looks_like_korean_sentence_end(s)
+            or _looks_like_english_sentence_end(s)
+        ):
             broken += 1
-    return broken / len(lines)
+    return broken / len(sentences)
 
 
 def detect_repeated_punct_ratio(text: str) -> float:
