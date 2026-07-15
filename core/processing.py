@@ -419,6 +419,8 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
     stem = make_safe_stem(source_name)
 
     try:
+        # [SPRINT15-DEBUG] ENTER process_one_file — 첫 진입 지점
+        logger.info("[SPRINT15-DEBUG] ENTER process_one_file START | file=%s path=%s", source_name, src_path)
         emit("start", f"process_one_file 시작: {source_name}", 0.0, level="ok")
 
         use_ocr = bool(file_info.get("use_ocr", False))
@@ -426,13 +428,26 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # ── [1] 텍스트 추출 (리트라이) ──────────────────────
         emit("extract", f"텍스트 추출 시작: {source_name}", 0.1)
 
+        # [SPRINT15-DEBUG] extract_text_from_file 호출 전
+        logger.info("[SPRINT15-DEBUG] BEFORE extract_text_from_file | file=%s", source_name)
+
         def _extract():
             return extract_text_from_file(src_path, converter=converter, use_ocr=use_ocr)
 
         raw_result = _retry_with_backoff(_extract, max_retries=MAX_RETRY)
 
+        # [SPRINT15-DEBUG] extract_text_from_file 호출 후 (성공)
+        logger.info("[SPRINT15-DEBUG] AFTER extract_text_from_file SUCCESS | file=%s result_keys=%s", source_name, list(raw_result.keys()) if raw_result else "None")
+
         full_text = raw_result.get("text", "") or ""
         is_ocr = raw_result.get("is_ocr", use_ocr)
+
+        # [SPRINT15-DEBUG] extract success/fail 구분
+        if full_text:
+            logger.info("[SPRINT15-DEBUG] extract_text_from_file SUCCESS | file=%s text_len=%d", source_name, len(full_text))
+        else:
+            logger.warning("[SPRINT15-DEBUG] extract_text_from_file RETURNED EMPTY TEXT | file=%s raw_result=%s", source_name, raw_result)
+
         emit("extract_done", f"텍스트 추출 완료: {len(full_text)} characters", 0.2)
 
         language = detect_language(full_text)
@@ -447,7 +462,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
         # ── [2] 노이즈 분석 ────────────────────────────────
         emit("noise", f"노이즈 점검 시작: {source_name}", 0.3)
+
+        # [SPRINT15-DEBUG] calculate_noise_score 호출 전
+        logger.info("[SPRINT15-DEBUG] BEFORE calculate_noise_score | file=%s text_len=%d", source_name, len(full_text))
+
         noise = calculate_noise_score(full_text, file_type=ext, is_ocr=is_ocr)
+
+        # [SPRINT15-DEBUG] calculate_noise_score 호출 후
+        logger.info("[SPRINT15-DEBUG] AFTER calculate_noise_score SUCCESS | file=%s noise_score=%s", source_name, noise.get("score", "N/A") if noise else "None")
+
         emit("noise_done", f"노이즈 점검 완료: score={noise['score']}", 0.4)
         logs.append({
             "cls": "log-info",
@@ -517,11 +540,25 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # chunking below uses final_text unchanged (see reflow_wrapped_lines
         # docstring for why the two are kept independent).
         md_display_text = reflow_wrapped_lines(final_text)
+
+        # [SPRINT15-DEBUG] save_md_with_language 호출 전
+        logger.info("[SPRINT15-DEBUG] BEFORE save_md_with_language | file=%s output_dir=%s stem=%s", source_name, output_dir, stem)
+
         md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language)
+
+        # [SPRINT15-DEBUG] save_md_with_language 호출 후
+        logger.info("[SPRINT15-DEBUG] AFTER save_md_with_language SUCCESS | file=%s md_path=%s", source_name, md_path)
+
+        # [SPRINT15-DEBUG] 실제 MD 파일 존재 확인
+        md_exists = os.path.isfile(md_path) if md_path else False
+        logger.info("[SPRINT15-DEBUG] MD file exists check | file=%s path=%s exists=%s", source_name, md_path, md_exists)
         emit("save_md_done", f"MD 저장 완료: {md_path}", 0.55)
 
         # ── [4] 청킹 (리트라이) ────────────────────────────
         emit("chunk", f"청킹 시작: {source_name}", 0.65)
+
+        # [SPRINT15-DEBUG] optimize_chunks 호출 전
+        logger.info("[SPRINT15-DEBUG] BEFORE optimize_chunks | file=%s text_len=%d", source_name, len(final_text))
 
         def _chunk():
             return optimize_chunks(final_text, ext)
@@ -543,6 +580,12 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                         f"avg_dup={chunk_result.quality.avg_dup:.2f}, "
                         f"params={chunk_result.params}"),
             })
+
+        # [SPRINT15-DEBUG] optimize_chunks 호출 후 (성공/실패 구분)
+        if chunk_result is not None and getattr(chunk_result, "chunks", None):
+            logger.info("[SPRINT15-DEBUG] AFTER optimize_chunks SUCCESS | file=%s chunk_count=%d", source_name, len(chunk_result.chunks))
+        else:
+            logger.warning("[SPRINT15-DEBUG] AFTER optimize_chunks NO CHUNKS | file=%s chunk_result=%s", source_name, chunk_result)
 
         if not chunks:
             emit("fallback_split", f"옵티마이저 결과 없음, 기존 splitter 사용: {source_name}", 0.78, level="warn")
@@ -641,12 +684,19 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # ── [SPRINT1] output written ───────────────────────────
         logger.info("[SPRINT1] output written: %s (canonical=%s)", source_name, md_path)
 
+        # [SPRINT15-DEBUG] END process_one_file — 정상 종료 직전
+        logger.info("[SPRINT15-DEBUG] END process_one_file SUCCESS | file=%s md_exists=%s", source_name, md_exists)
+
         emit("done", f"{source_name} 처리 완료", 1.0, level="ok")
         return {"success": True, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": None, "reason": None}
 
     except Exception as e:
         _failure_reason = str(e)
-        
+
+        # [SPRINT15-DEBUG] 예외 발생 지점 — 어디에서 멈췄는지 확인
+        logger.error("[SPRINT15-DEBUG] EXCEPTION CAUGHT | file=%s failed_stage=%s reason=%s", source_name, failed_stage, _failure_reason)
+        logger.error("[SPRINT15-DEBUG] Exception traceback | file=%s\n%s", source_name, traceback.format_exc())
+
         # [PT-PROCESSING-012] Track failure in registry
         # FIXED: Check if document_id and file_hash are defined before using them
         if 'document_id' in locals() and 'file_hash' in locals() and document_id and file_hash:
@@ -657,9 +707,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                     save_identity_registry(_registry, registry_path)
             except Exception:
                 pass  # Don't let registry update failures mask the original error
-        
+
         logs.append({"cls": "log-warn", "msg": f"처리 실패 — {_failure_reason}"})
         logs.append({"cls": "log-warn", "msg": f"Traceback: {traceback.format_exc()}"})
+
+        # [SPRINT15-DEBUG] 예외 반환 시에도 MD 존재 확인
+        md_check_path = os.path.join(output_dir, f"{stem}.md") if 'stem' in locals() else None
+        md_exists_at_failure = os.path.isfile(md_check_path) if md_check_path else False
+        logger.warning("[SPRINT15-DEBUG] AT FAILURE | file=%s md_path=%s md_exists=%s", source_name, md_check_path, md_exists_at_failure)
+
         return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage or "unexpected", "reason": _failure_reason}
 
 

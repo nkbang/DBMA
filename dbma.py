@@ -1077,7 +1077,8 @@ def main():
         st.session_state["chunk_overlap"] = st.number_input("Chunk Overlap", value=int(st.session_state["chunk_overlap"]), min_value=0, step=10)
 
         if feature_enabled("rag"):
-            st.session_state["top_k"] = st.slider("Top K", min_value=1, max_value=10, value=int(st.session_state["top_k"]))
+            _top_k_init = int(st.session_state.get("top_k", RAG_TOP_K))
+            st.session_state["top_k"] = st.slider("Top K", min_value=1, max_value=10, value=_top_k_init, key="dbma_top_k")
             st.session_state["temperature"] = st.slider("Temperature", min_value=0.0, max_value=1.5, value=float(st.session_state["temperature"]), step=0.05)
             if feature_enabled("vector_db"):
                 st.caption(f"Collection: {COLLECTION_NAME}")
