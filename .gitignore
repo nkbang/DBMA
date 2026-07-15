@@ -43,6 +43,14 @@ chroma_db/
 cache/embeddings/
 *.dot
 *.png
+*.svg
+
+# Backup / legacy snapshots
+backup/
+
+# Stray files from unquoted "pip install pkg>=X.Y.Z" (shell interprets
+# '>' as a redirect, creating a file literally named "=X.Y.Z")
+=*
 
 # Log files
 logs/*.jsonl
