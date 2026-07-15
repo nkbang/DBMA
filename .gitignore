@@ -55,12 +55,13 @@ logs/*.jsonl
 .cline/
 .dbma/
 
-# Local workspace
-*.code-workspace
-
-# AI agent runtime state
-.cline/
-.dbma/
-
 # Local VS Code workspace files
 *.code-workspace
+
+# Runtime outputs
+output/
+output_sav/
+reports/
+
+# Backup snapshots
+*.bak_*

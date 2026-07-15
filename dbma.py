@@ -12,7 +12,11 @@ from typing import Any, Dict, List, Optional
 # Sprint 2+ = True  → Re-enable embedding, vector DB, LLM, RAG
 SPRINT2_FEATURES = False  # Set True to enable all features
 
-if SPRINT2_FEATURES:
+# ─── FEATURE FLAG HELPER ───────────────────────────────
+# Introducing capability-based feature flag system
+from core.feature_flags import feature_enabled
+
+if feature_enabled("embedding"):
     import chromadb
     import ollama
     from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -87,7 +91,7 @@ def get_bench_csv(create_if_missing: bool = False) -> Path:
 
 
 # ChromaDB paths — Sprint 2 only
-if SPRINT2_FEATURES:
+if feature_enabled("vector_db"):
     CHROMA_DIR = PROJECT_ROOT / CHROMA_PERSIST_DIR
     COLLECTION_NAME = CHROMA_COLLECTION
 
@@ -111,7 +115,7 @@ def ensure_dirs():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
-    if SPRINT2_FEATURES:
+    if feature_enabled("vector_db"):
         CHROMA_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -133,7 +137,7 @@ def _parse_frontmatter(content: str) -> tuple[dict, str]:
 def _save_md_with_metadata(output_dir: str, stem: str, content: str, meta: dict) -> str:
     """Save markdown with metadata (core/md_manager.py integration)."""
     filepath = str(Path(output_dir) / f"{stem}.md")
-    if SPRINT2_FEATURES:
+    if feature_enabled("embedding"):
         changed = save_md_with_change_detection(filepath, content)
     else:
         Path(filepath).parent.mkdir(parents=True, exist_ok=True)
@@ -143,7 +147,7 @@ def _save_md_with_metadata(output_dir: str, stem: str, content: str, meta: dict)
 
 def _split_content_by_headers(content: str, filepath: str) -> list:
     """Split markdown by header sections (core/md_manager.py integration)."""
-    if SPRINT2_FEATURES:
+    if feature_enabled("embedding"):
         return _split_by_markdown_headers(content, filepath)
     return []
 
@@ -154,7 +158,7 @@ def _split_content_by_headers(content: str, filepath: str) -> list:
 
 def embed_text_ollama(texts, model: str = DEFAULT_EMBED_MODEL) -> list:
     """Embed texts using Ollama (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("embedding"):
         return []
     try:
         return ollama.embed(model=model, input=texts)["embeddings"]
@@ -324,14 +328,14 @@ def get_cache_stats():
 
 def get_vector_client():
     """ChromaDB PersistentClient (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("vector_db"):
         return None
     return chromadb.PersistentClient(path=str(CHROMA_DIR))
 
 
 def get_collection():
     """Get or create ChromaDB collection (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("vector_db"):
         return None
     client = get_vector_client()
     if client is None:
@@ -345,7 +349,7 @@ def get_collection():
 
 def rag_chunk_text(text: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_CHUNK_OVERLAP) -> List[str]:
     """Split document into chunks (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("embedding"):
         return []
     splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=overlap, separators=["\n\n", "\n", ". ", " ", ""])
     return splitter.split_text(text or "")
@@ -353,6 +357,8 @@ def rag_chunk_text(text: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int
 
 def read_indexable_docs(selected_files: Optional[List[str]] = None, input_dir: str = str(OUTPUT_DIR)) -> List[Dict[str, Any]]:
     """Read .md files with metadata (SPRINT 1 DISABLED — kept for discovery)."""
+    if not feature_enabled("embedding"):
+        return []
     base = Path(input_dir)
     docs = []
     if not base.exists():
@@ -380,7 +386,7 @@ def read_indexable_docs(selected_files: Optional[List[str]] = None, input_dir: s
 
 def list_ollama_models() -> List[str]:
     """List installed Ollama models (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("embedding"):
         return []
     try:
         import requests
@@ -394,7 +400,7 @@ def list_ollama_models() -> List[str]:
 
 def _model_supports_embeddings(model: str) -> bool:
     """Check if model supports embeddings (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("embedding"):
         return False
     name = (model or "").lower()
     keywords = ["embed", "bge", "nomic", "mxbai", "e5", "snowflake"]
@@ -407,7 +413,7 @@ def _model_supports_embeddings(model: str) -> bool:
 
 def _qdrant_available() -> bool:
     """Test if Qdrant is accessible (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("vector_db"):
         return False
     try:
         from qdrant_client import QdrantClient
@@ -420,7 +426,7 @@ def _qdrant_available() -> bool:
 
 def _embed_text_qdrant(texts: list, model: str = DEFAULT_EMBED_MODEL) -> list:
     """Embed texts for Qdrant (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("vector_db"):
         dim = 384
         return [[0.0] * dim for t in texts if t.strip()] if texts else [[0.0] * dim]
     try:
@@ -432,7 +438,7 @@ def _embed_text_qdrant(texts: list, model: str = DEFAULT_EMBED_MODEL) -> list:
 
 def upsert_to_qdrant(chunks: list, metadatas: list, collection_name: str = "dbma_sermon", embed_model: str = DEFAULT_EMBED_MODEL, url: str = "http://localhost:6333") -> dict:
     """Upsert chunks to Qdrant (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("vector_db"):
         return {"status": "disabled", "collection": collection_name}
     from qdrant_client import QdrantClient
     from qdrant_client.models import PointStruct, VectorParams, Distance
@@ -457,7 +463,7 @@ def upsert_to_qdrant(chunks: list, metadatas: list, collection_name: str = "dbma
 
 def query_qdrant(question: str, top_k: int = RAG_TOP_K, collection_name: str = "dbma_sermon", embed_model: str = DEFAULT_EMBED_MODEL, url: str = "http://localhost:6333", max_noise: float = RAG_MAX_NOISE) -> list:
     """Search Qdrant by vector similarity (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("vector_db"):
         return []
     from qdrant_client import QdrantClient
     client = QdrantClient(url=url)
@@ -484,7 +490,7 @@ def query_qdrant(question: str, top_k: int = RAG_TOP_K, collection_name: str = "
 
 def _embed_texts(texts: List[str], model: str = DEFAULT_EMBED_MODEL) -> List[List[float]]:
     """Batch embedding — Ollama or sentence_transformers (SPRINT 1 DISABLED)."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("embedding"):
         return []
     try:
         return ollama.embed(model=model, input=texts)["embeddings"]
@@ -511,7 +517,7 @@ def _rag_noise(text: str, file_type: str = "txt", is_ocr: bool = False) -> float
 
 def build_rag_store(selected_files: Optional[List[str]] = None, input_dir: str = str(OUTPUT_DIR), embed_model: str = DEFAULT_EMBED_MODEL, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_CHUNK_OVERLAP, min_len: int = RAG_MIN_LEN, max_noise: float = RAG_MAX_NOISE, store: str = "both"):
     """Build RAG store (dual-store). SPRINT 1 DISABLED."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("embedding"):
         return {"documents": 0, "chunks": 0, "indexed": 0, "embed_model": embed_model}
     ensure_dirs()
     docs = read_indexable_docs(selected_files=selected_files, input_dir=input_dir)
@@ -560,7 +566,7 @@ def build_rag_store(selected_files: Optional[List[str]] = None, input_dir: str =
 
 def query_rag(question: str, embed_model: str = DEFAULT_EMBED_MODEL, gen_model: str = DEFAULT_GEN_MODEL, top_k: int = RAG_TOP_K, temperature: float = DEFAULT_TEMPERATURE, max_noise: float = RAG_MAX_NOISE, store: str = "both") -> Dict[str, Any]:
     """RAG query (dual-store). SPRINT 1 DISABLED."""
-    if not SPRINT2_FEATURES:
+    if not feature_enabled("rag"):
         return {"question": question, "answer": "[Sprint 1: RAG disabled]", "contexts": [], "sources": [], "embedding_enabled": False, "store_used": []}
 
     ensure_dirs()
@@ -704,10 +710,9 @@ def pick_docs_for_embedding():
 
 def render_trendy_chat_tab(embed_model: str, gen_model: str, chunk_size: int, chunk_overlap: int, top_k: int, temperature: float):
     """RAG chat tab. SPRINT 1 DISABLED."""
-    if not SPRINT2_FEATURES:
-        st.subheader("RAG (Disabled for Sprint 1)")
-        st.info("Sprint 1 focuses on data layer only (parsing → cleaning → chunking → .md storage). RAG will be enabled in Sprint 2.")
-        return
+    # Always show the RAG tab, but feature capabilities are checked internally
+    st.subheader("RAG Chat")
+    st.caption("모던한 채팅 UI + RAG fallback (dual-store: ChromaDB + Qdrant)")
 
     init_chat_state()
     st.subheader("RAG Chat")
@@ -1026,14 +1031,18 @@ def main():
     for k, v in [("pending_rerun", False), ("is_processing", False)]:
         if k not in st.session_state:
             st.session_state[k] = v
-    if SPRINT2_FEATURES:
-        for k, v in [("embed_model", DEFAULT_EMBED_MODEL), ("gen_model", DEFAULT_GEN_MODEL), ("top_k", RAG_TOP_K), ("temperature", DEFAULT_TEMPERATURE)]:
+    if feature_enabled("embedding"):
+        for k, v in [("embed_model", DEFAULT_EMBED_MODEL), ("gen_model", DEFAULT_GEN_MODEL)]:
             if k not in st.session_state:
                 st.session_state[k] = v
     if "chunk_size" not in st.session_state:
         st.session_state["chunk_size"] = DEFAULT_CHUNK_SIZE
     if "chunk_overlap" not in st.session_state:
         st.session_state["chunk_overlap"] = DEFAULT_CHUNK_OVERLAP
+    if "top_k" not in st.session_state:
+        st.session_state["top_k"] = RAG_TOP_K
+    if "temperature" not in st.session_state:
+        st.session_state["temperature"] = DEFAULT_TEMPERATURE
 
     st.title(f"{APP_NAME} v{APP_VERSION}")
     st.caption("Document parsing / cleaning / chunking / monitoring / RAG / trendy chat")
@@ -1042,26 +1051,26 @@ def main():
         st.header("Settings")
         use_ocr = st.checkbox("Use OCR", value=False)
 
-        # [SPRINT1] Embedding/LLM model options — Sprint 1 shows placeholder
-        if SPRINT2_FEATURES:
-            dynamic_models = list_ollama_models()
-            embed_choices = dynamic_models or EMBED_MODEL_OPTIONS
-            gen_choices = dynamic_models or GEN_MODEL_OPTIONS
-            if st.session_state["embed_model"] not in embed_choices:
-                st.session_state["embed_model"] = embed_choices[0]
-            if st.session_state["gen_model"] not in gen_choices:
-                st.session_state["gen_model"] = gen_choices[0]
-            st.session_state["embed_model"] = st.selectbox("Embedding model", embed_choices, index=embed_choices.index(st.session_state["embed_model"]))
-            st.session_state["gen_model"] = st.selectbox("LLM model", gen_choices, index=gen_choices.index(st.session_state["gen_model"]))
-        else:
-            st.info("[Sprint 1] Embedding/LLM settings disabled — will be enabled in Sprint 2")
-            st.session_state["embed_model"] = "n/a"
-            st.session_state["gen_model"] = "n/a"
+    # [SPRINT1] Embedding/LLM model options — Sprint 1 shows placeholder
+    if feature_enabled("embedding"):
+        dynamic_models = list_ollama_models()
+        embed_choices = dynamic_models or EMBED_MODEL_OPTIONS
+        gen_choices = dynamic_models or GEN_MODEL_OPTIONS
+        if st.session_state["embed_model"] not in embed_choices:
+            st.session_state["embed_model"] = embed_choices[0]
+        if st.session_state["gen_model"] not in gen_choices:
+            st.session_state["gen_model"] = gen_choices[0]
+        st.session_state["embed_model"] = st.selectbox("Embedding model", embed_choices, index=embed_choices.index(st.session_state["embed_model"]))
+        st.session_state["gen_model"] = st.selectbox("LLM model", gen_choices, index=gen_choices.index(st.session_state["gen_model"]))
+    else:
+        st.info("[Sprint 1] Embedding/LLM settings disabled — will be enabled in Sprint 2")
+        st.session_state["embed_model"] = "n/a"
+        st.session_state["gen_model"] = "n/a"
 
         st.session_state["chunk_size"] = st.number_input("Chunk Size", value=int(st.session_state["chunk_size"]), min_value=100, step=100)
         st.session_state["chunk_overlap"] = st.number_input("Chunk Overlap", value=int(st.session_state["chunk_overlap"]), min_value=0, step=10)
 
-        if SPRINT2_FEATURES:
+        if feature_enabled("rag"):
             st.session_state["top_k"] = st.slider("Top K", min_value=1, max_value=10, value=int(st.session_state["top_k"]))
             st.session_state["temperature"] = st.slider("Temperature", min_value=0.0, max_value=1.5, value=float(st.session_state["temperature"]), step=0.05)
             st.caption(f"Collection: {COLLECTION_NAME}")
@@ -1079,11 +1088,8 @@ def main():
     with tab3:
         render_monitor_tab()
     with tab4:
-        if SPRINT2_FEATURES:
-            render_trendy_chat_tab(embed_model=st.session_state["embed_model"], gen_model=st.session_state["gen_model"], chunk_size=int(st.session_state["chunk_size"]), chunk_overlap=int(st.session_state["chunk_overlap"]), top_k=int(st.session_state["top_k"]), temperature=float(st.session_state["temperature"]))
-        else:
-            st.subheader("RAG (Disabled for Sprint 1)")
-            st.info("Sprint 1 focuses on data layer only (parsing → cleaning → chunking → .md storage). RAG will be enabled in Sprint 2.")
+        # Always show RAG tab - feature checking moved to individual components
+        render_trendy_chat_tab(embed_model=st.session_state["embed_model"], gen_model=st.session_state["gen_model"], chunk_size=int(st.session_state["chunk_size"]), chunk_overlap=int(st.session_state["chunk_overlap"]), top_k=int(st.session_state["top_k"]), temperature=float(st.session_state["temperature"]))
 
 
 if __name__ == "__main__":
