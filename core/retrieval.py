@@ -220,16 +220,16 @@ BOOK_ID_TO_NAMES: dict[str, list[str]] = {
     "DAN": ["daniel", "dan", "다니엘", "다니"],
     # Prophetic books — Minor
     "HOS": ["hosea", "hos", "호세아", "호"],
-    "JOL": ["joel", "jol", "요엘", "요"],
-    "AMO": ["amos", "amo", "아모스", "아"],
-    "OBD": ["obadiah", "obd", "오바디아", "오"],
+    "JOEL": ["joel", "요엘", "요"],
+    "AMOS": ["amos", "아모스", "아"],
+    "OBA": ["obadiah", "oba", "오바댜", "오바디아", "오"],
     "JON": ["jonah", "jon", "요나", "욘"],
     "MIC": ["micah", "mic", "미가", "미"],
     "NAM": ["nahum", "nam", "나훔", "나"],
     "HAB": ["habakkuk", "hab", "하박국", "하바"],
-    "ZEP": ["zephaniah", "zep", "스바냐", "스바냐"],
-    "HAG": ["haggai", "hag", "스가야", "스가"],
-    "ZCH": ["zechariah", "zch", "스브리아", "스바"],
+    "ZEP": ["zephaniah", "zep", "스바냐"],
+    "HAG": ["haggai", "hag", "학개"],
+    "ZEC": ["zechariah", "zec", "스가랴"],
     "MAL": ["malachi", "mal", "말라기", "말라"],
     # New Testament — Gospels
     "MAT": ["matthew", "matt", "mt", "mat", "마태복음", "마태", "마타", "마"],
@@ -1015,7 +1015,8 @@ class RetrievalEngine:
         Pipeline:
             1. Metadata-first filtering (Bible book/chapter/verse)
             2. BM25 keyword scoring (candidate generation)
-            3. Vector search (Qdrant or stub)
+            3. Vector search (semantic via BGE-M3 when embedding_cache is
+               supplied; else/on-failure: in-memory TF-IDF cosine similarity)
             4. Theological scoring
             5. Hybrid ranking
             6. Deduplication
@@ -1058,16 +1059,52 @@ class RetrievalEngine:
             bm25_top_k_indices = [(idx, 0.0) for idx in candidate_pool]
 
         # --- STEP 3: Vector search ---
+        # Semantic (BGE-M3 via core.embedder) when an EmbeddingCache is
+        # supplied; falls back to in-memory TF-IDF cosine similarity per
+        # candidate whenever the embedding backend is unavailable/fails, so
+        # retrieval never hard-fails for lack of Ollama.
         t0 = time.perf_counter()
         vector_similarities: dict[int, float] = {}
+
+        semantic_embedder = None
+        query_semantic_vec: Optional[list[float]] = None
+        if embedding_cache is not None:
+            try:
+                from core.embedder import get_embedder
+                semantic_embedder = get_embedder()
+                query_semantic_vec = semantic_embedder.encode(
+                    parsed_query.original_query, normalize_embeddings=True
+                )
+            except Exception:
+                semantic_embedder = None
+                query_semantic_vec = None
+
         for idx, bm25_val in bm25_top_k_indices:
             content = self.tsus[idx].get("content", "")
-            # In-memory TF-IDF cosine similarity (fast, no Qdrant needed)
-            if idx < len(self.vectors):
+            if not content:
+                continue
+
+            sim = None
+            if semantic_embedder is not None and query_semantic_vec is not None:
+                try:
+                    doc_vec = embedding_cache.lookup(
+                        content,
+                        lambda t: semantic_embedder.encode(t, normalize_embeddings=True),
+                    )
+                    if doc_vec is not None and len(doc_vec) == len(query_semantic_vec):
+                        # Both vectors are L2-normalized, so dot product == cosine similarity.
+                        sim = sum(a * b for a, b in zip(query_semantic_vec, doc_vec))
+                except Exception:
+                    sim = None
+
+            if sim is None and idx < len(self.vectors):
+                # In-memory TF-IDF cosine similarity (fast, no embedding backend needed)
                 query_vector = self.tfidf_vectorizer.transform(
                     _tokenize(parsed_query.original_query)
                 )
                 sim = self.tfidf_vectorizer.cosine_similarity(query_vector, self.vectors[idx])
+
+            if sim is not None:
                 vector_similarities[idx] = sim
         metrics.vector_search_ms = (time.perf_counter() - t0) * 1000
 
@@ -1377,7 +1414,9 @@ class QueryProcessor:
         parsed_query = self.parser.parse(query)
 
         # 2. Retrieve via hybrid engine
-        candidates, metrics = self.engine.retrieve(parsed_query, k_output=k)
+        candidates, metrics = self.engine.retrieve(
+            parsed_query, k_output=k, embedding_cache=self.cache
+        )
 
         # 3. Assemble context
         llm_context_block, scripture_contexts = self.context_assembler.assemble(candidates[:k], parsed_query)

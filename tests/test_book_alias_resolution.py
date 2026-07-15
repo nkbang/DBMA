@@ -30,7 +30,7 @@ class TestBookNameRegistry:
             "1SA", "2SA", "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST",
             "JOB", "PSA", "PRO", "ECC", "SOL",
             "ISA", "JER", "LAM", "EZE", "DAN",
-            "HOS", "JOL", "AMO", "OBD", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZCH", "MAL",
+            "HOS", "JOEL", "AMOS", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL",
             "MAT", "MRK", "LUK", "JHN",
             "ACT",
             "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL",
