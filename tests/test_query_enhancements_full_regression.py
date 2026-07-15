@@ -169,7 +169,11 @@ def test_bible_book_detection():
 
     total = results["pass"] + results["fail"]
     print(f"\nBook Detection: {results['pass']}/{total} pass ({results['pass']/max(total,1):.2%})")
-    
+
+    failures = [d for d in results["details"] if "[FAIL]" in d]
+    assert results["fail"] == 0, (
+        f"{results['fail']}/{total} book detections failed:\n" + "\n".join(failures)
+    )
     return results
 
 
@@ -201,6 +205,10 @@ def test_duplicate_detection():
         results["details"].append(f"'{query}' → {result.detected_books} (count={count}) [{status}]")
         print(f"  '{query}' → books={result.detected_books}  count(book_id)={count}  [{'PASS' if is_unique else 'FAIL'}]")
 
+    failures = [d for d in results["details"] if "[FAIL]" in d]
+    assert results["fail"] == 0, (
+        f"{results['fail']} duplicate-detection cases failed:\n" + "\n".join(failures)
+    )
     return results
 
 
@@ -251,6 +259,10 @@ def test_scripture_reference_validation():
         print(f"  '{query}' → refs={refs_str}  book={exp_book} chap={exp_chap} ver={exp_verse}  [{'PASS' if hit else 'FAIL'}]")
         results["details"].append(f"'{query}' → refs={refs_str}  [{status}]")
 
+    failures = [d for d in results["details"] if "[FAIL]" in d]
+    assert results["fail"] == 0, (
+        f"{results['fail']} scripture-reference cases failed:\n" + "\n".join(failures)
+    )
     return results
 
 
@@ -292,6 +304,10 @@ def test_korean_alias_collision():
         print(f"  '{query}' → {result.detected_books}  (count={count}, unique={unique_count})  [{'PASS' if hit else 'FAIL'}]")
         results["details"].append(f"'{query}' → {result.detected_books}  [{status}]")
 
+    failures = [d for d in results["details"] if "[FAIL]" in d]
+    assert results["fail"] == 0, (
+        f"{results['fail']} Korean alias collision cases failed:\n" + "\n".join(failures)
+    )
     return results
 
 
@@ -329,6 +345,10 @@ def test_negative_query_regression():
         print(f"  '{query:<35}' confidence={confidence:.2f} productive={is_productive}  [{'PASS' if hit else 'FAIL'}]")
         results["details"].append(f"'{query}' → conf={confidence:.2f} prod={is_productive}  [{status}]")
 
+    failures = [d for d in results["details"] if "[FAIL]" in d]
+    assert results["fail"] == 0, (
+        f"{results['fail']} negative-query cases failed:\n" + "\n".join(failures)
+    )
     return results
 
 
@@ -434,7 +454,10 @@ def test_runtime_stability():
     status = "PASS" if hit else "FAIL"
     
     print(f"\n  Overall: [{status}]")
-    
+
+    assert exceptions == 0, f"{exceptions} exception(s) raised during 100-query stability run"
+    assert not leakage_detected, "Parser state leakage detected across parse() calls"
+
     return {
         "total": total,
         "exceptions": exceptions,
