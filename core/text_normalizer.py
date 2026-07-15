@@ -378,3 +378,31 @@ def _merge_sentence_fragments(sentences: list[str], max_chars: int) -> list[str]
 
     flush()
     return [c for c in chunks if c]
+
+
+def reflow_wrapped_lines(text: str) -> str:
+    """Rejoin PDF-style mid-sentence line wraps into complete sentences.
+
+    PDF text extraction wraps lines at the page width, so a raw extracted
+    document typically has one sentence spread across several physical
+    lines. Saved as-is, the .md body reads as visually "cut off" sentence
+    fragments even though no content is missing. This reflows each
+    paragraph (blank-line-separated block) through split_sentences_mixed()
+    so the saved .md shows one complete sentence per line.
+
+    Display/readability only — deliberately NOT used by the chunking
+    pipeline (core/chunking_optimizer.py), which has its own independent
+    sentence-merging logic already tuned for chunk-size packing.
+    """
+    if not text or not text.strip():
+        return text
+
+    paragraphs = re.split(r"\n[ \t]*\n", text)
+    out_paragraphs: list[str] = []
+    for para in paragraphs:
+        if not para.strip():
+            continue
+        sentences = split_sentences_mixed(para)
+        out_paragraphs.append("\n".join(sentences) if sentences else para.strip())
+
+    return "\n\n".join(out_paragraphs)

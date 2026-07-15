@@ -27,6 +27,7 @@ from langchain_text_splitters import SentenceTransformersTokenTextSplitter
 from core.extractors import extract_text_from_file
 from core.utils import make_safe_stem, calculate_noise_score
 from core.chunking_optimizer import optimize_chunks, save_optimized_md
+from core.text_normalizer import reflow_wrapped_lines
 
 # [PT-PROCESSING-008] Document identity integration
 from core.document_identity import (
@@ -511,7 +512,12 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
         # ── [3] MD 저장 ────────────────────────────────────
         emit("save_md", f"MD 저장 시작: {source_name}", 0.5)
-        md_path = save_md_with_language(output_dir, stem, source_name, final_text, noise, ext, language)
+        # Reflow PDF-style mid-sentence line wraps for readability in the
+        # saved .md body. Deliberately NOT applied to final_text itself —
+        # chunking below uses final_text unchanged (see reflow_wrapped_lines
+        # docstring for why the two are kept independent).
+        md_display_text = reflow_wrapped_lines(final_text)
+        md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language)
         emit("save_md_done", f"MD 저장 완료: {md_path}", 0.55)
 
         # ── [4] 청킹 (리트라이) ────────────────────────────
