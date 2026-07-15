@@ -59,7 +59,7 @@ MAX_RETRY = 3               # 리트라이 최대 횟수
 RETRY_DELAY_SEC = 2.0       # 재시도 간격 (초)
 MIN_CHUNK_CHARS = 80        # 최소 청크 길이
 # ── SPRINT 1 OUTPUT STANDARDIZATION ───────────────────────
-SPRINT1_ONLY_MD_OUTPUT = True   # Sprint 1: ONLY .md is canonical output
+SPRINT1_ONLY_MD_OUTPUT = False   # Sprint 1: ONLY .md is canonical output
 OUTPUT_VALIDATE_ENABLED = True  # 출력 검증 활성화
 
 
