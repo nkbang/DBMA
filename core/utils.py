@@ -283,7 +283,22 @@ def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) 
         score_raw = symbol_ratio * 20 + short_line_ratio * 10 + broken_line_ratio * 10
         mode = "unknown"
 
-    score = min(100.0, round(max(score_raw * 100, 3.0), 1))
+    # NOTE: score_raw is a weighted sum of 0-1 fraction ratios. The old
+    # code multiplied by 100 here, which double-scaled it (see git history)
+    # — any realistic ratio combination hit the 100-point ceiling instantly.
+    # Removing the *100 entirely overcorrected the other way: since no
+    # single ratio realistically reaches 1.0 (100%) even in a fully garbled
+    # document, score_raw alone rarely exceeds ~5-6, meaning even a
+    # completely unusable document scored under 10.
+    #
+    # K=14 is an empirically-calibrated scaling factor, chosen so that:
+    #   - a mostly-clean large document (small garbled portion diluted by
+    #     otherwise good body text) lands in GOOD/LOW (~10-15)
+    #   - a document that is garbled throughout lands solidly in HIGH (~75+)
+    # Calibrated against the available real/synthetic test cases as of
+    # 2026-07-15; revisit if real-corpus experience suggests otherwise.
+    NOISE_SCORE_SCALE = 14
+    score = min(100.0, round(max(score_raw * NOISE_SCORE_SCALE, 3.0), 1))
 
     return {
         "score": score,
