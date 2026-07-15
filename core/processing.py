@@ -28,6 +28,7 @@ from core.extractors import extract_text_from_file
 from core.utils import make_safe_stem, calculate_noise_score
 from core.chunking_optimizer import optimize_chunks, save_optimized_md
 from core.text_normalizer import reflow_wrapped_lines
+from core.frontmatter_detector import split_front_matter
 
 # [PT-PROCESSING-008] Document identity integration
 from core.document_identity import (
@@ -460,13 +461,27 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             emit("extract_fail", f"{source_name}: 추출 텍스트 없음", 1.0, level="warn")
             return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage, "reason": reason}
 
+        # ── [1.5] 전면부(제목/판권/목차) 분리 ────────────────
+        # Noise scoring and chunking below run on body_text only — front
+        # matter (title/copyright/TOC pages) has structurally different
+        # characteristics (dense short lines, boilerplate) that either
+        # drags a whole document's noise score up or gets diluted into
+        # invisibility once averaged across a large body, neither of
+        # which reflects actual body content quality. Front matter is
+        # still saved in the .md (see [3] below) for provenance — not
+        # discarded, just excluded from scoring/chunking.
+        front_matter_text, body_text = split_front_matter(full_text)
+        if front_matter_text:
+            emit("frontmatter", f"전면부 감지: {len(front_matter_text)}자 (본문 {len(body_text)}자)", 0.28)
+            logger.info("[FRONTMATTER] detected: %s (front=%d chars, body=%d chars)", source_name, len(front_matter_text), len(body_text))
+
         # ── [2] 노이즈 분석 ────────────────────────────────
         emit("noise", f"노이즈 점검 시작: {source_name}", 0.3)
 
         # [SPRINT15-DEBUG] calculate_noise_score 호출 전
-        logger.info("[SPRINT15-DEBUG] BEFORE calculate_noise_score | file=%s text_len=%d", source_name, len(full_text))
+        logger.info("[SPRINT15-DEBUG] BEFORE calculate_noise_score | file=%s text_len=%d", source_name, len(body_text))
 
-        noise = calculate_noise_score(full_text, file_type=ext, is_ocr=is_ocr)
+        noise = calculate_noise_score(body_text, file_type=ext, is_ocr=is_ocr)
 
         # [SPRINT15-DEBUG] calculate_noise_score 호출 후
         logger.info("[SPRINT15-DEBUG] AFTER calculate_noise_score SUCCESS | file=%s noise_score=%s", source_name, noise.get("score", "N/A") if noise else "None")
@@ -537,9 +552,20 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         emit("save_md", f"MD 저장 시작: {source_name}", 0.5)
         # Reflow PDF-style mid-sentence line wraps for readability in the
         # saved .md body. Deliberately NOT applied to final_text itself —
-        # chunking below uses final_text unchanged (see reflow_wrapped_lines
+        # chunking below uses body_text unchanged (see reflow_wrapped_lines
         # docstring for why the two are kept independent).
-        md_display_text = reflow_wrapped_lines(final_text)
+        # Front matter (if detected) is kept in the saved .md for
+        # provenance/citation, clearly demarcated and reflowed separately,
+        # but is not part of what gets noise-scored or chunked above.
+        if front_matter_text:
+            md_display_text = (
+                "## 전면부 (제목/판권/목차 — 검색·노이즈 채점 대상 제외)\n\n"
+                + reflow_wrapped_lines(front_matter_text)
+                + "\n\n---\n\n## 본문\n\n"
+                + reflow_wrapped_lines(body_text)
+            )
+        else:
+            md_display_text = reflow_wrapped_lines(body_text)
 
         # [SPRINT15-DEBUG] save_md_with_language 호출 전
         logger.info("[SPRINT15-DEBUG] BEFORE save_md_with_language | file=%s output_dir=%s stem=%s", source_name, output_dir, stem)
@@ -558,10 +584,10 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         emit("chunk", f"청킹 시작: {source_name}", 0.65)
 
         # [SPRINT15-DEBUG] optimize_chunks 호출 전
-        logger.info("[SPRINT15-DEBUG] BEFORE optimize_chunks | file=%s text_len=%d", source_name, len(final_text))
+        logger.info("[SPRINT15-DEBUG] BEFORE optimize_chunks | file=%s text_len=%d", source_name, len(body_text))
 
         def _chunk():
-            return optimize_chunks(final_text, ext)
+            return optimize_chunks(body_text, ext)
 
         try:
             chunk_result = _retry_with_backoff(_chunk, max_retries=MAX_RETRY)
@@ -589,7 +615,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
         if not chunks:
             emit("fallback_split", f"옵티마이저 결과 없음, 기존 splitter 사용: {source_name}", 0.78, level="warn")
-            chunks = splitter.split_text(final_text)
+            chunks = splitter.split_text(body_text)
             chunk_size_used = chunk_size
             chunk_overlap_used = chunk_overlap
             chunk_result = None

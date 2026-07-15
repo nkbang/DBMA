@@ -20,6 +20,7 @@ core/extractors.py — DBMA 텍스트 추출 엔진
   NEW-2  postprocess_pdf_text: PUA 제거, 한국어 어절 분리 복원, 고립 글리프 제거
   NEW-3  Tesseract OCR 추가 (he grc 언어 팩 지원)
   NEW-4  OCR 단어 내 공백 삽입 복원, 하이픈 줄바꿈 복원, 문단 경계 보호 (2026-06-29)
+  NEW-5  페이지 경계 마커(PAGE_BREAK_MARKER) 보존 — 전면부(제목/판권/목차) 탐지용 (2026-07-15)
 """
 
 import logging
@@ -28,6 +29,14 @@ from typing import Dict, Optional
 
 from bs4 import BeautifulSoup
 from docx import Document
+
+# Page-break sentinel inserted between PDF pages during extraction. A real
+# form-feed character (\x0c) essentially never occurs in extracted prose,
+# so it can be reliably split on later without colliding with ordinary
+# paragraph breaks (which use plain "\n\n"). Used by
+# core.frontmatter_detector.detect_front_matter_boundary() to distinguish
+# actual page boundaries from paragraph breaks within a page.
+PAGE_BREAK_MARKER = "\x0c"
 from ebooklib import epub, ITEM_DOCUMENT
 
 logger = logging.getLogger(__name__)
@@ -276,7 +285,7 @@ def _extract_via_pymupdf(path: str) -> str:
         if page_text.strip():
             pages.append(page_text)
     doc.close()
-    return "\n\n".join(pages).strip()
+    return f"\n\n{PAGE_BREAK_MARKER}\n\n".join(pages).strip()
 
 
 def _extract_via_docling(path: str, converter) -> str:
@@ -298,7 +307,7 @@ def _extract_via_pypdf(path: str) -> str:
         t = page.extract_text() or ""
         if t.strip():
             pages.append(t.strip())
-    return "\n\n".join(pages).strip()
+    return f"\n\n{PAGE_BREAK_MARKER}\n\n".join(pages).strip()
 
 
 def _detect_ocr_flag(converter) -> bool:
