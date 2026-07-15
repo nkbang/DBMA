@@ -7,6 +7,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+logger = logging.getLogger(__name__)
+
 # ─── SPRINT 2 FEATURE FLAG ───────────────────────────────
 # Sprint 1 = False → PURE DATA LAYER ONLY (parse → clean → chunk → store .md)
 # Sprint 2+ = True  → Re-enable embedding, vector DB, LLM, RAG
@@ -398,6 +400,42 @@ def list_ollama_models() -> List[str]:
         return []
 
 
+def list_ollama_embedding_models() -> List[str]:
+    """List installed Ollama models that actually support embeddings.
+
+    Uses the API's own capabilities field when available (Ollama returns
+    "capabilities": ["embedding"] per model) — this is what caused the
+    ChromaDB dimension-mismatch crash: list_ollama_models() returns every
+    installed model unfiltered, including chat/completion models like
+    "codestral:latest", and the sidebar defaulted to whichever model came
+    first in that unfiltered list. Falls back to the keyword heuristic in
+    _model_supports_embeddings() if the capabilities field is missing
+    (older Ollama versions).
+    """
+    if not feature_enabled("embedding"):
+        return []
+    try:
+        import requests
+        r = requests.get("http://localhost:11434/api/tags", timeout=5)
+        r.raise_for_status()
+        data = r.json()
+        models = data.get("models", [])
+        result = []
+        for m in models:
+            name = m.get("name")
+            if not name:
+                continue
+            caps = m.get("capabilities")
+            if caps is not None:
+                if "embedding" in caps:
+                    result.append(name)
+            elif _model_supports_embeddings(name):
+                result.append(name)
+        return result
+    except Exception:
+        return []
+
+
 def _model_supports_embeddings(model: str) -> bool:
     """Check if model supports embeddings (SPRINT 1 DISABLED)."""
     if not feature_enabled("embedding"):
@@ -489,22 +527,41 @@ def query_qdrant(question: str, top_k: int = RAG_TOP_K, collection_name: str = "
 # ═══════════════════════════════════════════════════════════
 
 def _embed_texts(texts: List[str], model: str = DEFAULT_EMBED_MODEL) -> List[List[float]]:
-    """Batch embedding — Ollama or sentence_transformers (SPRINT 1 DISABLED)."""
+    """Batch embedding via Ollama (SPRINT 1 DISABLED).
+
+    Deliberately does NOT silently fall back to a different embedding
+    backend (e.g. sentence-transformers/MiniLM, 384-dim) on Ollama
+    failure. That previously caused a real crash — ChromaDB
+    "expecting embedding with dimension of 1024, got 384" — because
+    list_ollama_models() (used to populate the sidebar's "Embedding
+    model" dropdown) returned every installed Ollama model unfiltered,
+    including chat/completion models like "codestral:latest". Once a
+    non-embedding model got selected, ollama.embed() failed, the
+    exception was swallowed silently, and this function fell back to a
+    384-dim embedder while the ChromaDB collection already held 1024-dim
+    (BGE-M3) vectors from an earlier run — silently corrupting the write.
+
+    Silently mixing embedding dimensions in the same persistent
+    collection is never a safe "best effort" fallback; it must fail
+    loudly so the actual cause (wrong model selected, Ollama unreachable,
+    etc.) is visible and fixable. See list_ollama_embedding_models() for
+    the dropdown-side fix that filters to embedding-capable models only.
+    """
     if not feature_enabled("embedding"):
         return []
+    if not _model_supports_embeddings(model):
+        raise RuntimeError(
+            f"'{model}'은(는) 임베딩을 지원하지 않는 모델입니다 — "
+            f"사이드바에서 임베딩 모델을 다시 선택해 주세요."
+        )
     try:
         return ollama.embed(model=model, input=texts)["embeddings"]
-    except Exception:
-        pass
-    result = []
-    for t in texts:
-        if not t.strip():
-            continue
-        try:
-            result.append(embed_via_transformer(t))
-        except Exception:
-            result.append([0.0] * 384)
-    return result
+    except Exception as e:
+        logger.error("[_embed_texts] Ollama embed 실패 (model=%s): %s", model, e)
+        raise RuntimeError(
+            f"Ollama 임베딩 호출 실패 (model={model}): {e}. "
+            f"Ollama가 실행 중인지, 해당 모델이 pull되어 있는지 확인하세요."
+        ) from e
 
 
 def _rag_noise(text: str, file_type: str = "txt", is_ocr: bool = False) -> float:
@@ -789,11 +846,15 @@ def render_trendy_chat_tab(embed_model: str, gen_model: str, chunk_size: int, ch
             st.warning("임베딩할 자료를 먼저 선택하세요.")
         else:
             current_store = st.session_state.get("rag_store", "both")
-            out = build_rag_store(selected_files=selected_docs, input_dir=str(OUTPUT_DIR), embed_model=embed_model, chunk_size=chunk_size, overlap=chunk_overlap, store=current_store)
-            msg = f"{out['documents']} docs, {out['chunks']} chunks indexed"
-            if out.get("qdrant"):
-                msg += f" | Qdrant: {out['qdrant']['upserted']} upserted"
-            st.success(msg)
+            try:
+                out = build_rag_store(selected_files=selected_docs, input_dir=str(OUTPUT_DIR), embed_model=embed_model, chunk_size=chunk_size, overlap=chunk_overlap, store=current_store)
+                msg = f"{out['documents']} docs, {out['chunks']} chunks indexed"
+                if out.get("qdrant"):
+                    msg += f" | Qdrant: {out['qdrant']['upserted']} upserted"
+                st.success(msg)
+            except Exception as e:
+                logger.error("[render_trendy_chat_tab] build_rag_store 실패: %s", e)
+                st.error(f"인덱싱 실패: {e}")
 
     for msg in st.session_state["rag_chat"]:
         if msg["role"] == "user":
@@ -1057,7 +1118,7 @@ def main():
         # [SPRINT1] Embedding/LLM model options — Sprint 1 shows placeholder
         if feature_enabled("embedding"):
             dynamic_models = list_ollama_models()
-            embed_choices = dynamic_models or EMBED_MODEL_OPTIONS
+            embed_choices = list_ollama_embedding_models() or EMBED_MODEL_OPTIONS
             gen_choices = dynamic_models or GEN_MODEL_OPTIONS
             if st.session_state["embed_model"] not in embed_choices:
                 st.session_state["embed_model"] = embed_choices[0]
