@@ -72,8 +72,10 @@ QDRANT_URL = _yaml_vdb.get("qdrant", {}).get("url", "http://localhost:6333")
 
 # ── 임베딩 모델 ──────────────────────────────────────────
 _yaml_emb = CFG.get("embedding", {})
-EMBEDDING_MODEL = _yaml_emb.get("model", "all-MiniLM-L6-v2")
-EMBEDDING_DIMENSION = _yaml_emb.get("dimension", 384)
+EMBEDDING_MODEL = _yaml_emb.get("model", "bge-m3:latest")  # Default to bge-m3 for consistency
+EMBEDDING_DIMENSION = 1024  # Enforce single embedding dimension policy - all embeddings must be 1024-dimensional
+# This ensures compatibility with BGE-M3 models and prevents dimension mismatch errors
+# Override any configuration that specifies different dimensions
 
 # ── Ollama 모델 (dbma.py UI용) ──────────────────────────
 _yaml_ollama = CFG.get("ollama", {})

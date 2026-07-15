@@ -2,7 +2,7 @@
 core/embedder.py — 임베딩 유틸리티 (안전한 import)
 
 Primary backend : Ollama (BGE-M3, 다국어 강세 — config.yaml ollama.default_embed_model)
-Fallback backend: sentence-transformers (all-MiniLM-L6-v2, legacy/경량)
+Fallback backend: sentence-transformers (all-mpnet-base-v2, legacy/경량)
 
 이 모듈은 import 시점에 외부 의존성을 로드하지 않습니다.
 첫 호출 시 필요한 백엔드를 지연 로드합니다.
@@ -11,6 +11,16 @@ Fallback backend: sentence-transformers (all-MiniLM-L6-v2, legacy/경량)
 import json
 import urllib.error
 import urllib.request
+import time
+from sentence_transformers import SentenceTransformer
+
+# Dimension validation for embedding consistency
+from core.config import EMBEDDING_DIMENSION
+
+# Custom exception for dimension mismatches
+class DimensionMismatchError(Exception):
+    """Raised when embedding dimension doesn't match expected dimension."""
+    pass
 
 _model = None
 _model_load_failed = False
@@ -39,7 +49,9 @@ def _get_model():
     if _model is None:
         try:
             from sentence_transformers import SentenceTransformer
-            _model = SentenceTransformer("all-MiniLM-L6-v2")
+            # Use the model that provides 1024-dimensional embeddings for consistency
+            # This ensures we're not mixing different dimension models
+            _model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
         except ImportError:
             _model_load_failed = True
             raise ImportError(_MODEL_IMPORT_ERROR_MSG)
@@ -50,26 +62,79 @@ def _get_model():
 
 
 def embed(text: str):
-    """텍스트를 임베딩 벡터로 변환합니다 (legacy 경로: MiniLM, sentence-transformers)."""
+    """텍스트를 임베딩 벡터로 변환합니다."""
     model = _get_model()
-    return model.encode(text).tolist()
+    embedding = model.encode(text)
+    
+    # Validate that the embedding has the expected dimension
+    if len(embedding) != EMBEDDING_DIMENSION:
+        raise DimensionMismatchError(
+            f"임베딩 차원 불일치: 기대값 {EMBEDDING_DIMENSION}, 실제값 {len(embedding)}. "
+            "모델이 예상과 다른 차원의 벡터를 생성했습니다. "
+            "모델 변경 시 재인덱싱이 필요합니다."
+        )
+    return embedding
 
 
 def _embed_via_ollama(text: str, model_name: str) -> list:
     """Ollama 서버(/api/embeddings)를 통해 BGE-M3 등으로 임베딩합니다."""
+    # DEBUG: Log request details
+    print("[OLLAMA EMBED REQUEST]")
+    print(f"Request URL: {_OLLAMA_HOST}/api/embeddings")
+    print(f"Model: {model_name}")
+    print(f"Input Type: {type(text)}")
+    print(f"Input Count: 1")
+    print(f"First input length (char): {len(text) if text else 0}")
+    print(f"Longest input length (char): {len(text) if text else 0}")
+    print(f"Total characters: {len(text) if text else 0}")
+    
+    # Estimate token count (rough approximation)
+    estimated_tokens = len(text) // 4 if text else 0  # Rough estimate
+    print(f"Estimated tokens: {estimated_tokens}")
+    
     payload = json.dumps({"model": model_name, "prompt": text}).encode("utf-8")
+    print(f"JSON Payload Size (Bytes): {len(payload)}")
+    print(f"HTTP Timeout: {_OLLAMA_TIMEOUT_S} seconds")
+    
     req = urllib.request.Request(
         f"{_OLLAMA_HOST}/api/embeddings",
         data=payload,
         headers={"Content-Type": "application/json"},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=_OLLAMA_TIMEOUT_S) as resp:
-        body = json.loads(resp.read().decode("utf-8"))
-    embedding = body.get("embedding")
-    if not embedding:
-        raise RuntimeError(f"Ollama 응답에 embedding 필드가 없습니다: {body}")
-    return embedding
+    
+    start_time = time.time()
+    try:
+        with urllib.request.urlopen(req, timeout=_OLLAMA_TIMEOUT_S) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+        
+        elapsed_time = (time.time() - start_time) * 1000
+        # DEBUG: Log response details
+        print("[OLLAMA EMBED RESPONSE]")
+        print(f"HTTP Status: {resp.getcode()}")
+        print(f"Response Headers: {dict(resp.headers)}")
+        print(f"Elapsed Time: {elapsed_time:.2f} ms")
+        
+        embedding = body.get("embedding")
+        if not embedding:
+            raise RuntimeError(f"Ollama 응답에 embedding 필드가 없습니다: {body}")
+        return embedding
+        
+    except Exception as e:
+        elapsed_time = (time.time() - start_time) * 1000
+        # DEBUG: Log exception details
+        print("[OLLAMA EMBED RESPONSE]")
+        print(f"Exception Type: {type(e).__name__}")
+        print(f"Exception Message: {str(e)}")
+        print(f"Elapsed Time: {elapsed_time:.2f} ms")
+        # Print response body if available
+        try:
+            with urllib.request.urlopen(req, timeout=_OLLAMA_TIMEOUT_S) as resp:
+                body = json.loads(resp.read().decode("utf-8"))
+                print(f"Response Body: {body}")
+        except:
+            pass  # Ignore if we can't read the body
+        raise
 
 
 class _OllamaEmbedder:
