@@ -1087,6 +1087,13 @@ def main():
             st.success("Cache cleared")
             st.rerun()
 
+        if st.session_state.get("is_processing", False):
+            st.warning("처리 중 상태(is_processing=True)입니다.")
+            if st.button("처리 상태 강제 초기화", type="primary"):
+                st.session_state["is_processing"] = False
+                st.success("초기화 완료 — Parse/Analysis 탭을 다시 확인하세요.")
+                st.rerun()
+
     tab1, tab2, tab3, tab4 = st.tabs(["Parse", "Analyze", "Project", "RAG"])
     with tab1:
         render_processing_tab(use_ocr=use_ocr, chunk_size=int(st.session_state["chunk_size"]), chunk_overlap=int(st.session_state["chunk_overlap"]))
