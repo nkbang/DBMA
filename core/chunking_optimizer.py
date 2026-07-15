@@ -133,8 +133,45 @@ class ChunkResult:
         return "\n".join(lines)
 
 
+def _slice_preserving_words(s: str, chunk_size: int) -> list[str]:
+    """Split a long run of text into <= chunk_size pieces without cutting
+    inside a word. Falls back to hard slicing only if a single "word" (e.g.
+    one token with no spaces at all) itself exceeds chunk_size.
+
+    Used for text that reached the "no sentence boundary found" fallback —
+    most commonly long Hebrew/Greek quotations, which rarely contain ASCII
+    sentence punctuation, so naive s[i:i+chunk_size] slicing risks cutting
+    mid-word (and, for Hebrew, mid-niqud).
+    """
+    # Prefer clause boundaries (Hebrew sof pasuq) if present, else whitespace.
+    tokens = re.split(r"(\s+|\u05C3)", s)
+    pieces: list[str] = []
+    buf = ""
+    for tok in tokens:
+        if len(buf) + len(tok) <= chunk_size:
+            buf += tok
+        else:
+            if buf.strip():
+                pieces.append(buf.strip())
+            if len(tok) > chunk_size:
+                # Single token longer than chunk_size (no spaces to break on)
+                # — only remaining safe option is a hard slice of that token.
+                for i in range(0, len(tok), chunk_size):
+                    pieces.append(tok[i:i + chunk_size].strip())
+                buf = ""
+            else:
+                buf = tok
+    if buf.strip():
+        pieces.append(buf.strip())
+    return [p for p in pieces if p]
+
+
 def _separators() -> list[str]:
-    return ["\n\n", "\n", "다. ", "요. ", ". ", "! ", "? ", " ", ""]
+    # "\u05C3" = Hebrew sof pasuq (verse-end punctuation) — biblical Hebrew
+    # rarely uses ASCII periods, so without this a long Hebrew quotation
+    # falls through every separator above it and gets cut mid-clause by the
+    # final "" (character-level) fallback.
+    return ["\n\n", "\n", "다. ", "요. ", ". ", "! ", "? ", "\u05C3 ", "\u05C3", " ", ""]
 
 
 def _simple_noise(chunk: str) -> float:
@@ -194,18 +231,20 @@ def _split_by_paragraphs(text: str, chunk_size: int, chunk_overlap: int) -> tupl
         if not p:
             continue
 
-        lang = detect_paragraph_language(p).label if detect_paragraph_language is not None else "other"
+        para_lang = detect_paragraph_language(p) if detect_paragraph_language is not None else None
+        lang = para_lang.label if para_lang is not None else "other"
+        has_original_language = bool(para_lang and para_lang.has_original_language)
 
-        if len(p) > int(chunk_size * 1.5) or lang == "mixed":
+        if len(p) > int(chunk_size * 1.5) or lang == "mixed" or has_original_language:
             flush()
             sents = split_sentences_mixed(p) if split_sentences_mixed is not None else (split_sentences(p) if split_sentences is not None else [])
             if sents:
-                if lang == "mixed":
+                if lang == "mixed" or has_original_language:
                     for s in sents:
                         if len(s) <= chunk_size:
                             chunks.append(s)
                         else:
-                            chunks.extend([s[i:i + chunk_size] for i in range(0, len(s), chunk_size)])
+                            chunks.extend(_slice_preserving_words(s, chunk_size))
                     continue
 
                 para_chunks = _merge_sentence_fragments(sents, max_chars=chunk_size)

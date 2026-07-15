@@ -13,6 +13,8 @@ _RE_KOREAN_CHARS = re.compile(r"[가-힣]")
 _RE_KOREAN_FUNCTION_END = re.compile(r"(?:다|니다|요|이다|했다|하였다|됩니다|입니다|같다|라고|하며|하면|하지만|그래서|그러나)$")
 _RE_HANGUL = re.compile(r"[가-힣]")
 _RE_LATIN = re.compile(r"[A-Za-z]")
+_RE_HEBREW = re.compile(r"[\u0590-\u05FF]")
+_RE_GREEK = re.compile(r"[\u0370-\u03FF\u1F00-\u1FFF]")
 _RE_BULLET_LINE = re.compile(r"^\s*(?:[-•*]|\d+[.)])\s+")
 _RE_KO_SENT_END = re.compile(r"(?:다|니다|요|이다|였다|합니다|입니다|했다|하였다|됩니다|같다|라고|하며|하면|하지만|그래서|그러나)$")
 _RE_EN_SENT_END = re.compile(r"[.!?]$")
@@ -30,6 +32,9 @@ class ParagraphLanguage:
     hangul_count: int
     latin_count: int
     text_length: int
+    hebrew_count: int = 0
+    greek_count: int = 0
+    has_original_language: bool = False
 
 
 def normalize_extracted_text(text: str) -> str:
@@ -142,6 +147,21 @@ def _count_latin(text: str) -> int:
     return len(_RE_LATIN.findall(text))
 
 
+def _count_hebrew(text: str) -> int:
+    return len(_RE_HEBREW.findall(text))
+
+
+def _count_greek(text: str) -> int:
+    return len(_RE_GREEK.findall(text))
+
+
+# Minimum original-language character count before a paragraph is flagged
+# as containing protected Hebrew/Greek content. Low on purpose: even a short
+# insertion like "בָּמָה" or "λόγος" inside Korean/English prose should be
+# protected from mid-word splitting.
+ORIGINAL_LANGUAGE_MIN_CHARS = 3
+
+
 def _clean_line(line: str) -> str:
     return _RE_MULTISPACE.sub(" ", line.strip())
 
@@ -157,36 +177,63 @@ def detect_paragraph_language(
 
     hangul_count = _count_hangul(text)
     latin_count = _count_latin(text)
+    hebrew_count = _count_hebrew(text)
+    greek_count = _count_greek(text)
     text_length = len(text)
     denom = max(hangul_count + latin_count, 1)
     ko_ratio = hangul_count / denom
     en_ratio = latin_count / denom
+    has_original_language = (hebrew_count + greek_count) >= ORIGINAL_LANGUAGE_MIN_CHARS
+
+    def _lang(
+        label: LanguageLabel,
+        ko_ratio: float = ko_ratio,
+        en_ratio: float = en_ratio,
+    ) -> ParagraphLanguage:
+        return ParagraphLanguage(
+            label, ko_ratio, en_ratio, hangul_count, latin_count, text_length,
+            hebrew_count, greek_count, has_original_language,
+        )
 
     if text_length < min_significant_chars:
         if hangul_count and not latin_count:
-            return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+            return _lang("ko")
         if latin_count and not hangul_count:
-            return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+            return _lang("en")
         if hangul_count and latin_count:
-            return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
-        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length)
+            return _lang("mixed")
+        if has_original_language:
+            # Short paragraph that is purely/mostly Hebrew or Greek (e.g. a
+            # standalone lemma or footnote gloss) — no Korean/English present
+            # to dominate, but it is meaningful original-language content,
+            # not noise. Route it through "mixed" so downstream chunking
+            # treats it with the same care as bilingual prose instead of
+            # discarding it under the generic "other" bucket.
+            return ParagraphLanguage("mixed", 0.0, 0.0, hangul_count, latin_count,
+                                      text_length, hebrew_count, greek_count, True)
+        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length,
+                                  hebrew_count, greek_count, has_original_language)
 
     if hangul_count == 0 and latin_count == 0:
-        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length)
+        if has_original_language:
+            return ParagraphLanguage("mixed", 0.0, 0.0, hangul_count, latin_count,
+                                      text_length, hebrew_count, greek_count, True)
+        return ParagraphLanguage("other", 0.0, 0.0, 0, 0, text_length,
+                                  hebrew_count, greek_count, has_original_language)
 
     if hangul_count > 0 and latin_count == 0:
-        return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+        return _lang("ko")
 
     if latin_count > 0 and hangul_count == 0:
-        return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+        return _lang("en")
 
     if ko_ratio >= 1.0 - mixed_threshold:
-        return ParagraphLanguage("ko", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+        return _lang("ko")
 
     if en_ratio >= 1.0 - mixed_threshold:
-        return ParagraphLanguage("en", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+        return _lang("en")
 
-    return ParagraphLanguage("mixed", ko_ratio, en_ratio, hangul_count, latin_count, text_length)
+    return _lang("mixed")
 
 
 def _looks_like_korean_sentence_end(line: str) -> bool:
