@@ -13,6 +13,7 @@ import urllib.error
 import urllib.request
 
 _model = None
+_model_load_failed = False
 _MODEL_IMPORT_ERROR_MSG = (
     "sentence_transformers가 설치되지 않았습니다. pip install sentence-transformers"
 )
@@ -22,14 +23,29 @@ _OLLAMA_TIMEOUT_S = 30
 
 
 def _get_model():
-    """MiniLM(legacy) 모델을 지연 로딩합니다."""
-    global _model
+    """MiniLM(legacy) 모델을 지연 로딩합니다.
+
+    로딩 실패(네트워크 차단, 모델 미설치 등)는 프로세스 수명 동안 고정
+    (sticky)됩니다 — 실패할 때마다 매번 재시도하면 (예: huggingface_hub의
+    재시도/백오프로 인해) 요청당 5초 이상 걸릴 수 있어, 이후 모든 호출이
+    같은 실패를 반복하며 지연되는 것을 방지합니다.
+    """
+    global _model, _model_load_failed
+    if _model_load_failed:
+        raise RuntimeError(
+            "MiniLM 모델 로딩이 이전에 실패했습니다 (이번 프로세스 동안 재시도하지 않음). "
+            "네트워크/모델 캐시 상태를 확인한 뒤 프로세스를 재시작하십시오."
+        )
     if _model is None:
         try:
             from sentence_transformers import SentenceTransformer
             _model = SentenceTransformer("all-MiniLM-L6-v2")
         except ImportError:
+            _model_load_failed = True
             raise ImportError(_MODEL_IMPORT_ERROR_MSG)
+        except Exception as e:
+            _model_load_failed = True
+            raise RuntimeError(f"MiniLM 모델 로딩 실패: {e}") from e
     return _model
 
 
