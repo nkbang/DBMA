@@ -764,7 +764,10 @@ def render_trendy_chat_tab(embed_model: str, gen_model: str, chunk_size: int, ch
             else:
                 st.info("벤치마크 기록이 없습니다.")
     with c4:
-        st.caption(f"Collection: {COLLECTION_NAME}")
+        if feature_enabled("vector_db"):
+            st.caption(f"Collection: {COLLECTION_NAME}")
+        else:
+            st.caption("Collection: N/A (Sprint 1 mode — vector_db disabled)")
 
     if bench_run_clicked:
         st.info("벤치마크를 실행합니다...")
