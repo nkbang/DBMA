@@ -627,6 +627,12 @@ def query_rag(question: str, embed_model: str = DEFAULT_EMBED_MODEL, gen_model: 
         return {"question": question, "answer": "[Sprint 1: RAG disabled]", "contexts": [], "sources": [], "embedding_enabled": False, "store_used": []}
 
     ensure_dirs()
+    # Validate that the generation model actually supports LLM generation (not embeddings)
+    if not feature_enabled("embedding") or not _model_supports_embeddings(gen_model):
+        raise RuntimeError(
+            f"'{gen_model}'은(는) 임베딩을 지원하는 모델이 아닙니다 — "
+            f"LLM generation 모델을 선택해 주세요."
+        )
     embedding_enabled = _model_supports_embeddings(embed_model)
     chroma_sources, qdrant_sources, embed_error = [], [], None
 
@@ -1119,11 +1125,12 @@ def main():
         if feature_enabled("embedding"):
             dynamic_models = list_ollama_models()
             embed_choices = list_ollama_embedding_models() or EMBED_MODEL_OPTIONS
-            gen_choices = dynamic_models or GEN_MODEL_OPTIONS
+            gen_choices = [m for m in dynamic_models if _model_supports_embeddings(m) == False] or GEN_MODEL_OPTIONS
+            # Ensure we have valid default values for both models
             if st.session_state["embed_model"] not in embed_choices:
                 st.session_state["embed_model"] = embed_choices[0]
             if st.session_state["gen_model"] not in gen_choices:
-                st.session_state["gen_model"] = gen_choices[0]
+                st.session_state["gen_model"] = gen_choices[0] if gen_choices else DEFAULT_GEN_MODEL
             st.session_state["embed_model"] = st.selectbox("Embedding model", embed_choices, index=embed_choices.index(st.session_state["embed_model"]))
             st.session_state["gen_model"] = st.selectbox("LLM model", gen_choices, index=gen_choices.index(st.session_state["gen_model"]))
         else:
