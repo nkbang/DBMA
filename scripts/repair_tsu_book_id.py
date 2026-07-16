@@ -371,9 +371,10 @@ def process_dataset(input_path: str, output_mode: str = "dry_run"):
 def main():
     """Main entry point."""
     import argparse
-    
+    from core.config import DEFAULT_TSU_DATASET_PATH
+
     parser = argparse.ArgumentParser(description='PT-METADATA-001: TSU Book Identity Repair')
-    parser.add_argument('--input', default='./output/bench/tsu_dataset.jsonl',
+    parser.add_argument('--input', default=DEFAULT_TSU_DATASET_PATH,
                        help='Path to input TSU dataset JSONL file')
     parser.add_argument('--mode', choices=['dry_run', 'execute', 'validate'], 
                        default='dry_run', help='Execution mode')

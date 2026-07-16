@@ -26,7 +26,13 @@ from core.feature_flags import feature_enabled
 from core.identity_registry import load_identity_registry
 from core.document_context import DocumentContext
 
-_DEFAULT_REGISTRY_PATH = os.path.join("output", "registry", "documents.json")
+from core.config import DEFAULT_OUTPUT_DIR
+
+# [SPRINT17-Phase5-C4.2] Resolves against config.yaml's directories.output_dir
+# instead of a hardcoded "output" literal — same stale-path class of issue as
+# Phase5-C4.1 (get_tsu_status), found while auditing this file's other
+# hardcoded path during that fix.
+_DEFAULT_REGISTRY_PATH = os.path.join(DEFAULT_OUTPUT_DIR, "registry", "documents.json")
 
 
 class ExecutionContext:
@@ -56,9 +62,14 @@ class ExecutionContext:
         """Return the TSU manifest status dict from core.runtime_state.
 
         Does not instantiate RetrievalEngine or touch core.retrieval at all.
+
+        [SPRINT17-Phase5-C4.1] Resolves against config.yaml's
+        directories.output_dir (DEFAULT_OUTPUT_DIR) instead of a hardcoded
+        "output" literal — see Phase5-C4 discovery for why the hardcoded
+        path pointed at a stale, unrelated directory.
         """
         from pathlib import Path
-        return _read_tsu_manifest(Path("output"))
+        return _read_tsu_manifest(Path(DEFAULT_OUTPUT_DIR))
 
     def get_document_state(self, document_id: str) -> Optional[DocumentContext]:
         """Look up a document in the identity registry and return it as a

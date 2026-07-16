@@ -204,8 +204,9 @@ class TestIntegration:
     def test_korean_query_full_pipeline(self):
         """요한복음 3:16 should resolve to JHN through QueryProcessor."""
         from core.retrieval import RetrievalEngine, QueryProcessor
+        from core.config import DEFAULT_TSU_DATASET_PATH
 
-        engine = RetrievalEngine(tsu_dataset_path="output/bench/tsu_dataset.jsonl")
+        engine = RetrievalEngine(tsu_dataset_path=DEFAULT_TSU_DATASET_PATH)
         processor = QueryProcessor(engine)
 
         response = processor.process("요한복음 3:16", query_id="sprint15-int-1", k=5)

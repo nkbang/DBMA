@@ -37,6 +37,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
+from core.config import DEFAULT_TSU_DATASET_PATH
+
 # [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
 logger = logging.getLogger(__name__)
 
@@ -1391,7 +1393,7 @@ class QueryProcessor:
             self.engine = engine
         else:
             self.engine = RetrievalEngine(
-                tsu_dataset_path="output/bench/tsu_dataset.jsonl"
+                tsu_dataset_path=DEFAULT_TSU_DATASET_PATH
             )
         self.cache = EmbeddingCache()
         self.context_assembler = ContextAssembler()
@@ -1446,7 +1448,7 @@ class QueryProcessor:
 
 def run_benchmark_integration(
     gs_path: str | Path = "output/SPRINT5_ENGINEERING_VALIDATION/dbma_gold_standard_v3.json",
-    tsu_path: str | Path = "output/bench/tsu_dataset.jsonl",
+    tsu_path: str | Path = DEFAULT_TSU_DATASET_PATH,
     k_output: int = 10,
 ) -> dict[str, Any]:
     """
@@ -1632,7 +1634,7 @@ if __name__ == "__main__":
     print("DBMA Phase II — Production Retrieval Core")
     print("=" * 50)
 
-    engine = RetrievalEngine(tsu_dataset_path="output/bench/tsu_dataset.jsonl")
+    engine = RetrievalEngine(tsu_dataset_path=DEFAULT_TSU_DATASET_PATH)
     processor = QueryProcessor(engine)
 
     test_query = "What does Romans 5:3 say about suffering and hope?"

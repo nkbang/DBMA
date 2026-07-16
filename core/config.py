@@ -46,6 +46,12 @@ if not os.path.exists(_yaml_raw_dir):
     _yaml_raw_dir = os.path.join(DATA_DIR, "RAW")
 DEFAULT_RAW_DIR = _yaml_raw_dir  # type: ignore[assignment]  # resolved after condition check
 
+# [SPRINT17-Phase5-M1b-0.1] TSU/bench path configuration authority — additive
+# only, not yet referenced by core/retrieval.py or scripts/ (see M1b-0.2+).
+DEFAULT_BENCH_DIR = _yaml_dirs.get("bench_dir", "output/bench")
+DEFAULT_TSU_DATASET_PATH = os.path.join(DEFAULT_BENCH_DIR, "tsu_dataset.jsonl")
+DEFAULT_TSU_MANIFEST_PATH = os.path.join(DEFAULT_BENCH_DIR, "tsu_manifest.json")
+
 # ── 확장자 ───────────────────────────────────────────────
 SUPPORTED_EXTENSIONS = {
     ".pdf",

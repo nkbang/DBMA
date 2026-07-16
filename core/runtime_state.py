@@ -172,7 +172,15 @@ def get_pipeline_status(
     if base_dir is None:
         base_dir = Path.cwd()
     if output_dir is None:
-        output_dir = base_dir / "output"
+        # [SPRINT17-Phase5-C4.1] config.yaml's directories.output_dir is the
+        # single authority for where processing output actually lives — the
+        # previous hardcoded base_dir/"output" pointed at a stale, unrelated
+        # directory once output_dir was set to "data/제련완성본" (see
+        # Phase5-C4 discovery: output/.batch_state.json and
+        # output/registry/documents.json were day-old snapshots, not the
+        # live state).
+        from core.config import DEFAULT_OUTPUT_DIR
+        output_dir = base_dir / DEFAULT_OUTPUT_DIR
     if event_log_path is None:
         event_log_path = base_dir / "logs" / "project_events.jsonl"
 

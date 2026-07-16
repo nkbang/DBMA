@@ -35,6 +35,7 @@ from typing import Any, Optional
 from core.identity_registry import load_identity_registry
 from core.document_identity import generate_chunk_id
 from core.utils import make_safe_stem
+from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH
 
 _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
 
@@ -131,14 +132,14 @@ def write_manifest(records: list[dict[str, Any]], registry: dict, manifest_path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build TSU v1 dataset from the identity registry.")
-    parser.add_argument("--output-dir", default="output", help="Processing output directory (default: output)")
+    parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR, help=f"Processing output directory (default: {DEFAULT_OUTPUT_DIR})")
     parser.add_argument("--dry-run", action="store_true", help="Build in memory only; do not write files")
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
     registry_path = output_dir / "registry" / "documents.json"
-    dataset_path = Path("output/bench/tsu_dataset.jsonl")
-    manifest_path = Path("output/bench/tsu_manifest.json")
+    dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
+    manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
 
     registry = load_identity_registry(str(registry_path))
     records = build_tsu_records(registry, output_dir)
