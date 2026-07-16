@@ -102,6 +102,16 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                 "content": content,
                 "verse_mapping": {},
                 "themes": [],
+                # [SPRINT17-Phase5-C1] M1-a — propagate document metadata
+                # already present in identity_registry/DocumentContext
+                # (Phase1-2) into TSU records, closing the gap identified in
+                # Phase5-C0 preflight (dbma.py's 2026-07-15 metadata commits
+                # were write-only and never consumed; this is the intended
+                # target path instead).
+                "title": doc.get("title"),
+                "author": doc.get("author"),
+                "chapter": doc.get("chapter"),
+                "page": doc.get("page"),
             })
 
     return records

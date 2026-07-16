@@ -13,7 +13,8 @@ from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from ui.components.tables import document_table, search_results_table
 from ui.state.store import StateStore
-from core.config import DEFAULT_RAW_DIR
+from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.identity_registry import load_identity_registry, save_identity_registry
 
 
 def render_library_page() -> None:
@@ -172,7 +173,15 @@ def _render_document_detail_panel() -> None:
     with col2:
         st.markdown(f"**경로:** {selected_doc.get('path', 'N/A')}")
         st.markdown(f"**수정일:** {selected_doc.get('modified', 'N/A')}")
-    
+
+    # ── Registry Metadata Edit (SPRINT17-Phase5-C2 M2-b) ────────
+    # Only shown once the selected raw file has been processed into a
+    # registry record — matches by filename (source_file), same identifier
+    # core/processing.py stores. Manual fallback for documents where
+    # automatic extraction (PDF docinfo/DOCX core_properties) is missing
+    # or wrong.
+    _render_metadata_edit_form(selected_doc.get("title", ""))
+
     # Add clear selection button — uses on_click callback for full page sync
     st.button(
         "✕ 선택 해제",
@@ -181,6 +190,71 @@ def _render_document_detail_panel() -> None:
         use_container_width=True,
         on_click=_clear_document_selection,
     )
+
+
+def _registry_path() -> Path:
+    return Path(DEFAULT_OUTPUT_DIR) / "registry" / "documents.json"
+
+
+def _find_registry_record(source_filename: str) -> "tuple[Optional[str], Optional[dict]]":
+    """Find the registry record whose source_file matches the given filename.
+
+    Returns (document_id, record) or (None, None) if not found/not yet processed.
+    """
+    registry_path = _registry_path()
+    if not registry_path.exists():
+        return None, None
+    registry = load_identity_registry(str(registry_path))
+    for doc_id, record in registry.get("documents", {}).items():
+        if record.get("source_file") == source_filename:
+            return doc_id, record
+    return None, None
+
+
+def _render_metadata_edit_form(source_filename: str) -> None:
+    """Render an editable title/author/chapter/page form for a processed
+    document and persist edits back to the identity registry on save.
+    """
+    document_id, record = _find_registry_record(source_filename)
+    if document_id is None:
+        st.caption("ℹ️ 아직 처리되지 않은 문서입니다 — 메타데이터 수정은 처리 완료 후 가능합니다.")
+        return
+
+    with st.expander("📝 문서 메타데이터 수정 (title / author / chapter / page)", expanded=False):
+        with st.form(key=f"metadata_edit_form_{document_id}"):
+            new_title = st.text_input("제목 (title)", value=record.get("title") or "")
+            new_author = st.text_input("저자 (author)", value=record.get("author") or "")
+            c1, c2 = st.columns(2)
+            with c1:
+                chapter_str = st.text_input("장 (chapter)", value=str(record.get("chapter")) if record.get("chapter") is not None else "")
+            with c2:
+                page_str = st.text_input("페이지 (page)", value=str(record.get("page")) if record.get("page") is not None else "")
+            submitted = st.form_submit_button("저장", use_container_width=True)
+
+        if submitted:
+            registry_path = _registry_path()
+            registry = load_identity_registry(str(registry_path))
+            target = registry.get("documents", {}).get(document_id)
+            if target is None:
+                st.error("저장 실패: registry에서 문서를 다시 찾지 못했습니다.")
+                return
+            target["title"] = new_title.strip() or None
+            target["author"] = new_author.strip() or None
+            try:
+                target["chapter"] = int(chapter_str) if chapter_str.strip() else None
+            except ValueError:
+                st.error("장(chapter)은 숫자여야 합니다.")
+                return
+            try:
+                target["page"] = int(page_str) if page_str.strip() else None
+            except ValueError:
+                st.error("페이지(page)는 숫자여야 합니다.")
+                return
+            if save_identity_registry(registry, str(registry_path)):
+                st.success("저장되었습니다.")
+                st.rerun()
+            else:
+                st.error("registry 저장에 실패했습니다.")
 
 
 def _clear_selected_document() -> None:

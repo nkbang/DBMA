@@ -459,6 +459,10 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
         full_text = raw_result.get("text", "") or ""
         is_ocr = raw_result.get("is_ocr", use_ocr)
+        # [SPRINT17-Phase5-C2] M2-a — title/author from the source file's own
+        # embedded metadata (PDF docinfo / DOCX core_properties), when present.
+        extracted_title = raw_result.get("title")
+        extracted_author = raw_result.get("author")
 
         # [SPRINT15-DEBUG] extract success/fail 구분
         if full_text:
@@ -532,6 +536,8 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             source_file=source_name,
             source_type=ext,
             is_ocr=is_ocr,
+            title=extracted_title,
+            author=extracted_author,
         )
 
         # ── [PT-PROCESSING-012] Incremental ingest decision gate ────
@@ -637,6 +643,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             language=language, noise_score=noise["score"],
             noise_mode=noise.get("mode", "-"), source_type=ext,
             is_ocr=is_ocr, chunk_count=0,  # Will be updated after chunking
+            title=extracted_title, author=extracted_author,
         )
 
         md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language, document_meta)

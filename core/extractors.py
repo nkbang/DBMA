@@ -105,6 +105,35 @@ def extract_text_from_md(path: str) -> str:
     return read_text_file(path).strip()
 
 
+def _extract_pdf_title_author(path: str) -> "tuple[Optional[str], Optional[str]]":
+    """PDF 내장 메타데이터(title/author)를 읽는다. 실패/부재 시 (None, None)."""
+    if not _HAS_PYMUPDF:
+        return None, None
+    try:
+        doc = _fitz.open(path)
+        meta = doc.metadata or {}
+        doc.close()
+        title = (meta.get("title") or "").strip() or None
+        author = (meta.get("author") or "").strip() or None
+        return title, author
+    except Exception as e:
+        logger.warning(f"[METADATA] PDF 메타데이터 추출 실패 ({os.path.basename(path)}): {e}")
+        return None, None
+
+
+def _extract_docx_title_author(path: str) -> "tuple[Optional[str], Optional[str]]":
+    """DOCX core_properties(title/author)를 읽는다. 실패/부재 시 (None, None)."""
+    try:
+        doc = Document(path)
+        props = doc.core_properties
+        title = (props.title or "").strip() or None
+        author = (props.author or "").strip() or None
+        return title, author
+    except Exception as e:
+        logger.warning(f"[METADATA] DOCX 메타데이터 추출 실패 ({os.path.basename(path)}): {e}")
+        return None, None
+
+
 def extract_text_from_docx(path: str) -> str:
     """
     BUG-10 fix: doc.paragraphs 뿐 아니라 표(table) 셀 텍스트도 추출.
@@ -451,22 +480,30 @@ def extract_text_from_file(
         use_ocr:   True 이면 Tesseract OCR 활성화
 
     Returns:
-        dict: {"text": str, "is_ocr": bool, "source_type": str}
+        dict: {"text": str, "is_ocr": bool, "source_type": str,
+               "title": Optional[str], "author": Optional[str]}
+        title/author come from the source file's own embedded metadata
+        (PDF docinfo / DOCX core_properties) when present; None otherwise —
+        never inferred from filename or content (SPRINT17-Phase5-C2 M2-a).
     """
     ext = os.path.splitext(path)[1].lower()
 
     text = ""
     is_ocr = False
+    title: Optional[str] = None
+    author: Optional[str] = None
 
     if ext == ".pdf":
         text = extract_text_from_pdf(path, converter=converter, use_ocr=use_ocr)
         is_ocr = use_ocr or _detect_ocr_flag(converter) if converter else use_ocr
+        title, author = _extract_pdf_title_author(path)
     elif ext == ".txt":
         text = extract_text_from_txt(path)
     elif ext == ".md":
         text = extract_text_from_md(path)
     elif ext == ".docx":
         text = extract_text_from_docx(path)
+        title, author = _extract_docx_title_author(path)
     elif ext == ".epub":
         text = extract_text_from_epub(path)
     elif ext in (".html", ".htm"):
@@ -479,4 +516,7 @@ def extract_text_from_file(
             f"지원 형식: pdf, txt, md, docx, epub, html, htm, rtf"
         )
 
-    return {"text": text, "is_ocr": is_ocr, "source_type": ext.lstrip(".")}
+    return {
+        "text": text, "is_ocr": is_ocr, "source_type": ext.lstrip("."),
+        "title": title, "author": author,
+    }
