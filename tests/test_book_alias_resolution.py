@@ -101,6 +101,13 @@ class TestQueryParserAliasResolution:
         assert len(refs) > 0
         assert refs[0].book_id == "MAT"
 
+    def test_korean_mark_resolution(self):
+        """마가복음 (SPRINT17-Phase6A-2 — previously unmapped, only 마르코복음
+        was listed) should resolve to MRK, not MAT."""
+        refs = self.parser._extract_scripture_refs("마가복음 4:9")
+        assert len(refs) > 0
+        assert refs[0].book_id == "MRK"
+
     def test_korean_1corinthians_resolution(self):
         """고린도전서 should resolve to 1CO."""
         refs = self.parser._extract_scripture_refs("고린도전서 13:4")
