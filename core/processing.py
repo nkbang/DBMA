@@ -36,7 +36,12 @@ from core.document_identity import (
     compute_content_hash,
     generate_chunk_id,
     build_document_metadata,
+    generate_processing_timestamp,
 )
+
+# [SPRINT17-Phase1-B-2] DocumentContext — additive only, not yet wired into
+# metadata/registry flow (see docs/architecture/DBMA-SPRINT17-Implementation-Plan-v1.md Phase 2)
+from core.document_context import DocumentContext
 
 # [PT-PROCESSING-010/012] Identity registry + incremental ingest
 from core.identity_registry import (
@@ -518,6 +523,17 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         file_hash = compute_content_hash(final_text)
         emit("identity", f"Document identity: {document_id[:16]}...", 0.42)
 
+        # [SPRINT17-Phase1-B-2] DocumentContext instance — created for future
+        # Phase 2 wiring only. Not read anywhere below in this function yet;
+        # build_document_metadata()/registry flow remain the source of truth.
+        _document_context = DocumentContext(
+            document_id=document_id,
+            file_hash=file_hash,
+            source_file=source_name,
+            source_type=ext,
+            is_ocr=is_ocr,
+        )
+
         # ── [PT-PROCESSING-012] Incremental ingest decision gate ────
         registry_dir = os.path.join(output_dir, "registry")
         registry_path = os.path.join(registry_dir, "documents.json")
@@ -529,6 +545,29 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         if decision == "SKIP":
             _prev_src = existing_record.get("source_file", "") if existing_record else ""
             emit("skip", f"UNCHANGED: {_prev_src or source_name}", 1.0, level="ok")
+
+            # [SPRINT17-Phase2-C] Synchronize DocumentContext from existing
+            # registry data on the SKIP path — this branch never runs the
+            # PROCESS-path sync block below, so without this the context
+            # would stay frozen at its Point A construction values. Read-only
+            # copy from existing_record; does not write back to the registry.
+            if existing_record:
+                _document_context.title = existing_record.get("title")
+                _document_context.author = existing_record.get("author")
+                _document_context.book = existing_record.get("book")
+                _document_context.chapter = existing_record.get("chapter")
+                _document_context.page = existing_record.get("page")
+                _document_context.batch_id = existing_record.get("batch_id")
+                _document_context.language = existing_record.get("language", _document_context.language)
+                _document_context.noise_score = existing_record.get("noise_score", _document_context.noise_score)
+                _document_context.noise_mode = existing_record.get("noise_mode", _document_context.noise_mode)
+                _document_context.chunk_count = existing_record.get("chunk_count", _document_context.chunk_count)
+                _document_context.ingest_status = existing_record.get("ingest_status", _document_context.ingest_status)
+                _document_context.retry_count = existing_record.get("retry_count", _document_context.retry_count)
+                _document_context.last_failure_reason = existing_record.get("last_failure_reason")
+                if "pipeline_flags" in existing_record:
+                    _document_context.pipeline_flags = dict(existing_record["pipeline_flags"])
+                _document_context.lifecycle_state = "SKIPPED"
             # [FIX] Ensure markdown output exists for SKIP documents — save if not already present
             md_output_dir = Path(output_dir)
             md_output_dir.mkdir(parents=True, exist_ok=True)
@@ -688,12 +727,25 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         emit("copy_done", f"원본 파일 복사 완료: {copied_to} (원본은 RAW에 유지)", 0.99)
 
         # ── [PT-PROCESSING-008] Complete Document Metadata (Point C) ──
-        document_meta = build_document_metadata(
-            content=final_text, source_file=source_name,
-            language=language, noise_score=noise["score"],
-            noise_mode=noise.get("mode", "-"), source_type=ext,
-            is_ocr=is_ocr, chunk_count=len(chunks),
-        )
+        # [SPRINT17-Phase1-B-3b] Sync finalized fields into DocumentContext
+        # before it becomes the metadata source below (Phase2-A Step 1).
+        _document_context.language = language
+        _document_context.noise_score = noise["score"]
+        _document_context.noise_mode = noise.get("mode", "-")
+        _document_context.source_type = ext
+        _document_context.is_ocr = is_ocr
+        _document_context.chunk_count = len(chunks)
+        # [SPRINT17-Phase2-B] registered_at is a distinct concept from
+        # created_at (which stays immutable, set once at Point A — see
+        # DocumentContext.__post_init__). registered_at marks this specific
+        # registration moment and is populated immediately before
+        # register_document() below.
+        _document_context.registered_at = generate_processing_timestamp()
+
+        # [SPRINT17-Phase2-A] DocumentContext is now the metadata source for
+        # register_document() — build_document_metadata() is no longer called
+        # at this point (still used at Point C-1 for save_md_with_language()).
+        document_meta = _document_context.to_metadata_dict()
 
         # ── [PT-PROCESSING-012] Update content hash on success ──────
         _hash_updated = update_content_hash(_registry, document_id, file_hash)
