@@ -37,9 +37,35 @@ from core.identity_registry import load_identity_registry
 from core.document_identity import generate_chunk_id
 from core.utils import make_safe_stem
 from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH
-from core.retrieval import NAME_TO_BOOK_ID
+from core.retrieval import NAME_TO_BOOK_ID, QueryParser
 
 _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
+
+# [SPRINT18-C] Reuses the existing, already-stabilized scripture reference
+# parsers (SPRINT18-A/B-1) against chunk *content* instead of query text —
+# no new parsing logic is introduced. `core.retrieval.QueryParser` is the
+# production entry point (module-level rebind to EnhancedQueryParser at the
+# bottom of core/retrieval.py), so calling it here exercises the exact same
+# combined extraction (colon form + chapter-only form) that already powers
+# query-time parsing. One shared instance, since its alias cache is built
+# lazily and reused across calls — constructing it once for the whole batch
+# run avoids rebuilding that cache per chunk.
+_reference_parser = QueryParser()
+
+
+def _resolve_chapter(content: str) -> Optional[int]:
+    """Detect a chapter number from chunk content via the existing
+    scripture reference parser. Returns the chapter of the first valid
+    ScriptureReference found, or None if no reference is detected —
+    never inferred/guessed (same "unknown = None" principle as
+    _resolve_book_id() above).
+    """
+    if not content:
+        return None
+    refs = _reference_parser.parse(content).scripture_refs
+    if refs:
+        return refs[0].chapter
+    return None
 
 
 def _resolve_book_id(source_file: str) -> Optional[str]:
@@ -144,12 +170,26 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
 
         for idx, chunk_id in enumerate(chunk_ids):
             content = chunk_texts[idx] if idx < len(chunk_texts) else ""
+
+            # [SPRINT18-C] verse_mapping is where RetrievalEngine actually
+            # reads chapter from (_metadata_filter()/_scripture_alignment_score()
+            # both read verse_mapping.get("chapter"), never the sibling
+            # top-level "chapter" field below, which is unrelated
+            # document-level metadata from the registry — see Phase18-C
+            # Preflight for the schema-mismatch finding this fixes).
+            verse_mapping: dict[str, Any] = {}
+            if book_id != "UNK":
+                verse_mapping["book_id"] = book_id
+                chapter = _resolve_chapter(content)
+                if chapter is not None:
+                    verse_mapping["chapter"] = chapter
+
             records.append({
                 "tsu_id": f"TSU-{book_id}-{len(records) + 1:06d}",
                 "document_id": document_id,
                 "chunk_id": chunk_id,
                 "content": content,
-                "verse_mapping": {"book_id": book_id} if book_id != "UNK" else {},
+                "verse_mapping": verse_mapping,
                 "themes": [],
                 # [SPRINT17-Phase5-C1] M1-a — propagate document metadata
                 # already present in identity_registry/DocumentContext
