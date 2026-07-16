@@ -382,9 +382,34 @@ class EnhancedBookDetector:
 
         # Step 4: Check NAME_TO_BOOK_ID directly for Korean entries (e.g., "창세기" -> GEN)
         # This catches Korean names that exist only in the base dict, not in _KOREAN_FULL_NAMES
+        # [SPRINT18-B-1] single-character alias suppression: this loop had no
+        # minimum-length guard, unlike Step 5 below (min_len=6 for Korean,
+        # min_len=3 for English) \u2014 a real policy divergence between the two
+        # standalone-book detectors on the same production path
+        # (core.retrieval.QueryParser._detect_books_standalone(), fixed
+        # separately, and this method). A lone Hangul syllable (e.g. "\uC694",
+        # "\uB9C8") is too ambiguous to trust standalone \u2014 it was matching
+        # substrings of unrelated words ("\uB9C8" inside "\uB9C8\uAC00\uBCF5\uC74C" wrongly
+        # adding MAT; "\uC694" inside "\uD544\uC694\uD55C\uAC00" wrongly adding JHN/JOEL),
+        # confirmed via SPRINT17 Book-level Benchmark and reproduced in the
+        # live Chat UI. Same minimum-length-2 policy as Step 5, for
+        # consistency between the two detectors.
         for name, book_id in NAME_TO_BOOK_ID.items():
+            if len(name) < 2:
+                continue
             if any('\uAC00' <= c <= '\uDBFF' for c in name):
-                if name.lower() in cleaned_query and book_id not in seen:
+                if book_id in seen:
+                    continue
+                idx = cleaned_query.find(name.lower())
+                # [SPRINT18-B-1] Leading word-boundary check: reject a match
+                # whose preceding character is alphanumeric \u2014 catches a
+                # legitimate 2+ char alias embedded mid-word (e.g. "\uC694\uD55C"
+                # inside "\uD544\uC694\uD55C\uAC00") that the length guard above does not
+                # filter, mirroring the same check in
+                # core.retrieval.QueryParser._detect_books_standalone().
+                # Trailing side deliberately unchecked: Korean particles
+                # (\uC744/\uB97C/\uC774/\uAC00/...) attach with no space (e.g. "\uC694\uD55C\uBCF5\uC74C\uC744").
+                if idx != -1 and (idx == 0 or not cleaned_query[idx - 1].isalnum()):
                     seen.add(book_id)
                     result.append(book_id)
 

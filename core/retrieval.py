@@ -464,26 +464,83 @@ class QueryParser:
     def _detect_books_standalone(self, query: str) -> list[str]:
         """Detect BOOK IDs from a query WITHOUT requiring chapter:verse.
 
-        Scans the entire query for known EN + KO aliases using longest-match-first strategy.
-        Returns unique book IDs in order of first appearance.
+        [SPRINT18-B-1] Matching priority (longest-match-first, actually
+        enforced — previously the docstring claimed this but the
+        implementation only sorted candidates by length without ever
+        suppressing shorter overlapping matches, so e.g. "마가복음"
+        (a valid 4-char MRK alias) also matched the single-char MAT alias
+        "마" it happens to contain, silently adding MAT to detected_books.
+        Confirmed root cause of a JHN/MAT/JOEL contamination bug found via
+        SPRINT17 Book-level Benchmark, reproduced in the live Chat UI):
+
+          1. Aliases are tried longest-first (sorted by length descending).
+          2. Once a span of the (cleaned) query text is claimed by a match,
+             any shorter alias whose occurrence falls entirely within an
+             already-claimed span is suppressed — matching is no longer
+             "any substring present", it is "first (longest) claim wins
+             per text span".
+          3. Aliases shorter than 2 characters are excluded from the
+             candidate list entirely — a lone Hangul syllable (e.g. "요",
+             "마") is inherently too ambiguous to trust as a standalone
+             book signal. A full scripture reference with a syllable-length
+             book abbreviation (e.g. "요 3:16") is still handled correctly
+             by _extract_scripture_refs()/_resolve_book_name(), which is a
+             separate, stricter regex-anchored path unaffected by this
+             method or this exclusion.
+          4. A match is also rejected if the character immediately before
+             it is alphanumeric (Hangul syllables count as alphanumeric in
+             Python) — this catches a 2+ char alias embedded mid-word
+             rather than filtered by (3), e.g. "요한" (a legitimate 2-char
+             JHN alias) inside "필요한가" ("necessary" + question ending).
+             The trailing side is deliberately NOT checked: Korean
+             particles (을/를/이/가/은/는/의/...) attach directly with no
+             separating space (e.g. "요한복음을"), so requiring a
+             non-word character after the match would reject valid,
+             common phrasing.
+
+        Returns unique book IDs in order of (first-claimed-span) appearance.
         """
         if not hasattr(self, '_alias_cache'):
             all_names: list[tuple[str, str]] = []
             for book_id, names in BOOK_ID_TO_NAMES.items():
                 for name in names:
-                    all_names.append((name.lower().strip(), book_id))
+                    cleaned_name = name.lower().strip()
+                    if len(cleaned_name) < 2:
+                        continue
+                    all_names.append((cleaned_name, book_id))
             all_names.sort(key=lambda x: len(x[0]), reverse=True)
             self._alias_cache = all_names
 
-        result: list[str] = []
         cleaned = re.sub(r'\d+장|\d+\s*:?\s*\d*', '', query.lower()).strip()
 
+        claimed = [False] * len(cleaned)
         seen: set[str] = set()
+        result: list[str] = []
+
         for alias, book_id in self._alias_cache:
-            if alias in cleaned:
-                if book_id not in seen:
-                    seen.add(book_id)
-                    result.append(book_id)
+            start = 0
+            while True:
+                idx = cleaned.find(alias, start)
+                if idx == -1:
+                    break
+                span = range(idx, idx + len(alias))
+                # Leading word-boundary check: a Hangul/alnum character
+                # immediately before the match means the alias is embedded
+                # mid-word (e.g. "요한" inside "필요한가") rather than a
+                # genuine standalone book reference — reject it. Trailing
+                # side is deliberately left unchecked: Korean particles
+                # (을/를/이/가/은/는/의/...) attach directly with no space
+                # (e.g. "요한복음을"), so requiring a non-word character
+                # after the match would reject valid, common phrasing.
+                leading_ok = idx == 0 or not cleaned[idx - 1].isalnum()
+                if leading_ok and not any(claimed[i] for i in span):
+                    for i in span:
+                        claimed[i] = True
+                    if book_id not in seen:
+                        seen.add(book_id)
+                        result.append(book_id)
+                start = idx + 1
+
         return result
 
     def _resolve_book_name(self, name: str) -> Optional[str]:
