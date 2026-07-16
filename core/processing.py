@@ -592,6 +592,14 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # [SPRINT15-DEBUG] save_md_with_language 호출 전
         logger.info("[SPRINT15-DEBUG] BEFORE save_md_with_language | file=%s output_dir=%s stem=%s", source_name, output_dir, stem)
 
+        # [PT-PROCESSING-008] Complete Document Metadata (Point C) - define before use
+        document_meta = build_document_metadata(
+            content=final_text, source_file=source_name,
+            language=language, noise_score=noise["score"],
+            noise_mode=noise.get("mode", "-"), source_type=ext,
+            is_ocr=is_ocr, chunk_count=0,  # Will be updated after chunking
+        )
+
         md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language, document_meta)
 
         # [SPRINT15-DEBUG] save_md_with_language 호출 후
