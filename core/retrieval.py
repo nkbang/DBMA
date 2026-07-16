@@ -401,8 +401,22 @@ class QueryParser:
                 ))
 
         # Pattern 2: Abbreviated book name + chapter:verse (e.g., "Rom 5:3", "Gen 1:1")
+        #
+        # [SPRINT18-A] Whitespace made optional (\s+ -> \s*) so no-space
+        # short-form references like "요3:16" (vs. "요 3:16") also match.
+        # The trailing \b was dropped rather than kept: Hangul syllables
+        # and digits are both \w in Python's Unicode-aware regex, so
+        # "요" immediately followed by "3" never had a \b between them in
+        # the first place — \b\s+ never actually required a space for
+        # Korean aliases, it silently just never matched the no-space
+        # form at all. The leading \b is kept and still does the real
+        # work: "필요3:16" does not match because "필" and "요" are both
+        # \w with no boundary between them, so the alias itself can't
+        # start mid-word — the immediate (\d+): requirement after the
+        # alias (with optional whitespace) is specific enough on its own
+        # that a trailing \b is not needed for disambiguation.
         abbr_pattern = re.compile(
-            r'\b(' + '|'.join(NAME_TO_BOOK_ID.keys()) + r')\b\s+(\d+):(\d+)(?:-(\d+))?',
+            r'\b(' + '|'.join(NAME_TO_BOOK_ID.keys()) + r')\s*(\d+):(\d+)(?:-(\d+))?',
             re.IGNORECASE
         )
 

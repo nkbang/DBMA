@@ -591,7 +591,26 @@ class EnhancedReferenceParser:
                 verse_end=verse_end,
             ))
 
-        return refs
+        # [SPRINT18-A] Dedupe within this method's own output. The English
+        # chapter-only pattern, the Korean-abbreviation pattern, and the
+        # Korean-full-name pattern above are three independent regex scans
+        # over the same query — a query like "요한복음 3장 16절" matches
+        # both the abbreviation pattern (KO_ABBR_TO_BOOK has "요한복음" as
+        # a key) and the full-name pattern (_KOREAN_FULL_NAMES also has
+        # it), producing two identical ScriptureReference entries. The
+        # caller (EnhancedQueryParser.parse()) already applies its own
+        # cross-layer dedup before this reaches ParsedQuery, which is why
+        # the duplication was invisible in production output — but this
+        # method should not depend on that caller-side cleanup to be
+        # internally consistent on its own.
+        seen: set[tuple] = set()
+        deduped: list[ScriptureReference] = []
+        for ref in refs:
+            key = (ref.book_id, ref.chapter, ref.verse_start, ref.verse_end)
+            if key not in seen:
+                seen.add(key)
+                deduped.append(ref)
+        return deduped
 
 
 # ============================================================
