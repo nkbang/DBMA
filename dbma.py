@@ -531,6 +531,31 @@ def query_qdrant(question: str, top_k: int = RAG_TOP_K, collection_name: str = "
 # SPRINT 1 DISABLED — Dual backend embedding
 # ═══════════════════════════════════════════════════════════
 
+# [RC-HOTFIX-02] Ollama's llama-server runner is started with a fixed
+# physical batch size (observed: -b 2048 -ub 2048 in ~/.ollama/logs/server.log).
+# Requests whose token count exceeds this get rejected repeatedly, which was
+# observed to eventually kill the runner process ("signal: killed"); any
+# request landing during its restart window then fails with a raw
+# "Post .../tokenize: EOF" error. _MAX_SAFE_EMBED_TOKENS keeps a safety
+# margin under that limit. 4 chars/token is a rough, model-agnostic estimate
+# (not an exact tokenizer) — good enough for a "reject before sending"
+# guard, not for precise accounting.
+_APPROX_CHARS_PER_TOKEN = 4
+_MAX_SAFE_EMBED_TOKENS = 1800
+
+# Only these error patterns are treated as transient/retryable — a wrong
+# model name, an oversized-input rejection, etc. will not be fixed by
+# retrying and must fail immediately instead.
+_RETRYABLE_ERROR_PATTERNS = ("eof", "connection", "timeout", "500")
+_EMBED_MAX_ATTEMPTS = 3
+_EMBED_BACKOFF_SECONDS = (1, 2, 4)
+
+
+def _is_retryable_ollama_error(exc: Exception) -> bool:
+    msg = str(exc).lower()
+    return any(pattern in msg for pattern in _RETRYABLE_ERROR_PATTERNS)
+
+
 def _embed_texts(texts: List[str], model: str = DEFAULT_EMBED_MODEL) -> List[List[float]]:
     """Batch embedding via Ollama (SPRINT 1 DISABLED).
 
@@ -551,6 +576,12 @@ def _embed_texts(texts: List[str], model: str = DEFAULT_EMBED_MODEL) -> List[Lis
     loudly so the actual cause (wrong model selected, Ollama unreachable,
     etc.) is visible and fixable. See list_ollama_embedding_models() for
     the dropdown-side fix that filters to embedding-capable models only.
+
+    [RC-HOTFIX-02] Also guards against oversized inputs (rejected by
+    Ollama's runner, see _MAX_SAFE_EMBED_TOKENS above) and retries a small,
+    explicit set of transient failure modes (EOF / connection / timeout /
+    HTTP 500) — never on a wrong-model or oversized-input error, since
+    those will not resolve on retry.
     """
     if not feature_enabled("embedding"):
         return []
@@ -559,14 +590,47 @@ def _embed_texts(texts: List[str], model: str = DEFAULT_EMBED_MODEL) -> List[Lis
             f"'{model}'은(는) 임베딩을 지원하지 않는 모델입니다 — "
             f"사이드바에서 임베딩 모델을 다시 선택해 주세요."
         )
-    try:
-        return ollama.embed(model=model, input=texts)["embeddings"]
-    except Exception as e:
-        logger.error("[_embed_texts] Ollama embed 실패 (model=%s): %s", model, e)
-        raise RuntimeError(
-            f"Ollama 임베딩 호출 실패 (model={model}): {e}. "
-            f"Ollama가 실행 중인지, 해당 모델이 pull되어 있는지 확인하세요."
-        ) from e
+
+    for i, text in enumerate(texts):
+        estimated_tokens = len(text) // _APPROX_CHARS_PER_TOKEN
+        if estimated_tokens > _MAX_SAFE_EMBED_TOKENS:
+            logger.error(
+                "[_embed_texts] input too large (model=%s, index=%d, chars=%d, "
+                "estimated_tokens=%d, limit=%d)",
+                model, i, len(text), estimated_tokens, _MAX_SAFE_EMBED_TOKENS,
+            )
+            raise ValueError(
+                f"임베딩 입력이 너무 큽니다(약 {estimated_tokens} 토큰 추정, "
+                f"안전 한도 {_MAX_SAFE_EMBED_TOKENS} 토큰) — 청크 크기를 줄여 "
+                f"다시 시도하세요. (index={i}, chars={len(text)})"
+            )
+
+    last_exc: Optional[Exception] = None
+    for attempt in range(1, _EMBED_MAX_ATTEMPTS + 1):
+        try:
+            result = ollama.embed(model=model, input=texts)["embeddings"]
+            if attempt > 1:
+                logger.info(
+                    "[_embed_texts] succeeded on attempt %d/%d (model=%s)",
+                    attempt, _EMBED_MAX_ATTEMPTS, model,
+                )
+            return result
+        except Exception as e:
+            last_exc = e
+            total_chars = sum(len(t) for t in texts)
+            logger.error(
+                "[_embed_texts] attempt %d/%d failed (model=%s, texts=%d, "
+                "total_chars=%d): %s",
+                attempt, _EMBED_MAX_ATTEMPTS, model, len(texts), total_chars, e,
+            )
+            if not _is_retryable_ollama_error(e) or attempt == _EMBED_MAX_ATTEMPTS:
+                break
+            time.sleep(_EMBED_BACKOFF_SECONDS[attempt - 1])
+
+    raise RuntimeError(
+        f"Ollama 임베딩 호출 실패 (model={model}): {last_exc}. "
+        f"Ollama가 실행 중인지, 해당 모델이 pull되어 있는지 확인하세요."
+    ) from last_exc
 
 
 def _rag_noise(text: str, file_type: str = "txt", is_ocr: bool = False) -> float:
