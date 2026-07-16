@@ -41,9 +41,12 @@ def _init_chat_state() -> None:
 
 
 def _get_processor() -> QueryProcessor:
-    if "chat_processor" not in st.session_state:
-        st.session_state["chat_processor"] = QueryProcessor()
-    return st.session_state["chat_processor"]
+    # [SPRINT17-Phase5-M1b-2.1] Shared across all pages that need a
+    # QueryProcessor (Research, Chat) — one RetrievalEngine instance per
+    # session instead of one per page.
+    if "shared_query_processor" not in st.session_state:
+        st.session_state["shared_query_processor"] = QueryProcessor()
+    return st.session_state["shared_query_processor"]
 
 
 def _get_generation_service() -> GenerationService:

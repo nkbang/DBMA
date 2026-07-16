@@ -61,11 +61,13 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
     query = query.strip()
 
     try:
-        # Initialize production retrieval processor (cached in session state)
-        if "research_processor" not in st.session_state:
-            st.session_state["research_processor"] = QueryProcessor()
+        # [SPRINT17-Phase5-M1b-2.1] Shared across all pages that need a
+        # QueryProcessor (Research, Chat) — one RetrievalEngine instance
+        # per session instead of one per page.
+        if "shared_query_processor" not in st.session_state:
+            st.session_state["shared_query_processor"] = QueryProcessor()
 
-        processor: QueryProcessor = st.session_state["research_processor"]
+        processor: QueryProcessor = st.session_state["shared_query_processor"]
 
         # Execute retrieval pipeline
         response = processor.process(query, query_id="research-ui", k=top_k)
