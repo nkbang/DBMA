@@ -594,7 +594,29 @@ def build_rag_store(selected_files: Optional[List[str]] = None, input_dir: str =
                 continue
             ids.append(f"{doc['source']}::{j}")
             documents.append(chunk)
-            metadatas.append({"source": doc["source"], "chunk": j, "noise": noise, "len": len(chunk)})
+            metadatas.append({
+                # backward compatibility
+                "source": doc["source"],
+                "chunk": j,
+                
+                # scope control
+                "document_id": doc["source"],
+                "source_file": doc["source"],
+                "source_type": doc.get("source_type", "md"),
+                
+                # document metadata
+                "title": doc.get("title", ""),
+                "author": doc.get("author", ""),
+                "chapter": doc.get("chapter", ""),
+                "page": doc.get("page", ""),
+                
+                # existing ranking metadata
+                "noise": noise,
+                "len": len(chunk),
+                
+                # unique chunk
+                "chunk_id": f"{doc['source']}::{j}"
+            })
 
     result = {"documents": len(docs), "chunks": 0, "indexed": 0, "embed_model": embed_model}
     if not ids:
