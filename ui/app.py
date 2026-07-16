@@ -21,6 +21,7 @@ from ui.pages.library import render_library_page
 from ui.pages.processing import render_processing_page
 from ui.pages.research import render_research_page
 from ui.pages.monitor import render_monitor_page
+from ui.pages.chat import render_chat_page
 
 
 def main() -> None:
@@ -120,6 +121,7 @@ def _render_sidebar() -> str:
             "Library": ("📚", "문서 라이브러리"),
             "Processing": ("📄", "문서 처리"),
             "Research": ("🔬", "연구_workspace"),
+            "Chat": ("💬", "RAG 채팅"),
             "Monitor": ("💚", "시스템 모니터링"),
         }
 
@@ -168,6 +170,7 @@ def _render_page_content(page: str) -> None:
         "Library": render_library_page,
         "Processing": render_processing_page,
         "Research": render_research_page,
+        "Chat": render_chat_page,
         "Monitor": render_monitor_page,
     }
 
