@@ -97,17 +97,45 @@ def _load_batch_state(output_dir: Path) -> Dict[str, Any]:
 
 # ── TSU 데이터셋 판독 ─────────────────────────────────────
 
+def _read_tsu_manifest(output_dir: Path) -> Dict[str, Any]:
+    """TSU manifest(output/bench/tsu_manifest.json) 기반 상태 판독.
+
+    [SPRINT17-RG-6B] output/tsu/tsu_dataset.json 경로는 어떤 생산자도 쓴 적이
+    없는 obsolete 경로였다(SPRINT17-RG-1/RG-2에서 확인). scripts/build_tsu_dataset.py
+    (SPRINT17-RG-6A)가 실제로 쓰는 manifest를 정본으로 삼는다.
+    RetrievalEngine을 인스턴스화하지 않고 manifest 파일만 읽는다.
+    """
+    manifest_path = output_dir / "bench" / "tsu_manifest.json"
+    status: Dict[str, Any] = {
+        "manifest_exists": False,
+        "generated_at": None,
+        "tsu_count": 0,
+        "source_document_count": 0,
+    }
+    if not manifest_path.exists():
+        return status
+    try:
+        data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception:
+        return status
+
+    status["manifest_exists"] = True
+    status["generated_at"] = data.get("generated_at")
+    status["tsu_count"] = data.get("tsu_count", 0)
+    status["source_document_count"] = data.get("source_document_count", 0)
+    return status
+
+
 def _check_tsu_dataset(output_dir: Path) -> tuple[bool, int]:
-    """TSU 데이터셋 존재 여부 + 문서 수."""
-    tsu_path = output_dir / "tsu" / "tsu_dataset.json"
-    if tsu_path.exists():
-        try:
-            data = json.loads(tsu_path.read_text(encoding="utf-8"))
-            doc_count = len(data) if isinstance(data, list) else 0
-            return True, doc_count
-        except Exception:
-            return False, 0
-    return False, 0
+    """TSU 데이터셋 존재 여부 + TSU 개수.
+
+    [SPRINT17-RG-6B] 함수 시그니처(반환 타입 tuple[bool, int])는 하위 호환을
+    위해 그대로 유지한다. 내부 조회 경로만 obsolete했던
+    output/tsu/tsu_dataset.json에서 _read_tsu_manifest()로 교체했다.
+    """
+    status = _read_tsu_manifest(output_dir)
+    exists = status["manifest_exists"] and status["generated_at"] is not None
+    return exists, status["tsu_count"]
 
 
 # ── 벡터DB 인덱스 판독 ─────────────────────────────────────
@@ -157,7 +185,10 @@ def get_pipeline_status(
     failed_count = len(batch_state.get("failed", []))
     
     # TSU 데이터셋 체크
+    # [SPRINT17-RG-6B] tsu_exists/tsu_doc_count는 하위 호환 위해 그대로 사용;
+    # tsu_manifest_status는 상세 detail 문자열 구성에만 추가로 사용한다.
     tsu_exists, tsu_doc_count = _check_tsu_dataset(output_dir)
+    tsu_manifest_status = _read_tsu_manifest(output_dir)
     
     # 벡터DB 인덱스 체크
     vector_index_exists = _check_vector_index(base_dir)
@@ -234,7 +265,11 @@ def get_pipeline_status(
         stage="embedding",
         status=embedding_status,
         progress=embedding_progress,
-        detail=f"TSU: {tsu_doc_count} docs" if tsu_exists else "TSU not found",
+        detail=(
+            f"TSU manifest: {tsu_manifest_status['tsu_count']} TSUs from "
+            f"{tsu_manifest_status['source_document_count']} documents "
+            f"(generated_at={tsu_manifest_status['generated_at']})"
+        ) if tsu_exists else "TSU manifest not found (output/bench/tsu_manifest.json)",
     ))
 
     # 4. 인덱싱 (Indexing)

@@ -12,7 +12,7 @@ from pathlib import Path
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
-from core.runtime_state import get_pipeline_status
+from core.execution_context import ExecutionContext
 
 
 def render_dashboard_page() -> None:
@@ -82,7 +82,7 @@ def _render_corpus_statistics() -> None:
 def _render_pipeline_status() -> None:
     """Render processing pipeline status from runtime state."""
     # Get real pipeline status from engine
-    runtime_stages = get_pipeline_status()
+    runtime_stages = ExecutionContext().get_pipeline_status()
     
     # Korean label mapping for UI
     STAGE_LABELS = {
