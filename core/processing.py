@@ -269,9 +269,11 @@ def _retry_with_backoff(func: Callable[..., _R], *args, max_retries: int = MAX_R
 
 # ── 파일 저장 함수들 ───────────────────────────────────
 
-def save_md_with_language(output_dir, stem, source_name, text, noise, source_type, language):
+def save_md_with_language(output_dir, stem, source_name, text, noise, source_type, language, document_meta=None):
     """Save markdown with language metadata"""
     path = os.path.join(output_dir, f"{stem}.md")
+
+    # Build frontmatter with basic metadata
     frontmatter = [
         "---",
         f"source: {source_name}",
@@ -280,10 +282,20 @@ def save_md_with_language(output_dir, stem, source_name, text, noise, source_typ
         f"created_at: {datetime.datetime.now().isoformat()}",
         f"noise_score: {noise['score']}",
         f"noise_mode: {noise.get('mode', '-')}",
+    ]
+
+    # Add document metadata fields if available
+    if document_meta:
+        for key, value in document_meta.items():
+            if key in ["title", "author", "book", "chapter", "page", "batch_id"]:
+                if value is not None and value != "":
+                    frontmatter.append(f"{key}: {value}")
+
+    frontmatter.extend([
         "---",
         "",
         text,
-    ]
+    ])
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(frontmatter))
     return path
@@ -299,12 +311,12 @@ DEPRECATED_FORMATS_META = "chunks_meta"    # DEPRECATED: will be removed in Spri
 
 def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap):
     """[DEPRECATED for Sprint 1] — kept for backward compatibility.
-    
+
     SPRINT 1 CANONICAL OUTPUT: {stem}.md (produced by save_md_with_language())
-    
+
     To re-enable these deprecated outputs:
         set SPRINT1_ONLY_MD_OUTPUT = False
-    
+
     Args:
         output_dir: Output directory path
         stem: Document stem name
@@ -312,7 +324,7 @@ def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap
         chunks: List of chunk strings
         chunk_size: Chunk size parameter
         chunk_overlap: Chunk overlap parameter
-        
+
     Returns:
         tuple: (txt_path, meta_path) — None paths if SPRINT1_ONLY_MD_OUTPUT is True
     """
@@ -513,7 +525,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
         # Pre-processing: classify ingest decision (PROCESS/SKIP/REPROCESS/RETRY)
         decision, existing_record = classify_ingest_decision(_registry, document_id, file_hash)
-        
+
         if decision == "SKIP":
             _prev_src = existing_record.get("source_file", "") if existing_record else ""
             emit("skip", f"UNCHANGED: {_prev_src or source_name}", 1.0, level="ok")
@@ -523,6 +535,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             _md_path = md_output_dir / f"{stem}.md"
             _prev_hash = existing_record.get("content_hash", "") if existing_record else ""
             if not _md_path.exists() or file_hash != _prev_hash:
+                # For SKIP case, reuse existing metadata fields to preserve title, author, chapter, page
                 _fm = [
                     "---",
                     f"source: {source_name}",
@@ -531,10 +544,19 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                     f"created_at: {datetime.datetime.now().isoformat()}",
                     f"noise_score: {noise['score']}",
                     f"noise_mode: {noise.get('mode', '-')}",
+                ]
+
+                # Add document metadata fields from existing record if available
+                if existing_record:
+                    for key in ["title", "author", "book", "chapter", "page", "batch_id"]:
+                        if key in existing_record and existing_record[key] is not None and existing_record[key] != "":
+                            _fm.append(f"{key}: {existing_record[key]}")
+
+                _fm.extend([
                     "---",
                     "",
                     final_text,
-                ]
+                ])
                 _md_path.write_text("\n".join(_fm), encoding="utf-8")
             artifacts = {**artifacts, "md_path": str(_md_path)}
             return {"success": True, "skipped": True, "ingest_decision": "SKIP", "logs": logs, "metrics": metrics, "artifacts": artifacts}
@@ -570,7 +592,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # [SPRINT15-DEBUG] save_md_with_language 호출 전
         logger.info("[SPRINT15-DEBUG] BEFORE save_md_with_language | file=%s output_dir=%s stem=%s", source_name, output_dir, stem)
 
-        md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language)
+        md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language, document_meta)
 
         # [SPRINT15-DEBUG] save_md_with_language 호출 후
         logger.info("[SPRINT15-DEBUG] AFTER save_md_with_language SUCCESS | file=%s md_path=%s", source_name, md_path)
