@@ -2,10 +2,15 @@
 
 build_tsu_records() previously tagged every TSU record "GEN" regardless
 of actual document content (Dataset Quality Audit finding). This test
-guards _resolve_book_id() against the two concrete regressions found
-while fixing it:
+guards _resolve_book_id() against the regressions found while fixing it:
   1. NFC/NFD Unicode mismatch silently failing all Korean filename matches.
-  2. Single-character alias false positives (e.g. "마가복음" matching "마").
+  2. Single-character alias false positives (a raw substring match would
+     resolve any "마"-containing filename to MAT).
+  3. (Follow-up) "마가복음" (Mark) originally had no matching alias at all
+     in core.retrieval.NAME_TO_BOOK_ID — only "마르코복음" was listed —
+     so real Mark documents fell back to "UNK". "마가복음"/"마가" were
+     added as MRK aliases; this must resolve to MRK now, not None and
+     not MAT.
 """
 
 import sys
@@ -28,9 +33,17 @@ class TestResolveBookId:
         assert nfd_name != "11. 고린도전서.pdf"  # sanity: NFD really differs byte-wise
         assert _resolve_book_id(nfd_name) == "1CO"
 
-    def test_mark_does_not_false_positive_to_matthew(self):
-        """'마가복음' (Mark) contains the single-char MAT alias '마' — must not match."""
-        assert _resolve_book_id("3. 마가복음.pdf") is None
+    def test_mark_resolves_correctly_not_matthew(self):
+        """'마가복음' (Mark) must resolve to MRK, not fall through to the
+        single-char MAT alias '마' (the original false-positive bug) and
+        not fall back to None (the subsequent missing-alias gap)."""
+        assert _resolve_book_id("3. 마가복음.pdf") == "MRK"
+
+    def test_single_char_alias_alone_does_not_match(self):
+        """A filename containing only a single-character alias substring
+        (with no real 2+ char book name present) must not resolve —
+        single-char aliases are excluded from filename matching entirely."""
+        assert _resolve_book_id("마제문서.pdf") is None  # contains "마" only
 
     def test_english_title_with_authors(self):
         assert _resolve_book_id(

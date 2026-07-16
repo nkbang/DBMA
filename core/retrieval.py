@@ -241,7 +241,7 @@ BOOK_ID_TO_NAMES: dict[str, list[str]] = {
     "MAL": ["malachi", "mal", "말라기", "말라"],
     # New Testament — Gospels
     "MAT": ["matthew", "matt", "mt", "mat", "마태복음", "마태", "마타", "마"],
-    "MRK": ["mark", "mk", "mrk", "mar", "마르코복음", "마르코", "막", "막달"],
+    "MRK": ["mark", "mk", "mrk", "mar", "마르코복음", "마르코", "마가복음", "마가", "막", "막달"],
     "LUK": ["luke", "lk", "luk", "루카복음", "루카", "눋", "누가"],
     "JHN": ["john", "jn", "jhn", "요한복음", "요한", "요한", "요복", "요"],
     # New Testament — History
