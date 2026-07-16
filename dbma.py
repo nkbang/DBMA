@@ -375,6 +375,11 @@ def read_indexable_docs(selected_files: Optional[List[str]] = None, input_dir: s
             docs.append({
                 "source": p.name, "text": body,
                 "file_type": meta.get("source_type", "md"),
+                "source_type": meta.get("source_type", "md"),
+                "title": meta.get("title", ""),
+                "author": meta.get("author", ""),
+                "chapter": meta.get("chapter", ""),
+                "page": meta.get("page", ""),
                 "is_ocr": meta.get("noise_mode", "") == "pdf_ocr",
             })
         except Exception:
