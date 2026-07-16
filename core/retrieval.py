@@ -173,6 +173,7 @@ class ResponsePackage:
     scripture_context: list[str] = field(default_factory=list)
     theological_summary: str = ""
     llm_context_block: str = ""
+    citations: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -185,6 +186,7 @@ class ResponsePackage:
             "scripture_context": self.scripture_context[:5],
             "theological_summary": self.theological_summary,
             "llm_context_block": self.llm_context_block[:2000],
+            "citations": self.citations,
         }
 
 
@@ -1353,6 +1355,7 @@ class ResponseFormatter:
             scripture_context=scripture_contexts,
             theological_summary=theological_summary,
             llm_context_block=llm_context_block,
+            citations=citations,
         )
 
     def _summarize_theology(self, top_k: list[RankedCandidate]) -> str:
