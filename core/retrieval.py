@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import math
 import os
 import re
@@ -35,6 +36,9 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
+
+# [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
+logger = logging.getLogger(__name__)
 
 
 # ============================================================
@@ -969,6 +973,7 @@ class RetrievalEngine:
         qdrant_url: str = "http://localhost:6333",
         collection_name: str = "dbma_sermon",
     ) -> None:
+        logger.debug("[SPRINT17-RG-3] RetrievalEngine.__init__ entry point hit | tsu_dataset_path=%s", tsu_dataset_path)
         self.tsu_dataset_path = Path(tsu_dataset_path)
         self.candidate_k = candidate_k
         self.qdrant_url = qdrant_url
@@ -1410,6 +1415,7 @@ class QueryProcessor:
         Returns:
             ResponsePackage with all components.
         """
+        logger.debug("[SPRINT17-RG-3] QueryProcessor.process entry point hit | query_id=%s", query_id)
         # 1. Parse query (intent + scripture refs + metadata)
         parsed_query = self.parser.parse(query)
 

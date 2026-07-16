@@ -5,6 +5,11 @@ core/ingest.py — Qdrant 문서 삽입 스크립트 (안전한 import)
 insert() 함수를 명시적으로 호출해야 합니다.
 """
 
+import logging
+
+# [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
+logger = logging.getLogger(__name__)
+
 
 def _ensure_qdrant():
     """qdrant_client를 선택적으로 임포트합니다."""
@@ -22,6 +27,7 @@ COLLECTION = "dbma_sermon"
 
 def insert(doc_id: str, text: str, url: str = DEFAULT_QDRANT_URL) -> dict:
     """문서를 Qdrant에 삽입합니다."""
+    logger.debug("[SPRINT17-RG-3] core.ingest.insert entry point hit | doc_id=%s", doc_id)
     from core.embedder import embed
     QdrantClient, PointStruct = _ensure_qdrant()
     client = QdrantClient(url=url)

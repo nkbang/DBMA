@@ -9,12 +9,18 @@ core/qdrant_init.py — Qdrant 컬렉션 초기화 스크립트
     from core.qdrant_init import init_collection; init_collection()  # 프로그램틱
 """
 
+import logging
+
+# [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
+logger = logging.getLogger(__name__)
+
 COLLECTION = "dbma_sermon"
 DEFAULT_QDRANT_URL = "http://localhost:6333"
 
 
 def init_collection(url: str = DEFAULT_QDRANT_URL) -> None:
     """Qdrant 컬렉션을 초기화합니다 (안전한 함수형 API)."""
+    logger.debug("[SPRINT17-RG-3] core.qdrant_init.init_collection entry point hit | url=%s", url)
     try:
         from qdrant_client import QdrantClient
         from qdrant_client.models import VectorParams, Distance

@@ -5,7 +5,12 @@ search.py — Qdrant 벡터 검색 + 메타데이터 반환 (안전한 import)
 search() 함수 호출 시에만 연결합니다.
 """
 
+import logging
+
 from core.embedder import embed
+
+# [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
+logger = logging.getLogger(__name__)
 
 COLLECTION_NAME = "dbma_sermon"
 DEFAULT_QDRANT_URL = "http://localhost:6333"
@@ -24,6 +29,7 @@ def search(query: str, limit: int = 5, url: str = DEFAULT_QDRANT_URL) -> list:
         [{"score": float, "text": str, "source": str,
           "section": str, "header_level": int, "filepath": str}, ...]
     """
+    logger.debug("[SPRINT17-RG-3] core.search.search entry point hit | query=%s", query)
     from qdrant_client import QdrantClient
 
     v = embed(query)
