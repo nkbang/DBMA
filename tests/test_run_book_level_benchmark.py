@@ -50,6 +50,49 @@ class TestRunBenchmark:
         assert "error" in result
 
 
+class TestDiagnosticBreakdowns:
+    """SPRINT17-Phase6B (closing run) — per_language/per_intent/failed_queries
+    were added so a full benchmark run doubles as Gold Standard validation
+    (are failures concentrated in one language/intent/book?) rather than
+    only producing an aggregate KPI number."""
+
+    def test_result_shape_has_diagnostic_keys(self, tmp_path, monkeypatch):
+        import json
+
+        gold_file = tmp_path / "gold.json"
+        gold_file.write_text(json.dumps({
+            "metadata": {"dataset_version": "test"},
+            "queries": [
+                {"id": "Q1", "question": "test", "expected_book_id": "JHN", "language": "en", "intent": "simple_lookup"},
+            ],
+        }), encoding="utf-8")
+
+        class _FakeCandidate:
+            def __init__(self, book_id):
+                self.metadata = {"verse_mapping": {"book_id": book_id}}
+
+        class _FakeResponse:
+            top_k_results = [_FakeCandidate("JHN")]
+
+        class _FakeProcessor:
+            def __init__(self, engine):
+                pass
+
+            def process(self, question, query_id, k):
+                return _FakeResponse()
+
+        import scripts.run_book_level_benchmark as mod
+        monkeypatch.setattr(mod, "RetrievalEngine", lambda tsu_dataset_path: object())
+        monkeypatch.setattr(mod, "QueryProcessor", _FakeProcessor)
+
+        result = mod.run_benchmark(gold_path=str(gold_file))
+        assert "per_language" in result
+        assert "per_intent" in result
+        assert "failed_queries" in result
+        assert result["metrics"]["precision_at_1"] == 1.0
+        assert result["failed_queries"] == []
+
+
 if __name__ == "__main__":
     import pytest
     pytest.main([__file__, "-v"])

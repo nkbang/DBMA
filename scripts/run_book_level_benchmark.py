@@ -74,11 +74,16 @@ def run_benchmark(
     n_queries = 0
     latencies_ms: list[float] = []
     per_book: dict[str, dict[str, int]] = {}
+    per_language: dict[str, dict[str, int]] = {}
+    per_intent: dict[str, dict[str, int]] = {}
+    failed_queries: list[dict[str, Any]] = []
 
     for query in queries:
         qid = query.get("id", "")
         question = query.get("question", "")
         expected_book_id = query.get("expected_book_id", "")
+        language = query.get("language", "unknown")
+        intent = query.get("intent", "unknown")
         if not expected_book_id:
             continue
 
@@ -94,10 +99,26 @@ def run_benchmark(
         n_queries += 1
         book_stats = per_book.setdefault(expected_book_id, {"queries": 0, "hit_at_1": 0})
         book_stats["queries"] += 1
+        lang_stats = per_language.setdefault(language, {"queries": 0, "hit_at_1": 0})
+        lang_stats["queries"] += 1
+        intent_stats = per_intent.setdefault(intent, {"queries": 0, "hit_at_1": 0})
+        intent_stats["queries"] += 1
 
-        if BookEvaluator.is_hit(ranked[0], expected_book_id):
+        top1_hit = BookEvaluator.is_hit(ranked[0], expected_book_id)
+        if top1_hit:
             hit_at_1 += 1
             book_stats["hit_at_1"] += 1
+            lang_stats["hit_at_1"] += 1
+            intent_stats["hit_at_1"] += 1
+        else:
+            failed_queries.append({
+                "id": qid,
+                "question": question,
+                "expected_book_id": expected_book_id,
+                "language": language,
+                "intent": intent,
+                "actual_top1_book_id": BookEvaluator.book_id_of(ranked[0]),
+            })
 
         for r in ranked[:5]:
             if BookEvaluator.is_hit(r, expected_book_id):
@@ -149,6 +170,21 @@ def run_benchmark(
             }
             for book_id, stats in sorted(per_book.items())
         },
+        "per_language": {
+            lang: {
+                "queries": stats["queries"],
+                "precision_at_1": round(stats["hit_at_1"] / stats["queries"], 4) if stats["queries"] else 0.0,
+            }
+            for lang, stats in sorted(per_language.items())
+        },
+        "per_intent": {
+            intent: {
+                "queries": stats["queries"],
+                "precision_at_1": round(stats["hit_at_1"] / stats["queries"], 4) if stats["queries"] else 0.0,
+            }
+            for intent, stats in sorted(per_intent.items())
+        },
+        "failed_queries": failed_queries,
     }
 
 
