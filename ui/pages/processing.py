@@ -165,13 +165,30 @@ def _render_processing_queue() -> None:
 
     files = list(raw_dir.iterdir())
     supported_exts = {".pdf", ".txt", ".md", ".docx"}
-    queued = [f for f in files if f.suffix.lower() in supported_exts]
+    supported = [f for f in files if f.suffix.lower() in supported_exts and f.is_file()]
 
-    if not queued:
+    if not supported:
         st.info("지원되지 않는 파일 유형입니다. (PDF, TXT, MD, DOCX)")
         return
 
-    st.caption(f"대기열: {len(queued)}개 문서")
+    # 이미 처리된 파일(.batch_state.json)은 실제 처리 대상이 아니므로 대기열에서 제외 —
+    # _build_file_list()의 skip 로직과 일치시켜 "대기열 N개 vs 처리할 파일 없음" 불일치 제거.
+    state_file = Path(DEFAULT_OUTPUT_DIR) / ".batch_state.json"
+    processed: set[str] = set()
+    if state_file.exists():
+        try:
+            processed = set(json.loads(state_file.read_text(encoding="utf-8")).get("processed", []))
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    queued = [f for f in supported if f.name not in processed]
+
+    if not queued:
+        st.info(f"대기열: 0개 (전체 {len(supported)}개 모두 처리 완료). "
+                "재처리하려면 아래에서 강제 재처리를 사용하세요.")
+        return
+
+    st.caption(f"대기열: {len(queued)}개 문서 (전체 {len(supported)}개 중 {len(processed & {f.name for f in supported})} 처리 완료)")
 
     for i, f in enumerate(queued[:10]):  # Show max 10
         size_kb = f.stat().st_size / 1024 if f.exists() else 0
