@@ -288,8 +288,8 @@ def _select_document(doc_path: str, doc_title: str, doc_type: str, doc_size: str
     # Write selection to both StateStore (cross-page persistence) and session state (highlight)
     store.set("library_selected_doc", doc)
     st.session_state["_library_selected_path"] = doc_path
-    # Force full page rerun so all visual elements update in sync
-    st.rerun()
+    # Streamlit reruns automatically after an on_click callback returns —
+    # calling st.rerun() inside a callback is a no-op and emits a warning.
 
 
 def _clear_document_selection():
@@ -298,7 +298,7 @@ def _clear_document_selection():
     store.delete("library_selected_doc")
     if "_library_selected_path" in st.session_state:
         del st.session_state["_library_selected_path"]
-    st.rerun()
+    # on_click callback: Streamlit reruns automatically on return (no st.rerun()).
 
 
 def _render_document_rows(documents: list[dict]) -> None:
