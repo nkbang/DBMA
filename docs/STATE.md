@@ -1,12 +1,12 @@
 # DBMA State
 
 ## 버전 상태
-**DBMA v1.1.0 — Architecture Consolidation Release** (Research Grade /
+**DBMA v1.3.0 — Architecture Consolidation Release** (Research Grade /
 Production Candidate). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
 
 ```
-Release State:  v1.1.0 RC READY
+Release State:  v1.3.0 RC READY
 Development:    FROZEN
 Next:           GA validation / tag preparation
 ```
@@ -34,7 +34,7 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 
 ## 프로젝트 진행률
 
-전체 진행률: 95% (SPRINT20-I Architecture Consolidation 완료, v1.1.0 RC 준비)
+전체 진행률: 95% (SPRINT20-I Architecture Consolidation 완료, v1.3.0 RC 준비)
 
 ### 세부 진행
 - Retrieval Engine 단일화 (ADR-001): 100%
@@ -144,7 +144,7 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 - [x] `dbma.py` Legacy Archive 완료 (SPRINT20-I-D, archive/legacy/)
 - [x] Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP)
 - [x] Legacy Vector Store 정책 확정 (ADR-003 Finalization)
-- [ ] v1.1.0 Release Candidate 선언 (본 항목 진행 중)
+- [ ] v1.3.0 Release Candidate 선언 (본 항목 진행 중)
 - [ ] Release validation (chapter-level benchmark, 선택)
 - [ ] 잔여 cleanup (data/rag_index, Ollama HTTP 500 조사)
 

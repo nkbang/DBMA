@@ -1,13 +1,13 @@
 ---
-title: DBMA v1.1.0 Release Candidate
+title: DBMA v1.3.0 Release Candidate
 category: release
 status: RC (validation 진행)
 created: 2026-07-17
 baseline_commit: ca23542
-head_commit: 6fb39c3
+head_commit: 4fda8ad (RC freeze; version bump follows)
 ---
 
-# DBMA v1.1.0 — Architecture Consolidation Release Candidate
+# DBMA v1.3.0 — Architecture Consolidation Release Candidate
 
 ## Summary
 
@@ -46,7 +46,7 @@ SPRINT20-I(Architecture Consolidation)에서 완성.
 - [x] Legacy 코드 격리 (archive/legacy, 공식 importer 0)
 - [x] Retrieval 품질 회귀 없음 (book-level: 전 지표 delta 0)
 - [x] Document diversity 개선 (2 Kings 1→3 문서)
-- [x] Version 정합 (APP_VERSION = 1.1.0)
+- [x] Version 정합 (APP_VERSION = 1.3.0)
 - [x] Storage 정책 확정 (ADR-003 Finalization)
 - [x] Release validation: chapter-level benchmark(1500q) — **Deferred (RC blocker 아님)**
 - [ ] git push (승인 대기)
@@ -57,7 +57,7 @@ SPRINT20-I(Architecture Consolidation)에서 완성.
 - 근거: book-level benchmark 회귀 없음(전 지표 delta 0), 변경은 ranking
   post-processing, `RETRIEVAL_DOCUMENT_CAP=0`으로 rollback 가능. chapter-level은
   release evidence 강화 항목이지 안정성 필수 조건이 아니다.
-- v1.1.0 GA 또는 연구용 benchmark report 단계에 추가.
+- v1.3.0 GA 또는 연구용 benchmark report 단계에 추가.
 
 ## Known Issues (non-blocking)
 
@@ -67,4 +67,4 @@ SPRINT20-I(Architecture Consolidation)에서 완성.
 
 ## Next
 
-RC 선언 → (선택)chapter-level validation → git push → v1.1.0 tag.
+RC 선언 → (선택)chapter-level validation → git push → v1.3.0 tag.

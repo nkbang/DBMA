@@ -21,7 +21,7 @@
 
 ## 변경 기록
 
-### 2026-07-17 — SPRINT20-I Architecture Consolidation (v1.1.0 RC)
+### 2026-07-17 — SPRINT20-I Architecture Consolidation (v1.3.0 RC)
 
 - 변경 사항: TSU Builder·Index·registry-path authority를 core로 통합, legacy
   코드(dbma.py + Chroma/Qdrant island) archive/legacy로 분리, retrieval
@@ -32,7 +32,7 @@
   `core/embedder.py`, `archive/legacy/*`, `docs/architecture/*`.
 - 이유: "Index=TSU 생성"으로 정의 확정, 공식/legacy 경계 물리 분리, 특정 문서
   편중(2 Kings Vol13) 완화.
-- 결과: baseline ca23542 → 6fb39c3 (7 commits, 237 tests pass). v1.1.0 RC.
+- 결과: baseline ca23542 → 6fb39c3 (7 commits, 237 tests pass). v1.3.0 RC.
 
 ### 2026-06-22
 
