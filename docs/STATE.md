@@ -28,7 +28,7 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 
 ## 프로젝트 진행률
 
-전체 진행률: 85% (RC Audit 진행 중, Yellow 항목 잔존)
+전체 진행률: 95% (SPRINT20-I Architecture Consolidation 완료, v1.1.0 RC 준비)
 
 ### 세부 진행
 - Retrieval Engine 단일화 (ADR-001): 100%
@@ -133,10 +133,14 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 - [x] Dataset Provenance (TSU manifest v2)
 - [x] Entry Point Documentation Alignment
 - [x] Logging Authority Restoration
-- [ ] Documentation Synchronization 완료 (본 항목 진행 중)
-- [ ] `dbma.py` Legacy Migration 결정 (CUE-20H)
-- [ ] Legacy Artifact 정리 (`output/registry/` 등)
-- [ ] SPRINT20-RC Final Audit / RC 선언 여부 결정
+- [x] Index/TSU Builder Authority 확립 (SPRINT20-I, core/index_orchestrator.py + core/tsu_builder.py)
+- [x] Registry Path Authority 단일화 (DEFAULT_REGISTRY_PATH)
+- [x] `dbma.py` Legacy Archive 완료 (SPRINT20-I-D, archive/legacy/)
+- [x] Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP)
+- [x] Legacy Vector Store 정책 확정 (ADR-003 Finalization)
+- [ ] v1.1.0 Release Candidate 선언 (본 항목 진행 중)
+- [ ] Release validation (chapter-level benchmark, 선택)
+- [ ] 잔여 cleanup (data/rag_index, Ollama HTTP 500 조사)
 
 ---
 

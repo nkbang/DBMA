@@ -45,6 +45,8 @@ created: 2026-07-17
 - Research agent workflow 구축
 - Archive lifecycle manager 구축
 
-## Known Discrepancy
+## Version Resolution
 
-- `config.yaml` app.version = `0.6.4` (문서 기준 v1.1.0과 불일치, 코드 영역 — 별도 정정 필요).
+- 런타임 `APP_VERSION`은 `config.yaml` app.version = `1.1.0`에서 해석된다(확인:
+  `core.config.APP_VERSION == "1.1.0"`). `core/config.py`의 fallback 기본값
+  `"0.6.4"`는 yaml이 없을 때만 쓰이며 실제 런타임에는 도달하지 않는다.
