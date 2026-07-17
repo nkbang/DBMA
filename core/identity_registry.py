@@ -3,9 +3,16 @@
 Manages document identity persistence across processing sessions.
 Provides duplicate detection via content hash comparison.
 
-Registry file location: output/registry/documents.json
+Registry location is resolved from core.config.DEFAULT_OUTPUT_DIR (backed
+by config.yaml's directories.output_dir), not a fixed path — do not
+hardcode registry paths. Multiple stale "output/registry/documents.json"
+snapshots exist on disk from before output_dir was repointed to
+"data/제련완성본"; treat any hardcoded "output/registry/..." path as
+suspect (see core/runtime_state.py's SPRINT17-Phase5-C4.1 note for the
+prior incident this caused).
 
 Usage:
+    from core.config import DEFAULT_OUTPUT_DIR
     from core.identity_registry import (
         load_identity_registry,
         register_document,
@@ -14,9 +21,10 @@ Usage:
         save_identity_registry,
     )
 
-    registry = load_identity_registry("output/registry/documents.json")
+    registry_path = f"{DEFAULT_OUTPUT_DIR}/registry/documents.json"
+    registry = load_identity_registry(registry_path)
     record, is_new = register_document(registry, document_meta)
-    save_identity_registry(registry, "output/registry/documents.json")
+    save_identity_registry(registry, registry_path)
 """
 
 from __future__ import annotations
