@@ -91,6 +91,20 @@
 - 이유: `.gitignore` 규칙 추가 이전에 커밋된 파일들은 규칙이 소급 적용되지 않아 계속 추적되고 있었다. 루트에는 따옴표 없는 `pip install pkg>=X.Y.Z` 실행으로 생긴 `=0.8.0`, `=10.4.0` 잔여 파일도 있었다.
 - 결과: 위 파일들을 git 추적에서 해제(로컬 디스크에는 보존). `=0.8.0`/`=10.4.0`은 완전 삭제. `.gitignore`에 `backup/`, `*.svg`, `=*` 패턴 추가로 재발 방지.
 
+### 2026-07-16
+
+- 변경 사항: SPRINT19 (Evidence/Citation 기반 마련) + SPRINT20 (Citation Layer 및 Research Grade 신뢰성 확보)
+- 대상 파일: `core/retrieval.py`, `core/generation.py`, `core/config.py`, `core/identity_registry.py`, `scripts/build_tsu_dataset.py`, `scripts/check_environment.py`(신규), `requirements.txt`, `environment.yml`, `README.md`, `.github/instructions/*`, `tests/*`
+- 이유: TSU 검색 결과를 사람이 검증 가능한 출처 단위(Citation)로 승격시키고, 그 위에서 발견된 세 가지 governance 결함(레지스트리 경로 혼동, PyYAML 누락 시 config.yaml silent fallback, root logger 강제 ERROR 설정으로 인한 optional-dependency 경고 억제)을 근본 원인부터 제거하기 위해서다.
+- 결과:
+  - SPRINT19-A~D: TSU `verse_mapping`에 `verse_start`/`verse_end` 추가, Scripture Evidence Resolver v1(`provenance.confidence`), Evidence-aware retrieval ranking, 독립 Evidence Quality Benchmark 신설.
+  - SPRINT20-A~C: Citation Architecture Audit → `Citation` 구조화 객체(`core/retrieval.py`) 도입 및 `GenerationResult`까지 pass-through(commit `b05160e`) → 1,500개 chapter gold query 기준 Citation Quality baseline 확정(Completeness Top-10 49.85%, Traceability(title/author) 35.60%).
+  - SPRINT20-D~D1: Registry 경로 4곳 분산 및 `core/identity_registry.py` docstring의 stale 경로 암시 발견, docstring 정정(commit `dd3225c`).
+  - SPRINT20-E~E3: Registry의 `source_file`/`language`/`source_type`을 TSU→Citation까지 propagate(commit `f520a13`), TSU 재빌드 중 PyYAML 누락 시 `DEFAULT_OUTPUT_DIR`이 stale `"output"`으로 조용히 폴백해 8,079건이 6,307건(빈 본문)으로 손상될 뻔한 사고 발견, `core/config.py`를 PyYAML 누락 시 `RuntimeError`로 hard-fail하도록 수정(commit `3c75078`).
+  - SPRINT20-F~F2: 공식 Python 버전(3.11.x) 확정 및 `scripts/check_environment.py` 신설(commit `cd73ad9`), 실제 테스트 baseline이 170이 아니라 **222 passed**였음을 확인(그동안 `.venv`가 Python 3.14로 잘못 구성되어 5개 테스트 파일이 collection 단계에서 조용히 제외되고 있었음), TSU manifest에 `build_commit`/`registry_sha256`/`dataset_sha256`/`config_sha256` provenance 필드 추가(commit `224ebd5`).
+  - SPRINT20-G1~G3: 이미 존재하던 `ADR-001-Retrieval-Engine-Authority.md`(accepted) 재발견 — `dbma.py`의 레거시 `query_rag()` 경로는 폐기 대상, `dbma_ui.py`→`ui/app.py`가 공식 진입점임을 확인. README/`.github/instructions/*`를 공식 경로로 정렬(commit `5061329`). `core/config.py`가 import 시점에 root logger를 강제로 `ERROR`로 설정해 `core/extractors.py`의 optional-dependency 경고가 전역 억제되던 문제를 발견 및 제거(commit `1c220f8`).
+  - 최종 테스트 baseline: **228 passed**(clean Python 3.11 환경 기준), benchmark 33 passed.
+
 ---
 
 ## 기록 기준

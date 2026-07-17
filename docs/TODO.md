@@ -1,7 +1,10 @@
 # DBMA TODO
 
 ## 현재 목표
-DBMA의 문서 처리 파이프라인을 안정화하고, md 산출물 생성과 청킹 흐름을 정상화한다.
+SPRINT17~19에서 완성한 Retrieval/Evidence/Citation Layer 위에서, SPRINT20이
+드러낸 governance 결함(Configuration/Environment/Entry Point/Logging
+Authority)을 마무리하고 Research Grade Release Candidate 선언 여부를
+결정한다.
 
 ---
 
@@ -10,16 +13,20 @@ DBMA의 문서 처리 파이프라인을 안정화하고, md 산출물 생성과
 - [x] 프로젝트 구조 확인
 - [x] 핵심 파일 목록 정리
 - [x] CLAUDE.md 운영 규칙 정리
-- [ ] dbma.py 기준 함수 연결도 정리
-- [ ] parsing 안정화
-- [ ] md 파일 생성 정상화
-- [ ] chunking optimizer 실제 실행 흐름 점검
-- [ ] ui/tabs.py 탭 비활성화 문제 수정
-- [ ] RAG 흐름 점검
-- [ ] 평가 루프 정리
-- [ ] 문서화 자동화 정리
+- [x] Retrieval Engine 단일화 (ADR-001 — `core/retrieval.py::RetrievalEngine`/`QueryProcessor`)
+- [x] Citation Layer 구조화 (`Citation` dataclass, `GenerationResult` pass-through)
+- [x] TSU Metadata Propagation (`source_file`/`language`/`source_type`, 100% coverage)
+- [x] Configuration Authority (PyYAML 누락 시 hard-fail, `requirements.txt`/`environment.yml` 정합)
+- [x] Execution Environment Authority (Python 3.11.x 공식 확정, `scripts/check_environment.py`)
+- [x] TSU Snapshot Provenance (`build_commit`/`registry_sha256`/`dataset_sha256`/`config_sha256`)
+- [x] Entry Point Documentation Alignment (`README.md`, `.github/instructions/*` → `dbma_ui.py`)
+- [x] Logging Authority Restoration (`core/config.py`의 root logger 강제 설정 제거)
+- [ ] Documentation Synchronization 완료 (본 문서/STATE.md/CHANGELOG.md 갱신 — 진행 중)
+- [ ] `dbma.py` Legacy Migration 결정 (CUE-20H)
+- [ ] Legacy Artifact 정리 (`output/registry/`, `output/baseline/`, `output_sav/` 등)
+- [ ] SPRINT20-RC Final Audit / RC 선언
 
-진행률: 30%
+진행률: 85%
 
 ---
 
@@ -28,40 +35,41 @@ DBMA의 문서 처리 파이프라인을 안정화하고, md 산출물 생성과
 ### 1단계: 구조 고정
 - [x] 핵심 디렉터리 식별
 - [x] 주요 파일 역할 정리
-- [ ] 복사본 파일 정리 기준 수립
+- [ ] 복사본/legacy 파일 정리 기준 수립 (CUE-20H 대상)
 
-### 2단계: 파이프라인 안정화
-- [ ] 원본 추출 확인
-- [ ] 정제 결과 확인
-- [ ] md 산출물 생성 확인
-- [ ] 청크 저장 확인
-- [ ] 에러 로그 정리
+### 2단계: Retrieval / Evidence / Citation (SPRINT17~19, SPRINT20-A~C)
+- [x] Retrieval Engine Authority 확정 (ADR-001)
+- [x] Scripture Evidence Resolver v1 (`provenance.confidence`)
+- [x] Citation 구조화 객체 도입 및 Generation pass-through
+- [x] Citation Quality baseline 측정 (1,500 gold query 기준)
 
-### 3단계: UI 안정화
-- [ ] 처리 중 다른 탭 비활성화
-- [ ] 진행 표시 개선
-- [ ] mac 친화적 탭 흐름 확인
+### 3단계: Governance / Reproducibility (SPRINT20-D~G)
+- [x] Registry Authority 정리 (`core/identity_registry.py` docstring)
+- [x] Metadata Propagation (registry → TSU → Citation)
+- [x] Configuration Hardening (PyYAML hard-fail)
+- [x] Execution Environment Lock (Python 3.11)
+- [x] Dataset Provenance Manifest v2
+- [x] Entry Point Authority 문서 정렬
+- [x] Logging Authority 복원
+- [ ] Documentation Synchronization 마무리
 
-### 4단계: RAG 정리
-- [ ] 임베딩 기본값 확인
-- [ ] 검색 흐름 확인
-- [ ] 응답 생성 흐름 확인
-- [ ] 재현 가능한 테스트 작성
+### 4단계: Legacy 정리 (CUE-20H, 별도 승인 필요)
+- [ ] `dbma.py` 함수군(`query_rag`, `build_rag_store`, `embed_text_ollama`,
+      `query_qdrant`, `upsert_to_qdrant`) 처분 결정
+- [ ] 2026-07-15 커밋(Chroma metadata schema)의 활성 여부 사람 확인
+- [ ] Legacy artifact(`output/registry/` 등) 정리 여부 결정
 
-### 5단계: 문서화
-- [ ] dbma.py 블록 다이어그램 정리
-- [ ] docs/PIPELINE.md 작성
-- [ ] docs/STATE.md 작성
-- [ ] docs/DBMA_MAP.md 정리
+### 5단계: RC 선언
+- [ ] SPRINT20-RC Final Audit
+- [ ] Green/Yellow/Red 재평가 후 RC 선언 여부 결정
 
 ---
 
 ## 현재 우선순위
-1. md 산출물 생성 정상화
-2. 청킹 흐름 점검
-3. UI 탭 문제 수정
-4. RAG 검증
-5. 평가 루프 문서화
+1. 문서 동기화 마무리 (본 작업)
+2. `dbma.py` Legacy Migration 결정 (CUE-20H Preflight)
+3. Legacy artifact 정리 여부 결정
+4. SPRINT20-RC Final Audit 진행
 
 ---
 
