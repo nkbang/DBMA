@@ -6,8 +6,10 @@ DBMA는 신학 문서 전용 RAG 시스템이다.
 Python 기반으로 다양한 문서 형식을 처리하고, 추출, 정제, 청킹, 임베딩, 검색, 생성, 평가를 하나의 흐름으로 연결한다.
 핵심 목표는 결과 정밀도, 추적 가능성, 유지보수성, 그리고 반복 개선이다.
 
-DBMA의 핵심 진입점은 `dbma.py`이며, 이 파일이 Streamlit UI와 전체 처리 흐름을 오케스트레이션한다.
-프로젝트 루트는 `~/DBMA` 이다.
+DBMA의 공식 실행 진입점은 `dbma_ui.py`(→ `ui/app.py`)이며, Streamlit UI와 전체 처리
+흐름을 오케스트레이션한다. `dbma.py`는 deprecated legacy application entry로,
+`core/retrieval.py::RetrievalEngine`을 사용하지 않는 별도의 레거시 RAG 경로다
+(ADR-001, ADR-003 참고). 프로젝트 루트는 `~/DBMA` 이다.
 
 ---
 
@@ -19,7 +21,7 @@ DBMA의 핵심 진입점은 `dbma.py`이며, 이 파일이 Streamlit UI와 전�
 - 작업은 반드시 추적 가능해야 한다.
 - 로그는 읽기 쉽게 남긴다.
 - md 파일을 사용해 상태와 과정을 문서화한다.
-- `dbma.py`를 시작점으로 연결 구조를 이해한다.
+- `dbma_ui.py`(→ `ui/app.py`)를 시작점으로 연결 구조를 이해한다.
 - 필요한 경우 함수 단위로 블록 다이어그램을 만든다.
 
 ---
@@ -42,10 +44,11 @@ DBMA의 핵심 진입점은 `dbma.py`이며, 이 파일이 Streamlit UI와 전�
 
 기준 경로:
 - 프로젝트 루트: `~/DBMA`
-- 핵심 파일: `/Users/David/DBMA/dbma.py`
+- 핵심 파일: `/Users/David/DBMA/dbma_ui.py` (→ `/Users/David/DBMA/ui/app.py`)
 
 주요 모듈:
-- `dbma.py`: 메인 진입점
+- `dbma_ui.py`: 공식 진입점 (thin launcher → `ui/app.py`)
+- `dbma.py`: deprecated legacy entry (제거 계획 진행 중, `docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md` 참고)
 - `core/`: 추출, 처리, 파일, 청킹, 유틸리티
 - `ui/`: 탭 기반 인터페이스
 - `dbma_rag.py`: RAG 처리
@@ -106,7 +109,7 @@ DBMA의 기본 흐름은 아래와 같다.
 - 상태 기록은 짧고 읽기 쉽게 쓴다.
 - 필요하면 파이프라인 문서와 설계 문서를 분리한다.
 - 함수 연결 구조는 블록 다이어그램으로 정리한다.
-- `dbma.py`를 시작점으로 전체 연결을 문서화한다.
+- `dbma_ui.py`(→ `ui/app.py`)를 시작점으로 전체 연결을 문서화한다.
 
 추천 문서 예시:
 - `docs/ARCHITECTURE.md`
