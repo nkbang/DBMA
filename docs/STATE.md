@@ -1,12 +1,18 @@
 # DBMA State
 
+## 버전 상태
+**DBMA v1.1.0 — Architecture Consolidation Release** (Research Grade /
+Production Candidate). 버전·Authority 정의는
+`docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
+
 ## 현재 상태
-DBMA는 신학 문서 전용 RAG 시스템이다.
+DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,
 SPRINT20에서 그 위에 Metadata Lineage, Configuration/Environment/Logging
 Authority, Application Entry Point 정합성을 확보했다.
-현재는 신규 기능 개발이 아니라 **Research Grade Release Candidate Audit**
-단계이며, RC 선언은 아직 보류 상태다(SPRINT20-G 진행 중).
+SPRINT20-I(Architecture Consolidation)에서 Processing/Identity/Index/TSU
+Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
+이동했으며, Legacy(`dbma.py` + Chroma/Qdrant island) 분리를 진행 중이다.
 
 ---
 
