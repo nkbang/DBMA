@@ -38,6 +38,7 @@ from core.document_identity import generate_chunk_id
 from core.utils import make_safe_stem
 from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH
 from core.retrieval import NAME_TO_BOOK_ID, QueryParser, ScriptureReference
+from scripts.generate_chapter_level_gold_standard import CANONICAL_MAX_CHAPTER
 
 _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
 
@@ -71,6 +72,94 @@ def _resolve_chapter(content: str) -> Optional[int]:
     unchanged from SPRINT18-C."""
     ref = _resolve_scripture_ref(content)
     return ref.chapter if ref else None
+
+
+# [SPRINT19-B] Scripture Evidence Resolver v1 — replaces the "first match
+# wins" policy (_resolve_scripture_ref) at the build_tsu_records() call
+# site with candidate scoring, so a target-book chapter:verse reference
+# outranks an unrelated colon-adjacent digit sequence (index/appendix
+# page noise, e.g. "2 Kings chapter=748") or a chapter-only match against
+# a different book than the TSU's own filename-resolved book_id.
+#
+# Score components (HQ-specified weights, Preflight §5/§6):
+#   canonical_range_valid  +0.3  chapter within the book's real chapter count
+#   verse_explicit         +0.2  verse_start > 0 (not the parser's
+#                                 "no verse specified" sentinel — Preflight
+#                                 §4 found chapter-only matches encode
+#                                 "no verse" as verse_start=0, which
+#                                 SPRINT19-A's refs[0] policy had been
+#                                 silently storing as if it were verse 0)
+#   verse_range_present     +0.1  verse_end is set (an explicit "a-b" range)
+#   duplicate_support       +0.2  the same (book_id, chapter) appears in
+#                                 more than one candidate from this content
+#   book_id_consistent      +0.2  candidate's book_id matches the TSU's own
+#                                 filename-resolved book_id (HQ's "본문 위치
+#                                 매치" — cross-checks the reference against
+#                                 the document it actually came from)
+# Ties broken by candidate order (first-seen wins), same as before.
+
+
+def _score_candidate(
+    ref: ScriptureReference,
+    all_refs: list[ScriptureReference],
+    tsu_book_id: Optional[str],
+) -> tuple[float, list[str]]:
+    score = 0.0
+    reasons: list[str] = []
+
+    max_ch = CANONICAL_MAX_CHAPTER.get(ref.book_id)
+    if max_ch is not None and 1 <= ref.chapter <= max_ch:
+        score += 0.3
+        reasons.append("canonical_range_valid")
+
+    if ref.verse_start and ref.verse_start > 0:
+        score += 0.2
+        reasons.append("verse_explicit")
+
+    if ref.verse_end is not None:
+        score += 0.1
+        reasons.append("verse_range_present")
+
+    duplicate_count = sum(
+        1 for r in all_refs if r.book_id == ref.book_id and r.chapter == ref.chapter
+    ) - 1
+    if duplicate_count > 0:
+        score += 0.2
+        reasons.append("duplicate_support")
+
+    if tsu_book_id is not None and ref.book_id == tsu_book_id:
+        score += 0.2
+        reasons.append("book_id_consistent")
+
+    return min(score, 1.0), reasons
+
+
+def _resolve_evidence(
+    content: str,
+    tsu_book_id: Optional[str],
+) -> tuple[Optional[ScriptureReference], Optional[dict[str, Any]]]:
+    """Score every scripture reference candidate found in content and
+    return the highest-scoring one plus its provenance record. Returns
+    (None, None) if no candidate is found — never guessed.
+    """
+    if not content:
+        return None, None
+    refs = _reference_parser.parse(content).scripture_refs
+    if not refs:
+        return None, None
+
+    scored = [(_score_candidate(ref, refs, tsu_book_id), ref) for ref in refs]
+    (best_score, best_reasons), best_ref = max(
+        scored, key=lambda item: item[0][0]
+    )
+
+    provenance = {
+        "resolver": "scripture_evidence_resolver_v1",
+        "confidence": round(best_score, 4),
+        "candidate_count": len(refs),
+        "selected_reason": best_reasons,
+    }
+    return best_ref, provenance
 
 
 def _resolve_book_id(source_file: str) -> Optional[str]:
@@ -183,23 +272,25 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
             # document-level metadata from the registry — see Phase18-C
             # Preflight for the schema-mismatch finding this fixes).
             verse_mapping: dict[str, Any] = {}
+            provenance: Optional[dict[str, Any]] = None
             if book_id != "UNK":
                 verse_mapping["book_id"] = book_id
-                # [SPRINT19-A] verse_start/verse_end were already produced
-                # by the parser (ScriptureReference) but discarded here —
-                # CitationBuilder/ContextAssembler in core/retrieval.py
-                # already read verse_mapping.get("verse_start"/"verse_end"),
-                # so this closes a producer-consumer schema gap rather than
-                # introducing a new field. Never guessed: each key is set
-                # only when the parser actually returned that value.
-                ref = _resolve_scripture_ref(content)
+                # [SPRINT19-B] "First match wins" (SPRINT18-C/19-A) replaced
+                # with candidate scoring — see _resolve_evidence()/_score_candidate()
+                # above. Never guessed: each key is set only when the
+                # resolver's selected candidate actually carried that value.
+                # verse_start==0 is the parser's "chapter-only, no verse
+                # specified" sentinel (Preflight §4) — never stored as a
+                # real verse.
+                ref, provenance = _resolve_evidence(content, book_id)
                 if ref is not None:
                     verse_mapping["chapter"] = ref.chapter
-                    verse_mapping["verse_start"] = ref.verse_start  # always int on ScriptureReference
-                    if ref.verse_end is not None:
-                        verse_mapping["verse_end"] = ref.verse_end
+                    if ref.verse_start and ref.verse_start > 0:
+                        verse_mapping["verse_start"] = ref.verse_start
+                        if ref.verse_end is not None:
+                            verse_mapping["verse_end"] = ref.verse_end
 
-            records.append({
+            record: dict[str, Any] = {
                 "tsu_id": f"TSU-{book_id}-{len(records) + 1:06d}",
                 "document_id": document_id,
                 "chunk_id": chunk_id,
@@ -216,7 +307,10 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                 "author": doc.get("author"),
                 "chapter": doc.get("chapter"),
                 "page": doc.get("page"),
-            })
+            }
+            if provenance is not None:
+                record["provenance"] = provenance
+            records.append(record)
 
     return records
 
