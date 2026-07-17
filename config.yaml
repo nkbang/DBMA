@@ -59,15 +59,15 @@ embedding:
 # ── Ollama Models (dbma.py UI용) ─────────────────────
 ollama:
   default_embed_model: "bge-m3:latest"
-  default_gen_model: "llama3.1"
+  default_gen_model: "my-theology-bot:latest"
   embed_model_options:
     - "bge-m3:latest"
     - "nomic-embed-text"
     - "mxbai-embed-large"
   gen_model_options:
-    - "llama3.1"
-    - "gemma3:4b"
-    - "llama3:8b"
+    - "my-theology-bot:latest"
+    - "llama3.1:8b"
+    - "llama3:latest"
 
 # ── Progress Tracking Defaults ─────────────────────────
 progress_defaults:

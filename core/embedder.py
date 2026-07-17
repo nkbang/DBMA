@@ -31,6 +31,24 @@ _MODEL_IMPORT_ERROR_MSG = (
 _OLLAMA_HOST = "http://localhost:11434"
 _OLLAMA_TIMEOUT_S = 30
 
+# [CUE-20I ported from dbma.py RC-HOTFIX-02] Ollama's llama-server runner
+# rejects inputs exceeding its fixed physical batch size; repeated
+# rejection can kill the runner, and requests during its restart window
+# fail with a raw "tokenize: EOF/timeout". This module only ever sends one
+# text per request (no batching), so only the single-input size guard and
+# selective retry apply here — see dbma.py::_embed_texts for the batching
+# variant needed by callers that embed many texts in one request.
+_APPROX_CHARS_PER_TOKEN = 4
+_MAX_SAFE_EMBED_TOKENS = 1800
+_RETRYABLE_ERROR_PATTERNS = ("eof", "connection", "timeout", "500")
+_EMBED_MAX_ATTEMPTS = 3
+_EMBED_BACKOFF_SECONDS = (1, 2, 4)
+
+
+def _is_retryable_ollama_error(exc: Exception) -> bool:
+    msg = str(exc).lower()
+    return any(pattern in msg for pattern in _RETRYABLE_ERROR_PATTERNS)
+
 
 def _get_model():
     """MiniLM(legacy) 모델을 지연 로딩합니다.
@@ -78,6 +96,13 @@ def embed(text: str):
 
 def _embed_via_ollama(text: str, model_name: str) -> list:
     """Ollama 서버(/api/embeddings)를 통해 BGE-M3 등으로 임베딩합니다."""
+    estimated_tokens = len(text) // _APPROX_CHARS_PER_TOKEN if text else 0
+    if estimated_tokens > _MAX_SAFE_EMBED_TOKENS:
+        raise ValueError(
+            f"임베딩 입력이 너무 큽니다(약 {estimated_tokens} 토큰 추정, "
+            f"안전 한도 {_MAX_SAFE_EMBED_TOKENS} 토큰) — 청크 크기를 줄여 "
+            f"다시 시도하세요. (chars={len(text)})"
+        )
     # DEBUG: Log request details
     print("[OLLAMA EMBED REQUEST]")
     print(f"Request URL: {_OLLAMA_HOST}/api/embeddings")
@@ -158,12 +183,31 @@ class _OllamaEmbedder:
 
     def embed(self, text: str) -> list:
         if self._check_ollama():
-            try:
-                return _embed_via_ollama(text, self.model_name)
-            except Exception as e:
-                if not self.fallback:
+            last_exc: Exception | None = None
+            for attempt in range(1, _EMBED_MAX_ATTEMPTS + 1):
+                try:
+                    vector = _embed_via_ollama(text, self.model_name)
+                    if len(vector) != EMBEDDING_DIMENSION:
+                        raise DimensionMismatchError(
+                            f"Ollama({self.model_name}) 임베딩 차원 불일치: "
+                            f"기대값 {EMBEDDING_DIMENSION}, 실제값 {len(vector)}. "
+                            "모델 설정을 확인하십시오 (재인덱싱 없이 벡터를 섞으면 "
+                            "검색 컬렉션이 손상됩니다)."
+                        )
+                    return vector
+                except (ValueError, DimensionMismatchError):
+                    # oversized-input / dimension-mismatch — not transient, retrying
+                    # or silently falling back to MiniLM won't fix a misconfigured
+                    # embedding model, and would corrupt the vector store instead.
                     raise
-                print(f"[core.embedder] Ollama 임베딩 실패({e}), MiniLM으로 폴백합니다.")
+                except Exception as e:
+                    last_exc = e
+                    if not _is_retryable_ollama_error(e) or attempt == _EMBED_MAX_ATTEMPTS:
+                        break
+                    time.sleep(_EMBED_BACKOFF_SECONDS[attempt - 1])
+            if not self.fallback:
+                raise last_exc
+            print(f"[core.embedder] Ollama 임베딩 실패({last_exc}), MiniLM으로 폴백합니다.")
         if not self.fallback:
             raise RuntimeError(
                 f"Ollama({_OLLAMA_HOST})에 연결할 수 없고 fallback=False로 설정되어 있습니다."
