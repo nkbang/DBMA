@@ -1402,6 +1402,9 @@ class Citation:
     content_excerpt: str
     evidence_confidence: Optional[float]
     retrieval_score: float
+    source_file: Optional[str] = None
+    language: Optional[str] = None
+    source_type: Optional[str] = None
 
     def __str__(self) -> str:
         return (
@@ -1443,6 +1446,9 @@ class CitationBuilder:
                 content_excerpt=candidate.content[:200],
                 evidence_confidence=candidate.metadata.get("provenance", {}).get("confidence"),
                 retrieval_score=candidate.final_score,
+                source_file=candidate.metadata.get("source_file"),
+                language=candidate.metadata.get("language"),
+                source_type=candidate.metadata.get("source_type"),
             ))
 
         return citations

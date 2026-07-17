@@ -107,6 +107,46 @@ class TestResponsePackageCitations:
         assert citations[1].evidence_confidence is None
         assert citations[1].retrieval_score == without_provenance.final_score
 
+    def test_citation_source_metadata_passthrough(self):
+        """Citation must carry source_file/language/source_type from TSU
+        metadata (SPRINT20-E registry propagation), and stay None when the
+        TSU record does not have them (no inference/fallback generation)."""
+        with_source_metadata = RankedCandidate(
+            tsu_id="TSU-JHN-000001",
+            content="For God so loved the world.",
+            metadata={
+                "verse_mapping": {"book_id": "JHN", "chapter": 3, "verse_start": 16},
+                "source_file": "5. 요한복음1.pdf",
+                "language": "ko",
+                "source_type": "pdf",
+            },
+            final_score=0.9234,
+        )
+        without_source_metadata = _make_candidate("TSU-GEN-000001", "GEN", 1, 1)
+
+        citations = CitationBuilder().build_citations(
+            [with_source_metadata, without_source_metadata]
+        )
+
+        assert citations[0].source_file == "5. 요한복음1.pdf"
+        assert citations[0].language == "ko"
+        assert citations[0].source_type == "pdf"
+
+        assert citations[1].source_file is None
+        assert citations[1].language is None
+        assert citations[1].source_type is None
+
+        d = ResponseFormatter().format(
+            ParsedQuery(original_query="q", intent="unknown"),
+            [with_source_metadata], scripture_contexts=[],
+            llm_context_block="", citations=citations,
+            metrics=PerformanceMetrics(),
+        ).to_dict()
+        assert d["citations"][0]["source_file"] == "5. 요한복음1.pdf"
+        assert d["citations"][0]["language"] == "ko"
+        assert d["citations"][0]["source_type"] == "pdf"
+        json.dumps(d["citations"])  # must remain JSON serializable
+
 
 if __name__ == "__main__":
     import pytest

@@ -307,6 +307,12 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                 "author": doc.get("author"),
                 "chapter": doc.get("chapter"),
                 "page": doc.get("page"),
+                # [SPRINT20-E] propagate registry values already loaded
+                # above (source_file, L245) or on doc (language,
+                # source_type) — no new registry lookup, no inference.
+                "source_file": source_file,
+                "language": doc.get("language"),
+                "source_type": doc.get("source_type"),
             }
             if provenance is not None:
                 record["provenance"] = provenance
