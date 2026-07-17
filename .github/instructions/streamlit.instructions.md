@@ -238,7 +238,7 @@ except Exception as e:
 - 드래그 앤 드롭 지원
 - 파일 선택 다이얼로그는 Mac 표준 UI 사용
 - Cmd+S (저장) 같은 단축키 인식
-- 터미널에서 `streamlit run dbma.py`로 실행
+- 터미널에서 `streamlit run dbma_ui.py`로 실행 (`dbma.py`는 deprecated legacy application entry, production 실행은 `dbma_ui.py`→`ui/app.py` 사용)
 
 ---
 
