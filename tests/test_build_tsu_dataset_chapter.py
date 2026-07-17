@@ -45,7 +45,7 @@ class TestVerseMappingChapterKeyOmission:
             }
         }
 
-        import scripts.build_tsu_dataset as mod
+        import core.tsu_builder as mod
         from pathlib import Path
 
         original_read_chunk_texts = mod._read_chunk_texts
@@ -76,7 +76,7 @@ class TestVerseMappingChapterKeyOmission:
             }
         }
 
-        import scripts.build_tsu_dataset as mod
+        import core.tsu_builder as mod
         from pathlib import Path
 
         original_read_chunk_texts = mod._read_chunk_texts

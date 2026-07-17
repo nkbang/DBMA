@@ -26,13 +26,13 @@ from core.feature_flags import feature_enabled
 from core.identity_registry import load_identity_registry
 from core.document_context import DocumentContext
 
-from core.config import DEFAULT_OUTPUT_DIR
+from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_REGISTRY_PATH
 
 # [SPRINT17-Phase5-C4.2] Resolves against config.yaml's directories.output_dir
 # instead of a hardcoded "output" literal — same stale-path class of issue as
 # Phase5-C4.1 (get_tsu_status), found while auditing this file's other
 # hardcoded path during that fix.
-_DEFAULT_REGISTRY_PATH = os.path.join(DEFAULT_OUTPUT_DIR, "registry", "documents.json")
+_DEFAULT_REGISTRY_PATH = DEFAULT_REGISTRY_PATH
 
 
 class ExecutionContext:

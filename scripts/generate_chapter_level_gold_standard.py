@@ -46,22 +46,8 @@ from pathlib import Path
 from typing import Any
 
 from core.config import DEFAULT_BENCH_DIR, DEFAULT_TSU_DATASET_PATH
+from core.canonical_constants import CANONICAL_MAX_CHAPTER
 from scripts.generate_book_level_gold_standard import CORPUS_BOOKS
-
-# Canonical chapter counts for the books present in this corpus — fixed
-# facts about the biblical text, not derived from TSU data (used to
-# reject implausible chapter values SPRINT18-C's parser could not itself
-# distinguish from real ones).
-CANONICAL_MAX_CHAPTER: dict[str, int] = {
-    "MRK": 16,
-    "JHN": 21,
-    "ACT": 28,
-    "ROM": 16,
-    "1CO": 16,
-    "2CO": 13,
-    "2KI": 25,
-    "2CH": 36,
-}
 
 MIN_DENSITY = 3  # minimum TSU records backing a (book, chapter) pair
 

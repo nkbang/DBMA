@@ -13,7 +13,7 @@ from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from ui.components.tables import document_table, search_results_table
 from ui.state.store import StateStore
-from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR, DEFAULT_REGISTRY_PATH
 from core.identity_registry import load_identity_registry, save_identity_registry
 
 
@@ -193,7 +193,7 @@ def _render_document_detail_panel() -> None:
 
 
 def _registry_path() -> Path:
-    return Path(DEFAULT_OUTPUT_DIR) / "registry" / "documents.json"
+    return Path(DEFAULT_REGISTRY_PATH)
 
 
 def _find_registry_record(source_filename: str) -> "tuple[Optional[str], Optional[dict]]":

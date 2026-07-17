@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import Optional
 
 from core.identity_registry import load_identity_registry, save_identity_registry
-from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_RAW_DIR
+from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_RAW_DIR, registry_path_for
 from core.extractors import _extract_pdf_title_author, _extract_docx_title_author
 from scripts.build_tsu_dataset import _resolve_book_id
 
@@ -127,7 +127,7 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    registry_path = Path(args.output_dir) / "registry" / "documents.json"
+    registry_path = Path(registry_path_for(args.output_dir))
     raw_dir = Path(args.raw_dir)
 
     registry = load_identity_registry(str(registry_path))

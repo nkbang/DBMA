@@ -12,7 +12,7 @@ suspect (see core/runtime_state.py's SPRINT17-Phase5-C4.1 note for the
 prior incident this caused).
 
 Usage:
-    from core.config import DEFAULT_OUTPUT_DIR
+    from core.config import DEFAULT_REGISTRY_PATH
     from core.identity_registry import (
         load_identity_registry,
         register_document,
@@ -21,8 +21,7 @@ Usage:
         save_identity_registry,
     )
 
-    registry_path = f"{DEFAULT_OUTPUT_DIR}/registry/documents.json"
-    registry = load_identity_registry(registry_path)
+    registry = load_identity_registry(DEFAULT_REGISTRY_PATH)
     record, is_new = register_document(registry, document_meta)
     save_identity_registry(registry, registry_path)
 """

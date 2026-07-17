@@ -62,6 +62,17 @@ DEFAULT_BENCH_DIR = _yaml_dirs.get("bench_dir", "output/bench")
 DEFAULT_TSU_DATASET_PATH = os.path.join(DEFAULT_BENCH_DIR, "tsu_dataset.jsonl")
 DEFAULT_TSU_MANIFEST_PATH = os.path.join(DEFAULT_BENCH_DIR, "tsu_manifest.json")
 
+
+# [SPRINT20-I-C-2-B2] Registry Path Authority — single source for the
+# {output_dir}/registry/documents.json path, previously reconstructed in 7
+# sites (CUE-20I-C-1.5). registry_path_for() serves callers with a variable
+# output_dir; DEFAULT_REGISTRY_PATH is the default (output_dir omitted).
+def registry_path_for(output_dir: str) -> str:
+    return os.path.join(output_dir, "registry", "documents.json")
+
+
+DEFAULT_REGISTRY_PATH = registry_path_for(DEFAULT_OUTPUT_DIR)
+
 # ── 확장자 ───────────────────────────────────────────────
 SUPPORTED_EXTENSIONS = {
     ".pdf",
@@ -96,9 +107,9 @@ EMBEDDING_DIMENSION = 1024  # Enforce single embedding dimension policy - all em
 # ── Ollama 모델 (dbma.py UI용) ──────────────────────────
 _yaml_ollama = CFG.get("ollama", {})
 DEFAULT_EMBED_MODEL = _yaml_ollama.get("default_embed_model", "bge-m3:latest")
-DEFAULT_GEN_MODEL = _yaml_ollama.get("default_gen_model", "llama3.1")
+DEFAULT_GEN_MODEL = _yaml_ollama.get("default_gen_model", "my-theology-bot:latest")
 EMBED_MODEL_OPTIONS = _yaml_ollama.get("embed_model_options", ["bge-m3:latest", "nomic-embed-text", "mxbai-embed-large"])
-GEN_MODEL_OPTIONS = _yaml_ollama.get("gen_model_options", ["llama3.1", "gemma3:4b", "llama3:8b"])
+GEN_MODEL_OPTIONS = _yaml_ollama.get("gen_model_options", ["my-theology-bot:latest", "llama3.1:8b", "llama3:latest"])
 
 # ── 진행률 기본값 ─────────────────────────────────────────
 _yaml_progress = CFG.get("progress_defaults", [])

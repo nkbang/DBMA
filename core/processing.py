@@ -55,6 +55,7 @@ from core.identity_registry import (
     transition_ingest_status,
     update_pipeline_flags,
 )
+from core.config import registry_path_for
 
 logger = logging.getLogger(__name__)
 
@@ -541,8 +542,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         )
 
         # ── [PT-PROCESSING-012] Incremental ingest decision gate ────
-        registry_dir = os.path.join(output_dir, "registry")
-        registry_path = os.path.join(registry_dir, "documents.json")
+        registry_path = registry_path_for(output_dir)
         _registry = load_identity_registry(registry_path)
 
         # Pre-processing: classify ingest decision (PROCESS/SKIP/REPROCESS/RETRY)
