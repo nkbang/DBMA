@@ -518,12 +518,42 @@ def query_qdrant(question: str, top_k: int = RAG_TOP_K, collection_name: str = "
 _APPROX_CHARS_PER_TOKEN = 4
 _MAX_SAFE_EMBED_TOKENS = 1800
 
+# [CUE-20I-0-C] The per-chunk guard above only rejects a single oversized
+# chunk; it does nothing to stop a batch call (ollama.embed(input=texts))
+# whose *combined* token count exceeds the runner's physical batch size —
+# each chunk can individually pass the guard while the summed request
+# still overflows. Cap the summed estimated tokens per Ollama request and
+# split into smaller sub-batches instead. Set below the per-chunk limit on
+# purpose: this exists for runtime stability, not throughput.
+_MAX_SAFE_EMBED_BATCH_TOKENS = 1600
+
 # Only these error patterns are treated as transient/retryable — a wrong
 # model name, an oversized-input rejection, etc. will not be fixed by
 # retrying and must fail immediately instead.
 _RETRYABLE_ERROR_PATTERNS = ("eof", "connection", "timeout", "500")
 _EMBED_MAX_ATTEMPTS = 3
 _EMBED_BACKOFF_SECONDS = (1, 2, 4)
+
+
+def _split_into_safe_batches(texts: List[str]) -> List[List[str]]:
+    """Group texts into sub-batches whose summed estimated tokens stay
+    under _MAX_SAFE_EMBED_BATCH_TOKENS. Each individual text is already
+    guaranteed (by the caller) to be under _MAX_SAFE_EMBED_TOKENS, so a
+    single oversized text never gets stuck unable to fit any batch."""
+    batches: List[List[str]] = []
+    current: List[str] = []
+    current_tokens = 0
+    for text in texts:
+        text_tokens = len(text) // _APPROX_CHARS_PER_TOKEN
+        if current and current_tokens + text_tokens > _MAX_SAFE_EMBED_BATCH_TOKENS:
+            batches.append(current)
+            current = []
+            current_tokens = 0
+        current.append(text)
+        current_tokens += text_tokens
+    if current:
+        batches.append(current)
+    return batches
 
 
 def _is_retryable_ollama_error(exc: Exception) -> bool:
@@ -580,32 +610,50 @@ def _embed_texts(texts: List[str], model: str = DEFAULT_EMBED_MODEL) -> List[Lis
                 f"다시 시도하세요. (index={i}, chars={len(text)})"
             )
 
-    last_exc: Optional[Exception] = None
-    for attempt in range(1, _EMBED_MAX_ATTEMPTS + 1):
-        try:
-            result = ollama.embed(model=model, input=texts)["embeddings"]
-            if attempt > 1:
-                logger.info(
-                    "[_embed_texts] succeeded on attempt %d/%d (model=%s)",
-                    attempt, _EMBED_MAX_ATTEMPTS, model,
-                )
-            return result
-        except Exception as e:
-            last_exc = e
-            total_chars = sum(len(t) for t in texts)
-            logger.error(
-                "[_embed_texts] attempt %d/%d failed (model=%s, texts=%d, "
-                "total_chars=%d): %s",
-                attempt, _EMBED_MAX_ATTEMPTS, model, len(texts), total_chars, e,
-            )
-            if not _is_retryable_ollama_error(e) or attempt == _EMBED_MAX_ATTEMPTS:
-                break
-            time.sleep(_EMBED_BACKOFF_SECONDS[attempt - 1])
+    batches = _split_into_safe_batches(texts)
+    if len(batches) > 1:
+        logger.info(
+            "[_embed_texts] batching: total_texts=%d, batch_count=%d, "
+            "max_batch_tokens=%d",
+            len(texts), len(batches), _MAX_SAFE_EMBED_BATCH_TOKENS,
+        )
 
-    raise RuntimeError(
-        f"Ollama 임베딩 호출 실패 (model={model}): {last_exc}. "
-        f"Ollama가 실행 중인지, 해당 모델이 pull되어 있는지 확인하세요."
-    ) from last_exc
+    all_embeddings: List[List[float]] = []
+    for batch_index, batch in enumerate(batches):
+        last_exc: Optional[Exception] = None
+        for attempt in range(1, _EMBED_MAX_ATTEMPTS + 1):
+            try:
+                result = ollama.embed(model=model, input=batch)["embeddings"]
+                if attempt > 1:
+                    logger.info(
+                        "[_embed_texts] succeeded on attempt %d/%d (model=%s, "
+                        "batch_index=%d/%d)",
+                        attempt, _EMBED_MAX_ATTEMPTS, model, batch_index, len(batches) - 1,
+                    )
+                all_embeddings.extend(result)
+                last_exc = None
+                break
+            except Exception as e:
+                last_exc = e
+                batch_tokens = sum(len(t) for t in batch) // _APPROX_CHARS_PER_TOKEN
+                logger.error(
+                    "[_embed_texts] attempt %d/%d failed (model=%s, "
+                    "batch_index=%d/%d, batch_text_count=%d, "
+                    "estimated_tokens=%d): %s",
+                    attempt, _EMBED_MAX_ATTEMPTS, model,
+                    batch_index, len(batches) - 1, len(batch), batch_tokens, e,
+                )
+                if not _is_retryable_ollama_error(e) or attempt == _EMBED_MAX_ATTEMPTS:
+                    break
+                time.sleep(_EMBED_BACKOFF_SECONDS[attempt - 1])
+
+        if last_exc is not None:
+            raise RuntimeError(
+                f"Ollama 임베딩 호출 실패 (model={model}): {last_exc}. "
+                f"Ollama가 실행 중인지, 해당 모델이 pull되어 있는지 확인하세요."
+            ) from last_exc
+
+    return all_embeddings
 
 
 def _rag_noise(text: str, file_type: str = "txt", is_ocr: bool = False) -> float:

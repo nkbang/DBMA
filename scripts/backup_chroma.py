@@ -23,17 +23,15 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# [SPRINT20-I-D-5] dbma.py archived to archive/legacy/. ChromaDB is a legacy
+# store (dbma-only, ADR-003 KEEP); its path is the project-root "chroma_db"
+# directory — declared here explicitly instead of importing the archived module.
+LEGACY_CHROMA_DIR = Path("chroma_db")
+
+
 def get_chroma_db_path():
-    """Get the ChromaDB path from config or default to 'chroma_db'."""
-    # Try to import from dbma.py to get the actual path
-    try:
-        import sys
-        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-        from dbma import CHROMA_DIR
-        return CHROMA_DIR
-    except ImportError:
-        # Fallback to default path
-        return Path("chroma_db")
+    """Get the ChromaDB path (legacy store, project-root chroma_db/)."""
+    return LEGACY_CHROMA_DIR
 
 def create_backup_directory():
     """Create backup directory with timestamp."""
