@@ -9,6 +9,7 @@ import streamlit as st
 import os
 from pathlib import Path
 
+from core.config import DEFAULT_EMBED_MODEL
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from ui.state.store import StateStore
@@ -42,7 +43,7 @@ def _render_health_overview() -> None:
     """Render system health overview."""
     components = [
         {"name": "벡터 데이터베이스", "status": "healthy", "detail": "연결 정상"},
-        {"name": "임베딩 모델", "status": "healthy", "detail": "all-MiniLM-L6-v2 로드됨"},
+        {"name": "임베딩 모델", "status": "healthy", "detail": f"{DEFAULT_EMBED_MODEL} 로드됨"},
         {"name": "파일 시스템", "status": "healthy", "detail": "읽기/쓰기 가능"},
         {"name": "메모리", "status": "warning", "detail": "사용율 72%"},
         {"name": "디스크", "status": "healthy", "detail": "여유 공간充足"},

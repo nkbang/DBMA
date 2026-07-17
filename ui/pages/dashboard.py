@@ -11,7 +11,7 @@ from pathlib import Path
 
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
-from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR, DEFAULT_EMBED_MODEL
 from core.execution_context import ExecutionContext
 
 
@@ -76,7 +76,7 @@ def _render_corpus_statistics() -> None:
     with c3:
         st.metric("지원 형식", "PDF/TXT/MD/DOCX")
     with c4:
-        st.metric("임베딩", "all-MiniLM-L6-v2")
+        st.metric("임베딩", DEFAULT_EMBED_MODEL)
 
 
 def _render_pipeline_status() -> None:
