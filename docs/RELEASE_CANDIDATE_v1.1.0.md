@@ -48,8 +48,16 @@ SPRINT20-I(Architecture Consolidation)에서 완성.
 - [x] Document diversity 개선 (2 Kings 1→3 문서)
 - [x] Version 정합 (APP_VERSION = 1.1.0)
 - [x] Storage 정책 확정 (ADR-003 Finalization)
-- [ ] Release validation: chapter-level benchmark(1500q) — 선택, 미실행
+- [x] Release validation: chapter-level benchmark(1500q) — **Deferred (RC blocker 아님)**
 - [ ] git push (승인 대기)
+
+### Chapter-level validation: Deferred
+
+- RC blocker 아님 — post-RC evidence task로 이동.
+- 근거: book-level benchmark 회귀 없음(전 지표 delta 0), 변경은 ranking
+  post-processing, `RETRIEVAL_DOCUMENT_CAP=0`으로 rollback 가능. chapter-level은
+  release evidence 강화 항목이지 안정성 필수 조건이 아니다.
+- v1.1.0 GA 또는 연구용 benchmark report 단계에 추가.
 
 ## Known Issues (non-blocking)
 

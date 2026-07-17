@@ -5,6 +5,12 @@
 Production Candidate). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
 
+```
+Release State:  v1.1.0 RC READY
+Development:    FROZEN
+Next:           GA validation / tag preparation
+```
+
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,
