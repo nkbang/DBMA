@@ -154,31 +154,6 @@ def _split_content_by_headers(content: str, filepath: str) -> list:
     return []
 
 
-# ═══════════════════════════════════════════════════════════
-# SPRINT 1 DISABLED — Embedding functions (ollama backend)
-# ═══════════════════════════════════════════════════════════
-
-def embed_text_ollama(texts, model: str = DEFAULT_EMBED_MODEL) -> list:
-    """Embed texts using Ollama (SPRINT 1 DISABLED)."""
-    if not feature_enabled("embedding"):
-        return []
-    try:
-        return ollama.embed(model=model, input=texts)["embeddings"]
-    except Exception as e:
-        if "tokenize" in str(e).lower() or len(texts) > 1:
-            out = []
-            for t in texts:
-                if not t.strip():
-                    continue
-                try:
-                    out.extend(ollama.embed(model=model, input=t)["embeddings"])
-                except Exception:
-                    continue
-            if out:
-                return out
-        raise
-
-
 def _noise_for_display(result: dict) -> dict:
     score = float(result.get("score", 100.0))
     if score >= 70:
