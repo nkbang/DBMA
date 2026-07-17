@@ -137,6 +137,52 @@ restore test passed         (별도 테스트 컬렉션에 업로드, points_cou
 
 ---
 
-*본 문서는 SPRINT20-H-4C 범위(`docs/architecture/`)에서 작성되었으며, 어떤 코드도
-수정하지 않았다. Decision에 나열된 조치("KEEP")는 이미 완료된 보존 조치(백업/스냅샷)를
-추인하는 것이며, 신규 코드 변경을 지시하지 않는다.*
+## Finalization (SPRINT20-I-D-7, 2026-07-17)
+
+DBMA v1.1.0 Architecture Consolidation Release에서 legacy code archive가
+완료되어(commit `ce6b05a`) 본 ADR을 최종 확정한다.
+
+### Legacy Code Archive 완료
+
+- `dbma.py` 및 Chroma/Qdrant island(`core/search.py`, `core/ingest.py`,
+  `core/qdrant_init.py`)이 `archive/legacy/`로 이동 완료(git rename, 삭제 아님).
+- 공식 runtime의 archived 모듈 importer 0 확인. `scripts/backup_chroma.py`는
+  archived 모듈 import를 제거하고 legacy Chroma 경로를 자체 상수로 선언.
+
+### Legacy Boundary 최종 확정
+
+```
+Official Runtime:
+    data/RAW                          (원본 문서)
+    data/제련완성본                    (처리 산출물)
+    data/제련완성본/registry           (Identity Registry, SoT)
+    output/bench/tsu_dataset.jsonl     (TSU Dataset)
+    cache/embeddings                   (Embedding Cache)
+    core/retrieval.py::RetrievalEngine (Retrieval Runtime)
+
+Legacy Storage:
+    archive/legacy                     (archived code)
+    chroma_db                          (legacy vector store)
+    backups                            (legacy snapshots)
+```
+
+### Vector Storage 결정 (확정)
+
+- **chroma_db/ → KEEP 확정.** production retrieval dependency 없음(chroma-free
+  재확인). 소비자는 dashboard status(`runtime_state._check_vector_index`,
+  읽기전용) + legacy recovery 목적뿐. 별도 archive 위치로의 이동은 하지
+  않는다(현 위치 유지) — Consequences의 "이동 여부 별도 결정" 항목을 이로써 종결.
+- **backups/ → KEEP 확정.** 유효 snapshot 보존(chroma×2, qdrant×1).
+
+### Scope 제외 항목 (ADR-003 대상 아님)
+
+아래는 legacy vector store 정책과 무관한 잔재이며, 별도 cleanup 후보다:
+
+- `data/rag_index/` — 실제 index 파일 없음, `.DS_Store` 잔재뿐.
+- `backups/chroma_backup_20260715_203507` — 0B 빈 디렉토리.
+
+---
+
+*Finalization 섹션은 SPRINT20-I-D-7 범위(`docs/architecture/`)에서 작성되었으며,
+어떤 코드/스토리지도 변경하지 않았다. 이 문서 갱신은 이미 완료된 archive(commit
+`ce6b05a`)와 보존 상태를 추인한다.*
