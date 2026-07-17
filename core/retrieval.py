@@ -173,7 +173,7 @@ class ResponsePackage:
     scripture_context: list[str] = field(default_factory=list)
     theological_summary: str = ""
     llm_context_block: str = ""
-    citations: list[str] = field(default_factory=list)
+    citations: "list[Citation]" = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -186,7 +186,7 @@ class ResponsePackage:
             "scripture_context": self.scripture_context[:5],
             "theological_summary": self.theological_summary,
             "llm_context_block": self.llm_context_block[:2000],
-            "citations": self.citations,
+            "citations": [citation.__dict__ for citation in self.citations],
         }
 
 
@@ -1385,12 +1385,38 @@ class ContextAssembler:
         return llm_context_block, scripture_contexts
 
 
+@dataclass
+class Citation:
+    """Structured, human-verifiable citation for a single evidence unit.
+
+    retrieval_score and evidence_confidence are deliberately separate:
+    retrieval_score answers "why did this rank highly", evidence_confidence
+    answers "why do we trust this as evidence" (SPRINT19-B provenance).
+    """
+    citation_id: str
+    tsu_id: str
+    scripture_reference: str
+    source_title: Optional[str]
+    source_author: Optional[str]
+    document_id: Optional[str]
+    content_excerpt: str
+    evidence_confidence: Optional[float]
+    retrieval_score: float
+
+    def __str__(self) -> str:
+        return (
+            f"[{self.citation_id}] {self.scripture_reference}\n"
+            f"    Score: {self.retrieval_score:.4f}\n"
+            f"    Content: {self.content_excerpt}..."
+        )
+
+
 class CitationBuilder:
     """Builds formatted citations from ranked candidates."""
 
-    def build_citations(self, top_k: list[RankedCandidate]) -> list[str]:
-        """Build citation strings for all ranked candidates."""
-        citations: list[str] = []
+    def build_citations(self, top_k: list[RankedCandidate]) -> list[Citation]:
+        """Build structured Citation objects for all ranked candidates."""
+        citations: list[Citation] = []
 
         for i, candidate in enumerate(top_k, 1):
             vm = candidate.metadata.get("verse_mapping", {})
@@ -1407,12 +1433,17 @@ class CitationBuilder:
             else:
                 ref = "Unmapped passage"
 
-            citation = (
-                f"[{i}] {ref}\n"
-                f"    Score: {candidate.final_score:.4f}\n"
-                f"    Content: {candidate.content[:200]}..."
-            )
-            citations.append(citation)
+            citations.append(Citation(
+                citation_id=str(i),
+                tsu_id=candidate.tsu_id,
+                scripture_reference=ref,
+                source_title=candidate.metadata.get("title"),
+                source_author=candidate.metadata.get("author"),
+                document_id=candidate.metadata.get("document_id"),
+                content_excerpt=candidate.content[:200],
+                evidence_confidence=candidate.metadata.get("provenance", {}).get("confidence"),
+                retrieval_score=candidate.final_score,
+            ))
 
         return citations
 

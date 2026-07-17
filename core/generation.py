@@ -32,12 +32,12 @@ uncaught.
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 import ollama
 
-from core.retrieval import ResponsePackage
+from core.retrieval import Citation, ResponsePackage
 from core.config import DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE
 
 logger = logging.getLogger(__name__)
@@ -52,6 +52,7 @@ class GenerationResult:
     temperature: float
     context_used: bool
     error: Optional[str] = None
+    citations: list[Citation] = field(default_factory=list)
 
 
 class GenerationService:
@@ -104,4 +105,5 @@ class GenerationService:
             temperature=temperature,
             context_used=context_used,
             error=error,
+            citations=response.citations,
         )
