@@ -18,7 +18,8 @@ SPRINT20에서 그 위에 Metadata Lineage, Configuration/Environment/Logging
 Authority, Application Entry Point 정합성을 확보했다.
 SPRINT20-I(Architecture Consolidation)에서 Processing/Identity/Index/TSU
 Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
-이동했으며, Legacy(`dbma.py` + Chroma/Qdrant island) 분리를 진행 중이다.
+이동했으며, Legacy(`dbma.py` + Chroma/Qdrant island + md_manager)를
+`archive/legacy/`로 분리 완료했다. v1.3.0으로 태그·검증되었다.
 
 ---
 
@@ -34,31 +35,40 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 
 ## 프로젝트 진행률
 
-전체 진행률: 95% (SPRINT20-I Architecture Consolidation 완료, v1.3.0 RC 준비)
+전체 진행률: 100% (SPRINT20-I Architecture Consolidation 완료, v1.3.0 태그·검증 완료)
 
-### 세부 진행
+### 세부 진행 (SPRINT20-I 완료)
 - Retrieval Engine 단일화 (ADR-001): 100%
-- Citation Layer (구조화 객체 + Generation pass-through): 100%
-- Metadata Propagation (source_file/language/source_type): 100%
-- Configuration Authority (PyYAML hard-fail): 100%
-- Execution Environment Authority (Python 3.11 lock): 100%
-- Dataset Provenance (TSU manifest v2): 100%
-- Entry Point Documentation Alignment: 100%
-- Logging Authority Restoration: 100%
-- Documentation Synchronization (본 문서 포함): 진행 중
-- Legacy Migration (`dbma.py` archive/wrapper 결정): 대기 (CUE-20H)
+- Citation Layer / Metadata Propagation: 100%
+- Configuration / Execution Env / Logging Authority: 100%
+- Index/TSU Builder Authority (core/index_orchestrator.py, core/tsu_builder.py): 100%
+- Registry Path Authority (DEFAULT_REGISTRY_PATH): 100%
+- Legacy Archive (dbma.py + search/ingest/qdrant_init + md_manager → archive/legacy): 100%
+- Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP): 100%
+- Legacy Vector Store 정책 (ADR-003 Finalization): 100%
+- Release: v1.3.0 태그 + chapter-level benchmark PASS + beta validation: 100%
 
 ---
 
-## 현재 우선순위
+## v1.3.0 릴리스 상태
 
-1. `docs/TODO.md`/`docs/CHANGELOG.md` 동기화를 마무리한다(SPRINT20-G4).
-2. `dbma.py` legacy 함수군(`query_rag`, `build_rag_store`, `embed_text_ollama`,
-   `query_qdrant`, `upsert_to_qdrant`)의 처분(archive/wrapper/제거)을 결정한다
-   (SPRINT20-H, 사람 확인 선행 조건 있음 — 2026-07-15 커밋의 활성 여부).
-3. Legacy artifact(`output/registry/`, `output/baseline/`,
-   `output/SPRINT2_MD_DEBUG/`, `output_sav/`) 정리 여부를 결정한다.
-4. 위 항목이 마무리되면 SPRINT20-RC Final Audit으로 RC 선언 여부를 판단한다.
+```
+Version:   v1.3.0 (tag 07ec084) + post-release stabilization
+HEAD:      7a51a31 (origin/dev/dbma-engine 동기화)
+Tests:     237 passed
+Runtime:   APP_VERSION 1.3.0 / embed bge-m3:latest / gen my-theology-bot:latest / cap 2
+Status:    STABLE — GA 검토 단계
+```
+
+완료된 post-release 안정화:
+- UI 수정: st.rerun 콜백, 임베딩 % 표시, 마지막 처리, 버전/임베딩 라벨 authority화
+- Ollama HTTP 500: char/token 4→2 (다국어 oversized 차단)
+- Orphan cleanup: data/rag_index, 빈 backup 폴더, md_manager archive
+- Benchmark evidence: output/bench/chapter_level_result_v1.3.0_cap2.json
+
+## 잔여 (비blocker, 향후)
+- monitor.py 정적 하드코딩 값(메모리 72% 등) → 실시간화 (P3)
+- GA 선언 여부 판단 (안정화 기간 후)
 
 ---
 
