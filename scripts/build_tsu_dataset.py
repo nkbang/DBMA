@@ -26,9 +26,11 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import hashlib
 import json
 import os
 import re
+import subprocess
 import unicodedata
 from pathlib import Path
 from typing import Any, Optional
@@ -328,7 +330,41 @@ def write_tsu_dataset(records: list[dict[str, Any]], dataset_path: Path) -> None
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
 
-def write_manifest(records: list[dict[str, Any]], registry: dict, manifest_path: Path) -> dict:
+def _git_commit_hash() -> Optional[str]:
+    """Current HEAD commit hash, or None if git is unavailable (e.g. a zip
+    distribution with no .git directory) — never invented/guessed."""
+    try:
+        out = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=str(Path(__file__).resolve().parent.parent),
+            stderr=subprocess.DEVNULL,
+        )
+        return out.decode("utf-8").strip() or None
+    except Exception:
+        return None
+
+
+def _sha256_of_file(path: Path) -> Optional[str]:
+    """SHA-256 of a file's bytes, or None if it can't be read — never a
+    placeholder/empty-string value."""
+    try:
+        h = hashlib.sha256()
+        with open(path, "rb") as f:
+            for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                h.update(chunk)
+        return h.hexdigest()
+    except Exception:
+        return None
+
+
+def write_manifest(
+    records: list[dict[str, Any]],
+    registry: dict,
+    manifest_path: Path,
+    registry_path: Optional[Path] = None,
+    dataset_path: Optional[Path] = None,
+    config_path: Optional[Path] = None,
+) -> dict:
     source_document_count = len({
         doc_id for doc_id, doc in registry.get("documents", {}).items()
         if doc.get("chunk_count", 0) > 0
@@ -337,6 +373,16 @@ def write_manifest(records: list[dict[str, Any]], registry: dict, manifest_path:
         "generated_at": datetime.datetime.now().isoformat(timespec="seconds"),
         "tsu_count": len(records),
         "source_document_count": source_document_count,
+        # [SPRINT20-F2] provenance fields — None when the underlying source
+        # is unavailable (e.g. no .git, file not readable), never invented.
+        "build_commit": _git_commit_hash(),
+        "builder_script": "scripts/build_tsu_dataset.py",
+        "registry_path": str(registry_path) if registry_path is not None else None,
+        "registry_sha256": _sha256_of_file(registry_path) if registry_path is not None else None,
+        "dataset_sha256": _sha256_of_file(dataset_path) if dataset_path is not None else None,
+        "dataset_records": len(records),
+        "config_file": "config.yaml",
+        "config_sha256": _sha256_of_file(config_path) if config_path is not None else None,
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     with open(manifest_path, "w", encoding="utf-8") as f:
@@ -371,7 +417,13 @@ def main() -> None:
         return
 
     write_tsu_dataset(records, dataset_path)
-    manifest = write_manifest(records, registry, manifest_path)
+    config_path = Path(__file__).resolve().parent.parent / "config.yaml"
+    manifest = write_manifest(
+        records, registry, manifest_path,
+        registry_path=registry_path,
+        dataset_path=dataset_path,
+        config_path=config_path,
+    )
     print(f"Wrote {len(records)} TSU records to {dataset_path}")
     print(f"Wrote manifest to {manifest_path}: {manifest}")
 
