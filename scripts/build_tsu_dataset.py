@@ -37,7 +37,7 @@ from core.identity_registry import load_identity_registry
 from core.document_identity import generate_chunk_id
 from core.utils import make_safe_stem
 from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH
-from core.retrieval import NAME_TO_BOOK_ID, QueryParser
+from core.retrieval import NAME_TO_BOOK_ID, QueryParser, ScriptureReference
 
 _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
 
@@ -53,19 +53,24 @@ _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
 _reference_parser = QueryParser()
 
 
-def _resolve_chapter(content: str) -> Optional[int]:
-    """Detect a chapter number from chunk content via the existing
-    scripture reference parser. Returns the chapter of the first valid
-    ScriptureReference found, or None if no reference is detected —
-    never inferred/guessed (same "unknown = None" principle as
-    _resolve_book_id() above).
+def _resolve_scripture_ref(content: str) -> Optional[ScriptureReference]:
+    """Detect the first scripture reference in chunk content via the
+    existing parser. Returns None if no reference is detected — never
+    inferred/guessed (same "unknown = None" principle as
+    _resolve_book_id() above). [SPRINT19-A] Single parse call shared by
+    chapter, verse_start, and verse_end resolution below.
     """
     if not content:
         return None
     refs = _reference_parser.parse(content).scripture_refs
-    if refs:
-        return refs[0].chapter
-    return None
+    return refs[0] if refs else None
+
+
+def _resolve_chapter(content: str) -> Optional[int]:
+    """Detect a chapter number from chunk content — first-match policy
+    unchanged from SPRINT18-C."""
+    ref = _resolve_scripture_ref(content)
+    return ref.chapter if ref else None
 
 
 def _resolve_book_id(source_file: str) -> Optional[str]:
@@ -180,9 +185,19 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
             verse_mapping: dict[str, Any] = {}
             if book_id != "UNK":
                 verse_mapping["book_id"] = book_id
-                chapter = _resolve_chapter(content)
-                if chapter is not None:
-                    verse_mapping["chapter"] = chapter
+                # [SPRINT19-A] verse_start/verse_end were already produced
+                # by the parser (ScriptureReference) but discarded here —
+                # CitationBuilder/ContextAssembler in core/retrieval.py
+                # already read verse_mapping.get("verse_start"/"verse_end"),
+                # so this closes a producer-consumer schema gap rather than
+                # introducing a new field. Never guessed: each key is set
+                # only when the parser actually returned that value.
+                ref = _resolve_scripture_ref(content)
+                if ref is not None:
+                    verse_mapping["chapter"] = ref.chapter
+                    verse_mapping["verse_start"] = ref.verse_start  # always int on ScriptureReference
+                    if ref.verse_end is not None:
+                        verse_mapping["verse_end"] = ref.verse_end
 
             records.append({
                 "tsu_id": f"TSU-{book_id}-{len(records) + 1:06d}",

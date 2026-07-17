@@ -89,7 +89,12 @@ class TestVerseMappingChapterKeyOmission:
             mod._read_chunk_texts = original_read_chunk_texts
             mod._read_md_fallback = original_read_md_fallback
 
-        assert records[0]["verse_mapping"] == {"book_id": "2CO", "chapter": 1}
+        # [SPRINT19-A] verse_mapping now additionally carries verse_start/
+        # verse_end when the parser resolves them — chapter enrichment
+        # itself (this test's original SPRINT18-C target) is unchanged.
+        vm = records[0]["verse_mapping"]
+        assert vm["book_id"] == "2CO"
+        assert vm["chapter"] == 1
 
 
 if __name__ == "__main__":
