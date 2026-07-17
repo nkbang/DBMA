@@ -81,7 +81,9 @@ def _render_app_header() -> None:
     col1, col2, col3 = st.columns([1, 4, 1])
 
     with col1:
-        st.logo("DBMA_core.svg", icon_image="DBMA_core.svg")
+        logo_path = Path("DBMA_core.svg")
+        if logo_path.exists():
+            st.logo(str(logo_path), icon_image=str(logo_path))
 
     with col2:
         st.markdown(f"""

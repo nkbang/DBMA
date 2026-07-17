@@ -223,8 +223,20 @@ def _get_corpus_size() -> int:
 
 
 def _get_last_processed() -> str:
-    """Get last processed timestamp."""
-    return "N/A"
+    """Get last processed timestamp from the identity registry (most recent
+    last_processed_at across documents)."""
+    from core.config import DEFAULT_REGISTRY_PATH
+    from core.identity_registry import load_identity_registry
+
+    registry = load_identity_registry(DEFAULT_REGISTRY_PATH)
+    stamps = [
+        doc.get("last_processed_at")
+        for doc in registry.get("documents", {}).values()
+        if doc.get("last_processed_at")
+    ]
+    if not stamps:
+        return "N/A"
+    return max(stamps)[:16].replace("T", " ")
 
 
 def _get_document_counts() -> tuple[int, int]:

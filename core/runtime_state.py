@@ -21,6 +21,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from core.config import DEFAULT_TSU_MANIFEST_PATH
+
 
 # ── 데이터 모델 ─────────────────────────────────────────────
 
@@ -105,7 +107,10 @@ def _read_tsu_manifest(output_dir: Path) -> Dict[str, Any]:
     (SPRINT17-RG-6A)가 실제로 쓰는 manifest를 정본으로 삼는다.
     RetrievalEngine을 인스턴스화하지 않고 manifest 파일만 읽는다.
     """
-    manifest_path = output_dir / "bench" / "tsu_manifest.json"
+    # [FIX] bench 경로는 config authority(DEFAULT_TSU_MANIFEST_PATH,
+    # 기본 output/bench)로 고정 — output_dir(예: data/제련완성본)에서 파생하면
+    # 실제 manifest 위치와 어긋나 임베딩 단계가 30%로 오표시된다.
+    manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
     status: Dict[str, Any] = {
         "manifest_exists": False,
         "generated_at": None,
