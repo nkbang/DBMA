@@ -10,19 +10,26 @@ import logging
 from pathlib import Path
 from typing import Any
 
-# config.yaml 로드 (PyYAML 없으면 무시)
+# config.yaml 로드 (PyYAML 필수 — 누락 시 config.yaml이 조용히 무시되고
+# DEFAULT_OUTPUT_DIR 등이 하드코딩 fallback으로 빠지는 silent corruption을
+# 막기 위해 즉시 실패한다. SPRINT20-E2에서 이 silent fallback이 실제로
+# TSU dataset을 손상시킬 뻔한 사고로 이어진 바 있다.)
 _CFG_RAW: dict[str, Any] | None = None  # pyright: ignore[reportAny]
 CFG: dict[str, Any] = {}  # pyright: ignore[reportAny]
 try:
     import yaml
-    _config_path = Path(__file__).parent.parent / "config.yaml"
-    if _config_path.exists():
-        with open(_config_path, "r", encoding="utf-8") as f:
-            _loaded = yaml.safe_load(f)
-            if isinstance(_loaded, dict):
-                CFG.update(_loaded)
-except ImportError:
-    pass
+except ImportError as exc:
+    raise RuntimeError(
+        "PyYAML is required for DBMA configuration loading. "
+        "Install dependencies from requirements.txt."
+    ) from exc
+
+_config_path = Path(__file__).parent.parent / "config.yaml"
+if _config_path.exists():
+    with open(_config_path, "r", encoding="utf-8") as f:
+        _loaded = yaml.safe_load(f)
+        if isinstance(_loaded, dict):
+            CFG.update(_loaded)
 
 # ── 앱 메타 ──────────────────────────────────────────────
 _yaml_app = CFG.get("app", {})
