@@ -132,6 +132,10 @@ _yaml_rag = CFG.get("rag", {})
 RAG_MIN_LEN = _yaml_rag.get("min_length", 80)
 RAG_MAX_NOISE = _yaml_rag.get("max_noise", 70.0)
 RAG_TOP_K = _yaml_rag.get("top_k", 4)
+# [SPRINT20-I-E] 문서 다양성: top-k 내 동일 document_id 최대 노출 수.
+# 0이면 비활성(기존 동작). 특정 문서(예: 과청킹된 2 Kings Vol13)가 top-k를
+# 독점하는 편중을 완화한다.
+RETRIEVAL_DOCUMENT_CAP = _yaml_rag.get("document_cap", 2)
 DEFAULT_TEMPERATURE = _yaml_rag.get("default_temperature", 0.2)
 RAG_CHUNK_SIZE = _yaml_rag.get("chunk_size", 1200)
 RAG_CHUNK_OVERLAP = _yaml_rag.get("chunk_overlap", 120)

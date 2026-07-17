@@ -37,7 +37,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
-from core.config import DEFAULT_TSU_DATASET_PATH
+from core.config import DEFAULT_TSU_DATASET_PATH, RETRIEVAL_DOCUMENT_CAP
 
 # [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
 logger = logging.getLogger(__name__)
@@ -1291,11 +1291,43 @@ class RetrievalEngine:
         deduplicated = self._deduplicate(candidates)
         metrics.deduplication_ms = (time.perf_counter() - t0) * 1000
 
-        # --- STEP 7: Top-K selection ---
-        top_k = deduplicated[:k_output]
+        # --- STEP 7: Document diversity + Top-K selection ---
+        top_k = self._apply_document_diversity(
+            deduplicated, k_output, RETRIEVAL_DOCUMENT_CAP
+        )
 
         metrics.total_ms = (time.perf_counter() - t_total) * 1000
         return top_k, metrics
+
+    def _apply_document_diversity(
+        self,
+        candidates: list[RankedCandidate],
+        k: int,
+        cap: int,
+    ) -> list[RankedCandidate]:
+        """Limit how many chunks from the same document appear in the top-k,
+        so an over-chunked document (e.g. 2 Kings Vol.13, 67% of the 2KI pool)
+        cannot monopolize the results. Score order is preserved; candidates
+        over the per-document cap are held in overflow and used to backfill
+        when the capped pass yields fewer than k (single-document corpus,
+        candidate_pool < k). cap <= 0 disables the layer (legacy behavior)."""
+        if cap <= 0:
+            return candidates[:k]
+
+        counts: dict[str, int] = {}
+        selected: list[RankedCandidate] = []
+        overflow: list[RankedCandidate] = []
+        for c in candidates:
+            key = c.metadata.get("document_id") or c.metadata.get("source_file") or c.tsu_id
+            if counts.get(key, 0) < cap:
+                counts[key] = counts.get(key, 0) + 1
+                selected.append(c)
+            else:
+                overflow.append(c)
+            if len(selected) == k:
+                return selected
+        # k 미달 시 cap 초과분(score 순서 유지)으로 보충 — 항상 최대 k개 보장
+        return (selected + overflow)[:k]
 
     def _metadata_filter(self, parsed_query: ParsedQuery) -> list[int]:
         """Filter TSUs by metadata (book_id, chapter range). Returns list of valid indices."""
