@@ -6,7 +6,6 @@ config.yaml에서 설정을 읽으며, 하위 호환성을 위해 기본값도 �
 
 import os
 import warnings
-import logging
 from pathlib import Path
 from typing import Any
 
@@ -37,7 +36,11 @@ APP_VERSION = _yaml_app.get("version", "0.6.4")
 APP_NAME = _yaml_app.get("name", "DBMAr")
 
 warnings.filterwarnings("ignore", category=UserWarning)
-logging.getLogger().setLevel(logging.ERROR)
+# [SPRINT20-G3] Previously forced the root logger to ERROR here, which
+# silently suppressed WARNING/INFO logs project-wide the moment core.config
+# was imported (e.g. core/extractors.py's optional-dependency warnings never
+# reached anyone). Application logging level is the entry point's
+# responsibility, not a config-loading side effect — removed.
 
 # ── 디렉토리 (하위 호환성 기본값) ───────────────────────
 CORE_DIR = os.path.dirname(os.path.abspath(__file__))
