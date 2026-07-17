@@ -48,23 +48,31 @@ SPRINT20-I(Architecture Consolidation)에서 완성.
 - [x] Document diversity 개선 (2 Kings 1→3 문서)
 - [x] Version 정합 (APP_VERSION = 1.3.0)
 - [x] Storage 정책 확정 (ADR-003 Finalization)
-- [x] Release validation: chapter-level benchmark(1500q) — **Deferred (RC blocker 아님)**
-- [ ] git push (승인 대기)
+- [x] Release validation: chapter-level benchmark(1500q) — **PASS**
+- [x] git push (완료, origin/dev/dbma-engine)
 
-### Chapter-level validation: Deferred
+### Chapter-level validation: PASS
 
-- RC blocker 아님 — post-RC evidence task로 이동.
-- 근거: book-level benchmark 회귀 없음(전 지표 delta 0), 변경은 ranking
-  post-processing, `RETRIEVAL_DOCUMENT_CAP=0`으로 rollback 가능. chapter-level은
-  release evidence 강화 항목이지 안정성 필수 조건이 아니다.
-- v1.3.0 GA 또는 연구용 benchmark report 단계에 추가.
+1500q, cap=2 + P2 embedding fix. vs baseline v2(cap=0):
 
-## Known Issues (non-blocking)
+| Metric | Baseline | v1.3.0 | Δ |
+|---|---|---|---|
+| P@1 | 0.242 | 0.242 | 0 |
+| P@5 | 0.180 | 0.174 | -0.006 |
+| MRR | 0.3454 | 0.3453 | -0.0001 |
+| nDCG@10 | 0.3853 | 0.3849 | -0.0004 |
+| hit@10 | 0.1567 | 0.1565 | -0.0002 |
 
-- **Ollama HTTP 500**: 장시간 연속 임베딩 요청 시 발생(chapter-level 벤치 중 관찰).
-  별도 조사 항목. RC blocker 아님.
-- Cleanup 후보: `data/rag_index/`(.DS_Store만), `backups/chroma_backup_20260715_203507`(0B).
+- avg_latency 311.5ms. 전 지표 baseline과 동등(noise 수준) → 회귀 없음.
+- Evidence: `output/bench/chapter_level_result_v1.3.0_cap2.json`.
+
+## Resolved Issues
+
+- **Ollama HTTP 500**: 원인 규명·수정 완료(commit f5f2753). char//4 토큰추정이
+  다국어 텍스트 과소평가 → oversized 청크가 Ollama batch(2048) 초과.
+  `_APPROX_CHARS_PER_TOKEN` 4→2로 전송 전 차단. chapter-level 재실행 시 500 재발 0.
+- Orphan cleanup 완료: `data/rag_index/`, 빈 backup 폴더, `core/md_manager.py`(archive).
 
 ## Next
 
-RC 선언 → (선택)chapter-level validation → git push → v1.3.0 tag.
+GA 검토 (안정화 기간 후).

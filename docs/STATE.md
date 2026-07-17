@@ -145,8 +145,9 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 - [x] Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP)
 - [x] Legacy Vector Store 정책 확정 (ADR-003 Finalization)
 - [ ] v1.3.0 Release Candidate 선언 (본 항목 진행 중)
-- [ ] Release validation (chapter-level benchmark, 선택)
-- [ ] 잔여 cleanup (data/rag_index, Ollama HTTP 500 조사)
+- [x] Release validation (chapter-level benchmark 1500q — PASS, 회귀 없음)
+- [x] Ollama HTTP 500 수정 (P2, char/token 4→2, commit f5f2753)
+- [x] 잔여 cleanup (data/rag_index, 빈 backup 폴더, md_manager archive)
 
 ---
 
