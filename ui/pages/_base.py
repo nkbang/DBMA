@@ -7,6 +7,7 @@ from typing import Optional
 
 import streamlit as st
 
+from core.config import APP_VERSION
 from ui.theme.colors import THEME
 
 
@@ -20,7 +21,7 @@ class BasePage:
     def render_header(self) -> None:
         """Render the standard page header."""
         st.markdown(f"## {self.icon} {self.title}")
-        st.caption("DBMA v1.0.0 — Personal Knowledge Operating System")
+        st.caption(f"DBMA v{APP_VERSION} — Personal Knowledge Operating System")
 
     def render_section(self, title: str, icon: str = "📋") -> None:
         """Render a section heading with divider."""
@@ -122,4 +123,4 @@ class BasePage:
     def render_footer(self) -> None:
         """Render the standard page footer."""
         st.divider()
-        st.caption("DBMA v1.0.0 — David Bang Ministry Archive | Personal Knowledge Operating System")
+        st.caption(f"DBMA v{APP_VERSION} — David Bang Ministry Archive | Personal Knowledge Operating System")

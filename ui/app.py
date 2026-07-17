@@ -15,6 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+from core.config import APP_VERSION
 from ui.theme.colors import THEME
 from ui.pages.dashboard import render_dashboard_page
 from ui.pages.library import render_library_page
@@ -101,7 +102,7 @@ def _render_app_header() -> None:
         st.markdown(f"""
         <div style="text-align: right; padding: 0.5rem 0;">
                 <span style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
-                v1.1.0
+                v{APP_VERSION}
             </span>
         </div>
         """, unsafe_allow_html=True)
@@ -147,7 +148,7 @@ def _render_sidebar() -> str:
         st.markdown(f"""
         <div style="text-align: center; padding: 0.5rem 0;">
                 <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
-                DBMA v1.1.0
+                DBMA v{APP_VERSION}
             </span>
             <br>
             <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
