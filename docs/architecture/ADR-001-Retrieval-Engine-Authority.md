@@ -31,7 +31,7 @@ DBMA 저장소에는 검색(retrieval) 책임을 갖는 구현이 **세 갈래**
 |---|---|---|---|---|---|---|
 | ① | 레거시 인라인 RAG | `dbma.py` (`query_rag`, `build_rag_store`, `query_qdrant`, `upsert_to_qdrant`) | Chroma + Qdrant 혼재 | Ollama (`embed_text_ollama`) | `query_rag` 내부에서 직접 호출 | `dbma.py` 자기 자신(self-contained), 외부 호출자 없음 |
 | ② | 경량 검색 | `core/search.py` (`search`, `search_pretty`) | Qdrant | `core/embedder.py` | 없음 | 독립 유틸리티, 현재 UI에서 미사용 확인됨 |
-| ③ | 풀스택 검색 엔진 | `core/retrieval.py`(`RetrievalEngine`, `QueryProcessor` 등) + `core/query_enhancements.py` | Qdrant | (외부 위임) | 별도 계층(`ResponseFormatter`) | `ui/pages/research.py`, `core/runtime_state.py`, `tests/test_book_alias_resolution.py` |
+| ③ | 풀스택 검색 엔진 | `core/retrieval.py`(`RetrievalEngine`, `QueryProcessor` 등) + `core/query_enhancements.py` | ~~Qdrant~~ → 영구 vector store 없음, TSU 기반 in-memory 검색 (SPRINT20-H-3에서 정정, 하단 Correction 참고) | (외부 위임) | 별도 계층(`ResponseFormatter`, 이후 `core/generation.py::GenerationService`로 구체화됨 — SPRINT20-B) | `ui/pages/research.py`, `ui/pages/chat.py`, `core/runtime_state.py`, `tests/test_book_alias_resolution.py` |
 
 세 구현은 각각 다른 벡터 백엔드 조합, 다른 임베딩 경로, 다른 스코어링 방식(신학 특화
 BM25/TF-IDF 하이브리드 vs 단순 벡터 질의 vs 없음)을 가지며 서로를 참조하지 않는다.
@@ -73,10 +73,12 @@ DBMA의 유일한 Retrieval Engine Authority로 지정한다.**
    `tests/test_query_enhancements_full_regression.py`가 `RetrievalEngine`/
    `EnhancedQueryParser` 경로를 검증한다. ①·②는 어떤 테스트로도 커버되지 않는다
    (SPRINT16-B-2에서 확인) — 즉 ③만이 유일하게 신뢰 가능한 경로다.
-4. **벡터 백엔드 일관성**: `RetrievalEngine`은 Qdrant만 사용한다. `core/qdrant_init.py`,
+4. ~~**벡터 백엔드 일관성**: `RetrievalEngine`은 Qdrant만 사용한다. `core/qdrant_init.py`,
    `core/ingest.py`, `core/md_manager.py`도 전부 Qdrant다. Chroma는 ①(`dbma.py`)
    생태계에만 남아있는 레거시이며, Authority를 ③으로 확정하면 벡터 백엔드
-   단일화(Qdrant)가 자연히 뒤따른다.
+   단일화(Qdrant)가 자연히 뒤따른다.**~~ — **[SPRINT20-H-3에서 사실과 다름이 확인됨,
+   하단 Correction 참고]** `RetrievalEngine`은 Qdrant를 전혀 쿼리하지 않으며, 영구
+   vector store를 사용하지 않는다.
 5. **마이그레이션 안전성**: SPRINT16-B-2 조사에서 ①의 `query_rag`/`build_rag_store`가
    외부에서 전혀 참조되지 않는 self-contained 코드임을 확인했다. 즉 ①을
    폐기해도 깨지는 외부 호출자가 없다 — 마이그레이션 리스크가 낮다.
@@ -126,5 +128,48 @@ DBMA의 유일한 Retrieval Engine Authority로 지정한다.**
 
 ---
 
+## Correction (SPRINT20-H-3, 2026-07-16)
+
+**Decision(§Decision, `RetrievalEngine`을 유일한 Retrieval Engine Authority로 지정)은
+그대로 유효하다.** 정정 대상은 §Current Conflict/§Rationale이 전제했던 "③의 벡터
+백엔드는 Qdrant"라는 사실관계뿐이다.
+
+CUE-20H-3(Qdrant Parity Audit)에서 `core/retrieval.py`를 직접 읽고 실제 Qdrant
+인스턴스를 기동해 대조한 결과, 이 전제가 틀렸음이 확인되었다:
+
+```python
+core/retrieval.py:1054: self.qdrant_url = qdrant_url  # 저장만 되고 이후 어디서도 참조되지 않음
+```
+
+**Actual Retrieval Implementation (verified SPRINT20-H-3)**:
+
+```
+RetrievalEngine does not currently query Qdrant.
+
+Current production retrieval flow:
+  TSU dataset (output/bench/tsu_dataset.jsonl, 8,079 records)
+    → core.embedder.get_embedder() (BGE-M3 via Ollama)
+    → in-memory cosine similarity (query/document vectors computed at query time)
+    → in-memory TF-IDF cosine similarity fallback (embedding backend 실패 시)
+
+Qdrant(`dbma_sermon`, 10,570 points)와 Chroma(`dbmar_docs`, 6,710 vectors)는
+①(`dbma.py`) 레거시 파이프라인이 생성한 vector store이며, ③(`RetrievalEngine`)은
+둘 중 어느 것도 쿼리하지 않는다 — "Qdrant=production, Chroma=legacy" 구분은
+성립하지 않는다. 두 저장소 모두 dbma.py 레거시 자산으로 동일하게 취급한다
+(보존 상태: 둘 다 백업 완료 — CUE-20H-2.5/CUE-20H-3.5 참고).
+```
+
+**영향 범위**: §Decision(RetrievalEngine 단일화)과 §Migration Impact의 개별 함수별
+조치는 이 정정과 무관하게 유효하다. 단, §Rationale 4번이 근거로 들었던 "벡터 백엔드
+단일화가 자연히 뒤따른다"는 결론은 철회한다 — 단일화할 대상 자체가 없다(영구 vector
+store 미사용). 향후 vector store 재도입 여부는 별도 ADR(Legacy Vector Store
+Strategy)에서 다룬다.
+
+이 정정은 `docs/architecture/DBMA-Retrieval-Migration-Matrix-v1.md`에도 동일하게
+반영되어야 한다(별도 CUE 대상).
+
+---
+
 *본 문서는 SPRINT16-B-3 범위(`docs/architecture/`)에서 작성되었으며, 어떤 코드도
-수정하지 않았다. 표에 나열된 조치는 결정 사항의 기록일 뿐 실행이 아니다.*
+수정하지 않았다. 표에 나열된 조치는 결정 사항의 기록일 뿐 실행이 아니다.
+Correction 섹션은 SPRINT20-H-3(`docs/architecture/` 범위, 코드 미수정)에서 추가되었다.*
