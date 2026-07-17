@@ -38,7 +38,12 @@ _OLLAMA_TIMEOUT_S = 30
 # text per request (no batching), so only the single-input size guard and
 # selective retry apply here — see dbma.py::_embed_texts for the batching
 # variant needed by callers that embed many texts in one request.
-_APPROX_CHARS_PER_TOKEN = 4
+# [SPRINT20-I P2] 4 chars/token은 영어 기준 추정이라 한국어/헬라어/히브리어
+# 신학 텍스트에서 실제 토큰을 과소평가한다(6511자 청크가 실제 ~3000 토큰).
+# 그 결과 oversized 가드가 무력화되어 Ollama가 물리 batch(2048)를 초과한
+# 입력에 HTTP 500을 반환하고, 반복 시 llama-server가 크래시했다(server.log
+# "signal: killed"). 2 chars/token으로 보수화해 다국어 입력을 전송 전에 차단한다.
+_APPROX_CHARS_PER_TOKEN = 2
 _MAX_SAFE_EMBED_TOKENS = 1800
 _RETRYABLE_ERROR_PATTERNS = ("eof", "connection", "timeout", "500")
 _EMBED_MAX_ATTEMPTS = 3
