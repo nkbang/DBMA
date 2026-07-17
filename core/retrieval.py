@@ -1244,7 +1244,22 @@ class RetrievalEngine:
             norm_theo = theological_scores.get(idx, 0.0)
 
             # Hybrid score: 0.30 * BM25 + 0.25 * vector + 0.45 * theological
-            final_score = (0.30 * norm_bm25 + 0.25 * norm_vector + 0.45 * norm_theo)
+            base_score = (0.30 * norm_bm25 + 0.25 * norm_vector + 0.45 * norm_theo)
+
+            # [SPRINT19-C] Evidence Reliability Adjustment — a narrow (+/-10%)
+            # multiplicative correction, never a primary ranking signal. This
+            # keeps semantic relevance (base_score above) dominant: a large
+            # relevance gap between two candidates always outweighs the
+            # confidence adjustment, so a highly "confident" but topically
+            # weak match cannot outrank a topically strong one (SPRINT19-C
+            # Preflight §3). provenance.confidence comes from
+            # scripts/build_tsu_dataset.py's Scripture Evidence Resolver
+            # (SPRINT19-B); TSUs without it (no scripture reference detected
+            # in their content, 76.23% of the corpus) get the neutral
+            # midpoint 0.5 rather than being penalized for lacking chapter
+            # metadata they were never going to have.
+            evidence_confidence = tsu.get("provenance", {}).get("confidence", 0.5)
+            final_score = base_score * (0.9 + 0.1 * evidence_confidence)
 
             breakdown = theological_breakdowns.get(idx, {})
 
@@ -1252,6 +1267,7 @@ class RetrievalEngine:
                 f"bm25={norm_bm25:.3f}×0.30={0.30*norm_bm25:.3f} | "
                 f"vector={norm_vector:.3f}×0.25={0.25*norm_vector:.3f} | "
                 f"theological={norm_theo:.3f}×0.45={0.45*norm_theo:.3f} | "
+                f"base={base_score:.3f} × evidence_adj={0.9 + 0.1*evidence_confidence:.3f} | "
                 f"total={final_score:.3f}"
             )
 
