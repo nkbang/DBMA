@@ -1058,10 +1058,25 @@ class RetrievalEngine:
         self.tsus: list[dict[str, Any]] = []
         self._load_corpus()
 
-        # Build in-memory index (TF-IDF)
+        # [SPRINT28-C] TF-IDF is a fallback-only path — retrieve() STEP 3
+        # only reads self.vectors when the BGE-M3 embedding backend is
+        # unavailable/fails. Measured (SPRINT28-C Preflight): eagerly
+        # building it here accounted for ~80% of this engine's memory
+        # footprint (19.1 KB/TSU vs 4.81 KB/TSU for the TSU corpus itself)
+        # even in the common case where the embedding backend is healthy
+        # all session and self.vectors is never read at all. Built lazily
+        # on first actual need instead — see _ensure_tfidf_index().
         self.tfidf_vectorizer = TfidfVectorizer()
         self.vectors: list[dict[str, float]] = []
+        self._tfidf_index_built = False
+
+    def _ensure_tfidf_index(self) -> None:
+        """Build the in-memory TF-IDF fallback index on first actual need
+        (idempotent — safe to call before every fallback attempt)."""
+        if self._tfidf_index_built:
+            return
         self._build_tfidf_index()
+        self._tfidf_index_built = True
 
     def _load_corpus(self) -> None:
         """Load TSU dataset from JSONL file."""
@@ -1177,12 +1192,16 @@ class RetrievalEngine:
                 except Exception:
                     sim = None
 
-            if sim is None and idx < len(self.vectors):
-                # In-memory TF-IDF cosine similarity (fast, no embedding backend needed)
-                query_vector = self.tfidf_vectorizer.transform(
-                    _tokenize(parsed_query.original_query)
-                )
-                sim = self.tfidf_vectorizer.cosine_similarity(query_vector, self.vectors[idx])
+            if sim is None:
+                # [SPRINT28-C] Built lazily here, not at __init__ — see
+                # _ensure_tfidf_index() docstring.
+                self._ensure_tfidf_index()
+                if idx < len(self.vectors):
+                    # In-memory TF-IDF cosine similarity (fast, no embedding backend needed)
+                    query_vector = self.tfidf_vectorizer.transform(
+                        _tokenize(parsed_query.original_query)
+                    )
+                    sim = self.tfidf_vectorizer.cosine_similarity(query_vector, self.vectors[idx])
 
             if sim is not None:
                 vector_similarities[idx] = sim
