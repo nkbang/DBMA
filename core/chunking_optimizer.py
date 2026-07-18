@@ -8,6 +8,7 @@ import re
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from core.utils import calculate_noise_score
+from core.config import DEFAULT_MIN_CHUNK_SIZE
 
 try:
     from core.text_normalizer import (
@@ -53,7 +54,11 @@ GRID_OVERLAPS = [50, 80, 100, 120, 150, 200]
 
 NOISE_THRESHOLD = 18.0
 MAX_DUP_RATIO = 0.30
-MIN_CHUNK_CHARS = 80
+# [SPRINT29-B] Single source of truth via core/config.py (config.yaml
+# chunking.min_chunk_size, default 80). Value unchanged from the previous
+# hardcoded 80 — this only removes the duplicate literal shared with
+# core/processing.py.
+MIN_CHUNK_CHARS = DEFAULT_MIN_CHUNK_SIZE
 SHORT_CHUNK_RATIO_LIMIT = 0.20
 
 _RE_MULTISPACE = re.compile(r"[ \t]+")

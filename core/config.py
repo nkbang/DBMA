@@ -89,6 +89,17 @@ SUPPORTED_EXTENSIONS = {
 _yaml_chunking = CFG.get("chunking", {})
 DEFAULT_CHUNK_SIZE = _yaml_chunking.get("default_size", 1200)
 DEFAULT_CHUNK_OVERLAP = _yaml_chunking.get("default_overlap", 120)
+# [SPRINT29-B] Single source for the minimum chunk length. Previously the
+# value 80 was hardcoded independently in core/chunking_optimizer.py and
+# core/processing.py, while config.yaml declared an unrelated (and
+# never-loaded) min_chunk_size: 200. Loaded here so both call sites read
+# one value; default 80 preserves the pre-SPRINT29-B chunking behavior.
+DEFAULT_MIN_CHUNK_SIZE = _yaml_chunking.get("min_chunk_size", 80)
+# [SPRINT29-B] Advisory only — the chunker does not enforce a hard maximum;
+# the effective upper bound is a soft cap of chunk_size * 1.5 in
+# core/chunking_optimizer.py (_split_by_paragraphs). Loaded for provenance/
+# tooling visibility, not consumed by the splitting logic.
+DEFAULT_MAX_CHUNK_SIZE = _yaml_chunking.get("max_chunk_size", 5000)
 
 # ── 벡터DB 설정 (하위 호환성) ───────────────────────────
 _yaml_vdb = CFG.get("vector_db", {})

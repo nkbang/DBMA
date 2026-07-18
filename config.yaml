@@ -34,7 +34,12 @@ directories:
 chunking:
   default_size: 1200
   default_overlap: 120
-  min_chunk_size: 200
+  # [SPRINT29-B] Matches the actual minimum enforced by
+  # core/chunking_optimizer.py (was declared 200 here but the code always
+  # used 80 — reconciled to the real value, behavior unchanged).
+  min_chunk_size: 80
+  # [SPRINT29-B] Advisory only — not enforced by the chunker. The effective
+  # upper bound is a soft cap of default_size * 1.5 in chunking_optimizer.py.
   max_chunk_size: 5000
 
 # ── Vector Database (Primary) ──────────────────────────

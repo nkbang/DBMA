@@ -58,7 +58,7 @@ from core.identity_registry import (
     update_pipeline_flags,
 )
 from core.extraction_failures import record_extraction_failure
-from core.config import registry_path_for
+from core.config import registry_path_for, DEFAULT_MIN_CHUNK_SIZE
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +67,10 @@ _splitter_cache: dict[tuple[int, int], Any] = {}
 # ── 상수 ────────────────────────────────────────────────
 MAX_RETRY = 3               # 리트라이 최대 횟수
 RETRY_DELAY_SEC = 2.0       # 재시도 간격 (초)
-MIN_CHUNK_CHARS = 80        # 최소 청크 길이
+# [SPRINT29-B] Sourced from core/config.py (config.yaml chunking.min_chunk_size,
+# default 80) instead of a second independent literal that duplicated
+# core/chunking_optimizer.py's constant. Value unchanged (80).
+MIN_CHUNK_CHARS = DEFAULT_MIN_CHUNK_SIZE   # 최소 청크 길이
 # ── SPRINT 1 OUTPUT STANDARDIZATION ───────────────────────
 SPRINT1_ONLY_MD_OUTPUT = False   # Sprint 1: ONLY .md is canonical output
 OUTPUT_VALIDATE_ENABLED = True  # 출력 검증 활성화

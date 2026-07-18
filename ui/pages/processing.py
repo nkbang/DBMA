@@ -189,13 +189,19 @@ def _render_ingestion_form() -> None:
         store.set("processing_target", target_dir)
 
     with c2:
+        # [SPRINT29-B] Labeled "(토큰)" not "(문자)": this value feeds
+        # build_splitter() -> SentenceTransformersTokenTextSplitter, which
+        # counts tokens, not characters. It also applies only on the
+        # fallback path — the primary chunker (optimize_chunks) uses
+        # config.yaml chunking.default_size (chars). See help text.
         chunk_size = st.number_input(
-            "청크 크기 (문자)",
+            "청크 크기 (토큰, 폴백용)",
             min_value=256,
             max_value=8192,
             value=1000,
             step=256,
             key="chunk_size",
+            help="폴백 splitter(토큰 단위)에만 적용됩니다. 정상 처리 시 청킹은 config.yaml의 default_size(문자)를 따릅니다.",
         )
         store.set("chunk_size", chunk_size)
 
@@ -203,12 +209,13 @@ def _render_ingestion_form() -> None:
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         overlap = st.number_input(
-            "오버랩 (문자)",
+            "오버랩 (토큰, 폴백용)",
             min_value=0,
             max_value=500,
             value=200,
             step=50,
             key="chunk_overlap",
+            help="폴백 splitter(토큰 단위)에만 적용됩니다.",
         )
     with col2:
         use_ocr = st.checkbox("OCR 사용", value=False, key="use_ocr")
