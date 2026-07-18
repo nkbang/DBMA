@@ -14,7 +14,13 @@ from ui.theme.colors import THEME
 from ui.components.tables import document_table, search_results_table
 from ui.state.store import StateStore
 from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR, DEFAULT_REGISTRY_PATH
-from core.identity_registry import load_identity_registry, save_identity_registry
+from core.identity_registry import (
+    load_identity_registry,
+    save_identity_registry,
+    find_by_source_file,
+    get_supersession_chain,
+)
+from core.extraction_failures import load_extraction_failures
 
 
 def render_library_page() -> None:
@@ -182,6 +188,9 @@ def _render_document_detail_panel() -> None:
     # or wrong.
     _render_metadata_edit_form(selected_doc.get("title", ""))
 
+    # ── Provenance: version history + failure history (SPRINT24-2) ──
+    _render_provenance_section(selected_doc.get("title", ""))
+
     # Add clear selection button — uses on_click callback for full page sync
     st.button(
         "✕ 선택 해제",
@@ -209,6 +218,48 @@ def _find_registry_record(source_filename: str) -> "tuple[Optional[str], Optiona
         if record.get("source_file") == source_filename:
             return doc_id, record
     return None, None
+
+
+def _render_provenance_section(source_filename: str) -> None:
+    """[SPRINT24-2] Read-only join of this filename's version history
+    (documents.json, via supersedes/superseded_by) and failure history
+    (extraction_failures.json). The two logs stay decoupled at the data
+    layer (SPRINT21-H-1 design) — this joins them only for display, by
+    source_file, without introducing a new authority or schema.
+    """
+    if not source_filename:
+        return
+
+    registry_path = _registry_path()
+    chain: list[dict] = []
+    if registry_path.exists():
+        registry = load_identity_registry(str(registry_path))
+        current = find_by_source_file(registry, source_filename)
+        if current is not None:
+            chain = get_supersession_chain(registry, current["document_id"])
+
+    failures = [
+        f for f in load_extraction_failures(DEFAULT_OUTPUT_DIR).get("failures", [])
+        if f.get("source_file") == source_filename
+    ]
+
+    if not chain and not failures:
+        return  # nothing to show — avoid an empty "이력" expander for untouched files
+
+    with st.expander("🕓 이력 (버전 / 실패 기록)", expanded=False):
+        if chain:
+            st.caption(f"버전 {len(chain)}개")
+            for record in chain:
+                status = "현재" if record.get("superseded_by") is None else "이전 버전(대체됨)"
+                st.markdown(
+                    f"- `{record.get('document_id', '?')[:16]}...` — {status}, "
+                    f"pipeline_state={record.get('pipeline_state', '?')}, "
+                    f"chunk_count={record.get('chunk_count', '?')}"
+                )
+        if failures:
+            st.caption(f"실패 기록 {len(failures)}건")
+            for f in reversed(failures):  # most recent first (append-order log)
+                st.markdown(f"- {f.get('failed_at', '?')} • {f.get('stage', '?')} — {f.get('reason', '?')}")
 
 
 def _render_metadata_edit_form(source_filename: str) -> None:

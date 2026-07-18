@@ -201,6 +201,45 @@ def mark_superseded(registry: dict, old_document_id: str, new_document_id: str) 
         new_record["supersedes"] = old_document_id
 
 
+def get_supersession_chain(registry: dict, document_id: str) -> list[dict]:
+    """[SPRINT24-2] Full version history for a document, oldest to newest,
+    following supersedes/superseded_by links in both directions from
+    document_id (which may be any version in the chain, not just the
+    current one). Read-only, no side effects, no schema change.
+
+    Returns [] if document_id is not in the registry. A document with no
+    supersession relationships returns a single-element list (itself).
+    """
+    documents = registry.get("documents", {})
+    if document_id not in documents:
+        return []
+
+    chain_ids = [document_id]
+    seen = {document_id}
+
+    # Walk backward to older versions.
+    cur = documents[document_id]
+    while cur.get("supersedes"):
+        prev_id = cur["supersedes"]
+        if prev_id in seen or prev_id not in documents:
+            break  # cycle guard / dangling reference
+        chain_ids.insert(0, prev_id)
+        seen.add(prev_id)
+        cur = documents[prev_id]
+
+    # Walk forward to newer versions.
+    cur = documents[document_id]
+    while cur.get("superseded_by"):
+        next_id = cur["superseded_by"]
+        if next_id in seen or next_id not in documents:
+            break
+        chain_ids.append(next_id)
+        seen.add(next_id)
+        cur = documents[next_id]
+
+    return [documents[did] for did in chain_ids]
+
+
 def migrate_registry_schema(registry: dict) -> bool:
     """Upgrade v1.0 → v2.0, backward-compatible.
 
