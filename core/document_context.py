@@ -14,6 +14,29 @@ from typing import Optional
 
 from core.document_identity import PROCESSING_VERSION, generate_processing_timestamp
 
+# [SPRINT21-F-2] Valid pipeline_state values. Centralizes the state set that
+# was previously only implicit in scattered literal-string assignments
+# across core/processing.py and core/index_orchestrator.py (5+ sites) —
+# see set_pipeline_state() below.
+PIPELINE_STATES = ("NEW", "IDENTIFIED", "EXTRACTED", "PROCESSED", "TSU_READY", "INDEXED", "FAILED")
+
+
+def set_pipeline_state(target, state: str) -> None:
+    """Set pipeline_state on a DocumentContext instance or a registry
+    record dict, rejecting typos/invalid values immediately instead of
+    letting an unrecognized string silently sit in the registry.
+
+    Args:
+        target: DocumentContext instance, or a dict (registry record).
+        state: One of PIPELINE_STATES.
+    """
+    if state not in PIPELINE_STATES:
+        raise ValueError(f"invalid pipeline_state: {state!r} (valid: {PIPELINE_STATES})")
+    if isinstance(target, dict):
+        target["pipeline_state"] = state
+    else:
+        target.pipeline_state = state
+
 
 @dataclass
 class DocumentContext:

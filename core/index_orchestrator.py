@@ -17,6 +17,7 @@ from typing import Any, Optional
 
 from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH, registry_path_for
 from core.identity_registry import load_identity_registry, save_identity_registry
+from core.document_context import set_pipeline_state
 from core.tsu_builder import build_tsu_records, write_tsu_dataset, write_manifest
 
 
@@ -144,7 +145,7 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
         # reindex_document() above — TSU_READY and INDEXED happen together
         # in this implementation (no partial/observable midpoint), so only
         # the final state is persisted.
-        registry["documents"][doc_id]["pipeline_state"] = "INDEXED"
+        set_pipeline_state(registry["documents"][doc_id], "INDEXED")
         reconciled.append(doc_id)
 
     if reconciled:

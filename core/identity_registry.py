@@ -33,6 +33,7 @@ import os
 import datetime
 from typing import Optional, Dict, Tuple, Literal
 from core.document_identity import PROCESSING_VERSION
+from core.document_context import set_pipeline_state
 
 
 def load_identity_registry(registry_path: str) -> dict:
@@ -219,7 +220,7 @@ def migrate_registry_schema(registry: dict) -> bool:
         # default: PROCESSED (not TSU_READY/INDEXED) — a later reconcile
         # step can verify and advance it, never the reverse.
         if "pipeline_state" not in record:
-            record["pipeline_state"] = "PROCESSED"
+            set_pipeline_state(record, "PROCESSED")
             changed = True
 
         # Sprint 2 pipeline completion flags (additive — never modifies existing fields)
