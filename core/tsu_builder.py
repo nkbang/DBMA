@@ -291,7 +291,20 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                             verse_mapping["verse_end"] = ref.verse_end
 
             record: dict[str, Any] = {
-                "tsu_id": f"TSU-{book_id}-{len(records) + 1:06d}",
+                # [SPRINT21-D fix] Was f"TSU-{book_id}-{len(records)+1:06d}" —
+                # a counter local to the *batch being built*. build_tsu_records()
+                # is called both on the full corpus (rebuild_tsu_index) and on
+                # a single-document subset (reindex_document(), SPRINT20-I-C-3);
+                # in the latter case len(records) restarts at 0 per call, so
+                # every document sharing a book_id independently produced
+                # TSU-{book}-000001, TSU-{book}-000002, ... — colliding across
+                # documents (1448/8079 collisions observed in production,
+                # SPRINT21-D). chunk_id is already a deterministic, globally
+                # unique identifier (document_id-derived) regardless of which
+                # batch a document is built in, so basing tsu_id on it makes
+                # tsu_id collision-free by construction and stable across
+                # full rebuilds and partial reindexes alike.
+                "tsu_id": f"TSU-{book_id}-{chunk_id}",
                 "document_id": document_id,
                 "chunk_id": chunk_id,
                 "content": content,
