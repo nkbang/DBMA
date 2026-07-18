@@ -38,6 +38,7 @@ from core.document_identity import generate_chunk_id
 from core.utils import make_safe_stem
 from core.retrieval import NAME_TO_BOOK_ID, QueryParser, ScriptureReference
 from core.canonical_constants import CANONICAL_MAX_CHAPTER
+from core.noise_classifier import classify as classify_noise
 
 
 _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
@@ -329,6 +330,20 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
             }
             if provenance is not None:
                 record["provenance"] = provenance
+
+            # [SPRINT28-B] Additive-only TSU metadata — content_quality is a
+            # new sibling field, no existing field above is touched or
+            # removed. core/retrieval.py does not read this field yet
+            # (SPRINT28-A design proposal deferred that to a separate
+            # Retrieval Sprint); this only tags TSU records for future
+            # consumption.
+            noise_result = classify_noise(content)
+            record["content_quality"] = {
+                "noise_type": noise_result.noise_type,
+                "quality_score": noise_result.quality_score,
+                "section_type": noise_result.section_type,
+            }
+
             records.append(record)
 
     return records

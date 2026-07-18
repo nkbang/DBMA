@@ -31,7 +31,19 @@ from core.extractors import PAGE_BREAK_MARKER
 
 _FRONT_MATTER_KEYWORDS = re.compile(
     r"(Copyright|ISBN|All rights reserved|Table of Contents|"
-    r"판권|발행처|발행인|\b인쇄\b|옮김|저작권|목차|초판|재판\s*발행)",
+    r"판권|발행처|발행인|\b인쇄\b|옮김|저작권|목차|초판|재판\s*발행|"
+    # [SPRINT28-B] Additional front-matter section headers observed in
+    # academic commentaries (Beta Corpus Validation, e.g. WBC "Abbreviations"
+    # page) that the original keyword set didn't cover — these pages don't
+    # contain Copyright/ISBN/TOC keywords and are dense (not short-line), so
+    # they previously fell through to body_text undetected.
+    r"Abbreviations|Acknowledge?ments?|Preface|Glossary|"
+    r"약어표?|서문|감사의\s*글|색인|"
+    # "Index" alone is a common English word — restricted to a standalone
+    # heading line (start of line, optional trailing whitespace/newline)
+    # rather than a bare substring match, to avoid misclassifying a body
+    # page that merely mentions "author index" in running prose.
+    r"^\s*Index\s*$)",
     re.IGNORECASE,
 )
 
