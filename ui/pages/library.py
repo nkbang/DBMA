@@ -55,14 +55,14 @@ def _render_search_bar() -> None:
     if query:
         store.set("library_search_query", query)
 
-    # Filter options
+     # Filter options
     c1, c2 = st.columns(2)
     with c1:
-        file_type = st.selectbox(
-            "파일 유형",
-            options=["all", "pdf", "txt", "md", "docx"],
-            key="library_file_type",
-        )
+         file_type = st.selectbox(
+             "파일 유형",
+             options=["all", "pdf", "txt", "md", "docx", "epub", "html", "htm", "rtf"],
+             key="library_file_type",
+         )
     with c2:
         sort_by = st.selectbox(
             "정렬 기준",
@@ -402,7 +402,7 @@ def _get_documents_list() -> list[dict]:
     """Get the list of source documents from the RAW directory.
 
     Primary source: DEFAULT_RAW_DIR (raw document queue).
-    Supports: .pdf, .epub, .txt, .md, .docx
+    Supports: .pdf, .epub, .txt, .md, .docx, .html, .htm, .rtf
     Uses recursive search (rglob) to discover all files in subdirectories.
     
     Sort order determined by st.session_state["library_sort_by"]:
@@ -420,7 +420,7 @@ def _get_documents_list() -> list[dict]:
         return documents
 
     # Supported source document extensions
-    SUPPORTED_EXTENSIONS = {".pdf", ".epub", ".txt", ".md", ".docx"}
+    SUPPORTED_EXTENSIONS = {".pdf", ".epub", ".txt", ".md", ".docx", ".html", ".htm", ".rtf"}
 
     # Resolve to absolute for consistent iteration; store display path relative to project root
     raw_resolved = raw_dir.resolve()
