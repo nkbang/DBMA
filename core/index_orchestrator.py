@@ -110,20 +110,27 @@ def reindex_document(document_id: str, output_dir: str = DEFAULT_OUTPUT_DIR) -> 
 
 
 def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
-    """[SPRINT21-B Phase2] Pull-based reconciler — Processing -> TSU 연결.
+    """[SPRINT21-B Phase2, extended SPRINT21-G-2 Option C] Pull-based
+    reconciler — Processing -> TSU 연결 + superseded 문서 정리.
 
-    registry에서 pipeline_state == "PROCESSED"(TSU 미반영)인 문서만 찾아
-    reindex_document()로 한 건씩 색인하고, 성공 시 pipeline_state를
-    PROCESSED -> TSU_READY -> INDEXED로 전진시킨다. 이미 TSU_READY/INDEXED인
-    문서는 건드리지 않으므로(idempotent) 반복 호출해도 안전 — event/queue
-    없이 매 호출 시점의 registry 스냅샷만 보고 필요한 것만 처리한다
-    (Preflight §3 "Command/Pull 기반" 설계).
+    1. registry에서 pipeline_state == "PROCESSED"(TSU 미반영)인 문서만 찾아
+       reindex_document()로 한 건씩 색인하고, 성공 시 pipeline_state를
+       PROCESSED -> TSU_READY -> INDEXED로 전진시킨다. 이미 TSU_READY/INDEXED인
+       문서는 건드리지 않으므로(idempotent) 반복 호출해도 안전 — event/queue
+       없이 매 호출 시점의 registry 스냅샷만 보고 필요한 것만 처리한다
+       (Preflight §3 "Command/Pull 기반" 설계).
+    2. superseded_by가 설정된 문서(SPRINT21-G-2 Option C — 같은 source_file을
+       내용만 바꿔 재처리한 결과 남은 옛 버전)의 TSU 레코드를 데이터셋에서
+       제거한다. reindex_document()를 재사용하지 않는다 — 옛 문서의 {stem}.md는
+       이미 새 버전 내용으로 덮어써져 있어(같은 source_file), 그걸로 다시 빌드하면
+       옛 document_id에 새 내용이 잘못 매핑된다. 대신 document_id로 필터링만
+       한다(재빌드 없음, 순수 삭제). 이미 제거된 문서는 0건이라 idempotent.
 
     ingest_status는 건드리지 않는다. tsu_builder.py/retrieval.py/
     embedder.py는 호출만 하며 내부 로직은 변경하지 않는다.
 
     Returns:
-        {"pending": int, "reconciled": int, "failed": [{"document_id","error"}]}
+        {"pending": int, "reconciled": int, "failed": [...], "purged": int}
     """
     registry_path = Path(registry_path_for(output_dir))
     registry = load_identity_registry(str(registry_path))
@@ -148,7 +155,33 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
         set_pipeline_state(registry["documents"][doc_id], "INDEXED")
         reconciled.append(doc_id)
 
+    # [SPRINT21-G-2 Option C] Purge superseded documents' TSU records so
+    # edited-then-reprocessed content stops being searchable under its old
+    # document_id, without disturbing anything else in the dataset.
+    superseded_ids = {
+        doc_id for doc_id, doc in registry.get("documents", {}).items()
+        if doc.get("superseded_by") is not None
+    }
+    purged = 0
+    if superseded_ids:
+        dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
+        if dataset_path.exists():
+            with open(dataset_path, "r", encoding="utf-8") as f:
+                existing = [json.loads(line) for line in f if line.strip()]
+            kept = [r for r in existing if r.get("document_id") not in superseded_ids]
+            purged = len(existing) - len(kept)
+            if purged > 0:
+                write_tsu_dataset(kept, dataset_path)
+                manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
+                config_path = Path(__file__).resolve().parent.parent / "config.yaml"
+                write_manifest(
+                    kept, registry, manifest_path,
+                    registry_path=registry_path,
+                    dataset_path=dataset_path,
+                    config_path=config_path,
+                )
+
     if reconciled:
         save_identity_registry(registry, str(registry_path))
 
-    return {"pending": len(pending), "reconciled": len(reconciled), "failed": failed}
+    return {"pending": len(pending), "reconciled": len(reconciled), "failed": failed, "purged": purged}

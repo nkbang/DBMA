@@ -134,6 +134,10 @@ def register_document(
         # don't supply it (e.g. scripts not yet updated), matching the
         # migration default above.
         "pipeline_state": metadata.get("pipeline_state", "PROCESSED"),
+        # [SPRINT21-G-2 Option C] set by mark_superseded() after the fact,
+        # never guessed at creation time.
+        "superseded_by": None,
+        "supersedes": None,
     }
 
     registry["documents"][doc_id] = record
@@ -160,6 +164,41 @@ def find_by_file_hash(registry: dict, file_hash: str) -> Optional[dict]:
         if doc.get("file_hash") == file_hash:
             return doc
     return None
+
+
+def find_by_source_file(registry: dict, source_file: str) -> Optional[dict]:
+    """[SPRINT21-G-2 Option C] Lookup the current (non-superseded) record
+    for a source_file. document_id/file_hash are pure content hashes, so
+    editing a document's content produces a brand-new document_id that
+    classify_ingest_decision() cannot match back to the prior record (it
+    only searches by the freshly-computed doc_id/hash) — this was
+    confirmed to fall through to PROCESS and orphan the old record
+    (SPRINT21-G Gap#2 reproduction). This lookup is the missing piece that
+    lets processing.py detect "same source_file, different content" and
+    link the two records via supersedes/superseded_by instead of leaving
+    the old one silently searchable forever.
+
+    Returns the record if found, None otherwise. If more than one
+    non-superseded record shares source_file (should not happen under
+    normal operation), returns the first match.
+    """
+    for doc in registry["documents"].values():
+        if doc.get("source_file") == source_file and doc.get("superseded_by") is None:
+            return doc
+    return None
+
+
+def mark_superseded(registry: dict, old_document_id: str, new_document_id: str) -> None:
+    """[SPRINT21-G-2 Option C] Link a superseded document to its
+    replacement. Does not touch document_id/file_hash/content — purely an
+    additive relationship. Caller is responsible for persisting the
+    registry afterward."""
+    old_record = registry["documents"].get(old_document_id)
+    new_record = registry["documents"].get(new_document_id)
+    if old_record is not None:
+        old_record["superseded_by"] = new_document_id
+    if new_record is not None:
+        new_record["supersedes"] = old_document_id
 
 
 def migrate_registry_schema(registry: dict) -> bool:
@@ -221,6 +260,16 @@ def migrate_registry_schema(registry: dict) -> bool:
         # step can verify and advance it, never the reverse.
         if "pipeline_state" not in record:
             set_pipeline_state(record, "PROCESSED")
+            changed = True
+
+        # [SPRINT21-G-2 Option C] additive — existing records predate the
+        # supersession relationship, so none of them supersede/are
+        # superseded by anything until a future re-edit triggers it.
+        if "superseded_by" not in record:
+            record["superseded_by"] = None
+            changed = True
+        if "supersedes" not in record:
+            record["supersedes"] = None
             changed = True
 
         # Sprint 2 pipeline completion flags (additive — never modifies existing fields)

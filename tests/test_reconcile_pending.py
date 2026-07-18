@@ -83,7 +83,7 @@ def test_no_pending_documents_is_noop(tmp_path, monkeypatch):
     _patch_paths(tmp_path, monkeypatch)
 
     result = reconcile_pending(output_dir=str(tmp_path))
-    assert result == {"pending": 0, "reconciled": 0, "failed": []}
+    assert result == {"pending": 0, "reconciled": 0, "failed": [], "purged": 0}
 
 
 def test_tsu_dataset_actually_contains_reconciled_document(tmp_path, monkeypatch):

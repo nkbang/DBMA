@@ -53,7 +53,7 @@ class TestRegistryMigration:
                        "pipeline_state": "INDEXED", "last_content_hash": "h1",
                        "ingest_status": "PROCESSED", "retry_count": 0, "max_retries": 3,
                        "last_failure_reason": None, "last_processed_at": "x",
-                       "pipeline_flags": {}},
+                       "pipeline_flags": {}, "superseded_by": None, "supersedes": None},
             },
         }
         changed = migrate_registry_schema(registry)

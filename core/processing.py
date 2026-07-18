@@ -50,6 +50,8 @@ from core.identity_registry import (
     save_identity_registry,
     find_by_document_id,
     find_by_file_hash,
+    find_by_source_file,
+    mark_superseded,
     classify_ingest_decision,
     update_content_hash,
     transition_ingest_status,
@@ -551,6 +553,18 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # Pre-processing: classify ingest decision (PROCESS/SKIP/REPROCESS/RETRY)
         decision, existing_record = classify_ingest_decision(_registry, document_id, file_hash)
 
+        # [SPRINT21-G-2 Option C] classify_ingest_decision() only searches by
+        # the freshly-computed document_id/file_hash, both pure content
+        # hashes — editing a document's content changes both, so an edited
+        # file's prior record is never found there and PROCESS treats it as
+        # brand new, orphaning the old record (SPRINT21-G Gap#2, reproduced
+        # and confirmed). Detect that case here via source_file instead, and
+        # link the two records — old content stays in the registry for
+        # history but is excluded from TSU/retrieval once superseded.
+        _prior_version = None
+        if decision == "PROCESS" and existing_record is None:
+            _prior_version = find_by_source_file(_registry, source_name)
+
         if decision == "SKIP":
             _prev_src = existing_record.get("source_file", "") if existing_record else ""
             emit("skip", f"UNCHANGED: {_prev_src or source_name}", 1.0, level="ok")
@@ -771,6 +785,18 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
         # ── [PT-PROCESSING-010-C/012] Persist identity registry ────
         record, is_new = register_document(_registry, document_meta, output_dir)
+
+        # [SPRINT21-G-2 Option C] Link the edited document to the prior
+        # version found above, now that the new record actually exists in
+        # the registry. document_id/content of either record is untouched.
+        if _prior_version is not None and is_new:
+            mark_superseded(_registry, _prior_version["document_id"], document_id)
+            emit(
+                "supersede",
+                f"이전 버전 대체: {_prior_version['document_id'][:16]}... → {document_id[:16]}...",
+                0.99, level="warn",
+            )
+
         persisted_ok = save_identity_registry(_registry, registry_path)
 
         # ── [SPRINT2] Set pipeline completion flags on successful persist ──
