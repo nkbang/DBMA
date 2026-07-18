@@ -28,11 +28,24 @@ from core.processing import (
 
 logger = logging.getLogger(__name__)
 
+# [SPRINT22-A] Single source of truth for supported intake formats — the
+# extractor (core/extractors.py::extract_text_from_file) has always
+# supported pdf/txt/md/docx/epub/html/htm/rtf, but this UI independently
+# repeated a stale {pdf,txt,md,docx}-only set in three separate literals
+# (SPRINT21-G-3-B backlog item), silently hiding epub/html/rtf from users.
+# One constant now, referenced everywhere a supported-extension check is
+# needed, so the two can't drift apart again.
+SUPPORTED_EXTS = {".pdf", ".txt", ".md", ".docx", ".epub", ".html", ".htm", ".rtf"}
+
 
 def render_processing_page() -> None:
     """Render the DBMA Document Processing page."""
     page = BasePage(title="Document Processing", icon="📄")
     page.render_header()
+
+    # ── File Upload (Drag & Drop) ───────────────────────────────
+    page.render_section("파일 업로드", icon="📤")
+    _render_upload_section()
 
     # ── Ingestion Form ─────────────────────────────────────────
     page.render_section("문書 처리", icon="📥")
@@ -49,17 +62,62 @@ def render_processing_page() -> None:
     page.render_footer()
 
 
+def _render_upload_section() -> None:
+    """[SPRINT22-A] Drag & drop file upload.
+
+    Saves uploaded files directly into DEFAULT_RAW_DIR and stops there —
+    it is purely an alternate intake mechanism for RAW. The existing
+    processing pipeline (_build_file_list/process_batch/process_one_file)
+    picks the saved files up completely unchanged on the next "🚀 문서
+    처리 시작" click, exactly as if the user had copied them into RAW
+    manually. No core/processing.py changes needed.
+    """
+    uploaded_files = st.file_uploader(
+        "파일을 끌어다 놓거나 선택하세요",
+        type=sorted(ext.lstrip(".") for ext in SUPPORTED_EXTS),
+        accept_multiple_files=True,
+        key="raw_upload_files",
+    )
+
+    if not uploaded_files:
+        st.caption("지원 형식: PDF, TXT, MD, DOCX, EPUB, HTML, RTF")
+        return
+
+    st.caption(f"{len(uploaded_files)}개 파일 선택됨: {', '.join(f.name for f in uploaded_files)}")
+
+    if st.button("📥 RAW 폴더에 저장", key="save_uploads"):
+        raw_dir = Path(DEFAULT_RAW_DIR)
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        saved, skipped = [], []
+        for f in uploaded_files:
+            # Path(...).name strips any directory components the browser
+            # might have supplied — never write outside raw_dir.
+            safe_name = Path(f.name).name
+            ext = Path(safe_name).suffix.lower()
+            if ext not in SUPPORTED_EXTS:
+                skipped.append(safe_name)
+                continue
+            dest = raw_dir / safe_name
+            dest.write_bytes(f.getvalue())
+            saved.append(safe_name)
+
+        if saved:
+            st.success(f"RAW에 저장됨: {', '.join(saved)} — 아래에서 처리를 시작하세요.")
+        if skipped:
+            st.warning(f"지원하지 않는 형식이라 건너뜀: {', '.join(skipped)}")
+        st.rerun()
+
+
 def _build_file_list(target_dir: str, force_reingest: bool) -> List[Dict[str, Any]]:
     """Build file list from target directory, respecting force_reingest flag."""
     raw_path = Path(target_dir)
     if not raw_path.exists():
         return []
 
-    supported_exts = {".pdf", ".txt", ".md", ".docx"}
     files = []
 
     for f in sorted(raw_path.iterdir()):
-        if f.suffix.lower() not in supported_exts:
+        if f.suffix.lower() not in SUPPORTED_EXTS:
             continue
         if not f.is_file():
             continue
@@ -134,11 +192,10 @@ def _render_ingestion_form() -> None:
 
     # Count pending files
     raw_path = Path(target_dir)
-    supported_exts = {".pdf", ".txt", ".md", ".docx"}
     pending_count = 0
     if raw_path.exists():
         for f in raw_path.iterdir():
-            if f.suffix.lower() in supported_exts and f.is_file():
+            if f.suffix.lower() in SUPPORTED_EXTS and f.is_file():
                 pending_count += 1
 
     # Start processing button
@@ -165,11 +222,10 @@ def _render_processing_queue() -> None:
         return
 
     files = list(raw_dir.iterdir())
-    supported_exts = {".pdf", ".txt", ".md", ".docx"}
-    supported = [f for f in files if f.suffix.lower() in supported_exts and f.is_file()]
+    supported = [f for f in files if f.suffix.lower() in SUPPORTED_EXTS and f.is_file()]
 
     if not supported:
-        st.info("지원되지 않는 파일 유형입니다. (PDF, TXT, MD, DOCX)")
+        st.info("지원되지 않는 파일 유형입니다. (PDF, TXT, MD, DOCX, EPUB, HTML, RTF)")
         return
 
     # 이미 처리된 파일(.batch_state.json)은 실제 처리 대상이 아니므로 대기열에서 제외 —
