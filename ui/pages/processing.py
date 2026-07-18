@@ -316,6 +316,7 @@ def _execute_processing(
                 chunk_size=chunk_size,
                 chunk_overlap=overlap,
                 report=report_callback,
+                force_reingest=force_reingest,
             )
             
             # Summarize results

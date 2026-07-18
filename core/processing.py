@@ -874,10 +874,18 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage or "unexpected", "reason": _failure_reason}
 
 
-def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None):
-    """배치 처리 (업그레이드 v2 — 중복 파일 제외 + 배치 상태 추적)"""
+def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_reingest=False):
+    """배치 처리 (업그레이드 v2 — 중복 파일 제외 + 배치 상태 추적)
+
+    [SPRINT21-G-3-B Gap#3 fix] force_reingest=True면 .batch_state.json
+    파일명 게이트를 건너뛴다. 이전에는 이 함수가 force_reingest를 아예
+    받지 않아, ui/pages/processing.py의 "강제 재처리" 체크박스가
+    _build_file_list()의 1차 필터만 우회하고 이 함수의 독립적인 2차
+    필터(get_processed_files())에 다시 걸려 무조건 스킵되는 구조적
+    결함이 있었다(실측 확정: force_reingest 의도와 무관하게 skipped=True).
+    """
     logger.info("[SPRINT1] ingestion start: %d files", len(file_list))
-    processed_set = get_processed_files(output_dir)
+    processed_set = set() if force_reingest else get_processed_files(output_dir)
     results = []
 
     for file_info in file_list:
