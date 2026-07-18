@@ -17,10 +17,13 @@ from __future__ import annotations
 import datetime
 import json
 import os
+import uuid
 from typing import Any, Dict, List, Optional
 
 from core.config import DEFAULT_OUTPUT_DIR
 from core.retrieval import QueryProcessor
+
+SCHEMA_VERSION = 1
 
 
 def _sessions_path() -> str:
@@ -32,14 +35,15 @@ def _sessions_path() -> str:
 def create_session() -> str:
     """
     Create a new research session.
-    
+
     Returns
     -------
     str
-        Unique session ID (timestamp-based).
+        Unique session ID (timestamp prefix + uuid4 suffix — SPRINT27-E,
+        ADR-005 §2 — avoids same-second collisions from timestamp-only IDs).
     """
-    session_id = datetime.datetime.now().isoformat(timespec="seconds")
-    return session_id
+    timestamp = datetime.datetime.now().isoformat(timespec="seconds")
+    return f"{timestamp}-{uuid.uuid4().hex[:8]}"
 
 
 def add_query_result(
@@ -174,17 +178,20 @@ def load_sessions() -> Dict[str, Any]:
     try:
         path = _sessions_path()
         if not os.path.exists(path):
-            return {"sessions": []}
-        
+            return {"schema_version": SCHEMA_VERSION, "sessions": []}
+
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        
+
         if not isinstance(data.get("sessions"), list):
-            return {"sessions": []}
-            
+            return {"schema_version": SCHEMA_VERSION, "sessions": []}
+
+        # [SPRINT27-E] Additive migration — files written before schema_version
+        # existed (ADR-005 §4/§5) are treated as version 1, read-time only.
+        data.setdefault("schema_version", SCHEMA_VERSION)
         return data
     except (json.JSONDecodeError, OSError):
-        return {"sessions": []}
+        return {"schema_version": SCHEMA_VERSION, "sessions": []}
 
 
 def list_sessions() -> List[Dict[str, Any]]:

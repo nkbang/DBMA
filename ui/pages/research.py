@@ -18,11 +18,17 @@ from core.config import DEFAULT_OUTPUT_DIR
 # Production retrieval imports (LOOP 3 — binding)
 from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate
 from ui.state.query_processor import get_shared_query_processor
-from core.research_workspace import list_sessions, load_session
+from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 
 
 def render_research_page() -> None:
     """Render the DBMA Research Workspace page."""
+    # [SPRINT27-E] One research session per browser visit (ADR-005 §1) —
+    # created once and reused across saves within this session_state; a
+    # page reload clears session_state and starts a new research session.
+    if "research_session_id" not in st.session_state:
+        st.session_state["research_session_id"] = create_session()
+
     page = BasePage(title="Research Workspace", icon="🔬")
     page.render_header()
 
@@ -242,12 +248,11 @@ def _render_search_results() -> None:
         
         if query and response_obj:
             try:
-                # Import research workspace module
-                from core.research_workspace import add_query_result, create_session
-                
-                # Create new session ID or use existing (for now using new)
-                session_id = create_session()
-                
+                # [SPRINT27-E] Reuse this browser session's research session_id
+                # (set once in render_research_page()) instead of minting a
+                # new session per save — see ADR-005 §1.
+                session_id = st.session_state["research_session_id"]
+
                 # Save to session workspace
                 success = add_query_result(session_id, query, response_obj.to_dict())
                 
