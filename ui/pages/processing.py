@@ -38,6 +38,29 @@ logger = logging.getLogger(__name__)
 # needed, so the two can't drift apart again.
 SUPPORTED_EXTS = {".pdf", ".txt", ".md", ".docx", ".epub", ".html", ".htm", ".rtf"}
 
+# [SPRINT25-B-2] Human-readable labels for the exception classes actually
+# reachable in the extraction path (verified in SPRINT25-B-1 Preflight —
+# never guessed). An error_type not in this map is shown verbatim, so a new
+# exception class surfaces its raw name rather than a wrong label.
+_ERROR_TYPE_LABELS = {
+    "FileNotFoundError": "파일 없음",
+    "ValueError": "형식/추출 오류",
+    "PackageNotFoundError": "손상된 DOCX",
+    "EpubException": "손상된 EPUB",
+}
+
+
+def _failure_label(failure: dict) -> str:
+    """Display label for one failure record. exception-stage failures are
+    refined by error_type (SPRINT25-B-1); everything else uses the stage.
+    Missing error_type (legacy records) falls back to the generic stage
+    label, so nothing regresses."""
+    stage_labels = {"extract": "추출 실패", "noise": "정제 후 텍스트 없음", "exception": "예외 발생"}
+    if failure.get("stage") == "exception" and failure.get("error_type"):
+        et = failure["error_type"]
+        return _ERROR_TYPE_LABELS.get(et, et)
+    return stage_labels.get(failure.get("stage"), failure.get("stage", "?"))
+
 
 def render_processing_page() -> None:
     """Render the DBMA Document Processing page."""
@@ -459,7 +482,6 @@ def _render_recent_failures() -> None:
     recent = list(reversed(failures))[:10]
     st.caption(f"전체 {len(failures)}건 중 최근 {len(recent)}건")
 
-    stage_labels = {"extract": "추출 실패", "noise": "정제 후 텍스트 없음", "exception": "예외 발생"}
     for f in recent:
         html = f"""
         <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {THEME.STATUS_ERROR}; margin-bottom: 4px;">
@@ -469,7 +491,7 @@ def _render_recent_failures() -> None:
                     {f.get("source_file", "?")}
                 </div>
                 <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
-                    {f.get("failed_at", "?")} • {stage_labels.get(f.get("stage"), f.get("stage", "?"))}
+                    {f.get("failed_at", "?")} • {_failure_label(f)}
                     {f" • 재시도 {f['retry_count']}회" if f.get("retry_count") else ""}
                 </div>
             </div>
