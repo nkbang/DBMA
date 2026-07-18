@@ -123,7 +123,7 @@ def _render_sidebar() -> str:
             "Dashboard": ("🏠", "시스템 대시보드"),
             "Library": ("📚", "문서 라이브러리"),
             "Processing": ("📄", "문서 처리"),
-            "Research": ("🔬", "연구_workspace"),
+            "Research": ("🔬", "연구 워크스페이스"),
             "Chat": ("💬", "RAG 채팅"),
             "Monitor": ("💚", "시스템 모니터링"),
         }

@@ -18,6 +18,7 @@ from core.config import DEFAULT_OUTPUT_DIR
 # Production retrieval imports (LOOP 3 — binding)
 from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate
 from ui.state.query_processor import get_shared_query_processor
+from core.research_workspace import list_sessions, load_session
 
 
 def render_research_page() -> None:
@@ -231,6 +232,82 @@ def _render_search_results() -> None:
         score_column="score",
         highlight_query=st.session_state.get("research_query", ""),
     )
+    
+    # Add session save functionality
+    st.divider()
+    st.subheader("세션 저장")
+    if st.button("🔍 세션에 저장", type="secondary", use_container_width=True):
+        query = st.session_state.get("research_query", "")
+        response_obj = st.session_state.get("research_response")
+        
+        if query and response_obj:
+            try:
+                # Import research workspace module
+                from core.research_workspace import add_query_result, create_session
+                
+                # Create new session ID or use existing (for now using new)
+                session_id = create_session()
+                
+                # Save to session workspace
+                success = add_query_result(session_id, query, response_obj.to_dict())
+                
+                if success:
+                    st.success(f"세션 저장 완료! (ID: {session_id[:8]}...)")
+                else:
+                    st.error("세션 저장에 실패했습니다.")
+            except Exception as e:
+                st.error(f"세션 저장 중 오류 발생: {str(e)}")
+        else:
+            st.warning("저장할 검색 결과가 없습니다.")
+
+    _render_saved_sessions()
+
+
+def _render_saved_sessions() -> None:
+    """Render a read-only list of saved research sessions with a load action.
+
+    [SPRINT27-C] Uses only the existing list_sessions()/load_session() core
+    API — no new retrieval calls, no TSU content fetch (references only,
+    per ADR-004 §2). Loading a session fills the query input; the user still
+    has to press "검색 실행" themselves to re-run it.
+    """
+    st.divider()
+    st.subheader("저장된 세션")
+
+    sessions = list_sessions()
+    if not sessions:
+        st.caption("저장된 세션이 없습니다.")
+        return
+
+    sessions_sorted = sorted(sessions, key=lambda s: s.get("created_at", ""), reverse=True)
+    options = {
+        f"{s.get('created_at', s.get('session_id', '?'))} · 쿼리 {len(s.get('queries', []))}개": s.get("session_id")
+        for s in sessions_sorted
+    }
+    selected_label = st.selectbox(
+        "세션 선택",
+        options=list(options.keys()),
+        key="research_selected_session_label",
+    )
+    session_id = options.get(selected_label)
+
+    session = load_session(session_id) if session_id else None
+    if not session:
+        st.caption("세션을 불러올 수 없습니다.")
+        return
+
+    for i, q in enumerate(session.get("queries", [])):
+        with st.expander(f"{q.get('timestamp', '?')} — {q.get('query', '')}"):
+            refs = q.get("result_refs", [])
+            if refs:
+                st.caption(f"저장된 참조 {len(refs)}건")
+                st.table(refs)
+            else:
+                st.caption("저장된 참조 없음")
+
+            if st.button("이 쿼리 불러오기", key=f"load_query_{session_id}_{i}"):
+                st.session_state["research_query"] = q.get("query", "")
+                st.success("쿼리를 검색창에 불러왔습니다. '검색 실행'을 눌러 재검색하세요.")
 
 
 def _render_query_analysis() -> None:
