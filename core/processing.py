@@ -3,7 +3,7 @@
 추가 기능:
 1. [NEW] 출 력 검증 (validate_chunks()) — 청크 유효성 검사 강화
 2. [NEW] 리트라이 로직 (process_with_retry()) — 실패 시 3회 재시도
-3. [NEW] 배치 상태 관리 (BatchState) — 중단 후 재시작 지원
+3. [NEW] 배치 상태 관리 (get_processed_files/mark_processed) — 중단 후 재시작 지원
 """
 
 from __future__ import annotations
@@ -74,36 +74,6 @@ OUTPUT_VALIDATE_ENABLED = True  # 출력 검증 활성화
 
 
 # ── 데이터클래스 ────────────────────────────────────────
-
-@dataclass
-class BatchState:
-    """배치 처리 상태 추적 — 중단 후 재시작"""
-    output_dir: str
-    state_file: Optional[Path] = field(default=None)  # runtime에서 설정
-    processed: List[str] = field(default_factory=list)
-    failed: List[str] = field(default_factory=list)
-
-    def __post_init__(self):
-        if self.state_file is None:
-            self.state_file = Path(self.output_dir) / ".batch_state.json"
-
-    def save(self):
-        if self.state_file is None:
-            self.state_file = Path(self.output_dir) / ".batch_state.json"
-        data = {
-            "processed": self.processed,
-            "failed": self.failed,
-            "timestamp": datetime.datetime.now().isoformat(),
-        }
-        self.state_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    @classmethod
-    def load(cls, output_dir: str) -> "BatchState":
-        state_file = Path(output_dir) / ".batch_state.json"
-        if state_file.exists():
-            data = json.loads(state_file.read_text(encoding="utf-8"))
-            return cls(output_dir=output_dir, processed=data.get("processed", []), failed=data.get("failed", []))
-        return cls(output_dir=output_dir, processed=[], failed=[])
 
 
 @dataclass
