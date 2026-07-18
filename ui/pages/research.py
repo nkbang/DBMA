@@ -17,6 +17,7 @@ from core.config import DEFAULT_OUTPUT_DIR
 
 # Production retrieval imports (LOOP 3 — binding)
 from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate
+from ui.state.query_processor import get_shared_query_processor
 
 
 def render_research_page() -> None:
@@ -63,11 +64,10 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
     try:
         # [SPRINT17-Phase5-M1b-2.1] Shared across all pages that need a
         # QueryProcessor (Research, Chat) — one RetrievalEngine instance
-        # per session instead of one per page.
-        if "shared_query_processor" not in st.session_state:
-            st.session_state["shared_query_processor"] = QueryProcessor()
-
-        processor: QueryProcessor = st.session_state["shared_query_processor"]
+        # per session instead of one per page. [SPRINT21-G Gap#1] recreated
+        # automatically when the TSU dataset on disk changes — see
+        # ui/state/query_processor.py.
+        processor: QueryProcessor = get_shared_query_processor()
 
         # Execute retrieval pipeline
         response = processor.process(query, query_id="research-ui", k=top_k)

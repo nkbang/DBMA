@@ -17,6 +17,7 @@ import streamlit as st
 from ui.pages._base import BasePage
 from core.retrieval import QueryProcessor, RankedCandidate
 from core.generation import GenerationService
+from ui.state.query_processor import get_shared_query_processor
 
 
 def render_chat_page() -> None:
@@ -43,10 +44,10 @@ def _init_chat_state() -> None:
 def _get_processor() -> QueryProcessor:
     # [SPRINT17-Phase5-M1b-2.1] Shared across all pages that need a
     # QueryProcessor (Research, Chat) — one RetrievalEngine instance per
-    # session instead of one per page.
-    if "shared_query_processor" not in st.session_state:
-        st.session_state["shared_query_processor"] = QueryProcessor()
-    return st.session_state["shared_query_processor"]
+    # session instead of one per page. [SPRINT21-G Gap#1] recreated
+    # automatically when the TSU dataset on disk changes — see
+    # ui/state/query_processor.py.
+    return get_shared_query_processor()
 
 
 def _get_generation_service() -> GenerationService:
