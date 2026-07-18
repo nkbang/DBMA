@@ -345,7 +345,38 @@ def split_sentences_mixed(
     return [s for s in sentences if s]
 
 
-def _merge_sentence_fragments(sentences: list[str], max_chars: int) -> list[str]:
+def _sentence_overlap_tail(units: list[str], overlap_chars: int) -> list[str]:
+    """[SPRINT29-B-Overlap] Smallest suffix of already-emitted sentences whose
+    joined length >= overlap_chars, used to seed the next chunk. Never returns
+    the whole list (units[0] is always excluded) so forward progress is
+    guaranteed. Boundary-preserving: whole sentences only, never a mid-sentence
+    cut. Empty when overlap is disabled or there is only one sentence to keep.
+    """
+    if overlap_chars <= 0 or len(units) <= 1:
+        return []
+    tail: list[str] = []
+    total = 0
+    for u in reversed(units[1:]):
+        tail.insert(0, u)
+        total += len(u) + 1
+        if total >= overlap_chars:
+            break
+    # Bound overshoot from a single long trailing sentence (same rationale as
+    # chunking_optimizer._paragraph_overlap_tail): if the seed exceeds ~2x the
+    # target, trim its oldest sentence to a word-safe tail — never a mid-word cut.
+    cap = overlap_chars * 2
+    joined_len = sum(len(u) + 1 for u in tail)
+    if joined_len > cap and tail:
+        first = tail[0]
+        if len(first) > overlap_chars:
+            window = first[-overlap_chars:]
+            m = re.search(r"[\s׃]", window)
+            trimmed = window[m.start():].strip() if m else ""
+            tail = ([trimmed] + tail[1:]) if trimmed else tail[1:]
+    return tail
+
+
+def _merge_sentence_fragments(sentences: list[str], max_chars: int, overlap_chars: int = 0) -> list[str]:
     if not sentences:
         return []
 
@@ -353,30 +384,36 @@ def _merge_sentence_fragments(sentences: list[str], max_chars: int) -> list[str]
     buf: list[str] = []
     total = 0
 
-    def flush() -> None:
+    def flush(carry_overlap: bool = False) -> None:
         nonlocal buf, total
         if buf:
             chunks.append(" ".join(buf).strip())
-            buf = []
-            total = 0
+            if carry_overlap:
+                seed = _sentence_overlap_tail(buf, overlap_chars)
+                if seed:
+                    buf = list(seed)
+                    total = sum(len(s) + 1 for s in buf)
+                    return
+        buf = []
+        total = 0
 
     for sent in sentences:
         sent = _clean_line(sent)
         if not sent:
             continue
         if len(sent) > max_chars:
-            flush()
+            flush(carry_overlap=False)
             chunks.append(sent)
             continue
         if total + len(sent) + 1 <= max_chars:
             buf.append(sent)
             total += len(sent) + 1
         else:
-            flush()
+            flush(carry_overlap=True)
             buf.append(sent)
-            total = len(sent)
+            total += len(sent) + 1
 
-    flush()
+    flush(carry_overlap=False)
     return [c for c in chunks if c]
 
 

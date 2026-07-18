@@ -171,6 +171,54 @@ def _slice_preserving_words(s: str, chunk_size: int) -> list[str]:
     return [p for p in pieces if p]
 
 
+def _paragraph_overlap_tail(units: list[str], overlap_chars: int, joiner: str = "\n\n") -> list[str]:
+    """[SPRINT29-B-Overlap] Smallest suffix of already-buffered paragraphs whose
+    joined length >= overlap_chars, used to seed the next chunk. units[0] is
+    always excluded so the buffer never carries its entire content forward
+    (guarantees forward progress). Whole paragraphs only — never a mid-paragraph
+    cut. Empty when overlap is disabled or only one paragraph is buffered.
+    """
+    if overlap_chars <= 0 or len(units) <= 1:
+        return []
+    tail: list[str] = []
+    total = 0
+    for u in reversed(units[1:]):
+        tail.insert(0, u)
+        total += len(u) + len(joiner)
+        if total >= overlap_chars:
+            break
+    # A single large trailing paragraph can overshoot the target overlap
+    # badly (an English commentary paragraph is often 400-600 chars vs a
+    # 120-char target). Bound it: if the seed exceeds ~2x the target, trim
+    # only its oldest paragraph to a word-safe tail — still never a mid-word
+    # cut (per SPRINT29-B-Overlap constraint), just a shorter carry.
+    cap = overlap_chars * 2
+    joined_len = sum(len(u) + len(joiner) for u in tail)
+    if joined_len > cap and tail:
+        trimmed = _word_safe_tail(tail[0], overlap_chars)
+        tail = ([trimmed] + tail[1:]) if trimmed else tail[1:]
+    return tail
+
+
+def _word_safe_tail(text: str, max_chars: int) -> str:
+    """[SPRINT29-B-Overlap] Longest suffix of `text` up to max_chars that begins
+    at a whitespace or Hebrew sof-pasuq boundary — never cuts mid-word or
+    mid-original-language. Returns "" when no safe boundary exists within the
+    window (overlap is skipped rather than risk a mid-word cut). Used to prepend
+    preceding context to per-sentence chunks in the mixed/original-language
+    path, where sentences are emitted individually (no accumulation buffer).
+    """
+    if max_chars <= 0:
+        return ""
+    if len(text) <= max_chars:
+        return text.strip()
+    window = text[-max_chars:]
+    m = re.search(r"[\s׃]", window)
+    if m:
+        return window[m.start():].strip()
+    return ""
+
+
 def _separators() -> list[str]:
     # "\u05C3" = Hebrew sof pasuq (verse-end punctuation) — biblical Hebrew
     # rarely uses ASCII periods, so without this a long Hebrew quotation
@@ -222,12 +270,24 @@ def _split_by_paragraphs(text: str, chunk_size: int, chunk_overlap: int) -> tupl
     buf: list[str] = []
     buf_len = 0
 
-    def flush() -> None:
+    # [SPRINT29-B-Overlap] flush() carries a boundary-preserving paragraph
+    # overlap into the next buffer, but only on a size-triggered flush
+    # (carry_overlap=True). Structural flushes — before switching to the
+    # sentence/original-language path, and the final end-of-document flush —
+    # pass carry_overlap=False so a page/section transition is not blurred and
+    # so the last chunk is not duplicated.
+    def flush(carry_overlap: bool = False) -> None:
         nonlocal buf, buf_len
         if buf:
             chunk = "\n\n".join(buf).strip()
             if len(chunk) >= MIN_CHUNK_CHARS:
                 chunks.append(chunk)
+            if carry_overlap:
+                seed = _paragraph_overlap_tail(buf, chunk_overlap)
+                if seed:
+                    buf = list(seed)
+                    buf_len = len("\n\n".join(buf))
+                    return
         buf = []
         buf_len = 0
 
@@ -241,18 +301,28 @@ def _split_by_paragraphs(text: str, chunk_size: int, chunk_overlap: int) -> tupl
         has_original_language = bool(para_lang and para_lang.has_original_language)
 
         if len(p) > int(chunk_size * 1.5) or lang == "mixed" or has_original_language:
-            flush()
+            flush(carry_overlap=False)
             sents = split_sentences_mixed(p) if split_sentences_mixed is not None else (split_sentences(p) if split_sentences is not None else [])
             if sents:
                 if lang == "mixed" or has_original_language:
+                    # [SPRINT29-B-Overlap] Per-sentence chunks (no accumulation
+                    # buffer) get a word-safe preceding-context prefix. The
+                    # current sentence is never cut — only the *previous*,
+                    # already-emitted sentence's tail is borrowed, at a
+                    # whitespace/sof-pasuq boundary — so original-language
+                    # protection on the current unit is preserved.
+                    prev = ""
                     for s in sents:
+                        prefix = _word_safe_tail(prev, chunk_overlap) if prev else ""
                         if len(s) <= chunk_size:
-                            chunks.append(s)
+                            piece = f"{prefix} {s}".strip() if prefix else s
+                            chunks.append(piece if len(piece) <= chunk_size else s)
                         else:
                             chunks.extend(_slice_preserving_words(s, chunk_size))
+                        prev = s
                     continue
 
-                para_chunks = _merge_sentence_fragments(sents, max_chars=chunk_size)
+                para_chunks = _merge_sentence_fragments(sents, max_chars=chunk_size, overlap_chars=chunk_overlap)
                 if para_chunks and len(para_chunks[-1]) < MIN_CHUNK_CHARS and len(para_chunks) > 1:
                     tail = para_chunks.pop()
                     para_chunks[-1] = f"{para_chunks[-1]} {tail}".strip()
@@ -264,11 +334,11 @@ def _split_by_paragraphs(text: str, chunk_size: int, chunk_overlap: int) -> tupl
 
         next_len = len(p) if not buf else buf_len + 2 + len(p)
         if buf and next_len > chunk_size:
-            flush()
+            flush(carry_overlap=True)   # sets buf to overlap seed (or empties it)
         buf.append(p)
         buf_len = len("\n\n".join(buf))
 
-    flush()
+    flush(carry_overlap=False)
     return chunks if chunks else _split_recursive(text, chunk_size, chunk_overlap), "paragraph-first"
 
 
