@@ -198,7 +198,13 @@ def extract_text_from_rtf(path: str) -> str:
 # PDF 텍스트 후처리 (NEW-4: 전면 개선 2026-06-29)
 # ─────────────────────────────────────────────────────────
 _RE_PUA_F        = re.compile(r'[\uE000-\uF8FF\U000F0000-\U000FFFFF]')
-_RE_CTRL_F       = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
+# [SPRINT28-B-2] \x0c (PAGE_BREAK_MARKER) deliberately excluded from this
+# control-char sweep (it used to be silently deleted here, before the
+# no-op `.replace('\x0c', '\n')` below ever ran), destroying page boundary
+# information that core/frontmatter_detector.py needs downstream. See
+# PAGE_BREAK_MARKER definition below for the page-aware processing this
+# preserves.
+_RE_CTRL_F       = re.compile(r'[\x00-\x08\x0b\x0e-\x1f\x7f]')
 _RE_NBSP_F       = re.compile(r'[\xa0\u00ad\u200b\u200c\u200d\ufeff]')
 _RE_ISOLATED     = re.compile(r'^\s*(?:[lIifl·•※◆▶→←↑↓]|ff|fi|fl)\s*$', re.MULTILINE)
 _RE_MULTIBLANK_F = re.compile(r'\n{3,}')
@@ -262,7 +268,10 @@ def postprocess_pdf_text(text: str) -> str:
     t = _RE_PUA_F.sub('', text)
     t = _RE_CTRL_F.sub('', t)
     t = _RE_NBSP_F.sub(' ', t)
-    t = t.replace('\x0c', '\n')
+    # [SPRINT28-B-2] PAGE_BREAK_MARKER (\x0c) is deliberately left as-is here
+    # (previously converted to '\n', collapsing all page boundaries into
+    # ordinary line breaks before core/frontmatter_detector.py ever sees
+    # them) — see PAGE_BREAK_MARKER definition and _RE_CTRL_F above.
     t = _RE_ISOLATED.sub('', t)
 
     # 4. 하이픈 줄바꿈 복원
