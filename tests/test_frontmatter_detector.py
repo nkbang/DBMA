@@ -76,3 +76,61 @@ class TestSplitFrontMatter:
         front, body = split_front_matter(full)
         assert "ISBN" in front or "All rights reserved" in front
         assert body.startswith("마가복음은")
+
+    def test_frontmatter_detects_non_contiguous_blocks(self):
+        """SPRINT28-B-3 Option B — real front matter is often split across
+        several non-contiguous pages (Beta Corpus Validation: "2 Chronicles
+        WBC"/"2 Kings Vol.13", both had an undetected page 0 that, under the
+        old single-cutoff model, blocked every later front-matter page)."""
+        # A long editorial/series listing page — no front-matter keyword,
+        # and long/dense enough (>= 400 chars, low short-line ratio) to
+        # fail the short-line heuristic too. This mirrors the real Beta
+        # Corpus Validation failure ("2 Chronicles WBC" page 0: "Editorial
+        # Board Old Testament Editor: ...", 570 chars, no keyword match).
+        page0_editorial_title = (
+            "Editorial Board Old Testament Editor Nancy Deputy Editor "
+            "James New Testament Editor Peter Deputy Editor Robert "
+            "Word Biblical Commentary Volumes One through Fifty Nine "
+            "General Editors David Allen Hubbard Glenn Barker Ralph Martin " * 3
+        )
+        page1_normal_body = BODY_PARA * 5
+        page2_copyright = "Copyright @ 2001, 2004 Nicholas Thomas Wright"
+        page3_normal_body = BODY_PARA * 5
+        page4_preface = "Preface\n이 책은 로마서 주해를 담고 있습니다. " * 5
+
+        full = M.join([
+            page0_editorial_title,
+            page1_normal_body,
+            page2_copyright,
+            page3_normal_body,
+            page4_preface,
+        ])
+        front, body = split_front_matter(full)
+
+        assert "Copyright" in front
+        assert "Preface" in front
+        # page0/page1/page3 must stay in body — not swallowed by the union,
+        # and not silently blocked from detecting page2/page4 either (the
+        # old single-cutoff model's exact failure mode).
+        assert "Editorial Board" in body
+        # BODY_PARA repeats the phrase 5x per page; both normal-body pages
+        # (page1, page3) must be fully preserved in body -> 2 * 5 = 10.
+        assert body.count("마가복음은") == 10
+
+    def test_frontmatter_preserves_body_order(self):
+        """Body pages must be rejoined in their original document order,
+        not grouped/reordered by classification pass."""
+        page0_editorial_title = "톰라이트\n뿔\nnμ"
+        page1_first = "FIRST_BODY_MARKER " + BODY_PARA
+        page2_copyright = "Copyright @ 2001 Test Publisher"
+        page3_second = "SECOND_BODY_MARKER " + BODY_PARA
+
+        full = M.join([
+            page0_editorial_title,
+            page1_first,
+            page2_copyright,
+            page3_second,
+        ])
+        _, body = split_front_matter(full)
+
+        assert body.index("FIRST_BODY_MARKER") < body.index("SECOND_BODY_MARKER")

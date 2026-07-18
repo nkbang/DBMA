@@ -80,6 +80,22 @@ def _looks_like_front_matter_page(page: str) -> bool:
 def split_front_matter(text: str) -> tuple[str, str]:
     """Split extracted text into (front_matter, body) using page markers.
 
+    [SPRINT28-B-3] Union-of-blocks model. Real front matter is often split
+    across several non-contiguous pages within the first
+    MAX_FRONT_MATTER_PAGES — Copyright, Preface, and Abbreviations are
+    frequently separated by pages (editorial/series listings, dedications)
+    that don't match any front-matter signal but aren't body prose either
+    (Beta Corpus Validation, SPRINT28-B-3 Preflight — "2 Chronicles WBC"
+    and "2 Kings Vol.13" both had page 0 fail detection this way). The
+    previous single-cutoff model stopped scanning at the first
+    non-front-matter page, so a single early miss like that silently
+    prevented every later front-matter page from ever being detected.
+    Every page within the scan window is now classified independently;
+    the ones that look like front matter are unioned together (their
+    original relative order preserved) and removed from body — everything
+    else, including all pages beyond the scan window, stays in body, also
+    in original order.
+
     Returns ("", text) when there is no page-marker information (e.g.
     non-PDF sources, or extraction paths that don't preserve page
     boundaries yet — see core/extractors.py NEW-5) or when no front
@@ -92,24 +108,26 @@ def split_front_matter(text: str) -> tuple[str, str]:
 
     pages = text.split(PAGE_BREAK_MARKER)
 
-    body_start_page = 0
-    for i, page in enumerate(pages[:MAX_FRONT_MATTER_PAGES]):
-        if not _looks_like_front_matter_page(page):
-            body_start_page = i
-            break
-    else:
-        # Every page scanned looked like front matter — unusual. Be
-        # conservative: only ever treat the very first page as front
-        # matter in this edge case, rather than risk swallowing real body
-        # content into the discarded-from-scoring bucket.
-        body_start_page = 1 if len(pages) > 1 else 0
-
     def _join(parts: list[str]) -> str:
         return "\n\n".join(p.strip() for p in parts if p.strip())
 
-    if body_start_page == 0:
+    scan_range = min(len(pages), MAX_FRONT_MATTER_PAGES)
+    is_front_matter = [
+        i < scan_range and _looks_like_front_matter_page(page)
+        for i, page in enumerate(pages)
+    ]
+
+    if not any(is_front_matter):
         return "", _join(pages)
 
-    front_matter = _join(pages[:body_start_page])
-    body = _join(pages[body_start_page:])
-    return front_matter, body
+    if all(is_front_matter):
+        # Every page scanned looked like front matter — unusual. Be
+        # conservative: only ever treat the very first page as front
+        # matter in this edge case, rather than risk swallowing the whole
+        # (short) document into the discarded-from-scoring bucket. Same
+        # safety net as the pre-SPRINT28-B-3 model.
+        return _join(pages[:1]), _join(pages[1:])
+
+    front_matter_pages = [p for p, is_fm in zip(pages, is_front_matter) if is_fm]
+    body_pages = [p for p, is_fm in zip(pages, is_front_matter) if not is_fm]
+    return _join(front_matter_pages), _join(body_pages)
