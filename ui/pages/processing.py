@@ -270,7 +270,7 @@ def _render_processing_queue() -> None:
 
     if not queued:
         st.info(f"대기열: 0개 (전체 {len(supported)}개 모두 처리 완료). "
-                "재처리하려면 아래에서 강제 재처리를 사용하세요.")
+                "재처리하려면 위의 문서 처리 영역에서 강제 재처리를 사용하세요.")
         return
 
     st.caption(f"대기열: {len(queued)}개 문서 (전체 {len(supported)}개 중 {len(processed & {f.name for f in supported})} 처리 완료)")
