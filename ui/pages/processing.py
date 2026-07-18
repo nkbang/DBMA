@@ -252,22 +252,42 @@ def _render_processing_queue() -> None:
 
     st.caption(f"대기열: {len(queued)}개 문서 (전체 {len(supported)}개 중 {len(processed & {f.name for f in supported})} 처리 완료)")
 
+    # [SPRINT24-1] 실패한 파일은 mark_processed()에 도달하지 못해 항상
+    # 대기열에 남아 자동 재시도되지만(core/processing.py 확인됨), 지금까지
+    # 대기열 UI는 이를 신규 파일과 구분 없이 보여줬다. 최근 실패 사유를
+    # source_file로 교차 매칭해 재시도 대상임을 표시한다(읽기 전용).
+    failures = load_extraction_failures(DEFAULT_OUTPUT_DIR).get("failures", [])
+    last_failure_by_file: dict[str, dict] = {}
+    for fail in failures:  # append 순서(오래된→최신)이므로 뒤에서 덮어써 최신만 남김
+        last_failure_by_file[fail.get("source_file", "")] = fail
+
     for i, f in enumerate(queued[:10]):  # Show max 10
         size_kb = f.stat().st_size / 1024 if f.exists() else 0
+        prior_failure = last_failure_by_file.get(f.name)
+
+        if prior_failure:
+            border_color = THEME.STATUS_WARNING
+            badge_bg, badge_fg, badge_text = THEME.STATUS_WARNING_BG, THEME.STATUS_WARNING, "재시도 예정"
+            detail = f"{size_kb:.0f} KB • 이전 실패: {prior_failure.get('reason', '?')}"
+        else:
+            border_color = THEME.BRAND_SECONDARY
+            badge_bg, badge_fg, badge_text = THEME.STATUS_INFO_BG, THEME.STATUS_INFO, "대기 중"
+            detail = f"{size_kb:.0f} KB"
+
         html = f"""
-        <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {THEME.BRAND_SECONDARY}; margin-bottom: 4px;">
+        <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {border_color}; margin-bottom: 4px;">
             <span style="font-size: 16px; margin-right: 12px;">📄</span>
             <div style="flex: 1;">
                 <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
                     {f.name}
                 </div>
                 <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
-                    {size_kb:.0f} KB
+                    {detail}
                 </div>
             </div>
             <span style="margin-left: 12px;">
-                <span style="padding: 2px 8px; border-radius: 4px; background: {THEME.STATUS_INFO_BG}; color: {THEME.STATUS_INFO}; font-size: 10px; font-weight: 600;">
-                    대기 중
+                <span style="padding: 2px 8px; border-radius: 4px; background: {badge_bg}; color: {badge_fg}; font-size: 10px; font-weight: 600;">
+                    {badge_text}
                 </span>
             </span>
         </div>
