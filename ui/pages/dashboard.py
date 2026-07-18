@@ -74,7 +74,7 @@ def _render_corpus_statistics() -> None:
     with c2:
         st.metric("출력 폴더", f"{output_docs}개 파일")
     with c3:
-        st.metric("지원 형식", "PDF/TXT/MD/DOCX")
+        st.metric("지원 형식", "PDF/TXT/MD/DOCX/EPUB/HTML/RTF")
     with c4:
         st.metric("임베딩", DEFAULT_EMBED_MODEL)
 
