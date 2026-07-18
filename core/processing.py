@@ -821,6 +821,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
 
     except Exception as e:
         _failure_reason = str(e)
+        _failure_type = type(e).__name__
 
         # [SPRINT15-DEBUG] 예외 발생 지점 — 어디에서 멈췄는지 확인
         logger.error("[SPRINT15-DEBUG] EXCEPTION CAUGHT | file=%s failed_stage=%s reason=%s", source_name, failed_stage, _failure_reason)
@@ -846,6 +847,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             record_extraction_failure(
                 output_dir, source_name, stage="exception",
                 reason=_failure_reason, retry_count=MAX_RETRY,
+                error_type=_failure_type,
             )
 
         logs.append({"cls": "log-warn", "msg": f"처리 실패 — {_failure_reason}"})

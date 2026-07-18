@@ -49,6 +49,7 @@ def record_extraction_failure(
     stage: str,
     reason: str,
     retry_count: int = 0,
+    error_type: str | None = None,
 ) -> bool:
     """Append one failure entry and persist atomically.
 
@@ -58,6 +59,13 @@ def record_extraction_failure(
         stage: "extract" | "noise" | "exception" — where it failed.
         reason: Human-readable cause (exception message or empty-text note).
         retry_count: How many _retry_with_backoff attempts were made.
+        error_type: [SPRINT25-B-1] type(e).__name__ for stage="exception"
+            (e.g. "FileNotFoundError", "PackageNotFoundError") — the raw
+            exception class name, captured verbatim, never guessed. None
+            for extract/noise (empty-text failures, not exceptions — the
+            stage value alone is already an unambiguous single category).
+            Older records predate this field; readers must use .get() and
+            treat a missing/None value as "unclassified", not an error.
 
     Returns:
         True on success, False on failure — never raises. A failure to
@@ -72,6 +80,7 @@ def record_extraction_failure(
             "stage": stage,
             "reason": reason,
             "retry_count": retry_count,
+            "error_type": error_type,
         })
 
         path = _failures_path(output_dir)
