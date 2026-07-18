@@ -19,6 +19,7 @@ from ui.components.status import progress_indicator, status_badge
 from ui.state.store import StateStore
 from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
 from core.index_orchestrator import reconcile_pending
+from core.extraction_failures import load_extraction_failures
 from core.processing import (
     build_converter,
     build_splitter,
@@ -58,6 +59,10 @@ def render_processing_page() -> None:
     # ── Processing History ─────────────────────────────────────
     page.render_section("처리 기록", icon="📜")
     _render_processing_history()
+
+    # ── Recent Failures ──────────────────────────────────────────
+    page.render_section("최근 실패", icon="⚠️")
+    _render_recent_failures()
 
     page.render_footer()
 
@@ -409,3 +414,46 @@ def _execute_processing(
         except Exception as e:
             logger.exception("Processing pipeline failed")
             st.error(f"처리 중 오류가 발생했습니다: {str(e)}")
+
+
+def _render_recent_failures() -> None:
+    """[SPRINT23] Surface core/extraction_failures.py's persisted log —
+    read-only. document_id doesn't exist for these (pre-identity
+    failures: extraction exception / empty extraction / empty cleaned
+    text — SPRINT21-H-1), so they never showed up in "처리 기록" above,
+    which only lists successfully-written {stem}.md files. Previously
+    this data was written but never surfaced anywhere in the UI.
+    """
+    data = load_extraction_failures(DEFAULT_OUTPUT_DIR)
+    failures = data.get("failures", [])
+
+    if not failures:
+        st.info("실패 기록이 없습니다.")
+        return
+
+    # record_extraction_failure() appends in chronological order and
+    # failed_at has only second-level precision — sorting by that string
+    # ties within the same second and can silently misorder a fast batch
+    # (stable sort keeps original order on ties). Reversing the
+    # already-chronological list is exact regardless of timestamp precision.
+    recent = list(reversed(failures))[:10]
+    st.caption(f"전체 {len(failures)}건 중 최근 {len(recent)}건")
+
+    stage_labels = {"extract": "추출 실패", "noise": "정제 후 텍스트 없음", "exception": "예외 발생"}
+    for f in recent:
+        html = f"""
+        <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {THEME.STATUS_ERROR}; margin-bottom: 4px;">
+            <span style="font-size: 16px; margin-right: 12px;">⚠️</span>
+            <div style="flex: 1;">
+                <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
+                    {f.get("source_file", "?")}
+                </div>
+                <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
+                    {f.get("failed_at", "?")} • {stage_labels.get(f.get("stage"), f.get("stage", "?"))}
+                    {f" • 재시도 {f['retry_count']}회" if f.get("retry_count") else ""}
+                </div>
+            </div>
+        </div>
+        """
+        st.markdown(html, unsafe_allow_html=True)
+        st.caption(f"　　사유: {f.get('reason', '?')}")
