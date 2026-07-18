@@ -57,6 +57,7 @@ from core.identity_registry import (
     transition_ingest_status,
     update_pipeline_flags,
 )
+from core.extraction_failures import record_extraction_failure
 from core.config import registry_path_for
 
 logger = logging.getLogger(__name__)
@@ -483,6 +484,9 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             failed_stage = "extract"
             reason = "추출 텍스트 없음"
             emit("extract_fail", f"{source_name}: 추출 텍스트 없음", 1.0, level="warn")
+            # [SPRINT21-H-1] No document_id exists yet at this point —
+            # record in the separate pre-identity failure log instead.
+            record_extraction_failure(output_dir, source_name, stage="extract", reason=reason)
             return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage, "reason": reason}
 
         # ── [1.5] 전면부(제목/판권/목차) 분리 ────────────────
@@ -523,6 +527,8 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             failed_stage = "noise"
             reason = "정제 후 텍스트 없음"
             emit("noise_fail", f"{source_name}: 정제 후 텍스트 없음", 1.0, level="warn")
+            # [SPRINT21-H-1] Still pre-document_id (Point A is below this).
+            record_extraction_failure(output_dir, source_name, stage="noise", reason=reason)
             return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage, "reason": reason}
 
         # ── [PT-PROCESSING-008] Document Identity Generation (Point A) ──
@@ -862,6 +868,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                     save_identity_registry(_registry, registry_path)
             except Exception:
                 pass  # Don't let registry update failures mask the original error
+        else:
+            # [SPRINT21-H-1] Exception raised before document_id existed
+            # (e.g. extraction itself threw after exhausting retries) —
+            # documents.json has no key to store this under. Record it in
+            # the separate pre-identity failure log instead.
+            record_extraction_failure(
+                output_dir, source_name, stage="exception",
+                reason=_failure_reason, retry_count=MAX_RETRY,
+            )
 
         logs.append({"cls": "log-warn", "msg": f"처리 실패 — {_failure_reason}"})
         logs.append({"cls": "log-warn", "msg": f"Traceback: {traceback.format_exc()}"})
