@@ -18,6 +18,7 @@ from ui.theme.colors import THEME
 from ui.components.status import progress_indicator, status_badge
 from ui.state.store import StateStore
 from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.index_orchestrator import reconcile_pending
 from core.processing import (
     build_converter,
     build_splitter,
@@ -323,7 +324,7 @@ def _execute_processing(
             fail_count = total_files - success_count - skipped_count
             
             st.success(f"처리 완료: {success_count}개 성공, {skipped_count}개 건너뜀, {fail_count}개 실패")
-            
+
             # Show failed files
             if fail_count > 0:
                 with st.expander("실패한 파일 보기"):
@@ -333,7 +334,18 @@ def _execute_processing(
                             for log in logs:
                                 msg = log.get("msg", "")
                                 st.error(f"❌ {msg}")
-            
+
+            # [SPRINT21-F-1] Processing → TSU Reconciliation, one click.
+            # reconcile_pending()은 무예외(never raises) — pending 문서가
+            # 없거나 개별 문서가 실패해도 결과 dict만 반환한다(SPRINT21-B).
+            reconcile_result = reconcile_pending(output_dir)
+            if reconcile_result["reconciled"] > 0:
+                st.success(f"색인 갱신: {reconcile_result['reconciled']}개 문서 검색 반영 완료")
+            if reconcile_result["failed"]:
+                with st.expander(f"색인 실패 {len(reconcile_result['failed'])}건 보기"):
+                    for f in reconcile_result["failed"]:
+                        st.error(f"❌ {f['document_id']}: {f['error']}")
+
             # Refresh the page state
             st.rerun()
             
