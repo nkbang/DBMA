@@ -129,6 +129,10 @@ def register_document(
         "page": metadata.get("page"),
         "title": metadata.get("title"),
         "author": metadata.get("author"),
+        # [SPRINT21-B Phase1] additive — default PROCESSED for callers that
+        # don't supply it (e.g. scripts not yet updated), matching the
+        # migration default above.
+        "pipeline_state": metadata.get("pipeline_state", "PROCESSED"),
     }
 
     registry["documents"][doc_id] = record
@@ -205,6 +209,18 @@ def migrate_registry_schema(registry: dict) -> bool:
 
         if "last_processed_at" not in record:
             record["last_processed_at"] = record.get("updated_at", record.get("created_at"))
+
+        # [SPRINT21-B Phase1] pipeline_state — additive, orthogonal to
+        # ingest_status (unchanged). Pre-existing records reached the
+        # registry via the old flow, i.e. at least PROCESSED; their actual
+        # TSU/index status is unknown without checking the TSU dataset,
+        # which this migration deliberately does not do (schema migration
+        # stays a pure, local, side-effect-free dict transform). Conservative
+        # default: PROCESSED (not TSU_READY/INDEXED) — a later reconcile
+        # step can verify and advance it, never the reverse.
+        if "pipeline_state" not in record:
+            record["pipeline_state"] = "PROCESSED"
+            changed = True
 
         # Sprint 2 pipeline completion flags (additive — never modifies existing fields)
         if "pipeline_flags" not in record:

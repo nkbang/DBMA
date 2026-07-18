@@ -540,6 +540,9 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             title=extracted_title,
             author=extracted_author,
         )
+        # [SPRINT21-B Phase1] identity generated (doc_id/file_hash), chunking
+        # not yet run — matches the IDENTIFIED state definition.
+        _document_context.pipeline_state = "IDENTIFIED"
 
         # ── [PT-PROCESSING-012] Incremental ingest decision gate ────
         registry_path = registry_path_for(output_dir)
@@ -573,7 +576,10 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                 _document_context.last_failure_reason = existing_record.get("last_failure_reason")
                 if "pipeline_flags" in existing_record:
                     _document_context.pipeline_flags = dict(existing_record["pipeline_flags"])
-                _document_context.lifecycle_state = "SKIPPED"
+                # [SPRINT21-B Phase1] SKIP means content unchanged — carry the
+                # document's actual pipeline_state forward (may already be
+                # TSU_READY/INDEXED) rather than resetting it.
+                _document_context.pipeline_state = existing_record.get("pipeline_state", "PROCESSED")
             # [FIX] Ensure markdown output exists for SKIP documents — save if not already present
             md_output_dir = Path(output_dir)
             md_output_dir.mkdir(parents=True, exist_ok=True)
@@ -742,12 +748,18 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         _document_context.source_type = ext
         _document_context.is_ocr = is_ocr
         _document_context.chunk_count = len(chunks)
+        # [SPRINT21-B Phase1] extraction + chunking complete.
+        _document_context.pipeline_state = "EXTRACTED"
         # [SPRINT17-Phase2-B] registered_at is a distinct concept from
         # created_at (which stays immutable, set once at Point A — see
         # DocumentContext.__post_init__). registered_at marks this specific
         # registration moment and is populated immediately before
         # register_document() below.
         _document_context.registered_at = generate_processing_timestamp()
+        # [SPRINT21-B Phase1] about to persist to the registry — TSU/index
+        # are separate, not-yet-connected steps (Phase2), so this document
+        # stops at PROCESSED here.
+        _document_context.pipeline_state = "PROCESSED"
 
         # [SPRINT17-Phase2-A] DocumentContext is now the metadata source for
         # register_document() — build_document_metadata() is no longer called
@@ -819,6 +831,8 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                 _fail_decision, _fail_record = classify_ingest_decision(_registry, document_id, file_hash)
                 if _fail_decision != "PROCESS" and _fail_record is not None:
                     transition_ingest_status(_registry, document_id, "FAILED", failure_reason=_failure_reason)
+                    # [SPRINT21-B Phase1] additive; does not touch ingest_status.
+                    _fail_record["pipeline_state"] = "FAILED"
                     save_identity_registry(_registry, registry_path)
             except Exception:
                 pass  # Don't let registry update failures mask the original error

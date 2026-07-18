@@ -48,7 +48,13 @@ class DocumentContext:
     tsu_refs: list[str] = field(default_factory=list)
 
     # Lifecycle
-    lifecycle_state: str = "CREATED"
+    # [SPRINT21-B Phase1] pipeline_state tracks how far this document has
+    # progressed toward being searchable: NEW/IDENTIFIED/EXTRACTED/PROCESSED/
+    # TSU_READY/INDEXED/FAILED — orthogonal to ingest_status below, which
+    # tracks whether *processing* needs to (re)run and must not change
+    # meaning. Replaces lifecycle_state, which was set in exactly one place
+    # (SKIP path) and never persisted (to_metadata_dict() didn't include it).
+    pipeline_state: str = "NEW"
     ingest_status: str = "PROCESSED"
     retry_count: int = 0
     last_failure_reason: Optional[str] = None
@@ -136,4 +142,7 @@ class DocumentContext:
             "is_ocr": self.is_ocr,
             "chunk_count": self.chunk_count,
             "chunk_id_prefix": self.document_id,
+
+            # [SPRINT21-B Phase1] additive — see pipeline_state field comment.
+            "pipeline_state": self.pipeline_state,
         }

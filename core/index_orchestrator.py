@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH, registry_path_for
-from core.identity_registry import load_identity_registry
+from core.identity_registry import load_identity_registry, save_identity_registry
 from core.tsu_builder import build_tsu_records, write_tsu_dataset, write_manifest
 
 
@@ -106,3 +106,48 @@ def reindex_document(document_id: str, output_dir: str = DEFAULT_OUTPUT_DIR) -> 
         "dataset_path": str(dataset_path),
         "manifest_path": str(manifest_path),
     }
+
+
+def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
+    """[SPRINT21-B Phase2] Pull-based reconciler — Processing -> TSU 연결.
+
+    registry에서 pipeline_state == "PROCESSED"(TSU 미반영)인 문서만 찾아
+    reindex_document()로 한 건씩 색인하고, 성공 시 pipeline_state를
+    PROCESSED -> TSU_READY -> INDEXED로 전진시킨다. 이미 TSU_READY/INDEXED인
+    문서는 건드리지 않으므로(idempotent) 반복 호출해도 안전 — event/queue
+    없이 매 호출 시점의 registry 스냅샷만 보고 필요한 것만 처리한다
+    (Preflight §3 "Command/Pull 기반" 설계).
+
+    ingest_status는 건드리지 않는다. tsu_builder.py/retrieval.py/
+    embedder.py는 호출만 하며 내부 로직은 변경하지 않는다.
+
+    Returns:
+        {"pending": int, "reconciled": int, "failed": [{"document_id","error"}]}
+    """
+    registry_path = Path(registry_path_for(output_dir))
+    registry = load_identity_registry(str(registry_path))
+
+    pending = [
+        doc_id for doc_id, doc in registry.get("documents", {}).items()
+        if doc.get("pipeline_state") == "PROCESSED"
+    ]
+
+    reconciled: list[str] = []
+    failed: list[dict[str, str]] = []
+    for doc_id in pending:
+        try:
+            reindex_document(doc_id, output_dir=output_dir)
+        except Exception as e:
+            failed.append({"document_id": doc_id, "error": str(e)})
+            continue
+        # TSU record build + dataset/manifest write both completed inside
+        # reindex_document() above — TSU_READY and INDEXED happen together
+        # in this implementation (no partial/observable midpoint), so only
+        # the final state is persisted.
+        registry["documents"][doc_id]["pipeline_state"] = "INDEXED"
+        reconciled.append(doc_id)
+
+    if reconciled:
+        save_identity_registry(registry, str(registry_path))
+
+    return {"pending": len(pending), "reconciled": len(reconciled), "failed": failed}
