@@ -107,6 +107,30 @@ Status:    STABLE — GA 검토 단계
   전 구간에서 100% coverage로 propagate됨을 1,500개 gold query로 확인했다.
 - 다음 조치: 없음(SPRINT20-F 이후 후속 품질 개선은 별도 스프린트로 분리).
 
+### Research Workspace Layer — 첫 번째 Memory Layer (SPRINT27-B/C)
+- 상태: 완료
+- 설명: `core/research_workspace.py`를 기존 5개 Authority(Processing/Identity/
+  TSU/Retrieval/Generation)와 나란한 독립 6번째 레이어로 신설
+  (`docs/architecture/ADR-004-Research-Workspace-Layer.md`). 검색 세션을
+  `{DEFAULT_OUTPUT_DIR}/research/sessions.json`에 저장하되 TSU 콘텐츠는
+  복제하지 않고 `tsu_id`/`document_id`/`citation_id` 참조만 append-only로
+  기록(`extraction_failures.json`과 동일한 atomic write 패턴). Research UI
+  (`ui/pages/research.py`)에 "세션에 저장" 버튼과 저장된 세션 목록/불러오기
+  패널을 추가 — `QueryProcessor.process()` 기존 인터페이스만 호출하고,
+  세션 불러오기는 재검색을 자동 실행하지 않는다(검색창만 채움).
+  `core/retrieval.py`/`core/processing.py`/`core/identity_registry.py`/TSU
+  schema/`documents.json` 전부 무변경 확인됨.
+  CI 검증 과정에서 `response_package["results"]`(존재하지 않는 키) 참조 버그와
+  `document_id`(metadata 중첩)/`citation_id`(citations 리스트 별도 매핑) 추출
+  경로 버그를 발견해 수정하고 회귀 테스트를 추가했다.
+- 커밋: `519d719`(feature), `86b1d22`(무관 테스트 docstring), `02afc3f`
+  (LOCAL_LLM_HANDOFF.md) — `dev/dbma-engine`에 push 완료.
+- 검증: pytest 320 passed(신규 8건: `test_research_workspace.py` 5건,
+  `test_research_saved_sessions_ui.py` 3건), 회귀 없음.
+- 다음 조치: SPRINT27-D — Research Workspace를 향후 MIE(Ministry Intelligence
+  Engine) Memory Layer로 확장하는 방향에 대한 Architecture Preflight(투자
+  조사만, 구현 없음).
+
 ### Execution Environment / Configuration Authority (SPRINT20-E3/F1)
 - 상태: 완료
 - 설명: PyYAML 누락 시 `core/config.py`가 `RuntimeError`로 즉시 실패하도록
@@ -158,6 +182,9 @@ Status:    STABLE — GA 검토 단계
 - [x] Release validation (chapter-level benchmark 1500q — PASS, 회귀 없음)
 - [x] Ollama HTTP 500 수정 (P2, char/token 4→2, commit f5f2753)
 - [x] 잔여 cleanup (data/rag_index, 빈 backup 폴더, md_manager archive)
+- [x] Research Workspace Layer — 첫 번째 Memory Layer (SPRINT27-B/C, ADR-004,
+      `core/research_workspace.py`, commit `519d719`)
+- [ ] SPRINT27-D — Memory Layer 확장 Architecture Preflight (진행 중)
 
 ---
 
