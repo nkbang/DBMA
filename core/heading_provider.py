@@ -30,7 +30,7 @@ from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional, Protocol, runtime_checkable
 
 from core.heading_constants import ATX_HEADING_RE
-from core.pdf_structure_detector import detect_headings
+from core.pdf_structure_detector import detect_headings_from_spans
 
 # Strips a leading ATX marker ("## ") from a line so a chunk line can be
 # matched to a provider heading whose text is already marker-free. Bare lines
@@ -80,16 +80,23 @@ class MarkdownProvider:
 
 
 class PdfHeadingProvider:
-    """[Transitional Adapter — ADR-006 Amendment D] Headings from PDF span
-    geometry via core.pdf_structure_detector. Re-reads the PDF (temporary
-    two-parse cost) until Phase D integrates detection into extraction."""
+    """[SPRINT31-D-3] Headings from PDF span geometry that was already
+    collected upstream by the extractor (core.extractors.collect_pdf_spans,
+    surfaced as extract_text_from_file(...)['pdf_spans']). Consumes those
+    spans via detect_headings_from_spans — it never re-opens the PDF, so the
+    "one PDF, two parses" Transitional Adapter (ADR-006 Amendment D) is
+    removed and the pipeline reads each PDF once.
 
-    def __init__(self, path: str) -> None:
-        self._path = path
+    The provider's document is therefore the pre-collected spans, not a file
+    path — the provider knows nothing about files, only already-extracted
+    data (Unified Extraction Hook)."""
+
+    def __init__(self, spans: List[dict]) -> None:
+        self._spans = spans or []
 
     def headings(self) -> List[ProviderHeading]:
         out: List[ProviderHeading] = []
-        for c in detect_headings(self._path):
+        for c in detect_headings_from_spans(self._spans):
             out.append(ProviderHeading(
                 text=c.text,
                 level=1,  # flat for now; size-band -> level is a later phase

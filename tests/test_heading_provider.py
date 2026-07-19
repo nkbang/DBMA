@@ -59,8 +59,8 @@ class TestPdfHeadingProvider:
             HeadingCandidate(text="나사로의죽음", page=5, signal="size",
                              confidence=0.67, validity=1.0),
         ]
-        monkeypatch.setattr(hp, "detect_headings", lambda path: fake)
-        hs = PdfHeadingProvider("/any.pdf").headings()
+        monkeypatch.setattr(hp, "detect_headings_from_spans", lambda spans: fake)
+        hs = PdfHeadingProvider([{"text": "x"}]).headings()
         assert [(h.text, h.confidence, h.source) for h in hs] == [
             ("Introduction", 0.82, "pdf-bold"),
             ("나사로의죽음", 0.67, "pdf-size"),
@@ -68,8 +68,28 @@ class TestPdfHeadingProvider:
         assert all(h.level == 1 for h in hs)
 
     def test_no_candidates_is_empty(self, monkeypatch):
-        monkeypatch.setattr(hp, "detect_headings", lambda path: [])
-        assert PdfHeadingProvider("/any.pdf").headings() == []
+        monkeypatch.setattr(hp, "detect_headings_from_spans", lambda spans: [])
+        assert PdfHeadingProvider([]).headings() == []
+
+    def test_does_not_reopen_pdf(self, monkeypatch):
+        # D-3 core gate: the provider must consume spans, never re-open a PDF.
+        import core.pdf_structure_detector as det
+        calls = []
+        if det._HAS_FITZ:
+            monkeypatch.setattr(det.fitz, "open",
+                                lambda *a, **k: calls.append(a) or (_ for _ in ()).throw(
+                                    AssertionError("fitz.open must not be called")))
+        spans = [
+            {"text": "body line here that is prose", "size": 9.6, "bold": False,
+             "page": 0, "is_block_top": False} for _ in range(40)
+        ] + [
+            {"text": "나사로의죽음", "size": 12.0, "bold": False, "page": 0, "is_block_top": True},
+            {"text": "부활과생명", "size": 12.0, "bold": False, "page": 0, "is_block_top": True},
+            {"text": "예수께서무덤에가시다", "size": 12.0, "bold": False, "page": 0, "is_block_top": True},
+        ]
+        hs = PdfHeadingProvider(spans).headings()
+        assert calls == []                      # no fitz.open
+        assert hs and all(h.source == "pdf-size" for h in hs)
 
 
 class TestNullProvider:
