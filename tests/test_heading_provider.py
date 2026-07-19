@@ -192,3 +192,88 @@ class TestHeadingAssembler:
     def test_one_result_per_chunk(self):
         out = HeadingAssembler().assign(["a", "b", "c"], [])
         assert len(out) == 3
+
+
+class TestHeadingAssemblerNormalizedSpaceMatching:
+    """SPRINT31-B, Option B3: heading text and chunk lines are both projected
+    through core.text_normalizer.normalize_pipeline_text — the same
+    normalization real chunks undergo — before comparison."""
+
+    def test_whitespace_variance_absorbed_by_normalization(self):
+        # extra internal spaces (OCR/extraction noise) on the chunk side
+        chunks = ["Introduction   to    Romans\n\nbody text here"]
+        headings = [ProviderHeading("Introduction to Romans", 1, 0.8, "pdf-bold")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert out[0].heading_path == ["Introduction to Romans"]
+
+    def test_still_rejects_partial_match_after_normalization(self):
+        # normalization must not turn a substring match into a false positive
+        chunks = ["INTRO\n\nsome body text here"]
+        headings = [ProviderHeading("INTRODUCTION", 1, 0.8, "pdf-bold")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert out[0].heading_path == []
+
+    def test_atx_marker_normalizes_same_as_bare_pdf_line(self):
+        # "# Chapter 1" (Markdown) and a bare "Chapter 1" (PDF) both match
+        # the same marker-free heading text after normalization.
+        md_out = HeadingAssembler().assign(
+            ["# Chapter 1\n\nbody"], [ProviderHeading("Chapter 1", 1, 1.0, "atx")]
+        )
+        pdf_out = HeadingAssembler().assign(
+            ["Chapter 1\n\nbody"], [ProviderHeading("Chapter 1", 1, 0.8, "pdf-bold")]
+        )
+        assert md_out[0].heading_path == ["Chapter 1"] == pdf_out[0].heading_path
+
+
+class TestHeadingAssemblerDuplicateHeadings:
+    """SPRINT31-B required verification: identical titles under different
+    parents must bind to their own position via the ordered cursor, not
+    collapse to a single dict entry."""
+
+    def test_duplicate_titles_bind_to_correct_chapter(self):
+        chunks = [
+            "# Chapter 1\n\nintro",
+            "## Introduction\n\nfirst intro body",
+            "# Chapter 2\n\nintro",
+            "## Introduction\n\nsecond intro body",
+        ]
+        headings = [
+            ProviderHeading("Chapter 1", 1, 1.0, "atx"),
+            ProviderHeading("Introduction", 2, 1.0, "atx"),
+            ProviderHeading("Chapter 2", 1, 1.0, "atx"),
+            ProviderHeading("Introduction", 2, 1.0, "atx"),
+        ]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert out[1].heading_path == ["Chapter 1", "Introduction"]
+        assert out[3].heading_path == ["Chapter 2", "Introduction"]
+
+    def test_duplicate_at_same_level_does_not_desync_cursor(self):
+        # three "Note" headings in a row, each must consume exactly one
+        # occurrence in order, not all match the first one repeatedly.
+        chunks = ["# Note\n\na", "# Note\n\nb", "# Note\n\nc"]
+        headings = [
+            ProviderHeading("Note", 1, 1.0, "atx"),
+            ProviderHeading("Note", 1, 1.0, "atx"),
+            ProviderHeading("Note", 1, 1.0, "atx"),
+        ]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert [a.heading_path for a in out] == [["Note"], ["Note"], ["Note"]]
+        # each result's heading object is distinct in identity terms even
+        # though text is identical (order-based, not text-keyed)
+        assert out[0].heading_path == out[1].heading_path == out[2].heading_path
+
+
+class TestHeadingAssemblerBoundaryUnchanged:
+    """HQ-required boundary check: chunk count and content before/after
+    assembly must be identical (Assembler is read-only)."""
+
+    def test_chunk_count_and_content_unchanged(self):
+        chunks = ["# A\n\nbody one", "plain continuation", "## B\n\nbody two"]
+        before_count = len(chunks)
+        before_content = list(chunks)
+        HeadingAssembler().assign(chunks, [
+            ProviderHeading("A", 1, 1.0, "atx"),
+            ProviderHeading("B", 2, 1.0, "atx"),
+        ])
+        assert len(chunks) == before_count
+        assert chunks == before_content

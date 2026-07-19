@@ -31,6 +31,7 @@ from typing import Callable, Dict, List, Optional, Protocol, runtime_checkable
 
 from core.heading_constants import ATX_HEADING_RE
 from core.pdf_structure_detector import detect_headings_from_spans
+from core.text_normalizer import normalize_pipeline_text
 
 # Strips a leading ATX marker ("## ") from a line so a chunk line can be
 # matched to a provider heading whose text is already marker-free. Bare lines
@@ -169,38 +170,68 @@ class AssembledHeading:
     heading_source: str
 
 
-# Headings shorter than this are ignored for containment matching (guards
-# against spurious one/two-char line matches).
+# Headings shorter than this are ignored for matching (guards against
+# spurious one/two-char line matches).
 _MIN_HEADING_LEN = 2
+
+
+def _normalize_for_matching(text: str) -> str:
+    """[SPRINT31-B, Option B3] Put a heading candidate or a chunk line through
+    the SAME normalization chunks themselves undergo before splitting
+    (core.text_normalizer.normalize_pipeline_text — collapse_soft_linebreaks +
+    whitespace/blank-line collapse), after stripping any leading ATX marker.
+    This is the "stable coordinate" ADR-006 Phase B settles on: not a raw
+    character offset (there is none — postprocess_pdf_text/
+    split_front_matter/normalize_pipeline_text all mutate the text before a
+    chunk exists, SPRINT31-B Preflight), but a normalized-text space both a
+    heading candidate and a chunk line can be projected into and compared
+    exactly. A heading matches a chunk only when they are equal in this
+    space, so OCR/whitespace noise a candidate and a chunk each separately
+    accumulate is neutralized without introducing a substring match (which
+    caused the "INTRODUCTION" vs "INTRO" false-positive class the
+    Preflight flagged)."""
+    stripped = _ATX_PREFIX_RE.sub("", text.strip())
+    return normalize_pipeline_text(stripped)
 
 
 class HeadingAssembler:
     """Assigns a heading path to each chunk by matching provider headings to
-    chunk text. Phase-1 containment with an exact whole-line guard: a heading
-    matches a chunk only if the heading text equals a full stripped line of the
-    chunk — so a longer heading is never matched by a shorter fragment. Read-
-    only over `chunks` (boundary-preserving). Confidence/source are propagated,
-    not gated (Phase C owns thresholds)."""
+    chunk text in normalized-text space (Phase B, Option B3): a heading
+    matches a chunk only if its normalized text equals a normalized full line
+    of the chunk — so a longer heading is never matched by a shorter
+    fragment, and OCR/whitespace variance on either side is absorbed by
+    the shared normalization rather than by loosening the match itself.
+    Read-only over `chunks` (boundary-preserving). Confidence/source are
+    propagated, not gated (Phase C owns thresholds)."""
 
     def assign(
         self,
         chunks: List[str],
         headings: List[ProviderHeading],
     ) -> List[AssembledHeading]:
-        by_text = {h.text.strip(): h for h in headings if len(h.text.strip()) >= _MIN_HEADING_LEN}
+        # [SPRINT31-B] Headings are consumed as an ORDERED stream, not a
+        # text->heading lookup table. A flat dict keyed by normalized text
+        # would collapse duplicate titles (e.g. "Introduction" under both
+        # "Chapter 1" and "Chapter 2") to whichever ProviderHeading happened
+        # to be inserted last, mis-assigning every earlier occurrence to the
+        # wrong chapter. Walking `headings` in document order with a single
+        # cursor and only ever comparing against the next unconsumed heading
+        # keeps duplicates correctly bound to their own position.
+        eligible = [h for h in headings if len(h.text.strip()) >= _MIN_HEADING_LEN]
+        normalized_targets = [_normalize_for_matching(h.text) for h in eligible]
+        cursor = 0
         # stack of (level, ProviderHeading)
         stack: List[tuple] = []
         results: List[AssembledHeading] = []
 
         for chunk in chunks:
             for line in (chunk or "").splitlines():
-                # Normalize a leading ATX marker so "# Chapter 1" matches the
-                # marker-free heading text "Chapter 1"; bare PDF lines are
-                # unchanged. The whole-line equality still guards against
-                # partial matches (e.g. "INTRODUCT" vs "INTRODUCTION").
-                key = _ATX_PREFIX_RE.sub("", line.strip()).strip()
-                h = by_text.get(key)
-                if h is not None:
+                if not line.strip() or cursor >= len(eligible):
+                    continue
+                key = _normalize_for_matching(line)
+                if key and key == normalized_targets[cursor]:
+                    h = eligible[cursor]
+                    cursor += 1
                     while stack and stack[-1][0] >= h.level:
                         stack.pop()
                     stack.append((h.level, h))
