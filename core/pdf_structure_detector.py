@@ -217,11 +217,11 @@ def _confidence(line: _Line, profile: DocumentProfile, validity: float) -> float
     return round(max(0.0, min(0.5 * strength + 0.4 * validity + 0.1 * bonus, 1.0)), 4)
 
 
-def detect_headings(path: str, start_page: int = 0, max_pages: Optional[int] = None) -> List[HeadingCandidate]:
-    """Detect heading candidates in a PDF. Returns [] when PyMuPDF is
-    unavailable, no span data exists, or no signal is present (honest no-op).
-    Read-only; does not alter extraction, TSU, or any file."""
-    lines = _collect_lines(path, start_page=start_page, max_pages=max_pages)
+def _detect_from_lines(lines: List[_Line]) -> List[HeadingCandidate]:
+    """[SPRINT31-D-2] Single authority for heading detection over line-level
+    span geometry — pure, no I/O. Both the path-based detect_headings() and
+    the span-injection detect_headings_from_spans() funnel through here, so
+    they are result-identical by construction."""
     profile = profile_document(lines)
     if profile.selected_signal is None:
         return []
@@ -237,4 +237,39 @@ def detect_headings(path: str, start_page: int = 0, max_pages: Optional[int] = N
             confidence=_confidence(ln, profile, validity),
             validity=round(validity, 4),
         ))
+    return out
+
+
+def _spans_to_lines(spans: List[dict]) -> List[_Line]:
+    """Map extractor span records ({text,size,bold,page,is_block_top},
+    core.extractors.collect_pdf_spans) to internal _Line objects."""
+    return [
+        _Line(
+            text=s["text"],
+            size=s["size"],
+            bold=s["bold"],
+            page=s["page"],
+            is_block_top=s["is_block_top"],
+        )
+        for s in spans
+        if s.get("text")
+    ]
+
+
+def detect_headings_from_spans(spans: List[dict]) -> List[HeadingCandidate]:
+    """[SPRINT31-D-2, Option B] Detect headings from pre-collected span
+    metadata (core.extractors.collect_pdf_spans) WITHOUT re-opening the PDF —
+    the Transitional Adapter removal path (ADR-006 Amendment D). Pure; returns
+    [] for empty spans or when no signal is present."""
+    return _detect_from_lines(_spans_to_lines(spans))
+
+
+def detect_headings(path: str, start_page: int = 0, max_pages: Optional[int] = None) -> List[HeadingCandidate]:
+    """Detect heading candidates in a PDF by opening it directly. Retained for
+    the benchmark and backward compatibility; delegates detection to the same
+    core (_detect_from_lines) as detect_headings_from_spans(). Returns [] when
+    PyMuPDF is unavailable, no span data exists, or no signal is present.
+    Read-only; does not alter extraction, TSU, or any file."""
+    lines = _collect_lines(path, start_page=start_page, max_pages=max_pages)
+    return _detect_from_lines(lines)
     return out
