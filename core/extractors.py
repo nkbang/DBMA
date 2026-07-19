@@ -326,6 +326,56 @@ def _extract_via_pymupdf(path: str) -> str:
     return f"\n\n{PAGE_BREAK_MARKER}\n\n".join(pages).strip()
 
 
+# [SPRINT31-D-1] Bold flag bit in a PyMuPDF span's "flags" (bit 4 == 16).
+_PDF_BOLD_FLAG = 1 << 4
+
+
+def collect_pdf_spans(path: str) -> "list[dict]":
+    """[SPRINT31-D-1, Option B] Collect line-level span geometry (font size,
+    bold, page, block position, text) from a PDF for downstream heading
+    detection, so the heading detector no longer has to re-open the PDF
+    (Transitional Adapter removal, ADR-006 Amendment D).
+
+    Read-only and completely independent of the flat-text extraction path —
+    it does not alter, and is not called by, _extract_via_pymupdf, so the
+    extracted text stays byte-identical. Returns [] when PyMuPDF is
+    unavailable or the file cannot be read (honest degradation; non-PyMuPDF
+    fallback tiers simply have no spans).
+
+    Each record: {text, size, bold, page, is_block_top} — the shape consumed
+    by core.pdf_structure_detector (SPRINT31-D-2).
+    """
+    if not _HAS_PYMUPDF:
+        return []
+    try:
+        doc = _fitz.open(path)
+    except Exception:
+        return []
+    spans: list[dict] = []
+    try:
+        for pno in range(len(doc)):
+            for block in doc[pno].get_text("dict").get("blocks", []):
+                block_lines = block.get("lines", [])
+                for li, line in enumerate(block_lines):
+                    line_spans = line.get("spans", [])
+                    if not line_spans:
+                        continue
+                    dom = max(line_spans, key=lambda s: len(s["text"]))
+                    text = "".join(s["text"] for s in line_spans).strip()
+                    if not text:
+                        continue
+                    spans.append({
+                        "text": text,
+                        "size": round(dom["size"], 1),
+                        "bold": bool(dom["flags"] & _PDF_BOLD_FLAG),
+                        "page": pno,
+                        "is_block_top": (li == 0),
+                    })
+    finally:
+        doc.close()
+    return spans
+
+
 def _extract_via_docling(path: str, converter) -> str:
     """docling DocumentConverter 로 텍스트 추출."""
     result = converter.convert(path)
@@ -501,11 +551,15 @@ def extract_text_from_file(
     is_ocr = False
     title: Optional[str] = None
     author: Optional[str] = None
+    pdf_spans: list[dict] = []
 
     if ext == ".pdf":
         text = extract_text_from_pdf(path, converter=converter, use_ocr=use_ocr)
         is_ocr = use_ocr or _detect_ocr_flag(converter) if converter else use_ocr
         title, author = _extract_pdf_title_author(path)
+        # [SPRINT31-D-1] Additive — span geometry for heading detection,
+        # independent of the (unchanged) text above.
+        pdf_spans = collect_pdf_spans(path)
     elif ext == ".txt":
         text = extract_text_from_txt(path)
     elif ext == ".md":
@@ -528,4 +582,6 @@ def extract_text_from_file(
     return {
         "text": text, "is_ocr": is_ocr, "source_type": ext.lstrip("."),
         "title": title, "author": author,
+        # [SPRINT31-D-1] Additive — empty for non-PDF / non-PyMuPDF sources.
+        "pdf_spans": pdf_spans,
     }
