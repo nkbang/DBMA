@@ -263,6 +263,49 @@ class TestHeadingAssemblerDuplicateHeadings:
         assert out[0].heading_path == out[1].heading_path == out[2].heading_path
 
 
+class TestHeadingAssemblerCursorRecovery:
+    """SPRINT31-B-2 hardening: a heading that never appears verbatim in the
+    chunk text (OCR corruption, extraction gap) must not permanently stall
+    matching for every heading that follows it."""
+
+    def test_recovers_after_one_undetectable_heading(self):
+        chunks = [
+            "# Chapter 1\n\nintro",
+            # "## Lost Section" never appears literally in the extracted
+            # text (simulating OCR corruption / a missed line) — omitted.
+            "## Chapter 1 Continued\n\nbody one",
+            "# Chapter 2\n\nintro two",
+        ]
+        headings = [
+            ProviderHeading("Chapter 1", 1, 1.0, "atx"),
+            ProviderHeading("Lost Section", 2, 0.7, "pdf-size"),  # never matches
+            ProviderHeading("Chapter 1 Continued", 2, 1.0, "atx"),
+            ProviderHeading("Chapter 2", 1, 1.0, "atx"),
+        ]
+        out = HeadingAssembler().assign(chunks, headings)
+        # the skipped heading is simply absent, not a false match, and later
+        # real headings still bind correctly instead of staying stuck.
+        assert out[1].heading_path == ["Chapter 1", "Chapter 1 Continued"]
+        assert out[2].heading_path == ["Chapter 2"]
+
+    def test_no_match_within_window_does_not_advance_or_crash(self):
+        # heading list has one entry that never appears anywhere; nothing
+        # after it to recover onto — must degrade to empty, not raise.
+        chunks = ["plain body", "more plain body"]
+        headings = [ProviderHeading("Never Appears", 1, 0.5, "pdf-size")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert all(a.heading_path == [] for a in out)
+
+    def test_still_exact_match_only_no_fuzzy_recovery(self):
+        # recovery must not loosen matching into substrings even within
+        # the lookahead window.
+        chunks = ["INTRO\n\nbody", "INTRODUCTION\n\nbody"]
+        headings = [ProviderHeading("INTRODUCTION", 1, 0.8, "pdf-bold")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert out[0].heading_path == []               # "INTRO" must not match
+        assert out[1].heading_path == ["INTRODUCTION"]  # exact line does
+
+
 class TestHeadingAssemblerBoundaryUnchanged:
     """HQ-required boundary check: chunk count and content before/after
     assembly must be identical (Assembler is read-only)."""

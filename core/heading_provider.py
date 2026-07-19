@@ -174,6 +174,19 @@ class AssembledHeading:
 # spurious one/two-char line matches).
 _MIN_HEADING_LEN = 2
 
+# [SPRINT31-B-2] Bounded lookahead for cursor recovery: if the next expected
+# heading in document order never appears verbatim in the chunk text (OCR
+# corruption, an extraction gap, a page-break artifact splitting it across
+# lines), a strict single-position cursor stalls forever — every later
+# heading, however cleanly it matches, is then silently dropped for the rest
+# of the document, since the design only ever compares against the one
+# heading it is stuck waiting for. Scanning a small forward window instead
+# lets the cursor skip an undetectable heading (it simply never enters
+# heading_path — no false match is introduced) and resynchronize on the
+# next one that actually appears. Kept small and exact-match-only: this is
+# recovery from a missing line, not fuzzy matching.
+_LOOKAHEAD_WINDOW = 5
+
 
 def _normalize_for_matching(text: str) -> str:
     """[SPRINT31-B, Option B3] Put a heading candidate or a chunk line through
@@ -229,12 +242,22 @@ class HeadingAssembler:
                 if not line.strip() or cursor >= len(eligible):
                     continue
                 key = _normalize_for_matching(line)
-                if key and key == normalized_targets[cursor]:
-                    h = eligible[cursor]
-                    cursor += 1
-                    while stack and stack[-1][0] >= h.level:
-                        stack.pop()
-                    stack.append((h.level, h))
+                if not key:
+                    continue
+                # [SPRINT31-B-2] Look for an exact match within the next
+                # window of unconsumed headings, not only at `cursor`. Any
+                # headings skipped over (window[0:match_offset]) never
+                # appeared verbatim in the text — they are dropped, not
+                # guessed at, so no false match is introduced.
+                window = normalized_targets[cursor:cursor + _LOOKAHEAD_WINDOW]
+                if key not in window:
+                    continue
+                match_offset = window.index(key)
+                h = eligible[cursor + match_offset]
+                cursor += match_offset + 1
+                while stack and stack[-1][0] >= h.level:
+                    stack.pop()
+                stack.append((h.level, h))
             if stack:
                 top = stack[-1][1]
                 results.append(AssembledHeading(
