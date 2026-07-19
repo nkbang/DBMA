@@ -39,6 +39,7 @@ from core.utils import make_safe_stem
 from core.retrieval import NAME_TO_BOOK_ID, QueryParser, ScriptureReference
 from core.canonical_constants import CANONICAL_MAX_CHAPTER
 from core.noise_classifier import classify as classify_noise
+from core.heading_extractor import HeadingStack
 
 
 _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
@@ -263,6 +264,11 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
         # finding). "UNK" means no match was found — never invented.
         book_id = doc.get("book") or _resolve_book_id(source_file) or "UNK"
 
+        # [SPRINT29-C] One HeadingStack per document, advanced in chunk order so
+        # a chunk inherits the heading context established by earlier chunks.
+        # Boundary-preserving: reads chunk content only, never re-chunks.
+        heading_stack = HeadingStack()
+
         for idx, chunk_id in enumerate(chunk_ids):
             content = chunk_texts[idx] if idx < len(chunk_texts) else ""
 
@@ -342,6 +348,17 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                 "noise_type": noise_result.noise_type,
                 "quality_score": noise_result.quality_score,
                 "section_type": noise_result.section_type,
+            }
+
+            # [SPRINT29-C] Additive heading foundation — same additive contract
+            # as content_quality above (no existing field changed, retrieval
+            # does not read it yet). heading_path is empty for sources without
+            # explicit ATX heading markers (e.g. all current PDF corpus), which
+            # is the intended no-op — no PDF font heuristic is performed.
+            chunk_heading = heading_stack.apply_chunk(content)
+            record["structure"] = {
+                "heading_path": chunk_heading.heading_path,
+                "heading_depth": chunk_heading.heading_depth,
             }
 
             records.append(record)
