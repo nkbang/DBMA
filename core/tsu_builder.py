@@ -28,6 +28,7 @@ from __future__ import annotations
 import datetime
 import hashlib
 import json
+import os
 import re
 import subprocess
 import unicodedata
@@ -40,6 +41,9 @@ from core.retrieval import NAME_TO_BOOK_ID, QueryParser, ScriptureReference
 from core.canonical_constants import CANONICAL_MAX_CHAPTER
 from core.noise_classifier import classify as classify_noise
 from core.heading_extractor import HeadingStack
+from core.heading_provider import get_registry, HeadingAssembler
+from core.extractors import collect_pdf_spans
+from core.config import DEFAULT_RAW_DIR
 
 
 _CHUNK_HEADER_RE = re.compile(r"\[chunk \d+\]\n")
@@ -267,7 +271,20 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
         # [SPRINT29-C] One HeadingStack per document, advanced in chunk order so
         # a chunk inherits the heading context established by earlier chunks.
         # Boundary-preserving: reads chunk content only, never re-chunks.
+        # [SPRINT32-C] PDF documents use PdfHeadingProvider + HeadingAssembler
+        # instead (SPRINT32-A Option 1) — HeadingStack/ATX detection is kept
+        # unchanged for every other source_type (SPRINT32-C approved scope:
+        # "MD: HeadingStack 유지"). assembled_headings is precomputed once per
+        # PDF document (not per chunk) since the Assembler needs the full
+        # chunk_texts list to walk in order.
+        source_type = doc.get("source_type", "")
         heading_stack = HeadingStack()
+        assembled_headings: Optional[list] = None
+        if source_type == "pdf":
+            raw_path = os.path.join(DEFAULT_RAW_DIR, source_file)
+            spans = collect_pdf_spans(raw_path) if os.path.exists(raw_path) else []
+            provider = get_registry().resolve("pdf")(spans)
+            assembled_headings = HeadingAssembler().assign(chunk_texts, provider.headings())
 
         for idx, chunk_id in enumerate(chunk_ids):
             content = chunk_texts[idx] if idx < len(chunk_texts) else ""
@@ -352,14 +369,30 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
 
             # [SPRINT29-C] Additive heading foundation — same additive contract
             # as content_quality above (no existing field changed, retrieval
-            # does not read it yet). heading_path is empty for sources without
-            # explicit ATX heading markers (e.g. all current PDF corpus), which
-            # is the intended no-op — no PDF font heuristic is performed.
-            chunk_heading = heading_stack.apply_chunk(content)
-            record["structure"] = {
-                "heading_path": chunk_heading.heading_path,
-                "heading_depth": chunk_heading.heading_depth,
-            }
+            # does not read it yet).
+            # [SPRINT32-C] PDF documents read heading_path/confidence/source
+            # from the precomputed assembled_headings (PdfHeadingProvider +
+            # HeadingAssembler, SPRINT31 Phase A/D/B). Every other source_type
+            # keeps the unchanged HeadingStack/ATX path — heading_confidence/
+            # heading_source are populated here too (1.0/"atx" when a heading
+            # matched, 0.0/"" when not) purely to normalize the record shape;
+            # HeadingStack's own ATX detection logic is untouched.
+            if assembled_headings is not None:
+                a = assembled_headings[idx]
+                record["structure"] = {
+                    "heading_path": a.heading_path,
+                    "heading_depth": a.heading_depth,
+                    "heading_confidence": a.heading_confidence,
+                    "heading_source": a.heading_source,
+                }
+            else:
+                chunk_heading = heading_stack.apply_chunk(content)
+                record["structure"] = {
+                    "heading_path": chunk_heading.heading_path,
+                    "heading_depth": chunk_heading.heading_depth,
+                    "heading_confidence": 1.0 if chunk_heading.heading_path else 0.0,
+                    "heading_source": "atx" if chunk_heading.heading_path else "",
+                }
 
             records.append(record)
 
