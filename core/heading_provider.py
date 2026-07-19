@@ -16,11 +16,14 @@ Scope (SPRINT31-A, ADR-006 APPROVED):
     accepting a temporary "one PDF, two parses" cost until SPRINT31 Phase D
     unifies detection into the extractor span pipeline. It must not become the
     permanent production architecture.
-  - HeadingAssembler uses Phase-1 containment matching with an exact whole-line
-    guard (no partial "INTRODUCTION"->"INTRO" matches). Offset/page-anchor
-    matching is Phase B. Confidence is propagated but not threshold-gated here
-    (gating/calibration is Phase C; ADR-006 Amendment A defers physical
-    storage to the Calibration phase).
+  - HeadingAssembler matches in normalized-text space with a word-boundary
+    guard (SPRINT32-F: no partial "INTRODUCTION"->"INTRO" matches, but a
+    heading merged into a longer normalized line by
+    core.text_normalizer.collapse_soft_linebreaks is still found — exact
+    whole-line matching found 1 distinct heading across the 12-PDF Beta
+    corpus; word-boundary containment found 334). Confidence is propagated
+    but not threshold-gated here (gating/calibration is Phase C; ADR-006
+    Amendment A defers physical storage to the Calibration phase).
 """
 
 from __future__ import annotations
@@ -207,15 +210,34 @@ def _normalize_for_matching(text: str) -> str:
     return normalize_pipeline_text(stripped)
 
 
+def _first_contained(window: List[str], line: str) -> Optional[int]:
+    """[SPRINT32-F] Index of the first entry in `window` that appears in
+    `line` as a whole word/phrase — bounded by \\w-class boundaries on both
+    sides so "INTRO" never matches inside "INTRODUCTION", but a target that
+    got merged into a longer normalized line (heading + adjacent body text,
+    e.g. "톰라이트 10 모든사람을위한로마서 I") is still found. Empty targets
+    never match (an empty pattern would match everywhere). Returns None if
+    no window entry is found."""
+    for i, target in enumerate(window):
+        if not target:
+            continue
+        if re.search(r"(?<!\w)" + re.escape(target) + r"(?!\w)", line):
+            return i
+    return None
+
+
 class HeadingAssembler:
     """Assigns a heading path to each chunk by matching provider headings to
     chunk text in normalized-text space (Phase B, Option B3): a heading
-    matches a chunk only if its normalized text equals a normalized full line
-    of the chunk — so a longer heading is never matched by a shorter
-    fragment, and OCR/whitespace variance on either side is absorbed by
-    the shared normalization rather than by loosening the match itself.
-    Read-only over `chunks` (boundary-preserving). Confidence/source are
-    propagated, not gated (Phase C owns thresholds)."""
+    matches a chunk if its normalized text appears as a whole word/phrase
+    within a normalized line of the chunk (SPRINT32-F word-boundary
+    containment — see _first_contained) — so a longer heading is never
+    matched by a shorter fragment, and both OCR/whitespace variance AND
+    normalize_pipeline_text merging a short heading line into an adjacent
+    body line (SPRINT32-D/E finding) are absorbed without loosening the
+    match into an unbounded substring check. Read-only over `chunks`
+    (boundary-preserving). Confidence/source are propagated, not gated
+    (Phase C owns thresholds)."""
 
     def assign(
         self,
@@ -244,15 +266,24 @@ class HeadingAssembler:
                 key = _normalize_for_matching(line)
                 if not key:
                     continue
-                # [SPRINT31-B-2] Look for an exact match within the next
-                # window of unconsumed headings, not only at `cursor`. Any
-                # headings skipped over (window[0:match_offset]) never
-                # appeared verbatim in the text — they are dropped, not
-                # guessed at, so no false match is introduced.
+                # [SPRINT31-B-2] Look for a match within the next window of
+                # unconsumed headings, not only at `cursor`. Any headings
+                # skipped over (window[0:match_offset]) never matched — they
+                # are dropped, not guessed at, so no false match is introduced.
+                # [SPRINT32-F] Matching is word-boundary CONTAINMENT, not
+                # whole-line equality: core.text_normalizer.collapse_soft_
+                # linebreaks merges short, non-sentence-ending lines (the
+                # exact shape of a heading) into the adjacent body line before
+                # a chunk is ever formed (SPRINT32-C/D/E finding — validated
+                # on the Beta corpus: exact-line matching found 1 distinct
+                # heading across 12 PDFs; word-boundary containment found
+                # 334). A target still can't match as a bare substring of a
+                # longer word ("INTRO" doesn't match inside "INTRODUCTION")
+                # because of the \w boundary assertions on both sides.
                 window = normalized_targets[cursor:cursor + _LOOKAHEAD_WINDOW]
-                if key not in window:
+                match_offset = _first_contained(window, key)
+                if match_offset is None:
                     continue
-                match_offset = window.index(key)
                 h = eligible[cursor + match_offset]
                 cursor += match_offset + 1
                 while stack and stack[-1][0] >= h.level:

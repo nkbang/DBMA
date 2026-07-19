@@ -306,6 +306,44 @@ class TestHeadingAssemblerCursorRecovery:
         assert out[1].heading_path == ["INTRODUCTION"]  # exact line does
 
 
+class TestHeadingAssemblerWordBoundaryMatching:
+    """SPRINT32-F: word-boundary containment replaces exact whole-line
+    equality, validated against the real SPRINT32-C/D/E finding —
+    core.text_normalizer.collapse_soft_linebreaks merges a short heading
+    line into an adjacent body line before a chunk is ever formed."""
+
+    def test_merged_line_from_real_beta_corpus_finding(self):
+        # Reproduces the exact SPRINT32-C evidence: heading candidate
+        # "톰라이트" survived only as a substring of a merged line, never
+        # as its own chunk line.
+        chunks = ["톰라이트 10 모든사람을위한로마서 I\n\nbody continues here."]
+        headings = [ProviderHeading("톰라이트", 1, 0.6, "pdf-size")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert out[0].heading_path == ["톰라이트"]
+
+    def test_still_rejects_partial_word_match(self):
+        # "INTRO" must not match inside "INTRODUCTION" even with containment.
+        chunks = ["some INTRODUCTORY remarks here\n\nbody"]
+        headings = [ProviderHeading("INTRO", 1, 0.7, "pdf-bold")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert out[0].heading_path == []
+
+    def test_word_boundary_match_within_longer_line(self):
+        chunks = ["Chapter 1 Introduction page 12\n\nbody text"]
+        headings = [ProviderHeading("Introduction", 1, 0.75, "pdf-size")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert out[0].heading_path == ["Introduction"]
+
+    def test_empty_normalized_target_never_matches(self):
+        # A heading whose normalized text is empty (e.g. pure punctuation
+        # surviving strip/normalize down to "") must never match every line
+        # (an empty regex pattern would otherwise match anywhere).
+        chunks = ["ordinary body text here", "another line of body text"]
+        headings = [ProviderHeading("--", 1, 0.5, "pdf-size")]
+        out = HeadingAssembler().assign(chunks, headings)
+        assert all(a.heading_path == [] for a in out)
+
+
 class TestHeadingAssemblerBoundaryUnchanged:
     """HQ-required boundary check: chunk count and content before/after
     assembly must be identical (Assembler is read-only)."""
