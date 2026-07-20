@@ -12,7 +12,6 @@ import json
 import urllib.error
 import urllib.request
 import time
-from sentence_transformers import SentenceTransformer
 
 # Dimension validation for embedding consistency
 from core.config import EMBEDDING_DIMENSION

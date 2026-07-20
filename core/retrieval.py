@@ -1098,17 +1098,24 @@ class RetrievalEngine:
         self.tfidf_vectorizer.fit(token_docs)
         self.vectors = [self.tfidf_vectorizer.transform(tokens) for tokens in token_docs]
 
+    def list_source_files(self) -> list[str]:
+        """Unique tsu["source_file"] values in the loaded corpus, sorted.
+        Used by UI file-scope pickers (see retrieve()'s file_scope arg)."""
+        return sorted({sf for t in self.tsus if (sf := t.get("source_file"))})
+
     def retrieve(
         self,
         parsed_query: ParsedQuery,
         k_output: int = 10,
         embedding_cache: Optional[EmbeddingCache] = None,
+        file_scope: Optional[list[str]] = None,
     ) -> tuple[list[RankedCandidate], PerformanceMetrics]:
         """
         Execute the full hybrid retrieval pipeline.
 
         Pipeline:
             1. Metadata-first filtering (Bible book/chapter/verse)
+            1b. File-scope filtering (user-selected source_file allowlist)
             2. BM25 keyword scoring (candidate generation)
             3. Vector search (semantic via BGE-M3 when embedding_cache is
                supplied; else/on-failure: in-memory TF-IDF cosine similarity)
@@ -1116,6 +1123,14 @@ class RetrievalEngine:
             5. Hybrid ranking
             6. Deduplication
             7. Top-K selection
+
+        Args:
+            file_scope: Optional allowlist of exact tsu["source_file"]
+                values. When given, candidates are restricted to these
+                files — an explicit user narrowing (e.g. Chat UI "단일/다중
+                파일" scope), so it always wins: if it doesn't intersect the
+                metadata-filtered pool, the search runs within the chosen
+                files directly rather than silently ignoring the choice.
 
         Returns:
             (ranked_candidates, performance_metrics)
@@ -1143,6 +1158,14 @@ class RetrievalEngine:
 
         # Determine candidate pool
         candidate_pool = filtered_indices if filtered_indices else list(range(len(self.tsus)))
+
+        # --- STEP 1b: File-scope filtering ---
+        if file_scope:
+            scope_set = set(file_scope)
+            scoped_pool = [idx for idx in candidate_pool if self.tsus[idx].get("source_file") in scope_set]
+            if not scoped_pool:
+                scoped_pool = [idx for idx in range(len(self.tsus)) if self.tsus[idx].get("source_file") in scope_set]
+            candidate_pool = scoped_pool
 
         # --- STEP 2: BM25 keyword scoring (candidate generation) ---
         t0 = time.perf_counter()
@@ -1596,6 +1619,7 @@ class QueryProcessor:
         query: str,
         query_id: str = "",
         k: int = 10,
+        file_scope: Optional[list[str]] = None,
     ) -> ResponsePackage:
         """
         Process a raw query through the full production pipeline.
@@ -1604,6 +1628,8 @@ class QueryProcessor:
             query: The user query string.
             query_id: Optional identifier for this query.
             k: Number of results to return.
+            file_scope: Optional allowlist of exact source_file values to
+                restrict the search to (see RetrievalEngine.retrieve).
 
         Returns:
             ResponsePackage with all components.
@@ -1614,7 +1640,7 @@ class QueryProcessor:
 
         # 2. Retrieve via hybrid engine
         candidates, metrics = self.engine.retrieve(
-            parsed_query, k_output=k, embedding_cache=self.cache
+            parsed_query, k_output=k, embedding_cache=self.cache, file_scope=file_scope
         )
 
         # 3. Assemble context
