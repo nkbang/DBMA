@@ -101,6 +101,18 @@ DEFAULT_MIN_CHUNK_SIZE = _yaml_chunking.get("min_chunk_size", 80)
 # tooling visibility, not consumed by the splitting logic.
 DEFAULT_MAX_CHUNK_SIZE = _yaml_chunking.get("max_chunk_size", 5000)
 
+# ── Boundary Score model (SPRINT33-C) ───────────────────
+# [SPRINT33-C Phase 4-C] core.semantic_boundary_detector.
+# ScriptureReferenceBoundaryFeature only counts a scripture reference that
+# appears within a candidate's first N characters as a boundary signal —
+# Phase 4-C's overlap Preflight found that scoring ANY reference found
+# anywhere in a candidate would fire on incidental in-body citations
+# (~78.5% of ref-bearing, heading-unmatched candidates sampled), not just
+# genuine section-title-shaped ones. HQ-set value: 50.
+SCRIPTURE_REFERENCE_HEAD_WINDOW = 50
+# HQ-set feature weight for ScriptureReferenceBoundaryFeature.
+SCRIPTURE_REFERENCE_WEIGHT = 60.0
+
 # ── 벡터DB 설정 (하위 호환성) ───────────────────────────
 _yaml_vdb = CFG.get("vector_db", {})
 VECTOR_DB_PRIMARY = _yaml_vdb.get("primary", "chroma")

@@ -11,7 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.config import DEFAULT_MIN_CHUNK_SIZE
+from core.config import DEFAULT_MIN_CHUNK_SIZE, SCRIPTURE_REFERENCE_HEAD_WINDOW
 from core.heading_provider import ProviderHeading
 from core.semantic_boundary_detector import (
     BoundaryContext,
@@ -19,6 +19,7 @@ from core.semantic_boundary_detector import (
     FeatureRegistry,
     HeadingBoundaryFeature,
     ParagraphBoundaryFeature,
+    ScriptureReferenceBoundaryFeature,
     SentenceBoundaryConfidenceFeature,
     TinyFragmentPenaltyFeature,
     DEFAULT_THRESHOLD,
@@ -196,6 +197,33 @@ class TestSentenceBoundaryConfidenceFeature:
         assert feature.score(ctx) == 1.0
 
 
+class TestScriptureReferenceBoundaryFeature:
+    def test_scores_one_when_reference_at_head(self):
+        feature = ScriptureReferenceBoundaryFeature()
+        ctx = BoundaryContext(candidate_text="고전 5:6-13 '누룩'을제거하라!", position=0)
+        assert feature.score(ctx) == 1.0
+
+    def test_scores_zero_when_no_reference_present(self):
+        feature = ScriptureReferenceBoundaryFeature()
+        ctx = BoundaryContext(candidate_text="아무 관련 없는 본문입니다.", position=0)
+        assert feature.score(ctx) == 0.0
+
+    def test_scores_zero_when_reference_only_appears_after_head_window(self):
+        # Phase 4-C overlap Preflight finding: an incidental in-body
+        # citation well past the head window must NOT fire — only a
+        # reference shaped like a heading (at the very start) should.
+        feature = ScriptureReferenceBoundaryFeature()
+        padding = "본문 내용이 이어지고 이어지고 이어지는 문단입니다 " * 3
+        assert len(padding) > SCRIPTURE_REFERENCE_HEAD_WINDOW
+        ctx = BoundaryContext(candidate_text=padding + "고전 5:6-13 참고", position=0)
+        assert feature.score(ctx) == 0.0
+
+    def test_scores_zero_for_empty_candidate(self):
+        feature = ScriptureReferenceBoundaryFeature()
+        ctx = BoundaryContext(candidate_text="   ", position=0)
+        assert feature.score(ctx) == 0.0
+
+
 class TestFeatureRegistry:
     def test_register_and_score_all_applies_weight(self):
         reg = FeatureRegistry()
@@ -251,15 +279,21 @@ class TestFeatureRegistry:
         ctx = BoundaryContext(candidate_text=_long("아무 문단"), position=0)
         assert reg.score_all(ctx)["sentence_boundary"] == 10.0
 
+    def test_default_registry_has_scripture_reference_feature(self):
+        reg = get_registry()
+        ctx = BoundaryContext(candidate_text="고전 5:6-13 '누룩'을제거하라!", position=0)
+        assert reg.score_all(ctx)["scripture_reference"] == 60.0
+
     def test_default_registry_does_not_register_blank_line_feature(self):
         # SPRINT33-C Phase 2 Preflight: "Blank line" was explicitly excluded
         # (HQ-approved) because split_paragraphs() already splits on blank
-        # lines, making it a duplicate of "paragraph". Only these four
+        # lines, making it a duplicate of "paragraph". Only these five
         # feature names should exist in the default registry.
         reg = get_registry()
         ctx = BoundaryContext(candidate_text=_long("아무 문단."), position=0)
         assert set(reg.score_all(ctx).keys()) == {
             "heading", "paragraph", "tiny_fragment", "sentence_boundary",
+            "scripture_reference",
         }
 
 
@@ -335,5 +369,6 @@ class TestScoreBoundary:
         )
         event = score_boundary(ctx)
         assert event.features == {
-            "heading": 100.0, "paragraph": 30.0, "tiny_fragment": 0.0, "sentence_boundary": 10.0,
+            "heading": 100.0, "paragraph": 30.0, "tiny_fragment": 0.0,
+            "sentence_boundary": 10.0, "scripture_reference": 0.0,
         }

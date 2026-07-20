@@ -36,6 +36,16 @@ Scope (SPRINT33-B, per HQ Task Order):
     (confidence that the candidate ends at a real sentence boundary, not a
     truncation) rather than "Completion", so a later Phase 5 pivot to a
     negative "cut mid-sentence" penalty needs no rename.
+  - [SPRINT33-C Phase 4-C] ScriptureReferenceBoundaryFeature added — reuses
+    core.retrieval.QueryParser (the exact class core/tsu_builder.py's
+    _reference_parser already is, for verse_mapping resolution), but only
+    scores a reference found within the candidate's first
+    core.config.SCRIPTURE_REFERENCE_HEAD_WINDOW characters as a boundary
+    signal. Phase 4-C's overlap Preflight measured that scoring ANY
+    reference anywhere in a candidate would fire on incidental in-body
+    citations for ~78.5% of the ref-bearing, heading-unmatched sample —
+    restricting to the head window keeps this a heading-shaped signal
+    (title + reference at the start) instead of a body-content detector.
   - Threshold/weight values here are the SPRINT33-B design draft's initial
     numbers, not calibrated against real corpus data (calibration is a
     later, separately-approved phase, mirroring ADR-006 Amendment B/C for
@@ -48,13 +58,22 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List, Optional, Protocol, runtime_checkable
 
-from core.config import DEFAULT_MIN_CHUNK_SIZE
+from core.config import (
+    DEFAULT_MIN_CHUNK_SIZE,
+    SCRIPTURE_REFERENCE_HEAD_WINDOW,
+    SCRIPTURE_REFERENCE_WEIGHT,
+)
 from core.heading_provider import (
     ProviderHeading,
     _first_contained,
     _normalize_for_matching,
 )
+from core.retrieval import QueryParser
 from core.text_normalizer import _ends_like_sentence
+
+# Same QueryParser instance role as core.tsu_builder._reference_parser —
+# a stateless parser, safe to share across scoring calls.
+_reference_parser = QueryParser()
 
 # Mirrors HeadingAssembler's own window (core/heading_provider.py) so the
 # promoted feature recovers from a missing heading the same way the
@@ -214,6 +233,24 @@ class SentenceBoundaryConfidenceFeature:
         return 1.0 if _ends_like_sentence(lines[-1]) else 0.0
 
 
+class ScriptureReferenceBoundaryFeature:
+    """[SPRINT33-C Phase 4-C] Fires (1.0) when core.retrieval.QueryParser
+    finds a scripture reference within the candidate's first
+    core.config.SCRIPTURE_REFERENCE_HEAD_WINDOW characters — deliberately
+    NOT "anywhere in the candidate" (see module docstring and Phase 4-C
+    overlap Preflight): most in-body citations occur mid-paragraph and are
+    not boundary signals, only ones shaped like "REF + title" at the very
+    start are. Reuses QueryParser exactly as core.tsu_builder._reference_
+    parser already does for verse_mapping — no new reference grammar."""
+
+    def score(self, context: BoundaryContext) -> float:
+        head = context.candidate_text.strip()[:SCRIPTURE_REFERENCE_HEAD_WINDOW]
+        if not head:
+            return 0.0
+        refs = _reference_parser.parse(head).scripture_refs
+        return 1.0 if refs else 0.0
+
+
 # ── Registry (resolution + weighting, mirrors ProviderRegistry's shape) ────
 
 class FeatureRegistry:
@@ -242,6 +279,11 @@ def _default_registry() -> FeatureRegistry:
     r.register("paragraph", ParagraphBoundaryFeature(), weight=30.0)
     r.register("tiny_fragment", TinyFragmentPenaltyFeature(), weight=-60.0)
     r.register("sentence_boundary", SentenceBoundaryConfidenceFeature(), weight=10.0)
+    r.register(
+        "scripture_reference",
+        ScriptureReferenceBoundaryFeature(),
+        weight=SCRIPTURE_REFERENCE_WEIGHT,
+    )
     return r
 
 
