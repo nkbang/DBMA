@@ -280,9 +280,12 @@ class TestFeatureRegistry:
         assert reg.score_all(ctx)["sentence_boundary"] == 10.0
 
     def test_default_registry_has_scripture_reference_feature(self):
+        # [SPRINT33-C Phase 5-B] Calibrated down from 60.0 to 15.0 — see
+        # core/config.py SCRIPTURE_REFERENCE_WEIGHT for the Phase 5-A
+        # shadow-matrix rationale.
         reg = get_registry()
         ctx = BoundaryContext(candidate_text="고전 5:6-13 '누룩'을제거하라!", position=0)
-        assert reg.score_all(ctx)["scripture_reference"] == 60.0
+        assert reg.score_all(ctx)["scripture_reference"] == 15.0
 
     def test_default_registry_does_not_register_blank_line_feature(self):
         # SPRINT33-C Phase 2 Preflight: "Blank line" was explicitly excluded

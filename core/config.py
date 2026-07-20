@@ -110,8 +110,21 @@ DEFAULT_MAX_CHUNK_SIZE = _yaml_chunking.get("max_chunk_size", 5000)
 # (~78.5% of ref-bearing, heading-unmatched candidates sampled), not just
 # genuine section-title-shaped ones. HQ-set value: 50.
 SCRIPTURE_REFERENCE_HEAD_WINDOW = 50
-# HQ-set feature weight for ScriptureReferenceBoundaryFeature.
-SCRIPTURE_REFERENCE_WEIGHT = 60.0
+# [SPRINT33-C Phase 5-B] Calibrated down from the Phase 4-C initial value
+# (60.0) after Phase 5-A's weight x threshold shadow matrix showed 60.0
+# let paragraph(+30) + scripture_reference alone reach 90 -- comfortably
+# above DEFAULT_THRESHOLD(50) with no heading corroboration at all, which
+# Phase 4-C Validation's manual review linked to the weakest-precision
+# match class (20-40% true-boundary rate, dominated by incidental
+# citations and WBC-style running-header repeats). The matrix showed the
+# decision is flat for any weight in [20, 60] at threshold=50 (paragraph +
+# weight must drop under 50 to matter) -- 15.0 was chosen as the first
+# value clearly inside that effective range (paragraph(30) + 15 = 45,
+# below threshold) while still allowing a scripture reference to
+# contribute when reinforced by a second signal (e.g. + sentence_boundary
+# = 55, still >= threshold). DEFAULT_THRESHOLD(50) itself is unchanged
+# (Phase 5-B scope, HQ Task Order).
+SCRIPTURE_REFERENCE_WEIGHT = 15.0
 
 # ── 벡터DB 설정 (하위 호환성) ───────────────────────────
 _yaml_vdb = CFG.get("vector_db", {})
