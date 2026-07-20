@@ -7,7 +7,7 @@ FILES = {
 ## DBMA 프로젝트 개요
 DBMA는 신학 문서 전용 RAG 시스템이다. Python 기반으로 다양한 문서 형식을 처리하고, 추출, 정제, 청킹, 임베딩, 검색, 생성, 평가를 하나의 흐름으로 연결한다. 핵심 목표는 결과 정밀도, 추적 가능성, 유지보수성, 그리고 반복 개선이다.
 
-DBMA의 공식 실행 진입점은 `dbma_ui.py`(→ `ui/app.py`)이며, Streamlit UI와 전체 처리 흐름을 오케스트레이션한다. `dbma.py`는 deprecated legacy application entry다(ADR-001, ADR-003 참고). 프로젝트 루트는 `~/DBMA` 이다.
+DBMA의 공식 실행 진입점은 `dbma_ui.py`(→ `ui/app.py`)이며, Streamlit UI와 전체 처리 흐름을 오케스트레이션한다. 과거 legacy application entry였던 `dbma.py`는 2026-07-17 커밋 `ce6b05a`로 `archive/legacy/`로 이동(격리)되어 현재 프로젝트 루트에는 존재하지 않는다(ADR-001, ADR-003, `docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md` 참고). 프로젝트 루트는 `~/DBMA` 이다.
 
 ---
 
@@ -43,10 +43,9 @@ DBMA의 공식 실행 진입점은 `dbma_ui.py`(→ `ui/app.py`)이며, Streamli
 
 주요 모듈:
 - `dbma_ui.py`: 공식 진입점 (thin launcher → `ui/app.py`)
-- `dbma.py`: deprecated legacy entry
+- `dbma.py`: 제거됨 — `archive/legacy/dbma.py`로 이동 (2026-07-17, 커밋 `ce6b05a`)
 - `core/`: 추출, 처리, 파일, 청킹, 유틸리티
 - `ui/`: 탭 기반 인터페이스
-- `dbma_rag.py`: RAG 처리
 - `tests/`: 테스트 코드
 - `docs/`: 문서화
 - `loops/`: 루프 엔지니어링 관련 산출물
@@ -325,7 +324,6 @@ dbma_ui.py
 → ui/app.py
 → ui/
 → core/
-→ dbma_rag.py
 ```
 """,
     'docs/OPERATIONS.md': """# DBMA Operations
