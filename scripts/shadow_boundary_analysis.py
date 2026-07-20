@@ -51,7 +51,7 @@ import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
+from typing import Iterator, List, Tuple
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -64,6 +64,7 @@ from core.heading_provider import (
 )
 from core.semantic_boundary_detector import (
     BoundaryContext,
+    BoundaryEvent,
     DEFAULT_THRESHOLD,
     get_registry,
     score_boundary,
@@ -136,20 +137,33 @@ def _advance_cursor(cursor: int, headings: List[ProviderHeading], key: str) -> i
     return cursor + offset + 1
 
 
-def analyze_document(md_path: Path) -> DocResult:
-    stub = md_path.stem.replace("_pdf", "")
+def resolve_headings_and_candidates(md_path: Path) -> Tuple[List[ProviderHeading], List[str]]:
+    """Shared setup step: PDF headings (provider) + paragraph candidates
+    (body_text-aligned, Phase 2-A). Used by both the Phase 1 pass/fail
+    baseline and Phase 3's score-distribution analysis so the two never
+    drift apart on what counts as a "candidate"."""
     pdf_path = _resolve_pdf(md_path)
-
     spans = collect_pdf_spans(str(pdf_path))
     headings = PdfHeadingProvider(spans).headings()
 
     text = md_path.read_text(encoding="utf-8")
     body_text = _extract_body_text(text)
     candidates = split_paragraphs(body_text)
+    return headings, candidates
 
+
+def iter_scored_candidates(
+    headings: List[ProviderHeading],
+    candidates: List[str],
+) -> Iterator[Tuple[int, str, BoundaryEvent]]:
+    """[SPRINT33-C Phase 3] Yields (position, candidate_text, BoundaryEvent)
+    for every candidate, owning the same cursor-advance responsibility
+    analyze_document's inline loop used to (see module docstring). Exists
+    as its own generator so a caller that wants the full per-candidate
+    score (Phase 3) and one that only wants the pass/fail count (Phase 1)
+    can share one traversal instead of duplicating cursor logic."""
     registry = get_registry()
     cursor = 0
-    matched = 0
     for i, candidate in enumerate(candidates):
         ctx = BoundaryContext(
             candidate_text=candidate,
@@ -159,9 +173,18 @@ def analyze_document(md_path: Path) -> DocResult:
         )
         event = score_boundary(ctx, registry=registry)
         if event.is_boundary:
-            matched += 1
             key = _normalize_for_matching(candidate)
             cursor = _advance_cursor(cursor, headings, key)
+        yield i, candidate, event
+
+
+def analyze_document(md_path: Path) -> DocResult:
+    stub = md_path.stem.replace("_pdf", "")
+    headings, candidates = resolve_headings_and_candidates(md_path)
+
+    matched = sum(
+        1 for _, _, event in iter_scored_candidates(headings, candidates) if event.is_boundary
+    )
 
     return DocResult(
         name=stub,
