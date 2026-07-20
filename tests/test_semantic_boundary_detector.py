@@ -11,6 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from core.config import DEFAULT_MIN_CHUNK_SIZE
 from core.heading_provider import ProviderHeading
 from core.semantic_boundary_detector import (
     BoundaryContext,
@@ -18,6 +19,7 @@ from core.semantic_boundary_detector import (
     FeatureRegistry,
     HeadingBoundaryFeature,
     ParagraphBoundaryFeature,
+    TinyFragmentPenaltyFeature,
     DEFAULT_THRESHOLD,
     get_registry,
     score_boundary,
@@ -26,6 +28,12 @@ from core.semantic_boundary_detector import (
 
 def _heading(text: str, level: int = 1, confidence: float = 1.0, source: str = "atx") -> ProviderHeading:
     return ProviderHeading(text=text, level=level, confidence=confidence, source=source)
+
+
+def _long(lead: str) -> str:
+    # Pads `lead` well past DEFAULT_MIN_CHUNK_SIZE so TinyFragmentPenaltyFeature
+    # never fires incidentally in tests that aren't testing it.
+    return lead + " 본문 내용이 이어집니다" * 10
 
 
 class TestHeadingBoundaryFeature:
@@ -127,6 +135,33 @@ class TestParagraphBoundaryFeature:
         assert feature.score(ctx) == 1.0
 
 
+class TestTinyFragmentPenaltyFeature:
+    def test_scores_one_when_shorter_than_default_min_chunk_size(self):
+        feature = TinyFragmentPenaltyFeature()
+        ctx = BoundaryContext(candidate_text="서론", position=0)
+        assert feature.score(ctx) == 1.0
+
+    def test_scores_zero_when_at_or_above_default_min_chunk_size(self):
+        feature = TinyFragmentPenaltyFeature()
+        ctx = BoundaryContext(candidate_text="x" * DEFAULT_MIN_CHUNK_SIZE, position=0)
+        assert feature.score(ctx) == 0.0
+
+    def test_scores_one_just_below_default_min_chunk_size(self):
+        feature = TinyFragmentPenaltyFeature()
+        ctx = BoundaryContext(candidate_text="x" * (DEFAULT_MIN_CHUNK_SIZE - 1), position=0)
+        assert feature.score(ctx) == 1.0
+
+    def test_context_min_chunk_size_overrides_default(self):
+        feature = TinyFragmentPenaltyFeature()
+        ctx = BoundaryContext(candidate_text="x" * 50, position=0, min_chunk_size=30)
+        assert feature.score(ctx) == 0.0  # 50 >= override(30), not tiny
+
+    def test_strips_whitespace_before_measuring(self):
+        feature = TinyFragmentPenaltyFeature()
+        ctx = BoundaryContext(candidate_text="   서론   ", position=0)
+        assert feature.score(ctx) == 1.0
+
+
 class TestFeatureRegistry:
     def test_register_and_score_all_applies_weight(self):
         reg = FeatureRegistry()
@@ -160,7 +195,7 @@ class TestFeatureRegistry:
     def test_default_registry_has_heading_feature(self):
         reg = get_registry()
         ctx = BoundaryContext(
-            candidate_text="서론",
+            candidate_text=_long("서론"),
             position=0,
             headings=[_heading("서론")],
             heading_cursor=0,
@@ -169,23 +204,28 @@ class TestFeatureRegistry:
 
     def test_default_registry_has_paragraph_feature(self):
         reg = get_registry()
-        ctx = BoundaryContext(candidate_text="아무 문단.", position=0)
+        ctx = BoundaryContext(candidate_text=_long("아무 문단."), position=0)
         assert reg.score_all(ctx)["paragraph"] == 30.0
+
+    def test_default_registry_has_tiny_fragment_feature(self):
+        reg = get_registry()
+        ctx = BoundaryContext(candidate_text="서론", position=0)
+        assert reg.score_all(ctx)["tiny_fragment"] == -60.0
 
     def test_default_registry_does_not_register_blank_line_feature(self):
         # SPRINT33-C Phase 2 Preflight: "Blank line" was explicitly excluded
         # (HQ-approved) because split_paragraphs() already splits on blank
-        # lines, making it a duplicate of "paragraph". Only these two
-        # feature names should exist in the default registry.
+        # lines, making it a duplicate of "paragraph". Only heading/paragraph/
+        # tiny_fragment should exist in the default registry.
         reg = get_registry()
-        ctx = BoundaryContext(candidate_text="아무 문단.", position=0)
-        assert set(reg.score_all(ctx).keys()) == {"heading", "paragraph"}
+        ctx = BoundaryContext(candidate_text=_long("아무 문단."), position=0)
+        assert set(reg.score_all(ctx).keys()) == {"heading", "paragraph", "tiny_fragment"}
 
 
 class TestScoreBoundary:
     def test_score_at_or_above_threshold_is_boundary(self):
         ctx = BoundaryContext(
-            candidate_text="서론",
+            candidate_text=_long("서론"),
             position=3,
             headings=[_heading("서론")],
             heading_cursor=0,
@@ -193,18 +233,19 @@ class TestScoreBoundary:
         event = score_boundary(ctx)
         assert isinstance(event, BoundaryEvent)
         assert event.position == 3
-        # heading(100) + paragraph(30) — candidate is non-empty, so both
-        # default-registry features contribute.
+        # heading(100) + paragraph(30) + tiny_fragment(0, candidate is long
+        # enough not to trigger it) — all three default-registry features
+        # contribute (tiny_fragment contributes 0 when it doesn't fire).
         assert event.total_score == 130.0
         assert event.total_score >= DEFAULT_THRESHOLD
         assert event.is_boundary is True
 
     def test_score_below_threshold_is_not_boundary(self):
-        # No heading match, but paragraph feature alone (30) still doesn't
+        # No heading match, paragraph feature alone (30) still doesn't
         # reach DEFAULT_THRESHOLD (50) — non-heading candidates stay
         # non-boundary under the current default weights.
         ctx = BoundaryContext(
-            candidate_text="아무 관련 없는 본문.",
+            candidate_text=_long("아무 관련 없는 본문."),
             position=0,
             headings=[_heading("서론")],
             heading_cursor=0,
@@ -212,6 +253,23 @@ class TestScoreBoundary:
         event = score_boundary(ctx)
         assert event.total_score == 30.0
         assert event.is_boundary is False
+
+    def test_tiny_heading_match_is_not_suppressed_by_penalty_alone(self):
+        # Documents the real arithmetic (core/semantic_boundary_detector.py
+        # TinyFragmentPenaltyFeature docstring): a short candidate that ALSO
+        # matches a heading nets 100+30-60=70, still >= threshold. The
+        # penalty alone does not filter every tiny OCR-noise match seen in
+        # SPRINT33-C Phase 3 — only a heading-less tiny paragraph
+        # (0+30-60=-30) is pulled further from threshold.
+        ctx = BoundaryContext(
+            candidate_text="서론",
+            position=0,
+            headings=[_heading("서론")],
+            heading_cursor=0,
+        )
+        event = score_boundary(ctx)
+        assert event.total_score == 70.0
+        assert event.is_boundary is True
 
     def test_custom_registry_is_honored_over_default(self):
         reg = FeatureRegistry()
@@ -228,10 +286,10 @@ class TestScoreBoundary:
 
     def test_features_breakdown_is_exposed_on_event(self):
         ctx = BoundaryContext(
-            candidate_text="서론",
+            candidate_text=_long("서론"),
             position=0,
             headings=[_heading("서론")],
             heading_cursor=0,
         )
         event = score_boundary(ctx)
-        assert event.features == {"heading": 100.0, "paragraph": 30.0}
+        assert event.features == {"heading": 100.0, "paragraph": 30.0, "tiny_fragment": 0.0}

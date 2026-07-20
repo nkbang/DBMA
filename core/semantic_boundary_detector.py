@@ -23,6 +23,10 @@ Scope (SPRINT33-B, per HQ Task Order):
     splits on blank lines, so every candidate this module ever sees already
     implies one; scoring both would double-count the same signal (SPRINT33-C
     Phase 2 Preflight finding, HQ-approved exclusion).
+  - [SPRINT33-C Phase 4] TinyFragmentPenaltyFeature added — negative weight,
+    reuses core.config.DEFAULT_MIN_CHUNK_SIZE (SSOT, SPRINT29-B) rather than
+    a re-hardcoded threshold. First feature to use BoundaryContext.
+    min_chunk_size, reserved since SPRINT33-B for exactly this.
   - Threshold/weight values here are the SPRINT33-B design draft's initial
     numbers, not calibrated against real corpus data (calibration is a
     later, separately-approved phase, mirroring ADR-006 Amendment B/C for
@@ -35,6 +39,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List, Optional, Protocol, runtime_checkable
 
+from core.config import DEFAULT_MIN_CHUNK_SIZE
 from core.heading_provider import (
     ProviderHeading,
     _first_contained,
@@ -140,6 +145,33 @@ class ParagraphBoundaryFeature:
         return 1.0 if context.candidate_text.strip() else 0.0
 
 
+class TinyFragmentPenaltyFeature:
+    """[SPRINT33-C Phase 4] Fires (1.0, meant to be paired with a negative
+    weight) when a candidate is shorter than the SSOT minimum chunk size
+    (core.config.DEFAULT_MIN_CHUNK_SIZE, SPRINT29-B single-source-of-truth
+    — not re-hardcoded here). `context.min_chunk_size` overrides it when a
+    caller sets one, same pattern chunk_size/accumulated_length were
+    reserved for in BoundaryContext since SPRINT33-B.
+
+    Evidence (SPRINT33-C Phase 3 score distribution, docs/SPRINT33-C-
+    phase3-score-distribution.md): 8.1% (33/409) of matched candidates in
+    the Beta corpus were <=10 characters, and 63% of those were <=3
+    characters — OCR-noise fragments a heading candidate coincidentally
+    matched inside (e.g. a single merged Hangul syllable), not real
+    headings. Note the arithmetic at default weights: heading(+100) +
+    paragraph(+30) - tiny(-60) = 70, still >= DEFAULT_THRESHOLD(50) — this
+    feature alone does NOT suppress a tiny candidate that also matches a
+    heading; it only pulls a heading-less tiny paragraph (0+30-60=-30)
+    further from threshold, which was already non-boundary. Whether the
+    documented tiny OCR matches are actually filtered is an empirical
+    question answered by re-running shadow_boundary_analysis.py, not by
+    this docstring — see the Phase 4 implementation report."""
+
+    def score(self, context: BoundaryContext) -> float:
+        threshold = context.min_chunk_size or DEFAULT_MIN_CHUNK_SIZE
+        return 1.0 if len(context.candidate_text.strip()) < threshold else 0.0
+
+
 # ── Registry (resolution + weighting, mirrors ProviderRegistry's shape) ────
 
 class FeatureRegistry:
@@ -166,6 +198,7 @@ def _default_registry() -> FeatureRegistry:
     r = FeatureRegistry()
     r.register("heading", HeadingBoundaryFeature(), weight=100.0)
     r.register("paragraph", ParagraphBoundaryFeature(), weight=30.0)
+    r.register("tiny_fragment", TinyFragmentPenaltyFeature(), weight=-60.0)
     return r
 
 
