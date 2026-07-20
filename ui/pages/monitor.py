@@ -9,10 +9,23 @@ import streamlit as st
 import os
 from pathlib import Path
 
-from core.config import DEFAULT_EMBED_MODEL
+from core.config import DEFAULT_EMBED_MODEL, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.execution_context import ExecutionContext
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from ui.state.store import StateStore
+
+# Korean label mapping for pipeline stages (same stages ExecutionContext
+# reports; this UI previously lived on Dashboard — moved here since
+# per-stage detail is developer-facing, not something a content-owner
+# user needs to see day to day).
+_STAGE_LABELS = {
+    "extract": "추출",
+    "chunk": "청킹",
+    "embedding": "임베딩",
+    "indexing": "인덱싱",
+    "search": "검색",
+}
 
 
 def render_monitor_page() -> None:
@@ -20,9 +33,17 @@ def render_monitor_page() -> None:
     page = BasePage(title="System Monitor", icon="💚")
     page.render_header()
 
+    # 파이프라인 상태와 건강 상태 둘 다 같은 ExecutionContext 스냅샷을
+    # 쓰므로 한 번만 조회한다.
+    pipeline_stages = ExecutionContext().get_pipeline_status()
+
+    # ── Processing Pipeline Status (moved from Dashboard) ───────
+    page.render_section("처리 파이프라인 상태", icon="⚙️")
+    _render_pipeline_status(pipeline_stages)
+
     # ── Health Overview ────────────────────────────────────────
     page.render_section("시스템 건강 상태", icon="🏥")
-    _render_health_overview()
+    _render_health_overview(pipeline_stages)
 
     # ── Performance Metrics ────────────────────────────────────
     page.render_section("성능 지표", icon="📊")
@@ -39,28 +60,108 @@ def render_monitor_page() -> None:
     page.render_footer()
 
 
-def _render_health_overview() -> None:
-    """Render system health overview."""
+def _render_pipeline_status(runtime_stages) -> None:
+    """Render per-stage pipeline progress (moved from Dashboard — see
+    core/runtime_state.py::get_pipeline_status for how each stage's
+    status/progress/detail is computed)."""
+    stages = [
+        {
+            "label": _STAGE_LABELS.get(s.stage, s.stage),
+            "status": s.status,
+            "progress": s.progress,
+            "detail": s.detail,
+        }
+        for s in runtime_stages
+    ]
+
+    stage_colors = {
+        "complete": THEME.STATUS_SUCCESS,
+        "active": THEME.BRAND_SECONDARY,
+        "pending": THEME.TEXT_TERTIARY,
+    }
+    stage_icons = {
+        "complete": "✅",
+        "active": "🔄",
+        "pending": "⏳",
+    }
+
+    cols = st.columns(len(stages) + (len(stages) - 1))
+    for i, stage in enumerate(stages):
+        with cols[i * 2]:
+            color = stage_colors.get(stage["status"], stage_colors["pending"])
+            icon = stage_icons.get(stage["status"], stage_icons["pending"])
+            html = f"""
+            <div style="text-align: center; padding: {8}px 4px;" title="{stage['detail']}">
+                <div style="font-size: 20px; margin-bottom: 4px;">{icon}</div>
+                <div style="font-size: 12px; color: {color}; font-weight: 600;">
+                    {stage['label']}
+                </div>
+                <div style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
+                    {stage['progress']}%
+                </div>
+            </div>
+            """
+            st.markdown(html, unsafe_allow_html=True)
+
+        if i < len(stages) - 1:
+            with cols[i * 2 + 1]:
+                st.progress(0.8)
+                st.caption("→")
+
+
+def _render_health_overview(pipeline_stages) -> None:
+    """Render system health overview from real signals — no hardcoded
+    statuses. 벡터DB는 파이프라인의 인덱싱 단계 결과를 그대로 재사용하고,
+    파일시스템/메모리는 실측치를 읽는다."""
+    stage_by_name = {s.stage: s for s in pipeline_stages}
+    indexing = stage_by_name.get("indexing")
+    vector_ok = indexing is not None and indexing.status == "complete"
+
+    fs_ok = Path(DEFAULT_RAW_DIR).is_dir() and Path(DEFAULT_OUTPUT_DIR).is_dir()
+    mem_percent = _get_memory_usage()
+
     components = [
-        {"name": "벡터 데이터베이스", "status": "healthy", "detail": "연결 정상"},
-        {"name": "임베딩 모델", "status": "healthy", "detail": f"{DEFAULT_EMBED_MODEL} 로드됨"},
-        {"name": "파일 시스템", "status": "healthy", "detail": "읽기/쓰기 가능"},
-        {"name": "메모리", "status": "warning", "detail": "사용율 72%"},
-        {"name": "디스크", "status": "healthy", "detail": "여유 공간充足"},
-        {"name": "파이프라인", "status": "idle", "detail": "대기 중"},
+        {
+            "name": "벡터 데이터베이스",
+            "status": "healthy" if vector_ok else "warning",
+            "detail": indexing.detail if indexing else "확인 불가",
+        },
+        {
+            "name": "임베딩 모델",
+            # 실제 Ollama 헬스체크(네트워크 호출)는 페이지 렌더를 지연시킬
+            # 수 있어 하지 않는다 — 설정값만 보여준다("정상" 과대표시 방지).
+            "status": "info",
+            "detail": f"{DEFAULT_EMBED_MODEL} 설정됨",
+        },
+        {
+            "name": "파일 시스템",
+            "status": "healthy" if fs_ok else "error",
+            "detail": "읽기/쓰기 가능" if fs_ok else "RAW/출력 폴더 없음",
+        },
+        {
+            "name": "메모리",
+            "status": "warning" if mem_percent >= 80 else "healthy",
+            "detail": f"사용율 {mem_percent}%",
+        },
     ]
 
     status_colors = {
         "healthy": THEME.STATUS_SUCCESS,
         "warning": THEME.STATUS_WARNING,
         "error": THEME.STATUS_ERROR,
-        "idle": THEME.TEXT_TERTIARY,
+        "info": THEME.STATUS_INFO,
     }
     status_labels = {
         "healthy": "정상",
         "warning": "경고",
         "error": "오류",
-        "idle": "대기",
+        "info": "정보",
+    }
+    status_icons = {
+        "healthy": "✅",
+        "warning": "⚠️",
+        "error": "❌",
+        "info": "ℹ️",
     }
 
     cols = st.columns(len(components))
@@ -68,7 +169,7 @@ def _render_health_overview() -> None:
         with cols[i]:
             color = status_colors.get(comp["status"], THEME.TEXT_TERTIARY)
             label = status_labels.get(comp["status"], comp["status"])
-            icon = "✅" if comp["status"] == "healthy" else "⚠️" if comp["status"] == "warning" else "⏳"
+            icon = status_icons.get(comp["status"], "⏳")
 
             html = f"""
             <div style="text-align: center; padding: {12}px 4px;">

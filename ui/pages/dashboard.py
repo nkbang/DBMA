@@ -27,24 +27,23 @@ def render_dashboard_page() -> None:
     page.render_section("문서 코퍼스 통계", icon="📚")
     _render_corpus_statistics()
 
-    # ── Processing Pipeline Status ─────────────────────────────
-    page.render_section("처리 파이프라인 상태", icon="⚙️")
-    _render_pipeline_status()
-
-    # ── System Health ──────────────────────────────────────────
-    page.render_section("시스템 상태", icon="💚")
-    _render_system_health()
-
     page.render_footer()
 
 
 def _render_system_overview() -> None:
-    """Render system overview metrics row."""
+    """Render system overview metrics row.
+
+    [design] Dashboard is the user-facing summary — "내 자료가 얼마나
+    있고, 잘 돌아가는가" 한 줄. 파이프라인 단계별 %, 벡터DB/메모리 등
+    개발자용 상세는 Monitor 페이지로 옮겼다(같은 정보를 두 곳에서 각각
+    실데이터/가짜 데이터로 따로 보여주던 중복을 해소).
+    """
+    status_label, status_icon, status_color = _get_overall_status()
     metrics = [
         {"icon": "📄", "label": "전체 문서", "value": _count_documents(), "color": THEME.BRAND_PRIMARY},
         {"icon": "💾", "label": "코퍼스 크기", "value": _format_size(_get_corpus_size()), "color": THEME.STATUS_SUCCESS},
         {"icon": "🔄", "label": "마지막 처리", "value": _get_last_processed(), "color": THEME.STATUS_INFO},
-        {"icon": "✅", "label": "시스템", "value": "정상", "color": THEME.STATUS_SUCCESS},
+        {"icon": status_icon, "label": "전체 상태", "value": status_label, "color": status_color},
     ]
 
     cols = st.columns(4)
@@ -79,113 +78,23 @@ def _render_corpus_statistics() -> None:
         st.metric("임베딩", DEFAULT_EMBED_MODEL)
 
 
-def _render_pipeline_status() -> None:
-    """Render processing pipeline status from runtime state."""
-    # Get real pipeline status from engine
-    runtime_stages = ExecutionContext().get_pipeline_status()
-    
-    # Korean label mapping for UI
-    STAGE_LABELS = {
-        "extract": "추출",
-        "chunk": "청킹", 
-        "embedding": "임베딩",
-        "indexing": "인덱싱",
-        "search": "검색",
-    }
-    
-    # Transform to format compatible with existing UI rendering
-    stages = [
-        {
-            "label": STAGE_LABELS.get(s.stage, s.stage),
-            "status": s.status,
-            "progress": s.progress,
-        }
-        for s in runtime_stages
-    ]
+def _get_overall_status() -> tuple[str, str, str]:
+    """One-line health summary for the Dashboard's "전체 상태" card.
 
-    cols = st.columns(len(stages) + (len(stages) - 1))
-    stage_colors = {
-        "complete": THEME.STATUS_SUCCESS,
-        "active": THEME.BRAND_SECONDARY,
-        "pending": THEME.TEXT_TERTIARY,
-    }
-    stage_icons = {
-        "complete": "✅",
-        "active": "🔄",
-        "pending": "⏳",
-    }
+    Derived from the same ExecutionContext().get_pipeline_status() that
+    Monitor's detailed per-stage view reads — Dashboard just collapses it
+    to complete/in-progress instead of duplicating per-stage rendering.
+    Stage-by-stage detail (%, vector DB, memory, etc.) lives on Monitor.
 
-    for i, stage in enumerate(stages):
-        with cols[i * 2]:
-            color = stage_colors.get(stage["status"], stage_colors["pending"])
-            icon = stage_icons.get(stage["status"], stage_icons["pending"])
-            html = f"""
-            <div style="text-align: center; padding: {8}px 4px;">
-                <div style="font-size: 20px; margin-bottom: 4px;">{icon}</div>
-                <div style="font-size: 12px; color: {color}; font-weight: 600;">
-                    {stage['label']}
-                </div>
-                <div style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
-                    {stage['progress']}%
-                </div>
-            </div>
-            """
-            st.markdown(html, unsafe_allow_html=True)
-
-        if i < len(stages) - 1:
-            with cols[i * 2 + 1]:
-                next_stage = stages[i + 1]
-                line_color = stage_colors.get(next_stage["status"], stage_colors["pending"])
-                st.progress(0.8)
-                st.caption("→")
-
-
-def _render_system_health() -> None:
-    """Render system health indicators."""
-    statuses = [
-        {"label": "벡터DB", "status": "success"},
-        {"label": "임베딩 모델", "status": "success"},
-        {"label": "파일 시스템", "status": "success"},
-        {"label": "메모리", "status": "info"},
-    ]
-
-    cols = st.columns(len(statuses))
-    for i, s in enumerate(statuses):
-        with cols[i]:
-            _BG_COLORS = {
-                "success": THEME.STATUS_SUCCESS_BG,
-                "warning": THEME.STATUS_WARNING_BG,
-                "error": THEME.STATUS_ERROR_BG,
-                "info": THEME.STATUS_INFO_BG,
-                "neutral": THEME.STATUS_NEUTRAL_BG,
-            }
-            _TEXT_COLORS = {
-                "success": THEME.STATUS_SUCCESS,
-                "warning": THEME.STATUS_WARNING,
-                "error": THEME.STATUS_ERROR,
-                "info": THEME.STATUS_INFO,
-                "neutral": THEME.STATUS_NEUTRAL,
-            }
-
-            bg = _BG_COLORS.get(s["status"], THEME.STATUS_NEUTRAL_BG)
-            text_color = _TEXT_COLORS.get(s["status"], THEME.STATUS_NEUTRAL)
-
-            html = f"""
-            <div style="text-align: center; padding: {12}px;">
-                <span style="
-                    display: inline-block;
-                    padding: 4px 12px;
-                    border-radius: 4px;
-                    background: {bg};
-                    color: {text_color};
-                    font-size: 12px;
-                    font-weight: 600;
-                ">
-                    ✅ {s['label']} 정상
-                </span>
-            </div>
-            """
-            st.markdown(html, unsafe_allow_html=True)
+    Returns:
+        (label, icon, color) for the metric card.
+    """
+    stages = ExecutionContext().get_pipeline_status()
+    if stages and all(s.status == "complete" for s in stages):
+        return "정상", "✅", THEME.STATUS_SUCCESS
+    if any(s.status == "active" for s in stages):
+        return "처리 중", "🔄", THEME.STATUS_INFO
+    return "확인 필요", "⚠️", THEME.STATUS_WARNING
 
 
 # ── Utility Functions ──────────────────────────────────────────────
