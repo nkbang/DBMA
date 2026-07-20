@@ -22,7 +22,7 @@ Authority)을 마무리하고 Research Grade Release Candidate 선언 여부를
 - [x] Entry Point Documentation Alignment (`README.md`, `.github/instructions/*` → `dbma_ui.py`)
 - [x] Logging Authority Restoration (`core/config.py`의 root logger 강제 설정 제거)
 - [ ] Documentation Synchronization 완료 (본 문서/STATE.md/CHANGELOG.md 갱신 — 진행 중)
-- [ ] `dbma.py` Legacy Migration 결정 (CUE-20H)
+- [x] `dbma.py` Legacy Migration 결정 (CUE-20H)
 - [ ] Legacy Artifact 정리 (`output/registry/`, `output/baseline/`, `output_sav/` 등)
 - [ ] SPRINT20-RC Final Audit / RC 선언
 
@@ -54,8 +54,8 @@ Authority)을 마무리하고 Research Grade Release Candidate 선언 여부를
 - [ ] Documentation Synchronization 마무리
 
 ### 4단계: Legacy 정리 (CUE-20H, 별도 승인 필요)
-- [ ] `dbma.py` 함수군(`query_rag`, `build_rag_store`, `embed_text_ollama`,
-      `query_qdrant`, `upsert_to_qdrant`) 처분 결정
+- [x] `dbma.py` 함수군(`query_rag`, `build_rag_store`, `embed_text_ollama`,
+      `query_qdrant`, `upsert_to_qdrant`) archive 완료
 - [ ] 2026-07-15 커밋(Chroma metadata schema)의 활성 여부 사람 확인
 - [ ] Legacy artifact(`output/registry/` 등) 정리 여부 결정
 
@@ -67,7 +67,7 @@ Authority)을 마무리하고 Research Grade Release Candidate 선언 여부를
 
 ## 현재 우선순위
 1. 문서 동기화 마무리 (본 작업)
-2. `dbma.py` Legacy Migration 결정 (CUE-20H Preflight)
+2. `dbma.py` Legacy Migration 결정 (CUE-20H Preflight) (완료됨)
 3. Legacy artifact 정리 여부 결정
 4. SPRINT20-RC Final Audit 진행
 

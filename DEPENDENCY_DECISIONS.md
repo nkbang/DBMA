@@ -11,7 +11,7 @@
 
 | Package | Pinned Version | Why This Version | Incompatibilities |
 |---------|---------------|-----------------|------------------|
-| **streamlit** | `==1.28.0` | Original requirements.txt specified this exact version. It is stable and provides the UI components used by `dbma.py`. No need to upgrade — no known bugs in this version for our use case. | Later versions (1.29+) may have changed API for widgets. Downgrading from newer streamlit will not work without code changes. |
+| **streamlit** | `==1.28.0` | Original requirements.txt specified this exact version. It is stable and provides the UI components used by `dbma_ui.py` and `ui/app.py`. No need to upgrade — no known bugs in this version for our use case. | Later versions (1.29+) may have changed API for widgets. Downgrading from newer streamlit will not work without code changes. |
 | **chromadb** | `==0.5.23` | Last stable version before major API shifts in 0.6+. Provides reliable vector store functionality for Sprint 2. Later versions (1.x) have changed embedding and collection APIs. | Version 1.x+ has breaking API changes. Do not upgrade beyond 0.5.x without code review. |
 | **ollama** | unversioned | No pinning — latest version accepted. Ollama is a daemon/service; the Python package is a thin client wrapper. It does not affect Sprint 1 data pipeline. | None known. The Ollama binary itself should be kept up-to-date for security fixes. |
 

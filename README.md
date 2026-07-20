@@ -6,10 +6,8 @@ DBMA는 문서 기반 메모리 어시스턴트로, 다양한 형식의 문서�
 
 ```
 .
-├── dbma.py                 # 주요 애플리케이션 로직
-├── dbma_rag.py            # RAG 기능 관련 코드
+├── dbma_ui.py              # 공식 실행 진입점 (→ ui/app.py)
 ├── requirements.txt       # 의존성 라이브러리 목록
-├── test_dbma.py           # 단위 테스트 파일
 ├── core/                  # 핵심 기능 모듈
 │   ├── __init__.py
 │   ├── chunking_optimizer.py  # 청킹 최적화 로직
@@ -66,7 +64,7 @@ pip install -r requirements.txt
    ```bash
    streamlit run dbma_ui.py
    ```
-   `dbma.py`는 deprecated legacy application entry입니다. Production 실행은 `dbma_ui.py`(→ `ui/app.py`)를 사용합니다.
+   `dbma.py`는 2026-07-17 커밋 `ce6b05a`로 `archive/legacy/dbma.py`로 이동되어 더 이상 프로젝트 루트에 존재하지 않습니다. Production 실행은 `dbma_ui.py`(→ `ui/app.py`)를 사용합니다.
 3. Streamlit UI에서 결과를 확인하고 RAG 채팅 기능을 사용합니다.
 
 ## 테스트

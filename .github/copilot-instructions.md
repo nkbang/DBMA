@@ -9,7 +9,7 @@ description: "DBMA 프로젝트 전용 코딩 프로필: 신학 문서 RAG 시�
 
 **DBMA**: 신학 문서 전용 RAG(Retrieval-Augmented Generation) 시스템
 - 언어: Python
-- 진입점: `dbma.py`
+- 진입점: `dbma_ui.py`
 - 임베딩 모델: `bge-m3:latest`
 - 청킹 설정: chunk_size=1200, overlap=200
 - UI: Streamlit
@@ -76,16 +76,15 @@ description: "DBMA 프로젝트 전용 코딩 프로필: 신학 문서 RAG 시�
 
 ```
 ~/DBMA/
-  ├── dbma.py                    # 메인 진입점 (Streamlit UI)
-  ├── dbma_rag.py               # RAG 처리 통합
+  ├── dbma_ui.py                 # 메인 진입점 (Streamlit UI)
   ├── core/                       # 핵심 모듈
   │   ├── extractors.py           # 문서 추출
   │   ├── text_normalizer.py      # 텍스트 정제
   │   ├── chunking_optimizer.py   # 청킹 최적화
   │   ├── embedder.py             # 임베딩
   │   ├── retrieval.py            # 검색
-  │   ├── search.py               # 검색 유틸
-  │   ├── ingest.py               # 저장소 관리
+  │   ├── search.py               # 검색 유틸 (이동 완료: archive/legacy/core/search.py)
+  │   ├── ingest.py               # 저장소 관리 (이동 완료: archive/legacy/core/ingest.py)
   │   ├── config.py               # 설정
   │   ├── utils.py                # 유틸리티
   │   └── tsu/                    # 텍스트 정규화 유틸
@@ -226,7 +225,7 @@ def process_document(file_path: str, chunk_size: int = 1200) -> list:
 - TODO 리스트: 완료/진행중/대기로 분류
 - 큰 작업은 체크포인트로 나눔
 - 함수 연결 구조는 블록 다이어그램으로 정리
-- `dbma.py`를 시작점으로 전체 연결 문서화
+- `dbma_ui.py`를 시작점으로 전체 연결 문서화
 
 권장 문서:
 - `docs/PIPELINE.md` - 파이프라인 흐름

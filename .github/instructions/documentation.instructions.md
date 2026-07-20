@@ -71,7 +71,7 @@ def process_document(file_path: str) -> dict:
 \`\`\`
 
 \`\`\`bash
-# 실행 방법 (dbma.py는 deprecated legacy entry, production은 dbma_ui.py 사용)
+# 실행 방법 (dbma.py는 archive/legacy/dbma.py로 이동됨, production은 dbma_ui.py 사용)
 streamlit run dbma_ui.py
 \`\`\`
 ```

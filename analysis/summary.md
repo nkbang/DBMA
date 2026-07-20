@@ -5,8 +5,8 @@ This is a document processing and analysis application built with Python and Str
 
 ## Main Files and Their Purposes
 
-### `dbma.py` - Main Application Entry Point
-- **Purpose**: Streamlit-based web application that serves as the user interface
+### `dbma.py` - Archived (moved to `archive/legacy/dbma.py` on 2026-07-17; official entry point is now `dbma_ui.py`)
+- **Purpose**: Streamlit-based web application that served as the user interface
 - **Key Functions**:
   - Main application logic with tab-based UI (Parse, Analyze, Project, RAG)
   - Configuration management and session state handling
@@ -117,7 +117,7 @@ This is a document processing and analysis application built with Python and Str
 ## Architecture Pattern
 
 The application follows a modular architecture pattern:
-1. **Presentation Layer**: Streamlit UI in `dbma.py` and `ui/tabs.py`
+1. **Presentation Layer**: Streamlit UI in `ui/app.py` and `ui/tabs.py`
 2. **Business Logic Layer**: Core processing in `core/processing.py`, `core/extractors.py`, `core/chunking_optimizer.py`
 3. **Utility Layer**: Helper functions in `core/utils.py`, `core/files.py`
 4. **Data Access Layer**: File system operations and vector database interaction
