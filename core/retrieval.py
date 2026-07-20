@@ -1123,6 +1123,19 @@ class RetrievalEngine:
         t_total = time.perf_counter()
         metrics = PerformanceMetrics()
 
+        # Authority boundary: BM25 candidate generation (STEP 2) never
+        # supplies more than self.candidate_k indices downstream, so
+        # requesting k_output > candidate_k would silently return fewer
+        # results than asked for on the BM25-hit path while the no-hit
+        # fallback path (which uses the full candidate_pool) would not be
+        # bounded the same way. Clamp here so both paths agree.
+        if k_output > self.candidate_k:
+            logger.debug(
+                "[retrieve] k_output=%d exceeds candidate_k=%d — clamping",
+                k_output, self.candidate_k,
+            )
+            k_output = self.candidate_k
+
         # --- STEP 1: Metadata-first filtering ---
         t0 = time.perf_counter()
         filtered_indices = self._metadata_filter(parsed_query)
