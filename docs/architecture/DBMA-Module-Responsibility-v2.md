@@ -5,10 +5,20 @@ sprint: SPRINT16-B-1
 based_on:
   - docs/architecture/DBMA-Architecture-Map-v2.md (SPRINT16-A-2)
   - repository inspection (core/, ui/, scripts/, tests/)
-status: current
+status: superseded (SPRINT16-B-1 시점 스냅샷 — SPRINT20-I Architecture Consolidation
+  이후 상태는 docs/STATE.md, docs/architecture/ADR-001-Retrieval-Engine-Authority.md,
+  docs/architecture/ADR-003-Legacy-Vector-Store-Strategy.md 참고)
 created: 2026-07-16
 scope_modified: docs/architecture/ only (core/, ui/, scripts/, tests/, config.yaml 미수정)
 ---
+
+> **주의 (2026-07-20 갱신)**: 이 문서는 SPRINT16-B-1(2026-07-16) 시점의 저장소
+> 실사 기록이다. 이후 SPRINT20-I Architecture Consolidation(2026-07-17, 커밋
+> `ce6b05a`)에서 `dbma.py`, `core/search.py`, `core/ingest.py`,
+> `core/qdrant_init.py`가 `archive/legacy/`로 이동했고, `core/retrieval.py::RetrievalEngine`이
+> 유일한 Retrieval Engine Authority로 확정되었다(ADR-001, ADR-003). 아래 "One
+> Retrieval Engine 원칙 정면 충돌" 등 위반 판정은 해소된 상태이며, 역사적 조사
+> 기록으로만 참고할 것.
 
 # DBMA Module Responsibility Map v2
 

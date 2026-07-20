@@ -5,16 +5,26 @@ sprint: SPRINT16-A-2
 based_on:
   - docs/architecture/DBMA-Engineering-Knowledge-Map.md
   - repository inspection (2026-07-16)
-status: current
+status: superseded (SPRINT16-A-2 시점 스냅샷 — SPRINT20-I Architecture Consolidation
+  이후 상태는 docs/STATE.md, docs/architecture/ADR-001-Retrieval-Engine-Authority.md,
+  docs/architecture/ADR-003-Legacy-Vector-Store-Strategy.md 참고)
 created: 2026-07-16
 supersedes_intent: docs/ARCHITECTURE.md, docs/DBMA_MAP.md (구식, 이 문서로 대체 권장 — 자동 폐기하지 않음)
 ---
+
+> **주의 (2026-07-20 갱신)**: 이 문서는 SPRINT16-A-2(2026-07-16) 시점의 저장소
+> 실사 기록이다. 이후 SPRINT20-I Architecture Consolidation(2026-07-17, 커밋
+> `ce6b05a`)에서 `dbma.py`, `core/search.py`, `core/ingest.py`,
+> `core/qdrant_init.py`가 `archive/legacy/`로 이동했고, `core/retrieval.py::RetrievalEngine`이
+> 유일한 Retrieval Engine Authority로 확정되었다(ADR-001, ADR-003). 아래 본문의
+> "3계통 retrieval 병존", "`core/search.py`/`core/ingest.py` 활성" 등의 서술은
+> 더 이상 현재 상태가 아니며, 역사적 조사 기록으로만 참고할 것.
 
 # DBMA Architecture Map v2
 
 이 문서는 `docs/architecture/DBMA-Engineering-Knowledge-Map.md`(진화 이력)와
 현재 저장소 실사(import 그래프, 파일 구조, 함수 시그니처)를 근거로 작성한
-**현재 시점(Phase 6 / Production v1.1.0)** 구조 기준 문서다.
+**SPRINT16-A-2 시점(Phase 6 / Production v1.1.0)** 구조 기준 문서다.
 
 ---
 
