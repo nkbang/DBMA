@@ -243,24 +243,47 @@ def get_pipeline_status(
 
     # 2. 청킹 (Chunk)
     chunk_events = _count_events_by_type(events, "chunk_completed")
-    if total_docs > 0 and extract_status == PipelineStageState.COMPLETE:
+    tsu_source_count = tsu_manifest_status.get("source_document_count", 0)
+    if tsu_exists and tsu_source_count > 0:
+        # TSU 데이터셋이 이미 존재한다는 것 자체가 해당 문서들의 청킹이
+        # 끝났다는 직접 증거다 — event log는 마지막으로 기록된 실행 1회분만
+        # 반영해 과거 배치 실행분을 누락시킨다(예: run_id="manual" 로그
+        # 하나만 남아 12개 파일만 커버 → 89% 오표시, 실제로는 TSU manifest
+        # 기준 74개 파일 처리 완료). 임베딩/인덱싱 단계와 동일하게 산출물
+        # 존재 여부를 우선 신뢰한다.
+        chunk_progress = min(100, int((tsu_source_count / max(total_docs, 1)) * 100))
+        chunk_status = (
+            PipelineStageState.COMPLETE if chunk_progress >= 100 else PipelineStageState.ACTIVE
+        )
+        if tsu_source_count >= total_docs:
+            # manifest가 현재 RAW보다 많은 문서를 추적 중 — 과거 처리된
+            # 문서가 이후 RAW에서 이동/삭제된 경우. "119/64"처럼 분자가 더
+            # 큰 분수로 보이면 오해를 사므로 총 처리 문서 수로 표기한다.
+            chunk_detail = f"TSU manifest 기준 {tsu_source_count}개 문서 청킹 완료 (현재 RAW {total_docs}개)"
+        else:
+            chunk_detail = f"TSU manifest 기준 {tsu_source_count}/{total_docs} 파일 청킹 완료"
+    elif total_docs > 0 and extract_status == PipelineStageState.COMPLETE:
         chunk_status = PipelineStageState.ACTIVE if chunk_events < total_docs else PipelineStageState.COMPLETE
         chunk_progress = min(100, int((chunk_events / max(total_docs, 1)) * 100)) if total_docs > 0 else 0
+        chunk_detail = f"{chunk_events} chunk events"
     elif chunk_events > 0:
         chunk_status = PipelineStageState.ACTIVE
         chunk_progress = min(100, int((chunk_events / max(total_docs, 1)) * 100))
+        chunk_detail = f"{chunk_events} chunk events"
     elif extract_status == PipelineStageState.COMPLETE:
         chunk_status = PipelineStageState.ACTIVE
         chunk_progress = 50  # extract complete but no chunk events yet
+        chunk_detail = f"{chunk_events} chunk events"
     else:
         chunk_status = PipelineStageState.PENDING if extract_status == PipelineStageState.PENDING else PipelineStageState.ACTIVE
         chunk_progress = 0
+        chunk_detail = f"{chunk_events} chunk events"
 
     stages.append(PipelineStageState(
         stage="chunk",
         status=chunk_status,
         progress=chunk_progress,
-        detail=f"{chunk_events} chunk events",
+        detail=chunk_detail,
     ))
 
     # 3. 임베딩 (Embedding)
