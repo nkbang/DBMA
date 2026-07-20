@@ -99,6 +99,27 @@ Status:    STABLE — GA 검토 단계
 
 ## 최근 상태
 
+### 문서 정합성 점검 및 정정 (2026-07-20)
+- 상태: 완료
+- 설명: HQ 제기 "dbma.py 제거 적절성" 질의를 계기로 문서 전수 점검 수행.
+  `dbma.py`는 이미 SPRINT20-I-D(commit `ce6b05a`, 2026-07-17)에서
+  `archive/legacy/`로 이동 완료된 상태였으나, `CLAUDE.md`와
+  `docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md`가 이를 반영하지
+  못하고 "제거 계획 진행 중"으로 서술 중이었음을 확인해 정정. 존재하지 않는
+  `dbma_rag.py`(commit `94ed8cf`에서 이미 삭제됨) 오기재도 `CLAUDE.md`와
+  그 생성 템플릿(`scripts/create_docs.py`)에서 함께 제거. ChromaDB/Qdrant
+  레거시 벡터스토어는 ADR-003(Finalization)에 따라 폐기 대상이 아니라 KEEP
+  확정 상태임을 재확인(`chroma_db/`, `dbma_qdrant_storage` 실물 존재 확인
+  완료). `docs/architecture/DBMA-Architecture-Map-v2.md`,
+  `DBMA-Module-Responsibility-v2.md`는 `status: current`를 단 채 SPRINT16
+  시점(레거시 archive 이전) 상태를 서술하고 있어 STATE.md와 모순되는 것을
+  발견, 본문 재작성 없이 frontmatter status를 `superseded`로 변경하고 상단에
+  경고 문구 추가.
+- 커밋: `35b8e94`(CLAUDE.md/Plan v1), `8f6b314`(create_docs.py),
+  `38e813d`(Architecture-Map-v2/Module-Responsibility-v2) — `dev/dbma-engine`에
+  push 완료.
+- 다음 조치: 없음.
+
 ### Citation Layer (SPRINT20-B/E)
 - 상태: 완료
 - 설명: `CitationBuilder`가 `list[str]` 대신 구조화된 `Citation` 객체를 생성하고,
@@ -145,8 +166,9 @@ Status:    STABLE — GA 검토 단계
   `dbma_ui.py`→`ui/app.py`를 공식 경로로, `dbma.py`의 인라인 RAG를 폐기
   대상으로 결정해 두었으나 README/`.github/instructions/*` 문서가 갱신되지
   않아 신규 사용자가 legacy 경로로 유입될 위험이 있었다. 문서 정렬 완료.
-- 다음 조치: `dbma.py` 자체의 archive/wrapper/제거 여부 결정(CUE-20H, 사람
-  확인 선행 조건 있음).
+- 다음 조치: 없음 — `dbma.py` 자체의 archive 여부는 SPRINT20-I-D에서 결정·실행
+  완료(`archive/legacy/`로 이동, commit `ce6b05a`, 2026-07-17). 아래 체크포인트
+  항목 참고.
 
 ### Logging Authority (SPRINT20-G3)
 - 상태: 완료
