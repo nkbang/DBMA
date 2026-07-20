@@ -7,9 +7,10 @@ based_on:
   - CUE-20I-B Architecture Authority Verification
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
   - docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md
-status: design (승인 대기, 코드 미수정)
+status: implemented (SPRINT20-I에서 실행 완료 — core/index_orchestrator.py,
+  core/tsu_builder.py 존재 확인, docs/STATE.md "Index/TSU Builder Authority" 100%)
 created: 2026-07-17
-scope: docs/architecture/ only (조사·설계만, 코드 0 변경)
+scope: docs/architecture/ only (조사·설계만, 코드 0 변경) — 설계 당시 기준, 이후 구현됨
 ---
 
 # DBMA Index Authority Final Design v1

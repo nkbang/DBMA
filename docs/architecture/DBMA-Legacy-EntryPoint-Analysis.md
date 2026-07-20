@@ -5,10 +5,19 @@ sprint: SPRINT16-B-2
 based_on:
   - docs/architecture/DBMA-Module-Responsibility-v2.md (SPRINT16-B-1)
   - repository inspection (rg 검색, git log, import 그래프)
-status: current
+status: superseded (SPRINT16-B-2 시점 스냅샷 — SPRINT20-I Architecture Consolidation
+  이후 상태는 docs/STATE.md, docs/architecture/ADR-001-Retrieval-Engine-Authority.md,
+  docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md 참고)
 created: 2026-07-16
 scope_modified: docs/architecture/ only (읽기 전용 분석, 코드/설정 미수정)
 ---
+
+> **주의 (2026-07-20 갱신)**: 이 문서는 SPRINT16-B-2(2026-07-16) 시점의 저장소
+> 실사 기록이다. 이후 SPRINT20-I Architecture Consolidation(2026-07-17, 커밋
+> `ce6b05a`)에서 `dbma.py`가 `archive/legacy/`로 이동해 더 이상 저장소 루트에서
+> 실행 가능한 상태가 아니다. 아래 "`dbma.py`는 여전히 실행 가능한 완전한
+> Streamlit 애플리케이션" 서술은 더 이상 현재 상태가 아니며, 역사적 조사
+> 기록으로만 참고할 것.
 
 # DBMA Legacy Entry Point Analysis
 

@@ -6,13 +6,22 @@ based_on:
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md (SPRINT16-B-3)
   - docs/architecture/DBMA-Legacy-EntryPoint-Analysis.md (SPRINT16-B-2)
   - docs/architecture/DBMA-Module-Responsibility-v2.md (SPRINT16-B-1)
-status: current
+status: superseded (SPRINT16-B-4 시점 스냅샷, SPRINT20-H-3/H-4B 부분 정정 반영 —
+  SPRINT20-I Architecture Consolidation 이후 상태는 docs/STATE.md,
+  docs/architecture/ADR-001-Retrieval-Engine-Authority.md,
+  docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md 참고)
 created: 2026-07-16
 updated: 2026-07-16 (SPRINT20-H-3/H-4B correction)
 scope_modified: docs/architecture/ only (코드 미수정)
 ---
 
 # DBMA Retrieval Migration Matrix v1
+
+> **주의 (2026-07-20 갱신)**: 이 문서의 §1 `dbma.py` 함수 인벤토리는 SPRINT16-B-4
+> 시점 서술이다. 이후 SPRINT20-I Architecture Consolidation(2026-07-17, 커밋
+> `ce6b05a`)에서 `dbma.py` 전체가 `archive/legacy/`로 이동했으므로, 아래 함수들은
+> 더 이상 저장소 루트의 활성 코드가 아니라 `archive/legacy/dbma.py`에 보존된
+> 이력이다.
 
 > **SPRINT20-H-3/H-4B 정정 안내**: 이 문서는 SPRINT16-B-4 작성 당시 ADR-001의
 > "`RetrievalEngine`은 Qdrant를 사용한다"는 전제를 기반으로 작성되었다. 이후
