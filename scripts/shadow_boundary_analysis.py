@@ -19,6 +19,18 @@ order of magnitude, since HeadingAssembler matched against chunk lines
 (1200-char chunks split further into lines) while this scores whole
 paragraphs.
 
+[SPRINT33-C Phase 2-A, Shadow Input Alignment] core/processing.py:474/665
+shows chunking runs on body_text only — split_front_matter() strips front
+matter (title/copyright/TOC) before optimize_chunks() ever sees the text.
+The saved .md keeps front matter for provenance (processing.py:625-632),
+demarcated by a literal "## 본문\n\n" marker immediately before body_text
+when front matter was detected, and no marker at all when it wasn't. This
+script extracts body_text from the saved .md via that same marker
+(_extract_body_text) instead of feeding the whole .md — including a leading
+YAML metadata header the .md writer adds, which is not part of any
+production text at all — into split_paragraphs(), so shadow candidates now
+match exactly what real chunking operates on.
+
 Cursor management: HeadingBoundaryFeature.score() is intentionally
 stateless (see core/semantic_boundary_detector.py docstring) — it does not
 advance any cursor itself. This script owns that responsibility, exactly
@@ -35,6 +47,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -63,6 +76,28 @@ MD_DIR = Path(__file__).parent.parent / "output" / "beta_validation_v5"
 # Same window size HeadingAssembler uses (core/heading_provider.py) — kept
 # identical here so cursor recovery behaves the same way in shadow mode.
 _LOOKAHEAD_WINDOW = 5
+
+# Matches the .md writer's YAML metadata block (core/processing.py's
+# save_md_with_language) — not document content, must not become a candidate.
+_YAML_HEADER_RE = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
+
+# Literal marker core/processing.py:628 writes immediately before body_text
+# when front matter was detected (see save_md_with_language call site).
+_BODY_MARKER = "## 본문\n\n"
+
+
+def _extract_body_text(md_text: str) -> str:
+    """[SPRINT33-C Phase 2-A] Recovers exactly the body_text production
+    chunking operates on (core/processing.py:665's optimize_chunks(body_text,
+    ext)) from the saved .md — stripping the YAML metadata header always
+    present, and, when front matter was detected, everything up to and
+    including the "## 본문" marker. Documents with no detected front matter
+    have no marker and no front-matter section to strip, so the text (minus
+    the YAML header) is body_text already."""
+    text = _YAML_HEADER_RE.sub("", md_text, count=1)
+    if _BODY_MARKER in text:
+        text = text.split(_BODY_MARKER, 1)[1]
+    return text.strip()
 
 
 @dataclass
@@ -109,7 +144,8 @@ def analyze_document(md_path: Path) -> DocResult:
     headings = PdfHeadingProvider(spans).headings()
 
     text = md_path.read_text(encoding="utf-8")
-    candidates = split_paragraphs(text)
+    body_text = _extract_body_text(text)
+    candidates = split_paragraphs(body_text)
 
     registry = get_registry()
     cursor = 0

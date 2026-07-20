@@ -2,6 +2,16 @@
 
 상태: 고정(fixed) — 이후 feature 추가 시 회귀 비교 기준으로 사용.
 
+**개정 이력**: Phase 2-A(Shadow Input Alignment)에서 shadow driver가
+저장된 .md 전체(YAML 헤더 + 전면부 재부착본)를 그대로 candidate 생성에
+사용하고 있었음을 발견 — 운영 청킹(`core/processing.py:665`,
+`optimize_chunks(body_text, ext)`)은 `split_front_matter()`로 분리된
+`body_text`만 사용하므로, 아래 최초 수치는 전면부 잡음이 섞인 값이었다.
+`scripts/shadow_boundary_analysis.py`에 `_extract_body_text()`를 추가해
+"## 본문" 마커 기준으로 body_text를 복원하도록 교정한 뒤 재실행한
+결과로 본 문서를 갱신했다. 판정 기준(11/12 문서 매칭, "2 Kings, Volume
+13" 0건)은 교정 전후 동일하게 유지됨을 확인.
+
 ## 목적
 
 `core/semantic_boundary_detector.py`(SPRINT33-B)의 `HeadingBoundaryFeature`가
@@ -22,30 +32,36 @@ python scripts/shadow_boundary_analysis.py
   (chunk-line 단위 `HeadingAssembler`, 12개 문서 중 11개 개선, 총 334개
   distinct heading 매칭, "2 Kings Vol.13" 0건)
 
-## 결과 (고정)
+## 결과 (고정, body_text 정합 이후)
 
 | document | candidates | headings | matched |
 |---|---:|---:|---:|
-| 11. 고린도전서 | 1120 | 111 | 5 |
-| 12. 고린도후서 | 804 | 64 | 49 |
-| 2 Chronicles, Volume 15 | 1883 | 286 | 132 |
-| 2 Kings The Anchor Bible Commentary | 967 | 2170 | 1 |
-| 2 Kings The Power and the Fury | 1288 | 107 | 20 |
-| 2 Kings, Volume 13 | 3043 | 5100 | 0 |
-| 3. 마가복음 | 1542 | 105 | 86 |
-| 5. 요한복음1 | 1138 | 78 | 54 |
-| 6. 요한복음2 | 1179 | 62 | 50 |
-| 7. 사도행전1 | 1078 | 117 | 72 |
-| 8. 사도행전2 | 1288 | 313 | 105 |
-| 9. 로마서1 | 994 | 63 | 52 |
+| 11. 고린도전서 | 1107 | 111 | 5 |
+| 12. 고린도후서 | 783 | 64 | 46 |
+| 2 Chronicles, Volume 15 | 1864 | 286 | 136 |
+| 2 Kings The Anchor Bible Commentary | 947 | 2170 | 1 |
+| 2 Kings The Power and the Fury | 1276 | 107 | 19 |
+| 2 Kings, Volume 13 | 3013 | 5100 | 0 |
+| 3. 마가복음 | 1525 | 105 | 85 |
+| 5. 요한복음1 | 1114 | 78 | 9 |
+| 6. 요한복음2 | 1166 | 62 | 49 |
+| 7. 사도행전1 | 1061 | 117 | 4 |
+| 8. 사도행전2 | 1268 | 313 | 6 |
+| 9. 로마서1 | 982 | 63 | 49 |
 
 ```text
 documents: 12
 documents with >=1 match: 11
-total matched (this run): 626
+total matched (this run): 409
 SPRINT32-F baseline: 334 distinct headings, 11/12 documents improved
 threshold used: 50.0
 ```
+
+교정 전(626) 대비 교정 후(409) 총 매칭 수가 SPRINT32-F 기준(334)에
+더 근접 — 일부 문서(5. 요한복음1: 54→9, 7. 사도행전1: 72→4, 8.
+사도행전2: 105→6)에서 큰 폭 감소는 표지/목차 페이지의 반복된
+장·절 제목이 전면부로 정확히 분리되어 candidate에서 제외된 결과로
+해석된다(정밀 원인 분석은 Phase 3 예정).
 
 ## 판정
 

@@ -15,11 +15,35 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from core.heading_provider import ProviderHeading, _normalize_for_matching
-from shadow_boundary_analysis import _advance_cursor
+from shadow_boundary_analysis import _advance_cursor, _extract_body_text
 
 
 def _heading(text: str) -> ProviderHeading:
     return ProviderHeading(text=text, level=1, confidence=1.0, source="pdf-size")
+
+
+class TestExtractBodyText:
+    def test_strips_yaml_header_and_front_matter_section(self):
+        md = (
+            "---\n"
+            "source: x.pdf\n"
+            "source_type: pdf\n"
+            "---\n"
+            "## 전면부 (제목/판권/목차 — 검색·노이즈 채점 대상 제외)\n\n"
+            "표지 판권 목차 내용\n\n"
+            "---\n\n"
+            "## 본문\n\n"
+            "실제 본문 내용입니다."
+        )
+        assert _extract_body_text(md) == "실제 본문 내용입니다."
+
+    def test_strips_only_yaml_header_when_no_front_matter_detected(self):
+        md = "---\nsource: x.pdf\n---\n실제 본문 내용입니다."
+        assert _extract_body_text(md) == "실제 본문 내용입니다."
+
+    def test_no_body_marker_confusion_when_absent(self):
+        md = "---\nsource: x.pdf\n---\n본문만 있고 전면부 마커는 없습니다."
+        assert _extract_body_text(md) == "본문만 있고 전면부 마커는 없습니다."
 
 
 class TestAdvanceCursor:
