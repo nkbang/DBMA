@@ -246,6 +246,30 @@ def _render_ingestion_form() -> None:
             _execute_processing(target_dir, chunk_size, overlap, use_ocr, force_reingest)
 
 
+def _render_item_row(icon: str, name: str, detail: str, border_color: str, badge_bg: str, badge_fg: str, badge_text: str) -> None:
+    """Shared row renderer for queue/history/failure lists — one file per line
+    with a colored left border and a status badge."""
+    html = f"""
+    <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {border_color}; margin-bottom: 4px;">
+        <span style="font-size: 16px; margin-right: 12px;">{icon}</span>
+        <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
+                {name}
+            </div>
+            <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
+                {detail}
+            </div>
+        </div>
+        <span style="margin-left: 12px;">
+            <span style="padding: 2px 8px; border-radius: 4px; background: {badge_bg}; color: {badge_fg}; font-size: 10px; font-weight: 600;">
+                {badge_text}
+            </span>
+        </span>
+    </div>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+
+
 def _render_processing_queue() -> None:
     """Render the processing queue."""
     store = StateStore()
@@ -267,10 +291,14 @@ def _render_processing_queue() -> None:
     # _build_file_list()의 skip 로직과 일치시켜 "대기열 N개 vs 처리할 파일 없음" 불일치 제거.
     state_file = Path(DEFAULT_OUTPUT_DIR) / ".batch_state.json"
     processed: set[str] = set()
+    last_run_ts: Optional[datetime] = None
     if state_file.exists():
         try:
-            processed = set(json.loads(state_file.read_text(encoding="utf-8")).get("processed", []))
-        except (json.JSONDecodeError, OSError):
+            state_data = json.loads(state_file.read_text(encoding="utf-8"))
+            processed = set(state_data.get("processed", []))
+            if state_data.get("timestamp"):
+                last_run_ts = datetime.fromisoformat(state_data["timestamp"])
+        except (json.JSONDecodeError, OSError, ValueError):
             pass
 
     queued = [f for f in supported if f.name not in processed]
@@ -291,38 +319,36 @@ def _render_processing_queue() -> None:
     for fail in failures:  # append 순서(오래된→최신)이므로 뒤에서 덮어써 최신만 남김
         last_failure_by_file[fail.get("source_file", "")] = fail
 
-    for i, f in enumerate(queued[:10]):  # Show max 10
+    def _render_queue_item(f: Path) -> None:
         size_kb = f.stat().st_size / 1024 if f.exists() else 0
         prior_failure = last_failure_by_file.get(f.name)
+        # 파일 mtime이 마지막 배치 처리 시각보다 늦으면 "그 이후에 새로
+        # 들어온 파일" — 실패 이력이 없다면 "신규", 있다면(재시도 대상이
+        # 우선) 재시도 예정으로 표시한다.
+        is_new = last_run_ts is not None and datetime.fromtimestamp(f.stat().st_mtime) > last_run_ts
 
         if prior_failure:
             border_color = THEME.STATUS_WARNING
             badge_bg, badge_fg, badge_text = THEME.STATUS_WARNING_BG, THEME.STATUS_WARNING, "재시도 예정"
             detail = f"{size_kb:.0f} KB • 이전 실패: {prior_failure.get('reason', '?')}"
+        elif is_new:
+            border_color = THEME.STATUS_INFO
+            badge_bg, badge_fg, badge_text = THEME.STATUS_INFO_BG, THEME.STATUS_INFO, "🆕 신규"
+            detail = f"{size_kb:.0f} KB"
         else:
             border_color = THEME.BRAND_SECONDARY
             badge_bg, badge_fg, badge_text = THEME.STATUS_INFO_BG, THEME.STATUS_INFO, "대기 중"
             detail = f"{size_kb:.0f} KB"
 
-        html = f"""
-        <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {border_color}; margin-bottom: 4px;">
-            <span style="font-size: 16px; margin-right: 12px;">📄</span>
-            <div style="flex: 1;">
-                <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
-                    {f.name}
-                </div>
-                <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
-                    {detail}
-                </div>
-            </div>
-            <span style="margin-left: 12px;">
-                <span style="padding: 2px 8px; border-radius: 4px; background: {badge_bg}; color: {badge_fg}; font-size: 10px; font-weight: 600;">
-                    {badge_text}
-                </span>
-            </span>
-        </div>
-        """
-        st.markdown(html, unsafe_allow_html=True)
+        _render_item_row("📄", f.name, detail, border_color, badge_bg, badge_fg, badge_text)
+
+    visible, rest = queued[:10], queued[10:]
+    for f in visible:
+        _render_queue_item(f)
+    if rest:
+        with st.expander(f"나머지 {len(rest)}개 더보기"):
+            for f in rest:
+                _render_queue_item(f)
 
 
 def _render_processing_history() -> None:
@@ -349,27 +375,20 @@ def _render_processing_history() -> None:
 
     file_times.sort(key=lambda x: x[1], reverse=True)
 
-    for f, dt in file_times[:5]:
+    st.caption(f"전체 {len(file_times)}개 완료")
+
+    def _render_history_item(f: Path, dt: datetime) -> None:
         size_kb = f.stat().st_size / 1024 if f.exists() else 0
-        html = f"""
-        <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {THEME.STATUS_SUCCESS}; margin-bottom: 4px;">
-            <span style="font-size: 16px; margin-right: 12px;">✅</span>
-            <div style="flex: 1;">
-                <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
-                    {f.stem}
-                </div>
-                <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
-                    {dt.strftime("%Y-%m-%d %H:%M")} • {size_kb:.0f} KB
-                </div>
-            </div>
-            <span style="margin-left: 12px;">
-                <span style="padding: 2px 8px; border-radius: 4px; background: {THEME.STATUS_SUCCESS_BG}; color: {THEME.STATUS_SUCCESS}; font-size: 10px; font-weight: 600;">
-                    완료
-                </span>
-            </span>
-        </div>
-        """
-        st.markdown(html, unsafe_allow_html=True)
+        detail = f"{dt.strftime('%Y-%m-%d %H:%M')} • {size_kb:.0f} KB"
+        _render_item_row("✅", f.stem, detail, THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS, "완료")
+
+    visible, rest = file_times[:5], file_times[5:]
+    for f, dt in visible:
+        _render_history_item(f, dt)
+    if rest:
+        with st.expander(f"나머지 {len(rest)}개 더보기"):
+            for f, dt in rest:
+                _render_history_item(f, dt)
 
 
 def _execute_processing(
