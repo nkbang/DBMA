@@ -18,6 +18,11 @@ Scope (SPRINT33-B, per HQ Task Order):
     (_normalize_for_matching, _first_contained) promoted to the
     BoundaryFeatureDetector contract, per HQ's explicit instruction to reuse
     the heading pipeline rather than build a parallel one.
+  - [SPRINT33-C Phase 2] ParagraphBoundaryFeature added — deliberately NOT
+    a "Blank line" feature too: core.text_normalizer.split_paragraphs()
+    splits on blank lines, so every candidate this module ever sees already
+    implies one; scoring both would double-count the same signal (SPRINT33-C
+    Phase 2 Preflight finding, HQ-approved exclusion).
   - Threshold/weight values here are the SPRINT33-B design draft's initial
     numbers, not calibrated against real corpus data (calibration is a
     later, separately-approved phase, mirroring ADR-006 Amendment B/C for
@@ -113,6 +118,28 @@ class HeadingBoundaryFeature:
         return 1.0 if _first_contained(window, key) is not None else 0.0
 
 
+class ParagraphBoundaryFeature:
+    """[SPRINT33-C Phase 2] Scores 1.0 when `candidate_text` is a
+    paragraph-level unit — today that is every candidate, since upstream
+    candidate generation is core.text_normalizer.split_paragraphs() and
+    nothing else feeds this detector. This makes the feature a constant
+    contribution under the current one-level candidate generation (a
+    deliberate "structural base rate": a paragraph break is boundary-worthy
+    by default, and it is negative features — Tiny fragment, Length
+    overflow, not yet implemented — that pull specific candidates back
+    below threshold, not this feature discriminating among them).
+
+    The definition is written in terms of "is a paragraph unit", not "is
+    non-empty", so it stays meaningful rather than becoming dead weight if
+    SPRINT33-D introduces a second, finer candidate level (e.g. sentence
+    candidates within a paragraph) — at that point this feature starts
+    discriminating paragraph-level candidates from sentence-level ones
+    without needing to be redefined."""
+
+    def score(self, context: BoundaryContext) -> float:
+        return 1.0 if context.candidate_text.strip() else 0.0
+
+
 # ── Registry (resolution + weighting, mirrors ProviderRegistry's shape) ────
 
 class FeatureRegistry:
@@ -138,6 +165,7 @@ class FeatureRegistry:
 def _default_registry() -> FeatureRegistry:
     r = FeatureRegistry()
     r.register("heading", HeadingBoundaryFeature(), weight=100.0)
+    r.register("paragraph", ParagraphBoundaryFeature(), weight=30.0)
     return r
 
 

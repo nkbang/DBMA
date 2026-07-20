@@ -17,6 +17,7 @@ from core.semantic_boundary_detector import (
     BoundaryEvent,
     FeatureRegistry,
     HeadingBoundaryFeature,
+    ParagraphBoundaryFeature,
     DEFAULT_THRESHOLD,
     get_registry,
     score_boundary,
@@ -96,6 +97,36 @@ class TestHeadingBoundaryFeature:
         assert feature.score(ctx) == 1.0
 
 
+class TestParagraphBoundaryFeature:
+    def test_scores_one_for_non_empty_candidate(self):
+        feature = ParagraphBoundaryFeature()
+        ctx = BoundaryContext(candidate_text="아무 문단 내용입니다.", position=0)
+        assert feature.score(ctx) == 1.0
+
+    def test_scores_zero_for_empty_candidate(self):
+        feature = ParagraphBoundaryFeature()
+        ctx = BoundaryContext(candidate_text="", position=0)
+        assert feature.score(ctx) == 0.0
+
+    def test_scores_zero_for_whitespace_only_candidate(self):
+        feature = ParagraphBoundaryFeature()
+        ctx = BoundaryContext(candidate_text="   \n  ", position=0)
+        assert feature.score(ctx) == 0.0
+
+    def test_is_independent_of_headings(self):
+        # Paragraph feature scores the candidate's own shape only — heading
+        # presence/absence must not affect it (no double-counting with
+        # HeadingBoundaryFeature).
+        feature = ParagraphBoundaryFeature()
+        ctx = BoundaryContext(
+            candidate_text="서론",
+            position=0,
+            headings=[_heading("서론")],
+            heading_cursor=0,
+        )
+        assert feature.score(ctx) == 1.0
+
+
 class TestFeatureRegistry:
     def test_register_and_score_all_applies_weight(self):
         reg = FeatureRegistry()
@@ -136,6 +167,20 @@ class TestFeatureRegistry:
         )
         assert reg.score_all(ctx)["heading"] == 100.0
 
+    def test_default_registry_has_paragraph_feature(self):
+        reg = get_registry()
+        ctx = BoundaryContext(candidate_text="아무 문단.", position=0)
+        assert reg.score_all(ctx)["paragraph"] == 30.0
+
+    def test_default_registry_does_not_register_blank_line_feature(self):
+        # SPRINT33-C Phase 2 Preflight: "Blank line" was explicitly excluded
+        # (HQ-approved) because split_paragraphs() already splits on blank
+        # lines, making it a duplicate of "paragraph". Only these two
+        # feature names should exist in the default registry.
+        reg = get_registry()
+        ctx = BoundaryContext(candidate_text="아무 문단.", position=0)
+        assert set(reg.score_all(ctx).keys()) == {"heading", "paragraph"}
+
 
 class TestScoreBoundary:
     def test_score_at_or_above_threshold_is_boundary(self):
@@ -148,11 +193,16 @@ class TestScoreBoundary:
         event = score_boundary(ctx)
         assert isinstance(event, BoundaryEvent)
         assert event.position == 3
-        assert event.total_score == 100.0
+        # heading(100) + paragraph(30) — candidate is non-empty, so both
+        # default-registry features contribute.
+        assert event.total_score == 130.0
         assert event.total_score >= DEFAULT_THRESHOLD
         assert event.is_boundary is True
 
     def test_score_below_threshold_is_not_boundary(self):
+        # No heading match, but paragraph feature alone (30) still doesn't
+        # reach DEFAULT_THRESHOLD (50) — non-heading candidates stay
+        # non-boundary under the current default weights.
         ctx = BoundaryContext(
             candidate_text="아무 관련 없는 본문.",
             position=0,
@@ -160,7 +210,7 @@ class TestScoreBoundary:
             heading_cursor=0,
         )
         event = score_boundary(ctx)
-        assert event.total_score == 0.0
+        assert event.total_score == 30.0
         assert event.is_boundary is False
 
     def test_custom_registry_is_honored_over_default(self):
@@ -184,4 +234,4 @@ class TestScoreBoundary:
             heading_cursor=0,
         )
         event = score_boundary(ctx)
-        assert event.features == {"heading": 100.0}
+        assert event.features == {"heading": 100.0, "paragraph": 30.0}
