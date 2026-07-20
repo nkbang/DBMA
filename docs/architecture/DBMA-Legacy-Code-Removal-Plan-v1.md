@@ -6,16 +6,20 @@ based_on:
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md (SPRINT16-B-3, Correction: SPRINT20-H-3)
   - docs/architecture/ADR-003-Legacy-Vector-Store-Strategy.md (SPRINT20-H-4C)
   - docs/architecture/DBMA-Retrieval-Migration-Matrix-v1.md (SPRINT16-B-4, Updated: SPRINT20-H-4B)
-status: plan (실행 전, 승인 대기)
+status: executed (commit ce6b05a, 2026-07-17)
 created: 2026-07-16
-scope_modified: docs/architecture/ only (코드 미수정)
+scope_modified: docs/architecture/ only (코드 미수정) — 계획 수립 시점 기준
 ---
 
 # DBMA Legacy Code Removal Plan v1
 
-이 문서는 계획 문서다. 이번 스프린트(SPRINT20-H-5)에서는 어떤 코드도 수정, 삭제,
-이동하지 않는다. `core/`, `ui/`, `scripts/`, `tests/`, `dbma.py` 전부 read-only로
-조사했다.
+이 문서는 원래 계획 문서로 작성되었다(SPRINT20-H-5, 코드 미수정, read-only 조사).
+이후 커밋 `ce6b05a` (archive: isolate legacy RAG modules from v1.1 architecture,
+2026-07-17)에서 이 계획이 실행되었다: `dbma.py`, `core/search.py`,
+`core/ingest.py`, `core/qdrant_init.py`가 `git rm`이 아니라 `archive/legacy/`로
+이동(격리)되었고, `scripts/backup_chroma.py`는 archived 모듈을 import하지 않도록
+legacy Chroma 경로를 직접 명시하는 방식으로 수정되었다. 아래 inventory는 실행 시점
+기준의 판단 근거로 보존한다.
 
 ---
 

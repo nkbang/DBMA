@@ -7,9 +7,12 @@ Python 기반으로 다양한 문서 형식을 처리하고, 추출, 정제, 청
 핵심 목표는 결과 정밀도, 추적 가능성, 유지보수성, 그리고 반복 개선이다.
 
 DBMA의 공식 실행 진입점은 `dbma_ui.py`(→ `ui/app.py`)이며, Streamlit UI와 전체 처리
-흐름을 오케스트레이션한다. `dbma.py`는 deprecated legacy application entry로,
-`core/retrieval.py::RetrievalEngine`을 사용하지 않는 별도의 레거시 RAG 경로다
-(ADR-001, ADR-003 참고). 프로젝트 루트는 `~/DBMA` 이다.
+흐름을 오케스트레이션한다. 과거 legacy application entry였던 `dbma.py`와
+`core/search.py`, `core/ingest.py`, `core/qdrant_init.py`는 `core/retrieval.py::RetrievalEngine`을
+사용하지 않는 별도의 레거시 RAG 경로였으며, 2026-07-17 커밋 `ce6b05a`로
+`archive/legacy/`로 이동(격리)되어 현재 프로젝트 루트에는 존재하지 않는다
+(ADR-001, ADR-003, `docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md` 참고).
+프로젝트 루트는 `~/DBMA` 이다.
 
 ---
 
@@ -48,10 +51,10 @@ DBMA의 공식 실행 진입점은 `dbma_ui.py`(→ `ui/app.py`)이며, Streamli
 
 주요 모듈:
 - `dbma_ui.py`: 공식 진입점 (thin launcher → `ui/app.py`)
-- `dbma.py`: deprecated legacy entry (제거 계획 진행 중, `docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md` 참고)
+- `dbma.py`: 제거됨 — `archive/legacy/dbma.py`로 이동 (2026-07-17, 커밋 `ce6b05a`,
+  `docs/architecture/DBMA-Legacy-Code-Removal-Plan-v1.md` 참고)
 - `core/`: 추출, 처리, 파일, 청킹, 유틸리티
 - `ui/`: 탭 기반 인터페이스
-- `dbma_rag.py`: RAG 처리
 - `tests/`: 테스트 코드
 - `docs/`: 문서화
 - `loops/`: 루프 엔지니어링 관련 산출물
