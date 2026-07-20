@@ -11,7 +11,7 @@ from pathlib import Path
 
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
-from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR, DEFAULT_EMBED_MODEL
+from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
 from core.execution_context import ExecutionContext
 
 
@@ -64,18 +64,20 @@ def _render_system_overview() -> None:
 
 
 def _render_corpus_statistics() -> None:
-    """Render corpus statistics."""
+    """Render corpus statistics.
+
+    [design] 임베딩 모델명은 콘텐츠 현황이 아니라 설정값 — Monitor의
+    시스템 건강 상태 카드로 옮겨서 중복을 없앴다.
+    """
     raw_docs, output_docs = _get_document_counts()
 
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3 = st.columns(3)
     with c1:
         st.metric("RAW 폴더", f"{raw_docs}개 파일")
     with c2:
         st.metric("출력 폴더", f"{output_docs}개 파일")
     with c3:
         st.metric("지원 형식", "PDF/TXT/MD/DOCX/EPUB/HTML/RTF")
-    with c4:
-        st.metric("임베딩", DEFAULT_EMBED_MODEL)
 
 
 def _get_overall_status() -> tuple[str, str, str]:
