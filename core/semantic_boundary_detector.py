@@ -23,10 +23,19 @@ Scope (SPRINT33-B, per HQ Task Order):
     splits on blank lines, so every candidate this module ever sees already
     implies one; scoring both would double-count the same signal (SPRINT33-C
     Phase 2 Preflight finding, HQ-approved exclusion).
-  - [SPRINT33-C Phase 4] TinyFragmentPenaltyFeature added — negative weight,
-    reuses core.config.DEFAULT_MIN_CHUNK_SIZE (SSOT, SPRINT29-B) rather than
-    a re-hardcoded threshold. First feature to use BoundaryContext.
-    min_chunk_size, reserved since SPRINT33-B for exactly this.
+  - [SPRINT33-C Phase 4-A] TinyFragmentPenaltyFeature added — negative
+    weight, reuses core.config.DEFAULT_MIN_CHUNK_SIZE (SSOT, SPRINT29-B)
+    rather than a re-hardcoded threshold. First feature to use
+    BoundaryContext.min_chunk_size, reserved since SPRINT33-B for exactly
+    this.
+  - [SPRINT33-C Phase 4-B] SentenceBoundaryConfidenceFeature added — reuses
+    core.text_normalizer._ends_like_sentence (SPRINT33-C Phase 4-B
+    Preflight: already the exact primitive collapse_soft_linebreaks itself
+    uses per-line to decide short-line merges, applied here to a
+    candidate's last non-empty line). Named for what it measures today
+    (confidence that the candidate ends at a real sentence boundary, not a
+    truncation) rather than "Completion", so a later Phase 5 pivot to a
+    negative "cut mid-sentence" penalty needs no rename.
   - Threshold/weight values here are the SPRINT33-B design draft's initial
     numbers, not calibrated against real corpus data (calibration is a
     later, separately-approved phase, mirroring ADR-006 Amendment B/C for
@@ -45,6 +54,7 @@ from core.heading_provider import (
     _first_contained,
     _normalize_for_matching,
 )
+from core.text_normalizer import _ends_like_sentence
 
 # Mirrors HeadingAssembler's own window (core/heading_provider.py) so the
 # promoted feature recovers from a missing heading the same way the
@@ -172,6 +182,38 @@ class TinyFragmentPenaltyFeature:
         return 1.0 if len(context.candidate_text.strip()) < threshold else 0.0
 
 
+class SentenceBoundaryConfidenceFeature:
+    """[SPRINT33-C Phase 4-B] Fires (1.0) when the candidate's last
+    non-empty line ends like a complete sentence, via
+    core.text_normalizer._ends_like_sentence — the exact primitive
+    core.text_normalizer.collapse_soft_linebreaks already applies per-line
+    (text_normalizer.py:99,102,109) to decide whether a short line should
+    be merged into the previous one, reused here unchanged (no new
+    detection logic, per HQ Phase 4-B scope: no sentence regex
+    improvements).
+
+    Known imprecision, inherited as-is (text_normalizer.py is out of
+    scope): _RE_SENTENCE_END is not end-anchored, so a line with a
+    mid-line period (e.g. a verse citation like "고전1:8-14 참고") can
+    register as sentence-ending even when it isn't. Not corrected here —
+    documented for Phase 5 calibration to weigh.
+
+    Evidence (SPRINT33-C Phase 4-B Preflight, ad-hoc measurement over the
+    full Beta corpus): 88.0% of all 16106 candidates and 85.1% of the 409
+    heading-matched candidates already end like a sentence — a high base
+    rate, so at the current +10 weight this feature has limited
+    discriminative power (mirrors ParagraphBoundaryFeature's base-rate
+    role, just not as extreme). HQ Phase 4-B decision keeps the positive
+    formulation (+10, "ends like a sentence") rather than inverting it to
+    a "cut mid-sentence" penalty — reconsider only in Phase 5."""
+
+    def score(self, context: BoundaryContext) -> float:
+        lines = [l for l in context.candidate_text.strip().splitlines() if l.strip()]
+        if not lines:
+            return 0.0
+        return 1.0 if _ends_like_sentence(lines[-1]) else 0.0
+
+
 # ── Registry (resolution + weighting, mirrors ProviderRegistry's shape) ────
 
 class FeatureRegistry:
@@ -199,6 +241,7 @@ def _default_registry() -> FeatureRegistry:
     r.register("heading", HeadingBoundaryFeature(), weight=100.0)
     r.register("paragraph", ParagraphBoundaryFeature(), weight=30.0)
     r.register("tiny_fragment", TinyFragmentPenaltyFeature(), weight=-60.0)
+    r.register("sentence_boundary", SentenceBoundaryConfidenceFeature(), weight=10.0)
     return r
 
 

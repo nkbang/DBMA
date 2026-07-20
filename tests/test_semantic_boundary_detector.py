@@ -19,6 +19,7 @@ from core.semantic_boundary_detector import (
     FeatureRegistry,
     HeadingBoundaryFeature,
     ParagraphBoundaryFeature,
+    SentenceBoundaryConfidenceFeature,
     TinyFragmentPenaltyFeature,
     DEFAULT_THRESHOLD,
     get_registry,
@@ -162,6 +163,39 @@ class TestTinyFragmentPenaltyFeature:
         assert feature.score(ctx) == 1.0
 
 
+class TestSentenceBoundaryConfidenceFeature:
+    def test_scores_one_when_last_line_ends_with_period(self):
+        feature = SentenceBoundaryConfidenceFeature()
+        ctx = BoundaryContext(candidate_text="이것은 완전한 문장입니다.", position=0)
+        assert feature.score(ctx) == 1.0
+
+    def test_scores_one_when_last_line_ends_with_korean_final_ending(self):
+        feature = SentenceBoundaryConfidenceFeature()
+        ctx = BoundaryContext(candidate_text="문장이 종결어미로 끝난다", position=0)
+        assert feature.score(ctx) == 1.0
+
+    def test_scores_zero_when_cut_mid_sentence(self):
+        feature = SentenceBoundaryConfidenceFeature()
+        ctx = BoundaryContext(candidate_text="문장이 중간에서 끊", position=0)
+        assert feature.score(ctx) == 0.0
+
+    def test_scores_zero_for_empty_candidate(self):
+        feature = SentenceBoundaryConfidenceFeature()
+        ctx = BoundaryContext(candidate_text="   \n  ", position=0)
+        assert feature.score(ctx) == 0.0
+
+    def test_uses_last_non_empty_line_only(self):
+        # Multi-line candidate: only the LAST line's ending determines the
+        # score, mirroring how collapse_soft_linebreaks applies
+        # _ends_like_sentence per-line rather than to the whole block.
+        feature = SentenceBoundaryConfidenceFeature()
+        ctx = BoundaryContext(
+            candidate_text="첫 줄은 끊긴다\n\n마지막 줄은 완결됩니다.\n\n",
+            position=0,
+        )
+        assert feature.score(ctx) == 1.0
+
+
 class TestFeatureRegistry:
     def test_register_and_score_all_applies_weight(self):
         reg = FeatureRegistry()
@@ -212,14 +246,21 @@ class TestFeatureRegistry:
         ctx = BoundaryContext(candidate_text="서론", position=0)
         assert reg.score_all(ctx)["tiny_fragment"] == -60.0
 
+    def test_default_registry_has_sentence_boundary_feature(self):
+        reg = get_registry()
+        ctx = BoundaryContext(candidate_text=_long("아무 문단"), position=0)
+        assert reg.score_all(ctx)["sentence_boundary"] == 10.0
+
     def test_default_registry_does_not_register_blank_line_feature(self):
         # SPRINT33-C Phase 2 Preflight: "Blank line" was explicitly excluded
         # (HQ-approved) because split_paragraphs() already splits on blank
-        # lines, making it a duplicate of "paragraph". Only heading/paragraph/
-        # tiny_fragment should exist in the default registry.
+        # lines, making it a duplicate of "paragraph". Only these four
+        # feature names should exist in the default registry.
         reg = get_registry()
         ctx = BoundaryContext(candidate_text=_long("아무 문단."), position=0)
-        assert set(reg.score_all(ctx).keys()) == {"heading", "paragraph", "tiny_fragment"}
+        assert set(reg.score_all(ctx).keys()) == {
+            "heading", "paragraph", "tiny_fragment", "sentence_boundary",
+        }
 
 
 class TestScoreBoundary:
@@ -233,17 +274,17 @@ class TestScoreBoundary:
         event = score_boundary(ctx)
         assert isinstance(event, BoundaryEvent)
         assert event.position == 3
-        # heading(100) + paragraph(30) + tiny_fragment(0, candidate is long
-        # enough not to trigger it) — all three default-registry features
-        # contribute (tiny_fragment contributes 0 when it doesn't fire).
-        assert event.total_score == 130.0
+        # heading(100) + paragraph(30) + tiny_fragment(0, long enough not to
+        # trigger it) + sentence_boundary(10, _long()'s padding ends like a
+        # sentence) — all four default-registry features contribute.
+        assert event.total_score == 140.0
         assert event.total_score >= DEFAULT_THRESHOLD
         assert event.is_boundary is True
 
     def test_score_below_threshold_is_not_boundary(self):
-        # No heading match, paragraph feature alone (30) still doesn't
-        # reach DEFAULT_THRESHOLD (50) — non-heading candidates stay
-        # non-boundary under the current default weights.
+        # No heading match: paragraph(30) + sentence_boundary(10) = 40,
+        # still doesn't reach DEFAULT_THRESHOLD(50) — non-heading candidates
+        # stay non-boundary under the current default weights.
         ctx = BoundaryContext(
             candidate_text=_long("아무 관련 없는 본문."),
             position=0,
@@ -251,15 +292,16 @@ class TestScoreBoundary:
             heading_cursor=0,
         )
         event = score_boundary(ctx)
-        assert event.total_score == 30.0
+        assert event.total_score == 40.0
         assert event.is_boundary is False
 
     def test_tiny_heading_match_is_not_suppressed_by_penalty_alone(self):
         # Documents the real arithmetic (core/semantic_boundary_detector.py
         # TinyFragmentPenaltyFeature docstring): a short candidate that ALSO
-        # matches a heading nets 100+30-60=70, still >= threshold. The
-        # penalty alone does not filter every tiny OCR-noise match seen in
-        # SPRINT33-C Phase 3 — only a heading-less tiny paragraph
+        # matches a heading nets 100+30-60=70 (sentence_boundary contributes
+        # 0 here — "서론" doesn't end like a sentence), still >= threshold.
+        # The penalty alone does not filter every tiny OCR-noise match seen
+        # in SPRINT33-C Phase 3 — only a heading-less tiny paragraph
         # (0+30-60=-30) is pulled further from threshold.
         ctx = BoundaryContext(
             candidate_text="서론",
@@ -292,4 +334,6 @@ class TestScoreBoundary:
             heading_cursor=0,
         )
         event = score_boundary(ctx)
-        assert event.features == {"heading": 100.0, "paragraph": 30.0, "tiny_fragment": 0.0}
+        assert event.features == {
+            "heading": 100.0, "paragraph": 30.0, "tiny_fragment": 0.0, "sentence_boundary": 10.0,
+        }
