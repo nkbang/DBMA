@@ -254,6 +254,28 @@ def _is_bullet(line: str) -> bool:
     return bool(_RE_BULLET_LINE.match(line))
 
 
+def _split_line_on_sentence_end(line: str) -> list[str]:
+    """[ADR-008 제안 4 수정] split_sentences_mixed()는 원래 개행(\\n)
+    기준으로만 줄을 나눴다 — collapse_soft_linebreaks()가 문단 내부
+    개행을 이미 공백으로 합쳐버리므로, 프로덕션 청커가 넘기는 입력에는
+    개행이 하나도 없어 문장이 전혀 안 나뉘는 결함이 있었다(실증:
+    379자·문장 10개 이상 문단이 "문장 1개"로 반환됨). 이 헬퍼가 그
+    빈틈을 메운다 — 마침표류 문장부호(_RE_SENTENCE_END, 한국어 종결
+    어미 포함) 뒤에 공백이나 문자열 끝이 오는 지점에서만 자른다(약어의
+    마침표 등 오탐 최소화)."""
+    parts: list[str] = []
+    start = 0
+    for m in _RE_SENTENCE_END.finditer(line):
+        end = m.end()
+        if end == len(line) or line[end] in " \t":
+            parts.append(line[start:end].strip())
+            start = end
+    tail = line[start:].strip()
+    if tail:
+        parts.append(tail)
+    return [p for p in parts if p] or ([line] if line.strip() else [])
+
+
 def split_sentences_mixed(
     text: str,
     mixed_threshold: float = 0.20,
@@ -263,8 +285,11 @@ def split_sentences_mixed(
     if not text:
         return []
 
-    lines = [_clean_line(x) for x in text.split("\n")]
-    lines = [x for x in lines if x]
+    raw_lines = [_clean_line(x) for x in text.split("\n")]
+    raw_lines = [x for x in raw_lines if x]
+    lines: list[str] = []
+    for rl in raw_lines:
+        lines.extend(_split_line_on_sentence_end(rl))
     if not lines:
         return []
 
