@@ -290,13 +290,13 @@ class TestFeatureRegistry:
     def test_default_registry_does_not_register_blank_line_feature(self):
         # SPRINT33-C Phase 2 Preflight: "Blank line" was explicitly excluded
         # (HQ-approved) because split_paragraphs() already splits on blank
-        # lines, making it a duplicate of "paragraph". Only these five
-        # feature names should exist in the default registry.
+        # lines, making it a duplicate of "paragraph". [ADR-008 제안 3,
+        # 2026-07-21] embedding_similarity 추가로 6개가 됨.
         reg = get_registry()
         ctx = BoundaryContext(candidate_text=_long("아무 문단."), position=0)
         assert set(reg.score_all(ctx).keys()) == {
             "heading", "paragraph", "tiny_fragment", "sentence_boundary",
-            "scripture_reference",
+            "scripture_reference", "embedding_similarity",
         }
 
 
@@ -371,7 +371,10 @@ class TestScoreBoundary:
             heading_cursor=0,
         )
         event = score_boundary(ctx)
+        # [ADR-008 제안 3, 2026-07-21] embedding_similarity 추가 —
+        # previous_candidate_text 미설정(기본값 "")이라 0.0으로 폴백.
         assert event.features == {
             "heading": 100.0, "paragraph": 30.0, "tiny_fragment": 0.0,
             "sentence_boundary": 10.0, "scripture_reference": 0.0,
+            "embedding_similarity": 0.0,
         }

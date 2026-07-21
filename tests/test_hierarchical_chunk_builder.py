@@ -9,8 +9,33 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import pytest
+
+from core.config import EMBEDDING_SIMILARITY_WEIGHT
 from core.heading_provider import ProviderHeading
 from core.hierarchical_chunk_builder import build_chunks
+from core.semantic_boundary_detector import (
+    EmbeddingSimilarityBoundaryFeature,
+    get_registry,
+)
+
+
+@pytest.fixture(autouse=True)
+def _no_network_embedding_feature():
+    """[ADR-008 제안 3, 2026-07-21] build_chunks()는 module-level singleton
+    registry(get_registry())를 그대로 쓴다 — embedding_similarity feature가
+    기본값으로는 실제 core.embedder.embed()(Ollama 네트워크 호출)를 쓰므로,
+    이 dormant 모듈의 "격리된 unit test" 성격을 지키기 위해 테스트 동안만
+    고정 벡터를 반환하는 가짜 embed_fn으로 교체하고 끝나면 원복한다."""
+    registry = get_registry()
+    original = registry._entries["embedding_similarity"]
+    registry.register(
+        "embedding_similarity",
+        EmbeddingSimilarityBoundaryFeature(embed_fn=lambda t: [0.0]),
+        weight=EMBEDDING_SIMILARITY_WEIGHT,
+    )
+    yield
+    registry._entries["embedding_similarity"] = original
 
 
 def _heading(text: str, level: int = 1, confidence: float = 1.0, source: str = "atx") -> ProviderHeading:

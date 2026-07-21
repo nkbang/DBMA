@@ -124,6 +124,10 @@ def build_chunks(
             accumulated_length=buf_len,
             chunk_size=chunk_size,
             min_chunk_size=min_chunk_size,
+            # [ADR-008 제안 3] EmbeddingSimilarityBoundaryFeature용 — 현재
+            # 버퍼의 마지막 후보. 버퍼가 비어 있으면(문서/청크 시작
+            # 직후) 빈 문자열, feature는 0.0으로 폴백한다.
+            previous_candidate_text=buf[-1] if buf else "",
         )
         event = score_boundary(ctx, registry=registry)
 

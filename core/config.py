@@ -126,6 +126,17 @@ SCRIPTURE_REFERENCE_HEAD_WINDOW = 50
 # (Phase 5-B scope, HQ Task Order).
 SCRIPTURE_REFERENCE_WEIGHT = 15.0
 
+# [ADR-008 제안 3, 2026-07-21] core.semantic_boundary_detector.
+# EmbeddingSimilarityBoundaryFeature — 인접 후보 텍스트 임베딩(bge-m3,
+# core/embedder.py 재사용)의 코사인 유사도가 이 값 미만이면 주제 전환
+# (경계 신호)으로 본다. Profile B(학력 밀도 낮은 학술 주석서)의 Axis 2
+# (semantic flush ratio) 16.4%가 프로덕션 전환에 불충분하다는 ADR-008
+# §1 판정에 대응하는 신규 feature — 다른 feature와 동일하게 SPRINT33-B
+# 설계 초안 수치이며 실제 코퍼스로 보정되지 않았다(보정은 별도 승인
+# 단계).
+EMBEDDING_SIMILARITY_DROP_THRESHOLD = 0.5
+EMBEDDING_SIMILARITY_WEIGHT = 40.0
+
 # ── 벡터DB 설정 (하위 호환성) ───────────────────────────
 _yaml_vdb = CFG.get("vector_db", {})
 VECTOR_DB_PRIMARY = _yaml_vdb.get("primary", "chroma")

@@ -60,9 +60,12 @@ from typing import Callable, Dict, List, Optional, Protocol, runtime_checkable
 
 from core.config import (
     DEFAULT_MIN_CHUNK_SIZE,
+    EMBEDDING_SIMILARITY_DROP_THRESHOLD,
+    EMBEDDING_SIMILARITY_WEIGHT,
     SCRIPTURE_REFERENCE_HEAD_WINDOW,
     SCRIPTURE_REFERENCE_WEIGHT,
 )
+from core.embedder import embed as _default_embed
 from core.heading_provider import (
     ProviderHeading,
     _first_contained,
@@ -70,6 +73,18 @@ from core.heading_provider import (
 )
 from core.retrieval import QueryParser
 from core.text_normalizer import _ends_like_sentence
+
+
+def _cosine_similarity(a, b) -> float:
+    import numpy as np
+
+    a = np.asarray(a, dtype=float)
+    b = np.asarray(b, dtype=float)
+    norm_a = np.linalg.norm(a)
+    norm_b = np.linalg.norm(b)
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return float(np.dot(a, b) / (norm_a * norm_b))
 
 # Same QueryParser instance role as core.tsu_builder._reference_parser —
 # a stateless parser, safe to share across scoring calls.
@@ -98,6 +113,11 @@ class BoundaryContext:
     accumulated_length: int = 0
     chunk_size: int = 0
     min_chunk_size: int = 0
+    # [ADR-008 제안 3] EmbeddingSimilarityBoundaryFeature 전용 — 현재
+    # 버퍼의 마지막 후보 텍스트(hierarchical_chunk_builder.build_chunks()
+    # 의 buf[-1]). 버퍼가 비어 있으면(문서/청크 시작 직후) 빈 문자열 —
+    # 이 경우 feature는 신호 없음(0.0)으로 안전하게 폴백한다.
+    previous_candidate_text: str = ""
 
 
 @dataclass(frozen=True)
@@ -251,6 +271,45 @@ class ScriptureReferenceBoundaryFeature:
         return 1.0 if refs else 0.0
 
 
+class EmbeddingSimilarityBoundaryFeature:
+    """[ADR-008 제안 3, 2026-07-21] 인접 후보(현재 candidate_text vs
+    BoundaryContext.previous_candidate_text) 임베딩(bge-m3,
+    core/embedder.py 재사용 — 신규 임베딩 인프라 도입 없음)의 코사인
+    유사도가 core.config.EMBEDDING_SIMILARITY_DROP_THRESHOLD 미만이면
+    주제 전환으로 보고 1.0을 낸다. 업계 표준(LlamaIndex
+    SemanticSplitterNodeParser 계열)인 "인접 문장 임베딩 유사도 급락"
+    방식.
+
+    ADR-008 §1 판정 배경: Profile B(학력 밀도 낮은 학술 주석서)의 Axis 2
+    (semantic flush ratio) 실측 16.4%는 다른 구조·규칙 기반 5개
+    feature(heading/paragraph/tiny_fragment/sentence_boundary/
+    scripture_reference)가 heading이 드문 주석 문서에서 신호를 거의 못
+    낸다는 뜻 — 이 feature는 구조와 무관하게 내용 자체의 주제 전환을
+    잡아 그 공백을 메우기 위한 것이다.
+
+    previous_candidate_text가 없거나(문서/버퍼 시작) 임베딩 호출이
+    실패하면 신호 없음(0.0)으로 안전하게 폴백한다 — Ollama 장애 한 번이
+    전체 Boundary Score 계산을 막지 않도록(다른 feature와 동일한 "raw
+    signal 0.0=없음" 계약 유지)."""
+
+    def __init__(self, embed_fn=None, drop_threshold: float = EMBEDDING_SIMILARITY_DROP_THRESHOLD):
+        self._embed_fn = embed_fn or _default_embed
+        self._drop_threshold = drop_threshold
+
+    def score(self, context: BoundaryContext) -> float:
+        prev = context.previous_candidate_text.strip()
+        curr = context.candidate_text.strip()
+        if not prev or not curr:
+            return 0.0
+        try:
+            v_prev = self._embed_fn(prev)
+            v_curr = self._embed_fn(curr)
+        except Exception:
+            return 0.0
+        similarity = _cosine_similarity(v_prev, v_curr)
+        return 1.0 if similarity < self._drop_threshold else 0.0
+
+
 # ── Registry (resolution + weighting, mirrors ProviderRegistry's shape) ────
 
 class FeatureRegistry:
@@ -283,6 +342,11 @@ def _default_registry() -> FeatureRegistry:
         "scripture_reference",
         ScriptureReferenceBoundaryFeature(),
         weight=SCRIPTURE_REFERENCE_WEIGHT,
+    )
+    r.register(
+        "embedding_similarity",
+        EmbeddingSimilarityBoundaryFeature(),
+        weight=EMBEDDING_SIMILARITY_WEIGHT,
     )
     return r
 

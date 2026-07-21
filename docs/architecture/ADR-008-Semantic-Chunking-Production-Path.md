@@ -168,7 +168,15 @@ semantic chunking 논의와 독립적인 문제다 — 현재도 문장 단위 �
    (`core/text_normalizer.py`, `tests/test_split_sentences_mixed_punctuation.py`)
 2. ~~제안 1(§1 threshold 재산정)~~ 부분 확정 (2026-07-21) — Axis 1/3
    임계값 확정, Axis 2는 Profile B 불충분 판정(위 참고).
-3. **다음: 제안 3(임베딩 기반 6번째 feature)을 Profile B Axis 2 개선
-   목표로 착수** — 제안 2(Level 3)보다 우선.
+3. ~~제안 3(임베딩 기반 6번째 feature)~~ 구현 완료 (2026-07-21) —
+   `EmbeddingSimilarityBoundaryFeature`(`core/semantic_boundary_detector.py`),
+   `BoundaryContext.previous_candidate_text` 필드 추가,
+   `hierarchical_chunk_builder.build_chunks()` 연결(`core/embedder.py`
+   재사용, 신규 임베딩 인프라 없음). weight=40.0·drop_threshold=0.5는
+   다른 feature와 동일하게 미보정 설계 초안 수치
+   (`core/config.py::EMBEDDING_SIMILARITY_WEIGHT/_DROP_THRESHOLD`).
+   여전히 dormant — 프로덕션 미연결. **다음: Phase 3-A와 동일한 방법론
+   (Axis 2 재측정)으로 Profile B 개선 여부를 실측 검증**해야 §1 판정을
+   다시 볼 수 있다.
 4. RAPTOR/Late Chunking 등은 이번 범위 밖 — 별도 C1 분석 요청 여부만
    기록하고 착수하지 않음.
