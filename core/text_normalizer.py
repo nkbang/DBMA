@@ -402,8 +402,31 @@ def _merge_sentence_fragments(sentences: list[str], max_chars: int, overlap_char
         if not sent:
             continue
         if len(sent) > max_chars:
+            # Word-safe hard slice: split on whitespace boundaries only.
+            # Never cuts inside a word (unless a single token exceeds max_chars).
             flush(carry_overlap=False)
-            chunks.append(sent)
+            tokens = sent.split()
+            overflow_buf: list[str] = []
+            overflow_len = 0
+            for tok in tokens:
+                tok_len = len(tok) + (1 if overflow_buf else 0)
+                if overflow_len + tok_len <= max_chars:
+                    overflow_buf.append(tok)
+                    overflow_len += tok_len
+                else:
+                    if overflow_buf:
+                        chunks.append(" ".join(overflow_buf))
+                    if len(tok) > max_chars:
+                        # Single token longer than max_chars — hard slice as last resort
+                        for i in range(0, len(tok), max_chars):
+                            chunks.append(tok[i:i + max_chars])
+                        overflow_buf = []
+                        overflow_len = 0
+                    else:
+                        overflow_buf = [tok]
+                        overflow_len = tok_len
+            if overflow_buf:
+                chunks.append(" ".join(overflow_buf))
             continue
         if total + len(sent) + 1 <= max_chars:
             buf.append(sent)

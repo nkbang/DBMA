@@ -1,7 +1,8 @@
 # Preflight — `split_sentences_mixed()` 줄바꿈 의존성으로 인한 Chunk Overflow
 
-상태: 고정(fixed). ADR-008 제안 4의 후속 조사. 코드 미수정, 조사·재현만
-수행(`core/chunking_optimizer.py`, `core/text_normalizer.py` 무접촉).
+상태: **하위 결함 B 수정 완료(2026-07-20)**. ADR-008 제안 4의 후속
+조사로 시작해, 조사(코드 미수정) → 발생 빈도 실측 → 실제 수정까지
+완료됨. 아래 §"수정 완료" 참고.
 
 ## 배경
 
@@ -172,11 +173,38 @@ largest chunk observed: 6511 chars (5.4x target)
 ✅ 발생 빈도 실측 완료 (scripts/shadow_chunk_overflow_audit.py, Beta
    corpus 12개 문서, production chunk_once() 직접 호출) — 4.6%(352/7736)
    청크가 1.5x 상한 초과, Profile B 4개 문서에 100% 집중, 최악 5.4배
-코드 변경: 진단 스크립트 2개 신규 추가만
+코드 변경(조사 단계): 진단 스크립트 2개 신규 추가만
    (scripts/shadow_chunk_overflow_audit.py, tests/test_shadow_chunk_
-   overflow_audit.py — 유닛테스트 6건 + 전체 회귀 534 passed). core/
-   chunking_optimizer.py, core/text_normalizer.py 등 production 코드는
-   여전히 무접촉.
+   overflow_audit.py — 유닛테스트 6건 + 전체 회귀 534 passed). 이
+   단계까지는 core/chunking_optimizer.py, core/text_normalizer.py 등
+   production 코드 무접촉.
+✅ 하위 결함 B 수정 완료 (아래 §"수정 완료" 참고)
+```
+
+## 수정 완료 (2026-07-20)
+
+`core/text_normalizer.py::_merge_sentence_fragments()`의 oversized
+단일 항목 미분할 버그를 word-safe hard slice로 수정. TDD 게이팅
+방식으로 진행 — CUE가 먼저 실패하는 테스트 5개
+(`tests/test_merge_sentence_fragments_overflow.py`)를 작성하고,
+C1(Cline, `qwen3.6:35b-DBMAcode` 모델)이 그 테스트를 통과시키는 최소
+diff만 작성, CUE가 자체 보고를 신뢰하지 않고 직접 재검증.
+
+**검증 결과**:
+- 신규 테스트 5개 전부 PASSED, 전체 회귀 539 passed(기존 534+5),
+  0 failed.
+- `core/chunking_optimizer.py` diff 없음(스코프 준수), diff가
+  `_merge_sentence_fragments()` 함수 내부로 정확히 국한.
+- `scripts/shadow_chunk_overflow_audit.py` 재실행: over-cap 비율
+  **4.6%→0.5%**(352/7736 → 40/8161), 최악 사례 **5.4배→1.6배**
+  (6511자 → 1966자, "2 Kings, Volume 13").
+
+**잔여 이슈(이번 작업 범위 밖, 후속 과제)**: 완전히 0%가 되지는
+않음(잔여 0.5%, 최악 1.6배) — 이번에 고친 "통째 무제한 append" 버그와는
+규모가 다른 별도 원인(overlap 프리픽스 상호작용 추정)으로 보임. 근본
+수정 (a)(`split_sentences_mixed()`가 `\n` 없으면 `split_sentences()`로
+위임)는 여전히 미착수 — corpus 전체 문장분할 동작을 바꾸므로 별도
+벤치마크 검증 필요.
 ```
 
 ## 다음 조치 (HQ 승인 대기, 이 문서 범위 밖)
