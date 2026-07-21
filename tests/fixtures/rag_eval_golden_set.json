@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "purpose": "ADR-010 DBMA-REQ Phase 1 groundedness judge 골든셋 대조 검증",
+    "labeled_by": "David Bang (사용자, 직접 채점)",
+    "labeled_at": "2026-07-21",
+    "scale": "0~5 (RagEvalScore.groundedness와 동일 스케일; 사용자는 0~1로 채점해 x5 환산)",
+    "coverage_note": "3/5~10 목표 사례 — ADR-010 Decision-미확정 §1의 최소 착수 셋. 표본 확대는 후속 과제로 남김.",
+    "judge_model": "dbma-planner-r1-q6:70b",
+    "judge_run_id": "golden-calib-1"
+  },
+  "cases": [
+    {
+      "query_id": "gold-1",
+      "question": "요한복음 15장의 포도나무 비유가 강조하는 것은 무엇인가?",
+      "human_groundedness": 0.4,
+      "human_rationale": "답변(포도나무/가지/열매/거함)이 검색된 청크(기도·공동체, '세상' 개념, 인자 용어 해설)와 거의 무관 — LLM이 일반 성경 지식으로 답변을 생성한 것으로 판단됨.",
+      "judge_groundedness": 2.0,
+      "judge_rationale": "Chunk1에서 부분적으로 근거를 찾을 수 있지만, 다른 핵심 주장은 청크에 직접적으로 확인되지 않습니다.",
+      "agreement": "방향 일치(둘 다 낮은 점수), 절대값 편차 +1.6 — judge가 사람보다 관대"
+    },
+    {
+      "query_id": "gold-2",
+      "question": "로마서 8장에서 성령의 역할은 무엇인가?",
+      "human_groundedness": 0.5,
+      "human_rationale": "검색 청크(속죄제, 메시아와의 연합, 믿음의 정의)가 답변(성령의 4가지 역할)을 지지하지 못함 — 답변은 모델의 사전지식에 의존.",
+      "judge_groundedness": 0.0,
+      "judge_rationale": "The answer does not reference any specific details from the provided chunks, which focus on faith, Christ's role, and being bound to Adam.",
+      "agreement": "거의 일치 (편차 0.5 이내)"
+    },
+    {
+      "query_id": "gold-3",
+      "question": "히브리서에서 그리스도의 대제사장직은 어떻게 설명되는가?",
+      "human_groundedness": 4.4,
+      "human_rationale": "검색된 핵심 청크(우월한 제사장, 대제사장의 역할)가 답변 대부분을 뒷받침 — 설교 조언 청크 하나만 노이즈.",
+      "judge_groundedness": 4.0,
+      "judge_rationale": "Most of the answer is well-supported by the chunks, particularly regarding Christ as a superior high priest and the nature of His sacrifice.",
+      "agreement": "거의 일치 (편차 0.4 이내)"
+    }
+  ],
+  "summary": {
+    "mean_absolute_error": 0.83,
+    "rank_order_agreement": true,
+    "verdict": "순위(어느 사례가 낮고 높은지)는 3사례 전부 사람과 judge가 일치. 절대 점수는 judge가 전반적으로 관대한 경향(특히 gold-1). 상대 비교(reranker 도입 전/후 델타 측정)에는 사용 가능하나, 절대 점수를 그대로 신뢰하기엔 표본이 작고 gold-1 편차가 큼."
+  }
+}

@@ -106,15 +106,24 @@ Qdrant만 사용한다. ChromaDB는 도입하지 않는다 — 근거 없는 구
 
 ## Decision — 확정되지 않는 것 (Phase 1 착수 전 별도 결정 필요)
 
-1. **골든셋 라벨링 담당·소요시간** — 신학적 groundedness 판단은 사용자
-   검수가 필요하나 담당·일정 미정.
+1. **골든셋 라벨링 담당·소요시간** — ✅ **부분 해결 (2026-07-21)**.
+   담당: 사용자(David) 직접 채점. 일정: 착수 세션에서 즉시 진행.
+   `QueryProcessor` + `GenerationService`로 실제 파이프라인을 3회
+   실행(요한복음 15장/로마서 8장/히브리서 대제사장)해 얻은 실제
+   질문·청크·답변에 사용자가 0~5점 groundedness를 직접 채점했다.
+   `judge_groundedness()`(judge_model=`dbma-planner-r1-q6:70b`)로 같은
+   3사례를 채점해 대조한 결과, **순위(어느 사례가 낮고 높은지)는
+   3사례 전부 사람과 일치**했으나 절대 점수는 judge가 전반적으로
+   관대한 경향(평균 절대 오차 0.83/5, gold-1 사례는 +1.6 편차).
+   결과 전체는 `tests/fixtures/rag_eval_golden_set.json`에 저장.
+   **표본이 3개뿐**이라 목표(5~10개)에는 못 미침 — 절대 점수를
+   그대로 신뢰하기보다 **상대 비교(reranker 도입 전/후 델타 측정)
+   용도로 우선 사용**하고, 표본 확대는 별도 후속 과제로 남긴다.
 2. **`question_answering_quality`의 reference-free 재정의 여부** —
    DBMA의 실제 용례(설교 개요 생성)는 정답이 없는 open-ended 작업이라,
    정답 존재를 전제로 한 QA 벤치마크식 지표를 그대로 쓸 수 없다.
-   groundedness(정답 불필요)는 문제없음.
-
-이 2건이 정해지기 전까지 Phase 1의 스키마·테스트 설계를 완결하지
-않는다.
+   groundedness(정답 불필요)는 문제없음. **미해결** — Phase 4(지표
+   확장) 착수 전 별도 결정 필요.
 
 ---
 
@@ -141,13 +150,16 @@ Qdrant만 사용한다. ChromaDB는 도입하지 않는다 — 근거 없는 구
 
 ## Next Steps
 
-1. 미확정 항목 2건(골든셋 담당자/일정, QA quality reference-free 여부)
-   HQ 결정
-2. `core/evaluation/schemas.py` — `RagEvalScore` (judge_prompt_version
-   필드 포함) TDD로 작성
-3. `tests/test_rag_judge.py` — 20케이스(고/중/저 7-6-7) + 골든셋 대조
-4. `core/evaluation/rag_judge.py` — 테스트 통과 최소 구현 (groundedness만)
-5. Phase 1 완료 후 베이스라인 측정 → Reranker 도입 검토(Phase 3)로 이관
+1. ~~미확정 항목 2건 HQ 결정~~ — 골든셋 항목은 부분 해결(위 참고),
+   QA quality reference-free 여부는 Phase 4 착수 전 결정 필요로 이관
+2. ~~`core/evaluation/schemas.py` — `RagEvalScore` TDD 작성~~ 완료
+   (`core/evaluation/schemas.py`, `tests/test_rag_eval_schemas.py`)
+3. ~~`tests/test_rag_judge.py` — TDD~~ 완료 (mock 기반 10케이스).
+   실모델 골든셋 대조는 3케이스로 착수, 표본 확대는 후속 과제
+4. ~~`core/evaluation/rag_judge.py` — groundedness 최소 구현~~ 완료
+5. **다음 단계**: 골든셋 표본 5~10개로 확대(현재 3개) → 신뢰도 재평가
+   → Phase 2(베이스라인 측정, `scripts/run_rag_eval.py`) 착수 →
+   Reranker 도입 검토(Phase 3)로 이관
 6. **별도 후속 확인(이 ADR 범위 밖)**: 메타데이터(저자·출판연도·페이지·
    언어·문서 유형)가 TSU 레코드에 실제로 채워지는지 `core/tsu_builder.py`
    재확인 — 채워지지 않으면 필터링·인용 품질에 영향. 이 ADR은 평가/
