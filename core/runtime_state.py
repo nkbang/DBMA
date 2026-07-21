@@ -157,6 +157,69 @@ def _check_vector_index(base_dir: Path) -> bool:
     return False
 
 
+def get_index_size_bytes(base_dir: Optional[Path] = None) -> int:
+    """벡터 인덱스(ChromaDB persist directory) 실제 디스크 사용량.
+
+    core.config.CHROMA_PERSIST_DIR(기본 "chroma_db")를 그대로 신뢰한다 —
+    Monitor 페이지의 "인덱스 크기" 카드가 하드코딩된 "156MB" 대신 이 값을
+    쓴다.
+    """
+    from core.config import CHROMA_PERSIST_DIR
+
+    if base_dir is None:
+        base_dir = Path.cwd()
+    index_dir = base_dir / CHROMA_PERSIST_DIR
+    if not index_dir.is_dir():
+        return 0
+    return sum(f.stat().st_size for f in index_dir.rglob("*") if f.is_file())
+
+
+def get_processing_throughput(
+    event_log_path: Optional[Path] = None,
+    idle_gap_threshold_sec: float = 60.0,
+) -> Optional[Dict[str, Any]]:
+    """최근 문서 처리 배치의 실측 처리 속도(파일/초).
+
+    logs/project_events.jsonl은 여러 날에 걸친 개별 실행을 전부
+    run_id="manual" 하나로 뭉쳐 기록한다 — 첫 이벤트~마지막 이벤트 구간을
+    그대로 나누면 세션 사이 유휴 시간(최대 20시간+)까지 "처리 시간"으로
+    잡혀 사실상 0에 가까운 값이 나온다(Preflight로 확인: 0.00035파일/초).
+    연속 이벤트 간격이 idle_gap_threshold_sec 이하인 구간만 "활동 시간"으로
+    합산해 유휴 구간을 제외한다.
+
+    Returns:
+        {"files_per_sec": float, "as_of": str} — 계산 불가(이벤트 부족/활동
+        시간 0) 시 None. as_of는 마지막 이벤트 시각으로, 이 수치가 실시간이
+        아니라 "그 시점 기준 스냅샷"임을 UI에서 명시하기 위함이다.
+    """
+    from datetime import datetime
+
+    if event_log_path is None:
+        event_log_path = Path.cwd() / "logs" / "project_events.jsonl"
+
+    events = [e for e in _read_event_log(event_log_path) if e.get("ts")]
+    if len(events) < 2:
+        return None
+
+    events.sort(key=lambda e: e["ts"])
+    active_time = 0.0
+    for i in range(1, len(events)):
+        t0 = datetime.fromisoformat(events[i - 1]["ts"])
+        t1 = datetime.fromisoformat(events[i]["ts"])
+        gap = (t1 - t0).total_seconds()
+        if 0 < gap <= idle_gap_threshold_sec:
+            active_time += gap
+
+    parse_completed = _count_events_by_type(events, "parse_completed")
+    if active_time <= 0 or parse_completed == 0:
+        return None
+
+    return {
+        "files_per_sec": parse_completed / active_time,
+        "as_of": events[-1]["ts"],
+    }
+
+
 # ── 메인 상태 계산 함수 ───────────────────────────────────
 
 def get_pipeline_status(

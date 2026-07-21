@@ -17,7 +17,7 @@ from core.config import DEFAULT_OUTPUT_DIR
 
 # Production retrieval imports (LOOP 3 — binding)
 from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate
-from ui.state.query_processor import get_shared_query_processor
+from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 
 
@@ -78,6 +78,7 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
 
         # Execute retrieval pipeline
         response = processor.process(query, query_id="research-ui", k=top_k)
+        record_query_latency(response.performance_metrics.total_ms)
 
         # Check for results
         if not response.top_k_results:

@@ -30,6 +30,8 @@ from core.retrieval import QueryProcessor
 
 _SESSION_KEY = "shared_query_processor"
 _FINGERPRINT_KEY = "shared_query_processor_dataset_sha256"
+_LATENCY_KEY = "query_latencies_ms"
+_LATENCY_HISTORY_CAP = 200
 
 
 def _current_dataset_fingerprint() -> Optional[str]:
@@ -61,3 +63,14 @@ def get_shared_query_processor() -> QueryProcessor:
         st.session_state[_FINGERPRINT_KEY] = fingerprint
 
     return st.session_state[_SESSION_KEY]
+
+
+def record_query_latency(total_ms: float) -> None:
+    """Append one QueryProcessor.process() call's total_ms to this
+    session's running history — Monitor's "평균 응답 시간" card reads
+    session_state[_LATENCY_KEY] directly (same key). Capped so a long
+    session doesn't grow this list unbounded."""
+    history = st.session_state.setdefault(_LATENCY_KEY, [])
+    history.append(total_ms)
+    if len(history) > _LATENCY_HISTORY_CAP:
+        del history[: len(history) - _LATENCY_HISTORY_CAP]

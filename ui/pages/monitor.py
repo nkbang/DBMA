@@ -188,20 +188,90 @@ def _render_health_overview(pipeline_stages) -> None:
             st.markdown(html, unsafe_allow_html=True)
 
 
+_BENCHMARK_RESULT_PATH = "output/bench/chapter_level_result_v1.3.0_cap2.json"
+# [Preflight] 이전엔 output/SPRINT5_ENGINEERING_VALIDATION/benchmark_results_
+# sprint9.json을 후보로 봤으나, 그 파일은 precision/MRR/nDCG가 전부 0.0인
+# 깨진/구코퍼스 실행분이었다. 이 파일은 v1.3.0 태그 + 1500쿼리 + 2026-07-17
+# 실행으로 현재 스키마와 맞는 유일한 실측 결과라 이걸 쓴다. 버전이 파일명에
+# 박혀 있어 다음 정식 벤치마크 때는 경로를 갱신해야 한다(자동 latest-file
+# 탐색은 잘못된 실행분을 집어올 위험이 있어 명시적 경로를 택했다).
+
+
+def _read_benchmark_result() -> Optional[dict]:
+    import json
+
+    path = Path(_BENCHMARK_RESULT_PATH)
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def _format_size(size_bytes: float | int) -> str:
+    for unit in ["B", "KB", "MB", "GB"]:
+        if size_bytes < 1024:
+            return f"{size_bytes:.1f} {unit}"
+        size_bytes /= 1024
+    return f"{size_bytes:.1f} TB"
+
+
 def _render_performance_metrics() -> None:
-    """Render performance metrics."""
-    # Simulated metrics (replace with actual measurements)
+    """Render performance metrics — all real, no hardcoded/simulated values.
+
+    "처리_throughput"이었던 4번째 카드는 검색/채팅 성능이 아니라 문서 처리
+    파이프라인 속도라 실측 가능한 유일한 지표라 "문서 처리 속도"로 이름과
+    의미를 바꿨다. 실시간 지표가 아닌 값(벤치마크, 처리 속도)은 반드시
+    측정 시점을 같이 표기해 "지금 이 순간"으로 오인하지 않게 한다.
+    """
+    from core.runtime_state import get_index_size_bytes, get_processing_throughput
+
+    # 1. 평균 검색 응답 시간 — 이 세션에서 실행된 Chat/Research 쿼리 누적.
+    # QueryProcessor.process()의 retrieval 단계(total_ms)만 잰다 — LLM
+    # 생성 시간은 별도(수 초~수십 초 단위)라 같이 평균 내면 이 카드의
+    # 밀리초 단위 스케일과 안 맞아 오해를 준다.
+    latencies = st.session_state.get("query_latencies_ms", [])
+    avg_latency = f"{sum(latencies) / len(latencies):.0f}ms" if latencies else "데이터 없음"
+    latency_detail = (
+        f"검색(retrieval)만 집계, LLM 생성 시간 제외 · 이번 세션 {len(latencies)}건 평균"
+        if latencies else "Chat/Research에서 질문하면 누적됩니다 (검색 단계만, LLM 생성 제외)"
+    )
+
+    # 2. 문서 처리 속도 — 이벤트 로그 기반, 유휴 구간 제외
+    throughput = get_processing_throughput()
+    if throughput:
+        throughput_value = f"{throughput['files_per_sec']:.2f}/sec"
+        throughput_detail = f"기준: {throughput['as_of'][:16].replace('T', ' ')}"
+    else:
+        throughput_value = "데이터 없음"
+        throughput_detail = "처리 이력 부족"
+
+    # 3. 검색 정확도 — 저장된 벤치마크 결과 (실시간 재측정 아님)
+    bench = _read_benchmark_result()
+    if bench and "metrics" in bench:
+        m = bench["metrics"]
+        accuracy_value = f"MRR {m.get('mrr', 0):.3f}"
+        accuracy_detail = f"precision@1 {m.get('precision_at_1', 0):.3f} · {bench.get('generated_at', bench.get('gold_standard_version', ''))}"
+    else:
+        accuracy_value = "데이터 없음"
+        accuracy_detail = "벤치마크 결과 파일 없음"
+
+    # 4. 인덱스 크기 — chroma_db 실측
+    index_bytes = get_index_size_bytes()
+    index_value = _format_size(index_bytes) if index_bytes > 0 else "데이터 없음"
+
     metrics = [
-        {"label": "평균 응답 시간", "value": "142ms", "trend": "↓ 5%"},
-        {"label": "처리_throughput", "value": "8.3/sec", "trend": "→ 0%"},
-        {"label": "검색 정확도 (RRF)", "value": "0.8923", "trend": "↑ 2%"},
-        {"label": "인덱스 크기", "value": "156MB", "trend": "↑ 12%"},
+        {"label": "평균 응답 시간", "value": avg_latency, "detail": latency_detail},
+        {"label": "문서 처리 속도", "value": throughput_value, "detail": throughput_detail},
+        {"label": "검색 정확도", "value": accuracy_value, "detail": accuracy_detail},
+        {"label": "인덱스 크기", "value": index_value, "detail": "chroma_db 실측"},
     ]
 
     c1, c2, c3, c4 = st.columns(4)
     for i, m in enumerate(metrics):
         with [c1, c2, c3, c4][i]:
-            st.metric(m["label"], m["value"], m["trend"])
+            st.metric(m["label"], m["value"], help=m["detail"])
 
 
 def _render_resource_usage() -> None:

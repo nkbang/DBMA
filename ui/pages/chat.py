@@ -19,7 +19,7 @@ import streamlit as st
 from ui.pages._base import BasePage
 from core.retrieval import QueryProcessor, RankedCandidate
 from core.generation import GenerationService
-from ui.state.query_processor import get_shared_query_processor
+from ui.state.query_processor import get_shared_query_processor, record_query_latency
 
 # 스코프별 반환 청크 수(k) — 좁은 스코프일수록 LLM에 넘기는 컨텍스트가
 # 짧아져 응답이 빨라진다(정확도 트레이드오프가 아니라 컨텍스트 길이 문제).
@@ -117,6 +117,7 @@ def _handle_user_message(question: str) -> None:
 
     try:
         response = processor.process(question, query_id="chat-ui", k=k, file_scope=file_scope)
+        record_query_latency(response.performance_metrics.total_ms)
     except Exception as e:
         error_msg = f"[검색 실패] {e}"
         with st.chat_message("assistant"):
