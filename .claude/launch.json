@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dbma-ui",
+      "runtimeExecutable": "/Users/David/envs/dbma311/bin/streamlit",
+      "runtimeArgs": ["run", "dbma_ui.py", "--server.headless", "true", "--server.port", "8520"],
+      "port": 8520
+    }
+  ]
+}

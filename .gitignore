@@ -65,6 +65,10 @@ logs/*.jsonl
 .git.bak.*/
 .idea/
 
+# Claude Code local/personal settings (per-developer, not shared)
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
 # AI agent runtime state
 .cline/
 .dbma/
