@@ -23,6 +23,7 @@ from ui.pages.processing import render_processing_page
 from ui.pages.research import render_research_page
 from ui.pages.monitor import render_monitor_page
 from ui.pages.chat import render_chat_page
+from ui.pages.sermon_draft import render_sermon_draft_page
 
 
 def main() -> None:
@@ -125,6 +126,7 @@ def _render_sidebar() -> str:
             "Processing": ("📄", "문서 처리"),
             "Research": ("🔬", "연구 워크스페이스"),
             "Chat": ("💬", "RAG 채팅"),
+            "설교문 작성": ("📝", "설교문 작성 워크숍"),
             "Monitor": ("💚", "시스템 모니터링"),
         }
 
@@ -180,6 +182,7 @@ def _render_page_content(page: str) -> None:
         "Processing": render_processing_page,
         "Research": render_research_page,
         "Chat": render_chat_page,
+        "설교문 작성": render_sermon_draft_page,
         "Monitor": render_monitor_page,
     }
 

@@ -184,3 +184,128 @@ class GenerationService:
             error=error,
             citations=response.citations,
         )
+
+
+# ============================================================
+# 설교문 작성 워크플로 (Phase 1) — docs/agents/c1/
+# DBMA-SERMON-DRAFT-Phase1-Design-Review.md 설계 검토 결과 반영.
+#
+# GenerationService를 상속하지 않고 조합(composition)한다 — 프롬프트
+# 템플릿이 근본적으로 다르고(단발 Q&A vs 개요/확장 다단계), Ollama 호출
+# 책임과 설교문 도메인 로직 책임을 분리하기 위함(설계 문서 Q4).
+# ============================================================
+
+@dataclass
+class SermonOutline:
+    """설교 개요 — 서론/대지/결론. 사용자가 검토·수정한 뒤 대지별로
+    확장 생성된다."""
+    title: str
+    introduction: str
+    points: list[str] = field(default_factory=list)
+    conclusion: str = ""
+
+
+_OUTLINE_FORMAT_INSTRUCTIONS = (
+    "아래 형식을 정확히 지켜 작성하라. 다른 설명이나 인사말을 덧붙이지 마라.\n"
+    "제목: <설교 제목>\n"
+    "서론: <서론, 2~3문장>\n"
+    "대지1: <첫 번째 대지 요약, 1문장>\n"
+    "대지2: <두 번째 대지 요약, 1문장>\n"
+    "대지3: <세 번째 대지 요약, 1문장>\n"
+    "결론: <결론, 2~3문장>"
+)
+
+
+def _parse_outline(text: str) -> SermonOutline:
+    """LLM이 위 형식 지시를 따랐다는 전제로 줄 단위 파싱한다.
+    형식을 어긴 줄은 조용히 건너뛴다 — 부분적으로라도 파싱 가능한 결과를
+    사용자에게 보여주고, 빈 값은 검토 단계에서 사람이 채우면 된다."""
+    outline = SermonOutline(title="", introduction="")
+    for line in text.splitlines():
+        line = line.strip()
+        if line.startswith("제목:"):
+            outline.title = line[len("제목:"):].strip()
+        elif line.startswith("서론:"):
+            outline.introduction = line[len("서론:"):].strip()
+        elif line.startswith("결론:"):
+            outline.conclusion = line[len("결론:"):].strip()
+        elif line.startswith("대지") and len(line) > 2:
+            # "대지1:", "대지2:", ... — 번호는 순서만 의미하고 값은 안 씀
+            idx = line.find(":")
+            if idx != -1 and line[2:idx].strip().isdigit():
+                outline.points.append(line[idx + 1:].strip())
+    return outline
+
+
+class SermonDraftService:
+    """설교문 작성 워크플로 전용 서비스. Ollama 호출은 자체 수행하되(단발
+    generate 패턴은 GenerationService와 동일), 프롬프트 템플릿은 개요
+    생성/대지 확장 단계별로 별도 관리한다."""
+
+    def __init__(self) -> None:
+        pass
+
+    def generate_outline(
+        self,
+        scripture_and_theme: str,
+        context_block: str,
+        gen_model: str = DEFAULT_GEN_MODEL,
+        temperature: float = DEFAULT_TEMPERATURE,
+    ) -> tuple[SermonOutline, Optional[str]]:
+        """검색된 자료를 근거로 설교 개요(서론/대지/결론) 1차 초안을
+        생성한다. 실패 시 (빈 SermonOutline, 에러 메시지) 반환 — 절대
+        raise하지 않는다(GenerationService.generate()와 동일한 계약)."""
+        prompt = (
+            f"다음 참고 자료를 근거로 설교 개요를 작성하라.\n"
+            f"본문/주제: {scripture_and_theme}\n\n"
+            f"참고 자료:\n{context_block}\n\n"
+            f"{_OUTLINE_FORMAT_INSTRUCTIONS}"
+        )
+        try:
+            result = ollama.generate(
+                model=gen_model, prompt=prompt, options={"temperature": temperature}
+            )
+            return _parse_outline(result["response"]), None
+        except Exception as e:
+            logger.error(
+                "[SermonDraftService.generate_outline] Ollama generate 실패 (model=%s): %s",
+                gen_model, e,
+            )
+            return SermonOutline(title="", introduction=""), str(e)
+
+    def expand_point(
+        self,
+        point_text: str,
+        scripture_and_theme: str,
+        context_block: str,
+        style_examples: str = "",
+        gen_model: str = DEFAULT_GEN_MODEL,
+        temperature: float = DEFAULT_TEMPERATURE,
+    ) -> tuple[str, Optional[str]]:
+        """승인된 대지 하나를 실제 설교문 문단으로 확장한다.
+        style_examples는 콘텐츠 근거가 아니라 어투 참고용 — 별도 절로
+        구분해 프롬프트에 그 의도를 명시한다(설계 문서 Q3)."""
+        style_section = (
+            f"\n\n문체 참고(아래는 설교자 본인의 과거 설교문 발췌 —"
+            f" 내용을 인용하지 말고 어투·문장 호흡만 참고하라):\n{style_examples}"
+            if style_examples.strip() else ""
+        )
+        prompt = (
+            f"아래 설교 대지 하나를 실제 설교문 문단으로 확장하라.\n"
+            f"본문/주제: {scripture_and_theme}\n"
+            f"대지: {point_text}\n\n"
+            f"참고 자료:\n{context_block}"
+            f"{style_section}\n\n"
+            "성경적 근거, 목회적 적용, 예화를 균형 있게 포함해 2~4개 문단으로 서술하라."
+        )
+        try:
+            result = ollama.generate(
+                model=gen_model, prompt=prompt, options={"temperature": temperature}
+            )
+            return result["response"], None
+        except Exception as e:
+            logger.error(
+                "[SermonDraftService.expand_point] Ollama generate 실패 (model=%s): %s",
+                gen_model, e,
+            )
+            return "", str(e)
