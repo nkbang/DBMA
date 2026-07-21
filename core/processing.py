@@ -291,7 +291,7 @@ DEPRECATED_FORMATS_TXT = "chunks_txt"      # DEPRECATED: will be removed in Spri
 DEPRECATED_FORMATS_META = "chunks_meta"    # DEPRECATED: will be removed in Sprint 2+
 
 
-def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap):
+def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap, quality=None):
     """[DEPRECATED for Sprint 1] — kept for backward compatibility.
 
     SPRINT 1 CANONICAL OUTPUT: {stem}.md (produced by save_md_with_language())
@@ -306,6 +306,11 @@ def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap
         chunks: List of chunk strings
         chunk_size: Chunk size parameter
         chunk_overlap: Chunk overlap parameter
+        quality: Optional core.chunking_optimizer.ChunkQuality — persisted
+            additively as meta["quality"] when provided. [2026-07-21] Added
+            so a future re-chunk (force_rechunk) has something on disk to
+            compare against before overwriting; this change only persists
+            the metric, it does not yet compare or block anything.
 
     Returns:
         tuple: (txt_path, meta_path) — None paths if SPRINT1_ONLY_MD_OUTPUT is True
@@ -328,6 +333,14 @@ def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap
         "chunk_size": chunk_size,
         "chunk_overlap": chunk_overlap,
     }
+    if quality is not None:
+        meta["quality"] = {
+            "avg_noise": quality.avg_noise,
+            "max_noise": quality.max_noise,
+            "avg_dup": quality.avg_dup,
+            "short_ratio": quality.short_ratio,
+            "passed": quality.passed,
+        }
     validation = validate_chunks(chunks, meta)
 
     if not validation.valid:
@@ -742,7 +755,10 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         validation = validate_chunks(chunks, meta)
         emit("validate_done", f"청크 검증 결과: {validation.summary()}", 0.80)
 
-        txt_path, meta_path = save_chunks(output_dir, stem, source_name, chunks, chunk_size_used, chunk_overlap_used)
+        txt_path, meta_path = save_chunks(
+            output_dir, stem, source_name, chunks, chunk_size_used, chunk_overlap_used,
+            quality=chunk_result.quality if chunk_result is not None else None,
+        )
         if SPRINT1_ONLY_MD_OUTPUT:
             emit("save_chunks_done", f"[SPRINT1-DEPRECATED] Deprecated outputs skipped (canonical: {stem}.md)", 0.85)
         else:
