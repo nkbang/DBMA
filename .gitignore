@@ -47,6 +47,12 @@ cache/embeddings/
 
 # Backup / legacy snapshots
 backup/
+backups/
+backup_chroma.log
+
+# Embedding cache (all subdirs, not just cache/embeddings/ — e.g.
+# cache/embeddings_backup_YYYYMMDD/ was previously untracked-but-unignored)
+cache/
 
 # Stray files from unquoted "pip install pkg>=X.Y.Z" (shell interprets
 # '>' as a redirect, creating a file literally named "=X.Y.Z")
@@ -62,6 +68,7 @@ logs/*.jsonl
 # AI agent runtime state
 .cline/
 .dbma/
+.claude/worktrees/
 
 # Local VS Code workspace files
 *.code-workspace
@@ -69,7 +76,7 @@ logs/*.jsonl
 # Runtime outputs
 output/
 output_sav/
-reports/
+/reports/
 
 # Backup snapshots
 *.bak_*
