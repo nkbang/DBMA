@@ -76,36 +76,48 @@ def _get_service() -> SermonDraftService:
 
 
 def _render_input_step() -> None:
+    """[버그 수정] 이 3개 위젯을 st.form 없이 개별 렌더링했을 때, 텍스트를
+    입력한 뒤 blur(포커스 이탈)하기 전에 라디오/멀티셀렉트를 건드리면
+    Streamlit이 textarea의 커밋 안 된 이전 값(빈 문자열)으로 스크립트를
+    재실행해 "개요 생성" 버튼이 계속 비활성 상태로 보이는 문제가 있었다
+    (실사용 재현 확인). st.form은 제출(submit) 시점에만 재실행하고 그때
+    모든 위젯 값을 한 번에 확정해서 가져오므로, 위젯 간 상호작용 순서와
+    무관하게 항상 최신 텍스트를 읽는다."""
     state = st.session_state["sermon_draft_state"]
-
-    scripture_and_theme = st.text_area(
-        "본문 성경 구절과 설교 주제",
-        value=state["scripture_and_theme"],
-        placeholder="예: 로마서 5:1-5, 고난 중의 소망",
-        height=80,
-        key="sermon_input_text",
-    )
-
-    sermon_format = st.radio(
-        "설교 형식",
-        options=SERMON_FORMATS,
-        horizontal=True,
-        help="주제설교: 대지를 신학적 주제 단위로 재구성. 강해설교: 대지가 본문의 절 순서를 그대로 따라가며 주해.",
-        key="sermon_format_radio",
-    )
-
     files = _get_processor().engine.list_source_files()
-    style_files = st.multiselect(
-        "문체 참고용 과거 설교문 (선택, 최대 3개)",
-        options=files,
-        default=[f for f in state["style_files"] if f in files],
-        help="선택한 파일의 어투만 확장 단계에서 참고합니다 — 내용 근거로는 쓰이지 않습니다.",
-        max_selections=3,
-    )
 
-    disabled = not scripture_and_theme.strip()
-    if st.button("📝 개요 생성", type="primary", use_container_width=True, disabled=disabled):
-        _generate_outline(scripture_and_theme.strip(), style_files, sermon_format)
+    with st.form("sermon_input_form"):
+        scripture_and_theme = st.text_area(
+            "본문 성경 구절과 설교 주제",
+            value=state["scripture_and_theme"],
+            placeholder="예: 로마서 5:1-5, 고난 중의 소망",
+            height=80,
+            key="sermon_input_text",
+        )
+
+        sermon_format = st.radio(
+            "설교 형식",
+            options=SERMON_FORMATS,
+            horizontal=True,
+            help="주제설교: 대지를 신학적 주제 단위로 재구성. 강해설교: 대지가 본문의 절 순서를 그대로 따라가며 주해.",
+            key="sermon_format_radio",
+        )
+
+        style_files = st.multiselect(
+            "문체 참고용 과거 설교문 (선택, 최대 3개)",
+            options=files,
+            default=[f for f in state["style_files"] if f in files],
+            help="선택한 파일의 어투만 확장 단계에서 참고합니다 — 내용 근거로는 쓰이지 않습니다.",
+            max_selections=3,
+        )
+
+        submitted = st.form_submit_button("📝 개요 생성", type="primary", use_container_width=True)
+
+    if submitted:
+        if not scripture_and_theme.strip():
+            st.warning("본문 성경 구절과 설교 주제를 입력하세요.")
+        else:
+            _generate_outline(scripture_and_theme.strip(), style_files, sermon_format)
 
 
 def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_format: str) -> None:
