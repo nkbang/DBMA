@@ -20,6 +20,7 @@ import streamlit as st
 from ui.pages._base import BasePage
 from core.retrieval import QueryProcessor
 from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
+from core.sermon.bible_books import BIBLE_BOOKS
 from ui.state.query_processor import get_shared_query_processor
 
 _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크게
@@ -75,6 +76,37 @@ def _get_service() -> SermonDraftService:
     return st.session_state["sermon_draft_service"]
 
 
+def _render_book_coverage_buttons() -> None:
+    """[2026-07-21] 66권 성경 이름 버튼 — 코퍼스에 실제 임베딩된 서로 다른
+    원본 문서(주석서 등) 개수를 각 버튼에 표시한다. 클릭하면 본문 입력란
+    (아래 st.form의 scripture_and_theme)에 그 책 이름이 채워진다.
+
+    core/sermon/bible_books.py(정규 66권 목록, query_enhancements.py의
+    오탈자 있는 별칭 테이블과 별개) + RetrievalEngine.book_coverage()
+    (TSU 코퍼스를 읽기 전용으로 집계, 새 검색 경로 없음 — ADR-001 준수)로
+    구성했다. 문서가 늘어나면(재처리·신규 업로드) 숫자가 자동으로
+    갱신된다 — 하드코딩된 값이 아니다.
+
+    버튼은 st.form 밖에 있어야 한다(Streamlit 제약 — st.button은 form
+    안에서 즉시 클릭 반응하지 않음, st.form_submit_button만 가능)."""
+    coverage = _get_processor().engine.book_coverage()
+    with st.expander("📖 전체 성경 이름 (책마다 임베딩된 자료 수)"):
+        cols = st.columns(6)
+        for i, (name, book_id) in enumerate(BIBLE_BOOKS):
+            count = coverage.get(book_id, 0)
+            with cols[i % 6]:
+                if st.button(f"{name} {count}", key=f"book_btn_{book_id}", use_container_width=True):
+                    st.session_state["sermon_draft_state"]["scripture_and_theme"] = name
+                    # [버그 수정 2026-07-21] _render_input_step()의 text_area가
+                    # value=와 key=를 동시에 쓴다 — Streamlit은 위젯이 이미
+                    # 한 번 렌더링된 뒤에는 key로 저장된 session_state 값을
+                    # value=보다 우선한다. 그래서 state["scripture_and_theme"]만
+                    # 바꾸면 rerun 후에도 텍스트 영역이 비어있는 채로 남는다
+                    # (실사용 재현 확인). 위젯의 실제 키에도 같이 써야 한다.
+                    st.session_state["sermon_input_text"] = name
+                    st.rerun()
+
+
 def _render_input_step() -> None:
     """[버그 수정] 이 3개 위젯을 st.form 없이 개별 렌더링했을 때, 텍스트를
     입력한 뒤 blur(포커스 이탈)하기 전에 라디오/멀티셀렉트를 건드리면
@@ -85,6 +117,8 @@ def _render_input_step() -> None:
     무관하게 항상 최신 텍스트를 읽는다."""
     state = st.session_state["sermon_draft_state"]
     files = _get_processor().engine.list_source_files()
+
+    _render_book_coverage_buttons()
 
     with st.form("sermon_input_form"):
         scripture_and_theme = st.text_area(

@@ -1103,6 +1103,24 @@ class RetrievalEngine:
         Used by UI file-scope pickers (see retrieve()'s file_scope arg)."""
         return sorted({sf for t in self.tsus if (sf := t.get("source_file"))})
 
+    def book_coverage(self) -> dict[str, int]:
+        """[2026-07-21] Distinct source_file count per Bible book_id,
+        aggregated read-only over the already-loaded self.tsus — no new
+        corpus-access path, same pattern as list_source_files(). Used by
+        Sermon Draft's book-coverage picker (ui/pages/sermon_draft.py) to
+        label each of the 66 book buttons with how many source documents
+        cover it (e.g. "창세기 2"). Books with zero coverage are simply
+        absent from the returned dict — callers should treat a missing
+        key as 0, not raise."""
+        coverage: dict[str, set[str]] = {}
+        for t in self.tsus:
+            book_id = (t.get("verse_mapping") or {}).get("book_id")
+            source_file = t.get("source_file")
+            if not book_id or not source_file:
+                continue
+            coverage.setdefault(book_id, set()).add(source_file)
+        return {book_id: len(files) for book_id, files in coverage.items()}
+
     def retrieve(
         self,
         parsed_query: ParsedQuery,
