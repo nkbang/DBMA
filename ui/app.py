@@ -128,10 +128,16 @@ def _render_sidebar() -> str:
             "Monitor": ("💚", "시스템 모니터링"),
         }
 
+        # key="nav_page" lets other pages switch tabs programmatically
+        # (e.g. Dashboard's quick-action buttons) by setting
+        # st.session_state["nav_page"] before rerunning — the radio picks
+        # up that value on the next render instead of needing a widget
+        # reference passed around.
         selected = st.radio(
             "페이지 선택",
             options=list(pages.keys()),
             label_visibility="collapsed",
+            key="nav_page",
         )
 
         st.divider()

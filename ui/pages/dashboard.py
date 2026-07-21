@@ -16,72 +16,76 @@ from core.execution_context import ExecutionContext
 
 
 def render_dashboard_page() -> None:
-    """Render the DBMA Dashboard page."""
+    """Render the DBMA Dashboard page.
+
+    [design] User-convenience redesign — Dashboard's job is "지금 바로
+    쓸 수 있는가" and "다음에 뭘 누르면 되는가", not a stats readout.
+    파이프라인 %, 벡터DB/메모리 등 개발자용 상세는 Monitor로 옮겨져 있다
+    (같은 정보를 두 곳에서 실데이터/가짜 데이터로 중복 보여주던 문제 해소).
+    """
     page = BasePage(title="Dashboard", icon="🏠")
     page.render_header()
 
-    # ── System Overview Metrics ────────────────────────────────
-    _render_system_overview()
+    _render_status_banner()
+    _render_quick_actions()
 
-    # ── Document Corpus Statistics ─────────────────────────────
-    page.render_section("문서 코퍼스 통계", icon="📚")
-    _render_corpus_statistics()
+    st.markdown(f"<div style='font-size: 13px; color: {THEME.TEXT_SECONDARY}; margin: 1.5rem 0 0.5rem;'>내 서재</div>", unsafe_allow_html=True)
+    _render_library_summary()
 
     page.render_footer()
 
 
-def _render_system_overview() -> None:
-    """Render system overview metrics row.
+def _go_to(page_name: str) -> None:
+    """on_click callback for quick-action buttons — see ui/app.py's
+    nav radio (key="nav_page"), which reads this on the next rerun."""
+    st.session_state["nav_page"] = page_name
 
-    [design] Dashboard is the user-facing summary — "내 자료가 얼마나
-    있고, 잘 돌아가는가" 한 줄. 파이프라인 단계별 %, 벡터DB/메모리 등
-    개발자용 상세는 Monitor 페이지로 옮겼다(같은 정보를 두 곳에서 각각
-    실데이터/가짜 데이터로 따로 보여주던 중복을 해소).
+
+def _render_status_banner() -> None:
+    """One glance: can I use this right now, and what's in it."""
+    status_label, status_icon, status_color, status_bg = _get_overall_status()
+    raw_docs = _count_documents()
+    last_processed = _get_last_processed()
+
+    headline = "지금 바로 질문할 수 있어요" if status_label == "정상" else status_label
+    html = f"""
+    <div style="background: {status_bg}; border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 20px;">{status_icon}</span>
+        <div>
+            <div style="font-weight: 700; font-size: 15px; color: {status_color};">{headline}</div>
+            <div style="font-size: 12px; color: {status_color};">문서 {raw_docs}권 · 마지막 업데이트 {last_processed}</div>
+        </div>
+    </div>
     """
-    status_label, status_icon, status_color = _get_overall_status()
-    metrics = [
-        {"icon": "📄", "label": "전체 문서", "value": _count_documents(), "color": THEME.BRAND_PRIMARY},
-        {"icon": "💾", "label": "코퍼스 크기", "value": _format_size(_get_corpus_size()), "color": THEME.STATUS_SUCCESS},
-        {"icon": "🔄", "label": "마지막 처리", "value": _get_last_processed(), "color": THEME.STATUS_INFO},
-        {"icon": status_icon, "label": "전체 상태", "value": status_label, "color": status_color},
-    ]
-
-    cols = st.columns(4)
-    for i, m in enumerate(metrics):
-        with cols[i]:
-            html = f"""
-            <div style="text-align: center; padding: {16}px 8px;">
-                <div style="font-size: 28px; margin-bottom: 8px;">{m['icon']}</div>
-                <div style="font-size: 20px; font-weight: 700; color: {m['color']};">
-                    {m['value']}
-                </div>
-                <div style="font-size: 12px; color: {THEME.TEXT_SECONDARY}; margin-top: 4px;">
-                    {m['label']}
-                </div>
-            </div>
-            """
-            st.markdown(html, unsafe_allow_html=True)
+    st.markdown(html, unsafe_allow_html=True)
 
 
-def _render_corpus_statistics() -> None:
-    """Render corpus statistics.
-
-    [design] 임베딩 모델명은 콘텐츠 현황이 아니라 설정값 — Monitor의
-    시스템 건강 상태 카드로 옮겨서 중복을 없앴다.
-    """
-    raw_docs, output_docs = _get_document_counts()
-
+def _render_quick_actions() -> None:
+    """Jump straight to the three things a user actually comes here to do."""
+    st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.metric("RAW 폴더", f"{raw_docs}개 파일")
+        st.button("💬 질문하기", use_container_width=True, on_click=_go_to, args=("Chat",))
     with c2:
-        st.metric("출력 폴더", f"{output_docs}개 파일")
+        st.button("🔍 자료 검색", use_container_width=True, on_click=_go_to, args=("Research",))
     with c3:
-        st.metric("지원 형식", "PDF/TXT/MD/DOCX/EPUB/HTML/RTF")
+        st.button("📤 문서 추가", use_container_width=True, on_click=_go_to, args=("Processing",))
 
 
-def _get_overall_status() -> tuple[str, str, str]:
-    """One-line health summary for the Dashboard's "전체 상태" card.
+def _render_library_summary() -> None:
+    """Collapsed "내 서재" summary — RAW/출력/지원형식/임베딩 세부는
+    개발자용 정보라 Monitor·Processing으로 이미 옮겨져 있다."""
+    raw_docs, output_docs = _get_document_counts()
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.metric("보유 문서", f"{raw_docs}권")
+    with c2:
+        st.metric("정리된 자료", f"{output_docs}개 문서")
+
+
+def _get_overall_status() -> tuple[str, str, str, str]:
+    """One-line health summary for the Dashboard's status banner.
 
     Derived from the same ExecutionContext().get_pipeline_status() that
     Monitor's detailed per-stage view reads — Dashboard just collapses it
@@ -89,14 +93,14 @@ def _get_overall_status() -> tuple[str, str, str]:
     Stage-by-stage detail (%, vector DB, memory, etc.) lives on Monitor.
 
     Returns:
-        (label, icon, color) for the metric card.
+        (label, icon, text_color, bg_color).
     """
     stages = ExecutionContext().get_pipeline_status()
     if stages and all(s.status == "complete" for s in stages):
-        return "정상", "✅", THEME.STATUS_SUCCESS
+        return "정상", "✅", THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG
     if any(s.status == "active" for s in stages):
-        return "처리 중", "🔄", THEME.STATUS_INFO
-    return "확인 필요", "⚠️", THEME.STATUS_WARNING
+        return "처리 중", "🔄", THEME.STATUS_INFO, THEME.STATUS_INFO_BG
+    return "확인 필요", "⚠️", THEME.STATUS_WARNING, THEME.STATUS_WARNING_BG
 
 
 # ── Utility Functions ──────────────────────────────────────────────
@@ -120,17 +124,6 @@ def _count_documents() -> int:
         if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in supported_exts
     ]
     return len(doc_files)
-
-
-def _get_corpus_size() -> int:
-    """Get total corpus size in bytes."""
-    output_dir = Path(DEFAULT_OUTPUT_DIR)
-    if not output_dir.exists():
-        return 0
-    total = 0
-    for f in output_dir.rglob("*.md"):
-        total += f.stat().st_size
-    return total
 
 
 def _get_last_processed() -> str:
@@ -172,12 +165,3 @@ def _get_document_counts() -> tuple[int, int]:
     output_count = len(list(Path(DEFAULT_OUTPUT_DIR).rglob("*.md"))) if Path(DEFAULT_OUTPUT_DIR).exists() else 0
 
     return raw_count, output_count
-
-
-def _format_size(size_bytes: int) -> str:
-    """Format bytes to human-readable size."""
-    for unit in ['B', 'KB', 'MB', 'GB']:
-        if size_bytes < 1024:
-            return f"{size_bytes:.1f} {unit}"
-        size_bytes /= 1024
-    return f"{size_bytes:.1f} TB"
