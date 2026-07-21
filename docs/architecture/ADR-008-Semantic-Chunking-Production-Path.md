@@ -78,6 +78,26 @@ Semantic Improvement Threshold" 수치를 지금 확정할 수 있는 데이터�
 genre-aware 원칙 계승) — 단, 구체 수치는 이 ADR이 아니라 별도 Phase
 (가칭 SPRINT33-D Phase 4)에서 HQ 승인을 받아 확정한다.
 
+**✅ 착수 및 부분 확정 (2026-07-21)**:
+
+| 지표 | Profile A | Profile B | 확정 임계값 |
+|---|---|---|---|
+| Axis 1 (Orphaned Recovery) | 98.5% | 99.0% | **≥95%** (공통, 회귀 감지용 여유폭) |
+| Axis 3 (Unsplittable Outlier) | 0.0% | 5.5%(최악 18.6%) | **A: 0%, B: ≤10%** |
+| Axis 2 (Semantic Flush Ratio) | 29.1% | 16.4% | **Profile B는 현재 실측치로 프로덕션 전환 불충분 — HQ 판단** |
+
+Profile B(heading 밀도 낮은 학술 주석서 — 사용자가 주석 문서 청킹
+품질을 직접 우려한 바로 그 유형)의 Axis 2 16.4%는 "여전히 절반 이상을
+길이 기반 안전망에 의존"한다는 뜻으로, HQ는 이 수준을 **프로덕션
+전환에 불충분**하다고 판단했다. 따라서:
+
+- **제안 3(임베딩 기반 6번째 feature)이 제안 2(Level 3)보다 먼저,
+  Profile B의 Axis 2를 끌어올리는 것을 목표로 우선 착수한다.**
+- Profile A(29.1%)에 대한 임계값 충족 여부는 별도로 판단하지 않음 —
+  이번 결정은 Profile B(주석 문서)로 범위를 한정해 물었다.
+- Axis 1·Axis 3 임계값은 두 프로필 모두 현재 실측치가 이미 상회하므로
+  회귀 감지용 하한선으로 확정.
+
 ### 제안 2 — Level 3 (Hard Fallback) 구현
 
 Amendment A가 "설계만 완료, 미구현"으로 남긴 Level 3를 구현해야
@@ -142,10 +162,13 @@ semantic chunking 논의와 독립적인 문제다 — 현재도 문장 단위 �
 
 ## Next Steps (HQ 승인 대기)
 
-1. 제안 4(버그 후보 Preflight)를 가장 먼저 처리 — 다른 제안과 독립적이고
-   리스크가 가장 낮음.
-2. 제안 1(§1 threshold 재산정)을 SPRINT33-D Phase 4로 착수할지 HQ 결정.
-3. 제안 2(Level 3 구현)와 제안 3(임베딩 feature)은 제안 1 확정 후
-   순서를 재검토.
+1. ~~제안 4(버그 후보 Preflight)~~ 완료 (2026-07-21) —
+   `split_sentences_mixed()`가 개행 없는 입력(프로덕션 실제 입력 형태)
+   에서 문장을 전혀 못 나누던 결함 확인·수정.
+   (`core/text_normalizer.py`, `tests/test_split_sentences_mixed_punctuation.py`)
+2. ~~제안 1(§1 threshold 재산정)~~ 부분 확정 (2026-07-21) — Axis 1/3
+   임계값 확정, Axis 2는 Profile B 불충분 판정(위 참고).
+3. **다음: 제안 3(임베딩 기반 6번째 feature)을 Profile B Axis 2 개선
+   목표로 착수** — 제안 2(Level 3)보다 우선.
 4. RAPTOR/Late Chunking 등은 이번 범위 밖 — 별도 C1 분석 요청 여부만
    기록하고 착수하지 않음.
