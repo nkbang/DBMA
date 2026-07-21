@@ -394,6 +394,17 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                     "heading_source": "atx" if chunk_heading.heading_path else "",
                 }
 
+            # [ADR-009] Additive-only SIL sermon-theology fields — same
+            # additive contract as content_quality/structure above (no
+            # existing field changed or removed, including the pre-existing
+            # unused "themes" field, which this intentionally does not
+            # reinterpret). Structure only: no tagging logic populates these
+            # yet, because the doctrine vocabulary is a separate, not-yet-
+            # approved decision (ADR-009 §Decision "확정되지 않는 것").
+            record["theological_claim"] = None
+            record["doctrine_category"] = []
+            record["baptist_theme"] = []
+
             records.append(record)
 
     return records
