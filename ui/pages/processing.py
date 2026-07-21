@@ -26,6 +26,7 @@ from core.processing import (
     process_batch,
     get_processed_files,
 )
+from core.utils import make_safe_stem
 
 logger = logging.getLogger(__name__)
 
@@ -352,7 +353,16 @@ def _render_processing_queue() -> None:
 
 
 def _render_processing_history() -> None:
-    """Render the processing history."""
+    """Render the processing history.
+
+    [버그 수정 2026-07-21] 이전에는 .md 파일 존재만으로 "완료"라고 표시했다
+    (추출·정제 직후 생성됨). 그런데 대기열(_render_processing_queue)은
+    .batch_state.json의 processed 목록(청킹+원본 복사까지 끝나야 mark_
+    processed()로 기록됨, core/processing.py:732)을 기준으로 삼는다 —
+    청킹 단계에서 멈춘 파일은 .md만 있고 processed에는 없어, 히스토리엔
+    "완료"로, 대기열엔 "대기 중"으로 동시에 나타나는 모순이 있었다.
+    make_safe_stem()으로 processed 파일명 -> .md stem을 정방향 매핑해
+    실제 파이프라인 완료 여부로 상태를 나눈다."""
     output_dir = Path(DEFAULT_OUTPUT_DIR)
 
     if not output_dir.exists():
@@ -363,6 +373,8 @@ def _render_processing_history() -> None:
     if not md_files:
         st.info("처리 기록이 없습니다.")
         return
+
+    completed_stems = {make_safe_stem(name) for name in get_processed_files(DEFAULT_OUTPUT_DIR)}
 
     # Show recent processing history (last 5)
     file_times = []
@@ -375,12 +387,17 @@ def _render_processing_history() -> None:
 
     file_times.sort(key=lambda x: x[1], reverse=True)
 
-    st.caption(f"전체 {len(file_times)}개 완료")
+    done_count = sum(1 for f, _ in file_times if f.stem in completed_stems)
+    st.caption(f"전체 {len(file_times)}개 중 {done_count}개 완료")
 
     def _render_history_item(f: Path, dt: datetime) -> None:
         size_kb = f.stat().st_size / 1024 if f.exists() else 0
         detail = f"{dt.strftime('%Y-%m-%d %H:%M')} • {size_kb:.0f} KB"
-        _render_item_row("✅", f.stem, detail, THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS, "완료")
+        if f.stem in completed_stems:
+            _render_item_row("✅", f.stem, detail, THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS, "완료")
+        else:
+            detail += " • 청킹 미완료"
+            _render_item_row("⏳", f.stem, detail, THEME.STATUS_WARNING, THEME.STATUS_WARNING_BG, THEME.STATUS_WARNING, "처리 중")
 
     visible, rest = file_times[:5], file_times[5:]
     for f, dt in visible:

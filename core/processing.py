@@ -603,6 +603,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                 ])
                 _md_path.write_text("\n".join(_fm), encoding="utf-8")
             artifacts = {**artifacts, "md_path": str(_md_path)}
+            # [2026-07-21 fix] SKIP means "this exact content is already
+            # represented in the TSU dataset under a prior filename" — it
+            # is still a resolved outcome for *this* filename, not an
+            # unfinished one. Without this, a duplicate/re-scanned file
+            # (same content hash, different name) never entered
+            # .batch_state.json's processed set and stayed in
+            # ui/pages/processing.py's queue forever, even though nothing
+            # further needs to happen for it.
+            mark_processed(output_dir, source_name)
             return {"success": True, "skipped": True, "ingest_decision": "SKIP", "logs": logs, "metrics": metrics, "artifacts": artifacts}
 
         if decision == "RETRY":
