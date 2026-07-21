@@ -37,7 +37,7 @@ from typing import Optional
 
 import ollama
 
-from core.retrieval import Citation, ResponsePackage
+from core.retrieval import Citation, RankedCandidate, ResponsePackage
 from core.config import DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE
 
 logger = logging.getLogger(__name__)
@@ -212,6 +212,43 @@ class SermonOutline:
 SERMON_FORMATS = ("주제설교", "강해설교")
 _DEFAULT_SERMON_FORMAT = "주제설교"
 
+# [품질] 개요가 "본문을 얕게 풀어쓴 것" 수준으로 나온다는 지적(실사용
+# 피드백)의 원인을 단계적으로 좁혔다:
+#   1차 시도: 대지를 1문장→2문장으로 늘리고 "참고 자료를 반영하라"는
+#     지시만 추가 — 실측 결과 변화 없음, 여전히 성경 본문 재진술.
+#   2차 시도: 지시를 프롬프트 앞뒤 양쪽에 반복 배치 — 실측 결과도 변화
+#     없음 (my-theology-bot이 23K자 컨텍스트 안에서 특정 인용을 스스로
+#     찾아 쓰는 지시-따르기 능력 자체가 약함, "lost in the middle" 문제로
+#     의심되지만 확정은 아님 — 지시 위치보다 컨텍스트에 사람이 읽을 수
+#     있는 출처 라벨이 없었던 게 더 근본 원인으로 보임).
+#   3차(현재): _format_sermon_context()로 각 청크에 "[자료N] 제목·저자"
+#     라벨을 붙이고, "[자료N]을 최소 1회 인용하라"는 구체적·검증 가능한
+#     지시로 바꿈 — 모델이 "어떤 신학적 통찰을 반영하라"는 추상적 지시보다
+#     "이 번호를 인용하라"는 구체적 지시를 더 잘 따를 것이라는 가설.
+_QUALITY_DIRECTIVE = (
+    "본문을 단순히 재진술하지 마라. 아래 참고 자료는 [자료1], [자료2]... 로"
+    " 번호가 매겨져 있다 — 각 대지에서 최소 1개 이상의 [자료N]을 실제로"
+    " 인용·언급하며 그 내용을 반영해서 작성하라. 참고 자료에 없는 내용은"
+    " 지어내지 말고, 뻔하고 상투적인 문장(예: '우리는 이를 통해 은혜를"
+    " 깨달을 수 있습니다' 류의 일반론)은 피하라. 한국어로만 작성하고 다른"
+    " 언어 문자를 섞지 마라."
+)
+
+
+def _format_sermon_context(candidates: list[RankedCandidate], max_items: int = 15) -> str:
+    """설교문 워크플로 전용 컨텍스트 포맷 — core/retrieval.py::
+    ContextAssembler.assemble()의 <context id="tsu_id">는 사람이 읽을 수
+    있는 출처가 아니라(Chat/Research 공용 포맷이라 변경하지 않는다), 모델이
+    "[자료1]을 인용하라"처럼 구체적으로 지목할 수 있도록 제목·저자 라벨을
+    붙인 별도 포맷을 여기서 만든다."""
+    parts: list[str] = []
+    for i, c in enumerate(candidates[:max_items], 1):
+        title = c.metadata.get("title") or c.metadata.get("source_file") or "출처 미상"
+        author = c.metadata.get("author")
+        label = f"{title} — {author}" if author else title
+        parts.append(f"[자료{i}] {label}\n{c.content}")
+    return "\n\n".join(parts)
+
 _OUTLINE_POINT_GUIDANCE = {
     "주제설교": (
         "대지는 본문에서 뽑아낸 신학적 주제·교훈 단위로 구성하라 — 절 순서를"
@@ -225,11 +262,15 @@ _OUTLINE_POINT_GUIDANCE = {
 }
 
 _EXPANSION_STYLE_GUIDANCE = {
-    "주제설교": "성경적 근거, 목회적 적용, 예화를 균형 있게 포함해 2~4개 문단으로 서술하라.",
+    "주제설교": (
+        "참고 자료에 나온 신학적 근거를 구체적으로 인용·전개하며, 목회적"
+        " 적용과 예화는 그 근거에서 자연스럽게 도출되게 하라(본문과 무관한"
+        " 성경 인물을 예화로 나열하지 마라). 2~4개 문단."
+    ),
     "강해설교": (
         "해당 절의 문맥과 원문의 의미, 그 절이 본문 전체 흐름에서 하는 역할을"
-        " 중심으로 풀어 설명하라. 예화보다 본문 자체의 논리 전개와 주해에"
-        " 비중을 두어 2~4개 문단으로 서술하라."
+        " 참고 자료의 주석적 논의에 근거해 풀어 설명하라. 예화보다 본문 자체의"
+        " 논리 전개와 주해에 비중을 두어 2~4개 문단으로 서술하라."
     ),
 }
 
@@ -237,13 +278,14 @@ _EXPANSION_STYLE_GUIDANCE = {
 def _outline_format_instructions(sermon_format: str) -> str:
     guidance = _OUTLINE_POINT_GUIDANCE.get(sermon_format, _OUTLINE_POINT_GUIDANCE[_DEFAULT_SERMON_FORMAT])
     return (
+        f"{_QUALITY_DIRECTIVE}\n\n"
         f"설교 형식: {sermon_format}. {guidance}\n\n"
         "아래 형식을 정확히 지켜 작성하라. 다른 설명이나 인사말을 덧붙이지 마라.\n"
         "제목: <설교 제목>\n"
         "서론: <서론, 2~3문장>\n"
-        "대지1: <첫 번째 대지, 1문장>\n"
-        "대지2: <두 번째 대지, 1문장>\n"
-        "대지3: <세 번째 대지, 1문장>\n"
+        "대지1: <첫 번째 대지 — 핵심 주장과 그 신학적 근거, 2문장>\n"
+        "대지2: <두 번째 대지 — 핵심 주장과 그 신학적 근거, 2문장>\n"
+        "대지3: <세 번째 대지 — 핵심 주장과 그 신학적 근거, 2문장>\n"
         "결론: <결론, 2~3문장>"
     )
 
@@ -280,7 +322,7 @@ class SermonDraftService:
     def generate_outline(
         self,
         scripture_and_theme: str,
-        context_block: str,
+        candidates: list[RankedCandidate],
         sermon_format: str = _DEFAULT_SERMON_FORMAT,
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
@@ -290,7 +332,10 @@ class SermonDraftService:
         raise하지 않는다(GenerationService.generate()와 동일한 계약).
 
         sermon_format: "주제설교"(기본) | "강해설교" — 대지의 성격만
-        바뀌고 출력 스키마는 동일하다(SERMON_FORMATS 참고)."""
+        바뀌고 출력 스키마는 동일하다(SERMON_FORMATS 참고).
+        candidates: response.top_k_results — _format_sermon_context()가
+        [자료N] 라벨을 붙여 인용 가능한 컨텍스트로 재구성한다."""
+        context_block = _format_sermon_context(candidates)
         prompt = (
             f"다음 참고 자료를 근거로 설교 개요를 작성하라.\n"
             f"본문/주제: {scripture_and_theme}\n\n"
@@ -313,7 +358,7 @@ class SermonDraftService:
         self,
         point_text: str,
         scripture_and_theme: str,
-        context_block: str,
+        candidates: list[RankedCandidate],
         style_examples: str = "",
         sermon_format: str = _DEFAULT_SERMON_FORMAT,
         gen_model: str = DEFAULT_GEN_MODEL,
@@ -323,7 +368,9 @@ class SermonDraftService:
         style_examples는 콘텐츠 근거가 아니라 어투 참고용 — 별도 절로
         구분해 프롬프트에 그 의도를 명시한다(설계 문서 Q3).
         sermon_format에 따라 확장 방식이 갈린다 — 주제설교는 예화·적용
-        중심, 강해설교는 본문 주해·문맥 중심(_EXPANSION_STYLE_GUIDANCE)."""
+        중심, 강해설교는 본문 주해·문맥 중심(_EXPANSION_STYLE_GUIDANCE).
+        candidates: generate_outline()과 동일한 [자료N] 인용 가능 컨텍스트."""
+        context_block = _format_sermon_context(candidates)
         style_section = (
             f"\n\n문체 참고(아래는 설교자 본인의 과거 설교문 발췌 —"
             f" 내용을 인용하지 말고 어투·문장 호흡만 참고하라):\n{style_examples}"
@@ -333,6 +380,7 @@ class SermonDraftService:
             sermon_format, _EXPANSION_STYLE_GUIDANCE[_DEFAULT_SERMON_FORMAT]
         )
         prompt = (
+            f"{_QUALITY_DIRECTIVE}\n\n"
             f"아래 설교 대지 하나를 실제 설교문 문단으로 확장하라. (설교 형식: {sermon_format})\n"
             f"본문/주제: {scripture_and_theme}\n"
             f"대지: {point_text}\n\n"

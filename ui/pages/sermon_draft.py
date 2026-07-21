@@ -58,7 +58,7 @@ def _init_state() -> None:
             "style_files": [],
             "sermon_format": SERMON_FORMATS[0],  # "주제설교"
             "outline": None,  # SermonOutline
-            "context_block": "",
+            "candidates": [],  # list[RankedCandidate] — [자료N] 인용용 원본
             "expanded": {},  # point_index(int) -> str
         }
 
@@ -132,7 +132,7 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
             st.error(f"검색 실패: {e}")
             return
         outline, error = service.generate_outline(
-            scripture_and_theme, response.llm_context_block, sermon_format=sermon_format
+            scripture_and_theme, response.top_k_results, sermon_format=sermon_format
         )
 
     if error:
@@ -143,7 +143,7 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
     state["style_files"] = style_files
     state["sermon_format"] = sermon_format
     state["outline"] = outline
-    state["context_block"] = response.llm_context_block
+    state["candidates"] = response.top_k_results
     state["expanded"] = {}
     state["status"] = "outline_generated"
     st.rerun()
@@ -207,7 +207,7 @@ def _render_expansion_step() -> None:
                         text, error = service.expand_point(
                             point,
                             state["scripture_and_theme"],
-                            state["context_block"],
+                            state["candidates"],
                             style_examples,
                             sermon_format=state["sermon_format"],
                         )
