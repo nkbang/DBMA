@@ -176,6 +176,20 @@ def _build_file_list(target_dir: str, force_reingest: bool) -> List[Dict[str, An
     return files
 
 
+def _filter_selected_files(
+    file_list: List[Dict[str, Any]], selected_names: Optional[List[str]]
+) -> List[Dict[str, Any]]:
+    """[2026-07-21] _build_file_list()가 만든 후보 목록을 사용자가 고른
+    파일명(selected_names)으로 좁힌다. selected_names가 None이면(선택
+    UI 미표시 — 강제 옵션이 꺼진 일반 처리 경로) 전체 목록을 그대로
+    반환해 기존 동작을 바꾸지 않는다. 순서는 항상 file_list 원래 순서를
+    따른다(선택 UI에서 고른 순서가 아니라)."""
+    if selected_names is None:
+        return file_list
+    selected_set = set(selected_names)
+    return [f for f in file_list if f["name"] in selected_set]
+
+
 def _render_ingestion_form() -> None:
     """Render the document ingestion form."""
     store = StateStore()
@@ -250,7 +264,26 @@ def _render_ingestion_form() -> None:
     # .batch_state.json으로 처리 완료 파일을 걸러내고 force_reingest를
     # 반영하므로(SPRINT22-A, tests/test_processing_upload.py로 검증됨),
     # 그 결과를 그대로 재사용해 대기열과 정의를 일치시킨다.
-    pending_count = len(_build_file_list(target_dir, effective_force_reingest))
+    candidate_files = _build_file_list(target_dir, effective_force_reingest)
+
+    # [2026-07-21] 강제 재처리 문서 선택 기능 — "강제 재처리"/"전체
+    # 재청킹"을 켜면 이미 처리된 문서까지 전부 대상이 되어 특정 문서만
+    # 다시 처리하고 싶어도 방법이 없었다(사용자 보고). 강제 옵션이 켜진
+    # 경우에만 멀티셀렉트를 보여주고, 꺼져 있으면(일반 신규 처리) 기존
+    # 동작 그대로 전체를 처리한다 — 매번 선택을 강요하지 않는다.
+    selected_names: Optional[List[str]] = None
+    if effective_force_reingest and candidate_files:
+        all_names = [f["name"] for f in candidate_files]
+        selected_names = st.multiselect(
+            "재처리할 문서 선택 (비워두면 전체)",
+            options=all_names,
+            default=all_names,
+            key="force_reprocess_selection",
+            help="강제 재처리/전체 재청킹 대상 문서를 좁힐 수 있습니다.",
+        )
+
+    file_list = _filter_selected_files(candidate_files, selected_names)
+    pending_count = len(file_list)
 
     # Start processing button
     st.divider()
@@ -265,7 +298,7 @@ def _render_ingestion_form() -> None:
         st.caption(f"처리 가능: {pending_count}개 문서")
 
         if st.button("🚀 문서 처리 시작", type="primary", use_container_width=True):
-            _execute_processing(target_dir, chunk_size, overlap, use_ocr, effective_force_reingest, force_rechunk)
+            _execute_processing(file_list, chunk_size, overlap, use_ocr, effective_force_reingest, force_rechunk)
 
 
 def _render_item_row(icon: str, name: str, detail: str, border_color: str, badge_bg: str, badge_fg: str, badge_text: str) -> None:
@@ -430,18 +463,20 @@ def _render_processing_history() -> None:
 
 
 def _execute_processing(
-    target_dir: str,
+    file_list: List[Dict[str, Any]],
     chunk_size: int,
     overlap: int,
     use_ocr: bool,
     force_reingest: bool,
     force_rechunk: bool = False,
 ) -> None:
-    """Execute the document processing pipeline."""
-    
-    # Build file list
-    file_list = _build_file_list(target_dir, force_reingest)
-    
+    """Execute the document processing pipeline.
+
+    [2026-07-21] file_list는 호출부(_render_ingestion_form)에서 이미
+    _build_file_list() + _filter_selected_files()로 확정된 목록을
+    그대로 받는다 — 여기서 target_dir을 다시 스캔하면 사용자가 고른
+    문서 선택이 무시되므로 재빌드하지 않는다."""
+
     if not file_list:
         st.info("처리할 파일이 없습니다. (이미 처리되었거나 파일이 없는 경우)")
         return
