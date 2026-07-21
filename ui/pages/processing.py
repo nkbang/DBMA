@@ -221,30 +221,51 @@ def _render_ingestion_form() -> None:
     with col2:
         use_ocr = st.checkbox("OCR 사용", value=False, key="use_ocr")
     with col3:
-        force_reingest = st.checkbox("강제 재처리", value=False, key="force_reingest")
+        force_reingest = st.checkbox("강제 재처리", value=False, key="force_reingest",
+                                      help="이미 처리된 파일명도 다시 시도합니다. 다만 내용이 기존 registry와 동일하면 여전히 건너뜁니다(SKIP) — 청킹 로직 자체를 바꿔서 재청킹하려면 아래 '전체 재청킹'을 쓰세요.")
     with col4:
         store.set("use_ocr", use_ocr)
         store.set("force_reingest", force_reingest)
 
+    # [2026-07-21] force_reingest("강제 재처리")와는 별개 기능 — 파일명
+    # 게이트만 우회하는 force_reingest와 달리, 콘텐츠 해시가 동일해도
+    # classify_ingest_decision()의 SKIP을 무시하고 실제로 청킹을 다시
+    # 실행한다. 청킹 알고리즘 자체를 고친 뒤(예: _merge_sentence_fragments
+    # word-safe hard slice 수정) 이미 처리된 문서들을 새 로직으로
+    # 재청킹하고 싶을 때 쓴다. 기존 "강제 재처리" 체크박스 의미를 바꾸면
+    # tests/test_process_batch_force_reingest.py의 명시적 계약("두 게이트를
+    # 혼동하지 말 것")을 깨므로, 반드시 별도 컨트롤로 둔다
+    # (tests/test_force_rechunk.py 참고).
+    force_rechunk = st.checkbox(
+        "⚠️ 전체 재청킹 (내용이 같아도 다시 청킹)", value=False, key="force_rechunk",
+        help="청킹 알고리즘이 바뀐 뒤 이미 처리된 문서를 새 로직으로 다시 청킹할 때만 사용하세요. 자동으로 '강제 재처리'도 함께 적용됩니다.",
+    )
+    store.set("force_rechunk", force_rechunk)
+    effective_force_reingest = force_reingest or force_rechunk
+
     # Count pending files
-    raw_path = Path(target_dir)
-    pending_count = 0
-    if raw_path.exists():
-        for f in raw_path.iterdir():
-            if f.suffix.lower() in SUPPORTED_EXTS and f.is_file():
-                pending_count += 1
+    # [버그 수정 2026-07-21] 이전에는 RAW의 지원 형식 파일 총 개수를 셌다 —
+    # 이미 처리 완료된 파일도 포함되어, 대기열이 0개인데 "처리 가능: 64개"로
+    # 표시되는 모순이 있었다(사용자 보고). _build_file_list()는 이미
+    # .batch_state.json으로 처리 완료 파일을 걸러내고 force_reingest를
+    # 반영하므로(SPRINT22-A, tests/test_processing_upload.py로 검증됨),
+    # 그 결과를 그대로 재사용해 대기열과 정의를 일치시킨다.
+    pending_count = len(_build_file_list(target_dir, effective_force_reingest))
 
     # Start processing button
     st.divider()
-    
+
+    if force_rechunk:
+        st.warning("전체 재청킹이 켜져 있습니다 — 내용이 동일한 문서도 청킹을 처음부터 다시 실행합니다. 문서 수가 많으면 오래 걸릴 수 있습니다.")
+
     if pending_count == 0:
         st.info("처리할 문서가 없습니다.")
         st.button("🚀 문서 처리 시작", type="primary", use_container_width=True, disabled=True)
     else:
         st.caption(f"처리 가능: {pending_count}개 문서")
-        
+
         if st.button("🚀 문서 처리 시작", type="primary", use_container_width=True):
-            _execute_processing(target_dir, chunk_size, overlap, use_ocr, force_reingest)
+            _execute_processing(target_dir, chunk_size, overlap, use_ocr, effective_force_reingest, force_rechunk)
 
 
 def _render_item_row(icon: str, name: str, detail: str, border_color: str, badge_bg: str, badge_fg: str, badge_text: str) -> None:
@@ -414,6 +435,7 @@ def _execute_processing(
     overlap: int,
     use_ocr: bool,
     force_reingest: bool,
+    force_rechunk: bool = False,
 ) -> None:
     """Execute the document processing pipeline."""
     
@@ -464,6 +486,7 @@ def _execute_processing(
                 chunk_overlap=overlap,
                 report=report_callback,
                 force_reingest=force_reingest,
+                force_rechunk=force_rechunk,
             )
             
             # Summarize results

@@ -394,8 +394,18 @@ def mark_processed(output_dir: str, filename: str):
 
 # ── 핵심 처리 함수 ─────────────────────────────────────
 
-def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None):
-    """단일 파일 처리 (업그레이드 v2 — 검증 + 리트라이 + 배치 상태)"""
+def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_rechunk=False):
+    """단일 파일 처리 (업그레이드 v2 — 검증 + 리트라이 + 배치 상태)
+
+    force_rechunk: True면 classify_ingest_decision()이 SKIP(콘텐츠 해시
+    동일)을 반환해도 무시하고 청킹까지 전부 다시 실행한다. 청킹
+    알고리즘 자체가 바뀌어 기존 문서를 새 로직으로 재청킹해야 할 때만
+    쓴다 — "강제 재처리"(force_reingest, process_batch()의 파일명 게이트
+    우회)와는 별개다. 둘은 절대 혼동하면 안 된다
+    (tests/test_process_batch_force_reingest.py 참고): force_reingest는
+    "이 파일명을 다시 시도하라"는 뜻이고, force_rechunk는 "내용이
+    같아도 청킹 로직을 다시 돌려라"는 뜻이다.
+    """
     logs = []
     metrics = {}
     artifacts = {}
@@ -543,6 +553,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         _prior_version = None
         if decision == "PROCESS" and existing_record is None:
             _prior_version = find_by_source_file(_registry, source_name)
+
+        if decision == "SKIP" and force_rechunk:
+            # 콘텐츠는 동일하지만 청킹 로직을 강제로 다시 돌린다 — REPROCESS와
+            # 동일한 하위 경로(전체 저장+청킹)로 흘려보내되, 로그 문구만
+            # 구분한다. document_id/file_hash가 기존 레코드와 같으므로
+            # register_document()가 새 레코드를 만들지 않고 같은 레코드를
+            # 갱신한다(orphan 없음).
+            emit("force_rechunk", f"FORCE RECHUNK (content unchanged): {source_name}", 1.0, level="warn")
+            decision = "REPROCESS"
 
         if decision == "SKIP":
             _prev_src = existing_record.get("source_file", "") if existing_record else ""
@@ -873,7 +892,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage or "unexpected", "reason": _failure_reason}
 
 
-def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_reingest=False):
+def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_reingest=False, force_rechunk=False):
     """배치 처리 (업그레이드 v2 — 중복 파일 제외 + 배치 상태 추적)
 
     [SPRINT21-G-3-B Gap#3 fix] force_reingest=True면 .batch_state.json
@@ -882,6 +901,11 @@ def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_
     _build_file_list()의 1차 필터만 우회하고 이 함수의 독립적인 2차
     필터(get_processed_files())에 다시 걸려 무조건 스킵되는 구조적
     결함이 있었다(실측 확정: force_reingest 의도와 무관하게 skipped=True).
+
+    force_rechunk=True면 process_one_file()의 콘텐츠 해시 SKIP까지 우회한다
+    (청킹 알고리즘 변경 후 전체 재청킹용, 2026-07-21 도입). force_reingest와
+    별개 파라미터 — 이 함수 자신은 두 값을 그대로 각자의 역할로 전달할 뿐,
+    서로 대신하지 않는다.
     """
     logger.info("[SPRINT1] ingestion start: %d files", len(file_list))
     processed_set = set() if force_reingest else get_processed_files(output_dir)
@@ -894,7 +918,7 @@ def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_
             results.append({"success": True, "logs": logs, "metrics": {}, "artifacts": {}, "skipped": True})
             continue
 
-        result = process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report)
+        result = process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report, force_rechunk=force_rechunk)
         results.append(result)
 
     logger.info("[SPRINT1] ingestion end: %d files processed", len(results))
