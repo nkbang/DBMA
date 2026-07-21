@@ -112,13 +112,51 @@ if len(sent) > max_chars:
 
 ---
 
-## 발생 빈도 추정 (미실측, 후속 과제)
+## 발생 빈도 실측 (2026-07-20, `scripts/shadow_chunk_overflow_audit.py`)
 
-이 Preflight는 buggy 경로의 **존재와 메커니즘**을 코드 추적 + 합성
-재현으로 확정했을 뿐, **실제 Beta corpus 12개 문서에서 하위 결함 B가
-몇 건 발생하는지는 측정하지 않았다**(§4 "다음 조치" 참고). 학술
-주석서(WBC 등, Profile B)처럼 문단이 길고 blank-line 구분이 느슨한
-장르에서 더 자주 발생할 것으로 추정되나 정량 근거는 없다.
+Beta corpus 12개 문서 전체에 `core.chunking_optimizer.chunk_once()`
+(production이 실제로 호출하는 함수 그 자체, 재구현 아님)를 그대로
+실행해 결과 청크 길이 분포를 측정했다. 로직 재현이 아니라 production
+함수를 직접 호출한 결과이므로 이 수치는 추정이 아니라 실측이다.
+
+```text
+chunk_size=1200  overflow_cap(1.5x)=1800
+
+document                                                              chunks  >target  >1.5x cap  max_len
+11. 고린도전서                                                           293        0          0     1200
+12. 고린도후서                                                           213        1          0     1219
+2 Chronicles, Volume 15 (Word Biblical Commentary)                     1109      177         55     2514
+2 Kings, The Anchor Bible Commentary (Cogan/Tadmor)                     763      343        194     4616
+2 Kings, The Power and the Fury (Dale Ralph Davis)                      723      122         40     2455
+2 Kings, Volume 13 (Hubbard/Barker et al.)                             2984      122         63     6511
+3. 마가복음                                                              315        0          0     1200
+5. 요한복음1                                                             231        0          0     1200
+6. 요한복음2                                                             234        0          0     1199
+7. 사도행전1                                                             276        0          0     1199
+8. 사도행전2                                                             352        0          0     1200
+9. 로마서1                                                              243        0          0     1200
+
+documents: 12
+documents with >=1 chunk over 1.5x cap: 4
+total chunks: 7736
+chunks over target (1200): 765 (9.9%)
+chunks over 1.5x cap (1800, likely 하위 결함 B): 352 (4.6%)
+largest chunk observed: 6511 chars (5.4x target)
+```
+
+**해석**:
+- 한국어 성경 8개 문서: 결함 B 발생 **0건**(완전히 경계 안에 있음).
+- 영문 WBC류 학술 주석서 4개 문서: 전체 코퍼스 청크의 4.6%(352/7736)가
+  1.5x 상한(1800자)을 초과 — **이 4개 문서에만 100% 집중**되어 있다.
+  ADR-007 Amendment A의 Profile 분류(문단 중 1800자 초과 candidate
+  존재 여부)와 정확히 겹치는 문서군이다.
+- 최악 사례 **"2 Kings, Volume 13"**(6511자, target의 5.4배)는
+  ADR-007 Amendment A가 Axis 3(Unsplittable Outlier)에서도 최악
+  (18.6%)으로 지목했던 바로 그 문서 — 두 개의 서로 다른 측정 방법론이
+  같은 문서를 최악으로 재확인, 교차 검증 성격.
+- 결론: 하위 결함 B는 "드문 예외"가 아니라 **Profile B 문서군 전체에
+  구조적으로 발생**하며, 심각도(5.4배)도 처음 합성 재현(2~2.5배)보다
+  실제로 더 큼.
 
 ---
 
@@ -131,14 +169,23 @@ if len(sent) > max_chars:
 ✅ split_sentences()(정규식 기반)가 동일 입력에서 정상 동작함을 대조 확인
 ✅ chunking_optimizer.py:305의 split_sentences_mixed 우선 호출로 인해
    split_sentences()가 현재 production에서 도달 불가능한 dead fallback임을 확인
-코드 변경: 없음 (core/chunking_optimizer.py, core/text_normalizer.py 무접촉)
+✅ 발생 빈도 실측 완료 (scripts/shadow_chunk_overflow_audit.py, Beta
+   corpus 12개 문서, production chunk_once() 직접 호출) — 4.6%(352/7736)
+   청크가 1.5x 상한 초과, Profile B 4개 문서에 100% 집중, 최악 5.4배
+코드 변경: 진단 스크립트 2개 신규 추가만
+   (scripts/shadow_chunk_overflow_audit.py, tests/test_shadow_chunk_
+   overflow_audit.py — 유닛테스트 6건 + 전체 회귀 534 passed). core/
+   chunking_optimizer.py, core/text_normalizer.py 등 production 코드는
+   여전히 무접촉.
 ```
 
 ## 다음 조치 (HQ 승인 대기, 이 문서 범위 밖)
 
-1. **발생 빈도 실측** — Beta corpus 12개 문서에 대해 하위 결함 B
-   (`len(chunk) > chunk_size * 1.5`인 production 청크 비율)를 진단
-   스크립트(`scripts/shadow_*.py` 패턴, 코드 미수정)로 측정.
+1. **발생 빈도 실측 — 완료(위 §"발생 빈도 실측" 참고)**. 결과는
+   "드문 예외"가 아니라 Profile B 4개 문서에 구조적으로 집중된
+   4.6%(352/7736 청크)이며, 최악 사례는 target의 5.4배(6511자).
+   실측치가 나왔으므로 수정 우선순위 결정은 더 이상 이 항목에
+   막혀있지 않다 — HQ가 §2 수정 방향을 바로 검토 가능한 상태.
 2. **수정 방향 후보(구현 없음, 검토용만)**:
    - (a) `split_sentences_mixed()`가 입력에 `\n`이 없으면 `split_sentences()`
      (정규식 기반)로 자동 위임하는 내부 폴백 추가.
