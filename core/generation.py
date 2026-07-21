@@ -205,15 +205,47 @@ class SermonOutline:
     conclusion: str = ""
 
 
-_OUTLINE_FORMAT_INSTRUCTIONS = (
-    "아래 형식을 정확히 지켜 작성하라. 다른 설명이나 인사말을 덧붙이지 마라.\n"
-    "제목: <설교 제목>\n"
-    "서론: <서론, 2~3문장>\n"
-    "대지1: <첫 번째 대지 요약, 1문장>\n"
-    "대지2: <두 번째 대지 요약, 1문장>\n"
-    "대지3: <세 번째 대지 요약, 1문장>\n"
-    "결론: <결론, 2~3문장>"
-)
+# [설교 형식] 대지의 "성격"만 다르고 출력 스키마(제목/서론/대지N/결론)는
+# 동일하게 유지한다 — _parse_outline()을 형식별로 분기할 필요가 없어서
+# 파싱 로직이 단순해지고, 사용자가 검토 단계에서 두 형식을 오갈 때도
+# 같은 UI(텍스트 입력 필드들)를 그대로 쓸 수 있다.
+SERMON_FORMATS = ("주제설교", "강해설교")
+_DEFAULT_SERMON_FORMAT = "주제설교"
+
+_OUTLINE_POINT_GUIDANCE = {
+    "주제설교": (
+        "대지는 본문에서 뽑아낸 신학적 주제·교훈 단위로 구성하라 — 절 순서를"
+        " 그대로 따를 필요 없이, 설교의 논지 전개에 맞게 재구성해도 된다."
+    ),
+    "강해설교": (
+        "대지는 반드시 본문의 절 구분을 그대로 따라가라 — 주제를 임의로"
+        " 재구성하지 말고, 본문에 나오는 순서대로 절 범위를 명시하며 그 절이"
+        " 말하는 바를 요약하라. 예: '1-2절 — 의롭다 함을 받은 자가 누리는 평강'."
+    ),
+}
+
+_EXPANSION_STYLE_GUIDANCE = {
+    "주제설교": "성경적 근거, 목회적 적용, 예화를 균형 있게 포함해 2~4개 문단으로 서술하라.",
+    "강해설교": (
+        "해당 절의 문맥과 원문의 의미, 그 절이 본문 전체 흐름에서 하는 역할을"
+        " 중심으로 풀어 설명하라. 예화보다 본문 자체의 논리 전개와 주해에"
+        " 비중을 두어 2~4개 문단으로 서술하라."
+    ),
+}
+
+
+def _outline_format_instructions(sermon_format: str) -> str:
+    guidance = _OUTLINE_POINT_GUIDANCE.get(sermon_format, _OUTLINE_POINT_GUIDANCE[_DEFAULT_SERMON_FORMAT])
+    return (
+        f"설교 형식: {sermon_format}. {guidance}\n\n"
+        "아래 형식을 정확히 지켜 작성하라. 다른 설명이나 인사말을 덧붙이지 마라.\n"
+        "제목: <설교 제목>\n"
+        "서론: <서론, 2~3문장>\n"
+        "대지1: <첫 번째 대지, 1문장>\n"
+        "대지2: <두 번째 대지, 1문장>\n"
+        "대지3: <세 번째 대지, 1문장>\n"
+        "결론: <결론, 2~3문장>"
+    )
 
 
 def _parse_outline(text: str) -> SermonOutline:
@@ -249,17 +281,21 @@ class SermonDraftService:
         self,
         scripture_and_theme: str,
         context_block: str,
+        sermon_format: str = _DEFAULT_SERMON_FORMAT,
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
     ) -> tuple[SermonOutline, Optional[str]]:
         """검색된 자료를 근거로 설교 개요(서론/대지/결론) 1차 초안을
         생성한다. 실패 시 (빈 SermonOutline, 에러 메시지) 반환 — 절대
-        raise하지 않는다(GenerationService.generate()와 동일한 계약)."""
+        raise하지 않는다(GenerationService.generate()와 동일한 계약).
+
+        sermon_format: "주제설교"(기본) | "강해설교" — 대지의 성격만
+        바뀌고 출력 스키마는 동일하다(SERMON_FORMATS 참고)."""
         prompt = (
             f"다음 참고 자료를 근거로 설교 개요를 작성하라.\n"
             f"본문/주제: {scripture_and_theme}\n\n"
             f"참고 자료:\n{context_block}\n\n"
-            f"{_OUTLINE_FORMAT_INSTRUCTIONS}"
+            f"{_outline_format_instructions(sermon_format)}"
         )
         try:
             result = ollama.generate(
@@ -279,24 +315,30 @@ class SermonDraftService:
         scripture_and_theme: str,
         context_block: str,
         style_examples: str = "",
+        sermon_format: str = _DEFAULT_SERMON_FORMAT,
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
     ) -> tuple[str, Optional[str]]:
         """승인된 대지 하나를 실제 설교문 문단으로 확장한다.
         style_examples는 콘텐츠 근거가 아니라 어투 참고용 — 별도 절로
-        구분해 프롬프트에 그 의도를 명시한다(설계 문서 Q3)."""
+        구분해 프롬프트에 그 의도를 명시한다(설계 문서 Q3).
+        sermon_format에 따라 확장 방식이 갈린다 — 주제설교는 예화·적용
+        중심, 강해설교는 본문 주해·문맥 중심(_EXPANSION_STYLE_GUIDANCE)."""
         style_section = (
             f"\n\n문체 참고(아래는 설교자 본인의 과거 설교문 발췌 —"
             f" 내용을 인용하지 말고 어투·문장 호흡만 참고하라):\n{style_examples}"
             if style_examples.strip() else ""
         )
+        style_guidance = _EXPANSION_STYLE_GUIDANCE.get(
+            sermon_format, _EXPANSION_STYLE_GUIDANCE[_DEFAULT_SERMON_FORMAT]
+        )
         prompt = (
-            f"아래 설교 대지 하나를 실제 설교문 문단으로 확장하라.\n"
+            f"아래 설교 대지 하나를 실제 설교문 문단으로 확장하라. (설교 형식: {sermon_format})\n"
             f"본문/주제: {scripture_and_theme}\n"
             f"대지: {point_text}\n\n"
             f"참고 자료:\n{context_block}"
             f"{style_section}\n\n"
-            "성경적 근거, 목회적 적용, 예화를 균형 있게 포함해 2~4개 문단으로 서술하라."
+            f"{style_guidance}"
         )
         try:
             result = ollama.generate(

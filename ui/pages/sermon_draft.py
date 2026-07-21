@@ -19,7 +19,7 @@ import streamlit as st
 
 from ui.pages._base import BasePage
 from core.retrieval import QueryProcessor
-from core.generation import SermonDraftService, SermonOutline
+from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
 from ui.state.query_processor import get_shared_query_processor
 
 _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크게
@@ -56,6 +56,7 @@ def _init_state() -> None:
             "status": "input",
             "scripture_and_theme": "",
             "style_files": [],
+            "sermon_format": SERMON_FORMATS[0],  # "주제설교"
             "outline": None,  # SermonOutline
             "context_block": "",
             "expanded": {},  # point_index(int) -> str
@@ -85,6 +86,14 @@ def _render_input_step() -> None:
         key="sermon_input_text",
     )
 
+    sermon_format = st.radio(
+        "설교 형식",
+        options=SERMON_FORMATS,
+        horizontal=True,
+        help="주제설교: 대지를 신학적 주제 단위로 재구성. 강해설교: 대지가 본문의 절 순서를 그대로 따라가며 주해.",
+        key="sermon_format_radio",
+    )
+
     files = _get_processor().engine.list_source_files()
     style_files = st.multiselect(
         "문체 참고용 과거 설교문 (선택, 최대 3개)",
@@ -96,10 +105,10 @@ def _render_input_step() -> None:
 
     disabled = not scripture_and_theme.strip()
     if st.button("📝 개요 생성", type="primary", use_container_width=True, disabled=disabled):
-        _generate_outline(scripture_and_theme.strip(), style_files)
+        _generate_outline(scripture_and_theme.strip(), style_files, sermon_format)
 
 
-def _generate_outline(scripture_and_theme: str, style_files: list[str]) -> None:
+def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_format: str) -> None:
     state = st.session_state["sermon_draft_state"]
     processor = _get_processor()
     service = _get_service()
@@ -110,7 +119,9 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str]) -> None:
         except Exception as e:
             st.error(f"검색 실패: {e}")
             return
-        outline, error = service.generate_outline(scripture_and_theme, response.llm_context_block)
+        outline, error = service.generate_outline(
+            scripture_and_theme, response.llm_context_block, sermon_format=sermon_format
+        )
 
     if error:
         st.error(f"개요 생성 실패: {error}")
@@ -118,6 +129,7 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str]) -> None:
 
     state["scripture_and_theme"] = scripture_and_theme
     state["style_files"] = style_files
+    state["sermon_format"] = sermon_format
     state["outline"] = outline
     state["context_block"] = response.llm_context_block
     state["expanded"] = {}
@@ -129,6 +141,7 @@ def _render_outline_step() -> None:
     state = st.session_state["sermon_draft_state"]
     outline: SermonOutline = state["outline"]
 
+    st.caption(f"설교 형식: {state['sermon_format']}")
     title = st.text_input("제목", value=outline.title, key="sermon_outline_title")
     introduction = st.text_area("서론", value=outline.introduction, height=80, key="sermon_outline_intro")
 
@@ -184,6 +197,7 @@ def _render_expansion_step() -> None:
                             state["scripture_and_theme"],
                             state["context_block"],
                             style_examples,
+                            sermon_format=state["sermon_format"],
                         )
                     if error:
                         st.error(f"생성 실패: {error}")
