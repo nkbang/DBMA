@@ -119,6 +119,7 @@ def build_document_metadata(
     page: Optional[int] = None,
     title: Optional[str] = None,
     author: Optional[str] = None,
+    doc_type: Optional[str] = None,
 ) -> dict:
     """Build complete document metadata object per METADATA_CONTRACT_v1.
     
@@ -139,6 +140,7 @@ def build_document_metadata(
         page: Page reference (None if unknown)
         title: Document title (None if unknown)
         author: Author name (None if unknown)
+        doc_type: Document type (주석/설교/시전/논문/기타, None if unknown)
     
     Returns:
         Metadata dictionary with all required fields present
@@ -171,6 +173,9 @@ def build_document_metadata(
         "is_ocr": is_ocr,
         "chunk_count": chunk_count,
         "chunk_id_prefix": doc_id,
+        
+        # Document type (unknown = None — never invent)
+        "doc_type": doc_type,
     }
     
     return metadata

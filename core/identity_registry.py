@@ -130,6 +130,7 @@ def register_document(
         "page": metadata.get("page"),
         "title": metadata.get("title"),
         "author": metadata.get("author"),
+        "doc_type": metadata.get("doc_type"),
         # [SPRINT21-B Phase1] additive — default PROCESSED for callers that
         # don't supply it (e.g. scripts not yet updated), matching the
         # migration default above.
