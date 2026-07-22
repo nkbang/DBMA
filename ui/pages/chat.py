@@ -12,6 +12,7 @@ Scope (SPRINT17-Phase5-M1b-2):
     RankedCandidate fields ui/pages/research.py already displays.
 """
 
+from pathlib import Path
 from typing import Optional
 
 import streamlit as st
@@ -158,5 +159,9 @@ def _render_chat_history() -> None:
 
 def _render_source(candidate: RankedCandidate) -> None:
     source_file = candidate.metadata.get("source_file", "Unknown source")
-    st.markdown(f"**{source_file}** · score={candidate.final_score:.3f}")
+    # source_file을 클릭 가능한 링크로 표시 — 클릭 시 원본 문서가 새 윈도우에서 열림
+    # source_file이 상대 경로이면 프로젝트 루트 기준 절대 경로로 변환
+    abs_path = Path(source_file).resolve()
+    file_url = f"file://{abs_path}"
+    st.markdown(f"[**{source_file}**]({file_url}) · score={candidate.final_score:.3f}")
     st.caption(candidate.content[:240].replace("\n", " "))
