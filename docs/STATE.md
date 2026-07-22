@@ -49,6 +49,12 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 - `docs/architecture/ADR-010-DBMA-REQ-RAG-Evaluation-Quality.md`
   (구조 확정, Phase 1 착수 전 미확정 항목 2건 별도 결정 필요):
   LLM-as-judge pointwise 평가 인프라(`core/evaluation/`).
+- `docs/architecture/ADR-011-Header-Footer-Repetition-Detector.md`
+  (제안, 2026-07-22, HQ 승인 대기): 한글 PDF 주석서(Profile B)의 반복
+  러닝헤더 문제 — `noise_classifier.py`(디노이즈)와
+  `semantic_boundary_detector.py`(청킹 고수준 결과) 양쪽이 독립적으로
+  발견해 둔 동일 미해결 갭(둘 다 stateless 구조라 반복 빈도 추적 불가)을
+  단일 `RepetitionTracker` 모듈로 통합 해결하는 제안.
 
 ---
 

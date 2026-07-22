@@ -40,11 +40,19 @@ SPRINT20 governance 결함을 마무리하고 RC 선언 여부 결정)는 RC 선
    정리해두고 나중에 결정" — 2026-07-22 기준 보류, 착수하지 않음.**
    재개 시 참고: `docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md`
    Next Steps §5.
-2. **ADR-009 SIL Theology Engine** — 구조(TSU 확장 필드)만 확정, 신학
-   교리 어휘·임계값 확정은 **사용자(신학적 권위자) 본인의 결정 사항**
-   — 엔지니어링 작업으로 대신 처리할 수 없음.
+2. ~~ADR-009 SIL Theology Engine~~ — **완료** (2026-07-22, commit
+   `0324dca`). 사용자가 신학 전통(개혁파 침례교)과 어휘를 직접 확정,
+   `core/sermon/doctrine_filter.py` 구현·`ui/pages/sermon_draft.py`
+   연결까지 완료. (이 항목도 한때 "미착수"로 오래 남아있었을 뻔한
+   것을 처리 직후 바로 갱신 — 문서 지연 갱신 재발 방지.)
 3. **ADR-010 RAG Evaluation** — Phase 1 착수 전 미확정 항목 2건 결정 필요
    (`core/evaluation/` 인프라는 존재, 정식 실행 미착수).
+4. **ADR-011 Header/Footer Repetition Detector** (신규, 2026-07-22) —
+   한글 PDF 주석서(Profile B)의 반복 러닝헤더가 디노이즈(`noise_
+   classifier.py`)와 청킹 고수준 결과(`semantic_boundary_detector.py`)
+   양쪽에서 독립적으로 발견된 동일 갭임을 확인, 단일
+   `RepetitionTracker` 모듈로 통합 해결하는 설계 제안 — 구현 전,
+   HQ 승인 대기. 참고: `docs/architecture/ADR-011-Header-Footer-Repetition-Detector.md`.
 
 ---
 
