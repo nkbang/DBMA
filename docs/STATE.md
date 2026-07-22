@@ -84,9 +84,13 @@ STATE.md가 SPRINT27-D에서 멈춰 있는 동안 실제로는 아래까지 진�
     `docs/PREFLIGHT-split-sentences-mixed-chunk-overflow.md`로 분리 추적.
     하위 결함 B는 `_merge_sentence_fragments()` word-safe hard slice로
     수정 완료(over-cap 비율 4.6%→0.5%, commit `c513bad`). **근본 수정
-    (a)(`split_sentences_mixed()`의 `split_sentences()` 위임)는 아직
-    미착수 — corpus 전체 문장분할 동작에 영향을 주므로 별도 벤치마크
-    검증 필요, HQ 결정 대기.**
+    (a)도 완료됨**(`_split_line_on_sentence_end()` 신설로 문장부호 기준
+    분할 추가, commit `d45caed`, 2026-07-21 — 애초 제안한 "`split_
+    sentences()`로 위임" 방식은 아니었지만 동일 목적 달성. 잔여
+    over-cap은 0.2%(40건)로, 이는 Axis 3 unsplittable outlier — 별개
+    문제로 Hierarchical Chunk Builder 쪽에서 계속 추적). **[2026-07-22
+    정정] 이 항목은 한때 "미착수"로 잘못 기재됐었다 — Preflight 문서의
+    갱신 지연분을 그대로 옮겨적은 것이 원인, git 로그 재대조로 확인.**
 
 ---
 
@@ -303,11 +307,18 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
 - [x] SPRINT32 — PdfHeadingProvider production 연결(PDF), word-boundary 매칭 버그 수정
 - [x] SPRINT33-A/B/C — Boundary Score 모델(ADR-007) 설계·shadow 검증·보정
 - [x] SPRINT33-D — Hierarchical Chunk Builder 프로토타입 + D5 정식 평가 (프로덕션 전환은 미실행)
-- [ ] 근본 수정 (a) — `split_sentences_mixed()`의 `split_sentences()` 위임 (HQ 결정 대기)
+- [x] 근본 수정 (a) — `split_sentences_mixed()` 문장부호 기준 분할 추가
+      (commit `d45caed`, 2026-07-21 — 2026-07-22에 "미착수" 오기재를
+      정정, 잔여 0.2%는 별개의 Axis 3 unsplittable outlier 문제)
 - [ ] Hierarchical Chunk Builder 프로덕션 전환 여부 결정 (ADR-008 조건 검토)
 - [x] Logos 소스 인제스트 + PassageMatch/SourceTierBonus 스코어링 (SPRINT 외 병행, commit `08e5704`)
 - [x] 한국어 출력 순도 검증 — 재시도 + sanitize 백스톱 (SPRINT 외 병행, commit `08e5704`)
 - [x] 대시보드 문서 카운트 통일 + 수량사 적용 (SPRINT 외 병행, commit `8f40ea0`)
+- [x] Legacy artifact 정리(output/registry, output/baseline, output_sav →
+      backups/) + classify_documents_from_frontmatter.py 경로 버그 수정
+      (C1-TASK-ORDER-007, commit `bccd3f4`)
+- [ ] Logos manifest 템플릿 준비 완료, 실제 Logos 자료 인제스트는 사용자
+      액션 대기 (C1-TASK-ORDER-007 항목6)
 
 ---
 

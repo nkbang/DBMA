@@ -13,25 +13,36 @@ SPRINT20 governance 결함을 마무리하고 RC 선언 여부 결정)는 RC 선
 
 ---
 
-## SPRINT28~33-D 이후 현재 우선순위 (2026-07-22)
+## SPRINT28~33-D 이후 현재 우선순위 (2026-07-22, 갱신)
 
-1. **근본 수정 (a)** — `core/text_normalizer.py::split_sentences_mixed()`가
-   입력에 `\n`이 없으면 `split_sentences()`(정규식 기반)로 위임하도록 수정.
-   corpus 전체 문장분할 동작에 영향을 주므로 별도 벤치마크 검증 필요 —
-   **HQ 결정 대기** (`docs/PREFLIGHT-split-sentences-mixed-chunk-overflow.md`).
-2. **Hierarchical Chunk Builder 프로덕션 전환 여부** — 현재
+~~1. 근본 수정 (a)~~ — **완료 확인** (commit `d45caed`, 2026-07-21).
+`split_sentences_mixed()`에 문장부호 기준 분할(`_split_line_on_sentence_end()`)
+추가. 이 항목이 "미착수"로 기재됐던 건 오류였다 — Preflight 문서(작성 후
+갱신 지연) 서술을 그대로 옮기고 git 로그를 재대조하지 않은 것이 원인,
+2026-07-22 CUE가 직접 실측 재검증 후 정정(`docs/PREFLIGHT-split-sentences-mixed-chunk-overflow.md`
+참고). 잔여 over-cap 0.2%(40건)는 별개의 Axis 3 unsplittable outlier
+문제로 아래 항목1(Hierarchical Chunk Builder)에서 계속 추적.
+
+~~5. Legacy artifact 정리~~ / ~~6. Logos 소스 인제스트 실사용~~ —
+**완료** (C1-TASK-ORDER-007, commit `bccd3f4`). Legacy artifact 98개
+파일 `backups/legacy_artifact_cleanup_20260722/`로 이동(삭제 아님),
+`classify_documents_from_frontmatter.py`의 stale 경로 하드코딩 버그도
+함께 수정. Logos manifest 템플릿(`docs/logos_manifest.example.json`)
+준비 완료 — 실제 Logos 자료 인제스트 자체는 여전히 사용자 액션 대기.
+
+**남은 우선순위 (번호 재부여)**:
+
+1. **Hierarchical Chunk Builder 프로덕션 전환 여부** — 현재
    `core/hierarchical_chunk_builder.py`는 프로토타입 단계이고 프로덕션
    경로(`core/chunking_optimizer.py`)는 무접촉 상태. 전환 조건은
-   ADR-008에 정의되어 있으나 착수 여부 미결정.
-3. **ADR-009 SIL Theology Engine** — 구조(TSU 확장 필드)만 확정, 신학
-   교리 어휘·임계값 확정 및 실제 태깅 로직은 미착수.
-4. **ADR-010 RAG Evaluation** — Phase 1 착수 전 미확정 항목 2건 결정 필요
+   ADR-008에 정의되어 있으나 착수 여부 미결정. (참고: 위에서 완료된
+   근본 수정 (a) 이후에도 잔여 0.2% over-cap이 있으며, 이건 이 항목이
+   해결해야 할 Axis 3 문제와 같은 것으로 확인됨.)
+2. **ADR-009 SIL Theology Engine** — 구조(TSU 확장 필드)만 확정, 신학
+   교리 어휘·임계값 확정은 **사용자(신학적 권위자) 본인의 결정 사항**
+   — 엔지니어링 작업으로 대신 처리할 수 없음.
+3. **ADR-010 RAG Evaluation** — Phase 1 착수 전 미확정 항목 2건 결정 필요
    (`core/evaluation/` 인프라는 존재, 정식 실행 미착수).
-5. **Legacy artifact 정리** — `output/registry/`, `output/baseline/`,
-   `output_sav/` 등 정리 여부 — SPRINT20 때부터 미결정 상태로 이월.
-6. **Logos 소스 인제스트 실사용** — `scripts/ingest_logos_export.py`는
-   구현·검증 완료. 실제 Logos Clippings/manifest 준비가 있어야 다음
-   단계(로마서 시리즈 MVP) 진행 가능 — 사용자 액션 대기.
 
 ---
 
