@@ -168,15 +168,37 @@ semantic chunking 논의와 독립적인 문제다 — 현재도 문장 단위 �
    (`core/text_normalizer.py`, `tests/test_split_sentences_mixed_punctuation.py`)
 2. ~~제안 1(§1 threshold 재산정)~~ 부분 확정 (2026-07-21) — Axis 1/3
    임계값 확정, Axis 2는 Profile B 불충분 판정(위 참고).
-3. ~~제안 3(임베딩 기반 6번째 feature)~~ 구현 완료 (2026-07-21) —
-   `EmbeddingSimilarityBoundaryFeature`(`core/semantic_boundary_detector.py`),
-   `BoundaryContext.previous_candidate_text` 필드 추가,
+3. ~~제안 3(임베딩 기반 6번째 feature)~~ 구현 및 실측 검증 완료
+   (2026-07-21) — `EmbeddingSimilarityBoundaryFeature`
+   (`core/semantic_boundary_detector.py`),
+   `BoundaryContext.previous_candidate_text` 필드,
    `hierarchical_chunk_builder.build_chunks()` 연결(`core/embedder.py`
-   재사용, 신규 임베딩 인프라 없음). weight=40.0·drop_threshold=0.5는
-   다른 feature와 동일하게 미보정 설계 초안 수치
-   (`core/config.py::EMBEDDING_SIMILARITY_WEIGHT/_DROP_THRESHOLD`).
-   여전히 dormant — 프로덕션 미연결. **다음: Phase 3-A와 동일한 방법론
-   (Axis 2 재측정)으로 Profile B 개선 여부를 실측 검증**해야 §1 판정을
-   다시 볼 수 있다.
+   재사용, 신규 임베딩 인프라 없음). 여전히 dormant — 프로덕션 미연결.
+
+   **버그 2건 발견·수정 (재측정 과정에서)**:
+   - `core.embedder.embed()`는 "폴백"으로 문서화돼 있었지만 실제로는
+     legacy MiniLM(768차원)만 로드해 `EMBEDDING_DIMENSION`(1024, bge-m3
+     기준)과 항상 불일치, 매 호출이 `DimensionMismatchError`로 실패하고
+     있었다. feature의 안전 폴백(`except Exception: return 0.0`)이 이를
+     조용히 삼켜 "유사도가 높아 발화 안 함"처럼 보였다 — 실제로는 매번
+     실패해 완전히 죽어있던 것. 실제 프로덕션 진입점인
+     `core.embedder.get_embedder()`(Ollama bge-m3 우선)로 교체.
+   - threshold=0.5(설계 초안값)는 버그 수정 후 실측한 진짜 유사도
+     분포(Profile B 4개 문서, n=7055 인접 후보쌍)의 중앙값(0.5615)보다
+     낮아, 오히려 절반 가까운 후보를 경계로 판정하는 반대 방향 문제가
+     있었다. p15 근처인 **0.41로 재보정**(`core/config.py`).
+
+   **최종 Axis 재측정 (Profile B, 실제 bge-m3 + 재보정 threshold)**:
+
+   | 지표 | Phase 3-A (이전) | 이번 (임베딩 feature 도입 후) |
+   |---|---|---|
+   | Axis 1 (Recovery) | 99.0% | 99.0% (변화 없음) |
+   | **Axis 2 (Semantic Flush)** | **16.4%** | **33.7%** (+17.3%p, 약 2배) |
+   | Axis 3 (Outlier) | 5.5% | 0.2% (제안 4 수정 효과, 별건) |
+
+   Axis 2가 실질적으로 개선됐다 — §1이 "불충분"으로 판정했던 Profile B
+   상태가 유의미하게 나아졌다. 다만 이 자체가 프로덕션 전환 승인은
+   아니다(§1 최종 재판정·제안 2 Level 3 구현·D-5 게이트 재통과는 별도
+   HQ 승인 필요, ADR-007 원칙 유지).
 4. RAPTOR/Late Chunking 등은 이번 범위 밖 — 별도 C1 분석 요청 여부만
    기록하고 착수하지 않음.

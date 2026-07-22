@@ -128,13 +128,20 @@ SCRIPTURE_REFERENCE_WEIGHT = 15.0
 
 # [ADR-008 제안 3, 2026-07-21] core.semantic_boundary_detector.
 # EmbeddingSimilarityBoundaryFeature — 인접 후보 텍스트 임베딩(bge-m3,
-# core/embedder.py 재사용)의 코사인 유사도가 이 값 미만이면 주제 전환
-# (경계 신호)으로 본다. Profile B(학력 밀도 낮은 학술 주석서)의 Axis 2
-# (semantic flush ratio) 16.4%가 프로덕션 전환에 불충분하다는 ADR-008
-# §1 판정에 대응하는 신규 feature — 다른 feature와 동일하게 SPRINT33-B
-# 설계 초안 수치이며 실제 코퍼스로 보정되지 않았다(보정은 별도 승인
-# 단계).
-EMBEDDING_SIMILARITY_DROP_THRESHOLD = 0.5
+# core/embedder.py::get_embedder() 재사용)의 코사인 유사도가 이 값
+# 미만이면 주제 전환(경계 신호)으로 본다. Profile B(학력 밀도 낮은
+# 학술 주석서)의 Axis 2(semantic flush ratio) 16.4%가 프로덕션 전환에
+# 불충분하다는 ADR-008 §1 판정에 대응하는 신규 feature.
+#
+# [재보정, 2026-07-21] 최초 설계 초안값 0.5는 실측 분포(Profile B
+# 4개 문서, n=7055 인접 후보쌍, get_embedder()의 실제 bge-m3 경로로
+# 재계산)의 중앙값(0.5615)보다 낮아 오히려 인접 후보 절반 가까이를
+# 경계로 판정하는 반대 방향 문제가 있었다(get_embedder() 대신 항상
+# 실패하던 legacy embed() 버그를 고친 뒤 드러남). p15 근처로 하향
+# 재보정 — 급격한 주제 전환(하위 ~15%)만 신호로 잡는다.
+#   실측: p1=0.270 p5=0.333 p10=0.379 p20=0.441 p25=0.470
+#         median=0.562 p75=0.638 p90=0.702
+EMBEDDING_SIMILARITY_DROP_THRESHOLD = 0.41
 EMBEDDING_SIMILARITY_WEIGHT = 40.0
 
 # ── 벡터DB 설정 (하위 호환성) ───────────────────────────

@@ -65,7 +65,7 @@ from core.config import (
     SCRIPTURE_REFERENCE_HEAD_WINDOW,
     SCRIPTURE_REFERENCE_WEIGHT,
 )
-from core.embedder import embed as _default_embed
+from core.embedder import get_embedder as _get_embedder
 from core.heading_provider import (
     ProviderHeading,
     _first_contained,
@@ -73,6 +73,17 @@ from core.heading_provider import (
 )
 from core.retrieval import QueryParser
 from core.text_normalizer import _ends_like_sentence
+
+# [ADR-008 제안 3 수정, 2026-07-21] core.embedder.embed()는 문서에는
+# "폴백"으로 적혀 있지만 실제로는 legacy MiniLM(768차원)만 로드하는
+# 함수다 — core.config.EMBEDDING_DIMENSION(1024, bge-m3 기준)과 맞지
+# 않아 항상 DimensionMismatchError를 던진다. 실측(Axis 2 재측정)에서
+# 이 예외가 EmbeddingSimilarityBoundaryFeature의 안전 폴백(except
+# Exception: return 0.0)에 조용히 삼켜져, feature가 "유사도가 높아
+# 안 켜짐"이 아니라 "매 호출이 실패해 전혀 작동하지 않음" 상태였음이
+# 드러났다. core.retrieval.py가 실제로 쓰는 진입점인
+# get_embedder()(Ollama bge-m3 우선, 실패 시 MiniLM 폴백)로 교체.
+_embedder = _get_embedder()
 
 
 def _cosine_similarity(a, b) -> float:
@@ -293,7 +304,7 @@ class EmbeddingSimilarityBoundaryFeature:
     signal 0.0=없음" 계약 유지)."""
 
     def __init__(self, embed_fn=None, drop_threshold: float = EMBEDDING_SIMILARITY_DROP_THRESHOLD):
-        self._embed_fn = embed_fn or _default_embed
+        self._embed_fn = embed_fn or _embedder.embed
         self._drop_threshold = drop_threshold
 
     def score(self, context: BoundaryContext) -> float:

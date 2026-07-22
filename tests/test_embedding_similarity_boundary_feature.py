@@ -73,11 +73,15 @@ def test_embed_failure_falls_back_to_zero_not_raise():
     assert feature.score(ctx) == 0.0
 
 
-def test_default_embed_fn_is_core_embedder_embed():
-    from core.embedder import embed
+def test_default_embed_fn_uses_production_get_embedder_not_legacy_embed():
+    """[ADR-008 제안 3 수정, 2026-07-21] core.embedder.embed()는 legacy
+    MiniLM(768차원)만 로드해 EMBEDDING_DIMENSION(1024)과 항상 불일치
+    (DimensionMismatchError) — 실제 프로덕션이 쓰는 get_embedder()(Ollama
+    bge-m3 우선)를 기본값으로 써야 한다."""
+    from core.semantic_boundary_detector import _embedder
 
     feature = EmbeddingSimilarityBoundaryFeature()
-    assert feature._embed_fn is embed
+    assert feature._embed_fn == _embedder.embed
 
 
 if __name__ == "__main__":
