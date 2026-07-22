@@ -202,3 +202,36 @@ semantic chunking 논의와 독립적인 문제다 — 현재도 문장 단위 �
    HQ 승인 필요, ADR-007 원칙 유지).
 4. RAPTOR/Late Chunking 등은 이번 범위 밖 — 별도 C1 분석 요청 여부만
    기록하고 착수하지 않음.
+5. ~~제안 2(Level 3 Hard Fallback)~~ **구현 및 실측 검증 완료 (2026-07-22,
+   commit `08d542a`)** — `core/hierarchical_chunk_builder.py`에
+   `_slice_preserving_words()` 독립 재구현(Amendment A 원칙 준수, 프로덕션
+   private 함수 미import). 회귀 tests/ 602 passed(신규 3건 포함).
+
+   **검증(가짜 임베딩 스텁으로 즉시 재실행 — 길이 상한 보장은 semantic
+   신호와 무관하므로 실제 임베딩 불필요)**:
+   ```
+   safety_cap = 1800
+   2 Chronicles Vol.15                 chunks=1751  max_len=1800  over_cap=0
+   2 Kings Anchor Bible Commentary      chunks=1102  max_len=1800  over_cap=0
+   2 Kings Power and the Fury           chunks=1204  max_len=1800  over_cap=0
+   2 Kings Vol.13(최악 사례 문서)        chunks=2119  max_len=1800  over_cap=0
+   TOTAL: chunks=6176  over_cap=0 (0.0%)
+   ```
+   Profile B 4개 문서(이전 unsplittable outlier 최악 18.6%였던 "2 Kings,
+   Vol.13" 포함) 전체에서 청크 길이가 예외 없이 safety_cap(1800자) 이하로
+   제한됨을 확인 — Level 3가 설계 의도대로 작동.
+
+   **참고(측정 도구 제약)**: `scripts/shadow_d5_metrics_embedding_rerun.py`의
+   `Axis 3` 지표는 `build_chunks()` 출력이 아니라 candidate 자체 속성만
+   측정하도록 설계돼 있어(`d5.unsplittable_outliers(candidates)`),
+   Level 3 적용 여부와 무관하게 항상 동일한 값(0.2%)을 낸다 — 이 지표로
+   Level 3 효과를 판단할 수 없음(위 직접 청크 길이 검증이 올바른 지표).
+   같은 재측정에서 Axis 2는 33.7%→30.2%로 소폭 하락했는데, 이는 Level 3가
+   만든 조각들이 "의미 경계 flush 아님"으로 분모에만 추가되어 비율이
+   희석된 측정 부작용이지 실제 semantic flush 능력 저하가 아니다.
+
+   **프로덕션 전환 여부는 여전히 별도 HQ 결정 사항** — ADR-008 제안
+   2/3/4 모두 완료, 제안 1(§1 threshold)도 Axis 1/3 확정 + Axis 2는
+   Profile B 개선 확인까지 마친 상태이나, 이 ADR은 전환을 결정하지
+   않는다(ADR-007 "D-5 게이트 통과 = 실행 승인 아님" 원칙 유지). 2026-07-22
+   기준 데이터만 정리, 전환 착수는 보류.

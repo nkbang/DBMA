@@ -78,8 +78,10 @@ STATE.md가 SPRINT27-D에서 멈춰 있는 동안 실제로는 아래까지 진�
   ScriptureReferenceBoundary, 가중치 보정, shadow-vs-production delta 측정).
 - **SPRINT33-D** — Hierarchical Chunk Builder 프로토타입
   (`core/hierarchical_chunk_builder.py`, ADR-007 Amendment A) 구현 및
-  D5 3축 정식 평가 완료. **상태: 프로토타입 단계 — 프로덕션(`chunking_
-  optimizer.py`) 전환은 아직 미실행.**
+  D5 3축 정식 평가 완료. ADR-008의 제안 2(Level 3 Hard Fallback,
+  2026-07-22 완료)/3(임베딩 6번째 feature)/4(버그 수정)까지 모두
+  완료(commit `08d542a`). **상태: 프로토타입 완결 — 프로덕션(`chunking_
+  optimizer.py`) 전환은 데이터 갖춰졌으나 HQ 결정 대기로 보류(2026-07-22).**
   - 이 과정에서 `split_sentences_mixed()`의 줄바꿈 의존 버그를 발견 →
     `docs/PREFLIGHT-split-sentences-mixed-chunk-overflow.md`로 분리 추적.
     하위 결함 B는 `_merge_sentence_fragments()` word-safe hard slice로
@@ -310,7 +312,13 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
 - [x] 근본 수정 (a) — `split_sentences_mixed()` 문장부호 기준 분할 추가
       (commit `d45caed`, 2026-07-21 — 2026-07-22에 "미착수" 오기재를
       정정, 잔여 0.2%는 별개의 Axis 3 unsplittable outlier 문제)
-- [ ] Hierarchical Chunk Builder 프로덕션 전환 여부 결정 (ADR-008 조건 검토)
+- [x] Hierarchical Chunk Builder Level 3(Hard Fallback) 구현 (ADR-008
+      제안 2, commit `08d542a`, 2026-07-22) — 청크 길이 상한 보장을 Profile
+      B 4개 문서(6176청크)에서 실측 확인, over_cap 0건(0.0%). ADR-008
+      제안 2/3/4 모두 완료.
+- [ ] Hierarchical Chunk Builder **프로덕션 전환 여부**는 여전히 미결정
+      — 데이터는 다 갖췄으나(ADR-008 참고) HQ 승인 대기, 2026-07-22 기준
+      보류 결정(데이터만 정리, 착수하지 않음).
 - [x] Logos 소스 인제스트 + PassageMatch/SourceTierBonus 스코어링 (SPRINT 외 병행, commit `08e5704`)
 - [x] 한국어 출력 순도 검증 — 재시도 + sanitize 백스톱 (SPRINT 외 병행, commit `08e5704`)
 - [x] 대시보드 문서 카운트 통일 + 수량사 적용 (SPRINT 외 병행, commit `8f40ea0`)

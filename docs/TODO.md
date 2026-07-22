@@ -32,12 +32,14 @@ SPRINT20 governance 결함을 마무리하고 RC 선언 여부 결정)는 RC 선
 
 **남은 우선순위 (번호 재부여)**:
 
-1. **Hierarchical Chunk Builder 프로덕션 전환 여부** — 현재
-   `core/hierarchical_chunk_builder.py`는 프로토타입 단계이고 프로덕션
-   경로(`core/chunking_optimizer.py`)는 무접촉 상태. 전환 조건은
-   ADR-008에 정의되어 있으나 착수 여부 미결정. (참고: 위에서 완료된
-   근본 수정 (a) 이후에도 잔여 0.2% over-cap이 있으며, 이건 이 항목이
-   해결해야 할 Axis 3 문제와 같은 것으로 확인됨.)
+1. **Hierarchical Chunk Builder 프로덕션 전환 여부** — ADR-008 제안
+   2(Level 3 Hard Fallback)까지 2026-07-22 완료(commit `08d542a`) — 이제
+   제안 2/3/4 전부 완료, Profile B 4개 문서(6176청크) 실측으로 청크 길이
+   상한 100% 보장 확인(over_cap 0건). `core/chunking_optimizer.py`(프로덕션)는
+   여전히 무접촉. **데이터는 다 갖춰졌으나 실제 전환은 사용자가 "데이터만
+   정리해두고 나중에 결정" — 2026-07-22 기준 보류, 착수하지 않음.**
+   재개 시 참고: `docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md`
+   Next Steps §5.
 2. **ADR-009 SIL Theology Engine** — 구조(TSU 확장 필드)만 확정, 신학
    교리 어휘·임계값 확정은 **사용자(신학적 권위자) 본인의 결정 사항**
    — 엔지니어링 작업으로 대신 처리할 수 없음.
