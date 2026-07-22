@@ -936,6 +936,7 @@ def compute_theological_score(
     query: str,
     tsu: dict[str, Any],
     weights: Optional[dict[str, float]] = None,
+    content_refs_cache: Optional[dict[int, list["ScriptureReference"]]] = None,
 ) -> tuple[float, dict[str, Any]]:
     """
     Compute theological relevance score (SSA + TRS + SUS).
@@ -946,6 +947,10 @@ def compute_theological_score(
         query: The user query string.
         tsu: TSU dict with 'content', 'verse_mapping', 'themes'.
         weights: Optional score component weights.
+        content_refs_cache: Optional per-engine cache (keyed by id(tsu))
+            for _scripture_alignment_score()'s TSU-content scripture-ref
+            parse — see that function's docstring. None (default) keeps
+            the original always-reparse behavior for standalone callers.
 
     Returns:
         (total_score, breakdown) tuple.
@@ -954,7 +959,7 @@ def compute_theological_score(
         weights = {"ssa": 0.45, "trs": 0.35, "sus": 0.20}
 
     # Scripture Alignment Score (SSA)
-    ssa = _scripture_alignment_score(query, tsu)
+    ssa = _scripture_alignment_score(query, tsu, content_refs_cache)
 
     # Thematic Relevance Score (TRS)
     trs = _thematic_relevance_score(query, tsu)
@@ -973,15 +978,45 @@ def compute_theological_score(
     return round(total, 4), breakdown
 
 
-def _scripture_alignment_score(query: str, tsu: dict[str, Any]) -> float:
-    """Compute scripture alignment score (0-1)."""
+def _scripture_alignment_score(
+    query: str,
+    tsu: dict[str, Any],
+    content_refs_cache: Optional[dict[int, list["ScriptureReference"]]] = None,
+) -> float:
+    """Compute scripture alignment score (0-1).
+
+    [성능 수정, 2026-07-22] 실측: 메타데이터 필터가 좁혀지지 않는 쿼리
+    (예: 영문 책명이 없는 한국어 쿼리라 query_refs가 항상 빈 경우)에서
+    _parse_refs_from_text(tsu.content)가 후보마다(52,064건 기준 쿼리당
+    최대 ~4.1초) 매번 다시 실행되고 있었다 — TSU content는 코퍼스
+    로드 후 절대 안 바뀌는데 캐싱이 없었다. content_refs_cache가
+    주어지면 id(tsu) 기준으로 한 번만 파싱해 재사용한다(캐시가 없으면
+    이전과 동일하게 매번 새로 계산 — 이 함수를 단독 호출하는 기존
+    코드/테스트는 영향 없음).
+
+    또한 query_refs가 이미 비어있지 않으면 all_refs가 어차피 non-empty로
+    확정되므로(아래 "if not all_refs" 분기 무관), 그 경우엔 tsu_content_refs
+    파싱 자체를 생략한다 — 캐시 유무와 무관한 별도의 안전한 단축 경로."""
     verse_map = tsu.get("verse_mapping", {})
     if not verse_map or not verse_map.get("book_id"):
         return 0.0
 
     # Parse refs from query and TSU content
     query_refs = _parse_refs_from_text(query)
-    tsu_content_refs = _parse_refs_from_text(tsu.get("content", ""))
+    if query_refs:
+        # all_refs is guaranteed non-empty via query_refs alone — the
+        # "if not all_refs" branch below can't fire either way, so skip
+        # parsing tsu content entirely.
+        tsu_content_refs: list["ScriptureReference"] = []
+    elif content_refs_cache is not None:
+        key = id(tsu)
+        cached = content_refs_cache.get(key)
+        if cached is None:
+            cached = _parse_refs_from_text(tsu.get("content", ""))
+            content_refs_cache[key] = cached
+        tsu_content_refs = cached
+    else:
+        tsu_content_refs = _parse_refs_from_text(tsu.get("content", ""))
     all_refs = query_refs + tsu_content_refs
 
     if not all_refs:
@@ -1151,6 +1186,14 @@ class RetrievalEngine:
         self.tfidf_vectorizer = TfidfVectorizer()
         self.vectors: list[dict[str, float]] = []
         self._tfidf_index_built = False
+
+        # [성능 수정, 2026-07-22] compute_theological_score()의
+        # _scripture_alignment_score()가 TSU content의 scripture-ref
+        # 파싱을 매 쿼리마다 재계산하던 것을 막는 캐시 — id(tsu) 기준,
+        # 엔진 인스턴스 수명 전체에 걸쳐 유지(코퍼스 로드 후 TSU content는
+        # 안 바뀌므로 무효화 불필요). 실측: 52,064건 코퍼스에서 쿼리당
+        # 최대 ~4.1초 걸리던 구간을 제거.
+        self._content_refs_cache: dict[int, list["ScriptureReference"]] = {}
 
     def _ensure_tfidf_index(self) -> None:
         """Build the in-memory TF-IDF fallback index on first actual need
@@ -1357,18 +1400,20 @@ class RetrievalEngine:
         for idx in score_targets:
             tsu = self.tsus[idx]
             score, breakdown = compute_theological_score(
-                parsed_query.original_query, tsu
+                parsed_query.original_query, tsu,
+                content_refs_cache=self._content_refs_cache,
             )
             theological_scores[idx] = score
             theological_breakdowns[idx] = breakdown
-        
-        # Ensure all ranking_indices have theological scores (may be missing if 
+
+        # Ensure all ranking_indices have theological scores (may be missing if
         # fallback pool differs from score_targets)
         for idx in set(candidate_pool):
             if idx not in theological_scores:
                 tsu = self.tsus[idx]
                 score, breakdown = compute_theological_score(
-                    parsed_query.original_query, tsu
+                    parsed_query.original_query, tsu,
+                    content_refs_cache=self._content_refs_cache,
                 )
                 theological_scores[idx] = score
                 theological_breakdowns[idx] = breakdown
