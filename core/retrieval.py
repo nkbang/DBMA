@@ -105,6 +105,7 @@ class RankedCandidate:
     vector_score: float = 0.0
     bm25_score: float = 0.0
     theological_score: float = 0.0
+    passage_score: float = 0.0
     final_score: float = 0.0
     explanation: str = ""
 
@@ -116,6 +117,7 @@ class RankedCandidate:
             "vector_score": round(self.vector_score, 4),
             "bm25_score": round(self.bm25_score, 4),
             "theological_score": round(self.theological_score, 4),
+            "passage_score": round(self.passage_score, 4),
             "final_score": round(self.final_score, 4),
             "explanation": self.explanation,
         }
@@ -139,6 +141,7 @@ class PerformanceMetrics:
     embedding_cache_hits: int = 0
     embedding_cache_misses: int = 0
     bm25_scoring_ms: float = 0.0
+    passage_match_ms: float = 0.0
     memory_peak_mb: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
@@ -155,6 +158,8 @@ class PerformanceMetrics:
             "deduplication_ms": round(self.deduplication_ms, 2),
             "context_assembly_ms": round(self.context_assembly_ms, 2),
             "citation_builder_ms": round(self.citation_builder_ms, 2),
+            "bm25_scoring_ms": round(self.bm25_scoring_ms, 2),
+            "passage_match_ms": round(self.passage_match_ms, 2),
             "embedding_cache_hits": self.embedding_cache_hits,
             "embedding_cache_misses": self.embedding_cache_misses,
             "memory_peak_mb": round(self.memory_peak_mb, 2),
@@ -847,6 +852,83 @@ class TfidfVectorizer:
 
 
 # ============================================================
+# SECTION 6b: PASSAGE MATCH — docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.3
+# ============================================================
+#
+# Cross-checks the query's detected scripture reference(s) against a TSU's
+# own verse_mapping (populated by core/tsu_builder.py's Scripture Evidence
+# Resolver) so that e.g. a Romans 12 query ranks a Romans 12 commentary
+# chunk above a chunk that only scores well on generic semantic/theological
+# similarity (Romans 8, same themes, different chapter). Deliberately
+# reuses ScriptureReference/verse_mapping — no new parsing or storage
+# introduced, same principle as _resolve_scripture_ref() in tsu_builder.py.
+
+def compute_passage_match_score(
+    scripture_refs: list["ScriptureReference"],
+    verse_mapping: dict[str, Any],
+) -> float:
+    """Score how well a TSU's verse_mapping matches the query's detected
+    scripture reference(s). Returns 0.0 when the query carries no scripture
+    reference (nothing to match against) or the TSU carries no verse_mapping
+    (never guessed) — never a placeholder positive value in either case.
+
+    Score components per matching ref (best-matching ref wins, capped 1.0):
+      book_id match       +0.5
+      chapter exact match  +0.3  (else +0.15 if within 1 chapter — commentary
+                                   chunks commonly span a chapter boundary)
+      verse range overlap +0.2  (only checked when both sides specify verses)
+    """
+    if not scripture_refs or not verse_mapping:
+        return 0.0
+
+    tsu_book = verse_mapping.get("book_id")
+    if not tsu_book:
+        return 0.0
+
+    tsu_chapter = verse_mapping.get("chapter")
+    tsu_verse_start = verse_mapping.get("verse_start")
+    tsu_verse_end = verse_mapping.get("verse_end", tsu_verse_start)
+
+    best = 0.0
+    for ref in scripture_refs:
+        if ref.book_id != tsu_book:
+            continue
+        score = 0.5
+
+        if tsu_chapter is not None:
+            if tsu_chapter == ref.chapter:
+                score += 0.3
+            elif abs(tsu_chapter - ref.chapter) == 1:
+                score += 0.15
+
+        if (
+            ref.verse_start
+            and tsu_verse_start is not None
+            and tsu_chapter == ref.chapter
+        ):
+            ref_end = ref.verse_end if ref.verse_end is not None else ref.verse_start
+            if ref.verse_start <= tsu_verse_end and ref_end >= tsu_verse_start:
+                score += 0.2
+
+        best = max(best, min(score, 1.0))
+
+    return best
+
+
+def compute_source_tier_bonus(tsu: dict[str, Any]) -> float:
+    """Small reviewed-source bonus (design doc §9.3 `SourceTierBonus`, weight
+    0.05) — rewards externally-sourced (e.g. Logos-export) TSUs that have
+    passed human review, without letting an unreviewed external source
+    outrank a reviewed one on this component. Returns 0.0 for the entire
+    pre-existing corpus (no source_provenance field), so this is a no-op
+    everywhere except newly-tagged external sources."""
+    provenance = tsu.get("source_provenance")
+    if not provenance:
+        return 0.0
+    return 1.0 if provenance.get("review_status") in ("reviewed", "approved") else 0.0
+
+
+# ============================================================
 # SECTION 7: THEOLOGICAL SCORER — integration with sprint7
 # ============================================================
 
@@ -1293,6 +1375,16 @@ class RetrievalEngine:
         
         metrics.theological_scoring_ms = (time.perf_counter() - t0) * 1000
 
+        # --- STEP 4b: Passage match scoring ---
+        t0 = time.perf_counter()
+        passage_scores: dict[int, float] = {}
+        for idx in set(candidate_pool):
+            tsu = self.tsus[idx]
+            passage_scores[idx] = compute_passage_match_score(
+                parsed_query.scripture_refs, tsu.get("verse_mapping", {})
+            )
+        metrics.passage_match_ms = (time.perf_counter() - t0) * 1000
+
         # --- STEP 5: Hybrid ranking ---
         t0 = time.perf_counter()
         
@@ -1315,9 +1407,23 @@ class RetrievalEngine:
             norm_bm25 = bm25_scores.get(idx, 0.0) / max_bm25 if max_bm25 > 0 else 0.5
             norm_vector = vector_similarities.get(idx, 0.0) / max_vector if max_vector > 0 else 0.0
             norm_theo = theological_scores.get(idx, 0.0)
+            # [docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.3] Already
+            # bounded to [0, 1] by compute_passage_match_score() itself — no
+            # min-max normalization against a batch max, unlike bm25/vector/
+            # theological above, since 0.0 means "no reference detected /
+            # no match", not "worst-scoring candidate in this batch".
+            norm_passage = passage_scores.get(idx, 0.0)
+            source_tier_bonus = compute_source_tier_bonus(tsu)
 
-            # Hybrid score: 0.30 * BM25 + 0.25 * vector + 0.45 * theological
-            base_score = (0.30 * norm_bm25 + 0.25 * norm_vector + 0.45 * norm_theo)
+            # Hybrid score: 0.25*BM25 + 0.20*vector + 0.30*theological +
+            # 0.20*PassageMatch + 0.05*SourceTierBonus
+            base_score = (
+                0.25 * norm_bm25
+                + 0.20 * norm_vector
+                + 0.30 * norm_theo
+                + 0.20 * norm_passage
+                + 0.05 * source_tier_bonus
+            )
 
             # [SPRINT19-C] Evidence Reliability Adjustment — a narrow (+/-10%)
             # multiplicative correction, never a primary ranking signal. This
@@ -1337,9 +1443,11 @@ class RetrievalEngine:
             breakdown = theological_breakdowns.get(idx, {})
 
             explanation = (
-                f"bm25={norm_bm25:.3f}×0.30={0.30*norm_bm25:.3f} | "
-                f"vector={norm_vector:.3f}×0.25={0.25*norm_vector:.3f} | "
-                f"theological={norm_theo:.3f}×0.45={0.45*norm_theo:.3f} | "
+                f"bm25={norm_bm25:.3f}×0.25={0.25*norm_bm25:.3f} | "
+                f"vector={norm_vector:.3f}×0.20={0.20*norm_vector:.3f} | "
+                f"theological={norm_theo:.3f}×0.30={0.30*norm_theo:.3f} | "
+                f"passage={norm_passage:.3f}×0.20={0.20*norm_passage:.3f} | "
+                f"source_tier={source_tier_bonus:.3f}×0.05={0.05*source_tier_bonus:.3f} | "
                 f"base={base_score:.3f} × evidence_adj={0.9 + 0.1*evidence_confidence:.3f} | "
                 f"total={final_score:.3f}"
             )
@@ -1351,6 +1459,7 @@ class RetrievalEngine:
                 vector_score=round(norm_vector, 4),
                 bm25_score=round(norm_bm25, 4),
                 theological_score=round(norm_theo, 4),
+                passage_score=round(norm_passage, 4),
                 final_score=round(final_score, 4),
                 explanation=explanation,
             ))

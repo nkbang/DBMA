@@ -73,6 +73,18 @@ def registry_path_for(output_dir: str) -> str:
 
 DEFAULT_REGISTRY_PATH = registry_path_for(DEFAULT_OUTPUT_DIR)
 
+# [docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.2] Logos Print/Export
+# originals live outside DEFAULT_RAW_DIR — they are not primary research
+# documents (scripts/check_raw_only_originals.py's RAW-only guard is scoped
+# to DEFAULT_RAW_DIR and must not be asked to reason about this directory),
+# and are never committed (see .gitignore). DEFAULT_LOGOS_OUTPUT_DIR holds
+# the chunked/registered output of scripts/ingest_logos_export.py, kept
+# separate from DEFAULT_OUTPUT_DIR's registry so a Logos ingest run cannot
+# collide with the main corpus's document_id namespace by directory alone
+# (document_id itself is still content-hash based, per core/document_identity.py).
+DEFAULT_LOGOS_INBOX_DIR = os.path.join(DATA_DIR, "inbox", "logos_export")
+DEFAULT_LOGOS_OUTPUT_DIR = os.path.join(DATA_DIR, "normalized", "logos")
+
 # ── 확장자 ───────────────────────────────────────────────
 SUPPORTED_EXTENSIONS = {
     ".pdf",

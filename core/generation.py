@@ -32,6 +32,7 @@ uncaught.
 from __future__ import annotations
 
 import logging
+import re
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -41,6 +42,57 @@ from core.retrieval import Citation, RankedCandidate, ResponsePackage
 from core.config import DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE
 
 logger = logging.getLogger(__name__)
+
+
+# ============================================================
+# 한국어 출력 순도 검증 — SermonDraftService 전용 (실측 근거 아래)
+# ============================================================
+#
+# 실측(2026-07-21, my-theology-bot:latest = llama3.3:70b Q4_K_M): 동일
+# 프롬프트("고난이 인내를 낳는다" 계열 문장)를 temperature 0.3/0.2/0.1/0.0
+# 4개 조건에서 반복 호출한 결과, 오염(히라가나/가타카나/한자/태국어 유입)이
+# 0.3에서 8자, 0.1에서 11자(태국어까지 등장), 0.0(완전 결정론)에서도 1자
+# 발생 — 0.2만 우연히 0건이었다. 즉 temperature를 낮추는 것은 신뢰할 수
+# 있는 해결책이 아니다(오염이 특정 개념의 토큰 임베딩이 언어 간에 얽혀
+# 있는 모델/양자화 자체의 결함으로 보이며, 온도와 무관하게 재현된다).
+# 대신 출력을 검사해 오염이 감지되면 같은 프롬프트로 재시도한다 —
+# ollama.generate()는 seed를 고정하지 않으므로(옵션에 seed 미지정) 각
+# 호출의 디코딩 경로가 달라, 재시도가 실제로 오염을 회피할 확률이 있다
+# (같은 실측에서 매 호출마다 오염 위치/여부가 달랐다).
+#
+# 한글(가-힣, 자모)과 아라비아 숫자·구두점·영문(성경 인명 로마자 표기 등)은
+# 검사 대상이 아니다 — 프로젝트가 실제로 배제하려는 것은 CJK 이웃 언어와
+# 태국어처럼 한국어 문장에 섞일 이유가 없는 문자뿐이다.
+_SCRIPT_CONTAMINATION_RE = re.compile(r"[぀-ヿ一-鿿฀-๿]")
+_MAX_LANGUAGE_RETRIES = 2
+
+
+def _detect_script_contamination(text: str) -> list[str]:
+    """비한글 오염 문자를 등장 순서대로 중복 제거해 반환. 없으면 빈 리스트."""
+    seen: dict[str, None] = {}
+    for ch in _SCRIPT_CONTAMINATION_RE.findall(text):
+        seen.setdefault(ch, None)
+    return list(seen.keys())
+
+
+def _contamination_retry_note(chars: list[str]) -> str:
+    return (
+        f"\n\n[자동 검증] 방금 출력에 한국어가 아닌 문자({''.join(chars)})가"
+        " 섞여 있었다. 반드시 한국어(한글)로만 다시 작성하고, 위와 같은 문자를"
+        " 전혀 포함하지 마라."
+    )
+
+
+def _sanitize_script_contamination(text: str) -> str:
+    """재시도(_MAX_LANGUAGE_RETRIES)를 다 써도 오염이 남을 때의 최종
+    방어선. 실측 결과(동일 프롬프트 3회 연속 실패, 매번 다른 문자로 오염)
+    재시도만으로는 특정 개념 주변의 오염을 신뢰성 있게 없앨 수 없다는 것이
+    확인됐다 — 문장을 일부 손상시키는 한이 있어도 사용자에게 비한글 문자가
+    그대로 노출되는 것보다는 낫다는 판단으로, 오염 문자를 제거한다(대체
+    번역은 하지 않음 — 없는 내용을 지어내지 않는다는 프로젝트 원칙과
+    동일하게, 무엇으로 바꿔야 할지 모르는 문자는 만들어내지 않고 삭제만
+    한다)."""
+    return _SCRIPT_CONTAMINATION_RE.sub("", text)
 
 
 class GenerationStream:
@@ -235,6 +287,25 @@ _QUALITY_DIRECTIVE = (
 )
 
 
+def _external_source_directive(candidates: list[RankedCandidate]) -> str:
+    """규칙 7~9 (docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.4) — Logos
+    등 외부 소스 유래 청크(TSU의 source_provenance 필드, core/tsu_builder.py
+    참고)가 컨텍스트에 하나라도 있을 때만 추가되는 지시문. 하나도 없으면
+    빈 문자열을 반환(no-op)해서, 외부 소스를 전혀 안 쓰는 절대다수 호출에서
+    프롬프트가 불필요하게 길어지지 않게 한다."""
+    has_external = any(c.metadata.get("source_provenance") for c in candidates)
+    if not has_external:
+        return ""
+    return (
+        "\n\n외부 소스 인용 규칙(Logos 등에서 가져온 자료가 포함된 경우):\n"
+        "7. 외부 소스에서 가져온 자료는 원문을 그대로 재현하지 말고 요약·재진술하라.\n"
+        "8. 그런 자료를 인용할 때는 자료 라벨에 이미 괄호로 병기된 원저작물 위치"
+        "(예: Romans 12:1-2, p.749)를 함께 언급하라.\n"
+        "9. 개인 연구 노트(personal_research)로 표시된 자료는 저자 개인의 견해·적용"
+        " 제안으로 명시하고, 본문 자체의 명령처럼 단정하지 마라."
+    )
+
+
 def _format_sermon_context(candidates: list[RankedCandidate], max_items: int = 15) -> str:
     """설교문 워크플로 전용 컨텍스트 포맷 — core/retrieval.py::
     ContextAssembler.assemble()의 <context id="tsu_id">는 사람이 읽을 수
@@ -246,6 +317,14 @@ def _format_sermon_context(candidates: list[RankedCandidate], max_items: int = 1
         title = c.metadata.get("title") or c.metadata.get("source_file") or "출처 미상"
         author = c.metadata.get("author")
         label = f"{title} — {author}" if author else title
+        # [docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.1] Logos 등 외부
+        # 소스 유래 청크는 TSU의 source_provenance.logos_location을 라벨에
+        # 병기해 원저작물 위치를 추적 가능하게 한다. 없는 경우(기존 코퍼스
+        # 전체) 라벨은 그대로 유지된다 — 새로 지어내지 않는다.
+        provenance = c.metadata.get("source_provenance")
+        location = provenance.get("logos_location") if provenance else None
+        if location:
+            label = f"{label} ({location})"
         parts.append(f"[자료{i}] {label}\n{c.content}")
     return "\n\n".join(parts)
 
@@ -275,10 +354,10 @@ _EXPANSION_STYLE_GUIDANCE = {
 }
 
 
-def _outline_format_instructions(sermon_format: str) -> str:
+def _outline_format_instructions(sermon_format: str, extra_directive: str = "") -> str:
     guidance = _OUTLINE_POINT_GUIDANCE.get(sermon_format, _OUTLINE_POINT_GUIDANCE[_DEFAULT_SERMON_FORMAT])
     return (
-        f"{_QUALITY_DIRECTIVE}\n\n"
+        f"{_QUALITY_DIRECTIVE}{extra_directive}\n\n"
         f"설교 형식: {sermon_format}. {guidance}\n\n"
         "아래 형식을 정확히 지켜 작성하라. 다른 설명이나 인사말을 덧붙이지 마라.\n"
         "제목: <설교 제목>\n"
@@ -336,17 +415,40 @@ class SermonDraftService:
         candidates: response.top_k_results — _format_sermon_context()가
         [자료N] 라벨을 붙여 인용 가능한 컨텍스트로 재구성한다."""
         context_block = _format_sermon_context(candidates)
-        prompt = (
+        base_prompt = (
             f"다음 참고 자료를 근거로 설교 개요를 작성하라.\n"
             f"본문/주제: {scripture_and_theme}\n\n"
             f"참고 자료:\n{context_block}\n\n"
-            f"{_outline_format_instructions(sermon_format)}"
+            f"{_outline_format_instructions(sermon_format, _external_source_directive(candidates))}"
         )
         try:
-            result = ollama.generate(
-                model=gen_model, prompt=prompt, options={"temperature": temperature}
-            )
-            return _parse_outline(result["response"]), None
+            prompt = base_prompt
+            raw = ""
+            for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
+                result = ollama.generate(
+                    model=gen_model, prompt=prompt, options={"temperature": temperature}
+                )
+                raw = result["response"]
+                contamination = _detect_script_contamination(raw)
+                if not contamination:
+                    break
+                logger.warning(
+                    "[SermonDraftService.generate_outline] 한국어 출력 오염 감지"
+                    " (시도 %d/%d): %s",
+                    attempt + 1, _MAX_LANGUAGE_RETRIES + 1, contamination,
+                )
+                prompt = base_prompt + _contamination_retry_note(contamination)
+            else:
+                # for-else: 마지막 attempt까지 break 없이 다 돌았다 = 재시도를
+                # 전부 써도 오염이 남았다(실측상 특정 개념 주변에서는 재시도
+                # 자체가 안정적으로 회피하지 못하는 경우가 있었다). 개요는
+                # 2단계 검토가 있지만, 그 화면에 애초에 비한글 문자가 뜨는
+                # 것 자체를 막기 위해 여기서도 제거한다.
+                logger.warning(
+                    "[SermonDraftService.generate_outline] 재시도 소진 — 오염 문자 강제 제거"
+                )
+                raw = _sanitize_script_contamination(raw)
+            return _parse_outline(raw), None
         except Exception as e:
             logger.error(
                 "[SermonDraftService.generate_outline] Ollama generate 실패 (model=%s): %s",
@@ -379,8 +481,8 @@ class SermonDraftService:
         style_guidance = _EXPANSION_STYLE_GUIDANCE.get(
             sermon_format, _EXPANSION_STYLE_GUIDANCE[_DEFAULT_SERMON_FORMAT]
         )
-        prompt = (
-            f"{_QUALITY_DIRECTIVE}\n\n"
+        base_prompt = (
+            f"{_QUALITY_DIRECTIVE}{_external_source_directive(candidates)}\n\n"
             f"아래 설교 대지 하나를 실제 설교문 문단으로 확장하라. (설교 형식: {sermon_format})\n"
             f"본문/주제: {scripture_and_theme}\n"
             f"대지: {point_text}\n\n"
@@ -389,10 +491,33 @@ class SermonDraftService:
             f"{style_guidance}"
         )
         try:
-            result = ollama.generate(
-                model=gen_model, prompt=prompt, options={"temperature": temperature}
-            )
-            return result["response"], None
+            prompt = base_prompt
+            text = ""
+            for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
+                result = ollama.generate(
+                    model=gen_model, prompt=prompt, options={"temperature": temperature}
+                )
+                text = result["response"]
+                contamination = _detect_script_contamination(text)
+                if not contamination:
+                    break
+                logger.warning(
+                    "[SermonDraftService.expand_point] 한국어 출력 오염 감지"
+                    " (시도 %d/%d): %s",
+                    attempt + 1, _MAX_LANGUAGE_RETRIES + 1, contamination,
+                )
+                prompt = base_prompt + _contamination_retry_note(contamination)
+            else:
+                # generate_outline()과 동일한 for-else 백스톱. 대지 확장
+                # 결과는 개요와 달리 사람이 편집하는 단계 없이 바로 최종
+                # 초안에 조립되므로(ui/pages/sermon_draft.py의 확장 단계는
+                # st.markdown()으로 바로 표시 — 수정 UI가 없다) 여기서
+                # 걸러내는 것이 개요 쪽보다 더 중요하다.
+                logger.warning(
+                    "[SermonDraftService.expand_point] 재시도 소진 — 오염 문자 강제 제거"
+                )
+                text = _sanitize_script_contamination(text)
+            return text, None
         except Exception as e:
             logger.error(
                 "[SermonDraftService.expand_point] Ollama generate 실패 (model=%s): %s",

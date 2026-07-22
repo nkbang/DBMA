@@ -405,6 +405,28 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
             record["doctrine_category"] = []
             record["baptist_theme"] = []
 
+            # [docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9] Additive-only
+            # external-source provenance — same contract as content_quality/
+            # structure above (no existing field changed, RetrievalEngine does
+            # not read this yet). Populated only for documents whose registry
+            # entry actually carries these keys (e.g. a future Logos-export
+            # ingestion path writing to registry.documents[document_id]);
+            # every field defaults to None/[] rather than being invented, so
+            # non-Logos documents are unaffected and the block is a no-op for
+            # the entire existing corpus.
+            source_tier = doc.get("source_tier")
+            if source_tier is not None:
+                record["source_provenance"] = {
+                    "source_tier": source_tier,
+                    "logos_location": doc.get("logos_location"),
+                    "rights": doc.get("rights"),
+                    "export_method": doc.get("export_method"),
+                    "content_hash": doc.get("content_hash"),
+                    "review_status": doc.get("review_status"),
+                }
+            else:
+                record["source_provenance"] = None
+
             records.append(record)
 
     return records
