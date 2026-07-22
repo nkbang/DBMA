@@ -84,8 +84,8 @@ python -m pytest tests/ -v
 ## 개발 정보
 
 - **버전**: 1.0.0
-- **주요 임베딩 모델**: all-MiniLM-L6-v2 (`config.yaml`에서 변경 가능)
-- **주요 벡터 데이터베이스**: ChromaDB (Qdrant은 별도 서비스로 제공)
+- **주요 임베딩 모델**: bge-m3:latest (`config.yaml`에서 변경 가능)
+- **벡터 저장/검색**: TSU dataset(`output/bench/tsu_dataset.jsonl`) + in-memory 유사도 검색이 production authority. ChromaDB/Qdrant는 legacy corpus history로만 보존되며 검색 경로에서 쿼리되지 않음(ADR-001 Correction, ADR-003)
 - **설정 파일**: `config.yaml` — 모든 설정의 단일 소스 (Source of Truth)
 
 ## 구성 요소 설명
@@ -139,8 +139,8 @@ pip install pdf2image python-tesseract
   - pypdf fallback — pure Python
 - **Text Preprocessing**: Noise filtering, Unicode cleanup, line break restoration
 - **Chunking Optimization**: Intelligent chunk size selection and overlap optimization
-- **RAG Pipeline**: Vector store with ChromaDB (primary), Qdrant (optional external service)
-- **Embedded Models**: all-MiniLM-L6-v2 for text embeddings (config.yaml에서 변경 가능)
+- **RAG Pipeline**: TSU dataset + in-memory similarity retrieval (production authority). ChromaDB/Qdrant preserved as legacy corpus history only — not queried by RetrievalEngine (ADR-001 Correction, ADR-003)
+- **Embedding Model**: bge-m3:latest (config.yaml에서 변경 가능)
 - **Configuration**: Centralized settings in `config.yaml` (directories, chunking, vectorDB, embedding)
 - **Hebrew/Greek Support**:
   - BGE-M3 or nomic-embed-text embedding models for multilingual document processing

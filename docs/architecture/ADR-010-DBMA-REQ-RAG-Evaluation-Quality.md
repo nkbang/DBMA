@@ -34,8 +34,8 @@ Evaluation Service의 pointwise autorater 지표명과 동일)로 채점하는
 
 ```
 Source Documents → Extraction → Normalization → Chunking → Embedding
-→ Qdrant → RetrievalEngine(BM25+Vector+Theological scoring) → GenerationService
-→ Research UI
+→ TSU dataset(in-memory) → RetrievalEngine(BM25+Vector+Theological scoring)
+→ GenerationService → Research UI
 ```
 
 - **검색 품질 평가는 이미 존재**: `scripts/rag_benchmark.py`
@@ -99,8 +99,12 @@ output/eval/{run_id}_eval.jsonl  # 평가 결과 저장 (append-only,
 
 ### 4. 벡터DB 범위
 
-Qdrant만 사용한다. ChromaDB는 도입하지 않는다 — 근거 없는 구조 변경
-금지 원칙(ADR-001/003과 충돌 방지).
+**정정 (2026-07-21)**: 초안 작성 시 "Qdrant만 사용한다"고 잘못 서술함 —
+ADR-001 Correction/ADR-003이 이미 확정한 사실은 production authority가
+TSU dataset + in-memory 유사도 검색이며, Qdrant/Chroma는 legacy corpus
+history로만 보존되고 `RetrievalEngine` 검색 경로에서 쿼리되지 않는다는
+것이다. 이 평가 모듈도 동일 원칙을 따른다 — 신규 벡터DB(Qdrant든
+Chroma든)를 도입하지 않고 기존 TSU+in-memory 경로만 읽는다.
 
 ---
 
