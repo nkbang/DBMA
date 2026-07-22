@@ -6,7 +6,7 @@ based_on:
   - docs/agents/c1/DBMA-SIL-Theology-Engine-Design.md
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
 created: 2026-07-21
-status: Architecture Decision (부분 확정 — 구조만 확정, 신학적 어휘/임계값은 별도 승인 대기)
+status: Architecture Decision (전체 확정 — 구조 + 신학적 어휘 모두 확정, 2026-07-22)
 scope_modified: docs/architecture/ + core/tsu_builder.py(스키마 shape만) + core/sermon/(골격만)
 ---
 
@@ -14,7 +14,7 @@ scope_modified: docs/architecture/ + core/tsu_builder.py(스키마 shape만) + c
 
 | | |
 |---|---|
-| Status | Partially Accepted — 구조 확정, 내용(어휘/임계값) 미확정 |
+| Status | Accepted — 구조 + 어휘 전체 확정 (2026-07-22) |
 | Date | 2026-07-21 |
 | Deciders | HQ(사용자) 승인 / CUE 설계·구현 |
 | Supersedes | — (C1-TASK-ORDER-005 / DBMA-SIL Phase 0은 이 ADR로 대체되어 중단됨) |
@@ -97,19 +97,40 @@ SIL은 `core/retrieval.py::RetrievalEngine`을 변경하거나 별도 검색
 
 ---
 
-## Decision — 확정되지 않는 것 (별도 승인 필요)
+## Decision — 확정됨 (2026-07-22, 사용자 직접 승인)
 
-- **`doctrine_category`/`baptist_theme`의 실제 초기 어휘 목록** —
-  신학적 판단이 필요하며 CUE/C1의 권한 밖. 사용자(목회자) 직접 결정
-  대상.
-- **Doctrine Filter의 신뢰도 임계값(어느 수준부터 경고를 표시할지)** —
-  실사용 데이터 없이 임의 수치를 정하지 않는다.
-- **`doctrine_filter.py`의 실제 LLM 프롬프트/체크 로직** — 어휘가
-  없으면 정의할 수 없다. 어휘 확정 후 별도 구현 착수.
-- **TSU 온디맨드 태깅 결과의 영구 저장 여부(캐시 레이어)** — 후속 설계
-  대상.
-- ADR 번호 확정만 이번에 다룸; 위 미확정 항목이 결정되면 이 ADR을
-  Amendment로 갱신하거나 후속 ADR을 발행한다.
+**신학적 전통**: 개혁파 침례교(Reformed Baptist) — 1689 런던신앙고백
+계열, 신자세례·회중교회론.
+
+**`doctrine_category`** (표준 조직신학 범주, 제안 그대로 채택):
+```
+["Scripture", "Trinity", "Christology", "Anthropology", "Soteriology", "Ecclesiology", "Eschatology"]
+```
+
+**`baptist_theme`** (원래 제안된 SBC 계열 목록을 개혁파 침례교로
+재구성 — 5 Solas + TULIP 핵심(particular redemption) + 침례교 고유
+교회론/언약신학):
+```
+["SolaScriptura", "SolaFide", "SolaGratia", "SolusChristus", "SoliDeoGloria",
+ "DivineSovereigntyInSalvation", "ParticularRedemption",
+ "BelieversBaptism", "RegenerateChurchMembership", "CovenantTheology1689"]
+```
+코드 상수: `core/sermon/doctrine_vocabulary.py::DOCTRINE_CATEGORY`,
+`BAPTIST_THEME`.
+
+**신뢰도 임계값/표시 정책**: 별도 수치 임계값을 두지 않는다 — ADR
+원안대로 "신뢰도가 낮으면 숨기지 않고 확실하지 않음을 그대로 노출"을
+그대로 채택(`core/sermon/doctrine_filter.py::check()`가 `confidence:
+"low"`인 경고에 "(확실하지 않음)" 접두를 붙여 표시).
+
+**`doctrine_filter.py` 실제 구현**: 완료 — `check(outline,
+context_block)` 함수, LLM에게 위 두 어휘 목록에 명백히 배치되는 부분만
+묻고 점수화하지 않는다(§Decision-4 원칙 그대로). `ui/pages/sermon_draft.py`의
+개요 생성 직후·2단계 검토 렌더링 직전에 연결됨(`_render_doctrine_warning()`).
+회귀: `tests/test_doctrine_filter.py` 10건 신규.
+
+**TSU 온디맨드 태깅 결과의 영구 저장 여부(캐시 레이어)** — 여전히
+미확정, 후속 설계 대상(실사용 패턴을 본 뒤 재검토).
 
 ---
 
@@ -119,25 +140,28 @@ SIL은 `core/retrieval.py::RetrievalEngine`을 변경하거나 별도 검색
 - Retrieval Engine 무변경 원칙, TSU additive 스키마 shape(값 제외),
   온디맨드 태깅 방침, Doctrine Filter의 "경고 전용·점수화 금지" 원칙,
   Multi-Agent 미채택.
+- **[2026-07-22 추가]** 교리 어휘(`doctrine_category`/`baptist_theme`
+  최종 목록, 개혁파 침례교 전통), 신뢰도 표시 정책(수치 임계값 없이
+  "확실하지 않음" 노출), `doctrine_filter.py` 실제 구현·연결까지 완료.
 
 ### 이번 ADR로 확정되지 않는 것(의도적으로 미룸)
-- 교리 어휘, 신뢰도 임계값, 실제 검증 로직, TSU 태깅 결과 영속화 방식.
+- TSU 온디맨드 태깅 결과의 영구 저장 방식(캐시 레이어)만 후속 설계로 남음.
 
 ### 리스크
-- 구조만 먼저 만들고 내용(어휘)이 늦게 확정되면, `doctrine_filter.py`가
-  한동안 빈 골격(no-op)으로 남을 수 있다 — 의도된 상태.
 - TSU 신규 필드가 실제로 채워지기 전까지는 어떤 코드도 이 필드를
   읽어서는 안 된다(존재하지만 항상 비어있는 상태를 전제해야 함,
-  기존 `themes` 필드와 동일한 함정 방지).
+  기존 `themes` 필드와 동일한 함정 방지) — `doctrine_filter.py`는 TSU
+  필드가 아니라 `SermonOutline`을 직접 검토하므로 이 함정과 무관하다.
 
 ---
 
 ## Next Steps
 
-1. `core/sermon/__init__.py` 생성(빈 패키지 골격).
-2. `core/tsu_builder.py`에 §Decision-2 필드 3개를 additive로 추가
-   (기본값만, 채우는 로직 없음) — TDD로 기존 레코드 무영향 확인.
-3. `doctrine_category`/`baptist_theme` 초기 어휘를 사용자가 확정하면
-   `doctrine_filter.py` 실제 구현 착수(TDD 게이팅 방식).
-4. 신뢰도 임계값은 초기 실사용(사용자 본인 설교 준비) 데이터를 모은
-   뒤 재검토.
+1. ~~`core/sermon/__init__.py` 생성~~ 완료.
+2. ~~`core/tsu_builder.py`에 §Decision-2 필드 3개 additive 추가~~ 완료.
+3. ~~`doctrine_category`/`baptist_theme` 어휘 확정 + `doctrine_filter.py`
+   실제 구현~~ **완료 (2026-07-22)** — `core/sermon/doctrine_vocabulary.py`,
+   `core/sermon/doctrine_filter.py`, `ui/pages/sermon_draft.py` 연결,
+   `tests/test_doctrine_filter.py` 10건.
+4. TSU 온디맨드 태깅 결과의 영구 저장(캐시 레이어) 여부 — 초기 실사용
+   데이터를 모은 뒤 재검토, 아직 미착수.

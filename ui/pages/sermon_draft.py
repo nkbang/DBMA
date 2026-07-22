@@ -21,6 +21,7 @@ from ui.pages._base import BasePage
 from core.retrieval import QueryProcessor
 from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
 from core.sermon.bible_books import BIBLE_BOOKS
+from core.sermon.doctrine_filter import check as doctrine_check
 from ui.state.query_processor import get_shared_query_processor
 
 _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크게
@@ -173,6 +174,12 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
         st.error(f"개요 생성 실패: {error}")
         return
 
+    # [ADR-009 §Decision-4] Doctrine Filter — 사후·경고 전용, 생성 자체를
+    # 막지 않는다. 실패해도(doctrine_check는 raise하지 않음) 개요 검토
+    # 흐름은 그대로 진행된다.
+    context_preview = "\n\n".join(c.content[:500] for c in response.top_k_results[:5])
+    state["doctrine_report"] = doctrine_check(outline, context_preview)
+
     state["scripture_and_theme"] = scripture_and_theme
     state["style_files"] = style_files
     state["sermon_format"] = sermon_format
@@ -183,10 +190,25 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
     st.rerun()
 
 
+def _render_doctrine_warning() -> None:
+    """[ADR-009 §Decision-4] 경고 배너만 — 점수화 없음, 생성 차단 없음.
+    report가 없거나(구버전 세션 상태) 통과했으면 아무것도 표시하지 않는다
+    (과잉 경고 방지, doctrine_filter.py의 "명백하지 않으면 침묵" 원칙과
+    같은 톤)."""
+    report = st.session_state["sermon_draft_state"].get("doctrine_report")
+    if report is None or report.passed:
+        return
+    for w in report.warnings:
+        st.warning(w)
+    if report.flagged_categories:
+        st.caption(f"관련 범주: {', '.join(report.flagged_categories)} · 신뢰도: {report.confidence}")
+
+
 def _render_outline_step() -> None:
     state = st.session_state["sermon_draft_state"]
     outline: SermonOutline = state["outline"]
 
+    _render_doctrine_warning()
     st.caption(f"설교 형식: {state['sermon_format']}")
     title = st.text_input("제목", value=outline.title, key="sermon_outline_title")
     introduction = st.text_area("서론", value=outline.introduction, height=80, key="sermon_outline_intro")
