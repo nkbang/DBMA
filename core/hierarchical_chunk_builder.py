@@ -35,6 +35,17 @@ is reproduced here from core.heading_provider's exported matching
 functions — no new detection logic, same pattern already duplicated once
 in scripts/shadow_boundary_analysis.py.
 
+Level 3 (Hard Fallback, ADR-008 제안 2, 2026-07-22 구현): Level 1/2가
+flush한 청크가 그래도 safety_cap을 넘는 경우(Axis 3 "unsplittable
+outlier" — 문장/공백 경계가 거의 없는 색인·용어집류 콘텐츠에서 발생)
+word-safe hard slice로 추가 분할한다. `_slice_preserving_words()`는
+`core/chunking_optimizer.py::_slice_preserving_words()`와 동일한 알고리즘을
+**독립적으로 재구현**한 것 — Amendment A 원칙(production의 private
+함수를 직접 import하지 않음)을 지킨다. 이 계층에서 쪼개진 조각들은
+모두 그 청크의 원래 buf_start를 그대로 공유한다(shadow 측정 목적상
+정확한 조각별 오프셋 재계산은 하지 않음 — 이 프로토타입은 아직 실제
+인용/오프셋을 생성하지 않는다).
+
 Known limitations inherited from Pre-SPRINT33-D Preflight
 (docs/SPRINT33-D-preflight-issues.md), NOT addressed here:
   - PageHeaderArtifact not implemented — running-header repeats in
@@ -50,6 +61,7 @@ this is ever promoted toward production.
 
 from __future__ import annotations
 
+import re
 from typing import List, Tuple
 
 from core.heading_provider import (
@@ -71,6 +83,34 @@ SAFETY_CAP_RATIO = 1.5
 _LOOKAHEAD_WINDOW = 5
 
 _heading_feature = HeadingBoundaryFeature()
+
+
+def _slice_preserving_words(s: str, max_len: int) -> List[str]:
+    """Level 3 Hard Fallback (ADR-008 제안 2) — word-safe hard slice.
+    Independent reimplementation of core/chunking_optimizer.py's
+    `_slice_preserving_words()` (same algorithm) — Amendment A forbids
+    importing production's private functions, so this is duplicated
+    rather than shared. Falls back to a true hard slice only if a single
+    "word" (no whitespace at all — e.g. an unbroken Hebrew/Greek run)
+    itself exceeds max_len."""
+    tokens = re.split(r"(\s+)", s)
+    pieces: List[str] = []
+    buf = ""
+    for tok in tokens:
+        if len(buf) + len(tok) <= max_len:
+            buf += tok
+        else:
+            if buf.strip():
+                pieces.append(buf.strip())
+            if len(tok) > max_len:
+                for i in range(0, len(tok), max_len):
+                    pieces.append(tok[i : i + max_len].strip())
+                buf = ""
+            else:
+                buf = tok
+    if buf.strip():
+        pieces.append(buf.strip())
+    return [p for p in pieces if p]
 
 
 def _advance_heading_cursor(cursor: int, headings: List[ProviderHeading], key: str) -> int:
@@ -111,7 +151,17 @@ def build_chunks(
     def flush() -> None:
         nonlocal buf, buf_len
         if buf:
-            chunks.append(("\n\n".join(buf).strip(), buf_start))
+            joined = "\n\n".join(buf).strip()
+            if len(joined) > safety_cap:
+                # Level 3 Hard Fallback — Level 1(semantic)/Level 2(safety
+                # cap) still produced an oversized chunk (Axis 3
+                # unsplittable outlier: no sentence/whitespace boundary
+                # inside the run to flush on earlier). Slice word-safe
+                # rather than emit an unbounded chunk.
+                for piece in _slice_preserving_words(joined, safety_cap):
+                    chunks.append((piece, buf_start))
+            else:
+                chunks.append((joined, buf_start))
         buf = []
         buf_len = 0
 

@@ -13,7 +13,7 @@ import pytest
 
 from core.config import EMBEDDING_SIMILARITY_WEIGHT
 from core.heading_provider import ProviderHeading
-from core.hierarchical_chunk_builder import build_chunks
+from core.hierarchical_chunk_builder import _slice_preserving_words, build_chunks
 from core.semantic_boundary_detector import (
     EmbeddingSimilarityBoundaryFeature,
     get_registry,
@@ -62,10 +62,38 @@ class TestNoHeadingsFallsBackToSafetyCap:
 
     def test_force_flushes_at_safety_cap_without_any_semantic_signal(self):
         # chunk_size=10 -> safety cap = 15. Each candidate is 20 chars, so
-        # every single candidate alone already exceeds the cap.
+        # every single candidate alone already exceeds the cap. [ADR-008
+        # 제안 2, Level 3 Hard Fallback, 2026-07-22] Level 2 still flushes
+        # at the cap, but the flushed chunk itself is now word-safe sliced
+        # if it still exceeds safety_cap — a single unbroken 20-char run
+        # (no whitespace) has no word boundary to slice on, so it hard-
+        # slices into ceil(20/15)=2 pieces per candidate (15 + 5 chars).
         candidates = _cands("x" * 20, "y" * 20, "z" * 20)
         chunks = build_chunks(candidates, headings=[], chunk_size=10, min_chunk_size=1)
-        assert len(chunks) == 3
+        assert len(chunks) == 6
+        assert all(len(text) <= 15 for text, _ in chunks)
+        assert chunks[0] == ("x" * 15, 0)
+        assert chunks[1] == ("x" * 5, 0)
+
+
+class TestLevel3HardFallbackSlicing:
+    """ADR-008 제안 2 (2026-07-22) — _slice_preserving_words() 단위 테스트."""
+
+    def test_never_cuts_inside_a_word(self):
+        text = "짧은 단어들 여러 개를 공백으로 이어붙인 긴 문장을 만들어 안전 상한을 넘기는 예시 텍스트입니다"
+        pieces = _slice_preserving_words(text, max_len=20)
+        assert all(len(p) <= 20 for p in pieces)
+        # 원문을 공백 기준으로 재조합했을 때 단어가 잘리지 않았는지 확인
+        assert " ".join(pieces).replace("  ", " ") == " ".join(text.split())
+
+    def test_single_unbroken_token_longer_than_max_len_hard_slices(self):
+        # 공백이 전혀 없는 토큰(예: 헬라어/히브리어 연속 인용) — 마지막
+        # 수단으로만 하드 슬라이스.
+        pieces = _slice_preserving_words("가" * 50, max_len=20)
+        assert pieces == ["가" * 20, "가" * 20, "가" * 10]
+
+    def test_empty_input_returns_empty_list(self):
+        assert _slice_preserving_words("", max_len=20) == []
 
 
 class TestMinChunkSizeFloor:
