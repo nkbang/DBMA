@@ -21,6 +21,11 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 이동했으며, Legacy(`dbma.py` + Chroma/Qdrant island + md_manager)를
 `archive/legacy/`로 분리 완료했다. v1.3.0으로 태그·검증되었다.
 
+**[2026-07-22 갱신] 이 문서는 SPRINT27-D 이후 장기간 갱신이 밀려 실제
+코드 상태와 어긋나 있었다 — 실제로는 SPRINT33-D까지 진행되었다.**
+아래 "SPRINT28~33-D 진행 내역"과 "SPRINT 외 병행 작업"을 반드시 함께
+읽을 것.
+
 ---
 
 ## 아키텍처 결정 (ADR)
@@ -30,14 +35,95 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
   Engine Authority. `dbma.py`의 인라인 RAG(`query_rag` 등)는 폐기 대상.
 - 공식 실행 진입점: `dbma_ui.py` → `ui/app.py` (SPRINT20-G2에서 README/
   `.github/instructions/*` 문서 정렬 완료).
+- `docs/architecture/ADR-006-Heading-Provider-Registry.md` (accepted):
+  헤딩 감지를 소스 타입별 Provider로 분리(`core/heading_provider.py`).
+- `docs/architecture/ADR-007-Semantic-Boundary-Detector.md` +
+  Amendment A (accepted): Boundary Score 모델과 D5(recovery/semantic/
+  outlier) 3축 품질 지표, Hierarchical Chunk Builder 설계 근거.
+- `docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md`
+  (accepted, 프로덕션 전환 경로는 미실행): 현재 `chunking_optimizer.py`
+  대신 Hierarchical Chunk Builder로 전환하는 조건과 절차.
+- `docs/architecture/ADR-009-SIL-Theology-Engine.md` (부분 확정 —
+  구조만, 신학 어휘/임계값은 별도 승인 대기): TSU에 교리 필터 확장
+  필드 골격만 추가, 태깅 로직은 미구현.
+- `docs/architecture/ADR-010-DBMA-REQ-RAG-Evaluation-Quality.md`
+  (구조 확정, Phase 1 착수 전 미확정 항목 2건 별도 결정 필요):
+  LLM-as-judge pointwise 평가 인프라(`core/evaluation/`).
+
+---
+
+## SPRINT28~33-D 진행 내역 (2026-07-22, 뒤늦게 기록)
+
+STATE.md가 SPRINT27-D에서 멈춰 있는 동안 실제로는 아래까지 진행되어
+있었다 — 전부 완료 상태이며, 코드 변경은 각 스프린트 주석([SPRINT28-B]
+등)과 `docs/SPRINT33-*.md`에서 확인 가능하다.
+
+- **SPRINT28** — 청크 단위 noise 분류기, front-matter 감지 버그 수정,
+  PDF PAGE_BREAK_MARKER 보존, RetrievalEngine TF-IDF fallback 지연 빌드.
+- **SPRINT29** — 청킹 파라미터를 `core/config.py` 단일 소스로 정리(SSOT),
+  경계 기반 chunk overlap 적용, 헤딩 골격(`heading_extractor.py`, "honest
+  empty" 원칙).
+- **SPRINT30** — 적응형 PDF 헤딩 감지기(`core/pdf_structure_detector.py`)
+  실측·설계·구현.
+- **SPRINT31** — Heading Provider Registry 아키텍처 확정(ADR-006),
+  HeadingAssembler 커서 매칭(정확 일치 → bounded-lookahead 복구),
+  PDF span geometry 수집/연결, 과도기 어댑터 제거.
+- **SPRINT32** — PdfHeadingProvider를 `tsu_builder.py`에 실제 연결(PDF
+  한정, ADR-006 Option 1), HeadingAssembler word-boundary 매칭 버그 수정.
+- **SPRINT33-A** — SPRINT31~32 경계/청킹 파이프라인 감사(코드 변경 없음).
+- **SPRINT33-B** — `core/semantic_boundary_detector.py`(Boundary Score
+  모델, dormant/shadow) 설계·구현. ADR-007.
+- **SPRINT33-C** — Boundary Score 모델 shadow 검증·보정(휴리스틱 피처
+  4종 추가: Paragraph/TinyFragmentPenalty/SentenceBoundaryConfidence/
+  ScriptureReferenceBoundary, 가중치 보정, shadow-vs-production delta 측정).
+- **SPRINT33-D** — Hierarchical Chunk Builder 프로토타입
+  (`core/hierarchical_chunk_builder.py`, ADR-007 Amendment A) 구현 및
+  D5 3축 정식 평가 완료. **상태: 프로토타입 단계 — 프로덕션(`chunking_
+  optimizer.py`) 전환은 아직 미실행.**
+  - 이 과정에서 `split_sentences_mixed()`의 줄바꿈 의존 버그를 발견 →
+    `docs/PREFLIGHT-split-sentences-mixed-chunk-overflow.md`로 분리 추적.
+    하위 결함 B는 `_merge_sentence_fragments()` word-safe hard slice로
+    수정 완료(over-cap 비율 4.6%→0.5%, commit `c513bad`). **근본 수정
+    (a)(`split_sentences_mixed()`의 `split_sentences()` 위임)는 아직
+    미착수 — corpus 전체 문장분할 동작에 영향을 주므로 별도 벤치마크
+    검증 필요, HQ 결정 대기.**
+
+---
+
+## SPRINT 외 병행 작업 (2026-07-21~22)
+
+번호가 매겨진 스프린트 트랙과 별개로, 별도 설계 문서
+(`docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md`) 하에 진행된 작업.
+commit `08e5704`/`8f40ea0`/`3dde0fd`/`21f80a1` (dev/dbma-engine push 완료).
+
+- 설교문 생성 파이프라인: Logos Print/Export 자료 인제스트 스크립트
+  (`scripts/ingest_logos_export.py`), TSU `source_provenance` additive
+  필드, 하이브리드 검색에 PassageMatch·SourceTierBonus 항목 추가
+  (`core/retrieval.py`).
+- 한국어 출력 순도: 로컬 생성 모델(`my-theology-bot:latest`,
+  llama3.3:70b Q4_K_M)에서 실측된 CJK 이웃 언어/태국어 혼입 현상 —
+  temperature와 무관하게 재현되는 모델 자체 결함으로 확인, 재시도 2회
+  + 최종 sanitize 백스톱으로 대응(`core/generation.py`).
+- 대시보드: "정리된 자료"/"유형별 문서" 카운트 불일치(74 vs 124) 수정 —
+  `_get_effective_documents()`로 두 카드가 같은 모집단(chunk_count>0·
+  ingest_status=PROCESSED·superseded_by 없음)을 공유하도록 통일, registry의
+  superseded 이력 48건 정리, 유형별 수량사(권/건) 적용.
+- Streamlit dev server가 harness 할당 포트로 바인딩되지 않던 문제 수정
+  (`.claude/launch.json`, autoPort).
+
+**다음 조치**: 없음(각 항목 실측 검증 완료) — Logos 인제스트는 실제
+Logos 자료·manifest 준비가 있어야 다음 단계로 진행 가능.
 
 ---
 
 ## 프로젝트 진행률
 
-전체 진행률: 100% (SPRINT20-I Architecture Consolidation 완료, v1.3.0 태그·검증 완료)
+전체 진행률(SPRINT20-I Architecture Consolidation 기준): 100% —
+단, 이는 v1.3.0 태그 시점 스코프일 뿐이며 이후 SPRINT28~33-D(청킹
+품질 고도화, 위 §SPRINT28~33-D 참고)가 별도로 진행 중/완료되었다.
+"100%"는 v1.3.0 스코프 완료를 뜻하지 프로젝트 전체 종료를 뜻하지 않는다.
 
-### 세부 진행 (SPRINT20-I 완료)
+### 세부 진행 (SPRINT20-I 완료, v1.3.0 스코프)
 - Retrieval Engine 단일화 (ADR-001): 100%
 - Citation Layer / Metadata Propagation: 100%
 - Configuration / Execution Env / Logging Authority: 100%
@@ -53,11 +139,14 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 ## v1.3.0 릴리스 상태
 
 ```
-Version:   v1.3.0 (tag 07ec084) + post-release stabilization
-HEAD:      7a51a31 (origin/dev/dbma-engine 동기화)
-Tests:     237 passed
-Runtime:   APP_VERSION 1.3.0 / embed bge-m3:latest / gen my-theology-bot:latest / cap 2
-Status:    STABLE — GA 검토 단계
+Version:   v1.3.0 (tag 07ec084) + post-release stabilization (SPRINT28~33-D 반영)
+HEAD:      932aa93 (origin/dev/dbma-engine 동기화, 2026-07-22)
+Tests:     599개 수집 확인(tests/ 스코프, 2026-07-22) — 전체 통과 여부는
+           SPRINT33-D 완료 시점 기록(539 passed)이 마지막 공식 확인, 이후
+           변경분(SPRINT 외 병행 작업 포함) 재실행 권장
+Runtime:   APP_VERSION 1.3.0 / embed bge-m3:latest / gen my-theology-bot:latest
+           (llama3.3:70b Q4_K_M) / cap 2
+Status:    STABLE — GA 검토 단계 (변동 없음)
 ```
 
 완료된 post-release 안정화:
@@ -206,7 +295,19 @@ Status:    STABLE — GA 검토 단계
 - [x] 잔여 cleanup (data/rag_index, 빈 backup 폴더, md_manager archive)
 - [x] Research Workspace Layer — 첫 번째 Memory Layer (SPRINT27-B/C, ADR-004,
       `core/research_workspace.py`, commit `519d719`)
-- [ ] SPRINT27-D — Memory Layer 확장 Architecture Preflight (진행 중)
+- [x] SPRINT27-D — Memory Layer 확장 Architecture Preflight (조사만, 구현 없음)
+- [x] SPRINT28 — Chunk noise 분류기, front-matter/PAGE_BREAK 수정, TF-IDF fallback 지연 빌드
+- [x] SPRINT29 — 청킹 파라미터 SSOT화(config.py), 경계 기반 overlap, heading 골격
+- [x] SPRINT30 — 적응형 PDF 헤딩 감지기
+- [x] SPRINT31 — Heading Provider Registry (ADR-006), HeadingAssembler 커서 매칭
+- [x] SPRINT32 — PdfHeadingProvider production 연결(PDF), word-boundary 매칭 버그 수정
+- [x] SPRINT33-A/B/C — Boundary Score 모델(ADR-007) 설계·shadow 검증·보정
+- [x] SPRINT33-D — Hierarchical Chunk Builder 프로토타입 + D5 정식 평가 (프로덕션 전환은 미실행)
+- [ ] 근본 수정 (a) — `split_sentences_mixed()`의 `split_sentences()` 위임 (HQ 결정 대기)
+- [ ] Hierarchical Chunk Builder 프로덕션 전환 여부 결정 (ADR-008 조건 검토)
+- [x] Logos 소스 인제스트 + PassageMatch/SourceTierBonus 스코어링 (SPRINT 외 병행, commit `08e5704`)
+- [x] 한국어 출력 순도 검증 — 재시도 + sanitize 백스톱 (SPRINT 외 병행, commit `08e5704`)
+- [x] 대시보드 문서 카운트 통일 + 수량사 적용 (SPRINT 외 병행, commit `8f40ea0`)
 
 ---
 
