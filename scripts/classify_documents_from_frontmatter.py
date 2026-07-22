@@ -1,9 +1,17 @@
 #!/usr/bin/env python
 """classify_documents_from_frontmatter.py — registry 문서의 프론트 메터 기반 유형 분류."""
 
+from __future__ import annotations
+
 import json
+import os
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from core.config import DEFAULT_REGISTRY_PATH, DEFAULT_RAW_DIR
 
 try:
     import pdfplumber
@@ -115,13 +123,13 @@ def classify_from_frontmatter(text: str) -> tuple[str, list[str]]:
 
 
 def main():
-    registry_path = Path("output/registry/documents.json")
+    registry_path = Path(DEFAULT_REGISTRY_PATH)
     if not registry_path.exists():
         print(f"registry 파일을 찾을 수 없음: {registry_path}")
         return
     with open(registry_path, "r", encoding="utf-8") as f:
         registry = json.load(f)
-    raw_dir = Path("data/raw")
+    raw_dir = Path(DEFAULT_RAW_DIR)
     if not raw_dir.exists():
         print(f"raw 디렉토리를 찾을 수 없음: {raw_dir}")
         return
