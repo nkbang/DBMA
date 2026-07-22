@@ -11,7 +11,7 @@ from pathlib import Path
 
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
-from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
+from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR
 from core.execution_context import ExecutionContext
 
 
@@ -76,19 +76,26 @@ def _render_quick_actions() -> None:
 def _render_library_summary() -> None:
     """Collapsed "내 서재" summary — RAW/출력/지원형식/임베딩 세부는
     개발자용 정보라 Monitor·Processing으로 이미 옮겨져 있다."""
-    raw_docs, output_docs = _get_document_counts()
+    raw_docs = _count_documents()
 
     # [버그 수정 2026-07-21] "보유 문서"(RAW 폴더 파일 수)와 "정리된
-    # 자료"(output .md 누적 수)는 서로 다른 걸 재는 지표다 — 처리된
-    # 원본은 RAW에서 지워지는 경우가 많아 RAW 카운트가 총 보유량을
-    # 반영하지 않는다(사용자 보고: "61권 vs 79개" 불일치). 계산 로직은
-    # 그대로 두고 라벨만 정확하게 — "RAW 대기 문서"로 바꿔 두 숫자가
-    # 같은 모집단이 아님을 명확히 한다.
+    # 자료"는 서로 다른 걸 재는 지표다 — 처리된 원본은 RAW에서 지워지는
+    # 경우가 많아 RAW 카운트가 총 보유량을 반영하지 않는다(사용자 보고:
+    # "61권 vs 79개" 불일치). RAW는 계산 로직 그대로 두고 라벨만 정확하게.
+    #
+    # [버그 수정 2026-07-22] "정리된 자료"는 사용자 재보고("74개인데
+    # 유형별 문서는 124개") 원인 — 이전엔 output/ 폴더의 .md 파일 수를
+    # 세었고, 아래 유형별 문서 카드는 registry 전체 항목 수(superseded/
+    # 미완료 포함)를 세어서 서로 다른 모집단이었다. 이제 둘 다
+    # _effective_documents()로 걸러낸 "실질적으로 유효한 등록 문서"
+    # 하나의 집합을 공유해 두 숫자가 항상 일치하도록 통일한다.
+    effective_docs = _get_effective_documents()
+
     c1, c2 = st.columns(2)
     with c1:
-        st.metric("RAW 대기 문서", f"{raw_docs}권", help="data/RAW 폴더에 현재 남아있는 파일 수 — 처리된 원본은 여기서 지워질 수 있어 총 보유량과 다를 수 있습니다.")
+        st.metric("RAW 대기 문서", f"{raw_docs}권", help="data/RAW 폴더에 현재 남아있는 파일 수 — 처리된 원본은 여기서 지워질 수 있어 총 보유량과 다를 수 있습니다. 아래 '정리된 자료'/'유형별 문서'와는 다른 모집단입니다.")
     with c2:
-        st.metric("정리된 자료", f"{output_docs}개 문서", help="누적 처리 산출물(.md) 수 — 중복/미완성 파일이 섞여 있을 수 있습니다.")
+        st.metric("정리된 자료", f"{len(effective_docs)}개 문서", help="registry에 등록된 문서 중 청킹 완료(chunk_count>0)·처리 성공(ingest_status=PROCESSED)·최신본(superseded_by 없음)만 센 수 — 아래 '유형별 문서'와 항상 같은 모집단입니다.")
 
 
 def _get_overall_status() -> tuple[str, str, str, str]:
@@ -150,28 +157,36 @@ def _get_last_processed() -> str:
     return max(stamps)[:16].replace("T", " ")
 
 
-def _get_document_counts() -> tuple[int, int]:
-    """Get RAW and output document counts.
+def _get_effective_documents() -> dict:
+    """registry의 전체 문서 중 "실질적으로 유효한" 것만 걸러 반환한다.
 
-    RAW count uses same discovery rules as Library page:
-    - Recursive search (rglob)
-    - Supported extensions only
-    - Excludes hidden files
-    - Includes only files (not directories)
+    [버그 수정 2026-07-22] registry["documents"]는 실패/중단된 처리
+    시도(ingest_status FAILED/ABANDONED)와 새 버전으로 대체된 옛
+    항목(superseded_by가 set된 것)을 삭제하지 않고 그대로 쌓아두므로,
+    이 필터 없이 len(registry["documents"])를 그대로 쓰면 대시보드의
+    "정리된 자료"·"유형별 문서" 두 카드가 서로 다른 필터를 적용해 숫자가
+    어긋난다(사용자 보고: 74 vs 124). 두 카드가 항상 이 함수 하나를
+    공유하도록 해서 재발을 막는다.
+
+    필터 기준:
+      - chunk_count > 0            (청킹까지 실제로 완료된 문서만)
+      - ingest_status == "PROCESSED" (실패/중단된 시도 제외; 필드가
+        없는 구버전 레코드는 register_document()의 기본값과 동일하게
+        "PROCESSED"로 간주 — core/identity_registry.py:275)
+      - superseded_by is None       (대체된 옛 버전 제외, 최신본만)
     """
-    supported_exts = {".pdf", ".epub", ".txt", ".md", ".docx"}
+    from core.config import DEFAULT_REGISTRY_PATH
+    from core.identity_registry import load_identity_registry
 
-    raw_count = 0
-    raw_dir = Path(DEFAULT_RAW_DIR)
-    if raw_dir.exists():
-        raw_count = len([
-            f for f in raw_dir.rglob("*")
-            if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in supported_exts
-        ])
-
-    output_count = len(list(Path(DEFAULT_OUTPUT_DIR).rglob("*.md"))) if Path(DEFAULT_OUTPUT_DIR).exists() else 0
-
-    return raw_count, output_count
+    registry = load_identity_registry(DEFAULT_REGISTRY_PATH)
+    docs = registry.get("documents", {})
+    return {
+        doc_id: doc
+        for doc_id, doc in docs.items()
+        if doc.get("chunk_count", 0) > 0
+        and doc.get("ingest_status", "PROCESSED") == "PROCESSED"
+        and doc.get("superseded_by") is None
+    }
 
 
 # ── Document Type (doc_type) Summary & Manual Labeling ──────────────
@@ -184,15 +199,23 @@ _DOC_TYPE_ICONS = {
     "논문": "📜",
     "기타": "📁",
 }
+# 유형별 수량사 — 책 형태 자료는 "권", 낱건 자료는 "건"으로 구분.
+_DOC_TYPE_UNITS = {
+    "주석": "권",
+    "설교": "건",
+    "사전": "권",
+    "논문": "건",
+    "기타": "권",
+}
 
 
 def _render_doc_type_summary() -> None:
-    """Show doc_type distribution from registry and allow manual labeling."""
-    from core.config import DEFAULT_REGISTRY_PATH
-    from core.identity_registry import load_identity_registry
+    """Show doc_type distribution from registry and allow manual labeling.
 
-    registry = load_identity_registry(DEFAULT_REGISTRY_PATH)
-    docs = registry.get("documents", {})
+    [버그 수정 2026-07-22] "정리된 자료" 카드와 동일한 _get_effective_documents()
+    집합을 쓴다 — 이전엔 여기서 registry 전체(superseded/실패 포함)를
+    분모로 삼아 "정리된 자료" 카드와 항상 어긋났다."""
+    docs = _get_effective_documents()
     if not docs:
         return
 
@@ -219,7 +242,7 @@ def _render_doc_type_summary() -> None:
     for i, doc_type in enumerate(_DOC_TYPE_ORDER):
         with cols[i]:
             icon = _DOC_TYPE_ICONS.get(doc_type, "📁")
-            st.metric(f"{icon} {doc_type}", f"{counts[doc_type]}개")
+            st.metric(f"{icon} {doc_type}", f"{counts[doc_type]}{_DOC_TYPE_UNITS.get(doc_type, '개')}")
 
     # Manual labeling section for untyped documents (one row per document)
     if untyped_ids:
