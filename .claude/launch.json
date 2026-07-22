@@ -4,8 +4,9 @@
     {
       "name": "dbma-ui",
       "runtimeExecutable": "/Users/David/envs/dbma311/bin/streamlit",
-      "runtimeArgs": ["run", "dbma_ui.py", "--server.headless", "true", "--server.port", "8520"],
-      "port": 8520
+      "runtimeArgs": ["run", "dbma_ui.py", "--server.headless", "true"],
+      "port": 8520,
+      "autoPort": true
     }
   ]
 }
