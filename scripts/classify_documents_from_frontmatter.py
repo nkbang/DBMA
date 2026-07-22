@@ -106,7 +106,7 @@ def classify_from_frontmatter(text: str) -> tuple[str, list[str]]:
     liturgy_matches = LITURGY_KEYWORDS.findall(text)
     if liturgy_matches:
         matched.extend(liturgy_matches)
-        return "시전", list(set(matched))
+        return "사전", list(set(matched))
     thesis_matches = THESIS_KEYWORDS.findall(text)
     if thesis_matches:
         matched.extend(thesis_matches)
@@ -126,8 +126,8 @@ def main():
         print(f"raw 디렉토리를 찾을 수 없음: {raw_dir}")
         return
 
-    type_counts = {"주석": 0, "설교": 0, "시전": 0, "논문": 0, "기타": 0}
-    type_docs = {"주석": [], "설교": [], "시전": [], "논문": [], "기타": []}
+    type_counts = {"주석": 0, "설교": 0, "사전": 0, "논문": 0, "기타": 0}
+    type_docs = {"주석": [], "설교": [], "사전": [], "논문": [], "기타": []}
 
     print("=" * 80)
     print("문서 유형 분류 결과 (프론트 메터 기반)")
@@ -170,7 +170,7 @@ def main():
     print("\n" + "=" * 80)
     print("유형별 문서 목록")
     print("=" * 80)
-    for doc_type in ["주석", "설교", "시전", "논문", "기타"]:
+    for doc_type in ["주석", "설교", "사전", "논문", "기타"]:
         if type_docs[doc_type]:
             print(f"\n--- {doc_type} ({len(type_docs[doc_type])}권) ---")
             for source_file, dtype, keywords in type_docs[doc_type]:
