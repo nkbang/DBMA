@@ -78,11 +78,17 @@ def _render_library_summary() -> None:
     개발자용 정보라 Monitor·Processing으로 이미 옮겨져 있다."""
     raw_docs, output_docs = _get_document_counts()
 
+    # [버그 수정 2026-07-21] "보유 문서"(RAW 폴더 파일 수)와 "정리된
+    # 자료"(output .md 누적 수)는 서로 다른 걸 재는 지표다 — 처리된
+    # 원본은 RAW에서 지워지는 경우가 많아 RAW 카운트가 총 보유량을
+    # 반영하지 않는다(사용자 보고: "61권 vs 79개" 불일치). 계산 로직은
+    # 그대로 두고 라벨만 정확하게 — "RAW 대기 문서"로 바꿔 두 숫자가
+    # 같은 모집단이 아님을 명확히 한다.
     c1, c2 = st.columns(2)
     with c1:
-        st.metric("보유 문서", f"{raw_docs}권")
+        st.metric("RAW 대기 문서", f"{raw_docs}권", help="data/RAW 폴더에 현재 남아있는 파일 수 — 처리된 원본은 여기서 지워질 수 있어 총 보유량과 다를 수 있습니다.")
     with c2:
-        st.metric("정리된 자료", f"{output_docs}개 문서")
+        st.metric("정리된 자료", f"{output_docs}개 문서", help="누적 처리 산출물(.md) 수 — 중복/미완성 파일이 섞여 있을 수 있습니다.")
 
 
 def _get_overall_status() -> tuple[str, str, str, str]:
