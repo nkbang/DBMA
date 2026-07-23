@@ -103,6 +103,25 @@ sources:
       raw_path: "data/sermon_corpus/raw/woori_church.jsonl"
       normalized_path: "data/sermon_corpus/normalized/corpus_woori_church.jsonl"
 
+  # 새삶교회 (saesamm.com) - 2026-07-23 실측 확인
+  # robots.txt 없음(전면 허용). 그누보드 갤러리형 스킨이며 상세 페이지
+  # table#sermon-info에 설교자/설교본문/설교날짜가 명시적으로 라벨링돼
+  # 있어 필드 구분이 명확하다.
+  saesamm:
+    enabled: true
+    source_id: saesamm
+    mode: saesamm_website
+    base_url: "https://www.saesamm.com"
+
+    limits:
+      min_delay_seconds: 3.0
+      max_delay_seconds: 8.0
+      max_pages: 10
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/saesamm.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_saesamm.jsonl"
+
   # 출판 설교집 (Publication)
   publication:
     enabled: false  # 추가 데이터 소스 연결 시 true로 변경
