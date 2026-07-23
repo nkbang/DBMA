@@ -227,6 +227,9 @@ class BackgroundCollector:
         if source_config.get("mode") == "saesamm_website":
             return self._collect_from_saesamm(source_id, source_config, limits, default_policy)
 
+        if source_config.get("mode") == "manna_website":
+            return self._collect_from_manna(source_id, source_config, limits, default_policy)
+
         urls = source_config.get("urls", [])
         if not urls:
             logger.warning(f"URL이 설정되지 않은 출처: {source_id}")
@@ -332,6 +335,36 @@ class BackgroundCollector:
         )
 
         collector = SaesammCollector({
+            "source_id": source_id,
+            "storage": {"raw_path": str(self.data_store.data_path)},
+        })
+
+        try:
+            records = collector.collect_all(
+                fetcher, max_records=1000, max_pages=limits.get("max_pages", 10)
+            )
+            self.stats["total_collected"] += len(records)
+            logger.info(f"{source_id}: {len(records)}건 수집 완료")
+            return records
+        except Exception as e:
+            self.stats["total_errors"] += 1
+            logger.error(f"{source_id} 수집 오류: {e}")
+            return []
+
+    def _collect_from_manna(
+        self, source_id: str, source_config: Dict, limits: Dict, default_policy: Dict
+    ) -> List[Any]:
+        """만나교회(manna.or.kr) 설교 게시판에서 수집합니다."""
+        from sermon_corpus.collector.manna import MannaCollector
+
+        fetcher = PoliteFetcher(
+            user_agent=default_policy.get("user_agent", "DBMA-SermonCorpus/0.1 (academic research)"),
+            min_delay=limits.get("min_delay_seconds", 3.0),
+            max_delay=limits.get("max_delay_seconds", 8.0),
+            max_retries=default_policy.get("retry", {}).get("max_attempts", 2),
+        )
+
+        collector = MannaCollector({
             "source_id": source_id,
             "storage": {"raw_path": str(self.data_store.data_path)},
         })

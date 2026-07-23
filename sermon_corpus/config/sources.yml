@@ -122,6 +122,25 @@ sources:
       raw_path: "data/sermon_corpus/raw/saesamm.jsonl"
       normalized_path: "data/sermon_corpus/normalized/corpus_saesamm.jsonl"
 
+  # 만나교회 (manna.or.kr) - 2026-07-23 실측 확인
+  # WordPress "jt-" 테마. robots.txt는 GPTBot/CCBot과 wp-json/wp-admin만
+  # 차단, 일반 UA는 허용. 상세 페이지 .jt-content-header__title/__author/
+  # __time/__meta 로 제목/설교자/날짜/본문 참조가 명확히 구분된다.
+  manna:
+    enabled: true
+    source_id: manna
+    mode: manna_website
+    base_url: "https://manna.or.kr"
+
+    limits:
+      min_delay_seconds: 3.0
+      max_delay_seconds: 8.0
+      max_pages: 10
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/manna.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_manna.jsonl"
+
   # 출판 설교집 (Publication)
   publication:
     enabled: false  # 추가 데이터 소스 연결 시 true로 변경
