@@ -512,7 +512,7 @@ def render_testament_distribution(stats: CorpusStatisticsAnalyzer):
     # OT/NT가 없는 경우 추가
     for t in testament_freq:
         if t not in ["OT", "NT"]:
-            data.append({"언약": t, "설교 수": testament_freq[t]["count"], "비율 (%)": testament_freq[t]["percentage"]})
+            data.append({"성경": t, "설교 수": testament_freq[t]["count"], "비율 (%)": testament_freq[t]["percentage"]})
     df = pd.DataFrame(data)
     
     col1, col2 = st.columns([1, 2])
@@ -533,36 +533,26 @@ def render_testament_distribution(stats: CorpusStatisticsAnalyzer):
 
 
 def render_book_frequencies(stats: CorpusStatisticsAnalyzer):
-    """권별 설교 빈도를 렌더링합니다"""
-    st.subheader("📚 권별 설교 빈도 (Top 30)")
-    
-    book_freq = stats.frequency_analyzer.get_book_frequencies(top_k=30)
-    
-    if not book_freq:
-        st.warning("권별 데이터가 없습니다.")
-        return
-    
-    # 막대 차트
-    df = pd.DataFrame(book_freq)
+    """66권 전체의 설교 빈도(권 이름 + 빈도수)를 렌더링합니다"""
+    st.subheader("📚 성경 권별 설교 빈도 (전체 66권)")
 
-    # [버그 수정] 이전에 있던 df["testament"] 계산은 문자열 x를
-    # BIBLE_BOOKS(튜플 리스트)와 직접 비교해 항상 거짓이 되는 죽은
-    # 코드였다 — book → testament 딕셔너리 매핑 하나로 정리.
-    testament_map = {}
-    for book, _, testament in stats.frequency_analyzer.BIBLE_BOOKS:
-        testament_map[book] = testament
-    
-    df["testament_ko"] = df["bible_book"].apply(lambda x: "구약" if testament_map.get(x) == "OT" else "신약")
-    
+    # 데이터에 등장하지 않은 권도 0건으로 표시하기 위해 book_counter가
+    # 아니라 정경 순서(BIBLE_BOOKS)를 기준으로 66권 전부를 순회한다.
+    counts = dict(stats.frequency_analyzer.book_counter)
+    rows = [
+        {"bible_book": book, "count": counts.get(book, 0)}
+        for book, _, _ in stats.frequency_analyzer.BIBLE_BOOKS
+    ]
+
+    df = pd.DataFrame(rows)
+
     fig = px.bar(
         df,
         x="bible_book",
         y="count",
-        color="testament_ko",
-        hover_data={"percentage": ":.2f"},
-        title="성경 책별 설교 빈도 (Top 30)",
+        title="성경 권별 설교 빈도 (전체 66권)",
     )
-    fig.update_layout(xaxis_tickangle=-45, height=500, showlegend=True)
+    fig.update_layout(xaxis_tickangle=-45, height=600, showlegend=False)
     st.plotly_chart(fig, use_container_width=True)
 
 
