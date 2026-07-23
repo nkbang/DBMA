@@ -54,6 +54,57 @@ class TestChannelNormalization:
         ]
 
 
+class TestExtractPreacher:
+    def test_finds_name_before_title_with_space(self):
+        collector = YouTubeSermonCollector({})
+        assert collector.extract_preacher("은혜로 사는 삶 - 유기성 목사 설교") == "유기성"
+
+    def test_finds_name_before_title_without_space(self):
+        collector = YouTubeSermonCollector({})
+        assert collector.extract_preacher("이재철목사 명설교 최근말씀") == "이재철"
+
+    def test_no_match_returns_none(self):
+        collector = YouTubeSermonCollector({})
+        assert collector.extract_preacher("아무 관련 없는 제목입니다") is None
+
+
+class TestExtractBibleReferencesChapterSanityCheck:
+    """[버그 수정] 권명 뒤 숫자를 장 번호로 채택할 때 그 책의 실제 장
+    수를 넘는지 검증하지 않아 "민수기 787237장", "이사야서 2026장" 같은
+    터무니없는 값이 그대로 passage_raw에 들어갔다(설명란의 구독자 수/
+    연도 등이 우연히 "권명+숫자+장" 형태로 걸림, 실제 유튜브 API로 실측
+    확인). 그 책의 실제 최대 장 수를 넘으면 채택하지 않아야 한다."""
+
+    def test_rejects_chapter_number_beyond_books_actual_chapter_count(self):
+        collector = YouTubeSermonCollector({})
+        # 민수기는 36장까지만 있음
+        result = collector.extract_bible_references(
+            "정상 제목", "민수기 787237장 무관한 설명 텍스트"
+        )
+        assert result["bible_book"] is None
+        assert result["chapter_start"] is None
+
+    def test_accepts_valid_chapter_number_within_range(self):
+        collector = YouTubeSermonCollector({})
+        result = collector.extract_bible_references("로마서 8:28 설교", "")
+        assert result["bible_book"] == "롬"
+        assert result["chapter_start"] == 8
+        assert result["verse_start"] == 28
+
+    def test_abbreviation_strategy_requires_explicit_chapter_marker(self):
+        # [버그 수정] "(?:장|편)?"이 완전 선택적이라 "장"/"편" 표시 없이
+        # 약어 뒤 숫자만 있어도 통과했다 — 명시적 표시가 없으면 거부.
+        collector = YouTubeSermonCollector({})
+        result = collector.extract_bible_references("무관한 제목", "시 787237 무관한 숫자")
+        assert result["bible_book"] is None
+
+    def test_abbreviation_strategy_rejects_out_of_range_chapter(self):
+        collector = YouTubeSermonCollector({})
+        # 시편은 150편까지만 있음
+        result = collector.extract_bible_references("무관한 제목", "시 999편 무관한 텍스트")
+        assert result["bible_book"] is None
+
+
 def _fake_search_item(video_id: str, title: str, channel_title: str) -> dict:
     return {
         "id": {"videoId": video_id},

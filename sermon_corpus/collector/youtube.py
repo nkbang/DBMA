@@ -171,15 +171,36 @@ class YouTubeSermonCollector:
         self._seen_titles.add(dedupe_key)
         return False
     
+    # [기능 추가] 설교자 이름 추출 — "유기성 목사", "이재철목사"(공백 없음),
+    # "정동수 목사님", "OOO 전도사" 등 제목/설명에 흔히 붙는 패턴에서
+    # 이름만 뽑는다. CorpusStatisticsAnalyzer가 preacher 필드를 필수로
+    # 요구하도록 바뀐 뒤로 유튜브 레코드는 이 필드가 항상 비어있어 전부
+    # 걸러지고 있었음 — 못 찾으면 None(추측해서 채우지 않음).
+    PREACHER_PATTERN = re.compile(r"([가-힣]{2,4})\s?(목사님|목사|전도사님|전도사|장로님|장로)")
+
+    def extract_preacher(self, title: str, description: str = "") -> Optional[str]:
+        """제목/설명에서 설교자 이름을 추출합니다. 못 찾으면 None."""
+        text = f"{title} {description}"
+        match = self.PREACHER_PATTERN.search(text)
+        return match.group(1) if match else None
+
     def extract_bible_references(self, title: str, description: str = "") -> Dict:
         """
         설교 제목/설명에서 성경 본문 참조를 추출합니다.
         
-        패턴:
-        - "창세기가 1장" -> 창세기는, 1
+        YouTube 영상 제목/설명에서는 다음과 같은 다양한 형식이 사용됩니다:
+        - "요한복음 3장 설교" -> 요한복음, 3
         - "요한복음 3:16" -> 요한복음, 3, 16
-        - "롬 8:28" -> 로마서, 8, 28 (약어 매핑 필요)
-        - "시편 23편" -> 시편, 23
+        - "3장 - 은혜" -> (이전 권명에서 이어짐)
+        - "롬 8:28" -> 로마서, 8, 28 (약어)
+        - "창 1:1" -> 창세기, 1, 1 (약어 + 콜론)
+        - "Genesis 3:16" -> 영어 권명 매칭
+        
+        Returns:
+            bible_book: 권 약어 (예: "요", "창", "롬")
+            chapter_start: 장 번호
+            verse_start: 절 번호 (있는 경우)
+            passage_raw: 원본 본문 참조 문자열
         """
         result = {
             "bible_book": None,
@@ -190,66 +211,181 @@ class YouTubeSermonCollector:
         
         # 제목 + 설명 결합
         text = f"{title} {description}"
+        # 대소문자 정규화 (영어 매칭용)
+        text_lower = text.lower()
         
-        # 패턴 1: "권명 장:절" 형식 (예: "요한복음 3:16", "시편 23편 4절")
-        # 한글 권명 매칭
-        for book_name, info in self.BIBLE_BOOKS_KO.items():
-            if book_name in text:
-                result["bible_book"] = info["abbr"]
-                
-                # 장 번호 추출 (예: "요한복음 3:16" -> 3)
-                chapter_pattern = rf"{book_name}\s*(\d+)"
-                match = re.search(chapter_pattern, text)
-                if match:
-                    result["chapter_start"] = int(match.group(1))
-                    
-                    # 절 번호 추출 (예: "3:16" -> 16)
-                    verse_pattern = rf"{book_name}\s*\d+[::\s](\d+)"
-                    verse_match = re.search(verse_pattern, text)
-                    if verse_match:
-                        result["verse_start"] = int(verse_match.group(1))
-                        result["passage_raw"] = f"{book_name.rstrip('는')} {match.group(1)}:{verse_match.group(1)}"
-                    else:
-                        result["passage_raw"] = f"{book_name.rstrip('는')} {match.group(1)}장"
-                
-                break
+        # ============================================================
+        # 전략 1: 영어 권명 패턴 (가장 명확 — 한글과 충돌 없음)
+        # "John 3:16", "Genesis 1:1", "Romans 8:28" 등
+        # 먼저 시도하여 한글 매칭과 충돌 방지
+        # ============================================================
+        english_books = {
+            "genesis": {"abbr": "창", "chapters": 50},
+            "exodus": {"abbr": "출", "chapters": 40},
+            "leviticus": {"abbr": "레", "chapters": 27},
+            "numbers": {"abbr": "민", "chapters": 36},
+            "deuteronomy": {"abbr": "신", "chapters": 34},
+            "john": {"abbr": "요", "chapters": 21},
+            "romans": {"abbr": "롬", "chapters": 16},
+            "1 corinthians": {"abbr": "고전", "chapters": 16},
+            "2 corinthians": {"abbr": "고후", "chapters": 13},
+            "matthew": {"abbr": "마", "chapters": 28},
+            "mark": {"abbr": "막", "chapters": 16},
+            "luke": {"abbr": "눅", "chapters": 24},
+            "acts": {"abbr": "행", "chapters": 28},
+            "psalm": {"abbr": "시", "chapters": 150},
+            "psalms": {"abbr": "시", "chapters": 150},
+            "proverbs": {"abbr": "잠", "chapters": 31},
+            "revelation": {"abbr": "계", "chapters": 22},
+        }
         
-        # 패턴 2: 약어 형식 (예: "롬 8:28", "고전 13:4")
-        if not result["bible_book"]:
-            abbrev_map = {
-                "창": "창세기는", "출": "출애굽기는", "레": "레기는",
-                "민": "민수기는", "신": "신명기는", "수": "여호수아기는",
-                "삐": "사사기는", "룻": "룻기는", "상": "사무엘상은",
-                "하": "사무엘하는", "왕": "열왕기는", "대상": "역대상은",
-                "대하": "역대하는", "느": "느헤미야는", "에스": "에스더는",
-                "욥": "욥기는", "시": "시편은", "잠": "잠언은",
-                "전": "전도서에는", "아신": "아름의 노래에는", "사": "이사야서는",
-                "렘": "예레미야서는", "애": "예레미야애서는", "겔": "에스겔서는",
-                "단": "다니엘서는", "호": "호세아서는", "욜": "요엘서는",
-                "암": "아모스서는", "옵": "오바디아서는", "욘": "요나는",
-                "미": "미가는", "눙": "나훰서는", "합": "하박국은",
-                "습": "스바냐서는", "학": "학개서는", "슥": "스가랴서는",
-                "말": "말라기는", "마": "마태복음은", "막": "마가복음은",
-                "눅": "누가는", "요": "요한복음은", "행": "사도행전은",
-                "롬": "로마서는", "고전": "고전에는", "고후": "후에는",
-                "갈": "갈라디아서에는", "엡": "에베소서에는", "빌": "빌립보서에는",
-                "골": "골로새서에는", "살전": "데살로니전후서에는",
-                "딤전": "디모데전서에는", "딤후": "디모데후서에는",
-                "딛": "디도서에는", "히": "히브리서에는", "야": "야고보서에는",
-                "벧전": "베전에는", "벧후": "후에는", "일": "요한일서에는",
-                "이": "요한이서에는", "삼": "요한삼서에는", "유": "유다서에는",
-                "계": "요한계시록은",
-            }
-            
-            for abbr, full_name in abbrev_map.items():
-                pattern = rf"{abbr}\s*(\d+)[::]\s*(\d+)"
-                match = re.search(pattern, text)
+        for eng_name, info in english_books.items():
+            if eng_name in text_lower:
+                # "John 3:16" 패턴 — re.IGNORECASE로 대소문자 구분 없이 매칭
+                pat = rf"{re.escape(eng_name)}\s*(\d+)[\:]\s*(\d+)"
+                match = re.search(pat, text, re.IGNORECASE)
                 if match:
-                    result["bible_book"] = abbr
+                    result["bible_book"] = info["abbr"]
                     result["chapter_start"] = int(match.group(1))
                     result["verse_start"] = int(match.group(2))
-                    result["passage_raw"] = f"{abbr} {match.group(1)}:{match.group(2)}"
-                    break
+                    result["passage_raw"] = f"{eng_name} {match.group(1)}:{match.group(2)}"
+                    return result
+                
+                # "John 3" 패턴 — "Psalm 23편" 등 "편/장" 접미사도 허용
+                pat_ch = rf"{re.escape(eng_name)}\s*(\d+)\s*(?:장|편)?\b"
+                match = re.search(pat_ch, text, re.IGNORECASE)
+                if match:
+                    result["bible_book"] = info["abbr"]
+                    chapter_text = match.group(0)
+                    ch = match.group(1)
+                    result["chapter_start"] = int(ch)
+                    if "편" in chapter_text:
+                        result["passage_raw"] = f"{eng_name} {ch}편"
+                    else:
+                        result["passage_raw"] = f"{eng_name} {ch}"
+                    return result
+        
+        # ============================================================
+        # 전략 2: 한글 권명 + 장 번호 패턴 (가장 일반적)
+        # "요한복음 3장", "창세기 1:1", "시편 23편" 등
+        # ============================================================
+        
+        # 권명 목록: '는/은/가/편' 접미사 제거 버전도 포함
+        book_patterns = []
+        for book_name, info in self.BIBLE_BOOKS_KO.items():
+            # '는/은/가' 접미사 제거
+            base_name = re.sub(r'[는은가]$', '', book_name)
+            book_patterns.append((book_name, base_name, info))
+        
+        for full_name, base_name, info in book_patterns:
+            # 완전 일치 (예: "요한복음은")
+            if full_name in text:
+                # 장 번호 추출: "요한복음은 3장", "요한복음은 3:16"
+                # [버그 수정] "권명 + 아무 숫자"(구분자 없음) 폴백
+                # 패턴이 있어서, 설명란에 있는 구독자 수/조회수 같은
+                # 무관한 큰 숫자가 우연히 권명 바로 뒤에 오면 그걸
+                # 장 번호로 잘못 채택했다(실측: "민수기 787237장" 등
+                # 터무니없는 값 확인). "장"이나 ":" 같은 명확한 구분자가
+                # 있을 때만 인정 — 없으면 차라리 못 찾은 것으로 둔다.
+                patterns_to_try = [
+                    rf"{re.escape(full_name)}\s*(\d+)[:::\s]\s*(\d+)",  # 권명 3:16
+                    rf"{re.escape(full_name)}\s*(\d+)\s*장",             # 권명 3장
+                ]
+                for pat in patterns_to_try:
+                    match = re.search(pat, text)
+                    if not match:
+                        continue
+                    ch_num = int(match.group(1))
+                    # [버그 수정] "이사야서 2026장"처럼 그 책의 실제
+                    # 장 수를 훌쩍 넘는 값도 여전히 나왔다(구독자 수,
+                    # 연도 등 설명란의 다른 숫자가 우연히 "권명+숫자+장"
+                    # 형태로 걸림) — 그 책의 실제 최대 장 수를 넘으면
+                    # 채택하지 않고 다음 패턴/후보로 넘어간다.
+                    if not (1 <= ch_num <= info["chapters"]):
+                        continue
+                    result["bible_book"] = info["abbr"]
+                    result["chapter_start"] = ch_num
+                    if len(match.groups()) > 1 and match.group(2):
+                        result["verse_start"] = int(match.group(2))
+                    # passage_raw 생성
+                    vr = match.group(2) if len(match.groups()) > 1 and match.group(2) else None
+                    if vr:
+                        result["passage_raw"] = f"{base_name} {ch_num}:{vr}"
+                    else:
+                        result["passage_raw"] = f"{base_name} {ch_num}장"
+                    return result
+                break
+            
+            # 접미사 제거 버전 매칭 (예: "요한복음 3장" — "은" 없이)
+            if base_name in text and full_name not in text:
+                patterns_to_try = [
+                    rf"{re.escape(base_name)}\s*(\d+)[:::\s]\s*(\d+)",
+                    rf"{re.escape(base_name)}\s*(\d+)\s*장",
+                ]
+                for pat in patterns_to_try:
+                    match = re.search(pat, text)
+                    if not match:
+                        continue
+                    ch_num = int(match.group(1))
+                    if not (1 <= ch_num <= info["chapters"]):
+                        continue
+                    result["bible_book"] = info["abbr"]
+                    result["chapter_start"] = ch_num
+                    if len(match.groups()) > 1 and match.group(2):
+                        result["verse_start"] = int(match.group(2))
+                    vr = match.group(2) if len(match.groups()) > 1 and match.group(2) else None
+                    if vr:
+                        result["passage_raw"] = f"{base_name} {ch_num}:{vr}"
+                    else:
+                        result["passage_raw"] = f"{base_name} {ch_num}장"
+                    return result
+
+        # ============================================================
+        # 전략 3: 한글 약어 패턴 (예: "요 3:16", "창 1:1", "시 23")
+        # ============================================================
+        if not result["bible_book"]:
+            # 약어 매핑 (약어 -> (완전권명, 기본권명))
+            abbrev_to_full = {}
+            for book_name, info in self.BIBLE_BOOKS_KO.items():
+                base_name = re.sub(r'[는은가]$', '', book_name)
+                abbrev_to_full[info["abbr"]] = (book_name, base_name, info["chapters"])
+
+            # 약어 + 장:절 패턴 (예: "요 3:16", "창 1:1")
+            for abbr, (full_name, base_name, max_chapters) in abbrev_to_full.items():
+                # "약어 장:절" 패턴
+                pat_with_verse = rf"{re.escape(abbr)}\s*(\d+)[::]\s*(\d+)"
+                match = re.search(pat_with_verse, text)
+                if match:
+                    ch_num = int(match.group(1))
+                    if 1 <= ch_num <= max_chapters:
+                        result["bible_book"] = abbr
+                        result["chapter_start"] = ch_num
+                        result["verse_start"] = int(match.group(2))
+                        result["passage_raw"] = f"{base_name} {ch_num}:{match.group(2)}"
+                        return result
+
+                # [버그 수정] "(?:장|편)?"이 완전히 선택적이라 "장"/"편"
+                # 표시 없이 약어 뒤에 아무 숫자만 있어도 통과했다 — 짧은
+                # 1글자 약어("민","시" 등)는 본문과 무관한 문맥에도 흔히
+                # 등장해서 오탐이 매우 잦다(실측: "민수기 787237장" 등
+                # 확인). "장"/"편" 표시를 필수로 요구 + 그 책의 실제
+                # 최대 장 수를 넘으면 거부.
+                pat_chapter_only = rf"{re.escape(abbr)}\s*(\d+)\s*(장|편)"
+                match = re.search(pat_chapter_only, text)
+                if match:
+                    ch_num = int(match.group(1))
+                    if 1 <= ch_num <= max_chapters:
+                        result["bible_book"] = abbr
+                        result["chapter_start"] = ch_num
+                        marker = match.group(2)
+                        result["passage_raw"] = f"{base_name} {ch_num}{marker}"
+                        return result
+        
+        # ============================================================
+        # 전략 4: 독립된 장 번호 패턴 (예: "3장 설교", "Chapter 3")
+        # 이전 컨텍스트에서 권명이 이미 발견된 경우에만 사용
+        # ============================================================
+        # 이 전략은 현재 skip (권명 없이 장 번호만으로는 불명확)
         
         return result
     
@@ -379,6 +515,14 @@ class YouTubeSermonCollector:
             bible_ref = self.extract_bible_references(
                 video["title"], video.get("description", "")
             )
+            preacher = self.extract_preacher(video["title"], video.get("description", ""))
+
+            # [버그 수정] YouTube API의 publishedAt("2026-01-01T00:00:00Z")을
+            # "published_at"으로만 저장했는데, 코퍼스가 요구하는 필수
+            # 필드명은 sermonbank 등 다른 출처와 동일한 "published_date"
+            # (YYYY-MM-DD)다 — 이름이 달라 항상 누락 처리돼 필터링됐다.
+            published_at = video.get("published_at", "")
+            published_date = published_at[:10] if published_at else ""
 
             records.append({
                 "record_id": f"yt_{dedupe_key}",
@@ -389,13 +533,15 @@ class YouTubeSermonCollector:
                 "video_id": video["video_id"],
                 "title": video["title"],
                 "description": video.get("description", ""),
+                "preacher": preacher,
                 "passage_raw": bible_ref.get("passage_raw") or "",
                 "bible_book": bible_ref.get("bible_book") or "Unknown",
                 "chapter_start": bible_ref.get("chapter_start") or 0,
                 "chapter_end": bible_ref.get("chapter_end"),
                 "verse_start": bible_ref.get("verse_start") or 0,
                 "verse_end": bible_ref.get("verse_end"),
-                "published_at": video.get("published_at", ""),
+                "published_at": published_at,
+                "published_date": published_date,
                 "collected_at": datetime.utcnow().isoformat(),
             })
             self.stats["videos_collected"] += 1

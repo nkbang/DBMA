@@ -49,13 +49,18 @@ class CorpusStatistics:
 class CorpusStatisticsAnalyzer:
     """
     코퍼스 전체 통계 분석기.
-    
+
     - 빈도 분석 (FrequencyAnalyzer 통합)
     - 키워드 분석 (KeywordExtractor 통합)
     - 본문-주제 상관관계 분석
     - JSONL 데이터 로드 및 처리
     """
-    
+
+    # [기능 추가] 날짜/본문/제목/설교자 중 하나라도 없는 레코드는 통계에
+    # 포함시키지 않는다 — 코퍼스에 들어오는 모든 경로(load_jsonl,
+    # load_records)가 공통으로 거치도록 여기 한 곳에 고정.
+    REQUIRED_FIELDS = ["published_date", "passage_raw", "title", "preacher"]
+
     def __init__(self):
         self.frequency_analyzer = FrequencyAnalyzer()
         self.keyword_extractor = KeywordExtractor()
@@ -75,39 +80,53 @@ class CorpusStatisticsAnalyzer:
     def load_jsonl(self, path: Path) -> int:
         """
         JSONL 파일에서 기록을 로드합니다.
-        
+
         Returns:
-            로드된 기록 수
+            로드된 기록 수 (필수 필드 누락 레코드 제외)
         """
-        loaded = 0
+        records = []
         with open(path, "r", encoding="utf-8") as f:
             for line in f:
                 if not line.strip():
                     continue
-                
                 try:
-                    record = json.loads(line)
-                    self._process_record(record)
-                    loaded += 1
-                except (json.JSONDecodeError, KeyError):
+                    records.append(json.loads(line))
+                except json.JSONDecodeError:
                     continue
-        
-        return loaded
-    
+
+        return self.load_records(records)
+
     def load_records(self, records: List[dict]) -> int:
         """
         기록 목록을 로드합니다.
-        
+
+        [기능 추가] 날짜(published_date)/본문(passage_raw)/제목(title)/
+        설교자(preacher) 중 하나라도 비어있는 레코드는 통계·시각화에서
+        제외한다 — self.records에도 필터링된 것만 남긴다.
+
         Returns:
-            로드된 기록 수
+            로드된 기록 수 (필수 필드 누락 레코드 제외)
         """
-        for record in records:
+        complete_records = [r for r in records if self._has_required_fields(r)]
+
+        for record in complete_records:
             self._process_record(record)
-        
-        # 원본 기록 저장 (대시보드 시각화용)
-        self.records = list(records)
-        
-        return len(records)
+
+        # 원본 기록 저장 (대시보드 시각화용) — 필터링된 것만
+        self.records = complete_records
+
+        return len(complete_records)
+
+    @classmethod
+    def _has_required_fields(cls, record: dict) -> bool:
+        """REQUIRED_FIELDS가 전부 값이 있는지(None/빈 문자열이 아닌지) 확인"""
+        for field in cls.REQUIRED_FIELDS:
+            value = record.get(field)
+            if value is None:
+                return False
+            if isinstance(value, str) and not value.strip():
+                return False
+        return True
     
     def _process_record(self, record: dict) -> None:
         """단일 기록을 처리하여 각 분석기에 추가합니다"""
