@@ -460,6 +460,56 @@ def load_data(data_path: str, progress: Optional[ProgressState] = None) -> Optio
         return None
 
 
+def filter_records_without_bible_book(records: List[dict]) -> tuple:
+    """성경 본문(bible_book)이 없는 레코드를 제거합니다.
+
+    제거 조건: bible_book 이 None / 빈 문자열 / 공백만 있는 경우
+
+    Returns:
+        (필터된_records, 원본_건수, 제거된_건수)
+    """
+    kept = []
+    removed = 0
+
+    for record in records:
+        book = record.get("bible_book")
+        if book is None or str(book).strip() == "":
+            removed += 1
+        else:
+            kept.append(record)
+
+    return kept, len(records), removed
+
+
+# 필수 필드: 설교일(published_date), 설교자(preacher), 성경본문(bible_book),
+# 설교제목(title) 중 하나라도 비어있으면 레코드를 제거한다.
+_REQUIRED_FIELDS = ["published_date", "preacher", "bible_book", "title"]
+
+
+def filter_records_with_required_fields(records: List[dict]) -> tuple:
+    """필수 필드(published_date, preacher, bible_book, title) 가 모두
+    채워진 레코드만 남깁니다.
+
+    제거 조건: 필수 필드 중 None / 빈 문자열 / 공백만 있는 것이 하나라도 있으면 제거
+
+    Returns:
+        (필터된_records, 원본_건수, 제거된_건수)
+    """
+    kept = []
+    removed = 0
+
+    for record in records:
+        for field in _REQUIRED_FIELDS:
+            val = record.get(field)
+            if val is None or str(val).strip() == "":
+                removed += 1
+                break
+        else:
+            kept.append(record)
+
+    return kept, len(records), removed
+
+
 def deduplicate_records(records: List[dict]) -> tuple:
     """중복 데이터를 제거합니다.
     
@@ -499,10 +549,16 @@ def analyze_data(records: List[dict]) -> CorpusStatisticsAnalyzer:
     return analyzer
 
 
-def get_background_data_path() -> Optional[str]:
-    """백그라운드 수집 데이터 파일 경로를 반환합니다"""
-    data_path = Path(__file__).parent.parent / "data" / "collected_sermons.jsonl"
-    return str(data_path) if data_path.exists() else None
+def get_background_data_path() -> str:
+    """백그라운드 수집 데이터 파일 경로를 반환합니다.
+
+    [버그 수정] 이전에는 파일이 이미 존재할 때만 경로를 반환했다 —
+    그래서 아직 한 번도 수집한 적 없는 상태에서는 "수동 데이터 수집
+    실행" 버튼 자체가 화면에 나타나지 않고 CLI 안내문만 보였다(버튼을
+    보려면 먼저 CLI로 한 번 수집해야 하는 순환 문제). 파일 존재
+    여부와 무관하게 항상 경로를 반환 — DataStore가 없으면 만든다.
+    """
+    return str(Path(__file__).parent.parent / "data" / "collected_sermons.jsonl")
 
 
 # ============================================================
@@ -673,21 +729,69 @@ def render_keyword_analysis(stats: CorpusStatisticsAnalyzer):
     
     # 상위 키워드
     top_keywords = stats.keyword_extractor.get_top_keywords(top_k=30)
-    
+
     if not top_keywords:
         st.warning("키워드 데이터가 없습니다.")
         return
-    
-    # 단어 구름
-    word_data = [(kw["word"], kw["frequency"]) for kw in top_keywords]
+
+    # [기능 강화] 이전에는 트리맵이 path=["word"] 단일 계층이라 클릭해도
+    # 확대/축소 외에 아무 반응이 없었다(원래도 최상위 노드라 확대할
+    # 곳도 없었음). 1) 주제 카테고리 > 키워드 2단계 계층으로 바꿔
+    # 카테고리 조각을 클릭하면 그 안의 키워드들로 확대되도록 하고,
+    # 2) on_select로 클릭 이벤트를 받아 실제로 그 키워드가 들어간
+    # 설교 제목 목록을 트리맵 아래에 표시한다.
+    tree_rows = [
+        {
+            "category_kr": CATEGORY_KOREAN_MAP.get(kw.get("category"), "기타"),
+            "word": kw["word"],
+            "freq": kw["frequency"],
+        }
+        for kw in top_keywords
+    ]
     fig_wordcloud = px.treemap(
-        pd.DataFrame(word_data, columns=["word", "freq"]),
-        path=["word"],
+        pd.DataFrame(tree_rows),
+        path=["category_kr", "word"],
         values="freq",
-        title="설교 제목 키워드 트리맵",
+        title="설교 제목 키워드 트리맵 (카테고리 → 키워드, 클릭하면 해당 설교 제목 표시)",
     )
-    fig_wordcloud.update_layout(height=400)
-    st.plotly_chart(fig_wordcloud, use_container_width=True)
+    fig_wordcloud.update_layout(height=450)
+    fig_wordcloud.update_traces(hovertemplate="%{label}<br>빈도: %{value}<extra></extra>")
+
+    selection = st.plotly_chart(
+        fig_wordcloud,
+        use_container_width=True,
+        on_select="rerun",
+        selection_mode="points",
+        key="keyword_treemap",
+    )
+
+    word_set = {kw["word"] for kw in top_keywords}
+    clicked_word = None
+    points = (selection or {}).get("selection", {}).get("points", [])
+    if points:
+        label = points[0].get("label") or points[0].get("id")
+        if label in word_set:
+            clicked_word = label
+
+    if clicked_word:
+        st.markdown(f"##### 🔎 \"{clicked_word}\" 키워드가 들어간 설교 제목")
+        matching_titles = [
+            r.get("title", "")
+            for r in (stats.records or [])
+            if clicked_word in (r.get("title") or "")
+        ]
+        if matching_titles:
+            st.dataframe(
+                pd.DataFrame({"설교 제목": matching_titles[:50]}),
+                hide_index=True,
+                use_container_width=True,
+            )
+            if len(matching_titles) > 50:
+                st.caption(f"...외 {len(matching_titles) - 50}건 더 있습니다.")
+        else:
+            st.info("일치하는 설교 제목을 찾지 못했습니다.")
+    else:
+        st.caption("💡 트리맵에서 키워드 조각을 클릭하면 해당 키워드가 들어간 설교 제목을 볼 수 있습니다.")
     
     # 카테고리 분포 (한글 매핑)
     st.markdown("#### 주제 카테고리 분포")
@@ -943,9 +1047,14 @@ def main():
     original_count = 0
     duplicate_count = 0
     
-    # 영구 저장 경로
+    # 영구 저장 경로 (누적 전체 데이터)
     PERSISTENT_DATA_DIR = Path("data/sermon_corpus/uploaded")
     PERSISTENT_DATA_FILE = PERSISTENT_DATA_DIR / "uploaded_sermons.jsonl"
+    
+    # [버그 수정] CLI 경로에서도 누계 전체 데이터를 분석에 사용 —
+    # PERSISTENT_DATA_FILE 이 있으면 그것을 기본 누계 데이터로
+    # 간주하고 analyzer 에 전달한다.
+    cumulative_records: Optional[List[dict]] = None
     
     if uploaded_file is not None:
         # 진행률 표시
@@ -969,6 +1078,16 @@ def main():
         else:
             original_count = len(records)
             progress.current = progress.total
+            progress.message = "본문 필터링 중..."
+            
+            # 성경 본문이 없는 레코드 제거
+            records, _, no_book_removed = filter_records_without_bible_book(records)
+            
+            progress.message = "필수 필드 검증 중..."
+            
+            # 필수 필드(published_date, preacher, bible_book, title) 가 모두 있는 레코드만 남김
+            records, _, required_removed = filter_records_with_required_fields(records)
+            
             progress.message = "중복 제거 중..."
             
             # 업로드 데이터 내 중복 제거
@@ -1038,7 +1157,7 @@ def main():
             # 포함)라 duplicate_count(=dup_internal+appended_count)를 그대로
             # 더하면 dup_internal이 두 번 더해져 총건수가 부풀려졌다.
             # 처리 대상 총건수는 original_count 하나로 충분.
-            st.success(f"✅ {original_count}건 처리 완료 (중복 {duplicate_count}건 스킵, 최종 {len(records)}건 추가, 총 누적 {existing_count + len(records):,}건)")
+            st.success(f"✅ {original_count}건 처리 완료 (본문 없음 {no_book_removed}건, 필수필드 미비 {required_removed}건, 중복 {duplicate_count}건 스킵, 최종 {len(records)}건 추가, 총 누적 {existing_count + len(records):,}건)")
 
             # 진행률 표시
             st.progress(1.0)
@@ -1048,17 +1167,53 @@ def main():
         os.unlink(tmp_path)
     
     elif data_path:
-        # 명령줄 인자에서 파일 로드 (영구 저장 없이 읽기만 함)
-        progress.message = "파일 로드 중..."
-        records = load_data(data_path, progress)
-        
-        if records is None:
-            st.error(f"데이터 파일을 로드할 수 없습니다: {data_path}")
-            st.stop()
+        # [버그 수정] --data 로 지정된 파일이 누계 파일(self) 과
+        # 동일하면 "새 데이터"가 아니라 "누계 전체 데이터"로 간주한다.
+        # (find_default_data_path() 가 uploaded_sermons.jsonl 을
+        # 반환하는 경우가 바로 이에 해당)
+        if Path(data_path).resolve() == PERSISTENT_DATA_FILE.resolve():
+            # 누계 파일 자체를 분석 대상에 사용
+            cumulative_records = []
+            with open(PERSISTENT_DATA_FILE, 'r', encoding='utf-8') as f:
+                for line in f:
+                    if line.strip():
+                        cumulative_records.append(json.loads(line))
+            st.info(f"📊 누계 데이터: {len(cumulative_records):,}건 (저장된 전체 데이터)")
         else:
-            original_count = len(records)
-            records, original_count, duplicate_count = deduplicate_records(records)
-            st.info(f"📂 {original_count + duplicate_count}건 로드 완료 (중복 {duplicate_count}건 제거)")
+            # 다른 파일 — "추가할 새 데이터"로 처리
+            progress.message = "파일 로드 중..."
+            records = load_data(data_path, progress)
+            
+            if records is None:
+                st.error(f"데이터 파일을 로드할 수 없습니다: {data_path}")
+                st.stop()
+            else:
+                original_count = len(records)
+                # 성경 본문이 없는 레코드 제거
+                records, _, no_book_removed = filter_records_without_bible_book(records)
+                duplicate_count += no_book_removed
+                
+                progress.message = "필수 필드 검증 중..."
+                
+                # 필수 필드(published_date, preacher, bible_book, title) 가 모두 있는 레코드만 남김
+                records, _, required_removed = filter_records_with_required_fields(records)
+                duplicate_count += required_removed
+                
+                progress.message = "중복 제거 중..."
+                
+                records, original_count, dup_after_filter = deduplicate_records(records)
+                duplicate_count += dup_after_filter
+                st.info(f"📂 {original_count + duplicate_count}건 로드 완료 (본문 없음 {no_book_removed}건, 필수필드 미비 {required_removed}건, 중복 {dup_after_filter}건 제거)")
+                
+                # 누계 파일이 있으면 그것도 합쳐서 분석
+                if PERSISTENT_DATA_FILE.exists():
+                    cumulative_records = []
+                    with open(PERSISTENT_DATA_FILE, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            if line.strip():
+                                cumulative_records.append(json.loads(line))
+                else:
+                    cumulative_records = records
     else:
         st.warning("⚠️ 데이터 파일이 지정되지 않았습니다. 파일을 업로드하거나 `--data PATH` 옵션을 사용하세요.")
         st.info("예시: streamlit run sermon_corpus/dashboard/web_app.py --data data/sermon_corpus/raw/sermonbank.jsonl")
@@ -1075,6 +1230,7 @@ def main():
                     for line in f:
                         if line.strip():
                             records.append(json.loads(line))
+                cumulative_records = records  # 누계에도 반영
             else:
                 st.error("저장된 데이터가 없습니다.")
                 st.stop()
@@ -1082,8 +1238,12 @@ def main():
             st.error("로드된 데이터가 없습니다.")
             st.stop()
     
+    # [버그 수정] 분석에는 항상 누계 전체 데이터(cumulative_records) 를 사용
+    if cumulative_records is None:
+        cumulative_records = records
+    
     # 분석
-    analyzer = analyze_data(records)
+    analyzer = analyze_data(cumulative_records)
 
     # 중복 제거 통계 표시
     if duplicate_count > 0:
@@ -1150,32 +1310,48 @@ def main():
 def _render_background_collector_status():
     """백그라운드 수집기 상태를 렌더링합니다"""
     st.header("🔄 백그라운드 데이터 수집기")
-    
+
     bg_data_path = get_background_data_path()
-    
-    if bg_data_path:
-        data_store = DataStore(bg_data_path)
-        stats = data_store.get_stats()
-        
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("총 데이터 건수", f"{stats['total_records']:,}")
-        col2.metric("파일 크기", f"{stats['file_size_bytes'] / 1024:.1f} KB")
-        col3.metric("마지막 수정", stats['last_modified'] or "없음")
-        
-        # 수동 수집 버튼
-        if st.button("📥 수동 데이터 수집 실행", key="manual_collect"):
-            st.info("수동 수집이 시작되었습니다. 콘솔을 확인하세요.")
-    else:
-        st.info("""
-        **백그라운드 수집 데이터 파일이 없습니다.**
-        
-        데이터를 수집하려면 다음 명령을 실행하세요:
+    data_store = DataStore(bg_data_path)
+    stats = data_store.get_stats()
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("총 데이터 건수", f"{stats['total_records']:,}")
+    col2.metric("파일 크기", f"{stats['file_size_bytes'] / 1024:.1f} KB")
+    col3.metric("마지막 수정", stats['last_modified'] or "없음")
+
+    # [버그 수정] 이 버튼이 st.info() 메시지 하나만 띄우고 실제로는
+    # 아무 수집도 실행하지 않는 완전한 stub이었다("수동 수집이
+    # 시작되었습니다. 콘솔을 확인하세요"라고만 말하고 콘솔에는 아무
+    # 로그도 안 남았음) — BackgroundCollector.run_once()를 실제로
+    # 호출하도록 연결.
+    if st.button("📥 수동 데이터 수집 실행", key="manual_collect"):
+        from sermon_corpus.collector.background_collector import BackgroundCollector
+
+        with st.spinner("설교은행에서 수집 중입니다... (robots.txt 확인 + 요청 지연으로 몇 초 걸릴 수 있습니다)"):
+            try:
+                collector = BackgroundCollector(data_path=bg_data_path)
+                result = collector.run_once()
+            except Exception as e:
+                st.error(f"수집 중 오류가 발생했습니다: {e}")
+            else:
+                st.success(
+                    f"✅ 수집 완료 — {result['total_collected']}건 수집, "
+                    f"{result['total_saved']}건 저장, {result['total_duplicates']}건 중복, "
+                    f"{result['total_errors']}건 오류 "
+                    f"(누적 {result['data_store']['total_records']:,}건)"
+                )
+                st.rerun()
+
+    with st.expander("CLI로 직접 실행하기"):
+        st.markdown("""
+        터미널에서 직접 실행하려면:
         ```bash
         cd ~/DBMA
         source ~/envs/dbma311/bin/activate
         python scripts/background_collector.py --once
         ```
-        
+
         또는 데몬 모드로 지속적으로 실행:
         ```bash
         python scripts/background_collector.py --daemon

@@ -28,6 +28,7 @@ import os
 import json
 import time
 import signal
+import threading
 import argparse
 import logging
 from pathlib import Path
@@ -174,9 +175,16 @@ class BackgroundCollector:
             "runs": 0,
         }
         
-        # 정지 신호 처리
-        signal.signal(signal.SIGINT, self._handle_signal)
-        signal.signal(signal.SIGTERM, self._handle_signal)
+        # [버그 수정] signal.signal()은 메인 스레드에서만 등록 가능한데
+        # Streamlit은 각 세션의 스크립트를 별도 워커 스레드에서 실행한다
+        # — 대시보드의 "수동 데이터 수집 실행" 버튼에서 BackgroundCollector()
+        # 를 생성하면 여기서 "signal only works in main thread of the
+        # main interpreter" ValueError가 나서 수집이 전혀 안 됐다.
+        # CLI(--once/--daemon)는 메인 스레드라 그대로 동작하도록,
+        # 메인 스레드일 때만 정지 신호를 등록한다.
+        if threading.current_thread() is threading.main_thread():
+            signal.signal(signal.SIGINT, self._handle_signal)
+            signal.signal(signal.SIGTERM, self._handle_signal)
     
     def _load_config(self) -> Dict:
         """설정 파일을 로드합니다."""
