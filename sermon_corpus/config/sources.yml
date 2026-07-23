@@ -41,7 +41,7 @@ sources:
         preacher: "tr td.f_d1_6 span.member"
         date: "table[style*='margin:0 0 15px 0'] td.bd_sermon_L02 (텍스트 끝 YYYY-MM-DD)"
         url: "span.f_s_list > a[href*='wr_id='] @href"
-    
+
     limits:
       min_delay_seconds: 5.0
       max_delay_seconds: 12.0
@@ -49,7 +49,7 @@ sources:
       # 목록 페이지가 한 페이지당 15건만 보여줘서(실측 확인) 여러 페이지를
       # 이어서 수집한다 — 출처 URL 하나당 최대 페이지 수.
       max_pages: 10
-    
+
     storage:
       raw_path: "data/sermon_corpus/raw/sermonbank.jsonl"
       normalized_path: "data/sermon_corpus/normalized/corpus_sermonbank.jsonl"
@@ -61,25 +61,25 @@ sources:
     mode: api_public_metadata
     api_endpoint: "https://www.googleapis.com/youtube/v3"
     api_key_env: "YOUTUBE_API_KEY"
-    
+
     # 수집 대상 채널 목록
     channels:
       - "Yoido Full Gospel Church"
       - "National Cathedral"
       - "Elevation Church"
       - "Hillsong Church"
-    
+
     search_keywords:
       - "설교"
       - "sermon"
       - "word of god"
-    
+
     limits:
       requests_per_minute: 60
       min_delay_seconds: 1.0
       max_delay_seconds: 3.0
       daily_budget: 1000
-    
+
     storage:
       raw_path: "data/sermon_corpus/raw/youtube.jsonl"
       normalized_path: "data/sermon_corpus/normalized/corpus_youtube.jsonl"
@@ -141,17 +141,42 @@ sources:
       raw_path: "data/sermon_corpus/raw/manna.jsonl"
       normalized_path: "data/sermon_corpus/normalized/corpus_manna.jsonl"
 
+  # 교회 웹사이트 (Church Websites) - 100개 교회
+  # 2026-07-23 100개 도메인 전수 재검증 결과: 40개는 DNS 자체가
+  # 없고, 나머지도 대부분 다른 기관이 점유했거나(수산물 업체, 문화원 등)
+  # JS 렌더링 사이트라 실제 존재 여부조차 확인 불가능했다 — "제목/본문
+  # 성경구절/설교자/날짜"가 실측으로 확인된 항목이 0개였다. 검증된
+  # 것만 남기기로 하여 비활성화. 실제 크롤 대상은 woori_church/
+  # saesamm/manna 처럼 하나씩 실측 검증해 개별 등록한다.
+  church:
+    enabled: false
+    source_id: church
+    mode: html_crawl
+    parser:
+      type: gnuboard
+      default_bo_table: "sermon"
+
+    limits:
+      min_delay_seconds: 5.0
+      max_delay_seconds: 12.0
+      max_items_per_church: 50
+      scrape_individual_pages: false
+
+    storage:
+      raw_path: "data/sermon_corpus/church/all_church_sermons.jsonl"
+      per_church_dir: "data/sermon_corpus/church/"
+
   # 출판 설교집 (Publication)
   publication:
     enabled: false  # 추가 데이터 소스 연결 시 true로 변경
     source_id: publication
     mode: file_based
     input_directory: "data/publications/"
-    
+
     limits:
       batch_size: 50
       processing_delay_seconds: 1.0
-    
+
     storage:
       raw_path: "data/sermon_corpus/raw/publication.jsonl"
       normalized_path: "data/sermon_corpus/normalized/corpus_publication.jsonl"
