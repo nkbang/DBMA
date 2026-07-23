@@ -32,6 +32,7 @@ import plotly.graph_objects as go
 from sermon_corpus.analyzer.frequency import FrequencyAnalyzer
 from sermon_corpus.analyzer.keywords import KeywordExtractor
 from sermon_corpus.analyzer.corpus_statistics import CorpusStatisticsAnalyzer
+from sermon_corpus.analyzer.keywords import CATEGORY_KOREAN_MAP
 from sermon_corpus.collector.background_collector import DataStore
 from sermon_corpus.collector.sermonbank import BibleReferenceParser
 
@@ -508,21 +509,27 @@ def get_background_data_path() -> Optional[str]:
 # UI 레이아웃
 # ============================================================
 
-def render_sidebar(analyzer: CorpusStatisticsAnalyzer):
-    """사이드바를 렌더링합니다"""
+def render_sidebar(analyzer: CorpusStatisticsAnalyzer) -> tuple:
+    """사이드바를 렌더링합니다.
+
+    Returns:
+        (selected_books, testament_filter) — 선택된 필터 값. main()이
+        이 값으로 실제 데이터를 필터링해야 한다(과거엔 위젯만 그려놓고
+        반환값을 아무도 쓰지 않아 필터가 화면에 전혀 반영되지 않았음).
+    """
     with st.sidebar:
         st.header("📊 필터")
-        
+
         # 성경 권 필터
         book_frequencies = analyzer.frequency_analyzer.get_book_frequencies()
         all_books = [b["bible_book"] for b in book_frequencies]
         selected_books = st.multiselect(
             "성경 책 선택",
             options=all_books,
-            default=all_books[:10] if len(all_books) > 10 else all_books,
+            default=all_books,
             help="분석할 성경 책을 선택하세요",
         )
-        
+
         # 신약/구약 필터
         testament_filter = st.multiselect(
             "신약/구약 필터",
@@ -530,15 +537,17 @@ def render_sidebar(analyzer: CorpusStatisticsAnalyzer):
             default=["구약", "신약"],
             help="구약/신약 필터",
         )
-        
+
         st.divider()
-        
+
         # 통계 요약
         st.header("📈 통계 요약")
         stats = analyzer.get_full_statistics()
         st.metric("총 설교 수", f"{stats.total_records:,}")
         st.metric("독립된 성경 책", stats.unique_books)
         st.metric("독립된 장", stats.unique_chapters)
+
+    return selected_books, testament_filter
 
 
 def render_overview(stats: CorpusStatisticsAnalyzer):
@@ -673,18 +682,21 @@ def render_keyword_analysis(stats: CorpusStatisticsAnalyzer):
     fig_wordcloud.update_layout(height=400)
     st.plotly_chart(fig_wordcloud, use_container_width=True)
     
-    # 카테고리 분포
+    # 카테고리 분포 (한글 매핑)
     st.markdown("#### 주제 카테고리 분포")
     top_categories = stats.keyword_extractor.get_top_categories(top_k=15)
     
     if top_categories:
         cat_df = pd.DataFrame(top_categories)
+        cat_df["category_kr"] = cat_df["category"].apply(
+            lambda c: CATEGORY_KOREAN_MAP.get(c, c)
+        )
         fig_cat = px.bar(
             cat_df,
-            x="category",
+            x="category_kr",
             y="count",
             hover_data={"percentage": ":.2f"},
-            title="주제 카테고리 분포",
+            title="주제 카테고리 분포 (한글)",
         )
         fig_cat.update_layout(xaxis_tickangle=-30, height=350)
         st.plotly_chart(fig_cat, use_container_width=True)
@@ -887,30 +899,12 @@ def main():
     st.markdown("---")
     st.subheader("📂 데이터 로드")
     
-    col_upload, col_info = st.columns([1, 2])
-    
-    with col_upload:
-        file_types = [".jsonl", ".json", ".csv", ".tsv", ".txt", ".xlsx", ".db", ".sqlite", ".sqlite3"]
-        uploaded_file = st.file_uploader(
-            "파일 업로드", 
-            type=file_types,
-            help="JSONL, CSV, XLSX, TXT, SQLite 파일 지원\n중복 데이터는 자동으로 제거됩니다"
-        )
-    
-    with col_info:
-        st.info("""
-        **표준 필드 구조:**
-        - `bible_book` 또는 `book`: 성경 책명 (예: Genesis, 창)
-        - `chapter_start` 또는 `chapter`: 장 번호
-        - `title` 또는 `sermon_title`: 설교 제목
-        - `passage_raw` 또는 `passage`: 본문 정보
-        - `preacher` 또는 `speaker`: 설교자
-        - `published_date` 또는 `date`: 날짜
-        
-        **자동 필드 감지:** 다양한 필드명을 자동으로 감지하여 표준 형식으로 변환합니다.
-        
-        **중복 제거:** 제목 + 본문이 동일한 데이터는 자동으로 머지됩니다.
-        """)
+    file_types = [".jsonl", ".json", ".csv", ".tsv", ".txt", ".xlsx", ".db", ".sqlite", ".sqlite3"]
+    uploaded_file = st.file_uploader(
+        "파일 업로드",
+        type=file_types,
+        help="JSONL, CSV, XLSX, TXT, SQLite 파일 지원\n중복 데이터는 자동으로 제거됩니다"
+    )
     
     # 데이터 로드 및 처리
     records = None
@@ -1058,14 +1052,38 @@ def main():
     
     # 분석
     analyzer = analyze_data(records)
-    
+
     # 중복 제거 통계 표시
     if duplicate_count > 0:
         st.warning(f"⚠️ **중복 데이터 {duplicate_count}건**이 제거되었습니다. (중복 조건: 제목 + 본문)")
-    
-    # 사이드바
-    render_sidebar(analyzer)
-    
+
+    # 사이드바 — [버그 수정] 필터 위젯 반환값을 아무도 안 받아서
+    # "성경 책 선택"/"신약/구약 필터"가 화면에 전혀 반영되지 않던
+    # 버그. 반환값으로 실제 records를 걸러서 analyzer를 다시 만든다.
+    selected_books, testament_filter = render_sidebar(analyzer)
+
+    filtered_records = records
+    if selected_books:
+        book_set = set(selected_books)
+        filtered_records = [r for r in filtered_records if r.get("bible_book") in book_set]
+    if testament_filter and len(testament_filter) < 2:
+        wanted_testaments = set()
+        if "구약" in testament_filter:
+            wanted_testaments.add("OT")
+        if "신약" in testament_filter:
+            wanted_testaments.add("NT")
+        filtered_records = [
+            r for r in filtered_records
+            if analyzer.frequency_analyzer._get_testament(r.get("bible_book", "")) in wanted_testaments
+        ]
+
+    if not selected_books or (testament_filter is not None and len(testament_filter) == 0):
+        st.warning("⚠️ 필터 조건에 맞는 데이터가 없습니다. 사이드바에서 성경 책 또는 신약/구약을 선택하세요.")
+        st.stop()
+
+    if len(filtered_records) != len(records):
+        analyzer = analyze_data(filtered_records)
+
     # 메인 콘텐츠
     render_overview(analyzer)
     
