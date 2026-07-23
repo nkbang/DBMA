@@ -84,6 +84,25 @@ sources:
       raw_path: "data/sermon_corpus/raw/youtube.jsonl"
       normalized_path: "data/sermon_corpus/normalized/corpus_youtube.jsonl"
 
+  # 교회 웹사이트 - 우리들교회 (2026-07-23 실측 확인)
+  # robots.txt에서 /board/G00068/(주일설교요약)는 차단 목록에 없음.
+  # 목록에는 "관리자"만 나오고 실제 설교자는 상세 본문(.cont_row)에만
+  # 있어 항목마다 상세 페이지도 함께 요청한다.
+  woori_church:
+    enabled: true
+    source_id: woori_church
+    mode: church_website
+    base_url: "https://woori.cc"
+
+    limits:
+      min_delay_seconds: 3.0
+      max_delay_seconds: 8.0
+      max_pages: 10
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/woori_church.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_woori_church.jsonl"
+
   # 출판 설교집 (Publication)
   publication:
     enabled: false  # 추가 데이터 소스 연결 시 true로 변경
