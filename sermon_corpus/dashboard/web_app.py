@@ -481,8 +481,11 @@ def filter_records_without_bible_book(records: List[dict]) -> tuple:
     return kept, len(records), removed
 
 
-# 필수 필드: 설교일(published_date), 설교자(preacher), 성경본문(bible_book),
-# 설교제목(title) 중 하나라도 비어있으면 레코드를 제거한다.
+# 필수 필드: 게시일(published_date — 설교은행 등 출처의 실제 "설교한
+# 날짜"가 아니라 게시판에 글이 올라온 날짜. 로그인 없이 접근 가능한
+# 목록 페이지에는 이것 하나뿐이라 근사치로 사용), 설교자(preacher),
+# 성경본문(bible_book), 설교제목(title) 중 하나라도 비어있으면 레코드를
+# 제거한다.
 _REQUIRED_FIELDS = ["published_date", "preacher", "bible_book", "title"]
 
 
