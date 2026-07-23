@@ -133,7 +133,7 @@ class FrequencyAnalyzer:
         "이": "2 John", "요한이서": "2 John",
         "삼": "3 John", "요한삼서": "3 John",
         "유": "Jude", "유다": "Jude",
-        "계": "Revelation", "요한계시록": "Revelation", "계시록": "Revelation", "계": "Revelation",
+        "계": "Revelation", "요한계시록": "Revelation", "계시록": "Revelation",
         # seed_generator에서 사용하는 전체명 매핑 추가
         "아라의 노래": "Song of Solomon",
         "데살로니전전": "1 Thessalonians",
