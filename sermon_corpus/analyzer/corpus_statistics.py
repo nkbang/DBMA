@@ -8,7 +8,8 @@ from pathlib import Path
 from dataclasses import dataclass, asdict
 
 from sermon_corpus.analyzer.frequency import FrequencyAnalyzer
-from sermon_corpus.analyzer.keywords import KeywordExtractor
+from sermon_corpus.analyzer.keywords import KeywordExtractor, CATEGORY_KOREAN_MAP
+from sermon_corpus.analyzer.book_themes import BOOK_KEY_THEMES
 
 
 @dataclass
@@ -67,6 +68,9 @@ class CorpusStatisticsAnalyzer:
         
         # 전체 통계
         self.total_records: int = 0
+        
+        # 원본 기록 저장 (대시보드 시각화용)
+        self.records: List[dict] = []
     
     def load_jsonl(self, path: Path) -> int:
         """
@@ -99,6 +103,9 @@ class CorpusStatisticsAnalyzer:
         """
         for record in records:
             self._process_record(record)
+        
+        # 원본 기록 저장 (대시보드 시각화용)
+        self.records = list(records)
         
         return len(records)
     
@@ -160,7 +167,7 @@ class CorpusStatisticsAnalyzer:
             bible_book: 특정 성경 책명 (None = 전체)
         
         Returns:
-            [{bible_book, chapter, dominant_category, category_percentage, 
+            [{bible_book, chapter, dominant_category(korean), category_percentage, 
                top_keywords, sample_titles, total_sermons}, ...]
         """
         results = []
@@ -174,12 +181,13 @@ class CorpusStatisticsAnalyzer:
             if total == 0:
                 continue
             
-            # 주요 카테고리
-            dominant_category, dominant_count = category_counter.most_common(1)[0]
+            # 주요 카테고리 (한글 매핑)
+            dominant_category_raw, dominant_count = category_counter.most_common(1)[0]
+            dominant_category = CATEGORY_KOREAN_MAP.get(dominant_category_raw, dominant_category_raw)
             dominant_percentage = (dominant_count / total * 100) if total > 0 else 0
             
-            # 상위 키워드
-            top_keywords = list(category_counter.keys())[:5]
+            # 상위 키워드 (카테고리 이름은 한글로)
+            top_keywords = [CATEGORY_KOREAN_MAP.get(cat, cat) for cat in category_counter.keys()][:5]
             
             # 샘플 제목
             sample_titles = self.sample_titles.get((book, chapter), [])
@@ -239,27 +247,26 @@ class CorpusStatisticsAnalyzer:
     
     def compute_key_themes_per_book(self) -> Dict[str, List[str]]:
         """
-        각 성경 책별 핵심 주제 키워드를 도출합니다.
-        
+        각 성경 책별 핵심 주제를 반환합니다.
+
+        [설계 변경] 예전에는 설교 제목에 등장한 단어를 20개 고정
+        카테고리와 매칭해 다수결로 뽑았다 — 설교 수가 적은 책은
+        우연히 붙은 단어 하나에 좌우되고, 제목에 분류 키워드가 전혀
+        없으면 아예 결과에서 빠지는 구조적 문제가 있었다(실측 결과
+        전체 설교의 80% 이상이 미분류로 빠짐). 성경 각 권의 핵심
+        주제는 설교 제목 통계로 매번 다시 추정할 대상이 아니라
+        조직신학/성서신학이 이미 정해둔 것이므로, book_themes.py의
+        고정 상수(BOOK_KEY_THEMES)를 그대로 반환한다 — 실제 설교
+        데이터에 등장하는 책에 한해서만 표시.
+
         Returns:
-            {bible_book: [top_keywords], ...}
+            {bible_book: [theme]}  — 책마다 정해진 핵심 주제 1개
         """
-        book_themes = defaultdict(Counter)
-        
-        for (book, chapter), category_counter in self.passage_categories.items():
-            if not book:
-                continue
-            
-            # 상위 카테고리 3개를 키워드로 사용
-            top_categories = [cat for cat, _ in category_counter.most_common(3)]
-            for cat in top_categories:
-                book_themes[book][cat] += 1
-        
-        # 각 책별 상위 카테고리 5개 추출
         result = {}
-        for book, theme_counter in book_themes.items():
-            result[book] = [cat for cat, _ in theme_counter.most_common(5)]
-        
+        for book in self.frequency_analyzer.book_counter:
+            theme = BOOK_KEY_THEMES.get(book)
+            if theme:
+                result[book] = [theme]
         return result
     
     def save_statistics(self, output_dir: Path) -> None:

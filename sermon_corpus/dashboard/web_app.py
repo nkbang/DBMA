@@ -32,7 +32,7 @@ import plotly.graph_objects as go
 from sermon_corpus.analyzer.frequency import FrequencyAnalyzer
 from sermon_corpus.analyzer.keywords import KeywordExtractor
 from sermon_corpus.analyzer.corpus_statistics import CorpusStatisticsAnalyzer
-from sermon_corpus.analyzer.keywords import CATEGORY_KOREAN_MAP
+from sermon_corpus.analyzer.keywords import CATEGORY_KOREAN_MAP, BIBLE_BOOK_KOREAN_MAP
 from sermon_corpus.collector.background_collector import DataStore
 from sermon_corpus.collector.sermonbank import BibleReferenceParser
 
@@ -612,6 +612,11 @@ def render_testament_distribution(stats: CorpusStatisticsAnalyzer):
         st.dataframe(df, hide_index=True, use_container_width=True)
 
 
+def _to_korean_book(book: str) -> str:
+    """영어 성경 책명을 한글로 변환"""
+    return BIBLE_BOOK_KOREAN_MAP.get(book, book)
+
+
 def render_book_frequencies(stats: CorpusStatisticsAnalyzer):
     """66권 전체의 설교 빈도(권 이름 + 빈도수)를 렌더링합니다"""
     st.subheader("📚 성경 권별 설교 빈도 (전체 66권)")
@@ -620,7 +625,7 @@ def render_book_frequencies(stats: CorpusStatisticsAnalyzer):
     # 아니라 정경 순서(BIBLE_BOOKS)를 기준으로 66권 전부를 순회한다.
     counts = dict(stats.frequency_analyzer.book_counter)
     rows = [
-        {"bible_book": book, "count": counts.get(book, 0)}
+        {"bible_book": _to_korean_book(book), "count": counts.get(book, 0)}
         for book, _, _ in stats.frequency_analyzer.BIBLE_BOOKS
     ]
 
@@ -647,7 +652,7 @@ def render_chapter_frequencies(stats: CorpusStatisticsAnalyzer):
         return
     
     df = pd.DataFrame(chapter_freq)
-    df["passage"] = df.apply(lambda r: f"{r['bible_book']} {r['chapter']}장", axis=1)
+    df["passage"] = df.apply(lambda r: f"{_to_korean_book(r['bible_book'])} {r['chapter']}장", axis=1)
     
     fig = px.bar(
         df,
@@ -721,7 +726,7 @@ def render_passage_theme_correlation(stats: CorpusStatisticsAnalyzer):
     heatmap_data = correlations[:10]
     heat_df = pd.DataFrame([
         {
-            "본문": f"{r['bible_book']} {'?' if r['chapter'] is None else r['chapter']}장",
+            "본문": f"{_to_korean_book(r['bible_book'])} {'?' if r['chapter'] is None else r['chapter']}장",
             "주요 주제": r["dominant_category"],
             "비율 (%)": r["category_percentage"],
             "설교 수": r["total_sermons"],
@@ -731,14 +736,28 @@ def render_passage_theme_correlation(stats: CorpusStatisticsAnalyzer):
     
     st.dataframe(heat_df, hide_index=True, use_container_width=True)
     
-    # 핵심 주제 per book
+    # 핵심 주제 per book — 성경 순서(66권 정경 순)로 정렬
     st.markdown("#### 성경 책별 핵심 주제")
     key_themes = stats.compute_key_themes_per_book()
-    
-    theme_cols = st.columns(min(len(key_themes), 5))
-    for i, (book, themes) in enumerate(key_themes.items()):
+
+    # FrequencyAnalyzer.BIBLE_BOOKS 에서 canonical 책명 집합과 순서를 가져옴
+    try:
+        from sermon_corpus.analyzer.frequency import FrequencyAnalyzer
+        _bible_order = [book for book, _, _ in FrequencyAnalyzer.BIBLE_BOOKS]
+    except Exception:
+        _bible_order = list(key_themes.keys())
+
+    # key_themes 에 없는 책은 건너뛰고, 있는 책만 성경 순서대로 정렬
+    sorted_books = [b for b in _bible_order if b in key_themes]
+    # 성경 순서에 포함되지 않은 나머지 책(예: 데이터에만 있는 책)
+    remaining = [b for b in key_themes if b not in set(sorted_books)]
+    sorted_books.extend(remaining)
+
+    theme_cols = st.columns(min(len(sorted_books), 5))
+    for i, book in enumerate(sorted_books):
+        themes = key_themes[book]
         with theme_cols[i % 5]:
-            st.markdown(f"**{book}**")
+            st.markdown(f"**{_to_korean_book(book)}**")
             for theme in themes[:3]:
                 st.caption(f"- {theme}")
 
