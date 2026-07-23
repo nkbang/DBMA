@@ -636,6 +636,7 @@ def render_book_frequencies(stats: CorpusStatisticsAnalyzer):
         x="bible_book",
         y="count",
         title="성경 권별 설교 빈도 (전체 66권)",
+        labels={"bible_book": "성경 책", "count": "설교 수"},
     )
     fig.update_layout(xaxis_tickangle=-45, height=600, showlegend=False)
     st.plotly_chart(fig, use_container_width=True)
@@ -643,7 +644,7 @@ def render_book_frequencies(stats: CorpusStatisticsAnalyzer):
 
 def render_chapter_frequencies(stats: CorpusStatisticsAnalyzer):
     """장별 설교 빈도를 렌더링합니다"""
-    st.subheader("📏 장별 설교 빈도 (Top 20)")
+    st.subheader("📏 장별 설교 빈도 (상위 20)")
     
     chapter_freq = stats.frequency_analyzer.get_chapter_frequencies(top_k=20)
     
@@ -659,7 +660,8 @@ def render_chapter_frequencies(stats: CorpusStatisticsAnalyzer):
         x="passage",
         y="count",
         hover_data={"percentage": ":.2f"},
-        title="장별 설교 빈도 (Top 20)",
+        title="장별 설교 빈도 (상위 20)",
+        labels={"passage": "본문", "count": "설교 수", "percentage": "비율 (%)"},
     )
     fig.update_layout(xaxis_tickangle=-45, height=400)
     st.plotly_chart(fig, use_container_width=True)
@@ -701,7 +703,8 @@ def render_keyword_analysis(stats: CorpusStatisticsAnalyzer):
             x="category_kr",
             y="count",
             hover_data={"percentage": ":.2f"},
-            title="주제 카테고리 분포 (한글)",
+            title="주제 카테고리 분포",
+            labels={"category_kr": "주제", "count": "설교 수", "percentage": "비율 (%)"},
         )
         fig_cat.update_layout(xaxis_tickangle=-30, height=350)
         st.plotly_chart(fig_cat, use_container_width=True)
@@ -721,7 +724,7 @@ def render_passage_theme_correlation(stats: CorpusStatisticsAnalyzer):
     df = pd.DataFrame(correlations)[:30]
     
     # 히트맵
-    st.markdown("#### 본문별 주요 주제 히트맵 (Top 10 본문)")
+    st.markdown("#### 본문별 주요 주제 히트맵 (상위 10개 본문)")
     
     heatmap_data = correlations[:10]
     heat_df = pd.DataFrame([
@@ -796,6 +799,7 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
                 y="설교 수",
                 title="연도별 설교 빈도",
                 hover_data=["누적 설교 수", "비율 (%)"],
+                labels={"year": "연도"},
             )
             fig_year.update_layout(xaxis_tickangle=-45, height=350)
             st.plotly_chart(fig_year, use_container_width=True)
@@ -808,7 +812,9 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
     if "decade" in df.columns:
         decade_freq = df.groupby("decade").size().reset_index(name="설교 수")
         decade_freq = decade_freq.sort_values("decade")
-        decade_freq["연대"] = decade_freq["decade"].apply(lambda x: f"{x}s")
+        # [버그 수정] f"{x}s"가 "1980.0s"처럼 영어 접미사 + 소수점
+        # artifact를 그대로 노출했다 — "1980년대" 형식으로 한글화.
+        decade_freq["연대"] = decade_freq["decade"].apply(lambda x: f"{int(x)}년대")
         
         fig_decade = px.pie(
             decade_freq,
@@ -823,7 +829,10 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
         # 연대별 핵심 키워드
         st.markdown("#### 연대별 핵심 키워드")
         decade_keywords = {}
-        for decade in sorted(df["decade"].unique()):
+        # [버그 수정] published_date가 없는 레코드는 decade가 NaN인데
+        # 이를 그대로 순회/포맷하면 "nans"라는 영어 표기가 컬럼 하나를
+        # 통째로 차지했다 — NaN 연대는 건너뛴다.
+        for decade in sorted(d for d in df["decade"].unique() if pd.notna(d)):
             decade_df = df[df["decade"] == decade]
             decade_records = decade_df.to_dict("records")
             
@@ -837,7 +846,7 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
             
             # 상위 5개 키워드
             top_kws = sorted(keyword_counts.items(), key=lambda x: -x[1])[:5]
-            decade_keywords[f"{decade}s"] = [kw for kw, _ in top_kws]
+            decade_keywords[f"{int(decade)}년대"] = [kw for kw, _ in top_kws]
         
         kw_cols = st.columns(min(len(decade_keywords), 4))
         for i, (decade, kws) in enumerate(decade_keywords.items()):
@@ -847,22 +856,26 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
                     st.caption(f"- {kw}")
     
     # 연도 × 성경 책 히트맵
-    st.markdown("### 연도 × 성경 책별 설교 빈도 (Top 10 책)")
+    st.markdown("### 연도 × 성경 책별 설교 빈도 (상위 10개 책)")
     if "year" in df.columns and "bible_book" in df.columns:
         top_books = df["bible_book"].value_counts().head(10).index.tolist()
         heatmap_df = df[df["bible_book"].isin(top_books)].groupby(["year", "bible_book"]).size().unstack(fill_value=0)
         
         if not heatmap_df.empty:
-            # pandas Index를 numpy 배열로 변환하여 Plotly Express에 전달
-            x_labels = [str(col) for col in heatmap_df.columns.tolist()]
+            # groupby(["year","bible_book"]).unstack()는 마지막 레벨
+            # (bible_book)을 컬럼으로 펼치므로 x축=책, y축=연도다.
+            # [버그 수정] labels=dict(x="연도", y="성경 책")로 서로
+            # 반대로 표시되고 있었다 — 실제 축과 맞게 바로잡고, 책명도
+            # 영어 그대로 나오던 것을 한글로 변환.
+            x_labels = [_to_korean_book(str(col)) for col in heatmap_df.columns.tolist()]
             y_labels = [str(row) for row in heatmap_df.index.tolist()]
-            
+
             fig_heatmap = px.imshow(
                 heatmap_df.values,
                 x=x_labels,
                 y=y_labels,
-                labels=dict(x="연도", y="성경 책", color="설교 수"),
-                title="연도 × 성경 책별 설교 빈도 (Top 10)",
+                labels=dict(x="성경 책", y="연도", color="설교 수"),
+                title="연도 × 성경 책별 설교 빈도 (상위 10)",
                 color_continuous_scale="Blues",
             )
             fig_heatmap.update_layout(height=400, xaxis_tickangle=-45)
@@ -878,8 +891,8 @@ def render_data_table(stats: CorpusStatisticsAnalyzer):
     for (book, chapter), titles in list(stats.sample_titles.items())[:20]:
         for title in titles:
             sample.append({
-                "성경 책": book or "Unknown",
-                "장": chapter or "N/A",
+                "성경 책": _to_korean_book(book) if book else "알 수 없음",
+                "장": chapter or "없음",
                 "설교 제목": title,
             })
     
@@ -1147,7 +1160,7 @@ def _render_background_collector_status():
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("총 데이터 건수", f"{stats['total_records']:,}")
         col2.metric("파일 크기", f"{stats['file_size_bytes'] / 1024:.1f} KB")
-        col3.metric("마지막 수정", stats['last_modified'] or "N/A")
+        col3.metric("마지막 수정", stats['last_modified'] or "없음")
         
         # 수동 수집 버튼
         if st.button("📥 수동 데이터 수집 실행", key="manual_collect"):

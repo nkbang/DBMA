@@ -340,6 +340,28 @@ const BOOK_KEY_THEMES = {
     "Revelation": "그리스도의 최종 승리와 새 하늘과 새 땅"
 };
 
+// 영어 성경 책명 -> 한글 성경 책명 (UI에 영어 책명이 노출되지 않도록 —
+// Python 쪽 keywords.py::BIBLE_BOOK_KOREAN_MAP과 동일 내용)
+const BIBLE_BOOK_KOREAN_MAP = {
+    "Genesis":"창세기","Exodus":"출애굽기","Leviticus":"레위기","Numbers":"민수기",
+    "Deuteronomy":"신명기","Joshua":"여호수아","Judges":"사사기","Ruth":"룻",
+    "1 Samuel":"사무엘상","2 Samuel":"사무엘하","1 Kings":"열왕기상","2 Kings":"열왕기하",
+    "1 Chronicles":"역대상","2 Chronicles":"역대하","Ezra":"에스라","Nehemiah":"느헤미야",
+    "Esther":"에스더","Job":"욥","Psalms":"시편","Proverbs":"잠언","Ecclesiastes":"전도서",
+    "Song of Solomon":"아가","Isaiah":"이사야","Jeremiah":"예레미야","Lamentations":"예레미야애가",
+    "Ezekiel":"에스겔","Daniel":"다니엘","Hosea":"호세아","Joel":"요엘","Amos":"아모스",
+    "Obadiah":"오바댜","Jonah":"요나","Micah":"미가","Nahum":"나훔","Habakkuk":"하박국",
+    "Zephaniah":"스바냐","Haggai":"학개","Zechariah":"스가랴","Malachi":"말라기",
+    "Matthew":"마태복음","Mark":"마가복음","Luke":"누가복음","John":"요한복음","Acts":"사도행전",
+    "Romans":"로마서","1 Corinthians":"고린도전서","2 Corinthians":"고린도후서",
+    "Galatians":"갈라디아서","Ephesians":"에베소서","Philippians":"빌립보서","Colossians":"골로새서",
+    "1 Thessalonians":"데살로니가전서","2 Thessalonians":"데살로니가후서",
+    "1 Timothy":"디모데전서","2 Timothy":"디모데후서","Titus":"디도서","Philemon":"빌레몬서",
+    "Hebrews":"히브리서","James":"야고보서","1 Peter":"베드로전서","2 Peter":"베드로후서",
+    "1 John":"요한일서","2 John":"요한이서","3 John":"요한삼서","Jude":"유다","Revelation":"요한계시록"
+};
+function toKoreanBook(name) { return BIBLE_BOOK_KOREAN_MAP[name] || name; }
+
 // [버그 수정] title.includes(kr)는 제목 문자열 어디든 kr이 부분
 // 문자열로 있으면 매칭시켰다 — "정의"(justice)처럼 짧은 한글 패턴은
 // "가정의"("of the family", 가정+조사 "의")처럼 뜻이 전혀 다른 단어
@@ -665,8 +687,8 @@ function analyze(data) {
         const t = bt ? bt.testament : "OT";
         testamentFreq[t] = (testamentFreq[t]||0)+1;
         
-        // Chapter frequency
-        const chKey = book+" "+ch+"장";
+        // Chapter frequency (UI에 영어 책명이 나오지 않도록 한글로 표시)
+        const chKey = toKoreanBook(book)+" "+ch+"장";
         chapterFreq[chKey] = (chapterFreq[chKey]||0)+1;
         
         // Keyword extraction from title
@@ -822,7 +844,7 @@ function renderBookFrequency(freq) {
     });
     
     Plotly.newPlot('chart-book-freq', [{
-        x: sorted.map(s=>s[0]), y: sorted.map(s=>s[1]),
+        x: sorted.map(s=>toKoreanBook(s[0])), y: sorted.map(s=>s[1]),
         type: 'bar', marker: {color: colors},
         hovertemplate: '%{x}: %{y}설교<extra></extra>'
     }], {...DARK_LAYOUT, margin:{l:60,r:20,t:20,b:100}, xaxis:{...DARK_LAYOUT.xaxis,tickangle:-45}});
@@ -903,7 +925,7 @@ function renderKeyThemes(keyThemes) {
         const item = document.createElement('div');
         item.style.padding = '6px 0';
         const bookEl = document.createElement('strong');
-        bookEl.textContent = book;
+        bookEl.textContent = toKoreanBook(book);
         const themeEl = document.createElement('div');
         themeEl.style.color = '#90a4ae';
         themeEl.style.fontSize = '13px';
@@ -929,7 +951,7 @@ function renderCorrelationMatrix(matrix, catFreq) {
     });
     
     const trace = {
-        z: values, x: cats, y: books,
+        z: values, x: cats, y: books.map(toKoreanBook),
         type: 'heatmap', colorscale: [[0,'#263540'],[1,'#5c6bc0']],
         hovertemplate: '%{y} - %{x}: %{z}<extra></extra>',
         showscale: false
@@ -1005,7 +1027,7 @@ function renderYearBookHeatmap(bookYearData, topBooks) {
     });
     
     const trace = {
-        z: values, x: sortedYears, y: actualBooks,
+        z: values, x: sortedYears, y: actualBooks.map(toKoreanBook),
         type: 'heatmap', colorscale: [[0,'#1a237e'],[0.5,'#5c6bc0'],[1,'#ff7043']],
         hovertemplate: '%{y} - %{x}년: %{z}<extra></extra>',
         showscale: true, colorbar: {title:'설교 수'}
