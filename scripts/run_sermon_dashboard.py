@@ -166,7 +166,9 @@ def main():
     elif args.data:
         data_path = args.data
     else:
-        # 기본 경로 확인
+        # 기본 경로 확인 (실제 수집 데이터 우선 — large_seed_sermons.jsonl은
+        # seed_generator.py가 만든 합성/가상 데이터라 기본 경로에서 제외,
+        # 필요 시 --data로 명시적으로 지정)
         default_paths = [
             "data/sermon_corpus/raw/sermonbank.jsonl",
             "data/sermon_corpus/raw/sermonbank_collected.jsonl",

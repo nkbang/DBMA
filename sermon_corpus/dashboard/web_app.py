@@ -452,11 +452,11 @@ def render_sidebar(analyzer: CorpusStatisticsAnalyzer):
             help="분석할 성경 책을 선택하세요",
         )
         
-        # 언약 필터
+        # 신약/구약 필터
         testament_filter = st.multiselect(
-            "언약 필터",
-            options=["OT", "NT"],
-            default=["OT", "NT"],
+            "신약/구약 필터",
+            options=["구약", "신약"],
+            default=["구약", "신약"],
             help="구약/신약 필터",
         )
         
@@ -491,20 +491,28 @@ def render_overview(stats: CorpusStatisticsAnalyzer):
 
 
 def render_testament_distribution(stats: CorpusStatisticsAnalyzer):
-    """언약별 분포를 렌더링합니다"""
-    st.subheader("📜 언약별 설교 분포")
+    """신약/구약별 분포를 렌더링합니다"""
+    st.subheader("📜 신약/구약별 설교 분포")
     
     testament_freq = stats.frequency_analyzer.get_testament_frequencies()
     
     if not testament_freq:
-        st.warning("언약 데이터가 없습니다.")
+        st.warning("신약/구약 데이터가 없습니다.")
         return
     
-    # 파이 차트
-    data = [
-        {"언약": t, "설교 수": d["count"], "비율 (%)": d["percentage"]}
-        for t, d in testament_freq.items()
-    ]
+    # 파이 차트 - 구약/신약 순으로 표시
+    testament_order = ["OT", "NT"]
+    data = []
+    for t in testament_order:
+        if t in testament_freq:
+            d = testament_freq[t]
+            label = "구약" if t == "OT" else "신약"
+            data.append({"언약": label, "설교 수": d["count"], "비율 (%)": d["percentage"]})
+    
+    # OT/NT가 없는 경우 추가
+    for t in testament_freq:
+        if t not in ["OT", "NT"]:
+            data.append({"언약": t, "설교 수": testament_freq[t]["count"], "비율 (%)": testament_freq[t]["percentage"]})
     df = pd.DataFrame(data)
     
     col1, col2 = st.columns([1, 2])
@@ -753,11 +761,15 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
         heatmap_df = df[df["bible_book"].isin(top_books)].groupby(["year", "bible_book"]).size().unstack(fill_value=0)
         
         if not heatmap_df.empty:
+            # pandas Index를 numpy 배열로 변환하여 Plotly Express에 전달
+            x_labels = [str(col) for col in heatmap_df.columns.tolist()]
+            y_labels = [str(row) for row in heatmap_df.index.tolist()]
+            
             fig_heatmap = px.imshow(
                 heatmap_df.values,
-                labels=dict(x=heatmap_df.columns, y=heatmap_df.index, color="설교 수"),
-                x=[str(b) for b in heatmap_df.columns],
-                y=[str(y) for y in heatmap_df.index],
+                x=x_labels,
+                y=y_labels,
+                labels=dict(x="연도", y="성경 책", color="설교 수"),
                 title="연도 × 성경 책별 설교 빈도 (Top 10)",
                 color_continuous_scale="Blues",
             )
@@ -844,6 +856,10 @@ def main():
     original_count = 0
     duplicate_count = 0
     
+    # 영구 저장 경로
+    PERSISTENT_DATA_DIR = Path("data/sermon_corpus/uploaded")
+    PERSISTENT_DATA_FILE = PERSISTENT_DATA_DIR / "uploaded_sermons.jsonl"
+    
     if uploaded_file is not None:
         # 진행률 표시
         progress.message = "파일 업로드 중..."
@@ -868,23 +884,84 @@ def main():
             progress.current = progress.total
             progress.message = "중복 제거 중..."
             
-            # 중복 제거
-            records, original_count, duplicate_count = deduplicate_records(records)
+            # 업로드 데이터 내 중복 제거
+            records, _, dup_internal = deduplicate_records(records)
+            duplicate_count += dup_internal
+            
+            progress.message = "기존 데이터와 병합 중..."
+            
+            # 영구 저장된 데이터가 있으면 로드하고 중복 체크하여 append
+            appended_count = 0
+            existing_count = 0
+            new_records = []
+            if PERSISTENT_DATA_FILE.exists():
+                existing_records = []
+                with open(PERSISTENT_DATA_FILE, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        if line.strip():
+                            existing_records.append(json.loads(line))
+                existing_count = len(existing_records)
+                
+                # 기존 데이터의 키 집합 생성 (중복 체크용)
+                existing_keys = set()
+                for rec in existing_records:
+                    title = rec.get('title', '') or rec.get('sermon_title', '') or ''
+                    passage = rec.get('passage_raw', '') or rec.get('passage', '') or ''
+                    book = rec.get('bible_book', '') or rec.get('book', '') or ''
+                    chapter = rec.get('chapter_start', '') or rec.get('chapter', '') or ''
+                    key = (title.strip(), passage.strip(), book.strip(), str(chapter).strip())
+                    existing_keys.add(key)
+                
+                # 새 데이터 중 중복 아닌 것만 필터
+                for rec in records:
+                    title = rec.get('title', '') or rec.get('sermon_title', '') or ''
+                    passage = rec.get('passage_raw', '') or rec.get('passage', '') or ''
+                    book = rec.get('bible_book', '') or rec.get('book', '') or ''
+                    chapter = rec.get('chapter_start', '') or rec.get('chapter', '') or ''
+                    key = (title.strip(), passage.strip(), book.strip(), str(chapter).strip())
+                    
+                    if key not in existing_keys:
+                        new_records.append(rec)
+                    else:
+                        appended_count += 1  # 중복으로 스킵
+            else:
+                # 영구 저장 파일이 없으면 모두 새 데이터
+                new_records = records
+            
+            duplicate_count += appended_count
+            records = new_records
+            
+            # 영구 저장 (append 모드)
+            PERSISTENT_DATA_DIR.mkdir(parents=True, exist_ok=True)
+            if PERSISTENT_DATA_FILE.exists():
+                # 기존 파일에 추가 작성
+                with open(PERSISTENT_DATA_FILE, 'a', encoding='utf-8') as f:
+                    for rec in records:
+                        f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+            else:
+                # 새 파일 생성
+                with open(PERSISTENT_DATA_FILE, 'w', encoding='utf-8') as f:
+                    for rec in records:
+                        f.write(json.dumps(rec, ensure_ascii=False) + '\n')
             
             progress.message = "분석 완료!"
             
             # 성공 메시지
-            st.success(f"✅ {original_count + duplicate_count}건 로드 완료 (중복 {duplicate_count}건 제거, 최종 {len(records)}건)")
-            
+            # [버그 수정] original_count는 업로드 파일의 원본 건수(dup_internal
+            # 포함)라 duplicate_count(=dup_internal+appended_count)를 그대로
+            # 더하면 dup_internal이 두 번 더해져 총건수가 부풀려졌다.
+            # 처리 대상 총건수는 original_count 하나로 충분.
+            st.success(f"✅ {original_count}건 처리 완료 (중복 {duplicate_count}건 스킵, 최종 {len(records)}건 추가, 총 누적 {existing_count + len(records):,}건)")
+
             # 진행률 표시
             st.progress(1.0)
-            st.text(f"📊 현재 처리 중: {len(records)} / {original_count + duplicate_count} ({progress.percentage:.1f}%)")
+            st.text(f"📊 현재 처리 중: {len(records)} / {original_count} ({progress.percentage:.1f}%)")
         
         # 임시 파일 삭제
         os.unlink(tmp_path)
     
     elif data_path:
-        # 명령줄 인자에서 파일 로드
+        # 명령줄 인자에서 파일 로드 (영구 저장 없이 읽기만 함)
         progress.message = "파일 로드 중..."
         records = load_data(data_path, progress)
         
@@ -901,8 +978,22 @@ def main():
         return
     
     if not records:
-        st.error("로드된 데이터가 없습니다.")
-        st.stop()
+        # 업로드된 데이터가 모두 중복이어서 비어있는 경우
+        if uploaded_file is not None:
+            st.info("ℹ️ 추가된 데이터가 없습니다. (모든 데이터가 이미 존재함)")
+            # 기존 영구 저장 데이터로 분석
+            if PERSISTENT_DATA_FILE.exists():
+                records = []
+                with open(PERSISTENT_DATA_FILE, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        if line.strip():
+                            records.append(json.loads(line))
+            else:
+                st.error("저장된 데이터가 없습니다.")
+                st.stop()
+        else:
+            st.error("로드된 데이터가 없습니다.")
+            st.stop()
     
     # 분석
     analyzer = analyze_data(records)
