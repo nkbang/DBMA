@@ -12,6 +12,7 @@ DBMA Sermon Corpus - 대시보드 웹 애플리케이션
     streamlit run sermon_corpus/dashboard/web_app.py --data data/sermon_corpus/raw/sermonbank.jsonl
 """
 
+import re
 import sys
 import os
 import json
@@ -32,6 +33,40 @@ from sermon_corpus.analyzer.frequency import FrequencyAnalyzer
 from sermon_corpus.analyzer.keywords import KeywordExtractor
 from sermon_corpus.analyzer.corpus_statistics import CorpusStatisticsAnalyzer
 from sermon_corpus.collector.background_collector import DataStore
+from sermon_corpus.collector.sermonbank import BibleReferenceParser
+
+# bible_book 값 정합성 검사/복구용 — 정경 66권 영문 canonical 이름 집합과
+# 한글/오기 별칭 -> 영문 매핑 (frequency.py와 동일한 기준 재사용)
+_CANONICAL_BOOKS = {book for book, _, _ in FrequencyAnalyzer.BIBLE_BOOKS}
+_ALIAS_TO_CANONICAL = FrequencyAnalyzer.KOREAN_ABBREVIATIONS
+_ALIASES_BY_LEN_DESC = sorted(_ALIAS_TO_CANONICAL.keys(), key=len, reverse=True)
+
+
+def _recover_bible_book(raw: str) -> tuple:
+    """bible_book 칸에 책명이 아니라 본문 참조 문자열(예: '시편 37:5-7',
+    '출애굽기 29')이 들어온 경우 실제 책명(+가능하면 장 번호)을 복구한다.
+
+    Returns:
+        (bible_book, chapter_start 또는 None)
+    """
+    if raw in _CANONICAL_BOOKS:
+        return raw, None
+
+    parsed = BibleReferenceParser().parse(raw)
+    if parsed.get("bible_book"):
+        return parsed["bible_book"], parsed.get("chapter_start")
+
+    # BibleReferenceParser가 "장"/":" 마커 없는 형식("출애굽기 29")은
+    # 못 잡으므로, 별칭 접두어 매칭 + 뒤따르는 숫자를 장 번호로 시도.
+    stripped = raw.strip()
+    for alias in _ALIASES_BY_LEN_DESC:
+        if stripped.startswith(alias):
+            rest = stripped[len(alias):].strip()
+            m = re.match(r"^(\d+)", rest)
+            chapter = int(m.group(1)) if m else None
+            return _ALIAS_TO_CANONICAL[alias], chapter
+
+    return raw, None
 
 
 # ============================================================
@@ -117,6 +152,9 @@ CHURCH_FIELDS = [
 # 연도/연대 계산용 필드
 DATE_CALC_FIELDS = DATE_FIELDS  # 날짜에서 연도/연대 추출
 
+# 기본 데이터 경로 탐색 (run_sermon_dashboard.py와 공유 — data_paths.py 참고)
+from sermon_corpus.dashboard.data_paths import find_default_data_path
+
 
 def detect_field_mapping(headers: List[str]) -> Dict[str, str]:
     """CSV 헤더에서 필드 매핑을 자동 감지합니다.
@@ -126,7 +164,13 @@ def detect_field_mapping(headers: List[str]) -> Dict[str, str]:
     """
     mapping = {}
     headers_lower = [h.lower().strip() for h in headers]
-    
+    # [버그 수정] 헤더별 매핑 여부를 추적하지 않아 "성경본문"처럼 여러
+    # 패턴("성경"→bible_book, "본문"→passage_raw)에 동시에 걸리는 헤더가
+    # 두 표준 필드에 중복 배정됐다 — bible_book에 실제로는 본문 참조
+    # 문자열("시편 37:5-7")이 들어가는 사고가 여기서 발생했다. 한 헤더는
+    # 먼저 매핑된 표준 필드 하나만 차지하도록 사용된 헤더를 추적.
+    used_headers = set()
+
     # 각 필드 유형별로 매핑 시도
     for field_list, standard_name in [
         (BIBLE_BOOK_FIELDS, "bible_book"),
@@ -138,15 +182,18 @@ def detect_field_mapping(headers: List[str]) -> Dict[str, str]:
         (CHURCH_FIELDS, "church"),
     ]:
         for header in headers_lower:
+            if header in used_headers:
+                continue
             for pattern in field_list:
                 if pattern.lower() in header or header in pattern.lower():
                     # 실제 헤더 인덱스 찾기
                     idx = headers_lower.index(header)
                     mapping[standard_name] = headers[idx]
+                    used_headers.add(header)
                     break
             if standard_name in mapping:
                 break
-    
+
     return mapping
 
 
@@ -156,13 +203,32 @@ def normalize_record(record: dict, field_mapping: Dict[str, str]) -> dict:
     
     # bible_book
     bb_key = field_mapping.get("bible_book")
-    normalized["bible_book"] = record.get(bb_key, "") if bb_key else ""
-    
+    bible_book_raw = str(record.get(bb_key, "")) if bb_key else ""
+    # [버그 수정] 헤더 오매핑(위 detect_field_mapping 수정으로 재발은
+    # 막았지만, 이미 그렇게 생성된 CSV/이전 파일이 들어올 가능성은
+    # 여전함) 등으로 bible_book 칸에 책명이 아니라 "시편 37:5-7" 같은
+    # 본문 참조 문자열이 그대로 들어올 수 있다. "1 Corinthians"/"2 Kings"
+    # 처럼 정상 책명에도 숫자가 들어가므로 "숫자 포함 여부"가 아니라
+    # 정경 66권 canonical 이름 집합에 있는지로 판단해야 오탐이 없다.
+    bible_book_looks_like_passage = bool(bible_book_raw) and bible_book_raw not in _CANONICAL_BOOKS
+    recovered_chapter = None
+    if bible_book_looks_like_passage:
+        normalized["bible_book"], recovered_chapter = _recover_bible_book(bible_book_raw)
+    else:
+        normalized["bible_book"] = bible_book_raw
+
     # chapter
     ch_key = field_mapping.get("chapter")
     try:
-        val = record.get(ch_key, 0) if ch_key else 0
-        normalized["chapter_start"] = int(val) if val else 1
+        if ch_key:
+            val = record.get(ch_key, 0)
+            normalized["chapter_start"] = int(val) if val else 1
+        elif recovered_chapter:
+            # chapter 칸이 따로 없고 bible_book 칸이 참조 문자열이었던
+            # 경우, 그 참조에서 복구된 장 번호를 사용.
+            normalized["chapter_start"] = recovered_chapter
+        else:
+            normalized["chapter_start"] = 1
         normalized["chapter_end"] = normalized["chapter_start"]
     except (ValueError, TypeError):
         normalized["chapter_start"] = 1
@@ -176,6 +242,11 @@ def normalize_record(record: dict, field_mapping: Dict[str, str]) -> dict:
     ps_key = field_mapping.get("passage_raw")
     if ps_key and record.get(ps_key):
         normalized["passage_raw"] = str(record[ps_key])
+    elif bible_book_looks_like_passage:
+        # bible_book 칸이 실제로는 본문 참조 문자열이었던 경우(위에서
+        # 책명만 뽑아 bible_book으로 옮겼음) — 원본 문자열 자체가
+        # passage_raw로 쓸 수 있는 가장 정확한 정보이므로 그대로 보존.
+        normalized["passage_raw"] = bible_book_raw
     elif normalized["title"]:
         # 제목에서 본문 정보 추출 (예: "창세기 1장 - 창조")
         normalized["passage_raw"] = normalized["title"]
@@ -797,8 +868,8 @@ def main():
     parser.add_argument(
         "--data",
         type=str,
-        default=None,
-        help="데이터 파일 경로 (JSONL, CSV, XLSX, TXT, SQLite 지원)",
+        default=find_default_data_path(),
+        help="데이터 파일 경로 (JSONL, CSV, XLSX, TXT, SQLite 지원). 실제 데이터가 있으면 자동 사용.",
     )
     args, unknown = parser.parse_known_args()
     

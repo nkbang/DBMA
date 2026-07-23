@@ -27,6 +27,9 @@ import subprocess
 from pathlib import Path
 from typing import List, Dict
 
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from sermon_corpus.dashboard.data_paths import DEFAULT_DATA_PATHS
+
 
 def create_sample_data(output_path: Path, num_records: int = 100) -> None:
     """샘플 데이터 생성 (테스트용)"""
@@ -166,15 +169,9 @@ def main():
     elif args.data:
         data_path = args.data
     else:
-        # 기본 경로 확인 (실제 수집 데이터 우선 — large_seed_sermons.jsonl은
-        # seed_generator.py가 만든 합성/가상 데이터라 기본 경로에서 제외,
-        # 필요 시 --data로 명시적으로 지정)
-        default_paths = [
-            "data/sermon_corpus/raw/sermonbank.jsonl",
-            "data/sermon_corpus/raw/sermonbank_collected.jsonl",
-        ]
+        # 기본 경로 확인 (실제 데이터만 — data_paths.py::DEFAULT_DATA_PATHS 공유)
         data_path = None
-        for p in default_paths:
+        for p in DEFAULT_DATA_PATHS:
             if Path(p).exists():
                 data_path = p
                 break
