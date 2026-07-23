@@ -56,7 +56,7 @@ sources:
 
   # 대형교회 유튜브 (YouTube API)
   youtube:
-    enabled: false  # API 키 필요 시 true로 변경
+    enabled: true  # YOUTUBE_API_KEY 환경변수 설정 후 활성화
     source_id: youtube
     mode: api_public_metadata
     api_endpoint: "https://www.googleapis.com/youtube/v3"

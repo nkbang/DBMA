@@ -204,38 +204,76 @@ class BackgroundCollector:
         """특정 출처에서 데이터를 수집합니다."""
         sources = self.config.get("sources", {})
         source_config = sources.get(source_id, {})
-        
+
         if not source_config:
             logger.warning(f"출처 설정을 찾을 수 없습니다: {source_id}")
             return []
-        
+
+        limits = source_config.get("limits", {})
+        default_policy = self.config.get("default_policy", {})
+
+        # [버그 수정] 이 함수가 source_id와 무관하게 항상
+        # SermonBankCollector만 생성했다 — sources.yml에 youtube가
+        # mode: api_public_metadata로 따로 등록돼 있어도 실제로는
+        # 절대 YouTubeSermonCollector가 쓰이지 않고, urls가 없는 youtube
+        # 설정은 항상 "URL이 설정되지 않은 출처"로 스킵됐다.
+        # mode로 실제 수집기를 분기하도록 수정.
+        if source_config.get("mode") == "api_public_metadata":
+            return self._collect_from_youtube(source_id, source_config, limits)
+
         urls = source_config.get("urls", [])
         if not urls:
             logger.warning(f"URL이 설정되지 않은 출처: {source_id}")
             return []
-        
-        # PoliteFetcher 설정
-        limits = source_config.get("limits", {})
-        default_policy = self.config.get("default_policy", {})
-        
+
         fetcher = PoliteFetcher(
             user_agent=default_policy.get("user_agent", "DBMA-SermonCorpus/0.1 (academic research)"),
             min_delay=limits.get("min_delay_seconds", 5.0),
             max_delay=limits.get("max_delay_seconds", 12.0),
             max_retries=default_policy.get("retry", {}).get("max_attempts", 2),
         )
-        
+
         # SermonBankCollector 설정
         collector = SermonBankCollector({
             "source_id": source_id,
             "urls": urls,
             "storage": {"raw_path": str(self.data_store.data_path)},
         })
-        
+
         try:
             records = collector.collect_all(
                 fetcher, max_records=1000, max_pages=limits.get("max_pages", 10)
             )
+            self.stats["total_collected"] += len(records)
+            logger.info(f"{source_id}: {len(records)}건 수집 완료")
+            return records
+        except Exception as e:
+            self.stats["total_errors"] += 1
+            logger.error(f"{source_id} 수집 오류: {e}")
+            return []
+
+    def _collect_from_youtube(self, source_id: str, source_config: Dict, limits: Dict) -> List[Any]:
+        """YouTube Data API로 대형교회 채널의 설교 영상 메타데이터를 수집합니다."""
+        from sermon_corpus.collector.youtube import YouTubeSermonCollector
+
+        collector = YouTubeSermonCollector({
+            "source_id": source_id,
+            "channels": source_config.get("channels"),
+            "search_keywords": source_config.get("search_keywords"),
+            "api_key_env": source_config.get("api_key_env", "YOUTUBE_API_KEY"),
+            "storage": {"raw_path": str(self.data_store.data_path)},
+            "max_results_per_channel": limits.get("max_results_per_channel", 50),
+            "delay_between_requests": limits.get("min_delay_seconds", 1.5),
+        })
+
+        if not collector.api_key:
+            logger.warning(
+                f"{source_id}: {source_config.get('api_key_env', 'YOUTUBE_API_KEY')} "
+                "환경변수가 설정되지 않아 API 키 없이 검색 폴백으로만 수집합니다."
+            )
+
+        try:
+            records = collector.collect_all()
             self.stats["total_collected"] += len(records)
             logger.info(f"{source_id}: {len(records)}건 수집 완료")
             return records
