@@ -1,0 +1,97 @@
+# DBMA Sermon Corpus - 수집원 설정
+# 각 출처별 수집 정책, rate limiting, 재시도 규칙
+
+default_policy:
+  user_agent: "DBMA-SermonCorpus/0.1 (academic research; contact: dbma-research@example.org)"
+  min_delay_seconds: 3.0
+  max_delay_seconds: 8.0
+  max_concurrency: 1
+  daily_request_budget: 500
+  retry:
+    max_attempts: 2
+    retryable_statuses: [408, 429, 500, 502, 503, 504]
+    stop_statuses: [401, 403, 451]
+  storage:
+    raw_jsonl: true
+    retain_days: 30
+
+sources:
+  # 설교은행 (SermonBank)
+  sermonbank:
+    enabled: true
+    source_id: sermonbank
+    mode: public_html
+    base_url: "https://sermonbank.net"
+
+    # 수집 대상 URL 패턴 (2026-07-22 실측 확인 — 그누보드 게시판,
+    # bo_table=sermon. 이전 값(/sermons, /search)은 404였음)
+    urls:
+      - "https://sermonbank.net/bbs/board.php?bo_table=sermon"
+
+    # 파서 설정 (2026-07-22 실측 — 실제 HTML에는 항목을 감싸는
+    # div/li 컨테이너가 없어 앵커(wr_id 링크) 기준 상대 탐색을
+    # sermon_corpus/collector/sermonbank.py::parse_sermon_from_html()에서
+    # 직접 구현. 아래 selectors는 문서화 목적, 실제 파싱 로직의 소스는
+    # 코드 쪽이 기준.
+    parser:
+      type: html_selector
+      selectors:
+        title: "span.f_s_list > a[href*='wr_id=']"
+        passage: "span.f_d2_6 (제목 span의 다음 형제)"
+        preacher: "tr td.f_d1_6 span.member"
+        date: "table[style*='margin:0 0 15px 0'] td.bd_sermon_L02 (텍스트 끝 YYYY-MM-DD)"
+        url: "span.f_s_list > a[href*='wr_id='] @href"
+    
+    limits:
+      min_delay_seconds: 5.0
+      max_delay_seconds: 12.0
+      daily_request_budget: 300
+    
+    storage:
+      raw_path: "data/sermon_corpus/raw/sermonbank.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_sermonbank.jsonl"
+
+  # 대형교회 유튜브 (YouTube API)
+  youtube:
+    enabled: false  # API 키 필요 시 true로 변경
+    source_id: youtube
+    mode: api_public_metadata
+    api_endpoint: "https://www.googleapis.com/youtube/v3"
+    api_key_env: "YOUTUBE_API_KEY"
+    
+    # 수집 대상 채널 목록
+    channels:
+      - "Yoido Full Gospel Church"
+      - "National Cathedral"
+      - "Elevation Church"
+      - "Hillsong Church"
+    
+    search_keywords:
+      - "설교"
+      - "sermon"
+      - "word of god"
+    
+    limits:
+      requests_per_minute: 60
+      min_delay_seconds: 1.0
+      max_delay_seconds: 3.0
+      daily_budget: 1000
+    
+    storage:
+      raw_path: "data/sermon_corpus/raw/youtube.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_youtube.jsonl"
+
+  # 출판 설교집 (Publication)
+  publication:
+    enabled: false  # 추가 데이터 소스 연결 시 true로 변경
+    source_id: publication
+    mode: file_based
+    input_directory: "data/publications/"
+    
+    limits:
+      batch_size: 50
+      processing_delay_seconds: 1.0
+    
+    storage:
+      raw_path: "data/sermon_corpus/raw/publication.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_publication.jsonl"
