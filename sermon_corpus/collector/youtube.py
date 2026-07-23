@@ -11,6 +11,8 @@ from typing import List, Dict, Optional
 from datetime import datetime
 import re
 
+from sermon_corpus.analyzer.frequency import FrequencyAnalyzer
+
 try:
     import httpx
 except ImportError:
@@ -517,6 +519,20 @@ class YouTubeSermonCollector:
             )
             preacher = self.extract_preacher(video["title"], video.get("description", ""))
 
+            # [버그 수정] extract_bible_references()가 "롬"/"막"/"요"
+            # 같은 한글 1글자 약어를 그대로 bible_book에 넣었다 —
+            # DBMA 전체(FrequencyAnalyzer/book_themes.py/sermonbank.py)는
+            # "Romans"/"Mark"/"John" 같은 정경 영문 canonical 이름을
+            # 기준으로 쓰므로, 이대로면 성경 권별 빈도/핵심 주제 등
+            # 모든 통계에서 유튜브 레코드만 매칭이 안 되고 빠진다.
+            # FrequencyAnalyzer의 한글 별칭 매핑으로 영문 canonical
+            # 이름으로 변환(매핑에 없는 값은 원본 그대로 — 추측하지 않음).
+            bible_book_raw = bible_ref.get("bible_book")
+            bible_book = (
+                FrequencyAnalyzer.KOREAN_ABBREVIATIONS.get(bible_book_raw, bible_book_raw)
+                if bible_book_raw else None
+            )
+
             # [버그 수정] YouTube API의 publishedAt("2026-01-01T00:00:00Z")을
             # "published_at"으로만 저장했는데, 코퍼스가 요구하는 필수
             # 필드명은 sermonbank 등 다른 출처와 동일한 "published_date"
@@ -535,7 +551,7 @@ class YouTubeSermonCollector:
                 "description": video.get("description", ""),
                 "preacher": preacher,
                 "passage_raw": bible_ref.get("passage_raw") or "",
-                "bible_book": bible_ref.get("bible_book") or "Unknown",
+                "bible_book": bible_book or "Unknown",
                 "chapter_start": bible_ref.get("chapter_start") or 0,
                 "chapter_end": bible_ref.get("chapter_end"),
                 "verse_start": bible_ref.get("verse_start") or 0,

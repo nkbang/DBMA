@@ -58,6 +58,50 @@ class TestCorrelationMatrixJsonBugFix:
         assert "Romans:8" in all_keys
 
 
+class TestPassageRawNormalization:
+    """[기능 추가] passage_raw("로마서 9:11-16" 등, 책명이 섞인 원본
+    표기)에서 책명은 bible_book으로, passage_raw는 "장:절-절" 숫자
+    형식으로 분리·통일한다."""
+
+    def test_strips_book_name_leaving_chapter_verse_range(self):
+        a = CorpusStatisticsAnalyzer()
+        a.load_records([{
+            "bible_book": "Romans", "chapter_start": 9, "verse_start": 11, "verse_end": 16,
+            "title": "제목", "passage_raw": "로마서 9:11-16",
+            "preacher": "김목사", "published_date": "2026-01-01",
+        }])
+        assert a.records[0]["passage_raw"] == "9:11-16"
+        assert a.records[0]["bible_book"] == "Romans"
+
+    def test_single_verse_no_range(self):
+        a = CorpusStatisticsAnalyzer()
+        a.load_records([{
+            "bible_book": "Mark", "chapter_start": 10, "verse_start": 46, "verse_end": None,
+            "title": "제목", "passage_raw": "마가복음 10:46",
+            "preacher": "이목사", "published_date": "2026-01-01",
+        }])
+        assert a.records[0]["passage_raw"] == "10:46"
+
+    def test_chapter_only_no_verse(self):
+        a = CorpusStatisticsAnalyzer()
+        a.load_records([{
+            "bible_book": "Jonah", "chapter_start": 1, "verse_start": None, "verse_end": None,
+            "title": "제목", "passage_raw": "요나 1장",
+            "preacher": "박목사", "published_date": "2026-01-01",
+        }])
+        assert a.records[0]["passage_raw"] == "1"
+
+    def test_missing_chapter_leaves_passage_raw_untouched(self):
+        # 장 정보가 아예 없으면 지어내지 않고 원본을 그대로 둔다.
+        a = CorpusStatisticsAnalyzer()
+        a.load_records([{
+            "bible_book": "Romans", "chapter_start": None,
+            "title": "제목", "passage_raw": "로마서 어딘가",
+            "preacher": "김목사", "published_date": "2026-01-01",
+        }])
+        assert a.records[0]["passage_raw"] == "로마서 어딘가"
+
+
 class TestCategorizeTitleBugFix:
     def test_matches_keyword_not_in_first_word(self):
         a = CorpusStatisticsAnalyzer()

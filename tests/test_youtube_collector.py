@@ -139,6 +139,18 @@ class TestCollectAllWithoutChannelFilter:
         # 설정된 "Yoido Full Gospel Church"가 아니라 검색 결과의 실제 채널명이 쓰여야 함
         assert channel_names == {"갓피플TV", "복음훈련소"}
 
+    def test_bible_book_is_canonical_english_name_not_korean_abbreviation(self):
+        # [버그 수정] _build_records()가 extract_bible_references()의
+        # 한글 1글자 약어("롬","막","요" 등)를 그대로 bible_book에 넣어
+        # DBMA 전체가 쓰는 영문 canonical 이름("Romans" 등)과 안 맞고,
+        # 그래서 성경 권별 통계에서 유튜브 레코드만 매칭이 안 됐다.
+        collector = YouTubeSermonCollector({"channels": ["Any"], "search_keywords": ["설교"]})
+        fake_items = [_fake_search_item("v1", "로마서 8:28 설교 - 김목사", "채널A")]
+        with patch.object(collector, "fetch_with_search", return_value=fake_items):
+            records = collector.collect_all(api_key="dummy")
+
+        assert records[0]["bible_book"] == "Romans"
+
     def test_deduplicates_by_title_and_video_id(self):
         collector = YouTubeSermonCollector({"channels": ["Any"], "search_keywords": ["설교"]})
         fake_items = [

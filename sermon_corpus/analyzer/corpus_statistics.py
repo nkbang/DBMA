@@ -104,10 +104,15 @@ class CorpusStatisticsAnalyzer:
         설교자(preacher) 중 하나라도 비어있는 레코드는 통계·시각화에서
         제외한다 — self.records에도 필터링된 것만 남긴다.
 
+        [기능 추가] passage_raw에 책명이 섞여 있으면(예: "로마서 9:11-16")
+        책명은 bible_book 필드로, passage_raw는 "장:절-절" 숫자 형식으로
+        분리·통일한다.
+
         Returns:
             로드된 기록 수 (필수 필드 누락 레코드 제외)
         """
-        complete_records = [r for r in records if self._has_required_fields(r)]
+        normalized = [self._normalize_passage_raw(r) for r in records]
+        complete_records = [r for r in normalized if self._has_required_fields(r)]
 
         for record in complete_records:
             self._process_record(record)
@@ -127,6 +132,36 @@ class CorpusStatisticsAnalyzer:
             if isinstance(value, str) and not value.strip():
                 return False
         return True
+
+    @staticmethod
+    def _normalize_passage_raw(record: dict) -> dict:
+        """passage_raw("로마서 9:11-16" 등, 책명이 섞인 원본 표기)를
+        bible_book(이미 각 수집기가 별도로 채워둔 필드)과 분리해
+        passage_raw는 "장:절-절"(또는 "장"만) 숫자 형식으로 통일한다.
+
+        문자열에서 책명을 잘라내는 방식이 아니라, chapter_start/
+        verse_start/verse_end(BibleReferenceParser 등이 이미 신뢰성
+        있게 파싱해둔 값)로 다시 조립한다 — 텍스트 패턴 매칭보다
+        안전하고, 값을 지어내지 않는다(장 정보가 아예 없으면 원본
+        passage_raw를 그대로 둔다).
+        """
+        chapter = record.get("chapter_start")
+        if chapter is None or record.get("passage_raw") is None:
+            return record
+
+        verse_start = record.get("verse_start")
+        verse_end = record.get("verse_end")
+
+        if verse_start and verse_end and verse_end != verse_start:
+            new_passage = f"{chapter}:{verse_start}-{verse_end}"
+        elif verse_start:
+            new_passage = f"{chapter}:{verse_start}"
+        else:
+            new_passage = str(chapter)
+
+        normalized = dict(record)
+        normalized["passage_raw"] = new_passage
+        return normalized
     
     def _process_record(self, record: dict) -> None:
         """단일 기록을 처리하여 각 분석기에 추가합니다"""
