@@ -101,6 +101,25 @@ class TestPassageRawNormalization:
         }])
         assert a.records[0]["passage_raw"] == "로마서 어딘가"
 
+    def test_chapter_zero_sentinel_is_not_treated_as_real_chapter(self):
+        # [버그 수정] 일부 수집기(youtube.py)는 성구를 못 찾으면
+        # chapter_start를 None이 아니라 0으로 채운다
+        # (`bible_ref.get("chapter_start") or 0`) — chapter_start=0을
+        # 진짜 1장인 것처럼 오인해 passage_raw="0"을 지어낸 뒤(존재하지
+        # 않는 값), 그 "0"이 비어있지 않은 문자열이라 필수 필드 검사도
+        # 통과해버려 실제로 우리 DB에 154건이나 섞여 있었다. chapter=0
+        # 이면 "장 정보 없음"으로 취급해 원본 passage_raw를 그대로
+        # 두고(빈 문자열이면 그대로 필수 필드 검사에서 걸러짐), 절대
+        # "0"을 만들어내지 않는다.
+        a = CorpusStatisticsAnalyzer()
+        n = a.load_records([{
+            "bible_book": "Unknown", "chapter_start": 0,
+            "title": "제목", "passage_raw": "",
+            "preacher": "김목사", "published_date": "2026-01-01",
+        }])
+        assert n == 0
+        assert a.records == []
+
 
 class TestCategorizeTitleBugFix:
     def test_matches_keyword_not_in_first_word(self):

@@ -146,7 +146,12 @@ class CorpusStatisticsAnalyzer:
         passage_raw를 그대로 둔다).
         """
         chapter = record.get("chapter_start")
-        if chapter is None or record.get("passage_raw") is None:
+        # [버그 수정] 일부 수집기(youtube.py 등)는 성구를 못 찾으면
+        # chapter_start를 None이 아니라 "못 찾음" 표시로 0을 넣는다
+        # (`bible_ref.get("chapter_start") or 0`) — `chapter is None`만
+        # 걸러서는 0을 진짜 1장인 것처럼 오인해 passage_raw="0"을
+        # 지어냈다. 0 이하는 "장 정보 없음"으로 같이 취급.
+        if not chapter or record.get("passage_raw") is None:
             return record
 
         verse_start = record.get("verse_start")
