@@ -561,6 +561,146 @@ def get_background_data_path() -> str:
     return str(Path(__file__).parent.parent / "data" / "collected_sermons.jsonl")
 
 
+# 업로드 플로우가 쓰는 것과 동일한 "누계 전체 데이터"(기존 DB) 경로 —
+# 백그라운드 수집 검토에서 승인한 레코드도 여기에 append한다.
+PERSISTENT_DATA_DIR = Path("data/sermon_corpus/uploaded")
+PERSISTENT_DATA_FILE = PERSISTENT_DATA_DIR / "uploaded_sermons.jsonl"
+
+# 검토에서 거부한 레코드의 dedupe key 목록 — 다음 수집/검토 때 다시
+# 나타나지 않도록 영구 기록한다.
+REVIEW_REJECTED_KEYS_FILE = Path(__file__).parent.parent / "data" / "review_rejected_keys.json"
+
+
+def _record_dedupe_key(rec: dict) -> tuple:
+    """제목+본문+책+장으로 레코드 중복/식별 키를 만든다.
+
+    업로드 병합 로직(main() 안의 동일 로직)과 같은 정의를 공유해야
+    "기존 DB"와의 중복 체크가 일관되게 동작한다.
+    """
+    title = (rec.get("title") or "").strip()
+    passage = (rec.get("passage_raw") or rec.get("passage") or "").strip()
+    book = (rec.get("bible_book") or rec.get("book") or "").strip()
+    chapter = str(rec.get("chapter_start") or rec.get("chapter") or "").strip()
+    return (title, passage, book, chapter)
+
+
+def _load_rejected_review_keys() -> set:
+    if not REVIEW_REJECTED_KEYS_FILE.exists():
+        return set()
+    try:
+        raw = json.loads(REVIEW_REJECTED_KEYS_FILE.read_text(encoding="utf-8"))
+        return {tuple(k) for k in raw}
+    except (json.JSONDecodeError, TypeError):
+        return set()
+
+
+def _save_rejected_review_keys(keys: set) -> None:
+    REVIEW_REJECTED_KEYS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    REVIEW_REJECTED_KEYS_FILE.write_text(
+        json.dumps([list(k) for k in keys], ensure_ascii=False), encoding="utf-8"
+    )
+
+
+def _render_collection_review(bg_data_path: str) -> None:
+    """백그라운드로 수집된 데이터를 검토해 선택적으로 수용/거부합니다.
+
+    - 수용: 선택한 레코드를 기존 DB(PERSISTENT_DATA_FILE)에 append하고
+      (중복은 건너뜀) 대기 목록에서 제거 — 다음 rerun에서 통계에 반영됨.
+    - 거부: 선택한 레코드를 대기 목록에서 제거하고 거부 키로 기록해
+      같은 레코드가 나중에 다시 수집돼도 검토 목록에 재등장하지 않게 함.
+    - 체크하지 않은 레코드는 그대로 대기 목록에 남아 다음에 다시 검토.
+    """
+    st.markdown("#### 🕵️ 수집 데이터 검토")
+
+    pending_path = Path(bg_data_path)
+    if not pending_path.exists():
+        st.caption("검토할 수집 데이터가 없습니다.")
+        return
+
+    with open(pending_path, encoding="utf-8") as f:
+        pending_records = [json.loads(line) for line in f if line.strip()]
+
+    rejected_keys = _load_rejected_review_keys()
+    pending_records = [
+        r for r in pending_records if _record_dedupe_key(r) not in rejected_keys
+    ]
+
+    if not pending_records:
+        st.caption("검토할 새 수집 데이터가 없습니다.")
+        return
+
+    st.info(f"검토 대기 중인 수집 데이터 {len(pending_records)}건")
+
+    review_df = pd.DataFrame([
+        {
+            "선택": True,
+            "성경 책": _to_korean_book(r.get("bible_book", "")),
+            "본문": r.get("passage_raw", ""),
+            "설교 제목": r.get("title", ""),
+            "설교자": r.get("preacher") or "",
+            "출처": r.get("source", ""),
+        }
+        for r in pending_records
+    ])
+
+    edited_df = st.data_editor(
+        review_df,
+        hide_index=True,
+        use_container_width=True,
+        disabled=["성경 책", "본문", "설교 제목", "설교자", "출처"],
+        key="collection_review_editor",
+    )
+
+    col_accept, col_reject = st.columns(2)
+    accept_clicked = col_accept.button("✅ 선택 항목 수용 → 기존 DB에 반영", key="review_accept")
+    reject_clicked = col_reject.button("🚫 선택 항목 거부", key="review_reject")
+
+    if not (accept_clicked or reject_clicked):
+        return
+
+    selected_mask = edited_df["선택"].tolist()
+    selected_records = [r for r, sel in zip(pending_records, selected_mask) if sel]
+    remaining_records = [r for r, sel in zip(pending_records, selected_mask) if not sel]
+
+    if not selected_records:
+        st.warning("선택된 항목이 없습니다.")
+        return
+
+    if accept_clicked:
+        existing_records = []
+        if PERSISTENT_DATA_FILE.exists():
+            with open(PERSISTENT_DATA_FILE, encoding="utf-8") as f:
+                existing_records = [json.loads(line) for line in f if line.strip()]
+        existing_keys = {_record_dedupe_key(r) for r in existing_records}
+
+        new_records = [
+            r for r in selected_records if _record_dedupe_key(r) not in existing_keys
+        ]
+        skipped = len(selected_records) - len(new_records)
+
+        PERSISTENT_DATA_DIR.mkdir(parents=True, exist_ok=True)
+        with open(PERSISTENT_DATA_FILE, "a", encoding="utf-8") as f:
+            for rec in new_records:
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+        st.success(
+            f"✅ {len(new_records)}건을 기존 DB에 추가했습니다"
+            + (f" (중복 {skipped}건 스킵)" if skipped else "")
+            + "."
+        )
+    else:
+        rejected_keys |= {_record_dedupe_key(r) for r in selected_records}
+        _save_rejected_review_keys(rejected_keys)
+        st.info(f"🚫 {len(selected_records)}건을 거부 처리했습니다.")
+
+    # 처리한(수용/거부) 레코드는 대기 목록에서 제거 — 체크 안 한 것만 남김
+    with open(pending_path, "w", encoding="utf-8") as f:
+        for rec in remaining_records:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    st.rerun()
+
+
 # ============================================================
 # UI 레이아웃
 # ============================================================
@@ -1173,11 +1313,17 @@ def main():
         # 반환하는 경우가 바로 이에 해당)
         if Path(data_path).resolve() == PERSISTENT_DATA_FILE.resolve():
             # 누계 파일 자체를 분석 대상에 사용
+            # [버그 수정] records를 대입하지 않고 cumulative_records만
+            # 채워서, 바로 아래 "if not records:" 체크가 records=None을
+            # 그대로 보고 항상 "로드된 데이터가 없습니다"로 멈췄다 —
+            # --data가 누계 파일(기본 경로)을 가리키는, 즉 가장 흔한
+            # 기본 실행 경로가 항상 즉시 멈추던 버그.
             cumulative_records = []
             with open(PERSISTENT_DATA_FILE, 'r', encoding='utf-8') as f:
                 for line in f:
                     if line.strip():
                         cumulative_records.append(json.loads(line))
+            records = cumulative_records
             st.info(f"📊 누계 데이터: {len(cumulative_records):,}건 (저장된 전체 데이터)")
         else:
             # 다른 파일 — "추가할 새 데이터"로 처리
@@ -1342,6 +1488,9 @@ def _render_background_collector_status():
                     f"(누적 {result['data_store']['total_records']:,}건)"
                 )
                 st.rerun()
+
+    st.divider()
+    _render_collection_review(bg_data_path)
 
     with st.expander("CLI로 직접 실행하기"):
         st.markdown("""
