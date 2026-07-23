@@ -1477,18 +1477,35 @@ def _render_background_collector_status():
     if st.button("📥 수동 데이터 수집 실행", key="manual_collect"):
         from sermon_corpus.collector.background_collector import BackgroundCollector
 
-        with st.spinner("설교은행에서 수집 중입니다... (robots.txt 확인 + 요청 지연으로 몇 초 걸릴 수 있습니다)"):
+        # [버그 수정] 스피너 문구가 "설교은행에서 수집 중"으로 고정돼
+        # 있어서, 유튜브 수집기를 실제로 연결한 뒤에도 유튜브가 같이
+        # 도는지 화면만 보고는 알 수 없었다(실제로는 같이 돌고 있었고
+        # 로그에서만 확인 가능했음) — enabled인 출처를 그대로 보여주고,
+        # 결과도 출처별로 나눠서 표시.
+        sources_cfg = BackgroundCollector(data_path=bg_data_path).config.get("sources", {})
+        enabled_sources = [
+            sid for sid, cfg in sources_cfg.items() if cfg.get("enabled", True)
+        ]
+        with st.spinner(
+            f"{', '.join(enabled_sources) or '설정된 출처'}에서 수집 중입니다... "
+            "(정중한 지연 때문에 몇 초~몇 분 걸릴 수 있습니다)"
+        ):
             try:
                 collector = BackgroundCollector(data_path=bg_data_path)
                 result = collector.run_once()
             except Exception as e:
                 st.error(f"수집 중 오류가 발생했습니다: {e}")
             else:
+                by_source = result.get("by_source", {})
+                breakdown = ", ".join(
+                    f"{sid} {info['collected']}건(신규 {info['saved']}건)"
+                    for sid, info in by_source.items()
+                )
                 st.success(
-                    f"✅ 수집 완료 — {result['total_collected']}건 수집, "
-                    f"{result['total_saved']}건 저장, {result['total_duplicates']}건 중복, "
-                    f"{result['total_errors']}건 오류 "
-                    f"(누적 {result['data_store']['total_records']:,}건)"
+                    f"✅ 수집 완료 — {breakdown or '수집 결과 없음'} "
+                    f"(합계 {result['total_collected']}건 수집, {result['total_saved']}건 저장, "
+                    f"{result['total_duplicates']}건 중복, {result['total_errors']}건 오류, "
+                    f"누적 {result['data_store']['total_records']:,}건)"
                 )
                 st.rerun()
 

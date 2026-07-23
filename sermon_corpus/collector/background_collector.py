@@ -297,6 +297,11 @@ class BackgroundCollector:
 
         all_records = []
         sources = self.config.get("sources", {})
+        # [기능 추가] 출처별 수집 결과를 나눠서 보여줄 수 있도록 기록 —
+        # 이전에는 합산 결과만 반환해서 대시보드가 "설교은행에서 수집
+        # 중"이라고만 표시하고, 유튜브도 같이 도는지 사용자가 알 방법이
+        # 없었다(실제로는 같이 돌고 있었음, 로그로만 확인 가능했음).
+        by_source: Dict[str, Dict[str, int]] = {}
 
         for source_id, source_config in sources.items():
             if not self.running:
@@ -309,6 +314,7 @@ class BackgroundCollector:
             logger.info(f"{source_id}에서 데이터 수집 중...")
             records = self.collect_from_source(source_id)
 
+            saved = 0
             if records:
                 # 새 데이터만 저장
                 saved = self.data_store.save_records(records)
@@ -316,10 +322,13 @@ class BackgroundCollector:
                 self.stats["total_saved"] += saved
                 self.stats["total_duplicates"] += duplicates
                 all_records.extend(records)
-        
+
+            by_source[source_id] = {"collected": len(records), "saved": saved}
+
         self.stats["last_run"] = datetime.now().isoformat()
         self.stats["runs"] += 1
-        
+        self.stats["by_source"] = by_source
+
         logger.info(
             f"수집 사이클 완료: {len(all_records)}건 수집, "
             f"{self.stats['total_saved']}건 저장, "
