@@ -233,7 +233,9 @@ class BackgroundCollector:
         })
         
         try:
-            records = collector.collect_all(fetcher, max_records=1000)
+            records = collector.collect_all(
+                fetcher, max_records=1000, max_pages=limits.get("max_pages", 10)
+            )
             self.stats["total_collected"] += len(records)
             logger.info(f"{source_id}: {len(records)}건 수집 완료")
             return records

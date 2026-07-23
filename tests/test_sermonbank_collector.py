@@ -102,6 +102,88 @@ class TestParseSermonFromHtmlRealSiteStructure:
         assert first.source_url == "https://sermonbank.net/bbs/board.php?bo_table=sermon&wr_id=65799"
 
 
+class _StubFetcher:
+    """collect_all() 페이지네이션 테스트용 — url별로 미리 정해둔 HTML을
+    반환하는 가짜 fetcher (실제 네트워크 요청 없음)."""
+
+    def __init__(self, pages: dict):
+        self.pages = pages
+        self.requested_urls = []
+
+    def get_text(self, url: str):
+        self.requested_urls.append(url)
+        return self.pages.get(url, "")
+
+
+def _board_html_with_one_item(wr_id: int, title: str) -> str:
+    return f"""
+    <table style="margin:0 0 15px 0">
+      <tr><td><table><tr><td>
+        <span class="f_s_list"><a href='../bbs/board.php?bo_table=sermon&wr_id={wr_id}'>{title}</a></span>
+        <span class="f_d2_6">창세기 1:1</span>
+      </td><td class="f_d1_6"><strong class="f_d1_3"><a><span class='member'>테스트목사</span></a></strong></td></tr></table></td></tr>
+      <tr><td class="bd_sermon_L02">2026-01-01</td></tr>
+    </table>
+    """
+
+
+class TestCollectAllPagination:
+    """[기능 추가] 목록 페이지가 페이지당 15건만 보여주는데 collect_all()이
+    self.urls의 페이지(보통 1페이지)만 가져오고 끝나서 매번 15건에서
+    멈추던 것 — page=2, page=3... 로 이어서 수집하도록 고침."""
+
+    BASE = "https://sermonbank.net/bbs/board.php?bo_table=sermon"
+
+    def test_paginates_across_multiple_pages(self):
+        pages = {
+            self.BASE: _board_html_with_one_item(1, "1페이지 설교"),
+            f"{self.BASE}&page=2": _board_html_with_one_item(2, "2페이지 설교"),
+            f"{self.BASE}&page=3": _board_html_with_one_item(3, "3페이지 설교"),
+        }
+        fetcher = _StubFetcher(pages)
+        collector = SermonBankCollector({"source_id": "sermonbank", "urls": [self.BASE]})
+
+        records = collector.collect_all(fetcher, max_pages=5)
+
+        assert [r.title for r in records] == ["1페이지 설교", "2페이지 설교", "3페이지 설교"]
+        # 4페이지는 빈 결과라 요청은 갔지만(끝 확인용) 5페이지는 요청 안 함
+        assert f"{self.BASE}&page=4" in fetcher.requested_urls
+        assert f"{self.BASE}&page=5" not in fetcher.requested_urls
+
+    def test_stops_at_max_records_mid_page_list(self):
+        pages = {
+            self.BASE: _board_html_with_one_item(1, "1페이지 설교"),
+            f"{self.BASE}&page=2": _board_html_with_one_item(2, "2페이지 설교"),
+        }
+        fetcher = _StubFetcher(pages)
+        collector = SermonBankCollector({"source_id": "sermonbank", "urls": [self.BASE]})
+
+        records = collector.collect_all(fetcher, max_records=1, max_pages=5)
+
+        assert len(records) == 1
+        assert records[0].title == "1페이지 설교"
+        # max_records에 도달했으니 2페이지는 요청하지 않아야 함
+        assert f"{self.BASE}&page=2" not in fetcher.requested_urls
+
+    def test_respects_max_pages_limit(self):
+        # 모든 페이지가 항목을 반환하는 무한 사이트를 흉내 — max_pages로만 멈춰야 함
+        class _InfiniteFetcher:
+            def __init__(self):
+                self.requested_urls = []
+
+            def get_text(self, url: str):
+                self.requested_urls.append(url)
+                return _board_html_with_one_item(len(self.requested_urls), "설교")
+
+        fetcher = _InfiniteFetcher()
+        collector = SermonBankCollector({"source_id": "sermonbank", "urls": [self.BASE]})
+
+        records = collector.collect_all(fetcher, max_pages=3)
+
+        assert len(records) == 3
+        assert len(fetcher.requested_urls) == 3
+
+
 class TestChapterVerseParsingBugFix:
     """[2026-07-22 갱신] C1이 BibleReferenceParser 전체를 새 구현(4단계
     검증, confidence/kind 필드, 정규식 기반 다중 패턴)으로 교체해 이

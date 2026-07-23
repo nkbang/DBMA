@@ -46,6 +46,9 @@ sources:
       min_delay_seconds: 5.0
       max_delay_seconds: 12.0
       daily_request_budget: 300
+      # 목록 페이지가 한 페이지당 15건만 보여줘서(실측 확인) 여러 페이지를
+      # 이어서 수집한다 — 출처 URL 하나당 최대 페이지 수.
+      max_pages: 10
     
     storage:
       raw_path: "data/sermon_corpus/raw/sermonbank.jsonl"

@@ -714,34 +714,64 @@ class SermonBankCollector:
         text = fetcher.get_text(url)
         if not text:
             return []
-        
+
         self.stats["urls_processed"] += 1
         return self.parse_sermon_from_html(text, url)
-    
-    def collect_all(self, fetcher, max_records: int = None) -> List[SermonRecord]:
+
+    @staticmethod
+    def _paginate_url(base_url: str, page: int) -> str:
+        """게시판 목록 URL에 페이지 번호를 붙인다(그누보드 관례: ?page=N).
+
+        1페이지는 원본 URL 그대로(사이트가 page=1과 무파라미터를 같은
+        내용으로 취급하는지 보장이 없어 굳이 덧붙이지 않음)."""
+        if page <= 1:
+            return base_url
+        sep = "&" if "?" in base_url else "?"
+        return f"{base_url}{sep}page={page}"
+
+    def collect_all(
+        self, fetcher, max_records: int = None, max_pages: int = 10
+    ) -> List[SermonRecord]:
         """
         모든 출처 URL에서 설교 데이터를 수집합니다.
-        
+
+        [기능 추가] 설교은행 목록 페이지는 한 페이지당 15건만 보여주는데
+        이전에는 self.urls에 등록된 URL(첫 페이지)만 그대로 한 번씩 가져와
+        매번 15건에서 멈췄다 — 사이트가 page=2, page=3... 파라미터로
+        다음 페이지를 제공하는 것을 확인(실측)하고, 다음 페이지가 빈
+        결과를 반환할 때까지(또는 max_pages/max_records 도달 시까지)
+        순차적으로 이어서 수집하도록 변경.
+
         Args:
             fetcher: PoliteFetcher 인스턴스
             max_records: 최대 수집 기록 수 (None = 무제한)
-        
+            max_pages: 출처 URL 하나당 최대 페이지 수 (과도한 요청 방지)
+
         Returns:
             SermonRecord 목록
         """
         all_records = []
-        
-        for url in self.urls:
-            records = self.collect_from_url(url, fetcher)
-            
-            if max_records:
-                remaining = max_records - len(all_records)
-                if remaining <= 0:
+
+        for base_url in self.urls:
+            for page in range(1, max_pages + 1):
+                url = self._paginate_url(base_url, page)
+                records = self.collect_from_url(url, fetcher)
+
+                if not records:
+                    # 더 이상 항목이 없는 페이지 — 이 출처는 끝
                     break
-                records = records[:remaining]
-            
-            all_records.extend(records)
-        
+
+                if max_records:
+                    remaining = max_records - len(all_records)
+                    if remaining <= 0:
+                        return all_records
+                    records = records[:remaining]
+
+                all_records.extend(records)
+
+                if max_records and len(all_records) >= max_records:
+                    return all_records
+
         return all_records
     
     def save_to_jsonl(self, records: List[SermonRecord], path: Optional[Path] = None) -> int:
