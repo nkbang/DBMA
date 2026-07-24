@@ -160,5 +160,49 @@ class RepetitionTracker:
 
 ## Next Steps (HQ 승인 대기)
 
-1. `RepetitionTracker` 구현 + 단위 테스트 (제안 4 §1) — 승인 시 착수.
-2. 승인 시 노출된 실측 결과를 갖고 제안 2/3 각각 별도 승인 요청.
+1. ~~`RepetitionTracker` 구현 + 단위 테스트~~ **완료 (2026-07-23, HQ
+   승인)** — `core/repetition_detector.py`(신규, dormant), 단위 테스트
+   6건(`tests/test_repetition_detector.py`) 전부 통과, production
+   무접촉 확인(회귀 695 passed). window=80, similarity_threshold=0.9,
+   숫자 마스킹(`\d+`→`#`) 정규화. 실제 corpus 유사도 계산에서 정확한
+   exact-match(1.000)까지 검출 확인 — tracker 자체는 정상 동작.
+
+2. ~~`noise_classifier.py` 연결 + Profile B 재분류 실측~~ **완료
+   (2026-07-23)** — `classify()`에 `repetition_signal` 선택 인자
+   additive 추가(`scripts/adr011_noise_classifier_repetition_delta.py`
+   로 실측). **결과: delta=0**(Profile B 4개 문서, candidates=7100,
+   HEADER_FOOTER 판정 24건 before/after 동일). 원인 진단: 유사도 진단
+   스크립트로 실제 corpus의 고유사도 반복 쌍을 직접 덤프한 결과,
+   장문(≥15자) 반복 쌍 5건 전부가 **히브리어 텍스트비평/어휘 인용
+   반복**(예: "וי א מ ר ... andhe cameand stood beforehimand said")이지
+   페이지 헤더 패턴(예: "2 Kings, Volume 13 — 749")은 **단 하나도
+   발견되지 않음**. 짧은 반복(예: "עלה")은 이미 `ORIGINAL_LANGUAGE`
+   보호 신호가 우선순위상 먼저 적용돼 애초에 repetition 분기에
+   도달하지 않음(의도된 우선순위 — 버그 아님).
+
+3. ~~`semantic_boundary_detector.py` 연결 + D5 3축 재측정~~ **완료
+   (2026-07-23)** — 7번째 feature `PageHeaderArtifactFeature` 추가
+   (`registry_with_page_header_artifact()`, dormant — `get_registry()`
+   기본 경로에는 미등록), 단위 테스트 5건 통과. Profile B 전체 boundary
+   판정 delta 실측(`scripts/adr011_page_header_artifact_delta.py`):
+   **flipped_to_non_boundary=0**(309건 전부 동일) — feature가 실제로
+   한 번도 발화하지 않음(2번 항목과 동일 원인).
+
+   **결론(2026-07-23, HQ 확인)**: `RepetitionTracker`/
+   `PageHeaderArtifactFeature` 구현은 정상이나, 이 Beta corpus에서는
+   **측정 가능한 효과가 없다** — running header가 PDF 추출 단계
+   (`core/extractors.py`, 이번 조사 범위 밖)에서 이미 제거된 뒤 이
+   candidate 스트림에 들어오는 것으로 추정된다(미검증 가설, 별도
+   조사 필요 시 진행). 따라서 ADR-011의 원래 동기(Axis 3 왜곡의
+   running-header 원인론)는 이 corpus에서는 **뒷받침되지 않는다** —
+   Profile B의 Axis 3/Axis 2 문제는 다른 원인(§4 genre 분류, 순수
+   구조 신호 희소성 등)이 더 유력하다. 프로덕션 연결(제안 2/3의 실제
+   활성화)은 **보류** — 효과가 없는 feature를 프로덕션에 올릴 이유가
+   없다. `PAGE_HEADER_ARTIFACT_WEIGHT`/`registry_with_page_header_
+   artifact()`는 향후 다른 corpus(실제 running header가 candidate로
+   살아남는 문서)가 확보되면 재평가할 수 있도록 코드는 유지한다.
+
+4. 두 결과를 갖고 HQ가 프로덕션 반영 여부 판단 — **판단 완료: 반영
+   보류**(3번 결론 참고). ADR-007 §3(c)(PageHeaderArtifact 안전 마진
+   15%)는 feature가 미발화 상태라 사실상 moot — 마진 수치 자체가
+   지금은 어떤 실제 판정에도 영향을 주지 않는다.

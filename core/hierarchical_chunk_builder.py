@@ -62,6 +62,7 @@ this is ever promoted toward production.
 from __future__ import annotations
 
 import re
+import statistics
 from typing import List, Tuple
 
 from core.heading_provider import (
@@ -83,6 +84,32 @@ SAFETY_CAP_RATIO = 1.5
 _LOOKAHEAD_WINDOW = 5
 
 _heading_feature = HeadingBoundaryFeature()
+
+# [ADR-008 §4, 2026-07-23] Signal-Profile threshold (ADR-007 Amendment A) —
+# replaces the earlier provisional rule ("any single candidate exceeds
+# chunk_size * SAFETY_CAP_RATIO"), which classified a whole document off one
+# outlier candidate and had a documented boundary-case risk (Amendment-A.md
+# §리스크). Median candidate length was validated against the full Beta
+# corpus (12 documents, 2026-07-23 measurement) and cleanly separates the two
+# profiles with no overlap: Profile A (Low Back-matter Density) 132~184
+# chars, Profile B (High Back-matter Density, academic commentary) 269~856
+# chars. 220 sits in the gap. (Two alternative signals — citation-parenthetical
+# ratio and BIBLIOGRAPHY-classification ratio via core.noise_classifier —
+# separated just as cleanly in the same measurement but were not chosen,
+# since median length needs no additional per-candidate classification pass.)
+MEDIAN_CANDIDATE_LENGTH_THRESHOLD = 220
+
+
+def classify_document_profile(candidates: List[Tuple[str, int]]) -> str:
+    """[ADR-008 §4] Returns "A" (Low Back-matter Density) or "B" (High Back-
+    matter Density) per ADR-007 Amendment A's Signal-Profile calibration.
+    Empty candidates -> "A" (no signal; a conservative default rather than
+    raising, matching how build_chunks() itself never raises on empty
+    input)."""
+    if not candidates:
+        return "A"
+    median_length = statistics.median(len(text) for text, _ in candidates)
+    return "B" if median_length > MEDIAN_CANDIDATE_LENGTH_THRESHOLD else "A"
 
 
 def _slice_preserving_words(s: str, max_len: int) -> List[str]:

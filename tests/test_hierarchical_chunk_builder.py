@@ -13,7 +13,11 @@ import pytest
 
 from core.config import EMBEDDING_SIMILARITY_WEIGHT
 from core.heading_provider import ProviderHeading
-from core.hierarchical_chunk_builder import _slice_preserving_words, build_chunks
+from core.hierarchical_chunk_builder import (
+    _slice_preserving_words,
+    build_chunks,
+    classify_document_profile,
+)
 from core.semantic_boundary_detector import (
     EmbeddingSimilarityBoundaryFeature,
     get_registry,
@@ -144,3 +148,30 @@ class TestSemanticBoundarySplitsBuffer:
 class TestEmptyInput:
     def test_no_candidates_yields_no_chunks(self):
         assert build_chunks([], headings=[], chunk_size=1000, min_chunk_size=5) == []
+
+
+class TestClassifyDocumentProfile:
+    """[ADR-008 §4, 2026-07-23] Median-candidate-length Signal-Profile
+    classifier — thresholds chosen from the validated Beta corpus ranges:
+    Profile A 132~184 chars, Profile B 269~856 chars (no overlap)."""
+
+    def test_short_candidates_are_profile_a(self):
+        candidates = [(f"짧은 문단 {i}", i) for i in range(20)]  # ~10 chars each
+        assert classify_document_profile(candidates) == "A"
+
+    def test_long_candidates_are_profile_b(self):
+        long_text = "학술 주석서 인용문 스타일의 긴 문단 " * 20  # well over 220 chars
+        candidates = [(long_text, i) for i in range(20)]
+        assert classify_document_profile(candidates) == "B"
+
+    def test_single_outlier_candidate_does_not_flip_profile(self):
+        # The old provisional rule ("any candidate > 1800 chars") would
+        # classify this as B off one outlier — the median-based rule
+        # correctly reads the document as A (Amendment A's documented
+        # boundary-case risk this replacement was chosen to avoid).
+        candidates = [("짧은 문단입니다", i) for i in range(50)]
+        candidates.append(("아주 긴 이상치 문단 " * 200, 999))
+        assert classify_document_profile(candidates) == "A"
+
+    def test_empty_candidates_default_to_profile_a(self):
+        assert classify_document_profile([]) == "A"

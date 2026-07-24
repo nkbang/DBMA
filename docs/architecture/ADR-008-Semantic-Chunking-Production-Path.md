@@ -235,3 +235,229 @@ semantic chunking 논의와 독립적인 문제다 — 현재도 문장 단위 �
    Profile B 개선 확인까지 마친 상태이나, 이 ADR은 전환을 결정하지
    않는다(ADR-007 "D-5 게이트 통과 = 실행 승인 아님" 원칙 유지). 2026-07-22
    기준 데이터만 정리, 전환 착수는 보류.
+
+6. **§1(Minimum Semantic Improvement Threshold) 최종 확정 (2026-07-23,
+   HQ 승인)** — Axis 1/3은 위 §4에서 이미 확정. 남아 있던 Axis 2
+   (Profile B)를 다음 근거로 확정한다:
+
+   | 지표 | 실측 이력 |
+   |---|---|
+   | Phase 3-A (2026-07-20) | 16.4% — HQ "불충분" 판정 |
+   | 임베딩 feature 도입 후 (2026-07-21) | 33.7% |
+   | Level 3 도입 후 재측정 (2026-07-22) | 30.2% (측정 부작용 — Level 3 조각이 분모에만 반영되어 희석, 실제 능력 저하 아님, 위 §5 참고 기록) |
+
+   Axis 1(≥95%, 실측 98.5~99.0%)·Axis 3(A:0%, B:≤10%, 실측 대비 여유폭)와
+   동일한 "실측치 대비 회귀 감지용 하한선" 원칙을 적용해:
+
+   **Profile B Axis 2 threshold = ≥25%** (측정 부작용을 반영한 최저
+   실측치 30.2%에서 약 5%p 마진). Profile A(29.1%)는 이전과 동일하게
+   이번 결정 범위 밖으로 유지.
+
+   이 수치는 Beta corpus 표본(Profile B 4개 문서) 기준이며 영구
+   확정치가 아니다 — corpus가 확장되면 재산정 대상(ADR-007 §1이
+   애초에 "SPRINT33-D 이후 재산정" 전제로 이연했던 항목과 동일한
+   성격). §1 전체(Axis 1/2/3)가 이로써 최종 확정됨.
+
+   D-5 게이트 잔여 미확정 항목: §2(Orphaned 2단계 기준 수치),
+   §3(false-positive 보호 구체 임계값), §4(genre 자동분류 알고리즘)
+   — 이 3개가 확정돼야 D-5 게이트 "통과/실패" 실제 판정이 가능하다.
+   §5(Rollback 수치)는 §1 확정으로 이제 정의 가능해졌으나 아직 미기술.
+
+7. **§2/§3/§4/§5 최종 확정 (2026-07-23, HQ 승인)** — 기존 측정
+   문서(Phase 4-C, ADR-007 Amendment A, ADR-011) 재검토로 확정.
+
+   **§2 — Orphaned Boundary 2단계 기준**:
+   - Heading 관여 boundary(핵심 기준): §1에서 확정된 **Axis 1 ≥95%**를
+     그대로 채택(Amendment A가 orphaned recovery를 Axis 1로 흡수했으므로
+     별도 수치 불필요, ADR-008:42 실측 98.5~99.0%).
+   - Heading 미관여·저weight boundary(관대한 허용범위): Phase 4-C
+     실측 정밀도 범위 20~40%(`docs/SPRINT33-C-phase4c-scripture-reference-validation.md:100`)의
+     하한을 그대로 허용 하한으로 채택 — **≥20%**.
+
+   **§3 — False-positive 보호 조건**:
+   - (a) 장르별 정밀도 하한: Phase 4-C 실측 최저치 **20%(WBC 학술
+     주석)** — ADR-007 초안이 이미 이 수치를 인용했으므로 그대로
+     확정. 이 미만 장르는 게이트를 열지 않는다.
+   - (b) 단일 feature 판정 boundary 비율 경고선: **실측 완료(2026-07-23,
+     `scripts/shadow_d5_single_feature_ratio.py` 신규 작성)** — Beta
+     corpus 전체(Profile A 338건, Profile B 309건, 총 647 boundary)에서
+     단일-feature-only 비율 = **0.0%**(0/647). 원인: `paragraph`
+     feature(weight 30)가 거의 모든 candidate에서 다른 feature와 함께
+     발화해 단독 판정 사례가 구조적으로 거의 발생하지 않음(원시 feature
+     dump로 확인). ADR-007 초안의 "예: 30%" placeholder는 폐기하고,
+     경고선을 실측 기반 **≥10%**로 확정(현재 0.0%에서 상당한 여유폭 —
+     Axis1/2/3과 동일한 회귀 감지용 하한선 원칙).
+   - (c) PageHeaderArtifact 안전 마진: **구현·실측 완료, 그러나 moot로
+     확인(2026-07-23)** — ADR-011 제안 1~3(`RepetitionTracker`,
+     `noise_classifier` 연결, `PageHeaderArtifactFeature`) 전부 구현·
+     검증했으나 Beta corpus에서 실제 발화 0건(running header가 PDF
+     추출 단계에서 이미 제거되는 것으로 추정). 마진 수치(10~15%)는
+     feature가 미발화 상태라 지금은 어떤 판정에도 영향을 주지 않음 —
+     **잠정치 15% 유지하되 "현재 무효(moot)"로 표기**. 상세 근거는
+     `docs/architecture/ADR-011-Header-Footer-Repetition-Detector.md`
+     Next Steps 참고.
+
+   **§4 — Genre 자동분류 알고리즘**: 정식 알고리즘은 여전히 미설계
+     (Amendment A가 명시적으로 이연한 항목, 별도 Preflight 필요).
+     현재 코드/문서에 존재하는 유일한 실행 가능 규칙은 Amendment A의
+     provisional 규칙(`chunk_size × 1.5 = 1800자 초과 → Profile B, 아니면
+     Profile A`, `ADR-007-Amendment-A.md:60-63`)뿐이다. **이를 공식
+     interim 규칙으로 채택**하되, Amendment A 자신이 경고한 경계 사례
+     리스크(Amendment-A.md:169-172)가 그대로 남아 있음을 D-5 게이트
+     문서에도 명시 — 정식 분류기 설계 전까지는 이 provisional 규칙으로
+     게이트를 운영한다.
+     (주의: `core/pdf_structure_detector.py`의 `profile_document()`는
+     이름이 유사하나 무관한 기능(SPRINT30-C heading 신호 선택기)이므로
+     혼동 금지.)
+
+     **대안 신호 탐색 시도 및 부결 (2026-07-23)**: "Profile B는 heading
+     밀도가 낮은 학술 주석서"라는 기존 정성적 서술(§Context 등)이
+     정량 신호(heading 개수/candidate 개수)로 유효한지 실측했다.
+     **결과: 부적합** — Profile A는 5.32~24.68%(median 7.59%), Profile
+     B는 8.39~229.14%(median 92.30%)로 두 구간이 겹치고, 오히려 B의
+     중앙값이 A보다 훨씬 높다(기존 정성적 서술과 반대 방향). 원인으로
+     의심되는 것: "2 Kings" 계열 2개 문서는 heading 개수가 candidate
+     개수를 초과(947 candidates에 2170 headings=229%) — `core.heading_
+     provider.PdfHeadingProvider`가 running header/페이지 헤더를
+     heading으로 오탐하고 있을 가능성(미검증 가설). 사실이라면 위 §3(c)
+     조사에서 "running header가 candidate 스트림에서 사라진" 이유가
+     '추출 단계 제거'가 아니라 'heading 채널로 오분류'일 수 있다는
+     뜻이었다.
+
+     **오탐 가설 검증·근본원인 수정 완료 (2026-07-23, HQ 승인)**:
+     `core.pdf_structure_detector.py`("2 Kings, Anchor Bible Commentary"
+     heading 목록 직접 덤프)로 확인한 결과, 가설과 다르게 running
+     header 자체가 아니라 **폰트 크기 이봉(bimodal) 분포 버그**가
+     원인이었다. `_body_size()`가 "가장 많은 글자수를 차지하는 폰트
+     크기 1개"만 본문으로 인식하는데, 이 문서는 본문 텍스트가 두
+     밴드(14.2pt 1911줄 vs 16.0~16.2pt 2166줄, 거의 동급 규모)로
+     나뉘어 있어 두 번째 밴드 전체(주로 인용 성구 텍스트의 줄바꿈
+     조각)가 heading 후보로 오탐(947 candidates 대비 heading 2170건).
+
+     **수정**: `_effective_size_ceiling()` 신설 — 두 번째 폰트 크기
+     밴드가 (a) `is_block_top` 비율이 50% 이하이고 (b) 줄 수가
+     `max(30, body_count × 15%)` 이상이면 "본문"으로 간주해 heading
+     판정 기준선을 그 크기까지 올린다. 판별 신호로 `is_block_top`
+     비율을 선택한 근거(실측): 진짜 heading("Notes"/"Comment", 86건)은
+     100% block-top, 실제 heading이 많은 정상 문서("8. 사도행전2")도
+     84.3% block-top인 반면, 오탐 밴드는 15.6%에 불과 — 두 경우가
+     명확히 분리됨. char-weight 비율 방식은 먼저 시도했으나 소수
+     헤딩 케이스에서 오판(단위테스트로 발견, 폐기).
+
+     **회귀 발견·2차 수정 (2026-07-23, 같은 세션)**: 최초 수정은 줄 수
+     조건을 절대 floor(10줄)만으로 뒀는데, 큰 문서(예: "11.
+     고린도전서", 총 7705줄)에서 11~47줄짜리 작은 노이즈 밴드까지
+     "두 번째 본문대"로 오판해 heading 판정 기준선을 39.2pt까지
+     밀어올리는 바람에 진짜 heading 111건이 0건으로 사라지는 회귀를
+     유발(§4 heading 밀도 재실측 도중 발견). 원인: 절대 floor만으로는
+     문서 규모에 비례하지 않는 노이즈 밴드를 걸러내지 못함. **수정**:
+     절대 floor(30줄) OR 상대 floor(body 밴드 줄 수의 15%) 중 큰 값을
+     요구하도록 변경 — 노이즈 밴드는 body 대비 비중이 미미(11~47줄 vs
+     body 6149줄)해 상대 floor(922줄)에 못 미쳐 걸러지고, 진짜 큰
+     두 번째 본문대(Anchor Bible, 4008줄 vs body 6353줄)는 여전히
+     통과. 재검증: 고린도전서 111(원복), 사도행전1 117(원복),
+     사도행전2 321(원래 313과 근접), Anchor Bible 유지(215건),
+     KO-series 신호 `['none','size']`→`['size']`로 오히려 개선.
+
+     **검증**: "2 Kings, Anchor Bible Commentary" heading 2170→**203~215**건
+     (90%+ 감소), 진짜 heading("Notes"/"Comment" 86건)은 100% 보존.
+     한국어 문서 전체 heading 카운트 버그 수정 이전 원래 값으로 복원
+     확인(회귀 없음).
+     benchmark 테스트(`tests/test_pdf_structure_benchmark.py`)의 Anchor
+     candidates 2170→25(테스트 자체 표본 스코프는 다름). 신규 단위
+     테스트 3건(`TestSecondaryBodyBand`) + 회귀 706 passed.
+
+     이 수정은 `core/tsu_builder.py`가 PDF 문서 heading 배정에 실제로
+     사용하는 프로덕션 경로에 영향을 준다(dormant가 아님) — SPRINT30-C
+     모듈 자체 문서상 "TSU 저장은 미승인"이지만, `HeadingAssembler`를
+     통해 이미 실제 chunk의 section_title 문맥에 쓰이고 있었음을
+     확인.
+
+     **§4용 heading 밀도 재실측 (수정된 데이터 기준)**: 버그 수정 후
+     여전히 **깨끗한 discriminator 아님** — Profile A 5.32~25.32%
+     (median 7.78%), Profile B 8.39~169.27%(median 19.02%, "2 Kings
+     Volume 13"의 169.27% 이상치 제외 시 8.39~22.70%)로 두 구간이
+     여전히 겹친다(A 최대 25.32% > B 최소 22.70%). heading 카운트
+     버그는 고쳤지만 그 자체가 genre discriminator는 아니라는 최초
+     결론은 유지.
+
+     **"2 Kings, Volume 13" 이상치 원인 조사·3차 수정 완료
+     (2026-07-23, 같은 세션, HQ 승인)**: 이 문서는 `selected_signal=
+     'bold'`(size가 아니라 bold 신호로 판정)였고, `_is_candidate`의
+     bold 분기가 `is_block_top` 조건 없이 "body 크기 + bold"만
+     확인했다. 실측: body 크기(10.0pt) bold 줄 6768개 중 block-top은
+     841개뿐 — 나머지 5927개는 볼드 처리된 원어(히브리어) 단어
+     인용(יהוה, אל, ישראל 등, 본문 중간에 등장)이지 heading이 아니었다.
+     block-top 그룹에는 진짜 section heading("Form/Structure/Setting"
+     17x, "Bibliography" 12x, "Notes" 12x, "Comment" 11x, "Translation"
+     10x, "Explanation" 7x)이 정확히 모여 있었다.
+
+     **수정**: `profile_document()`의 `bold_hits` 집계와
+     `_is_candidate()`의 bold 분기 둘 다에 `line.is_block_top` 조건
+     추가 — size 신호에 적용한 것과 동일한 원칙("진짜 heading은
+     block 시작점")을 bold 신호에도 일관 적용.
+
+     **검증**: "2 Kings, Volume 13" heading 5100→**556**건(89% 감소),
+     진짜 section heading(69건 + 표기 변형 몇 건) 100% 보존. 기존
+     WBC 문서("2 Chronicles, Volume 15") bold 신호 정상 동작 유지
+     (회귀 없음, benchmark candidates 20건 그대로). 신규 단위테스트
+     1건(`test_bold_candidate_requires_block_top`) 추가, 회귀 707
+     passed.
+
+     **잔여**: 556건 중 다수(약 480여 건)는 여전히 문단 첫 줄이
+     우연히 bold로 표시된 본문 문장 — 이번 수정보다 더 정밀한
+     판별(예: 텍스트 길이, 문장부호 유무)이 필요하나 진척 정도가
+     충분해(89% 감소, 실 heading 100% 보존) 이번 세션 범위에서는
+     여기서 멈춘다. 완전 제로화는 후속 과제.
+
+     **§4 재확인**: 위 3차 수정 이후 "2 Kings, Volume 13"의 heading
+     밀도도 크게 정상화(569/3013≈18.4%대로 추정, 다른 Profile B
+     문서와 비슷한 범위)됐지만, heading 밀도 자체가 Profile A/B를
+     가르는 discriminator라는 결론은 바뀌지 않는다(Profile A도
+     비슷한 범위까지 올라감, §Context 최초 실측 참고).
+
+     **§4 최종 확정 (2026-07-23, 같은 세션, HQ 승인)**: heading 밀도
+     대신 candidate 길이 분포를 실측(Beta corpus 12개 문서 전체)한
+     결과, **candidate 중앙값 길이**가 겹침 없이 완전히 분리됨을
+     확인했다 — Profile A 132~184자, Profile B 269~856자. 대안으로
+     citation-괄호 비율(`core.noise_classifier._RE_CITATION_YEAR`)과
+     BIBLIOGRAPHY 분류 비율도 동일하게 완전 분리를 보였으나(A
+     0.00~0.17%, B 2.52~37.28%), 중앙값 길이는 추가 분류 패스가
+     필요 없어 이를 채택.
+
+     **구현**: `core.hierarchical_chunk_builder.classify_document_
+     profile()` 신설 — `median(candidate 길이) > 220자` 기준(분리
+     구간 184~269 중간값). 기존 provisional 규칙("candidate 1개라도
+     1800자 초과")의 알려진 결함(이상치 candidate 1건에 문서 전체
+     분류가 흔들림, Amendment A §리스크 명시)을 구조적으로 해결 —
+     중앙값은 분포 전체를 반영해 단일 이상치에 흔들리지 않는다(단위
+     테스트로 검증: 이상치 1건 포함 문서도 여전히 Profile A로 정확히
+     분류됨).
+
+     **주의**: `scripts/shadow_d5_metrics.py` 등 기존 진단 스크립트의
+     로컬 `classify_profile()`은 과거 ADR-008 측정치(2026-07-20~22)의
+     재현성을 위해 **의도적으로 그대로 유지**(1800자 규칙) — 소급
+     변경하지 않음. 신규 표준 함수는 향후 프로덕션/재측정에 사용.
+     회귀: 신규 단위테스트 4건(`TestClassifyDocumentProfile`), 전체
+     711 passed.
+
+     이로써 D-5 게이트(ADR-007 §1~§5) **전 항목이 실측 근거로
+     확정**됐다. 단, 게이트 통과가 곧 프로덕션 전환 승인은 아니다
+     (ADR-007 원칙 유지) — 전환은 별도 명시적 HQ 승인 대상.
+
+   **§5 — Rollback 수치**: §1 확정치를 그대로 롤백 트리거로 채택 —
+     rebuild 후 재측정에서 **Axis 1 <95%**, 또는 **Axis 3 A>0%/B>10%**,
+     또는 **Axis 2(Profile B) <25%** 중 하나라도 해당하면 자동 롤백
+     대상. Profile A의 Axis 2는 이번 결정 범위 밖(§1과 동일하게 유지)
+     이므로 롤백 트리거에서 제외.
+
+   **D-5 게이트 상태**: §1~§5 전 항목이 이제 수치를 갖췄다 — 게이트
+   "통과/실패" 판정이 최초로 가능해졌다. §1/§2/§3(a)/§3(b)/§5는 실측
+   근거로 확정. §3(c)(PageHeaderArtifact 마진 15%)와 §4(genre 분류
+   provisional 규칙)만 미구현/미검증 상태로 남아 있다 — §3(c)는
+   feature 자체가 없어 실측 불가하고, §4는 정식 분류기 설계가 별도
+   연구 과제(Amendment A가 이미 이연한 항목)라 이번 세션 범위 밖.
+   실제 게이트 판정 실행 전 이 두 항목의 후속 처리를 권고한다.
+   ADR-007의 원칙("D-5 게이트 통과 = 실행 승인 아님")은 그대로 유지
+   — 게이트 판정 자체가 프로덕션
+   전환 승인은 아니며, 전환은 별도 명시적 HQ 승인 대상.

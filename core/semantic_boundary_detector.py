@@ -62,6 +62,7 @@ from core.config import (
     DEFAULT_MIN_CHUNK_SIZE,
     EMBEDDING_SIMILARITY_DROP_THRESHOLD,
     EMBEDDING_SIMILARITY_WEIGHT,
+    PAGE_HEADER_ARTIFACT_WEIGHT,
     SCRIPTURE_REFERENCE_HEAD_WINDOW,
     SCRIPTURE_REFERENCE_WEIGHT,
 )
@@ -71,6 +72,7 @@ from core.heading_provider import (
     _first_contained,
     _normalize_for_matching,
 )
+from core.repetition_detector import RepetitionSignal
 from core.retrieval import QueryParser
 from core.text_normalizer import _ends_like_sentence
 
@@ -129,6 +131,12 @@ class BoundaryContext:
     # 의 buf[-1]). 버퍼가 비어 있으면(문서/청크 시작 직후) 빈 문자열 —
     # 이 경우 feature는 신호 없음(0.0)으로 안전하게 폴백한다.
     previous_candidate_text: str = ""
+    # [ADR-011 제안 3] PageHeaderArtifactFeature 전용 — 호출자(문서 단위로
+    # 생성된 core.repetition_detector.RepetitionTracker)가 이 candidate에
+    # 대해 이미 observe()를 호출해 얻은 신호. None이면(기존 호출부) 이
+    # feature는 신호 없음(0.0)으로 안전하게 폴백한다 — 다른 feature와
+    # 동일한 계약.
+    repetition_signal: Optional[RepetitionSignal] = None
 
 
 @dataclass(frozen=True)
@@ -321,6 +329,24 @@ class EmbeddingSimilarityBoundaryFeature:
         return 1.0 if similarity < self._drop_threshold else 0.0
 
 
+class PageHeaderArtifactFeature:
+    """[ADR-011 제안 3, 2026-07-23] context.repetition_signal(호출자가
+    문서 단위 core.repetition_detector.RepetitionTracker로 이미 관측한
+    신호)이 반복으로 판정됐으면 1.0을 낸다 — registry에는 음의 weight
+    (PAGE_HEADER_ARTIFACT_WEIGHT)로 등록해 "반복 감지됨 = boundary
+    아님"을 표현한다(tiny_fragment와 동일 계열).
+
+    repetition_signal이 없으면(호출자가 tracker를 제공하지 않음, 기존
+    _default_registry() 사용부 포함) 신호 없음(0.0)으로 안전하게
+    폴백한다 — 다른 feature와 동일한 계약."""
+
+    def score(self, context: BoundaryContext) -> float:
+        signal = context.repetition_signal
+        if signal is None:
+            return 0.0
+        return 1.0 if signal.is_repeat else 0.0
+
+
 # ── Registry (resolution + weighting, mirrors ProviderRegistry's shape) ────
 
 class FeatureRegistry:
@@ -358,6 +384,24 @@ def _default_registry() -> FeatureRegistry:
         "embedding_similarity",
         EmbeddingSimilarityBoundaryFeature(),
         weight=EMBEDDING_SIMILARITY_WEIGHT,
+    )
+    return r
+
+
+def registry_with_page_header_artifact() -> FeatureRegistry:
+    """[ADR-011 제안 3] Opt-in registry for measurement only — adds the
+    7th feature on top of _default_registry()'s 6. NOT used by
+    get_registry()/score_boundary()'s default path; callers that want
+    PageHeaderArtifactFeature must request this explicitly and also pass
+    a populated BoundaryContext.repetition_signal (see
+    core.repetition_detector.RepetitionTracker). Kept separate from
+    _default_registry() so production behavior stays unchanged until a
+    separate HQ approval promotes this feature (ADR-011 Consequences)."""
+    r = _default_registry()
+    r.register(
+        "page_header_artifact",
+        PageHeaderArtifactFeature(),
+        weight=PAGE_HEADER_ARTIFACT_WEIGHT,
     )
     return r
 

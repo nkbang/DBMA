@@ -928,6 +928,25 @@ def compute_source_tier_bonus(tsu: dict[str, Any]) -> float:
     return 1.0 if provenance.get("review_status") in ("reviewed", "approved") else 0.0
 
 
+def compute_content_quality_factor(tsu: dict[str, Any]) -> float:
+    """[신규, 2026-07-23] core.noise_classifier가 core/tsu_builder.py에서
+    이미 계산해 저장한 content_quality.quality_score(0.0~1.0)를 좁은 폭
+    (0.7~1.0)의 곱셈형 순위 보정 계수로 변환한다 — REMOVE 판정 chunk
+    (quality_score=0.0)는 factor 0.7(최대 -30% 페널티), NORMAL/PRESERVE
+    (1.0)는 factor 1.0(페널티 없음). noise_classifier의 설계 원칙
+    ("Classifier, not a deleter")을 존중해 하드 필터링이 아니라 순위
+    페널티로만 반영 — false positive가 콘텐츠를 검색에서 완전히
+    지우지 않는다.
+
+    quality_score 필드가 없는 레코드(과거 ingest)는 중립값 1.0 —
+    새 필드 부재를 벌하지 않는 evidence_confidence(아래 retrieve())와
+    동일 원칙."""
+    quality_score = tsu.get("content_quality", {}).get("quality_score")
+    if quality_score is None:
+        return 1.0
+    return 0.7 + 0.3 * quality_score
+
+
 # ============================================================
 # SECTION 7: THEOLOGICAL SCORER — integration with sprint7
 # ============================================================
@@ -1483,7 +1502,16 @@ class RetrievalEngine:
             # midpoint 0.5 rather than being penalized for lacking chapter
             # metadata they were never going to have.
             evidence_confidence = tsu.get("provenance", {}).get("confidence", 0.5)
-            final_score = base_score * (0.9 + 0.1 * evidence_confidence)
+
+            # [2026-07-23] Content Quality Adjustment — same narrow,
+            # non-dominant multiplicative-correction philosophy as Evidence
+            # Reliability Adjustment above, applied to
+            # content_quality.quality_score (core.noise_classifier, computed
+            # at ingest by core/tsu_builder.py but never consumed until now).
+            # See compute_content_quality_factor() docstring for the 0.7~1.0
+            # range rationale.
+            content_quality_factor = compute_content_quality_factor(tsu)
+            final_score = base_score * (0.9 + 0.1 * evidence_confidence) * content_quality_factor
 
             breakdown = theological_breakdowns.get(idx, {})
 
@@ -1493,7 +1521,8 @@ class RetrievalEngine:
                 f"theological={norm_theo:.3f}×0.30={0.30*norm_theo:.3f} | "
                 f"passage={norm_passage:.3f}×0.20={0.20*norm_passage:.3f} | "
                 f"source_tier={source_tier_bonus:.3f}×0.05={0.05*source_tier_bonus:.3f} | "
-                f"base={base_score:.3f} × evidence_adj={0.9 + 0.1*evidence_confidence:.3f} | "
+                f"base={base_score:.3f} × evidence_adj={0.9 + 0.1*evidence_confidence:.3f} "
+                f"× content_quality={content_quality_factor:.3f} | "
                 f"total={final_score:.3f}"
             )
 

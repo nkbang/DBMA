@@ -156,6 +156,17 @@ SCRIPTURE_REFERENCE_WEIGHT = 15.0
 EMBEDDING_SIMILARITY_DROP_THRESHOLD = 0.41
 EMBEDDING_SIMILARITY_WEIGHT = 40.0
 
+# [ADR-011 제안 3, 2026-07-23] PageHeaderArtifactFeature — 문서 전체에
+# 걸쳐 반복되는 running header(페이지 번호만 바뀌는 동일 텍스트)가
+# "새로운 semantic 신호"처럼 잘못 인식돼 Axis 3(unsplittable outlier)를
+# 왜곡하는 문제(Profile B 최악 사례 "2 Kings, Volume 13", ADR-008
+# §Context)에 대응. core.repetition_detector.RepetitionTracker가
+# is_repeat=True를 신호하면 "boundary 아님"을 뜻하는 음의 가중치를
+# 적용 — tiny_fragment(-60.0)와 동일 계열. 7번째 feature이지만
+# _default_registry()에는 아직 등록하지 않음(dormant, ADR-011이
+# 구현만 승인, 프로덕션 연결은 별도 승인 대상).
+PAGE_HEADER_ARTIFACT_WEIGHT = -60.0
+
 # ── 벡터DB 설정 (하위 호환성) ───────────────────────────
 _yaml_vdb = CFG.get("vector_db", {})
 VECTOR_DB_PRIMARY = _yaml_vdb.get("primary", "chroma")
