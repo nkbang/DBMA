@@ -43,6 +43,20 @@ _SCOPE_K = {"단일 파일": 3, "다중 파일": 5, "전체 파일": 5}
 _HISTORY_MAX_TURNS = 3
 _HISTORY_MAX_CHARS_PER_MESSAGE = 300
 
+# [2026-07-24, soft relevance warning] RetrievalEngine has no relevance
+# floor — it always returns top-k candidates regardless of whether any of
+# them actually address the question (confirmed by reproduction: an
+# unrelated query like "오늘 서울 날씨 어때?" still returned 5 "results"
+# scoring 0.37~0.41, one of which was an unrelated illustration paragraph
+# that happened to contain the word "rain"). This constant is a **soft,
+# provisional** floor calibrated from only 4 sample queries (relevant:
+# 0.46~0.51, irrelevant: 0.37~0.41) — NOT a rigorously validated
+# threshold. It only adds a caption warning; it never blocks or alters the
+# generated answer (see feedback_avoid_risky_uncertain_design: don't gate
+# behavior on an under-validated signal). Revisit with a larger labeled
+# sample before tightening this into anything stronger.
+_LOW_CONFIDENCE_SCORE_THRESHOLD = 0.45
+
 
 def render_chat_page() -> None:
     """Render the DBMA RAG Chat page."""
@@ -169,10 +183,14 @@ def _handle_user_message(question: str) -> None:
         })
         return
 
+    low_confidence = _is_low_confidence(response.top_k_results)
+
     with st.chat_message("assistant"):
         stream = generator.generate_stream(response, conversation_history=conversation_history)
         st.write_stream(stream)
         result = stream.to_result()
+        if low_confidence:
+            _render_low_confidence_warning()
         if response.top_k_results:
             with st.expander(f"출처 ({len(response.top_k_results)}개)", expanded=False):
                 for candidate in response.top_k_results:
@@ -183,13 +201,28 @@ def _handle_user_message(question: str) -> None:
         "content": result.answer,
         "sources": response.top_k_results,
         "error": result.error,
+        "low_confidence": low_confidence,
     })
+
+
+def _is_low_confidence(top_k_results: list) -> bool:
+    """See _LOW_CONFIDENCE_SCORE_THRESHOLD docstring above — soft signal
+    only, no retrieval/generation behavior changes here."""
+    if not top_k_results:
+        return True
+    return top_k_results[0].final_score < _LOW_CONFIDENCE_SCORE_THRESHOLD
+
+
+def _render_low_confidence_warning() -> None:
+    st.caption("⚠️ 검색 결과 신뢰도가 낮습니다 — 관련 문서를 찾지 못했을 수 있습니다.")
 
 
 def _render_chat_history() -> None:
     for msg in st.session_state["chat_messages"]:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
+            if msg["role"] == "assistant" and msg.get("low_confidence"):
+                _render_low_confidence_warning()
             if msg["role"] == "assistant" and msg.get("sources"):
                 with st.expander(f"출처 ({len(msg['sources'])}개)", expanded=False):
                     for candidate in msg["sources"]:

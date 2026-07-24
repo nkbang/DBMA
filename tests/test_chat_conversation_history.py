@@ -77,3 +77,33 @@ def test_long_message_is_truncated(monkeypatch):
 
     result = mod._build_conversation_history()
     assert len(result) < 400
+
+
+class _FakeCandidate:
+    def __init__(self, final_score):
+        self.final_score = final_score
+
+
+class TestLowConfidenceWarning:
+    """[2026-07-24] Soft, provisional relevance-floor warning — see
+    _LOW_CONFIDENCE_SCORE_THRESHOLD docstring. Never blocks/alters the
+    answer, only adds a caption."""
+
+    def test_empty_results_is_low_confidence(self):
+        import ui.pages.chat as mod
+        assert mod._is_low_confidence([]) is True
+
+    def test_score_below_threshold_is_low_confidence(self):
+        import ui.pages.chat as mod
+        assert mod._is_low_confidence([_FakeCandidate(0.40)]) is True
+
+    def test_score_at_or_above_threshold_is_not_low_confidence(self):
+        import ui.pages.chat as mod
+        assert mod._is_low_confidence([_FakeCandidate(0.45)]) is False
+        assert mod._is_low_confidence([_FakeCandidate(0.51)]) is False
+
+    def test_only_top_result_score_matters(self):
+        import ui.pages.chat as mod
+        # top_k_results[0] is the ranking-sorted best match; a weak second
+        # result must not flip a genuinely strong top match to "low".
+        assert mod._is_low_confidence([_FakeCandidate(0.51), _FakeCandidate(0.10)]) is False
