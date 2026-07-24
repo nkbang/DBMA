@@ -47,8 +47,12 @@ ui/
 
 ### BasePage (`ui/pages/_base.py`)
 
-모든 페이지가 상속하는 공통 렌더 유틸리티 클래스(`render_header`,
-`render_section`, `render_error_box` 등).
+모든 페이지가 상속하는 공통 렌더 유틸리티 클래스.
+
+**메서드 목록**: `render_header()`, `render_section(title, icon)`,
+`render_error_box(message)`, `render_warning_box(message)`,
+`render_info_box(message)`, `render_metrics_row(metrics, num_cols)`,
+`render_status_row(statuses)`, `render_footer()`
 
 ### StateStore (`ui/state/store.py`)
 
@@ -94,9 +98,9 @@ all_data = store.all()
 | 설교문 작성 | `render_sermon_draft_page` | `sermon_draft.py` |
 | Monitor | `render_monitor_page` | `monitor.py` |
 
-**주의**: `ui/pages/__init__.py`의 `__all__`에 `render_chat_page`와
-`render_sermon_draft_page`가 누락되어 있다. app.py는 직접 import를
-사용하므로 작동하지만, `__all__`도 동기화해야 한다.
+`ui/pages/__init__.py`의 `__all__`은 7개 페이지 전부와 `BasePage`를
+export한다(2026-07-24 수정 — 이전에는 `render_chat_page`/
+`render_sermon_draft_page`가 누락돼 있었다).
 
 ### Dashboard (`dashboard.py`)
 
