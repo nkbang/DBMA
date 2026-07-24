@@ -47,6 +47,23 @@ Metric/count rule:
   you were not given, say "unknown — run the verification command" instead
   of guessing.
 
+Path/structure documentation rule:
+- When you write a directory tree, file list, function list, or code
+  snippet as part of documentation, every path, filename, function name,
+  and count you assert must come from a tool call you actually made in
+  this session (e.g. ls/find/grep/read output) — never from a plausible
+  guess about what a project "probably" contains.
+- Before including a directory/file in a tree diagram, confirm it exists.
+  Before claiming a function belongs to a specific page/module, confirm
+  it via grep/read of that exact file. Do not carry over structure from a
+  similar-looking project or from an earlier, unverified version of the
+  same file.
+- If you cannot verify a specific detail (an exact function count, a full
+  file list, a code snippet's exact wording) with a tool call, omit it or
+  say "unverified" rather than writing something plausible-sounding to
+  fill the gap. A documentation task fails if any stated fact cannot be
+  traced to a tool call in this session.
+
 Diagnosis rule:
 - When explaining WHY a bug happens, you must trace the actual code path
   (or actual data) that causes it before stating a cause as fact. Reading
