@@ -59,7 +59,9 @@ class CorpusStatisticsAnalyzer:
     # [기능 추가] 날짜/본문/제목/설교자 중 하나라도 없는 레코드는 통계에
     # 포함시키지 않는다 — 코퍼스에 들어오는 모든 경로(load_jsonl,
     # load_records)가 공통으로 거치도록 여기 한 곳에 고정.
-    REQUIRED_FIELDS = ["published_date", "passage_raw", "title", "preacher"]
+    REQUIRED_FIELDS = ["published_date", "title", "preacher"]
+    # passage_raw 또는 passage 중 하나만 있어도 된다
+    PASSAGE_ALTERNATES = ["passage_raw", "passage"]
 
     def __init__(self):
         self.frequency_analyzer = FrequencyAnalyzer()
@@ -131,6 +133,10 @@ class CorpusStatisticsAnalyzer:
                 return False
             if isinstance(value, str) and not value.strip():
                 return False
+        # passage_raw 또는 passage 중 하나라도 있어야 한다
+        has_passage = any(record.get(f) for f in cls.PASSAGE_ALTERNATES)
+        if not has_passage:
+            return False
         return True
 
     @staticmethod
@@ -172,15 +178,24 @@ class CorpusStatisticsAnalyzer:
         """단일 기록을 처리하여 각 분석기에 추가합니다"""
         self.total_records += 1
         
+        # [버그 수정] 원본 데이터에 한글 약어("막", "사", "상", "요", 
+        # "욘", "행", "말", "롬" 등)가 섞여 있어도 FrequencyAnalyzer의
+        # KOREAN_ABBREVIATIONS 매핑으로 영어 canonical 이름으로 정규화한다.
+        bible_book_raw = record.get("bible_book")
+        bible_book_normalized = (
+            self.frequency_analyzer._normalize_book_name(bible_book_raw)
+            if bible_book_raw else bible_book_raw
+        )
+        
         # 빈도 분석기
         self.frequency_analyzer.add_record(
-            bible_book=record.get("bible_book"),
+            bible_book=bible_book_normalized,
             chapter=record.get("chapter_start"),
             verse_start=record.get("verse_start"),
             verse_end=record.get("verse_end"),
         )
         
-        # 키워드 추출기
+        # 키워드 추출기 및 샘플 제목
         title = record.get("title", "")
         if title:
             self.keyword_extractor.add_title(title)
@@ -191,10 +206,12 @@ class CorpusStatisticsAnalyzer:
                 book = record.get("bible_book")
                 chapter = record.get("chapter_start")
                 self.passage_categories[(book, chapter)][category] += 1
-                
-                # 샘플 제목 저장 (최대 5개)
-                if len(self.sample_titles[(book, chapter)]) < 5:
-                    self.sample_titles[(book, chapter)].append(title)
+            
+            # 샘플 제목 저장 (카테고리 매칭 여부와 무관하게 전체 기록에서)
+            book = record.get("bible_book")
+            chapter = record.get("chapter_start")
+            if len(self.sample_titles[(book, chapter)]) < 5:
+                self.sample_titles[(book, chapter)].append(title)
     
     def _categorize_title(self, title: str) -> Optional[str]:
         """설교 제목을 카테고리로 분류합니다.

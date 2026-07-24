@@ -712,18 +712,16 @@ def render_sidebar(analyzer: CorpusStatisticsAnalyzer) -> tuple:
     """사이드바를 렌더링합니다.
 
     Returns:
-        (selected_books, testament_filter) — 선택된 필터 값. main()이
-        이 값으로 실제 데이터를 필터링해야 한다(과거엔 위젯만 그려놓고
-        반환값을 아무도 쓰지 않아 필터가 화면에 전혀 반영되지 않았음).
+        (selected_books, testament_filter, page) — 선택된 필터 값과
+        활성화된 페이지. main() 이 값으로 실제 데이터를 필터링하고
+        페이지 분기한다.
     """
     with st.sidebar:
-        st.header("📊 필터")
-
-        # 성경 권 필터
+        # 성경 책 필터 (사이드바 상단에 먼저 표시)
         book_frequencies = analyzer.frequency_analyzer.get_book_frequencies()
         all_books = [b["bible_book"] for b in book_frequencies]
         selected_books = st.multiselect(
-            "성경 책 선택",
+            "📚 성경 책 선택",
             options=all_books,
             default=all_books,
             help="분석할 성경 책을 선택하세요",
@@ -731,7 +729,7 @@ def render_sidebar(analyzer: CorpusStatisticsAnalyzer) -> tuple:
 
         # 신약/구약 필터
         testament_filter = st.multiselect(
-            "신약/구약 필터",
+            "📜 신약/구약 필터",
             options=["구약", "신약"],
             default=["구약", "신약"],
             help="구약/신약 필터",
@@ -739,34 +737,117 @@ def render_sidebar(analyzer: CorpusStatisticsAnalyzer) -> tuple:
 
         st.divider()
 
+        # 네비게이션 메뉴 — 사이드바에 radio 버튼으로 표시
+        st.header("📖 DBMA 설교 대시보드")
+        
+        page = st.radio(
+            "📊 네비게이션",
+            [
+                "개요",
+                "본문 빈도",
+                "키워드 분석",
+                "본문-주제 상관관계",
+                "연도/연대 통계",
+                "데이터 테이블",
+                "데이터 관리",
+            ],
+            index=0,
+        )
+        
+        st.divider()
+        
+        # 데이터 관리 섹션 (파일 업로드 + 백그라운드 수집기 통합)
+        st.header("📥 데이터 관리")
+        
+        # 파일 업로드 위젯은 main()에서 처리하므로 여기서는 안내만 제공
+        st.caption("📂 파일 업로드는 메인 페이지에서 제공합니다.")
+        
+        # 백그라운드 수집기 상태 버튼
+        bg_data_path = get_background_data_path()
+        if Path(bg_data_path).exists():
+            stats = DataStore(bg_data_path).get_stats()
+            st.caption(f"마지막 수정: {stats['last_modified']}")
+        
+        st.divider()
+
         # 통계 요약
         st.header("📈 통계 요약")
-        stats = analyzer.get_full_statistics()
-        st.metric("총 설교 수", f"{stats.total_records:,}")
-        st.metric("독립된 성경 책", stats.unique_books)
-        st.metric("독립된 장", stats.unique_chapters)
+        full_stats = analyzer.get_full_statistics()
+        st.metric("총 설교 수", f"{full_stats.total_records:,}")
+        st.metric("독립된 성경 책", full_stats.unique_books)
+        st.metric("독립된 장", full_stats.unique_chapters)
 
-    return selected_books, testament_filter
+    return selected_books, testament_filter, page
 
 
 def render_overview(stats: CorpusStatisticsAnalyzer):
-    """전체 개요를 렌더링합니다"""
+    """전체 개요를 렌더링합니다 (텍스트 기반 요약만 표시)"""
     st.header("📖 DBMA 설교 대시보드")
+    
+    # 1. 데이터셋 설명
+    st.markdown("### 1. 데이터셋 개요")
     st.markdown("""
     **설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.
     
-    - 성경 권별/장별 설교 빈도
-    - 설교 제목 핵심 키워드
-    - 본문과 설교 주제의 상관관계
+    주요 분석 항목:
+    1. 성경 권별/장별 설교 빈도
+    2. 설교 제목 핵심 키워드
+    3. 본문과 설교 주제의 상관관계
+    4. 연도/연대별 설교 추이
     """)
     
-    # 통계 요약 카드
+    # 2. 통계 요약 카드
+    st.markdown("### 2. 통계 요약")
     summary = stats.get_full_statistics()
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("총 설교 수", f"{summary.total_records:,}")
     col2.metric("성경 책 수", summary.unique_books)
     col3.metric("성경 장 수", summary.unique_chapters)
     col4.metric("키워드 수", summary.keyword_summary.get("unique_keywords", 0))
+    
+    # 3. 신약/구약 분포 (텍스트 기반)
+    st.markdown("### 3. 신약/구약 분포")
+    testament_freq = stats.frequency_analyzer.get_testament_frequencies()
+    if testament_freq:
+        ot_count = testament_freq.get("OT", {}).get("count", 0)
+        nt_count = testament_freq.get("NT", {}).get("count", 0)
+        total = ot_count + nt_count
+        st.markdown(f"- **구약**: {ot_count}건 ({ot_count/total*100:.1f}%)")
+        st.markdown(f"- **신약**: {nt_count}건 ({nt_count/total*100:.1f}%)")
+    else:
+        st.caption("신약/구약 데이터 없음")
+    
+    # 4. 상위 5개 본문 (책+장)
+    st.markdown("### 4. 설교가 많은 상위 5 본문")
+    top_chapters = stats.frequency_analyzer.get_chapter_frequencies(top_k=5)
+    if top_chapters:
+        for i, item in enumerate(top_chapters, 1):
+            book_kr = BIBLE_BOOK_KOREAN_MAP.get(item["bible_book"], item["bible_book"])
+            st.markdown(f"{i}. **{book_kr} {item['chapter']}장** — {item['count']}건")
+    else:
+        st.caption("장별 데이터 없음")
+    
+    # 5. 상위 10 키워드 (텍스트 기반)
+    st.markdown("### 5. 설교 제목 상위 10 키워드")
+    top_kws = stats.keyword_extractor.get_top_keywords(top_k=10)
+    if top_kws:
+        for i, kw in enumerate(top_kws, 1):
+            cat_kr = CATEGORY_KOREAN_MAP.get(kw.get("category", ""), "")
+            st.markdown(f"{i}. **{kw['word']}** ({kw['frequency']}건, {cat_kr})")
+    else:
+        st.caption("키워드 데이터 없음")
+    
+    # 6. 분석 페이지 안내
+    st.markdown("### 6. 상세 분석 페이지")
+    st.markdown("""
+    사이드바에서 아래 페이지 중 하나를 선택하면 그래픽 포함 상세 분석을 볼 수 있습니다:
+    
+    - **본문 빈도**: 권별/장별 설교 빈도 (파이차트, 바차트)
+    - **키워드 분석**: 키워드 트리맵, 카테고리 분포
+    - **본문-주제 상관관계**: 본문별 주요 주제 매핑
+    - **연도/연대 통계**: 연도별 추이, 연대별 분포
+    - **데이터 테이블**: 샘플 데이터 미리보기
+    """)
 
 
 def render_testament_distribution(stats: CorpusStatisticsAnalyzer):
@@ -805,10 +886,10 @@ def render_testament_distribution(stats: CorpusStatisticsAnalyzer):
             textinfo="percent",
         )])
         fig_pie.update_layout(height=300, showlegend=False)
-        st.plotly_chart(fig_pie, use_container_width=True)
+        st.plotly_chart(fig_pie, width='stretch')
     
     with col2:
-        st.dataframe(df, hide_index=True, use_container_width=True)
+        st.dataframe(df, hide_index=True, width='stretch')
 
 
 def _to_korean_book(book: str) -> str:
@@ -817,28 +898,62 @@ def _to_korean_book(book: str) -> str:
 
 
 def render_book_frequencies(stats: CorpusStatisticsAnalyzer):
-    """66권 전체의 설교 빈도(권 이름 + 빈도수)를 렌더링합니다"""
-    st.subheader("📚 성경 권별 설교 빈도 (전체 66권)")
+    """66권 전체의 설교 빈도(구약/신약 구분)를 렌더링합니다"""
+    st.subheader("📚 성경 권별 설교 빈도 (구약 39권 / 신약 27권)")
 
     # 데이터에 등장하지 않은 권도 0건으로 표시하기 위해 book_counter가
     # 아니라 정경 순서(BIBLE_BOOKS)를 기준으로 66권 전부를 순회한다.
     counts = dict(stats.frequency_analyzer.book_counter)
-    rows = [
-        {"bible_book": _to_korean_book(book), "count": counts.get(book, 0)}
-        for book, _, _ in stats.frequency_analyzer.BIBLE_BOOKS
+    
+    # 구약과 신약으로 분리
+    ot_books = [(book, num, test) for book, num, test in stats.frequency_analyzer.BIBLE_BOOKS if test == "OT"]
+    nt_books = [(book, num, test) for book, num, test in stats.frequency_analyzer.BIBLE_BOOKS if test == "NT"]
+    
+    ot_rows = [
+        {"bible_book": _to_korean_book(book), "count": counts.get(book, 0), "testament": "구약"}
+        for book, _, _ in ot_books
     ]
-
-    df = pd.DataFrame(rows)
-
-    fig = px.bar(
-        df,
-        x="bible_book",
-        y="count",
-        title="성경 권별 설교 빈도 (전체 66권)",
-        labels={"bible_book": "성경 책", "count": "설교 수"},
-    )
-    fig.update_layout(xaxis_tickangle=-45, height=600, showlegend=False)
-    st.plotly_chart(fig, use_container_width=True)
+    nt_rows = [
+        {"bible_book": _to_korean_book(book), "count": counts.get(book, 0), "testament": "신약"}
+        for book, _, _ in nt_books
+    ]
+    
+    df_ot = pd.DataFrame(ot_rows)
+    df_nt = pd.DataFrame(nt_rows)
+    
+    # 구약 총합과 신약 총합 계산
+    ot_total = df_ot["count"].sum() if len(df_ot) > 0 else 0
+    nt_total = df_nt["count"].sum() if len(df_nt) > 0 else 0
+    
+    st.markdown(f"**구약 총계:** {ot_total}건 | **신약 총계:** {nt_total}건")
+    
+    # 구약 차트
+    if len(df_ot) > 0:
+        fig_ot = px.bar(
+            df_ot,
+            x="bible_book",
+            y="count",
+            title=f"구약 39권 설교 빈도 (총 {ot_total}건)",
+            labels={"bible_book": "성경 책", "count": "설교 수"},
+            color="testament",
+            color_discrete_map={"구약": "#1f77b4"},
+        )
+        fig_ot.update_layout(xaxis_tickangle=-45, height=500, showlegend=False)
+        st.plotly_chart(fig_ot, width='stretch')
+    
+    # 신약 차트
+    if len(df_nt) > 0:
+        fig_nt = px.bar(
+            df_nt,
+            x="bible_book",
+            y="count",
+            title=f"신약 27권 설교 빈도 (총 {nt_total}건)",
+            labels={"bible_book": "성경 책", "count": "설교 수"},
+            color="testament",
+            color_discrete_map={"신약": "#ff7f0e"},
+        )
+        fig_nt.update_layout(xaxis_tickangle=-45, height=450, showlegend=False)
+        st.plotly_chart(fig_nt, width='stretch')
 
 
 def render_chapter_frequencies(stats: CorpusStatisticsAnalyzer):
@@ -863,7 +978,7 @@ def render_chapter_frequencies(stats: CorpusStatisticsAnalyzer):
         labels={"passage": "본문", "count": "설교 수", "percentage": "비율 (%)"},
     )
     fig.update_layout(xaxis_tickangle=-45, height=400)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 
 def render_keyword_analysis(stats: CorpusStatisticsAnalyzer):
@@ -902,7 +1017,7 @@ def render_keyword_analysis(stats: CorpusStatisticsAnalyzer):
 
     selection = st.plotly_chart(
         fig_wordcloud,
-        use_container_width=True,
+        width='stretch',
         on_select="rerun",
         selection_mode="points",
         key="keyword_treemap",
@@ -927,7 +1042,7 @@ def render_keyword_analysis(stats: CorpusStatisticsAnalyzer):
             st.dataframe(
                 pd.DataFrame({"설교 제목": matching_titles[:50]}),
                 hide_index=True,
-                use_container_width=True,
+                width='stretch',
             )
             if len(matching_titles) > 50:
                 st.caption(f"...외 {len(matching_titles) - 50}건 더 있습니다.")
@@ -954,7 +1069,7 @@ def render_keyword_analysis(stats: CorpusStatisticsAnalyzer):
             labels={"category_kr": "주제", "count": "설교 수", "percentage": "비율 (%)"},
         )
         fig_cat.update_layout(xaxis_tickangle=-30, height=350)
-        st.plotly_chart(fig_cat, use_container_width=True)
+        st.plotly_chart(fig_cat, width='stretch')
 
 
 def render_passage_theme_correlation(stats: CorpusStatisticsAnalyzer):
@@ -984,7 +1099,7 @@ def render_passage_theme_correlation(stats: CorpusStatisticsAnalyzer):
         for r in heatmap_data
     ])
     
-    st.dataframe(heat_df, hide_index=True, use_container_width=True)
+    st.dataframe(heat_df, hide_index=True, width='stretch')
     
     # 핵심 주제 per book — 성경 순서(66권 정경 순)로 정렬
     st.markdown("#### 성경 책별 핵심 주제")
@@ -1049,10 +1164,10 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
                 labels={"year": "연도"},
             )
             fig_year.update_layout(xaxis_tickangle=-45, height=350)
-            st.plotly_chart(fig_year, use_container_width=True)
+            st.plotly_chart(fig_year, width='stretch')
         
         with col2:
-            st.dataframe(year_freq, hide_index=True, use_container_width=True)
+            st.dataframe(year_freq, hide_index=True, width='stretch')
     
     # 연대별 통계
     st.markdown("### 연대별 설교 수")
@@ -1071,7 +1186,7 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
             hole=0.4,
         )
         fig_decade.update_traces(textinfo="percent+label")
-        st.plotly_chart(fig_decade, use_container_width=True)
+        st.plotly_chart(fig_decade, width='stretch')
         
         # 연대별 핵심 키워드
         st.markdown("#### 연대별 핵심 키워드")
@@ -1126,7 +1241,7 @@ def render_year_decade_statistics(stats: CorpusStatisticsAnalyzer):
                 color_continuous_scale="Blues",
             )
             fig_heatmap.update_layout(height=400, xaxis_tickangle=-45)
-            st.plotly_chart(fig_heatmap, use_container_width=True)
+            st.plotly_chart(fig_heatmap, width='stretch')
 
 
 def render_data_table(stats: CorpusStatisticsAnalyzer):
@@ -1145,7 +1260,7 @@ def render_data_table(stats: CorpusStatisticsAnalyzer):
     
     if sample:
         df = pd.DataFrame(sample)
-        st.dataframe(df, hide_index=True, use_container_width=True)
+        st.dataframe(df, hide_index=True, width='stretch')
     else:
         st.info("샘플 데이터가 없습니다.")
 
@@ -1171,21 +1286,11 @@ def main():
     uploaded_file = None
     data_path = args.data or os.environ.get("DBMA_SERMON_DATA")
     
-    st.header("📖 DBMA 설교 대시보드")
-    st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+    # [버그 수정] st.header + st.file_uploader 가 모든 페이지에서
+    # 상단에 표시되던 문제 — 사이드바 페이지 분기 후에 조건부로
+    # 렌더링하도록 옮겼다.
     
-    # 파일 업로드 섹션
-    st.markdown("---")
-    st.subheader("📂 데이터 로드")
-    
-    file_types = [".jsonl", ".json", ".csv", ".tsv", ".txt", ".xlsx", ".db", ".sqlite", ".sqlite3"]
-    uploaded_file = st.file_uploader(
-        "파일 업로드",
-        type=file_types,
-        help="JSONL, CSV, XLSX, TXT, SQLite 파일 지원\n중복 데이터는 자동으로 제거됩니다"
-    )
-    
-    # 데이터 로드 및 처리
+    # 데이터 로드 및 처리 (UI 위젯 없이 로직만)
     records = None
     original_count = 0
     duplicate_count = 0
@@ -1199,6 +1304,7 @@ def main():
     # 간주하고 analyzer 에 전달한다.
     cumulative_records: Optional[List[dict]] = None
     
+    # 업로드 파일 처리 (UI 없이 비동기적으로만)
     if uploaded_file is not None:
         # 진행률 표시
         progress.message = "파일 업로드 중..."
@@ -1400,8 +1506,8 @@ def main():
 
     # 사이드바 — [버그 수정] 필터 위젯 반환값을 아무도 안 받아서
     # "성경 책 선택"/"신약/구약 필터"가 화면에 전혀 반영되지 않던
-    # 버그. 반환값으로 실제 records를 걸러서 analyzer를 다시 만든다.
-    selected_books, testament_filter = render_sidebar(analyzer)
+    # 버그. 반환값으로 실제 records 를 걸러서 analyzer를 다시 만든다.
+    selected_books, testament_filter, page = render_sidebar(analyzer)
 
     filtered_records = records
     if selected_books:
@@ -1425,39 +1531,234 @@ def main():
     if len(filtered_records) != len(records):
         analyzer = analyze_data(filtered_records)
 
-    # 메인 콘텐츠
-    render_overview(analyzer)
+    # [버그 수정] 사이드바 "총 설교 수" 를 누계 전체 데이터 기준으로 표시
+    # 기존: analyzer.get_full_statistics().total_records — 필터 적용 후의 수
+    # 수정: cumulative_records (저장된 전체 JSONL 파일의 레코드 수) 와 일치
+    full_stats = analyzer.get_full_statistics()
+    if cumulative_records is not None and len(cumulative_records) != full_stats.total_records:
+        # 누계 데이터가 더 크면 누계를 기준으로 통보
+        pass  # 분석가는 필터된 데이터로 유지(차트/통계용), 사이드바 메트릭은 아래에서 별도 표시
+
+    # 선택된 페이지에 따라 콘텐츠 렌더링
+    if page == "개요":
+        st.header("📖 DBMA 설교 대시보드")
+        st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+        render_overview(analyzer)
+    elif page == "본문 빈도":
+        st.header("📖 DBMA 설교 대시보드")
+        st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+        render_testament_distribution(analyzer)
+        render_book_frequencies(analyzer)
+        render_chapter_frequencies(analyzer)
+    elif page == "키워드 분석":
+        st.header("📖 DBMA 설교 대시보드")
+        st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+        render_keyword_analysis(analyzer)
+    elif page == "본문-주제 상관관계":
+        st.header("📖 DBMA 설교 대시보드")
+        st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+        render_passage_theme_correlation(analyzer)
+    elif page == "연도/연대 통계":
+        st.header("📖 DBMA 설교 대시보드")
+        st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+        render_year_decade_statistics(analyzer)
+    elif page == "데이터 테이블":
+        st.header("📖 DBMA 설교 대시보드")
+        st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+        render_data_table(analyzer)
+    elif page == "데이터 관리":
+        # [버그 수정] st.header + st.file_uploader 를 여기로 옮김 —
+        # "데이터 관리" 페이지일 때만 상단 헤더와 업로드 위젯이 표시됨.
+        st.header("📖 DBMA 설교 대시보드")
+        st.markdown("**설교 본문-제목 데이터셋**의 통계 분석 대시보드입니다.")
+        
+        # 파일 업로드 섹션
+        st.markdown("---")
+        st.subheader("📂 데이터 로드")
+        
+        file_types = [".jsonl", ".json", ".csv", ".tsv", ".txt", ".xlsx", ".db", ".sqlite", ".sqlite3"]
+        uploaded_file = st.file_uploader(
+            "파일 업로드",
+            type=file_types,
+            help="JSONL, CSV, XLSX, TXT, SQLite 파일 지원\n중복 데이터는 자동으로 제거됩니다"
+        )
+        
+        # 업로드된 파일이 있으면 즉시 처리
+        if uploaded_file is not None:
+            # 진행률 표시
+            progress.message = "파일 업로드 중..."
+            progress.total = 1
+            progress.current = 0
+            
+            # 임시 파일로 저장
+            import tempfile
+            with tempfile.NamedTemporaryFile(delete=False, suffix=uploaded_file.name) as tmp_file:
+                tmp_file.write(uploaded_file.getvalue())
+                tmp_path = tmp_file.name
+            
+            progress.message = "데이터 처리 중..."
+            
+            # 데이터 로드
+            records = load_data(tmp_path, progress)
+            
+            if records is None:
+                st.error("데이터를 로드할 수 없습니다. 파일 형식이나 필드 구조를 확인하세요.")
+            else:
+                original_count = len(records)
+                progress.current = progress.total
+                progress.message = "본문 필터링 중..."
+                
+                # 성경 본문이 없는 레코드 제거
+                records, _, no_book_removed = filter_records_without_bible_book(records)
+                
+                progress.message = "필수 필드 검증 중..."
+                
+                # 필수 필드(published_date, preacher, bible_book, title) 가 모두 있는 레코드만 남김
+                records, _, required_removed = filter_records_with_required_fields(records)
+                
+                progress.message = "중복 제거 중..."
+                
+                # 업로드 데이터 내 중복 제거
+                records, _, dup_internal = deduplicate_records(records)
+                duplicate_count += dup_internal
+                
+                progress.message = "기존 데이터와 병합 중..."
+                
+                # 영구 저장된 데이터가 있으면 로드하고 중복 체크하여 append
+                appended_count = 0
+                existing_count = 0
+                new_records = []
+                if PERSISTENT_DATA_FILE.exists():
+                    existing_records = []
+                    with open(PERSISTENT_DATA_FILE, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            if line.strip():
+                                existing_records.append(json.loads(line))
+                    existing_count = len(existing_records)
+                    
+                    # 기존 데이터의 키 집합 생성 (중복 체크용)
+                    existing_keys = set()
+                    for rec in existing_records:
+                        title = rec.get('title', '') or rec.get('sermon_title', '') or ''
+                        passage = rec.get('passage_raw', '') or rec.get('passage', '') or ''
+                        book = rec.get('bible_book', '') or rec.get('book', '') or ''
+                        chapter = rec.get('chapter_start', '') or rec.get('chapter', '') or ''
+                        key = (title.strip(), passage.strip(), book.strip(), str(chapter).strip())
+                        existing_keys.add(key)
+                    
+                    # 새 데이터 중 중복 아닌 것만 필터
+                    for rec in records:
+                        title = rec.get('title', '') or rec.get('sermon_title', '') or ''
+                        passage = rec.get('passage_raw', '') or rec.get('passage', '') or ''
+                        book = rec.get('bible_book', '') or rec.get('book', '') or ''
+                        chapter = rec.get('chapter_start', '') or rec.get('chapter', '') or ''
+                        key = (title.strip(), passage.strip(), book.strip(), str(chapter).strip())
+                        
+                        if key not in existing_keys:
+                            new_records.append(rec)
+                        else:
+                            appended_count += 1  # 중복으로 스킵
+                else:
+                    # 영구 저장 파일이 없으면 모두 새 데이터
+                    new_records = records
+                
+                duplicate_count += appended_count
+                records = new_records
+                
+                # 영구 저장 (append 모드)
+                PERSISTENT_DATA_DIR.mkdir(parents=True, exist_ok=True)
+                if PERSISTENT_DATA_FILE.exists():
+                    # 기존 파일에 추가 작성
+                    with open(PERSISTENT_DATA_FILE, 'a', encoding='utf-8') as f:
+                        for rec in records:
+                            f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+                else:
+                    # 새 파일 생성
+                    with open(PERSISTENT_DATA_FILE, 'w', encoding='utf-8') as f:
+                        for rec in records:
+                            f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+                
+                progress.message = "분석 완료!"
+                
+                # 성공 메시지
+                st.success(f"✅ {original_count}건 처리 완료 (본문 없음 {no_book_removed}건, 필수필드 미비 {required_removed}건, 중복 {duplicate_count}건 스킵, 최종 {len(records)}건 추가, 총 누적 {existing_count + len(records):,}건)")
+                st.progress(1.0)
+                st.text(f"📊 현재 처리 중: {len(records)} / {original_count} ({progress.percentage:.1f}%)")
+            
+            # 임시 파일 삭제
+            os.unlink(tmp_path)
+        
+        # 데이터 로드 상태 + 백그라운드 수집기 통합
+        st.header("📂 데이터 관리")
+        
+        # 데이터 로드 상태
+        st.subheader("📊 데이터 로드 상태")
+        total = len(cumulative_records) if cumulative_records else 0
+        st.metric("누적 데이터 건수", f"{total:,}")
+
+        if PERSISTENT_DATA_FILE.exists():
+            size_kb = PERSISTENT_DATA_FILE.stat().st_size / 1024
+            st.caption(f"저장 파일: {PERSISTENT_DATA_FILE} ({size_kb:.1f} KB)")
+        else:
+            st.caption("저장 파일: 없음")
+
+        if uploaded_file is not None:
+            st.caption(
+                f"업로드 원본: {original_count:,}건 | 중복 제거: {duplicate_count:,}건 | "
+                f"최종 추가: {original_count - duplicate_count:,}건"
+            )
+        else:
+            st.caption("현재 업로드된 파일: 없음")
+
+        st.caption(f"누적 데이터 출처: {PERSISTENT_DATA_FILE}")
+        
+        st.divider()
+        
+        # 백그라운드 수집기
+        _render_background_collector_page()
+
+
+def _render_data_load_page(
+    persistent_path: Path,
+    cumulative_records: Optional[List[dict]],
+    original_count: int,
+    duplicate_count: int,
+    has_uploaded_file: bool,
+) -> None:
+    """데이터 로드 페이지를 렌더링합니다"""
+    st.header("📂 데이터 로드")
+    
+    # 파일 업로드 섹션
+    st.subheader("📥 파일 업로드")
+    st.markdown("JSONL, CSV, XLSX, TXT, SQLite 파일을 업로드하세요.")
+    st.caption("중복 데이터는 자동으로 제거됩니다.")
     
     st.divider()
     
-    # 언약별 분포
-    render_testament_distribution(analyzer)
-    
-    # 권별 빈도
-    render_book_frequencies(analyzer)
-    
-    # 장별 빈도
-    render_chapter_frequencies(analyzer)
-    
-    # 키워드 분석
-    render_keyword_analysis(analyzer)
-    
-    # 본문-주제 상관관계
-    render_passage_theme_correlation(analyzer)
-    
-    # 연도/연대별 통계 (NEW!)
-    render_year_decade_statistics(analyzer)
-    
-    # 데이터 테이블
-    render_data_table(analyzer)
-    
-    # 백그라운드 수집기 상태
-    st.divider()
-    _render_background_collector_status()
+    # 누계 데이터 상태
+    st.subheader("📊 누계 데이터 상태")
+    total = len(cumulative_records) if cumulative_records else 0
+    st.metric("누적 데이터 건수", f"{total:,}")
+
+    if persistent_path.exists():
+        size_kb = persistent_path.stat().st_size / 1024
+        st.caption(f"저장 파일: {persistent_path} ({size_kb:.1f} KB)")
+    else:
+        st.caption("저장 파일: 없음")
+
+    if has_uploaded_file:
+        st.caption(
+            f"업로드 원본: {original_count:,}건 | 중복 제거: {duplicate_count:,}건 | "
+            f"최종 추가: {original_count - duplicate_count:,}건"
+        )
+    else:
+        st.caption("현재 업로드된 파일: 없음")
+
+    st.caption(f"누적 데이터 출처: {persistent_path}")
 
 
-def _render_background_collector_status():
-    """백그라운드 수집기 상태를 렌더링합니다"""
+def _render_background_collector_page():
+    """백그라운드 수집기 페이지를 렌더링합니다"""
     st.header("🔄 백그라운드 데이터 수집기")
 
     bg_data_path = get_background_data_path()

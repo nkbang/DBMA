@@ -597,8 +597,15 @@ class YouTubeSermonCollector:
                 time.sleep(self.delay_between_requests)
             return all_records
 
-        # 채널 ID가 없음 — 특정 채널 제한 없이 검색 키워드로만 수집
-        print("  특정 채널 없이 키워드 검색으로 수집 중 (모든 채널 허용)")
+        # 채널 ID가 없음 — 특정 채널 제한 없이 검색 키워드로 수집하되,
+        # [기능 추가] 채널명에 "교회"/"church"가 없는 결과는 제외한다.
+        # "설교"/"sermon" 검색만으로는 "갓피플TV", "복음훈련소" 같은
+        # 유명 목사 설교 모음/큐레이션 채널이 많이 걸려서 특정 유명인
+        # 콘텐츠 위주가 됐다 — 실제 교회가 운영하는 채널(채널명에
+        # 교회명이 들어감, 예: "분당우리교회", "여의도순복음교회")만
+        # 남기도록. 채널 ID를 임의로 지어내지 않고, API가 실제로
+        # 알려주는 채널명으로 판별하는 방식이라 검증 가능함.
+        print("  교회 공식 채널 대상으로 키워드 검색 수집 중 (유명인 큐레이션 채널 제외)")
         raw_items = self.fetch_with_search(
             effective_key or "", self.search_keywords, self.max_results_per_channel
         )
@@ -607,18 +614,27 @@ class YouTubeSermonCollector:
             snippet = item.get("snippet", {})
             video_id = item.get("id", {}).get("videoId", "")
             title = snippet.get("title", "")
-            if video_id and title:
+            channel_title = snippet.get("channelTitle", "Unknown")
+            if video_id and title and self._is_church_channel(channel_title):
                 videos.append({
                     "video_id": video_id,
                     "title": title,
                     "description": snippet.get("description", ""),
                     "published_at": snippet.get("publishedAt", ""),
-                    "channel_title": snippet.get("channelTitle", "Unknown"),
+                    "channel_title": channel_title,
                 })
 
         all_records = self._build_records(videos, default_channel_name=None)
         self.stats["channels_processed"] += 1
         return all_records
+
+    @staticmethod
+    def _is_church_channel(channel_title: str) -> bool:
+        """채널명이 실제 교회 채널로 보이는지 판단(유명인 설교 모음/
+        큐레이션 채널 제외용). 채널명에 "교회" 또는 "church"가 있으면
+        교회 채널로 간주 — 추측이 아니라 API가 실제로 준 채널명 기준."""
+        name = (channel_title or "").lower()
+        return "교회" in channel_title or "church" in name
     
     def save_to_jsonl(self, records: List[Dict], path: Optional[Path] = None) -> int:
         """기록을 JSONL 파일에 저장합니다"""

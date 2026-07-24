@@ -122,14 +122,14 @@ class TestCollectAllWithoutChannelFilter:
     이름 매칭이 항상 실패, collect_all()이 항상 0건을 반환하던 문제.
     실제 채널 ID가 없으면 채널명 매칭 없이 검색 결과를 그대로 채택한다."""
 
-    def test_accepts_any_channel_when_no_real_channel_id_configured(self):
+    def test_accepts_any_church_channel_when_no_real_channel_id_configured(self):
         collector = YouTubeSermonCollector({
             "channels": ["Yoido Full Gospel Church"],  # 실제 유튜브 채널명과 다름
             "search_keywords": ["설교"],
         })
         fake_items = [
-            _fake_search_item("v1", "은혜로 사는 삶 - 설교", "갓피플TV"),
-            _fake_search_item("v2", "다른 설교 영상", "복음훈련소"),
+            _fake_search_item("v1", "은혜로 사는 삶 - 설교", "은혜교회"),
+            _fake_search_item("v2", "다른 설교 영상", "믿음교회"),
         ]
         with patch.object(collector, "fetch_with_search", return_value=fake_items):
             records = collector.collect_all(api_key="dummy")
@@ -137,7 +137,7 @@ class TestCollectAllWithoutChannelFilter:
         assert len(records) == 2
         channel_names = {r["channel_name"] for r in records}
         # 설정된 "Yoido Full Gospel Church"가 아니라 검색 결과의 실제 채널명이 쓰여야 함
-        assert channel_names == {"갓피플TV", "복음훈련소"}
+        assert channel_names == {"은혜교회", "믿음교회"}
 
     def test_bible_book_is_canonical_english_name_not_korean_abbreviation(self):
         # [버그 수정] _build_records()가 extract_bible_references()의
@@ -145,7 +145,7 @@ class TestCollectAllWithoutChannelFilter:
         # DBMA 전체가 쓰는 영문 canonical 이름("Romans" 등)과 안 맞고,
         # 그래서 성경 권별 통계에서 유튜브 레코드만 매칭이 안 됐다.
         collector = YouTubeSermonCollector({"channels": ["Any"], "search_keywords": ["설교"]})
-        fake_items = [_fake_search_item("v1", "로마서 8:28 설교 - 김목사", "채널A")]
+        fake_items = [_fake_search_item("v1", "로마서 8:28 설교 - 김목사", "사랑교회")]
         with patch.object(collector, "fetch_with_search", return_value=fake_items):
             records = collector.collect_all(api_key="dummy")
 
@@ -154,8 +154,8 @@ class TestCollectAllWithoutChannelFilter:
     def test_deduplicates_by_title_and_video_id(self):
         collector = YouTubeSermonCollector({"channels": ["Any"], "search_keywords": ["설교"]})
         fake_items = [
-            _fake_search_item("v1", "같은 제목", "채널A"),
-            _fake_search_item("v1", "같은 제목", "채널A"),
+            _fake_search_item("v1", "같은 제목", "소망교회"),
+            _fake_search_item("v1", "같은 제목", "소망교회"),
         ]
         with patch.object(collector, "fetch_with_search", return_value=fake_items):
             records = collector.collect_all(api_key="dummy")
@@ -177,3 +177,32 @@ class TestCollectAllWithoutChannelFilter:
 
         assert len(records) == 1
         assert records[0]["channel_name"] == "실제 채널"
+
+
+class TestChurchChannelFilter:
+    """[기능 추가] "설교"/"sermon" 검색만으로는 갓피플TV 같은 유명 목사
+    설교 모음/큐레이션 채널이 많이 걸려 특정 유명인 콘텐츠 위주가
+    됐다 — 채널명에 "교회"/"church"가 있는 실제 교회 채널만 남긴다."""
+
+    def test_is_church_channel_matches_korean_and_english(self):
+        collector = YouTubeSermonCollector({})
+        assert collector._is_church_channel("분당우리교회") is True
+        assert collector._is_church_channel("Charity Baptist Church") is True
+        assert collector._is_church_channel("여의도순복음교회") is True
+
+    def test_is_church_channel_rejects_curator_channels(self):
+        collector = YouTubeSermonCollector({})
+        assert collector._is_church_channel("갓피플TV") is False
+        assert collector._is_church_channel("복음훈련소") is False
+
+    def test_collect_all_excludes_non_church_channels(self):
+        collector = YouTubeSermonCollector({"channels": ["Any"], "search_keywords": ["설교"]})
+        fake_items = [
+            _fake_search_item("v1", "유명 목사 설교 모음", "갓피플TV"),
+            _fake_search_item("v2", "우리 교회 주일설교", "은혜교회"),
+        ]
+        with patch.object(collector, "fetch_with_search", return_value=fake_items):
+            records = collector.collect_all(api_key="dummy")
+
+        channel_names = {r["channel_name"] for r in records}
+        assert channel_names == {"은혜교회"}

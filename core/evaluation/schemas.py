@@ -43,3 +43,28 @@ class RagEvalScore:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+# ============================================================
+# DBMA-SEQ (ADR-012) — SermonQualityScore
+# ============================================================
+# 설계 메모 §3.3 그대로. rag_judge.py와 동일한 judge 패턴을
+# 설교 생성물에 적용한 것.
+# _judge_common.py 분리 금지 (Task Order 012 §1.3)
+# ============================================================
+
+@dataclass
+class SermonQualityScore:
+    run_id: str
+    query_id: str
+    scripture_and_theme: str
+    retrieved_candidate_ids: list[str] = field(default_factory=list)
+    generated_text: str = ""
+    text_type: str = ""          # "outline" | "expansion"
+    groundedness: float = 0.0
+    groundedness_rationale: str = ""
+    judge_model: str = ""
+    timestamp: str = ""
+
+    def to_dict(self) -> dict:
+        return asdict(self)
