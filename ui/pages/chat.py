@@ -1,15 +1,24 @@
 """DBMA Design System — RAG Chat Page.
 
-Single-turn question/answer interface connecting the production Retrieval
+Question/answer interface connecting the production Retrieval
 (core/retrieval.py::QueryProcessor) and Generation (core/generation.py::
 GenerationService) boundary to the UI.
 
 Scope (SPRINT17-Phase5-M1b-2):
-  - No multi-turn LLM memory — each question is answered independently;
-    chat_messages only stores display history, it is not fed back into
-    QueryProcessor/GenerationService as conversational context.
   - No citation architecture changes — sources are shown using the same
     RankedCandidate fields ui/pages/research.py already displays.
+
+Session-scoped continuity ("Plan B", 2026-07-24): the RETRIEVAL query is
+still independent per turn — QueryProcessor.process(question) never sees
+prior turns, so search itself is not widened or rewritten by conversation
+history (that would be "Plan A", query rewriting/condensation — a larger,
+not-yet-implemented change). What IS session-scoped: _build_conversation_
+history() feeds the last _HISTORY_MAX_TURNS exchanges into the ANSWER-
+GENERATION prompt only (GenerationService._build_prompt's conversation_
+history param), so follow-up questions read naturally within one browser
+session. Streamlit resets chat_messages to [] on a new session, so a new
+session already starts a fresh topic — no explicit "topic boundary"
+detection was needed for that half of the design.
 """
 
 from pathlib import Path
@@ -25,6 +34,14 @@ from ui.state.query_processor import get_shared_query_processor, record_query_la
 # 스코프별 반환 청크 수(k) — 좁은 스코프일수록 LLM에 넘기는 컨텍스트가
 # 짧아져 응답이 빨라진다(정확도 트레이드오프가 아니라 컨텍스트 길이 문제).
 _SCOPE_K = {"단일 파일": 3, "다중 파일": 5, "전체 파일": 5}
+
+# [2026-07-24, "Plan B" 세션 내 연속성] 최근 몇 턴(사용자+어시스턴트 쌍)까지
+# 답변 생성 프롬프트에 포함할지 — 검색 쿼리(response.question)는 여전히
+# 마지막 질문 그대로다(재작성 없음). 세션이 바뀌면 chat_messages가 빈
+# 리스트로 리셋되므로 "세션이 남아있으면 이어지고, 바뀌면 새 주제"가
+# 자연히 성립한다.
+_HISTORY_MAX_TURNS = 3
+_HISTORY_MAX_CHARS_PER_MESSAGE = 300
 
 
 def render_chat_page() -> None:
@@ -81,6 +98,21 @@ def _init_chat_state() -> None:
         st.session_state["chat_messages"] = []
 
 
+def _build_conversation_history() -> str:
+    """Last _HISTORY_MAX_TURNS exchanges as plain text for the generation
+    prompt (see GenerationService._build_prompt's conversation_history
+    param). Must be called BEFORE the current question is appended to
+    chat_messages, so it reflects prior turns only."""
+    messages = st.session_state.get("chat_messages", [])
+    recent = messages[-(_HISTORY_MAX_TURNS * 2):]
+    lines = []
+    for msg in recent:
+        role_label = "사용자" if msg["role"] == "user" else "어시스턴트"
+        content = msg["content"][:_HISTORY_MAX_CHARS_PER_MESSAGE]
+        lines.append(f"{role_label}: {content}")
+    return "\n".join(lines)
+
+
 def _get_processor() -> QueryProcessor:
     # [SPRINT17-Phase5-M1b-2.1] Shared across all pages that need a
     # QueryProcessor (Research, Chat) — one RetrievalEngine instance per
@@ -99,15 +131,22 @@ def _get_generation_service() -> GenerationService:
 def _handle_user_message(question: str) -> None:
     """Run one retrieval→generation round for a single question.
 
-    No conversational memory: each call parses `question` on its own —
-    prior chat_messages are display history only, never passed back into
-    QueryProcessor.process() or GenerationService.generate().
+    Retrieval query stays independent per call: `question` alone is parsed
+    by QueryProcessor.process() — prior turns never rewrite or widen the
+    search query. [2026-07-24, "Plan B"] The answer-generation prompt now
+    additionally receives recent chat_messages (via _build_conversation_
+    history(), captured BEFORE this turn's question is appended below) so
+    follow-up questions read naturally within a session; this is a smaller
+    change than query-rewriting ("Plan A") and was chosen first per that
+    design discussion.
 
     Renders the user message and the streamed assistant answer inline
     (before they're appended to chat_messages) so the LLM response shows
     up token-by-token instead of blocking until the full ~70B-model
     generation finishes.
     """
+    conversation_history = _build_conversation_history()
+
     st.session_state["chat_messages"].append({"role": "user", "content": question})
     with st.chat_message("user"):
         st.markdown(question)
@@ -131,7 +170,7 @@ def _handle_user_message(question: str) -> None:
         return
 
     with st.chat_message("assistant"):
-        stream = generator.generate_stream(response)
+        stream = generator.generate_stream(response, conversation_history=conversation_history)
         st.write_stream(stream)
         result = stream.to_result()
         if response.top_k_results:

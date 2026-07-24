@@ -173,18 +173,28 @@ class GenerationService:
     """
 
     @staticmethod
-    def _build_prompt(response: ResponsePackage) -> tuple[str, bool]:
-        """Returns (prompt, context_used)."""
+    def _build_prompt(response: ResponsePackage, conversation_history: str = "") -> tuple[str, bool]:
+        """Returns (prompt, context_used).
+
+        conversation_history (2026-07-24, DBMA Chat "Plan B" — sliding
+        window, additive/optional): prior turns as plain text, prepended
+        ahead of the retrieval context. Only the answer-generation prompt
+        gains this — the retrieval query itself (response.question) is
+        unchanged, so this does NOT rewrite/condense the search query
+        (that would be "Plan A", a separate, larger change). Callers that
+        don't pass it (Research/SermonDraft) see byte-identical prompts."""
         context = response.llm_context_block or ""
+        history_block = f"이전 대화:\n{conversation_history}\n\n" if conversation_history.strip() else ""
         if context.strip():
-            return f"문맥:\n{context}\n\n질문:\n{response.question}", True
-        return f"질문:\n{response.question}", False
+            return f"{history_block}문맥:\n{context}\n\n질문:\n{response.question}", True
+        return f"{history_block}질문:\n{response.question}", False
 
     def generate_stream(
         self,
         response: ResponsePackage,
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
+        conversation_history: str = "",
     ) -> GenerationStream:
         """Same prompt/model as generate(), but returns an iterable of text
         chunks instead of blocking for the full answer — lets the caller
@@ -193,7 +203,7 @@ class GenerationService:
         Call to_result() on the returned GenerationStream after fully
         iterating it to get the equivalent GenerationResult.
         """
-        prompt, context_used = self._build_prompt(response)
+        prompt, context_used = self._build_prompt(response, conversation_history)
         return GenerationStream(response, gen_model, temperature, prompt, context_used)
 
     def generate(
@@ -201,6 +211,7 @@ class GenerationService:
         response: ResponsePackage,
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
+        conversation_history: str = "",
     ) -> GenerationResult:
         """Build a prompt from response.llm_context_block + response.question
         and call Ollama to synthesize an answer.
@@ -209,7 +220,7 @@ class GenerationService:
         call, but never raises — Ollama failures are captured into
         GenerationResult.error instead of propagating.
         """
-        prompt, context_used = self._build_prompt(response)
+        prompt, context_used = self._build_prompt(response, conversation_history)
 
         try:
             result = ollama.generate(
