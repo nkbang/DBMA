@@ -1265,6 +1265,97 @@ class RetrievalEngine:
             coverage.setdefault(book_id, set()).add(source_file)
         return {book_id: len(files) for book_id, files in coverage.items()}
 
+    def book_embedding_coverage(
+        self,
+        cache: EmbeddingCache,
+        threshold: float = 1.0,
+    ) -> dict[str, dict]:
+        """[2026-07-24] Return per-book embedding coverage stats for books
+        whose coverage_ratio is strictly below *threshold*.
+
+        Uses the same read-only pattern as book_coverage():
+        - Iterates self.tsus without modifying any state
+        - Does NOT call cache.lookup() — on a cache miss that method calls
+          embed_fn and writes a new cache file (cache.insert()), which
+          would turn this "read-only coverage report" into a mass
+          embedding job across every uncached chunk. EmbeddingCache has
+          no LRU eviction to worry about; the risk is purely the write
+          side effect on miss.
+        - Computes SHA256 hash directly via cache._hash_text()
+        - Reads cache file only to verify vector field existence
+
+        Returns:
+            {
+                "GEN": {
+                    "total": 42,
+                    "embedded": 40,
+                    "dimension_ok": 39,
+                    "coverage_ratio": 0.9523809523809523,
+                },
+                ...
+            }
+
+        Args:
+            cache: EmbeddingCache instance (read-only access).
+            threshold: Coverage ratio threshold. Books with
+                coverage_ratio < threshold are included in the result.
+                Default 1.0 means only books with incomplete coverage.
+                Set to 0.0 to include all books regardless of coverage.
+        """
+        from core.config import EMBEDDING_DIMENSION
+
+        coverage: dict[str, dict] = {}
+        for t in self.tsus:
+            book_id = (t.get("verse_mapping") or {}).get("book_id")
+            if not book_id:
+                continue
+            content = t.get("content", "")
+            if not content:
+                continue
+
+            coverage.setdefault(book_id, {
+                "total": 0,
+                "embedded": 0,
+                "dimension_ok": 0,
+            })
+            coverage[book_id]["total"] += 1
+
+            # 캐시 파일 존재 확인 — cache.lookup() 호출 금지 (LRU order 변경).
+            # EmbeddingCache.validate()가 하는 방식 그대로: 경로 직접 구성 후
+            # JSON 열어서 vector 필드 확인.
+            hash_key = cache._hash_text(content)
+            cache_path = Path(cache.cache_dir) / f"{hash_key}.json"
+            if not cache_path.exists():
+                continue
+
+            coverage[book_id]["embedded"] += 1
+
+            try:
+                with open(cache_path, "r", encoding="utf-8") as fh:
+                    data = json.load(fh)
+                vector = data.get("vector")
+                if vector is not None and len(vector) == EMBEDDING_DIMENSION:
+                    coverage[book_id]["dimension_ok"] += 1
+            except (json.JSONDecodeError, IOError):
+                pass
+
+        # coverage_ratio 계산 및 threshold 미만인 책만 필터
+        result: dict[str, dict] = {}
+        for book_id, stats in coverage.items():
+            total = stats["total"]
+            if total == 0:
+                continue
+            embedded = stats["embedded"]
+            coverage_ratio = embedded / total
+            if coverage_ratio < threshold:
+                result[book_id] = {
+                    "total": total,
+                    "embedded": embedded,
+                    "dimension_ok": stats["dimension_ok"],
+                    "coverage_ratio": coverage_ratio,
+                }
+        return result
+
     def retrieve(
         self,
         parsed_query: ParsedQuery,

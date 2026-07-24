@@ -53,6 +53,10 @@ def render_monitor_page() -> None:
     page.render_section("리소스 사용량", icon="💻")
     _render_resource_usage()
 
+    # ── Embedding Coverage Report ────────────────────────────────
+    page.render_section("임베딩 커버리지 리포트", icon="📚")
+    _render_embedding_coverage_report()
+
     # ── Log Viewer ─────────────────────────────────────────────
     page.render_section("운영 로그", icon="📜")
     _render_log_viewer()
@@ -359,10 +363,37 @@ def _get_disk_usage() -> float:
         return 60.0
 
 
-def _format_size(size_bytes: float | int) -> str:
-    """Format bytes to human-readable size."""
-    for unit in ['B', 'KB', 'MB', 'GB']:
-        if size_bytes < 1024:
-            return f"{size_bytes:.1f} {unit}"
-        size_bytes /= 1024
-    return f"{size_bytes:.1f} TB"
+def _render_embedding_coverage_report() -> None:
+    """book_embedding_coverage() 기반: 커버리지 미달 책만 보여주는 리포트."""
+    from core.retrieval import RetrievalEngine
+    from core.config import DEFAULT_TSU_DATASET_PATH, DEFAULT_OUTPUT_DIR
+    from core.retrieval import EmbeddingCache
+
+    try:
+        engine = RetrievalEngine(DEFAULT_TSU_DATASET_PATH)
+        cache = EmbeddingCache(str(Path(DEFAULT_OUTPUT_DIR) / "cache" / "embeddings"))
+        coverage = engine.book_embedding_coverage(cache)
+    except Exception:
+        st.warning("커버리지 데이터를 로드할 수 없습니다.")
+        return
+
+    if not coverage:
+        st.info("📚 모든 책의 임베딩 커버리지가 100%입니다.")
+        return
+
+    # coverage_ratio < 1.0인 책만 필터 (coverage 0은 dict에 없음)
+    incomplete = {k: v for k, v in coverage.items() if v["coverage_ratio"] < 1.0}
+    if not incomplete:
+        st.info("📚 모든 책의 임베딩 커버리지가 100%입니다.")
+        return
+
+    st.markdown("**커버리지 미달 책**")
+    for book_id in sorted(incomplete):
+        stats = incomplete[book_id]
+        ratio_pct = stats["coverage_ratio"] * 100
+        st.markdown(
+            f"- **{book_id}**: {stats['embedded']}/{stats['total']} chunks "
+            f"({ratio_pct:.1f}%) — dimension_ok: {stats['dimension_ok']}"
+        )
+
+
