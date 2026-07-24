@@ -105,7 +105,11 @@ export한다(2026-07-24 수정 — 이전에는 `render_chat_page`/
 ### Dashboard (`dashboard.py`)
 
 - `_render_status_banner()` — 전체 시스템 상태(정상/처리 중/확인 필요)
-- `_render_quick_actions()` — Chat/Research/Processing 바로가기
+- `_render_quick_actions()` — Chat/Research/Processing 바로가기 버튼
+  - "💬 질문하기" → `st.session_state["nav_page"] = "Chat"`
+  - "🔍 자료 검색" → `st.session_state["nav_page"] = "Research"`
+  - "📤 문서 추가" → `st.session_state["nav_page"] = "Processing"`
+- `_go_to(page_name)` — session_state에 페이지명 저장 → app.py의 st.radio(`key="nav_page"`)가 감지하여 페이지 전환
 - `_render_library_summary()` — RAW 문서 수 + 처리된 문서 수
 - `_get_effective_documents()` — chunk_count>0, PROCESSED, 최신 버전만
   필터링된 문서 집합(Library 페이지와 동일 필터 재사용, 카운트 불일치
@@ -194,4 +198,7 @@ Dashboard의 "정리된 자료"/"유형별 문서" 카운트와 Library의 문�
 
 ## Version
 
-DBMA v1.1.0(app.py docstring 기준) — Personal Knowledge Operating System.
+`APP_VERSION`은 `config.yaml`의 `version` 필드(source of truth)에서
+읽는다 — 2026-07-24 확인 시점 실행 화면 기준 **v1.3.0**. `ui/app.py`
+docstring의 "v1.1.0" 표기는 stale 주석이므로 신뢰하지 말 것(직접
+브라우저로 실행해 확인한 값을 우선).
