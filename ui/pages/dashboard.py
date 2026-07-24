@@ -76,8 +76,6 @@ def _render_quick_actions() -> None:
 def _render_library_summary() -> None:
     """Collapsed "내 서재" summary — RAW/출력/지원형식/임베딩 세부는
     개발자용 정보라 Monitor·Processing으로 이미 옮겨져 있다."""
-    raw_docs = _count_documents()
-
     # [버그 수정 2026-07-21] "보유 문서"(RAW 폴더 파일 수)와 "정리된
     # 자료"는 서로 다른 걸 재는 지표다 — 처리된 원본은 RAW에서 지워지는
     # 경우가 많아 RAW 카운트가 총 보유량을 반영하지 않는다(사용자 보고:
@@ -89,11 +87,25 @@ def _render_library_summary() -> None:
     # 미완료 포함)를 세어서 서로 다른 모집단이었다. 이제 둘 다
     # _effective_documents()로 걸러낸 "실질적으로 유효한 등록 문서"
     # 하나의 집합을 공유해 두 숫자가 항상 일치하도록 통일한다.
+    #
+    # [버그 수정 2026-07-24] "RAW 대기 문서"라는 라벨이 "미처리"를
+    # 뜻하는 것처럼 읽히지만 실제로는 처리 여부와 무관하게 RAW 폴더에
+    # 물리적으로 있는 파일 수였다(사용자 보고: 69권이 실제로는 전부
+    # 처리 완료 상태). 처리 완료/미처리를 나눠서 보여준다.
     effective_docs = _get_effective_documents()
+    raw_breakdown = _get_raw_processing_breakdown()
 
     c1, c2 = st.columns(2)
     with c1:
-        st.metric("RAW 대기 문서", f"{raw_docs}권", help="data/RAW 폴더에 현재 남아있는 파일 수 — 처리된 원본은 여기서 지워질 수 있어 총 보유량과 다를 수 있습니다. 아래 '정리된 자료'/'유형별 문서'와는 다른 모집단입니다.")
+        st.metric(
+            "RAW 폴더 파일",
+            f"{raw_breakdown['total']}권",
+            help="data/RAW 폴더에 현재 남아있는 파일 수 — 처리 여부와 무관합니다. 처리된 원본이 삭제되지 않고 RAW에 남아있는 경우가 흔해, 아래 처리 완료/미처리 구분을 함께 보세요.",
+        )
+        st.caption(
+            f"✅ 처리 완료 {raw_breakdown['processed']}권 · "
+            f"⏳ 미처리 {raw_breakdown['unprocessed']}권"
+        )
     with c2:
         st.metric("정리된 자료", f"{len(effective_docs)}개 문서", help="registry에 등록된 문서 중 청킹 완료(chunk_count>0)·처리 성공(ingest_status=PROCESSED)·최신본(superseded_by 없음)만 센 수 — 아래 '유형별 문서'와 항상 같은 모집단입니다.")
 
@@ -124,20 +136,65 @@ def _count_documents() -> int:
 
     Uses same discovery rules as Library and Processing pages:
     - Recursive search (rglob)
-    - Supported extensions: .pdf, .epub, .txt, .md, .docx
+    - Supported extensions: core.config.SUPPORTED_EXTENSIONS
     - Excludes hidden files and directories
     - Includes only files (not directories)
     """
+    from core.config import SUPPORTED_EXTENSIONS
+
     raw_dir = Path(DEFAULT_RAW_DIR)
     if not raw_dir.exists():
         return 0
 
-    supported_exts = {".pdf", ".epub", ".txt", ".md", ".docx"}
     doc_files = [
         f for f in raw_dir.rglob("*")
-        if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in supported_exts
+        if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
     ]
     return len(doc_files)
+
+
+def _get_raw_processing_breakdown() -> dict:
+    """[버그 수정 2026-07-24] "RAW 대기 문서"라는 이름과 달리 _count_
+    documents()는 처리 여부와 무관하게 RAW 폴더에 물리적으로 있는 파일
+    수만 센다 — 처리된 원본이 삭제되지 않고 RAW에 남아있는 경우가 흔해
+    "대기 중"이라는 라벨이 오해를 준다(사용자 보고, 2026-07-24: 69권이
+    전부 이미 처리 완료 상태였음). RAW 파일명을 TSU 데이터셋의
+    source_file 집합과 대조해 실제 처리 완료/미처리를 구분한다.
+
+    RetrievalEngine 전체를 띄우지 않고 TSU JSONL을 직접 스트리밍해
+    source_file만 모은다 — Dashboard 렌더마다 52,064건 전체를 메모리에
+    올리는 무거운 경로를 피하기 위함."""
+    import json
+    from core.config import DEFAULT_TSU_DATASET_PATH, SUPPORTED_EXTENSIONS
+
+    raw_dir = Path(DEFAULT_RAW_DIR)
+    if not raw_dir.exists():
+        return {"total": 0, "processed": 0, "unprocessed": 0}
+
+    raw_files = {
+        f.name for f in raw_dir.rglob("*")
+        if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
+    }
+
+    tsu_sources: set[str] = set()
+    tsu_path = Path(DEFAULT_TSU_DATASET_PATH)
+    if tsu_path.exists():
+        with open(tsu_path, "r", encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("$"):
+                    continue
+                try:
+                    rec = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                source_file = rec.get("source_file")
+                if source_file:
+                    tsu_sources.add(source_file)
+
+    processed = len(raw_files & tsu_sources)
+    total = len(raw_files)
+    return {"total": total, "processed": processed, "unprocessed": total - processed}
 
 
 def _get_last_processed() -> str:
