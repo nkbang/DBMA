@@ -277,9 +277,16 @@ def _render_doc_type_summary() -> None:
 
     [기능 추가] 유형 카드를 클릭하면 해당 유형의 문서 리스트를 보이고,
     각 문서의 유형을 변경할 수 있다.
+
+    [기능 추가 2026-07-24] "미처리" 카드 — RAW에는 있지만 아직 처리
+    파이프라인을 거치지 않아 registry에 아예 없는 파일(doc_type을
+    붙일 자리 자체가 없음). 여기에 타입을 미리 지정하는 대신, 처리를
+    유도한다 — 처리되면 guess_doc_type()이 자동으로 타입을 부여한다
+    (사용자 결정, 2026-07-24: "처리하게 유도하자").
     """
     docs = _get_effective_documents()
-    if not docs:
+    unprocessed_files = _get_unprocessed_raw_files()
+    if not docs and not unprocessed_files:
         return
 
     # Initialize session state for selected type filter
@@ -305,14 +312,16 @@ def _render_doc_type_summary() -> None:
     )
 
     # Display as clickable metric cards
-    cols = st.columns(len(_DOC_TYPE_ORDER))
-    for i, doc_type in enumerate(_DOC_TYPE_ORDER):
+    card_types = _DOC_TYPE_ORDER + (["미처리"] if unprocessed_files else [])
+    cols = st.columns(len(card_types))
+    for i, doc_type in enumerate(card_types):
         with cols[i]:
-            icon = _DOC_TYPE_ICONS.get(doc_type, "📁")
-            count = counts[doc_type]
+            icon = "🆕" if doc_type == "미처리" else _DOC_TYPE_ICONS.get(doc_type, "📁")
+            count = len(unprocessed_files) if doc_type == "미처리" else counts[doc_type]
+            unit = "권" if doc_type == "미처리" else _DOC_TYPE_UNITS.get(doc_type, "개")
             # Use button with on_click to toggle selection
             clicked = st.button(
-                f"{icon}\n**{doc_type}**\n{count}{_DOC_TYPE_UNITS.get(doc_type, '개')}",
+                f"{icon}\n**{doc_type}**\n{count}{unit}",
                 key=f"_type_card_{doc_type}",
                 use_container_width=True,
             )
@@ -326,13 +335,67 @@ def _render_doc_type_summary() -> None:
 
     # Show document list for selected type
     selected_type = st.session_state.get("selected_doc_type")
-    if selected_type:
+    if selected_type == "미처리":
+        _render_unprocessed_detail(unprocessed_files)
+    elif selected_type:
         _render_doc_type_detail(docs, selected_type, untyped_ids)
     else:
         # Show untyped documents section only when no type is selected
         if untyped_ids:
             st.markdown(f"<div style='margin-top: 1rem; font-size: 13px;'>미라벨링 문서 ({len(untyped_ids)}개)</div>", unsafe_allow_html=True)
             _render_manual_labeler(docs, untyped_ids)
+
+
+def _get_unprocessed_raw_files() -> list[str]:
+    """RAW에 있지만 TSU 데이터셋에 없는(=처리 안 된) 파일명 목록.
+
+    _get_raw_processing_breakdown()과 같은 기준(source_file 대조)을
+    쓰되, 파일명 목록 자체가 필요해 별도로 계산한다."""
+    import json
+    from core.config import DEFAULT_TSU_DATASET_PATH, SUPPORTED_EXTENSIONS
+
+    raw_dir = Path(DEFAULT_RAW_DIR)
+    if not raw_dir.exists():
+        return []
+
+    raw_files = {
+        f.name for f in raw_dir.rglob("*")
+        if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
+    }
+
+    tsu_sources: set[str] = set()
+    tsu_path = Path(DEFAULT_TSU_DATASET_PATH)
+    if tsu_path.exists():
+        with open(tsu_path, "r", encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("$"):
+                    continue
+                try:
+                    rec = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                source_file = rec.get("source_file")
+                if source_file:
+                    tsu_sources.add(source_file)
+
+    return sorted(raw_files - tsu_sources)
+
+
+def _render_unprocessed_detail(unprocessed_files: list[str]) -> None:
+    """미처리 파일 목록 + 처리 페이지로 바로 이동하는 버튼.
+    타입을 여기서 직접 지정하지 않는다 — registry에 아직 레코드가
+    없어 저장할 자리가 없고, 처리하면 guess_doc_type()이 자동으로
+    타입을 붙인다."""
+    st.divider()
+    st.markdown(f"**🆕 미처리 ({len(unprocessed_files)}권)** — 아직 처리 파이프라인을 거치지 않았습니다.")
+    for name in unprocessed_files:
+        st.markdown(f"- {name}")
+    st.caption("처리하면 유형이 자동으로 추정되어 붙습니다(불확실하면 \"기타\").")
+    st.button(
+        "📤 지금 처리하러 가기", key="_go_process_unprocessed",
+        on_click=_go_to, args=("Processing",),
+    )
 
 
 def _render_doc_type_detail(docs: dict, selected_type: str, untyped_ids: list[str]) -> None:

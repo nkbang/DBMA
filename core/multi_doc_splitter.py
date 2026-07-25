@@ -26,11 +26,19 @@
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass, field
 from typing import Optional
 
-from core.date_extractor import find_nearest_date
+from core.date_extractor import extract_date_from_line, find_nearest_date
+
+# 리뷰 화면에서 확정한 설교 1건을 개별 RAW 파일로 저장할 하위 폴더명.
+# 원본 "설교 모음" 파일과 섞이지 않게 분리 — 원본은 절대 수정/삭제하지
+# 않는다(project rule: RAW 원본 불변).
+SERMON_SPLIT_SUBDIR = "설교_분리"
+
+_UNSAFE_FILENAME_CHARS_RE = re.compile(r'[\\/:*?"<>|]')
 
 _TITLE_PREFIX_RE = re.compile(r"^\s*제목\s*:\s*")
 # "본문:" 또는 "본문 말씀:" 등 변형을 모두 잡는다 — "본문"과 ":" 사이에
@@ -82,6 +90,46 @@ def _find_scripture_nearby(lines: list[str], title_index: int, section_end: int)
             if scripture:
                 return scripture
     return None
+
+
+def guess_new_sermon_metadata(
+    lines: list[str], start_index: int, lookahead: int = 6
+) -> tuple[Optional[str], Optional[str], Optional[str]]:
+    """[2026-07-24, 사용자 요청] 수동 분할 시 잘린 부분(start_index부터)
+    첫머리 몇 줄 안에서 제목/날짜/성구를 자동으로 읽어온다 — 못 찾으면
+    None(사용자가 직접 입력하도록 UI에서 필수 입력으로 강제).
+
+    start_index부터 순방향으로 lookahead줄만 훑는다 — split_sermon_
+    collection()의 "제목:" 앵커 기반 탐색과 달리, 여기서는 앵커가
+    아니라 사용자가 지정한 임의의 줄(cut_line)이 시작점이라 "제목:"
+    줄이 아예 없을 수도 있다(그 경우 title=None으로 남긴다)."""
+    window_end = min(len(lines), start_index + lookahead)
+    title: Optional[str] = None
+    scripture: Optional[str] = None
+    date: Optional[str] = None
+
+    for i in range(start_index, window_end):
+        line = lines[i].strip()
+
+        if title is None and _TITLE_PREFIX_RE.match(line):
+            parsed_title, inline_scripture = _split_title_line(line)
+            title = parsed_title or None
+            if inline_scripture and scripture is None:
+                scripture = inline_scripture
+
+        if scripture is None:
+            m = _SCRIPTURE_PREFIX_RE.search(line)
+            if m:
+                found = line[m.end():].strip()
+                if found:
+                    scripture = found
+
+        if date is None:
+            found_date = extract_date_from_line(line)
+            if found_date:
+                date = found_date
+
+    return title, date, scripture
 
 
 def manual_split(
@@ -139,6 +187,84 @@ def manual_split(
         end_line=record.end_line,
     )
     return first, second
+
+
+def build_sermon_filename(record: SermonRecord) -> str:
+    """저장 파일명: "{날짜}_{제목}.md". 제목/날짜/성구 중 하나라도
+    없으면 저장 자체를 허용하지 않는다(호출자가 이 예외로 막게 됨) —
+    [2026-07-24, 사용자 요청] "저장 버튼에 항상 적용"."""
+    missing = [
+        label for label, value in (("제목", record.title), ("날짜", record.date), ("성구", record.scripture))
+        if not (value or "").strip()
+    ]
+    if missing:
+        raise ValueError(f"다음 항목이 없어 저장할 수 없습니다: {', '.join(missing)}")
+
+    safe_title = _UNSAFE_FILENAME_CHARS_RE.sub("_", record.title.strip())
+    safe_title = re.sub(r"\s+", " ", safe_title)
+    return f"{record.date.strip()}_{safe_title}.md"
+
+
+def render_sermon_file_content(record: SermonRecord) -> str:
+    """저장할 .md 파일 내용 — 날짜/성구를 사람이 읽을 수 있는 머리말로
+    남긴다(identity_registry 스키마에 date/scripture 필드를 새로
+    추가하지 않기 위한 선택 — 근거 없는 구조 변경 금지 원칙)."""
+    return f"날짜: {record.date}\n성구: {record.scripture}\n\n{record.body}"
+
+
+_YEAR_RE = re.compile(r"(19|20)\d{2}")
+
+
+def infer_collection_year(records: list[SermonRecord], filename: str = "") -> Optional[int]:
+    """설교 모음의 연도를 추정한다 — 파일명(예: "2025년 설교 모음.rtf")을
+    우선 확인하고, 못 찾으면 이미 날짜가 있는 설교들 중 가장 흔한
+    연도를 쓴다. 둘 다 없으면 None(더미 날짜를 채울 근거가 없다는 뜻)."""
+    m = _YEAR_RE.search(filename)
+    if m:
+        return int(m.group(0))
+
+    years = [int(r.date[:4]) for r in records if r.date and _YEAR_RE.match(r.date[:4])]
+    if not years:
+        return None
+    from collections import Counter
+    return Counter(years).most_common(1)[0][0]
+
+
+def fill_missing_dates(records: list[SermonRecord], year: int) -> int:
+    """[2026-07-24, 사용자 요청] 날짜를 못 찾은 설교에 "{year}-12-31"
+    더미 날짜를 채운다 — 통계(제목/날짜/성구별 집계) 낼 때 날짜 없어서
+    통째로 빠지는 걸 막기 위함. 실제 설교일이 아니라는 걸 12/31(연말,
+    실제 주일일 가능성이 낮은 날)로 구분해둔다.
+
+    Returns: 채워 넣은 건수."""
+    filled = 0
+    for record in records:
+        if not (record.date or "").strip():
+            record.date = f"{year}-12-31"
+            filled += 1
+    return filled
+
+
+def save_sermon_record(record: SermonRecord, raw_dir: str) -> str:
+    """분리된 설교 1건을 raw_dir/SERMON_SPLIT_SUBDIR/ 밑에 개별 .md
+    파일로 저장한다. 이후 기존 처리 파이프라인(core.processing)이
+    RAW의 다른 파일과 동일하게 인식해 처리 대상으로 잡는다 — 새 인제
+    스트 경로를 만들지 않고 기존 흐름을 재사용.
+
+    이미 같은 이름의 파일이 있으면 덮어쓰지 않고 FileExistsError.
+    Returns: 저장된 파일의 전체 경로."""
+    filename = build_sermon_filename(record)  # 필수 항목 검증 포함
+    target_dir = os.path.join(raw_dir, SERMON_SPLIT_SUBDIR)
+    os.makedirs(target_dir, exist_ok=True)
+
+    path = os.path.join(target_dir, filename)
+    if os.path.exists(path):
+        raise FileExistsError(f"이미 존재합니다: {filename}")
+
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(render_sermon_file_content(record))
+
+    return path
 
 
 def split_sermon_collection(text: str) -> list[SermonRecord]:

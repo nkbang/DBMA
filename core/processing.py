@@ -37,6 +37,7 @@ from core.document_identity import (
     generate_chunk_id,
     build_document_metadata,
     generate_processing_timestamp,
+    guess_doc_type,
 )
 
 # [SPRINT17-Phase1-B-2] DocumentContext — additive only, not yet wired into
@@ -677,6 +678,14 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # [SPRINT15-DEBUG] save_md_with_language 호출 전
         logger.info("[SPRINT15-DEBUG] BEFORE save_md_with_language | file=%s output_dir=%s stem=%s", source_name, output_dir, stem)
 
+        # [2026-07-24] 유형 구분 — 유형마다 이후 처리(청킹 방식 등)가
+        # 달라져야 하므로, 정제 직후·청킹 이전에 별도 단계로 확정한다.
+        # 순서: 추출 → 정제 → **유형 구분** → 청킹. 매칭되는 키워드가
+        # 없으면 "기타"로 떨어뜨려 "미분류" 상태로 방치하지 않는다.
+        emit("classify", f"유형 구분 시작: {source_name}", 0.43)
+        doc_type = guess_doc_type(final_text, source_name, extracted_title)
+        emit("classify_done", f"유형 구분 완료: {doc_type}", 0.44)
+
         # [PT-PROCESSING-008] Complete Document Metadata (Point C) - define before use
         document_meta = build_document_metadata(
             content=final_text, source_file=source_name,
@@ -684,6 +693,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             noise_mode=noise.get("mode", "-"), source_type=ext,
             is_ocr=is_ocr, chunk_count=0,  # Will be updated after chunking
             title=extracted_title, author=extracted_author,
+            doc_type=doc_type,
         )
 
         md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language, document_meta)
