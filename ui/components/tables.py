@@ -121,9 +121,21 @@ def search_results_table(results: list[dict],
         document_id = result.get("document_id", "")
         can_click = clickable_source and bool(source_file or document_id)
 
-        # Build clickable title if navigation is available
+        # Build clickable title if navigation is available.
+        # Widget key must be unique per rendering instance to avoid
+        # StreamlitDuplicateElementKey when the same source appears
+        # across multiple search results.  Use a monotonically increasing
+        # counter in session state so that each call gets its own key even
+        # when multiple results reference the same source_file.
+        _counter_key = "_dbma_table_btn_counter"
+        if _counter_key not in st.session_state:
+            st.session_state[_counter_key] = 0
+        _instance_idx = st.session_state[_counter_key]
+        st.session_state[_counter_key] += 1
+
+        nav_key = f"nav_res_{_instance_idx}_{i}"
+
         if can_click:
-            nav_key = f"nav_res_{i}_{abs(hash(source_file + str(document_id))) & 0xFFFFFFFF:x}"
             # Use source_file as the display label for the headline
             headline_label = source_file if source_file else title
             html = _render_clickable_result_row(

@@ -271,15 +271,31 @@ def _render_clickable_source(
 ) -> None:
     """[DBMA-UI-NAV-001] 클릭 가능한 출처 headline을 렌더링한다.
 
-    클릭 시:
-    1. session state에 source info 저장 (Library detail용)
-    2. JS로 원본 모달 열기
+    Click target:
+    1. Save source info to session state (Library detail)
+    2. Open JS modal
+
+    Widget key must be unique per rendering instance to avoid
+    StreamlitDuplicateElementKey when the same source appears
+    across multiple chat turns or within the same expander.
     """
     heading_hierarchy = " > ".join(heading_path) if heading_path else ""
     display_label = heading_hierarchy or source_file or "출처 미상"
 
-    # 고유 버튼 키
-    btn_key = f"nav_src_{abs(hash(candidate.tsu_id)) & 0xFFFFFFFF:x}"
+    # Unique button key per rendering instance (not per source identity).
+    # Use a monotonically increasing counter in session state so that each
+    # call to _render_source() gets its own widget key even when multiple
+    # messages reference the same candidate.tsu_id.
+    _counter_key = "_dbma_source_btn_counter"
+    if _counter_key not in st.session_state:
+        st.session_state[_counter_key] = 0
+    _instance_idx = st.session_state[_counter_key]
+    st.session_state[_counter_key] += 1
+
+    # Combine instance counter + tsu_id to keep keys stable across reruns
+    # for the SAME rendering (so the button doesn't disappear on rerun)
+    # but unique across DIFFERENT renderings (avoiding key collision).
+    btn_key = f"nav_src_{_instance_idx}_{abs(hash(candidate.tsu_id)) & 0xFFFFFFFF:x}"
 
     can_navigate = bool(source_file or candidate.metadata.get("document_id"))
 
