@@ -144,6 +144,15 @@ class TestTLISpellEngineCheck(unittest.TestCase):
         flagged = {err["word"] for err in result}
         self.assertNotIn("됐어", flagged)
 
+    def test_biblical_proper_names_and_places_not_flagged(self):
+        """[2026-07-24, 사용자 요청] 신학사전 확장 — 성경 인명/지명이
+        조사가 붙어도 오탐되지 않아야 함."""
+        from core.tli.hunspell_adapter import HunspellSpellEngine
+        engine = HunspellSpellEngine()
+        result = engine.check("므비보셋은 다윗을 만나러 예루살렘으로 갔고, 스룹바벨은 성전을 재건했다.")
+        flagged = {err["word"] for err in result}
+        self.assertEqual(flagged, set(), f"성경 인명/지명이 오탐됨: {flagged}")
+
     def test_common_words_not_falsely_flagged(self):
         """[CUE 검증 2026-07-24] spylls 시절 "하나님"/"우리"/"사랑" 같은
         기본 단어가 오탐됐던 회귀 방지 테스트."""
