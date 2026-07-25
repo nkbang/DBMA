@@ -131,6 +131,9 @@ def _format_candidate(candidate: RankedCandidate, parsed_query) -> dict:
         "type": "tsu",
         "snippet": candidate.content[:300].replace("\n", " "),
         "source": source_file,
+        # DBMA-UI-NAV-001: Source navigation metadata
+        "source_file": source_file,
+        "document_id": candidate.metadata.get("document_id", ""),
         # Extended metadata for detailed display
         "tsu_id": candidate.tsu_id,
         "bm25_score": candidate.bm25_score,
@@ -233,11 +236,12 @@ def _render_search_results() -> None:
             key="result_sort",
         )
 
-    # Render search results table
+    # Render search results table (DBMA-UI-NAV-001: clickable source)
     search_results_table(
         results=results,
         score_column="score",
         highlight_query=st.session_state.get("research_query", ""),
+        clickable_source=True,
     )
     
     # Add session save functionality

@@ -75,7 +75,8 @@ def document_table(documents: list[dict],
 
 def search_results_table(results: list[dict],
                          score_column: str = "score",
-                         highlight_query: Optional[str] = None) -> None:
+                         highlight_query: Optional[str] = None,
+                         clickable_source: bool = False) -> None:
     """Render a styled search results table with relevance scores.
 
     Parameters
@@ -86,6 +87,9 @@ def search_results_table(results: list[dict],
         Key for the relevance score field.
     highlight_query : str, optional
         Original search query for highlighting.
+    clickable_source : bool
+        If True, render source headline as a clickable link
+        (uses 'source_file' and 'document_id' from each result dict).
     """
     if not results:
         st.info("검색 결과가 없습니다.")
@@ -112,33 +116,122 @@ def search_results_table(results: list[dict],
         else:
             score_color = THEME.STATUS_ERROR
 
-        html = f"""
-        <div style="
-            background: {THEME.BG_SURFACE};
-            border: 1px solid {THEME.BORDER_LIGHT};
-            border-radius: 6px;
-            padding: {12}px {16}px;
-            margin-bottom: {8}px;
-        ">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                <span style="font-size: 14px; font-weight: 600; color: {THEME.BRAND_PRIMARY};">
-                    {i + 1}. {title}
-                </span>
-                <span style="
-                    font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px;
-                    background: {score_color}18; color: {score_color};
-                ">
-                    RRF {score:.4f}
-                </span>
+        # Extract source metadata for clickable navigation
+        source_file = result.get("source_file", "")
+        document_id = result.get("document_id", "")
+        can_click = clickable_source and bool(source_file or document_id)
+
+        # Build clickable title if navigation is available
+        if can_click:
+            nav_key = f"nav_res_{i}_{abs(hash(source_file + str(document_id))) & 0xFFFFFFFF:x}"
+            # Use source_file as the display label for the headline
+            headline_label = source_file if source_file else title
+            html = _render_clickable_result_row(
+                i=i,
+                title=title,
+                score=score,
+                doc_type=doc_type,
+                snippet=snippet,
+                source=source,
+                score_color=score_color,
+                nav_key=nav_key,
+                headline_label=headline_label,
+                source_file=source_file,
+                document_id=document_id,
+            )
+        else:
+            html = f"""
+            <div style="
+                background: {THEME.BG_SURFACE};
+                border: 1px solid {THEME.BORDER_LIGHT};
+                border-radius: 6px;
+                padding: {12}px {16}px;
+                margin-bottom: {8}px;
+            ">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                    <span style="font-size: 14px; font-weight: 600; color: {THEME.BRAND_PRIMARY};">
+                        {i + 1}. {title}
+                    </span>
+                    <span style="
+                        font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+                        background: {score_color}18; color: {score_color};
+                    ">
+                        RRF {score:.4f}
+                    </span>
+                </div>
+                <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 4px;">
+                    {doc_type}
+                    {f' • {source}' if source else ''}
+                </div>
+                {f'<div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.5;">{snippet}</div>' if snippet else ''}
             </div>
-            <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 4px;">
-                {doc_type}
-                {f' • {source}' if source else ''}
-            </div>
-            {f'<div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.5;">{snippet}</div>' if snippet else ''}
-        </div>
-        """
+            """
         st.markdown(html, unsafe_allow_html=True)
+
+
+def _render_clickable_result_row(
+    i: int,
+    title: str,
+    score: float,
+    doc_type: str,
+    snippet: str,
+    source: str,
+    score_color: str,
+    nav_key: str,
+    headline_label: str,
+    source_file: str,
+    document_id: str,
+) -> str:
+    """Render a search result row with a clickable source headline."""
+    # Store navigation target in session state via a hidden widget
+    _nav_store_key = f"_dbma_nav_{nav_key}"
+
+    # Hidden button to capture click (Streamlit requires widget for side effects)
+    clicked = st.button(
+        f"📄 {headline_label}",
+        key=nav_key,
+        type="primary",
+        use_container_width=False,
+        help=f"출처: {source_file or 'N/A'}",
+    )
+
+    if clicked:
+        st.session_state[_nav_store_key] = {
+            "source_file": source_file,
+            "document_id": document_id,
+            "label": headline_label,
+            "title": title,
+            "score": score,
+        }
+        st.rerun()
+
+    # Build the HTML row with clickable title span
+    title_html = f'<span style="font-size: 14px; font-weight: 600; color: {THEME.BRAND_PRIMARY}; cursor: pointer;">{i + 1}. {headline_label}</span>'
+
+    return f"""
+    <div style="
+        background: {THEME.BG_SURFACE};
+        border: 1px solid {THEME.BORDER_LIGHT};
+        border-radius: 6px;
+        padding: {12}px {16}px;
+        margin-bottom: {8}px;
+    ">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            {title_html}
+            <span style="
+                font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+                background: {score_color}18; color: {score_color};
+            ">
+                RRF {score:.4f}
+            </span>
+        </div>
+        <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 4px;">
+            {doc_type}
+            {f' • {source}' if source else ''}
+        </div>
+        {f'<div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.5;">{snippet}</div>' if snippet else ''}
+    </div>
+    """
 
 
 def _truncate(text: str, max_len: int) -> str:
