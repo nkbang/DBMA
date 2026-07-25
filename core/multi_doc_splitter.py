@@ -40,7 +40,10 @@ SERMON_SPLIT_SUBDIR = "설교_분리"
 
 _UNSAFE_FILENAME_CHARS_RE = re.compile(r'[\\/:*?"<>|]')
 
-_TITLE_PREFIX_RE = re.compile(r"^\s*제목\s*:\s*")
+# [버그 수정 2026-07-24] 실측 결과 "제목:" 외에 "설교 제목:" 변형도
+# 앵커로 쓰인다(6곳 확인 — 이 때문에 merged 설교가 6건 생겨 사용자가
+# 발견/보고함). "설교" 접두어를 선택적으로 허용.
+_TITLE_PREFIX_RE = re.compile(r"^\s*(설교\s*)?제목\s*:\s*")
 # "본문:" 또는 "본문 말씀:" 등 변형을 모두 잡는다 — "본문"과 ":" 사이에
 # 공백/다른 글자가 낄 수 있음(실측: "본문 말씀:" 확인).
 _SCRIPTURE_PREFIX_RE = re.compile(r"본문\s*[가-힣]*\s*:\s*")

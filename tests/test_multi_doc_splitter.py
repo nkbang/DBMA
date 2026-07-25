@@ -89,6 +89,21 @@ class TestSplitSermonCollection:
         records = split_sermon_collection(text)
         assert records[0].date is None
 
+    def test_seolgyo_jemok_prefix_variant_is_recognized_as_anchor(self):
+        """[버그 수정 2026-07-24, 사용자 보고] "제목:" 뿐 아니라 "설교
+        제목:"도 앵커로 인식해야 한다 — 실측: "2025년 설교 모음.rtf"
+        에서 6곳이 이 변형을 써서 자동 분리가 놓쳐 여러 설교가 하나로
+        병합돼 있었다(사용자가 발견해 보고)."""
+        text = "\n".join([
+            "제목: 첫 설교",
+            "본문 내용1",
+            "설교 제목: 둘째 설교",
+            "본문 내용2",
+        ])
+        records = split_sermon_collection(text)
+        assert len(records) == 2
+        assert records[1].title == "둘째 설교"
+
     def test_date_does_not_leak_across_sermons(self):
         """이전 설교의 날짜가 다음 설교로 잘못 붙지 않아야 한다."""
         text = "\n".join([
