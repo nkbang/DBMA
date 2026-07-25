@@ -184,6 +184,26 @@ def extract_text_from_html(path: str) -> str:
     return soup.get_text("\n", strip=True).strip()
 
 
+def _fix_or_strip_lone_surrogates(text: str) -> str:
+    """[버그 수정 2026-07-24] striprtf가 이모지 등 BMP 밖 문자를 나타내는
+    RTF `\\uXXXX\\uXXXX`(UTF-16 서로게이트 쌍) 이스케이프를 하나의
+    코드포인트로 합치지 못하고 분리된 서로게이트 코드유닛 그대로
+    남기는 경우가 있다(실측: "2025년 설교 모음.rtf"의 29개 설교 중
+    5개에서 발견). 이런 lone surrogate는 유효한 유니코드 텍스트가
+    아니라 UTF-8로 인코딩할 수 없고, Streamlit이 protobuf 메시지에
+    담는 순간(markdown 등 렌더링 시) 크래시한다.
+
+    UTF-16 왕복 인코딩으로 인접한 high+low 서로게이트 쌍을 원래
+    코드포인트(예: 이모지)로 복원한다 — 그 뒤에도 남아있는(쌍을
+    못 이룬) 서로게이트는 복구 불가능하므로 제거한다(크래시를
+    막는 게 원본 완전 보존보다 우선)."""
+    try:
+        text = text.encode("utf-16", "surrogatepass").decode("utf-16")
+    except UnicodeError:
+        pass
+    return "".join(ch for ch in text if not (0xD800 <= ord(ch) <= 0xDFFF))
+
+
 def extract_text_from_rtf(path: str) -> str:
     """BUG-13 fix: striprtf 미설치 시 명확한 예외 발생."""
     if not _HAS_STRIPRTF:
@@ -191,7 +211,7 @@ def extract_text_from_rtf(path: str) -> str:
             "RTF 추출에는 striprtf 가 필요합니다: pip install striprtf"
         )
     raw = read_text_file(path)
-    return _rtf_to_text(raw).strip()
+    return _fix_or_strip_lone_surrogates(_rtf_to_text(raw).strip())
 
 
 # ─────────────────────────────────────────────────────────

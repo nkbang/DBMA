@@ -8,9 +8,11 @@
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.multi_doc_splitter import split_sermon_collection
+from core.multi_doc_splitter import split_sermon_collection, manual_split, SermonRecord
 
 
 class TestSplitSermonCollection:
@@ -96,3 +98,86 @@ class TestSplitSermonCollection:
         assert len(records) == 2
         assert records[0].date == "2025-01-05"
         assert records[1].date is None
+
+
+class TestManualSplit:
+    """리뷰 화면에서 자동 분리가 놓친 2건짜리 SermonRecord를 사용자가
+    지정한 지점에서 수동으로 나누는 기능."""
+
+    def _record(self, body_lines):
+        return SermonRecord(
+            title="합쳐진 설교", date="2025-06-01", scripture="시편 23편",
+            body="\n".join(body_lines), start_line=0, end_line=10,
+        )
+
+    def test_split_in_the_middle(self):
+        record = self._record(["첫 설교 1줄", "첫 설교 2줄", "둘째 설교 1줄", "둘째 설교 2줄"])
+        first, second = manual_split(
+            record, cut_line=2, new_title="두 번째 설교",
+            new_date="2025-06-08", new_scripture="로마서 1:1",
+        )
+
+        assert first.body == "첫 설교 1줄\n첫 설교 2줄"
+        assert second.body == "둘째 설교 1줄\n둘째 설교 2줄"
+
+    def test_first_part_keeps_original_metadata(self):
+        record = self._record(["A", "B"])
+        first, _ = manual_split(
+            record, cut_line=1, new_title="새 설교",
+            new_date="2025-06-08", new_scripture="로마서 1:1",
+        )
+        assert first.title == "합쳐진 설교"
+        assert first.date == "2025-06-01"
+        assert first.scripture == "시편 23편"
+
+    def test_second_part_uses_new_metadata(self):
+        record = self._record(["A", "B"])
+        _, second = manual_split(record, cut_line=1, new_title="새 설교", new_date="2025-06-08", new_scripture="로마서 1:1")
+        assert second.title == "새 설교"
+        assert second.date == "2025-06-08"
+        assert second.scripture == "로마서 1:1"
+
+    def test_missing_date_raises(self):
+        """[2026-07-24, 사용자 요청] 제목/날짜/성구 중 하나라도 없으면
+        분할 자체를 실행하지 않는다."""
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError, match="날짜"):
+            manual_split(record, cut_line=1, new_title="새 설교", new_scripture="로마서 1:1")
+
+    def test_missing_scripture_raises(self):
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError, match="성구"):
+            manual_split(record, cut_line=1, new_title="새 설교", new_date="2025-06-08")
+
+    def test_missing_title_raises(self):
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError, match="제목"):
+            manual_split(record, cut_line=1, new_title="", new_date="2025-06-08", new_scripture="로마서 1:1")
+
+    def test_blank_whitespace_fields_also_raise(self):
+        """빈 문자열뿐 아니라 공백만 있는 입력도 "없음"으로 취급."""
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError):
+            manual_split(record, cut_line=1, new_title="새 설교", new_date="   ", new_scripture="로마서 1:1")
+
+    def test_all_fields_missing_lists_all_in_message(self):
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError) as exc_info:
+            manual_split(record, cut_line=1, new_title="")
+        message = str(exc_info.value)
+        assert "제목" in message and "날짜" in message and "성구" in message
+
+    def test_cut_line_zero_raises(self):
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError, match="cut_line"):
+            manual_split(record, cut_line=0, new_title="x", new_date="2025-06-08", new_scripture="로마서 1:1")
+
+    def test_cut_line_at_end_raises(self):
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError, match="cut_line"):
+            manual_split(record, cut_line=2, new_title="x", new_date="2025-06-08", new_scripture="로마서 1:1")
+
+    def test_cut_line_beyond_length_raises(self):
+        record = self._record(["A", "B"])
+        with pytest.raises(ValueError, match="cut_line"):
+            manual_split(record, cut_line=99, new_title="x", new_date="2025-06-08", new_scripture="로마서 1:1")

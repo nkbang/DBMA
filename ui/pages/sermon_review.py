@@ -17,7 +17,7 @@ import streamlit as st
 from ui.pages._base import BasePage
 from core.config import DEFAULT_RAW_DIR, SUPPORTED_EXTENSIONS
 from core.extractors import extract_text_from_file
-from core.multi_doc_splitter import split_sermon_collection, SermonRecord
+from core.multi_doc_splitter import split_sermon_collection, manual_split, SermonRecord
 
 
 def render_sermon_review_page() -> None:
@@ -39,6 +39,7 @@ def render_sermon_review_page() -> None:
 
     _render_sermon_navigator(records)
     _render_selected_sermon(records)
+    _render_manual_split(records)
 
     page.render_footer()
 
@@ -139,3 +140,71 @@ def _render_selected_sermon(records: list[SermonRecord]) -> None:
     st.caption(" · ".join(meta_parts))
 
     st.markdown(record.body if record.body else "_본문 없음_")
+
+
+def _render_manual_split(records: list[SermonRecord]) -> None:
+    """자동 분리("제목:" 앵커)가 놓쳐서 한 조각 안에 실제로는 설교
+    2개가 남아있는 경우, 사용자가 본문을 훑어보고 지정한 줄부터를
+    새 설교로 떼어낸다(core.multi_doc_splitter.manual_split()).
+    떼어낸 뒤에는 목록에 새 항목으로 추가되고, 리스트/네비게이션은
+    다음 rerun에서 그대로 반영된다."""
+    index = st.session_state.get("sermon_review_index", 0)
+    record = records[index]
+    lines = record.body.split("\n")
+
+    if len(lines) < 2:
+        return  # 본문이 한 줄뿐이면 나눌 대상이 없음
+
+    with st.expander("🔀 이 안에 설교가 2개 이상 섞여 있나요? 수동으로 분할"):
+        cut_line = st.slider(
+            "몇 번째 줄부터 새 설교로 분리할까요?",
+            min_value=1, max_value=len(lines) - 1, value=len(lines) // 2,
+            key=f"sermon_split_cut_{index}",
+            help="이 줄부터(포함) 끝까지가 새 설교로 떨어져 나갑니다.",
+        )
+
+        col_before, col_after = st.columns(2)
+        with col_before:
+            st.caption("분할 전 마지막 부분(기존 설교)")
+            st.text("\n".join(lines[max(0, cut_line - 3):cut_line]))
+        with col_after:
+            st.caption("분할 후 시작 부분(새 설교)")
+            st.text("\n".join(lines[cut_line:cut_line + 3]))
+
+        # [2026-07-24, 사용자 요청] 제목/날짜/성구 셋 다 필수 — 자동
+        # 분리와 달리 수동 보정이라 "모르면 비워둔다"를 허용하지 않는다.
+        # core.multi_doc_splitter.manual_split()도 동일하게 강제하므로
+        # (방어적 이중 검증), 여기서 비활성화하는 건 UX용 — 우회해서
+        # 호출해도 함수 자체가 막는다.
+        new_title = st.text_input("새로 분리될 설교의 제목(필수)", key=f"sermon_split_title_{index}")
+        col_date, col_scripture = st.columns(2)
+        with col_date:
+            new_date = st.text_input("날짜(필수, YYYY-MM-DD)", key=f"sermon_split_date_{index}")
+        with col_scripture:
+            new_scripture = st.text_input("성구(필수)", key=f"sermon_split_scripture_{index}")
+
+        missing = [
+            label for label, value in (("제목", new_title), ("날짜", new_date), ("성구", new_scripture))
+            if not value.strip()
+        ]
+        if missing:
+            st.caption(f"⚠️ 아직 입력 안 됨: {', '.join(missing)} — 전부 입력해야 분할할 수 있습니다.")
+
+        if st.button("✂️ 이 지점에서 분할 실행", disabled=bool(missing), key=f"sermon_split_go_{index}"):
+            try:
+                first, second = manual_split(
+                    record,
+                    cut_line=cut_line,
+                    new_title=new_title.strip(),
+                    new_date=new_date.strip(),
+                    new_scripture=new_scripture.strip(),
+                )
+            except ValueError as e:
+                st.error(f"[분할 실패] {e}")
+                return
+            records[index] = first
+            records.insert(index + 1, second)
+            st.session_state["sermon_review_records"] = records
+            st.session_state["sermon_review_index"] = index
+            st.success(f"분할 완료 — \"{second.title}\"이(가) 새 설교로 추가되었습니다.")
+            st.rerun()

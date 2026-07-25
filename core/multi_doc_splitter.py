@@ -84,6 +84,63 @@ def _find_scripture_nearby(lines: list[str], title_index: int, section_end: int)
     return None
 
 
+def manual_split(
+    record: SermonRecord,
+    cut_line: int,
+    new_title: str,
+    new_date: Optional[str] = None,
+    new_scripture: Optional[str] = None,
+) -> tuple[SermonRecord, SermonRecord]:
+    """자동 분리가 한 SermonRecord 안에 실제로는 서로 다른 설교 2개를
+    남겨둔 경우, 사용자가 리뷰 중 지정한 지점(cut_line — record.body를
+    줄 단위로 나눴을 때의 인덱스, 이 줄부터 두 번째 설교로 취급)에서
+    수동으로 다시 나눈다.
+
+    [2026-07-24, 사용자 요청] 자동 탐지("제목:" 앵커)가 놓친 경우를
+    수동으로 보정하는 기능이므로, **제목/날짜/성구 세 가지 모두
+    필수** — 자동 분리(split_sermon_collection)와 달리 "찾았으면
+    쓰고 못 찾으면 None"이 아니라, 사용자가 이 자리에서 직접 확인해
+    입력해야 한다. 셋 중 하나라도 비어 있으면 분할 자체를 실행하지
+    않고 ValueError — UI 쪽에서도 버튼을 비활성화하지만, 이 함수를
+    직접 호출하는 경우에도 동일하게 강제한다(방어적 이중 검증).
+
+    Returns: (첫 번째 조각 — 원래 record의 메타데이터 유지,
+              두 번째 조각 — 신규 메타데이터)"""
+    missing = [
+        label for label, value in (("제목", new_title), ("날짜", new_date), ("성구", new_scripture))
+        if not (value or "").strip()
+    ]
+    if missing:
+        raise ValueError(f"다음 항목이 없어 분할할 수 없습니다: {', '.join(missing)}")
+
+    lines = record.body.split("\n")
+    if not (0 < cut_line < len(lines)):
+        raise ValueError(
+            f"cut_line은 1~{len(lines) - 1} 사이여야 합니다 (본문 총 {len(lines)}줄, 받은 값: {cut_line})"
+        )
+
+    first_body = "\n".join(lines[:cut_line]).strip()
+    second_body = "\n".join(lines[cut_line:]).strip()
+
+    first = SermonRecord(
+        title=record.title,
+        date=record.date,
+        scripture=record.scripture,
+        body=first_body,
+        start_line=record.start_line,
+        end_line=record.end_line,
+    )
+    second = SermonRecord(
+        title=new_title,
+        date=new_date,
+        scripture=new_scripture,
+        body=second_body,
+        start_line=record.start_line,
+        end_line=record.end_line,
+    )
+    return first, second
+
+
 def split_sermon_collection(text: str) -> list[SermonRecord]:
     """설교 모음 텍스트를 개별 SermonRecord 목록으로 분리한다.
 
