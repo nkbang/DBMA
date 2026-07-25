@@ -19,3 +19,9 @@ PyMuPDF
 pypdf
 easyocr
 sentence-transformers
+
+# core/tli/hunspell_adapter.py — 한국어 맞춤법 검사(설교 에디터 전용).
+# Apple Silicon에서 plain `pip install hunspell`이 실패한다(패키지
+# setup.py가 Intel Homebrew 경로를 하드코딩) — 설치 절차는
+# core/tli/hunspell_adapter.py 모듈 docstring 참고.
+hunspell

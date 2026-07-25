@@ -22,6 +22,8 @@ from core.retrieval import QueryProcessor
 from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
 from core.sermon.bible_books import BIBLE_BOOKS
 from core.sermon.doctrine_filter import check as doctrine_check
+# TLI interface via factory — UI MUST NOT import hunspell_adapter directly
+from core.tli.spell_engine import create_spell_engine
 from ui.state.query_processor import get_shared_query_processor
 
 _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크게
@@ -221,14 +223,42 @@ def _render_outline_step() -> None:
 
     conclusion = st.text_area("결론", value=outline.conclusion, height=80, key="sermon_outline_conclusion")
 
+    # §2.3 맞춤법 검사: "💾 수정 반영" 버튼 클릭 시 서론+대지+결론 전체 검사
+    spell_errors: list[dict] = []
+    if st.session_state.get("_spellcheck_pending_outline"):
+        all_text = f"{title} {introduction} {' '.join(edited_points)} {conclusion}"
+        _spell_engine = create_spell_engine()
+        spell_errors = _spell_engine.check(all_text)
+        if spell_errors:
+            word_list = ", ".join(f"`{e['word']}`" for e in spell_errors[:10])
+            st.warning(
+                f"맞춤법 확인이 필요할 수 있는 단어 ({len(spell_errors)}개): {word_list}"
+                f"\n오탐이면 각 단어 옆 '정상' 버튼을 클릭하면 사용자 사전에 추가됩니다."
+            )
+            for err in spell_errors[:10]:
+                cols = st.columns([3, 1, 6])
+                with cols[0]:
+                    st.caption(f"`{err['word']}` (위치: {err['offset']})")
+                with cols[1]:
+                    if st.button("✓ 정상", key=f"spell_ok_{err['word']}"):
+                        _spell_engine.add_to_custom_dictionary(err["word"])
+                        st.session_state["_spellcheck_pending_outline"] = False
+                        st.rerun()
+                with cols[2]:
+                    if err["suggestions"]:
+                        st.caption(f"추천: {', '.join(err['suggestions'][:3])}")
+
     col1, col2 = st.columns(2)
     with col1:
         if st.button("💾 수정 반영", use_container_width=True):
+            # 맞춤법 검사 플래그 설정 (다음 render에서 check_korean_spelling 호출)
+            st.session_state["_spellcheck_pending_outline"] = True
             state["outline"] = SermonOutline(
                 title=title, introduction=introduction, points=edited_points, conclusion=conclusion
             )
             state["status"] = "reviewing"
             st.success("반영되었습니다.")
+            st.rerun()
     with col2:
         if st.button("✅ 개요 승인 — 확장 단계로", type="primary", use_container_width=True):
             state["outline"] = SermonOutline(
@@ -248,6 +278,33 @@ def _render_expansion_step() -> None:
         return
 
     style_examples = _build_style_examples(state["style_files"])
+
+    # §2.3 맞춤법 검사: 확장 단계에서도 검사
+    spell_errors_expansion: list[dict] = []
+    if st.session_state.get("_spellcheck_pending_expansion"):
+        all_text_expansion = f"{state['scripture_and_theme']} " + " ".join(
+            state["expanded"].get(i, "") for i in range(len(outline.points))
+        )
+        _spell_engine_exp = create_spell_engine()
+        spell_errors_expansion = _spell_engine_exp.check(all_text_expansion)
+        if spell_errors_expansion:
+            word_list = ", ".join(f"`{e['word']}`" for e in spell_errors_expansion[:10])
+            st.warning(
+                f"맞춤법 확인이 필요할 수 있는 단어 ({len(spell_errors_expansion)}개): {word_list}"
+                f"\n오탐이면 각 단어 옆 '정상' 버튼을 클릭하면 사용자 사전에 추가됩니다."
+            )
+            for err in spell_errors_expansion[:10]:
+                cols = st.columns([3, 1, 6])
+                with cols[0]:
+                    st.caption(f"`{err['word']}` (위치: {err['offset']})")
+                with cols[1]:
+                    if st.button("✓ 정상", key=f"spell_ok_exp_{err['word']}"):
+                        _spell_engine_exp.add_to_custom_dictionary(err["word"])
+                        st.session_state["_spellcheck_pending_expansion"] = False
+                        st.rerun()
+                with cols[2]:
+                    if err["suggestions"]:
+                        st.caption(f"추천: {', '.join(err['suggestions'][:3])}")
 
     for i, point in enumerate(outline.points):
         already_done = i in state["expanded"]
@@ -280,6 +337,12 @@ def _render_expansion_step() -> None:
         st.subheader("📄 완성된 설교문 초안")
         full_draft = _assemble_draft(outline, state["expanded"])
         st.markdown(full_draft)
+        # §2.3: 다운로드 전 맞춤법 검사 플래그 설정
+        if spell_errors_expansion:
+            st.warning(
+                f"전체 설교문 맞춤법 확인 필요 ({len(spell_errors_expansion)}개): "
+                + ", ".join(f"`{e['word']}`" for e in spell_errors_expansion[:10])
+            )
         st.download_button(
             "⬇️ 다운로드 (.md)",
             data=full_draft,

@@ -12,6 +12,45 @@
 
 ---
 
+## Addendum (2026-07-24, CUE) — TLI 비전 문서 반영
+
+Human HQ가 `docs/architecture/DBMA-TLI-Architecture-Vision-v1.md`
+(장기 비전 문서, TLI = Theology Language Intelligence)를 제시했다.
+CUE 검토 결과 방향은 승인하되, **이번 Task Order의 구현 범위는
+그 문서의 §19 범위 그대로 유지하고 다음 형태로만 좁혀 반영한다**:
+
+- §2.1의 `core/spellcheck.py` 단일 모듈 대신, **`core/tli/` 패키지에
+  파일 2개만** 만든다:
+  - `core/tli/spell_engine.py` — 추상 인터페이스(예:
+    `class SpellEngine(Protocol): def check(self, text: str) -> list[dict]`)
+  - `core/tli/hunspell_adapter.py` — `check_korean_spelling()`의
+    실제 구현(§2.1 로직 그대로, hunspell 우선 → §5 폴백 순서 동일)이
+    `SpellEngine`을 구현.
+- `ui/pages/sermon_draft.py`는 `hunspell_adapter`를 직접 import하지
+  않고, `spell_engine.py`가 노출하는 인터페이스(또는 그 인터페이스를
+  구현한 인스턴스를 반환하는 간단한 factory 함수 하나)를 통해서만
+  호출한다 — "UI → Hunspell 직접 연결 금지" 원칙(비전 문서 §5) 반영.
+- **Dictionary Engine / Style Engine / Citation Engine / Named Entity
+  Engine 파일은 이번에 생성하지 않는다** — 빈 스텁도 금지. 비전
+  문서 §4의 다이어그램은 장기 목표이지 이번 라운드 산출물이 아니다.
+  필요해지면 그때 가서 새 Task Order로 하나씩 만든다.
+- `resources/hunspell/custom_theology.dic`(§2.2)는 비전 문서의
+  `resources/dictionary/theology/` 구조를 미리 다 만들 필요 없이,
+  이번 Task 범위에 필요한 최소 파일 하나만 있으면 된다.
+- 그 외 §1~§7(배경/설계/테스트/금지사항/폴백/완료절차/원칙)은 전부
+  원문 그대로 유효하다 — 변경 없음.
+
+즉: "TLI라는 이름의 인터페이스 계층 뒤에 hunspell을 숨긴다"는 모양만
+반영하고, 그 계층 안에 아직 안 쓰는 다른 Engine들을 미리 만들지는
+않는다.
+
+파일명 매핑(§3/§6 원문의 `tests/test_spellcheck.py` → 대체):
+`tests/test_tli_hunspell_adapter.py` 하나로 §3의 (a)~(d) 케이스를
+전부 커버하면 된다 — 인터페이스 파일(`spell_engine.py`)은 추상
+정의뿐이라 별도 테스트 불필요.
+
+---
+
 ## 1. 배경
 
 사용자가 "설교문이 투입되면 한글 맞춤법을 확인하는 것이 좋겠다"고
