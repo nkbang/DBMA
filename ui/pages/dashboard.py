@@ -248,12 +248,13 @@ def _get_effective_documents() -> dict:
 
 # ── Document Type (doc_type) Summary & Manual Labeling ──────────────
 
-_DOC_TYPE_ORDER = ["주석", "설교", "사전", "논문", "기타"]
+_DOC_TYPE_ORDER = ["주석", "설교", "사전", "논문", "조직신학", "기타"]
 _DOC_TYPE_ICONS = {
     "주석": "📖",
     "설교": "🎤",
     "사전": "📚",
     "논문": "📜",
+    "조직신학": "⛪",
     "기타": "📁",
 }
 # 유형별 수량사 — 책 형태 자료는 "권", 낱건 자료는 "건"으로 구분.
@@ -262,6 +263,7 @@ _DOC_TYPE_UNITS = {
     "설교": "건",
     "사전": "권",
     "논문": "건",
+    "조직신학": "권",
     "기타": "권",
 }
 
@@ -271,10 +273,18 @@ def _render_doc_type_summary() -> None:
 
     [버그 수정 2026-07-22] "정리된 자료" 카드와 동일한 _get_effective_documents()
     집합을 쓴다 — 이전엔 여기서 registry 전체(superseded/실패 포함)를
-    분모로 삼아 "정리된 자료" 카드와 항상 어긋났다."""
+    분모로 삼아 "정리된 자료" 카드와 항상 어긋났다.
+
+    [기능 추가] 유형 카드를 클릭하면 해당 유형의 문서 리스트를 보이고,
+    각 문서의 유형을 변경할 수 있다.
+    """
     docs = _get_effective_documents()
     if not docs:
         return
+
+    # Initialize session state for selected type filter
+    if "selected_doc_type" not in st.session_state:
+        st.session_state["selected_doc_type"] = None
 
     # Count by type
     counts: dict[str, int] = {t: 0 for t in _DOC_TYPE_ORDER}
@@ -294,17 +304,95 @@ def _render_doc_type_summary() -> None:
         unsafe_allow_html=True,
     )
 
-    # Display as small metric cards
+    # Display as clickable metric cards
     cols = st.columns(len(_DOC_TYPE_ORDER))
     for i, doc_type in enumerate(_DOC_TYPE_ORDER):
         with cols[i]:
             icon = _DOC_TYPE_ICONS.get(doc_type, "📁")
-            st.metric(f"{icon} {doc_type}", f"{counts[doc_type]}{_DOC_TYPE_UNITS.get(doc_type, '개')}")
+            count = counts[doc_type]
+            # Use button with on_click to toggle selection
+            clicked = st.button(
+                f"{icon}\n**{doc_type}**\n{count}{_DOC_TYPE_UNITS.get(doc_type, '개')}",
+                key=f"_type_card_{doc_type}",
+                use_container_width=True,
+            )
+            if clicked:
+                # Toggle: click same type again → deselect
+                if st.session_state["selected_doc_type"] == doc_type:
+                    st.session_state["selected_doc_type"] = None
+                else:
+                    st.session_state["selected_doc_type"] = doc_type
+                st.rerun()
 
-    # Manual labeling section for untyped documents (one row per document)
-    if untyped_ids:
-        st.markdown(f"<div style='margin-top: 1rem; font-size: 13px;'>미라벨링 문서 ({len(untyped_ids)}개)</div>", unsafe_allow_html=True)
-        _render_manual_labeler(docs, untyped_ids)
+    # Show document list for selected type
+    selected_type = st.session_state.get("selected_doc_type")
+    if selected_type:
+        _render_doc_type_detail(docs, selected_type, untyped_ids)
+    else:
+        # Show untyped documents section only when no type is selected
+        if untyped_ids:
+            st.markdown(f"<div style='margin-top: 1rem; font-size: 13px;'>미라벨링 문서 ({len(untyped_ids)}개)</div>", unsafe_allow_html=True)
+            _render_manual_labeler(docs, untyped_ids)
+
+
+def _render_doc_type_detail(docs: dict, selected_type: str, untyped_ids: list[str]) -> None:
+    """Show documents of the selected type and allow type changes with inline type buttons."""
+    st.divider()
+    
+    # Header with deselect button
+    col_title, col_close = st.columns([5, 1])
+    with col_title:
+        icon = _DOC_TYPE_ICONS.get(selected_type, "📁")
+        st.markdown(f"**{icon} {selected_type} 문서**")
+    with col_close:
+        if st.button("✕", key=f"_close_{selected_type}", help="닫기"):
+            st.session_state["selected_doc_type"] = None
+            st.rerun()
+    
+    # Filter documents by selected type
+    type_docs = {}
+    for doc_id, doc in docs.items():
+        if doc.get("doc_type") == selected_type:
+            type_docs[doc_id] = doc
+    
+    if not type_docs:
+        st.info(f"{_DOC_TYPE_ICONS.get(selected_type, '')} {selected_type} 문서가 없습니다.")
+        return
+    
+    st.caption(f"{len(type_docs)}개 문서")
+    
+    # Display each document with an inline type dropdown (name 우측)
+    #
+    # [레이아웃 수정 2026-07-24, 2차] 1차 수정(균등 폭 → 넓은 비율
+    # 컬럼)은 1600px 너비 브라우저에서는 한 줄로 나왔지만, 사용자의
+    # 실제 창 너비에서는 여전히 세로로 쌓였다 — 원인은 비율이 아니라
+    # **컬럼 개수 자체**였다. Streamlit은 `st.columns()`를 컨테이너
+    # 너비가 좁으면(다수 컬럼일수록 더 쉽게 걸림) 자동으로 세로 스택
+    # 레이아웃으로 전환한다(반응형 동작, 비율 조정으로 못 피함).
+    # 유형별 버튼 6개를 각각 별도 컬럼으로 쓰는 대신, 컬럼을 2개(문서명
+    # + 유형 선택 드롭다운 1개)로 줄여 좁은 창에서도 한 줄을 유지한다.
+    for doc_id, doc in type_docs.items():
+        source_file = doc.get("source_file", doc_id)
+        current_type = doc.get("doc_type", "")
+
+        col_name, col_select = st.columns([4, 1])
+        with col_name:
+            st.markdown(f"**{_DOC_TYPE_ICONS.get(current_type, '📁')} {source_file}**")
+
+        with col_select:
+            options = list(_DOC_TYPE_ORDER)
+            current_index = options.index(current_type) if current_type in options else 0
+            chosen = st.selectbox(
+                "유형",
+                options=options,
+                index=current_index,
+                key=f"_type_select_{doc_id}",
+                label_visibility="collapsed",
+                format_func=lambda t: f"{_DOC_TYPE_ICONS.get(t, '📁')} {t}",
+            )
+            if chosen != current_type:
+                _save_doc_type(doc_id, chosen)
+                st.rerun()
 
 
 def _render_manual_labeler(docs: dict, untyped_ids: list[str]) -> None:

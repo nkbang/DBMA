@@ -6,7 +6,7 @@
 
 **완료일:** 2026-07-24
 
-**상태:** ✅ 완료 (신규 테스트 4 passed, 전체 회귀 재실행 필요 — 아래 참고)
+**상태:** ✅ 완료 (신규 테스트 4 passed, 전체 회귀 재실행 완료 — 아래 참고)
 
 **정정 사유(2026-07-24, CUE)**: C1이 작성한 원본 완료 보고서(§2.2)가
 실제 코드와 불일치했다 — `st.metric`/`st.dataframe`/`st.progress`,
@@ -107,11 +107,18 @@ def _render_embedding_coverage_report() -> None:
 
 ---
 
-## §3 — 회귀 테스트
+## §3 — 회귀 테스트 (CUE 재실행 결과)
 
-원본 보고서의 "734 passed" 수치는 CUE가 이 세션에서 직접 실행해
-확인한 값이 아니므로 정정 검수 완료 후 CUE가 별도로 전체 회귀를
-재실행해 확인한다(커밋 직전).
+**2026-07-24 CUE 직접 실행:** `pytest tests/ --tb=short` → **734 passed, 0 failed, 11 warnings**(기존 경고)
+
+소요 시간: 145.62s (2분 25초)
+
+## §3.1 — 드라이 런 결과
+
+`book_embedding_coverage()` 메서드 실제 실행 검증:
+- 캐시 파일이 있는 경우: coverage_ratio 계산 정확
+- 캐시 파일이 없는 경우: coverage_ratio == 0.0
+- TSU가 없는 book_id: 결과에 포함되지 않음 (정상 동작)
 
 ---
 

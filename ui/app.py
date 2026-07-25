@@ -6,6 +6,13 @@ Main application entry point with navigation across all pages.
 from pathlib import Path
 import streamlit as st
 import sys
+import os
+
+# Ensure project root is on sys.path so `core.*` imports work
+# regardless of how/where streamlit is launched from.
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 # Configure page
 st.set_page_config(
@@ -24,6 +31,7 @@ from ui.pages.research import render_research_page
 from ui.pages.monitor import render_monitor_page
 from ui.pages.chat import render_chat_page
 from ui.pages.sermon_draft import render_sermon_draft_page
+from ui.pages.sermon_review import render_sermon_review_page
 
 
 def main() -> None:
@@ -127,6 +135,7 @@ def _render_sidebar() -> str:
             "Research": ("🔬", "연구 워크스페이스"),
             "Chat": ("💬", "RAG 채팅"),
             "설교문 작성": ("📝", "설교문 작성 워크숍"),
+            "설교 리뷰": ("🗂️", "설교 모음 분리·검수"),
             "Monitor": ("💚", "시스템 모니터링"),
         }
 
@@ -183,6 +192,7 @@ def _render_page_content(page: str) -> None:
         "Research": render_research_page,
         "Chat": render_chat_page,
         "설교문 작성": render_sermon_draft_page,
+        "설교 리뷰": render_sermon_review_page,
         "Monitor": render_monitor_page,
     }
 
