@@ -8,6 +8,7 @@ import unicodedata
 from datetime import datetime
 from typing import Optional
 
+import pandas as pd
 import streamlit as st
 from pathlib import Path
 
@@ -404,6 +405,12 @@ def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
             document_id, _ = _find_registry_record(source_filename)
             saved = _save_chunk_snapshot(stem, source_filename, document_id, result)
             st.success(f"저장됨: {saved}")
+
+        chunk_lengths = pd.DataFrame(
+            {"chunk_idx": list(range(1, len(result.chunks) + 1)),
+             "length": [len(c) for c in result.chunks]}
+        ).set_index("chunk_idx")
+        st.bar_chart(chunk_lengths)
 
         for i, chunk in enumerate(result.chunks):
             st.text_area(
