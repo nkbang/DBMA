@@ -12,14 +12,13 @@ Production Engineering / Release Stabilization
 
 Development Boundary:
 
-Sprint 15 is the FINAL development sprint.
-
-After Sprint 15:
-
-* Maintenance only
-* Bug fixes only
-* No architectural expansion
-* No speculative features
+[2026-07-26 정정] "Sprint 15가 마지막"이라는 아래 경계는 이미 지난
+사실이다 — 실제로는 SPRINT27~33까지 아키텍처급 변경(Research Workspace
+Layer, Boundary Score 모델, Hierarchical Chunk Builder 등, ADR-004~008)이
+사용자 승인 하에 계속 진행됐다. "Sprint 15 이후 아키텍처 확장 금지"를
+현재 유효한 제약으로 취급하지 마라. 현재 진행 상태의 유일한 권위 소스는
+docs/STATE.md이다 — 작업 전 반드시 그 파일을 먼저 확인하라. 아래
+숫자(Sprint 13/14/15)는 참고용 이력으로만 남겨둔다.
 
 ---
 
@@ -226,7 +225,28 @@ large redesigns
 
 ---
 
-## 7. Documentation Policy
+## 7. Git Commit Policy
+
+* NEVER run `git add` or `git commit` unless the user's Task Order
+  explicitly asks for a commit in that same request.
+* A request to investigate, report, fix, or implement does NOT imply
+  permission to commit — implementing and committing are separate
+  approvals.
+* Read-only/investigation tasks (status reports, audits, greps) must
+  leave `git status` unchanged. Do not stage or commit anything as a
+  side effect of "cleaning up" while investigating.
+* If you believe a commit is warranted but the Task Order didn't ask
+  for one, say so in your report ("이 변경은 커밋이 필요해 보입니다")
+  and wait for explicit approval — do not commit preemptively.
+* Never use `git checkout --`, `git reset --hard`, `git restore`, or
+  any other command that discards working-tree changes unless the
+  user explicitly asked for that revert. If asked to "start over" or
+  something looks wrong, ask first — a prior session's uncommitted
+  work may be in that working tree.
+
+---
+
+## 8. Documentation Policy
 
 Documentation is required only when:
 
@@ -250,7 +270,7 @@ Priority:
 
 ---
 
-## 8. Validation Requirements
+## 9. Validation Requirements
 
 Every engineering change must verify:
 
@@ -276,7 +296,7 @@ Required checks:
 
 ---
 
-## 9. DBMA Pipeline Integrity
+## 10. DBMA Pipeline Integrity
 
 Maintain this pipeline:
 
@@ -320,7 +340,7 @@ Never bypass validation layers.
 
 ---
 
-## 10. Benchmark Rules
+## 11. Benchmark Rules
 
 Benchmark execution must use:
 
@@ -348,7 +368,7 @@ Metrics:
 
 ---
 
-## 11. Regression Rules
+## 12. Regression Rules
 
 Maintain:
 
@@ -370,22 +390,17 @@ baseline_v3.json
 
 ---
 
-## 12. Sprint Control
+## 13. Sprint Control
 
-Current:
+[2026-07-26 정정] 이 섹션의 "Sprint 13 → 14 → 15" 계획은 낡았다(파일
+최종 수정 2026-07-10, 실제로는 SPRINT33-D까지 진행됨). Sprint 번호를
+여기 다시 하드코딩하지 않는다 — 매번 새로 낡아지는 문제가 반복되므로,
+**현재 진행 중인 스프린트/체크포인트는 항상 docs/STATE.md를 읽어서
+확인**한다. 이 파일은 "이 프로젝트가 언젠가 유지보수 전용으로
+동결된다"는 원칙(아래 Final objectives)만 유지하고, 구체적 스프린트
+번호는 더 이상 여기서 관리하지 않는다.
 
-Sprint 13
-
-Remaining:
-
-Sprint 14
-Sprint 15
-
-Sprint 15 completion means:
-
-DBMA development freeze.
-
-Final objectives:
+동결 시 최종 목표(원칙은 유효, 시점은 docs/STATE.md 참고):
 
 * stable retrieval
 * validated corpus
@@ -394,7 +409,7 @@ Final objectives:
 
 ---
 
-## 13. Current Priority Order
+## 14. Current Priority Order
 
 Priority 1:
 
@@ -420,7 +435,7 @@ Do not prioritize UI or additional features.
 
 ---
 
-## 14. Response Format for Engineering Tasks
+## 15. Response Format for Engineering Tasks
 
 When completing tasks, report only:
 
@@ -434,7 +449,7 @@ Avoid unnecessary summaries.
 
 ---
 
-## 15. Final Engineering Principle
+## 16. Final Engineering Principle
 
 DBMA is no longer a prototype.
 
