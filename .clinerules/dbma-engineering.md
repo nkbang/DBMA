@@ -246,7 +246,47 @@ large redesigns
 
 ---
 
-## 8. Documentation Policy
+## 8. Verification & Anti-Fabrication Policy
+
+[2026-07-26/27 추가] 이 세션에서 반복적으로 발생한 실패 패턴을 막기
+위한 규칙이다. 발생했던 실제 사례: (a) 정적 문서(STATE.md/TODO.md)의
+낡은 서술을 실제 소스(ADR 파일 결론부)와 대조 없이 그대로 인용, (b)
+`git log`를 실행하지 않고 커밋 개수를 지어냄(47개라 했지만 실제
+180개), (c) 코드 docstring이 "no hardcoded values"라고 명시한 걸
+반대로 "하드코딩 문제 있음"으로 지어냄, (d) canary 테스트에서 실제
+문서 데이터 대신 doc_type별 하드코딩 mock 텍스트를 만들어 넣고 그
+결과를 실측 결과인 것처럼 보고함.
+
+* **숫자·상태·결론은 항상 재현 가능한 명령/파일 근거를 대라.** "N개
+  커밋", "M% 통과", "하드코딩됨/안 됨" 같은 주장을 쓰기 전에, 그
+  주장을 만든 정확한 명령(`git log ...`, `grep ...`, 실행한 스크립트
+  등)을 실제로 실행하고, 그 출력을 보고서에 그대로 인용하라. 암산하거나
+  이전 기억으로 대체하지 마라.
+* **정적 문서(STATE.md, TODO.md, ADR 요약 등)를 인용하기 전에 그
+  문서가 가리키는 원본(해당 ADR 파일의 결론/Next Steps 섹션, 실제
+  코드 파일)을 다시 열어서 확인하라.** 정적 문서는 항상 낡아있을 수
+  있다는 것을 기본 가정으로 삼는다.
+* **테스트/검증 스크립트에 mock, synthetic, 하드코딩된 샘플 데이터를
+  쓰지 마라 — 이미 "샘플 데이터 생성 금지" 규칙(§5)이 있지만, 이는
+  seed_generator류 도구뿐 아니라 canary/benchmark/validation 스크립트
+  내부에서 즉석으로 만드는 가짜 입력에도 동일하게 적용된다.** 실제
+  데이터를 못 구하면(예: 실제 heading을 못 가져오겠으면) mock으로
+  채우지 말고 막힌 지점을 그대로 보고하고 멈춰라.
+* **측정/판정 로직을 새로 만들기 전에 기존 코드에 이미 있는지 먼저
+  찾아라.** 후보 추출, 지표 계산, 분류 기준 등은 보통 이미 어딘가
+  구현돼 있다(예: `scripts/shadow_boundary_delta.py::candidates_
+  with_offsets()`, `core.hierarchical_chunk_builder.classify_
+  document_profile()`). grep으로 기존 구현을 먼저 찾고, 없다는 게
+  확실할 때만 새로 만들어라.
+* **"문제가 있다"거나 "해야 할 일"로 목록에 올리는 것 자체가 사실
+  주장이다.** 다른 상태 판단과 동일한 검증 기준(직접 파일/코드를
+  열어서 확인)을 적용하라 — 확인 안 하고 목록에 넣지 마라.
+* 여러 개의 서로 다른 Task Order 결과를 하나의 보고서에 섞지 마라.
+  각 작업은 그 작업이 요청한 것만 보고하라.
+
+---
+
+## 9. Documentation Policy
 
 Documentation is required only when:
 
@@ -270,7 +310,7 @@ Priority:
 
 ---
 
-## 9. Validation Requirements
+## 10. Validation Requirements
 
 Every engineering change must verify:
 
@@ -296,7 +336,7 @@ Required checks:
 
 ---
 
-## 10. DBMA Pipeline Integrity
+## 11. DBMA Pipeline Integrity
 
 Maintain this pipeline:
 
@@ -340,7 +380,7 @@ Never bypass validation layers.
 
 ---
 
-## 11. Benchmark Rules
+## 12. Benchmark Rules
 
 Benchmark execution must use:
 
@@ -368,7 +408,7 @@ Metrics:
 
 ---
 
-## 12. Regression Rules
+## 13. Regression Rules
 
 Maintain:
 
@@ -390,7 +430,7 @@ baseline_v3.json
 
 ---
 
-## 13. Sprint Control
+## 14. Sprint Control
 
 [2026-07-26 정정] 이 섹션의 "Sprint 13 → 14 → 15" 계획은 낡았다(파일
 최종 수정 2026-07-10, 실제로는 SPRINT33-D까지 진행됨). Sprint 번호를
@@ -409,7 +449,7 @@ baseline_v3.json
 
 ---
 
-## 14. Current Priority Order
+## 15. Current Priority Order
 
 Priority 1:
 
@@ -435,7 +475,7 @@ Do not prioritize UI or additional features.
 
 ---
 
-## 15. Response Format for Engineering Tasks
+## 16. Response Format for Engineering Tasks
 
 When completing tasks, report only:
 
@@ -449,7 +489,7 @@ Avoid unnecessary summaries.
 
 ---
 
-## 16. Final Engineering Principle
+## 17. Final Engineering Principle
 
 DBMA is no longer a prototype.
 
