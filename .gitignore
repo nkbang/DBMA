@@ -85,3 +85,6 @@ output_sav/
 # Backup snapshots
 *.bak_*
 dbma_env/
+
+# Secrets
+.webui_secret_key
