@@ -332,9 +332,15 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
       제안 2, commit `08d542a`, 2026-07-22) — 청크 길이 상한 보장을 Profile
       B 4개 문서(6176청크)에서 실측 확인, over_cap 0건(0.0%). ADR-008
       제안 2/3/4 모두 완료.
-- [ ] Hierarchical Chunk Builder **프로덕션 전환 여부**는 여전히 미결정
-      — 데이터는 다 갖췄으나(ADR-008 참고) HQ 승인 대기, 2026-07-22 기준
-      보류 결정(데이터만 정리, 착수하지 않음).
+- [x] Hierarchical Chunk Builder **프로덕션 전환 보류 확정**
+      (2026-07-27) — canary 실측(Profile A 2건/B 3건,
+      `docs/PREFLIGHT-hierarchical-chunk-builder-canary-2026-07-27.md`)
+      결과 Profile B의 Axis 2(Semantic Flush Ratio) 평균 23.9%로
+      §5 롤백 트리거(<25%) 발동. `core/hierarchical_chunk_builder.py`는
+      계속 dormant 유지, `core/processing.py`는 기존
+      `core/chunking_optimizer.py` 그대로 사용. 재평가 트리거: Axis 2
+      불안정 원인이 해소되거나 corpus 전체 재측정에서 다른 결과가
+      나오면 재검토.
 - [x] Logos 소스 인제스트 + PassageMatch/SourceTierBonus 스코어링 (SPRINT 외 병행, commit `08e5704`)
 - [x] 한국어 출력 순도 검증 — 재시도 + sanitize 백스톱 (SPRINT 외 병행, commit `08e5704`)
 - [x] 대시보드 문서 카운트 통일 + 수량사 적용 (SPRINT 외 병행, commit `8f40ea0`)
