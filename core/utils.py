@@ -257,7 +257,21 @@ def calculate_noise_score(text: str, file_type: str = "", is_ocr: bool = False) 
         short_line_ratio = detect_short_line_ratio(cleaned)
         broken_line_ratio = detect_broken_line_ratio(cleaned)
         repeated_punct_ratio = detect_repeated_punct_ratio(cleaned)
-        ocr_noise_ratio = detect_pdf_ocr_like_noise(cleaned) if is_ocr else 0.0
+        # [PT-NOISE-001] Always measured, regardless of is_ocr: some PDFs carry
+        # a pre-baked low-quality OCR text layer (scanned + embedded OCR text)
+        # that docling's do_ocr flag never sees, so is_ocr stays False even
+        # though the extracted text is garbled. Gating this detector behind
+        # is_ocr let such documents score as "clean" (see 11. 고린도전서.pdf,
+        # stored noise_score=8.0 with is_ocr=false despite heavy OCR garbling).
+        ocr_noise_ratio = detect_pdf_ocr_like_noise(cleaned)
+        # word_split_ratio stays is_ocr-gated: its regexes (e.g. a lone
+        # lowercase letter between spaces) match ordinary short English
+        # function words ("of", "in", "to"...) constantly, so on a clean,
+        # non-OCR English PDF it false-positives on nearly every sentence
+        # and can drive the score straight to the 100 ceiling (confirmed via
+        # output/noise_recompute/ recompute run on 2026-07-26 — two clean
+        # English PDFs jumped to 100.0/93.8 when this was made unconditional).
+        # It is only reliable on text that is actually known to be OCR output.
         word_split_ratio = detect_word_split_ratio(original) if is_ocr else 0.0
         page_artifact_ratio = detect_page_artifact_ratio(original)
         score_raw = (
