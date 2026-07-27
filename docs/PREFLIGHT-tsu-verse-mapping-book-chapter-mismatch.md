@@ -1,8 +1,8 @@
 # Preflight — TSU `verse_mapping`의 book_id/chapter 조합 불일치
 
-상태: **조사·전수 실측 완료(2026-07-27), 수정 미착수**. ADR-010 Phase 2
-(RAG 평가 베이스라인 측정) 실행 중 실측으로 발견 — 코드 수정 없이
-원인 확정과 규모 측정만 완료된 상태.
+상태: **Fix A 구현·검증 완료(2026-07-27, 신규 코드 경로만 — 기존 TSU
+데이터셋 재빌드는 아직 미실행). Fix B(verse 범위 검증)는 미착수.**
+ADR-010 Phase 2(RAG 평가 베이스라인 측정) 실행 중 실측으로 발견.
 
 ---
 
@@ -75,26 +75,61 @@ verse_mapping을 가진 레코드(전체의 24%)의 65%가 검색 시 잘못된
 book/chapter로 필터링·정렬될 가능성이 있다 — 정량적 영향(예: Hit@K
 저하폭)은 이번 조사 범위 밖이며 별도 실측 필요.
 
-## 수정 방향 (제안, 미승인 — 설계 검토 필요)
+## 수정 방향
 
-1. **"모르면 비워둔다" 원칙 적용**: 청크 안에 문서 자신의 book_id와
-   일치하는 참조가 하나도 없으면 `verse_mapping.chapter`/`verse_start`를
-   아예 채우지 않는다(book_id만 유지하거나, book_id도 청크 단위로
-   재검토). 현재처럼 무관한 참조의 chapter/verse를 문서의 book_id에
-   덧씌우지 않는다.
-2. `canonical_range_valid`에 verse 범위 검사 추가(책×chapter별 최대
-   verse 수 데이터 필요 — 현재 `CANONICAL_MAX_CHAPTER`만 있고 verse
-   단위 정경 데이터는 없음, 신규 확보 필요).
-3. 수정 후 TSU 데이터셋 재빌드 필요(`scripts/build_tsu_dataset.py`) —
-   전체 코퍼스 규모 작업, 별도 세션/승인 대상.
+### Fix A — "모르면 비워둔다" 원칙 적용 (구현 완료, 2026-07-27)
+
+**변경**: [`core/tsu_builder.py:309`](../core/tsu_builder.py#L309)
+
+```python
+ref, provenance = _resolve_evidence(content, book_id)
+if ref is not None and ref.book_id == book_id:   # ★ 추가된 게이트
+    verse_mapping["chapter"] = ref.chapter
+    ...
+```
+
+청크 안에서 찾은 최고점 참조(`ref`)의 book_id가 문서 자신의 book_id와
+일치할 때만 chapter/verse를 채운다. 안 맞으면 `verse_mapping`엔
+`book_id`만 남고 chapter/verse는 비운다 — 무관한 참조의 chapter/verse를
+문서의 book_id에 덧씌우지 않는다.
+
+**검증**:
+- 신규 재현 테스트 `tests/test_scripture_evidence_resolver.py::
+  TestBuildTsuRecordsProvenance::test_cross_book_reference_does_not_
+  contaminate_chapter` 추가 — 실제 코퍼스에서 발견된 패턴(문서
+  book_id=2CO, 청크 본문엔 요한복음만 인용)을 합성 재현, 수정 후
+  `verse_mapping == {"book_id": "2CO"}`만 남는지 확인.
+- 관련 테스트 전체(`tsu`/`verse_mapping`/`scripture_evidence` 매칭)
+  82건 통과, 회귀 없음.
+- 실제 원본 버그 청크(`TSU-ROM-...chunk_00293`, 저장된 content 그대로)로
+  `_resolve_evidence(content, "ROM")` 재실행 — `ref.book_id="JHN" != "ROM"`
+  이라 chapter/verse 미채택 확인(수정 전 재현했던 버그가 실제로 해소됨).
+
+**주의**: 이 수정은 **앞으로 새로 처리되는 문서**에만 적용된다.
+기존 `output/bench/tsu_dataset.jsonl`(53,231건)은 그대로이며, Fix A
+코드만으로는 기존 8,391건의 불일치가 자동으로 고쳐지지 않는다 —
+아래 "재빌드"가 실행돼야 실제 검색 경로에 반영된다.
+
+### Fix B — verse 범위 검증 (미착수)
+
+`canonical_range_valid`에 verse 범위 검사 추가(책×chapter별 최대
+verse 수 데이터 필요 — 현재 `CANONICAL_MAX_CHAPTER`만 있고 verse
+단위 정경 데이터는 없음, 신규 확보 필요). Fix A로 대부분의 실질적
+피해(무관한 책의 chapter/verse 채택)가 해소되므로 우선순위 낮음 —
+별도 후속 과제로 분리.
+
+### 재빌드 (미착수, 별도 승인 필요)
+
+Fix A를 기존 코퍼스에 반영하려면 `scripts/build_tsu_dataset.py`
+재실행(전체 코퍼스 규모 작업)이 필요하다. 재빌드 전/후 Hit@K 등
+검색 품질 델타를 실측해 회귀가 없는지 확인한 뒤 진행해야 한다.
 
 ## Next Steps
 
-- [ ] 수정 방향 HQ 승인
-- [ ] verse 단위 정경 데이터(각 책·chapter의 최대 verse 수) 확보 방법 결정
-- [ ] 수정 구현 + 단위테스트
+- [x] Fix A 구현 + 단위테스트 + 실제 버그 청크로 검증
 - [ ] TSU 재빌드 전/후 Hit@K 등 검색 품질 델타 실측(회귀 방지)
 - [ ] 재빌드 실행(전체 코퍼스, 별도 승인 필요)
+- [ ] Fix B(verse 범위 검증) 착수 여부 — 별도 후속 과제, 데이터 확보 방법 결정 필요
 
 ## 관련 산출물
 

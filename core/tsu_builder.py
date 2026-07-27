@@ -306,8 +306,17 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                 # verse_start==0 is the parser's "chapter-only, no verse
                 # specified" sentinel (Preflight §4) — never stored as a
                 # real verse.
+                # [2026-07-27 Preflight tsu-verse-mapping-book-chapter-mismatch]
+                # ref.book_id == book_id 게이트 추가: _resolve_evidence()가
+                # 청크 안에서 점수가 가장 높은 참조를 고르지만, 그 청크에
+                # 문서 자신의 책(book_id)과 일치하는 참조가 하나도 없으면
+                # 무관한 책의 chapter/verse가 채택될 수 있었다(전수 실측
+                # 64.88% 불일치, 전부 이 패턴). "모르면 비워둔다" 원칙
+                # (_resolve_book_id()의 unknown=None과 동일)을 적용해,
+                # 참조의 book_id가 문서의 book_id와 실제로 일치할 때만
+                # chapter/verse를 채운다.
                 ref, provenance = _resolve_evidence(content, book_id)
-                if ref is not None:
+                if ref is not None and ref.book_id == book_id:
                     verse_mapping["chapter"] = ref.chapter
                     if ref.verse_start and ref.verse_start > 0:
                         verse_mapping["verse_start"] = ref.verse_start
