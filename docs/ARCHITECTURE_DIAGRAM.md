@@ -159,7 +159,7 @@ sequenceDiagram
 | ADR-008 | Semantic-Chunking-Production-Path | accepted, 프로덕션 전환 경로는 미실행
 | ADR-009 | SIL-Theology-Engine | 부분 확정 — 구조만, 신학 어휘/임계값은 별도 승인 대기
 | ADR-010 | DBMA-REQ-RAG-Evaluation-Quality | 구조 확정, Phase 1 착수 전 미확정 항목 2건 별도 결정 필요
-| ADR-011 | Header-Footer-Repetition-Detector | 완료/보류 확정 — 구현·실측 완료, 효과 0(delta=0) 확인되어 프로덕션 반영은 보류(추가 조치 불필요)
+| ADR-011 | Header-Footer-Repetition-Detector | 완료/보류 확정, 2026-07-23
 
 ## Research Workspace Layer (Mermaid)
 
