@@ -64,13 +64,13 @@ embedding:
 # ── Ollama Models (dbma.py UI용) ─────────────────────
 ollama:
   default_embed_model: "bge-m3:latest"
-  default_gen_model: "my-theology-bot:latest"
+  default_gen_model: "my-theology-bot-v2:latest"
   embed_model_options:
     - "bge-m3:latest"
     - "nomic-embed-text"
     - "mxbai-embed-large"
   gen_model_options:
-    - "my-theology-bot:latest"
+    - "my-theology-bot-v2:latest"
     - "llama3.1:8b"
     - "llama3:latest"
 

@@ -184,9 +184,9 @@ EMBEDDING_DIMENSION = 1024  # Enforce single embedding dimension policy - all em
 # ── Ollama 모델 (dbma.py UI용) ──────────────────────────
 _yaml_ollama = CFG.get("ollama", {})
 DEFAULT_EMBED_MODEL = _yaml_ollama.get("default_embed_model", "bge-m3:latest")
-DEFAULT_GEN_MODEL = _yaml_ollama.get("default_gen_model", "my-theology-bot:latest")
+DEFAULT_GEN_MODEL = _yaml_ollama.get("default_gen_model", "my-theology-bot-v2:latest")
 EMBED_MODEL_OPTIONS = _yaml_ollama.get("embed_model_options", ["bge-m3:latest", "nomic-embed-text", "mxbai-embed-large"])
-GEN_MODEL_OPTIONS = _yaml_ollama.get("gen_model_options", ["my-theology-bot:latest", "llama3.1:8b", "llama3:latest"])
+GEN_MODEL_OPTIONS = _yaml_ollama.get("gen_model_options", ["my-theology-bot-v2:latest", "llama3.1:8b", "llama3:latest"])
 
 # ── 진행률 기본값 ─────────────────────────────────────────
 _yaml_progress = CFG.get("progress_defaults", [])
