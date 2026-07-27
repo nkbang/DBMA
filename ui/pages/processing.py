@@ -224,7 +224,7 @@ def _render_ingestion_form() -> None:
         else:  # Windows
             os.system(f'explorer "{folder_path}"')
 
-    c1, c2 = st.columns([3, 1])
+    c1, c2, c3 = st.columns([3, 1, 2])
     with c1:
         # Folder selector dropdown
         selected = st.selectbox(
@@ -250,7 +250,7 @@ def _render_ingestion_form() -> None:
             _open_folder_in_browser(target_dir)
             st.info(f"'{target_dir}' 폴더를 파일 브라우저에서 열었습니다.")
 
-    with c2:
+    with c3:
         # [SPRINT29-B] Labeled "(토큰)" not "(문자)": this value feeds
         # build_splitter() -> SentenceTransformersTokenTextSplitter, which
         # counts tokens, not characters. It also applies only on the
