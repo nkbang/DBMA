@@ -3,7 +3,9 @@
 Document library browsing, search, and management interface.
 """
 
+import json
 import unicodedata
+from datetime import datetime
 from typing import Optional
 
 import streamlit as st
@@ -313,12 +315,51 @@ def _render_metadata_edit_form(source_filename: str) -> None:
                 st.error("registry 저장에 실패했습니다.")
 
 
+def _chunks_meta_path(stem: str) -> Path:
+    return Path(DEFAULT_OUTPUT_DIR) / f"{stem}_chunks_meta.json"
+
+
+def _save_chunk_snapshot(stem: str, source_filename: str, document_id: Optional[str], result) -> Path:
+    """청킹 미리보기 결과를 {stem}_chunks_meta.json 하나로 병합 저장.
+
+    core.processing.save_chunks()의 죽어있던 포맷(quality 필드까지 포함)을
+    그대로 확장한 것 — 새 스키마를 만들지 않고, RAGFlow의 document_id 연결
+    개념만 추가하고 청크 본문을 별도 .txt 대신 이 JSON 배열 안에 인라인한다.
+    """
+    quality = result.quality
+    payload = {
+        "source": source_filename,
+        "document_id": document_id,
+        "chunk_count": len(result.chunks),
+        "chunk_size": result.params.get("chunk_size"),
+        "chunk_overlap": result.params.get("chunk_overlap"),
+        "strategy": result.strategy,
+        "quality": {
+            "avg_noise": quality.avg_noise,
+            "max_noise": quality.max_noise,
+            "avg_dup": quality.avg_dup,
+            "short_ratio": quality.short_ratio,
+            "passed": quality.passed,
+        },
+        "chunks": [
+            {"chunk_id": i, "content": chunk}
+            for i, chunk in enumerate(result.chunks)
+        ],
+        "saved_at": datetime.now().isoformat(),
+        "saved_from": "library_preview",
+    }
+    path = _chunks_meta_path(stem)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
 def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
-    """RAGFlow식 온디맨드 청킹 미리보기.
+    """RAGFlow식 온디맨드 청킹 미리보기 + 명시적 저장.
 
     처리 완료된 문서의 {stem}.md를 찾아 optimize_chunks()로 그 자리에서 청킹하고
-    청크 목록 + 품질 지표(ChunkQuality)를 보여준다. 결과는 저장하지 않는다 —
-    재실행할 때마다 다시 청킹한다(1단계 범위, 영속화는 별도 검토 대상).
+    청크 목록 + 품질 지표(ChunkQuality)를 보여준다. "청킹 실행"만으로는 저장되지
+    않고 재실행할 때마다 다시 청킹한다 — 사용자가 "이 결과 저장"을 눌러야만
+    {stem}_chunks_meta.json에 병합 저장된다(자동 저장 아님).
     """
     if not source_filename:
         return
@@ -330,6 +371,18 @@ def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
 
     with st.expander("🔍 청킹 미리보기", expanded=False):
         state_key = f"_chunk_preview_result_{stem}"
+
+        saved_path = _chunks_meta_path(stem)
+        if saved_path.exists():
+            try:
+                saved_meta = json.loads(saved_path.read_text(encoding="utf-8"))
+                st.caption(
+                    f"💾 마지막 저장: {saved_meta.get('saved_at', '?')} • "
+                    f"청크 {saved_meta.get('chunk_count', '?')}개 • "
+                    f"통과 여부: {'✅' if saved_meta.get('quality', {}).get('passed') else '⚠️'}"
+                )
+            except (json.JSONDecodeError, OSError):
+                pass
 
         if st.button("청킹 실행", key=f"chunk_preview_btn_{stem}"):
             md_text = md_matches[0].read_text(encoding="utf-8")
@@ -346,6 +399,12 @@ def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
             f"평균 noise={quality.avg_noise:.3f} • 평균 중복={quality.avg_dup:.3f} • "
             f"짧은청크비율={quality.short_ratio:.3f}"
         )
+
+        if st.button("💾 이 결과 저장", key=f"chunk_preview_save_{stem}"):
+            document_id, _ = _find_registry_record(source_filename)
+            saved = _save_chunk_snapshot(stem, source_filename, document_id, result)
+            st.success(f"저장됨: {saved}")
+
         for i, chunk in enumerate(result.chunks):
             st.text_area(
                 f"청크 {i + 1} / {len(result.chunks)} ({len(chunk)}자)",
