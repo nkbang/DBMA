@@ -21,6 +21,8 @@ from core.identity_registry import (
     get_supersession_chain,
 )
 from core.extraction_failures import load_extraction_failures
+from core.chunking_optimizer import optimize_chunks
+from core.utils import make_safe_stem
 
 
 def render_library_page() -> None:
@@ -191,6 +193,9 @@ def _render_document_detail_panel() -> None:
     # ── Provenance: version history + failure history (SPRINT24-2) ──
     _render_provenance_section(selected_doc.get("title", ""))
 
+    # ── Chunk Preview (RAGFlow-style on-demand chunking preview) ────
+    _render_chunk_preview_section(selected_doc.get("title", ""), selected_doc.get("type", ""))
+
     # Add clear selection button — uses on_click callback for full page sync
     st.button(
         "✕ 선택 해제",
@@ -306,6 +311,48 @@ def _render_metadata_edit_form(source_filename: str) -> None:
                 st.rerun()
             else:
                 st.error("registry 저장에 실패했습니다.")
+
+
+def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
+    """RAGFlow식 온디맨드 청킹 미리보기.
+
+    처리 완료된 문서의 {stem}.md를 찾아 optimize_chunks()로 그 자리에서 청킹하고
+    청크 목록 + 품질 지표(ChunkQuality)를 보여준다. 결과는 저장하지 않는다 —
+    재실행할 때마다 다시 청킹한다(1단계 범위, 영속화는 별도 검토 대상).
+    """
+    if not source_filename:
+        return
+
+    stem = make_safe_stem(source_filename)
+    md_matches = list(Path(DEFAULT_OUTPUT_DIR).rglob(f"{stem}.md"))
+    if not md_matches:
+        return  # 아직 처리되지 않은 문서 — 미리볼 MD가 없음
+
+    with st.expander("🔍 청킹 미리보기", expanded=False):
+        state_key = f"_chunk_preview_result_{stem}"
+
+        if st.button("청킹 실행", key=f"chunk_preview_btn_{stem}"):
+            md_text = md_matches[0].read_text(encoding="utf-8")
+            st.session_state[state_key] = optimize_chunks(md_text, doc_type.lower())
+
+        result = st.session_state.get(state_key)
+        if result is None:
+            return
+
+        quality = result.quality
+        badge = "✅ 통과" if quality.passed else "⚠️ 기준 미달"
+        st.caption(
+            f"{badge} • 청크 {len(result.chunks)}개 • 전략={result.strategy} • "
+            f"평균 noise={quality.avg_noise:.3f} • 평균 중복={quality.avg_dup:.3f} • "
+            f"짧은청크비율={quality.short_ratio:.3f}"
+        )
+        for i, chunk in enumerate(result.chunks):
+            st.text_area(
+                f"청크 {i + 1} / {len(result.chunks)} ({len(chunk)}자)",
+                chunk,
+                height=120,
+                key=f"chunk_preview_text_{stem}_{i}",
+            )
 
 
 def _clear_selected_document() -> None:
