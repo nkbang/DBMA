@@ -194,14 +194,61 @@ def _render_ingestion_form() -> None:
     """Render the document ingestion form."""
     store = StateStore()
 
-    c1, c2 = st.columns([1, 1])
+    # Available folders for processing
+    _available_dirs: List[str] = []
+    _dir_labels: Dict[str, str] = {}
+    try:
+        _base = Path(DEFAULT_RAW_DIR).parent
+        if _base.exists():
+            for d in sorted(_base.iterdir()):
+                if d.is_dir() and any(f.suffix.lower() in SUPPORTED_EXTS for f in d.iterdir() if f.is_file()):
+                    _available_dirs.append(str(d))
+                    _dir_labels[str(d)] = f"{d.name} ({len([f for f in d.iterdir() if f.is_file()])} files)"
+    except OSError:
+        pass
+
+    # Ensure current DEFAULT_RAW_DIR is always available
+    if DEFAULT_RAW_DIR not in _available_dirs:
+        _available_dirs.insert(0, DEFAULT_RAW_DIR)
+        _dir_labels.setdefault(DEFAULT_RAW_DIR, f"기본 RAW 폴더")
+
+    # Helper: open folder in system file browser
+    def _open_folder_in_browser(folder_path: str) -> None:
+        """Open a folder in the system's native file browser."""
+        import platform
+        system = platform.system()
+        if system == "Darwin":  # macOS
+            os.system(f"open '{folder_path}'")
+        elif system == "Linux":
+            os.system(f"xdg-open '{folder_path}'")
+        else:  # Windows
+            os.system(f'explorer "{folder_path}"')
+
+    c1, c2 = st.columns([3, 1])
     with c1:
-        target_dir = st.text_input(
+        # Folder selector dropdown
+        selected = st.selectbox(
             "처리 대상 폴더",
-            value=DEFAULT_RAW_DIR,
-            key="processing_target",
+            options=_available_dirs,
+            format_func=lambda x: str(_dir_labels.get(x, "")) if _dir_labels.get(x) else x,
+            key="processing_target_selector",
+            help="처리할 폴더를 선택하거나 아래에 직접 경로를 입력하세요.",
         )
+        # Allow manual override
+        manual_dir = st.text_input(
+            "또는 직접 경로 입력",
+            value=selected if selected != DEFAULT_RAW_DIR else "",
+            placeholder=DEFAULT_RAW_DIR,
+            key="processing_target_manual",
+        )
+        target_dir = (manual_dir or "").strip() or selected
         store.set("processing_target", target_dir)
+
+    with c2:
+        # "Open Folder" button — opens system file browser at target_dir
+        if st.button("📁 폴더 열기", key="open_folder_btn", use_container_width=True):
+            _open_folder_in_browser(target_dir)
+            st.info(f"'{target_dir}' 폴더를 파일 브라우저에서 열었습니다.")
 
     with c2:
         # [SPRINT29-B] Labeled "(토큰)" not "(문자)": this value feeds
