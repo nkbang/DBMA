@@ -219,16 +219,38 @@ class GenerationService:
         Mirrors dbma.py::query_rag() L716-722's prompt assembly and Ollama
         call, but never raises — Ollama failures are captured into
         GenerationResult.error instead of propagating.
+
+        [2026-07-27, ADR-010 Phase 2 베이스라인이 실측으로 발견] 이 경로에는
+        한국어 출력 순도 검증(재시도+sanitize, SermonDraftService에만
+        적용돼 있던 것)이 빠져 있어 Chat/Research 답변에 CJK 오염 문자가
+        그대로 노출되고 있었다 — 같은 방어 로직을 여기에도 적용한다.
         """
-        prompt, context_used = self._build_prompt(response, conversation_history)
+        base_prompt, context_used = self._build_prompt(response, conversation_history)
 
         try:
-            result = ollama.generate(
-                model=gen_model,
-                prompt=prompt,
-                options={"temperature": temperature},
-            )
-            answer = result["response"]
+            prompt = base_prompt
+            answer = ""
+            for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
+                result = ollama.generate(
+                    model=gen_model,
+                    prompt=prompt,
+                    options={"temperature": temperature},
+                )
+                answer = result["response"]
+                contamination = _detect_script_contamination(answer)
+                if not contamination:
+                    break
+                logger.warning(
+                    "[GenerationService.generate] 한국어 출력 오염 감지"
+                    " (시도 %d/%d): %s",
+                    attempt + 1, _MAX_LANGUAGE_RETRIES + 1, contamination,
+                )
+                prompt = base_prompt + _contamination_retry_note(contamination)
+            else:
+                logger.warning(
+                    "[GenerationService.generate] 재시도 소진 — 오염 문자 강제 제거"
+                )
+                answer = _sanitize_script_contamination(answer)
             error = None
         except Exception as e:
             logger.error(
