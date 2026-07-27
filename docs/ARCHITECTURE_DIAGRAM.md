@@ -25,7 +25,8 @@ graph TB
         QueryEnh[core/query_enhancements.py<br/>Query Enhancement]
         ResearchWS[core/research_workspace.py<br/>Research Workspace]
         Retrieval[core/retrieval.py<br/>Retrieval Engine]
-        HierChunk[core/hierarchical_chunk_builder.py<br/>Hierarchical Chunking]
+        ChunkOpt[core/chunking_optimizer.py<br/>optimize_chunks — PRODUCTION]
+        HierChunk[core/hierarchical_chunk_builder.py<br/>Hierarchical Chunking — DORMANT, HQ 승인 대기]
         Boundary[core/semantic_boundary_detector.py<br/>Boundary Score]
         Identity[core/identity_registry.py<br/>Identity Registry]
         Constants[core/canonical_constants.py<br/>Canonical Constants]
@@ -42,8 +43,10 @@ graph TB
     end
 
     subgraph "Data Layer"
-        SourceDocs[Source Documents<br/>PDF/TXT/MD/DOCX/EPUB/HTML]
-        Output[output/ + docs/<br/>+ sermon_corpus/]
+        SourceDocs[data/<br/>Source Documents]
+        Output[output/<br/>Generated Outputs]
+        Docs[docs/<br/>Documentation]
+        SermonCorpus[sermon_corpus/<br/>Sermon Collector + Analyzer]
         Chroma[ChromaDB<br/>Legacy Only ADR-003]
     end
 
@@ -60,9 +63,9 @@ graph TB
 
     Processing --> Extraction
     Extraction --> Normalization
-    Normalization --> HierChunk
-    HierChunk --> Boundary
-    HierChunk --> TSU
+    Normalization --> ChunkOpt
+    ChunkOpt --> TSU
+    HierChunk -.dormant, not wired to production.-> Boundary
     TSU --> Metadata
     Metadata --> GoldStandard
     GoldStandard --> Retrieval
@@ -126,18 +129,18 @@ sequenceDiagram
     participant Q as QueryEnhancements
     participant RW as ResearchWorkspace
     participant R as RetrievalEngine
-    participant H as HierChunkBuilder
-    participant B as BoundaryDetector
+    participant TSU as TSU Dataset (pre-chunked at ingestion)
     participant RK as Ranker
     participant L as LLM
+
+    Note over TSU: 청킹은 쿼리 시점이 아니라 문서 처리(ingestion) 시점에<br/>1회 수행됨 — 현재 core.chunking_optimizer.optimize_chunks()
 
     U->>UI: Search/Chat query
     UI->>Q: forward query
     Q->>RW: resolve context
     RW->>R: retrieve candidates
-    R->>H: fetch hierarchical chunks
-    H->>B: compute boundary scores
-    B-->>R: scored candidates
+    R->>TSU: query pre-chunked dataset
+    TSU-->>R: candidates
     R->>RK: rank results
     RK-->>UI: ranked results
     UI->>U: display with citations
@@ -156,7 +159,7 @@ sequenceDiagram
 | ADR-008 | Semantic-Chunking-Production-Path | accepted, 프로덕션 전환 경로는 미실행
 | ADR-009 | SIL-Theology-Engine | 부분 확정 — 구조만, 신학 어휘/임계값은 별도 승인 대기
 | ADR-010 | DBMA-REQ-RAG-Evaluation-Quality | 구조 확정, Phase 1 착수 전 미확정 항목 2건 별도 결정 필요
-| ADR-011 | Header-Footer-Repetition-Detector | 제안, 2026-07-22, HQ 승인 대기
+| ADR-011 | Header-Footer-Repetition-Detector | 완료/보류 확정 — 구현·실측 완료, 효과 0(delta=0) 확인되어 프로덕션 반영은 보류(추가 조치 불필요)
 
 ## Research Workspace Layer (Mermaid)
 
@@ -386,9 +389,12 @@ flowchart TB
 
     subgraph "Retrieval Pipeline"
         RE[RetrievalEngine<br/>core/retrieval.py]
-        HC[Hierarchical Chunk<br/>core/hierarchical_chunk_builder.py]
-        BS[Boundary Score<br/>core/semantic_boundary_detector.py]
         RK[Ranking<br/>Score Aggregation]
+    end
+
+    subgraph "Ingestion-time Chunking (DORMANT candidate — not called by retrieval)"
+        HC[Hierarchical Chunk<br/>core/hierarchical_chunk_builder.py<br/>HQ 승인 대기]
+        BS[Boundary Score<br/>core/semantic_boundary_detector.py<br/>HC 내부에서만 사용]
     end
 
     subgraph "Generation"
@@ -411,9 +417,8 @@ flowchart TB
     C --> QE
     QE --> RW
     RW --> RE
-    RE --> HC
-    HC --> BS
-    BS --> RK
+    RE --> RK
+    HC -.dormant, HQ 승인 대기.-> BS
     RK --> GS
     GS --> LLM
     LLM --> R
@@ -427,6 +432,92 @@ flowchart TB
     class RE,HC,BS,RK retrieval
     classDef gen fill:#e8f5e9,stroke:#2e7d32
     class GS,LLM gen
+```
+
+## Project Structure
+
+This diagram represents the current repository structure and file
+containment hierarchy. It does not represent runtime dependencies
+or execution flow.
+
+```mermaid
+graph TD
+    ROOT["DBMA Repository<br/>~/DBMA"]
+
+    subgraph CONFIG["Project Configuration"]
+        CFG["config.yaml"]
+        PYPROJ["pyproject.toml"]
+        REQ["requirements*.txt"]
+        ENV["environment.yml"]
+        DOCKER["docker-compose.yml"]
+        README["README.md"]
+    end
+
+    subgraph CORE["core/ — Core Engine"]
+        CORE_FILES["35+ modules"]
+        TLI["tli/<br/>Spell Engine"]
+        EVAL["evaluation/<br/>RAG Judge"]
+        SERMON_PKG["sermon/<br/>Bible Books"]
+    end
+
+    subgraph UI_PKG["ui/ — Streamlit UI"]
+        UI_FILES["app.py, tabs.py<br/>sidebar.py, styles.py"]
+        PAGES["pages/<br/>8 page modules"]
+        COMPS["components/<br/>7 component modules"]
+        STATE_PKG["state/<br/>query processor"]
+        THEME_PKG["theme/<br/>colors, spacing"]
+    end
+
+    subgraph DOCS_PKG["docs/ — Documentation"]
+        ARCH_DOCS["architecture/<br/>ADR files"]
+        AGENTS_PKG["agents/<br/>C1 task orders"]
+        REL_PKG["releases/<br/>v1.1.0+"]
+        STATE_DOC["STATE.md"]
+        TODO_DOC["TODO.md"]
+    end
+
+    subgraph SCRIPTS_PKG["scripts/ — Engineering"]
+        SHADOW["shadow_*<br/>analysis scripts"]
+        BENCH["benchmark<br/>scripts"]
+        VALID_PKG["validation/<br/>test utilities"]
+        UTIL_SCRIPTS["utility<br/>scripts (30+)"]
+    end
+
+    subgraph TESTS_PKG["tests/ — Validation"]
+        TEST_FILES["test_*.py<br/>130+ test files"]
+        FIXTURES_PKG["fixtures/<br/>sample HTML/JSON"]
+        ASSETS_PKG["assets/<br/>test PDF"]
+    end
+
+    subgraph DATA_PKG["Data & Runtime"]
+        SRC_DATA["data/<br/>source documents"]
+        CACHE_DIR["cache/<br/>[embedding cache]"]
+        OUT_DIR["output/<br/>[generated outputs]"]
+    end
+
+    SERMON_CORPUS["sermon_corpus/<br/>collector + analyzer<br/>(top-level, data/의 하위 아님)"]
+
+    ROOT --> CONFIG
+    ROOT --> CORE
+    ROOT --> UI_PKG
+    ROOT --> DOCS_PKG
+    ROOT --> SCRIPTS_PKG
+    ROOT --> TESTS_PKG
+    ROOT --> DATA_PKG
+    ROOT --> SERMON_CORPUS
+
+    CORE --> TLI
+    CORE --> EVAL
+    CORE --> SERMON_PKG
+
+    UI_PKG --> PAGES
+    UI_PKG --> COMPS
+    UI_PKG --> STATE_PKG
+    UI_PKG --> THEME_PKG
+
+    DOCS_PKG --> ARCH_DOCS
+    DOCS_PKG --> AGENTS_PKG
+    DOCS_PKG --> REL_PKG
 ```
 
 ## Current Sprint Reference
