@@ -172,14 +172,15 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
 ## 잔여 (비blocker, 향후)
 - monitor.py 정적 하드코딩 값(메모리 72% 등) → 실시간화 (P3)
 - GA 선언 여부 판단 (안정화 기간 후)
-- **[2026-07-27 신규]** TSU `verse_mapping`의 book_id/chapter 조합
-  불일치 — ADR-010 Phase 2 베이스라인 측정 중 실측 발견. 전수 감사
-  결과 verse_mapping 보유 레코드(전체의 24%)의 65%(8,391/12,933)가
-  저장된 본문과 맞지 않는 chapter/verse를 가짐(`core/tsu_builder.py`가
-  문서 단위 book_id와 청크 단위 최고점 참조의 chapter/verse를 무검증
-  조합하는 구조적 원인). `RetrievalEngine`의 검색 필터링/랭킹이 이
-  필드를 직접 읽어 영향 가능. 조사·전수 실측 완료, 수정 미착수 —
-  상세: `docs/PREFLIGHT-tsu-verse-mapping-book-chapter-mismatch.md`
+- [x] **[2026-07-27, 완전 해결]** TSU `verse_mapping`의 book_id/chapter
+  조합 불일치 — Fix A 구현(`core/tsu_builder.py`) + 전체 재빌드 완료,
+  재측정 결과 불일치 8,391건(64.88%) → 0건(0.00%). 상세:
+  `docs/PREFLIGHT-tsu-verse-mapping-book-chapter-mismatch.md`
+- **[2026-07-27 신규]** DBMA-SEQ(ADR-012) `sermon_judge.py`
+  groundedness 첫 실측 — `scripts/run_sermon_eval.py` 신설, 실제
+  경로로 3건 실행 결과 평균 5.00/5(전부 만점, 판별력 확인 필요).
+  골든셋 라벨링 담당/일정은 여전히 미결정(ADR-012 Next Steps §2).
+  상세: `docs/DBMA-SEQ-Phase1-Groundedness-Baseline-2026-07-27.md`
 
 ---
 
