@@ -23,7 +23,7 @@ def render_dashboard_page() -> None:
     파이프라인 %, 벡터DB/메모리 등 개발자용 상세는 Monitor로 옮겨져 있다
     (같은 정보를 두 곳에서 실데이터/가짜 데이터로 중복 보여주던 문제 해소).
     """
-    page = BasePage(title="Dashboard", icon="🏠")
+    page = BasePage(title="홈", icon="🏠")
     page.render_header()
 
     _render_status_banner()

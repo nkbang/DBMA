@@ -64,7 +64,7 @@ def render_research_page() -> None:
     if "research_session_id" not in st.session_state:
         st.session_state["research_session_id"] = create_session()
 
-    page = BasePage(title="Research Workspace", icon="🧪")
+    page = BasePage(title="연구 공간", icon="🧪")
     page.render_header()
 
     # ── Search Interface ───────────────────────────────────────

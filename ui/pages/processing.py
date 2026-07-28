@@ -65,7 +65,7 @@ def _failure_label(failure: dict) -> str:
 
 def render_processing_page() -> None:
     """Render the DBMA Document Processing page."""
-    page = BasePage(title="Document Processing", icon="📄")
+    page = BasePage(title="문서 처리", icon="📄")
     page.render_header()
 
     # ── File Upload (Drag & Drop) ───────────────────────────────

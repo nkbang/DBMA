@@ -60,7 +60,7 @@ _LOW_CONFIDENCE_SCORE_THRESHOLD = 0.45
 
 def render_chat_page() -> None:
     """Render the DBMA RAG Chat page."""
-    page = BasePage(title="RAG Chat", icon="chat")
+    page = BasePage(title="질문하기", icon="💬")
     page.render_header()
 
     _init_chat_state()

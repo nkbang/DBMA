@@ -30,7 +30,7 @@ _STAGE_LABELS = {
 
 def render_monitor_page() -> None:
     """Render the DBMA System Monitor page."""
-    page = BasePage(title="System Monitor", icon="💚")
+    page = BasePage(title="시스템 모니터", icon="💚")
     page.render_header()
 
     # 파이프라인 상태와 건강 상태 둘 다 같은 ExecutionContext 스냅샷을
