@@ -29,6 +29,10 @@ ENV/
 .venv_311/
 .venv311/
 .tsu_venv/
+.venv_beta/
+
+# Mac package build output (scripts/build_mac_package.sh)
+dist/
 
 # Backup directory (legacy launchers)
 archive/
