@@ -180,9 +180,14 @@ def _render_sidebar() -> str:
             "Chat": ("💬", "RAG 채팅"),
             "설교문 작성": ("📖", "설교 준비"),
             "설교 리뷰": ("🗂️", "설교 모음 분리·검수"),
-            "Monitor": ("💚", "시스템 모니터링"),
-            "도움말": ("❓", "내서재 활용 가이드"),
         }
+        # 엔지니어링 내부 진단 화면 — 일반 사용자(베타 테스터)에게는 불필요해
+        # 백본으로 숨긴다. NAE_ADMIN_MODE=1 환경변수를 설정한 경우에만 노출
+        # (David 본인 로컬 진단용). scripts/setup_beta_tester.command는 이
+        # 변수를 설정하지 않으므로 테스터 화면에는 기본적으로 나타나지 않는다.
+        if os.environ.get("NAE_ADMIN_MODE") == "1":
+            pages["Monitor"] = ("💚", "시스템 모니터링")
+        pages["도움말"] = ("❓", "내서재 활용 가이드")
 
         # key="nav_page" lets other pages switch tabs programmatically
         # (e.g. Dashboard's quick-action buttons) by setting
