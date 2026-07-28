@@ -169,3 +169,77 @@ class DocumentContext:
             # [SPRINT21-B Phase1] additive — see pipeline_state field comment.
             "pipeline_state": self.pipeline_state,
         }
+
+    @classmethod
+    def from_metadata_dict(cls, meta: dict) -> "DocumentContext":
+        """Rehydrate a DocumentContext from a metadata dict.
+
+        Inverse of to_metadata_dict(), but not a lossless round trip — see
+        the note on created_at below. Accepts both the dict shape produced
+        by to_metadata_dict()/build_document_metadata() and a persisted
+        core.identity_registry record (a superset of those fields; unknown
+        extra keys such as "status" or "superseded_by" are ignored rather
+        than rejected, since registry records evolve additively — see
+        migrate_registry_schema()).
+
+        created_at: to_metadata_dict() does not serialize the dataclass's
+        own (immutable, Point-A) created_at field — it writes registered_at
+        under the "created_at" key instead (see that method's docstring).
+        This means the original creation timestamp cannot be recovered from
+        a metadata dict; __post_init__ stamps a fresh created_at on the
+        rehydrated instance, exactly as it would for a newly-constructed
+        DocumentContext. Only "created_at" (or "registered_at", checked
+        first for forward-compatibility with a future direct dict dump of
+        this dataclass) is used to restore registered_at.
+
+        Args:
+            meta: Metadata dict with at least "document_id" and "file_hash".
+
+        Returns:
+            A new DocumentContext instance.
+
+        Raises:
+            ValueError: if document_id or file_hash is missing/empty —
+                mirrors to_metadata_dict()'s validation, since both are
+                required for identity_registry lookups downstream.
+        """
+        document_id = meta.get("document_id", "")
+        file_hash = meta.get("file_hash", "")
+        if not document_id:
+            raise ValueError("DocumentContext.from_metadata_dict(): document_id is required")
+        if not file_hash:
+            raise ValueError("DocumentContext.from_metadata_dict(): file_hash is required")
+
+        ctx = cls(
+            document_id=document_id,
+            file_hash=file_hash,
+            source_file=meta.get("source_file", ""),
+            source_type=meta.get("source_type", ""),
+            is_ocr=meta.get("is_ocr", False),
+            title=meta.get("title"),
+            author=meta.get("author"),
+            book=meta.get("book"),
+            chapter=meta.get("chapter"),
+            page=meta.get("page"),
+            batch_id=meta.get("batch_id"),
+            language=meta.get("language", "en"),
+            noise_score=meta.get("noise_score", 0.0),
+            noise_mode=meta.get("noise_mode", "-"),
+            processing_version=meta.get("processing_version", PROCESSING_VERSION),
+            chunk_count=meta.get("chunk_count", 0),
+            pipeline_state=meta.get("pipeline_state", "NEW"),
+            ingest_status=meta.get("ingest_status", "PROCESSED"),
+            retry_count=meta.get("retry_count", 0),
+            last_failure_reason=meta.get("last_failure_reason"),
+            registered_at=meta.get("registered_at", meta.get("created_at", "")),
+            last_processed_at=meta.get("last_processed_at", ""),
+            md_path=meta.get("md_path"),
+            copied_source_path=meta.get("copied_source_path"),
+        )
+        if isinstance(meta.get("pipeline_flags"), dict):
+            ctx.pipeline_flags = dict(meta["pipeline_flags"])
+        if isinstance(meta.get("chunk_ids"), list):
+            ctx.chunk_ids = list(meta["chunk_ids"])
+        if isinstance(meta.get("tsu_refs"), list):
+            ctx.tsu_refs = list(meta["tsu_refs"])
+        return ctx
