@@ -1,0 +1,238 @@
+<!DOCTYPE html><html class="light" lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DBMA - 시작하기</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#596060",
+                    "surface-container-low": "#f5f3ee",
+                    "tertiary-fixed": "#c2e8fe",
+                    "surface-dim": "#dbdad5",
+                    "outline-variant": "#c3c7c7",
+                    "tertiary-container": "#0c3647",
+                    "inverse-surface": "#30312e",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#c1c8c7",
+                    "primary": "#171e1e",
+                    "surface": "#fbf9f4",
+                    "outline": "#737878",
+                    "on-secondary-fixed": "#241a0d",
+                    "surface-container-highest": "#e4e2dd",
+                    "on-primary-container": "#949b9b",
+                    "secondary": "#6a5c4c",
+                    "on-secondary-container": "#6f6050",
+                    "on-tertiary-fixed-variant": "#264b5d",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#fbf9f4",
+                    "surface-container": "#f0eee9",
+                    "on-tertiary-fixed": "#001e2b",
+                    "tertiary": "#00202d",
+                    "tertiary-fixed-dim": "#a7cce1",
+                    "inverse-on-surface": "#f2f1ec",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#f3dfcb",
+                    "primary-fixed-dim": "#c1c8c7",
+                    "on-background": "#1b1c19",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed-variant": "#514535",
+                    "error-container": "#ffdad6",
+                    "surface-container-high": "#eae8e3",
+                    "primary-fixed": "#dde4e3",
+                    "on-surface": "#1b1c19",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#161d1d",
+                    "secondary-fixed-dim": "#d6c3b0",
+                    "on-tertiary-container": "#7b9fb3",
+                    "background": "#fbf9f4",
+                    "surface-variant": "#e4e2dd",
+                    "on-surface-variant": "#434848",
+                    "on-primary-fixed-variant": "#414848",
+                    "secondary-container": "#f0dcc8",
+                    "primary-container": "#2c3333"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "32px",
+                    "margin-page": "48px",
+                    "unit": "8px",
+                    "sidebar-width": "280px",
+                    "reading-column": "720px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Hanken Grotesk"],
+                    "label-ui": ["Hanken Grotesk"],
+                    "body-reading-md": ["'Source Serif 4'"],
+                    "body-reading-lg": ["'Source Serif 4'"],
+                    "caption": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-ui": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-reading-md": ["17px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-reading-lg": ["19px", {"lineHeight": "32px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f5f3ee; /* surface-container-low */
+            color: #1b1c19; /* on-surface */
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .scholar-card {
+            transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease;
+        }
+        .scholar-card:hover {
+            transform: translateY(-4px);
+            background-color: #f0eee9; /* surface-container */
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        
+        /* Subtle texture for paper-like feel */
+        .paper-grain::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="paper-grain min-h-screen flex flex-col items-center justify-center p-gutter overflow-x-hidden">
+<!-- Shell Suppression: This is a task-focused onboarding screen, so no Global Nav Shell is rendered -->
+<main class="max-w-[1000px] w-full flex flex-col items-center text-center">
+<!-- Illustration Area -->
+<div class="mb-10 fade-in-up">
+<div class="relative w-48 h-48 mx-auto flex items-center justify-center">
+<!-- Decorative Circle -->
+<div class="absolute inset-0 bg-surface-container-highest rounded-full opacity-50 scale-110"></div>
+<!-- Digital Desk Illustration -->
+<div class="relative z-10 w-full h-full rounded-xl flex items-center justify-center bg-surface-container-lowest border border-outline-variant shadow-sm">
+<div class="w-full h-full bg-cover bg-center rounded-xl" data-alt="A minimalist, top-down digital illustration of a organized theological researcher's desk. It features a clean tablet displaying Greek manuscripts, a fountain pen, and a stack of classic leather-bound theological volumes. The lighting is soft and natural, coming from an unseen window. The color palette is composed of warm creams, deep charcoal, and a single accent of scholar blue. The atmosphere is quiet, intellectual, and reverent." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhjCDa5-hiXR118fCAnrUhXs1NY6gBtifRVlvUq93kZgaeia5KGs7uPvqWp8wKDj3rmYACVtpt4QHuBpFDP4w_LS8euI9gGEfPet6udBDLPK9dx5nlHJfxR_3w-ROgcPeRPJJp7e1Fl6kG3s7SOWDEcGY5nupBTjChh39JV8zslr8-aUsWo5xgbv_8tJrbWV1_KJrU07NOrCjhhB22yjneDhZLyatemN6dRg1Fh5LAcXuVzTlNRoCX3A')"></div>
+</div>
+<!-- Floating Elements -->
+<span class="material-symbols-outlined absolute -top-4 -right-4 text-primary opacity-20 text-[48px]" style="font-variation-settings: 'wght' 100;">menu_book</span>
+<span class="material-symbols-outlined absolute -bottom-4 -left-4 text-secondary opacity-20 text-[40px]" style="font-variation-settings: 'wght' 100;">history_edu</span>
+</div>
+</div>
+<!-- Typography Branding -->
+<div class="mb-12 space-y-4 fade-in-up delay-1">
+<h1 class="font-display-lg text-display-lg text-primary tracking-tight">내서재에 오신 것을 환영합니다</h1>
+<p class="font-body-reading-md text-body-reading-md text-on-surface-variant max-w-[560px] mx-auto">목회자의 연구와 설교를 돕는 디지털 서재, <span class="font-semibold text-primary">내서재</span>를 시작해보세요.</p>
+</div>
+<!-- Feature Cards: Bento Style Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-16 fade-in-up delay-2">
+<!-- Card 1: Search -->
+<div class="scholar-card bg-surface p-8 border border-outline-variant rounded-lg flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="search">search</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-primary mb-3">자료 찾기</h3>
+<p class="font-label-ui text-label-ui text-on-surface-variant">
+                    방대한 성경과 신학 자료를 한곳에서 검색하세요.
+                </p>
+</div>
+<!-- Card 2: AI Assistant -->
+<div class="scholar-card bg-surface p-8 border border-outline-variant rounded-lg flex flex-col items-center text-center ring-1 ring-primary/5">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="science" style="font-variation-settings: 'FILL' 1;">science</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-primary mb-3">AI 연구 도우미</h3>
+<p class="font-label-ui text-label-ui text-on-surface-variant">
+                    맥락을 이해하는 AI와 함께 깊이 있는 신학 연구를 수행하세요.
+                </p>
+</div>
+<!-- Card 3: Sermon Prep -->
+<div class="scholar-card bg-surface p-8 border border-outline-variant rounded-lg flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-on-secondary-fixed" data-icon="menu_book" style="transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1.15) rotate(-5deg);">menu_book</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-primary mb-3">설교 준비</h3>
+<p class="font-label-ui text-label-ui text-on-surface-variant">
+                    연구 결과를 바탕으로 자연스럽게 설교문을 작성하세요.
+                </p>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row gap-4 items-center justify-center w-full fade-in-up delay-3">
+<button class="px-10 py-4 bg-primary text-on-primary font-label-ui text-label-ui rounded-full hover:bg-on-surface-variant transition-colors shadow-lg shadow-primary/10">
+                샘플 자료로 시작하기
+            </button>
+<button class="px-10 py-4 bg-transparent border border-outline text-on-surface font-label-ui text-label-ui rounded-full hover:bg-surface-container transition-all">
+                나중에 하기
+            </button>
+</div>
+<!-- Small Print -->
+<p class="mt-12 font-caption text-caption text-outline opacity-60">© 2024 내서재. 목회자를 위한 디지털 서재입니다.</p>
+</main>
+<script>
+        // Micro-interaction for the cards
+        document.querySelectorAll('.scholar-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                icon.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                icon.style.transform = 'scale(1.15) rotate(-5deg)';
+            });
+            card.addEventListener('mouseleave', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                icon.style.transform = 'scale(1) rotate(0deg)';
+            });
+        });
+
+        // Subtle parallax effect on the illustration container
+        window.addEventListener('mousemove', (e) => {
+            const icons = document.querySelectorAll('.material-symbols-outlined.absolute');
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            
+            icons.forEach((icon, index) => {
+                const depth = (index + 1) * 2;
+                icon.style.transform = `translate(${moveX * depth}px, ${moveY * depth}px)`;
+            });
+        });
+    </script>
+
+
+
+
+</body></html>

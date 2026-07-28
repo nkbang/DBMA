@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#434848",
+                    "surface-bright": "#fbf9f4",
+                    "background": "#fbf9f4",
+                    "on-secondary-fixed": "#241a0d",
+                    "tertiary-fixed": "#c2e8fe",
+                    "outline": "#737878",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-dim": "#dbdad5",
+                    "outline-variant": "#c3c7c7",
+                    "inverse-surface": "#30312e",
+                    "on-surface": "#1b1c19",
+                    "on-primary-fixed-variant": "#414848",
+                    "inverse-primary": "#c1c8c7",
+                    "secondary": "#6a5c4c",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#a7cce1",
+                    "inverse-on-surface": "#f2f1ec",
+                    "primary-fixed": "#dde4e3",
+                    "primary": "#171e1e",
+                    "on-secondary-fixed-variant": "#514535",
+                    "surface-container-highest": "#e4e2dd",
+                    "surface": "#fbf9f4",
+                    "secondary-fixed": "#f3dfcb",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#6f6050",
+                    "surface-container-low": "#f5f3ee",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#001e2b",
+                    "tertiary-container": "#0c3647",
+                    "secondary-container": "#f0dcc8",
+                    "surface-tint": "#596060",
+                    "on-tertiary-fixed-variant": "#264b5d",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#949b9b",
+                    "surface-variant": "#e4e2dd",
+                    "on-tertiary-container": "#7b9fb3",
+                    "on-primary-fixed": "#161d1d",
+                    "primary-container": "#2c3333"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "sidebar-width": "280px",
+                    "reading-column": "720px",
+                    "container-max": "1280px",
+                    "gutter": "32px",
+                    "margin-page": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-reading-md": ["\"Source Serif 4\""],
+                    "display-lg": ["Hanken Grotesk"],
+                    "title-lg": ["Hanken Grotesk"],
+                    "caption": ["Hanken Grotesk"],
+                    "body-reading-lg": ["\"Source Serif 4\""],
+                    "label-ui": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-reading-md": ["17px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-reading-lg": ["19px", {"lineHeight": "32px", "fontWeight": "400"}],
+                    "label-ui": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fbf9f4;
+            color: #1b1c19;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .scholar-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .scholar-card:hover {
+            border-color: #737878;
+            background-color: #f5f3ee;
+        }
+        .reading-gradient {
+            background: linear-gradient(180deg, rgba(251, 249, 244, 0) 0%, rgba(251, 249, 244, 1) 100%);
+        }
+    </style>
+</head>
+<body class="font-body-reading-md text-body-reading-md selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width flex flex-col py-margin-page px-4 gap-4 bg-surface border-r border-outline-variant z-50">
+<div class="mb-8 px-4">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Theology Desk</h1>
+<p class="font-label-ui text-label-ui text-on-surface-variant">Pastoral Scholar</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer duration-200 transition-colors text-primary font-bold border-r-2 border-primary bg-surface-container" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-ui text-label-ui">홈</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer duration-200 transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-ui text-label-ui">자료 찾기</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer duration-200 transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-ui text-label-ui">내 자료</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer duration-200 transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-label-ui text-label-ui">연구하기</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer duration-200 transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-ui text-label-ui">설교 준비</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer duration-200 transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-ui text-label-ui">도움말</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="ml-sidebar-width min-h-screen pb-20">
+<!-- TopNavBar Shell -->
+<header class="flex justify-between items-center h-16 px-gutter sticky top-0 z-40 bg-surface-bright border-b border-outline-variant">
+<div class="flex items-center gap-6">
+<span class="font-title-lg text-title-lg font-semibold text-on-surface">DBMA Research</span>
+<div class="flex gap-4">
+<a class="font-label-ui text-label-ui text-primary border-b-2 border-primary pb-1" href="#">홈</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">읽기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">연대기</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption text-outline italic">자동 저장됨</span>
+<div class="flex gap-3">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">open_in_new</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">history</button>
+</div>
+</div>
+</header>
+<!-- Search Section -->
+<section class="max-w-reading-column mx-auto mt-24 px-8">
+<div class="text-center mb-12">
+<h2 class="font-display-lg text-display-lg mb-8">무엇을 깊이 읽으시겠습니까?</h2>
+<div class="relative group">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full h-16 pl-16 pr-6 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-reading-md text-body-reading-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm" placeholder="성경, 책, 설교, 신학 자료를 찾아보세요." type="text"/>
+</div>
+</div>
+</section>
+<!-- Quick Actions (Asymmetric Bento) -->
+<section class="max-w-container-max mx-auto px-gutter mb-20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="md:col-span-1 p-6 bg-surface-container-high border border-outline-variant scholar-card flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-3xl">manage_search</span>
+<div>
+<span class="block font-label-ui text-label-ui">자료 찾기</span>
+<span class="text-caption text-on-surface-variant">방대한 아카이브 검색</span>
+</div>
+</div>
+<div class="md:col-span-1 p-6 bg-surface-container-high border border-outline-variant scholar-card flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-3xl">edit_note</span>
+<div>
+<span class="block font-label-ui text-label-ui">연구 시작</span>
+<span class="text-caption text-on-surface-variant">새로운 캔버스 열기</span>
+</div>
+</div>
+<div class="md:col-span-1 p-6 bg-surface-container-high border border-outline-variant scholar-card flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-3xl">auto_stories</span>
+<div>
+<span class="block font-label-ui text-label-ui">설교 준비</span>
+<span class="text-caption text-on-surface-variant">텍스트 주해 및 구성</span>
+</div>
+</div>
+<div class="md:col-span-1 p-6 bg-surface-container-high border border-outline-variant scholar-card flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-3xl">support_agent</span>
+<div>
+<span class="block font-label-ui text-label-ui">도움말</span>
+<span class="text-caption text-on-surface-variant">DBMA 활용 가이드</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Continue Working -->
+<section class="max-w-container-max mx-auto px-gutter mb-20">
+<div class="flex items-center justify-between mb-6 border-b border-outline-variant pb-2">
+<h3 class="font-title-lg text-title-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span> 최근 작업
+                </h3>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-colors" href="#">모두 보기</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 scholar-card flex flex-col justify-between group">
+<div>
+<div class="w-full h-32 mb-4 bg-surface-container overflow-hidden rounded-sm">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A high-resolution close-up of an ancient Greek New Testament manuscript, focusing on Romans chapter 8. The lighting is soft and warm, highlighting the texture of the parchment and the delicate ink strokes. The background is a scholarly oak desk with hints of a fountain pen and a magnifying glass. Minimalist and reverent atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTWuhxopprjniiPJxK8sB15aLTfTLrDQ2Ypqb2NQS73SPjC9dtQioC4A0W2sohOUp7cs_G2nFfm-HrPtkCc6sYs9OiGdgWYfRzYtjdPfeu4Dga0tUHWYVi9-EacSZO1ThX0ClWTU2fO5unBMLtVW6LqE94a5Tkn9i1rWNwKpuB81TAYmIA4mNTXC_OgCa68igjOutCFvvI6MquAYDZL1dnzU_WR0csDMDhU5dDIOVC8lPegSEREM_y5Q"/>
+</div>
+<h4 class="font-title-lg text-title-lg mb-2">로마서 8장 연구</h4>
+<p class="font-caption text-caption text-on-surface-variant mb-4">마지막 수정: 2시간 전</p>
+</div>
+<button class="bg-primary text-on-primary py-2 px-4 font-label-ui text-label-ui hover:bg-on-surface-variant transition-colors flex items-center justify-center gap-2">
+                        계속하기 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 scholar-card flex flex-col justify-between group">
+<div>
+<div class="w-full h-32 mb-4 bg-surface-container overflow-hidden rounded-sm">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A clean, minimalist study space showing a modern tablet displaying a sermon outline titled 'Preparation'. Beside it lies an open black leather Bible and a ceramic coffee mug on a light wood surface. The lighting is bright morning light from a nearby window, creating long soft shadows. Pure, focused, and professional intellectual environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASkfIQ6lm5w7u6zj1MO0Kuu2aCJvz818WWWTlHhqFgQoeD8y6KU98QTEyfe5imxZAo2rOcTMrIV3FLSvCRiVaOZPjM24wm2uM8wQlFrU_U8WSx7c_86bK3LFfkRysnpzAYZqZxUULa4xIA4H_mZ5ZB0_KfKEk8mqlK0XmF2WN3rwZWycKgy43NQJAgD8STZR3o5uDr6jrF_GBil5TUliAs3_8TbJ8PaVLiywwsRFQUTtBd0_GvgwFhiQ"/>
+</div>
+<h4 class="font-title-lg text-title-lg mb-2">주일 설교 준비</h4>
+<p class="font-caption text-caption text-on-surface-variant mb-4">마지막 수정: 어제</p>
+</div>
+<button class="bg-primary text-on-primary py-2 px-4 font-label-ui text-label-ui hover:bg-on-surface-variant transition-colors flex items-center justify-center gap-2">
+                        계속하기 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 scholar-card flex flex-col justify-between group">
+<div>
+<div class="w-full h-32 mb-4 bg-surface-container overflow-hidden rounded-sm">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A stack of classic theological books with gold-embossed spines on a dark mahogany shelf. The focus is on the word 'Justification' on one of the spines. The lighting is moody and dramatic, reminiscent of a traditional library at dusk. The palette is rich with deep browns, golds, and blacks, evoking intellectual history and depth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLlTe7pJQ-c9IlzUAqI6wBYzQkFy245B3ugX_Fx14emzlCuHZNbTtncg9MSWKjb7LHtJ8A-iO57Yzrn_eBb5lA6tIluiikPaHSqEdvYY7jGUnqnV-DgljvNopuuseAyeq_abHI7S4sDlMTdTQ4Er-BsOAXC-jjIDN576tbsZRT7eJbhAbPlaZwjmBdY71QLd2_BePfDQQTASyaT_iBLM-uL-L1Zy_7plFd6_9VYYk9w7uOFRcPj5xaiA"/>
+</div>
+<h4 class="font-title-lg text-title-lg mb-2">칭의에 관한 연구</h4>
+<p class="font-caption text-caption text-on-surface-variant mb-4">마지막 수정: 3일 전</p>
+</div>
+<button class="bg-primary text-on-primary py-2 px-4 font-label-ui text-label-ui hover:bg-on-surface-variant transition-colors flex items-center justify-center gap-2">
+                        계속하기 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Learn by Example -->
+<section class="max-w-container-max mx-auto px-gutter mb-20">
+<h3 class="font-title-lg text-title-lg mb-6 border-b border-outline-variant pb-2">예제로 배우기</h3>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="p-6 border border-outline-variant hover:bg-surface-container transition-all cursor-pointer flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-secondary mb-4 text-4xl">local_library</span>
+<h5 class="font-label-ui text-label-ui font-bold">성경 연구 예제</h5>
+<p class="text-caption text-on-surface-variant mt-2">원어 분석 및 주해 흐름</p>
+</div>
+<div class="p-6 border border-outline-variant hover:bg-surface-container transition-all cursor-pointer flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-secondary mb-4 text-4xl">menu_book</span>
+<h5 class="font-label-ui text-label-ui font-bold">신학 연구 예제</h5>
+<p class="text-caption text-on-surface-variant mt-2">조직신학적 주제 탐구</p>
+</div>
+<div class="p-6 border border-outline-variant hover:bg-surface-container transition-all cursor-pointer flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-secondary mb-4 text-4xl">record_voice_over</span>
+<h5 class="font-label-ui text-label-ui font-bold">설교 준비 예제</h5>
+<p class="text-caption text-on-surface-variant mt-2">서론에서 결론까지의 구성</p>
+</div>
+<div class="p-6 border border-outline-variant hover:bg-surface-container transition-all cursor-pointer flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-secondary mb-4 text-4xl">find_in_page</span>
+<h5 class="font-label-ui text-label-ui font-bold">자료 찾기 예제</h5>
+<p class="text-caption text-on-surface-variant mt-2">고급 필터와 검색 활용</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] h-10 flex items-center justify-between px-gutter bg-tertiary-container text-on-tertiary-container border-t border-outline-variant z-50">
+<span class="font-caption text-caption text-on-tertiary-container/80">현재 보고 있는 자료: 신학적 인간학 연구 (2024)</span>
+<div class="flex items-center gap-4">
+<a class="font-label-ui text-label-ui hover:opacity-80 flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-xs">smart_toy</span>
+                DBMA에게 물어보세요
+            </a>
+</div>
+</footer>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('.scholar-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Search Bar Focus Effect
+        const mainSearch = document.querySelector('input[type="text"]');
+        mainSearch.addEventListener('focus', () => {
+            mainSearch.parentElement.classList.add('scale-[1.02]');
+            mainSearch.parentElement.style.transition = 'all 0.3s ease';
+        });
+        mainSearch.addEventListener('blur', () => {
+            mainSearch.parentElement.classList.remove('scale-[1.02]');
+        });
+    </script>
+</body></html>

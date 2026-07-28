@@ -73,7 +73,7 @@ def render_processing_page() -> None:
     _render_upload_section()
 
     # ── Ingestion Form ─────────────────────────────────────────
-    page.render_section("문書 처리", icon="📥")
+    page.render_section("문서 처리", icon="📥")
     _render_ingestion_form()
 
     # ── Processing Queue ───────────────────────────────────────

@@ -18,6 +18,7 @@
 import streamlit as st
 
 from ui.pages._base import BasePage
+from ui.theme.colors import THEME
 from core.retrieval import QueryProcessor
 from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
 from core.sermon.bible_books import BIBLE_BOOKS
@@ -32,9 +33,41 @@ _STATUS_HAS_OUTLINE = {"outline_generated", "reviewing", "approved", "expanding"
 _STATUS_HAS_EXPANSION = {"approved", "expanding", "draft_complete"}
 
 
+def _apply_sermon_draft_styles() -> None:
+    """설교 준비 Stitch 화면 스타일 — 노트 카드, 원고 카드, 확장 대지 카드."""
+    st.markdown(
+        f"""
+        <style>
+        div[data-testid="stTextArea"] textarea,
+        div[data-testid="stTextInput"] input {{
+            border-radius: 10px !important;
+            border-color: {THEME.BORDER_MEDIUM} !important;
+        }}
+        div[data-testid="stExpander"] {{
+            border: 1px solid {THEME.BORDER_LIGHT} !important;
+            border-radius: 8px !important;
+        }}
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            border-radius: 8px !important;
+            border-color: {THEME.BORDER_LIGHT} !important;
+            background: {THEME.BG_SURFACE};
+        }}
+        div[data-testid="stVerticalBlockBorderWrapper"] p,
+        div[data-testid="stVerticalBlockBorderWrapper"] li {{
+            font-family: 'Source Serif 4', serif;
+            line-height: 1.8;
+            color: {THEME.TEXT_PRIMARY};
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_sermon_draft_page() -> None:
     """Render the DBMA Sermon Draft workshop page."""
-    page = BasePage(title="설교문 작성", icon="📝")
+    _apply_sermon_draft_styles()
+    page = BasePage(title="설교문 작성", icon="📖")
     page.render_header()
 
     _init_state()
@@ -336,7 +369,8 @@ def _render_expansion_step() -> None:
         st.divider()
         st.subheader("📄 완성된 설교문 초안")
         full_draft = _assemble_draft(outline, state["expanded"])
-        st.markdown(full_draft)
+        with st.container(border=True):
+            st.markdown(full_draft)
         # §2.3: 다운로드 전 맞춤법 검사 플래그 설정
         if spell_errors_expansion:
             st.warning(

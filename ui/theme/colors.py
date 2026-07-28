@@ -18,33 +18,34 @@ class DBMADesignSystemColors:
     """
 
     # ── Brand Colors ───────────────────────────────────────────
-    # Primary brand — deep navy for navigation and headings
-    BRAND_PRIMARY: str = "#1B365D"
-    # Secondary brand — warm gold accent
-    BRAND_SECONDARY: str = "#C8943E"
+    # Primary brand — deep charcoal (Stitch "Scholar" system, see
+    # docs/design/stitch/pastoral_research_desk/DESIGN.md)
+    BRAND_PRIMARY: str = "#171E1E"
+    # Secondary brand — muted wood accent
+    BRAND_SECONDARY: str = "#6A5C4C"
 
     # ── Surface Colors ─────────────────────────────────────────
-    # Main page background
-    BG_PAGE: str = "#F7F5F0"
-    # Card / panel background (slightly lighter)
-    BG_SURFACE: str = "#FFFFFF"
+    # Main page background — soft cream (paper-like)
+    BG_PAGE: str = "#F5F3EE"
+    # Card / panel background
+    BG_SURFACE: str = "#FBF9F4"
     # Sidebar background
-    BG_SIDEBAR: str = "#FDFCFA"
+    BG_SIDEBAR: str = "#FBF9F4"
     # Elevated surface (dialogs, overlays)
     BG_ELEVATED: str = "#FFFFFF"
 
     # ── Text Colors ────────────────────────────────────────────
-    TEXT_PRIMARY: str = "#1A1A1A"
-    TEXT_SECONDARY: str = "#5C5C5C"
-    TEXT_TERTIARY: str = "#8E8E8E"
+    TEXT_PRIMARY: str = "#1B1C19"
+    TEXT_SECONDARY: str = "#434848"
+    TEXT_TERTIARY: str = "#737878"
     TEXT_INVERSE: str = "#FFFFFF"
-    # Link color
-    TEXT_LINK: str = "#2B6CB0"
+    # Link color — conservative "Scholar Blue", reserved for primary actions
+    TEXT_LINK: str = "#264B5D"
 
     # ── Border / Divider Colors ────────────────────────────────
-    BORDER_LIGHT: str = "#E8E4DF"
-    BORDER_MEDIUM: str = "#D1CCC6"
-    BORDER_FOCUS: str = "#C8943E"
+    BORDER_LIGHT: str = "#E4E2DD"
+    BORDER_MEDIUM: str = "#C3C7C7"
+    BORDER_FOCUS: str = "#264B5D"
 
     # ── Status Colors ──────────────────────────────────────────
     STATUS_SUCCESS: str = "#2D7D5B"

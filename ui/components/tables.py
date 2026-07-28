@@ -156,9 +156,9 @@ def search_results_table(results: list[dict],
             <div style="
                 background: {THEME.BG_SURFACE};
                 border: 1px solid {THEME.BORDER_LIGHT};
-                border-radius: 6px;
-                padding: {12}px {16}px;
-                margin-bottom: {8}px;
+                border-radius: 8px;
+                padding: {14}px {18}px;
+                margin-bottom: {10}px;
             ">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
                     <span style="font-size: 14px; font-weight: 600; color: {THEME.BRAND_PRIMARY};">
@@ -171,11 +171,11 @@ def search_results_table(results: list[dict],
                         RRF {score:.4f}
                     </span>
                 </div>
-                <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 4px;">
+                <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 6px;">
                     {doc_type}
                     {f' • {source}' if source else ''}
                 </div>
-                {f'<div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.5;">{snippet}</div>' if snippet else ''}
+                {f'<div style="font-family: Source Serif 4, serif; font-style: italic; font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.6;">{snippet}</div>' if snippet else ''}
             </div>
             """
         st.markdown(html, unsafe_allow_html=True)

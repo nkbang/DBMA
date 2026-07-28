@@ -21,15 +21,50 @@ from ui.state.query_processor import get_shared_query_processor, record_query_la
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 
 
+def _apply_research_styles() -> None:
+    """연구하기 워크스페이스 Stitch 화면 스타일 — 둥근 검색창, AI 인사이트 카드."""
+    st.markdown(
+        f"""
+        <style>
+        div[data-testid="stTextArea"] textarea {{
+            border-radius: 12px !important;
+            border-color: {THEME.BORDER_MEDIUM} !important;
+            font-family: 'Source Serif 4', serif;
+        }}
+        .research-insight-card {{
+            background: {THEME.TEXT_LINK}14;
+            border: 1px solid {THEME.TEXT_LINK}33;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+        }}
+        .research-session-card {{
+            background: {THEME.BG_SURFACE};
+            border: 1px solid {THEME.BORDER_LIGHT};
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+        }}
+        div[data-testid="stExpander"] {{
+            border: 1px solid {THEME.BORDER_LIGHT} !important;
+            border-radius: 8px !important;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_research_page() -> None:
     """Render the DBMA Research Workspace page."""
+    _apply_research_styles()
     # [SPRINT27-E] One research session per browser visit (ADR-005 §1) —
     # created once and reused across saves within this session_state; a
     # page reload clears session_state and starts a new research session.
     if "research_session_id" not in st.session_state:
         st.session_state["research_session_id"] = create_session()
 
-    page = BasePage(title="Research Workspace", icon="🔬")
+    page = BasePage(title="Research Workspace", icon="🧪")
     page.render_header()
 
     # ── Search Interface ───────────────────────────────────────
@@ -350,20 +385,40 @@ def _render_query_analysis() -> None:
         intent_display = intent.upper() if intent != "unknown" else "—"
         st.metric("인식된 의도", intent_display)
 
-    # Query expansion suggestions
-    st.markdown("### 💡 검색어 확장 제안")
+    # Query expansion suggestions — AI Insight card (Stitch research_workspace.html)
     first_word = query.split()[0] if query.split() else ""
     suggestions = [
         f"{query} 관련 문헌",
         f"{first_word} 논평",
         f"{query} 신학적 분석",
     ]
-    for s in suggestions:
-        st.caption(f"• {s}")
+    suggestions_html = "".join(f"<div>• {s}</div>" for s in suggestions)
+    st.markdown(
+        f"""
+        <div class="research-insight-card">
+            <div style="font-weight: 600; color: {THEME.TEXT_PRIMARY}; margin-bottom: 8px;">
+                🧪 검색어 확장 제안
+            </div>
+            <div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.8;">
+                {suggestions_html}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     # Display scripture references if detected (LOOP 3 enhancement)
     if detected_books:
-        st.markdown("### 📖 감지된 성서 도서")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.caption(f"감지된 도서: {', '.join(detected_books)}")
+        st.markdown(
+            f"""
+            <div class="research-insight-card">
+                <div style="font-weight: 600; color: {THEME.TEXT_PRIMARY}; margin-bottom: 8px;">
+                    📖 감지된 성서 도서
+                </div>
+                <div style="font-size: 13px; color: {THEME.TEXT_SECONDARY};">
+                    {', '.join(detected_books)}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )

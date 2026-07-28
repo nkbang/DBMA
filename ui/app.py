@@ -16,7 +16,7 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 # Configure page
 st.set_page_config(
-    page_title="DBMA — Personal Knowledge Operating System",
+    page_title="내서재 · NAE",
     page_icon="📚",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -32,6 +32,8 @@ from ui.pages.monitor import render_monitor_page
 from ui.pages.chat import render_chat_page
 from ui.pages.sermon_draft import render_sermon_draft_page
 from ui.pages.sermon_review import render_sermon_review_page
+from ui.pages.onboarding import render_onboarding_page
+from ui.pages.help import render_help_page
 
 
 def main() -> None:
@@ -39,6 +41,11 @@ def main() -> None:
 
     # ── Global Styles ──────────────────────────────────────────
     _apply_global_styles()
+
+    # ── First-run Onboarding ───────────────────────────────────
+    if st.session_state.get("show_onboarding", True):
+        render_onboarding_page()
+        return
 
     # ── Application Header ─────────────────────────────────────
     _render_app_header()
@@ -52,36 +59,71 @@ def main() -> None:
 
 def _apply_global_styles() -> None:
     """Apply global CSS styles."""
-    st.markdown("""
+    st.markdown(f"""
         <style>
-        /* Main container styling */
-        .main > div {
-            padding: 2rem 3rem;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&display=swap');
 
-        /* Sidebar styling */
-        .css-1egun95 {
-            background-color: #fafbfc;
-        }
+        /* Stitch Scholar design system typography */
+        html, body, [class*="css"] {{
+            font-family: 'Hanken Grotesk', sans-serif;
+        }}
+
+        /* App / sidebar surface colors */
+        [data-testid="stAppViewContainer"] {{
+            background-color: {THEME.BG_PAGE};
+        }}
+        [data-testid="stSidebar"] {{
+            background-color: {THEME.BG_SIDEBAR};
+            border-right: 1px solid {THEME.BORDER_LIGHT};
+        }}
+        [data-testid="stHeader"] {{
+            background-color: transparent;
+        }}
+
+        /* Main container styling */
+        .main > div {{
+            padding: 2rem 3rem;
+        }}
 
         /* Custom component styles */
-        [data-testid="stMetric"] {
+        [data-testid="stMetric"] {{
             background-color: white;
             padding: 0.5rem 1rem;
             border-radius: 6px;
             border: 1px solid #e0e0e0;
-        }
+        }}
 
         /* Table styling */
-        [data-testid="stDataFrame"] {
+        [data-testid="stDataFrame"] {{
             border: 1px solid #e0e0e0;
             border-radius: 6px;
-        }
+        }}
+
+        /* Primary action buttons — Scholar Blue per DESIGN.md
+           (kind is "primary" for st.button, "primaryFormSubmit" for
+           st.form_submit_button — match both with a substring selector) */
+        button[kind*="primary"] {{
+            background-color: #171e1e !important;
+            border-color: #171e1e !important;
+            color: #ffffff !important;
+            border-radius: 999px !important;
+        }}
+        button[kind*="primary"]:hover {{
+            background-color: #434848 !important;
+            border-color: #434848 !important;
+            color: #ffffff !important;
+        }}
+        button[kind*="primary"] p {{
+            color: #ffffff !important;
+        }}
+        button[kind*="secondary"] {{
+            border-radius: 999px !important;
+        }}
 
         /* Footer styling */
-        footer {
+        footer {{
             visibility: hidden;
-        }
+        }}
         </style>
     """, unsafe_allow_html=True)
 
@@ -96,13 +138,15 @@ def _render_app_header() -> None:
             st.logo(str(logo_path), icon_image=str(logo_path))
 
     with col2:
+        # 사용자-facing 브랜드는 내서재/NAE — DBMA는 내부 식별자로만 유지
+        # (docs/governance/DBMA-BRAND-GOV-001.md 참고)
         st.markdown(f"""
         <div style="padding: 0.5rem 0;">
-            <h1 style="font-size: 24px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 0;">
-                DBMA
+            <h1 style="font-family: 'Hanken Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 0; letter-spacing: -0.01em;">
+                내서재 <span style="font-weight: 500; color: {THEME.TEXT_TERTIARY};">· NAE</span>
             </h1>
-            <p style="font-size: 12px; color: {THEME.TEXT_SECONDARY}; margin: 0;">
-                David Bang Ministry Archive — Personal Knowledge Operating System
+            <p style="font-family: 'Hanken Grotesk', sans-serif; font-size: 12px; color: {THEME.TEXT_SECONDARY}; margin: 0;">
+                나의 자료 · 나의 연구 · 나의 목회
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -129,14 +173,15 @@ def _render_sidebar() -> str:
         st.markdown("### 📑 네비게이션")
 
         pages = {
-            "Dashboard": ("🏠", "시스템 대시보드"),
-            "Library": ("📚", "문서 라이브러리"),
+            "Dashboard": ("🏠", "홈"),
+            "Library": ("🔍", "자료 찾기 · 내 자료"),
             "Processing": ("📄", "문서 처리"),
-            "Research": ("🔬", "연구 워크스페이스"),
+            "Research": ("🧪", "연구하기 워크스페이스"),
             "Chat": ("💬", "RAG 채팅"),
-            "설교문 작성": ("📝", "설교문 작성 워크숍"),
+            "설교문 작성": ("📖", "설교 준비"),
             "설교 리뷰": ("🗂️", "설교 모음 분리·검수"),
             "Monitor": ("💚", "시스템 모니터링"),
+            "도움말": ("❓", "내서재 활용 가이드"),
         }
 
         # key="nav_page" lets other pages switch tabs programmatically
@@ -165,11 +210,7 @@ def _render_sidebar() -> str:
         st.markdown(f"""
         <div style="text-align: center; padding: 0.5rem 0;">
                 <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
-                DBMA v{APP_VERSION}
-            </span>
-            <br>
-            <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
-                David Bang Ministry Archive
+                내서재 · NAE v{APP_VERSION}
             </span>
         </div>
         """, unsafe_allow_html=True)
@@ -194,6 +235,7 @@ def _render_page_content(page: str) -> None:
         "설교문 작성": render_sermon_draft_page,
         "설교 리뷰": render_sermon_review_page,
         "Monitor": render_monitor_page,
+        "도움말": render_help_page,
     }
 
     renderer = page_renderers.get(page)

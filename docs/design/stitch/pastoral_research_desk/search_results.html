@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .reading-container {
+            max-width: 720px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5E1D8;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c3c7c7;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#434848",
+                        "surface-bright": "#fbf9f4",
+                        "background": "#fbf9f4",
+                        "on-secondary-fixed": "#241a0d",
+                        "tertiary-fixed": "#c2e8fe",
+                        "outline": "#737878",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dbdad5",
+                        "outline-variant": "#c3c7c7",
+                        "inverse-surface": "#30312e",
+                        "on-surface": "#1b1c19",
+                        "on-primary-fixed-variant": "#414848",
+                        "inverse-primary": "#c1c8c7",
+                        "secondary": "#6a5c4c",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#00202d",
+                        "surface-container-high": "#eae8e3",
+                        "surface-container": "#f0eee9",
+                        "secondary-fixed-dim": "#d6c3b0",
+                        "on-background": "#1b1c19",
+                        "primary-fixed-dim": "#c1c8c7",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#a7cce1",
+                        "inverse-on-surface": "#f2f1ec",
+                        "primary-fixed": "#dde4e3",
+                        "primary": "#171e1e",
+                        "on-secondary-fixed-variant": "#514535",
+                        "surface-container-highest": "#e4e2dd",
+                        "surface": "#fbf9f4",
+                        "secondary-fixed": "#f3dfcb",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#6f6050",
+                        "surface-container-low": "#f5f3ee",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#001e2b",
+                        "tertiary-container": "#0c3647",
+                        "secondary-container": "#f0dcc8",
+                        "surface-tint": "#596060",
+                        "on-tertiary-fixed-variant": "#264b5d",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#949b9b",
+                        "surface-variant": "#e4e2dd",
+                        "on-tertiary-container": "#7b9fb3",
+                        "on-primary-fixed": "#161d1d",
+                        "primary-container": "#2c3333"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "sidebar-width": "280px",
+                        "reading-column": "720px",
+                        "container-max": "1280px",
+                        "gutter": "32px",
+                        "margin-page": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-reading-md": ["\"Source Serif 4\""],
+                        "display-lg": ["Hanken Grotesk"],
+                        "title-lg": ["Hanken Grotesk"],
+                        "caption": ["Hanken Grotesk"],
+                        "body-reading-lg": ["\"Source Serif 4\""],
+                        "label-ui": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-reading-md": ["17px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "body-reading-lg": ["19px", { "lineHeight": "32px", "fontWeight": "400" }],
+                        "label-ui": ["14px", { "lineHeight": "20px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-label-ui overflow-hidden flex h-screen">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-surface border-r border-outline-variant flex flex-col py-margin-page px-4 gap-4 z-50">
+<div class="mb-8 px-2">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Theology Desk</h1>
+<p class="font-title-lg text-title-lg text-on-surface-variant opacity-70">Pastoral Scholar</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-ui text-label-ui">홈</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary font-bold border-r-2 border-primary bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-ui text-label-ui">자료 찾기</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-label-ui text-label-ui">내 자료</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-label-ui text-label-ui">연구하기</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-ui text-label-ui">설교 준비</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-ui text-label-ui">도움말</span>
+</a>
+</nav>
+<div class="mt-auto px-3 py-4 border-t border-outline-variant">
+<h3 class="text-caption font-caption text-outline uppercase tracking-wider mb-3">검색 필터</h3>
+<div class="space-y-3">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-label-ui text-on-surface-variant group-hover:text-on-surface">학술 자료 전용</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-label-ui text-on-surface-variant group-hover:text-on-surface">최근 5년 이내</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-label-ui text-on-surface-variant group-hover:text-on-surface">원어 분석 포함</span>
+</label>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width flex-1 flex flex-col h-full bg-surface-bright overflow-hidden">
+<!-- TopNavBar (Shared Component) -->
+<header class="sticky top-0 z-40 bg-surface-bright h-16 border-b border-outline-variant flex items-center justify-between px-gutter">
+<div class="flex items-center gap-6">
+<span class="font-title-lg text-title-lg font-semibold text-on-surface">DBMA Research</span>
+<div class="relative w-96">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-outline material-symbols-outlined" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-full pl-10 pr-4 py-1.5 font-body-reading-md text-label-ui focus:outline-none focus:border-primary focus:ring-0" type="text" value="로마서 8장 성령"/>
+</div>
+<nav class="flex items-center gap-6 ml-4">
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">열기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">읽기</a>
+<a class="font-label-ui text-label-ui text-primary border-b-2 border-primary pb-1" href="#">연구하기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">설교 준비</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption text-outline">자동 저장됨</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="open_in_new">open_in_new</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="history">history</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 overflow-y-auto px-gutter py-8">
+<div class="reading-container mx-auto">
+<!-- Category Tabs -->
+<div class="flex items-center gap-4 border-b border-outline-variant mb-8">
+<button class="px-1 py-3 text-primary border-b-2 border-primary font-bold text-label-ui">전체</button>
+<button class="px-1 py-3 text-on-surface-variant hover:text-on-surface font-label-ui transition-colors">성경 (12)</button>
+<button class="px-1 py-3 text-on-surface-variant hover:text-on-surface font-label-ui transition-colors">책 (45)</button>
+<button class="px-1 py-3 text-on-surface-variant hover:text-on-surface font-label-ui transition-colors">신학 자료 (28)</button>
+<button class="px-1 py-3 text-on-surface-variant hover:text-on-surface font-label-ui transition-colors">설교 (15)</button>
+<button class="px-1 py-3 text-on-surface-variant hover:text-on-surface font-label-ui transition-colors">내 자료 (3)</button>
+</div>
+<!-- Search Header -->
+<div class="mb-10">
+<h2 class="font-display-lg text-display-lg text-primary mb-2">"로마서 8장 성령" 검색 결과</h2>
+<p class="font-label-ui text-on-surface-variant">약 103개의 관련 자료를 찾았습니다.</p>
+</div>
+<!-- Results List -->
+<div class="space-y-6">
+<!-- Result Item 1: Bible -->
+<div class="group p-6 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all hover:border-primary-container hover:shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">성경</span>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-caption font-label-ui text-outline hover:text-primary">읽기</button>
+<button class="text-caption font-label-ui text-outline hover:text-primary">연구하기</button>
+<button class="material-symbols-outlined text-outline text-lg" data-icon="bookmark">bookmark</button>
+</div>
+</div>
+<h3 class="font-title-lg text-title-lg text-primary mb-2 group-hover:text-primary-container transition-colors">로마서 8:1-11 - 성령 안에서의 생명</h3>
+<p class="font-body-reading-md text-body-reading-md text-on-surface-variant line-clamp-2 italic mb-4">"그러므로 이제 그리스도 예수 안에 있는 자에게는 결코 정죄함이 없나니 이는 그리스도 예수 안에 있는 생명의 성령의 법이 죄와 사망의 법에서 너를 해방하였음이라..."</p>
+<div class="flex items-center gap-4 text-caption font-caption text-outline">
+<span>개역개정 (KRV)</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">읽기</button>
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">연구하기</button>
+</div>
+</div>
+</div>
+<!-- Result Item 2: Theological Resource -->
+<div class="group p-6 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all hover:border-primary-container hover:shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">신학 자료</span>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-outline text-lg" data-icon="open_in_new">open_in_new</button>
+<button class="material-symbols-outlined text-outline text-lg" data-icon="add_to_photos">add_to_photos</button>
+</div>
+</div>
+<h3 class="font-title-lg text-title-lg text-primary mb-2">로마서 8장에 나타난 성령의 구원론적 역할 연구</h3>
+<p class="font-body-reading-md text-body-reading-md text-on-surface-variant line-clamp-2 mb-4">본 논문은 바울의 성령론의 정점이라 불리는 로마서 8장을 중심으로, 양자 삼으시는 성령과 말할 수 없는 탄식으로 기도하시는 성령의 사역을 분석합니다.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 text-caption font-caption text-outline">
+<span>김학술 교수</span>
+<span>•</span>
+<span>한국신학논총 (2022)</span>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">연구하기</button>
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">내 자료에 저장</button>
+</div>
+</div>
+</div>
+<!-- Result Item 3: Sermon -->
+<div class="group p-6 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all hover:border-primary-container hover:shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">설교</span>
+<div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-outline text-lg" data-icon="playlist_add">playlist_add</button>
+</div>
+</div>
+<h3 class="font-title-lg text-title-lg text-primary mb-2">성령과 함께 걷는 탄식의 골짜기</h3>
+<p class="font-body-reading-md text-body-reading-md text-on-surface-variant line-clamp-2 mb-4">고난 중에 있는 성도들에게 로마서 8장이 주는 위로는 성령의 동행하심입니다. 성령님은 우리의 연약함을 도우시며 친히 간구하십니다.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 text-caption font-caption text-outline">
+<span>이목자 목사</span>
+<span>•</span>
+<span>주일 대예배 설교안 (2024.03)</span>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">읽기</button>
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">새 창으로 열기</button>
+</div>
+</div>
+</div>
+<!-- Result Item 4: Book -->
+<div class="group p-6 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all hover:border-primary-container hover:shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-on-primary-fixed text-primary-fixed px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">책</span>
+</div>
+<div class="flex gap-6">
+<div class="w-16 h-24 bg-surface-dim border border-outline-variant flex-shrink-0 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-4xl" data-icon="menu_book">menu_book</span>
+</div>
+<div class="flex-1">
+<h3 class="font-title-lg text-title-lg text-primary mb-1">바울의 성령 신학</h3>
+<p class="font-body-reading-md text-body-reading-md text-on-surface-variant line-clamp-2 mb-3">로마서 8장 26절의 '말할 수 없는 탄식'에 대한 주석적 고찰과 성령의 중보 사역의 현대적 의미를 조명합니다.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 text-caption font-caption text-outline">
+<span>고든 피 (Gordon Fee)</span>
+<span>•</span>
+<span>CH북스 출판</span>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">연구하기</button>
+<button class="px-3 py-1 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">내 자료에 저장</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Insights - Scholar Desk Specific -->
+<div class="mt-12 p-8 bg-tertiary-container text-on-tertiary-container rounded-xl border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary-fixed text-2xl" data-icon="psychology">psychology</span>
+<h4 class="font-title-lg text-title-lg font-bold">AI 연구 제언: 로마서 8장의 성령</h4>
+</div>
+<p class="font-body-reading-md mb-6 leading-relaxed">
+                            사용자가 검색한 <strong>"로마서 8장 성령"</strong>은 신약학에서 가장 풍성한 주제 중 하나입니다. 검색 결과를 토대로 볼 때, 다음의 세부 주제로 연구를 좁혀보시는 것을 추천합니다:
+                            <br/><br/>
+                            • <b>양자 됨의 영 (Rom 8:15)</b>: 구약의 '출애굽' 이미지와 연결된 자유의 영 연구<br/>
+                            • <b>창조세계의 탄식과 성령</b>: 최근 생태신학적 관점에서의 주석 자료 5건 발견<br/>
+                            • <b>성령의 탄식과 중보</b>: 기도의 신학적 기반 탐구
+                        </p>
+<button class="flex items-center gap-2 text-label-ui font-bold text-tertiary-fixed hover:underline">
+<span>신학적 맥락 분석 리포트 생성하기</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Bottom Link -->
+<div class="pt-8 pb-20 text-center">
+<a class="inline-flex items-center gap-2 font-label-ui text-label-ui text-on-surface-variant hover:text-primary border-b border-dashed border-outline-variant hover:border-primary transition-all pb-1" href="#">
+<span>더 자세히 찾기</span>
+<span class="material-symbols-outlined text-sm" data-icon="expand_more">expand_more</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer (Shared Component) -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] bg-tertiary-container text-on-tertiary-container h-10 border-t border-outline-variant px-gutter py-2 flex items-center justify-between z-40">
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption text-on-tertiary-container/80">현재 보고 있는 자료: 신학적 인간학 연구 (2024)</span>
+</div>
+<div class="flex items-center gap-6">
+<a class="font-label-ui text-label-ui font-bold text-tertiary-fixed hover:opacity-80" href="#">DBMA에게 물어보세요</a>
+<div class="flex items-center gap-2 text-caption text-on-tertiary-container/60">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                    학술 엔진 연결됨
+                </div>
+</div>
+</footer>
+</main>
+<!-- Floating AI Assistant Button (Contextual FAB Suppression would hide this on deep details, but here on Search results it stays) -->
+<button class="fixed bottom-16 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform z-50">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</button>
+<script>
+        // Simple micro-interaction for result cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-2', 'ring-primary/10');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-2', 'ring-primary/10');
+        });
+    </script>
+</body></html>

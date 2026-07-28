@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Theology Desk - Sermon Preparation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .scholar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scholar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .scholar-scroll::-webkit-scrollbar-thumb {
+            background: #e4e2dd;
+            border-radius: 10px;
+        }
+        .scholar-scroll::-webkit-scrollbar-thumb:hover {
+            background: #c3c7c7;
+        }
+        .paper-texture {
+            background-color: #fbf9f4;
+            background-image: radial-gradient(#e5e1d8 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+        .editor-cursor {
+            border-right: 2px solid #171e1e;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #171e1e }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#434848",
+                        "surface-bright": "#fbf9f4",
+                        "background": "#fbf9f4",
+                        "on-secondary-fixed": "#241a0d",
+                        "tertiary-fixed": "#c2e8fe",
+                        "outline": "#737878",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dbdad5",
+                        "outline-variant": "#c3c7c7",
+                        "inverse-surface": "#30312e",
+                        "on-surface": "#1b1c19",
+                        "on-primary-fixed-variant": "#414848",
+                        "inverse-primary": "#c1c8c7",
+                        "secondary": "#6a5c4c",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#00202d",
+                        "surface-container-high": "#eae8e3",
+                        "surface-container": "#f0eee9",
+                        "secondary-fixed-dim": "#d6c3b0",
+                        "on-background": "#1b1c19",
+                        "primary-fixed-dim": "#c1c8c7",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#a7cce1",
+                        "inverse-on-surface": "#f2f1ec",
+                        "primary-fixed": "#dde4e3",
+                        "primary": "#171e1e",
+                        "on-secondary-fixed-variant": "#514535",
+                        "surface-container-highest": "#e4e2dd",
+                        "surface": "#fbf9f4",
+                        "secondary-fixed": "#f3dfcb",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#6f6050",
+                        "surface-container-low": "#f5f3ee",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#001e2b",
+                        "tertiary-container": "#0c3647",
+                        "secondary-container": "#f0dcc8",
+                        "surface-tint": "#596060",
+                        "on-tertiary-fixed-variant": "#264b5d",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#949b9b",
+                        "surface-variant": "#e4e2dd",
+                        "on-tertiary-container": "#7b9fb3",
+                        "on-primary-fixed": "#161d1d",
+                        "primary-container": "#2c3333"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "sidebar-width": "280px",
+                        "reading-column": "720px",
+                        "container-max": "1280px",
+                        "gutter": "32px",
+                        "margin-page": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-reading-md": ["\"Source Serif 4\""],
+                        "display-lg": ["Hanken Grotesk"],
+                        "title-lg": ["Hanken Grotesk"],
+                        "caption": ["Hanken Grotesk"],
+                        "body-reading-lg": ["\"Source Serif 4\""],
+                        "label-ui": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-reading-md": ["17px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "body-reading-lg": ["19px", { "lineHeight": "32px", "fontWeight": "400" }],
+                        "label-ui": ["14px", { "lineHeight": "20px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-label-ui text-on-surface overflow-hidden h-screen flex">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-surface border-r border-outline-variant flex flex-col py-margin-page px-4 gap-4 z-50">
+<div class="mb-8 px-2">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Theology Desk</h1>
+<p class="font-caption text-caption text-on-surface-variant opacity-70">Pastoral Scholar</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-ui text-label-ui">홈</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-ui text-label-ui">자료 찾기</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-label-ui text-label-ui">내 자료</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-label-ui text-label-ui">연구하기</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-primary font-bold border-r-2 border-primary bg-surface-container-low transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-ui text-label-ui">설교 준비</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-ui text-label-ui">도움말</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width flex-1 flex flex-col h-full bg-surface-bright relative">
+<!-- TopNavBar Anchor -->
+<header class="flex justify-between items-center h-16 px-gutter border-b border-outline-variant sticky top-0 bg-surface-bright z-40">
+<div class="flex items-center gap-8">
+<span class="font-title-lg text-title-lg font-semibold text-on-surface">DBMA Research</span>
+<div class="h-6 w-px bg-outline-variant"></div>
+<nav class="flex items-center gap-6">
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">열기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">읽기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">연구하기</a>
+<a class="font-label-ui text-label-ui text-primary border-b-2 border-primary pb-1" href="#">설교 준비</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption text-on-surface-variant">자동 저장됨</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="open_in_new">open_in_new</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="history">history</button>
+</div>
+</header>
+<!-- Preparation Canvas -->
+<section class="flex flex-1 overflow-hidden">
+<!-- Left Panel: Research Notes -->
+<div class="w-1/2 border-r border-outline-variant flex flex-col bg-surface-container-low/30">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+<h2 class="font-title-lg text-title-lg">Research Notes</h2>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded-lg hover:bg-surface-container transition-all group">
+<span class="material-symbols-outlined text-sm group-hover:rotate-12 transition-transform" data-icon="history">history</span>
+<span class="font-label-ui text-label-ui">최근 연구 내용 가져오기</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-8 scholar-scroll">
+<div class="max-w-[500px] mx-auto space-y-8">
+<!-- Research Card 1 -->
+<div class="p-6 bg-white border border-outline-variant rounded-lg shadow-sm hover:border-primary transition-all group relative">
+<button class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-surface-container rounded" title="Open in window">
+<span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</button>
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded uppercase tracking-wider">Scripture</span>
+<span class="text-caption font-caption text-on-surface-variant">요한복음 14:16-17</span>
+</div>
+<p class="font-body-reading-md text-body-reading-md italic text-on-surface-variant border-l-2 border-outline-variant pl-4 mb-4">
+                                "내가 아버지께 구하겠으니 그가 또 다른 보혜사를 너희에게 주사 영원토록 너희와 함께 있게 하리니..."
+                            </p>
+<div class="text-label-ui font-label-ui text-primary font-medium">핵심 주제: 보혜사(Parakletos)의 영원한 거하심</div>
+</div>
+<!-- Research Card 2 -->
+<div class="p-6 bg-white border border-outline-variant rounded-lg shadow-sm hover:border-primary transition-all group relative">
+<button class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-surface-container rounded" title="Open in window">
+<span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</button>
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold rounded uppercase tracking-wider">Commentary</span>
+<span class="text-caption font-caption text-on-surface-variant">칼빈 주석</span>
+</div>
+<p class="font-body-reading-md text-body-reading-md text-on-surface mb-2">
+                                성령은 단순히 신자들에게 힘을 주는 존재가 아니라, 그리스도의 실재를 우리 안에 구현하시는 분이다. 성령의 인도함은 지성적 깨달음과 영적 감화가 결합된 형태이다.
+                            </p>
+</div>
+<!-- Research Card 3 -->
+<div class="p-6 bg-[#fcfbf7] border-dashed border-2 border-outline-variant rounded-lg flex flex-col items-center justify-center py-12 gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-4xl opacity-20" data-icon="add_circle">add_circle</span>
+<span class="font-label-ui">추가 연구 노트를 드래그하세요</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Sermon Editor -->
+<div class="w-1/2 flex flex-col bg-surface paper-texture relative">
+<!-- Editor Header -->
+<div class="px-12 pt-16 pb-8">
+<div class="max-w-reading-column mx-auto">
+<div class="flex items-center gap-3 mb-4 text-on-surface-variant/60">
+<span class="font-caption tracking-widest uppercase">Drafting</span>
+<div class="h-px flex-1 bg-outline-variant"></div>
+</div>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 font-headline-md text-headline-md font-bold text-primary placeholder:text-outline-variant" placeholder="설교 제목을 입력하세요" type="text" value="주일 설교 준비: 성령의 인도함"/>
+<div class="flex items-center gap-4 mt-6 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-caption font-caption">2024년 5월 19일</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="tag">tag</span>
+<span class="text-caption font-caption">주일 대예배</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Editor Body -->
+<div class="flex-1 overflow-y-auto px-12 pb-32 scholar-scroll">
+<div class="max-w-reading-column mx-auto space-y-6">
+<div class="group">
+<span class="font-caption text-on-surface-variant opacity-40 group-hover:opacity-100 transition-opacity uppercase mb-2 block">서론</span>
+<p class="font-body-reading-lg text-body-reading-lg leading-relaxed text-on-surface outline-none" contenteditable="true">
+                                오늘 우리는 요한복음 14장의 말씀을 통해 우리와 영원히 함께하시겠다고 약속하신 성령 하나님에 대해 묵상하고자 합니다. 삶의 폭풍 속에서도 우리가 평안을 잃지 않을 수 있는 이유는 무엇입니까? 
+                            </p>
+</div>
+<div class="group">
+<span class="font-caption text-on-surface-variant opacity-40 group-hover:opacity-100 transition-opacity uppercase mb-2 block">본론 1. 보혜사의 약속</span>
+<p class="font-body-reading-lg text-body-reading-lg leading-relaxed text-on-surface outline-none" contenteditable="true">
+                                예수님께서는 떠나가시며 우리를 고아와 같이 버려두지 않겠다고 하셨습니다. '보혜사' 즉 '곁에서 돕는 자'로 오시는 성령님은...
+                            </p>
+<span class="editor-cursor ml-1"></span>
+</div>
+<div class="mt-12 p-6 bg-surface-container-high/50 border border-outline-variant rounded-lg border-dashed">
+<div class="flex items-center gap-2 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm" data-icon="tips_and_updates">tips_and_updates</span>
+<span class="text-caption font-caption font-bold">AI 제안 (연구 기반)</span>
+</div>
+<p class="font-label-ui text-label-ui text-on-surface-variant mb-4">
+                                칼빈의 주석 내용을 인용하여 "성령의 내주하심이 주는 그리스도와의 연합"에 대해 강조해보는 것은 어떨까요?
+                            </p>
+<button class="text-primary font-bold text-label-ui flex items-center gap-1 hover:underline">
+                                내용 삽입하기 <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Floating Toolbar -->
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-on-background text-surface-bright px-6 py-3 rounded-full flex items-center gap-6 shadow-xl border border-outline/20">
+<button class="material-symbols-outlined hover:text-tertiary-fixed transition-colors" data-icon="format_bold">format_bold</button>
+<button class="material-symbols-outlined hover:text-tertiary-fixed transition-colors" data-icon="format_italic">format_italic</button>
+<button class="material-symbols-outlined hover:text-tertiary-fixed transition-colors" data-icon="format_list_bulleted">format_list_bulleted</button>
+<div class="w-px h-4 bg-outline"></div>
+<button class="material-symbols-outlined hover:text-tertiary-fixed transition-colors" data-icon="auto_awesome" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</button>
+<button class="material-symbols-outlined hover:text-tertiary-fixed transition-colors" data-icon="share">share</button>
+<button class="bg-primary-fixed-dim text-on-primary-fixed px-4 py-1 rounded text-label-ui font-bold hover:bg-white transition-all">최종 검토</button>
+</div>
+</div>
+</section>
+<!-- Footer Anchor -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] bg-tertiary-container text-on-tertiary-container flex items-center justify-between h-10 px-gutter border-t border-outline-variant z-40">
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption opacity-80">현재 보고 있는 자료: 신학적 인간학 연구 (2024)</span>
+</div>
+<div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-ui text-label-ui font-bold text-tertiary-fixed">DBMA에게 물어보세요</span>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interactions for editor focus
+        const editableElements = document.querySelectorAll('[contenteditable="true"]');
+        editableElements.forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.querySelector('span.font-caption').style.opacity = '1';
+                el.parentElement.querySelector('span.font-caption').style.color = '#171e1e';
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.querySelector('span.font-caption').style.opacity = '0.4';
+                el.parentElement.querySelector('span.font-caption').style.color = '';
+            });
+        });
+
+        // Simple mock for "Fetch Recent Research"
+        document.querySelector('button.group').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm" data-icon="sync">sync</span> <span class="font-label-ui text-label-ui">가져오는 중...</span>';
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm text-green-600" data-icon="check_circle">check_circle</span> <span class="font-label-ui text-label-ui">업데이트 완료</span>';
+                setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+            }, 1200);
+        });
+    </script>
+</body></html>

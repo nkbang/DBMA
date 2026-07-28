@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Theology Desk - 성령론 연구</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        /* Custom Scrollbar for Scholarly Feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e4e2dd;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c3c7c7;
+        }
+
+        .paper-texture {
+            background-image: radial-gradient(#d1d1d1 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.2;
+        }
+        
+        .research-canvas {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#434848",
+                    "surface-bright": "#fbf9f4",
+                    "background": "#fbf9f4",
+                    "on-secondary-fixed": "#241a0d",
+                    "tertiary-fixed": "#c2e8fe",
+                    "outline": "#737878",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-dim": "#dbdad5",
+                    "outline-variant": "#c3c7c7",
+                    "inverse-surface": "#30312e",
+                    "on-surface": "#1b1c19",
+                    "on-primary-fixed-variant": "#414848",
+                    "inverse-primary": "#c1c8c7",
+                    "secondary": "#6a5c4c",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#00202d",
+                    "surface-container-high": "#eae8e3",
+                    "surface-container": "#f0eee9",
+                    "secondary-fixed-dim": "#d6c3b0",
+                    "on-background": "#1b1c19",
+                    "primary-fixed-dim": "#c1c8c7",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#a7cce1",
+                    "inverse-on-surface": "#f2f1ec",
+                    "primary-fixed": "#dde4e3",
+                    "primary": "#171e1e",
+                    "on-secondary-fixed-variant": "#514535",
+                    "surface-container-highest": "#e4e2dd",
+                    "surface": "#fbf9f4",
+                    "secondary-fixed": "#f3dfcb",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#6f6050",
+                    "surface-container-low": "#f5f3ee",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#001e2b",
+                    "tertiary-container": "#0c3647",
+                    "secondary-container": "#f0dcc8",
+                    "surface-tint": "#596060",
+                    "on-tertiary-fixed-variant": "#264b5d",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#949b9b",
+                    "surface-variant": "#e4e2dd",
+                    "on-tertiary-container": "#7b9fb3",
+                    "on-primary-fixed": "#161d1d",
+                    "primary-container": "#2c3333"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "sidebar-width": "280px",
+                    "reading-column": "720px",
+                    "container-max": "1280px",
+                    "gutter": "32px",
+                    "margin-page": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-reading-md": ["\"Source Serif 4\""],
+                    "display-lg": ["Hanken Grotesk"],
+                    "title-lg": ["Hanken Grotesk"],
+                    "caption": ["Hanken Grotesk"],
+                    "body-reading-lg": ["\"Source Serif 4\""],
+                    "label-ui": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-reading-md": ["17px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-reading-lg": ["19px", {"lineHeight": "32px", "fontWeight": "400"}],
+                    "label-ui": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-label-ui overflow-hidden">
+<!-- SideNavBar (Left) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-surface border-r border-outline-variant flex flex-col py-margin-page px-4 gap-4 z-50">
+<div class="mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Theology Desk</h1>
+<p class="font-title-lg text-caption text-on-surface-variant">Pastoral Scholar</p>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 py-2 px-3 cursor-pointer duration-200 hover:bg-surface-container transition-colors text-on-surface-variant group">
+<span class="material-symbols-outlined group-hover:text-primary">home</span>
+<span class="font-label-ui text-label-ui">홈</span>
+</div>
+<div class="flex items-center gap-3 py-2 px-3 cursor-pointer duration-200 hover:bg-surface-container transition-colors text-on-surface-variant group">
+<span class="material-symbols-outlined group-hover:text-primary">search</span>
+<span class="font-label-ui text-label-ui">자료 찾기</span>
+</div>
+<div class="flex items-center gap-3 py-2 px-3 cursor-pointer duration-200 hover:bg-surface-container transition-colors text-on-surface-variant group">
+<span class="material-symbols-outlined group-hover:text-primary">library_books</span>
+<span class="font-label-ui text-label-ui">내 자료</span>
+</div>
+<div class="flex items-center gap-3 py-2 px-3 cursor-pointer duration-200 text-primary font-bold border-r-2 border-primary bg-surface-container-low">
+<span class="material-symbols-outlined">science</span>
+<span class="font-label-ui text-label-ui">연구하기</span>
+</div>
+<div class="flex items-center gap-3 py-2 px-3 cursor-pointer duration-200 hover:bg-surface-container transition-colors text-on-surface-variant group">
+<span class="material-symbols-outlined group-hover:text-primary">menu_book</span>
+<span class="font-label-ui text-label-ui">설교 준비</span>
+</div>
+<div class="flex items-center gap-3 py-2 px-3 cursor-pointer duration-200 hover:bg-surface-container transition-colors text-on-surface-variant group">
+<span class="material-symbols-outlined group-hover:text-primary">help</span>
+<span class="font-label-ui text-label-ui">도움말</span>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width h-screen flex flex-col relative">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-16 px-gutter sticky top-0 z-40 bg-surface-bright border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<span class="font-title-lg text-title-lg font-semibold text-on-surface">DBMA Research</span>
+<nav class="flex items-center gap-6">
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">열기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">읽기</a>
+<a class="font-label-ui text-label-ui text-primary border-b-2 border-primary pb-1" href="#">연구하기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">설교 준비</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption text-outline">자동 저장됨</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">open_in_new</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">history</span>
+</div>
+</header>
+<!-- Workspace Layout -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Research Canvas (Left/Main) -->
+<section class="flex-1 overflow-y-auto bg-surface relative">
+<div class="absolute inset-0 paper-texture pointer-events-none"></div>
+<div class="research-canvas py-12 px-gutter relative z-10">
+<header class="mb-10">
+<div class="flex items-center gap-2 text-outline mb-2">
+<span class="material-symbols-outlined text-[18px]">folder</span>
+<span class="font-caption text-caption tracking-wider">PROJECT: PNEUMATOLOGY</span>
+</div>
+<h2 class="font-display-lg text-display-lg text-on-surface mb-4">성령론 연구</h2>
+<hr class="border-outline-variant w-16"/>
+</header>
+<!-- Workspace Content -->
+<div class="space-y-12">
+<!-- Note Block 1 -->
+<article class="group relative">
+<div class="flex items-center gap-3 mb-3">
+<span class="bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full font-bold">INSIGHT</span>
+<h3 class="font-title-lg text-title-lg text-on-surface italic">오순절 사건의 구조적 의의</h3>
+</div>
+<div class="font-body-reading-lg text-body-reading-lg text-on-surface leading-relaxed">
+                                성령의 강림은 단순한 영적 체험을 넘어 구속사적 전환점을 시사한다. 사도행전 2장의 기록은 구약의 바벨탑 사건에 대한 신학적 해독제로서, 언어의 혼잡이 아닌 '이해의 일치'를 통해 새로운 공동체의 탄생을 선포하고 있다.
+                            </div>
+<footer class="mt-4 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-caption text-outline hover:text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">edit</span> 편집
+                                </button>
+<button class="text-caption text-outline hover:text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">share</span> 공유
+                                </button>
+</footer>
+</article>
+<!-- Snippet Block (Original Source) -->
+<article class="bg-surface-container-low border border-outline-variant p-6 rounded-lg relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">format_quote</span>
+<span class="font-caption text-caption font-bold text-secondary uppercase tracking-widest">Original Source</span>
+</div>
+<span class="text-caption text-outline font-body-reading-md italic">John Calvin, Institutes, III.1.3</span>
+</div>
+<blockquote class="font-body-reading-md text-body-reading-md text-on-surface-variant italic border-l-2 border-outline-variant pl-4 py-1">
+                                "성령은 우리와 그리스도를 묶어주는 끈(vinculum)이다. 그리스도께서 우리 밖에 계시는 한, 그분이 인류를 위해 행하신 모든 일은 우리에게 아무런 소용이 없다."
+                            </blockquote>
+</article>
+<!-- Note Block 2 -->
+<article class="group relative">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-3 italic">그리스도와의 연합 (Unio cum Christo)</h3>
+<div class="font-body-reading-lg text-body-reading-lg text-on-surface leading-relaxed">
+                                칼빈이 강조한 성령의 '끈'으로서의 역할은 현대 성령론에서도 핵심적이다. 성령은 객관적 계시를 주관적 확신으로 변환시키는 역동적인 매개체이다. 이는 설교의 현장에서 '들려지는 말씀'이 '살아있는 말씀'으로 화하는 과정과 일치한다.
+                            </div>
+</article>
+<!-- AI Generated Block -->
+<article class="bg-tertiary-container text-on-tertiary-container p-6 rounded-lg border border-tertiary/20 shadow-sm">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-label-ui text-label-ui font-bold tracking-tight">AI 연구 도우미 분석</span>
+</div>
+<div class="font-body-reading-md text-body-reading-md mb-4 opacity-90">
+                                연구 중인 '성령의 연합 사역'은 칼 바르트의 교회교의학 IV/1에서도 중요하게 다뤄집니다. 바르트는 성령을 '계시의 주관적 측면'으로 정의하며, 인간이 하나님을 알 수 있는 유일한 가능성으로 성령을 제시합니다. 
+                            </div>
+<div class="flex flex-wrap gap-2 pt-4 border-t border-on-tertiary-container/10">
+<span class="text-[11px] bg-tertiary px-2 py-1 rounded text-on-tertiary uppercase tracking-tighter">Ref: Karl Barth, Church Dogmatics</span>
+<span class="text-[11px] bg-tertiary px-2 py-1 rounded text-on-tertiary uppercase tracking-tighter">Ref: Pneumatology Context</span>
+</div>
+</article>
+<div class="h-40"></div> <!-- Bottom Spacer for AI input -->
+</div>
+</div>
+</section>
+<!-- Utility Panel (Right Sidebar) -->
+<aside class="w-[320px] bg-surface-container-low border-l border-outline-variant flex flex-col">
+<div class="p-6 flex flex-col h-full">
+<div class="flex items-center justify-between mb-6">
+<h4 class="font-title-lg text-title-lg text-on-surface">선택한 자료 모음</h4>
+<span class="bg-surface-container-high px-2 py-1 rounded text-caption text-on-surface-variant">3개 선택됨</span>
+</div>
+<ul class="space-y-4 mb-auto">
+<li class="flex items-start gap-3 p-3 bg-surface rounded border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<input checked="" class="mt-1 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<div>
+<p class="font-label-ui text-on-surface font-semibold group-hover:text-primary">자료 A: 사도행전 주석</p>
+<p class="text-caption text-outline mt-1 line-clamp-1">성령 강림의 역사적 맥락과...</p>
+</div>
+</li>
+<li class="flex items-start gap-3 p-3 bg-surface rounded border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<input checked="" class="mt-1 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<div>
+<p class="font-label-ui text-on-surface font-semibold group-hover:text-primary">자료 B: 칼빈 기독교 강요</p>
+<p class="text-caption text-outline mt-1 line-clamp-1">제 3권 성령의 은밀한 사역...</p>
+</div>
+</li>
+<li class="flex items-start gap-3 p-3 bg-surface rounded border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<input checked="" class="mt-1 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<div>
+<p class="font-label-ui text-on-surface font-semibold group-hover:text-primary">자료 D: 현대 조직신학</p>
+<p class="text-caption text-outline mt-1 line-clamp-1">몰트만의 성령론적 통찰...</p>
+</div>
+</li>
+</ul>
+<div class="mt-8 pt-8 border-t border-outline-variant">
+<button class="w-full py-4 bg-primary text-on-primary font-label-ui rounded shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">auto_stories</span>
+                            이 연구를 설교 준비로 이어가시겠습니까?
+                        </button>
+</div>
+</div>
+</aside>
+</div>
+<!-- AI Assistant Floating Bar (Bottom) -->
+<div class="absolute bottom-10 left-sidebar-width right-[320px] px-gutter pointer-events-none">
+<div class="research-canvas pointer-events-auto">
+<div class="bg-surface-container-highest/90 backdrop-blur-md p-4 rounded-xl border border-outline-variant shadow-lg">
+<!-- Suggestions -->
+<div class="flex gap-2 mb-4">
+<button class="bg-surface-container-low border border-outline-variant px-3 py-1.5 rounded-full text-caption text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">auto_fix_high</span> 더 쉽게 설명해줘
+                        </button>
+<button class="bg-surface-container-low border border-outline-variant px-3 py-1.5 rounded-full text-caption text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">history_edu</span> 신학적으로 더 깊게
+                        </button>
+<button class="bg-surface-container-low border border-outline-variant px-3 py-1.5 rounded-full text-caption text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">format_list_bulleted</span> 출처를 더 보여줘
+                        </button>
+</div>
+<!-- Search/Input Area -->
+<div class="relative">
+<input class="w-full h-12 pl-12 pr-4 bg-surface rounded-lg border-outline-variant focus:border-primary focus:ring-0 font-body-reading-md placeholder:italic text-on-surface" placeholder="DBMA에게 물어보세요" type="text"/>
+<div class="absolute left-4 top-1/2 -translate-y-1/2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">psychology_alt</span>
+</div>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-primary rounded text-on-primary">
+<span class="material-symbols-outlined text-[20px]">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer (Status Bar) -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] bg-tertiary-container text-on-tertiary-container h-10 px-gutter flex items-center justify-between border-t border-outline-variant z-40">
+<span class="font-caption text-caption opacity-80">현재 보고 있는 자료: 신학적 인간학 연구 (2024)</span>
+<div class="flex items-center gap-4">
+<span class="font-label-ui text-label-ui font-bold text-tertiary-fixed cursor-pointer hover:opacity-80">DBMA에게 물어보세요</span>
+<div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for smooth scrolling and hovering
+        document.querySelectorAll('.group').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                // Subtle lift or glow effect could be added here
+            });
+        });
+
+        // Simple visibility toggle for TopNavBar shadow on scroll
+        const scrollContainer = document.querySelector('section.flex-1');
+        const header = document.querySelector('header');
+        scrollContainer.addEventListener('scroll', () => {
+            if (scrollContainer.scrollTop > 10) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

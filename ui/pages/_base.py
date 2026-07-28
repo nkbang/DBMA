@@ -19,9 +19,13 @@ class BasePage:
         self.icon = icon
 
     def render_header(self) -> None:
-        """Render the standard page header."""
+        """Render the standard page header.
+
+        사용자-facing 캡션은 내서재/NAE — DBMA는 내부 식별자로만 유지
+        (docs/governance/DBMA-BRAND-GOV-001.md).
+        """
         st.markdown(f"## {self.icon} {self.title}")
-        st.caption(f"DBMA v{APP_VERSION} — Personal Knowledge Operating System")
+        st.caption(f"내서재 · NAE — v{APP_VERSION}")
 
     def render_section(self, title: str, icon: str = "📋") -> None:
         """Render a section heading with divider."""
@@ -123,4 +127,4 @@ class BasePage:
     def render_footer(self) -> None:
         """Render the standard page footer."""
         st.divider()
-        st.caption(f"DBMA v{APP_VERSION} — David Bang Ministry Archive | Personal Knowledge Operating System")
+        st.caption(f"내서재 · NAE — v{APP_VERSION}")
