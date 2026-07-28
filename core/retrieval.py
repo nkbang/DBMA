@@ -1223,9 +1223,22 @@ class RetrievalEngine:
         self._tfidf_index_built = True
 
     def _load_corpus(self) -> None:
-        """Load TSU dataset from JSONL file."""
+        """Load TSU dataset from JSONL file.
+
+        A missing file is a legitimate state — first launch, or right after
+        scripts/reset_for_beta.py — before any document has been processed
+        into a TSU dataset yet (core/index_orchestrator.py writes it on
+        first rebuild_tsu_index()/reindex_document() call). Treated as an
+        empty corpus rather than a hard crash, so the UI can show its own
+        "아직 처리된 문서가 없습니다" empty state instead of a raw traceback.
+        """
         if not self.tsu_dataset_path.exists():
-            raise FileNotFoundError(f"TSU dataset not found: {self.tsu_dataset_path}")
+            logger.warning(
+                "[RetrievalEngine] TSU dataset not found at %s — starting with an empty corpus "
+                "(expected before the first document is processed)",
+                self.tsu_dataset_path,
+            )
+            return
 
         with open(self.tsu_dataset_path, "r", encoding="utf-8") as f:
             for line in f:
