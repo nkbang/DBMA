@@ -22,15 +22,68 @@ from core.identity_registry import (
     save_identity_registry,
     find_by_source_file,
     get_supersession_chain,
+    exclude_document,
+    unexclude_document,
 )
+from core.index_orchestrator import exclude_document_from_index
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
 
 
+def _apply_library_styles() -> None:
+    """자료 찾기(검색 결과) Stitch 화면 스타일 — 카드형 결과 목록, 타입 배지."""
+    st.markdown(
+        f"""
+        <style>
+        div[data-testid="stTextInput"] input {{
+            border-radius: 999px !important;
+            border-color: {THEME.BORDER_MEDIUM} !important;
+        }}
+        .lib-badge {{
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: {THEME.BRAND_SECONDARY}22;
+            color: {THEME.BRAND_SECONDARY};
+        }}
+        .lib-badge.selected {{
+            background: {THEME.BRAND_PRIMARY};
+            color: #ffffff;
+        }}
+        .lib-card {{
+            background: {THEME.BG_SURFACE};
+            border: 1px solid {THEME.BORDER_LIGHT};
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+        }}
+        .lib-card.selected {{
+            border-color: {THEME.BRAND_PRIMARY};
+        }}
+        .lib-card .lib-title {{
+            font-weight: 600;
+            color: {THEME.TEXT_PRIMARY};
+            margin: 8px 0 4px;
+        }}
+        .lib-card .lib-meta {{
+            font-size: 12px;
+            color: {THEME.TEXT_TERTIARY};
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_library_page() -> None:
     """Render the DBMA Library workspace page."""
-    page = BasePage(title="Library", icon="📚")
+    _apply_library_styles()
+    page = BasePage(title="Library", icon="🔍")
     page.render_header()
 
     # ── Search Bar ─────────────────────────────────────────────
@@ -193,6 +246,9 @@ def _render_document_detail_panel() -> None:
     # or wrong.
     _render_metadata_edit_form(selected_doc.get("title", ""))
 
+    # ── 처리 제외 (exclude) ──────────────────────────────────────
+    _render_exclude_section(selected_doc.get("title", ""))
+
     # ── Provenance: version history + failure history (SPRINT24-2) ──
     _render_provenance_section(selected_doc.get("title", ""))
 
@@ -314,6 +370,53 @@ def _render_metadata_edit_form(source_filename: str) -> None:
                 st.rerun()
             else:
                 st.error("registry 저장에 실패했습니다.")
+
+
+def _render_exclude_section(source_filename: str) -> None:
+    """처리 제외(exclude) 토글 UI. RAW 원본은 건드리지 않는다.
+
+    제외 시: registry ingest_status를 EXCLUDED로 표시하고, TSU 레코드/청크
+    파일을 backups/excluded_documents_{date}/로 이동해 검색 대상에서 뺀다
+    (core/index_orchestrator.py::exclude_document_from_index()).
+    재포함 시: ingest_status만 PROCESSED로 되돌린다 — 검색되게 하려면
+    별도로 재처리(재색인)가 필요하다는 점을 안내한다.
+    """
+    document_id, record = _find_registry_record(source_filename)
+    if document_id is None:
+        return  # 아직 처리되지 않은 문서 — 제외할 대상 자체가 없음
+
+    is_excluded = record.get("ingest_status") == "EXCLUDED"
+
+    with st.expander("🚫 처리 제외 관리", expanded=is_excluded):
+        if is_excluded:
+            st.warning(
+                f"이 문서는 제외 상태입니다 (사유: {record.get('exclude_reason') or '-'}, "
+                f"{record.get('excluded_at', '-')}). 검색/생성 대상에서 제외되어 있습니다."
+            )
+            if st.button("↩ 제외 해제", key=f"unexclude_btn_{document_id}", use_container_width=True):
+                registry_path = _registry_path()
+                registry = load_identity_registry(str(registry_path))
+                if unexclude_document(registry, document_id) is not None and save_identity_registry(registry, str(registry_path)):
+                    st.success("제외가 해제되었습니다. 검색되게 하려면 재처리(재색인)가 필요합니다.")
+                    st.rerun()
+                else:
+                    st.error("제외 해제에 실패했습니다.")
+        else:
+            st.caption("RAW 원본은 삭제되지 않습니다 — 처리 산출물(청크/색인)만 정리하고 향후 처리 대상에서 제외합니다.")
+            reason = st.text_input("제외 사유", key=f"exclude_reason_{document_id}")
+            confirm = st.checkbox("이 문서를 처리 대상에서 제외하고 기존 색인 데이터를 정리합니다.", key=f"exclude_confirm_{document_id}")
+            if st.button("🚫 처리 제외", key=f"exclude_btn_{document_id}", disabled=not confirm, use_container_width=True):
+                cleanup = exclude_document_from_index(document_id, output_dir=DEFAULT_OUTPUT_DIR, execute=True)
+                registry_path = _registry_path()
+                registry = load_identity_registry(str(registry_path))
+                if exclude_document(registry, document_id, reason=reason) is not None and save_identity_registry(registry, str(registry_path)):
+                    st.success(
+                        f"제외 처리되었습니다. TSU 레코드 {cleanup['purged_tsu_records']}건 제거, "
+                        f"파일 {len(cleanup['moved_files'])}개를 {cleanup['backup_dir']}/로 이동했습니다."
+                    )
+                    st.rerun()
+                else:
+                    st.error("registry 저장에 실패했습니다.")
 
 
 def _chunks_meta_path(stem: str) -> Path:
@@ -487,11 +590,18 @@ def _render_document_rows(documents: list[dict]) -> None:
             # Compute is_selected from session state _library_selected_path (set by callback)
             selected_path = st.session_state.get("_library_selected_path")
             is_selected = selected_path == doc.get("path")
-            label = f"📄 {doc.get('title', 'Unknown')}  •  {doc.get('type', '?')}  •  {doc.get('size', '?')}  •  {doc.get('modified', '?')}"
-            if is_selected:
-                st.markdown(f'<div style="padding: 6px 12px; background: #e3f2fd; border-radius: 4px; border-left: 3px solid #1976d2;">{label}</div>', unsafe_allow_html=True)
-            else:
-                st.markdown(f'<div style="padding: 6px 12px;">{label}</div>', unsafe_allow_html=True)
+            card_class = "lib-card selected" if is_selected else "lib-card"
+            badge_class = "lib-badge selected" if is_selected else "lib-badge"
+            st.markdown(
+                f"""
+                <div class="{card_class}">
+                    <span class="{badge_class}">{doc.get('type', '?')}</span>
+                    <div class="lib-title">📄 {doc.get('title', 'Unknown')}</div>
+                    <div class="lib-meta">{doc.get('size', '?')} · {doc.get('modified', '?')}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
         
         with cols[1]:
             sel_label = "✓ 선택됨" if is_selected else "선택"

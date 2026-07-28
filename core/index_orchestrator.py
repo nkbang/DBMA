@@ -12,6 +12,8 @@ embedding을 생성하지 않는다(TSU 레코드 생성 + 데이터셋/매니�
 """
 
 import json
+import shutil
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
@@ -19,6 +21,9 @@ from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TS
 from core.identity_registry import load_identity_registry, save_identity_registry
 from core.document_context import set_pipeline_state
 from core.tsu_builder import build_tsu_records, write_tsu_dataset, write_manifest
+from core.utils import make_safe_stem
+
+BACKUP_ROOT = Path("backups")
 
 
 def rebuild_tsu_index(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
@@ -185,3 +190,74 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
         save_identity_registry(registry, str(registry_path))
 
     return {"pending": len(pending), "reconciled": len(reconciled), "failed": failed, "purged": purged}
+
+
+def exclude_document_from_index(
+    document_id: str,
+    output_dir: str = DEFAULT_OUTPUT_DIR,
+    execute: bool = False,
+) -> dict[str, Any]:
+    """제외(exclude) 처리된 문서의 파생 산출물을 정리한다.
+
+    RAW 원본은 건드리지 않는다. 두 가지만 수행:
+    1. TSU 데이터셋에서 해당 document_id 레코드 제거(reindex_document()의
+       필터 패턴 재사용, 재빌드 없이 순수 삭제) — RetrievalEngine이 TSU
+       데이터셋을 직접 로드하므로 이것만으로 검색 대상에서 제외된다.
+    2. {stem}_chunks.txt / {stem}.md를 scripts/cleanup_legacy_outputs.py와
+       동일한 패턴(backups/excluded_documents/{YYYYMMDD}/로 이동)으로 정리.
+
+    execute=False(기본)면 dry-run — 무엇이 지워지고 이동될지만 계산해
+    반환하고 파일/데이터셋은 건드리지 않는다.
+
+    registry의 ingest_status 변경은 하지 않는다 — 그건
+    core/identity_registry.py::exclude_document()의 책임이다.
+
+    Returns:
+        {"document_id", "purged_tsu_records", "moved_files", "backup_dir", "executed"}
+    """
+    registry_path = Path(registry_path_for(output_dir))
+    registry = load_identity_registry(str(registry_path))
+    record = registry.get("documents", {}).get(document_id)
+    if record is None:
+        raise KeyError(f"document_id not in registry: {document_id}")
+
+    dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
+    purged = 0
+    if dataset_path.exists():
+        with open(dataset_path, "r", encoding="utf-8") as f:
+            existing = [json.loads(line) for line in f if line.strip()]
+        kept = [r for r in existing if r.get("document_id") != document_id]
+        purged = len(existing) - len(kept)
+        if purged > 0 and execute:
+            write_tsu_dataset(kept, dataset_path)
+            manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
+            config_path = Path(__file__).resolve().parent.parent / "config.yaml"
+            write_manifest(
+                kept, registry, manifest_path,
+                registry_path=registry_path,
+                dataset_path=dataset_path,
+                config_path=config_path,
+            )
+
+    stem = make_safe_stem(record.get("source_file", ""))
+    out_dir = Path(output_dir)
+    candidates = [out_dir / f"{stem}_chunks.txt", out_dir / f"{stem}.md"]
+    existing_files = [f for f in candidates if f.exists()]
+
+    timestamp = datetime.now().strftime("%Y%m%d")
+    backup_dir = BACKUP_ROOT / f"excluded_documents_{timestamp}"
+    moved: list[str] = []
+    if execute:
+        for f in existing_files:
+            backup_dir.mkdir(parents=True, exist_ok=True)
+            dest = backup_dir / f.name
+            shutil.move(str(f), str(dest))
+            moved.append(str(dest))
+
+    return {
+        "document_id": document_id,
+        "purged_tsu_records": purged,
+        "moved_files": moved if execute else [str(f) for f in existing_files],
+        "backup_dir": str(backup_dir),
+        "executed": execute,
+    }

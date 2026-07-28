@@ -202,6 +202,42 @@ def mark_superseded(registry: dict, old_document_id: str, new_document_id: str) 
         new_record["supersedes"] = old_document_id
 
 
+def exclude_document(registry: dict, document_id: str, reason: str = "") -> Optional[dict]:
+    """문서를 처리 대상에서 제외 처리한다(원본 RAW 파일은 건드리지 않음).
+
+    ingest_status를 "EXCLUDED"로 바꾸고 excluded_at/exclude_reason을 기록한다.
+    파생 데이터(TSU 레코드/chunk 파일) 정리는 별도로
+    core/index_orchestrator.py::exclude_document_from_index()가 담당한다 —
+    이 함수는 registry 상태 변경만 하고 파일시스템은 건드리지 않는다.
+
+    Returns the updated record, or None if document_id not in registry.
+    """
+    record = registry["documents"].get(document_id)
+    if record is None:
+        return None
+    record["ingest_status"] = "EXCLUDED"
+    record["excluded_at"] = datetime.datetime.now().isoformat(timespec="seconds")
+    record["exclude_reason"] = reason
+    return record
+
+
+def unexclude_document(registry: dict, document_id: str) -> Optional[dict]:
+    """exclude_document()를 되돌린다 — ingest_status를 PROCESSED로 복원.
+
+    파생 데이터(TSU/chunk 파일)는 exclude 시 이미 backups/로 이동됐으므로
+    복원하지 않는다 — 재검색되게 하려면 재처리(reindex_document())가 필요하다.
+
+    Returns the updated record, or None if document_id not in registry.
+    """
+    record = registry["documents"].get(document_id)
+    if record is None:
+        return None
+    record["ingest_status"] = "PROCESSED"
+    record["excluded_at"] = None
+    record["exclude_reason"] = None
+    return record
+
+
 def get_supersession_chain(registry: dict, document_id: str) -> list[dict]:
     """[SPRINT24-2] Full version history for a document, oldest to newest,
     following supersedes/superseded_by links in both directions from
@@ -342,6 +378,7 @@ def classify_ingest_decision(
 
         B1  No match by doc_id or hash → PROCESS (new document)
         B2  Status = ABANDONED → SKIP (manual intervention required)
+        B2'  Status = EXCLUDED → SKIP (manual intervention required)
         B3  Status = FAILED, retries < max → RETRY
         B4  Status = FAILED, retries >= max → REPROCESS
         B5  last_content_hash == current_hash → SKIP (unchanged)
@@ -374,6 +411,12 @@ def classify_ingest_decision(
 
     # B2: Abandoned → skip (do not auto-retry forever)
     if status == "ABANDONED":
+        return ("SKIP", record)
+
+    # Excluded (user-flagged, exclude_document()) → skip until explicitly
+    # unexcluded, same manual-intervention precedent as ABANDONED — a
+    # content-hash change on an excluded file must not silently reprocess it.
+    if status == "EXCLUDED":
         return ("SKIP", record)
 
     # B3/B4: Failed status — check retry count
