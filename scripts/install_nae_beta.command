@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 # scripts/install_nae_beta.command — 내서재(NAE) 베타 웹 다운로드/업데이트 실행기.
 #
-# 목회자 테스터가 GitHub Release에서 이 파일 하나만 다운로드해 더블클릭하면:
+# 터미널을 전혀 다루지 못하는 사용자를 대상으로 한다 — 진행 상황은
+# macOS 알림(display notification)으로, 업데이트 승인은 대화상자
+# (display dialog, 버튼 클릭)로 받는다. 텍스트 입력이나 터미널 창을
+# 사용자에게 요구하지 않는다(.app 래퍼가 이 스크립트를 do shell script로
+# 숨겨서 실행하는 것을 전제로 한다).
+#
+# 목회자 테스터가 GitHub Release에서 .app/.dmg 하나만 받아 더블클릭하면:
 #   1. 최초 실행 시 소스 코드를 GitHub에서 내려받고
-#   2. 이후 실행마다 최신 버전 여부를 확인해, 새 버전이 있으면 업데이트할지
-#      물어본 뒤(승인 시에만) 새 버전을 내려받고
+#   2. 이후 실행마다 최신 버전 여부를 확인해, 새 버전이 있으면 대화상자로
+#      업데이트 여부를 물은 뒤(승인 시에만) 새 버전을 내려받고
 #   3. scripts/setup_beta_tester.command(메모리 자동 감지 → 모델 등급 설치 →
 #      Python 환경 → 앱 실행)를 이어서 실행한다.
-# 이 파일 자체는 저장소 없이도 단독 실행 가능해야 하므로 나머지 코드에
-# 의존하지 않는다 — 소스를 받아오는/갱신하는 역할만 한다.
 #
 # 버전 확인 방식: 태그 tarball 자체가 아니라, 기본 브랜치(dev/dbma-engine)의
 # BETA_LATEST_TAG.txt 파일(한 줄, 최신 배포 태그명)을 raw로 읽는다 — 이렇게
@@ -20,6 +24,7 @@
 # 새 설치 위에 그대로 되돌려 놓는다.
 
 set -e
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 REPO_OWNER="nkbang"
 REPO_NAME="DBMA"
@@ -34,13 +39,45 @@ MANIFEST_URL="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${DEF
 # 업데이트 때 앱 소스 교체와 별개로 보존할 테스터 개인 데이터
 PERSIST_ITEMS=("data/RAW" "data/제련완성본" "output" "chroma_db" "logs" "config.yaml")
 
-echo "================================================================"
-echo " 내서재(NAE) 베타"
-echo "================================================================"
+notify() {
+    osascript -e "display notification \"$2\" with title \"내서재(NAE) 베타\" subtitle \"$1\"" >/dev/null 2>&1 || true
+    echo "[$1] $2"
+}
 
+fatal() {
+    osascript -e "display dialog \"$1\" with title \"내서재(NAE) 베타\" buttons {\"확인\"} default button \"확인\" with icon caution" >/dev/null 2>&1 || true
+    echo "FATAL: $1"
+    exit 1
+}
+
+# 업데이트 대화상자 — "업데이트" 클릭 시에만 종료코드 0.
+# 응답이 없으면(giving up after) 2분 뒤 자동으로 닫히는데, 이때는 무조건
+# "나중에"로 취급한다 — 사용자 응답 없는 타임아웃을 실제 동의로 오인해
+# 다운로드를 시작하면 안 되므로, 기본 버튼도 "나중에"로 둔다.
+ask_update() {
+    osascript <<APPLESCRIPT
+try
+    set dlg to display dialog "새 버전이 있습니다 ($1 → $2).\n지금 업데이트할까요?" ¬
+        with title "내서재(NAE) 베타 업데이트" ¬
+        buttons {"나중에", "업데이트"} default button "나중에" ¬
+        giving up after 120
+    if gave up of dlg then
+        error number -128
+    end if
+    if button returned of dlg is "업데이트" then
+        return 0
+    else
+        error number -128
+    end if
+on error
+    error number -128
+end try
+APPLESCRIPT
+}
+
+notify "확인" "업데이트가 있는지 확인하는 중..."
 mkdir -p "$INSTALL_DIR"
 
-echo "[1/4] 최신 버전 확인 중..."
 LATEST_TAG=$(curl -fsSL "$MANIFEST_URL" 2>/dev/null | tr -d '[:space:]')
 
 CURRENT_TAG=""
@@ -50,34 +87,26 @@ fi
 
 if [ -z "$LATEST_TAG" ]; then
     if [ -n "$CURRENT_TAG" ]; then
-        echo "  버전 확인에 실패했습니다(네트워크 문제일 수 있음) — 기존 설치($CURRENT_TAG)로 계속 진행합니다."
         LATEST_TAG="$CURRENT_TAG"
     else
-        echo "  버전 확인에 실패했고 최초 설치라 인터넷 연결이 필요합니다."
-        echo "  기본 태그($FALLBACK_TAG)로 시도합니다..."
         LATEST_TAG="$FALLBACK_TAG"
     fi
 fi
 
 NEED_DOWNLOAD=0
 if [ -z "$CURRENT_TAG" ]; then
-    echo "  최초 설치 — ${LATEST_TAG} 버전을 내려받습니다."
+    notify "설치" "처음 실행합니다 — 다운로드를 시작합니다."
     NEED_DOWNLOAD=1
 elif [ "$CURRENT_TAG" = "$LATEST_TAG" ]; then
-    echo "  이미 최신 버전입니다 (${CURRENT_TAG})."
+    notify "확인 완료" "이미 최신 버전입니다."
 else
-    echo ""
-    echo "  새 버전이 있습니다: ${CURRENT_TAG} -> ${LATEST_TAG}"
-    read -p "  지금 업데이트할까요? (y/n): " ANSWER
-    case "$ANSWER" in
-        y|Y|yes|Yes|YES)
-            NEED_DOWNLOAD=1
-            ;;
-        *)
-            echo "  업데이트를 건너뜁니다 — 기존 버전(${CURRENT_TAG})으로 실행합니다."
-            LATEST_TAG="$CURRENT_TAG"
-            ;;
-    esac
+    if osascript -e "" >/dev/null 2>&1; then :; fi  # GUI 세션 가용성 확인용 no-op
+    if ask_update "$CURRENT_TAG" "$LATEST_TAG" >/dev/null 2>&1; then
+        NEED_DOWNLOAD=1
+    else
+        notify "건너뜀" "기존 버전(${CURRENT_TAG})으로 계속 실행합니다."
+        LATEST_TAG="$CURRENT_TAG"
+    fi
 fi
 
 if [ "$NEED_DOWNLOAD" = "1" ]; then
@@ -86,17 +115,14 @@ if [ "$NEED_DOWNLOAD" = "1" ]; then
     rm -rf "$DL_DIR"
     mkdir -p "$DL_DIR"
 
-    echo "[2/4] 소스 다운로드 중... (${LATEST_TAG})"
-    curl -fL "$TARBALL_URL" -o "$DL_DIR/nae_beta.tar.gz"
+    notify "다운로드" "새 버전을 내려받는 중입니다..."
+    curl -fL "$TARBALL_URL" -o "$DL_DIR/nae_beta.tar.gz" \
+        || fatal "다운로드에 실패했습니다. 인터넷 연결을 확인하거나 David에게 문의해 주세요."
 
     if [ ! -s "$DL_DIR/nae_beta.tar.gz" ]; then
-        echo ""
-        echo "다운로드에 실패했습니다. 인터넷 연결을 확인하거나 David에게 문의해 주세요."
-        read -p "종료하려면 Enter를 누르세요..."
-        exit 1
+        fatal "다운로드에 실패했습니다. 인터넷 연결을 확인하거나 David에게 문의해 주세요."
     fi
 
-    echo "[3/4] 압축 해제 중..."
     tar -xzf "$DL_DIR/nae_beta.tar.gz" -C "$DL_DIR"
     NEW_APP_DIR=$(find "$DL_DIR" -maxdepth 1 -type d -name "${REPO_NAME}-*" | head -n 1)
 
@@ -129,12 +155,8 @@ if [ "$NEED_DOWNLOAD" = "1" ]; then
 
     rm -rf "$DL_DIR" "$PERSIST_STASH"
     echo "$LATEST_TAG" > "$VERSION_FILE"
-else
-    echo "[2-3/4] 다운로드 건너뜀."
 fi
 
-echo "[4/4] 설치를 이어서 진행합니다."
-echo "================================================================"
 cd "$APP_DIR"
 chmod +x scripts/setup_beta_tester.command
 exec ./scripts/setup_beta_tester.command

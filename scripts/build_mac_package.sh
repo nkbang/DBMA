@@ -57,13 +57,16 @@ PLIST
 cp "$PROJECT_ROOT/scripts/install_nae_beta.command" "$APP_DIR/Contents/Resources/install_nae_beta.command"
 chmod +x "$APP_DIR/Contents/Resources/install_nae_beta.command"
 
-# MacOS/launcher — 더블클릭 시 Terminal을 열어 설치 스크립트를 실행
-# (진행 상황을 목회자가 눈으로 볼 수 있도록 창을 숨기지 않는다)
+# MacOS/launcher — 터미널을 전혀 다루지 못하는 사용자를 대상으로 하므로
+# Terminal 창을 절대 열지 않는다. AppleScript `do shell script`로 설치
+# 스크립트를 백그라운드에서 조용히 실행하고, 진행 상황은 스크립트 자체가
+# macOS 알림(notify)/대화상자(fatal, ask_update)로 보여준다.
 cat > "$APP_DIR/Contents/MacOS/launcher" <<'LAUNCHER'
 #!/usr/bin/env bash
 SCRIPT_PATH="$(cd "$(dirname "$0")/../Resources" && pwd)/install_nae_beta.command"
-osascript -e "tell application \"Terminal\" to do script \"bash '${SCRIPT_PATH}'\""
-osascript -e 'tell application "Terminal" to activate'
+nohup osascript -e "do shell script \"bash '${SCRIPT_PATH}' > /tmp/nae_beta_install.log 2>&1\"" \
+    > /tmp/nae_beta_launcher.log 2>&1 &
+disown
 LAUNCHER
 chmod +x "$APP_DIR/Contents/MacOS/launcher"
 
@@ -75,10 +78,13 @@ cat > "$DIST_DIR/테스터_안내.txt" <<'README'
 2. macOS가 "확인되지 않은 개발자"라는 경고를 띄우면:
    - 앱을 다시 우클릭(또는 control+클릭) → "열기"를 선택하세요.
    - 뜨는 창에서 다시 "열기"를 누르면 됩니다. (최초 1회만 필요)
-3. 터미널 창이 열리며 자동으로 설치가 진행됩니다.
+3. 화면 오른쪽 위에 진행 상황 알림이 뜨며 자동으로 설치가 진행됩니다.
+   터미널(검은 화면)은 뜨지 않습니다 — 알림만 확인하시면 됩니다.
    - 이 Mac의 메모리를 자동으로 확인해 알맞은 모델을 내려받습니다.
    - 처음 실행 시 모델 다운로드 때문에 수 분 정도 걸릴 수 있습니다.
-4. 설치가 끝나면 브라우저에 내서재(NAE) 화면이 자동으로 열립니다.
+4. 다음 실행부터는 새 버전이 있을 때만 "업데이트할까요?" 창이 뜹니다 —
+   원하실 때 "업데이트" 버튼을, 아니면 "나중에"를 누르시면 됩니다.
+5. 설치가 끝나면 브라우저에 내서재(NAE) 화면이 자동으로 열립니다.
 
 문제가 있으면 David에게 연락해 주세요.
 README
