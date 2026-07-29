@@ -6,7 +6,7 @@ based_on:
   - scripts/rag_benchmark.py (기존 검색 품질 벤치마크)
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
 created: 2026-07-21
-status: Architecture Decision (구조 확정 — 미확정 항목 2건 중 1건 해결(2026-07-29, 골든셋 3→7건 확대), 나머지 1건(question_answering_quality reference-free 재정의)만 HQ 결정 필요)
+status: Architecture Decision (구조 확정 — 미확정 항목 2건 중 1건 해결(2026-07-29, 골든셋 3→7건 확대), 나머지 1건(question_answering_quality reference-free 재정의)은 David 결정으로 Phase 4 착수 시점까지 보류(2026-07-29))
 scope_modified: docs/architecture/ + core/evaluation/(신규) + scripts/run_rag_eval.py(신규)
 ---
 
@@ -131,8 +131,9 @@ Chroma든)를 도입하지 않고 기존 TSU+in-memory 경로만 읽는다.
 2. **`question_answering_quality`의 reference-free 재정의 여부** —
    DBMA의 실제 용례(설교 개요 생성)는 정답이 없는 open-ended 작업이라,
    정답 존재를 전제로 한 QA 벤치마크식 지표를 그대로 쓸 수 없다.
-   groundedness(정답 불필요)는 문제없음. **미해결** — Phase 4(지표
-   확장) 착수 전 별도 결정 필요.
+   groundedness(정답 불필요)는 문제없음. **미해결 — David 결정으로
+   Phase 4 착수 시점까지 명시적으로 보류(2026-07-29)**. 지금 급한
+   결정 아님, Phase 4(지표 확장) 착수할 때 다시 꺼낼 것.
 
 ---
 
