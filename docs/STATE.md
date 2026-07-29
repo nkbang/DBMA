@@ -43,9 +43,17 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 - `docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md`
   (accepted, 프로덕션 전환 경로는 미실행): 현재 `chunking_optimizer.py`
   대신 Hierarchical Chunk Builder로 전환하는 조건과 절차.
-- `docs/architecture/ADR-009-SIL-Theology-Engine.md` (부분 확정 —
-  구조만, 신학 어휘/임계값은 별도 승인 대기): TSU에 교리 필터 확장
-  필드 골격만 추가, 태깅 로직은 미구현.
+- `docs/architecture/ADR-009-SIL-Theology-Engine.md` (**완료**, commit
+  `0324dca`, 2026-07-22 — 이전 "구조만 확정" 기재는 stale, 이후 갱신
+  누락돼 있었음): 사용자가 신학 전통(개혁파 침례교, 1689 런던신앙고백
+  계열)과 `doctrine_category`(7개)/`baptist_theme`(10개) 최종 어휘를
+  직접 확정. `core/sermon/doctrine_vocabulary.py`(승인 어휘 상수),
+  `core/sermon/doctrine_filter.py`(`check()` — 사후 실행, 생성 차단
+  없음, 점수화 금지, 저신뢰도는 "(확실하지 않음)" 노출, 승인 어휘 밖
+  범주는 필터링, Ollama 실패해도 raise 안 함)로 구현되고
+  `ui/pages/sermon_draft.py`에 개요 생성 직후 자동 실행·경고 배너로
+  연결됨. 테스트 10건 신규(`tests/test_doctrine_filter.py`), 당시
+  회귀 612 passed.
 - `docs/architecture/ADR-010-DBMA-REQ-RAG-Evaluation-Quality.md`
   (구조 확정, Phase 1 착수 전 미확정 항목 2건 별도 결정 필요):
   LLM-as-judge pointwise 평가 인프라(`core/evaluation/`).
@@ -161,9 +169,14 @@ HEAD:      bd0bb34 (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
            (doc_type을 core/processing.py PROCESS/SKIP 경로에 실제 배선)·
            Task Order 019(기존 등록 문서 doc_type 백필 스크립트)
            순으로 진행, 전부 push 완료)
-Tests:     599개 수집 확인(tests/ 스코프, 2026-07-22) — 전체 통과 여부는
-           SPRINT33-D 완료 시점 기록(539 passed)이 마지막 공식 확인, 이후
-           변경분(SPRINT 외 병행 작업 포함) 재실행 권장
+Tests:     852개 수집 확인(tests/ 스코프, 2026-07-29 재확인 — 이전 기재
+           "599개"는 2026-07-22 시점 값으로 stale했음, Task Order
+           016~019 등에서 추가된 테스트 다수 반영 안 돼 있었음). 전체
+           852개 일괄 실행은 비용 커서 보류 — Task Order 016~019 관련
+           범위(document_context/processing/index_orchestrator/
+           semantic_boundary_detector/hierarchical_chunk_builder 등)는
+           개별 확인 시마다 통과 확인됨. 전체 스위트 공식 재실행은
+           GA 검토 전 별도로 권장.
 Runtime:   APP_VERSION 1.3.0 / embed bge-m3:latest / gen my-theology-bot:latest
            (llama3.3:70b Q4_K_M) / cap 2
 Status:    STABLE — GA 검토 단계 (변동 없음)
