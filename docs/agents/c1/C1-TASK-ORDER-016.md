@@ -1,6 +1,6 @@
 # C1 Task Order 016 — Hierarchical Chunk Builder Axis 2 (Semantic Flush Ratio) 개선 설계
 
-**상태**: **Phase 1 구현 반려 — 승인된 방식으로 재구현 요청** (2026-07-28, David 지시). Phase 2(전체 corpus canary)/Phase 3(Option B 신규 feature 3개)는 여전히 승인 범위 밖.
+**상태**: Phase 1 정정 구현 완료·커밋(`9b9291f`)·push 완료. **Phase 1.5(단위 테스트) 승인됨** (2026-07-28, David 승인). Phase 2(축소 세트 canary)/Phase 3(결과 보고)은 여전히 별도 승인 필요.
 **작성자**: C1 (DBMA Core Engineer)
 **작성일**: 2026-07-28
 **범위**: `score_boundary()`/`build_chunks()`에 `document_profile` 파라미터 스레딩 + Profile B 임계값(`DEFAULT_THRESHOLD * 0.7`) 적용 + 축소 세트 canary 검증까지만. 전체 corpus 재측정·신규 feature 구현은 금지.
@@ -21,6 +21,22 @@ C1이 제출한 "완료" 보고와 실제 `git diff`를 대조한 결과, **승�
 3. **기술적 결함**: `DYNAMIC_THRESHOLD_CEILING_RATIO = 1.3`은 slope=0.3 기준 캘리브레이션값. slope를 3배(0.9)로 올려도 상한은 그대로 1.3배에 고정돼 있어 `buffer_ratio > ~0.33`이면 이미 상한 도달 — 최종 임계값은 기존과 동일(1.3배)하게 캡되고 "더 빨리 도달"할 뿐이라 Axis 2 실질 개선 효과가 거의 없을 가능성
 
 **조치 요청**: 이 변경분(`core/semantic_boundary_detector.py`/`core/hierarchical_chunk_builder.py`의 "3x slope" 부분)을 되돌리고, 위 "승인된 방식"대로 다시 구현할 것. §7.4(score_boundary 수정 예시), §7.5(build_chunks 수정 예시)의 코드를 그대로 따를 것 — 새 계수나 다른 개입 지점을 쓰고 싶으면 구현 전에 별도로 제안·승인받을 것.
+
+**결과**: C1이 재구현 제출 → CUE가 diff 대조 + 관련 테스트 5개 파일(83개) 통과 확인 → 승인된 설계와 정확히 일치 확인. 커밋 `9b9291f`, `origin/dev/dbma-engine`에 push 완료.
+
+---
+
+## Phase 1.5 승인 — 2026-07-28
+
+**승인 범위**: 아래 3개 단위 테스트만 추가. 코드(`core/semantic_boundary_detector.py`/`core/hierarchical_chunk_builder.py`) 재수정 금지 — Phase 1 구현은 이미 확정·커밋됨.
+
+1. `classify_document_profile()` Profile A/B 경계값 테스트 (`MEDIAN_CANDIDATE_LENGTH_THRESHOLD = 220` 기준 위/아래)
+2. `score_boundary()` profile별 분기 테스트 — `document_profile="A"`일 때 `DEFAULT_THRESHOLD`(50.0), `"B"`일 때 `PROFILE_B_THRESHOLD`(35.0) 적용 확인
+3. `build_chunks()`가 `classify_document_profile(candidates)`를 1회만 호출하고 그 결과를 `score_boundary()` 호출마다 동일하게 전달하는지 확인 (candidate마다 재계산 안 하는지 — 이게 §7에서 반려됐던 원래 결함이었으므로 회귀 방지용으로 중요)
+
+**보고 형식**: 추가된 테스트 파일 diff + `pytest --collect-only -q` 실제 결과(테스트 개수를 실측으로 인용, "23개" 같은 미검증 숫자 재사용 금지) + 전체 `pytest tests/test_semantic_boundary_detector.py tests/test_hierarchical_chunk_builder.py` 통과 여부.
+
+Phase 2(축소 세트 canary 실행)는 이 테스트가 통과된 뒤 별도 승인 요청할 것.
 
 ---
 
