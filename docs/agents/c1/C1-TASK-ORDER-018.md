@@ -83,6 +83,62 @@ SKIP 경로는 콘텐츠가 안 변했다는 뜻이므로, registry에 이미 �
    registry에 `doc_type`이 채워지는지, 대시보드에서 "?" 대신 실제 유형이
    표시되는지 스크린샷 없이 registry JSON만으로도 확인 가능
 
+### 3.1. 테스트 작성 가이드 — 2026-07-29 추가 (기존 구현에 테스트 누락 확인됨)
+
+1차 구현(`core/processing.py` 두 곳 수정)은 코드 자체는 정확했으나 이 §3의
+테스트가 실제로는 추가되지 않았다(`git diff --stat -- tests/`가 빈 결과였음).
+`tests/test_processing_pipeline.py`가 이미 쓰는 패턴을 그대로 따라 추가할 것 —
+새 인프라나 mock 프레임워크 조사 불필요:
+
+```python
+# tests/test_processing_pipeline.py에 추가 (기존 fixture/_run() 재사용)
+from core.config import registry_path_for
+from core.identity_registry import load_identity_registry
+from core.document_identity import guess_doc_type
+
+class TestProcessOneFileDocType:
+
+    def test_process_path_sets_doc_type_in_registry(self, tmp_path, converter, splitter):
+        sample = tmp_path / "sample.txt"
+        content = "This is a test sentence for DBMA. " * 50
+        sample.write_text(content, encoding="utf-8")
+        file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
+        _run(file_info, converter, splitter, str(tmp_path))
+
+        registry = load_identity_registry(registry_path_for(str(tmp_path)))
+        # registry["documents"]는 document_id -> record dict
+        record = next(iter(registry["documents"].values()))
+        expected = guess_doc_type(content, sample.name, None)
+        assert record["doc_type"] == expected
+
+    def test_skip_path_preserves_existing_doc_type(self, tmp_path, converter, splitter):
+        sample = tmp_path / "sample.txt"
+        content = "This is a test sentence for DBMA. " * 50
+        sample.write_text(content, encoding="utf-8")
+        file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
+
+        # 1차 처리 — 레코드 생성
+        _run(file_info, converter, splitter, str(tmp_path))
+        registry_path = registry_path_for(str(tmp_path))
+        registry = load_identity_registry(registry_path)
+        doc_id = next(iter(registry["documents"]))
+        registry["documents"][doc_id]["doc_type"] = "sermon"  # 임의 값으로 고정
+        from core.identity_registry import save_identity_registry
+        save_identity_registry(registry, registry_path)
+
+        # 2차 처리 — 파일 안 바뀌었으므로 SKIP 경로
+        result = _run(file_info, converter, splitter, str(tmp_path))
+
+        registry = load_identity_registry(registry_path)
+        assert registry["documents"][doc_id]["doc_type"] == "sermon"
+```
+
+정확한 fixture/import 이름은 `tests/test_processing_pipeline.py` 상단을
+확인해서 맞출 것(위 코드는 참고용 — 실행해서 안 되면 그 파일의 실제
+시그니처에 맞게 조정). SKIP 경로가 실제로 트리거되는지(파일 unchanged
+판정 조건)는 `core/processing.py`의 `classify_ingest_decision()` 호출부를
+참고해서 확인할 것.
+
 ---
 
 ## 4. 보고 형식
