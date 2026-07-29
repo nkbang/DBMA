@@ -1,9 +1,9 @@
 # Hierarchical Chunk Builder — Axis 2 (Semantic Flush Ratio) 개선 설계
 
-**상태**: Option A 구현 완료(dormant, 미등록), 설계 문서 v1.3 정정 완료 — §8.1 축소 canary 결과 목표(≥25%) 미달, 전체 재검증 HQ 판단 대기 (2026-07-28)
+**상태**: Option A 구현 완료(dormant, 미등록) — §8.1 목표 미달. **Option C-1(profile별 정적 threshold)은 구현→canary 실측→반증→되돌림까지 완료(2026-07-28), §11 참고.** Option B는 보류 유지.
 **작성자**: C1 (DBMA Core Engineer)
-**승인 상태**: CUE 검토 완료 — Option A 승인(방향 오류 CUE가 구현 중 수정, 계수는 §8.1 실측상 부족 확인), Option C-1 반려, Option B 보류
-**문서 버전**: v1.3 (동적 임계값 방향 정정 + §8.1 실측 결과 반영)
+**승인 상태**: CUE 검토 완료 — Option A 승인(방향 오류 CUE가 구현 중 수정, 계수는 §8.1 실측상 부족 확인), Option C-1은 실측으로 반증되어 되돌림(§11), Option B 보류
+**문서 버전**: v1.4 (Option C-1 실측·반증·되돌림 기록 추가)
 
 ---
 
@@ -640,6 +640,30 @@ def build_chunks(doc_candidates: List[Tuple[str, int]], chunk_size: int = 300) -
 
 ---
 
+## 11. Option C-1 구현·실측·반증·되돌림 — 2026-07-28
+
+Task Order 016에서 Option C-1(§7 방법 B: `score_boundary()`에 `document_profile` 파라미터 추가, Profile B는 `PROFILE_B_THRESHOLD = DEFAULT_THRESHOLD * 0.7`(35.0) 적용)을 승인·구현(커밋 `9b9291f`)하고 단위 테스트(커밋 `ade22c5`, 66/66 pass)까지 마쳤다. 이후 축소 세트 canary(Profile A: "12. 고린도후서" 783 candidates / Profile B: "2 Kings The Anchor Bible Commentary" 947 candidates)로 실측한 결과 **Profile B Axis 2가 99.3%(1088/1096)로 튀었다** — 목표(≥25%) 초과 달성이 아니라 지표 자체가 무의미해지는 퇴화(degenerate) 현상이었다.
+
+**원인 — feature 점수 분포의 이중봉(bimodal) 구조**: 이 문서의 candidate 947개에 대해 `score_boundary()`의 `total_score` 분포를 직접 뽑아보면:
+- 중앙값 = 40.0, 상위 90%까지도 40.0 (즉 대부분 candidate가 정확히 40점에 몰려있음 — heading 없는 평범한 문단이 `paragraph(+30) + sentence_boundary(+10) = 40`으로 끝나는 경우가 압도적 다수)
+- `total_score >= 35` 비율: 95.4%
+- `total_score >= 40` 비율: 95.4% (35~40 구간엔 사실상 아무도 없음)
+- `total_score >= 45` 비율: 1.9%로 급락 (scripture_reference/heading 등 추가 신호가 드물게만 붙음)
+
+즉 30~40 사이 어떤 정적 threshold를 잡아도 이 분포의 "40점 평원(plateau)"을 건드려 **거의 모든 candidate가 boundary로 판정**된다. `PROFILE_B_THRESHOLD=35.0`은 정확히 이 평원 아래에 있어 95.4%를 통째로 boundary로 만들었다 — 의미 경계를 더 잘 찾은 게 아니라 판정 기준 자체가 무너진 것이다. 41~49 구간은 반대로 40점 평원 위라 원래 threshold(50.0)와 사실상 다르지 않아 실질 개선 효과가 없다. 즉 **이 feature 조합·이 문서 특성상 정적 threshold 튜닝만으로 25%와 99.3% 사이의 중간 지점을 잡을 수 있는 값 자체가 존재하지 않는다.**
+
+(측정 과정에서 별도로 발견한 버그: `scripts/shadow_d5_metrics.py::_boundary_offsets()`가 `document_profile`을 `score_boundary()`에 넘기지 않아 항상 `DEFAULT_THRESHOLD`로 "정답" 경계를 판정하던 것도 처음엔 반대 방향의 오차를 냈다 — 이를 먼저 고쳐 공정하게 재측정한 뒤 위 99.3% 결과를 확인했다. 이 스크립트 수정은 Option C-1 자체가 되돌려지면서 함께 원복했다.)
+
+**조치**: Option C-1 관련 코드(`core/semantic_boundary_detector.py`/`core/hierarchical_chunk_builder.py`의 `document_profile`/`PROFILE_B_THRESHOLD` 전체, 관련 단위 테스트)를 커밋 `ddea706`으로 되돌리고, 되돌린 상태에서 canary를 재실행해 원래 baseline(Profile A 13.2%, Profile B 21.0%)과 정확히 일치함을 확인했다.
+
+**결론**: Option C-1(profile별 정적 전체-threshold 조정)은 이 데이터셋에서 기각한다. Axis 2 개선이 계속 필요하다면 다음 두 방향이 남는다:
+- Option B(신규 feature: ParagraphTopicDrift/AcademicStructure/BufferLengthNormalization) — 이번 분석이 보여준 "구조 기반 feature가 40점 평원에 묶여 있다"는 문제를 정적 threshold가 아니라 새로운 신호로 풀자는 방향이라 여전히 유효한 후보
+- Option A(동적 embedding threshold)의 계수를 이 bimodal 분포를 고려해 재설계 — 다만 §8.1에서 이미 slope 스윕이 반직관적으로 움직였으므로 신중한 접근 필요
+
+이 둘 다 이번 Task Order 016 범위 밖 — 진행하려면 별도 제안·승인 필요.
+
+---
+
 **문서 작성일**: 2026-07-28
-**문서 버전**: v1.3 (동적 임계값 방향 정정 + §8.1 실측 결과 반영)
-**상태**: Option A 구현 완료(dormant), 설계 문서 정정 완료 — §8.1 축소 세트 실측 결과 목표(Profile B Axis 2 ≥25%) 미달 확인, 전체 corpus 재검증 여부 HQ 판단 대기
+**문서 버전**: v1.4 (Option C-1 실측·반증·되돌림 기록 추가)
+**상태**: Option A dormant/미달, Option C-1 기각·되돌림 완료(커밋 `ddea706`), Option B 보류 — Task Order 016은 여기서 종료, 후속 방향은 별도 제안 필요

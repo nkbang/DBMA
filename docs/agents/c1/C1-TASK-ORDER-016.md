@@ -1,6 +1,6 @@
 # C1 Task Order 016 — Hierarchical Chunk Builder Axis 2 (Semantic Flush Ratio) 개선 설계
 
-**상태**: Phase 1(커밋 `9b9291f`)·Phase 1.5(커밋 `ade22c5`, 66/66 pass) 완료·push 완료. **Phase 2(축소 세트 canary) 승인됨** (2026-07-28, David 승인). Phase 3(전체 결과 보고 이후 후속 조치)은 canary 결과 확인 후 별도 승인.
+**상태**: **종료 — Option C-1 기각, 되돌림 완료** (2026-07-28). Phase 2 canary가 Profile B Axis 2 99.3%(퇴화)를 보여 근본 원인(feature 점수 이중봉 분포) 분석 후 CUE가 직접 되돌림(커밋 `ddea706`). Task Order 016은 여기서 종료 — 후속 방향(Option B/재설계된 Option A)은 별도 신규 제안·승인 필요.
 **작성자**: C1 (DBMA Core Engineer)
 **작성일**: 2026-07-28
 **범위**: `score_boundary()`/`build_chunks()`에 `document_profile` 파라미터 스레딩 + Profile B 임계값(`DEFAULT_THRESHOLD * 0.7`) 적용 + 축소 세트 canary 검증까지만. 전체 corpus 재측정·신규 feature 구현은 금지.
@@ -255,5 +255,24 @@ C1이 위 문서 선정 정정 이후 제출한 보고서는 canary 실행 결�
 
 ---
 
+## 11. Phase 2 canary 결과 — Option C-1 기각, 되돌림 — 2026-07-28
+
+CUE가 직접 §9의 문서 쌍으로 canary를 실행했다. 처음엔 `scripts/shadow_d5_metrics.py::_boundary_offsets()`가 `document_profile`을 넘기지 않아 항상 `DEFAULT_THRESHOLD`로 "정답" 경계를 판정하는 버그를 발견해 먼저 고쳤다(이 스크립트 수정은 아래 되돌림과 함께 폐기). 공정하게 재측정한 결과:
+
+| | Before | After (Option C-1, `PROFILE_B_THRESHOLD=35.0`) |
+|---|---|---|
+| Profile A | 13.2% | 13.2% (변화 없음, 예상대로) |
+| Profile B | 21.0% | **99.3%** (1088/1096) |
+
+99.3%는 목표(≥25%) 달성이 아니라 **지표가 퇴화한 것**이다. 원인을 `score_boundary()`의 `total_score` 분포로 직접 확인: 이 문서 candidate의 95.4%가 정확히 40점(paragraph +30, sentence_boundary +10만 기여하는 평범한 문단)에 몰려 있고, 35~40 구간엔 아무도 없다(40점 평원 구조). `PROFILE_B_THRESHOLD=35.0`은 이 평원 바로 아래에 있어 사실상 전체 candidate를 boundary로 만들어버렸다 — 30~40 사이 어떤 정적값을 넣어도 마찬가지였을 것이고, 41~49는 반대로 원래 threshold(50.0)와 실질적 차이가 없다. 즉 **이 데이터에서 정적 threshold 조정만으로는 25%~99%의 중간 지점을 잡을 방법이 없다.**
+
+상세 분석은 `docs/hierarchical-chunk-builder-improvement-design.md` §11 참고.
+
+**조치**: David 승인 하에 CUE가 직접 진행 — Option C-1 관련 코드(`core/semantic_boundary_detector.py`/`core/hierarchical_chunk_builder.py`의 `document_profile`/`PROFILE_B_THRESHOLD`, 관련 단위 테스트 66개)를 커밋 `ddea706`으로 되돌리고, 되돌린 상태에서 canary를 재실행해 원래 baseline(Profile A 13.2%, Profile B 21.0%)과 정확히 일치함을 확인했다. `git revert`가 세션 권한상 막혀 이전 커밋(`4d74b70`) 시점 파일 내용을 직접 복원하는 방식으로 처리했다 — 결과는 동일(순수 삭제 diff, 관련 테스트 83/83 pass).
+
+**Task Order 016은 여기서 종료한다.** Axis 2 개선이 계속 필요하면 Option B(신규 feature) 또는 재설계된 Option A 계수를 별도로 제안·승인받아 새 Task Order로 진행할 것.
+
+---
+
 **문서 작성일**: 2026-07-28
-**상태**: Phase 1/1.5 완료·push 완료. Phase 2(축소 세트 canary) 승인 — 실행 가능. Phase 3은 결과 보고 후 별도 승인 대기.
+**상태**: 종료 — Option A dormant/미달, Option C-1 기각·되돌림 완료(커밋 `ddea706`), Option B 보류. 후속 방향은 별도 신규 제안 필요.
