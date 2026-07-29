@@ -55,8 +55,10 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
   연결됨. 테스트 10건 신규(`tests/test_doctrine_filter.py`), 당시
   회귀 612 passed.
 - `docs/architecture/ADR-010-DBMA-REQ-RAG-Evaluation-Quality.md`
-  (구조 확정, Phase 1 착수 전 미확정 항목 2건 별도 결정 필요):
-  LLM-as-judge pointwise 평가 인프라(`core/evaluation/`).
+  (구조 확정 — 미확정 항목 2건 중 1건 해결(2026-07-29, 골든셋 3→7건
+  확대), 나머지 1건(`question_answering_quality` reference-free
+  재정의)은 **David 결정으로 Phase 4 착수 시점까지 명시적 보류**,
+  2026-07-29): LLM-as-judge pointwise 평가 인프라(`core/evaluation/`).
 - `docs/architecture/ADR-011-Header-Footer-Repetition-Detector.md`
   (완료/보류 확정, 2026-07-23): 한글 PDF 주석서(Profile B)의 반복
   러닝헤더 문제 — `RepetitionTracker`(`core/repetition_detector.py`)
@@ -162,13 +164,14 @@ Logos 자료·manifest 준비가 있어야 다음 단계로 진행 가능.
 
 ```
 Version:   v1.3.0 (tag 07ec084) + post-release stabilization (SPRINT28~33-D 반영)
-HEAD:      bd0bb34 (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
+HEAD:      afbb1be (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
            016(Hierarchical Chunk Builder Axis 2, Option A/B/C-1 전부
            실측 기각·종료)·골든셋 gold-4~7 확장·Task Order 017
            (DocumentContext Registry Schema Parity 구현)·Task Order 018
            (doc_type을 core/processing.py PROCESS/SKIP 경로에 실제 배선)·
-           Task Order 019(기존 등록 문서 doc_type 백필 스크립트)
-           순으로 진행, 전부 push 완료)
+           Task Order 019(기존 등록 문서 doc_type 백필 스크립트)·
+           STATE.md/ADR-009/ADR-010 stale 항목 정정·ADR-010 잔여
+           결정 항목 Phase 4까지 보류 확정, 전부 push 완료)
 Tests:     852개 수집 확인(tests/ 스코프, 2026-07-29 재확인 — 이전 기재
            "599개"는 2026-07-22 시점 값으로 stale했음, Task Order
            016~019 등에서 추가된 테스트 다수 반영 안 돼 있었음). 전체
