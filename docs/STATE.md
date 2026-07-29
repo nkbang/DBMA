@@ -154,11 +154,12 @@ Logos 자료·manifest 준비가 있어야 다음 단계로 진행 가능.
 
 ```
 Version:   v1.3.0 (tag 07ec084) + post-release stabilization (SPRINT28~33-D 반영)
-HEAD:      e1fe996 (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
+HEAD:      bd0bb34 (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
            016(Hierarchical Chunk Builder Axis 2, Option A/B/C-1 전부
            실측 기각·종료)·골든셋 gold-4~7 확장·Task Order 017
            (DocumentContext Registry Schema Parity 구현)·Task Order 018
-           (doc_type을 core/processing.py PROCESS/SKIP 경로에 실제 배선)
+           (doc_type을 core/processing.py PROCESS/SKIP 경로에 실제 배선)·
+           Task Order 019(기존 등록 문서 doc_type 백필 스크립트)
            순으로 진행, 전부 push 완료)
 Tests:     599개 수집 확인(tests/ 스코프, 2026-07-22) — 전체 통과 여부는
            SPRINT33-D 완료 시점 기록(539 passed)이 마지막 공식 확인, 이후
@@ -386,6 +387,19 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
       받아 확인 완료. 앞으로 (재)처리되는 문서부터 registry에 실제
       `doc_type`이 채워짐 — 이미 등록된 기존 문서의 `doc_type=None`
       백필은 범위 밖(별도 과제로 남김).
+- [x] 기존 등록 문서 doc_type 백필 완료 (C1-TASK-ORDER-019,
+      commit `bd0bb34`, 2026-07-29) — 착수 전 실측 결과 프로덕션
+      registry(`data/제련완성본/`)는 78건 전부 이미 `doc_type` 있어
+      백필 대상 0건(적용 후 재확인도 0건, 불변) — 실제 대상은 진단용
+      registry 6개(`output/beta_validation`~`v5`, `SPRINT2_MD_DEBUG`,
+      총 61건 `None`)뿐이었음. `scripts/backfill_doc_type.py` 신규
+      (dry-run 기본/`--apply` 게이팅/이미 값 있으면 무시/md 파일 없으면
+      skip). 41/61건 적용, 20건은 md 파일 없어 skip(그대로 `None` —
+      "never invent" 원칙대로 정상 동작). 신규 테스트 6개 통과, `--apply`
+      전 registry `.bak` 백업 생성. **1차 보고서에 "적용 후 0건"이라는
+      오기재가 있었음** — CUE가 registry 직접 재확인으로 발견(실제로는
+      20건 잔존), 정정 후 재제출 받아 확인 완료. 상세:
+      `docs/agents/c1/C1-TASK-ORDER-019-REPORT.md`.
 
 ---
 
