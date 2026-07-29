@@ -154,10 +154,11 @@ Logos 자료·manifest 준비가 있어야 다음 단계로 진행 가능.
 
 ```
 Version:   v1.3.0 (tag 07ec084) + post-release stabilization (SPRINT28~33-D 반영)
-HEAD:      35d5dd9 (origin/dev/dbma-engine 동기화, 2026-07-28 — SPRINT34
-           Option A 코드(dormant)/Modelfile 브랜드 동결 규칙/골든셋 확장
-           스크립트·시트/DocumentContext-Registry Parity 설계 문서/STATE.md
-           갱신 5개 커밋 push 완료)
+HEAD:      ed82921 (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
+           016(Hierarchical Chunk Builder Axis 2, Option A/B/C-1 전부
+           실측 기각·종료)·골든셋 gold-4~7 확장·Task Order 017
+           (DocumentContext Registry Schema Parity 구현) 순으로 진행,
+           전부 push 완료)
 Tests:     599개 수집 확인(tests/ 스코프, 2026-07-22) — 전체 통과 여부는
            SPRINT33-D 완료 시점 기록(539 passed)이 마지막 공식 확인, 이후
            변경분(SPRINT 외 병행 작업 포함) 재실행 권장
@@ -359,6 +360,18 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
       (C1-TASK-ORDER-007, commit `bccd3f4`)
 - [ ] Logos manifest 템플릿 준비 완료, 실제 Logos 자료 인제스트는 사용자
       액션 대기 (C1-TASK-ORDER-007 항목6)
+- [x] DocumentContext Registry Schema Parity 구현 완료 (C1-TASK-ORDER-017,
+      commit `ed82921`, 2026-07-29) — `DocumentContext`에 registry 스키마
+      갭 필드 6개(`doc_type`/`superseded_by`/`supersedes`/
+      `last_content_hash`/`max_retries`/`source_provenance`) 추가,
+      `to_metadata_dict()`에 신규 5개 + 기존 직렬화 누락 5개 키 추가,
+      `source_provenance_from_registry_record()` 읽기 전용 accessor 신설.
+      신규 테스트 17개, 관련 테스트 범위(document_context/processing/
+      index_orchestrator) 48/48 통과, 다른 파일 무변경 확인. 스키마
+      왕복(직렬화/역직렬화)만 다루며, `core/processing.py`가 실제
+      `doc_type` 값을 채우는 배선은 범위 밖으로 남겨둠 — 대시보드 "?"
+      doc_type 표시 문제는 별도 후속 과제. 설계 문서:
+      `docs/architecture/DBMA-DocumentContext-Registry-Parity-Design-v1.md`.
 
 ---
 
