@@ -600,6 +600,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                 _document_context.ingest_status = existing_record.get("ingest_status", _document_context.ingest_status)
                 _document_context.retry_count = existing_record.get("retry_count", _document_context.retry_count)
                 _document_context.last_failure_reason = existing_record.get("last_failure_reason")
+                _document_context.doc_type = existing_record.get("doc_type")
                 if "pipeline_flags" in existing_record:
                     _document_context.pipeline_flags = dict(existing_record["pipeline_flags"])
                 # [SPRINT21-B Phase1] SKIP means content unchanged — carry the
@@ -795,6 +796,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         _document_context.source_type = ext
         _document_context.is_ocr = is_ocr
         _document_context.chunk_count = len(chunks)
+        _document_context.doc_type = doc_type
         # [SPRINT21-B Phase1] extraction + chunking complete.
         set_pipeline_state(_document_context, "EXTRACTED")
         # [SPRINT17-Phase2-B] registered_at is a distinct concept from
