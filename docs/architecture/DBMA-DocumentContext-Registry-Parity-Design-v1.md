@@ -1,12 +1,14 @@
 ---
 title: DBMA DocumentContext Registry Schema Parity Design v1
 category: architecture
-status: draft (design only — 구현 없음)
+status: CUE 검토 완료 — doc_type 인용 출처 정정(2026-07-29), 그 외 설계 승인 가능. 구현 없음.
 based_on:
   - core/document_context.py (현재 구현, from_metadata_dict()/to_metadata_dict())
   - core/identity_registry.py (registry 레코드 스키마 전수 조사)
   - scripts/ingest_logos_export.py (registry 레코드에 직접 쓰는 side-channel 필드)
   - core/index_orchestrator.py, core/processing.py (통합 시도에서 발견된 필드 갭)
+  - ui/pages/dashboard.py, scripts/report_chunk_summary.py, ui/pages/sermon_review.py
+    (doc_type 실제 소비처 — 2026-07-29 정정으로 추가)
 created: 2026-07-27
 scope_modified: docs/architecture/ only (코드 미수정)
 ---
@@ -28,11 +30,22 @@ scope_modified: docs/architecture/ only (코드 미수정)
 - `processing.py` SKIP 경로: `source_file`을 통째로 덮어쓰면 파일명 변경
   추적(SPRINT21-G-2 Option C)이 깨짐 — 이건 스키마 갭이 아니라 **부분 병합
   vs 전체 재구성**의 문제라 이번 설계로 해결되지 않는다(§6에서 범위 명시).
-- `index_orchestrator.py`: `build_tsu_records()`가 읽는 `source_provenance`
-  (`source_tier`/`logos_location`/`rights`/`export_method`/`content_hash`/
-  `review_status`), `doc_type`, `superseded_by` 등이 `to_metadata_dict()`
-  출력에 없어 **왕복 시 데이터가 사라진다** — 이건 순수 스키마 갭이라
-  이번 설계로 해결 가능하다.
+- `index_orchestrator.py`가 호출하는 `core/tsu_builder.py::build_tsu_records()`가
+  읽는 `source_provenance`(`source_tier`/`logos_location`/`rights`/
+  `export_method`/`content_hash`/`review_status`), `superseded_by` 등이
+  `to_metadata_dict()` 출력에 없어 **왕복 시 데이터가 사라진다** — 이건 순수
+  스키마 갭이라 이번 설계로 해결 가능하다.
+- `doc_type`은 `build_tsu_records()`가 아니라 **`ui/pages/dashboard.py`
+  (문서 그룹핑/필터링/표시, 300/418/439/471/503행)**,
+  **`scripts/report_chunk_summary.py`**(유형별 리포트 — 값이 없으면 `"?"`로
+  표시), **`ui/pages/sermon_review.py`**가 읽는다(grep으로 확인, `core/
+  tsu_builder.py`/`core/index_orchestrator.py`에는 `doc_type` 참조 0건).
+  `core/processing.py`의 일반 파이프라인은 `_document_context`에 `doc_type`을
+  세팅하는 코드가 없어(792~805행 sync 블록에 없음) `to_metadata_dict()`가
+  이를 직렬화하지 않는 것과 무관하게 이미 `register_document()`에서
+  `metadata.get("doc_type")`이 항상 `None`으로 귀결된다 — 즉 **정상 파이프라인을
+  거친 문서는 대시보드에서 전부 "?" 유형으로 표시되는 실사용 버그**다(TSU
+  빌드 실패가 아니라 대시보드 분류 오류).
 
 ---
 
@@ -58,7 +71,7 @@ scope_modified: docs/architecture/ only (코드 미수정)
 | `is_ocr` | ✅ | ✅ | |
 | `book`/`chapter`/`page` | ✅ | ✅ | |
 | `title`/`author` | ✅ | ✅ | |
-| `doc_type` | ❌ | ❌ | **갭 — `build_tsu_records()`가 읽음** |
+| `doc_type` | ❌ | ❌ | **갭 — `ui/pages/dashboard.py`/`scripts/report_chunk_summary.py`/`ui/pages/sermon_review.py`가 읽음(§0 정정 참고)** |
 | `pipeline_state` | ✅ | ✅ | |
 | `superseded_by` | ❌ | ❌ | **갭 — `mark_superseded()`가 씀, `find_by_source_file()`가 읽음** |
 | `supersedes` | ❌ | ❌ | **갭 — 위와 동일 메커니즘의 역방향 링크** |
