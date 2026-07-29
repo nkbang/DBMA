@@ -1,6 +1,6 @@
 # C1 Task Order 016 — Hierarchical Chunk Builder Axis 2 (Semantic Flush Ratio) 개선 설계
 
-**상태**: Phase 1 정정 구현 완료·커밋(`9b9291f`)·push 완료. **Phase 1.5(단위 테스트) 승인됨** (2026-07-28, David 승인). Phase 2(축소 세트 canary)/Phase 3(결과 보고)은 여전히 별도 승인 필요.
+**상태**: Phase 1(커밋 `9b9291f`)·Phase 1.5(커밋 `ade22c5`, 66/66 pass) 완료·push 완료. **Phase 2(축소 세트 canary) 승인됨** (2026-07-28, David 승인). Phase 3(전체 결과 보고 이후 후속 조치)은 canary 결과 확인 후 별도 승인.
 **작성자**: C1 (DBMA Core Engineer)
 **작성일**: 2026-07-28
 **범위**: `score_boundary()`/`build_chunks()`에 `document_profile` 파라미터 스레딩 + Profile B 임계값(`DEFAULT_THRESHOLD * 0.7`) 적용 + 축소 세트 canary 검증까지만. 전체 corpus 재측정·신규 feature 구현은 금지.
@@ -209,5 +209,51 @@ C1이 제출한 실행 계획의 `python scripts/shadow_d5_metrics.py --docs <pa
 
 ---
 
+## 8. Phase 2 승인 — 2026-07-28
+
+**승인 범위**: §7 방법(코드 수정 없이 2개 문서 임시 디렉터리 복사 + `MD_DIR` monkeypatch)으로 축소 세트 canary 실행만. `scripts/shadow_d5_metrics.py` 자체 수정, 전체 12개 문서 corpus 실행, 코드 재수정(Phase 1/1.5는 이미 확정)은 여전히 범위 밖.
+
+**측정 항목**: Profile A/B 각각의 Axis 2(Semantic Flush Ratio) — Phase 1 적용 전(§8.1의 기존 실측값: slope 0.3 기준 Profile A 13.2%, Profile B 21.0%) 대비 Phase 1 적용 후(`PROFILE_B_THRESHOLD=35.0`) 수치를 비교.
+
+**보고 형식**:
+1. 어떤 2개 문서를 골랐는지(Profile A/B 각 1개, 파일명, candidate 수)
+2. 실행에 쓴 monkeypatch 방식 코드/커맨드 (재현 가능하게)
+3. Before/After Axis 2 표 (Profile A/B 각각)
+4. 목표(Profile B ≥25%) 달성 여부 — 미달이어도 그대로 보고할 것(수치 조작·재시도로 목표치 맞추기 금지)
+
+Phase 3(결과 기반 후속 조치 — 계수 재조정/Option B 재검토/프로덕션 전환 여부 등)는 이 canary 결과를 본 뒤 별도로 승인한다.
+
+---
+
+## 9. 문서 선정 정정 — 2026-07-28
+
+C1이 제안한 문서 쌍("12. 고린도후서" + "2 Chronicles Volume 15")을 CUE가 12개 문서 전체 `classify_document_profile()` 결과로 직접 대조했다.
+
+| 문서 | profile | candidate 수 |
+|---|---|---|
+| 12. 고린도후서 | A | **783** (Profile A 최소) |
+| 2 Kings The Anchor Bible Commentary | B | **947** (Profile B 최소) |
+| 2 Chronicles Volume 15 (WBC) | B | 1864 |
+
+**Profile A("12. 고린도후서", 783개)는 그대로 사용** — §8.1 baseline과 정확히 일치.
+
+**Profile B는 "2 Chronicles Volume 15"(1864개)가 아니라 "2 Kings The Anchor Bible Commentary"(947개)를 쓸 것.** §8.1 baseline(Profile B 21.0% 등)이 바로 이 947-candidate 문서로 측정된 값이라, 다른 문서(1864개)로 바꾸면 Before/After가 같은 문서 기준이 아니게 돼 비교가 무의미해진다. candidate 수도 2배라 축소 세트 취지에도 안 맞음.
+
+---
+
+## 10. "Phase 2: Profile B slope 기반 chunking algorithm" 반려 — 2026-07-28
+
+C1이 위 문서 선정 정정 이후 제출한 보고서는 canary 실행 결과가 아니라, **승인 안 된 완전히 새로운 작업**을 "Phase 2"라는 이름으로 제안한 것이었다. `git status`로 확인한 결과 코드 변경이 전혀 없었고, 보고서가 언급한 `_build_chunks_for_profile()`은 코드베이스 어디에도 존재하지 않는다.
+
+**반려 사유**:
+1. §8(승인된 Phase 2)은 "코드 수정 없이 §9의 문서 2개로 축소 세트 canary 실행"이었다. `classify_document_profile()`에 slope 계산 로직 추가 + 신규 함수 `_build_chunks_for_profile()` 구현은 전혀 다른, 승인받지 않은 작업이다.
+2. 승인된 canary(§9 정정 반영) 자체가 아직 실행되지 않았다 — 실측치, 선택한 문서, monkeypatch 코드 등 결과물이 전혀 없다.
+3. 보고서의 "Phase 1 결과: 동적 임계값 상향 정정 후 §8.1 실측"이라는 서술은 인과관계가 뒤섞여 있다 — §8.1은 Option A 단독(Phase 1/Option C-1 이전) 실험 결과이고, Phase 1(Option C-1, `score_boundary()` profile threshold)은 그 §8.1 미달 문제에 대한 후속 조치로 나중에 구현된 것이다.
+4. "Phase 1.6 — shadow chunk builder prototype(dormant)"은 이번 Task Order와 무관한 SPRINT33-D의 기존 산출물을 마치 이 작업의 하위 단계처럼 재서술한 것 — 혼란을 유발하므로 사용하지 말 것.
+
+**지시**: 신규 알고리즘 제안은 중단하고, §8/§9에서 승인한 축소 세트 canary(문서: "12. 고린도후서" 783개 / "2 Kings The Anchor Bible Commentary" 947개, 코드 수정 없이 `MD_DIR` monkeypatch)부터 먼저 실행해 결과를 보고할 것. 새 알고리즘이 필요하다고 판단되면 canary 결과를 본 뒤 별도로 제안·승인받을 것.
+
+---
+
 **문서 작성일**: 2026-07-28
-**상태**: Phase 1(Option C-1) 승인 — 구현 착수 가능. Phase 2/3은 결과 보고 후 별도 승인 대기.
+**상태**: Phase 1/1.5 완료·push 완료. Phase 2(축소 세트 canary) 승인 — 실행 가능. Phase 3은 결과 보고 후 별도 승인 대기.
