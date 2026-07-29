@@ -154,7 +154,10 @@ Logos 자료·manifest 준비가 있어야 다음 단계로 진행 가능.
 
 ```
 Version:   v1.3.0 (tag 07ec084) + post-release stabilization (SPRINT28~33-D 반영)
-HEAD:      932aa93 (origin/dev/dbma-engine 동기화, 2026-07-22)
+HEAD:      35d5dd9 (origin/dev/dbma-engine 동기화, 2026-07-28 — SPRINT34
+           Option A 코드(dormant)/Modelfile 브랜드 동결 규칙/골든셋 확장
+           스크립트·시트/DocumentContext-Registry Parity 설계 문서/STATE.md
+           갱신 5개 커밋 push 완료)
 Tests:     599개 수집 확인(tests/ 스코프, 2026-07-22) — 전체 통과 여부는
            SPRINT33-D 완료 시점 기록(539 passed)이 마지막 공식 확인, 이후
            변경분(SPRINT 외 병행 작업 포함) 재실행 권장
