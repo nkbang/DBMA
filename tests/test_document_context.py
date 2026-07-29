@@ -153,3 +153,153 @@ def test_from_metadata_dict_defaults_for_partial_metadata():
     assert ctx.pipeline_flags["verified"] is False
     assert ctx.tsu_refs == []
     assert ctx.chunk_ids == []
+
+
+# [Task Order 017] New fields (§3 schema parity) — doc_type, superseded_by,
+# supersedes, last_content_hash, max_retries, source_provenance
+
+
+def test_new_fields_default_values():
+    """6개 신규 필드의 기본값: doc_type/superseded_by/supersedes/last_content_hash
+    는 None, max_retries 는 3, source_provenance 는 None."""
+    ctx = _minimal_context()
+    assert ctx.doc_type is None
+    assert ctx.superseded_by is None
+    assert ctx.supersedes is None
+    assert ctx.last_content_hash is None
+    assert ctx.max_retries == 3
+    assert ctx.source_provenance is None
+
+
+def test_new_fields_set_and_round_trip():
+    """신규 필드에 값을 설정 → to_metadata_dict() → from_metadata_dict()
+    round trip에서 값이 복원된다."""
+    original = _minimal_context(
+        doc_type="sermon",
+        superseded_by="doc-2",
+        supersedes="doc-1",
+        last_content_hash="d" * 64,
+        max_retries=5,
+    )
+
+    meta = original.to_metadata_dict()
+    # to_metadata_dict()에 신규 필드가 포함되어야 함
+    assert meta["doc_type"] == "sermon"
+    assert meta["superseded_by"] == "doc-2"
+    assert meta["supersedes"] == "doc-1"
+    assert meta["last_content_hash"] == "d" * 64
+    assert meta["max_retries"] == 5
+
+    rehydrated = DocumentContext.from_metadata_dict(meta)
+    assert rehydrated.doc_type == "sermon"
+    assert rehydrated.superseded_by == "doc-2"
+    assert rehydrated.supersedes == "doc-1"
+    assert rehydrated.last_content_hash == "d" * 64
+    assert rehydrated.max_retries == 5
+
+
+def test_source_provenance_from_registry_record_all_none():
+    """6개 필드가 전부 없으면 None."""
+    record = {"document_id": "x", "file_hash": "y"}
+    result = DocumentContext.source_provenance_from_registry_record(record)
+    assert result is None
+
+
+def test_source_provenance_from_registry_record_some_present():
+    """6개 필드 중 일부가 있으면 dict로 반환."""
+    record = {
+        "source_tier": "scholarly_commentary",
+        "logos_location": "Romans 12:1-2, p.748-752",
+        "rights": "personal_study_export",
+        "export_method": "Logos Print/Export",
+        "content_hash": "abc123",
+        "review_status": "reviewed",
+    }
+    result = DocumentContext.source_provenance_from_registry_record(record)
+    assert result == record
+
+
+def test_source_provenance_from_registry_record_partial():
+    """6개 필드 중 일부만 있어도 dict 반환 (전부 None일 때만 None)."""
+    record = {"source_tier": "primary", "review_status": "unreviewed"}
+    result = DocumentContext.source_provenance_from_registry_record(record)
+    assert result == {"source_tier": "primary", "logos_location": None,
+                      "rights": None, "export_method": None,
+                      "content_hash": None, "review_status": "unreviewed"}
+
+
+def test_from_metadata_dict_picks_up_source_provenance():
+    """from_metadata_dict()가 registry record에서 source_provenance를
+    올바르게 복원한다."""
+    record = {
+        "document_id": "doc-1",
+        "file_hash": "b" * 64,
+        "source_file": "commentary.pdf",
+        "source_tier": "scholarly_commentary",
+        "logos_location": "Romans 12:1-2",
+        "rights": "personal_study_export",
+        "export_method": "Logos Print/Export",
+        "content_hash": "abc123",
+        "review_status": "reviewed",
+    }
+    ctx = DocumentContext.from_metadata_dict(record)
+    assert ctx.source_provenance == {
+        "source_tier": "scholarly_commentary",
+        "logos_location": "Romans 12:1-2",
+        "rights": "personal_study_export",
+        "export_method": "Logos Print/Export",
+        "content_hash": "abc123",
+        "review_status": "reviewed",
+    }
+
+
+def test_from_metadata_dict_no_source_provenance():
+    """source_provenance 6개 필드가 없으면 source_provenance는 None."""
+    record = {
+        "document_id": "doc-1",
+        "file_hash": "b" * 64,
+        "source_file": "sermon.pdf",
+    }
+    ctx = DocumentContext.from_metadata_dict(record)
+    assert ctx.source_provenance is None
+
+
+def test_to_metadata_dict_includes_new_fields():
+    """to_metadata_dict()가 신규 필드를 포함한다."""
+    ctx = _minimal_context(
+        doc_type="sermon",
+        superseded_by="doc-2",
+        supersedes="doc-1",
+        last_content_hash="e" * 64,
+        max_retries=5,
+    )
+    meta = ctx.to_metadata_dict()
+    assert "doc_type" in meta
+    assert "superseded_by" in meta
+    assert "supersedes" in meta
+    assert "last_content_hash" in meta
+    assert "max_retries" in meta
+    assert meta["doc_type"] == "sermon"
+    assert meta["superseded_by"] == "doc-2"
+    assert meta["supersedes"] == "doc-1"
+    assert meta["last_content_hash"] == "e" * 64
+    assert meta["max_retries"] == 5
+
+
+def test_to_metadata_dict_includes_already_missing_fields():
+    """to_metadata_dict()가 기존에 누락되었던 필드들(ingest_status,
+    retry_count, last_failure_reason, last_processed_at, pipeline_flags)을
+    포함한다."""
+    ctx = _minimal_context(
+        ingest_status="REPROCESS",
+        retry_count=3,
+        last_failure_reason="timeout",
+        last_processed_at="2026-07-28T10:00:00",
+    )
+    meta = ctx.to_metadata_dict()
+    assert meta["ingest_status"] == "REPROCESS"
+    assert meta["retry_count"] == 3
+    assert meta["last_failure_reason"] == "timeout"
+    assert meta["last_processed_at"] == "2026-07-28T10:00:00"
+    assert isinstance(meta["pipeline_flags"], dict)
+    assert meta["pipeline_flags"]["ingested"] is False
