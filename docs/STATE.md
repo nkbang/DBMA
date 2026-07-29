@@ -154,11 +154,12 @@ Logos 자료·manifest 준비가 있어야 다음 단계로 진행 가능.
 
 ```
 Version:   v1.3.0 (tag 07ec084) + post-release stabilization (SPRINT28~33-D 반영)
-HEAD:      ed82921 (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
+HEAD:      e1fe996 (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
            016(Hierarchical Chunk Builder Axis 2, Option A/B/C-1 전부
            실측 기각·종료)·골든셋 gold-4~7 확장·Task Order 017
-           (DocumentContext Registry Schema Parity 구현) 순으로 진행,
-           전부 push 완료)
+           (DocumentContext Registry Schema Parity 구현)·Task Order 018
+           (doc_type을 core/processing.py PROCESS/SKIP 경로에 실제 배선)
+           순으로 진행, 전부 push 완료)
 Tests:     599개 수집 확인(tests/ 스코프, 2026-07-22) — 전체 통과 여부는
            SPRINT33-D 완료 시점 기록(539 passed)이 마지막 공식 확인, 이후
            변경분(SPRINT 외 병행 작업 포함) 재실행 권장
@@ -372,6 +373,19 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
       `doc_type` 값을 채우는 배선은 범위 밖으로 남겨둠 — 대시보드 "?"
       doc_type 표시 문제는 별도 후속 과제. 설계 문서:
       `docs/architecture/DBMA-DocumentContext-Registry-Parity-Design-v1.md`.
+- [x] doc_type을 DocumentContext에 실제 배선 완료 (C1-TASK-ORDER-018,
+      commit `e1fe996`, 2026-07-29) — `core/processing.py`의 PROCESS
+      경로(796행)에 `_document_context.doc_type = doc_type`(이미 계산된
+      `guess_doc_type()` 결과), SKIP 경로(600행)에
+      `_document_context.doc_type = existing_record.get("doc_type")`
+      추가. `TestProcessOneFileDocType` 테스트 2개 신규
+      (`tests/test_processing_pipeline.py`), 관련 테스트 범위
+      (test_processing_pipeline.py + test_document_context.py) 29/29
+      통과. **1차 제출 시 테스트 누락이 있었음** — CUE가 diff 대조로
+      발견해 §3.1 테스트 스켈레톤을 Task Order 문서에 추가한 뒤 재제출
+      받아 확인 완료. 앞으로 (재)처리되는 문서부터 registry에 실제
+      `doc_type`이 채워짐 — 이미 등록된 기존 문서의 `doc_type=None`
+      백필은 범위 밖(별도 과제로 남김).
 
 ---
 
