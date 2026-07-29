@@ -1,7 +1,7 @@
 ---
 title: DBMA DocumentContext Registry Schema Parity Design v1
 category: architecture
-status: CUE 검토 완료 — doc_type 인용 출처 정정(2026-07-29), 그 외 설계 승인 가능. 구현 없음.
+status: **승인됨(David, 2026-07-29)** — doc_type 인용 출처 정정 반영 후 승인. 구현은 별도 Task Order로 착수.
 based_on:
   - core/document_context.py (현재 구현, from_metadata_dict()/to_metadata_dict())
   - core/identity_registry.py (registry 레코드 스키마 전수 조사)
@@ -273,6 +273,18 @@ registry["documents"][document_id] (dict)
 제외), 이 경로를 실제로 쓰려면 `build_tsu_records()`에 넘기기 직전에
 `ctx.source_provenance`를 별도로 병합하는 한 줄이 추가로 필요하다 —
 이 역시 §6에서 이월한 구현 세부사항이다.
+
+---
+
+## 8. 승인 — 2026-07-29
+
+David 승인. CUE의 doc_type 인용 출처 정정(§0/§1, 커밋 `fcf6db2`)을 반영한
+상태로 승인됨. 구현(§3~§5의 `DocumentContext` 필드 추가/`to_metadata_dict()`
+확장/`source_provenance_from_registry_record()` 신설/`from_metadata_dict()`
+대칭 확장)은 이 문서 범위 밖이므로 별도 Task Order로 착수할 것 — 착수 시
+§2 확장 원칙(additive-only, 버전 분기 없음, never invent)과 §6 경계(registry
+최상위 필드/`status` 필드/`register_document()` 확장/`processing.py` SKIP
+경로 재통합은 범위 밖)를 그대로 지킬 것.
 
 ---
 
