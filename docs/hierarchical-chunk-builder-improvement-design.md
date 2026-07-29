@@ -690,6 +690,22 @@ Profile B를 정의하는 바로 그 특성(성경 구절 인용·cf. 참조 밀
 
 ---
 
+## 13. Option B 재설계 구체 지침 — 2026-07-29
+
+C1이 §12 반려 사유를 확인했으나, B-2를 "가중치 하향 또는 통합"으로만 접근하려는 건 부족하다 — 추가로 확인한 사실을 반영해 지침을 구체화한다.
+
+**B-2에 대한 추가 확인**: 기존 `ScriptureReferenceBoundaryFeature`(`core/semantic_boundary_detector.py:293`)는 **의도적으로** candidate 앞 `SCRIPTURE_REFERENCE_HEAD_WINDOW=50`자만 검사하도록 설계돼 있다. Docstring에 명시: "본문 중간의 인용은 boundary 신호가 아니다 — REF+제목이 candidate 맨 앞에 오는 경우만 신호"(SPRINT33-C 실측 근거). 반면 B-2는 `context.candidate_text` **전체**를 정규식으로 스캔한다 — 이는 가중치 문제가 아니라, **SPRINT33-C에서 이미 실측으로 반려됐던 "mid-paragraph 인용을 boundary로 오인" 패턴을 그대로 재도입하는 것**이다.
+
+**지침 (기존 지시를 대체)**:
+1. B-2는 "가중치 하향/통합"이 아니라 **head-window 제약을 그대로 적용**해야 한다 — `context.candidate_text.strip()[:SCRIPTURE_REFERENCE_HEAD_WINDOW]`에만 정규식을 적용하도록 범위를 좁힐 것. 그렇게 좁혔을 때 `ScriptureReferenceBoundaryFeature`(이미 `QueryParser.parse().scripture_refs`로 REF를 감지)와 실질적으로 다른 걸 잡아내는지 먼저 확인 — "cf. also"/"comment on Romans 3:14" 같은 **REF가 아닌 서술형 패턴**만 남는다면 신규 feature로서 의미가 있고, 대부분 겹친다면 신규 feature를 만들지 말고 기존 feature에 패턴만 추가할 것. 좁힌 뒤 §9의 두 문서로 베이스레이트 재측정(0%에 가까운 게 정상 — head window는 문서당 candidate 수가 아니라 "문단 시작부"라 발생 빈도가 크게 낮아짐).
+2. B-3 제외는 그대로 유지.
+3. **B-1 검증 방법 구체화**: 완전히 Ollama 호출 없이는 임베딩 기반 상관관계를 볼 수 없다 — 대신 §9의 두 대표 문서(783+947 candidates, 이미 canary에서 쓴 세트라 새 문서 추가 없음) 중 **일부 샘플(예: 각 100개 candidate)**에 한정해서, 같은 임베딩 호출을 재사용해 (a) `EmbeddingSimilarityBoundaryFeature`의 0/1 신호와 (b) B-1의 `1.0 - similarity(prev[:200], last_line)` 연속값을 둘 다 계산하고 상관관계(예: 두 신호가 켜지는 candidate가 얼마나 겹치는지)를 볼 것. 전체 corpus나 전체 문서 전량이 아니라 표본 200개 정도로 충분 — Ollama 비용 최소화.
+4. 상관관계가 높으면(예: 겹침 70%+) B-1은 기존 feature의 변형일 뿐이므로 드롭. 낮으면 독립 신호로 인정하고 가중치는 여전히 §12처럼 근거 없는 임의값을 피하고, 이 표본 측정에서 나온 실제 발화 빈도를 근거로 제안할 것.
+
+이 지침대로 재설계 문서를 제출하면 구현 승인 여부를 다시 검토한다.
+
+---
+
 **문서 작성일**: 2026-07-29
-**문서 버전**: v1.5 (Option B 사전 검토 — 코드 작성 전 재설계 요청 추가)
-**상태**: Option A dormant/미달, Option C-1 기각·되돌림 완료(커밋 `ddea706`), Option B는 재설계 요청 상태(B-3 제외/B-2 재설계/B-1 검증 필요) — 재설계본 제출 전까지 구현 승인 보류
+**문서 버전**: v1.6 (Option B 재설계 구체 지침 — B-2 head-window 제약, B-1 표본 상관관계 검증 방법 추가)
+**상태**: Option A dormant/미달, Option C-1 기각·되돌림 완료(커밋 `ddea706`), Option B는 §13 구체 지침에 따른 재설계 대기 — 재설계본 제출 전까지 구현 승인 보류
