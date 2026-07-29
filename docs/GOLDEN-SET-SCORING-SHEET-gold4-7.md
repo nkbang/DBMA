@@ -46,7 +46,7 @@ So the LORD has rewardedme accordingtomy righteousness, accordingtothe cle
 
 **judge_groundedness (RAG)**: 0.0 — 답변은 검색된 청크에 근거하지 않았으며 시편 23편에 대한 설명이 청크와 무관합니다.
 
-**사람 채점 (RAG, 0~5)**: ____
+**사람 채점 (RAG, 0~5)**: 0
 
 ---
 
@@ -61,7 +61,7 @@ So the LORD has rewardedme accordingtomy righteousness, accordingtothe cle
 
 **judge_groundedness (설교)**: 4.0 — The sermon effectively uses multiple materials to support its main points about God's guidance and protection, though one reference lacks direct support.
 
-**사람 채점 (설교, 0~5)**: ____
+**사람 채점 (설교, 0~5)**: 3
 
 ============================================================
 
@@ -120,7 +120,7 @@ So the LORD has rewardedme accordingtomy righteousness, accordingtothe cle
 
 **judge_groundedness (RAG)**: 5.0 — 답변의 모든 핵심 주장이 청크1과 청크5에서 직접 확인된다.
 
-**사람 채점 (RAG, 0~5)**: ____
+**사람 채점 (RAG, 0~5)**: 5
 
 ---
 
@@ -135,7 +135,7 @@ So the LORD has rewardedme accordingtomy righteousness, accordingtothe cle
 
 **judge_groundedness (설교)**: 5.0 — The generated text directly references and aligns with multiple specific points from the provided materials, ensuring all claims are supported by the sources.
 
-**사람 채점 (설교, 0~5)**: ____
+**사람 채점 (설교, 0~5)**: 5
 
 ============================================================
 
@@ -201,7 +201,7 @@ The Epistle of Paulto the Romans (MNTC; London and New York, 1932)
 
 **judge_groundedness (RAG)**: 0.0 — 검색된 청크에 성령의 열매나 갈라디아서 5장에 대한 내용이 전혀 포함되지 않아 답변을 지원할 수 없습니다.
 
-**사람 채점 (RAG, 0~5)**: ____
+**사람 채점 (RAG, 0~5)**: 0
 
 ---
 
@@ -216,7 +216,7 @@ The Epistle of Paulto the Romans (MNTC; London and New York, 1932)
 
 **judge_groundedness (설교)**: 1.0 — The sermon text mentions scholars like Jewett, Marshall, Machen, Paulsen, and Dodd, but none of these references directly support the specific claims made about the fruits of the Spirit in Galatians 5. The connections are tenuous and based on indirect associations rather than explicit evidence from the provided sources.
 
-**사람 채점 (설교, 0~5)**: ____
+**사람 채점 (설교, 0~5)**: 0
 
 ============================================================
 
@@ -261,7 +261,7 @@ Luke usesthe same formulaashe doesfor the Lord’s Supper in 22:19. Of course, t
 
 **judge_groundedness (RAG)**: 0.0 — 답변은 마태복음 5장의 팔복에 관한accurate한 설명이지만, 검색된 청크에 근거하지 않습니다.
 
-**사람 채점 (RAG, 0~5)**: ____
+**사람 채점 (RAG, 0~5)**: 0
 
 ---
 
@@ -276,6 +276,6 @@ Luke usesthe same formulaashe doesfor the Lord’s Supper in 22:19. Of course, t
 
 **judge_groundedness (설교)**: 2.0 — Only a few points in the sermon text have direct and clear connections to the provided materials.
 
-**사람 채점 (설교, 0~5)**: ____
+**사람 채점 (설교, 0~5)**: 2
 
 ============================================================

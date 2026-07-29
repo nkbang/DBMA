@@ -183,10 +183,13 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
   groundedness 첫 실측 — `scripts/run_sermon_eval.py` 신설, 실제
   경로로 3건 실행 결과 평균 5.00/5(전부 만점, 판별력 확인 필요).
   상세: `docs/DBMA-SEQ-Phase1-Groundedness-Baseline-2026-07-27.md`
-- **[2026-07-27 결정]** 골든셋 라벨링 담당/일정 확정 — 담당: David
-  본인 직접 채점. 일정: 2026-08-02(이번 주)까지 ADR-010(RAG)과
-  ADR-012(설교, DBMA-SEQ) 골든셋을 3건→5~10건으로 **동시 확장**.
-  (ADR-010 §1, ADR-012 Next Steps §2 관련)
+- **[2026-07-27 결정 → 2026-07-29 완료]** 골든셋 라벨링 담당/일정 확정
+  — 담당: David 본인 직접 채점. ADR-010(RAG)/ADR-012(설교) 골든셋을
+  3건→7건으로 **동시 확장 완료**(gold-4~7/SEQ004~007). RAG 축은
+  judge·사람 4건 전부 완전 일치, 설교 축은 judge가 사람보다 최대 1점
+  관대한 경향 확인 — "전부 만점" 판별력 우려 해소. 반영: `tests/
+  fixtures/rag_eval_golden_set.json`(RAG), `docs/DBMA-SEQ-Phase1-
+  Groundedness-Baseline-2026-07-27.md`(설교, "확장" 절).
 
 ---
 

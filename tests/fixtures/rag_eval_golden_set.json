@@ -35,11 +35,47 @@
       "judge_groundedness": 4.0,
       "judge_rationale": "Most of the answer is well-supported by the chunks, particularly regarding Christ as a superior high priest and the nature of His sacrifice.",
       "agreement": "거의 일치 (편차 0.4 이내)"
+    },
+    {
+      "query_id": "gold-4",
+      "question": "시편 23편에서 여호와의 목자 되심은 어떻게 표현되는가?",
+      "human_groundedness": 0.0,
+      "human_rationale": "검색된 청크 5개 전부 시편 23편과 무관(시편 1편/31편의 왕권·수치 모티프, righteousness 구절 등) — 답변은 모델의 사전지식으로 생성된 것으로 판단됨.",
+      "judge_groundedness": 0.0,
+      "judge_rationale": "답변은 검색된 청크에 근거하지 않았으며 시편 23편에 대한 설명이 청크와 무관합니다.",
+      "agreement": "완전 일치"
+    },
+    {
+      "query_id": "gold-5",
+      "question": "에베소서 2장에서 은혜로 말미암은 구원은 어떻게 설명되는가?",
+      "human_groundedness": 5.0,
+      "human_rationale": "청크1이 에베소서 2:8-10 본문을 그대로 포함하고 있어 답변의 핵심 주장(믿음/은혜/행위 아님/하나님의 선물) 전부가 직접 확인됨.",
+      "judge_groundedness": 5.0,
+      "judge_rationale": "답변의 모든 핵심 주장이 청크1과 청크5에서 직접 확인된다.",
+      "agreement": "완전 일치"
+    },
+    {
+      "query_id": "gold-6",
+      "question": "갈라디아서 5장에서 성령의 열매는 어떻게 나열되는가?",
+      "human_groundedness": 0.0,
+      "human_rationale": "검색된 청크 5개 전부 갈라디아서 5장과 무관(참고문헌 목록, 갈라디아서 6장 논쟁 등) — 성령의 열매 언급이 전혀 없음에도 답변은 정확한 목록을 냄(사전지식).",
+      "judge_groundedness": 0.0,
+      "judge_rationale": "검색된 청크에 성령의 열매나 갈라디아서 5장에 대한 내용이 전혀 포함되지 않아 답변을 지원할 수 없습니다.",
+      "agreement": "완전 일치"
+    },
+    {
+      "query_id": "gold-7",
+      "question": "마태복음 5장에서 팔복은 어떻게 선포되는가?",
+      "human_groundedness": 0.0,
+      "human_rationale": "검색된 청크 5개 전부 마태복음 5장 팔복과 무관(성찬 신학, 엠마오, 이사야 53장 몸값 모티프, 미쉬나/토라 배경 등).",
+      "judge_groundedness": 0.0,
+      "judge_rationale": "답변은 마태복음 5장의 팔복에 관한 accurate한 설명이지만, 검색된 청크에 근거하지 않습니다.",
+      "agreement": "완전 일치"
     }
   ],
   "summary": {
-    "mean_absolute_error": 0.83,
+    "mean_absolute_error": 0.36,
     "rank_order_agreement": true,
-    "verdict": "순위(어느 사례가 낮고 높은지)는 3사례 전부 사람과 judge가 일치. 절대 점수는 judge가 전반적으로 관대한 경향(특히 gold-1). 상대 비교(reranker 도입 전/후 델타 측정)에는 사용 가능하나, 절대 점수를 그대로 신뢰하기엔 표본이 작고 gold-1 편차가 큼."
+    "verdict": "gold-1~3(초기 3건) + gold-4~7(2026-07-29 확장 4건) 총 7건. 신규 4건은 judge/사람 전부 완전 일치(0.0 또는 5.0) — RAG groundedness judge가 검색 성공/실패를 사람과 동일하게 판정함을 확인. 전체 MAE는 0.83(3건)에서 0.36(7건)으로 개선됐으나, 이는 신규 4건이 극단값(0 또는 5)이라 편차가 날 여지가 적었기 때문 — gold-1의 +1.6 편차(judge가 관대)는 여전히 유효한 경고로 남아있다. 순위 일치는 7건 전부 유지."
   }
 }
