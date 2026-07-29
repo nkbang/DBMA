@@ -155,6 +155,9 @@ class BoundaryContext:
     # feature는 신호 없음(0.0)으로 안전하게 폴백한다 — 다른 feature와
     # 동일한 계약.
     repetition_signal: Optional[RepetitionSignal] = None
+    # [Task Order 016 Phase 1] Profile A/B 분류 결과 — Axis 2 개선용
+    # 동적 임계값에 사용 ("A" 또는 "B")
+    document_profile: str = "A"
 
 
 @dataclass(frozen=True)
@@ -376,6 +379,7 @@ class EmbeddingSimilarityBoundaryFeature:
         safety_cap = context.chunk_size * self._SAFETY_CAP_RATIO
         buffer_ratio = context.accumulated_length / safety_cap if safety_cap > 0 else 0.0
         buffer_ratio = min(1.0, buffer_ratio)
+
         dynamic_threshold = self._drop_threshold * (1.0 + buffer_ratio * DYNAMIC_THRESHOLD_SLOPE)
         dynamic_threshold = min(
             self._drop_threshold * DYNAMIC_THRESHOLD_CEILING_RATIO, dynamic_threshold
@@ -476,17 +480,24 @@ def get_registry() -> FeatureRegistry:
 # here (see design doc §3/§6).
 DEFAULT_THRESHOLD = 50.0
 
+# [Task Order 016 Phase 1] Profile B 전용 하향 임계값 — heading 드문
+# 학술 주석서에서 Axis 2(Semantic Flush Ratio) 개선을 위해 적용.
+PROFILE_B_THRESHOLD = DEFAULT_THRESHOLD * 0.7  # 35.0
+
 
 def score_boundary(
     context: BoundaryContext,
     registry: Optional[FeatureRegistry] = None,
+    document_profile: str = "A",
 ) -> BoundaryEvent:
     reg = registry or get_registry()
     features = reg.score_all(context)
     total = sum(features.values())
+    # [Task Order 016 Phase 1] Profile B일 때 하향 임계값 적용
+    threshold = PROFILE_B_THRESHOLD if document_profile == "B" else DEFAULT_THRESHOLD
     return BoundaryEvent(
         position=context.position,
         features=features,
         total_score=total,
-        is_boundary=total >= DEFAULT_THRESHOLD,
+        is_boundary=total >= threshold,
     )

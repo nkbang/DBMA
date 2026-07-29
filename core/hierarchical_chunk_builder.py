@@ -169,6 +169,10 @@ def build_chunks(
     registry = get_registry()
     safety_cap = int(chunk_size * SAFETY_CAP_RATIO)
 
+    # [Task Order 016 Phase 1] Profile A/B 분류 — 버퍼에 Profile B 동적
+    # 임계값을 적용하기 위해 candidates를 받은 후 바로 1회 분류한다.
+    document_profile = classify_document_profile(candidates)
+
     buf: List[str] = []
     buf_start: int = 0
     buf_len = 0
@@ -205,8 +209,11 @@ def build_chunks(
             # 버퍼의 마지막 후보. 버퍼가 비어 있으면(문서/청크 시작
             # 직후) 빈 문자열, feature는 0.0으로 폴백한다.
             previous_candidate_text=buf[-1] if buf else "",
+            # [Task Order 016 Phase 1] Profile A/B 분류 결과 —
+            # EmbeddingSimilarityBoundaryFeature가 동적 임계값에 사용
+            document_profile=document_profile,
         )
-        event = score_boundary(ctx, registry=registry)
+        event = score_boundary(ctx, registry=registry, document_profile=document_profile)
 
         if _heading_feature.score(ctx) > 0:
             key = _normalize_for_matching(text)

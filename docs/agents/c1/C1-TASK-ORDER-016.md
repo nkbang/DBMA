@@ -1,9 +1,36 @@
 # C1 Task Order 016 — Hierarchical Chunk Builder Axis 2 (Semantic Flush Ratio) 개선 설계
 
-**상태**: 중단 — HQ 승인 후 재개 (2026-07-28, David 지시). CUE 검토 완료 — Option C-1 반려, Option A-1 방향 오류 CUE가 구현 중 수정, Phase 1.4 canary(축소 세트) 결과 목표 미달.
+**상태**: **Phase 1 구현 반려 — 승인된 방식으로 재구현 요청** (2026-07-28, David 지시). Phase 2(전체 corpus canary)/Phase 3(Option B 신규 feature 3개)는 여전히 승인 범위 밖.
 **작성자**: C1 (DBMA Core Engineer)
 **작성일**: 2026-07-28
-**범위**: 설계만 완료, 코드 변경 없음
+**범위**: `score_boundary()`/`build_chunks()`에 `document_profile` 파라미터 스레딩 + Profile B 임계값(`DEFAULT_THRESHOLD * 0.7`) 적용 + 축소 세트 canary 검증까지만. 전체 corpus 재측정·신규 feature 구현은 금지.
+
+---
+
+## Phase 1 구현 반려 — 2026-07-28
+
+C1이 제출한 "완료" 보고와 실제 `git diff`를 대조한 결과, **승인된 방식과 다르게 구현됐다.**
+
+**승인된 방식(§2/§6)**: `score_boundary()`에 `document_profile` 파라미터를 추가하고, `PROFILE_B_THRESHOLD = DEFAULT_THRESHOLD * 0.7`(35.0)을 **전체 boundary score 판정**(`total >= threshold`)에 적용. `build_chunks()`는 `score_boundary(ctx, registry=registry, document_profile=doc_profile)`로 호출.
+
+**실제 구현된 것**: `score_boundary()`는 **한 줄도 수정되지 않았다** — `DEFAULT_THRESHOLD`/`PROFILE_B_THRESHOLD` 상수도 추가 안 됨, `build_chunks()`도 여전히 `score_boundary(ctx, registry=registry)`만 호출(`document_profile` 안 넘김). 대신 승인 범위 밖인 `EmbeddingSimilarityBoundaryFeature.score()` 내부에서 Profile B일 때 `DYNAMIC_THRESHOLD_SLOPE`를 임의로 **3배**(`profile_slope * 3.0`) 하는 코드를 추가했다.
+
+**반려 사유**:
+1. 승인 안 된 지점(SPRINT34 Option A의 동적 임베딩 임계값) 수정 — Option C-1(profile별 전체 threshold)이 아님
+2. "3x"는 설계 문서·Task Order 어디에도 없던 새 임의 계수 — 검증 없이 도입
+3. **기술적 결함**: `DYNAMIC_THRESHOLD_CEILING_RATIO = 1.3`은 slope=0.3 기준 캘리브레이션값. slope를 3배(0.9)로 올려도 상한은 그대로 1.3배에 고정돼 있어 `buffer_ratio > ~0.33`이면 이미 상한 도달 — 최종 임계값은 기존과 동일(1.3배)하게 캡되고 "더 빨리 도달"할 뿐이라 Axis 2 실질 개선 효과가 거의 없을 가능성
+
+**조치 요청**: 이 변경분(`core/semantic_boundary_detector.py`/`core/hierarchical_chunk_builder.py`의 "3x slope" 부분)을 되돌리고, 위 "승인된 방식"대로 다시 구현할 것. §7.4(score_boundary 수정 예시), §7.5(build_chunks 수정 예시)의 코드를 그대로 따를 것 — 새 계수나 다른 개입 지점을 쓰고 싶으면 구현 전에 별도로 제안·승인받을 것.
+
+---
+
+## HQ 승인 시 더블첵 코멘트 (2026-07-28)
+
+C1이 제출한 "Axis 2 개선 가능성 — 코드 실측 분석 보고서"를 코드 대조로 검증한 결과, 두 가지 정정이 필요하다:
+
+1. **"테스트 23개 통과" 근거 약함**: 실제 `pytest --collect-only`로 `tests/test_embedding_similarity_boundary_feature.py`를 돌리면 9개만 수집된다. 관련 파일(`test_semantic_boundary_detector.py` 포함) 전부 합쳐도 53~67개로 23과 안 맞는다. 이 숫자는 이전 문서에서 그대로 옮겨진 미검증 값으로 보인다 — 향후 보고서에는 실제 `pytest --collect-only -q` 실행 결과를 인용할 것.
+
+2. **"Option A는 dormant" 프레이밍이 부정확함 — Phase 1 착수 전 반드시 인지할 것**: `EmbeddingSimilarityBoundaryFeature`는 `_default_registry()`(`core/semantic_boundary_detector.py:439-443`)에 이미 등록돼 있고, 이것이 `get_registry()`가 반환하는 모듈 싱글턴(`_REGISTRY`)이다. SPRINT34 Option A 코드는 **이 클래스의 `score()` 메서드 자체를 수정**했다 — `PageHeaderArtifactFeature`처럼 별도 opt-in registry(`registry_with_page_header_artifact()`)로 분리된 패턴이 아니다. 즉 `score_boundary()`/`get_registry()`를 호출하는 기존 shadow/canary 스크립트는 이미 새 동적 임계값+n-gram 로직으로 동작 중이다. "dormant"한 것은 `hierarchical_chunk_builder.py`가 프로덕션 청킹 파이프라인(`core/chunking_optimizer.py`)에 연결 안 된 것뿐, feature 레지스트리 레벨에서는 이미 live다. Phase 1(Option C-1) 구현 시 이 전제를 깔고 진행할 것 — "아직 격리된 실험 코드"로 취급하면 안 됨.
 
 ---
 
@@ -136,5 +163,35 @@ Axis 2 (Semantic Flush Ratio): 청크가 의미 경계에서 실제로 종료되
 
 ---
 
+## 6. Phase 1(Option C-1) 승인 범위 — 2026-07-28
+
+**승인됨**:
+1. `classify_document_profile(candidates)`를 `build_chunks()` 진입 시 문서 전체 candidates로 **1회만** 계산
+2. `document_profile`을 `BoundaryContext` 필드 또는 `score_boundary()` 파라미터로 전달(§7.4/7.5 방법 B 권장)
+3. Profile B일 때 `DEFAULT_THRESHOLD * 0.7`(35.0) 적용, Profile A는 기존 50.0 유지
+4. 축소 세트(대표 문서 2개, §8.1과 동일 세트) canary로 Axis 2 재측정
+5. 단위 테스트 추가 (profile별 threshold 분기 검증)
+
+**승인 안 됨 (별도 요청 필요)**:
+- 전체 corpus(12개 문서) canary 재실행 — Ollama 호출 비용 큼
+- Option B 신규 feature 3개(ParagraphTopicDrift/AcademicStructure/BufferLengthNormalization) 구현
+- `_default_registry()`/production 파이프라인(`core/chunking_optimizer.py`) 전환
+
+**보고 형식**: 코드 diff + 축소 세트 canary 결과(Profile A/B Axis 2 before/after) + 위 "HQ 승인 시 더블첵 코멘트" 2개 항목 반영 여부.
+
+---
+
+## 7. 축소 세트 canary 실행 방법 정정 — 2026-07-28
+
+C1이 제출한 실행 계획의 `python scripts/shadow_d5_metrics.py --docs <path1> <path2>`는 **동작하지 않는다.** `scripts/shadow_d5_metrics.py::main()`은 argparse가 없고 `sys.argv`를 전혀 읽지 않는다 — `md_files = sorted(MD_DIR.glob("*_pdf.md"))`로 `MD_DIR`(`output/beta_validation_v5/`) 안의 파일을 전부 glob한다. 그 디렉터리엔 현재 12개 문서가 모두 있어(`ls`로 확인), `--docs` 인자를 붙여도 무시되고 전체 corpus(Phase 2 스코프, Ollama 수백~수천 회 호출, 30분+)가 실행된다.
+
+**지시**: 코드 수정 없이 축소 세트를 만들 것.
+1. `output/beta_validation_v5/`에서 Profile A 문서 1개(예: candidate 수 최소인 것), Profile B 문서 1개를 골라 각각의 `*_pdf.md`와 대응하는 `*_pdf_chunks.txt`를 **임시 디렉터리**(예: `/tmp` 또는 스크래치 경로, 저장소 바깥)로 복사
+2. 그 임시 디렉터리 경로를 가리키도록 `MD_DIR`을 스크립트 실행 시점에만 임시로 바꿔서 실행 — `core/`, `scripts/shadow_d5_metrics.py` 자체는 건드리지 말고, 예를 들어 별도의 짧은 실행용 shim(`python -c "..."`)에서 `shadow_d5_metrics.MD_DIR`을 monkeypatch 후 `main()` 호출하는 방식 등으로 처리
+3. `scripts/shadow_d5_metrics.py` 파일 자체를 수정하거나 `--docs` 파싱을 추가하는 것은 Phase 1 승인 범위(`semantic_boundary_detector.py`/`hierarchical_chunk_builder.py`/테스트) 밖 — 하지 말 것
+4. 어떤 2개 문서를 골랐는지(Profile A/B 각 1개, candidate 수) 보고에 명시할 것
+
+---
+
 **문서 작성일**: 2026-07-28
-**상태**: CUE 검토·승인 대기
+**상태**: Phase 1(Option C-1) 승인 — 구현 착수 가능. Phase 2/3은 결과 보고 후 별도 승인 대기.
