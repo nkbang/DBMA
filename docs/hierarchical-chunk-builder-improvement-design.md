@@ -1,9 +1,9 @@
 # Hierarchical Chunk Builder — Axis 2 (Semantic Flush Ratio) 개선 설계
 
-**상태**: Option A 구현 완료(dormant, 미등록) — §8.1 목표 미달. **Option C-1(profile별 정적 threshold)은 구현→canary 실측→반증→되돌림까지 완료(2026-07-28), §11 참고.** Option B는 보류 유지.
+**상태**: Option A 구현 완료(dormant, 미등록) — §8.1 목표 미달. Option C-1(profile별 정적 threshold)은 구현→canary 실측→반증→되돌림까지 완료(2026-07-28, §11). **Option B는 코드 작성 전 사전 검토에서 재설계 요청(2026-07-29, §12) — B-3 제외/B-2 재설계/B-1 검증 필요.**
 **작성자**: C1 (DBMA Core Engineer)
-**승인 상태**: CUE 검토 완료 — Option A 승인(방향 오류 CUE가 구현 중 수정, 계수는 §8.1 실측상 부족 확인), Option C-1은 실측으로 반증되어 되돌림(§11), Option B 보류
-**문서 버전**: v1.4 (Option C-1 실측·반증·되돌림 기록 추가)
+**승인 상태**: CUE 검토 완료 — Option A 승인(방향 오류 CUE가 구현 중 수정, 계수는 §8.1 실측상 부족 확인), Option C-1은 실측으로 반증되어 되돌림(§11), Option B는 재설계 요청(§12)
+**문서 버전**: v1.5 (Option B 사전 검토 — 코드 작성 전 재설계 요청 추가)
 
 ---
 
@@ -664,6 +664,32 @@ Task Order 016에서 Option C-1(§7 방법 B: `score_boundary()`에 `document_pr
 
 ---
 
-**문서 작성일**: 2026-07-28
-**문서 버전**: v1.4 (Option C-1 실측·반증·되돌림 기록 추가)
-**상태**: Option A dormant/미달, Option C-1 기각·되돌림 완료(커밋 `ddea706`), Option B 보류 — Task Order 016은 여기서 종료, 후속 방향은 별도 제안 필요
+## 12. Option B 사전 검토 — 코드 작성 전 반려/재설계 요청 (2026-07-29)
+
+Option C-1 종료 후 Option B(§3 B-1/B-2/B-3) 구현을 검토했다. **코드 작성 전** 세 feature 각각을 점검한 결과, B-2/B-3에서 Option C-1과 같은 종류의 문제(Profile B의 장르적 특성 자체가 신호로 오인되는 것, 지표 정의의 순환성)가 재발할 위험이 확인됐다.
+
+**실측 — B-2 AcademicStructureFeature 베이스레이트** (§3 B-2 정규식 패턴을 §9의 두 문서 candidate에 그대로 적용, 구현 없이 패턴 매칭만 재현):
+
+| 문서 | 매칭 candidate 비율 |
+|---|---|
+| Profile A (12. 고린도후서) | 0.0% |
+| Profile B (2 Kings Anchor Bible Commentary) | **42.7%** (404/947) |
+
+Profile B를 정의하는 바로 그 특성(성경 구절 인용·cf. 참조 밀도)이 이 feature의 발화 조건과 겹친다 — Option C-1에서 "40점 평원" 후보들에 이 정도 베이스레이트(+25 weight)가 더해지면 다수가 threshold(50)를 넘어서는 유사한 과다-트리거 위험이 있다. 또한 기존 `ScriptureReferenceBoundaryFeature`(+30, 이미 registry 등록)와 목적이 겹쳐 사실상 유사 기능 중복.
+
+**코드 검토(실행 없이 정적 분석)**:
+- **B-1 ParagraphTopicDriftFeature**: `previous_candidate_text[:200]` vs 현재 candidate의 마지막 줄 1개만 비교 — 기존 `EmbeddingSimilarityBoundaryFeature`와 개념적으로 겹쳐 독립 신호인지 불분명. `1.0 - similarity` 연속값을 반환해 다른 feature 대부분의 "신호 없음=0.0" 이진 계약과 다르게 항상 어느 정도 기여함 — weight(+40) 곱해진 실제 영향을 예측하기 어려움. `last_line` 하나가 페이지 아티팩트일 경우 노이즈 취약.
+- **B-3 BufferLengthNormalizationFeature**: **가장 심각** — 순수 `accumulated_length`만으로 신호를 낸다. 이 feature가 registry에 들어가면 Axis 2("flush 지점이 score_boundary()의 boundary 판정과 일치하는가")의 정의 자체에 "버퍼가 다 찼다"가 포함돼버려, 원래는 순수 safety-cap flush였을 것을 "semantic"으로 자동 인정하는 **순환 논리**가 된다 — 실제 청킹 품질 개선과 무관하게 지표만 부풀어 오른다.
+- **가중치**(+40/+25/+15): Option A/C-1과 동일하게 근거 없는 임의값.
+
+**지시(C1에 전달, 코드 작성 전 재설계 요청)**:
+1. B-3(BufferLengthNormalizationFeature)은 방법론적으로 순환적이므로 **제외**
+2. B-2(AcademicStructureFeature)는 가중치를 대폭 낮추거나, 기존 `ScriptureReferenceBoundaryFeature`와 통합하는 방향으로 재설계 — 42.7% 베이스레이트를 고려해 조정
+3. B-1(ParagraphTopicDriftFeature)은 코드 구현 전에 Ollama 호출 없이(또는 최소 호출로) `EmbeddingSimilarityBoundaryFeature`와의 상관관계부터 확인해, 독립적인 신호인지 검증
+4. 이 순서(제외 → 재설계 → 검증)로 다시 설계 문서를 제출한 뒤에만 코드 구현 승인을 요청할 것 — 지금 이 설계 그대로 구현 착수는 승인하지 않는다.
+
+---
+
+**문서 작성일**: 2026-07-29
+**문서 버전**: v1.5 (Option B 사전 검토 — 코드 작성 전 재설계 요청 추가)
+**상태**: Option A dormant/미달, Option C-1 기각·되돌림 완료(커밋 `ddea706`), Option B는 재설계 요청 상태(B-3 제외/B-2 재설계/B-1 검증 필요) — 재설계본 제출 전까지 구현 승인 보류
