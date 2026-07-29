@@ -64,6 +64,20 @@ Path/structure documentation rule:
   fill the gap. A documentation task fails if any stated fact cannot be
   traced to a tool call in this session.
 
+Brand freeze rule (FROZEN — see docs/governance/DBMA-BRAND-GOV-001.md):
+- The product's user-facing brand is frozen: Korean "내서재", English "NAE"
+  (always uppercase). "DBMA" remains the internal engineering/project
+  identifier only — it is NOT deprecated and must not be renamed.
+- Never rename DBMA to NAE in code, repo, package names, `dbma_ui.py`,
+  `core/`, config keys, database paths, or Git history — brand naming and
+  code identifiers are separate concerns.
+- Never invent derivative brand names (NAE AI, NAE Ministry, Nae, nae,
+  N.A.E., etc.) or state an official expansion of the NAE acronym — it is
+  not yet finalized.
+- If a task asks to "rename" or "update branding," do not interpret this
+  as changing the already-frozen 내서재/NAE names. If a brand change seems
+  needed, report it instead of applying it.
+
 Diagnosis rule:
 - When explaining WHY a bug happens, you must trace the actual code path
   (or actual data) that causes it before stating a cause as fact. Reading
