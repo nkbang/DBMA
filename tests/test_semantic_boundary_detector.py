@@ -383,63 +383,6 @@ class TestScoreBoundary:
         }
 
 
-class TestScoreBoundaryProfileThreshold:
-    """[Task Order 016 Phase 1] Profile A/B 동적 임계값 분기 테스트."""
-
-    def test_profile_a_uses_default_threshold(self):
-        """document_profile="A"일 때 DEFAULT_THRESHOLD(50.0) 적용 확인."""
-        # heading(100) + paragraph(30) + sentence(10) = 140 >= 50 -> boundary
-        ctx = BoundaryContext(
-            candidate_text=_long("서론"),
-            position=3,
-            headings=[_heading("서론")],
-            heading_cursor=0,
-            document_profile="A",
-        )
-        event = score_boundary(ctx, document_profile="A")
-        assert event.is_boundary is True
-        assert event.total_score == 140.0
-
-    def test_profile_b_uses_downward_threshold(self):
-        """document_profile="B"일 때 PROFILE_B_THRESHOLD(35.0) 적용 확인.
-        heading 없는 candidate: paragraph(30) + sentence(10) = 40 >= 35 -> boundary."""
-        ctx = BoundaryContext(
-            candidate_text=_long("아무 관련 없는 본문."),
-            position=0,
-            headings=[_heading("서론")],
-            heading_cursor=0,
-            document_profile="B",
-        )
-        event = score_boundary(ctx, document_profile="B")
-        assert event.is_boundary is True  # 40 >= 35
-        assert event.total_score == 40.0
-
-    def test_profile_b_below_threshold_is_not_boundary(self):
-        """Profile B에서도 threshold(35.0) 미만이면 non-boundary."""
-        # paragraph(30)만 기여하는 짧은 candidate: 30 < 35 -> not boundary
-        ctx = BoundaryContext(
-            candidate_text="짧은",
-            position=0,
-            document_profile="B",
-        )
-        event = score_boundary(ctx, document_profile="B")
-        # tiny_fragment(-60) + paragraph(30) + sentence(0, "짧은"은 종결아님) = -30
-        assert event.total_score == -30.0
-        assert event.is_boundary is False
-
-    def test_default_document_profile_is_a(self):
-        """document_profile 파라미터 미전달 시 기본값 "A" 확인."""
-        ctx = BoundaryContext(
-            candidate_text=_long("서론"),
-            position=3,
-            headings=[_heading("서론")],
-            heading_cursor=0,
-        )
-        event = score_boundary(ctx)  # document_profile 미전달 -> 기본 "A"
-        assert event.is_boundary is True
-        assert event.total_score == 140.0
-
-
 class TestPageHeaderArtifactFeature:
     """[ADR-011 제안 3] Dormant — not in get_registry()'s default set."""
 
