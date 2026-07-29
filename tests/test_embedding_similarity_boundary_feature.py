@@ -84,6 +84,50 @@ def test_default_embed_fn_uses_production_get_embedder_not_legacy_embed():
     assert feature._embed_fn == _embedder.embed
 
 
+def test_dynamic_threshold_raises_as_buffer_fills():
+    """[SPRINT34 Option A-1] score()는 similarity < threshold일 때
+    boundary(1.0)를 내므로, 버퍼가 safety_cap에 가까울수록 threshold를
+    올려야 Profile B에서 boundary가 더 잡힌다 — 정적 threshold(0.5)로는
+    안 잡히던 combined(~0.55)가 버퍼가 다 찬 상태(threshold 0.65)에서는
+    잡혀야 한다."""
+    # cosine([1,0], [0.7857, 0.6186]) ~= 0.7857 -> combined = 0.7*0.7857 ~= 0.55
+    embed_fn = _fixed_embed({"이전": [1.0, 0.0], "다음": [0.7857, 0.6186]})
+    feature = EmbeddingSimilarityBoundaryFeature(embed_fn=embed_fn, drop_threshold=0.5)
+
+    ctx_empty_buffer = BoundaryContext(
+        candidate_text="다음", position=1, previous_candidate_text="이전",
+        accumulated_length=0, chunk_size=1000,
+    )
+    ctx_full_buffer = BoundaryContext(
+        candidate_text="다음", position=1, previous_candidate_text="이전",
+        accumulated_length=1500, chunk_size=1000,  # buffer_ratio == 1.0
+    )
+    assert feature.score(ctx_empty_buffer) == 0.0  # 0.55 >= 0.5 (static threshold)
+    assert feature.score(ctx_full_buffer) == 1.0  # 0.55 < 0.5*1.3=0.65 (raised threshold)
+
+
+def test_dynamic_threshold_ceiling_ratio_caps_raising():
+    """buffer_ratio가 1.0을 넘어도 threshold는 base * CEILING_RATIO(1.3)
+    위로 올라가지 않아야 한다."""
+    embed_fn = _fixed_embed({"이전": [1.0, 0.0], "다음": [0.99, 0.141]})  # cosine ~= 0.99
+    feature = EmbeddingSimilarityBoundaryFeature(embed_fn=embed_fn, drop_threshold=0.5)
+    ctx = BoundaryContext(
+        candidate_text="다음", position=1, previous_candidate_text="이전",
+        accumulated_length=10_000, chunk_size=1000,
+    )
+    # combined ~= 0.99*0.7 = 0.693 >= ceiling(0.5*1.3=0.65) -> 여전히 신호 없음
+    assert feature.score(ctx) == 0.0
+
+
+def test_zero_chunk_size_falls_back_to_static_threshold():
+    """chunk_size 미설정(0, 기존 호출부 포함)이면 buffer_ratio=0 — 정적
+    threshold와 동일하게 동작해야 한다 (하위 호환)."""
+    embed_fn = _fixed_embed({"이전 문단": [1.0, 0.0], "비슷한 문단": [0.99, 0.01]})
+    feature = EmbeddingSimilarityBoundaryFeature(embed_fn=embed_fn, drop_threshold=0.5)
+    ctx = _ctx("비슷한 문단", previous_candidate_text="이전 문단")
+    assert feature.score(ctx) == 0.0
+
+
 if __name__ == "__main__":
     import pytest
     pytest.main([__file__, "-v"])

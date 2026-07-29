@@ -60,6 +60,10 @@ from typing import Callable, Dict, List, Optional, Protocol, runtime_checkable
 
 from core.config import (
     DEFAULT_MIN_CHUNK_SIZE,
+    DYNAMIC_THRESHOLD_CEILING_RATIO,
+    DYNAMIC_THRESHOLD_SLOPE,
+    EMBEDDING_NGRAM_ALPHA,
+    EMBEDDING_NGRAM_SIZE,
     EMBEDDING_SIMILARITY_DROP_THRESHOLD,
     EMBEDDING_SIMILARITY_WEIGHT,
     PAGE_HEADER_ARTIFACT_WEIGHT,
@@ -98,6 +102,20 @@ def _cosine_similarity(a, b) -> float:
     if norm_a == 0 or norm_b == 0:
         return 0.0
     return float(np.dot(a, b) / (norm_a * norm_b))
+
+
+def _ngram_overlap(s1: str, s2: str, n: int = EMBEDDING_NGRAM_SIZE) -> float:
+    """[SPRINT34 Option A-2] 문자 n-gram 중복률(Jaccard 유사, min-length로
+    정규화) — 임베딩이 저신호인 긴 문단에서도 표층 반복/유사 문구를 보완
+    신호로 잡는다. 둘 중 하나가 n자 미만이면 n-gram이 없어 0.0(신호
+    없음)으로 폴백."""
+    def _ngrams(s: str) -> set:
+        return {s[i : i + n] for i in range(len(s) - n + 1)}
+
+    ng1, ng2 = _ngrams(s1), _ngrams(s2)
+    if not ng1 or not ng2:
+        return 0.0
+    return len(ng1 & ng2) / min(len(ng1), len(ng2))
 
 # Same QueryParser instance role as core.tsu_builder._reference_parser —
 # a stateless parser, safe to share across scoring calls.
@@ -309,7 +327,31 @@ class EmbeddingSimilarityBoundaryFeature:
     previous_candidate_text가 없거나(문서/버퍼 시작) 임베딩 호출이
     실패하면 신호 없음(0.0)으로 안전하게 폴백한다 — Ollama 장애 한 번이
     전체 Boundary Score 계산을 막지 않도록(다른 feature와 동일한 "raw
-    signal 0.0=없음" 계약 유지)."""
+    signal 0.0=없음" 계약 유지).
+
+    [SPRINT34 Option A, hierarchical-chunk-builder-improvement-design.md
+    §3 Option A] Profile B(heading 드문 학술 주석서)의 긴 문단에서는 인접
+    candidate 임베딩 유사도가 자연히 높아 정적 drop_threshold로는 신호가
+    거의 안 남는다. 두 가지를 추가:
+      - 동적 임계값: score()는 similarity < threshold일 때 boundary(1.0)를
+        내므로, threshold가 높을수록 더 많은 candidate가 boundary로
+        잡힌다. 버퍼(accumulated_length)가 safety_cap(chunk_size *
+        _SAFETY_CAP_RATIO)에 가까워질수록 drop_threshold를 최대
+        DYNAMIC_THRESHOLD_SLOPE 비율만큼 "올려" Profile B에서 boundary가
+        더 잡히게 한다(설계 문서 초안의 하향 공식은 반대 효과를 내는
+        오류였음 — 구현 시 방향 수정, 2026-07-28).
+        DYNAMIC_THRESHOLD_CEILING_RATIO 상한으로 과도한 상향을 막는다.
+        chunk_size가 0이면(테스트 등 미설정) buffer_ratio=0 — 기존 정적
+        동작과 동일.
+      - n-gram 결합: 임베딩 유사도와 문자 n-gram 중복률을
+        EMBEDDING_NGRAM_ALPHA 비율로 섞어 임베딩 단독보다 표층 반복에도
+        반응하게 한다.
+    계수(slope/alpha)는 미검증 — Phase 1.4 canary로 확정 전까지 잠정값
+    (design doc §8)."""
+
+    # hierarchical_chunk_builder.SAFETY_CAP_RATIO와 동일한 값 — 그 모듈이
+    # 이 모듈을 import하므로(순환 import 회피) 값만 미러링, import는 안 함.
+    _SAFETY_CAP_RATIO = 1.5
 
     def __init__(self, embed_fn=None, drop_threshold: float = EMBEDDING_SIMILARITY_DROP_THRESHOLD):
         self._embed_fn = embed_fn or _embedder.embed
@@ -326,7 +368,20 @@ class EmbeddingSimilarityBoundaryFeature:
         except Exception:
             return 0.0
         similarity = _cosine_similarity(v_prev, v_curr)
-        return 1.0 if similarity < self._drop_threshold else 0.0
+        combined = (
+            EMBEDDING_NGRAM_ALPHA * similarity
+            + (1.0 - EMBEDDING_NGRAM_ALPHA) * _ngram_overlap(prev, curr)
+        )
+
+        safety_cap = context.chunk_size * self._SAFETY_CAP_RATIO
+        buffer_ratio = context.accumulated_length / safety_cap if safety_cap > 0 else 0.0
+        buffer_ratio = min(1.0, buffer_ratio)
+        dynamic_threshold = self._drop_threshold * (1.0 + buffer_ratio * DYNAMIC_THRESHOLD_SLOPE)
+        dynamic_threshold = min(
+            self._drop_threshold * DYNAMIC_THRESHOLD_CEILING_RATIO, dynamic_threshold
+        )
+
+        return 1.0 if combined < dynamic_threshold else 0.0
 
 
 class PageHeaderArtifactFeature:

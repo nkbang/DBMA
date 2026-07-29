@@ -156,6 +156,28 @@ SCRIPTURE_REFERENCE_WEIGHT = 15.0
 EMBEDDING_SIMILARITY_DROP_THRESHOLD = 0.41
 EMBEDDING_SIMILARITY_WEIGHT = 40.0
 
+# [SPRINT34 Option A, 2026-07-28, hierarchical-chunk-builder-improvement-
+# design.md §3 Option A] Profile B(학술 주석서, heading 드묾)의 Axis 2
+# (semantic flush ratio) 23.9%가 임계값 25% 미달 — 긴 문단에서 인접
+# candidate 임베딩 유사도가 자연히 높아 EMBEDDING_SIMILARITY_DROP_THRESHOLD
+# 신호가 거의 안 남는 문제 대응.
+# [주의 — 방향 수정, 2026-07-28] score()는 similarity < threshold일 때
+# boundary(1.0)를 낸다 — threshold가 높을수록 더 많은 유사도 값이 걸려
+# boundary가 더 "관대하게" 잡힌다. 따라서 버퍼가 safety_cap에
+# 가까워질수록 threshold를 DYNAMIC_THRESHOLD_SLOPE 비율만큼 "올려야"
+# Profile B에서 boundary를 더 잡는다는 목표에 맞다(설계 문서 초안은 반대
+# 방향(하향)으로 적혀 있었으나 그러면 버퍼가 찰수록 오히려 boundary가 덜
+# 잡히는 반대 효과가 나 구현 시 수정함). 상한(DYNAMIC_THRESHOLD_CEILING_
+# RATIO)으로 과도한 상향을 방지. 계수는 미검증 — Phase 1.4
+# canary(scripts/shadow_boundary_delta.py)로 확정 전까지 잠정값.
+DYNAMIC_THRESHOLD_SLOPE = 0.3
+DYNAMIC_THRESHOLD_CEILING_RATIO = 1.0 + DYNAMIC_THRESHOLD_SLOPE
+
+# n-gram(문자 3-gram) 중복률을 임베딩 유사도와 결합 — 임베딩 실패/저신호
+# 상황에서도 표층 반복 여부로 보완 신호를 낸다. alpha는 임베딩 비중.
+EMBEDDING_NGRAM_ALPHA = 0.7
+EMBEDDING_NGRAM_SIZE = 3
+
 # [ADR-011 제안 3, 2026-07-23] PageHeaderArtifactFeature — 문서 전체에
 # 걸쳐 반복되는 running header(페이지 번호만 바뀌는 동일 텍스트)가
 # "새로운 semantic 신호"처럼 잘못 인식돼 Axis 3(unsplittable outlier)를
