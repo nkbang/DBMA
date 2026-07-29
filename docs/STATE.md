@@ -179,8 +179,11 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
 - **[2026-07-27 신규]** DBMA-SEQ(ADR-012) `sermon_judge.py`
   groundedness 첫 실측 — `scripts/run_sermon_eval.py` 신설, 실제
   경로로 3건 실행 결과 평균 5.00/5(전부 만점, 판별력 확인 필요).
-  골든셋 라벨링 담당/일정은 여전히 미결정(ADR-012 Next Steps §2).
   상세: `docs/DBMA-SEQ-Phase1-Groundedness-Baseline-2026-07-27.md`
+- **[2026-07-27 결정]** 골든셋 라벨링 담당/일정 확정 — 담당: David
+  본인 직접 채점. 일정: 2026-08-02(이번 주)까지 ADR-010(RAG)과
+  ADR-012(설교, DBMA-SEQ) 골든셋을 3건→5~10건으로 **동시 확장**.
+  (ADR-010 §1, ADR-012 Next Steps §2 관련)
 
 ---
 
