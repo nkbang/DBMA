@@ -1,9 +1,9 @@
 # Hierarchical Chunk Builder — Axis 2 (Semantic Flush Ratio) 개선 설계
 
-**상태**: Option A 구현 완료(dormant, 미등록) — §8.1 목표 미달. Option C-1(profile별 정적 threshold)은 구현→canary 실측→반증→되돌림까지 완료(2026-07-28, §11). **Option B는 코드 작성 전 사전 검토에서 재설계 요청(2026-07-29, §12) — B-3 제외/B-2 재설계/B-1 검증 필요.**
+**상태**: **A/B/C-1 전부 검토 종료 — 코드 구현으로 이어진 건 없음(Option A는 dormant 등록만, C-1은 구현 후 되돌림).** Option A 구현(dormant) §8.1 목표 미달. Option C-1 구현→canary 실측→반증→되돌림 완료(2026-07-28, §11). **Option B는 B-1/B-2 실측까지 마쳤으나 둘 다 기각, 종료(2026-07-29, §14).**
 **작성자**: C1 (DBMA Core Engineer)
-**승인 상태**: CUE 검토 완료 — Option A 승인(방향 오류 CUE가 구현 중 수정, 계수는 §8.1 실측상 부족 확인), Option C-1은 실측으로 반증되어 되돌림(§11), Option B는 재설계 요청(§12)
-**문서 버전**: v1.5 (Option B 사전 검토 — 코드 작성 전 재설계 요청 추가)
+**승인 상태**: CUE 검토 완료 — Option A 승인(방향 오류 CUE가 구현 중 수정, 계수는 §8.1 실측상 부족 확인), Option C-1은 실측으로 반증되어 되돌림(§11), Option B는 실측 후 기각·종료(§14)
+**문서 버전**: v1.8 (Option B 최종 실측 결과 — B-1/B-2 기각, Option B 종료)
 
 ---
 
@@ -215,7 +215,9 @@ def score(self, context: BoundaryContext) -> float:
 
 ### Option B: Profile B 전용 feature 추가 (P2)
 
-#### B-1. ParagraphTopicDriftFeature
+#### B-1. ParagraphTopicDriftFeature — [§13 지침 3-4: 검증 필요]
+
+> **지시**: `EmbeddingSimilarityBoundaryFeature`와의 상관관계 검증 필수. 완전히 Ollama 호출 없이는 불가능 — §9의 두 대표 문서(783+947 candidates) 중 **각 100개 candidate 표본**으로만 제한해 비용 최소화.
 
 ```python
 class ParagraphTopicDriftFeature:
@@ -242,18 +244,25 @@ class ParagraphTopicDriftFeature:
         return 1.0 - similarity
 ```
 
-#### B-2. AcademicStructureFeature
+**가중치**: **미정 — §13 지침 4에 따라 EmbeddingSimilarityBoundaryFeature와의 상관관계 검증 후 결정**
+
+**검증 계획 (§13 지침 3-4)**:
+- §9의 두 문서(고린도후서 / 2 Kings Anchor Bible Commentary)에서 각 100개 candidate 표본 추출
+- `EmbeddingSimilarityBoundaryFeature`의 0/1 신호와 B-1의 `1.0-similarity(prev[:200], last_line)` 연속값을 같이 계산
+- **상관관계 70%+** → B-1은 기존 feature 변형이므로 **드롭**
+- **상관관계 70% 미만** → 독립 신호로 인정, 표본에서 나온 실제 발화 빈도를 근거로 가중치 제안
+
+#### B-2. AcademicStructureFeature — [§13 지침 1: head-window 축소 필요]
+
+> **지시**: `context.candidate_text` 전체 스캔 → `context.candidate_text.strip()[:SCRIPTURE_REFERENCE_HEAD_WINDOW]`(50자)로 범위 축소. 기존 `ScriptureReferenceBoundaryFeature`와 중복 여부 확인 — "cf. also"/"comment on Romans 3:14" 같은 **REF가 아닌 서술형 패턴**만 남으면 신규 feature 의미 있음. 베이스레이트 재측정(0%에 가까운 게 정상).
 
 ```python
 class AcademicStructureFeature:
-    """학술 주석서의 구조적 신호 감지."""
+    """학술 주석서의 구조적 신호 감지 — head-window 제한 적용."""
     
-    # 학술 commentary에서 자주 보이는 패턴
+    # REF가 아닌 서술형 패턴만 포함 (기존 ScriptureReferenceBoundaryFeature와 중복 제거)
     _PATTERNS = [
-        r"verse\s+\d+[:\.]\s*\d+",           # "verse 3:14"
         r"cf\.\s+.*(?:also|see)",             # "cf. also..."
-        r"(?:cf\.|cfr\.)\s+\w+",              # "cf. X"
-        r"\([^)]*?:\s*\d+[:\.]\s*\d+[^\)]*\)",  # "(고전 3:14 참고)"
         r"comment.*on\s+\w+\s+\d+[:\.]\s*\d+",  # "comment on Romans 3:14"
     ]
     
@@ -261,34 +270,27 @@ class AcademicStructureFeature:
         self._compiled = [re.compile(p, re.IGNORECASE) for p in self._PATTERNS]
     
     def score(self, context: BoundaryContext) -> float:
+        # head-window만 검사 (기존 ScriptureReferenceBoundaryFeature와 동일한 50자)
+        head = context.candidate_text.strip()[:50]
         for pattern in self._compiled:
-            if pattern.search(context.candidate_text):
+            if pattern.search(head):
                 return 1.0
         return 0.0
 ```
 
-#### B-3. BufferLengthNormalizationFeature
+**가중치**: **미정 — head-window 축소 후 §9의 두 문서로 베이스레이트 재측정 후 결정**
 
-```python
-class BufferLengthNormalizationFeature:
-    """버퍼가 chunk_size의 80% 이상 도달 시 점진적 신호 증가."""
-    
-    def score(self, context: BoundaryContext) -> float:
-        if context.chunk_size <= 0:
-            return 0.0
-        ratio = context.accumulated_length / (context.chunk_size * 0.8)
-        return min(1.0, max(0.0, ratio - 0.5))  # 50% 도달 시 신호 시작, 80%에서 1.0
-```
+**검증 계획 (§13 지침 1)**:
+- head-window 축소 후 §9의 두 문서로 베이스레이트 재측정 (0%에 가까운 게 정상)
+- "cf. also"/"comment on Romans 3:14" 같은 서술형 패턴이 실제로 남는지 확인
+- 대부분 기존 feature와 겹친다면 신규 feature를 만들지 말고 기존 feature에 패턴만 추가
 
-**가중치 제안**:
-| Feature | 제안 Weight | 이유 |
-|---------|------------|------|
-| ParagraphTopicDriftFeature | +40 | 주제 전환 직접 측정 |
-| AcademicStructureFeature | +25 | 학술 구조 신호 |
-| BufferLengthNormalizationFeature | +15 | 버퍼 길이 정규화 |
+#### B-3. BufferLengthNormalizationFeature — [제외]
 
-**기대 효과**: Axis 2 10~15%p 향상 (Profile B: 23.9% → ~35%)
-**비용**: 높음 (신규 feature 3개 구현 + registry 등록 + 테스트)
+> **지시 (§12 지침 1)**: 방법론적으로 순환적이므로 **제외** — 구현하지 않음.
+
+**기대 효과**: B-1/B-2 검증 결과에 따라 구현 또는 폐기 (B-3 제외)
+**비용**: B-1/B-2 검증 후 결정
 
 ---
 
@@ -706,6 +708,35 @@ C1이 §12 반려 사유를 확인했으나, B-2를 "가중치 하향 또는 통
 
 ---
 
+## 14. Option B 최종 실측 — B-1/B-2 전부 기각, Option B 종료 — 2026-07-29
+
+C1이 §13 지침대로 §3 B-1/B-2 재설계(head-window 축소, 상관관계 검증 계획)를 문서에 반영했다(v1.7). CUE가 그 검증 계획을 §13에서 정한 방법·표본 그대로 직접 실행했다.
+
+**B-1 상관관계 실측** (§9의 두 문서, 각 100개 candidate 쌍 = 총 200쌍, 실제 Ollama 임베딩 호출):
+
+| | 건수 |
+|---|---|
+| ESBF·B-1 둘 다 발화 | 18 |
+| ESBF만 발화 | 0 |
+| B-1만 발화 | 1 |
+| 둘 다 무발화 | 181 |
+| **일치율** | **99.5%** |
+
+ESBF(`EmbeddingSimilarityBoundaryFeature`)가 발화하는 경우 B-1도 **예외 없이(18/18)** 함께 발화 — §13 지침 4의 판정 기준(70%+ → 드롭)을 훨씬 상회. **B-1은 기존 feature의 재포장일 뿐 독립 신호가 아니다 — 드롭.**
+
+**B-2 베이스레이트 재측정** (head-window 50자로 축소한 패턴, §9의 두 문서 전량):
+
+| 문서 | 발화율 |
+|---|---|
+| Profile A | 0.00% |
+| Profile B | 0.21% (2/947) |
+
+과다-트리거(이전 42.7%)는 해결됐지만, 문서 하나에 2건뿐이라 Axis 2(현재 21.0%, 목표 ≥25%)를 유의미하게 움직일 수 없는 수준 — 안전해졌지만 실효성이 없다.
+
+**결론**: B-1(중복이라 드롭)·B-2(안전하지만 무의미할 만큼 희소)·B-3(§12에서 이미 순환 논리로 제외) **세 항목 모두 이 설계로는 구현할 이유가 없다. Option B는 여기서 종료한다.** Axis 2를 계속 개선하려면 지금까지 검토한 Option A/B/C-1과 다른, 새로운 접근을 제안해야 한다.
+
+---
+
 **문서 작성일**: 2026-07-29
-**문서 버전**: v1.6 (Option B 재설계 구체 지침 — B-2 head-window 제약, B-1 표본 상관관계 검증 방법 추가)
-**상태**: Option A dormant/미달, Option C-1 기각·되돌림 완료(커밋 `ddea706`), Option B는 §13 구체 지침에 따른 재설계 대기 — 재설계본 제출 전까지 구현 승인 보류
+**문서 버전**: v1.8 (Option B 최종 실측 결과 — B-1/B-2 기각, Option B 종료)
+**상태**: Option A dormant/미달, Option C-1 기각·되돌림(커밋 `ddea706`), Option B 실측 후 기각·종료 — Axis 2 개선은 완전히 새로운 접근 제안 필요
