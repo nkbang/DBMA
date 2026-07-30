@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>내서재 (NAE) - 당신의 신학적 연구 공간</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Custom Fine-tuning for the Paper Texture & Typography */
+        body {
+            background-color: #fbf9f4;
+            background-image: url("https://www.transparenttextures.com/patterns/linen.png");
+            background-blend-mode: multiply;
+        }
+
+        .scholar-gradient {
+            background: linear-gradient(180deg, rgba(251, 249, 244, 0) 0%, rgba(251, 249, 244, 1) 100%);
+        }
+
+        .letter-spacing-widest {
+            letter-spacing: 0.2em;
+        }
+
+        .border-fine {
+            border: 1px solid #e4e2dd;
+        }
+
+        .hover-lift {
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Custom Scrollbar for Scholarly feel */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #fbf9f4; }
+        ::-webkit-scrollbar-thumb { background: #d6c3b0; border-radius: 3px; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fbf9f4",
+                    "secondary-fixed": "#f3dfcb",
+                    "secondary": "#6a5c4c",
+                    "background": "#fbf9f4",
+                    "on-primary-fixed-variant": "#414848",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#264b5d",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e4e2dd",
+                    "on-tertiary-container": "#7b9fb3",
+                    "on-primary-container": "#949b9b",
+                    "primary-container": "#2c3333",
+                    "outline": "#737878",
+                    "on-background": "#1b1c19",
+                    "tertiary-fixed-dim": "#a7cce1",
+                    "surface-bright": "#fbf9f4",
+                    "inverse-primary": "#c1c8c7",
+                    "surface-tint": "#596060",
+                    "on-secondary-container": "#6f6050",
+                    "primary-fixed-dim": "#c1c8c7",
+                    "on-secondary-fixed-variant": "#514535",
+                    "outline-variant": "#c3c7c7",
+                    "surface-container": "#f0eee9",
+                    "on-surface": "#1b1c19",
+                    "surface-dim": "#dbdad5",
+                    "tertiary-container": "#0c3647",
+                    "secondary-fixed-dim": "#d6c3b0",
+                    "error": "#ba1a1a",
+                    "primary": "#171e1e",
+                    "on-surface-variant": "#434848",
+                    "on-primary-fixed": "#161d1d",
+                    "on-tertiary-fixed": "#001e2b",
+                    "secondary-container": "#f0dcc8",
+                    "primary-fixed": "#dde4e3",
+                    "on-secondary-fixed": "#241a0d",
+                    "surface-container-high": "#eae8e3",
+                    "surface-container-low": "#f5f3ee",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#00202d",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#30312e",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#c2e8fe",
+                    "surface-container-highest": "#e4e2dd",
+                    "inverse-on-surface": "#f2f1ec"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "32px",
+                    "margin-page": "48px",
+                    "container-max": "1280px",
+                    "reading-column": "720px",
+                    "sidebar-width": "280px"
+            },
+            "fontFamily": {
+                    "label-ui": ["Hanken Grotesk"],
+                    "body-reading-lg": ["\"Source Serif 4\""],
+                    "body-reading-md": ["\"Source Serif 4\""],
+                    "display-lg": ["Hanken Grotesk"],
+                    "caption": ["Hanken Grotesk"],
+                    "title-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "label-ui": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-reading-lg": ["19px", {"lineHeight": "32px", "fontWeight": "400"}],
+                    "body-reading-md": ["17px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-outline-variant">
+<nav class="flex justify-between items-center w-full px-margin-page py-4 max-w-container-max mx-auto">
+<div class="font-display-lg text-title-lg font-bold text-primary">內書齋</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-label-ui text-label-ui text-primary border-b-2 border-primary pb-1" href="#">서재</a>
+<a class="font-label-ui text-label-ui text-secondary hover:text-primary transition-colors duration-200" href="#">연구</a>
+<a class="font-label-ui text-label-ui text-secondary hover:text-primary transition-colors duration-200" href="#">탐색</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-ui text-label-ui text-secondary hover:text-primary transition-colors px-4 py-2">로그인</button>
+<button class="font-label-ui text-label-ui bg-primary text-on-primary px-5 py-2 hover:bg-opacity-90 active:scale-95 transition-all">연구 시작하기</button>
+</div>
+</nav>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center pt-24 pb-16 px-margin-page relative overflow-hidden">
+<!-- Faint Background Element (Bookshelf Silhouette) -->
+<div class="absolute inset-0 z-0 flex justify-center items-end opacity-[0.03] pointer-events-none select-none overflow-hidden">
+<div class="w-full max-w-container-max h-[600px] border-l-2 border-r-2 border-primary flex items-end">
+<div class="grid grid-cols-12 gap-2 w-full px-4 h-[300px]">
+<div class="h-full border-t-2 border-primary"></div>
+<div class="h-3/4 border-t-2 border-primary"></div>
+<div class="h-full border-t-2 border-primary"></div>
+<div class="h-4/5 border-t-2 border-primary"></div>
+<div class="h-full border-t-2 border-primary"></div>
+<div class="h-3/4 border-t-2 border-primary"></div>
+<div class="h-full border-t-2 border-primary"></div>
+<div class="h-2/3 border-t-2 border-primary"></div>
+<div class="h-full border-t-2 border-primary"></div>
+<div class="h-5/6 border-t-2 border-primary"></div>
+<div class="h-full border-t-2 border-primary"></div>
+<div class="h-3/4 border-t-2 border-primary"></div>
+</div>
+</div>
+</div>
+<!-- Content Area: Center Aligned Reading Column -->
+<section class="relative z-10 w-full max-w-reading-column text-center flex flex-col items-center gap-unit">
+<!-- Hero Typography -->
+<div class="mb-12 space-y-6">
+<h1 class="font-body-reading-lg text-[80px] leading-tight text-primary font-light tracking-widest opacity-90">
+                    內書齋
+                </h1>
+<h2 class="font-display-lg text-headline-md text-primary font-semibold tracking-normal mt-[-10px]">
+                    내서재
+                </h2>
+<p class="font-body-reading-md text-body-reading-lg text-on-surface italic mt-8">
+                    당신의 책이 답하고, 당신의 기록이 말합니다.
+                </p>
+<div class="flex items-center justify-center gap-4 mt-2">
+<span class="w-8 h-[1px] bg-outline-variant"></span>
+<p class="font-label-ui text-label-ui text-secondary uppercase tracking-[0.2em]">
+                        나의 서재 · 나의 연구 · 나의 사역
+                    </p>
+<span class="w-8 h-[1px] bg-outline-variant"></span>
+</div>
+</div>
+<!-- Primary Actions -->
+<div class="flex flex-col items-center gap-6 mt-8 w-full max-w-[320px]">
+<button class="w-full bg-primary text-on-primary py-4 px-8 font-label-ui text-[16px] font-semibold hover-lift hover:shadow-lg transition-all active:scale-[0.98]">
+                    연구 시작하기
+                </button>
+<button class="w-full border-fine bg-surface py-4 px-8 font-label-ui text-[16px] text-primary hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+                    자료 불러오기
+                </button>
+<a class="group flex items-center gap-2 font-label-ui text-label-ui text-secondary hover:text-primary transition-colors mt-2" href="#">
+                    최근 연구 이어가기
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<!-- Visual Separator -->
+<div class="w-full h-px bg-outline-variant my-16"></div>
+<!-- Content Teaser: Bento-ish Scholarly Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full text-left">
+<div class="border-fine p-gutter bg-surface-container-lowest hover-lift cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-caption text-caption text-outline">최근 연구</span>
+</div>
+<h3 class="font-body-reading-lg text-title-lg text-primary mb-2 group-hover:text-secondary-container transition-colors">칼뱅의 기독교 강요 연구</h3>
+<p class="font-body-reading-md text-label-ui text-on-surface-variant line-clamp-2">
+                        제3권 제1장: 성령의 은밀한 역사에 의한 그리스도와의 연합에 대하여...
+                    </p>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-caption text-caption text-secondary">2024년 5월 12일</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</div>
+</div>
+<div class="border-fine p-gutter bg-surface-container-lowest hover-lift cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-secondary">history_edu</span>
+<span class="font-caption text-caption text-outline">보관된 자료</span>
+</div>
+<h3 class="font-body-reading-lg text-title-lg text-primary mb-2 group-hover:text-secondary-container transition-colors">교회사 아카이브</h3>
+<p class="font-body-reading-md text-label-ui text-on-surface-variant line-clamp-2">
+                        초기 기독교 교부들의 서신서 및 주석 모음집 (A.D. 100 - 450)
+                    </p>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-caption text-caption text-secondary">총 142개 항목</span>
+<span class="material-symbols-outlined text-[16px]">inventory_2</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Subtle Footer -->
+<footer class="w-full py-gutter px-margin-page border-t border-outline-variant bg-surface-container-lowest relative z-10">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-6">
+<span class="font-display-lg text-label-ui font-bold text-primary">內書齋</span>
+<span class="font-caption text-caption text-outline">© 2024 NAE. Powered by NAE</span>
+</div>
+<div class="flex gap-8">
+<a class="font-label-ui text-label-ui text-secondary hover:underline decoration-secondary transition-all" href="#">이용약관</a>
+<a class="font-label-ui text-label-ui text-secondary hover:underline decoration-secondary transition-all" href="#">개인정보처리방침</a>
+<a class="font-label-ui text-label-ui text-secondary hover:underline decoration-secondary transition-all" href="#">도움말</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Subtle scroll reveal effect for cards
+            const cards = document.querySelectorAll('.hover-lift');
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(card);
+            });
+
+            // Nav backdrop change on scroll
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-sm');
+                    header.style.backgroundColor = 'rgba(251, 249, 244, 0.95)';
+                } else {
+                    header.classList.remove('shadow-sm');
+                    header.style.backgroundColor = 'rgba(251, 249, 244, 0.8)';
+                }
+            });
+        });
+    </script>
+</body></html>

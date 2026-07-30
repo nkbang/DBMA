@@ -89,6 +89,21 @@ Stitch만으로는 구조 초안(80%)까지만 확보되고, 디테일(20%: 계�
 **진행률: 55%** (Stitch 5화면 확보 + Help/Library 보완 + 한글 라벨 통일
 완료, Figma 반입 및 20% 디테일 보강 대기)
 
+### 4.2 브랜드 거버넌스 정정 (2026-07-30)
+
+Stitch 랜딩 화면(`landing.html`, "内書齋 / 내서재 (NAE)")을 받고 확인한 결과,
+기존 커밋된 5화면(`296acc8`)과 CUE가 보완 제작한 도움말/내 자료 화면이
+`docs/governance/DBMA-BRAND-GOV-001.md`(2026-07-28 FROZEN)를 위반해
+사용자-facing 텍스트에 "DBMA"를 노출하고 있었음을 발견 — 거버넌스는
+사용자-facing 브랜드를 "내서재 / NAE"로, DBMA는 내부 엔지니어링
+식별자로만 한정한다.
+
+- [x] `docs/design/stitch/pastoral_research_desk/*.html` 6개 파일의
+      "DBMA"/"Theology Desk"/"Pastoral Scholar" 사용자-facing 노출을
+      "내서재"/"NAE"로 정정 완료
+- [x] `landing.html` 저장소 반입 완료 (신규 자산)
+- [x] 스크래치패드 보완 화면(도움말/내 자료) 동일 정정 완료
+
 ### 4.1 보완 산출물
 
 - `docs/assets/ux-stitch-p0/` (예정) — 한글 라벨 통일 완료된 code.html 5종
