@@ -40,6 +40,7 @@ import ollama
 
 from core.retrieval import Citation, RankedCandidate, ResponsePackage
 from core.config import DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE
+from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +96,44 @@ def _sanitize_script_contamination(text: str) -> str:
     return _SCRIPT_CONTAMINATION_RE.sub("", text)
 
 
+def _run_claim_guard(
+    answer: str,
+    response: ResponsePackage,
+) -> ClaimGuardResult | None:
+    """답변 텍스트에서 위험 표현을 탐지하고, 증거(candidates)로 ClaimGuard를
+    실행한다. 실패하면 ClaimGuardResult(risk_level=NONE, ...)를 반환 —
+    답변 생성이 실패해도 답변 자체는 막히지 않는다."""
+    try:
+        guard = ClaimGuard()
+        risk_level, matched_terms = guard.detect_risk(answer)
+        if risk_level == RiskLevel.NONE:
+            return ClaimGuardResult(
+                risk_level=RiskLevel.NONE,
+                matched_terms=[],
+                scope_qualifier_required=False,
+                absolute_claim_blocked=False,
+                competing_candidates_found=False,
+                reason="",
+                suggested_wording=None,
+            )
+        # 위험 표현이 있으면 evidence로 평가
+        wrapped = wrap_ranked_candidates(response.top_k_results)
+        return guard.evaluate(claim_text=answer, evidence=wrapped)
+    except Exception as e:
+        logger.warning(
+            "[GenerationService._run_claim_guard] ClaimGuard 실패 (답변은 계속 사용): %s", e
+        )
+        return ClaimGuardResult(
+            risk_level=RiskLevel.NONE,
+            matched_terms=[],
+            scope_qualifier_required=False,
+            absolute_claim_blocked=False,
+            competing_candidates_found=False,
+            reason=f"claim_guard 실패: {e}",
+            suggested_wording=None,
+        )
+
+
 class GenerationStream:
     """Iterable of answer text chunks from a streaming Ollama call.
 
@@ -143,14 +182,17 @@ class GenerationStream:
 
     def to_result(self) -> "GenerationResult":
         """Build the final GenerationResult. Call only after full iteration."""
+        answer = "".join(self._answer_parts)
+        claim_guard_result = _run_claim_guard(answer, self._response)
         return GenerationResult(
             question=self._response.question,
-            answer="".join(self._answer_parts),
+            answer=answer,
             gen_model=self._gen_model,
             temperature=self._temperature,
             context_used=self._context_used,
             error=self._error,
             citations=self._response.citations,
+            claim_guard_result=claim_guard_result,
         )
 
 
@@ -164,6 +206,7 @@ class GenerationResult:
     context_used: bool
     error: Optional[str] = None
     citations: list[Citation] = field(default_factory=list)
+    claim_guard_result: ClaimGuardResult | None = None
 
 
 class GenerationService:
@@ -260,6 +303,7 @@ class GenerationService:
             answer = f"[생성 실패] Ollama 호출 중 오류가 발생했습니다: {e}"
             error = str(e)
 
+        claim_guard_result = _run_claim_guard(answer, response)
         return GenerationResult(
             question=response.question,
             answer=answer,
@@ -268,6 +312,7 @@ class GenerationService:
             context_used=context_used,
             error=error,
             citations=response.citations,
+            claim_guard_result=claim_guard_result,
         )
 
 

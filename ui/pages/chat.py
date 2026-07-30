@@ -189,8 +189,14 @@ def _handle_user_message(question: str) -> None:
         stream = generator.generate_stream(response, conversation_history=conversation_history)
         st.write_stream(stream)
         result = stream.to_result()
+        claim_guard_result = getattr(result, "claim_guard_result", None)
         if low_confidence:
             _render_low_confidence_warning()
+        if claim_guard_result and (
+            claim_guard_result.absolute_claim_blocked
+            or claim_guard_result.scope_qualifier_required
+        ):
+            _render_claim_guard_warning(claim_guard_result)
         if response.top_k_results:
             with st.expander(f"출처 ({len(response.top_k_results)}개)", expanded=False):
                 for candidate in response.top_k_results:
@@ -202,6 +208,7 @@ def _handle_user_message(question: str) -> None:
         "sources": response.top_k_results,
         "error": result.error,
         "low_confidence": low_confidence,
+        "claim_guard_result": claim_guard_result,
     })
 
 
@@ -217,12 +224,23 @@ def _render_low_confidence_warning() -> None:
     st.caption("검색 결과 신뢰도가 낮습니다 - 관련 문서를 찾지 못했을 수 있습니다.")
 
 
+def _render_claim_guard_warning(result) -> None:
+    """ClaimGuard가 위험 주장을 탐지했을 때 안내 박스를 표시한다.
+    _render_low_confidence_warning()와 동일한 패턴(st.caption)."""
+    if result.suggested_wording:
+        st.caption(f"주장 검증: {result.suggested_wording}")
+    else:
+        st.caption(f"주장 검증: {result.reason}")
+
+
 def _render_chat_history() -> None:
     for msg in st.session_state["chat_messages"]:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg["role"] == "assistant" and msg.get("low_confidence"):
                 _render_low_confidence_warning()
+            if msg["role"] == "assistant" and msg.get("claim_guard_result"):
+                _render_claim_guard_warning(msg["claim_guard_result"])
             if msg["role"] == "assistant" and msg.get("sources"):
                 with st.expander(f"출처 ({len(msg['sources'])}개)", expanded=False):
                     for candidate in msg["sources"]:
