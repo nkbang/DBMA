@@ -1450,10 +1450,32 @@ class RetrievalEngine:
         bm25_top_k_indices = sorted(bm25_scores.items(), key=lambda x: x[1], reverse=True)[:self.candidate_k]
 
         # P0 FIX: If BM25 produced no hits within the metadata-filtered pool,
-        # fall back to ALL metadata-filtered candidates. This prevents pipeline
-        # collapse when Korean TSU content lacks English book-name keywords.
+        # fall back to candidates. This prevents pipeline collapse when
+        # Korean TSU content lacks English book-name keywords.
+        #
+        # [SEARCH-INFRA-001 Phase0/1] The fallback used to pass the ENTIRE
+        # candidate_pool (up to the full corpus) through unchanged, which
+        # left self.candidate_k's cap unenforced on exactly the path that
+        # needs it most: downstream theological/passage scoring (STEP 4/4b)
+        # is O(N) per candidate, and Phase 0 baseline measured this fallback
+        # costing 45-55s end-to-end on a 53k-TSU corpus (82% in theological
+        # scoring alone) vs <1s when the cap held.
+        #
+        # A first attempt ranked the pool by TF-IDF cosine similarity before
+        # capping, but that scoring pass is itself O(N) per candidate and
+        # simply moved the multi-second cost elsewhere (measured 8-16s on
+        # degenerate Korean/English queries where metadata filtering also
+        # fails to narrow the pool) — the same mistake the HQ directive
+        # explicitly rules out ("검색 시 문서 전체를 순회하지 않는다"). A plain
+        # slice is O(candidate_k): no per-query signal exists in this branch
+        # anyway (BM25 found zero matches), so an unranked cap is not a
+        # quality regression relative to a same-cost heuristic — downstream
+        # vector/theological scoring (STEP 3/4) still discriminates among
+        # whichever candidate_k survive. True ranked candidate generation
+        # for this branch is the Phase 2 inverted-index work, not a Phase 1
+        # patch.
         if not bm25_top_k_indices:
-            bm25_top_k_indices = [(idx, 0.0) for idx in candidate_pool]
+            bm25_top_k_indices = [(idx, 0.0) for idx in candidate_pool[:self.candidate_k]]
 
         # --- STEP 3: Vector search ---
         # Semantic (BGE-M3 via core.embedder) when an EmbeddingCache is
@@ -1509,15 +1531,23 @@ class RetrievalEngine:
                 vector_similarities[idx] = sim
         metrics.vector_search_ms = (time.perf_counter() - t0) * 1000
 
+        # [SEARCH-INFRA-001 Phase1] Downstream scoring (STEP 4/4b/5) must
+        # never exceed candidate_k candidates — bm25_top_k_indices already
+        # enforces that cap on both the normal-hit and fallback paths (see
+        # STEP 2/2-fallback above), so it is the authoritative pool here
+        # instead of the raw candidate_pool, which can still be the entire
+        # corpus.
+        capped_pool = [idx for idx, _ in bm25_top_k_indices]
+
         # --- STEP 4: Theological scoring ---
         t0 = time.perf_counter()
-        
+
         # P0 FIX: Score ALL ranking candidates, not just vector_similarities.
         # When BM25 produces no hits (Korean content), fallback pool needs
         # full theological coverage to prevent empty scores.
-        score_targets = set(vector_similarities.keys()) if vector_similarities else candidate_pool
+        score_targets = set(vector_similarities.keys()) if vector_similarities else set(capped_pool)
         score_targets = set(score_targets)  # deduplicate
-        
+
         theological_scores: dict[int, float] = {}
         theological_breakdowns: dict[int, dict[str, Any]] = {}
         for idx in score_targets:
@@ -1531,7 +1561,7 @@ class RetrievalEngine:
 
         # Ensure all ranking_indices have theological scores (may be missing if
         # fallback pool differs from score_targets)
-        for idx in set(candidate_pool):
+        for idx in set(capped_pool):
             if idx not in theological_scores:
                 tsu = self.tsus[idx]
                 score, breakdown = compute_theological_score(
@@ -1540,13 +1570,13 @@ class RetrievalEngine:
                 )
                 theological_scores[idx] = score
                 theological_breakdowns[idx] = breakdown
-        
+
         metrics.theological_scoring_ms = (time.perf_counter() - t0) * 1000
 
         # --- STEP 4b: Passage match scoring ---
         t0 = time.perf_counter()
         passage_scores: dict[int, float] = {}
-        for idx in set(candidate_pool):
+        for idx in set(capped_pool):
             tsu = self.tsus[idx]
             passage_scores[idx] = compute_passage_match_score(
                 parsed_query.scripture_refs, tsu.get("verse_mapping", {})
@@ -1555,11 +1585,11 @@ class RetrievalEngine:
 
         # --- STEP 5: Hybrid ranking ---
         t0 = time.perf_counter()
-        
+
         # P0 FIX: Build the candidate index set from the actual pool used,
         # not just bm25_scores. This prevents zero-candidate output when
         # BM25 produces no hits (e.g., Korean TSU content with English query).
-        ranking_indices = set(bm25_scores.keys()) if bm25_scores else candidate_pool
+        ranking_indices = set(bm25_scores.keys()) if bm25_scores else set(capped_pool)
         ranking_indices = set(ranking_indices)  # deduplicate
         
         max_bm25 = max(bm25_scores.values()) if bm25_scores else 0.0
