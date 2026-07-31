@@ -62,6 +62,21 @@ DEFAULT_BENCH_DIR = _yaml_dirs.get("bench_dir", "output/bench")
 DEFAULT_TSU_DATASET_PATH = os.path.join(DEFAULT_BENCH_DIR, "tsu_dataset.jsonl")
 DEFAULT_TSU_MANIFEST_PATH = os.path.join(DEFAULT_BENCH_DIR, "tsu_manifest.json")
 
+# [DBMA-SEARCH-INFRA-001 Phase2-4] core/candidate_generator.py's Tantivy
+# index directory — kept alongside the TSU dataset it mirrors.
+DEFAULT_CANDIDATE_INDEX_DIR = os.path.join(DEFAULT_BENCH_DIR, "tantivy_index")
+
+# [DBMA-SEARCH-INFRA-001 Phase2-3] core/bible_index.py's canonical-key ->
+# tsu_id posting-list database — independent of the vector/BM25 indexes.
+DEFAULT_BIBLE_INDEX_PATH = os.path.join(DEFAULT_BENCH_DIR, "bible_index.sqlite3")
+
+# [DBMA-SEARCH-INFRA-001 HQ 제안 ⑨] core/search_telemetry.py's per-query
+# telemetry database.
+DEFAULT_SEARCH_TELEMETRY_PATH = os.path.join(DEFAULT_BENCH_DIR, "search_telemetry.sqlite3")
+
+# [DBMA-SEARCH-INFRA-001 HQ 제안 ⑥] core/search_cache.py's L2 (SQLite) tier.
+DEFAULT_SEARCH_CACHE_PATH = os.path.join(DEFAULT_BENCH_DIR, "search_cache.sqlite3")
+
 
 # [SPRINT20-I-C-2-B2] Registry Path Authority — single source for the
 # {output_dir}/registry/documents.json path, previously reconstructed in 7

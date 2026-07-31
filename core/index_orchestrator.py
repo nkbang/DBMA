@@ -17,11 +17,21 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH, registry_path_for
+from core.config import (
+    DEFAULT_BIBLE_INDEX_PATH,
+    DEFAULT_CANDIDATE_INDEX_DIR,
+    DEFAULT_OUTPUT_DIR,
+    DEFAULT_TSU_DATASET_PATH,
+    DEFAULT_TSU_MANIFEST_PATH,
+    registry_path_for,
+)
 from core.identity_registry import load_identity_registry, save_identity_registry
 from core.document_context import set_pipeline_state
 from core.tsu_builder import build_tsu_records, write_tsu_dataset, write_manifest
 from core.utils import make_safe_stem
+from core.candidate_generator import build_index, open_or_build_index
+from core.bible_index import BibleIndex
+from core.bible_index import build_index as build_bible_index
 
 BACKUP_ROOT = Path("backups")
 
@@ -51,6 +61,17 @@ def rebuild_tsu_index(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
         config_path=config_path,
     )
 
+    # [DBMA-SEARCH-INFRA-001 Phase2-4] Rebuild the Tantivy candidate index
+    # from the dataset file we just wrote, so it never drifts out of sync
+    # with the TSU dataset it mirrors.
+    candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+    indexed_count = build_index(dataset_path, candidate_index_dir)
+
+    # [DBMA-SEARCH-INFRA-001 Phase2-3] Same for the Bible reference posting
+    # index — independent storage, rebuilt from the same dataset file.
+    bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+    bible_postings = build_bible_index(dataset_path, bible_index_path)
+
     source_document_count = len({
         doc_id for doc_id, doc in registry.get("documents", {}).items()
         if doc.get("chunk_count", 0) > 0
@@ -60,6 +81,10 @@ def rebuild_tsu_index(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
         "records": len(records),
         "dataset_path": str(dataset_path),
         "manifest_path": str(manifest_path),
+        "candidate_index_dir": str(candidate_index_dir),
+        "candidate_index_documents": indexed_count,
+        "bible_index_path": str(bible_index_path),
+        "bible_index_postings": bible_postings,
     }
 
 
@@ -104,6 +129,26 @@ def reindex_document(document_id: str, output_dir: str = DEFAULT_OUTPUT_DIR) -> 
         dataset_path=dataset_path,
         config_path=config_path,
     )
+
+    # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the same delete-by-document_id +
+    # re-add the candidate index just did to the TSU dataset above — this is
+    # the actual "no full re-index on document add" requirement (HQ Phase 2
+    # 완료기준): only this one document's rows are touched in the index.
+    candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+    generator = open_or_build_index(dataset_path, candidate_index_dir)
+    generator.replace_document(document_id, new_records)
+
+    # [DBMA-SEARCH-INFRA-001 Phase2-3] Same replace semantics for the Bible
+    # index — a bootstrap build from the just-written dataset if it doesn't
+    # exist yet, otherwise an in-place delete-by-document_id + re-add.
+    bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+    if not bible_index_path.exists():
+        build_bible_index(dataset_path, bible_index_path)
+    else:
+        bible_index = BibleIndex(bible_index_path)
+        bible_index.replace_document(document_id, new_records)
+        bible_index.close()
+
     return {
         "document_id": document_id,
         "replaced": replaced,
@@ -111,6 +156,8 @@ def reindex_document(document_id: str, output_dir: str = DEFAULT_OUTPUT_DIR) -> 
         "records": len(all_records),
         "dataset_path": str(dataset_path),
         "manifest_path": str(manifest_path),
+        "candidate_index_dir": str(candidate_index_dir),
+        "bible_index_path": str(bible_index_path),
     }
 
 
@@ -185,6 +232,22 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
                     dataset_path=dataset_path,
                     config_path=config_path,
                 )
+                # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the purge to the
+                # candidate index — otherwise superseded content stays
+                # searchable there even though the TSU dataset dropped it.
+                candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+                if (candidate_index_dir / "meta.json").exists():
+                    generator = open_or_build_index(dataset_path, candidate_index_dir)
+                    for doc_id in superseded_ids:
+                        generator.delete_document(doc_id)
+                # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to
+                # the Bible index.
+                bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+                if bible_index_path.exists():
+                    bible_index = BibleIndex(bible_index_path)
+                    for doc_id in superseded_ids:
+                        bible_index.delete_document(doc_id)
+                    bible_index.close()
 
     if reconciled:
         save_identity_registry(registry, str(registry_path))
@@ -238,6 +301,20 @@ def exclude_document_from_index(
                 dataset_path=dataset_path,
                 config_path=config_path,
             )
+            # [DBMA-SEARCH-INFRA-001 Phase2-4] Same purge, mirrored to the
+            # candidate index so an excluded document stops being searchable
+            # there too.
+            candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+            if (candidate_index_dir / "meta.json").exists():
+                generator = open_or_build_index(dataset_path, candidate_index_dir)
+                generator.delete_document(document_id)
+            # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to the
+            # Bible index.
+            bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+            if bible_index_path.exists():
+                bible_index = BibleIndex(bible_index_path)
+                bible_index.delete_document(document_id)
+                bible_index.close()
 
     stem = make_safe_stem(record.get("source_file", ""))
     out_dir = Path(output_dir)

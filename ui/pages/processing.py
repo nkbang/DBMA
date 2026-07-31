@@ -18,7 +18,7 @@ from ui.theme.colors import THEME
 from ui.components.status import progress_indicator, status_badge
 from ui.state.store import StateStore
 from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
-from core.index_orchestrator import reconcile_pending
+from ui.state.background_builder import get_shared_background_builder
 from core.extraction_failures import load_extraction_failures
 from core.processing import (
     build_converter,
@@ -588,16 +588,15 @@ def _execute_processing(
                                 msg = log.get("msg", "")
                                 st.error(f"❌ {msg}")
 
-            # [SPRINT21-F-1] Processing → TSU Reconciliation, one click.
-            # reconcile_pending()은 무예외(never raises) — pending 문서가
-            # 없거나 개별 문서가 실패해도 결과 dict만 반환한다(SPRINT21-B).
-            reconcile_result = reconcile_pending(output_dir)
-            if reconcile_result["reconciled"] > 0:
-                st.success(f"색인 갱신: {reconcile_result['reconciled']}개 문서 검색 반영 완료")
-            if reconcile_result["failed"]:
-                with st.expander(f"색인 실패 {len(reconcile_result['failed'])}건 보기"):
-                    for f in reconcile_result["failed"]:
-                        st.error(f"❌ {f['document_id']}: {f['error']}")
+            # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑧ Background Index Builder]
+            # reconcile_pending()을 여기서 직접 기다리는 대신(예전엔 이 한
+            # 줄이 전체 재색인이 끝날 때까지 이 페이지를 블로킹했음), 백그라운드
+            # 워커를 깨우기만 하고 바로 돌아온다 — "사용자는 기다리지 않는다".
+            # 실제 색인은 core/background_index_builder.py의 데몬 스레드가
+            # core/index_orchestrator.py::reconcile_pending()을 그대로 호출해
+            # 수행한다(재구현 없음).
+            get_shared_background_builder().trigger_now()
+            st.info("📥 백그라운드에서 검색 색인을 갱신하고 있습니다 — 잠시 후 검색에 반영됩니다.")
 
             # Refresh the page state
             st.rerun()

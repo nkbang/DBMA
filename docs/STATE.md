@@ -26,6 +26,11 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 아래 "SPRINT28~33-D 진행 내역"과 "SPRINT 외 병행 작업"을 반드시 함께
 읽을 것.
 
+**[2026-07-30 갱신] SPRINT33-D 이후 이 문서가 다시 갱신되지 않은 채
+DBMA-SEARCH-INFRA-001(Logos식 Hybrid Retrieval 인프라, Phase 0~2)이
+진행·완료되었다 — 아래 "DBMA-SEARCH-INFRA-001 진행 내역" 섹션을 반드시
+함께 읽을 것. SPRINT 번호 체계 밖의 별도 프로젝트 트랙이다.**
+
 ---
 
 ## 아키텍처 결정 (ADR)
@@ -172,13 +177,16 @@ HEAD:      afbb1be (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
            Task Order 019(기존 등록 문서 doc_type 백필 스크립트)·
            STATE.md/ADR-009/ADR-010 stale 항목 정정·ADR-010 잔여
            결정 항목 Phase 4까지 보류 확정, 전부 push 완료)
-Tests:     852개 수집 확인(tests/ 스코프, 2026-07-29 재확인 — 이전 기재
-           "599개"는 2026-07-22 시점 값으로 stale했음, Task Order
-           016~019 등에서 추가된 테스트 다수 반영 안 돼 있었음). 전체
-           852개 일괄 실행은 비용 커서 보류 — Task Order 016~019 관련
-           범위(document_context/processing/index_orchestrator/
-           semantic_boundary_detector/hierarchical_chunk_builder 등)는
-           개별 확인 시마다 통과 확인됨. 전체 스위트 공식 재실행은
+Tests:     1,151개 수집 확인(tests/ 스코프, 2026-07-30 재확인 — 이전 기재
+           "852개"/"1,114개"는 같은 날 세션 중간 시점 값으로 이미 stale,
+           DBMA-SEARCH-INFRA-001 Phase 2 + Query Planner에서 추가된 테스트
+           반영 안 돼 있었음). 전체 1,151개 일괄 실행은 비용 커서 보류 —
+           DBMA-SEARCH-INFRA-001 관련 범위(candidate_generator/bible_index/
+           hybrid_candidate_pipeline/query_planner/index_orchestrator/
+           retrieval 일부)는 이번 세션에서 개별 확인 시마다 통과 확인됨
+           (111개). output/SPRINT5_ENGINEERING_VALIDATION/
+           stress_test.py에서 무관한 collection error 1건 있음(사전부터
+           존재, 이번 세션 원인 아님, 미조사). 전체 스위트 공식 재실행은
            GA 검토 전 별도로 권장.
 Runtime:   APP_VERSION 1.3.0 / embed bge-m3:latest / gen my-theology-bot:latest
            (llama3.3:70b Q4_K_M) / cap 2
@@ -190,6 +198,101 @@ Status:    STABLE — GA 검토 단계 (변동 없음)
 - Ollama HTTP 500: char/token 4→2 (다국어 oversized 차단)
 - Orphan cleanup: data/rag_index, 빈 backup 폴더, md_manager archive
 - Benchmark evidence: output/bench/chapter_level_result_v1.3.0_cap2.json
+
+## DBMA-SEARCH-INFRA-001 진행 내역 (2026-07-30)
+
+HQ 작업지시서("Logos식 초고속 하이브리드 검색 엔진 도입") 기반, `docs/architecture/`
+아래 계획 문서 3건 참고:
+- `DBMA-SEARCH-INFRA-001-PHASE0-BASELINE.md` — 현황 진단
+- `DBMA-SEARCH-INFRA-001-PHASE2-PLAN.md` — Phase 2 착수 계획 (진행률 100%)
+- `C1-TASK-ORDER-033-REPORT.md`(`docs/agents/c1/`) — 엔진 벤치마크 v5(CUE 직접 실행·검증)
+
+**Phase 0 (현황 진단)**: 기존 `RetrievalEngine.retrieve()`가 metadata filter 실패 시
+BM25가 역색인 없이 전체 코퍼스(53,231 TSU)를 스캔 → 7~8초. Qdrant는 실제로
+연결된 적이 없었음(파라미터만 받고 미사용, 전량 인메모리 BM25/TF-IDF)도 확인.
+
+**Phase 1 (긴급 패치)**: BM25 완전 미스 시 폴백이 `candidate_k` 캡을 무시하고
+전체 후보 풀을 theological scoring에 넘기던 버그 수정(`core/retrieval.py`) —
+p50 385ms→149ms, p95 14.7s→9.0s, p99 54.6s→17.3s. `core/retrieval.py`는 이
+한 건의 최소 패치 외에는 이후 전부 무변경 유지.
+
+**Phase 2 (역색인 인프라 도입, 완료)**:
+- 2-1: Tantivy/Meilisearch/Typesense 벤치마크 → **Tantivy 채택**(임베디드,
+  평균 지연 최저). C1이 Task Order 033을 4차례(v2~v4) 데이터 무결성 결함으로
+  반려당한 뒤 CUE가 직접 인수해 실행·검증(v5) — 상세는
+  `feedback_c1_stale_status_reports.md` 메모리 #9/#10 참고.
+- 2-2: `core/candidate_generator.py` — Tantivy 기반 `CandidateGenerator`
+  (BM25 + 메타데이터 사전필터, id+score만 반환·full_text 미포함)
+- 2-3: `core/bible_index.py` — SQLite 기반 `Bible.{Book}.{Chapter}.{Verse}`
+  posting list, Vector 인덱스와 독립. 기존 `QueryParser`/`ScriptureReference`
+  정규화 재사용(신규 파서 없음)
+- 2-4: `core/index_orchestrator.py`의 4개 함수(rebuild_tsu_index/
+  reindex_document/reconcile_pending/exclude_document_from_index) 전부에
+  candidate index + Bible index 배선 — 문서 1건 수정 시 전체 재색인 없음
+- 2-5: 스니펫 — 별도 preview 필드 저장 대신 Tantivy 내장 `SnippetGenerator`
+  활용(UTF-8 바이트/문자 오프셋 버그 발견·수정 포함)
+- 2-6: `core/hybrid_candidate_pipeline.py`(`HybridRetriever`) — Stage1
+  CandidateGenerator + Stage2는 `core/retrieval.py`의 기존 스코어링 함수
+  그대로 재사용(재구현 없음). 통합 검증 중 회귀 버그 2건 발견·수정
+  (메타데이터 폴백 누락으로 12/96 쿼리 dead-end, Stage2 후보 100개 스코어링
+  시 특정 청크로 인한 비선형 지연) 후 최종 실측:
+
+| 지표 | 기존 RetrievalEngine | HybridRetriever |
+|---|---:|---:|
+| precision@1 (96쿼리) | 1.0 | 1.0 |
+| p50 | 149ms | 8.2ms |
+| p95 | 9,020ms | 10.5ms |
+
+  10만 합성 코퍼스 별도 측정: p95 9.8ms(완료기준 1초 이내 충족).
+
+**[2026-07-30 추가 진행] USE_INVERTED_INDEX 실배포 + Query Planner 구현 완료**:
+- `ui/state/query_processor.py::get_shared_query_processor()`에 배선 완료 —
+  `chat.py`/`research.py`는 무변경(이 함수 하나만 통과). 플래그 true면
+  `HybridQueryProcessor` 반환.
+- `core/query_planner.py`(신규) — 규칙 기반 5-way 라우팅(bible/greek/exact/
+  metadata/hybrid), LLM 미사용. `HybridRetriever.retrieve()`가 Stage 0으로
+  호출해 Bible Index 직접조회/PhraseQuery/title-author 한정 검색으로 분기.
+- 진행 중 실제 프로덕션 `output/bench/bible_index.sqlite3`가 테스트 픽스처로
+  오염된 걸 발견·수정(테스트가 경로 인자 하나를 안 넘겨서 발생 — 재발 방지로
+  테스트 수정 + 실제 인덱스 재구축 56,857 postings).
+- `core/retrieval.py`는 시종 무변경 유지.
+
+**RRF (HQ 제안 ⑦) 구현**: `core/rrf.py`(신규, 범용 유틸) — `HybridRetriever`의
+고정 가중합(0.4*bm25+0.4*theological+0.2*passage)을 3-신호 순위 기반 RRF로
+교체. book-level gold standard 재실행으로 precision@1 1.0 유지 확인(회귀 없음).
+
+**Search Telemetry (HQ 제안 ⑨) 구현 — 백엔드만, UI 클릭 배선 보류**:
+`core/search_telemetry.py`(신규, SQLite) — 성공률/Zero-hit/Top1·5 Click/
+Average Candidate/Merge Time/Cache Hit/Embedding·ANN Time 전부 구현(캐시·
+임베딩·ANN은 아직 그 단계 자체가 없어 정직하게 항상 0). `HybridQueryProcessor`가
+매 쿼리 자동 기록. **UI(`ui/pages/research.py`) 클릭 배선은 보류** —
+연결 시도 중 이 파일이 C1이 동시에 진행 중인 대규모 Stitch 리디자인
+(uncommitted, 계속 변경 중)으로 실제로 한 번 편집이 덮어써진 것을 발견,
+사용자 확인 후 C1 작업 완료 후로 미룸.
+
+**Background Index Builder (HQ 제안 ⑧) 구현 (2026-07-31)**: `core/background_index_builder.py`
+(신규, 데몬 스레드) — 새 파이프라인이 아니라 이미 있던 `pipeline_state=PROCESSED`
+큐 + `reconcile_pending()`(멱등적 pull 재조정자)을 블로킹 호출 대신 백그라운드
+스레드로 옮긴 것. `ui/pages/processing.py`의 블로킹 호출 1곳을
+`trigger_now()`(논블로킹)로 교체 — 수정 전 매번 git diff로 C1이 안 건드린
+파일인지 확인함(research.py 사고 이후 습관화).
+
+**캐시 계층 분리 (HQ 제안 ⑥) 구현 (2026-07-31)**: `core/search_cache.py`
+(신규) — `SearchResultCache`(L1 메모리 + L2 SQLite). L3(Disk)는 별도로
+안 만듦(L2가 이미 디스크라 중복), Query Embedding Cache도 안 만듦
+(HybridRetriever엔 임베딩 단계 자체가 없음) — 둘 다 이유를 문서에 명시.
+캐시 키에 TSU manifest fingerprint 포함 → 재색인하면 자동 무효화.
+실측: 캐시 히트 시 67.92ms→0.61ms(약 110배). 이번에도 테스트가 실제
+경로를 오염시킨 사고 발생(네 번째, 같은 패턴) — 수정 완료.
+
+**범위 경계 (의도적으로 안 한 것)**: HQ 제안 ①~⑨ 전부 착수 완료(⑨는 백엔드만,
+UI 클릭 배선은 C1 리디자인 완료 후 보류). 남은 것은 그 UI 배선 하나뿐.
+
+**테스트**: 이 트랙에서 신규 파일 5개(`test_candidate_generator.py`,
+`test_bible_index.py`, `test_hybrid_candidate_pipeline.py`, `test_query_planner.py`
++ `test_index_orchestrator.py`/`test_shared_query_processor.py` 확장) 약 100여 건
+추가. 전체 스위트는 1,114개+ 수집(2026-07-30 재확인, 아래
+"Tests:" 줄도 함께 갱신).
 
 ## 잔여 (비blocker, 향후)
 - monitor.py 정적 하드코딩 값(메모리 72% 등) → 실시간화 (P3)
