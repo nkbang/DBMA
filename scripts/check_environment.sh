@@ -69,5 +69,14 @@ else
   status FAIL "git 저장소 아님"
 fi
 
+# 7. 주요 DBMA directory 존재 여부
+for d in core ui data output cache workspace docs/tasks; do
+  if [ -d "$d" ]; then
+    status PASS "디렉토리 존재: $d"
+  else
+    status FAIL "디렉토리 없음: $d"
+  fi
+done
+
 echo
 echo "=== 결과 요약: PASS=$PASS WARNING=$WARN FAIL=$FAIL ==="
