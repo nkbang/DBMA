@@ -4,6 +4,7 @@ Document library browsing, search, and management interface.
 """
 
 import json
+import os
 import unicodedata
 from datetime import datetime
 from typing import Optional
@@ -253,7 +254,10 @@ def _render_document_detail_panel() -> None:
     _render_provenance_section(selected_doc.get("title", ""))
 
     # ── Chunk Preview (RAGFlow-style on-demand chunking preview) ────
-    _render_chunk_preview_section(selected_doc.get("title", ""), selected_doc.get("type", ""))
+    # 엔지니어링 진단 패널 — 일반 사용자(베타 테스터)에게는 불필요해 숨긴다.
+    # NAE_ADMIN_MODE=1일 때만 노출 (ui/app.py의 Monitor 게이트와 동일 패턴).
+    if os.environ.get("NAE_ADMIN_MODE") == "1":
+        _render_chunk_preview_section(selected_doc.get("title", ""), selected_doc.get("type", ""))
 
     # Add clear selection button — uses on_click callback for full page sync
     st.button(
@@ -402,7 +406,7 @@ def _render_exclude_section(source_filename: str) -> None:
                 else:
                     st.error("제외 해제에 실패했습니다.")
         else:
-            st.caption("RAW 원본은 삭제되지 않습니다 — 처리 산출물(청크/색인)만 정리하고 향후 처리 대상에서 제외합니다.")
+            st.caption("RAW 원본은 삭제되지 않습니다 — 정리된 자료만 삭제하고 향후 처리 대상에서 제외합니다.")
             reason = st.text_input("제외 사유", key=f"exclude_reason_{document_id}")
             confirm = st.checkbox("이 문서를 처리 대상에서 제외하고 기존 색인 데이터를 정리합니다.", key=f"exclude_confirm_{document_id}")
             if st.button("🚫 처리 제외", key=f"exclude_btn_{document_id}", disabled=not confirm, use_container_width=True):

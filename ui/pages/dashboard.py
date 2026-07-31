@@ -107,7 +107,7 @@ def _render_library_summary() -> None:
             f"⏳ 미처리 {raw_breakdown['unprocessed']}권"
         )
     with c2:
-        st.metric("정리된 자료", f"{len(effective_docs)}개 문서", help="registry에 등록된 문서 중 청킹 완료(chunk_count>0)·처리 성공(ingest_status=PROCESSED)·최신본(superseded_by 없음)만 센 수 — 아래 '유형별 문서'와 항상 같은 모집단입니다.")
+        st.metric("정리된 자료", f"{len(effective_docs)}개 문서", help="정리가 끝나 검색·연구에 바로 쓸 수 있는 문서 수입니다 — 아래 '유형별 문서'와 항상 같은 기준입니다.")
 
 
 def _get_overall_status() -> tuple[str, str, str, str]:
@@ -388,7 +388,7 @@ def _render_unprocessed_detail(unprocessed_files: list[str]) -> None:
     없어 저장할 자리가 없고, 처리하면 guess_doc_type()이 자동으로
     타입을 붙인다."""
     st.divider()
-    st.markdown(f"**🆕 미처리 ({len(unprocessed_files)}권)** — 아직 처리 파이프라인을 거치지 않았습니다.")
+    st.markdown(f"**🆕 미처리 ({len(unprocessed_files)}권)** — 아직 정리 과정을 거치지 않았습니다.")
     for name in unprocessed_files:
         st.markdown(f"- {name}")
     st.caption("처리하면 유형이 자동으로 추정되어 붙습니다(불확실하면 \"기타\").")
