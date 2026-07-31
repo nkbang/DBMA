@@ -145,7 +145,7 @@ def render_onboarding_page() -> None:
     btn_col1, btn_col2, btn_col3 = st.columns([2, 1, 1])
     with btn_col2:
         start_clicked = st.button(
-            "샘플 자료로 시작하기", use_container_width=True, type="primary"
+            "바로 시작하기", use_container_width=True, type="primary"
         )
     with btn_col3:
         skip_clicked = st.button("나중에 하기", use_container_width=True)
