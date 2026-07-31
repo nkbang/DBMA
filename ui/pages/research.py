@@ -10,6 +10,7 @@ Stitch-style redesign:
 - Session management with expandable history
 """
 
+import os
 from dataclasses import dataclass
 from typing import Optional
 
@@ -164,7 +165,7 @@ def render_research_page() -> None:
         _render_search_results()
 
         # ── Query Analysis ─────────────────────────────────────
-        page.render_section("쿼리 분석", icon="📈")
+        page.render_section("검색 분석", icon="📈")
         _render_query_analysis()
 
         page.render_footer()
@@ -188,35 +189,50 @@ def _render_search_interface() -> None:
     if query:
         store.set("research_query", query)
 
-    # Search options — compact row
-    c1, c2, c3 = st.columns([2, 1, 1])
+    # [DBMA-UX-004] "검색 방법"(Hybrid/BM25/Vector/RRF)과 "최소 점수"는
+    # 검색 엔진 내부 알고리즘/relevance-score 파라미터라 일반 사용자에게
+    # 노출하지 않는다(Design Brief §8, "Vector" 등은 금지 용어 목록에
+    # 직접 해당). ui/app.py Monitor·ui/pages/library.py 청킹 미리보기와
+    # 동일한 패턴으로 NAE_ADMIN_MODE=1일 때만 노출하고, 일반 사용자는
+    # 안전한 기본값(Hybrid, 0.0)을 그대로 쓴다. "결과 수"만 남긴다 —
+    # "몇 건 보여줄지"는 목회자도 이해할 수 있는 개념이라 유지.
+    is_admin = os.environ.get("NAE_ADMIN_MODE") == "1"
+    if is_admin:
+        c1, c2, c3 = st.columns([2, 1, 1])
+    else:
+        c1, = st.columns([2])
+        c2 = c3 = None
     with c1:
         top_k = st.slider(
-            "결과 수 (K)",
+            "결과 수",
             min_value=1,
             max_value=50,
             value=st.session_state.get("research_top_k", 10),
             step=1,
             key="research_top_k",
         )
-    with c2:
-        method = st.selectbox(
-            "검색 방법",
-            options=["Hybrid", "BM25", "Vector", "RRF"],
-            index=["Hybrid", "BM25", "Vector", "RRF"].index(
-                st.session_state.get("search_method", "Hybrid")
-            ),
-            key="search_method",
-        )
-    with c3:
-        min_score = st.slider(
-            "최소 점수",
-            min_value=0.0,
-            max_value=1.0,
-            value=st.session_state.get("min_score", 0.0),
-            step=0.05,
-            key="min_score",
-        )
+    if is_admin:
+        with c2:
+            method = st.selectbox(
+                "검색 방법",
+                options=["Hybrid", "BM25", "Vector", "RRF"],
+                index=["Hybrid", "BM25", "Vector", "RRF"].index(
+                    st.session_state.get("search_method", "Hybrid")
+                ),
+                key="search_method",
+            )
+        with c3:
+            min_score = st.slider(
+                "최소 점수",
+                min_value=0.0,
+                max_value=1.0,
+                value=st.session_state.get("min_score", 0.0),
+                step=0.05,
+                key="min_score",
+            )
+    else:
+        st.session_state.setdefault("search_method", "Hybrid")
+        st.session_state.setdefault("min_score", 0.0)
 
     # Execute search button
     st.divider()
@@ -263,7 +279,7 @@ def _render_search_results() -> None:
     with c2:
         sort_option = st.selectbox(
             "정렬",
-            options=["relevance", "date", "title"],
+            options=["관련도순", "날짜순", "제목순"],
             label_visibility="collapsed",
             key="result_sort",
         )
@@ -299,18 +315,16 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
     """Render search results as Stitch-style cards with score badges."""
     for i, result in enumerate(results):
         score = result.get("score", 0)
-        title = result.get("title", "미제시")
-        doc_type = result.get("type", "document").upper()
+        title = result.get("title", "제목 없음")
         snippet = result.get("snippet", "")
         source = result.get("source", "")
 
-        # Score badge color
-        if score >= 0.8:
-            score_color = THEME.STATUS_SUCCESS
-        elif score >= 0.5:
-            score_color = THEME.STATUS_WARNING
-        else:
-            score_color = THEME.STATUS_ERROR
+        # [DBMA-UX-004] "RRF {score}"(알고리즘명+원시 점수)는 검색 엔진
+        # 내부 노출이라 별점으로 단순화(Design Brief §8, "RRF"는 금지
+        # 용어 목록에 직접 해당). doc_type도 항상 "tsu"(내부 코퍼스
+        # 포맷명)로 고정되어 사용자에게 의미가 없어 표시하지 않는다.
+        filled = min(5, max(0, round(score * 5)))
+        score_badge = "⭐" * filled + "☆" * (5 - filled)
 
         html = f"""
         <div style="
@@ -325,16 +339,12 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
                 <span style="font-size: 15px; font-weight: 600; color: {THEME.BRAND_PRIMARY};">
                     {i + 1}. {title}
                 </span>
-                <span style="
-                    font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 8px;
-                    background: {score_color}18; color: {score_color};
-                ">
-                    RRF {score:.4f}
+                <span style="font-size: 13px; color: #C8943E; letter-spacing: 1px;">
+                    {score_badge}
                 </span>
             </div>
             <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 8px;">
-                {doc_type}
-                {f' • {source}' if source else ''}
+                {source}
             </div>
             {f'<div style="font-family: Source Serif 4, serif; font-style: italic; font-size: 14px; color: {THEME.TEXT_SECONDARY}; line-height: 1.6;">{snippet}</div>' if snippet else ''}
         </div>
@@ -363,8 +373,11 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
                 }
                 st.rerun()
 
+            # [DBMA-UX-004] 원시 relevance score(소수점 4자리)는 기술적
+            # 수치라 노출하지 않는다(Design Brief §8) — 별점으로 단순화.
             score = result.get("score", 0.0)
-            st.caption(f"신뢰도: {score:.4f}")
+            filled = min(5, max(0, round(score * 5)))
+            st.caption("⭐" * filled + "☆" * (5 - filled))
 
 
 # ── Saved Sessions ─────────────────────────────────────────────
@@ -381,7 +394,7 @@ def _render_saved_sessions() -> None:
 
     sessions_sorted = sorted(sessions, key=lambda s: s.get("created_at", ""), reverse=True)
     options = {
-        f"{s.get('created_at', s.get('session_id', '?'))} · 쿼리 {len(s.get('queries', []))}개": s.get("session_id")
+        f"{s.get('created_at', s.get('session_id', '?'))} · 검색 {len(s.get('queries', []))}건": s.get("session_id")
         for s in sessions_sorted
     }
     selected_label = st.selectbox(
@@ -405,9 +418,9 @@ def _render_saved_sessions() -> None:
             else:
                 st.caption("저장된 참조 없음")
 
-            if st.button("이 쿼리 불러오기", key=f"load_query_{session_id}_{i}"):
+            if st.button("이 검색어 불러오기", key=f"load_query_{session_id}_{i}"):
                 st.session_state["research_query"] = q.get("query", "")
-                st.success("쿼리를 검색창에 불러왔습니다. '검색 실행'을 눌러 재검색하세요.")
+                st.success("검색어를 검색창에 불러왔습니다. '검색 실행'을 눌러 재검색하세요.")
 
 
 # ── Query Analysis ─────────────────────────────────────────────
@@ -417,7 +430,7 @@ def _render_query_analysis() -> None:
     query = st.session_state.get("research_query", "")
 
     if not query:
-        st.info("쿼리를 입력하여 분석 결과를 확인하세요.")
+        st.info("검색어를 입력하면 분석 결과를 볼 수 있습니다.")
         return
 
     # Query statistics
@@ -438,9 +451,19 @@ def _render_query_analysis() -> None:
             intent = getattr(resp.parsed_query, "intent", "unknown")
             detected_books = getattr(resp.parsed_query, "detected_books", [])
 
+    # [DBMA-UX-004] ParsedQuery.intent is an internal classification code
+    # (core/retrieval.py) — translate to plain Korean instead of showing
+    # the raw enum string (was rendering e.g. "EXEGESIS", "CROSS-REFERENCE").
+    _INTENT_LABELS = {
+        "exegesis": "본문 해석",
+        "comparison": "비교",
+        "devotional": "묵상",
+        "theological": "신학적 고찰",
+        "cross-reference": "관련 구절",
+    }
     with c4:
-        intent_display = intent.upper() if intent != "unknown" else "—"
-        st.metric("인식된 의도", intent_display)
+        intent_display = _INTENT_LABELS.get(intent, "—")
+        st.metric("찾으시는 내용", intent_display)
 
     # Query expansion suggestions — AI Insight card (Stitch style)
     first_word = query.split()[0] if query.split() else ""
@@ -458,7 +481,12 @@ def _render_query_analysis() -> None:
 
     # Display scripture references if detected
     if detected_books:
-        books_html = f"{', '.join(detected_books)}"
+        # [DBMA-UX-004] detected_books는 원시 book_id 코드(예: "ROM")라
+        # 그대로 노출하지 않고 한글 성경 이름으로 변환한다.
+        from core.sermon.bible_books import BIBLE_BOOKS
+        _BOOK_ID_TO_NAME = {book_id: name for name, book_id in BIBLE_BOOKS}
+        book_names = [_BOOK_ID_TO_NAME.get(b, b) for b in detected_books]
+        books_html = f"{', '.join(book_names)}"
         _render_insight_card(
             title="📖 감지된 성서 도서",
             content=books_html,
@@ -502,7 +530,7 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
     """
     # Validate query
     if not query or not query.strip():
-        return [], None, "쿼리를 입력하세요"
+        return [], None, "검색어를 입력하세요"
 
     query = query.strip()
 
@@ -519,7 +547,7 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
 
         # Check for results
         if not response.top_k_results:
-            return [], None, f"결과 없음 (쿼리: {query})"
+            return [], None, f"결과 없음 (검색어: {query})"
 
         # Format candidates for UI display
         results = []
@@ -530,7 +558,7 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
         return results, response, f"검색 완료 ({len(results)}개 결과)"
 
     except FileNotFoundError as e:
-        return [], None, f"에러: TSU 데이터셋을 찾을 수 없습니다 — {str(e)}"
+        return [], None, f"에러: 자료를 찾을 수 없습니다 — {str(e)}"
     except Exception as e:
         return [], None, f"에러: 검색 실행 중 오류 발생 — {str(e)}"
 
@@ -543,17 +571,22 @@ def _format_candidate(candidate: RankedCandidate, parsed_query) -> dict:
     expected by search_results_table() component.
     """
     # Build verse reference string from metadata
+    # [DBMA-UX-004] book_id는 원시 코드(예: "ROM")라 한글 성경 이름으로
+    # 변환해 표시한다 — 그대로 노출하면 사용자에게 의미가 없다.
     vm = candidate.metadata.get("verse_mapping", {})
     if vm and vm.get("book_id"):
-        book_id = vm["book_id"]
+        from core.sermon.bible_books import BIBLE_BOOKS
+        _book_name = {book_id: name for name, book_id in BIBLE_BOOKS}.get(
+            vm["book_id"], vm["book_id"]
+        )
         chapter = vm.get("chapter", "?")
         v_start = vm.get("verse_start", "?")
         v_end = vm.get("verse_end", v_start)
-        verse_ref = f"{book_id} {chapter}:{v_start}"
+        verse_ref = f"{_book_name} {chapter}:{v_start}"
         if v_end and v_end != v_start:
             verse_ref += f"-{v_end}"
     else:
-        verse_ref = "Unmapped passage"
+        verse_ref = "본문 참조 없음"
 
     # Build title from reference + content preview
     content_preview = candidate.content[:120].replace("\n", " ")
@@ -607,7 +640,7 @@ def _render_research_page_with_detail() -> None:
         page.render_section("검색 결과", icon="📊")
         _render_search_results()
 
-        page.render_section("쿼리 분석", icon="📈")
+        page.render_section("검색 분석", icon="📈")
         _render_query_analysis()
 
         page.render_footer()

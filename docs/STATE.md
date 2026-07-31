@@ -44,6 +44,18 @@ DBMA-SEARCH-INFRA-001(Logos식 Hybrid Retrieval 인프라, Phase 0~2)이
 테스트 산출물 정리). C1 Task Order 035 Architecture Review: GO with
 caveats.**
 
+**[2026-07-31 갱신 #2] DBMA-UX-004(P1 화면 점검) 완료,
+`docs/DBMA-UX-004-P1-SCREENS-PLAN.md` 참고. 연구하기(`research.py`)
+화면을 실 데이터로 브라우저 검색까지 돌려보고서야 발견된 위반 다수
+수정 — `RRF {score}`/`Hybrid·BM25·Vector·RRF` 알고리즘 노출(관리자
+게이트 처리), `TSU` 라벨, `ROM` 등 원시 성경책 코드, `EXEGESIS` 등
+영어 intent enum, "쿼리" 차용어 전반. **1차 grep 감사(리터럴 문자열만
+검색)로는 f-string 동적 조합 문자열을 못 잡는다는 것이 이번 교훈** —
+향후 UX 감사는 grep 이후 반드시 실 데이터로 브라우저 검증 필요.
+"자료 읽기"(문서 본문 전체를 읽는 화면) 자체가 라이브 앱에 없다는
+진짜 기능 공백도 발견 — `docs/DBMA-UX-005-DOCUMENT-READING-PLAN.md`로
+분리 발행, 착수 전 HQ 결정(옵션 A/B) 대기 중.**
+
 ---
 
 ## 아키텍처 결정 (ADR)

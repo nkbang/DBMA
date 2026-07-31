@@ -83,7 +83,7 @@ def test_lists_and_loads_session_with_result_refs(tmp_path, monkeypatch):
         },
     )
 
-    label = f"{rw.load_session(session_id)['created_at']} · 쿼리 1개"
+    label = f"{rw.load_session(session_id)['created_at']} · 검색 1건"
     rec = _Recorder(selectbox_return=label)
     monkeypatch.setattr(mod, "st", rec)
 
@@ -101,7 +101,7 @@ def test_load_query_button_fills_query_into_session_state(tmp_path, monkeypatch)
     session_id = rw.create_session()
     rw.add_query_result(session_id, "은혜란 무엇인가", {"top_k_results": []})
 
-    label = f"{rw.load_session(session_id)['created_at']} · 쿼리 1개"
+    label = f"{rw.load_session(session_id)['created_at']} · 검색 1건"
     rec = _Recorder(selectbox_return=label, button_return=True)
     monkeypatch.setattr(mod, "st", rec)
 
