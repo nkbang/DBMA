@@ -14,6 +14,7 @@ from __future__ import annotations
 from NAE.pipeline.embed import client as embed_client
 from NAE.pipeline.embed import hashing
 from NAE.pipeline.embed.similarity import cosine_similarity
+from NAE.pipeline.tsu.config import TSU_SCHEMA_VERSION
 
 from . import config
 
@@ -31,6 +32,7 @@ def find_duplicates(records: list[dict], *, threshold: float = config.DUPLICATE_
         if not claim_text:
             continue
         content_hash = hashing.tsu_hash(
+            schema_version=record.get("tsu_schema_version", TSU_SCHEMA_VERSION),
             claim=claim_text, book=record.get("book", ""),
             page=record.get("page", ""), scriptures=record.get("scriptures", []),
         )

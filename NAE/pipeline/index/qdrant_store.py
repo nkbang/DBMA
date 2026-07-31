@@ -43,6 +43,7 @@ def build_point(record: dict, vector: list[float]) -> PointStruct:
         "book": record.get("book"),
         "author": record.get("author"),
         "identifier": record.get("identifier"),
+        "source_identifier": record.get("source_identifier", record.get("identifier")),
         "doctrine": record.get("doctrine"),
         "page": record.get("page"),
         "paragraph": record.get("paragraph"),
@@ -58,6 +59,11 @@ def build_point(record: dict, vector: list[float]) -> PointStruct:
         "citation_score": record.get("citation_score"),
         "overall_score": record.get("overall_score"),
         "duplicate_of": record.get("duplicate_of"),
+        # Reproducibility - which pipeline version produced each upstream artifact
+        # this point was derived from (Phase 3.5 gate review, item 6).
+        "tsu_schema_version": record.get("tsu_schema_version"),
+        "collector_version": record.get("collector_version"),
+        "canonical_version": record.get("canonical_version"),
     }
     return PointStruct(id=tsu_id_to_point_id(record["id"]), vector=vector, payload=payload)
 

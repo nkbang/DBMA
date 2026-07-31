@@ -21,6 +21,8 @@ class SentenceCandidate:
     context_after: str
     candidate_scriptures: list[str] = field(default_factory=list)
     candidate_citations: list[str] = field(default_factory=list)
+    collector_version: str = ""
+    canonical_version: str = ""
 
 
 def _find_raw_metadata(identifier: str, raw_root: Path = config.RAW_ROOT) -> dict:
@@ -51,6 +53,8 @@ def build_candidates(identifier: str, *, canonical_root: Path = config.CANONICAL
     raw_meta = _find_raw_metadata(identifier, raw_root)
     book = raw_meta.get("title", "") or identifier
     author = raw_meta.get("creator", "")
+    collector_version = raw_meta.get("collector_version", "")
+    canonical_version = canonical_json.get("pipeline_version", "")
     footnotes = canonical_json.get("footnotes", [])
 
     candidates: list[SentenceCandidate] = []
@@ -85,5 +89,7 @@ def build_candidates(identifier: str, *, canonical_root: Path = config.CANONICAL
                 context_after=after,
                 candidate_scriptures=sentence_scriptures,
                 candidate_citations=candidate_citations,
+                collector_version=collector_version,
+                canonical_version=canonical_version,
             ))
     return candidates

@@ -72,9 +72,13 @@ def build_tsu_for_identifier(identifier: str, *, model: str = config.DEFAULT_CLA
 
         record = {
             "id": _format_tsu_id(next_id),
+            "tsu_schema_version": config.TSU_SCHEMA_VERSION,
             "book": cand.book,
             "author": cand.author,
             "identifier": cand.identifier,
+            "source_identifier": cand.identifier,
+            "collector_version": cand.collector_version,
+            "canonical_version": cand.canonical_version,
             "page": cand.page,
             "paragraph": cand.paragraph_index,
             "sentence": cand.sentence_index,

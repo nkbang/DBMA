@@ -12,6 +12,12 @@ TSU_ROOT = CORPUS_ROOT / "tsu"
 
 BUILDER_VERSION = "3.0.0"
 
+# Bumped whenever the TSU record *shape* changes (fields added/removed/renamed).
+# Included in the embedding cache hash (NAE.pipeline.embed.hashing) so a schema
+# change invalidates old cache entries instead of silently reusing embeddings
+# computed under a different record shape.
+TSU_SCHEMA_VERSION = "1"
+
 # Ollama-backed claim extraction, following the existing convention in
 # core/evaluation/sermon_judge.py (same JSON-schema-prompt + brace-extraction
 # parsing, same fail-soft error handling so one bad sentence never kills a batch run).

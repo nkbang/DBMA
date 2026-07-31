@@ -17,6 +17,7 @@ from typing import Any
 from NAE.pipeline.embed import client as embed_client
 from NAE.pipeline.embed import hashing
 from NAE.pipeline.tsu import config as tsu_config
+from NAE.pipeline.tsu.config import TSU_SCHEMA_VERSION
 
 from . import config, qdrant_store
 
@@ -54,6 +55,7 @@ def index_identifier(identifier: str, *, tsu_root: Path = tsu_config.TSU_ROOT,
             continue
 
         content_hash = hashing.tsu_hash(
+            schema_version=record.get("tsu_schema_version", TSU_SCHEMA_VERSION),
             claim=claim_text, book=record.get("book", ""),
             page=record.get("page", ""), scriptures=record.get("scriptures", []),
         )

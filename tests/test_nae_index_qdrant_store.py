@@ -30,6 +30,9 @@ def test_build_point_includes_expected_payload_fields():
         "review_status": "unverified",
         "overall_score": 0.75,
         "duplicate_of": None,
+        "tsu_schema_version": "1",
+        "collector_version": "1.1.0",
+        "canonical_version": "2.0.0",
     }
     point = qdrant_store.build_point(record, [0.1] * 1024)
     assert point.id == 5
@@ -37,4 +40,8 @@ def test_build_point_includes_expected_payload_fields():
     assert point.payload["book"] == "Body of Divinity"
     assert point.payload["doctrine"] == "Baptism"
     assert point.payload["overall_score"] == 0.75
+    assert point.payload["source_identifier"] == "gill_item"
+    assert point.payload["tsu_schema_version"] == "1"
+    assert point.payload["collector_version"] == "1.1.0"
+    assert point.payload["canonical_version"] == "2.0.0"
     assert len(point.vector) == 1024

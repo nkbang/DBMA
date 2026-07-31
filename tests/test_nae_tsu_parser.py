@@ -12,6 +12,7 @@ def _setup_item(tmp_path: Path, identifier: str) -> tuple[Path, Path]:
     canonical_dir.mkdir(parents=True)
     canonical_json = {
         "identifier": identifier,
+        "pipeline_version": "2.0.0",
         "paragraphs": [
             {
                 "index": 0,
@@ -53,7 +54,7 @@ def _setup_item(tmp_path: Path, identifier: str) -> tuple[Path, Path]:
     raw_dir = raw_root / "books" / identifier
     raw_dir.mkdir(parents=True)
     with open(raw_dir / "metadata.json", "w", encoding="utf-8") as fh:
-        json.dump({"title": "Body of Divinity", "creator": "John Gill"}, fh)
+        json.dump({"title": "Body of Divinity", "creator": "John Gill", "collector_version": "1.1.0"}, fh)
 
     return canonical_root, raw_root
 
@@ -76,6 +77,8 @@ def test_build_candidates_attaches_book_author_and_context(tmp_path: Path):
     assert first.book == "Body of Divinity"
     assert first.author == "John Gill"
     assert first.context_after == "This is clearly seen in Acts 2:41."
+    assert first.collector_version == "1.1.0"
+    assert first.canonical_version == "2.0.0"
 
     second = candidates[1]
     assert second.context_before == "Believer's baptism follows a profession of faith."

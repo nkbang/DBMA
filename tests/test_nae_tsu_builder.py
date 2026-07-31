@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-from NAE.pipeline.tsu import builder, claim
+from NAE.pipeline.tsu import builder, claim, config
 
 
 def _setup_item(tmp_path: Path, identifier: str) -> tuple[Path, Path, Path]:
@@ -60,6 +60,8 @@ def test_build_tsu_for_identifier_writes_records_and_report(tmp_path: Path):
     assert result["records"][0]["book"] == "Body of Divinity"
     assert result["records"][0]["doctrine"] == "Baptism"
     assert result["records"][0]["review_status"] == "unverified"
+    assert result["records"][0]["tsu_schema_version"] == config.TSU_SCHEMA_VERSION
+    assert result["records"][0]["source_identifier"] == "gill_body_of_divinity"
 
     out_dir = tsu_root / "gill_body_of_divinity"
     assert (out_dir / "tsu.json").exists()
