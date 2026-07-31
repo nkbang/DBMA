@@ -436,6 +436,24 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
             else:
                 record["source_provenance"] = None
 
+            # [STEP4-D, docs/tasks/reports/NAE_METADATA_ADAPTER_ARCHITECTURE_v1.md]
+            # Additive-only — same contract as content_quality/structure/
+            # source_provenance above. Populated only for documents whose
+            # registry entry carries nae_theological_position (i.e. ingested
+            # via scripts/ingest_nae_source.py); every field defaults to
+            # None/[] rather than being invented, so non-NAE documents are
+            # unaffected and this block is a no-op for the existing corpus.
+            nae_theological_position = doc.get("nae_theological_position")
+            if nae_theological_position is not None:
+                record["nae_metadata"] = {
+                    "theological_position": nae_theological_position,
+                    "denomination_context": doc.get("nae_denomination_context"),
+                    "content_genre": doc.get("nae_content_genre", []),
+                    "copyright_status": doc.get("nae_copyright_status"),
+                }
+            else:
+                record["nae_metadata"] = None
+
             records.append(record)
 
     return records
