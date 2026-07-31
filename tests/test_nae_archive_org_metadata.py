@@ -38,6 +38,31 @@ def test_fetch_item_metadata_parses_fields():
     assert len(item.files) == 2
 
 
+def test_select_download_files_does_not_mistake_chocr_gz_for_ocr_txt():
+    item = meta_mod.ItemMetadata(
+        identifier="id1",
+        files=[
+            meta_mod.FileEntry(name="book.pdf", format="text pdf"),
+            meta_mod.FileEntry(name="book_chocr.html.gz", format="chocr"),
+            meta_mod.FileEntry(name="book_djvu.txt", format="djvutxt"),
+        ],
+    )
+    chosen = meta_mod.select_download_files(item)
+    assert chosen["ocr_txt"].name == "book_djvu.txt"
+
+
+def test_select_download_files_no_ocr_when_only_chocr_available():
+    item = meta_mod.ItemMetadata(
+        identifier="id1",
+        files=[
+            meta_mod.FileEntry(name="book.pdf", format="text pdf"),
+            meta_mod.FileEntry(name="book_chocr.html.gz", format="chocr"),
+        ],
+    )
+    chosen = meta_mod.select_download_files(item)
+    assert "ocr_txt" not in chosen
+
+
 def test_select_download_files_prefers_pdf():
     item = meta_mod.ItemMetadata(
         identifier="id1",

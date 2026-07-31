@@ -120,13 +120,20 @@ def select_download_files(item: ItemMetadata) -> dict[str, FileEntry]:
             chosen["primary"] = candidates[0]
             break
 
+    # Plain-text OCR only: "_djvu.txt" or format "DjVuTXT". Deliberately excludes
+    # "*_chocr.html.gz" and other compressed/markup OCR variants that also contain
+    # the substring "ocr" but are not plain text (previously misdetected as OCR TXT).
     for f in item.files:
-        if "djvu.txt" in f.name.lower() or (f.format == "dwn" or "ocr" in f.name.lower()):
+        name = f.name.lower()
+        if name.endswith(".gz") or name.endswith(".html") or "chocr" in name or "hocr" in name:
+            continue
+        if name.endswith("_djvu.txt") or f.format == "djvutxt":
             chosen["ocr_txt"] = f
             break
     if "ocr_txt" not in chosen:
         for f in item.files:
-            if f.format == "txt":
+            name = f.name.lower()
+            if f.format == "txt" and not name.endswith(".gz") and "chocr" not in name and "hocr" not in name:
                 chosen["ocr_txt"] = f
                 break
 
