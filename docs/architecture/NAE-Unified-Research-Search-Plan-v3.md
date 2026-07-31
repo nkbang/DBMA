@@ -128,6 +128,15 @@ Notion API 미호출)를 C1 Task Order 028로 착수·완료. CUE 재검증: 신
 `core/retrieval.py`/`core/parallel_retriever.py`/`core/generation.py`/`ui/pages/chat.py` 미접촉 확인,
 실제 API 호출 코드(`api.notion.com`/`NOTION_TOKEN`/`notion_client`) 없음을 grep으로 확인.
 
-**실제 Notion 연동 착수 전 사용자 결정 필요 (5개, C1 정리):** (1) Integration Token 발급,
-(2) 워크스페이스 범위, (3) 페이지 매핑 정책(블록 단위 vs 페이지 단위), (4) 속성 스키마 매핑,
-(5) 증분 동기화 전략. DEVONthink와 같은 원칙으로 별도 결정 후 진행.
+**Notion 연동 취소 (2026-07-30, 사용자 결정).** 실제 연동 착수 전 필요했던 5개 결정 사항(Integration
+Token/워크스페이스 범위/매핑 정책/속성 스키마/동기화 전략)에 이르기 전에 취소됨. DEVONthink와 동일한
+패턴 — 커밋된 코드(`core/evidence_adapters/notion_fixture_adapter.py`, `CorpusType.NOTION`)는 범용
+인프라이므로 남겨두되, 실제 Notion API 연동은 v3 로드맵에서 제외한다.
+
+**v3 개인서재 트랙 보류 (2026-07-30, 사용자 결정).** DEVONthink 철회, Notion 취소 이후 사용자가 v3의
+개인서재(Personal Library/Knowledge Corpus) 트랙 전체를 접기로 결정 — Obsidian/Logos 커넥터 착수도
+포함해 더 이상 진행하지 않는다. `EvidenceUnit`/`evidence_adapters/`(픽스처 기반, DEVONthink+Notion)는
+범용 인프라로 코드에 남아있으나, v3 로드맵상 다음 단계로 이어지지 않는다. 재개 시점은 미정 — 다시
+꺼내기 전에 사용자에게 먼저 확인할 것.
+
+**v2(성경 검색 신뢰성 파이프라인)는 Sprint A~E 전부 완료된 상태로 유지.** 세션의 다른 작업으로 이동.

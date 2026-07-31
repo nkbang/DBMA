@@ -173,8 +173,3 @@ Notion Integration Token 발급 및 워크스페이스 연결을 시작하기 �
 | 파일 | 설명 |
 |------|------|
 | `core/evidence_unit.py` | CorpusType.NOTION 추가 (기존 값/필드 변경 없음) |
-| `core/evidence_adapters/notion_fixture_adapter.py` | Notion JSON 픽스처 → EvidenceUnit 변환 어댑터 |
-| `tests/fixtures/notion_fixture.json` | 테스트용 Notion 픽스처 (2페이지, 6블록) |
-| `tests/test_notion_fixture_adapter.py` | NotionFixtureAdapter 단위 테스트 (15개 케이스) |
-
-**미접촉 파일**: `core/retrieval.py`, `core/parallel_retriever.py`, `core/generation.py`, `ui/pages/chat.py` — 전부 무변경
