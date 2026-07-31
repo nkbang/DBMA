@@ -41,6 +41,29 @@ def test_remove_toc_and_index_drops_toc_page():
     assert "chapter one" in cleaned[0][0].lower()
 
 
+def test_remove_toc_and_index_does_not_delete_whole_book_when_unpaginated():
+    """Regression: OCR without form-feed page breaks becomes one giant 'page'.
+
+    A single incidental 'CONTENTS' line anywhere in that page must not delete
+    the entire book - this previously happened for real archive.org items
+    whose djvu.txt lacks \\x0c page markers (found via live TSU smoke testing).
+    """
+    body_lines = [f"This is real body text on line {i} of the book." for i in range(300)]
+    pages = [["CONTENTS", *body_lines]]
+    cleaned, removed = structure.remove_toc_and_index(pages)
+    assert removed == 0
+    assert len(cleaned[0]) == len(pages[0])
+
+
+def test_remove_toc_and_index_still_drops_short_real_toc_page():
+    pages = [
+        ["CONTENTS", "Chapter One .......... 1", "Chapter Two .......... 15"],
+        ["This is the actual body text of chapter one." for _ in range(1)],
+    ]
+    cleaned, removed = structure.remove_toc_and_index(pages)
+    assert removed == 1
+
+
 def test_extract_footnotes_pulls_numbered_marker_near_bottom():
     pages = [[
         "Main body paragraph text continues here.",

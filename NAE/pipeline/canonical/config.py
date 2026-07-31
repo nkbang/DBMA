@@ -22,6 +22,7 @@ FOOTNOTE_MARKER_PATTERN = r"^\s*(\[?\d{1,3}[\.\)]|\*+)\s+\S"
 FOOTNOTE_ZONE_LINES = 6          # look for footnote markers in the last N lines of a page
 TOC_HEADING_PATTERN = r"^\s*(CONTENTS|TABLE OF CONTENTS|INDEX)\s*$"
 TOC_ENTRY_PATTERN = r"^.{2,80}?\.{3,}\s*\d{1,4}\s*$"   # "Chapter One .......... 12"
+TOC_MAX_PAGE_LINES = 150         # a real TOC/index page is short; larger "pages" are never TOC candidates
 SCAN_NOISE_PATTERN = r"^[^A-Za-z0-9À-￿]{3,}$"  # lines of only punctuation/symbols
 
 # Stage 2.3 - reflow

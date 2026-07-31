@@ -67,13 +67,22 @@ def remove_page_numbers(pages: list[list[str]]) -> tuple[list[list[str]], int]:
 
 
 def remove_toc_and_index(pages: list[list[str]]) -> tuple[list[list[str]], int]:
-    """Drop whole pages that look like a table of contents / index."""
+    """Drop whole pages that look like a table of contents / index.
+
+    Guarded by page size: a real TOC/index page is short. Without this guard,
+    OCR text lacking form-feed page breaks (see extract.py) is treated as one
+    giant "page" spanning the whole book - a single "CONTENTS" line anywhere
+    in that text would then match has_heading and delete the entire document.
+    """
     removed = 0
     cleaned: list[list[str]] = []
     for page_lines in pages:
+        non_blank = [ln for ln in page_lines if ln.strip()]
+        if len(non_blank) > config.TOC_MAX_PAGE_LINES:
+            cleaned.append(page_lines)
+            continue
         has_heading = any(_TOC_HEADING_RE.match(line) for line in page_lines)
         entry_lines = [ln for ln in page_lines if _TOC_ENTRY_RE.match(ln)]
-        non_blank = [ln for ln in page_lines if ln.strip()]
         looks_like_toc = has_heading or (non_blank and len(entry_lines) / max(len(non_blank), 1) > 0.5)
         if looks_like_toc and non_blank:
             removed += 1
