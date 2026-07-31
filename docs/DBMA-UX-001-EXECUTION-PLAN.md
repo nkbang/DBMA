@@ -57,10 +57,9 @@ Stitch만으로는 구조 초안(80%)까지만 확보되고, 디테일(20%: 계�
   (§4 참고) — 3단계(Figma)에서 두 화면도 함께 반영 필요
 - 2단계: 완료 — §5.2 체크리스트 검증 + 영어 라벨(Theology Desk, Pastoral
   Scholar, INSIGHT 등) 한글 통일 완료
-- 3단계: 진행 중 — Figma 반입은 HQ가 html.to.design 플러그인으로 수동 진행.
-  Figma Dev Mode MCP 연동 시도했으나 무료(Starter) 플랜에서는 Dev Mode
-  자체가 제한되어 CUE의 직접 조회·검증(get_screenshot 등) 불가로 확인됨
-  (2026-07-30). 완료 후 스크린샷을 CUE에게 전달하는 방식으로 검증 계속
+- 3단계: **HQ 판단으로 생략** (2026-07-30) — Figma 반입 없이 바로 6단계
+  (C1 Architecture Review)로 진행. raw HTML 상태 그대로 리뷰함을 의미
+- 4단계: 3단계 생략에 따라 보류 (필요 시 6단계 리뷰 이후 재검토)
 - 4단계 이후: 3단계 완료 후 진행
 
 ---
@@ -80,16 +79,14 @@ Stitch만으로는 구조 초안(80%)까지만 확보되고, 디테일(20%: 계�
       동일 디자인 시스템으로 제작, §4-보완 참고)
 - [x] §5.2 체크리스트 검증 완료 — 영어 라벨(Theology Desk, Pastoral
       Scholar, INSIGHT, Scripture, Commentary, Drafting 등) 한글 통일 완료
-- [ ] Figma 반입 → 팀 리뷰, 오토레이아웃 정리, 토큰/디자인 시스템 맵핑
-      (v2 절차 3단계, HQ 액션 필요)
-- [ ] 사람 손 20% 보강(계층 구조, 브랜드 톤, 마이크로 인터랙션, 접근성)
+- [x] Figma 반입 — **HQ 판단으로 생략** (2026-07-30), 3단계·4단계 건너뜀
 - [ ] Design Freeze
-- [ ] C1 Architecture Review (Stitch 코드는 베이스 참고용, `ui/pages/*`
-      구조에 맞춰 CUE가 재작성하는 것을 전제로 리뷰)
+- [x] C1 Architecture Review 요청 — [C1 Task Order 035](agents/c1/C1-TASK-ORDER-035.md)
+      발급 (2026-07-30), 리뷰 진행 중
 - [ ] `DBMA-UX-002` Implementation Task Order 발행
 
-**진행률: 55%** (Stitch 5화면 확보 + Help/Library 보완 + 한글 라벨 통일
-완료, Figma 반입 및 20% 디테일 보강 대기)
+**진행률: 70%** (Stitch 9화면 확보 + Help/Library 보완 + 한글 라벨/브랜드
+통일 완료, Figma 생략, C1 Architecture Review 대기)
 
 ### 4.2 브랜드 거버넌스 정정 (2026-07-30)
 
