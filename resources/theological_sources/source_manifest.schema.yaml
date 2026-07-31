@@ -1,0 +1,118 @@
+# source_manifest.yaml schema
+#
+# resources/theological_sources/ 하위 각 카테고리 디렉토리(예: baptist/confessions/)에
+# source_manifest.yaml 1개씩을 두고, 그 안에 sources: 배열로 문서를 나열한다.
+# 이 파일 자체는 스키마 정의이며 실제 manifest 데이터가 아니다.
+#
+# scripts/source_validator.py가 이 스키마 기준으로 실제 manifest.yaml들을 검증한다.
+
+schema_version: "1.2"
+
+# 각 항목(entry)이 가져야 할 필드 정의
+fields:
+  source_id:
+    type: string
+    required: true
+    description: >
+      고유 식별자. 형식 권장: "{denomination}-{genre}-{sequence}"
+      예: baptist-confession-001. 전체 resources/theological_sources/ 트리에서
+      유일해야 함(source_validator.py가 중복 검사). 짧은 코드 형식(예:
+      SLBC1689)도 허용 — 유일성만 검사, 특정 포맷을 강제하지 않음.
+
+  title:
+    type: string
+    required: true
+    description: 원문 제목
+
+  author:
+    type: string
+    required: false
+    description: 저자/저술 단체. 무명/집단 저작은 명시적 단체명 또는 "unknown"
+
+  year:
+    type: integer
+    required: false
+    description: 최초 출판/저술 연도
+
+  license:
+    type: string
+    required: true
+    description: >
+      저작권/이용 조건. 값 예: "public_domain", "public_domain_original",
+      "public_domain_possible", "copyright_restricted", "unknown".
+      source_validator.py가 이 필드의 존재만 확인하며(값의 타당성 판단은
+      하지 않음), 누락 시 FAIL 처리.
+
+  content_genre:
+    type: array[string]
+    required: true
+    description: >
+      confession / theology / history / commentary / sermon / mission /
+      church_practice / pastoral 중 1개 이상 (NAE_METADATA_POLICY_v1.md
+      §5 값 체계 재사용)
+
+  tradition:
+    type: string
+    required: false
+    description: >
+      [NAE-SOURCE-003 신규] 침례교 신학 전통 분류. 값 예: "Particular Baptist"
+      (칼빈주의 계열), "American Baptist"(미국에서 독자적으로 형성된 계열),
+      "Baptist Evangelical"(General/초기 아르미니안 계열 및 부흥운동 계열).
+      이 3분류는 자유 텍스트이며 강제 enum이 아님 — source_candidates.csv의
+      원 tradition 표기(예: "Baptist (Second London)")와 다를 수 있으므로,
+      매핑 근거는 각 등록 시 notes에 기록 권장.
+
+  theological_category:
+    type: array[string]
+    required: false
+    description: >
+      [NAE-SOURCE-003 신규] 문서의 신학적 주제 축 — confession / ecclesiology
+      / soteriology / missions 중 1개 이상. content_genre(문서 형식/장르)와
+      다른 축임에 유의: 예를 들어 content_genre=theology인 논고가
+      theological_category=[soteriology, missions]를 가질 수 있음.
+
+  local_path:
+    type: string
+    required: false
+    description: 저장소 내 상대 경로 (파일 확보 전에는 비워둘 수 있음)
+
+  aliases:
+    type: array[string]
+    required: false
+    description: >
+      [NAE-SOURCE-DEDUP-001 신규, docs/SOURCE_ID_POLICY.md 참고] 이 문서를
+      과거 다른 source_id로 등록·언급한 이력이 있을 때, 그 옛 ID들을 보존
+      목적으로 나열한다. "하나의 원문 = 하나의 canonical source_id" 원칙에
+      따라 새 등록은 항상 canonical id로 하되, 기존 문서(리포트 등)가
+      참조하는 옛 id는 삭제하지 않고 여기 alias로 남겨 lineage를 보존한다.
+      source_validator.py는 이 필드를 별도 검사하지 않는다(중복 검사 대상은
+      source_id뿐 — alias는 의도적으로 여러 문서에 걸쳐 재사용될 수 없다는
+      점만 사람이 docs/SOURCE_ID_POLICY.md 기준으로 관리).
+
+  status:
+    type: enum
+    required: true
+    values: [PREPARED, ACQUIRED, VERIFIED, INGESTED, approved_for_acquisition, permission_required, verification_pending]
+    description: >
+      STEP5_REGISTRY_TRANSITION.md의 4단계(PREPARED/ACQUIRED/VERIFIED/INGESTED)에
+      더해, RAW 후보 심사 단계에서 쓰이는 3개 값을 추가(NAE-SOURCE-003):
+      approved_for_acquisition(확보 승인됨, 아직 미확보),
+      permission_required(저작권 등 별도 허가 필요, 확보 보류),
+      verification_pending(데이터 신뢰성/저작권 미확인, 확보 보류).
+      scripts/source_validator.py가 이 값이 허용된 목록 중 하나인지 검사.
+
+# manifest.yaml 파일 자체의 최상위 구조 예시
+example: |
+  schema_version: "1.2"
+  sources:
+    - source_id: SLBC1689
+      title: "Second London Baptist Confession of Faith (1689)"
+      author: "John Spurstow et al. (Baptist Assembly)"
+      year: 1689
+      license: public_domain_original
+      content_genre: [confession]
+      tradition: "Particular Baptist"
+      theological_category: [confession, ecclesiology, soteriology]
+      aliases: []
+      local_path: null
+      status: approved_for_acquisition
