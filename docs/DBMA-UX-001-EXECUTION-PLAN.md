@@ -57,8 +57,10 @@ Stitch만으로는 구조 초안(80%)까지만 확보되고, 디테일(20%: 계�
   (§4 참고) — 3단계(Figma)에서 두 화면도 함께 반영 필요
 - 2단계: 완료 — §5.2 체크리스트 검증 + 영어 라벨(Theology Desk, Pastoral
   Scholar, INSIGHT 등) 한글 통일 완료
-- 3단계: 미착수 — Figma 반입은 HQ 액션 필요 (Google 계정과 마찬가지로 웹
-  로그인 필요, CUE 브라우저 자동화로 대체 불가)
+- 3단계: 진행 중 — Figma 반입은 HQ가 html.to.design 플러그인으로 수동 진행.
+  Figma Dev Mode MCP 연동 시도했으나 무료(Starter) 플랜에서는 Dev Mode
+  자체가 제한되어 CUE의 직접 조회·검증(get_screenshot 등) 불가로 확인됨
+  (2026-07-30). 완료 후 스크린샷을 CUE에게 전달하는 방식으로 검증 계속
 - 4단계 이후: 3단계 완료 후 진행
 
 ---
