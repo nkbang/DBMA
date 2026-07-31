@@ -283,7 +283,7 @@ def _render_ingestion_form() -> None:
         use_ocr = st.checkbox("OCR 사용", value=False, key="use_ocr")
     with col3:
         force_reingest = st.checkbox("강제 재처리", value=False, key="force_reingest",
-                                      help="이미 처리된 파일명도 다시 시도합니다. 다만 내용이 기존 registry와 동일하면 여전히 건너뜁니다(SKIP) — 청킹 로직 자체를 바꿔서 재청킹하려면 아래 '전체 재청킹'을 쓰세요.")
+                                      help="이미 처리된 파일명도 다시 시도합니다. 다만 내용이 기존과 동일하면 여전히 건너뜁니다.")
     with col4:
         store.set("use_ocr", use_ocr)
         store.set("force_reingest", force_reingest)
@@ -297,10 +297,15 @@ def _render_ingestion_form() -> None:
     # tests/test_process_batch_force_reingest.py의 명시적 계약("두 게이트를
     # 혼동하지 말 것")을 깨므로, 반드시 별도 컨트롤로 둔다
     # (tests/test_force_rechunk.py 참고).
-    force_rechunk = st.checkbox(
-        "⚠️ 전체 재청킹 (내용이 같아도 다시 청킹)", value=False, key="force_rechunk",
-        help="청킹 알고리즘이 바뀐 뒤 이미 처리된 문서를 새 로직으로 다시 청킹할 때만 사용하세요. 자동으로 '강제 재처리'도 함께 적용됩니다.",
-    )
+    # 엔지니어링 유지보수용 위험 옵션 — 일반 사용자(베타 테스터)에게는 불필요해
+    # 숨긴다. NAE_ADMIN_MODE=1일 때만 노출 (ui/app.py의 Monitor 게이트와 동일 패턴).
+    if os.environ.get("NAE_ADMIN_MODE") == "1":
+        force_rechunk = st.checkbox(
+            "⚠️ 전체 재청킹 (내용이 같아도 다시 청킹)", value=False, key="force_rechunk",
+            help="청킹 알고리즘이 바뀐 뒤 이미 처리된 문서를 새 로직으로 다시 청킹할 때만 사용하세요. 자동으로 '강제 재처리'도 함께 적용됩니다.",
+        )
+    else:
+        force_rechunk = False
     store.set("force_rechunk", force_rechunk)
     effective_force_reingest = force_reingest or force_rechunk
 

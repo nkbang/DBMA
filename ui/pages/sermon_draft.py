@@ -126,7 +126,7 @@ def _render_book_coverage_buttons() -> None:
     버튼은 st.form 밖에 있어야 한다(Streamlit 제약 — st.button은 form
     안에서 즉시 클릭 반응하지 않음, st.form_submit_button만 가능)."""
     coverage = _get_processor().engine.book_coverage()
-    with st.expander("📖 전체 성경 이름 (책마다 임베딩된 자료 수)"):
+    with st.expander("📖 전체 성경 이름 (책마다 등록된 자료 수)"):
         cols = st.columns(6)
         for i, (name, book_id) in enumerate(BIBLE_BOOKS):
             count = coverage.get(book_id, 0)
