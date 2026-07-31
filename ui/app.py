@@ -205,9 +205,9 @@ def _render_sidebar() -> str:
 
         # System status summary
         st.markdown("### 📊 시스템 상태")
-        st.caption("벡터DB: 정상")
-        st.caption("임베딩: 정상")
-        st.caption("파일시스템: 정상")
+        st.caption("자료 검색: 정상")
+        st.caption("AI 분석: 정상")
+        st.caption("저장 공간: 정상")
 
         st.divider()
 
