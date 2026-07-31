@@ -80,13 +80,42 @@ Stitch만으로는 구조 초안(80%)까지만 확보되고, 디테일(20%: 계�
 - [x] §5.2 체크리스트 검증 완료 — 영어 라벨(Theology Desk, Pastoral
       Scholar, INSIGHT, Scripture, Commentary, Drafting 등) 한글 통일 완료
 - [x] Figma 반입 — **HQ 판단으로 생략** (2026-07-30), 3단계·4단계 건너뜀
-- [ ] Design Freeze
-- [x] C1 Architecture Review 요청 — [C1 Task Order 035](agents/c1/C1-TASK-ORDER-035.md)
-      발급 (2026-07-30), 리뷰 진행 중
-- [ ] `DBMA-UX-002` Implementation Task Order 발행
+- [x] Design Freeze — **HQ 판단으로 별도 승인 절차 없이 구현 착수로 진행**
+      (Acceptance §6.1 정식 체크 생략, 3단계/Figma 생략과 동일한 패턴)
+- [x] C1 Architecture Review 완료 — [C1 Task Order 035](agents/c1/C1-TASK-ORDER-035.md) /
+      [보고서](agents/c1/C1-TASK-ORDER-035-REPORT.md) (2026-07-31),
+      **판정: GO with caveats** (Core 영향 없음, 기술 용어 미노출 확인,
+      Streamlit 이식 caveats 6건 — landing.html 한자 로고 "內書齋"를
+      "내서재"로 정정 완료)
+- [x] `DBMA-UX-002` Implementation Task Order 발행 —
+      [DBMA-UX-002-IMPLEMENTATION-PLAN.md](DBMA-UX-002-IMPLEMENTATION-PLAN.md)
+      (2026-07-31), §2.1 옵션 A(내비게이션 전용 사이드바)로 착수
+- [x] §2.1 착수 — 실제 `ui/app.py` 사이드바가 이미 내비게이션 형태였음을
+      재확인(구 `ui/sidebar.py`는 미사용 죽은 코드), 대신 §4.3 목록의
+      기술 용어 노출을 실제로 발견·수정
+- [ ] `ui/pages/*` P0 화면(홈/검색/도움말/내 자료) Stitch 목업 기준 재구성 —
+      진행 중, 지금까지는 기존 화면의 브랜드·용어 정합성 정리 단계
 
-**진행률: 70%** (Stitch 9화면 확보 + Help/Library 보완 + 한글 라벨/브랜드
-통일 완료, Figma 생략, C1 Architecture Review 대기)
+**진행률: 92%** (Stitch 9화면 확보, C1 Review GO with caveats, UX-002
+착수하여 라이브 앱의 기술 용어 노출 8건 수정 완료 — 남은 건 Stitch 목업
+기준 화면 재구성 자체)
+
+### 4.3 UX-002 구현 중 실제 발견·수정한 항목 (2026-07-30 ~ 2026-07-31)
+
+Stitch 프로토타입과 별개로, **라이브 `ui/` 코드에 이미 있던** 브랜드/기술
+용어 위반을 감사하며 발견 즉시 수정(전부 커밋됨):
+
+| 파일 | 수정 |
+|---|---|
+| `ui/app.py` | 사이드바 라벨 "RAG 채팅"→"AI에게 질문" 등 4건, 상태 캡션 "벡터DB/임베딩"→"자료 검색/AI 분석" |
+| `ui/pages/dashboard.py` | 툴팁 내부 필드명 노출 제거, "처리 파이프라인"→"정리 과정" |
+| `ui/pages/library.py` | "청크/색인" 문구 순화, "청킹 미리보기" 패널 `NAE_ADMIN_MODE` 게이트 |
+| `ui/pages/processing.py` | "전체 재청킹" 체크박스 `NAE_ADMIN_MODE` 게이트 |
+| `ui/pages/sermon_draft.py` | "임베딩된 자료 수"→"등록된 자료 수" |
+| `docs/design/stitch/pastoral_research_desk/landing.html` | 한자 로고 "內書齋"→"내서재" (C1 리뷰 발견) |
+
+`research.py`/`chat.py`/`sermon_review.py`/`onboarding.py`는 위반 없음.
+`monitor.py`는 이미 관리자 전용이라 그대로 유지.
 
 ### 4.2 브랜드 거버넌스 정정 (2026-07-30)
 
