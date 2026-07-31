@@ -32,13 +32,17 @@ DBMA-SEARCH-INFRA-001(Logos식 Hybrid Retrieval 인프라, Phase 0~2)이
 함께 읽을 것. SPRINT 번호 체계 밖의 별도 프로젝트 트랙이다.**
 
 **[2026-07-31 갱신] DBMA-UX-001~003 트랙(Stitch 프로토타입 → 브랜드/UI
-정정 → Sample Library) 진행 완료. `docs/DBMA-UX-001-EXECUTION-PLAN.md`,
-`docs/DBMA-UX-002-IMPLEMENTATION-PLAN.md`, `docs/DBMA-UX-003-SAMPLE-LIBRARY-PLAN.md`
-참고. 라이브 `ui/` 코드의 기술 용어 노출(RAG/벡터DB/임베딩/청킹 등) 9건을
-발견·수정했고, Library에 "기본 자료(읽기 전용)" Sample Library를 실제
-파이프라인으로 구현했다(`core/config.py::DEFAULT_SAMPLE_LIBRARY_PATH`,
+정정 → Sample Library) 완료. `docs/DBMA-UX-001-EXECUTION-PLAN.md`(진행률
+100%), `docs/DBMA-UX-002-IMPLEMENTATION-PLAN.md`,
+`docs/DBMA-UX-003-SAMPLE-LIBRARY-PLAN.md` 참고. 라이브 `ui/` 코드의 기술
+용어 노출(RAG/벡터DB/임베딩/청킹 등) 9건을 발견·수정했고, Library에
+"기본 자료(읽기 전용)" Sample Library를 실제 파이프라인으로 구현했다
+(`core/config.py::DEFAULT_SAMPLE_LIBRARY_PATH`,
 `scripts/seed_sample_library.py`). Core 스키마(`identity_registry.py`)는
-변경하지 않았다 — side-file 방식.**
+변경하지 않았다 — side-file 방식. "보기"/"복사하여 내 자료로" 두 버튼
+모두 실 브라우저 클릭으로 최종 검증함(문서 수 112→113 증가 확인, 이후
+테스트 산출물 정리). C1 Task Order 035 Architecture Review: GO with
+caveats.**
 
 ---
 
