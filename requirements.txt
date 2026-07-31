@@ -1,6 +1,7 @@
 streamlit==1.58.0
 chromadb
 ollama
+qdrant-client
 langchain-text-splitters
 beautifulsoup4
 python-docx
