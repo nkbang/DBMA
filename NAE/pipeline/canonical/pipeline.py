@@ -7,12 +7,11 @@ from __future__ import annotations
 
 import json
 import logging
-from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from . import config, extract, normalize, reflow, structure
+from . import annotate, config, extract, normalize, reflow, structure
 
 logger = logging.getLogger("nae.canonical.pipeline")
 
@@ -43,16 +42,23 @@ def normalize_item(item_dir: Path, *, identifier: str | None = None) -> dict[str
     canonical_text = "\n\n".join(p.text for p in paragraphs if p.text)
     chars_after = len(canonical_text)
 
+    annotated_paragraphs = [annotate.annotate_paragraph(p, i) for i, p in enumerate(paragraphs)]
+
     scripture_refs: list[str] = []
-    for p in paragraphs:
-        scripture_refs.extend(reflow.find_scripture_references(p.text))
+    for entry in annotated_paragraphs:
+        scripture_refs.extend(ref["canonical"] for ref in entry["scripture_references"])
+
+    heading_count = sum(1 for p in annotated_paragraphs if p["type"] == "heading")
+    quote_count = sum(1 for p in annotated_paragraphs if p["type"] == "quote")
+    sentence_count = sum(len(p["sentences"]) for p in annotated_paragraphs)
+    language_blocks = sum(1 for p in annotated_paragraphs if p.get("language"))
 
     canonical_json = {
         "identifier": identifier,
         "pipeline_version": config.PIPELINE_VERSION,
         "source": extraction.source,
         "page_count": len(extraction.pages),
-        "paragraphs": [asdict(p) for p in paragraphs],
+        "paragraphs": annotated_paragraphs,
         "footnotes": structure_report.footnotes_extracted,
         "scripture_references": sorted(set(scripture_refs)),
     }
@@ -68,6 +74,10 @@ def normalize_item(item_dir: Path, *, identifier: str | None = None) -> dict[str
         "characters_after": chars_after,
         "paragraph_count": len(paragraphs),
         "verse_paragraph_count": sum(1 for p in paragraphs if p.type == "verse"),
+        "heading_count": heading_count,
+        "quote_count": quote_count,
+        "sentence_count": sentence_count,
+        "language_blocks_detected": language_blocks,
         "headers_footers_removed": structure_report.headers_footers_removed,
         "page_numbers_removed": structure_report.page_numbers_removed,
         "toc_pages_removed": structure_report.toc_pages_removed,
