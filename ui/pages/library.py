@@ -17,7 +17,13 @@ from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from ui.components.tables import document_table, search_results_table
 from ui.state.store import StateStore
-from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR, DEFAULT_REGISTRY_PATH
+from core.config import (
+    DEFAULT_RAW_DIR,
+    DEFAULT_OUTPUT_DIR,
+    DEFAULT_REGISTRY_PATH,
+    DEFAULT_SAMPLE_LIBRARY_PATH,
+)
+from core.processing import build_converter, build_splitter, process_one_file
 from core.identity_registry import (
     load_identity_registry,
     save_identity_registry,
@@ -134,9 +140,66 @@ def _render_search_bar() -> None:
 _DEFAULT_PAGE_SIZE = 20
 
 
+def _render_sample_library_section(sample_docs: list[dict]) -> None:
+    """[DBMA-UX-003] Read-only "기본 자료" section — Design Brief §2.5.
+    Visually distinct (tinted card, "읽기 전용" badge) from the user's own
+    documents below. "보기" opens it like any other document; "복사하여
+    내 자료로" duplicates it into an independent, editable copy.
+    """
+    if not sample_docs:
+        return
+
+    st.markdown(
+        f"""
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span style="font-weight:600; color:{THEME.TEXT_PRIMARY};">📚 기본 자료</span>
+            <span style="font-size:10px; font-weight:700; letter-spacing:0.03em;
+                         background:#F0DCC8; color:#6F6050; padding:2px 8px; border-radius:10px;">
+                읽기 전용
+            </span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    for doc in sample_docs:
+        with st.container():
+            st.markdown(
+                f"""
+                <div style="background:#F5F3EE; border:1px solid {THEME.BORDER_LIGHT};
+                            border-radius:8px; padding:12px 16px; margin-bottom:8px;">
+                    <div style="font-weight:600; color:{THEME.TEXT_PRIMARY};">{doc['title']}</div>
+                    <div style="font-size:12px; color:{THEME.TEXT_SECONDARY};">완성된 연구 예제</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            c1, c2 = st.columns(2)
+            with c1:
+                st.button(
+                    "보기", key=f"sample_view_{doc['title']}", use_container_width=True,
+                    on_click=_select_document,
+                    args=(doc["path"], doc["title"], doc["type"], doc["size"], doc["modified"]),
+                )
+            with c2:
+                if st.button("복사하여 내 자료로", key=f"sample_copy_{doc['title']}", use_container_width=True, type="primary"):
+                    ok, message = _copy_sample_to_my_library(doc["title"])
+                    if ok:
+                        st.success(message)
+                        st.rerun()
+                    else:
+                        st.error(message)
+    st.divider()
+
+
 def _render_document_collection() -> None:
     """Render the document collection table with single-click selection and pagination."""
     all_documents = _get_documents_list()
+
+    sample_titles = _get_sample_source_files()
+    if sample_titles:
+        sample_docs = [d for d in all_documents if d.get("title") in sample_titles]
+        all_documents = [d for d in all_documents if d.get("title") not in sample_titles]
+        _render_sample_library_section(sample_docs)
 
     if not all_documents:
         st.info("📂 문서가 없습니다. RAW 폴더에 문서를 추가하세요.")
@@ -286,6 +349,76 @@ def _find_registry_record(source_filename: str) -> "tuple[Optional[str], Optiona
         if record.get("source_file") == source_filename:
             return doc_id, record
     return None, None
+
+
+def _get_sample_source_files() -> set[str]:
+    """[DBMA-UX-003] source_file names of curated read-only sample
+    documents. Resolves DEFAULT_SAMPLE_LIBRARY_PATH's document_ids against
+    the registry so the caller can match against filenames from RAW
+    (see _get_documents_list, which lists by filename, not document_id).
+    """
+    if not os.path.exists(DEFAULT_SAMPLE_LIBRARY_PATH):
+        return set()
+    try:
+        with open(DEFAULT_SAMPLE_LIBRARY_PATH, "r", encoding="utf-8") as f:
+            sample_ids = set(json.load(f).get("document_ids", []))
+    except (json.JSONDecodeError, OSError):
+        return set()
+
+    if not sample_ids or not os.path.exists(DEFAULT_REGISTRY_PATH):
+        return set()
+
+    registry = load_identity_registry(DEFAULT_REGISTRY_PATH)
+    return {
+        record.get("source_file")
+        for doc_id, record in registry.get("documents", {}).items()
+        if doc_id in sample_ids and record.get("source_file")
+    }
+
+
+def _copy_sample_to_my_library(source_filename: str) -> "tuple[bool, str]":
+    """[DBMA-UX-003] Duplicate a sample's processed content as an
+    independent, editable document. Finds the sample's canonical output
+    .md, writes it into RAW under a new (non-colliding) filename, and
+    processes that copy through the normal pipeline — the copy gets its
+    own document_id and is never added to DEFAULT_SAMPLE_LIBRARY_PATH, so
+    it behaves like any other user document from then on. The original
+    sample is untouched.
+
+    Returns (success, message).
+    """
+    stem = make_safe_stem(source_filename)
+    matches = list(Path(DEFAULT_OUTPUT_DIR).rglob(f"{stem}.md"))
+    if not matches:
+        return False, "원본 자료를 찾을 수 없습니다."
+
+    content = matches[0].read_text(encoding="utf-8")
+
+    base_name = Path(source_filename).stem
+    new_name = f"{base_name} (내 자료).md"
+    new_path = Path(DEFAULT_RAW_DIR) / new_name
+    counter = 2
+    while new_path.exists():
+        new_name = f"{base_name} (내 자료 {counter}).md"
+        new_path = Path(DEFAULT_RAW_DIR) / new_name
+        counter += 1
+
+    new_path.parent.mkdir(parents=True, exist_ok=True)
+    new_path.write_text(content, encoding="utf-8")
+
+    converter = build_converter(use_ocr=False)
+    splitter = build_splitter(chunk_size=1200, chunk_overlap=200)
+    file_info = {
+        "name": new_name,
+        "path": str(new_path),
+        "size": new_path.stat().st_size,
+        "ext": "md",
+    }
+    result = process_one_file(file_info, converter, splitter, DEFAULT_OUTPUT_DIR, 1200, 200)
+    if not result["success"]:
+        return False, f"복사본 저장에 실패했습니다: {result.get('reason', '알 수 없는 오류')}"
+
+    return True, f"'{new_name}' 이름으로 내 자료에 복사되었습니다."
 
 
 def _render_provenance_section(source_filename: str) -> None:

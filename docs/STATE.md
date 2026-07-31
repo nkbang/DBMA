@@ -31,6 +31,15 @@ DBMA-SEARCH-INFRA-001(Logos식 Hybrid Retrieval 인프라, Phase 0~2)이
 진행·완료되었다 — 아래 "DBMA-SEARCH-INFRA-001 진행 내역" 섹션을 반드시
 함께 읽을 것. SPRINT 번호 체계 밖의 별도 프로젝트 트랙이다.**
 
+**[2026-07-31 갱신] DBMA-UX-001~003 트랙(Stitch 프로토타입 → 브랜드/UI
+정정 → Sample Library) 진행 완료. `docs/DBMA-UX-001-EXECUTION-PLAN.md`,
+`docs/DBMA-UX-002-IMPLEMENTATION-PLAN.md`, `docs/DBMA-UX-003-SAMPLE-LIBRARY-PLAN.md`
+참고. 라이브 `ui/` 코드의 기술 용어 노출(RAG/벡터DB/임베딩/청킹 등) 9건을
+발견·수정했고, Library에 "기본 자료(읽기 전용)" Sample Library를 실제
+파이프라인으로 구현했다(`core/config.py::DEFAULT_SAMPLE_LIBRARY_PATH`,
+`scripts/seed_sample_library.py`). Core 스키마(`identity_registry.py`)는
+변경하지 않았다 — side-file 방식.**
+
 ---
 
 ## 아키텍처 결정 (ADR)

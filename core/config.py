@@ -88,6 +88,20 @@ def registry_path_for(output_dir: str) -> str:
 
 DEFAULT_REGISTRY_PATH = registry_path_for(DEFAULT_OUTPUT_DIR)
 
+# [DBMA-UX-003] Sample Library — a small side-list of document_ids that are
+# curated read-only examples (Design Brief §2.5). Deliberately kept OUT of
+# identity_registry.py's schema (documents.json) rather than adding an
+# is_sample field there — this is a UI-only concern, and touching the core
+# registry contract for it would be unnecessary Core architecture surface
+# for what's fundamentally a display/permission flag. ui/pages/library.py
+# reads this file to decide which registry entries render as "기본 자료
+# (읽기 전용)".
+def sample_library_path_for(output_dir: str) -> str:
+    return os.path.join(output_dir, "registry", "sample_library.json")
+
+
+DEFAULT_SAMPLE_LIBRARY_PATH = sample_library_path_for(DEFAULT_OUTPUT_DIR)
+
 # [docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.2] Logos Print/Export
 # originals live outside DEFAULT_RAW_DIR — they are not primary research
 # documents (scripts/check_raw_only_originals.py's RAW-only guard is scoped
