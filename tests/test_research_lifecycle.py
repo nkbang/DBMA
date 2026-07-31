@@ -83,7 +83,11 @@ def _seed_mod(tmp_path, monkeypatch):
     monkeypatch.setattr(rw, "DEFAULT_OUTPUT_DIR", str(tmp_path))
     import ui.pages.research as mod
     monkeypatch.setattr(mod, "add_query_result", rw.add_query_result)
-    monkeypatch.setattr(mod, "search_results_table", lambda **kw: None)
+    # [Stitch redesign] search_results_table() was replaced by card-based
+    # rendering (_render_search_results_as_cards) — same stub purpose as
+    # before (this test only cares about session_id persistence, not
+    # rendering), just retargeted at the function that actually runs now.
+    monkeypatch.setattr(mod, "_render_search_results_as_cards", lambda *a, **kw: None)
     return mod
 
 

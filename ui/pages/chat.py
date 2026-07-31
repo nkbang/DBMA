@@ -16,20 +16,40 @@ not-yet-implemented change). What IS session-scoped: _build_conversation_
 history() feeds the last _HISTORY_MAX_TURNS exchanges into the ANSWER-
 GENERATION prompt only (GenerationService._build_prompt's conversation_
 history param), so follow-up questions read naturally within one browser
-session. Streamlit resets chat_messages to [] on a new session, so a new
-session already starts a fresh topic - no explicit "topic boundary"
-detection was needed for that half of the design.
+session.
+
+Cross-refresh persistence (2026-07-30): Streamlit resets session_state
+on a hard page refresh (new session) - this is framework behavior, not a
+regression. Since DBMA is a local single-user app, chat_messages is now
+mirrored to disk (_CHAT_HISTORY_FILE) after every turn and restored by
+_init_chat_state() on a fresh session, so a refresh no longer loses the
+conversation. Use the "대화 초기화" button (_clear_chat_history) to
+start a new topic - there's still no automatic topic-boundary detection.
 """
 
+import dataclasses
+import json
+import logging
+import os
 from pathlib import Path
 from typing import Optional
 
 import streamlit as st
 
 from ui.pages._base import BasePage
+from core.config import DATA_DIR
 from core.retrieval import QueryProcessor, RankedCandidate
 from core.generation import GenerationService
+from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
+
+logger = logging.getLogger(__name__)
+
+# [2026-07-30] 새로고침(F5) 시 chat_messages가 초기화되는 문제 - Streamlit의
+# session_state는 브라우저 세션에 묶여 있어 새로고침하면 새 세션으로 취급된다
+# (프레임워크 자체 동작, 회귀 아님). DBMA는 로컬 단일 사용자 앱이므로 디스크에
+# 마지막 대화를 저장했다가 새 세션 시작 시 복원하는 방식으로 해결한다.
+_CHAT_HISTORY_FILE = os.path.join(DATA_DIR, "chat_session_history.json")
 
 # 스코프별 반환 청크 수(k) - 좁은 스코프일수록 LLM에 넘기는 컨텍스트가
 # 짧아져 응답이 빨라진다(정확도 트레이드오프가 아니라 컨텍스트 길이 문제).
@@ -64,8 +84,13 @@ def render_chat_page() -> None:
     page.render_header()
 
     _init_chat_state()
-    _render_scope_selector()
-    _render_chat_history()
+
+    detail_selection = st.session_state.get("chat_detail_selection")
+    if detail_selection is not None:
+        _render_chat_page_with_detail()
+    else:
+        _render_scope_selector()
+        _render_chat_history()
 
     prompt = st.chat_input("질문을 입력하세요...")
     if prompt:
@@ -92,6 +117,9 @@ def _render_scope_selector() -> None:
                 st.selectbox("파일 선택", options=files, key="chat_scope_single")
             else:
                 st.multiselect("파일 선택 (복수)", options=files, key="chat_scope_multi")
+        if st.button("대화 초기화", key="chat_clear_history"):
+            _clear_chat_history()
+            st.rerun()
 
 
 def _current_scope() -> tuple:
@@ -109,7 +137,90 @@ def _current_scope() -> tuple:
 
 def _init_chat_state() -> None:
     if "chat_messages" not in st.session_state:
-        st.session_state["chat_messages"] = []
+        st.session_state["chat_messages"] = _load_chat_history()
+
+
+def _serialize_messages(messages: list[dict]) -> list[dict]:
+    """chat_messages를 JSON 저장 가능한 형태로 변환 - RankedCandidate/
+    ClaimGuardResult 같은 객체를 dict로 풀어낸다. 원본 리스트는 건드리지
+    않는다(session_state 내용을 그대로 두고 저장용 사본만 만듦)."""
+    out = []
+    for msg in messages:
+        m = dict(msg)
+        sources = m.get("sources")
+        if sources:
+            m["sources"] = [
+                s.to_dict() if hasattr(s, "to_dict") else s for s in sources
+            ]
+        claim_guard_result = m.get("claim_guard_result")
+        if claim_guard_result is not None:
+            m["claim_guard_result"] = dataclasses.asdict(claim_guard_result)
+        out.append(m)
+    return out
+
+
+def _deserialize_messages(raw: list[dict]) -> list[dict]:
+    """_serialize_messages()의 역변환 - 저장된 dict를 RankedCandidate/
+    ClaimGuardResult 객체로 복원한다. 필드가 안 맞는 등 손상된 레코드는
+    건너뛴다(저장 파일이 낡은 스키마여도 채팅 자체는 죽지 않게)."""
+    out = []
+    for msg in raw:
+        m = dict(msg)
+        sources = m.get("sources")
+        if sources:
+            restored = []
+            for s in sources:
+                try:
+                    restored.append(RankedCandidate(**s))
+                except TypeError:
+                    continue
+            m["sources"] = restored
+        claim_guard_result = m.get("claim_guard_result")
+        if claim_guard_result is not None:
+            try:
+                cg = dict(claim_guard_result)
+                cg["risk_level"] = RiskLevel(cg["risk_level"])
+                m["claim_guard_result"] = ClaimGuardResult(**cg)
+            except (TypeError, ValueError, KeyError):
+                m["claim_guard_result"] = None
+        out.append(m)
+    return out
+
+
+def _save_chat_history() -> None:
+    """현재 chat_messages를 디스크에 저장 - 실패해도 채팅 자체는 계속
+    동작해야 하므로 예외를 삼키고 경고 로그만 남긴다(부가 기능 장애가
+    핵심 기능을 막지 않게, Sprint D ClaimGuard 통합과 같은 원칙)."""
+    try:
+        os.makedirs(os.path.dirname(_CHAT_HISTORY_FILE), exist_ok=True)
+        serialized = _serialize_messages(st.session_state.get("chat_messages", []))
+        with open(_CHAT_HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(serialized, f, ensure_ascii=False)
+    except Exception as e:
+        logger.warning("[chat] 대화 기록 저장 실패: %s", e)
+
+
+def _load_chat_history() -> list[dict]:
+    """디스크에 저장된 마지막 대화를 복원. 파일이 없거나 손상됐으면 빈
+    대화로 시작한다 - 저장된 형식을 추측해서 복구하지 않는다."""
+    if not os.path.exists(_CHAT_HISTORY_FILE):
+        return []
+    try:
+        with open(_CHAT_HISTORY_FILE, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+        return _deserialize_messages(raw)
+    except Exception as e:
+        logger.warning("[chat] 대화 기록 복원 실패, 빈 대화로 시작: %s", e)
+        return []
+
+
+def _clear_chat_history() -> None:
+    st.session_state["chat_messages"] = []
+    try:
+        if os.path.exists(_CHAT_HISTORY_FILE):
+            os.remove(_CHAT_HISTORY_FILE)
+    except OSError as e:
+        logger.warning("[chat] 대화 기록 파일 삭제 실패: %s", e)
 
 
 def _build_conversation_history() -> str:
@@ -162,6 +273,7 @@ def _handle_user_message(question: str) -> None:
     conversation_history = _build_conversation_history()
 
     st.session_state["chat_messages"].append({"role": "user", "content": question})
+    _save_chat_history()
     with st.chat_message("user"):
         st.markdown(question)
 
@@ -181,6 +293,7 @@ def _handle_user_message(question: str) -> None:
             "content": error_msg,
             "sources": [],
         })
+        _save_chat_history()
         return
 
     low_confidence = _is_low_confidence(response.top_k_results)
@@ -198,9 +311,12 @@ def _handle_user_message(question: str) -> None:
         ):
             _render_claim_guard_warning(claim_guard_result)
         if response.top_k_results:
+            # Determine this turn's message index for stable key generation.
+            msgs = st.session_state.get("chat_messages", [])
+            _turn_msg_idx = len(msgs) - 1  # the assistant message just appended
             with st.expander(f"출처 ({len(response.top_k_results)}개)", expanded=False):
-                for candidate in response.top_k_results:
-                    _render_source(candidate)
+                for _src_idx, candidate in enumerate(response.top_k_results):
+                    _render_source(candidate, _turn_msg_idx, _src_idx)
 
     st.session_state["chat_messages"].append({
         "role": "assistant",
@@ -210,6 +326,7 @@ def _handle_user_message(question: str) -> None:
         "low_confidence": low_confidence,
         "claim_guard_result": claim_guard_result,
     })
+    _save_chat_history()
 
 
 def _is_low_confidence(top_k_results: list) -> bool:
@@ -234,7 +351,8 @@ def _render_claim_guard_warning(result) -> None:
 
 
 def _render_chat_history() -> None:
-    for msg in st.session_state["chat_messages"]:
+    msgs = st.session_state.get("chat_messages", [])
+    for _msg_idx, msg in enumerate(msgs):
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg["role"] == "assistant" and msg.get("low_confidence"):
@@ -243,8 +361,45 @@ def _render_chat_history() -> None:
                 _render_claim_guard_warning(msg["claim_guard_result"])
             if msg["role"] == "assistant" and msg.get("sources"):
                 with st.expander(f"출처 ({len(msg['sources'])}개)", expanded=False):
-                    for candidate in msg["sources"]:
-                        _render_source(candidate)
+                    for _src_idx, candidate in enumerate(msg["sources"]):
+                        _render_source(candidate, _msg_idx, _src_idx)
+
+
+def _render_chat_page_with_detail() -> None:
+    """2단 레이아웃: 왼쪽 채팅/검색, 오른쪽 문서 상세 패널."""
+    from core.document_detail import get_document_detail
+    from ui.components.detail_panel import render_detail_panel
+
+    cols = st.columns([2, 1])
+    with cols[0]:
+        _render_scope_selector()
+        _render_chat_history()
+
+    detail_selection = st.session_state.get("chat_detail_selection")
+    if detail_selection is None:
+        return
+
+    source_file = detail_selection["source_file"]
+    document_id = detail_selection["document_id"]
+    query_terms = detail_selection.get("query_terms", [])
+
+    with cols[1]:
+        # 닫기 버튼
+        if st.button("닫기", key="chat_detail_close_btn", type="primary"):
+            st.session_state["chat_detail_selection"] = None
+            st.rerun()
+
+        st.divider()
+
+        # 문서 상세 정보 로드
+        detail = get_document_detail(
+            source_file=source_file,
+            document_id=document_id,
+            query_terms=query_terms,
+        )
+
+        # 상세 패널 렌더링
+        render_detail_panel(detail, query_terms)
 
 
 def _escape_for_html(text: str) -> str:
@@ -255,155 +410,86 @@ def _escape_for_html(text: str) -> str:
     return result
 
 
-def _render_source(candidate: RankedCandidate) -> None:
-    """출처를 표시하고, 헤드라인을 클릭하면 원본 내용을 보여주는 모달을 연결한다.
+def _render_source(
+    candidate: RankedCandidate,
+    msg_index: int,
+    source_index_in_msg: int,
+) -> None:
+    """출처를 표시하고, 헤드라인을 클릭하면 우측에 문서 상세 패널을 연다.
 
-    [DBMA-UI-NAV-001] Headline 클릭 시 Library 문서 상세로 네비게이션 가능.
+    Parameters
+    ----------
+    candidate : RankedCandidate
+        출처 청프
+    msg_index : int
+        chat_messages 리스트에서의 메시지 인덱스 — key 안정성 보장
+    source_index_in_msg : int
+        해당 메시지 내 sources 리스트에서의 순번 — key 안정성 보장
     """
-    from ui.components.source_link import source_link
-
     source_file = candidate.metadata.get("source_file", "Unknown source")
-    structure = candidate.metadata.get("structure", {})
-    heading_path = structure.get("heading_path", [])
+    document_id = candidate.metadata.get("document_id", "")
 
-    # 헤드라인 경로 생성 (상위 -> 하위 순서)
-    heading_hierarchy = " > ".join(heading_path) if heading_path else ""
-
-    # 고유 ID 생성 (각 출처마다 고유한 모달 연결용) - hash()는 음수를 반환할 수 있으므로 abs() 사용
-    _source_hash = abs(hash(candidate.tsu_id + str(candidate.final_score))) & 0xFFFFFFFF
-    source_id = f"source-{_source_hash:x}"
-
-    # DBMA-UI-NAV-001: 클릭 가능한 source link로 교체
-    # headline을 버튼으로 표시하고 클릭 시 Library detail + modal 동시 오픈
-    _render_clickable_source(candidate, source_file, heading_path, source_id)
-
-    # 원본 내용 모달 (JavaScript 기반) - 기존 유지
-    _render_source_modal(source_id, candidate.content, source_file, heading_path)
+    _render_clickable_source(candidate, source_file, document_id, msg_index, source_index_in_msg)
 
 
 def _render_clickable_source(
     candidate: RankedCandidate,
     source_file: str,
-    heading_path: list,
-    source_id: str,
+    document_id: str,
+    msg_index: int,
+    source_index_in_msg: int,
 ) -> None:
-    """[DBMA-UI-NAV-001] 클릭 가능한 출처 headline을 렌더링한다.
+    """클릭 가능한 출처 headline을 렌더링한다.
 
-    Click target:
-    1. Save source info to session state (Library detail)
-    2. Open JS modal
+    Widget key is built from msg_index + source_index_in_msg + tsu_id hash.
+    This guarantees the same button always gets the same key across reruns,
+    because msg_index and source_index_in_msg depend only on rendering position,
+    not on any global counter that increments on every rerun.
 
-    Widget key must be unique per rendering instance to avoid
+    Widget key must also be unique per rendering instance to avoid
     StreamlitDuplicateElementKey when the same source appears
     across multiple chat turns or within the same expander.
     """
+    # Get heading_path from candidate metadata for display label
+    structure = candidate.metadata.get("structure", {})
+    heading_path = structure.get("heading_path", [])
     heading_hierarchy = " > ".join(heading_path) if heading_path else ""
     display_label = heading_hierarchy or source_file or "출처 미상"
 
-    # Unique button key per rendering instance (not per source identity).
-    # Use a monotonically increasing counter in session state so that each
-    # call to _render_source() gets its own widget key even when multiple
-    # messages reference the same candidate.tsu_id.
-    _counter_key = "_dbma_source_btn_counter"
-    if _counter_key not in st.session_state:
-        st.session_state[_counter_key] = 0
-    _instance_idx = st.session_state[_counter_key]
-    st.session_state[_counter_key] += 1
+    # Stable key: depends only on rendering position, not on any counter.
+    btn_key = f"nav_src_{msg_index}_{source_index_in_msg}_{abs(hash(candidate.tsu_id)) & 0xFFFFFFFF:x}"
 
-    # Combine instance counter + tsu_id to keep keys stable across reruns
-    # for the SAME rendering (so the button doesn't disappear on rerun)
-    # but unique across DIFFERENT renderings (avoiding key collision).
-    btn_key = f"nav_src_{_instance_idx}_{abs(hash(candidate.tsu_id)) & 0xFFFFFFFF:x}"
-
-    can_navigate = bool(source_file or candidate.metadata.get("document_id"))
+    can_navigate = bool(source_file or document_id)
 
     if can_navigate:
+        # Get the current question (last user message content) for query_terms
+        chat_messages = st.session_state.get("chat_messages", [])
+        query_terms = []
+        # Find the last user message before this assistant message
+        for msg in reversed(chat_messages):
+            if msg["role"] == "user":
+                query_terms = msg["content"].split()
+                break
+
         if st.button(
             f"📄 {display_label}",
             key=btn_key,
             type="primary",
             use_container_width=True,
         ):
-            # 1. Library detail navigation info
-            st.session_state["_dbma_source_nav"] = {
+            # Set chat_detail_selection to open detail panel on the right
+            st.session_state["chat_detail_selection"] = {
                 "source_file": source_file,
-                "document_id": candidate.metadata.get("document_id", ""),
-                "label": display_label,
-                "modal_js": f"document.getElementById('{source_id}').classList.add('show');",
+                "document_id": document_id,
+                "query_terms": query_terms,
             }
             st.rerun()
     else:
         # Graceful degradation
         st.caption(f"출처 정보 부족: {display_label}")
 
-    # Score 표시
+    # Score 표시 (살아있는 기능 — 유지)
     score = getattr(candidate, "final_score", 0.0)
     st.caption(f"신뢰도: {score:.4f}")
 
 
-def _render_source_modal(source_id: str, content: str, source_file: str, heading_path: list) -> None:
-    """원본 내용을 보여주는 JavaScript 모달을 렌더링한다."""
-    # heading HTML - heading_path가 없으면 빈 문자열
-    if heading_path:
-        _heading_html = '<h3 class="modal-heading-' + source_id + '">' + ("> ").join(heading_path) + '</h3>'
-    else:
-        _heading_html = ""
-
-    # CSS 템플릿 - 포맷팅이 내용을 건드리지 않도록 단순 문자열 결합만 사용
-    _CSS_TEMPLATE = (
-        "<style>\n"
-        ".modal-{sid} {{ display: none; position: fixed; top: 0; left: 0;\n"
-        "    width: 100%; height: 100%; background: rgba(0,0,0,0.5);\n"
-        "    z-index: 9999; justify-content: center; align-items: center; }}\n"
-        ".modal-{sid}.show {{ display: flex; }}\n"
-        ".modal-content-{sid} {{ background: white; border-radius: 8px;\n"
-        "    padding: 20px; max-width: 80%; max-height: 80%; overflow: auto;\n"
-        "    position: relative; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }}\n"
-        ".modal-close-{sid} {{ position: absolute; top: 10px; right: 15px;\n"
-        "    cursor: pointer; font-size: 24px; color: #666; background: none;\n"
-        "    border: none; }}\n"
-        ".modal-close-{sid}:hover {{ color: #000; }}\n"
-        ".modal-heading-{sid} {{ margin: 0 0 15px 0; padding-bottom: 10px;\n"
-        "    border-bottom: 1px solid #eee; color: #333; }}\n"
-        ".modal-source-{sid} {{ font-size: 12px; color: #888; margin-bottom: 15px; }}\n"
-        ".modal-body-{sid} {{ white-space: pre-wrap; line-height: 1.6;\n"
-        "    font-size: 14px; color: #333; }}\n"
-        "</style>\n"
-    )
-
-    _BODY_TEMPLATE = (
-        '<div id="{sid}" class="modal-{sid}">\n'
-        '  <div class="modal-content-{sid}" onclick="event.stopPropagation()">\n'
-        '    <button class="modal-close-{sid}" '
-        "onclick=\"document.getElementById('{sid}').classList.remove('show')\">X</button>\n"
-        "  {heading}\n"
-        '    <p class="modal-source-{sid}">출처: {src}</p>\n'
-        '    <div class="modal-body-{sid}">{body}</div>\n'
-        "  </div>\n"
-        "</div>\n"
-        "<script>\n"
-        "document.getElementById('{sid}').addEventListener('click', function(e) {{\n"
-        "  if (e.target === this) {{ this.classList.remove('show'); }}\n"
-        "}});\n"
-        "</script>\n"
-    )
-
-    _escaped_body = _escape_for_html(content[:5000]).replace("\n", "<br>")
-
-    css_part = _CSS_TEMPLATE.format(sid=source_id)
-    body_part = _BODY_TEMPLATE.format(
-        sid=source_id,
-        heading=_heading_html,
-        src=source_file,
-        body=_escaped_body,
-    )
-    modal_html = css_part + body_part
-    import streamlit.components.v1 as components
-    components.html(modal_html, height=0)
-
-    # 모달을 여는 자바스크립트 함수를 페이지에 등록
-    if "modal_open_functions" not in st.session_state:
-        st.session_state["modal_open_functions"] = []
-    st.session_state["modal_open_functions"].append(
-        f"document.getElementById('{source_id}').classList.add('show');"
-    )
