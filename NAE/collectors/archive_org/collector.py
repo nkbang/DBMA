@@ -8,7 +8,9 @@ import argparse
 import json
 import logging
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -79,19 +81,77 @@ def known_checksums(catalog: dict[str, dict[str, Any]]) -> set[str]:
     return {e["checksum"] for e in catalog.values() if e.get("checksum")}
 
 
+def find_item_dir(identifier: str, download_root: Path = config.DOWNLOAD_ROOT) -> Path | None:
+    for category in list(config.CATEGORY_KEYWORDS.keys()) + [config.DEFAULT_CATEGORY]:
+        candidate = download_root / category / identifier
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def is_locally_intact(identifier: str, catalog_entry: dict[str, Any],
+                       download_root: Path = config.DOWNLOAD_ROOT) -> bool:
+    """Verify metadata.json, the original file, and its checksum actually exist on disk.
+
+    A catalog entry with downloaded=True is not trusted on its own — the raw
+    files may have been moved, deleted, or partially written since the last run.
+    """
+    item_dir = find_item_dir(identifier, download_root)
+    if item_dir is None:
+        return False
+    if not (item_dir / "metadata.json").exists():
+        return False
+    originals = list(item_dir.glob("original.*"))
+    if not originals:
+        return False
+    expected = catalog_entry.get("checksum", "")
+    if not expected:
+        return False
+    return downloader.verify_checksum(originals[0], expected)
+
+
+def write_manifest(item_dir: Path, *, identifier: str, entry: dict[str, Any]) -> None:
+    manifest = {
+        "identifier": identifier,
+        "download_time": datetime.now(timezone.utc).isoformat(),
+        "sha256": entry.get("checksum", ""),
+        "files": sorted(p.name for p in item_dir.glob("*") if p.is_file() and p.name != "manifest.json"),
+        "version": 1,
+        "collector_version": config.COLLECTOR_VERSION,
+    }
+    config.MANIFESTS_ROOT.mkdir(parents=True, exist_ok=True)
+    with open(item_dir / "manifest.json", "w", encoding="utf-8") as fh:
+        json.dump(manifest, fh, ensure_ascii=False, indent=2)
+    with open(config.MANIFESTS_ROOT / f"{identifier}.json", "w", encoding="utf-8") as fh:
+        json.dump(manifest, fh, ensure_ascii=False, indent=2)
+
+
 def process_identifier(identifier: str, *, cfg: config.CollectorConfig,
                         catalog: dict[str, dict[str, Any]],
                         download_only: bool = False,
-                        metadata_only: bool = False) -> dict[str, Any]:
+                        metadata_only: bool = False,
+                        resume: bool = True) -> dict[str, Any]:
     """Process one identifier through metadata -> download -> integrity -> catalog entry."""
-    if identifier in catalog and catalog[identifier].get("downloaded") and not download_only:
-        return {"identifier": identifier, "status": "skipped_duplicate"}
+    if resume and not download_only and identifier in catalog:
+        existing = catalog[identifier]
+        if existing.get("downloaded") and is_locally_intact(identifier, existing, cfg.download_root):
+            return {"identifier": identifier, "status": "skipped_duplicate"}
+        if existing.get("downloaded"):
+            logger.warning("[resume] catalog claims %s downloaded but local files missing/corrupt, re-downloading",
+                            identifier)
 
     try:
         item = meta_mod.fetch_item_metadata(identifier, retry=cfg.retry, timeout=cfg.timeout)
     except Exception as exc:  # noqa: BLE001
         logger.error("[process] metadata fetch failed for %s: %s", identifier, exc)
         return {"identifier": identifier, "status": "failed", "reason": f"metadata_error:{exc}"}
+
+    pd_ok, pd_reason = filters.is_public_domain(
+        licenseurl=item.license, rights=item.rights,
+        possible_copyright_status=item.possible_copyright_status, year=item.year,
+    )
+    if not pd_ok:
+        return {"identifier": identifier, "status": "skipped_license", "reason": pd_reason}
 
     files = meta_mod.select_download_files(item)
     if not files:
@@ -121,7 +181,7 @@ def process_identifier(identifier: str, *, cfg: config.CollectorConfig,
             return {"identifier": identifier, "status": "skipped_duplicate_checksum"}
 
     entry = meta_mod.build_metadata_dict(
-        item, license_ok=item.license, download_url=download_url,
+        item, license_ok=pd_reason, download_url=download_url,
         checksum=checksum, downloaded=downloaded_any,
     )
 
@@ -129,6 +189,8 @@ def process_identifier(identifier: str, *, cfg: config.CollectorConfig,
         item_dir.mkdir(parents=True, exist_ok=True)
         with open(item_dir / "metadata.json", "w", encoding="utf-8") as fh:
             json.dump(entry, fh, ensure_ascii=False, indent=2)
+        if downloaded_any:
+            write_manifest(item_dir, identifier=identifier, entry=entry)
 
     catalog[identifier] = entry
     return {"identifier": identifier, "status": "downloaded" if downloaded_any else "metadata_only"}
@@ -138,6 +200,7 @@ def run_collector(keywords: list[str], *, cfg: config.CollectorConfig,
                    resume: bool = True, download_only: bool = False,
                    metadata_only: bool = False) -> dict[str, Any]:
     setup_logging()
+    start_time = time.monotonic()
     catalog = load_catalog() if resume else {}
 
     all_results: list[search.SearchResult] = []
@@ -166,7 +229,8 @@ def run_collector(keywords: list[str], *, cfg: config.CollectorConfig,
     with ThreadPoolExecutor(max_workers=cfg.threads) as executor:
         futures = {
             executor.submit(process_identifier, r.identifier, cfg=cfg, catalog=catalog,
-                             download_only=download_only, metadata_only=metadata_only): r.identifier
+                             download_only=download_only, metadata_only=metadata_only,
+                             resume=resume): r.identifier
             for r in accepted
         }
         for future in tqdm(as_completed(futures), total=len(futures), desc="collecting"):
@@ -176,13 +240,37 @@ def run_collector(keywords: list[str], *, cfg: config.CollectorConfig,
                 summary["downloaded"] += 1
             elif status.startswith("skipped_duplicate"):
                 summary["skipped_duplicate"] += 1
+            elif status == "skipped_license":
+                summary["skipped_license"] += 1
             elif status == "failed":
                 summary["failed"] += 1
                 summary["failures"].append(result)
 
     save_catalog(catalog)
     summary["catalog_size"] = len(catalog)
+
+    elapsed = time.monotonic() - start_time
+    summary["elapsed_seconds"] = round(elapsed, 2)
+    summary["average_per_sec"] = round(len(accepted) / elapsed, 3) if elapsed > 0 else 0.0
+    write_report(summary, keywords)
     return summary
+
+
+def write_report(summary: dict[str, Any], keywords: list[str]) -> Path:
+    config.REPORTS_ROOT.mkdir(parents=True, exist_ok=True)
+    report = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "collector_version": config.COLLECTOR_VERSION,
+        "keywords": keywords,
+        **summary,
+    }
+    report_path = config.REPORTS_ROOT / f"report_{int(time.time())}.json"
+    with open(report_path, "w", encoding="utf-8") as fh:
+        json.dump(report, fh, ensure_ascii=False, indent=2)
+    latest_path = config.REPORTS_ROOT / "latest.json"
+    with open(latest_path, "w", encoding="utf-8") as fh:
+        json.dump(report, fh, ensure_ascii=False, indent=2)
+    return report_path
 
 
 def build_arg_parser() -> argparse.ArgumentParser:

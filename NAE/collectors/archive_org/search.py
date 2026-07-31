@@ -15,6 +15,7 @@ logger = logging.getLogger("nae.collector.search")
 SEARCH_FIELDS = [
     "identifier", "title", "creator", "year", "language",
     "licenseurl", "publicdate", "mediatype", "downloads", "collection",
+    "rights", "possible-copyright-status",
 ]
 
 
@@ -30,6 +31,8 @@ class SearchResult:
     mediatype: str = ""
     downloads: int = 0
     collection: list[str] = field(default_factory=list)
+    rights: str = ""
+    possible_copyright_status: str = ""
 
 
 def _request_with_retry(params: dict[str, Any], *, retry: int = config.RETRY,
@@ -86,6 +89,8 @@ def search_keyword(keyword: str, *, rows: int = config.MAX_RESULTS,
             mediatype=doc.get("mediatype", ""),
             downloads=int(doc.get("downloads", 0) or 0),
             collection=collection,
+            rights=doc.get("rights", "") if isinstance(doc.get("rights"), str) else str(doc.get("rights", "")),
+            possible_copyright_status=doc.get("possible-copyright-status", "") or "",
         ))
     logger.info("[search] keyword=%r found=%d", keyword, len(results))
     return results

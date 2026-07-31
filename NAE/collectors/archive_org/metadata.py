@@ -32,6 +32,13 @@ class ItemMetadata:
     downloads: int = 0
     collection: list[str] = field(default_factory=list)
     license: str = ""
+    rights: str = ""
+    possible_copyright_status: str = ""
+    volume: str = ""
+    edition: str = ""
+    ocr: str = ""
+    imagecount: str = ""
+    scandate: str = ""
     source_url: str = ""
     files: list[FileEntry] = field(default_factory=list)
 
@@ -91,6 +98,13 @@ def fetch_item_metadata(identifier: str, *, retry: int = config.RETRY,
         downloads=int(data.get("item", {}).get("downloads", 0) or 0),
         collection=as_list(meta.get("collection")),
         license=as_str(meta.get("licenseurl")),
+        rights=as_str(meta.get("rights")),
+        possible_copyright_status=as_str(meta.get("possible-copyright-status")),
+        volume=as_str(meta.get("volume")),
+        edition=as_str(meta.get("edition")),
+        ocr=as_str(meta.get("ocr")),
+        imagecount=as_str(meta.get("imagecount")),
+        scandate=as_str(meta.get("scandate")),
         source_url=f"https://archive.org/details/{identifier}",
         files=files,
     )
@@ -132,8 +146,16 @@ def build_metadata_dict(item: ItemMetadata, *, license_ok: str, download_url: st
         "downloads": item.downloads,
         "collection": item.collection,
         "license": license_ok or item.license,
+        "rights": item.rights,
+        "possible_copyright_status": item.possible_copyright_status,
+        "volume": item.volume,
+        "edition": item.edition,
+        "ocr": item.ocr,
+        "imagecount": item.imagecount,
+        "scandate": item.scandate,
         "source_url": item.source_url,
         "download_url": download_url,
         "checksum": checksum,
         "downloaded": downloaded,
+        "collector_version": config.COLLECTOR_VERSION,
     }

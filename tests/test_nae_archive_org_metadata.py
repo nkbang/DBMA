@@ -84,3 +84,29 @@ def test_filters_reject_video_mediatype():
     ok, reason = filters.passes_all_filters(r)
     assert ok is False
     assert "mediatype" in reason
+
+
+def test_is_public_domain_missing_licenseurl_but_pre_cutoff_year():
+    ok, reason = filters.is_public_domain(licenseurl="", rights="", year="1770")
+    assert ok is True
+    assert reason.startswith("year_cutoff")
+
+
+def test_is_public_domain_missing_licenseurl_and_recent_year_is_unknown():
+    ok, reason = filters.is_public_domain(licenseurl="", rights="", year="1990")
+    assert ok is False
+    assert reason == "unknown"
+
+
+def test_is_public_domain_rights_text_overrides_missing_license():
+    ok, reason = filters.is_public_domain(licenseurl="", rights="Public domain in the United States.", year="")
+    assert ok is True
+    assert reason.startswith("rights_public_domain")
+
+
+def test_is_public_domain_disallowed_license_wins_over_year():
+    ok, reason = filters.is_public_domain(
+        licenseurl="https://archive.org/details/in-copyright", year="1800",
+    )
+    assert ok is False
+    assert reason.startswith("licenseurl_disallowed")

@@ -1,6 +1,8 @@
 """Filtering rules: media type, language, license, exclusion keywords."""
 from __future__ import annotations
 
+import re
+
 from . import config
 from .search import SearchResult
 
@@ -23,14 +25,53 @@ def has_excluded_keyword(result: SearchResult) -> bool:
     return any(kw in haystack for kw in config.EXCLUDED_TITLE_KEYWORDS)
 
 
+def _extract_year(value: str) -> int | None:
+    if not value:
+        return None
+    match = re.search(r"(1[5-9]\d{2}|20\d{2})", value)
+    return int(match.group(1)) if match else None
+
+
+def is_public_domain(*, licenseurl: str = "", rights: str = "",
+                      possible_copyright_status: str = "", year: str = "") -> tuple[bool, str]:
+    """Determine public-domain status from multiple signals, not licenseurl alone.
+
+    Internet Archive frequently omits licenseurl on pre-1929 scans even though
+    the underlying work is public domain in the US. Checked in order:
+    1. licenseurl matches an allowed/disallowed keyword -> decisive.
+    2. rights / possible-copyright-status text mentions public domain -> allow.
+    3. rights / possible-copyright-status text mentions in-copyright/borrow -> deny.
+    4. publication year at or before the US public-domain cutoff -> allow.
+    5. otherwise -> deny (unknown, conservative default).
+    """
+    url = (licenseurl or "").lower()
+    if url:
+        if any(bad in url for bad in config.DISALLOWED_LICENSE_KEYWORDS):
+            return False, f"licenseurl_disallowed:{licenseurl}"
+        if any(good in url for good in config.ALLOWED_LICENSE_KEYWORDS):
+            return True, f"licenseurl_allowed:{licenseurl}"
+
+    rights_text = " ".join([rights or "", possible_copyright_status or ""]).lower()
+    if rights_text:
+        if any(bad in rights_text for bad in config.DISALLOWED_LICENSE_KEYWORDS):
+            return False, f"rights_disallowed:{rights_text}"
+        if any(good in rights_text for good in config.PUBLIC_DOMAIN_RIGHTS_KEYWORDS):
+            return True, f"rights_public_domain:{rights_text}"
+
+    parsed_year = _extract_year(year)
+    if parsed_year is not None and parsed_year <= config.PUBLIC_DOMAIN_YEAR_CUTOFF:
+        return True, f"year_cutoff:{parsed_year}"
+
+    return False, "unknown"
+
+
 def is_allowed_license(result: SearchResult) -> bool:
-    """Public Domain / CC0 / CC-BY / Open Library free -> allowed. Unknown/In-copyright/Borrow -> excluded."""
-    url = (result.licenseurl or "").lower()
-    if not url:
-        return False
-    if any(bad in url for bad in config.DISALLOWED_LICENSE_KEYWORDS):
-        return False
-    return any(good in url for good in config.ALLOWED_LICENSE_KEYWORDS)
+    """Backward-compatible wrapper over is_public_domain using search-result fields."""
+    ok, _ = is_public_domain(
+        licenseurl=result.licenseurl, rights=result.rights,
+        possible_copyright_status=result.possible_copyright_status, year=result.year,
+    )
+    return ok
 
 
 def passes_all_filters(result: SearchResult) -> tuple[bool, str]:
@@ -40,8 +81,12 @@ def passes_all_filters(result: SearchResult) -> tuple[bool, str]:
         return False, "excluded_keyword"
     if not is_allowed_language(result):
         return False, f"excluded_language:{result.language}"
-    if not is_allowed_license(result):
-        return False, f"excluded_license:{result.licenseurl or 'unknown'}"
+    ok, reason = is_public_domain(
+        licenseurl=result.licenseurl, rights=result.rights,
+        possible_copyright_status=result.possible_copyright_status, year=result.year,
+    )
+    if not ok:
+        return False, f"excluded_license:{reason}"
     return True, "ok"
 
 
