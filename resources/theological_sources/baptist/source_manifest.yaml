@@ -70,6 +70,13 @@ sources:
       CSV priority=P0. tradition 매핑 근거: 미국 북부/서부 침례교에서
       널리 채택된 온건 칼빈주의 신앙고백 — 남침례교 BFM(2000, 아래
       BFM2000 항목)의 직접적 원형이기도 함. "American Baptist"로 분류.
+      [2026-08-01] 원문 확보 시 두 경로 모두에 배치 필요 —
+      docs/architecture/NAE-Dual-Pipeline-Clarification.md 참고:
+      (A) NAE/pipeline용 NAE/corpus/raw/archive_org/books/NHBC1833/
+      (ocr.txt/original.pdf/hocr.html, PBC1765 선례 형식),
+      (B) core/tsu_builder.py 경로용 data/nae/sources/baptist/nhc_1833.txt
+      (STEP5_HUMAN_ACQUISITION_GUIDE.md 형식). 현재 두 경로 모두 원문
+      미확보 상태 — status는 approved_for_acquisition 유지.
       여부는 docs/NAE_SOURCE_REGISTRY_REPORT.md에서 별도 언급.
 
   - source_id: TH1612
