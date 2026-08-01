@@ -1,0 +1,61 @@
+d7152ec989d47a48fce008780066d1d35c05e653
+
+7b7610767af6578ddad4af70d1e91e1ae38373f2
+
+dev/dbma-engine
+
+--- git show --stat HEAD ---
+commit d7152ec989d47a48fce008780066d1d35c05e653
+Author: David Bang <30775989+nkbang@users.noreply.github.com>
+Date:   Fri Jul 31 12:08:02 2026 -0500
+
+    feat: NAE Phase 5 Benchmark Infrastructure (C1 implementation, CUE review + fixes)
+    
+    Implemented by C1 (docs/agents/c1/C1-TASK-NAE-PHASE5-BENCHMARK-INFRASTRUCTURE.md),
+    reviewed by CUE per the CUE Review 작업지시서, two correctness bugs found and
+    fixed before commit:
+    
+    NAE/benchmark/ - schema.py, loader.py, metrics.py, evaluator.py, runner.py:
+    - BenchmarkItem dataclass schema with manual-only expected answers (no
+      auto-generated ground truth), JSONL loader with malformed-record
+      isolation, Recall@K/Precision@K/MRR/Hit Rate metrics, evaluator +
+      CLI runner. No dependency on core/retrieval.py or Qdrant - RetrievalFn
+      is injected as a plain callable so Phase 5.2 can wire in real Qdrant
+      retrieval without touching this infrastructure.
+    
+    Bug fixes from CUE's technical review:
+    - metrics.recall_at_k(): duplicate IDs in retrieved_ids could push recall
+      above 1.0 (e.g. recall_at_k(["A","A","A"], ["A"]) returned 3.0). Now
+      uses set-intersection size instead of counting duplicate matches.
+      precision_at_k() had the same duplicate-counting issue (bounded but
+      inflated); fixed the same way.
+    - Evaluator.report(): averaged metrics using only self.results[0]'s
+      metric keys. A dataset whose first item is "skipped" (empty
+      relevant_ids -> metrics={}) silently produced an empty avg_metrics for
+      the entire report even when later items had real metrics. Now unions
+      metric keys across all results.
+    
+    Added tests/test_nae_benchmark_evaluator.py and
+    tests/test_nae_benchmark_runner.py (previously 0 coverage - both bugs
+    were in these two untested files) plus duplicate-ID regression tests in
+    test_nae_benchmark_metrics.py. 86/86 benchmark tests pass; full NAE
+    suite 216/216.
+    
+    Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+
+ NAE/benchmark/__init__.py                          |  33 +++
+ NAE/benchmark/datasets/.gitkeep                    |   0
+ NAE/benchmark/datasets/benchmark_v1.jsonl          |   5 +
+ NAE/benchmark/evaluator.py                         | 196 +++++++++++++++
+ NAE/benchmark/loader.py                            | 151 +++++++++++
+ NAE/benchmark/metrics.py                           | 148 +++++++++++
+ NAE/benchmark/reports/.gitkeep                     |   0
+ NAE/benchmark/runner.py                            | 214 ++++++++++++++++
+ NAE/benchmark/schema.py                            | 192 ++++++++++++++
+ .../C1-TASK-NAE-PHASE5-BENCHMARK-INFRASTRUCTURE.md | 188 ++++++++++++++
+ tests/test_nae_benchmark_evaluator.py              |  98 ++++++++
+ tests/test_nae_benchmark_loader.py                 | 228 +++++++++++++++++
+ tests/test_nae_benchmark_metrics.py                | 263 ++++++++++++++++++++
+ tests/test_nae_benchmark_runner.py                 |  89 +++++++
+ tests/test_nae_benchmark_schema.py                 | 275 +++++++++++++++++++++
+ 15 files changed, 2080 insertions(+)
