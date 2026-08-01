@@ -27,18 +27,39 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
+from typing import Protocol
+
 from NAE.benchmark.evaluator import Evaluator, EvaluationResult
 from NAE.benchmark.loader import load_dataset
 from NAE.benchmark.schema import BenchmarkItem
 
 logger = logging.getLogger(__name__)
 
+
 # ------------------------------------------------------------------
-# Type alias for retrieval function
+# Retriever Protocol (contract boundary)
 # ------------------------------------------------------------------
 
-# retrieval_fn: question text -> List[str] (TSU IDs)
+class Retriever(Protocol):
+    """Retrieval contract.
+
+    retrieved_tsu_ids: list[str]
+    → BenchmarkItem.gold_tsu_ids: list[str]
+    → Evaluator → Recall@K / Precision@K / MRR / Hit Rate
+    """
+
+    def retrieve(self, query: str, k: int) -> List[str]:
+        ...
+
+
+# Type alias for backward compat (deprecated)
 RetrievalFn = Callable[[str], List[str]]
+
+
+class ConfigurationError(ValueError):
+    """retriever 미주입 등 구성 오류."""
+
+    pass
 
 
 # ------------------------------------------------------------------
@@ -47,24 +68,36 @@ RetrievalFn = Callable[[str], List[str]]
 
 def run_benchmark(
     dataset_path: str | Path,
-    retrieval_fn: RetrievalFn,
+    retrieval_fn: Optional[Retriever] = None,
     top_k: int = 5,
     output: str | Path | None = None,
     verbose: bool = False,
 ) -> Dict:
     """전체 벤치마크를 실행하고 리포트를 반환.
 
+    canonical ground truth: BenchmarkItem.gold_tsu_ids (top-level only).
+
     Args:
         dataset_path: JSONL 데이터셋 경로.
-        retrieval_fn: question_text -> List[tsu_id] 함수.
-                      실제 Qdrant 검색 등을 여기에 연결.
+        retrieval_fn: Retriever (injectable) 또는 None.
+                      None 이면 명시적 ConfigurationError.
         top_k: 검색 결과 K.
         output: 보고서 출력 경로. None이면 파일에 쓰지 않음.
         verbose: 상세 로그 출력.
 
     Returns:
         리포트 딕셔너리.
+
+    Raises:
+        ConfigurationError: retrieval_fn 이 None 인 경우.
     """
+    # retriever 필수화 — silent default 제거
+    if retrieval_fn is None:
+        raise ConfigurationError(
+            "retrieval_fn is required. "
+            "Provide a Retriever (injectable) or test-only FakeRetriever. "
+            "Silent _dummy_retrieval() default path has been removed."
+        )
     # 1. 데이터셋 로드
     logger.info("loading dataset: %s", dataset_path)
     items: List[BenchmarkItem] = load_dataset(dataset_path)
@@ -87,14 +120,18 @@ def run_benchmark(
         qtext = item.question.text
 
         try:
-            retrieved_ids = retrieval_fn(qtext)
+            # Retriever Protocol: retrieve(query, k) -> List[str]
+            if hasattr(retrieval_fn, "retrieve"):
+                retrieved_ids = retrieval_fn.retrieve(qtext, top_k)
+            else:
+                # Deprecated: Callable[[str], List[str]]
+                retrieved_ids = retrieval_fn(qtext)  # type: ignore[misc]
         except Exception as exc:
             logger.error("retrieval failed for %s: %s", qid, exc)
             errors += 1
             continue
 
-        relevant_ids = item.expected.expected_scriptures or item.expected.required_concepts
-        result = evaluator.evaluate(item, retrieved_ids, relevant_ids)
+        result = evaluator.evaluate(item, retrieved_ids)
 
         if result.status == "passed":
             passed += 1
@@ -151,23 +188,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="상세 로그 출력",
     )
-    parser.add_argument(
-        "--retrieval-fn",
-        type=str,
-        default="dummy",
-        help="검색 함수 이름 (기본값: dummy — 실제 연결 전까지 더미 사용)",
-    )
     return parser
-
-
-def _dummy_retrieval(question_text: str) -> List[str]:
-    """더미 검색 함수 — 실제 Qdrant 연결 전까지 사용.
-
-    TODO: 실제 Qdrant retrieval_fn으로 교체.
-    """
-    # 인프라 검증용: 빈 목록 반환 (모든 결과가 fail로 기록됨)
-    # 실제 데이터가 필요하면 Phase 5.1에서 생성.
-    return []
 
 
 def main(argv: List[str] | None = None) -> int:
@@ -186,28 +207,19 @@ def main(argv: List[str] | None = None) -> int:
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     )
 
-    # 검색 함수 선택
-    retrieval_fn = _dummy_retrieval
-    if args.retrieval_fn != "dummy":
-        logger.warning("custom retrieval_fn은 아직 미구현 — dummy 사용")
+    # CLI 에서 retrieval_fn 은 직접 제공해야 함 (Phase 5.2 에서 구현)
+    # 현재는 test-only 로만 사용 가능.
+    logger.error(
+        "CLI requires a retrieval_fn argument. "
+        "Provide via Python API or implement --retrieval-fn module:func."
+    )
+    print(
+        "ERROR: CLI requires retrieval_fn to be provided via Python API.",
+        file=sys.stderr,
+    )
+    return 1
 
-    # 실행
-    try:
-        report = run_benchmark(
-            dataset_path=args.dataset,
-            retrieval_fn=retrieval_fn,
-            top_k=args.top_k,
-            output=args.output,
-            verbose=args.verbose,
-        )
-    except Exception as exc:
-        logger.error("benchmark failed: %s", exc)
-        print(f"ERROR: {exc}", file=sys.stderr)
-        return 1
-
-    # 결과 출력
-    print(json.dumps(report, ensure_ascii=False, indent=2, default=str))
-    return 0
+    # TODO: Phase 5.2 에서 실제 Qdrant client 연결 시 이 부분을 업데이트.
 
 
 if __name__ == "__main__":

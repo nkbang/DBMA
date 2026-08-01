@@ -14,7 +14,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import pytest
-from NAE.benchmark.loader import load_dataset, validate_dataset
+from NAE.benchmark.loader import (
+    load_dataset,
+    validate_dataset,
+    check_duplicate_benchmark_ids,
+    check_empty_dataset,
+)
 from NAE.benchmark.schema import BenchmarkItem
 
 
@@ -30,18 +35,34 @@ def valid_jsonl(tmp_path: Path) -> Path:
         {
             "benchmark_id": "B001",
             "question": {"text": "질문 1", "language": "ko"},
-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
+            "expected": {
+                "gold_tsu_ids": ["TSU-001"],
+                "required_concepts": [],
+                "expected_scriptures": [],
+                "expected_doctrine": "",
+            },
             "retrieval": {"top_k": 5},
             "evaluation": {"status": "pending"},
             "metadata": {"created_version": "1.0", "source": "test"},
+            "gold_tsu_ids": ["TSU-001"],
+            "difficulty": "beginner",
+            "review_status": "draft",
         },
         {
             "benchmark_id": "B002",
             "question": {"text": "질문 2", "language": "en"},
-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
+            "expected": {
+                "gold_tsu_ids": ["TSU-002"],
+                "required_concepts": [],
+                "expected_scriptures": [],
+                "expected_doctrine": "",
+            },
             "retrieval": {"top_k": 5},
             "evaluation": {"status": "pending"},
             "metadata": {"created_version": "1.0", "source": "test"},
+            "gold_tsu_ids": ["TSU-002"],
+            "difficulty": "beginner",
+            "review_status": "draft",
         },
     ]
     with open(p, "w", encoding="utf-8") as fh:
@@ -59,15 +80,28 @@ def mixed_jsonl(tmp_path: Path) -> Path:
         {
             "benchmark_id": "B001",
             "question": {"text": "질문 1", "language": "ko"},
-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
+            "expected": {
+                "gold_tsu_ids": ["TSU-001"],
+                "required_concepts": [],
+                "expected_scriptures": [],
+                "expected_doctrine": "",
+            },
             "retrieval": {"top_k": 5},
             "evaluation": {"status": "pending"},
             "metadata": {"created_version": "1.0", "source": "test"},
+            "gold_tsu_ids": ["TSU-001"],
+            "difficulty": "beginner",
+            "review_status": "draft",
         },
         # invalid: missing benchmark_id
         {
             "question": {"text": "질문 2", "language": "ko"},
-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
+            "expected": {
+                "gold_tsu_ids": [],
+                "required_concepts": [],
+                "expected_scriptures": [],
+                "expected_doctrine": "",
+            },
             "retrieval": {"top_k": 5},
             "evaluation": {"status": "pending"},
             "metadata": {"created_version": "1.0", "source": "test"},
@@ -76,10 +110,18 @@ def mixed_jsonl(tmp_path: Path) -> Path:
         {
             "benchmark_id": "B003",
             "question": {"text": "질문 3", "language": "ko"},
-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
+            "expected": {
+                "gold_tsu_ids": ["TSU-003"],
+                "required_concepts": [],
+                "expected_scriptures": [],
+                "expected_doctrine": "",
+            },
             "retrieval": {"top_k": 5},
             "evaluation": {"status": "pending"},
             "metadata": {"created_version": "1.0", "source": "test"},
+            "gold_tsu_ids": ["TSU-003"],
+            "difficulty": "beginner",
+            "review_status": "draft",
         },
     ]
     with open(p, "w", encoding="utf-8") as fh:
@@ -97,10 +139,18 @@ def corrupted_jsonl(tmp_path: Path) -> Path:
         fh.write(json.dumps({
             "benchmark_id": "B001",
             "question": {"text": "질문 1", "language": "ko"},
-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
+            "expected": {
+                "gold_tsu_ids": ["TSU-001"],
+                "required_concepts": [],
+                "expected_scriptures": [],
+                "expected_doctrine": "",
+            },
             "retrieval": {"top_k": 5},
             "evaluation": {"status": "pending"},
             "metadata": {"created_version": "1.0", "source": "test"},
+            "gold_tsu_ids": ["TSU-001"],
+            "difficulty": "beginner",
+            "review_status": "draft",
         }) + "\n")
         # corrupted: invalid JSON
         fh.write("{invalid json content\n")
@@ -108,10 +158,18 @@ def corrupted_jsonl(tmp_path: Path) -> Path:
         fh.write(json.dumps({
             "benchmark_id": "B003",
             "question": {"text": "질문 3", "language": "ko"},
-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
+            "expected": {
+                "gold_tsu_ids": ["TSU-003"],
+                "required_concepts": [],
+                "expected_scriptures": [],
+                "expected_doctrine": "",
+            },
             "retrieval": {"top_k": 5},
             "evaluation": {"status": "pending"},
             "metadata": {"created_version": "1.0", "source": "test"},
+            "gold_tsu_ids": ["TSU-003"],
+            "difficulty": "beginner",
+            "review_status": "draft",
         }) + "\n")
     return p
 

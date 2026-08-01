@@ -32,8 +32,8 @@ def recall_at_k(
         0.0 ~ 1.0 사이의 Recall 값.
     """
     if not relevant_ids:
-        # 관련 결과가 없으면 Recall은 1.0 (모두 정확)
-        return 1.0
+        # 관련 결과가 없으면 Recall은 0.0 (분모 0 — zero-gold 정책)
+        return 0.0
 
     if k is not None:
         retrieved_subset = retrieved_ids[:k]
@@ -55,8 +55,14 @@ def precision_at_k(
 ) -> float:
     """Top-K 중 관련 결과의 비율.
 
+    중복 검색 결과를 처리하는 정책 (HQ-C1-DIRECTIVE-NAE-PHASE5.1-REMEDIATION-004):
+    - retrieved IDs는 순서를 보존하며 중복 제거한다 (effective retrieved).
+    - numerator = effective retrieved IDs 중 gold_tsu_ids에 포함된 고유 ID 수
+    - denominator = effective retrieved IDs 수
+    - effective retrieved IDs가 비어 있으면 precision = 0.0
+
     Args:
-        retrieved_ids: 검색 결과 TSU ID 목록.
+        retrieved_ids: 검색 결과 TSU ID 목록 (순서 중요, 중복 가능).
         relevant_ids: gold standard 관련 TSU ID 목록.
         k: 사용할 K. None이면 len(retrieved_ids) 사용.
 
@@ -71,13 +77,19 @@ def precision_at_k(
     else:
         retrieved_subset = retrieved_ids
 
-    relevant_set: Set[str] = set(relevant_ids)
-    # 분자는 고유 관련 항목 수 (동일 ID 중복 검색을 여러 hit으로 세지 않음),
-    # 분모는 실제 반환된 결과 개수(중복 포함) — 검색기가 같은 결과를 중복
-    # 반환하면 precision이 인위적으로 부풀려지지 않도록 한다.
-    hits = len(relevant_set & set(retrieved_subset))
+    # HQ 정책: 순서를 보존하며 중복 제거 (effective retrieved)
+    seen: Set[str] = set()
+    effective_retrieved: List[str] = []
+    for rid in retrieved_subset:
+        if rid not in seen:
+            seen.add(rid)
+            effective_retrieved.append(rid)
 
-    return hits / len(retrieved_subset)
+    relevant_set: Set[str] = set(relevant_ids)
+    # numerator = effective retrieved IDs 중 gold_tsu_ids에 포함된 고유 ID 수
+    hits = len(relevant_set & set(effective_retrieved))
+    # denominator = effective retrieved IDs 수
+    return hits / len(effective_retrieved)
 
 
 def mean_reciprocal_rank(

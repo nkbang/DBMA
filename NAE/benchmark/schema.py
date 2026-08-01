@@ -1,6 +1,11 @@
 """NAE Benchmark Schema — Question Unit 정의
 
 자동 정답 생성 금지. 모든 값은 수동 입력 또는 후속 단계에서 생성.
+
+확장 스키마 (C1-TASK-ORDER-037):
+- gold_tsu_ids: retrieval ground truth (TSU ID 공간 기준)
+- question_type / difficulty / review_status: 메타 필드
+- metadata: tsu_schema_version, collector_version, canonical_version
 """
 
 from __future__ import annotations
@@ -9,6 +14,45 @@ import json
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
+
+
+# ------------------------------------------------------------------
+# Schema Constants
+# ------------------------------------------------------------------
+
+# 질문 유형 (수동 확정 값)
+QUESTION_TYPES: List[str] = [
+    "concept",       # 개념 이해
+    "scripture",     # 성경 근거
+    "doctrine",      # 교리 비교
+    "historical",    # 역사적 문맥
+    "application",   # 적용
+    "comparison",    # 비교 분석
+    "other",         # 기타
+]
+
+# 난이도 (수동 확정 값)
+DIFFICULTY_LEVELS: List[str] = [
+    "beginner",
+    "intermediate",
+    "advanced",
+    "scholarly",
+]
+
+# 검토 상태
+REVIEW_STATUSES: List[str] = [
+    "draft",
+    "review",
+    "approved",
+    "rejected",
+]
+
+# Gold validity diagnostic (HQ-C1-DIRECTIVE-NAE-PHASE5.1-REMEDIATION-004)
+GOLD_VALIDITY_STATUSES: List[str] = [
+    "VALID",           # gold_tsu_ids 가 비어 있고 중복 없음
+    "INVALID_GOLD",    # gold_tsu_ids 가 None, 누락, 또는 빈 list
+    "DUPLICATE_GOLD",  # gold_tsu_ids 에 중복이 있음
+]
 
 
 # ------------------------------------------------------------------
@@ -21,12 +65,21 @@ class BenchmarkQuestion:
 
     text: str = ""
     language: str = "ko"  # "ko" | "en"
+    question_type: str = "other"  # QUESTION_TYPES 중 하나
 
 
 @dataclass
 class BenchmarkExpected:
-    """예측 정답 정보 (수동 입력)."""
+    """예측 정답 정보 (수동 입력).
 
+    DEPRECATED: gold_tsu_ids는 BenchmarkItem.gold_tsu_ids로 canonical 이동.
+    loader가 legacy JSONL에서 역직렬화할 때만 사용됩니다.
+    """
+
+    gold_tsu_ids: List[str] = field(
+        default_factory=list,
+        metadata={"deprecated": True, "legacy_alias": "BenchmarkItem.gold_tsu_ids"},
+    )
     required_concepts: List[str] = field(default_factory=list)
     expected_scriptures: List[str] = field(default_factory=list)
     expected_doctrine: str = ""
@@ -55,6 +108,9 @@ class BenchmarkMetadata:
     created_version: str = ""
     source: str = ""
     created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    tsu_schema_version: str = ""
+    collector_version: str = ""
+    canonical_version: str = ""
 
 
 @dataclass
@@ -68,12 +124,18 @@ class BenchmarkItem:
     evaluation: BenchmarkEvaluation = field(default_factory=BenchmarkEvaluation)
     metadata: BenchmarkMetadata = field(default_factory=BenchmarkMetadata)
 
-    # retrieved_tsu_ids: 검색 결과로 얻은 TSU ID 목록 (평가 runner에서 채움)
+    # retrieved_tsu_ids: 검색 결과로 얻은 TSU ID 목록 (평가 runner 에서 채움)
     retrieved_tsu_ids: List[str] = field(default_factory=list)
     retrieved_scores: List[float] = field(default_factory=list)
 
-    # 관련 TSU ID 목록 (gold standard 기준)
-    relevant_tsu_ids: List[str] = field(default_factory=list)
+    # gold standard ground truth — TSU ID 공간 기준
+    gold_tsu_ids: List[str] = field(default_factory=list)
+
+    # 난이도 (수동 입력)
+    difficulty: str = "beginner"  # DIFFICULTY_LEVELS 중 하나
+
+    # 검토 상태 (수동 입력)
+    review_status: str = "draft"  # REVIEW_STATUSES 중 하나
 
     # ------------------------------------------------------------------
     # Serialization
@@ -90,7 +152,9 @@ class BenchmarkItem:
             "metadata": asdict(self.metadata),
             "retrieved_tsu_ids": self.retrieved_tsu_ids,
             "retrieved_scores": self.retrieved_scores,
-            "relevant_tsu_ids": self.relevant_tsu_ids,
+            "gold_tsu_ids": self.gold_tsu_ids,
+            "difficulty": self.difficulty,
+            "review_status": self.review_status,
         }
 
     def to_json(self, indent: int = 2) -> str:
@@ -113,7 +177,9 @@ class BenchmarkItem:
             metadata=BenchmarkMetadata(**data.get("metadata", {})),
             retrieved_tsu_ids=data.get("retrieved_tsu_ids", []),
             retrieved_scores=data.get("retrieved_scores", []),
-            relevant_tsu_ids=data.get("relevant_tsu_ids", []),
+            gold_tsu_ids=data.get("gold_tsu_ids", []),
+            difficulty=data.get("difficulty", "beginner"),
+            review_status=data.get("review_status", "draft"),
         )
 
     @classmethod
@@ -136,16 +202,63 @@ class BenchmarkItem:
             errors.append("question.text is required")
 
         if self.question.language not in ("ko", "en"):
-            errors.append(f"question.language must be 'ko' or 'en', got '{self.question.language}'")
+            errors.append(
+                f"question.language must be 'ko' or 'en', got '{self.question.language}'"
+            )
+
+        if self.question.question_type not in QUESTION_TYPES:
+            errors.append(
+                f"question.question_type must be one of {QUESTION_TYPES}, "
+                f"got '{self.question.question_type}'"
+            )
 
         if self.retrieval.top_k < 1:
             errors.append("retrieval.top_k must be >= 1")
 
+        if self.difficulty not in DIFFICULTY_LEVELS:
+            errors.append(
+                f"difficulty must be one of {DIFFICULTY_LEVELS}, got '{self.difficulty}'"
+            )
+
+        if self.review_status not in REVIEW_STATUSES:
+            errors.append(
+                f"review_status must be one of {REVIEW_STATUSES}, got '{self.review_status}'"
+            )
+
+        # gold_tsu_ids 중복 검사
+        if len(self.gold_tsu_ids) != len(set(self.gold_tsu_ids)):
+            errors.append("gold_tsu_ids contains duplicates")
+
+        return errors
+
+    def validate_referential_integrity(
+        self, known_tsu_ids: Optional[set] = None
+    ) -> List[str]:
+        """gold_tsu_ids 가 known_tsu_ids 에 존재하는지 검증.
+
+        Parameters
+        ----------
+        known_tsu_ids : set or None
+            실제 TSU 데이터셋의 모든 ID 집합.
+            None 이면 검증을 건너뛴다.
+
+        Returns
+        -------
+        List[str]
+            검증 오류 목록.
+        """
+        if known_tsu_ids is None:
+            return []
+
+        errors: List[str] = []
+        for tsu_id in self.gold_tsu_ids:
+            if tsu_id not in known_tsu_ids:
+                errors.append(f"gold_tsu_id '{tsu_id}' not found in known TSU IDs")
         return errors
 
 
 # ------------------------------------------------------------------
-# Schema Constants
+# Schema Constants (module level)
 # ------------------------------------------------------------------
 
 REQUIRED_FIELDS = [
@@ -159,7 +272,7 @@ REQUIRED_FIELDS = [
 
 QUESTION_REQUIRED = ["text", "language"]
 
-EXPECTED_REQUIRED = ["required_concepts", "expected_scriptures", "expected_doctrine"]
+EXPECTED_REQUIRED = ["gold_tsu_ids", "required_concepts", "expected_scriptures", "expected_doctrine"]
 
 RETRIEVAL_REQUIRED = ["top_k"]
 
@@ -173,8 +286,10 @@ SCHEMA_EXAMPLE = {
     "question": {
         "text": "예수님이 십자가에서 무엇을 이루셨나요?",
         "language": "ko",
+        "question_type": "doctrine",
     },
     "expected": {
+        "gold_tsu_ids": ["TSU-0001", "TSU-0042"],
         "required_concepts": ["속죄", "십자가", "대리"],
         "expected_scriptures": ["히브리서 9:22", "로마서 3:25"],
         "expected_doctrine": "대리 속죄설",
@@ -188,5 +303,11 @@ SCHEMA_EXAMPLE = {
     "metadata": {
         "created_version": "1.0",
         "source": "manual",
+        "tsu_schema_version": "",
+        "collector_version": "",
+        "canonical_version": "",
     },
+    "gold_tsu_ids": ["TSU-0001", "TSU-0042"],
+    "difficulty": "intermediate",
+    "review_status": "draft",
 }

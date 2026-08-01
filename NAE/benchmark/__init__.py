@@ -10,24 +10,55 @@
     runner   — 전체 벤치마크 러너 + CLI
 """
 
-from NAE.benchmark.schema import BenchmarkItem, BenchmarkQuestion, BenchmarkExpected
-from NAE.benchmark.loader import load_dataset
+from NAE.benchmark.schema import (
+    BenchmarkItem,
+    BenchmarkQuestion,
+    BenchmarkExpected,
+    BenchmarkRetrieval,
+    BenchmarkEvaluation,
+    BenchmarkMetadata,
+    QUESTION_TYPES,
+    DIFFICULTY_LEVELS,
+    REVIEW_STATUSES,
+)
+from NAE.benchmark.loader import (
+    load_dataset,
+    validate_dataset,
+    check_duplicate_benchmark_ids,
+    check_empty_dataset,
+)
 from NAE.benchmark.metrics import (
     recall_at_k,
     precision_at_k,
     mean_reciprocal_rank,
 )
 from NAE.benchmark.evaluator import Evaluator
-from NAE.benchmark.runner import run_benchmark
+from NAE.benchmark.runner import run_benchmark, Retriever, ConfigurationError
 
 __all__ = [
+    # schema
     "BenchmarkItem",
     "BenchmarkQuestion",
     "BenchmarkExpected",
+    "BenchmarkRetrieval",
+    "BenchmarkEvaluation",
+    "BenchmarkMetadata",
+    "QUESTION_TYPES",
+    "DIFFICULTY_LEVELS",
+    "REVIEW_STATUSES",
+    # loader
     "load_dataset",
+    "validate_dataset",
+    "check_duplicate_benchmark_ids",
+    "check_empty_dataset",
+    # metrics
     "recall_at_k",
     "precision_at_k",
     "mean_reciprocal_rank",
+    # evaluator
     "Evaluator",
+    # runner
     "run_benchmark",
+    "Retriever",
+    "ConfigurationError",
 ]

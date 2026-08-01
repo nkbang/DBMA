@@ -44,9 +44,9 @@ class TestRecallAtK:
         assert result == pytest.approx(2.0 / 3.0)
 
     def test_recall_empty_relevant(self):
-        """관련 결과가 없으면 recall = 1.0."""
+        """관련 결과가 없으면 recall = 0.0 (zero-gold 정책: 분모 0)."""
         result = recall_at_k(["A", "B", "C"], [])
-        assert result == 1.0
+        assert result == 0.0
 
     def test_recall_with_k_parameter(self):
         """k 파라미터가 올바르게 적용되어야 함."""
@@ -117,10 +117,10 @@ class TestPrecisionAtK:
         assert result == 0.0
 
     def test_precision_duplicate_retrieved_not_double_counted(self):
-        """동일 ID가 중복 검색되어도 고유 관련 항목 수만 분자로 카운트."""
-        # retrieved: [A, A], relevant: [A] → 고유 hit 1개 / 반환 2개 = 0.5
+        """동일 ID가 중복 검색되어도 effective retrieved 기준: [A, A] → 고유 1개 / hit 1 = 1.0."""
+        # HQ-C1-DIRECTIVE-NAE-PHASE5.1-REMEDIATION-004: effective retrieved 정책
         result = precision_at_k(["A", "A"], ["A"], k=2)
-        assert result == pytest.approx(0.5)
+        assert result == pytest.approx(1.0)
 
 
 # ------------------------------------------------------------------
@@ -229,9 +229,9 @@ class TestComputeAllMetrics:
         assert result["mrr"] == pytest.approx(0.0)
 
     def test_compute_all_metrics_empty_relevant(self):
-        """관련 결과가 비어있으면 recall = 1.0."""
+        """관련 결과가 비어있으면 recall = 0.0 (zero-gold 정책)."""
         result = compute_all_metrics(["A", "B"], [], 5)
-        assert result["recall@5"] == pytest.approx(1.0)
+        assert result["recall@5"] == pytest.approx(0.0)
 
 
 # ------------------------------------------------------------------

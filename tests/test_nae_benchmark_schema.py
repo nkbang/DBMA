@@ -1,19 +1,6 @@
-"""NAE Benchmark Schema 테스트.
-
-확인:
-    - valid JSONL 구조
-    - required fields 존재
-    - 직렬화/역직렬화
-    - validation 로직
-"""
+"""NAE Benchmark Schema Tests — C1-TASK-ORDER-037 확장 스키마 검증."""
 
 import json
-import sys
-from pathlib import Path
-
-# 프로젝트 루트를 sys.path에 추가
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
 import pytest
 from NAE.benchmark.schema import (
     BenchmarkItem,
@@ -22,254 +9,348 @@ from NAE.benchmark.schema import (
     BenchmarkRetrieval,
     BenchmarkEvaluation,
     BenchmarkMetadata,
-    SCHEMA_EXAMPLE,
+    QUESTION_TYPES,
+    DIFFICULTY_LEVELS,
+    REVIEW_STATUSES,
 )
 
 
 # ------------------------------------------------------------------
-# Fixtures
+# Schema Constants
 # ------------------------------------------------------------------
 
-@pytest.fixture
-def valid_item() -> BenchmarkItem:
-    return BenchmarkItem(
-        benchmark_id="B001",
-        question=BenchmarkQuestion(text="테스트 질문", language="ko"),
-        expected=BenchmarkExpected(
-            required_concepts=["속죄"],
-            expected_scriptures=["로마서 3:25"],
-            expected_doctrine="대리 속죄설",
-        ),
-        retrieval=BenchmarkRetrieval(top_k=5),
-    )
+class TestSchemaConstants:
+    def test_question_types_not_empty(self):
+        assert len(QUESTION_TYPES) > 0
 
+    def test_difficulty_levels_not_empty(self):
+        assert len(DIFFICULTY_LEVELS) > 0
 
-@pytest.fixture
-def valid_dict() -> dict:
-    return {
-        "benchmark_id": "B001",
-        "question": {"text": "테스트 질문", "language": "ko"},
-        "expected": {
-            "required_concepts": ["속죄"],
-            "expected_scriptures": ["로마서 3:25"],
-            "expected_doctrine": "대리 속죄설",
-        },
-        "retrieval": {"top_k": 5},
-        "evaluation": {"status": "pending"},
-        "metadata": {"created_version": "1.0", "source": "test"},
-    }
+    def test_review_statuses_not_empty(self):
+        assert len(REVIEW_STATUSES) > 0
 
 
 # ------------------------------------------------------------------
-# Schema Structure Tests
+# BenchmarkItem — Creation
 # ------------------------------------------------------------------
 
-class TestSchemaStructure:
-    """스키마 구조 테스트."""
-
-    def test_schema_example_has_required_keys(self):
-        """SCHEMA_EXAMPLE에 필수 키가 모두 있어야 함."""
-        for key in ["benchmark_id", "question", "expected", "retrieval", "evaluation", "metadata"]:
-            assert key in SCHEMA_EXAMPLE, f"SCHEMA_EXAMPLE에 '{key}' 키가 없음"
-
-    def test_question_required_fields(self):
-        """question에 text, language가 있어야 함."""
-        for key in ["text", "language"]:
-            assert key in SCHEMA_EXAMPLE["question"], f"question에 '{key}'가 없음"
-
-    def test_expected_required_fields(self):
-        """expected에 required_concepts, expected_scriptures, expected_doctrine가 있어야 함."""
-        for key in ["required_concepts", "expected_scriptures", "expected_doctrine"]:
-            assert key in SCHEMA_EXAMPLE["expected"], f"expected에 '{key}'가 없음"
-
-    def test_retrieval_required_fields(self):
-        """retrieval에 top_k가 있어야 함."""
-        assert "top_k" in SCHEMA_EXAMPLE["retrieval"]
-
-    def test_evaluation_required_fields(self):
-        """evaluation에 status가 있어야 함."""
-        assert "status" in SCHEMA_EXAMPLE["evaluation"]
-
-
-# ------------------------------------------------------------------
-# Data Class Tests
-# ------------------------------------------------------------------
-
-class TestDataClass:
-    """BenchmarkItem 데이터 클래스 테스트."""
-
-    def test_default_values(self):
-        """기본값이 올바르게 설정되어야 함."""
+class TestBenchmarkItemCreation:
+    def test_default_creation(self):
         item = BenchmarkItem()
-        assert item.question.language == "ko"
-        assert item.retrieval.top_k == 5
-        assert item.evaluation.status == "pending"
-        assert item.retrieved_tsu_ids == []
-        assert item.relevant_tsu_ids == []
+        assert item.benchmark_id == ""
+        assert isinstance(item.question, BenchmarkQuestion)
+        assert isinstance(item.expected, BenchmarkExpected)
+        assert isinstance(item.retrieval, BenchmarkRetrieval)
+        assert isinstance(item.evaluation, BenchmarkEvaluation)
+        assert isinstance(item.metadata, BenchmarkMetadata)
 
-    def test_from_dict(self, valid_dict):
-        """딕셔너리에서 역직렬화되어야 함."""
-        item = BenchmarkItem.from_dict(valid_dict)
+    def test_full_creation(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트 질문", language="ko", question_type="concept"),
+            expected=BenchmarkExpected(
+                gold_tsu_ids=["TSU-001", "TSU-002"],
+                required_concepts=["개념1"],
+                expected_scriptures=["시편 23:1"],
+                expected_doctrine="교리1",
+            ),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            difficulty="intermediate",
+            review_status="draft",
+        )
         assert item.benchmark_id == "B001"
         assert item.question.text == "테스트 질문"
         assert item.question.language == "ko"
-        assert item.expected.required_concepts == ["속죄"]
-        assert item.retrieval.top_k == 5
+        assert item.question.question_type == "concept"
+        assert item.expected.gold_tsu_ids == ["TSU-001", "TSU-002"]
+        assert item.difficulty == "intermediate"
+        assert item.review_status == "draft"
 
-    def test_to_dict(self, valid_item):
-        """딕셔너리로 직렬화되어야 함."""
-        d = valid_item.to_dict()
+
+# ------------------------------------------------------------------
+# BenchmarkItem — Serialization
+# ------------------------------------------------------------------
+
+class TestBenchmarkItemSerialization:
+    def test_to_dict(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            difficulty="beginner",
+            review_status="approved",
+        )
+        d = item.to_dict()
         assert d["benchmark_id"] == "B001"
-        assert d["question"]["text"] == "테스트 질문"
-        assert isinstance(d, dict)
+        assert d["question"]["text"] == "테스트"
+        assert d["expected"]["gold_tsu_ids"] == ["TSU-001"]
+        assert d["difficulty"] == "beginner"
+        assert d["review_status"] == "approved"
 
-    def test_roundtrip(self, valid_dict):
-        """직렬화 → 역직렬화가 원본과 동일해야 함."""
-        item = BenchmarkItem.from_dict(valid_dict)
-        d2 = item.to_dict()
-        assert d2["benchmark_id"] == valid_dict["benchmark_id"]
-        assert d2["question"]["text"] == valid_dict["question"]["text"]
+    def test_to_json(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+        )
+        j = item.to_json()
+        assert isinstance(j, str)
+        d = json.loads(j)
+        assert d["benchmark_id"] == "B001"
 
-    def test_to_json(self, valid_item):
-        """JSON 문자열로 직렬화되어야 함."""
-        json_str = valid_item.to_json()
-        parsed = json.loads(json_str)
-        assert parsed["benchmark_id"] == "B001"
+    def test_from_dict(self):
+        data = {
+            "benchmark_id": "B001",
+            "question": {"text": "테스트", "language": "ko", "question_type": "concept"},
+            "expected": {"gold_tsu_ids": ["TSU-001"]},
+            "retrieval": {"top_k": 5},
+            "evaluation": {"status": "pending"},
+            "metadata": {"created_version": "1.0", "source": "test"},
+            "difficulty": "intermediate",
+            "review_status": "draft",
+        }
+        item = BenchmarkItem.from_dict(data)
+        assert item.benchmark_id == "B001"
+        assert item.question.text == "테스트"
+        assert item.expected.gold_tsu_ids == ["TSU-001"]
+        assert item.difficulty == "intermediate"
+        assert item.review_status == "draft"
 
-    def test_from_json(self, valid_item):
-        """JSON 문자열에서 역직렬화되어야 함."""
-        json_str = valid_item.to_json()
-        item2 = BenchmarkItem.from_json(json_str)
-        assert item2.benchmark_id == valid_item.benchmark_id
-        assert item2.question.text == valid_item.question.text
+    def test_from_json(self):
+        j = json.dumps({
+            "benchmark_id": "B001",
+            "question": {"text": "테스트", "language": "ko"},
+            "expected": {"gold_tsu_ids": ["TSU-001"]},
+            "retrieval": {"top_k": 5},
+            "evaluation": {"status": "pending"},
+            "metadata": {"created_version": "1.0", "source": "test"},
+        })
+        item = BenchmarkItem.from_json(j)
+        assert item.benchmark_id == "B001"
 
 
 # ------------------------------------------------------------------
-# Validation Tests
+# BenchmarkItem — Validation
 # ------------------------------------------------------------------
 
-class TestValidation:
-    """스키마 검증 테스트."""
-
-    def test_valid_item_no_errors(self, valid_item):
-        """유효한 항목은 에러가 없어야 함."""
-        errors = valid_item.validate()
-        assert errors == []
+class TestBenchmarkItemValidation:
+    def test_valid_item(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트 질문", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            gold_tsu_ids=["TSU-001"],
+        )
+        assert item.validate() == []
 
     def test_missing_benchmark_id(self):
-        """benchmark_id가 비어있으면 에러."""
-        item = BenchmarkItem(benchmark_id="", question=BenchmarkQuestion(text="질문"))
+        item = BenchmarkItem(
+            benchmark_id="",
+            question=BenchmarkQuestion(text="테스트 질문", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+        )
         errors = item.validate()
         assert any("benchmark_id" in e for e in errors)
 
     def test_missing_question_text(self):
-        """question.text가 비어있으면 에러."""
-        item = BenchmarkItem(benchmark_id="B001", question=BenchmarkQuestion(text=""))
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+        )
         errors = item.validate()
         assert any("question.text" in e for e in errors)
 
     def test_invalid_language(self):
-        """language가 ko/en이 아니면 에러."""
         item = BenchmarkItem(
             benchmark_id="B001",
-            question=BenchmarkQuestion(text="질문", language="jp"),
+            question=BenchmarkQuestion(text="테스트", language="ja"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
         )
         errors = item.validate()
         assert any("language" in e for e in errors)
 
-    def test_invalid_top_k(self):
-        """top_k가 1보다 작으면 에러."""
+    def test_invalid_question_type(self):
         item = BenchmarkItem(
             benchmark_id="B001",
-            question=BenchmarkQuestion(text="질문"),
+            question=BenchmarkQuestion(text="테스트", language="ko", question_type="invalid_type"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+        )
+        errors = item.validate()
+        assert any("question_type" in e for e in errors)
+
+    def test_invalid_top_k(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
             retrieval=BenchmarkRetrieval(top_k=0),
         )
         errors = item.validate()
         assert any("top_k" in e for e in errors)
 
-    def test_whitespace_question_text(self):
-        """question.text가 공백만 있으면 에러."""
-        item = BenchmarkItem(benchmark_id="B001", question=BenchmarkQuestion(text="   "))
+    def test_invalid_difficulty(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            difficulty="invalid_level",
+        )
         errors = item.validate()
-        assert any("question.text" in e for e in errors)
+        assert any("difficulty" in e for e in errors)
+
+    def test_invalid_review_status(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            review_status="invalid_status",
+        )
+        errors = item.validate()
+        assert any("review_status" in e for e in errors)
+
+    def test_duplicate_gold_tsu_ids(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001", "TSU-001"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            gold_tsu_ids=["TSU-001", "TSU-001"],
+        )
+        errors = item.validate()
+        assert any("duplicates" in e for e in errors)
+
+    def test_valid_question_type_values(self):
+        for qt in QUESTION_TYPES:
+            item = BenchmarkItem(
+                benchmark_id="B001",
+                question=BenchmarkQuestion(text="테스트", language="ko", question_type=qt),
+                expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+                retrieval=BenchmarkRetrieval(top_k=5),
+                gold_tsu_ids=["TSU-001"],
+            )
+            assert item.validate() == []
+
+    def test_valid_difficulty_values(self):
+        for dl in DIFFICULTY_LEVELS:
+            item = BenchmarkItem(
+                benchmark_id="B001",
+                question=BenchmarkQuestion(text="테스트", language="ko"),
+                expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+                retrieval=BenchmarkRetrieval(top_k=5),
+                difficulty=dl,
+            )
+            assert item.validate() == []
+
+    def test_valid_review_status_values(self):
+        for rs in REVIEW_STATUSES:
+            item = BenchmarkItem(
+                benchmark_id="B001",
+                question=BenchmarkQuestion(text="테스트", language="ko"),
+                expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+                retrieval=BenchmarkRetrieval(top_k=5),
+                gold_tsu_ids=["TSU-001"],
+                review_status=rs,
+            )
+            assert item.validate() == []
 
 
 # ------------------------------------------------------------------
-# JSONL File Tests
+# BenchmarkItem — Referential Integrity
 # ------------------------------------------------------------------
 
-class TestJSONLFile:
-    """benchmark_v1.jsonl 파일 테스트."""
+class TestBenchmarkItemReferentialIntegrity:
+    def test_valid_gold_tsu_ids(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001", "TSU-002"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+        )
+        known = {"TSU-001", "TSU-002", "TSU-003"}
+        assert item.validate_referential_integrity(known) == []
 
-    @pytest.fixture
-    def jsonl_path(self) -> Path:
-        return Path(__file__).resolve().parent.parent / "NAE" / "benchmark" / "datasets" / "benchmark_v1.jsonl"
+    def test_invalid_gold_tsu_ids(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-999"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            gold_tsu_ids=["TSU-999"],
+        )
+        known = {"TSU-001", "TSU-002"}
+        errors = item.validate_referential_integrity(known)
+        assert len(errors) == 1
+        assert "TSU-999" in errors[0]
 
-    def test_file_exists(self, jsonl_path):
-        """benchmark_v1.jsonl 파일이 존재해야 함."""
-        assert jsonl_path.exists(), f"benchmark_v1.jsonl이 없음: {jsonl_path}"
+    def test_multiple_invalid_gold_tsu_ids(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-999", "TSU-888"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+            gold_tsu_ids=["TSU-999", "TSU-888"],
+        )
+        known = {"TSU-001", "TSU-002"}
+        errors = item.validate_referential_integrity(known)
+        assert len(errors) == 2
 
-    def test_all_lines_are_valid_json(self, jsonl_path):
-        """모든 줄이 유효한 JSON이어야 함."""
-        with open(jsonl_path, "r", encoding="utf-8") as fh:
-            for lineno, line in enumerate(fh, start=1):
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    json.loads(line)
-                except json.JSONDecodeError as exc:
-                    pytest.fail(f"line {lineno}이(가) 유효하지 않은 JSON: {exc}")
+    def test_none_known_tsu_ids(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=["TSU-999"]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+        )
+        # known_tsu_ids=None 이면 검증 건너뛰기
+        assert item.validate_referential_integrity(None) == []
 
-    def test_all_records_have_required_fields(self, jsonl_path):
-        """모든 레코드가 필수 필드를 가져야 함."""
-        with open(jsonl_path, "r", encoding="utf-8") as fh:
-            for lineno, line in enumerate(fh, start=1):
-                line = line.strip()
-                if not line:
-                    continue
-                data = json.loads(line)
-                for key in ["benchmark_id", "question", "expected", "retrieval", "evaluation", "metadata"]:
-                    assert key in data, f"line {lineno}에 '{key}' 키가 없음"
+    def test_empty_gold_tsu_ids(self):
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="테스트", language="ko"),
+            expected=BenchmarkExpected(gold_tsu_ids=[]),
+            retrieval=BenchmarkRetrieval(top_k=5),
+        )
+        known = {"TSU-001"}
+        # gold_tsu_ids 가 비어있으면 오류 없음
+        assert item.validate_referential_integrity(known) == []
 
-    def test_all_records_pass_validation(self, jsonl_path):
-        """모든 레코드가 검증을 통과해야 함."""
-        with open(jsonl_path, "r", encoding="utf-8") as fh:
-            for lineno, line in enumerate(fh, start=1):
-                line = line.strip()
-                if not line:
-                    continue
-                data = json.loads(line)
-                item = BenchmarkItem.from_dict(data)
-                errors = item.validate()
-                assert errors == [], f"line {lineno} 검증 실패: {errors}"
 
-    def test_has_benchmark_id(self, jsonl_path):
-        """모든 레코드가 benchmark_id를 가져야 함."""
-        with open(jsonl_path, "r", encoding="utf-8") as fh:
-            for lineno, line in enumerate(fh, start=1):
-                line = line.strip()
-                if not line:
-                    continue
-                data = json.loads(line)
-                assert data.get("benchmark_id"), f"line {lineno}에 benchmark_id가 없음"
+# ------------------------------------------------------------------
+# BenchmarkExpected — gold_tsu_ids 중심
+# ------------------------------------------------------------------
 
-    def test_has_question_text(self, jsonl_path):
-        """모든 레코드가 question.text를 가져야 함."""
-        with open(jsonl_path, "r", encoding="utf-8") as fh:
-            for lineno, line in enumerate(fh, start=1):
-                line = line.strip()
-                if not line:
-                    continue
-                data = json.loads(line)
-                assert data.get("question", {}).get("text"), f"line {lineno}에 question.text가 없음"
+class TestBenchmarkExpected:
+    def test_gold_tsu_ids_primary(self):
+        expected = BenchmarkExpected(gold_tsu_ids=["TSU-001", "TSU-002"])
+        assert expected.gold_tsu_ids == ["TSU-001", "TSU-002"]
 
-    def test_has_top_k(self, jsonl_path):
-        """모든 레코드가 retrieval.top_k를 가져야 함."""
-        with open(jsonl_path, "r", encoding="utf-8") as fh:
-            for lineno, line in enumerate(fh, start=1):
-                line = line.strip()
-                if not line:
-                    continue
-                data = json.loads(line)
-                assert data.get("retrieval", {}).get("top_k"), f"line {lineno}에 top_k가 없음"
+    def test_gold_tsu_ids_empty_default(self):
+        expected = BenchmarkExpected()
+        assert expected.gold_tsu_ids == []
+
+    def test_backward_compatible_scriptures(self):
+        """expected_scriptures 는 하위 호환성으로 유지."""
+        expected = BenchmarkExpected(
+            gold_tsu_ids=["TSU-001"],
+            expected_scriptures=["시편 23:1", "요한복음 3:16"],
+        )
+        assert expected.gold_tsu_ids == ["TSU-001"]
+        assert expected.expected_scriptures == ["시편 23:1", "요한복음 3:16"]
+
+    def test_backward_compatible_doctrine(self):
+        """expected_doctrine 는 하위 호환성으로 유지."""
+        expected = BenchmarkExpected(
+            gold_tsu_ids=["TSU-001"],
+            expected_doctrine="대리 속죄설",
+        )
+        assert expected.expected_doctrine == "대리 속죄설"

@@ -65,43 +65,48 @@ class Evaluator:
         self,
         item: BenchmarkItem,
         retrieved_ids: List[str],
-        relevant_ids: List[str] | None = None,
     ) -> EvaluationResult:
         """단일 항목을 평가하고 결과를 반환.
 
+        canonical ground truth: BenchmarkItem.gold_tsu_ids (top-level only).
+        expected_scriptures / required_concepts 는 metric 에 전달되지 않음.
+
         Args:
-            item: BenchmarkItem (question + expected 포함).
+            item: BenchmarkItem (question + gold_tsu_ids 포함).
             retrieved_ids: 검색 결과 TSU ID 목록 (순서 중요).
-            relevant_ids: gold standard 관련 ID. None이면 item.expected 에서 추출.
 
         Returns:
             EvaluationResult
         """
-        if relevant_ids is None:
-            relevant_ids = item.expected.expected_scriptures or item.expected.required_concepts
+        # canonical ground truth
+        relevant_ids = item.gold_tsu_ids
 
-        # 관련 결과가 완전히 비어있으면 special case
+        # zero-gold case: gold_tsu_ids 가 비어 있으면 zero metrics 반환
+        # effective_k 가 0 이 되면 키가 "recall@0" 이 되므로 항상 top_k 를 사용.
         if not relevant_ids:
-            logger.warning(
-                "benchmark_id=%s: relevant_ids가 비어있음 — 평가 스킵",
-                item.benchmark_id,
-            )
+            metrics = compute_all_metrics(retrieved_ids, [], self.top_k)
             result = EvaluationResult(
                 benchmark_id=item.benchmark_id,
                 question_text=item.question.text,
-                metrics={},
-                status="skipped",
-                notes="relevant_ids empty",
+                metrics=metrics,
+                status="zero_gold",
+                notes="gold_tsu_ids is empty — zero metrics",
             )
             self.results.append(result)
             self._pending_count += 1
             return result
 
-        # 지표 계산
-        effective_k = min(self.top_k, len(retrieved_ids))
+        # 지표 계산 — retrieved_ids 가 [] 일 때 effective_k 가 0 이 되면
+        # 키가 "recall@0" 이 되어 호출처가 "recall@5" 를 기대하는 코드가
+        # KeyError 를 만나므로, empty retrieval 는 항상 self.top_k 를 사용.
+        if retrieved_ids:
+            effective_k = min(self.top_k, len(retrieved_ids))
+        else:
+            effective_k = self.top_k
+
         metrics = compute_all_metrics(retrieved_ids, relevant_ids, effective_k)
 
-        # 상태 판정 (Recall@K >= 0.5 면 passed)
+        # 상태 판정 (Recall@K >= 0.5 면 passed; zero_gold 는 별도)
         recall_key = f"recall@{effective_k}"
         recall_value = metrics.get(recall_key, 0.0)
         status = "passed" if recall_value >= 0.5 else "failed"
@@ -116,6 +121,7 @@ class Evaluator:
             question_text=item.question.text,
             metrics=metrics,
             status=status,
+            notes=f"recall@{effective_k}={recall_value:.3f}",
         )
 
         self.results.append(result)
@@ -164,16 +170,20 @@ class Evaluator:
             if values:
                 avg_metrics[key] = sum(values) / len(values)
 
-        status_dist = {"passed": 0, "failed": 0, "skipped": 0}
+        status_dist = {"passed": 0, "failed": 0, "skipped": 0, "zero_gold": 0}
         for r in self.results:
             if r.status in status_dist:
                 status_dist[r.status] += 1
+
+        # zero-gold 항목 카운트 (aggregate에서 숨겨지지 않도록 명시적 필드)
+        zero_gold_count = status_dist.get("zero_gold", 0)
 
         return {
             "total_questions": total,
             "passed": self._passed_count,
             "failed": self._failed_count,
             "skipped": self._pending_count,
+            "zero_gold_count": zero_gold_count,
             "metrics": avg_metrics,
             "status_distribution": status_dist,
             "per_question": [
