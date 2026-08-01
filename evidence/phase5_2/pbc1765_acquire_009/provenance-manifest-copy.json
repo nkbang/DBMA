@@ -1,0 +1,74 @@
+{
+  "source_id": "PBC1765",
+  "legacy_source_id": "PBC1742",
+  "work": {
+    "canonical_title": "The Baptist Confession of Faith",
+    "historical_adoption_year": 1742,
+    "digital_manifestation_year": 1765,
+    "language": "en"
+  },
+  "repository": {
+    "name": "Internet Archive",
+    "queried_identifier": "plainbookofconfe00phil",
+    "returned_identifier": "confeo00phil",
+    "item_url": "https://archive.org/details/confeo00phil",
+    "metadata_url": "https://archive.org/metadata/confeo00phil",
+    "rights_basis": "public-domain"
+  },
+  "artifacts": [
+    {
+      "type": "scan_pdf",
+      "filename": "confeo00phil.pdf",
+      "url": "https://archive.org/download/confeo00phil/confeo00phil.pdf",
+      "mime_type": "application/pdf",
+      "bytes": 8238629,
+      "sha256": "c3c54102e3d207731cb9d8bc19075c98e373fb492cd2b03912dc0b6b24f6cabd",
+      "http_status": 200,
+      "final_url": "https://dn760106.eu.archive.org/0/items/confeo00phil/confeo00phil.pdf"
+    },
+    {
+      "type": "djvu_text",
+      "filename": "confeo00phil_djvu.txt",
+      "url": "https://archive.org/download/confeo00phil/confeo00phil_djvu.txt",
+      "mime_type": "text/plain; charset=utf-8",
+      "bytes": 159350,
+      "sha256": "b53fb3337245baff58349a29f6119aab5dd3eb1d72310aa5fd0c559c7400c68c",
+      "http_status": 200,
+      "final_url": "https://dn760106.eu.archive.org/0/items/confeo00phil/confeo00phil_djvu.txt"
+    },
+    {
+      "type": "scandata",
+      "filename": "confeo00phil_scandata.xml",
+      "url": "https://archive.org/download/confeo00phil/confeo00phil_scandata.xml",
+      "mime_type": "text/xml; charset=utf-8",
+      "bytes": 111912,
+      "sha256": "dede8772806b7d1e6660421414240d68d5eebbab83efc0b0b40292974258d3d8",
+      "http_status": 200,
+      "final_url": "https://dn720501.ca.archive.org/0/items/confeo00phil/confeo00phil_scandata.xml"
+    },
+    {
+      "type": "hocr_searchtext",
+      "filename": "confeo00phil_hocr_searchtext.txt.gz",
+      "url": "https://archive.org/download/confeo00phil/confeo00phil_hocr_searchtext.txt.gz",
+      "mime_type": "application/gzip",
+      "bytes": 67022,
+      "sha256": "49909548210b9c5bfb4d675d6ad567cf44bc67c2a8e1bfbceceb6edf2d8648af",
+      "http_status": 200,
+      "final_url": null,
+      "removed_by_cue_reconciliation_010": true,
+      "removal_reason": "Exceeded directive max-3 artifact cap; not one of the 3 authorized categories. File moved to NAE/corpus/quarantine/PBC1765/removed_excess_artifacts/, no longer part of the active quarantine set."
+    }
+  ],
+  "transport_validation": {
+    "preflight_status": "PASS",
+    "error_page_detected": false
+  },
+  "content_identity": {
+    "title_marker": "Baptist confession of faith",
+    "philadelphia_marker": "[Philadel]phia, printed by Ant. Armbruster in Race[-street] (CUE-RECONCILIATION-010: corrected from erroneous 'A. Archbold' — verified directly against confeo00phil_djvu.txt line 180, no 'Archbold' string exists anywhere in the downloaded OCR text)",
+    "imprint_1765_marker": "1765 (confeo00phil_djvu.txt line 181)",
+    "body_structure_marker": "CHAP. I., CHAP. II., CHAP. III. ... (confeo00phil_djvu.txt lines 190, 406, 521; CUE-RECONCILIATION-010: original content-identity-validation.md regex reported this and the imprint_1765_marker as False — false negatives, corrected by direct grep of the OCR text)",
+    "status": "VERIFIED (manual re-verification 2026-08-01, see evidence/phase5_2/pbc1765_acquire_009/CUE-RECONCILIATION-010.md)"
+  },
+  "canonical_admission": "NOT_AUTHORIZED"
+}
