@@ -21,11 +21,19 @@ def _write_dataset(tmp_path: Path, records: list[dict]) -> Path:
     return path
 
 
-def _record(benchmark_id: str, scriptures=None) -> dict:
+def _record(benchmark_id: str, gold_tsu_ids=None) -> dict:
+    """[CUE-RECONCILIATION-010] gold_tsu_ids is the top-level, canonical
+    gold field (NAE/benchmark/schema.py `BenchmarkItem.gold_tsu_ids`,
+    loaded via `data.get("gold_tsu_ids", [])`) — Phase 5.1 Remediation-004
+    made expected.expected_scriptures a deprecated, metrics-inert field.
+    This fixture only ever set the deprecated field, so every loaded item
+    had empty gold_tsu_ids ("INVALID_GOLD diagnostic" warning) regardless
+    of what was passed in."""
     return {
         "benchmark_id": benchmark_id,
         "question": {"text": f"question {benchmark_id}", "language": "ko"},
-        "expected": {"expected_scriptures": scriptures or [], "required_concepts": [], "expected_doctrine": ""},
+        "expected": {"expected_scriptures": [], "required_concepts": [], "expected_doctrine": ""},
+        "gold_tsu_ids": gold_tsu_ids or [],
         "retrieval": {"top_k": 5},
         "evaluation": {"status": "pending"},
         "metadata": {"created_version": "1.0", "source": "test"},
@@ -77,12 +85,23 @@ class TestCLI:
         with pytest.raises(SystemExit):
             parser.parse_args([])
 
-    def test_main_runs_with_dummy_retrieval(self, tmp_path: Path, capsys):
+    def test_main_without_retrieval_fn_fails_with_clear_error(self, tmp_path: Path, capsys):
+        """[CUE-RECONCILIATION-010] Renamed from test_main_runs_with_dummy_retrieval.
+
+        There is no dummy/stub retrieval CLI path — runner.py's own code
+        comment is explicit: "CLI 에서 retrieval_fn 은 직접 제공해야 함
+        (Phase 5.2 에서 구현)" (a --retrieval-fn module:func flag is a
+        future Phase 5.2 feature, not yet implemented). Calling main()
+        with only --dataset and no Python-API-supplied retrieval_fn is
+        documented to fail with a clear error, not silently succeed — this
+        test was asserting the not-yet-built feature instead of the
+        actual, intentional current contract.
+        """
         dataset = _write_dataset(tmp_path, [_record("B1", ["A"])])
         exit_code = main(["--dataset", str(dataset)])
-        assert exit_code == 0
-        out = capsys.readouterr().out
-        assert "total_questions" in out
+        assert exit_code != 0
+        err = capsys.readouterr().err
+        assert "retrieval_fn" in err
 
     def test_main_returns_nonzero_on_missing_dataset(self, tmp_path: Path):
         exit_code = main(["--dataset", str(tmp_path / "missing.jsonl")])
