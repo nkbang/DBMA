@@ -158,3 +158,21 @@ sources:
       notes에 "Author died 1630. Verify Dutch copyright law (life + 70
       years = 1700)"라는 미해결 저작권 질문이 남아 있어, 데이터 정합성
       문제와 무관하게 네덜란드 저작권법 확인이 별도로 필요함.
+
+      [2026-08-01 WebSearch 1차 조사] CSV의 "Author died 1630"은 오류로
+      보임 — 위키피디아 등 다수 출처가 일관되게 John Smyth 사망 연도를
+      **1612**로 기록(1630 아님). 관련 인물 Thomas Helwys(공동 활동,
+      1611년 "A declaration of faith of English people remaining at
+      Amsterdam in Holland" 등 저술)도 1616년경 사망. 두 저자 모두
+      400년 이상 전 사망 — 네덜란드(사후 70년)/미국/한국 어느 기준으로도
+      원저작물 자체는 명백히 PD. 다만 검색으로는 정확히 이 제목("The
+      Book of the First Baptist Church at Amsterdam")의 실제 판본을
+      특정하지 못함 — 확보 시 (a) 원본 필사본 팩시밀리/전사본을
+      우선하고 현대 학술 편집본(주석·해제 포함)은 피할 것,
+      (b) 언어가 실제로 영어/네덜란드 병기인지 원본 확인 필요(Helwys의
+      한 저작이 "written in Dutch, published in English"로 확인된 사례가
+      있어 이 계열 자료에서 이중 언어가 실제로 있을 수 있음 — CSV의
+      "English, Dutch" 오탐이 반드시 오류만은 아닐 가능성).
+      **잔여 리스크는 원저작물이 아니라 특정 판본의 편집저작권뿐** —
+      기존 CSV 근거보다 위험도가 낮아진 것으로 재평가하나, status는
+      정확한 판본 확인 전까지 verification_pending 유지 권장.
