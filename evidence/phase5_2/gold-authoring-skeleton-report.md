@@ -44,10 +44,17 @@ Approach B: identity registry의 metadata(book_id, doc_type, chunk_count)를
   별칭("마"→MAT) false positive를 막기 위해 `len(name) >= 2` 가드가 이미 있으나, 3~4자
   별칭의 단어경계 없는 부분매칭까지는 막지 못함. 즉 **TSU-SOL-\* 4개 gold ID는 실제로는 아가서가
   아닌 조직신학 도서를 가리키는, book_id 자체가 잘못 태깅된 문서 참조**.
-- **후속 조치 필요(이번 reconciliation 범위 밖, 별도 코드 수정 과제로 분리)**: `_resolve_book_id()`의
-  짧은 별칭(예: "sol", 그 외 3~4자 별칭 전반) 매칭을 단어경계 정규식으로 강화하거나 최소 길이
-  기준을 상향할 것을 권고. `tests/test_build_tsu_dataset_book_id.py`의 기존 마/MAT 회귀 테스트와
-  같은 패턴으로 SOL/SOLAS 케이스도 회귀 테스트 추가 필요.
+- **[2026-08-01 후속 수정 완료]** `core/tsu_builder.py::_resolve_book_id()`를 letter-only
+  경계 lookaround 방식으로 수정 — 짧은 별칭이 다른 글자와 바로 붙어 있으면(예: "sol"+"as") 더
+  이상 매칭되지 않지만, 이 코퍼스의 실제 명명 관행인 "책이름+숫자"(예: "사도행전1")는 계속
+  정상 매칭됨(숫자는 경계 예외로 허용). `tests/test_build_tsu_dataset_book_id.py`에 회귀
+  테스트 2건 추가(SOLAS 오매칭 방지 확인 + 사도행전1/2 정상 동작 확인), 관련 회귀 65개 전부
+  통과 확인.
+  `scripts/author_gold_set.py` 재실행 결과 `gold_benchmark_v1.jsonl`에서 `TSU-SOL-*` 완전히
+  사라짐(0건) — 5개 질문 모두 실제 성경 책(ACT, LUK 등)에서 파생된 gold_tsu_ids로 갱신됨.
+  단, 여전히 corpus indexing(Qdrant nae_tsu_v1)이 안 된 상태이므로 이 gold_tsu_ids들이
+  실제 TSU 데이터셋에 존재하는지는 별도로 검증 필요 — "Gold set validity: NOT VALIDATED"
+  게이트는 그대로 유효함.
 
 ## 제약 사항
 

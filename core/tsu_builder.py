@@ -193,6 +193,26 @@ def _resolve_book_id(source_file: str) -> Optional[str]:
     positive: "마가복음" (Mark) contains "마" and was silently
     misresolved to MAT (Matthew) before this guard was added.
 
+    [CUE-RECONCILIATION-010] The len>=2 guard above stops single-character
+    aliases but not short (2-4 char) ones — the 3-char alias "sol" (Song of
+    Solomon) matched as a raw substring of "SOLAS시리즈" (a Reformation
+    systematic theology series, unrelated to Scripture) in filenames like
+    "5 SOLAS시리즈01 [...] 오직 믿음.pdf", silently mistagging 10 registry
+    documents as book_id=SOL. Confirmed via scripts/author_gold_set.py
+    reproducing the exact same gold_benchmark_v1.jsonl output deterministically
+    from the current registry — not a data-entry error, a resolver bug.
+
+    Matching now requires the alias not be flanked by another *letter*
+    (any script) immediately before/after — but a flanking *digit* is
+    allowed, since this corpus's naming convention routinely appends a
+    volume/chapter number directly after the book name with no separator
+    (e.g. "사도행전1.pdf", "사도행전2.pdf" — book name immediately
+    followed by a digit). A plain regex \\b word boundary rejects this
+    case too (Python's \\w treats digits and letters alike, so there is no
+    boundary between "전" and "1"), which is why a custom letter-only
+    lookaround is used instead of \\b here. This still blocks the "sol"
+    substring match inside "solas" (a following letter "a", not a digit).
+
     source_file is normalized to NFC before matching — macOS stores
     Korean filenames in NFD (decomposed) form in the registry, while
     NAME_TO_BOOK_ID's keys are NFC (composed); without this, byte-level
@@ -202,8 +222,10 @@ def _resolve_book_id(source_file: str) -> Optional[str]:
     """
     text = unicodedata.normalize("NFC", source_file).lower()
     candidates = [name for name in NAME_TO_BOOK_ID if len(name) >= 2]
+    _LETTER = r"[^\W\d_]"  # any Unicode letter, excludes digits/underscore/punctuation
     for name in sorted(candidates, key=len, reverse=True):
-        if name in text:
+        pattern = r"(?<!" + _LETTER + r")" + re.escape(name) + r"(?!" + _LETTER + r")"
+        if re.search(pattern, text):
             return NAME_TO_BOOK_ID[name]
     return None
 
