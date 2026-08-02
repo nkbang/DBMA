@@ -1,0 +1,110 @@
+# NAE Metadata Manifest Pilot 002 (Schema v2.0.0 + volume_id 확장 제안)
+# NAE-METADATA-PILOT-002 — 기존 manifest 변경 없음, pilot 전용.
+# volume_id는 v2.0.0 정식 필드가 아니라 이번 pilot의 확장 제안(§Phase 8 Schema
+# Feedback) — Schema 자체는 수정하지 않았으므로 이 파일에서만 시험 사용.
+schema_version: "2.0.0-pilot-volume-ext"
+
+sources:
+  - source_id: BAP-MISS-FULLER-VOL01
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    volume_id: FULLER-COMPLETE-WORKS-VOL01
+    category: missions
+    publication_year: 1820
+    source_type: reference   # Pilot-001 F-P1과 동일 gap, 잠정치
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. I. Charlestown, MA: Anderson & Meehan for William Collins, 1820."
+    tsu_access: full
+
+  - source_id: BAP-MISS-FULLER-VOL02
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL02
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. II. New Haven: S. Converse, 1824."
+    tsu_access: full
+
+  - source_id: BAP-MISS-FULLER-VOL03
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL03
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. III. New Haven: S. Converse, 1824."
+    tsu_access: full
+
+  - source_id: BAP-MISS-FULLER-VOL04
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL04
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. IV. New Haven: S. Converse, 1824."
+    tsu_access: full
+
+  - source_id: BAP-MISS-FULLER-VOL05
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL05
+    category: missions
+    publication_year: 1825
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. V. New Haven: S. Converse, 1825."
+    tsu_access: full
+
+  - source_id: BAP-MISS-FULLER-VOL06
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL06
+    category: missions
+    publication_year: 1825
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. VI. New Haven: S. Converse, 1825."
+    tsu_access: full
+
+  - source_id: BAP-MISS-FULLER-VOL07
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL07
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. VII. New Haven: S. Converse, 1824."
+    tsu_access: full
+
+  - source_id: BAP-MISS-FULLER-VOL08
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL08
+    category: missions
+    publication_year: 1825
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. VIII. New Haven: S. Converse, 1825."
+    tsu_access: full

@@ -1,0 +1,18 @@
+# Pilot Authority Registry — Fuller (Multi-volume) — NAE-METADATA-PILOT-002
+schema_version: "1.0-pilot"
+
+authors:
+  - author_id: FULLER-ANDREW-001
+    canonical_name: "Andrew Fuller"
+    aliases: ["Rev. Andrew Fuller", "Andrew Fuller, Kettering"]
+    birth_year: 1754
+    death_year: 1815
+    tradition: "Particular Baptist"
+    notes: >
+      birth_year/death_year는 RAW 원문에 명시적 생몰년 페이지가 없어
+      일반 전기 정보로 채움(원문 미검증, Pilot-001 F-P 계열과 동일 한계).
+      기존 resources/theological_sources/baptist/source_manifest.yaml에
+      Fuller의 별도 단행본 entry(AF1815, "The Gospel Defended", 1785)가
+      이미 존재 — author_id는 이번 pilot에서 신규 발급하지만, 향후 실제
+      author registry 구축 시 AF1815 entry와 동일 인물로 통합 필요
+      (author_id 재사용 대상, §Cross-check 참고).

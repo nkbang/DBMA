@@ -1,0 +1,75 @@
+# Pilot Authority Registry — Fuller Volumes — NAE-METADATA-PILOT-002
+# Volume을 Edition과 별개의 独立 entity로 두되, publication_year를 volume
+# 레벨에도 개별 기록 — 동일 Edition group 안에서도 volume별 연도가
+# 다를 수 있음(1824/1825)을 반영하기 위함(Phase 2 모델 평가 참고).
+schema_version: "1.0-pilot"
+
+volumes:
+  - volume_id: FULLER-COMPLETE-WORKS-VOL01
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    volume_number: 1
+    volume_title: "The Gospel Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ"
+    publication_year: 1820
+    publisher: "Anderson & Meehan, for William Collins (Charlestown, MA)"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL02
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 2
+    volume_title: "The Calvinistic and Socinian Systems Examined and Compared"
+    publication_year: 1824
+    publisher: "S. Converse (New Haven, CT)"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL03
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 3
+    volume_title: "The Gospel Its Own Witness"
+    publication_year: 1824
+    publisher: "S. Converse (New Haven, CT)"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL04
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 4
+    volume_title: "Dialogues, Letters, and Essays, on Various Subjects"
+    publication_year: 1824
+    publisher: "S. Converse (New Haven, CT)"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL05
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 5
+    volume_title: "Expository Discourses on the Book of Genesis"
+    publication_year: 1825
+    publisher: "S. Converse (New Haven, CT)"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL06
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 6
+    volume_title: "Expository Discourses on the Apocalypse"
+    publication_year: 1825
+    publisher: "S. Converse (New Haven, CT)"
+    notes: >
+      스캔본 첫 페이지에 "Princeton Theological Seminary 도서관 기증"
+      장서인(藏書印) 존재 — Source(스캔본) provenance이며 Edition/
+      publication_year 판단과는 무관(장서인은 소장 이력, 발행 정보 아님).
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL07
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 7
+    volume_title: "Sermons on Various Subjects"
+    publication_year: 1824
+    publisher: "S. Converse (New Haven, CT)"
+    notes: "OCR상 연도 표기가 '1824-'로 잘려 있음(스캔 하단 잘림 추정) — 1824로 잠정, 사람 확인 권고."
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL08
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 8
+    volume_title: "Miscellanies: Magazine Papers, Sketches of Sermons, Association Letters, Tracts"
+    publication_year: 1825
+    publisher: "S. Converse (New Haven, CT)"

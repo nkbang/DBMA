@@ -1,0 +1,40 @@
+# Pilot Authority Registry — Fuller Editions — NAE-METADATA-PILOT-002
+# 핵심 발견: 8개 volume이 단일 Edition이 아니라 서로 다른 두 인쇄본으로
+# 구성됨(RAW title page 실측). Work 1개가 Edition 2개를 가질 수 있음을
+# 확인 — Phase 2 모델 평가의 실증 근거.
+schema_version: "1.0-pilot"
+
+editions:
+  - edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    work_id: FULLER-COMPLETE-WORKS-001
+    publisher: "Anderson & Meehan, for William Collins"
+    place: "Charlestown, Massachusetts"
+    publication_year: 1820
+    edition_notes: >
+      Vol01 ocr.txt 실측(제목면, OCR 노이즈 있음): "PHILADELPHIA-
+      [printed by] Anderson and Meehan, for Wiiiiam CoItlllB[?],
+      Chablestown, Massachusetts, 1820." 인쇄지/발행연도가 Vol02-08과
+      전혀 다름 — 별도 인쇄본으로 판단(신뢰도: 중간, OCR 노이즈로 발행처
+      표기가 불완전하게 인식됨, 사람 확인 권고).
+    volume_ids: [FULLER-COMPLETE-WORKS-VOL01]
+
+  - edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    work_id: FULLER-COMPLETE-WORKS-001
+    publisher: "S. Converse"
+    place: "New Haven, Connecticut"
+    publication_year: "1824-1825"   # volume별 실제 연도는 volumes.yaml에 개별 기록(1824 또는 1825)
+    edition_notes: >
+      Vol02-08 ocr.txt 전부 "NEW-HAVEN: PRINTED AND PUBLISHED BY S.
+      CONVERSE"로 동일 발행처 확인(신뢰도: 높음, 8개 중 7개 volume에서
+      일관되게 검출). 연도는 volume마다 1824 또는 1825로 소폭 다름 —
+      다권본 출판이 몇 년에 걸쳐 순차 진행된 것으로 해석(별도 Edition으로
+      쪼개지 않고 하나의 인쇄 캠페인으로 취급, edition_notes에 연도
+      스펙트럼만 기록).
+    volume_ids:
+      - FULLER-COMPLETE-WORKS-VOL02
+      - FULLER-COMPLETE-WORKS-VOL03
+      - FULLER-COMPLETE-WORKS-VOL04
+      - FULLER-COMPLETE-WORKS-VOL05
+      - FULLER-COMPLETE-WORKS-VOL06
+      - FULLER-COMPLETE-WORKS-VOL07
+      - FULLER-COMPLETE-WORKS-VOL08
