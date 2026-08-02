@@ -3,6 +3,7 @@
 작성일: 2026-08-02
 상태: 설계 단계 — 미구현 (파일 이동/삭제/다운로드/OCR/TSU/Embedding/Retrieval 코드 변경 없음)
 선행 검토: [`NAE_DATA_ARCHITECTURE.md`](NAE_DATA_ARCHITECTURE.md), [`NAE_MODERN_CORPUS_ARCHITECTURE_v1.md`](NAE_MODERN_CORPUS_ARCHITECTURE_v1.md), [ADR-001](architecture/ADR-001-Retrieval-Engine-Authority.md), [ADR-013](architecture/ADR-013-NAE-Vector-Store.md), [ADR-014](architecture/ADR-014-NAE-Modern-Corpus-Layer.md)
+개정 이력: 2026-08-02 — [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) 신설에 따라 License/Copyright/Authority 값 체계를 그 문서로 이관(단일 정본화). 이 문서는 값 정의를 재복사하지 않고 참조만 한다.
 
 ---
 
@@ -81,19 +82,31 @@ language: string           # ADR-014 신규 필드 재사용
 category: string           # Phase 5 taxonomy 값
 subcategory: array[string] # Phase 5 taxonomy 값
 source_type: licensed | purchased | personal | reference   # ADR-014 Task 2 재사용
-copyright_status: public_domain | copyright_restricted | fair_use_reference | unknown  # ADR-014 재사용
-usage_permission: full_text_storage | excerpt_only | metadata_only | citation_only     # ADR-014 재사용
+copyright_status: public_domain | copyrighted | licensed | unknown   # 값 체계 정정, NAE_METADATA_GOVERNANCE_v1.md §4 정본
+usage_permission: research | citation_only | internal_use | no_redistribution   # 값 체계 정정, NAE_METADATA_GOVERNANCE_v1.md §4 정본
+access_control: public | restricted | private   # 값 체계 정정, NAE_METADATA_GOVERNANCE_v1.md §4 정본
 ```
 
-### 기존 `source_manifest.schema.yaml` 호환성
+> **값 체계 개정 안내(2026-08-02)**: `copyright_status`/`usage_permission`/`access_control`의
+> 값 목록은 ADR-014 초안(`public_domain|copyright_restricted|fair_use_reference|unknown` 등)에서
+> 위 값으로 **정정되었다** — C1 Architecture Design Review-001 대응 및
+> NAE-METADATA-GOVERNANCE-REVISION-001 작업 결과. ADR-014 원문은 소급 수정하지 않으며,
+> **[`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md)가 이 세 필드의 유일한 정본**이다 —
+> 값 정의가 필요하면 항상 그 문서를 참조한다.
 
-- v1.2(NAE-PD)는 `license`(단일 문자열, `public_domain*` 값 체계)를 사용 — 위 스키마의
-  `copyright_status`와 값 체계가 다르다. **PD 자료는 `license` 필드를 유지하고,
-  Registration 시 `copyright_status=public_domain`을 파생값으로 자동 매핑**한다
-  (양방향 재작성이 아니라 PD는 기존 필드가 canonical, 신규 필드는 파생).
+### 기존 `source_manifest.schema.yaml` 호환성 및 License↔Copyright 관계
+
+- v1.2(NAE-PD)는 `license`(단일 문자열, `public_domain*` 값 체계)를 사용한다. 이 필드는
+  **source_value**(원본 출처 표기, 예: Archive.org metadata의 `licenseurl`/`rights` 필드
+  그대로)를 보존하는 canonical 필드로 유지하고, `copyright_status`는 그로부터 파생되는
+  **normalized_value**로 취급한다. 매핑 규칙과 전체 값 대응표는
+  [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) §4(License Rule/
+  Copyright Status Rule)를 정본으로 한다 — 이 문서는 그 결과만 요약 인용한다:
+  `license=public_domain*` → `copyright_status=public_domain`.
 - Modern 자료는 ADR-014의 `schema_version: "2.0.0"`을 그대로 따르므로 추가 매핑 불필요.
 - 결론: **스키마를 통합하지 않고 버전별로 병행 — Registration 표준은 두 스키마 위에
-  얹히는 공통 절차**로 정의한다(스키마 자체의 재작성/마이그레이션은 이번 범위 밖).
+  얹히는 공통 절차**로 정의한다. 실제 마이그레이션 절차는
+  [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) §7(Migration Policy) 참고.
 
 ### Versioning
 
@@ -116,6 +129,28 @@ work_id    = "{author_id}-{title_slug}"                      예: gill_john-body
 ---
 
 ## Phase 4. Authority Management
+
+### Entity Model (개정: Author → Work → Edition → Source File 4단 계층)
+
+이전 버전은 Author/Work 2단만 명시했다. 이번 개정에서 **Edition을 Work와 Source
+File 사이의 독립 entity로 승격**한다 — 동일 Work의 여러 Edition이 있고, 각
+Edition이 다시 여러 Source File(스캔본/OCR본)을 가질 수 있는 구조를 반영한다.
+
+```
+Author  (author_id)
+  ↓
+Work    (work_id)       — 저작 단위 (예: "A Body of Doctrinal Divinity")
+  ↓
+Edition (edition_id)    — 판본 단위 (예: 1810년판, 1839년판)
+  ↓
+Source File (source_id) — 파일 단위 (예: 1810년판의 archive.org 스캔본, 재스캔본)
+```
+
+필수 ID 4종: `author_id`, `work_id`, `edition_id`(신규), `source_id`. `edition_id`
+신설 이전에는 edition 정보가 `source_manifest.yaml`의 `edition` 필드(문자열)로만
+존재해 Phase 6(Different Scan Same Edition)처럼 같은 판본의 다른 스캔본을 묶을
+canonical key가 없었다 — `edition_id` 도입으로 해결. 생성 규칙: `edition_id =
+"{work_id}-{edition_slug}"`(예: `gill_john-body_of_doctrinal_divinity-1810`).
 
 ### Author Authority
 
@@ -146,10 +181,12 @@ work_id    = "{author_id}-{title_slug}"                      예: gill_john-body
 - work_id: gill_john-body_of_doctrinal_divinity
   canonical_title: "A Body of Doctrinal Divinity"
   editions:
-    - source_id: baptist-theology-014
+    - edition_id: gill_john-body_of_doctrinal_divinity-1810
       edition: "1810"
-    - source_id: baptist-theology-015
+      source_ids: [baptist-theology-014]   # 동일 edition의 복수 스캔본 가능(Phase 6 Different Scan Same Edition)
+    - edition_id: gill_john-body_of_doctrinal_divinity-1839
       edition: "1839"
+      source_ids: [baptist-theology-015]
 ```
 
 판본 간 우선순위(어느 판본을 검색 기본값으로 노출할지)는 등록자가 수동 지정
@@ -185,7 +222,7 @@ Modern:        theology | commentary | sermons | missions | ministry | apologeti
 |---|---|---|
 | Exact Duplicate | 동일 파일(해시 일치) | 신규 `source_id` 미발급, 기존 entry에 `local_path` alias만 추가 |
 | Same Work Different Edition | 같은 `work_id`, 다른 판본 | 별도 `source_id`, Phase 4 Edition Authority로 연결 |
-| Different Scan Same Edition | 같은 edition, 다른 스캔본(품질/출처 상이) | 별도 `source_id`, `aliases`에 상호 참조 기록 + `notes`에 스캔 출처 명시 |
+| Different Scan Same Edition | 같은 `edition_id`, 다른 스캔본(품질/출처 상이) | 별도 `source_id`, 동일 `edition_id`의 `source_ids` 배열에 함께 등록 + `notes`에 스캔 출처 명시 |
 | Derivative OCR | 동일 원본의 OCR 재처리본 | 원본 `source_id`에 `derived_from` 필드(신규)로 연결, 별도 저작 취급 안 함 |
 | Supplement Material | 부록/색인 등 원저작의 보충 자료 | 별도 `work_id` 부여하되 `related_work_id`(신규)로 원저작과 연결 |
 
@@ -229,18 +266,33 @@ FAIL    — 필수 항목 미충족(파일 손상, 필수 필드 누락, source_
 | Modern Licensed(`usage_permission=excerpt_only`) | Restricted TSU — 발췌 범위만 payload, 전문 미포함 |
 | Modern(`usage_permission=metadata_only`/`citation_only`) | Citation Only TSU — 원문 청크 없이 서지정보+위치 정보만 |
 
-### 필요 Metadata (TSU payload에 전파)
+### TSU 생성 전 필수 Metadata (개정)
+
+TSU 생성 호출 시점에 아래 9개 필드가 **전부** 존재해야 한다 — 하나라도 없으면
+TSU 생성을 차단한다(Quality Gate FAIL과 별개의 TSU 진입 게이트):
 
 ```yaml
+source_id: string          # Phase 3
+author_id: string          # Phase 3/4
+work_id: string             # Phase 3/4
+category: string            # Phase 5
+publication_year: integer   # Phase 3
+source_type: licensed | purchased | personal | reference          # NAE_METADATA_GOVERNANCE_v1.md §3
+copyright_status: public_domain | copyrighted | licensed | unknown # NAE_METADATA_GOVERNANCE_v1.md §4
+citation_policy: string     # 인용 표기 형식(저자/제목/출판사/연도/페이지)
 tsu_access: full | restricted | citation_only
-citation_policy: string       # 인용 시 표기 형식 지정(저자/제목/출판사/연도/페이지)
-source_restriction: source_manifest의 access_control 값을 그대로 전파
 ```
+
+`edition_id`는 이번 9개 필수 목록에는 없으나 Full/Restricted TSU 어느 쪽이든
+payload에 포함해 두는 것을 권장한다(판본 간 인용 구분 목적, 필수는 아님).
 
 Quality Gate를 통과(PASS/WARNING)하고 `copyright_status`가 `unknown`이 아닌 자료만
 TSU 단계 진입 — `unknown`은 Phase 5 §1 규칙에 따라 사람 확인 전까지 보류.
-경로 충돌 방지: TSU 생성 시 항상 명시적 `--dataset-path` 사용(§0.1 참고, 이번
-설계는 규칙화만, 실행 없음).
+
+**Dataset Isolation(필수)**: TSU 생성 시 항상 명시적 `--dataset-path` 사용,
+NAE/DBMA 각 파이프라인의 dataset boundary를 넘지 않는다 — 상세 규칙은
+[ADR-015 §3.6–3.7](architecture/ADR-015-NAE-Corpus-Ingestion-Standard.md)이 정본이며
+이 문서는 규칙화만 하고 실행하지 않는다.
 
 ---
 
@@ -288,8 +340,8 @@ Application Resource (Modern ministry/apologetics)
 
 1. **새 책 추가 첫 단계**: Registration — `source_id`/`author_id`/`work_id` 발급 및 PD/Modern 영역 결정(Phase 2/3).
 2. **저자명 표기가 다르게 들어오면**: Author Authority(`authority/authors.yaml`)의 `aliases`와 정규화 비교 후 기존 `author_id`로 통합, 불일치 시 사람이 동명이인 여부 확인(Phase 4).
-3. **같은 책의 다른 판본**: 동일 `work_id`, 별도 `source_id`로 등록하고 `authority/works.yaml`의 `editions` 목록으로 연결(Phase 4).
-4. **현대 저작권 자료 보호**: `source_type`/`copyright_status`/`usage_permission`/`access_control` 4필드로 등록 시점부터 관리, `no_redistribution`은 기본 `metadata_only`, TSU 단계에서 Restricted/Citation Only로 반영(Phase 3/8, ADR-014 계승).
+3. **같은 책의 다른 판본**: 동일 `work_id`, 별도 `edition_id`로 등록하고(Edition이 Work와 Source File 사이 독립 entity, Phase 4 개정), 동일 판본의 복수 스캔본은 같은 `edition_id`의 `source_ids` 배열로 묶는다.
+4. **현대 저작권 자료 보호**: `source_type`/`copyright_status`/`usage_permission`/`access_control` 4필드로 등록 시점부터 관리(값 체계는 [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md)가 정본), `no_redistribution`(access_control)은 `usage_permission=citation_only` 이하로 취급, TSU 단계에서 Restricted/Citation Only로 반영(Phase 3/8).
 5. **TSU Pipeline 진입 시점**: Quality Gate PASS/WARNING 통과 + `copyright_status≠unknown` 확정 후(Phase 7→8).
 6. **Retrieval Index 추가 시점**: TSU+Embedding 완료 및 `access_control≠no_redistribution` 확인 후, Authority Weight(Phase 9) 부여와 함께 노출.
 

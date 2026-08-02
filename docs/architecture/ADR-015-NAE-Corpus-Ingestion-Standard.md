@@ -7,7 +7,9 @@ based_on:
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
   - docs/architecture/ADR-013-NAE-Vector-Store.md
   - docs/architecture/ADR-014-NAE-Modern-Corpus-Layer.md
+  - docs/NAE_METADATA_GOVERNANCE_v1.md (2026-08-02 revision)
 created: 2026-08-02
+revised: 2026-08-02 (NAE-METADATA-GOVERNANCE-REVISION-001 — §3.7 Dataset Isolation Rule 추가, C1 Review-001 R6 대응)
 scope_modified: docs/ only — 파일 이동/삭제/다운로드/OCR/TSU/Embedding/Retrieval 코드 변경 없음
 ---
 
@@ -89,6 +91,28 @@ ADR-014에서 이미 확정된 원칙을 이번 표준의 운영 규칙으로 �
 Phase 8(TSU Integration Policy)의 모든 TSU 생성 호출은 **명시적 `--dataset-path`
 지정을 필수 조건으로 한다** — 이 조건 없이는 TSU Pipeline 진행을 승인하지 않는다.
 
+### 3.7 Dataset Isolation Rule (신규, NAE-METADATA-GOVERNANCE-REVISION-001 반영)
+
+`--dataset-path` 필수 지정(§3.6)을 일반 원칙으로 확장한다.
+
+1. **명시적 dataset path 사용** — NAE와 DBMA의 TSU Dataset은 항상 명시적 경로로
+   지정한다. 어느 파이프라인도 기본값(implicit) 경로에 의존해 다른 파이프라인의
+   산출물 위치를 추정하지 않는다.
+2. **Implicit path inference 금지** — `--output-dir`이 가리키는 registry로부터
+   TSU 산출 경로를 자동 추론하는 로직(§3.6에서 확인된 `DEFAULT_TSU_DATASET_PATH`
+   하드코딩과 동일 부류의 위험)을 금지한다. 경로는 항상 호출 시점에 명시적으로
+   전달되어야 한다.
+3. **Pipeline별 dataset boundary 유지** — DBMA(`output/bench/tsu_dataset.jsonl`,
+   `DEFAULT_TSU_DATASET_PATH`)와 NAE(`NAE/corpus/tsu/`, `nae_qdrant`/ADR-013)는
+   서로 다른 dataset boundary를 가지며, 한쪽 파이프라인의 실행이 다른 쪽 경로에
+   쓰기 작업을 일으켜서는 안 된다. NAE-MODERN이 추가되어도 이 경계는 그대로
+   유지되며, modern 전용 TSU는 PD/DBMA와 별도 경로를 갖는다(예:
+   `output/nae/bench/tsu_dataset_modern.jsonl` — 예시, 확정 경로는 구현 단계에서 결정).
+
+목적: DBMA/NAE TSU 데이터셋 간 충돌 방지, dataset 오염(한 파이프라인의 산출물이
+다른 파이프라인의 운영 데이터를 덮어쓰는 사고) 방지. 이 규칙은 §3.6 BLOCKER의
+근본 원인(암묵적 경로 추론)에 대한 일반화된 예방 조치이며, §3.6의 예외가 아니다.
+
 ## 4. Alternatives
 
 | 대안 | 기각 사유 |
@@ -109,6 +133,10 @@ Phase 8(TSU Integration Policy)의 모든 TSU 생성 호출은 **명시적 `--da
 - Quality Gate 임계값(OCR 품질 점수 등)이 미정이므로, 실제 운영 착수 전 샘플
   데이터로 보정하는 후속 단계가 필요하다.
 - ADR 번호 충돌 확인: 작성 시점 기준 001–014 존재, 015는 미사용 번호로 충돌 없음.
+- **C1 Architecture Design Review-001 R6(BLOCKER) 대응 완료**: §3.6에 `--dataset-path`
+  필수 조건 명시, §3.7에 Dataset Isolation Rule 일반화 — TSU Pipeline 진행을 막던
+  BLOCKER는 문서 레벨에서 해소됨(실제 CLI 호출 시 조건 준수 여부는 구현 단계에서
+  별도 검증 필요, 이번 ADR은 규칙만 확정).
 
 ## 6. Future Expansion
 
