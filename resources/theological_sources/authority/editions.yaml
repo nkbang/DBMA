@@ -7,6 +7,8 @@ schema_version: "1.0"
 
 editions:
   - edition_id: WORK-DAGG-CHURCH-ORDER-001-1871
+    canonical_id: dagg_john_l_church_order_1871
+    legacy_id: ["WORK-DAGG-CHURCH-ORDER-001-1871"]
     work_id: WORK-DAGG-CHURCH-ORDER-001
     publication_year: 1871
     publisher: "Bible and Publication Society"
@@ -17,6 +19,8 @@ editions:
       ARCH STREET." (Pilot-001 승격분)
 
   - edition_id: WORK-HISCOX-STANDARD-MANUAL-001-1890
+    canonical_id: hiscox_edward_t_standard_manual_1890
+    legacy_id: ["WORK-HISCOX-STANDARD-MANUAL-001-1890"]
     work_id: WORK-HISCOX-STANDARD-MANUAL-001
     publication_year: 1890
     publisher: "American Baptist Publication Society"
@@ -26,6 +30,8 @@ editions:
       Publication Society" + "1420 Chestnut Street." (Pilot-001 승격분)
 
   - edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    canonical_id: fuller_andrew_complete_works_1820_charlestown
+    legacy_id: ["FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820"]
     work_id: FULLER-COMPLETE-WORKS-001
     publication_year: 1820
     publisher: "Anderson & Meehan, for William Collins"
@@ -35,6 +41,8 @@ editions:
       발행처/도시/연도 전부 다름, 별도 인쇄본으로 판단(Pilot-002 승격분).
 
   - edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    canonical_id: fuller_andrew_complete_works_1824_newhaven
+    legacy_id: ["FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE"]
     work_id: FULLER-COMPLETE-WORKS-001
     publication_year: "1824-1825"
     publisher: "S. Converse"

@@ -24,6 +24,16 @@ Design-001 원안이 이번 구현으로 완성됨).
      체인에 순환이 있는지(ADR-018)
   8. Duplicate Canonical Name — 서로 다른 author_id가 동일
      canonical_name(정규화 비교)을 갖는 경우(동일 인물 중복 등록 의심)
+  9. Canonical ID Existence — ADR-017 Option B(NAE-ID-GOVERNANCE-
+     IMPLEMENTATION-001): 모든 entity에 `canonical_id` 필드가 있는지
+     (없으면 FAIL — 기존 ID 필드 자체의 표기 검사인 #4와 달리, 이
+     필드는 required 스키마 필드이므로 누락은 데이터 오류)
+  10. Canonical ID Format — `canonical_id` 값이 ADR-017 규칙(lowercase
+      snake_case)을 만족하는지(위반 시 FAIL — #4는 기존 ID 필드에 대해
+      WARNING만 주지만, canonical_id는 "이것이 정본 표기다"라고
+      선언하는 필드이므로 그 값 자체가 규칙을 어기면 FAIL)
+  11. Legacy ID Type — `legacy_id`가 있으면 배열(list) 타입인지 확인
+      (문자열 등 다른 타입이면 FAIL — 값의 사실 여부는 판단하지 않음)
 
 읽기 전용 — Registry 파일을 수정하지 않는다.
 
@@ -271,6 +281,41 @@ def check_duplicate_canonical_name(registry: dict[str, list[dict[str, Any]]], re
             result.add("PASS", f"authority/authors.yaml: {author_id!r} canonical_name 중복 없음")
 
 
+def check_canonical_id_governance(registry: dict[str, list[dict[str, Any]]], result: ValidationResult) -> None:
+    """검사 9/10/11: ADR-017 Option B canonical_id/legacy_id 스키마 검증.
+
+    NAE-ID-GOVERNANCE-IMPLEMENTATION-001 — 기존 ID 필드(#1~#8)는
+    전혀 건드리지 않는다. canonical_id/legacy_id는 그 위에 추가된
+    신규 필드에 대한 독립적인 검사다.
+    """
+    for entity_key, (_top_key, id_field) in _ENTITY_FILES.items():
+        for entry in registry[entity_key]:
+            eid = entry.get(id_field)
+            if not eid:
+                continue  # 누락은 check_duplicate_ids(#2)가 이미 FAIL 처리
+
+            canonical_id = entry.get("canonical_id")
+            if not canonical_id:
+                result.add("FAIL", f"authority/{entity_key}.yaml: {eid!r} — canonical_id 누락(missing canonical_id)")
+            elif not _CANONICAL_ID_RE.match(canonical_id):
+                result.add(
+                    "FAIL",
+                    f"authority/{entity_key}.yaml: {eid!r}의 canonical_id={canonical_id!r} — "
+                    f"ADR-017 canonical 표기(lowercase snake_case) 위반",
+                )
+            else:
+                result.add("PASS", f"authority/{entity_key}.yaml: {eid!r}의 canonical_id={canonical_id!r} 형식 확인")
+
+            if "legacy_id" in entry and entry["legacy_id"] is not None:
+                if isinstance(entry["legacy_id"], list):
+                    result.add("PASS", f"authority/{entity_key}.yaml: {eid!r}의 legacy_id 배열 타입 확인")
+                else:
+                    result.add(
+                        "FAIL",
+                        f"authority/{entity_key}.yaml: {eid!r}의 legacy_id={entry['legacy_id']!r} — 배열(list) 타입이어야 함",
+                    )
+
+
 def validate(registry_path: Path) -> ValidationResult:
     result = ValidationResult()
     registry = load_registry(registry_path)
@@ -286,6 +331,7 @@ def validate(registry_path: Path) -> ValidationResult:
     check_canonical_id_format(registry, result)
     check_circular_reference(registry, result)
     check_duplicate_canonical_name(registry, result)
+    check_canonical_id_governance(registry, result)
 
     return result
 

@@ -10,6 +10,7 @@ schema_version: "1.0"
 
 authors:
   - author_id: dagg_john_l
+    canonical_id: dagg_john_l
     canonical_name: "John L. Dagg"
     aliases: ["John Dagg", "J. L. Dagg, D.D.", "J.L. Dagg"]
     birth_year: 1794
@@ -21,6 +22,7 @@ authors:
       승격분, 값 변경 없음).
 
   - author_id: hiscox_edward_t
+    canonical_id: hiscox_edward_t
     canonical_name: "Edward T. Hiscox"
     aliases: ["Edward Hiscox", "Edward T. Hiscox, D.D."]
     birth_year: 1814
@@ -31,6 +33,8 @@ authors:
       원문 자체로 검증되지 않음(Pilot-001 승격분, 값 변경 없음).
 
   - author_id: FULLER-ANDREW-001
+    canonical_id: fuller_andrew
+    legacy_id: ["FULLER-ANDREW-001"]
     canonical_name: "Andrew Fuller"
     aliases: ["Rev. Andrew Fuller", "Andrew Fuller, Kettering"]
     birth_year: 1754

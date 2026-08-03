@@ -27,6 +27,7 @@ _GOOD_AUTHORS = """
 schema_version: "1.0"
 authors:
   - author_id: test_author
+    canonical_id: test_author
     canonical_name: "Test Author"
     aliases: ["T. Author"]
 """
@@ -35,6 +36,7 @@ _GOOD_WORKS = """
 schema_version: "1.0"
 works:
   - work_id: test_author_test_work
+    canonical_id: test_author_test_work
     author_id: test_author
     canonical_title: "Test Work"
 """
@@ -43,6 +45,7 @@ _GOOD_EDITIONS = """
 schema_version: "1.0"
 editions:
   - edition_id: test_author_test_work_1900
+    canonical_id: test_author_test_work_1900
     work_id: test_author_test_work
 """
 
@@ -52,6 +55,7 @@ _GOOD_SOURCES = """
 schema_version: "1.0"
 sources:
   - source_id: test_source_001
+    canonical_id: test_source_001
     edition_id: test_author_test_work_1900
 """
 
@@ -161,6 +165,7 @@ class TestCanonicalIdFormat:
 schema_version: "1.0"
 authors:
   - author_id: NOT-CANONICAL-001
+    canonical_id: not_canonical
     canonical_name: "Test"
 """
         registry = _write_good_registry(
@@ -183,6 +188,7 @@ authors:
 class TestOrphanEntity:
     def test_unreferenced_author_warns(self, tmp_path):
         authors = _GOOD_AUTHORS + """  - author_id: orphan_author
+    canonical_id: orphan_author
     canonical_name: "Orphan Author"
 """
         registry = _write_good_registry(tmp_path, authors=authors)
@@ -218,8 +224,10 @@ works:
 schema_version: "1.0"
 works:
   - work_id: work_a
+    canonical_id: work_a
     author_id: test_author
   - work_id: work_b
+    canonical_id: work_b
     author_id: test_author
     continues_work_id: work_a
 """
@@ -240,8 +248,10 @@ class TestDuplicateCanonicalName:
 schema_version: "1.0"
 authors:
   - author_id: john_smith_1660
+    canonical_id: john_smith_1660
     canonical_name: "John Smith"
   - author_id: john_smith_1810
+    canonical_id: john_smith_1810
     canonical_name: "John Smith"
 """
         registry = _write_good_registry(

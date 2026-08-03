@@ -9,6 +9,8 @@ schema_version: "1.0"
 
 works:
   - work_id: WORK-DAGG-CHURCH-ORDER-001
+    canonical_id: dagg_john_l_church_order
+    legacy_id: ["WORK-DAGG-CHURCH-ORDER-001"]
     author_id: dagg_john_l
     canonical_title: "Church Order"
     aliases: ["A Treatise on Church Order", "Manual of Church Order"]
@@ -20,6 +22,8 @@ works:
       (Pilot-001 승격분).
 
   - work_id: WORK-HISCOX-STANDARD-MANUAL-001
+    canonical_id: hiscox_edward_t_standard_manual
+    legacy_id: ["WORK-HISCOX-STANDARD-MANUAL-001"]
     author_id: hiscox_edward_t
     canonical_title: "The Standard Manual for Baptist Churches"
     aliases: []
@@ -27,6 +31,8 @@ works:
     original_language: en
 
   - work_id: FULLER-COMPLETE-WORKS-001
+    canonical_id: fuller_andrew_complete_works
+    legacy_id: ["FULLER-COMPLETE-WORKS-001"]
     author_id: FULLER-ANDREW-001
     canonical_title: "The Works of the Rev. Andrew Fuller, in Eight Volumes"
     aliases: ["Complete Works of Andrew Fuller"]

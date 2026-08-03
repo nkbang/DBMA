@@ -7,41 +7,57 @@ schema_version: "1.0"
 
 volumes:
   - volume_id: FULLER-COMPLETE-WORKS-VOL01
+    canonical_id: fuller_andrew_complete_works_1820_charlestown_v01
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL01"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
     volume_number: 1
     volume_title: "The Gospel Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ"
 
   - volume_id: FULLER-COMPLETE-WORKS-VOL02
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v02
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL02"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
     volume_number: 2
     volume_title: "The Calvinistic and Socinian Systems Examined and Compared"
 
   - volume_id: FULLER-COMPLETE-WORKS-VOL03
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v03
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL03"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
     volume_number: 3
     volume_title: "The Gospel Its Own Witness"
 
   - volume_id: FULLER-COMPLETE-WORKS-VOL04
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v04
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL04"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
     volume_number: 4
     volume_title: "Dialogues, Letters, and Essays, on Various Subjects"
 
   - volume_id: FULLER-COMPLETE-WORKS-VOL05
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v05
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL05"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
     volume_number: 5
     volume_title: "Expository Discourses on the Book of Genesis"
 
   - volume_id: FULLER-COMPLETE-WORKS-VOL06
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v06
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL06"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
     volume_number: 6
     volume_title: "Expository Discourses on the Apocalypse"
 
   - volume_id: FULLER-COMPLETE-WORKS-VOL07
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v07
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL07"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
     volume_number: 7
     volume_title: "Sermons on Various Subjects"
 
   - volume_id: FULLER-COMPLETE-WORKS-VOL08
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v08
+    legacy_id: ["FULLER-COMPLETE-WORKS-VOL08"]
     edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
     volume_number: 8
     volume_title: "Miscellanies: Magazine Papers, Sketches of Sermons, Association Letters, Tracts"
