@@ -1,0 +1,30 @@
+# NAE Authority Registry — Editions (TEMPLATE — 실제 데이터 없음)
+#
+# NAE-SCHEMA-MIGRATION-001: 빈 템플릿. 실제 Edition 데이터는 입력하지 않는다.
+#
+# 정본: NAE_METADATA_GOVERNANCE_v1.md §5.1, ADR-016
+# 핵심 원칙(Fuller 실증, Pilot-002): 1개 Work는 Edition을 1개 이상 가질 수
+# 있다(1:N) — Edition을 Work당 1개로 가정하지 말 것.
+# 실증 참고: authority/pilot/editions.yaml, authority/pilot/fuller/editions.yaml
+#
+# 필드 정의:
+#   edition_id       string, required  — 생성 규칙: "{work_id}-{edition_slug}"
+#   work_id           string, required  — works.yaml FK
+#   publisher         string, optional
+#   place             string, optional
+#   publication_year  integer|string, optional — 다권본은 범위 표기 가능(예: "1824-1825"), 개별 연도는 volumes.yaml에 정확히 기록
+#   edition_notes      string, optional  — 판단 근거(RAW 실측 인용 등)
+#   volume_ids         array[string], optional — 다권본에서 이 Edition 산하 volume 목록(단권 자료는 생략)
+#
+# 예시(구조 참고용, 데이터 아님):
+#   editions:
+#     - edition_id: example_author-example_work-ed1
+#       work_id: example_author-example_work
+#       publisher: "Example Publisher"
+#       place: "Example City"
+#       publication_year: 1900
+#       edition_notes: null
+#       volume_ids: []
+
+schema_version: "1.0"
+editions: []

@@ -1,0 +1,30 @@
+# NAE Authority Registry — Works (TEMPLATE — 실제 데이터 없음)
+#
+# NAE-SCHEMA-MIGRATION-001: 빈 템플릿. 실제 Work 데이터는 입력하지 않는다.
+#
+# 정본: NAE_METADATA_GOVERNANCE_v1.md §5.1, ADR-016 (Work:Edition = 1:N)
+# 실증 참고: authority/pilot/works.yaml, authority/pilot/fuller/works.yaml
+#
+# 필드 정의:
+#   work_id          string, required  — 생성 규칙: "{author_id}-{title_slug}"
+#   author_id         string, required  — authors.yaml FK(단방향 참조)
+#   title             string, required  — RAW title page 실측을 canonical로
+#   title_variants    array[string]     — 제목 다원 불일치 시 canonical 외 표기 보존
+#   category          string, required
+#   subcategory       array[string]
+#   topics            array[string]
+#   notes             string, optional
+#
+# 예시(구조 참고용, 데이터 아님):
+#   works:
+#     - work_id: example_author-example_work
+#       author_id: example_author
+#       title: "Example Work"
+#       title_variants: []
+#       category: theology
+#       subcategory: [systematic_theology]
+#       topics: [example_topic]
+#       notes: null
+
+schema_version: "1.0"
+works: []

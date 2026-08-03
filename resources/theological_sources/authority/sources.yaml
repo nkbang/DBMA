@@ -1,0 +1,40 @@
+# NAE Authority Registry — Source Files (TEMPLATE — 실제 데이터 없음)
+#
+# NAE-SCHEMA-MIGRATION-001: 빈 템플릿. 실제 Source 데이터는 입력하지 않는다.
+# 이 registry는 각 카테고리의 source_manifest.yaml의 source_id를 참조만
+# 하고 값을 복제하지 않는다(단방향 참조, NAE_METADATA_GOVERNANCE_v1.md §5.3).
+#
+# 정본: NAE_METADATA_GOVERNANCE_v1.md §5, ADR-016
+# archive_source는 선택 필드(Pilot-001 F-P4 — RAW에 실제로 없는 정보인
+# 경우가 많음, 값 없으면 Quality Gate WARNING이지 FAIL 아님).
+# 실증 참고: authority/pilot/sources.yaml, authority/pilot/fuller/sources.yaml
+#
+# 필드 정의:
+#   source_id         string, required  — source_manifest.yaml의 source_id와 일치해야 함(참조 무결성 검사 대상)
+#   volume_id          string, optional  — 다권본에서만 사용, volumes.yaml FK
+#   edition_id          string, required  — editions.yaml FK(volume이 없는 단권 자료는 이 필드로 직접 연결)
+#   path                string, required  — RAW 내 상대 경로
+#   file_type           array[string]     — [pdf, txt, hocr] 등
+#   file_size_mb        number, optional
+#   archive_source       string, optional  — 선택 필드(위 참고)
+#   ocr_available        boolean, optional
+#   hocr_available        boolean, optional
+#   quality_status         enum, optional — PASS | WARNING | FAIL
+#   notes                   string, optional
+#
+# 예시(구조 참고용, 데이터 아님):
+#   sources:
+#     - source_id: EXAMPLE-MODERN-001
+#       volume_id: null
+#       edition_id: example_author-example_work-ed1
+#       path: "NAE/corpus/raw/.../example/"
+#       file_type: [pdf, txt]
+#       file_size_mb: 10
+#       archive_source: null
+#       ocr_available: true
+#       hocr_available: false
+#       quality_status: PASS
+#       notes: null
+
+schema_version: "1.0"
+sources: []
