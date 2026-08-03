@@ -317,6 +317,22 @@ Regression Test → Build Report 작성 → **Git Commit** → **Git Push**.
 RAW 데이터, Retrieval Engine, Embedding Engine, TSU Pipeline, 기존
 ADR, Production Registry. Architecture를 우회하는 구현을 금지한다.
 
+### Architecture Freeze Rule
+
+ADR가 Approved 상태가 되면, 해당 ADR는 이후 어떤 작업 명령에서도
+**자동으로 변경하거나 우회해서는 안 된다** — 작업 명령서(사용자가
+채팅으로 준 지시 포함)가 Approved ADR의 규칙과 다른 값·형식·정책을
+암묵적으로 담고 있어도, CUE는 그것을 그대로 구현하지 않는다. 변경이
+필요한 경우 반드시 새로운 ADR Amendment 또는 ADR Revision 문서를
+먼저 작성하고 승인받은 후에만 구현한다.
+
+작업 명령서와 Approved ADR/기존 승인 설계 문서가 충돌하는 것을
+발견하면: 구현을 중단하고 충돌 내용을 구체적으로 제시한 뒤 사용자
+확인을 받는다(예: NAE-ID-GOVERNANCE-IMPLEMENTATION-001에서
+canonical_id 형식이 ADR-017 lowercase snake_case와 명령서의
+UPPER_SNAKE_CASE 예시가 충돌해 AskUserQuestion으로 확인 후 ADR-017
+기준으로 구현한 사례, 2026-08-03).
+
 ### C1 Review 요청 시점
 
 새 ADR 작성, 새 Architecture Layer 추가, Metadata Model 변경,
