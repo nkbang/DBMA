@@ -1,34 +1,47 @@
-# NAE Authority Registry — Volumes (TEMPLATE — 실제 데이터 없음)
+# NAE Authority Registry — Volumes (PRODUCTION)
+# NAE-AUTHORITY-REGISTRY-BUILD-001: Pilot-002(Fuller) 승격. 다권본에서만
+# 사용하는 조건부 Entity — Dagg/Hiscox(단권)는 이 파일에 항목 없음.
 #
-# NAE-SCHEMA-MIGRATION-001: 빈 템플릿. 실제 Volume 데이터는 입력하지 않는다.
-# 다권본에서만 사용하는 선택(optional) 계층 — 단권 자료는 이 파일에 항목을
-# 만들지 않고 Edition→Source File로 직접 연결한다(ADR-016).
-#
-# 정본: NAE_METADATA_GOVERNANCE_v1.md §5.1, ADR-016
-# 주의(Pilot-002 §6 실증): volume_number는 OCR 텍스트가 아니라 RAW
-# 디렉토리명을 canonical 출처로 삼는다(OCR 로마숫자 오인식 위험 확인됨).
-# 실증 참고: authority/pilot/fuller/volumes.yaml
-#
-# 필드 정의:
-#   volume_id         string, required  — 생성 규칙: "{edition_id}-vol{NN}"
-#   work_id            string, required  — works.yaml FK(edition_id를 통하지 않고 직접 참조 — Reference Integrity Phase 7 검사 대상)
-#   edition_id         string, required  — editions.yaml FK
-#   volume_number      integer, required — RAW 디렉토리명 기준
-#   volume_title       string, optional
-#   publication_year   integer, optional — Edition의 publication_year가 범위일 때 개별 volume의 정확한 연도
-#   publisher          string, optional
-#   notes              string, optional
-#
-# 예시(구조 참고용, 데이터 아님):
-#   volumes:
-#     - volume_id: example_author-example_work-ed1-vol01
-#       work_id: example_author-example_work
-#       edition_id: example_author-example_work-ed1
-#       volume_number: 1
-#       volume_title: "Example Volume Title"
-#       publication_year: 1900
-#       publisher: "Example Publisher"
-#       notes: null
-
+# 스키마 정본: docs/NAE_AUTHORITY_REGISTRY_DESIGN_v1.md §2.4
 schema_version: "1.0"
-volumes: []
+
+volumes:
+  - volume_id: FULLER-COMPLETE-WORKS-VOL01
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    volume_number: 1
+    volume_title: "The Gospel Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL02
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 2
+    volume_title: "The Calvinistic and Socinian Systems Examined and Compared"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL03
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 3
+    volume_title: "The Gospel Its Own Witness"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL04
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 4
+    volume_title: "Dialogues, Letters, and Essays, on Various Subjects"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL05
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 5
+    volume_title: "Expository Discourses on the Book of Genesis"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL06
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 6
+    volume_title: "Expository Discourses on the Apocalypse"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL07
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 7
+    volume_title: "Sermons on Various Subjects"
+
+  - volume_id: FULLER-COMPLETE-WORKS-VOL08
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_number: 8
+    volume_title: "Miscellanies: Magazine Papers, Sketches of Sermons, Association Letters, Tracts"
