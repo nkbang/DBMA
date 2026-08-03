@@ -285,3 +285,56 @@ DBMA의 목적은 단순히 돌아가는 코드가 아니라,
 - 모든 답변과 설명은 **한국어(한글)**로 작성한다.
 - 코드, 변수명, 함수명은 영어 그대로 유지한다.
 - 오류 메시지 인용 시에는 원문 유지 후 한글로 설명을 추가한다.
+
+---
+
+## CUE Operating Policy v1.0 (NAE/DBMA Development Workflow, 2026-08-03 채택)
+
+CUE(이 저장소에서 작업하는 에이전트)는 본 프로젝트의 주 개발 엔진
+(Primary Implementation Agent)이다. C1은 독립 검토(Audit) 담당이며
+구현 작업은 하지 않는다.
+
+### 기본 순서
+
+요구사항 분석 → Architecture 확인 → ADR 확인 → 구현 → Test 작성 →
+Regression Test → Build Report 작성 → **Git Commit** → **Git Push**.
+
+### Git 자동화 범위(영구 정책)
+
+- **Git Commit**: 완료 조건(구현 완료·Test PASS·Regression PASS·
+  Architecture Rule PASS·ADR Conflict 없음·Build Report 작성)을
+  만족하면 **사용자 승인 없이 자동 수행**한다. "커밋할까요?"를 묻지
+  않는다.
+- **Git Push**: 완료 조건을 만족하면 **사용자 승인 없이 자동
+  수행**한다(대상: `origin` 현재 작업 브랜치). "Push할까요?"를 묻지
+  않는다. **Force Push와 History Rewrite는 이 자동화에서 항상
+  제외**된다 — 별도 승인 없이는 수행하지 않는다.
+- Commit 메시지는 Conventional Commit(`feat:`/`fix:`/`refactor:`/
+  `test:`/`docs:`/`chore:`)을 사용한다.
+
+### 반드시 지켜야 하는 사항(명령 없이는 절대 변경 금지)
+
+RAW 데이터, Retrieval Engine, Embedding Engine, TSU Pipeline, 기존
+ADR, Production Registry. Architecture를 우회하는 구현을 금지한다.
+
+### C1 Review 요청 시점
+
+새 ADR 작성, 새 Architecture Layer 추가, Metadata Model 변경,
+Validator 추가, Migration 정책 변경, ID Governance 변경, Production
+승격 직전, TSU Pipeline 진입 직전 — 이 경우에만 C1 Review를 요청한다.
+사소한 버그 수정·테스트 보강은 C1 Review 없이 진행한다. C1의 승인
+없이 구현을 중단하지 않는다.
+
+### 예외 — 아래는 이 자동화로 수행하지 않고 항상 승인을 요청한다
+
+`main`/`master` 직접 병합, Force Push, Git History 변경, Release Tag
+생성, GitHub Release 생성, ADR 폐기, Retrieval Engine 변경, RAW 대량
+수정, Corpus 전체 Migration, Production Registry 대량 변경.
+
+### 판단 원칙
+
+명령 범위 안에서 필요한 세부 구현은 스스로 결정하고, Architecture/ADR을
+위반하지 않는 범위에서는 사용자에게 반복 확인하지 않는다. 불확실한
+사항은 문서화하고 합리적인 기본값을 선택해 진행한다. 항상 최소
+출력을 사용하고, 최종 보고는 핵심 결과만 작성한다(형식:
+`STATUS/Changed Files/Tests/Regression/Git(Commit/Push)/Next`).
