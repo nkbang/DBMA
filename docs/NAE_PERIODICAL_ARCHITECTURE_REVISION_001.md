@@ -68,6 +68,11 @@ Author→Work 인프라(Registry Build-001, ADR-017)를 정기간행물 전용�
 
 ## 4. Organization Authority 정책 (Phase 3)
 
+> **2026-08-02 추가(NAE-PERIODICAL-CONDITION-RESOLUTION-001 Phase 2)**:
+> 아래 결정이 [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) §5.1에
+> Person/Organization 필드 정의 + Editor 관계 설명으로 문서화 완료됐다
+> (스키마 파일 미반영, 문서만).
+
 ### 결정: **필요 — `author_type` 필드 추가**(별도 Entity 신설 아님)
 
 ```yaml

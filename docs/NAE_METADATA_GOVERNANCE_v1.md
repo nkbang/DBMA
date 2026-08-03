@@ -230,11 +230,46 @@ Source File
 
 | Entity | ID | 의미 |
 |---|---|---|
-| Author | `author_id` | 저자 canonical 식별자, 표기 변형(aliases) 통합 |
+| Author | `author_id` | 저자 canonical 식별자, 표기 변형(aliases) 통합 — Person 또는 Organization(아래 참고) |
 | Work | `work_id` | 저작 단위(개정판·역서를 아우르는 상위 개념) |
 | Edition | `edition_id` | 판본 단위 — 동일 Work의 여러 출판연도/개정 |
 | Volume | `volume_id` (2026-08-02 신규, 선택) | 다권본에서 권(volume) 단위 — 동일 Edition 산하 여러 volume |
 | Source File | `source_id` | 실제 파일 단위 — 동일 Edition/Volume의 여러 스캔본 가능 |
+
+**Author: Person / Organization 구분(`author_type`, ADR-018, ID Governance Review Phase 2 반영 — 설계 확정, 스키마 파일 미반영)**:
+
+```yaml
+author_id: string
+author_type: person | organization   # 신규(설계만, source_manifest.schema.yaml 미반영)
+canonical_name: string
+aliases: array[string]
+birth_year: integer|null   # organization이면 항상 null(설립연도로 재해석하지 않음 — 아래 근거)
+death_year: integer|null   # organization이면 항상 null(대부분 후신 조직으로 활동 지속 — 해산연도가 모호)
+tradition: string|null
+notes: string|null
+```
+
+정기간행물(Baptist Missionary Society, American Baptist Missionary
+Union 등)처럼 발행 주체가 개인이 아닌 경우를 위해 별도 `CorporateAuthor`
+Entity를 신설하지 않고 기존 Author entity를 확장하는 방식을 채택했다
+(ADR-018 §3.2) — `author_id` FK가 Person/Organization 어느 쪽이든
+동일하게 동작해야 Registry Validation Tool의 Reference 검사 로직이
+이원화되지 않는다.
+
+**Editor 관계**: 발행 조직(Publisher)과 편집자(Editor, 개인)를 구분해야
+하는 경우 — `Work.author_id`는 발행 조직(`author_type=organization`)을
+가리키고, 신규 선택 필드 `Work.editor_id`(Author FK,
+`author_type=person`)로 편집자를 별도 연결한다. 예: Baptist Missionary
+Magazine의 `author_id`는 `american_baptist_missionary_union`(조직),
+편집자가 RAW에서 확인되면 `editor_id`로 별도 개인 Author를 연결한다
+(Periodical Pilot 실제 데이터에는 RAW에서 명시적 개인 편집자 표기가
+확인되지 않아 `editor_id`가 비어 있음 — ADR-018 §Risk 6).
+
+**주의**: 위 `author_type`/`editor_id` 설계는 2026-08-02
+NAE-PERIODICAL-CONDITION-RESOLUTION-001에서 문서화만 완료됐다 —
+`resources/theological_sources/modern/source_manifest.schema.yaml`
+(schema_version 2.1.0)에는 아직 반영되지 않았다(실제 반영은 Schema
+v2.2.0 적용 시점, 별도 승인 필요).
 
 **C1 Review R4/R5(WARNING) 대응**: 기존 설계는 Author/Work까지만 구조화하고
 Edition은 `source_manifest.yaml`의 문자열 필드로만 존재해 "같은 판본의 다른
