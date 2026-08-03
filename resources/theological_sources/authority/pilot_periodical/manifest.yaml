@@ -1,0 +1,15 @@
+# Pilot Periodical Registry — Index
+# NAE-PERIODICAL-AUTHORITY-PILOT-001. Registry 색인 — 개별 저작 데이터 없음
+# (authority/manifest.yaml과 동일 성격, Pilot 격리 버전).
+registry_version: "1.0-pilot"
+last_updated: "2026-08-02"
+scope: "Baptist Missionary Magazine — missions/ 카테고리 archive.org 확보분 전체(10 issues)"
+entity_counts:
+  periodicals: 2
+  volumes: 10
+  issues: 10
+  sources: 10
+note: >
+  프로덕션 authority/*.yaml에는 아직 반영되지 않음 — 이번 pilot은
+  authority/pilot_periodical/ 안에서만 존재(명령서 Phase4 조건: 기존
+  Registry 변경 금지).

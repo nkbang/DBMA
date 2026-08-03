@@ -1,0 +1,52 @@
+# Pilot Periodical Registry — Periodicals (treated as Work, work_type=periodical)
+# NAE-PERIODICAL-AUTHORITY-PILOT-001. Pilot 검증용, 프로덕션 반영 아님.
+#
+# 설계 결정(Option A 채택, docs/NAE_PERIODICAL_AUTHORITY_DESIGN_v1.md 참고):
+# "Periodical"은 개념적으로 Work의 work_type=periodical일 뿐, 별도 최상위
+# Entity 모델(Option B)로 만들지 않는다. 이 파일명(periodicals.yaml)은
+# 명령서 Phase 4 지시에 따라 Pilot 격리 목적으로만 분리했고, 실제
+# Production 반영 시에는 authority/works.yaml에 병합하는 것을 권고한다
+# (Design 문서 §2 결론).
+schema_version: "1.0-pilot"
+
+periodicals:
+  - periodical_id: massachusetts_baptist_missionary_magazine
+    author_id: massachusetts_baptist_missionary_society   # organization(Author 확장, §ID Governance 검토)
+    canonical_title: "Massachusetts Baptist Missionary Magazine"
+    aliases: []
+    work_type: periodical
+    original_language: en
+    notes: >
+      RAW title page 실측("Baptift Miffionary Magazine", 장수체 s체
+      표기): "PUBLISHED FOR THE BENEFIT OF THE SOCIETY", Boston, 1803.
+      1817년 "New Series"로 관계된 다른 title(american_baptist_missionary_magazine
+      아래)로 전환된 것으로 보이나(제호/발행 조직 변경), 이 pilot에서는
+      확보된 RAW 1개 issue(1803)만으로는 계승 관계를 문헌학적으로 확정할
+      수 없어 **별도 periodical로 등록**(judgement call — 아래
+      american_baptist_missionary_magazine notes와 상호 참고).
+
+  - periodical_id: american_baptist_missionary_magazine
+    author_id: american_baptist_missionary_union   # organization — 실제로는 시기별 조직명이 변화(아래 참고)
+    canonical_title: "American Baptist Magazine, and Missionary Intelligencer"
+    aliases:
+      - "Missionary Magazine"   # 1857/1867/1877/1881/1897/1907 masthead 표기(RAW 실측)
+      - "The American Baptist Magazine and Missionary Intelligencer. New Series"   # 1817 title page 전체 표기
+    work_type: periodical
+    original_language: en
+    notes: >
+      RAW 실측: 1817("NEW SERIES...VOL I", Boston), 1837(Vol.17),
+      1842(Vol.22), 1857("MISSIONARY MAGAZINE...Von. XXXVII", American
+      Baptist Missionary Union), 1867(Vol.47), 1877(Vol.57), 1881(Vol.61),
+      1897(Vol.77), 1907(Vol.87, American Baptist Missionary Union) —
+      9개 issue, volume 번호가 1817(Vol.1)부터 1907(Vol.87)까지 끊김
+      없이 연속 증가(연간 1권 발행 가정과 대략 일치)하는 것으로 보아
+      **하나의 연속된 periodical**로 판단, 제호/발행 조직 표기 변화는
+      aliases로 흡수(단행본 title_variants와 동일 처리 원칙 적용).
+      [주의] 이는 실제 서지학적 계승 관계를 전수 조사한 것이 아니라
+      volume 번호 연속성에 근거한 판단(judgement call) — 프로덕션 반영
+      전 사서/서지 전문 검증 권고(Remaining Risk 참고).
+      발행 조직명도 기간에 따라 변화했을 가능성이 높으나(예: 1817년
+      trustee 표기 "Baptist Missionary Society of Massachusetts"
+      vs 1857/1907 "American Baptist Missionary Union"), 이번 pilot은
+      author_id를 최신/대표 조직명(american_baptist_missionary_union)
+      하나로 단순화 — 조직 계보(organization lineage)는 모델링하지 않음.

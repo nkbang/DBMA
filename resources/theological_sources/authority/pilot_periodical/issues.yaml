@@ -1,0 +1,70 @@
+# Pilot Periodical Registry — Issues
+# NAE-PERIODICAL-AUTHORITY-PILOT-001. Issue ID 형식: "{volume_id}_i{NNN}"
+#
+# [RAW 표본 한계] 이번 pilot의 RAW 확보분은 volume당 issue가 정확히
+# 1개씩만 존재(archive.org에서 낱권만 개별 스캔됨) — 동일 volume 안에
+# 여러 issue가 공존하는 실사례는 이번 표본에 없다. Issue 번호 유일성
+# 검증(§Reference Integrity)은 통과하나, "같은 volume, 여러 issue"
+# 케이스는 검증되지 않았다(Remaining Risk).
+schema_version: "1.0-pilot"
+
+issues:
+  - issue_id: massachusetts_baptist_missionary_magazine_v001_i001
+    volume_id: massachusetts_baptist_missionary_magazine_v001
+    issue_number: 1
+    publication_date: "1803-09"
+    notes: "RAW 실측: 'SEPTEMBER, 1803.' title page."
+
+  - issue_id: american_baptist_missionary_magazine_v001_i001
+    volume_id: american_baptist_missionary_magazine_v001
+    issue_number: 1
+    publication_date: "1817"
+    notes: "RAW title page에 월 표기 없음 — 연도만 확인(1817)."
+
+  - issue_id: american_baptist_missionary_magazine_v017_i007
+    volume_id: american_baptist_missionary_magazine_v017
+    issue_number: 7
+    publication_date: "1837-07"
+    notes: "RAW 실측: 'July, 1837.'"
+
+  - issue_id: american_baptist_missionary_magazine_v022_i001
+    volume_id: american_baptist_missionary_magazine_v022
+    issue_number: 1
+    publication_date: "1842-01"
+    notes: "RAW 실측: 'JANUARY, 1842.'"
+
+  - issue_id: american_baptist_missionary_magazine_v037_i010
+    volume_id: american_baptist_missionary_magazine_v037
+    issue_number: 10
+    publication_date: "1857-10"
+    notes: "RAW 실측: 'OCTOBER, 1857.'"
+
+  - issue_id: american_baptist_missionary_magazine_v047_i011
+    volume_id: american_baptist_missionary_magazine_v047
+    issue_number: 11
+    publication_date: "1867-11"
+    notes: "RAW 실측: 'Vor. XLVII. NOVEMBER, 1867.'"
+
+  - issue_id: american_baptist_missionary_magazine_v057_i009
+    volume_id: american_baptist_missionary_magazine_v057
+    issue_number: 9
+    publication_date: "1877-09"
+    notes: "RAW 실측: 'Vor. LVII.— SEPTEMBER, 1877.— No. 9.'"
+
+  - issue_id: american_baptist_missionary_magazine_v061_i006
+    volume_id: american_baptist_missionary_magazine_v061
+    issue_number: 6
+    publication_date: "1881-06"
+    notes: "RAW 실측: 'LXI.— JUNE, 1881. — No. 6.'"
+
+  - issue_id: american_baptist_missionary_magazine_v077_i009
+    volume_id: american_baptist_missionary_magazine_v077
+    issue_number: 9
+    publication_date: "1897"
+    notes: "RAW 디렉토리명(v77i9) 기준 — title page에서 월 표기 미확인."
+
+  - issue_id: american_baptist_missionary_magazine_v087_i003
+    volume_id: american_baptist_missionary_magazine_v087
+    issue_number: 3
+    publication_date: "1907-03"
+    notes: "RAW 실측: 도서관 접수 스탬프 'MAR 8 190?' — 월 추정 근거(확정 아님)."
