@@ -79,16 +79,26 @@ access_control: internal_only | user_only | no_redistribution
 
 기존 `resources/theological_sources/source_manifest.schema.yaml`(schema_version 1.2)과 호환되도록 설계 — 기존 필드(`source_id`, `title`, `author`, `year`→`publication_year`, `content_genre`, `status` 등)를 재사용하고 modern 전용 필드를 추가한다.
 
+> **값 체계 정본 안내(2026-08-02, NAE-METADATA-ARCHITECTURE-REVISION-001)**:
+> 아래 `source_type`/`copyright_status`/`usage_permission`/`access_control`
+> 값 목록은 이 문서 작성 시점의 초안이며, 이후
+> [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) §4가
+> 유일한 정본으로 값을 대체했다(이 문서 원문은 소급 수정하지 않음, 기록
+> 보존 목적). 실제 구현 시 반드시 GOVERNANCE 문서의 최신 값을 사용할 것.
+
 ```yaml
 # resources/theological_sources/modern/{category}/source_manifest.yaml (신규 파일, 기존 스키마 확장)
-schema_version: "2.0.0"   # NAE-PD 1.2와 구분되는 버전 — 혼동 방지
+schema_version: "2.1.0"   # NAE-PD 1.2와 구분되는 버전 — 혼동 방지. 2.1.0: 2026-08-02 volume_id/volume_number 추가(Minor)
 
 sources:
   - author_id: string          # 신규: 저자 canonical ID (동일 저자 다권 저작 묶음용)
     author_name: string        # 기존 author 대체
     work_id: string            # 신규: source_id와 별도로 "저작" 단위 식별(동일 저작의 개정판/역서 묶음)
+    edition_id: string         # 2026-08-02 신규(GOVERNANCE §5.1) — 판본 단위, TSU 필수(GOVERNANCE §6)
+    volume_id: string          # 2026-08-02 신규(GOVERNANCE §5.1) — 다권본에서만 사용, 선택 필드
+    volume_number: integer     # 2026-08-02 신규 — RAW 디렉토리명을 canonical 출처로(OCR 오인식 위험, Pilot-002 §6)
     title: string
-    edition: string            # 신규
+    edition: string            # 신규(자유 텍스트 표기, edition_id와 별도 — edition_id는 canonical key, 이 필드는 사람이 읽는 라벨)
     publication_year: integer  # 기존 year 대체
     publisher: string          # 신규
     language: string           # 신규 (ko/en/grc/heb 등 — CLAUDE.md 헬라어/히브리어 처리 고려)
@@ -96,10 +106,10 @@ sources:
     subcategory: array[string] # Task 4/5/6 taxonomy 값
     theological_position: string   # 신규 (예: Reformed, Dispensational, Baptist Evangelical)
     denomination: string       # 신규
-    source_type: licensed | purchased | personal | reference   # Task 2
-    copyright_status: public_domain | copyright_restricted | fair_use_reference | unknown  # Task 2
-    usage_permission: full_text_storage | excerpt_only | metadata_only | citation_only      # Task 2
-    access_control: internal_only | user_only | no_redistribution                            # Task 2
+    source_type: string        # 값 체계는 NAE_METADATA_GOVERNANCE_v1.md §4.4가 정본(licensed/purchased/personal/reference/public_archive)
+    copyright_status: string   # 값 체계는 NAE_METADATA_GOVERNANCE_v1.md §4.1이 정본
+    usage_permission: string   # 값 체계는 NAE_METADATA_GOVERNANCE_v1.md §4.2가 정본
+    access_control: string     # 값 체계는 NAE_METADATA_GOVERNANCE_v1.md §4.3이 정본
     topics: array[string]
     scripture_reference: array[string]   # 예: ["Rom.8", "Eph.2:8-10"]
     doctrine_tags: array[string]         # 기존 theological_category 필드와 값 체계 공유
@@ -110,6 +120,14 @@ sources:
 ```
 
 기존 `scripts/source_validator.py`는 NAE-PD manifest(`resources/theological_sources/baptist/...`)만 검사 대상으로 하드코딩되어 있을 가능성이 높다(`docs/NAE_DATA_ARCHITECTURE.md`에서 확인된 "RAW 감시 스크립트가 `data/RAW`만 하드코딩" 패턴과 동일 위험). Modern manifest를 검증 대상에 포함시키려면 별도 확장이 필요 — 이번 설계에서는 **발견만 하고 구현하지 않는다.**
+
+**2026-08-02 실측 정정(NAE-METADATA-AUTHORITY-PLAN-REVIEW-001)**: 실제
+코드 확인 결과 경로는 하드코딩되어 있지 않다(`DEFAULT_ROOT =
+resources/theological_sources`, `rglob`으로 하위 전체 탐색) — 위 문단의
+추측은 틀렸다. 대신 **필드명이 하드코딩**되어 있다
+(`_REQUIRED_FIELDS`에 `content_genre` 포함, 이 문서의 `category`와 불일치)
+— 확장 없이 modern manifest를 그대로 검증하면 전량 FAIL. 상세 요구사항은
+`NAE_METADATA_GOVERNANCE_v1.md` §7.3 참고.
 
 ---
 

@@ -8,6 +8,7 @@ based_on:
   - docs/architecture/ADR-013-NAE-Vector-Store.md
 created: 2026-08-02
 scope_modified: docs/ only — 디렉토리 생성, 데이터 확보, TSU/Embedding/Retrieval 코드 변경 없음
+partially_extended_by: docs/architecture/ADR-016-NAE-Metadata-Authority-Model-Revision.md (2026-08-02 — Volume entity, source_type 값 추가 등. 본문은 소급 수정하지 않음, GOVERNANCE §7.5 원칙)
 ---
 
 # ADR-014: NAE Modern Corpus Layer (Design Only)

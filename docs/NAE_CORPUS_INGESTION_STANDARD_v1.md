@@ -3,7 +3,9 @@
 작성일: 2026-08-02
 상태: 설계 단계 — 미구현 (파일 이동/삭제/다운로드/OCR/TSU/Embedding/Retrieval 코드 변경 없음)
 선행 검토: [`NAE_DATA_ARCHITECTURE.md`](NAE_DATA_ARCHITECTURE.md), [`NAE_MODERN_CORPUS_ARCHITECTURE_v1.md`](NAE_MODERN_CORPUS_ARCHITECTURE_v1.md), [ADR-001](architecture/ADR-001-Retrieval-Engine-Authority.md), [ADR-013](architecture/ADR-013-NAE-Vector-Store.md), [ADR-014](architecture/ADR-014-NAE-Modern-Corpus-Layer.md)
-개정 이력: 2026-08-02 — [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) 신설에 따라 License/Copyright/Authority 값 체계를 그 문서로 이관(단일 정본화). 이 문서는 값 정의를 재복사하지 않고 참조만 한다.
+개정 이력:
+- 2026-08-02 — [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) 신설에 따라 License/Copyright/Authority 값 체계를 그 문서로 이관(단일 정본화). 이 문서는 값 정의를 재복사하지 않고 참조만 한다.
+- 2026-08-02 (NAE-METADATA-ARCHITECTURE-REVISION-001) — Pilot-001/002 반영: Volume entity 추가, Work:Edition 1:N 명문화, edition_id TSU 필수 승격, ID 충돌 규칙·RAW 제목 우선 원칙·archive_source 선택 정책 추가. 상세: [ADR-016](architecture/ADR-016-NAE-Metadata-Authority-Model-Revision.md).
 
 ---
 
@@ -121,36 +123,53 @@ access_control: public | restricted | private   # 값 체계 정정, NAE_METADAT
 source_id  = "{denomination|domain}-{genre}-{sequence}"     예: baptist-confession-001 (기존 관례 계승)
 author_id  = "{surname}_{givenname}" 소문자, 언더스코어      예: gill_john
 work_id    = "{author_id}-{title_slug}"                      예: gill_john-body_of_doctrinal_divinity
+edition_id = "{work_id}-{edition_slug}"                      예: gill_john-body_of_doctrinal_divinity-1810
+volume_id  = "{edition_id}-vol{NN}" (2026-08-02 신규, 선택)  예: fuller_andrew-complete_works-newhaven_converse-vol02
 ```
 
 `source_id`는 기존 방식대로 유일성만 검사(포맷 강제 없음, v1.2 스키마 주석과 동일 원칙).
-`author_id`/`work_id`는 신규 — Phase 4 Authority 병합의 키가 된다.
+`author_id`/`work_id`/`edition_id`/`volume_id`는 신규 — Phase 4 Authority 병합의 키가 된다.
+
+**ID 충돌 처리 규칙(2026-08-02 추가, Plan Review-001 F3 대응)**: 위 생성
+규칙이 이미 존재하는 ID와 동일한 slug를 산출하면, 숫자 suffix(`-2`, `-3`, …)를
+순차 부여하고 충돌 발생을 사람이 확인하도록 notes에 남긴다 — 자동으로 조용히
+덮어쓰지 않는다. 상세는 [`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) §7.4.
 
 ---
 
 ## Phase 4. Authority Management
 
-### Entity Model (개정: Author → Work → Edition → Source File 4단 계층)
+### Entity Model (개정: Author → Work → Edition → Volume(선택) → Source File)
 
 이전 버전은 Author/Work 2단만 명시했다. 이번 개정에서 **Edition을 Work와 Source
 File 사이의 독립 entity로 승격**한다 — 동일 Work의 여러 Edition이 있고, 각
 Edition이 다시 여러 Source File(스캔본/OCR본)을 가질 수 있는 구조를 반영한다.
+**2026-08-02 추가 개정(Pilot-002 실증)**: 다권본을 위한 Volume entity를
+Edition과 Source File 사이에 신설(선택 계층, 단권 자료는 생략).
 
 ```
 Author  (author_id)
   ↓
 Work    (work_id)       — 저작 단위 (예: "A Body of Doctrinal Divinity")
   ↓
-Edition (edition_id)    — 판본 단위 (예: 1810년판, 1839년판)
+Edition (edition_id)    — 판본 단위 (예: 1810년판, 1839년판) — 1개 Work가 Edition을 1개 이상 가질 수 있음(1:N)
+  ↓
+Volume (volume_id, 선택) — 다권본에서만 사용 (예: Fuller Works Vol.01~08)
   ↓
 Source File (source_id) — 파일 단위 (예: 1810년판의 archive.org 스캔본, 재스캔본)
 ```
 
-필수 ID 4종: `author_id`, `work_id`, `edition_id`(신규), `source_id`. `edition_id`
-신설 이전에는 edition 정보가 `source_manifest.yaml`의 `edition` 필드(문자열)로만
-존재해 Phase 6(Different Scan Same Edition)처럼 같은 판본의 다른 스캔본을 묶을
-canonical key가 없었다 — `edition_id` 도입으로 해결. 생성 규칙: `edition_id =
-"{work_id}-{edition_slug}"`(예: `gill_john-body_of_doctrinal_divinity-1810`).
+필수 ID: `author_id`, `work_id`, `edition_id`, `source_id`. 다권본에서는
+`volume_id`도 필수(단권 자료는 생략). `edition_id` 신설 이전에는 edition
+정보가 `source_manifest.yaml`의 `edition` 필드(문자열)로만 존재해 Phase 6
+(Different Scan Same Edition)처럼 같은 판본의 다른 스캔본을 묶을 canonical
+key가 없었다 — `edition_id` 도입으로 해결.
+
+**Work:Edition = 1:N(N≥1) 관계(2026-08-02 명문화)**: Andrew Fuller "Works in
+Eight Volumes" 실증 사례에서 동일 Work 안에 서로 다른 인쇄 캠페인 2개(Vol01:
+1820 Charlestown / Vol02-08: 1824-1825 New Haven)가 확인됨 — 1개 Work가
+Edition을 정확히 1개만 갖는다고 가정하면 안 된다. 상세는
+[`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) §5.1.
 
 ### Author Authority
 
@@ -169,6 +188,13 @@ canonical key가 없었다 — `edition_id` 도입으로 해결. 생성 규칙: 
 등록 여부 확인(자동 병합 금지 — 동명이인 위험).
 
 ### Work Authority
+
+**제목 표기 불일치 시 RAW 원문 우선 원칙(2026-08-02 추가, Pilot-001 F-P2
+대응)**: 동일 저작의 제목이 RAW 원문(title page)/등록자 표기/기존 기록
+사이에서 서로 다르게 나타날 경우(Pilot-001에서 Dagg 작품이 3곳 모두 다른
+제목으로 표기된 실사례 확인), **RAW 원문 title page 실측 표기를 canonical
+title로 채택**하고 나머지 표기는 `title_variants`(array)에 전부 보존한다 —
+어느 쪽도 삭제하지 않는다.
 
 동일 저작의 다른 판본(예: `A Body of Doctrinal Divinity` 1810판/1839판)은
 **같은 `work_id`, 다른 `source_id`**로 등록한다. `work_id`는 저작 단위 묶음 키이고,
@@ -225,6 +251,7 @@ Modern:        theology | commentary | sermons | missions | ministry | apologeti
 | Different Scan Same Edition | 같은 `edition_id`, 다른 스캔본(품질/출처 상이) | 별도 `source_id`, 동일 `edition_id`의 `source_ids` 배열에 함께 등록 + `notes`에 스캔 출처 명시 |
 | Derivative OCR | 동일 원본의 OCR 재처리본 | 원본 `source_id`에 `derived_from` 필드(신규)로 연결, 별도 저작 취급 안 함 |
 | Supplement Material | 부록/색인 등 원저작의 보충 자료 | 별도 `work_id` 부여하되 `related_work_id`(신규)로 원저작과 연결 |
+| Volume Conflict(2026-08-02 추가) | 다권본에서 권수 표기가 OCR/파일명/등록자 입력 간 불일치(예: OCR이 로마숫자를 오인식) | **RAW 디렉토리명을 canonical `volume_number` 출처로 채택**(OCR 텍스트는 참고만) — Pilot-002 §6 실증(Vol01이 OCR상 "VOL. L"로 오인식된 사례) |
 
 ### 원칙
 
@@ -256,6 +283,13 @@ FAIL    — 필수 항목 미충족(파일 손상, 필수 필드 누락, source_
 구체적 임계값(OCR 품질 점수 기준 등)은 실제 샘플 데이터로 보정 필요 — 이번 설계는
 검사 항목과 3단계 판정 체계까지만 확정한다.
 
+**`archive_source` 필드 정책(2026-08-02 추가, Pilot-001 F-P4 대응)**: Source
+Entity의 `archive_source`(원본 아카이브 식별자/URL) 필드는 **선택(optional)**
+으로 정한다 — Pilot-001/002 모두 RAW 디렉토리에 archive.org 사이드카
+메타데이터가 없어 이 필드를 정확히 채울 수 없었다(실측 확인, 2회 연속).
+값이 없으면 Quality Gate에서 FAIL이 아닌 WARNING으로 처리하고, 추정치
+사용 시 근거를 notes에 남긴다.
+
 ---
 
 ## Phase 8. TSU Integration Policy
@@ -266,25 +300,30 @@ FAIL    — 필수 항목 미충족(파일 손상, 필수 필드 누락, source_
 | Modern Licensed(`usage_permission=excerpt_only`) | Restricted TSU — 발췌 범위만 payload, 전문 미포함 |
 | Modern(`usage_permission=metadata_only`/`citation_only`) | Citation Only TSU — 원문 청크 없이 서지정보+위치 정보만 |
 
-### TSU 생성 전 필수 Metadata (개정)
+### TSU 생성 전 필수 Metadata (2026-08-02 재개정: `edition_id` 필수 승격 + `volume_id` 조건부 필수)
 
-TSU 생성 호출 시점에 아래 9개 필드가 **전부** 존재해야 한다 — 하나라도 없으면
-TSU 생성을 차단한다(Quality Gate FAIL과 별개의 TSU 진입 게이트):
+TSU 생성 호출 시점에 아래 필드가 존재해야 한다 — 하나라도 없으면 TSU 생성을
+차단한다(Quality Gate FAIL과 별개의 TSU 진입 게이트). 값 체계는 전부
+[`NAE_METADATA_GOVERNANCE_v1.md`](NAE_METADATA_GOVERNANCE_v1.md) §4/§6이 정본:
 
 ```yaml
 source_id: string          # Phase 3
 author_id: string          # Phase 3/4
 work_id: string             # Phase 3/4
+edition_id: string          # Phase 4 — 필수(2026-08-02 승격, 기존: 선택). 근거: Pilot-002에서 Edition 구분이 인용 정확도에 직결됨을 실증
+volume_id: string           # Phase 4 — 조건부 필수: 다권본(Work가 Edition 산하 Volume ≥ 2)일 때만 필수, 단권 자료는 생략
 category: string            # Phase 5
 publication_year: integer   # Phase 3
-source_type: licensed | purchased | personal | reference          # NAE_METADATA_GOVERNANCE_v1.md §3
-copyright_status: public_domain | copyrighted | licensed | unknown # NAE_METADATA_GOVERNANCE_v1.md §4
+source_type: string         # NAE_METADATA_GOVERNANCE_v1.md §4.4 (licensed/purchased/personal/reference/public_archive)
+copyright_status: string    # NAE_METADATA_GOVERNANCE_v1.md §4.1
 citation_policy: string     # 인용 표기 형식(저자/제목/출판사/연도/페이지)
 tsu_access: full | restricted | citation_only
 ```
 
-`edition_id`는 이번 9개 필수 목록에는 없으나 Full/Restricted TSU 어느 쪽이든
-payload에 포함해 두는 것을 권장한다(판본 간 인용 구분 목적, 필수는 아님).
+**변경 사유**: Pilot-001(church_order, Work:Edition=1:1)에서는 `edition_id`
+없이도 검증에 문제가 없었으나, Pilot-002(Fuller, Work:Edition=1:2)에서
+`edition_id`가 없으면 8개 volume이 서로 다른 두 인쇄본(1820/1824-25)을
+구분하지 못한 채 TSU에 섞여 들어갈 위험이 실증됐다 — 필수로 승격.
 
 Quality Gate를 통과(PASS/WARNING)하고 `copyright_status`가 `unknown`이 아닌 자료만
 TSU 단계 진입 — `unknown`은 Phase 5 §1 규칙에 따라 사람 확인 전까지 보류.
