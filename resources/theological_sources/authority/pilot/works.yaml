@@ -1,0 +1,30 @@
+# Pilot Authority Registry — Works
+# NAE-METADATA-PILOT-001. Pilot 검증용, 전체 Corpus 미적용.
+schema_version: "1.0-pilot"
+
+works:
+  - work_id: WORK-DAGG-CHURCH-ORDER-001
+    author_id: dagg_john_l
+    title: "Church Order"
+    title_variants:
+      - "A Treatise on Church Order"    # Pilot 작업 명령서 표기
+      - "Manual of Church Order"        # NAE_SOURCE_MANIFEST_v1.csv(BAP-CHURCH-DAGG-001) 표기
+    category: church_order
+    subcategory: [ecclesiology, church_government]
+    topics: [membership, discipline, officers, ordinances, church_government]
+    notes: >
+      제목 표기가 3곳(RAW OCR 원문 title page, 이번 명령서, 기존
+      NAE_SOURCE_MANIFEST_v1.csv)에서 서로 다름 — RAW 원문 title page
+      실측("CHURCH ORDER.")을 canonical title로 채택하고 나머지는
+      title_variants로 보존. Phase 9 Issues Found에서 상세.
+
+  - work_id: WORK-HISCOX-STANDARD-MANUAL-001
+    author_id: hiscox_edward_t
+    title: "The Standard Manual for Baptist Churches"
+    title_variants: []
+    category: church_order
+    subcategory: [ecclesiology, church_government, pastoral]
+    topics: [membership, discipline, officers, ordinances, church_government, worship]
+    notes: >
+      RAW OCR 원문 title page 표기("Standard Manual for Baptist Churches")와
+      명령서/기존 CSV(BAP-CHURCH-HISCOX) 표기가 일치 — variant 없음.
