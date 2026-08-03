@@ -1,0 +1,30 @@
+# NAE Manifest Pilot — Dagg (monograph) — NAE-MANIFEST-PILOT-IMPLEMENTATION-001
+#
+# Pilot namespace(resources/theological_sources/manifest/pilot/) — 실제
+# 운영 Manifest 위치가 아니다(Phase 1 지시대로 확정 아님). Authority
+# Registry(authority/*.yaml, Production)를 참조만 하고 그 파일들은
+# 수정하지 않는다.
+#
+# Manifest Schema v1.0.0 정본: docs/NAE_CORPUS_MANIFEST_SCHEMA_DESIGN_v1.md
+# manifest_id 규칙: ADR-019 결정(manifest_id = source_id) 유지 — 이번
+# 명령서 예시(dagg_standard_manual_1890_manifest류 서술형 슬러그)와 다르게
+# 구현한 이유는 보고서 §Remaining Risks 참고.
+schema_version: "1.0.0"
+
+manifests:
+  - manifest_id: BAP-CHURCH-DAGG-001
+    source_id: BAP-CHURCH-DAGG-001
+    author_id: dagg_john_l
+    work_id: WORK-DAGG-CHURCH-ORDER-001
+    edition_id: WORK-DAGG-CHURCH-ORDER-001-1871
+    volume_id: null    # monograph — Phase2 조건: volume_id optional, 이 자료는 값 없음
+    issue_id: null      # monograph — forbidden 규칙(Validator v2.2)과 일치, 값 없음
+    acquisition_status: acquired
+    ocr_status: complete
+    metadata_status: validated
+    tsu_status: pending
+    embedding_status: pending
+    processing_status: metadata_complete   # 5필드 요약 파생값(Manifest Schema Design v1 §Phase6과 동일 매핑 원리)
+    created_at: "2026-08-03T00:00:00Z"
+    updated_at: "2026-08-03T00:00:00Z"
+    verified_by: cue
