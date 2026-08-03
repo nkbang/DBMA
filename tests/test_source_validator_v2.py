@@ -70,8 +70,14 @@ class TestV1Regression:
         assert result.pass_count > 0
 
     def test_real_repo_manifest_unchanged(self):
-        """실제 저장소 baptist manifest가 이번 변경 전후로 동일하게 통과하는지 확인."""
-        root = Path("resources/theological_sources")
+        """실제 저장소 baptist manifest(v1.2)가 이번 변경 전후로 동일하게 통과하는지 확인.
+
+        root을 baptist/로 한정한다 — resources/theological_sources 전체를
+        스캔하면 이후 커밋에서 추가된 Pilot source_manifest.yaml들
+        (v2.1/v2.2 트랙)까지 합산되어 이 v1.2 전용 회귀 테스트의 취지와
+        어긋난다(NAE-VALIDATOR-V2.2-IMPLEMENTATION-001에서 발견/수정).
+        """
+        root = Path("resources/theological_sources/baptist")
         result = sv.validate(root)
         assert result.fail_count == 0
         assert result.pass_count == 21
