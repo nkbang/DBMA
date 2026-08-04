@@ -333,6 +333,22 @@ canonical_id 형식이 ADR-017 lowercase snake_case와 명령서의
 UPPER_SNAKE_CASE 예시가 충돌해 AskUserQuestion으로 확인 후 ADR-017
 기준으로 구현한 사례, 2026-08-03).
 
+### Evidence Before Promotion Rule
+
+Proposed ADR은 구현의 근거가 될 수 있으나, **Approved로 승격되기
+전까지는 기존 Approved ADR을 변경하거나 대체하지 않는다**(Architecture
+Freeze Rule의 보호 대상은 Approved ADR뿐이며, Proposed는 아직 그
+권위를 갖지 않는다). ADR 승격(Proposed → Approved)은 아래 4개 조건을
+**모두** 만족해야 한다:
+
+1. 구현 완료
+2. 회귀 테스트 통과
+3. 독립 리뷰(C1) 완료
+4. 사용자 승인
+
+4개 중 하나라도 충족되지 않으면 Proposed 상태를 유지하고, CUE는 그
+ADR을 Approved로 취급해 다른 구현의 근거로 사용하지 않는다.
+
 ### C1 Review 요청 시점
 
 새 ADR 작성, 새 Architecture Layer 추가, Metadata Model 변경,
