@@ -16,9 +16,10 @@ scope_modified: docs/ only — Schema YAML/Registry/RAW/코드 변경 없음
 
 | | |
 |---|---|
-| Status | Proposed |
+| Status | Approved |
 | Date | 2026-08-02 |
-| Deciders | 사용자 승인 대기 (설계 문서 단계) |
+| Approved | 2026-08-03 (NAE-ADR-PROMOTION-001) |
+| Deciders | 사용자 승인 완료 (2026-08-03) |
 | Supersedes | — |
 | Superseded by | — |
 
@@ -128,3 +129,18 @@ continued_by_work_id: string|null
 ```
 grep -r "ADR-018" docs/
 ```
+
+## Promotion Evidence (NAE-ADR-PROMOTION-001, 2026-08-03)
+
+Evidence Before Promotion Rule(CLAUDE.md) 4조건 충족 확인:
+
+1. **구현 완료** — `authority/pilot_periodical/{periodicals,issues,volumes,
+   sources}.yaml` Pilot 데이터 구축
+2. **회귀 테스트 통과** — `tests/test_validator_v22.py`(periodical 관련
+   2건 PASS)
+3. **독립 리뷰(C1) 완료** — `docs/NAE_PERIODICAL_AUTHORITY_REVIEW_001.md`
+4. **사용자 승인** — 2026-08-03 NAE-ADR-PROMOTION-001
+
+`scope_modified`(frontmatter)는 작성 시점 "Schema YAML/Registry/RAW/
+코드 변경 없음"이었으나, 이후 Periodical Pilot 데이터가 실제
+구축됨 — 위 Evidence 문서가 실행 근거.

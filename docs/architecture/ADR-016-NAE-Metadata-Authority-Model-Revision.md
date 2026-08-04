@@ -16,9 +16,10 @@ scope_modified: docs/ only — Corpus/RAW 변경, Directory rename, Metadata 실
 
 | | |
 |---|---|
-| Status | Proposed |
+| Status | Approved |
 | Date | 2026-08-02 |
-| Deciders | 사용자 승인 대기 (설계 문서 단계) |
+| Approved | 2026-08-03 (NAE-ADR-PROMOTION-001) |
+| Deciders | 사용자 승인 완료 (2026-08-03) |
 | Supersedes | — (ADR-014/015는 직접 개정하지 않음, §5 참고) |
 | Superseded by | — |
 
@@ -110,3 +111,18 @@ front-matter 필드)만 추가했다 — 본문 내용은 변경하지 않았다
 ```
 grep -r "ADR-016" docs/
 ```
+
+## Promotion Evidence (NAE-ADR-PROMOTION-001, 2026-08-03)
+
+Evidence Before Promotion Rule(CLAUDE.md) 4조건 충족 확인:
+
+1. **구현 완료** — Authority Registry(`authority/{authors,works,editions,
+   volumes,sources}.yaml`) 실제 구축(`NAE_AUTHORITY_REGISTRY_BUILD_REPORT_001.md`)
+2. **회귀 테스트 통과** — `tests/test_authority_validator.py`,
+   `tests/test_authority_validator_canonical.py`(3-Validator 회귀 포함)
+3. **독립 리뷰(C1) 완료** — `docs/NAE_C1_ARCHITECTURE_DESIGN_REVIEW_FINAL_001.md`
+   (최종 판정: APPROVED WITH CONDITIONS)
+4. **사용자 승인** — 2026-08-03 NAE-ADR-PROMOTION-001
+
+`scope_modified`(frontmatter)는 작성 시점 "docs/ only"였으나, 이후
+Registry 실제 구축으로 범위가 확장됨 — 위 Evidence 문서가 실행 근거.

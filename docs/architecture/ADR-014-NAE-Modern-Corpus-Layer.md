@@ -15,7 +15,7 @@ partially_extended_by: docs/architecture/ADR-016-NAE-Metadata-Authority-Model-Re
 
 | | |
 |---|---|
-| Status | Proposed |
+| Status | Proposed(승격 보류, 2026-08-03 NAE-ADR-PROMOTION-001 검토) |
 | Date | 2026-08-02 |
 | Deciders | 사용자 승인 대기 (설계 문서 단계) |
 | Supersedes | — |
@@ -127,3 +127,17 @@ modern 전용 manifest에 적용한다 — `author_id`/`work_id`/`edition`/`publ
 ```
 grep -r "ADR-014" docs/  # 상호 참조 확인
 ```
+
+## Promotion Review (NAE-ADR-PROMOTION-001, 2026-08-03) — 승격 보류
+
+Evidence Before Promotion Rule(CLAUDE.md) 4조건 검토 결과 **1번 조건
+미충족으로 Approved 승격 보류**:
+
+1. **구현 완료** — **미충족**: `public_domain/` rename, Modern Corpus
+   실제 디렉토리 구조 생성 등 이 ADR이 정의하는 실행 대상이 아직 하나도
+   구현되지 않음(`NAE/corpus/raw/`에는 여전히 `archive_org/`만 존재,
+   `find` 확인 결과 `public_domain`/`modern` 디렉토리 없음)
+2. 회귀/C1/사용자 승인 — 1번이 충족되지 않아 검토 보류
+
+Status는 `Proposed`로 유지한다. 실제 Modern Corpus Layer 구현(디렉토리
+생성 등)이 별도 승인·실행된 이후 재검토한다.

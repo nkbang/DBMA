@@ -17,7 +17,7 @@ scope_modified: docs/ only — 파일 이동/삭제/다운로드/OCR/TSU/Embeddi
 
 | | |
 |---|---|
-| Status | Proposed |
+| Status | Proposed(승격 보류, 2026-08-03 NAE-ADR-PROMOTION-001 검토) |
 | Date | 2026-08-02 |
 | Deciders | 사용자 승인 대기 (설계 문서 단계) |
 | Supersedes | — |
@@ -154,3 +154,16 @@ Phase 8(TSU Integration Policy)의 모든 TSU 생성 호출은 **명시적 `--da
 ```
 grep -r "ADR-015" docs/
 ```
+
+## Promotion Review (NAE-ADR-PROMOTION-001, 2026-08-03) — 승격 보류
+
+Evidence Before Promotion Rule(CLAUDE.md) 4조건 검토 결과 **1번 조건
+미충족으로 Approved 승격 보류**:
+
+1. **구현 완료** — **미충족**: Modern Corpus 실제 수집/ingestion
+   파이프라인 코드가 아직 존재하지 않음(ADR-014 승격 보류와 동일 원인
+   — ADR-015는 ADR-014 위에 세워진 표준이므로 선행 조건이 먼저 풀려야
+   함)
+2. 회귀/C1/사용자 승인 — 1번이 충족되지 않아 검토 보류
+
+Status는 `Proposed`로 유지한다. ADR-014 구현·승격 이후 함께 재검토한다.

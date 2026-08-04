@@ -14,9 +14,10 @@ scope_modified: docs/ only — Registry/RAW/코드 변경 없음, 실제 ID rena
 
 | | |
 |---|---|
-| Status | Proposed |
+| Status | Approved |
 | Date | 2026-08-02 |
-| Deciders | 사용자 승인 대기 (설계 문서 단계) |
+| Approved | 2026-08-03 (NAE-ADR-PROMOTION-001) |
+| Deciders | 사용자 승인 완료 (2026-08-03) |
 | Supersedes | — |
 | Superseded by | — |
 
@@ -118,3 +119,23 @@ ADR-016은 Entity 모델(계층 구조) 결정이고 이번은 ID 표기 규칙(
 ```
 grep -r "ADR-017" docs/
 ```
+
+## Promotion Evidence (NAE-ADR-PROMOTION-001, 2026-08-03)
+
+Evidence Before Promotion Rule(CLAUDE.md) 4조건 충족 확인:
+
+1. **구현 완료** — `canonical_id`/`legacy_id` 필드 28개 entity 전체
+   적용(`docs/NAE_ID_GOVERNANCE_RESOLUTION_PLAN_001.md`,
+   `docs/NAE_REGISTRY_SCHEMA_EXTENSION_001.md`, 커밋 `1042b1f`),
+   `scripts/authority_validator.py` Check 9-11 구현
+2. **회귀 테스트 통과** — `tests/test_authority_validator_canonical.py`
+   9건 PASS, Production Registry PASS=128 WARNING=26 FAIL=0(drift 없음,
+   `docs/NAE_METADATA_MIGRATION_READINESS_REVIEW_001.md` §Phase4 재확인)
+3. **독립 리뷰(C1) 완료** — `docs/NAE_ID_GOVERNANCE_REVIEW_001.md`
+   (판정: APPROVED, 커밋 `378a216`)
+4. **사용자 승인** — 2026-08-03 NAE-ADR-PROMOTION-001
+
+`scope_modified`(frontmatter)는 작성 시점 "Registry/RAW/코드 변경
+없음"이었으나, 이후 Option B 구현으로 Registry 5개 파일이 실제
+확장됨(FK 필드 자체는 불변 — Option B 원칙 그대로 유지) — 위 Evidence
+문서가 실행 근거.

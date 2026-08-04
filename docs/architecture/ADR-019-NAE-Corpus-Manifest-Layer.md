@@ -15,9 +15,10 @@ scope_modified: docs/ only — Manifest 실제 생성, Schema/Validator/Registry
 
 | | |
 |---|---|
-| Status | Proposed |
+| Status | Approved |
 | Date | 2026-08-02 |
-| Deciders | 사용자 승인 대기 (설계 문서 단계) |
+| Approved | 2026-08-03 (NAE-ADR-PROMOTION-001) |
+| Deciders | 사용자 승인 완료 (2026-08-03) |
 | Supersedes | — |
 | Superseded by | — |
 
@@ -115,3 +116,23 @@ ADR 본문은 수정하지 않는다("ADR 소급 수정 금지" 관례의 네 �
 ```
 grep -r "ADR-019" docs/
 ```
+
+## Promotion Evidence (NAE-ADR-PROMOTION-001, 2026-08-03)
+
+Evidence Before Promotion Rule(CLAUDE.md) 4조건 충족 확인:
+
+1. **구현 완료** — `scripts/manifest_validator.py` 구현, Manifest
+   Pilot(dagg/hiscox/fuller, 10 source) 실제 구축
+2. **회귀 테스트 통과** — `tests/test_manifest_validator.py`, Pilot
+   실행 PASS=138 WARNING=0 FAIL=0, TSU_ELIGIBLE=READY 10/10(drift 없음,
+   `docs/NAE_METADATA_MIGRATION_READINESS_REVIEW_001.md` §Phase3 재확인)
+3. **독립 리뷰(C1) 완료** — `docs/NAE_MANIFEST_VALIDATOR_REVIEW_001.md`,
+   `docs/NAE_MANIFEST_PILOT_REVIEW_002.md`
+4. **사용자 승인** — 2026-08-03 NAE-ADR-PROMOTION-001
+
+`scope_modified`(frontmatter)는 작성 시점 "Manifest 실제 생성,
+Schema/Validator/Registry 변경 없음"이었으나, 이후 Manifest Pilot이
+실제 구축·검증됨 — 위 Evidence 문서가 실행 근거. TSU 빌더 게이트
+(`core/tsu_builder.py`의 `processing_status=TSU_ELIGIBLE` 연동)는 여전히
+미구현 상태(Readiness Review §Phase5 WARNING) — ADR 승격과 별개로
+남은 과제.
