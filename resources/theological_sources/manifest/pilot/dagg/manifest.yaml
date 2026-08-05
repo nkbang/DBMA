@@ -26,5 +26,5 @@ manifests:
     embedding_status: not_started
     processing_status: metadata_complete   # 5필드 요약 파생값(Manifest Schema Design v1 §Phase6과 동일 매핑 원리)
     created_at: "2026-08-03T00:00:00Z"
-    updated_at: "2026-08-03T00:00:00Z"
+    updated_at: "2026-08-05T17:02:24+09:00"
     verified_by: cue
