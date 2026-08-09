@@ -1,0 +1,24 @@
+[
+  {
+    "id": "TSU-0000005",
+    "tsu_schema_version": "1",
+    "book": "Church Order",
+    "author": "John L. Dagg",
+    "identifier": "Dagg_Church_Order",
+    "source_identifier": "Dagg_Church_Order",
+    "collector_version": "",
+    "canonical_version": "2.0.0",
+    "page": 8,
+    "paragraph": 8,
+    "sentence": 0,
+    "source_text": "Se a That thou shouldst set in order the things that are wanting, and ordain elders in every city.—Tırus i. 5.",
+    "claim": "교회에서 부족한 것을 정돈하고 각 도시마다 장로를 임명해야 한다.",
+    "doctrine": "Ecclesiology",
+    "scriptures": [],
+    "citations": [],
+    "confidence": 0.8,
+    "extraction_method": "llm",
+    "review_status": "unverified",
+    "model": "my-theology-bot-v2:latest"
+  }
+]

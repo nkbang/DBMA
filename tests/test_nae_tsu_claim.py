@@ -29,7 +29,7 @@ def test_extract_claim_parses_positive_claim(mock_generate):
     assert result.citations == ["John Gill"]
     assert result.confidence == 0.9
     assert result.extraction_method == "llm"
-    assert result.review_status == "unverified"
+    assert result.review_status == "generated"
     assert result.error is None
 
 

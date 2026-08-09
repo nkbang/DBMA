@@ -81,6 +81,26 @@ Major bump 없이도 정정 가능하다는 원칙(위 문단)과 일관된 적�
 Minor/Patch 범위 안에서 이뤄질 수 있다 — 실제 Migration(Corpus-wide Metadata
 Build)이 시작된 이후에는 이 완화된 기준이 더 이상 적용되지 않는다.
 
+### 2.3 계층 C(Authority Registry + Manifest Pilot) Migration Version(신설, 2026-08-08)
+
+C1 Final Review(`NAE_METADATA_SCHEMA_2_MIGRATION_FINAL_REVIEW_001.md`
+§11 C1-COND-002)의 지적에 따라 신설한다. §2.1의 `2.1.0`은 **계층
+B(Modern Corpus, 설계 단계, 실제 데이터 0건)**의 버전이며, 아래는 이와
+별개인 **계층 C(Authority Registry `authority/*.yaml` + Manifest Pilot
+`manifest/pilot/*/manifest.yaml`, ADR-019, 실제 Production 데이터가
+존재하는 계층)** 전용 버전 축이다. 두 계층은 서로 다른 파일/데이터
+집합이므로 버전 번호가 같은 값을 공유하지 않는다(예: 계층 C가
+`1.1.0`이라고 해서 계층 B의 `2.1.0`과 서수 비교가 성립하지 않음).
+
+| 버전 | 설명 | 적용 대상 |
+|---|---|---|
+| `1.0` | 기존 Authority Registry(`authority/*.yaml`) + Manifest Pilot(`manifest/pilot/*`, ADR-019) — Migration 이전 | 계층 C(현재) |
+| `1.1.0` | `NAE_METADATA_SCHEMA_2_MIGRATION_PACKAGE_001.md`에 따라 NAE TSU v3 레코드에 Metadata Layer 필드(source_id/author_id/work_id/edition_id/volume_id/publication_year/source_type/copyright_status/usage_permission/access_control/tsu_access 등)를 additive로 추가한 이후 — Minor bump(§2.2 규칙, 기존 필드 무효화 없음) | 계층 C(Migration 후, NAE-METADATA-SCHEMA-2.0.0-MIGRATION-IMPLEMENTATION-001) |
+
+이 버전은 TSU 레코드의 `metadata_schema_version` 필드값으로 기록되며,
+기존 `tsu_schema_version`(claim/doctrine 추출 스키마 버전, 이번 Migration과
+무관, 변경 없음)과는 별개 축이다 — 두 버전 필드를 혼동하지 않는다.
+
 ---
 
 ## 3. License Policy

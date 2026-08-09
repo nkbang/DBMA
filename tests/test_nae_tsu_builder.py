@@ -59,7 +59,7 @@ def test_build_tsu_for_identifier_writes_records_and_report(tmp_path: Path):
     assert result["records"][1]["id"] == "TSU-0000002"
     assert result["records"][0]["book"] == "Body of Divinity"
     assert result["records"][0]["doctrine"] == "Baptism"
-    assert result["records"][0]["review_status"] == "unverified"
+    assert result["records"][0]["review_status"] == "generated"
     assert result["records"][0]["tsu_schema_version"] == config.TSU_SCHEMA_VERSION
     assert result["records"][0]["source_identifier"] == "gill_body_of_divinity"
 

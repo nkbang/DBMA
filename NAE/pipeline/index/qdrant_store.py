@@ -64,6 +64,26 @@ def build_point(record: dict, vector: list[float]) -> PointStruct:
         "tsu_schema_version": record.get("tsu_schema_version"),
         "collector_version": record.get("collector_version"),
         "canonical_version": record.get("canonical_version"),
+        # Metadata Schema 1.1.0 layer (NAE-VECTOR-PAYLOAD-CONTRACT-IMPLEMENTATION-001)
+        # — pure pass-through of NAE/pipeline/tsu/metadata_migration.py's additive
+        # fields, already present on the TSU record; never derived/guessed here.
+        "source_id": record.get("source_id"),
+        "author_id": record.get("author_id"),
+        "work_id": record.get("work_id"),
+        "edition_id": record.get("edition_id"),
+        "volume_id": record.get("volume_id"),
+        "publication_year": record.get("publication_year"),
+        "source_type": record.get("source_type"),
+        "copyright_status": record.get("copyright_status"),
+        "usage_permission": record.get("usage_permission"),
+        "access_control": record.get("access_control"),
+        "tsu_access": record.get("tsu_access"),
+        "metadata_schema_version": record.get("metadata_schema_version"),
+        "category": record.get("category"),
+        "category_status": record.get("category_status"),
+        "citation_policy": record.get("citation_policy"),
+        "citation_policy_status": record.get("citation_policy_status"),
+        "metadata_provenance": record.get("metadata_provenance"),
     }
     return PointStruct(id=tsu_id_to_point_id(record["id"]), vector=vector, payload=payload)
 

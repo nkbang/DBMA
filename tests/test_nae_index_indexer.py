@@ -23,7 +23,8 @@ def test_index_identifier_indexes_claim_records(mock_embed, mock_get_client, moc
     mock_get_client.return_value = MagicMock()
 
     records = [
-        {"id": "TSU-0000001", "claim": "A claim.", "book": "B", "page": 1, "scriptures": [], "duplicate_of": None},
+        {"id": "TSU-0000001", "claim": "A claim.", "book": "B", "page": 1, "scriptures": [], "duplicate_of": None,
+         "review_status": "verified"},
     ]
     tsu_root = _write_records(tmp_path, "item1", records)
 
@@ -45,9 +46,10 @@ def test_index_identifier_skips_duplicates(mock_embed, mock_get_client, mock_ens
     mock_get_client.return_value = MagicMock()
 
     records = [
-        {"id": "TSU-0000001", "claim": "A claim.", "book": "B", "page": 1, "scriptures": [], "duplicate_of": None},
+        {"id": "TSU-0000001", "claim": "A claim.", "book": "B", "page": 1, "scriptures": [], "duplicate_of": None,
+         "review_status": "verified"},
         {"id": "TSU-0000002", "claim": "A duplicate claim.", "book": "B", "page": 2, "scriptures": [],
-         "duplicate_of": "TSU-0000001"},
+         "duplicate_of": "TSU-0000001", "review_status": "verified"},
     ]
     tsu_root = _write_records(tmp_path, "item1", records)
 
@@ -66,7 +68,8 @@ def test_index_identifier_counts_embedding_errors(mock_embed, mock_get_client, m
     mock_get_client.return_value = MagicMock()
 
     records = [
-        {"id": "TSU-0000001", "claim": "A claim.", "book": "B", "page": 1, "scriptures": [], "duplicate_of": None},
+        {"id": "TSU-0000001", "claim": "A claim.", "book": "B", "page": 1, "scriptures": [], "duplicate_of": None,
+         "review_status": "verified"},
     ]
     tsu_root = _write_records(tmp_path, "item1", records)
 
@@ -83,7 +86,7 @@ def test_index_identifier_prefers_verified_over_plain(mock_get_client, mock_ensu
     mock_get_client.return_value = MagicMock()
     plain = [{"id": "TSU-0000001", "claim": "Plain.", "book": "B", "page": 1, "scriptures": []}]
     verified = [{"id": "TSU-0000001", "claim": "Verified.", "book": "B", "page": 1, "scriptures": [],
-                 "overall_score": 0.9, "duplicate_of": None}]
+                 "overall_score": 0.9, "duplicate_of": None, "review_status": "verified"}]
 
     tsu_root = _write_records(tmp_path, "item1", plain, filename="tsu.json")
     _write_records(tmp_path, "item1", verified, filename="tsu_verified.json")

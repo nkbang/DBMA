@@ -69,7 +69,7 @@ class ClaimResult:
     citations: list[str] = field(default_factory=list)
     confidence: float | None = None
     extraction_method: str = "llm"
-    review_status: str = "unverified"
+    review_status: str = "generated"
     model: str = ""
     error: str | None = None
 
