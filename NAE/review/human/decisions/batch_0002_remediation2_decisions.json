@@ -1,0 +1,229 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0002_remediation2",
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0000230",
+      "tsu_id": "TSU-0000230",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "그것들이 침수의 의미를 완전히 확립한다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000235",
+      "tsu_id": "TSU-0000235",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "다른 의미를 시험해본 결과, 세례의 적절한 의미는 다른 것들이 아님을 알 수 있다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000254",
+      "tsu_id": "TSU-0000254",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "그리스어 단어 xaraôvo와 xaradvors는 침례와 세례를 나타내는 것으로 사용되었으며, 이는 물에 들어가는 것 또는 침례를 의미한다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000264",
+      "tsu_id": "TSU-0000264",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "세례에서 고백하는 믿음은 그리스도에 대한 믿음이며, 세례 의식은 우리의 구원에 의지하는 그리스도의 위대한 작품을 의미있게 대표한다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000297",
+      "tsu_id": "TSU-0000297",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "그리스도께서 \"나는 받을 세례가 있다\"라고 말씀하셨을 때, 이는 정화의 수단으로의 침례를 의미하지 않고, 오히려 고난에 대한 침례를 의미한다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000300",
+      "tsu_id": "TSU-0000300",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "성경에서 세례에 대한 언급 중 일부는 정화 의식으로 말하지만, 모든 경우가 그러한 것은 아님.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000307",
+      "tsu_id": "TSU-0000307",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "바울이 말한 세례는 이스라엘인이 구름과 바다로 인해 받은 물방울에 의한 세례였다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000249",
+      "tsu_id": "TSU-0000249",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "침례 대신 붓는 방식의 세례는 병중에 허용되었지만, 이는 불완전한 세례로 여겨졌다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000251",
+      "tsu_id": "TSU-0000251",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "세례는 자주 언급되지만, 대개 막연하게만 언급된다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000258",
+      "tsu_id": "TSU-0000258",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "예외적인 경우가 있었다는 것은 사실이다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000261",
+      "tsu_id": "TSU-0000261",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "세례의 상징적 의미는 침수를 요구한다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000268",
+      "tsu_id": "TSU-0000268",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "이런 관점에서 볼 때, 성례는 성령의 내면 작업을 나타내는 외적인 표징으로 여겨져 왔다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000276",
+      "tsu_id": "TSU-0000276",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "이 해석은 잘못되었다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000291",
+      "tsu_id": "TSU-0000291",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "할례는 \"손으로 하지 않은 할례\"로 명시적으로 한정되지만 세례는 그런 한정이 없으므로, 이 구절의 세례는 물리적 세례를 가리킨다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000302",
+      "tsu_id": "TSU-0000302",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "구름도 바닷물도 그들에게 닿지 않았다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "exception queue remediation: language contamination/claim fidelity 재작성 후 재승인"
+    },
+    {
+      "gate_id": "GATE-TSU-0000263",
+      "tsu_id": "TSU-0000263",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-08-10",
+      "comment": "fidelity/accuracy 상충 검토 후 현재 claim(\"구원에 기여한다\")을 유지하기로 확정 — 침례교 표준 신학(침례 중생설 회피)에 부합하는 완화된 표현을 원문의 강한 인과 표현보다 우선함."
+    }
+  ]
+}

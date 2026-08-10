@@ -199,8 +199,44 @@ Production 전체: verified 164건 (Pilot 10건 포함) / rejected 22건 / gener
 Exception Queue 미해결(batch_0002): NEEDS_CLAIM_REVIEW 17건, STRUCTURAL_EXCEPTION 5건, QA_FLAG_NONBLOCKING 1건
 ```
 
+- [x] Exception 22건(21 TSU) 처리: 15건 claim remediation(언어 오염
+      7건 + claim 내용 재작성 8건) → forensic 재검증 통과 → Human
+      Decision APPROVED → Promotion 완료. 5건(TSU-0000256/0257/0265/
+      0271/0272)은 구조적 결함으로 claim 무수정, `generated` 상태
+      보류 유지. TSU-0000263은 fidelity/accuracy 상충으로 사용자
+      결정 대기 중.
+
+- [x] TSU-0000263 fidelity/accuracy 결정 확정("구원에 기여한다" 유지)
+      → Human Decision APPROVED, claim 무수정, verified 승격
+- [x] **Batch 2(100건) 완전 종료** — 남은 것은 구조적 결함으로 의도적
+      보류 중인 5건(TSU-0000256/0257/0265/0271/0272)뿐
+
+## Batch 2 최종 현황 (2026-08-10)
+
+```
+Production 전체: verified 175건(Pilot 10건 포함) / rejected 22건 / generated 3180건
+Exception Queue 잔여(batch_0002): STRUCTURAL_EXCEPTION 5건(0256/0257/0265/0271/0272,
+                                   segmentation backlog 해결 전까지 의도적 보류)
+                                   QA_FLAG_NONBLOCKING 1건(0244 scripture metadata)
+```
+
+- [x] Batch 3(TSU-0000402~TSU-0000501, 100건) forensic 자동 스캔
+      완료(언어오염/중복/doctrine공백 정규식 + 플래그 20건 canonical
+      개별 대조, 나머지 80건은 자동 스캔만 — 전수 수동검증 아님을
+      명시). SCREENING_CLEAR 80건 사용자 일괄 승인(Q1=A/Q2=A/Q3=A/
+      FINAL=APPROVED, reviewer=David) 및 Promotion 완료.
+      → 백업 `NAE/corpus/tsu/_batch0003_promotion_backup_<timestamp>/`
+
+## Batch 3 현황 (2026-08-10)
+
+```
+Production 전체: verified 255건(Pilot 10건 포함) / rejected 22건 / generated 3100건
+Exception Queue(batch_0003): NEEDS_CLAIM_REVIEW 15건(언어오염 14 + claim오류 2, 1건 중복)
+                              QA_FLAG_NONBLOCKING 7건(doctrine 공백)
+Validator: PASS(DRIFT=0) / Regression: 실행 중
+```
+
 ## 다음 조치
 
-남은 Exception 22건(NEEDS_CLAIM_REVIEW 17 + STRUCTURAL_EXCEPTION 5)을
-유형별로 처리한 뒤 Batch 2를 완전히 종료하고 Batch 3(TSU-0000309~)로
-확장.
+Batch 3 Exception 15건 처리(Batch 2와 동일한 remediation 절차) 후
+Batch 3 완전 종료. 이후 Batch 4(TSU-0000502~)로 확장.

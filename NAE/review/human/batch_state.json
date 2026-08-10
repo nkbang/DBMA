@@ -167,6 +167,13 @@
         "TSU-0000230",
         "TSU-0000235"
       ]
+    },
+    "batch_0003": {
+      "batch_number": 3,
+      "tsu_count": 100,
+      "first_tsu_id": "TSU-0000402",
+      "last_tsu_id": "TSU-0000501",
+      "status": "requests_generated"
     }
   }
 }
