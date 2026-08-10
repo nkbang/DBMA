@@ -3056,7 +3056,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3078,12 +3078,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150853+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3105,7 +3099,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3127,12 +3121,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150856+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3154,7 +3142,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3176,12 +3164,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150860+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "rejected",
-      "review_notes": "batch_0001 review rejection (see decisions file)"
     }
   },
   {
@@ -3203,7 +3185,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3225,12 +3207,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150863+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3252,7 +3228,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3274,12 +3250,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150867+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3301,7 +3271,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3323,12 +3293,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150870+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3350,7 +3314,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3372,12 +3336,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150874+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3399,7 +3357,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3421,12 +3379,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150877+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3448,7 +3400,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3470,12 +3422,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150881+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {
@@ -3497,7 +3443,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -3519,12 +3465,6 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.150884+00:00",
       "resolver_version": "1.0.0"
-    },
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-08-09",
-      "review_decision": "approved",
-      "review_notes": null
     }
   },
   {

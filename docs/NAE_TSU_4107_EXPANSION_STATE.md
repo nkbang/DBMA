@@ -51,16 +51,20 @@
       원문 충실도 의심, TSU-0000066 한자 혼입("決定的") 관찰 후 10건
       전부 APPROVE → verified 승격
       → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T232148/`
-- [ ] Batch 1 나머지 40건(TSU-0000068~TSU-0000107) Human Review
+- [x] Batch 1 다음 10건 진행(TSU-0000068~0000077) — TSU-0000070
+      claim 오배정(TSU-0000069와 동일) REJECT, 나머지 9건 APPROVE →
+      verified 9건, rejected 1건
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T234449/`
+- [ ] Batch 1 나머지 30건(TSU-0000078~TSU-0000107) Human Review
 - [ ] Batch 2 ~ 42 반복
 
 ## 진행률
 
 ```
-verified: 58 / 4107 (Pilot 10건 제외)
-rejected: 10 / 4107
-reviewed subtotal: 68 / 4107 (1.66%)
-batches_with_requests: 1 / 42 (batch_0001: 68/100건 판정 완료)
+verified: 67 / 4107 (Pilot 10건 제외)
+rejected: 11 / 4107
+reviewed subtotal: 78 / 4107 (1.90%)
+batches_with_requests: 1 / 42 (batch_0001: 78/100건 판정 완료)
 ```
 
 ## 참고 — 데이터 품질 관찰(Batch 1, TSU-0000009/0000010/0000011)
