@@ -92,3 +92,17 @@ dbma_env/
 
 # Secrets
 .webui_secret_key
+
+# NAE raw/canonical source corpus (large acquired source material,
+# not meant to be version-controlled — see docs/NAE_SOURCE_PIPELINE.md)
+NAE/corpus/raw/
+NAE/corpus/canonical/
+
+# NAE one-off acquisition working artifacts (logs/intermediate jsonl)
+scripts/_bulk_download_early_baptist.log
+scripts/_bulk_download_early_baptist.done
+scripts/_classify_early_baptist.log
+scripts/_classify_early_baptist_meta.jsonl
+
+# Scratch/working tmp directory
+tmp/
