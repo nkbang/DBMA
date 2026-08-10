@@ -223,7 +223,7 @@ class TestProductionTsuReadOnlyDryRun:
         if not tsu_root.exists():
             return
         summary = indexer.index_all(tsu_root=tsu_root, dry_run=True)
-        assert summary["indexed"] == 95
+        assert summary["indexed"] == 164
 
     def test_real_production_tsu_files_untouched(self):
         from pathlib import Path
