@@ -27,22 +27,49 @@
 - [x] `batch_manager.py` 구현(정렬/배치 분할/상태 기록)
 - [x] Batch 1(TSU-0000006 ~ TSU-0000107, 100건) 요청 생성
       → `NAE/review/human/requests/batch_0001_requests.json`
-- [ ] Batch 1 Human Review 진행(사용자)
-- [ ] Batch 1 Promotion
+- [x] Batch 1 Human Review 10건 진행(TSU-0000006~0000015, 10건씩 확인
+      방식으로 사용자 확정, 전건 Q1=A/Q2=A/Q3=A/FINAL=APPROVED)
+      → `NAE/review/human/decisions/batch_0001_decisions.json`
+- [x] 위 10건 Promotion 완료(review_status: generated → verified)
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T225223/`
+- [x] Batch 1 다음 10건 진행(TSU-0000016~0000024, 0000026) — TOC 항목
+      8건(TSU-0000017~0000024) REJECT, 정상 진술 2건(TSU-0000016/0000026)
+      APPROVE → review_status: verified 2건, rejected 8건
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T225804/`
+- [x] Batch 1 다음 10건 진행(TSU-0000027~0000037, Pilot 제외 9건) —
+      TSU-0000027(claim 오배정 의심)·TSU-0000028(키릴 문자 혼입) REJECT,
+      나머지 7건 APPROVE → verified 8건, rejected 2건
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T230308/`
+- [ ] Batch 1 나머지 70건(TSU-0000038~TSU-0000107) Human Review
 - [ ] Batch 2 ~ 42 반복
 
 ## 진행률
 
 ```
-tsu_reviewed_and_completed: 0 / 4107
-percent_complete: 0.0%
-batches_with_requests: 1 / 42
+verified: 28 / 4107 (Pilot 10건 제외)
+rejected: 10 / 4107
+reviewed subtotal: 38 / 4107 (0.93%)
+batches_with_requests: 1 / 42 (batch_0001: 38/100건 판정 완료)
 ```
+
+## 참고 — 데이터 품질 관찰(Batch 1, TSU-0000009/0000010/0000011)
+
+리뷰 중 claim 텍스트에 한자가 혼입된 것이 발견됨(예: "来源", "頼赖").
+리뷰어가 claim의 신학적 의미 자체는 정확하다고 판단해 원안대로
+승인했으나, TSU 생성 파이프라인(LLM 추출) 단계의 표기 결함으로
+보이며 별도 확인이 필요할 수 있음. 근거는
+`NAE/review/human/decisions/batch_0001_decisions.json`의 comment 필드.
+
+## 참고 — 데이터 품질 관찰(Batch 1, TSU-0000017~0000024)
+
+목차(TOC) 파편이 TSU로 추출된 사례 8건 발견, 전부 REJECT 처리(
+`review_status: rejected`). TSU-0000021은 추가로 서로 다른 두 목차
+줄이 병합되고 원문에 없는 해석("유아 세례")까지 claim에 삽입된
+이중 결함. TSU 생성 파이프라인이 목차/색인 페이지를 신학적 진술과
+구분하지 못하는 것으로 보이며, 향후 배치에서 유사 패턴이 반복될
+가능성이 높음 — 확인 필요.
 
 ## 다음 조치
 
-Batch 1(100건)의 리뷰 방식은 Pilot 001과 동일한 Q1-Q3(+조건부 Q4)
-구조를 그대로 사용한다. 다만 Pilot과 달리 100건 전부를 한 세션에서
-서술형으로 리뷰하는 것은 비현실적이므로, 사용자가 원하는 하위 진행
-방식(예: 몇 건씩 나눠 확인, 또는 일괄 A/A/A 승인 후 이상 건만 별도
-표시 등)을 다음 대화에서 확인 후 진행한다.
+Batch 1 나머지 80건(TSU-0000027~TSU-0000107)을 동일하게 10건씩
+나눠서 제시 → 사용자 확인 → Promotion 순서로 반복 진행한다.

@@ -7,7 +7,42 @@
       "tsu_count": 100,
       "first_tsu_id": "TSU-0000006",
       "last_tsu_id": "TSU-0000107",
-      "status": "requests_generated"
+      "status": "partially_completed",
+      "reviewed_count": 38,
+      "promoted_tsu_ids": [
+        "TSU-0000006",
+        "TSU-0000007",
+        "TSU-0000008",
+        "TSU-0000009",
+        "TSU-0000010",
+        "TSU-0000011",
+        "TSU-0000012",
+        "TSU-0000013",
+        "TSU-0000014",
+        "TSU-0000015",
+        "TSU-0000016",
+        "TSU-0000026",
+        "TSU-0000029",
+        "TSU-0000030",
+        "TSU-0000031",
+        "TSU-0000032",
+        "TSU-0000034",
+        "TSU-0000035",
+        "TSU-0000036",
+        "TSU-0000037"
+      ],
+      "rejected_tsu_ids": [
+        "TSU-0000017",
+        "TSU-0000018",
+        "TSU-0000019",
+        "TSU-0000020",
+        "TSU-0000021",
+        "TSU-0000022",
+        "TSU-0000023",
+        "TSU-0000024",
+        "TSU-0000027",
+        "TSU-0000028"
+      ]
     }
   }
 }

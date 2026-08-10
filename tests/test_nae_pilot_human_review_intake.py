@@ -259,12 +259,13 @@ class TestReviewGateImmutability:
     def test_real_production_review_gate_state_unchanged_by_import(self):
         """이 테스트 스위트를 import/실행하는 것만으로 실제 Production
         Review Gate 판정이 바뀌지 않아야 한다(읽기 전용 재확인). Pilot 001
-        Promotion(1차 5건) + Remediation re-review 승인(2차 5건) 총
-        10건이 verified 상태인 것이 현재 Production의 정상 상태이며,
+        Promotion(1차 5건) + Remediation re-review 승인(2차 5건) 10건에
+        4,107건 확장 Batch 1의 첫 10건(TSU-0000006~0000015)이 더해져
+        총 20건이 verified 상태인 것이 현재 Production의 정상 상태이며,
         import가 이 값을 바꾸지 않는다는 것이 검증 대상."""
         from NAE.pipeline.index import indexer
         summary = indexer.index_all(dry_run=True)
-        assert summary["indexed"] == 10
+        assert summary["indexed"] == 30
 
 
 class TestNoQdrantNoEmbeddingGuarantee:

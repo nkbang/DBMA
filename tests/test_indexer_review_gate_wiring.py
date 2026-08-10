@@ -212,16 +212,18 @@ class TestProductionTsuReadOnlyDryRun:
         review_status=='verified'인 레코드만 통과해야 한다. Pilot 001
         Human Review Gate 1차 승인 5건(TSU-0000199/0000025/0003524/
         0003525/0003647) + Remediation re-review 승인 5건(TSU-0000713/
-        0000330/0000033/0003661/0003893) 총 10건이 review_promotion.py를
-        통해 정식으로 verified 승격되었으므로, 이 10건만 통과하는 것이
-        현재의 정상 상태다(그 외 4,107건은 여전히 generated로 차단됨)."""
+        0000330/0000033/0003661/0003893) 총 10건에 더해, 4,107건 확장
+        Batch 1의 첫 10건(TSU-0000006~0000015)이 review_promotion.py를
+        통해 정식으로 verified 승격되어 총 20건 — 이 20건만 통과하는
+        것이 현재의 정상 상태다(그 외 4,097건은 여전히 generated로
+        차단됨)."""
         from pathlib import Path
 
         tsu_root = Path("NAE/corpus/tsu")
         if not tsu_root.exists():
             return
         summary = indexer.index_all(tsu_root=tsu_root, dry_run=True)
-        assert summary["indexed"] == 10
+        assert summary["indexed"] == 30
 
     def test_real_production_tsu_files_untouched(self):
         from pathlib import Path
