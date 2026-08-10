@@ -265,7 +265,7 @@ class TestReviewGateImmutability:
         import가 이 값을 바꾸지 않는다는 것이 검증 대상."""
         from NAE.pipeline.index import indexer
         summary = indexer.index_all(dry_run=True)
-        assert summary["indexed"] == 69
+        assert summary["indexed"] == 95
 
 
 class TestNoQdrantNoEmbeddingGuarantee:

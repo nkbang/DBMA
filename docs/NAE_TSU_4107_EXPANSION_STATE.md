@@ -55,16 +55,29 @@
       claim 오배정(TSU-0000069와 동일) REJECT, 나머지 9건 APPROVE →
       verified 9건, rejected 1건
       → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T234449/`
-- [ ] Batch 1 나머지 30건(TSU-0000078~TSU-0000107) Human Review
-- [ ] Batch 2 ~ 42 반복
+- [x] Batch 1 다음 10건 진행(TSU-0000078~0000087) — TSU-0000087
+      claim 잘림(truncation) REJECT, 나머지 9건 APPROVE → verified 9건,
+      rejected 1건
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T234951/`
+- [x] Batch 1 다음 10건 진행(TSU-0000088~0000097) — TSU-0000091
+      베트남어 혼입("hướng dẫn") REJECT, 나머지 9건 APPROVE(TSU-0000095
+      경미한 의미 이동 관찰 후 승인) → verified 9건, rejected 1건
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T235434/`
+- [x] Batch 1 마지막 10건 진행(TSU-0000098~0000107) — TSU-0000100
+      doctrine 미분류, TSU-0000104 오역("전도서"↔"위임/commission" 혼동)
+      REJECT, 나머지 8건 APPROVE → verified 8건, rejected 2건
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260810T000503/`
+- [x] **Batch 1 완료(100/100건 판정: verified 85건, rejected 15건)**
+- [ ] Batch 2(TSU-0000108~) 요청 생성 및 진행
+- [ ] Batch 3 ~ 42 반복
 
 ## 진행률
 
 ```
-verified: 67 / 4107 (Pilot 10건 제외)
-rejected: 11 / 4107
-reviewed subtotal: 78 / 4107 (1.90%)
-batches_with_requests: 1 / 42 (batch_0001: 78/100건 판정 완료)
+verified: 85 / 4107 (Pilot 10건 제외)
+rejected: 15 / 4107
+reviewed subtotal: 100 / 4107 (2.44%)
+batches_with_requests: 1 / 42 (batch_0001: 100/100건 완료)
 ```
 
 ## 참고 — 데이터 품질 관찰(Batch 1, TSU-0000009/0000010/0000011)
@@ -84,7 +97,33 @@ batches_with_requests: 1 / 42 (batch_0001: 78/100건 판정 완료)
 구분하지 못하는 것으로 보이며, 향후 배치에서 유사 패턴이 반복될
 가능성이 높음 — 확인 필요.
 
+## Batch 1 완료 요약 (100건)
+
+```
+verified: 85건 (85%)
+rejected: 15건 (15%)
+```
+
+REJECT 사유 분포:
+- 목차(TOC) 파편 추출: 8건(TSU-0000017~0000024)
+- claim 오배정(다른 TSU의 claim이 잘못 재사용): 2건(TSU-0000027, 0000070)
+- claim 텍스트 언어 혼입(한자/키릴/베트남어): 1건(TSU-0000028)
+- claim 텍스트 잘림(truncation): 1건(TSU-0000087)
+- doctrine 미분류 + 기타: 2건(TSU-0000100, 0000104 오역)
+- 원문에 없는 해석 추가: 1건(TSU-0000021, 목차 결함과 중복 집계)
+
+승인되었으나 특이사항 기록된 건(생성 파이프라인 결함 가능성, 별도
+트랙 확인 필요로 코멘트만 남김): TSU-0000009/0000010/0000011(한자
+혼입), TSU-0000055(doctrine 미분류), TSU-0000057/0000066(한자 혼입),
+TSU-0000060(충실도 의심), TSU-0000095(경미한 의미 이동) — 총 7건.
+
+**관찰**: 15% REJECT + 7% "승인되었으나 특이사항" ≈ 전체의 22%가
+생성 파이프라인 품질 이슈를 동반. 목차 오추출·언어 혼입·claim
+오배정이 반복 패턴으로 확인됨 — TSU 생성 파이프라인(LLM 추출) 자체의
+개선 여지가 있으나, 이는 이 Human Review 트랙의 범위를 벗어나며
+별도 확인이 필요하다.
+
 ## 다음 조치
 
-Batch 1 나머지 80건(TSU-0000027~TSU-0000107)을 동일하게 10건씩
-나눠서 제시 → 사용자 확인 → Promotion 순서로 반복 진행한다.
+Batch 2(TSU-0000108부터, Dagg_Church_Order 계속)의 요청을 생성해
+동일한 10건씩 제시 → 사용자 확인 → Promotion 순서로 반복 진행한다.
