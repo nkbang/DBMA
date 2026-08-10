@@ -5,6 +5,11 @@
 **Authority:** Gold Query Set 초안(사용자 "승인") + `docs/NAE_PILOT_001_EMBEDDING_EXECUTION_REPORT_001.md`(Qdrant points_count=10)
 **Git Commit/Push:** 미수행.
 
+> **후속 업데이트(2026-08-09):** 이 문서의 draft Gold Query Set은 사용자
+> 승인을 거쳐 `NAE/benchmark/datasets/pilot_001_gold_v1.jsonl`
+> (`review_status: approved`)로 정식 승격됨. 상세는
+> `docs/NAE_PILOT_001_GOLD_QUERY_SET_APPROVAL_001.md` 참고.
+
 ---
 
 ## 1. Gold Query Set
