@@ -10,10 +10,14 @@ import types
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-if "ollama" not in sys.modules:
-    _ollama_stub = types.ModuleType("ollama")
-    _ollama_stub.generate = lambda *a, **k: {"response": ""}
-    sys.modules["ollama"] = _ollama_stub
+try:
+    import ollama  # noqa: F401
+except ImportError:
+    if "ollama" not in sys.modules:
+        _ollama_stub = types.ModuleType("ollama")
+        _ollama_stub.generate = lambda *a, **k: {"response": ""}
+        _ollama_stub.embeddings = lambda *a, **k: {"embedding": []}
+        sys.modules["ollama"] = _ollama_stub
 
 
 class _FakeSessionState(dict):

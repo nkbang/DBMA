@@ -13,10 +13,14 @@ import types
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-if "ollama" not in sys.modules:
-    _ollama_stub = types.ModuleType("ollama")
-    _ollama_stub.generate = lambda *args, **kwargs: {"response": ""}
-    sys.modules["ollama"] = _ollama_stub
+try:
+    import ollama  # noqa: F401
+except ImportError:
+    if "ollama" not in sys.modules:
+        _ollama_stub = types.ModuleType("ollama")
+        _ollama_stub.generate = lambda *args, **kwargs: {"response": ""}
+        _ollama_stub.embeddings = lambda *args, **kwargs: {"embedding": []}
+        sys.modules["ollama"] = _ollama_stub
 
 from core.generation import GenerationService
 from core.retrieval import ResponsePackage, ParsedQuery, PerformanceMetrics
