@@ -1,0 +1,52 @@
+# pytest-full result for Remediation-004
+# Command: cd ~/DBMA && source ~/envs/dbma311/bin/activate && python -m pytest tests/test_nae_benchmark_metrics.py -v
+# Generated: 2026-07-31
+
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- /Users/David/envs/dbma311/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/David/DBMA
+configfile: pyproject.toml
+plugins: anyio-4.14.0, cov-7.1.0, Faker-40.23.0, langsmith-0.9.1
+
+collecting ... collected 31 items
+
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_with_hit PASSED [  3%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_with_no_hit PASSED [  6%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_partial_hit PASSED [  9%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_empty_relevant PASSED [ 12%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_with_k_parameter PASSED [ 16%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_multiple_relevant PASSED [ 19%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_empty_retrieved PASSED [ 22%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_never_exceeds_one_with_duplicate_retrieved PASSED [ 25%]
+tests/test_nae_benchmark_metrics.py::TestRecallAtK::test_recall_duplicate_retrieved_partial_relevant PASSED [ 29%]
+tests/test_nae_benchmark_metrics.py::TestPrecisionAtK::test_precision_perfect PASSED [ 32%]
+tests/test_nae_benchmark_metrics.py::TestPrecisionAtK::test_precision_partial PASSED [ 35%]
+tests/test_nae_benchmark_metrics.py::TestPrecisionAtK::test_precision_with_k PASSED [ 38%]
+tests/test_nae_benchmark_metrics.py::TestPrecisionAtK::test_precision_empty_retrieved PASSED [ 41%]
+tests/test_nae_benchmark_metrics.py::TestPrecisionAtK::test_precision_duplicate_retrieved_not_double_counted PASSED [ 45%]
+tests/test_nae_benchmark_metrics.py::TestMRR::test_mrr_first_hit PASSED  [ 48%]
+tests/test_nae_benchmark_metrics.py::TestMRR::test_mrr_second_hit PASSED [ 51%]
+tests/test_nae_benchmark_metrics.py::TestMRR::test_mrr_third_hit PASSED  [ 54%]
+tests/test_nae_benchmark_metrics.py::TestMRR::test_mrr_no_hit PASSED     [ 58%]
+tests/test_nae_benchmark_metrics.py::TestMRR::test_mrr_multiple_relevant_first_hit PASSED [ 61%]
+tests/test_nae_benchmark_metrics.py::TestMRR::test_mrr_empty_retrieved PASSED [ 64%]
+tests/test_nae_benchmark_metrics.py::TestHitRate::test_hit_rate_with_hit PASSED [ 67%]
+tests/test_nae_benchmark_metrics.py::TestHitRate::test_hit_rate_without_hit PASSED [ 70%]
+tests/test_nae_benchmark_metrics.py::TestComputeAllMetrics::test_compute_all_metrics_returns_dict PASSED [ 74%]
+tests/test_nae_benchmark_metrics.py::TestComputeAllMetrics::test_compute_all_metrics_has_required_keys PASSED [ 77%]
+tests/test_nae_benchmark_metrics.py::TestComputeAllMetrics::test_compute_all_metrics_fixed_data PASSED [ 80%]
+tests/test_nae_benchmark_metrics.py::TestComputeAllMetrics::test_compute_all_metrics_with_k PASSED [ 83%]
+tests/test_nae_benchmark_metrics.py::TestComputeAllMetrics::test_compute_all_metrics_empty_retrieved PASSED [ 87%]
+tests/test_nae_benchmark_metrics.py::TestComputeAllMetrics::test_compute_all_metrics_empty_relevant PASSED [ 90%]
+tests/test_nae_benchmark_metrics.py::TestIntegration::test_fixed_data_recall_equals_1 PASSED [ 93%]
+tests/test_nae_benchmark_metrics.py::TestIntegration::test_fixed_data_mrr_equals_0_5 PASSED [ 96%]
+tests/test_nae_benchmark_metrics.py::TestIntegration::test_fixed_data_precision_equals_1_3 PASSED [100%]
+
+============================== 31 passed in 0.04s ==============================
+
+Collected: 31
+Passed: 31
+Failed: 0
+Skipped: 0
+Exit code: 0

@@ -1,0 +1,46 @@
+{
+  "source_id": "TO_BE_FILLED",
+  "legacy_source_id": "TO_BE_FILLED",
+  "work": {
+    "author": "TO_BE_FILLED",
+    "canonical_title": "TO_BE_FILLED",
+    "original_publication_year": null,
+    "language": "en"
+  },
+  "digital_manifestation": {
+    "repository": "TO_BE_FILLED",
+    "stable_identifier": "TO_BE_FILLED",
+    "catalog_url": "TO_BE_FILLED",
+    "item_url": "TO_BE_FILLED",
+    "edition_or_imprint": "TO_BE_FILLED",
+    "manifestation_year": null,
+    "rights_basis": "TO_BE_VERIFIED"
+  },
+  "selected_artifact": {
+    "repository_filename": "TO_BE_FILLED",
+    "expected_mime_type": "TO_BE_FILLED",
+    "minimum_size_bytes": null,
+    "download_url": "TO_BE_FILLED",
+    "sha256": null,
+    "downloaded_at": null
+  },
+  "identity_validation": {
+    "title_marker": "TO_BE_FILLED",
+    "author_marker": "TO_BE_FILLED",
+    "publication_marker": "TO_BE_FILLED",
+    "status": "NOT_YET_VERIFIED"
+  },
+  "transport_validation": {
+    "http_status": null,
+    "content_type": null,
+    "content_length": null,
+    "error_page_detected": null,
+    "status": "NOT_YET_VERIFIED"
+  },
+  "pipeline": {
+    "source_format": "TO_BE_FILLED",
+    "normalization_method": null,
+    "page_map_available": null,
+    "canonical_admission": "NOT_AUTHORIZED"
+  }
+}

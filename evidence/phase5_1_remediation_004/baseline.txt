@@ -1,0 +1,69 @@
+# C1 Remediation-004 Evidence Reconciliation — Baseline
+# Generated: 2026-07-31
+
+repository: https://github.com/nkbang/DBMA.git (origin)
+          http://100.94.139.122:3000/David/DBMA.git (nas)
+branch: dev/dbma-engine
+HEAD SHA: 403ab6581210d1fb77ef5a6508c84a4d40724fb8
+task ID: HQ-C1-DIRECTIVE-NAE-PHASE5.1-REMEDIATION-004
+working tree before: MODIFIED (11 tracked files, 39 untracked files)
+</content>
+<write_to_file>
+<path>evidence/phase5_1_remediation_004/git-status-before.txt</path>
+<content># git status --short (before evidence collection)
+# Generated: 2026-07-31
+
+ M NAE/benchmark/__init__.py
+ M NAE/benchmark/datasets/benchmark_v1.jsonl
+ M NAE/benchmark/evaluator.py
+ M NAE/benchmark/loader.py
+ M NAE/benchmark/metrics.py
+ M NAE/benchmark/runner.py
+ M NAE/benchmark/schema.py
+ M scripts/build_tsu_dataset.py
+ M tests/test_nae_benchmark_loader.py
+ M tests/test_nae_benchmark_metrics.py
+ M tests/test_nae_benchmark_schema.py
+?? NAE/benchmark/GOLD_BENCHMARK_AUTHORING_GUIDE.md
+?? NAE/benchmark/datasets/gold_benchmark_v1.jsonl
+?? docs/NAE_DATA_ARCHITECTURE.md
+?? docs/NAE_SOURCE_PIPELINE.md
+?? docs/NAE_SOURCE_REGISTRY_REPORT.md
+?? docs/SOURCE_ID_POLICY.md
+?? docs/agents/c1/C1-TASK-NAE-CORPUS-001-REPORT.md
+?? docs/agents/c1/C1-TASK-NAE-CORPUS-002-STATUS-REPORT.md
+?? docs/agents/c1/C1-TASK-NAE-CORPUS-003-HQ-DIRECTIVE-REPORT.md
+?? docs/agents/c1/C1-TASK-NAE-PHASE5-COMPLETE.md
+?? docs/agents/c1/C1-TASK-NAE-PHASE5-CONTRACT-COMPLETE.md
+?? docs/agents/c1/C1-TASK-ORDER-036.md
+?? docs/agents/c1/C1-TASK-ORDER-037.md
+?? docs/agents/cue/CUE-PHASE5.0.5-EVIDENCE-REVIEW.md
+?? docs/agents/cue/CUE-PHASE5.1-ARCHITECTURE-REVIEW.md
+?? docs/agents/cue/CUE-PHASE5.1-EVIDENCE-CONTEXT-CORRECTION.md
+?? docs/agents/cue/NAE-REGRESSION-001-REPORT.md
+?? docs/tasks/reports/STEP5C_REPORT.md
+?? docs/tasks/reports/STEP5_HUMAN_ACQUISITION_GUIDE.md
+?? docs/tasks/reports/STEP5_IMPORT_FORMAT_DECISION.md
+?? docs/tasks/reports/STEP5_PILOT_CHECKLIST.md
+?? docs/tasks/reports/STEP5_READINESS_REPORT.md
+?? docs/tasks/reports/STEP5_REGISTRY_TRANSITION.md
+?? docs/tasks/reports/STEP5_SOURCE_ACQUISITION_RECORD.md
+?? docs/tasks/reports/STEP5_SOURCE_COMPARISON.md
+?? docs/tasks/reports/STEP5_SOURCE_MANUAL_VERIFY.md
+?? docs/tasks/reports/STEP5_SOURCE_REGISTRY_ENTRY.md
+?? docs/tasks/reports/STEP5_SOURCE_VALIDATION_SCRIPT.md
+?? evidence/
+?? scripts/author_gold_set.py
+?? scripts/source_validator.py
+?? tests/test_build_tsu_dataset_output_path.py
+?? tests/test_nae_benchmark_contract.py
+</content>
+<write_to_file>
+<path>evidence/phase5_1_remediation_004/changed-files.txt</path>
+<content># Changed files (tracked, modified) — Remediation-004 scope
+# Generated: 2026-07-31
+
+NAE/benchmark/metrics.py
+NAE/benchmark/schema.py
+NAE/benchmark/loader.py
+tests/test_nae_benchmark_metrics.py

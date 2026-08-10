@@ -1,0 +1,62 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host archive.org:443 was resolved.
+* IPv6: (none)
+* IPv4: 207.241.224.2
+*   Trying 207.241.224.2:443...
+* Connected to archive.org (207.241.224.2) port 443
+* ALPN: curl offers h2,http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+} [316 bytes data]
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* (304) (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* (304) (IN), TLS handshake, Unknown (8):
+{ [41 bytes data]
+* (304) (IN), TLS handshake, Certificate (11):
+{ [5126 bytes data]
+* (304) (IN), TLS handshake, CERT verify (15):
+{ [264 bytes data]
+* (304) (IN), TLS handshake, Finished (20):
+{ [52 bytes data]
+* (304) (OUT), TLS handshake, Finished (20):
+} [52 bytes data]
+* SSL connection using TLSv1.3 / AEAD-AES256-GCM-SHA384 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.archive.org
+*  start date: Jan  8 22:02:42 2026 GMT
+*  expire date: Feb  9 22:02:42 2027 GMT
+*  subjectAltName: host "archive.org" matched cert's "archive.org"
+*  issuer: C=US; ST=Arizona; L=Scottsdale; O=GoDaddy.com, Inc.; OU=http://certs.godaddy.com/repository/; CN=Go Daddy Secure Certificate Authority - G2
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://archive.org/metadata/plainbookofconfe00phil
+* [HTTP/2] [1] [:method: GET]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: archive.org]
+* [HTTP/2] [1] [:path: /metadata/plainbookofconfe00phil]
+* [HTTP/2] [1] [user-agent: curl/8.7.1]
+* [HTTP/2] [1] [accept: */*]
+> GET /metadata/plainbookofconfe00phil HTTP/2
+> Host: archive.org
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0< HTTP/2 200 
+< server: nginx/1.31.3
+< date: Sat, 01 Aug 2026 06:51:45 GMT
+< content-type: application/json
+< access-control-allow-origin: *
+< vary: Accept-Encoding
+< strict-transport-security: max-age=15724800
+< onion-location: https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/metadata/plainbookofconfe00phil
+< content-security-policy: report-uri https://archive.org/services/csp-report; default-src *; img-src * data: blob:; object-src 'none'; media-src * blob:; connect-src * data:; style-src 'unsafe-inline' https://archive.org/ https://archive.org https://esm.archive.org/ https://esm.ext.archive.org/ https://offshoot.prod.archive.org/ https://av.archive.org/css/ https://av.dev.archive.org/css/ https://accounts.google.com/gsi/ https://synerg.adp.com/; script-src 'nonce-a3f3676f8c7dc81fea358ca0a9d209dd' https://archive.org/includes/ https://archive.org/includes/ https://archive.org/components/ https://archive.org/components/ https://archive.org/v/ https://archive.org/v/ https://archive.org/upload/app/ https://archive.org/offshoot_assets/ https://archive.org/offshoot_assets/ https://esm.archive.org/ https://esm.ext.archive.org/ https://polyfill.archive.org/v3/polyfill.min.js https://offshoot.prod.archive.org/ https://av.archive.org/ https://av.dev.archive.org/ https://openlibrary.org/query.json https://emularity-engine.ux-b.archive.org/ https://emularity-config.ux-b.archive.org/ https://emularity-bios.ux-b.archive.org/ https://archive.org/services/emularity/ https://archive.org/services/emularity/ 'wasm-unsafe-eval' 'sha256-CoX53XgCdkM1zegYEEpMUeYIZnv663inNm8bQv2VRbM=' https://accounts.google.com/gsi/ https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://workforcenow.adp.com/ https://synerg.adp.com/ https://apollo.archive.org
+< referrer-policy: no-referrer-when-downgrade
+< 
+{ [2 bytes data]
+100     2    0     2    0     0      0      0 --:--:--  0:00:02 --:--:--     0100     2    0     2    0     0      0      0 --:--:--  0:00:02 --:--:--     0
+* Connection #0 to host archive.org left intact
+{}

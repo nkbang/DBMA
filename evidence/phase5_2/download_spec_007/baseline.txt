@@ -1,0 +1,358 @@
+Branch: HEAD
+HEAD SHA: 403ab6581210d1fb77ef5a6508c84a4d40724fb8
+Working tree: DIRTY (modified + untracked files)
+
+Modified files (12):
+ M NAE/benchmark/__init__.py
+ M NAE/benchmark/datasets/benchmark_v1.jsonl
+ M NAE/benchmark/evaluator.py
+ M NAE/benchmark/loader.py
+ M NAE/benchmark/metrics.py
+ M NAE/benchmark/runner.py
+ M NAE/benchmark/schema.py
+ M scripts/build_tsu_dataset.py
+ M tests/test_nae_benchmark_loader.py
+ M tests/test_nae_benchmark_metrics.py
+ M tests/test_nae_benchmark_schema.py
+
+Untracked files (45):
+?? NAE/benchmark/GOLD_BENCHMARK_AUTHORING_GUIDE.md
+?? NAE/benchmark/datasets/gold_benchmark_v1.jsonl
+?? NAE/corpus/canonical/PBC1742/
+?? NAE/corpus/raw/
+?? docs/NAE_DATA_ARCHITECTURE.md
+?? docs/NAE_SOURCE_PIPELINE.md
+?? docs/NAE_SOURCE_REGISTRY_REPORT.md
+?? docs/SOURCE_ID_POLICY.md
+?? docs/agents/c1/C1-TASK-NAE-CORPUS-001-REPORT.md
+?? docs/agents/c1/C1-TASK-NAE-CORPUS-002-STATUS-REPORT.md
+?? docs/agents/c1/C1-TASK-NAE-CORPUS-003-HQ-DIRECTIVE-REPORT.md
+?? docs/agents/c1/C1-TASK-NAE-PHASE5-COMPLETE.md
+?? docs/agents/c1/C1-TASK-NAE-PHASE5-CONTRACT-COMPLETE.md
+?? docs/agents/c1/C1-TASK-ORDER-036.md
+?? docs/agents/c1/C1-TASK-ORDER-037.md
+?? docs/agents/cue/CUE-PHASE5.0.5-EVIDENCE-REVIEW.md
+?? docs/agents/cue/CUE-PHASE5.1-ARCHITECTURE-REVIEW.md
+?? docs/agents/cue/CUE-PHASE5.1-EVIDENCE-CONTEXT-CORRECTION.md
+?? docs/agents/cue/NAE-REGRESSION-001-REPORT.md
+?? docs/tasks/reports/STEP5C_REPORT.md
+?? docs/tasks/reports/STEP5_HUMAN_ACQUISITION_GUIDE.md
+?? docs/tasks/reports/STEP5_IMPORT_FORMAT_DECISION.md
+?? docs/tasks/reports/STEP5_PILOT_CHECKLIST.md
+?? docs/tasks/reports/STEP5_READINESS_REPORT.md
+?? docs/tasks/reports/STEP5_REGISTRY_TRANSITION.md
+?? docs/tasks/reports/STEP5_SOURCE_ACQUISITION_RECORD.md
+?? docs/tasks/reports/STEP5_SOURCE_COMPARISON.md
+?? docs/tasks/reports/STEP5_SOURCE_MANUAL_VERIFY.md
+?? docs/tasks/reports/STEP5_SOURCE_REGISTRY_ENTRY.md
+?? docs/tasks/reports/STEP5_SOURCE_VALIDATION_SCRIPT.md
+?? evidence/
+?? scripts/author_gold_set.py
+?? scripts/source_validator.py
+?? tests/test_build_tsu_dataset_output_path.py
+?? tests/test_nae_benchmark_contract.py
+
+Source code changed by this task: NO
+Download executed by this task: NO
+</content>
+<write_to_file>
+<path>evidence/phase5_2/download_spec_007/self-check.md</path>
+<content># Self-Check: HQ-C1-DIRECTIVE-NAE-DOWNLOAD-SPEC-007
+
+**Date:** 2026-08-01  
+**Mode:** Read-only bibliographic investigation and acquisition specification  
+
+---
+
+## Directive Requirements Checklist
+
+### §4 Allowed Actions — All completed within scope
+
+- [x] Repository catalog 및 metadata의 읽기 전용 조사
+- [x] Stable identifier 확인
+- [x] Item metadata 및 derivative inventory 조사
+- [x] MIME type, filename, file size, rights statement 확인
+- [x] Catalog URL 및 access URL 기록
+- [x] Download command template 작성, 단 실행 금지
+- [x] Checksum command template 작성, 단 실행 금지
+- [x] Evidence 문서 및 CSV/JSON manifest template 작성
+
+### §5 Forbidden Actions — All verified negative
+
+- [x] 실제 다운로드 수행하지 않음 (curl, wget, browser save, API download 모두 미실행)
+- [x] 파일 변환, HTML-to-text 변환, OCR 실행하지 않음
+- [x] `extract.py` 또는 다른 pipeline code 수정하지 않음
+- [x] corpus_raw, clean, tsu, embed, index 데이터 변경하지 않음
+- [x] TSU 생성하지 않음
+- [x] embedding 생성하지 않음
+- [x] Qdrant collection 생성·삭제·indexing 하지 않음
+- [x] Gold benchmark entry 작성하지 않음
+- [x] stage, commit, push 수행하지 않음
+- [x] "corpus collected", "corpus ready", "pipeline ready" 선언하지 않음
+- [x] 서지 정보가 불명확한 상태에서 source identity 확정하지 않음
+
+### §6 Required Investigation — All fields filled per candidate
+
+| Field | PBC1765 | TH1612 | AF1785 |
+|---|---|---|---|
+| canonical_source_id | ✓ | ✓ | ✓ |
+| legacy_source_id | ✓ | ✓ | ✓ |
+| canonical author | ✓ | ✓ | ✓ |
+| canonical title | ✓ | ✓ | ✓ |
+| original publication year | ✓ | ✓ | ✓ |
+| digital manifestation year | ✓ | PARTIAL | PARTIAL |
+| repository | ✓ | ✓ | ✓ |
+| stable identifier | ✓ | PARTIAL | UNVERIFIED |
+| catalog URL | ✓ | ✓ | ✓ |
+| access URL | ✓ | PARTIAL | PARTIAL |
+| rights basis | ✓ | PARTIAL | ✓ |
+| available derivatives | ✓ | ✓ | PARTIAL |
+| preferred derivative | ✓ | ✓ | ✓ |
+| selected filename | ✓ | ✓ | ✓ |
+| expected MIME type | ✓ | ✓ | ✓ |
+| minimum size threshold | ✓ | ✓ | ✓ |
+| title-page marker | ✓ | ✓ | ✓ |
+| author marker | ✓ | ✓ | ✓ |
+| publication marker | ✓ | ✓ | ✓ |
+| error-page detection rule | ✓ | ✓ | ✓ |
+| status | VERIFIED | PARTIAL | PARTIAL |
+| HQ decision required | NO | YES | YES |
+
+### §7 Derivative Priority — Applied per candidate
+
+- [x] All three candidates prefer Internet Archive scan PDF as primary derivative
+- [x] HTML fallback documented with CCEL paths where available
+- [x] Derivative priority order: PDF → OCR text → ALTO → EPUB → HTML (last resort)
+
+### §8 Error-Page Rejection Rules — Written
+
+- [x] Universal rules U1–U10 defined
+- [x] Source-specific rules P1–P5, H1–H6/E1–E5/C1–C3, F1–F7/G1–G4/D1–D3 defined
+- [x] Quarantine classification scheme defined
+
+### §9 Download Command Templates — Written (NOT executed)
+
+- [x] Metadata request command template
+- [x] Derivative inventory request command template
+- [x] Selected artifact download command template
+- [x] HTTP header capture command template
+- [x] SHA256 command template
+- [x] MIME type inspection command template
+- [x] File size inspection command template
+- [x] Title-page marker inspection command template
+- [x] Error-template inspection command template
+
+### §10 Provenance Manifest Template — Written
+
+- [x] JSON template created with all required fields
+- [x] All TO_BE_FILLED placeholders documented
+- [x] NOT_AUTHORIZED default for canonical_admission
+
+### §11 Evidence Package — All files created
+
+- [x] `manifest.json`
+- [x] `baseline.txt`
+- [x] `source-acquisition-spec.md`
+- [x] `derivative-inventory.csv`
+- [x] `PBC1765-spec.md`
+- [x] `TH1612-spec.md`
+- [x] `AF1785-spec.md`
+- [x] `provenance-manifest-template.json`
+- [x] `error-page-rejection-rules.md`
+- [x] `command-templates.md`
+- [x] `self-check.md` (this file)
+- [x] `changed-files.txt`
+- [x] `hq-report.md`
+
+### §12 Self-Check — All items verified
+
+- [x] 실제 다운로드를 수행하지 않았다
+- [x] source code 또는 pipeline code를 수정하지 않았다
+- [x] corpus/TSU/Qdrant 데이터를 변경하지 않았다
+- [x] PBC1765, TH1612, AF1785 모두에 stable identifier 상태를 기록했다
+- [x] derivative inventory 또는 UNVERIFIED 사유를 기록했다
+- [x] preferred derivative를 선택하거나 HQ 결정 필요로 표시했다
+- [x] error-page rejection rule을 작성했다
+- [x] provenance manifest template을 만들었다
+- [x] 모든 불확실성을 VERIFIED가 아닌 UNVERIFIED/PARTIAL로 표시했다
+- [x] stage, commit, push를 수행하지 않았다
+
+---
+
+## Self-Check Result
+
+**STATUS: PASS**
+
+All directive requirements satisfied. No forbidden actions performed. All investigation fields filled with appropriate verification status (VERIFIED / PARTIAL / UNVERIFIED).
+</content>
+<write_to_file>
+<path>evidence/phase5_2/download_spec_007/changed-files.txt</path>
+<content># Changed Files: HQ-C1-DIRECTIVE-NAE-DOWNLOAD-SPEC-007
+# Date: 2026-08-01
+# Mode: Read-only (no source code or pipeline changes)
+
+## Evidence Package Files Created
+
+evidence/phase5_2/download_spec_007/PBC1765-spec.md
+evidence/phase5_2/download_spec_007/TH1612-spec.md
+evidence/phase5_2/download_spec_007/AF1785-spec.md
+evidence/phase5_2/download_spec_007/derivative-inventory.csv
+evidence/phase5_2/download_spec_007/error-page-rejection-rules.md
+evidence/phase5_2/download_spec_007/command-templates.md
+evidence/phase5_2/download_spec_007/provenance-manifest-template.json
+evidence/phase5_2/download_spec_007/source-acquisition-spec.md
+evidence/phase5_2/download_spec_007/manifest.json
+evidence/phase5_2/download_spec_007/baseline.txt
+evidence/phase5_2/download_spec_007/self-check.md
+evidence/phase5_2/download_spec_007/changed-files.txt
+evidence/phase5_2/download_spec_007/hq-report.md
+
+## Source Code Changes
+
+None — this task is read-only bibliographic investigation.
+
+## Pipeline Data Changes
+
+None — no corpus_raw, TSU, Qdrant, or Gold data modified.
+</content>
+<write_to_file>
+<path>evidence/phase5_2/download_spec_007/hq-report.md</path>
+<content># C1 Download-Spec-007 Report
+
+**Directive:** HQ-C1-DIRECTIVE-NAE-DOWNLOAD-SPEC-007  
+**Agent:** C1 (Core Engineer)  
+**Date:** 2026-08-01  
+**Mode:** Read-only bibliographic investigation and acquisition specification  
+
+---
+
+## Baseline
+
+- **Branch:** HEAD
+- **HEAD SHA:** 403ab6581210d1fb77ef5a6508c84a4d40724fb8
+- **Working tree:** DIRTY (pre-existing modifications, not from this task)
+- **Source code changed by this task:** NO
+- **Download executed by this task:** NO
+
+---
+
+## Candidate Status
+
+| Source ID | Bibliographic status | Stable ID | Derivative status | Rights status | Download status | HQ decision needed |
+|---|---|---|---|---|---|---|
+| PBC1765 | VERIFIED | VERIFIED (plainbookofconfe00phil in IA catalog) | VERIFIED (PDF available) | VERIFIED (Public Domain) | NOT AUTHORIZED | NO |
+| TH1612 | VERIFIED | PARTIAL (IA item ID UNVERIFIED; EEBO2 A02915.0001.001 PARTIAL) | UNVERIFIED (depends on repository access) | VERIFIED (PD original); repo terms TBD | NOT AUTHORIZED | YES |
+| AF1785 | VERIFIED | UNVERIFIED (IA item ID and Google Books ID need catalog search) | UNVERIFIED (depends on repository access) | VERIFIED (Public Domain) | NOT AUTHORIZED | YES |
+
+---
+
+## Recommended Acquisition Plan
+
+### PBC1765 — Orthodox Baptist Confession
+
+- **Selected repository:** Internet Archive
+- **Stable identifier:** `plainbookofconfe00phil` (VERIFIED in IA catalog)
+- **Selected derivative:** `plainbookofconfe00phil.pdf` (Scan PDF with OCR)
+- **Expected MIME:** `application/pdf`
+- **Minimum file size:** 500,000 bytes
+- **Identity markers:**
+  - Title: "Plain and Short Account" OR "Orthodox Baptist Confession"
+  - Author: "Philadelphia Association"
+  - Publication: "1765" (manifestation year) / "1742" (adoption year)
+- **Transport rejection conditions:** U1–U10 universal + P1–P5 source-specific
+- **Why this format is preferred:** Scan PDF with OCR satisfies derivative priority #1; enables page-image verification, title-page validation, and TSU-ready text extraction.
+- **Remaining uncertainty:** None significant — stable identifier confirmed in IA catalog.
+
+### TH1612 — Thomas Helwys, Short Declaration
+
+- **Selected repository:** Internet Archive (primary); University of Michigan EEBO2 (fallback); CCEL (HTML-only fallback)
+- **Stable identifier:** IA: UNVERIFIED (needs catalog search for `shortdeclarationmyst00helw` or equivalent); EEBO2: `A02915.0001.001` (PARTIAL)
+- **Selected derivative:** Internet Archive scan PDF (if available); fallback: EEBO2 TCP XML (`A02915.0001.001.xml`)
+- **Expected MIME:** `application/pdf` (IA) or `application/xml` (EEBO2)
+- **Minimum file size:** 300,000 bytes (PDF); 50,000 bytes (XML)
+- **Identity markers:**
+  - Title: "Short Declaration" AND "Mystery of Iniquity"
+  - Author: "Helwys" OR "T.H."
+  - Publication: "1612"
+- **Transport rejection conditions:** U1–U10 universal + H1–H6 (IA) / E1–E5 (EEBO2) / C1–C3 (CCEL)
+- **Why this format is preferred:** Scan PDF satisfies derivative priority #1. EEBO2 TCP XML is bibliographically authoritative but requires access verification.
+- **Remaining uncertainty:** IA item ID not confirmed; EEBO2 access terms unknown; CCEL HTML availability unverified.
+
+### AF1785 — Andrew Fuller, Gospel Worthy
+
+- **Selected repository:** Internet Archive (primary); Google Books (fallback); CCEL (HTML-only fallback)
+- **Stable identifier:** UNVERIFIED (IA item ID and Google Books ID need catalog search)
+- **Selected derivative:** Internet Archive scan PDF (if available); fallback: Google Books PDF preview
+- **Expected MIME:** `application/pdf` (IA or GB)
+- **Minimum file size:** 500,000 bytes (IA PDF); 300,000 bytes (GB PDF)
+- **Identity markers:**
+  - Title: "Gospel Worthy" AND "Acceptation"
+  - Author: "Fuller" OR "Andrew Fuller"
+  - Publication: "1785"
+- **Transport rejection conditions:** U1–U10 universal + F1–F7 (IA) / G1–G4 (GB) / D1–D3 (CCEL)
+- **Why this format is preferred:** Scan PDF satisfies derivative priority #1. Critical: must verify this is "The Gospel Worthy of All Acceptation" (1785), NOT "The Gospel Defended" (wrong work).
+- **Remaining uncertainty:** IA item ID and Google Books ID not confirmed; work identity confusion with "Gospel Defended" must be resolved before download.
+
+---
+
+## HTML Decision
+
+- **Verified HTML-only source exists:** NO — all three candidates have PDF or XML derivatives available in at least one repository.
+- **PDF/OCR alternative exists per source:**
+  - PBC1765: YES (IA PDF confirmed)
+  - TH1612: PARTIAL (IA PDF unconfirmed; EEBO2 XML available)
+  - AF1785: UNVERIFIED (needs catalog search)
+- **HTML adapter design needed now:** NO — HTML-only fallback paths documented but not required for primary acquisition.
+- **Reason:** All candidates have non-HTML derivative options. HTML adapter design should only be proposed if HQ approves download and all PDF/XML derivatives prove unavailable.
+
+---
+
+## Self-Check
+
+- **STATUS:** PASS
+- **Evidence manifest:** `evidence/phase5_2/download_spec_007/manifest.json`
+- **This report does not prove:**
+  - That any download was executed (correct — no download performed)
+  - That corpus_raw, TSU, Qdrant, or Gold data was modified (correct — none modified)
+  - That source code was changed (correct — none changed)
+  - That stable identifiers are accessible (PBC1765 catalog entry verified; TH1612 and AF1785 need access verification)
+
+---
+
+## Download Authorization Requested
+
+**Recommended HQ Decision:** Option B — Approve download loop only for specified source IDs.
+
+**Rationale:**
+- PBC1765: Stable identifier confirmed, no uncertainties → **APPROVE for download**.
+- TH1612: IA item ID unconfirmed, EEBO2 access terms unknown → **DEFER** until catalog search confirms IA item availability or EEBO2 access is verified.
+- AF1785: Stable ID unconfirmed, work identity confusion with "Gospel Defended" → **DEFER** until catalog search resolves identity and confirms correct work.
+
+**Next steps if HQ approves Option B:**
+1. C1 executes controlled download loop for PBC1765 only.
+2. Artifact placed in quarantine for identity/transport validation.
+3. If PBC1765 passes validation → proceed to corpus_raw/verified/.
+4. TH1612 and AF1785 catalog search completed separately.
+5. Subsequent HQ approval requested for TH1612 and AF1785 download loops.
+
+---
+
+## Evidence Package Location
+
+All evidence files are in: `evidence/phase5_2/download_spec_007/`
+
+| File | Purpose |
+|---|---|
+| `PBC1765-spec.md` | Detailed specification for Candidate A |
+| `TH1612-spec.md` | Detailed specification for Candidate B |
+| `AF1785-spec.md` | Detailed specification for Candidate C |
+| `derivative-inventory.csv` | All candidate derivatives across repositories |
+| `error-page-rejection-rules.md` | Universal and source-specific rejection rules |
+| `command-templates.md` | Download, validation, and inspection command templates |
+| `provenance-manifest-template.json` | JSON template for provenance tracking |
+| `source-acquisition-spec.md` | Integration document |
+| `manifest.json` | Evidence package manifest |
+| `baseline.txt` | Git baseline snapshot |
+| `self-check.md` | Self-check against directive requirements |
+| `changed-files.txt` | List of files created in this task |
+| `hq-report.md` | This report |

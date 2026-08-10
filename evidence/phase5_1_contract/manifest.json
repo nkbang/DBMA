@@ -1,0 +1,53 @@
+{
+  "package": "phase5_1_contract",
+  "date": "2026-07-31",
+  "task": "C1-DIRECTIVE-047 (HQ-C1-DIRECTIVE-047)",
+  "description": "Phase 5.1 contract migration: gold_tsu_ids canonical, loader migration matrix, evaluator gold-only, runner strict protocol",
+  "base_sha": "403ab6581210d1fb77ef5a6508c84a4d40724fb8",
+  "head_sha": "403ab6581210d1fb77ef5a6508c84a4d40724fb8",
+  "branch": "HEAD",
+  "changed_files": [
+    "NAE/benchmark/__init__.py",
+    "NAE/benchmark/datasets/benchmark_v1.jsonl",
+    "NAE/benchmark/evaluator.py",
+    "NAE/benchmark/loader.py",
+    "NAE/benchmark/metrics.py",
+    "NAE/benchmark/runner.py",
+    "NAE/benchmark/schema.py",
+    "scripts/build_tsu_dataset.py",
+    "tests/test_nae_benchmark_loader.py",
+    "tests/test_nae_benchmark_schema.py"
+  ],
+  "untracked_test_files": [
+    "tests/test_nae_benchmark_contract.py"
+  ],
+  "pre_existing_uncommitted": [
+    "NAE/benchmark/datasets/benchmark_v1.jsonl",
+    "scripts/build_tsu_dataset.py"
+  ],
+  "test_commands": [
+    "pytest --collect-only -q tests/test_nae_benchmark_contract.py",
+    "pytest -v tests/test_nae_benchmark_contract.py",
+    "pytest -q tests/test_nae_benchmark_*.py"
+  ],
+  "collected": 16,
+  "passed": 16,
+  "failed": 0,
+  "risk_level": "C",
+  "qdrant_touched": false,
+  "corpus_touched": false,
+  "commit_status": "uncommitted",
+  "cue_review_status": "pending",
+  "metrics_py_changed": true,
+  "metrics_py_reason": "precision_at_k denominator dedup + recall_at_k zero-gold=0.0 — contract correctness fix per CUE-DIRECTIVE-050 exception B",
+  "gate_status": {
+    "Phase_5.1_Contract": "IMPLEMENTED LOCALLY — 16/16 tests pass",
+    "gold_tsu_ids_canonical": "ACTIVE — top-level only",
+    "expected_gold_tsu_ids": "DEPRECATED — migration warning on load",
+    "Evaluator_contract": "GOLD_ONLY — required_concepts scoring removed",
+    "Runner_protocol": "STRICT — retrieval_fn required (no silent default)",
+    "CUE_Contract_Review": "NOT YET AUTHORIZED",
+    "Commit_Push": "BLOCKED",
+    "Gold_Authoring_Phase5.2": "BLOCKED"
+  }
+}

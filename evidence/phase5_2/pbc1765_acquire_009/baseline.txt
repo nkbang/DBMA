@@ -1,0 +1,43 @@
+# Git Baseline — PBC1765 Acquire-008
+
+## Branch
+(working tree only — no branch change)
+
+## HEAD SHA
+403ab6581210d1fb77ef5a6508c84a4d40724fb8
+
+## Working tree before
+Modified (M): 11 files
+- NAE/benchmark/__init__.py
+- NAE/benchmark/datasets/benchmark_v1.jsonl
+- NAE/benchmark/evaluator.py
+- NAE/benchmark/loader.py
+- NAE/benchmark/metrics.py
+- NAE/benchmark/runner.py
+- NAE/benchmark/schema.py
+- scripts/build_tsu_dataset.py
+- tests/test_nae_benchmark_loader.py
+- tests/test_nae_benchmark_metrics.py
+- tests/test_nae_benchmark_schema.py
+
+Untracked (??): 42 files/directories
+- NAE/benchmark/GOLD_BENCHMARK_AUTHORING_GUIDE.md
+- NAE/benchmark/datasets/gold_benchmark_v1.jsonl
+- NAE/corpus/canonical/PBC1742/
+- NAE/corpus/quarantine/
+- NAE/corpus/raw/
+- docs/NAE_DATA_ARCHITECTURE.md
+- docs/NAE_SOURCE_PIPELINE.md
+- docs/NAE_SOURCE_REGISTRY_REPORT.md
+- docs/SOURCE_ID_POLICY.md
+- docs/agents/c1/C1-TASK-NAE-CORPUS-*.md (6 files)
+- docs/agents/cue/CUE-PHASE5.*.md (4 files)
+- docs/tasks/reports/STEP5*.md (9 files)
+- evidence/
+- scripts/author_gold_set.py
+- scripts/source_validator.py
+- tests/test_build_tsu_dataset_output_path.py
+- tests/test_nae_benchmark_contract.py
+
+## Working tree after PBC1765 Acquire-008
+(see changed-files.txt for new files created by this acquisition)
