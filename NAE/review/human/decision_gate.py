@@ -213,6 +213,60 @@ def write_requests(requests: list[HumanReviewRequest], directory: Path = REQUEST
     return path
 
 
+def build_requests_from_records(records: list[dict]) -> list[HumanReviewRequest]:
+    """`schema.PILOT_REFERENCE`(고정 10건) 대신, 임의의 Production TSU
+    레코드 리스트(예: 아직 verified로 승격되지 않은 4,107건 확장분)로
+    HumanReviewRequest를 생성한다(NAE-TSU-4107-EXPANSION-001). 이 함수는
+    레코드가 어떤 상태인지 스스로 판단하지 않는다 — 호출자(batch_manager)가
+    이미 걸러낸 레코드만 받는다.
+
+    Pilot 001의 `_PACKAGE_DETAIL`처럼 사람이 미리 분석해 둔 evidence/
+    flags는 이 규모에서는 존재하지 않는다 — `original_text`는 TSU
+    레코드 자체의 `source_text` 필드를 그대로 사용하고, `evidence`/
+    `flags`는 채우지 않는다(빈 값 = Q4 없이 Q1-Q3만 생성, Pilot과 동일한
+    `_build_questions()` 조건부 로직 재사용). Human Decision은 절대
+    채우지 않는다 — `decision_status`는 항상 `PENDING`."""
+    requests: list[HumanReviewRequest] = []
+    for record in records:
+        tsu_id = record["id"]
+        flags: list[str] = []
+        requests.append(
+            HumanReviewRequest(
+                gate_id=f"GATE-{tsu_id}",
+                tsu_id=tsu_id,
+                source_id=record.get("source_id", ""),
+                work_id=record.get("work_id", ""),
+                edition_id=record.get("edition_id", ""),
+                doctrine=record.get("doctrine") or "",
+                original_text=record.get("source_text", ""),
+                claim=record.get("claim", ""),
+                evidence="",
+                flags=flags,
+                review_questions=_build_questions(flags),
+                decision_status=PENDING,
+            )
+        )
+    return requests
+
+
+def write_batch_requests(
+    requests: list[HumanReviewRequest], batch_id: str, directory: Path = REQUESTS_DIR
+) -> Path:
+    """확장분 배치 1건을 `requests/{batch_id}_requests.json`으로 쓴다.
+    Pilot 001의 `pilot_001_requests.json`과 물리적으로 분리된 파일이라
+    Pilot 감사 기록을 덮어쓰지 않는다."""
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / f"{batch_id}_requests.json"
+    payload = {
+        "schema_version": "1.0.0",
+        "batch_id": batch_id,
+        "generated_by": "NAE-TSU-4107-EXPANSION-001",
+        "requests": [r.to_dict() for r in requests],
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
 # ---------------------------------------------------------------------------
 # Human Decision Record — parsing only. CUE never writes to decisions/.
 # ---------------------------------------------------------------------------
