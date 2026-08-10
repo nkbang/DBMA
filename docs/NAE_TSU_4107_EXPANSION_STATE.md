@@ -40,16 +40,27 @@
       TSU-0000027(claim 오배정 의심)·TSU-0000028(키릴 문자 혼입) REJECT,
       나머지 7건 APPROVE → verified 8건, rejected 2건
       → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T230308/`
-- [ ] Batch 1 나머지 70건(TSU-0000038~TSU-0000107) Human Review
+- [x] Batch 1 다음 10건 진행(TSU-0000038~0000047) — 품질 이슈 없음,
+      10건 전부 APPROVE → verified 승격
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T231304/`
+- [x] Batch 1 다음 10건 진행(TSU-0000048~0000057) — TSU-0000055
+      doctrine 미분류, TSU-0000057 한자 혼입("增加","榜樣") 관찰 후
+      10건 전부 APPROVE → verified 승격
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T231630/`
+- [x] Batch 1 다음 10건 진행(TSU-0000058~0000067) — TSU-0000060
+      원문 충실도 의심, TSU-0000066 한자 혼입("決定的") 관찰 후 10건
+      전부 APPROVE → verified 승격
+      → 백업 `NAE/corpus/tsu/_batch0001_promotion_backup_20260809T232148/`
+- [ ] Batch 1 나머지 40건(TSU-0000068~TSU-0000107) Human Review
 - [ ] Batch 2 ~ 42 반복
 
 ## 진행률
 
 ```
-verified: 28 / 4107 (Pilot 10건 제외)
+verified: 58 / 4107 (Pilot 10건 제외)
 rejected: 10 / 4107
-reviewed subtotal: 38 / 4107 (0.93%)
-batches_with_requests: 1 / 42 (batch_0001: 38/100건 판정 완료)
+reviewed subtotal: 68 / 4107 (1.66%)
+batches_with_requests: 1 / 42 (batch_0001: 68/100건 판정 완료)
 ```
 
 ## 참고 — 데이터 품질 관찰(Batch 1, TSU-0000009/0000010/0000011)
