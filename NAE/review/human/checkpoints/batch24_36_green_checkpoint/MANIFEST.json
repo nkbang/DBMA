@@ -3,7 +3,7 @@
   "created_at": "2026-08-11T16:16:27.078634+00:00",
   "description": "Batch 24-36 (1,271건) Promotion 완료 + CUE Evidence + C1 Independent Audit(3차) + CUE Independent Recomputation 전부 GREEN 판정 이후의 immutable Production snapshot. BGE-M3 embedding/indexing 착수 직전 기준점.",
   "sequence": "Human Review -> Promotion -> Independent Recalculation -> GREEN CHECKPOINT -> BGE-M3 Embedding/Index",
-  "git_commit_at_checkpoint": null,
+  "git_commit_at_checkpoint": "c0619370f894b6d0dfd8447f22a7becd986126bc",
   "production_counts": {
     "dagg_verified": 2958,
     "dagg_generated": 397,
