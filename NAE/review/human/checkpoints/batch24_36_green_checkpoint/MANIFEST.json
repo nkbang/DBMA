@@ -1,0 +1,52 @@
+{
+  "checkpoint_id": "NAE-BATCH24-36-PROMOTION-GREEN-CHECKPOINT-001",
+  "created_at": "2026-08-11T16:16:27.078634+00:00",
+  "description": "Batch 24-36 (1,271건) Promotion 완료 + CUE Evidence + C1 Independent Audit(3차) + CUE Independent Recomputation 전부 GREEN 판정 이후의 immutable Production snapshot. BGE-M3 embedding/indexing 착수 직전 기준점.",
+  "sequence": "Human Review -> Promotion -> Independent Recalculation -> GREEN CHECKPOINT -> BGE-M3 Embedding/Index",
+  "git_commit_at_checkpoint": null,
+  "production_counts": {
+    "dagg_verified": 2958,
+    "dagg_generated": 397,
+    "dagg_rejected": 22,
+    "hiscox_verified": 361,
+    "hiscox_generated": 379,
+    "total_indexed_expected": 3319
+  },
+  "file_hashes": {
+    "Dagg_Church_Order_tsu.json": "10fc58ef2f80902c967a6cf24409be78a04e993303ffcb7228853a1698516ea5",
+    "Hiscox_Standard_Manual_tsu.json": "1da2d7dd75d5235f645d5d2b22c19f865723134754e08028c93fc7d3943ceb2a",
+    "exception_queue.json": "1e940d4ae63ec7858e4bbca8ef43d1f2293ea610c7e2c526f0ae420a67d4b277",
+    "screening_state.json": "186bf4b588cb93a924ce9f5d3e318fe944bb9ad8396c335be09c06ea7239700a",
+    "batch_state.json": "1ce02326515fab0a1d5fcde1e8a3e17790f941ca395e04ddcefc12978f736f8f"
+  },
+  "decisions_files_count": 40,
+  "promotion_scope": {
+    "batches": "batch_0024 ~ batch_0036",
+    "promoted_count": 1271,
+    "human_review_required_excluded": 46,
+    "hiscox_pending_excluded": 284
+  },
+  "verification_chain": [
+    {
+      "step": "CUE Promotion execution",
+      "commit": "a330642",
+      "result": "1271/1271 succeeded"
+    },
+    {
+      "step": "CUE Evidence Package",
+      "commit": "a2068f1",
+      "result": "READ_ONLY_EVIDENCE_COMPLETE_PASS"
+    },
+    {
+      "step": "C1 Independent Audit (3rd attempt)",
+      "artifact": "output/c1_final_independent_promotion_audit.json",
+      "result": "GATE=GREEN (methodology flagged: read CUE evidence file, no raw stdout, regression/validator not run)"
+    },
+    {
+      "step": "CUE Independent Recomputation of C1's claimed numbers",
+      "result": "ALL VALUES REPRODUCED FROM PRIMARY SOURCES — Population/Decision/Promotion-ID exact match, protected-field mutation=0, exclusion intersection=0, Hiscox/exception_queue hash reproduced, index count reproduced (3319)"
+    }
+  ],
+  "final_gate": "GREEN",
+  "immutability_note": "이 디렉터리(NAE/review/human/checkpoints/batch24_36_green_checkpoint/)는 이후 어떤 Promotion/embedding/indexing 작업으로도 수정하지 않는다. BGE-M3 embedding/indexing 단계에서 문제가 발생하면 이 체크포인트를 기준으로 원인을 분리 추적한다. 위치는 NAE/corpus/tsu/ 바깥이다 — indexer.index_all()이 corpus identifier로 오인하지 않도록 하기 위함(Batch 24 스냅샷 오염 사고 재발 방지)."
+}
