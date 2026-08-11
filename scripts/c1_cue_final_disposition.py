@@ -90,7 +90,7 @@ def main() -> None:
         "theological_review_required": {
             "count": len(excluded_theological),
             "tsu_ids": sorted(excluded_theological),
-            "reason": "THEOLOGICAL_WEAKENING(1) + SEMANTIC_DUPLICATE(31) per C1 evidence — never auto-approvable per instruction 6",
+            "reason": "SEMANTIC_DUPLICATE(31, within 1,601 candidate scope) per C1 evidence — never auto-approvable per instruction 6. Note: TSU-0001756(THEOLOGICAL_WEAKENING) is separately already Promoted(verified) prior to this sweep and outside the 2,047-TSU generated-pool scope; not part of this 40-item queue.",
         },
         "records": [rec_summary(t) for t in sorted(human_review_required_ids)],
     }
