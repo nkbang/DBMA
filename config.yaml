@@ -120,3 +120,17 @@ ui:
   chunk_size: 1200
   chunk_overlap: 120
   use_ocr: false
+
+# ── Optional Modules (NAE-OPTIONAL-MODULE-PACKAGING-001) ─────
+# DBMA Core는 이 섹션이 없거나 전부 disabled여도 완전히 정상 동작한다.
+# 내부 코드 식별자는 "nae_pd"(NAE Public Theology Domain — Dagg/Hiscox 등
+# 공개신학 TSU corpus)로, 제품 브랜드 "내서재"(scripts/install_nae_beta.command
+# 가 설치하는 DBMA 앱 전체)와는 다른 대상이다 — 이름 혼동 방지를 위해
+# 브랜드명이 아닌 내부 식별자만 여기 사용한다.
+modules:
+  nae_pd:
+    enabled: false
+    display_name: "NAE Public Theology Module"
+    corpus_root: "NAE/corpus/tsu"
+    manifest_dir: "NAE/pipeline/ingest/manifests"
+    index_collection: "nae_tsu_v1"
