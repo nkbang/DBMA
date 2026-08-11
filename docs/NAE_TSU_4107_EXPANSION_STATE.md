@@ -236,7 +236,163 @@ Exception Queue(batch_0003): NEEDS_CLAIM_REVIEW 15건(언어오염 14 + claim오
 Validator: PASS(DRIFT=0) / Regression: 실행 중
 ```
 
+- [x] Batch 3 Promotion 사후 재검증 PASS 확정(80건, 무결성 위반 0건,
+      Exception 15건과 중복 없음). Exception 15건은 remediation 없이
+      현재 상태(generated) 그대로 보류.
+- [x] Batch 4(TSU-0000582~TSU-0000681, 100건) forensic screening
+      완료(자동 스캔: 언어오염/중복/doctrine공백). Human Decision/
+      Promotion 미실행(사용자 지시).
+
+## Batch 4 Screening 결과 (2026-08-10)
+
+```
+SCREENING_CLEAR: 91건
+Exception(언어오염, 전부 중국어 한자): 9건
+  TSU-0000593(洗足) 0595(洗足) 0597(行) 0628(洗礼) 0645(世俗)
+  0675(良心) 0676(力的) 0678(原始) 0679(章)
+Human Decision: 0건 (전부 대기)
+Production: 무변경
+```
+
+- [x] Batch 4 SCREENING_CLEAR 91건 승인·Promotion 완료(reviewer=David,
+      diff 91건 only review_status/review_metadata, protected fields
+      불변, validator PASS/DRIFT=0).
+- [x] Batch 5(TSU-0000774~TSU-0000873, 100건) forensic screening
+      완료. Human Decision/Promotion 미실행.
+
+## Batch 5 Screening 결과 (2026-08-10)
+
+```
+SCREENING_CLEAR: 90건
+Exception(언어오염 9 + fidelity 1건 중복): 9건 TSU
+  0802(如此) 0803(尊重) 0818(榜樣+오역:apostle→대제사장) 0823(利)
+  0827(真正) 0842(紀律) 0864(щед,러시아어) 0869(учрежд,러시아어) 0871(頼)
+QA_FLAG_NONBLOCKING(doctrine 공백): 1건 (TSU-0000798)
+```
+
+- [x] Batch 5 SCREENING_CLEAR 90건 승인·Promotion 완료(TSU-0000818
+      fidelity 이슈 포함 10건 정상 제외 확인).
+- [x] Batch 6(TSU-0000964~TSU-0001063, 100건) forensic screening 완료.
+
+## Batch 6 Screening 결과 (2026-08-10)
+
+```
+SCREENING_CLEAR: 88건
+Exception(언어오염): 3건 — TSU-0000977(上的上的) 1023(渐進的な) 1027(們)
+QA_FLAG_NONBLOCKING(doctrine 공백): 9건
+```
+
+- [x] Batch 6 SCREENING_CLEAR 88건 + QA_FLAG_NONBLOCKING 9건 = 97건
+      승인·Promotion 완료(Exception 3건 정상 제외 확인).
+- [x] Batch 7(TSU-0001161~TSU-0001260, 100건) forensic screening 완료.
+
+## Batch 7 Screening 결과 (2026-08-10)
+
+```
+SCREENING_CLEAR: 85건
+Exception(언어오염, fidelity 이슈 없음): 15건
+  0001161 0001171 0001181 0001191 0001198 0001210 0001213 0001216
+  0001217 0001218 0001219 0001226 0001227 0001236 0001248
+QA_FLAG_NONBLOCKING: 0건
+```
+
+- [x] Batch 7 SCREENING_CLEAR 85건 승인·Promotion 완료.
+- [x] Batch 8(TSU-0001346~TSU-0001445, 100건) forensic screening 완료.
+
+## Batch 8 Screening 결과 (2026-08-10)
+
+```
+SCREENING_CLEAR(QA_FLAG 2건 포함 승인 가능): 83건
+Exception: 17건 — 언어오염 16건(TSU-0001352는 claim 전체가 일본어로
+  작성된 심각 사례) + claim 중복 1건(TSU-0001390, 0001389와 동일)
+QA_FLAG_NONBLOCKING(doctrine 공백, 승인 대상 포함): 2건
+```
+
+- [x] Batch 8 승인 가능 83건 승인·Promotion 완료.
+- [x] Batch 9(TSU-0001529~TSU-0001628, 100건) forensic screening 완료.
+
+## Batch 9 Screening 결과 (2026-08-10)
+
+```
+승인 가능(QA_FLAG 9건 포함): 85건
+Exception(언어오염, TSU-0001609는 claim 전체가 중국어): 15건
+QA_FLAG_NONBLOCKING(doctrine 공백, 승인 대상 포함): 9건
+```
+
+- [x] Batch 9 승인 가능 85건 승인·Promotion 완료(TSU-0001609 전체
+      중국어 claim 포함 15건 정상 제외 확인). **성능 참고**: 누적
+      백업 디렉터리(29개, 157MB)로 `indexer.index_all()` dry_run이
+      느려짐(1회 타임아웃 발생, 재시도로 해결) — 배치가 늘어날수록
+      악화될 수 있음, 추후 정리 방법 논의 필요.
+- [x] Batch 10(TSU-0001714~TSU-0001813, 100건) forensic screening 완료.
+
+## Batch 10 Screening 결과 (2026-08-10)
+
+```
+승인 가능(QA_FLAG 4건 포함): 86건
+Exception(언어오염): 14건
+```
+
+- [x] Batch 10 승인 가능 86건 승인·Promotion 완료(sed 오염으로 인한
+      무관 synthetic 테스트 2건 오염 발견·정정, PERFORMANCE_BACKLOG
+      정식 등록 — `docs/NAE_TSU_INDEXER_PERFORMANCE_BACKLOG_001.md`,
+      백업 디렉터리는 보존, indexer 코드는 무수정).
+- [x] Batch 11(TSU-0001900~TSU-0001999, 100건) forensic screening 완료.
+
+## Batch 11 Screening 결과 (2026-08-10)
+
+```
+승인 가능(QA_FLAG 4건 포함): 89건
+Exception(언어오염): 11건
+```
+
+- [x] Batch 11 승인 가능 89건 승인·Promotion 완료.
+- [x] Batch 12(TSU-0002089~TSU-0002188, 100건) forensic screening 완료.
+
+## Batch 12 Screening 결과 (2026-08-10)
+
+```
+승인 가능: 93건
+Exception(언어오염): 7건
+```
+
+- [x] Batch 12 승인 가능 93건 승인·Promotion 완료.
+- [x] Batch 13(TSU-0002282~TSU-0002381, 100건) forensic screening 완료.
+
+## Batch 13 Screening 결과 (2026-08-10)
+
+```
+승인 가능: 95건
+Exception(언어오염 4 + claim 중복 1): 5건
+```
+
+- [x] Batch 13 승인 가능 95건 승인·Promotion 완료(TSU-0002299는
+      CLAIM_DUPLICATE / ADJACENT_CONTEXT_LOSS 유형으로 기록, 정상 제외).
+- [x] Batch 14(TSU-0002477~TSU-0002576, 100건) forensic screening 완료.
+
+## Batch 14 Screening 결과 (2026-08-10)
+
+```
+승인 가능(QA_FLAG 3건 포함): 81건
+Exception(언어오염, TSU-0002501은 claim 전체가 중국어): 19건
+QA_FLAG_NONBLOCKING(doctrine 공백): 3건
+```
+
+- [x] Batch 14 승인 가능 81건 승인·Promotion 완료(TSU-0002501 CRITICAL
+      전체-중국어 claim 정상 제외 확인).
+- [x] Batch 15(TSU-0002658~TSU-0002757, 100건) forensic screening 완료.
+
+## Batch 15 Screening 결과 (2026-08-10)
+
+```
+승인 가능: 92건
+Exception(언어오염): 8건
+```
+
+- [x] Batch 15 승인 가능 92건 승인·Promotion 완료.
+- [x] **Batch 15 완료 후 작업 중지**(사용자 지시) — Batch 16 시작하지 않음.
+
 ## 다음 조치
 
-Batch 3 Exception 15건 처리(Batch 2와 동일한 remediation 절차) 후
-Batch 3 완전 종료. 이후 Batch 4(TSU-0000502~)로 확장.
+Batch 16(TSU 범위는 Promotion 시점 기준 재계산 필요, 잔여 2,768건
+중 첫 100건) 진행 여부는 사용자 지시 대기.
