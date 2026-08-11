@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0020",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0003619",
+      "tsu_id": "TSU-0003619",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Trinity",
+      "original_text": "Thou whose name alone is JEHOVAH, art the Most High over all the earth.",
+      "claim": "하나님의 이름은 여호와이며 땅 위에 가장 높은 분이시다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003620",
+      "tsu_id": "TSU-0003620",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "Who is like unto thee— glorious in holiness ?",
+      "claim": "하나님은 거룩함에서 영광스럽다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003621",
+      "tsu_id": "TSU-0003621",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "Thou shalt love the Lord thy God with all thy heart, and with all thy soul, and with all thy mind, and with all thy strength.",
+      "claim": "하나님을 마음과 영혼과 생각과 힘의 전부로 사랑해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003622",
+      "tsu_id": "TSU-0003622",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Thou art worthy, O Lord to receive glory, and honour, and power.",
+      "claim": "주님은 영광과 존귀와 권능을 받으실 만하십니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003623",
+      "tsu_id": "TSU-0003623",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Go ye therefore and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost.",
+      "claim": "예수님의 이름으로 모든 민족을 가르치고 세례를 주어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003624",
+      "tsu_id": "TSU-0003624",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "We believe the Scriptures teach that man was created in holiness, under the law of his Maker;1 but by voluntary transgresson fell from that holy and happy state;2 in consequence of which all mankind are now sinners/ not by constraint but choice; being by nature utterly void of that holiness required by the law of God, positively inclined to evil ; and therefore under just condemnation4 without defense or excuse.5",
+      "claim": "인간은 창조 당시 거룩했지만 자발적인 불순종으로 그 상태에서 떨어졌고, 이제 모든 인간은 선택에 의해 죄인이 되며 하나님의 법을 따르기에는 전적으로 거룩하지 못하고 악한 쪽으로 기울어져 있으므로 정당한 판결 아래 놓여있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003625",
+      "tsu_id": "TSU-0003625",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Trinity",
+      "original_text": "God created man in his own image.",
+      "claim": "하나님은 인간을 자신의 형상대로 창조하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003626",
+      "tsu_id": "TSU-0003626",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Providence",
+      "original_text": "And God saw everything that he had made, and behold, it was very good.",
+      "claim": "하나님이 창조하신 모든 것을 보시고 그것이 매우 좋으심을 보셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003627",
+      "tsu_id": "TSU-0003627",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "By one man's disobedience many were made sinners.",
+      "claim": "한 사람의 불순종으로 많은 사람이 죄인으로 만들어졌다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003628",
+      "tsu_id": "TSU-0003628",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Among whom also we all had our conversation in times past in the lusts of our flesh, fulfilling the desires of the flesh and of the mind; and were by nature the children of wrath even as others.",
+      "claim": "인간은 본성적으로 분노의 자녀였으며 육체와 마음의 욕망을 따라 살았다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003629",
+      "tsu_id": "TSU-0003629",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "The soul that sinneth it shall die.",
+      "claim": "죄를 지은 영혼은 죽을 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003630",
+      "tsu_id": "TSU-0003630",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "So that they are without excuse.",
+      "claim": "인간은 하나님에 대한 지식이 있음에도 불구하고 죄를 저지르므로 변명할 수 없는 상태이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003631",
+      "tsu_id": "TSU-0003631",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "That every mouth may be stopped and all the world may become guilty before God.",
+      "claim": "모든 입이 막히고 세상 모든 사람이 하나님 앞에서 유죄 판결을 받게 하려는 것",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003632",
+      "tsu_id": "TSU-0003632",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "salvation of sinners is wholly of grace ; 1 through the mediatorial offices of the Son of God ; 2 who, according to the will of the Father, became man, yet without sin ; 3 honored the divine law by his personal obedience, and by his death made a full atonement for our sins ; 4 that having risen from the dead, he is now enthroned in heaven ; and uniting in his wonderful person the tenderest sympathies with divine perfections, he is every way qualified to be a suitable, a compassionate and an all-sufficient Saviour. 5",
+      "claim": "구원의 근원은 전적으로 하나님의 은혜로써 아들 예수 그리스도의 중보적 사역을 통해 이루어진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003633",
+      "tsu_id": "TSU-0003633",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "For God so loved the world that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "claim": "하나님은 세상을 इतन게 사랑하사 그의 독생자를 주셨으니, 누구든지 그를 믿는 자는 멸망하지 않고 영생을 얻게 하려 하심이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003634",
+      "tsu_id": "TSU-0003634",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Trinity",
+      "original_text": "Who being in the form of God, thought it not robbery to be equal with God: but made himself of no reputation, and took upon him the rorm of a servant, and was made in the likeness of men.",
+      "claim": "그리스도는 하나님의 형상을 가지고 계셨지만 그로 인해 하나님과 동등하다고 생각하지 않으시고 오히려 자신을 낮추사 종의 형상을 취하시고 인간의 모양으로 만들어지셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003635",
+      "tsu_id": "TSU-0003635",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "He was wounded for our transgressions, he was bruised for our iniquities ; the chastisement of our peace was upon him ; and with his stripes we are healed.",
+      "claim": "그리스도는 우리의 죄와 불의로 인해 상처를 입었고, 우리의 평화를 위한 징계가 그에게 내려졌으며, 그의 채찍으로 우리는 치유받았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003636",
+      "tsu_id": "TSU-0003636",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Wherefore he is able also to save them to the uttermost that come unto God by him, seeing he ever liveth to make intercession for them.",
+      "claim": "그리스도는 하나님께 나아오는 자들을 완전히 구원할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003637",
+      "tsu_id": "TSU-0003637",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Trinity",
+      "original_text": "For in him dwelleth ail the fulness of the Godhead bodily.",
+      "claim": "그리스도 안에는 신성의 온전한 충만이 육체적으로 거한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003638",
+      "tsu_id": "TSU-0003638",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "great gospel blessing which Christ1 secures to such as believe in him is justification ; 2 that justification includes the pardon of sin,3 and the gift of eternal life on principles of righteousness ; that it is bestowed, not in consideration of any works of righteousness which we have done, but solely through faith in Christ ; by means of which faith his perfect righteousness is freely imputed to us by God;4 that it brings us into a state of most blessed peace and favor with God, and secures every other blessing needful for time and eternity. 5",
+      "claim": "그리스도께서 믿는 자들에게 보장하는 큰 복음의 축복은 의롭다함을 받는 것이며, 이는 죄를 사해 주심과 영생을 주시는 것으로 오직 믿음을 통해 하나님께 의롭다함을 받게 되고, 그로 인해 하나님의 평화와 은혜 안에 들어가며, 시간과 영원에 필요한 모든 다른 축복을 확보한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003639",
+      "tsu_id": "TSU-0003639",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Of his fulness have all we received.",
+      "claim": "그리스도의 충만함에서 우리는 모두 받았다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003640",
+      "tsu_id": "TSU-0003640",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "By him all that believe are justified from all things.",
+      "claim": "믿는 모든 사람들은 그에 의하여 모든 것에서 정당화된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003641",
+      "tsu_id": "TSU-0003641",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "Being justified by his blood, we shall be saved from wrath through him.",
+      "claim": "그의 피로 의롭게 된 우리는 그를 통해 진노에서 구원될 것입니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003642",
+      "tsu_id": "TSU-0003642",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "By the obedience of one shall many be made righteous.",
+      "claim": "한 사람의 순종으로 많은 사람이 의롭다 하심을 받는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003643",
+      "tsu_id": "TSU-0003643",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "Being justified by faith, we have peace with God, through our Lord Jesus Christ; by whom also we have access by faith into this grace wherein we stand, and rejoice in hope of the glory of God.",
+      "claim": "우리는 믿음으로 의롭게 되어 하나님과 평화를 누ﾘ며, 주 예수 그리스도를 통하여 이 은혜에 들어가서 하나님의 영광의 소망을 즐긴다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003644",
+      "tsu_id": "TSU-0003644",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "blessings of salvation are made free to all FOR BAPTIST CHURCHES. 63",
+      "claim": "구원에 대한 축복이 모든 침례교회의 사람들에게 무료로 주어진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003645",
+      "tsu_id": "TSU-0003645",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "by the gospel:1 that it is the immediate duty of all to accept them by a cordial, penitent, and obedient faith;2 and that nothing prevents the salvation of the greatest sinner on earrh but his own determined depravity and voluntary rejection of the gospel;3 which rejection involves him in an aggravated condemnation. 4",
+      "claim": "복음은 모든 사람에게 즉시적인 의무를 주며, 이는 열심히 회개하고 복종하는 믿음을 통해 수용되어야 하며, 지구상에서 가장 큰 죄인이라도 구원받지 못하는 것은 오직 자기의 결정된 부패와 복음에 대한 자발적인 거부 때문이며, 이러한 거부는 더욱 심한 판결을 초래한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003646",
+      "tsu_id": "TSU-0003646",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Whosoever will let him take the water of life freely.",
+      "claim": "누구든지 물로 가득 찬 생명을 자유롭게 받을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003648",
+      "tsu_id": "TSU-0003648",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Ye will not come to me, that ye might have life.",
+      "claim": "사람들은 생명을 얻기 위해 내게 오지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003649",
+      "tsu_id": "TSU-0003649",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "And this is the condemnation, that light is come into the world, and men loved darkness rather than light because their deeds were evil.",
+      "claim": "빛이 세상에 오지만 사람들은 악한 행실 때문에 어둠을 더 사랑하여 심판을 받는다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003650",
+      "tsu_id": "TSU-0003650",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "We believe the Scriptures teach that in order to be saved, men must be regenerated, or born again;1 that regeneration consists in giving a holy disposition to the mind ; 2 that it is effected in a manner above our comprehension by the Holy Spirit, in connection with divine truth,3 so as to secure our voluntary obedience to the gospel ; 4 and that its proper evidence appears in the 64 STANDARD MANUAL",
+      "claim": "구원받기 위해서는 사람들로 하여금 거듭나거나 재생되어야 한다고 믿는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003651",
+      "tsu_id": "TSU-0003651",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "holv fruits of repentance, faith, and newness of life.5",
+      "claim": "회개, 믿음, 그리고 새로운 삶의 열매를 맺어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003652",
+      "tsu_id": "TSU-0003652",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Verily, verily, I say unto thee, except a man be born again, he cannot see the kingdom of God.",
+      "claim": "사람이 다시 태어나지 않으면 하나님의 나라를 볼 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003653",
+      "tsu_id": "TSU-0003653",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "If any man be in Christ, he is a new creature.",
+      "claim": "그리스도 안에 있는 사람은 새로운 피조물이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003654",
+      "tsu_id": "TSU-0003654",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "The wind bloweth where it listeth, and thou hearest the sound thereof, but canst not tell whence it cometh, and whither it goeth ; so is every one that is born of the Spirit.",
+      "claim": "성령으로 난 사람은 바람과 같이 그 출처와 목적지를 알 수 없게 행동한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003655",
+      "tsu_id": "TSU-0003655",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "Ye have purified your souls in obeying the truth through the Spirit. 1 John 5 : 1 ; Eph. 4 : 20-24 ; Col. 3 : 9-11.",
+      "claim": "성도들은 성령을 통해 진리를 순종함으로써 영혼을 정화시켰다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003656",
+      "tsu_id": "TSU-0003656",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "The fruit of the Spirit is in all goodness and righteousness, and truth.",
+      "claim": "성령의 열매는 모든 선함과 의와 진리 안에 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003657",
+      "tsu_id": "TSU-0003657",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "We believe the Scriptures teach that repentance and faith are sacred duties, and also inseparable graces, wrought in the soul by the regenerating Spirit of God ;x whereby being deeply convinced of our guilt, danger, and helplessness, and of the way of salvation by Christ,2 we turn to God with unfeigned contrition, confession, and supplication for mercy; at the same time heartily receiving the Lord Jesus as our prophet, priest, and king, and relying on him alone as the only and all-sufficient Saviour.3",
+      "claim": "회개와 믿음은 하나님의 재생하는 영에 의하여 이루어지는 거룩한 의무이자 분리할 수 없는 은사이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003658",
+      "tsu_id": "TSU-0003658",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Repent ye, and believe the gospel.",
+      "claim": "회개하고 복음을 믿으라",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003659",
+      "tsu_id": "TSU-0003659",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "By grace ye are saved, through faith; and that not of yourselves ; it is the gift of God. 1 John 5 : 1.",
+      "claim": "구원은 하나님의 은혜로 말미암아 믿음을 통하여 이루어지며, 그것은 우리 자신에게서 나온 것이 아니라 하나님의 선물이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003660",
+      "tsu_id": "TSU-0003660",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "He will reprove the world of sin, and of righteousness, and of judgment.",
+      "claim": "그는 세상을 죄와 의와 심판에 대해 책망할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003662",
+      "tsu_id": "TSU-0003662",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "If thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thy heart that God hath raised him from the dead, thou shalt be saved.",
+      "claim": "예수를 주님으로 고백하고, 하나님이 예수를 죽은 자 가운데서 살리셨음을 믿으면 구원받을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003663",
+      "tsu_id": "TSU-0003663",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "ix. god's purpose of grace.",
+      "claim": "하나님의 은혜의 목적",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003664",
+      "tsu_id": "TSU-0003664",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Election",
+      "original_text": "We believe the Scriptures teach that election is the eternal purpose of God, according to which he graciously regenerates, sanctities, and saves sinners ; * that being perfectly consistent with the free agency of man, it comprehends all the means in connection with the end;2 that it is a most glorious display of God's sovereign goodness ;3 that it utterly excludes boasting, and promotes humility;4 that it encourages the use of means ; that it may be ascertained by its effects in all who truly accept of Christ5; that it is the foundation of Christian assurance ; and that to ascertain it with regard to ourselves demands and deserves the utmost diligence.6",
+      "claim": "신자는 하나님의 영원한 목적에 따라 죄인들을 은혜로써 새롭게 하시고, 거룩하게 하시고, 구원하시는 선거를 믿는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003665",
+      "tsu_id": "TSU-0003665",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "But be thou partaker of the afflictions of the gospel, according to the power of God ; who hath saved us and called us with a holy calling, not according to our works, but according to his own purpose and grace which was given us in Christ Jesus before the world began.",
+      "claim": "하나님의 능력에 따라 복음의 고난에 동참하며, 우리를 구원하시고 거룩한 부르심으로 불러주신 하나님의 은혜는 우리의 행위가 아니라 그분 자신의 목적과 예수 그리스도 안에서 세상을 창조하기 전에 주신 것이라고 말합니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003666",
+      "tsu_id": "TSU-0003666",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Election",
+      "original_text": "But we are bound to give thanks always to God for you, brethren beloved of the Lord, because God hath from the beginning chosen you to salvation, through sanctification of the Spirit and belief of the truth ; whereunto he called you by our gospel, to the obtaining of the glory of our Lord Jesus Christ.",
+      "claim": "하나님은 성령의 거룩함과 진리의 믿음으로 구원에 선택하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003667",
+      "tsu_id": "TSU-0003667",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "For who maketh thee to differ from another? and what hast thou that thou didst not receive?",
+      "claim": "모든 것은 받은 것으로, 자랑할 수 없는 것임",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003668",
+      "tsu_id": "TSU-0003668",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Now if thou didst receive it, why dost thou glory as if thou hadst not received it? 1 Cor. 1 : 26-31 ; Rom. 3 : 27.",
+      "claim": "우리가 받은 것은 자랑할 것이 아니라 감사와 인정으로 받아들여야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003669",
+      "tsu_id": "TSU-0003669",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Election",
+      "original_text": "Therefore I endure all things for the elects' sake, that they also may obtain the salvation which is in Christ Jesus with eternal glory. 1 Cor. 9 : 22 ; Rom. 8 : 28-30.",
+      "claim": "바울은 선택받은 자들을 위해 모든 것을 참아忍고, 그들이 그리스도 예수 안에서 영광과 함께 구원을 얻도록 하기 위함이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003670",
+      "tsu_id": "TSU-0003670",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Election",
+      "original_text": "Knowing, brethren beloved, your election of God.",
+      "claim": "신자들은 하나님의 선택을 알고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003671",
+      "tsu_id": "TSU-0003671",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Election",
+      "original_text": "Wherefore the rather, brethren, give diligence to make your calling and election sure.",
+      "claim": "믿는 자들은 더욱 부지런히 자신의 소명과 선택을 확신하는 데 힘써야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003672",
+      "tsu_id": "TSU-0003672",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "We believe the Scriptures teach that sanctification is the process by which, according to the will of God, we are made partakers of his holiness;1 that it is a progressive work ; 2 that it is begun in regeneration ; that it is carried on in the hearts of believers by the presence and power of the Holy Spirit, the Sealer and Comforter, in the continual use of the appointed means — especially the word of God — self-examination, self-denial, watchfulness, and prayer;3 and in the practice of all godly exercises and duties.4",
+      "claim": "성도들은 성령의 역사와 말씀을 통한 자기 반성과 기도로 거룩함에 이를 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003673",
+      "tsu_id": "TSU-0003673",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "For this is the will of God, even your sanctification. 1 Thess. 5 : 23.",
+      "claim": "하나님의 뜻은 성도들의 성결이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003674",
+      "tsu_id": "TSU-0003674",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "And the very God of peace sanctify you wholly. 2 Cor. 7:1; 13 : 9 ; Eph. 1 : 4.",
+      "claim": "하나님은 우리를 온전히 성결하게 하시기를 원하신다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003675",
+      "tsu_id": "TSU-0003675",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "The path of the just is as the shining light, which shineth more and more, unto the perfect day.",
+      "claim": "의인의 길은 빛과 같이 점점 더 밝아져 완전한 낮이 될 때까지 계속 빛난다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003676",
+      "tsu_id": "TSU-0003676",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "Work out your own salvation with fear and trembling, for it is God which worketh in vou both to will and to do, of his good pleasure.",
+      "claim": "구원은 하나님께서 우리 안에서 이루시는 일이며, 우리는 두려움과 떨림으로 이를 이루어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003677",
+      "tsu_id": "TSU-0003677",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "Exercise thyself unto godliness.",
+      "claim": "신자들은 경건함을 위해 노력해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003678",
+      "tsu_id": "TSU-0003678",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "We believe the Scriptures teach that such as are truly regenerate, being born of the Spirit, will not utterly fall away and perish, but will endure unto the end;1 that their persevering attachment to Christ is the grand mark which distinguishes thein from superficial professors;2 that a special Providence watches over their welfare ;3 and that they are kept by the power of God through faith unto salvation. 4",
+      "claim": "真正으로 거듭난 사람들은 성령으로 말미암아 태어난 사람들이기 때문에 결코 완전히 떨어져나가서 멸망하지不会, 오직 끝까지 견디게 되며, 그리스도께 대한 그들의 지속적인 헌신은 표면적 신자들과 구별되는 큰 표징이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003679",
+      "tsu_id": "TSU-0003679",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Then said Jesus, If ye contiue in my word, then are ye my disciples indeed. 1 John 2 : 27, 28.",
+      "claim": "예수님의 말씀에 계속 거하는 것이 진정한 제자의 조건이다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003680",
+      "tsu_id": "TSU-0003680",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They went out from us, hut they were not of us ; for if they had heen of us, they would no doubt have continued with us ; but they went, out that it might be made manifest that they were not all of us.",
+      "claim": "그들이 우리와 함께 계속하지 않은 것은 그들이 실제로 우리와 하나가 아니었음을 보여주기 위한 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003681",
+      "tsu_id": "TSU-0003681",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Providence",
+      "original_text": "And we know all things work together for good unto them that love God, to them who are the called according to his purpose.",
+      "claim": "하나님을 사랑하는 자들과 하나님의 목적에 따라 부르심을 받은 자들에게 모든 것이 선으로 작용한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003682",
+      "tsu_id": "TSU-0003682",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "He who hath begun a good work in you will perform it until the day of Jesus Christ.",
+      "claim": "하나님이你们 안에 착한 일을 시작하신 이는 예수 그리스도 날까지 이루실 것임을 확신한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003683",
+      "tsu_id": "TSU-0003683",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Scripture / Authority",
+      "original_text": "law of God is the eternal and unchangeable 68 STANDARD MANUAL",
+      "claim": "하나님의 법은 영원하고 불변하는 표준이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003684",
+      "tsu_id": "TSU-0003684",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "rule of his moral government;1 that it is holy, just, and good ;2 and that the inability which the Scriptures ascribe to fallen men to fulfill its precepts arises entirely from their sinful nature ; 3 to deliver them from which, and to restore them through a Mediator to unfeigned obedience to the holy law, is one great end of the gospel, and of the means of grace connected with the establishment of the visible church.4",
+      "claim": "성경은 하나님의 도덕적 치료의 규칙이 거룩하고 정의롭고 좋으며, 타락한 인간들이 그 계명을 지키는 데 불가능함이 그들의 죄로운 본성에서 비롯된다고 가르치며, 복음과 교회 안에서의 은혜 수단은 이들을 죄로부터 구원하고 중재자를 통해 거룩한 법에 대한 순수한 순종으로 회복시키는 것을 하나의 주요 목적으로 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003685",
+      "tsu_id": "TSU-0003685",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "Do we make void the law through faith ?",
+      "claim": "우리는 믿음으로 말미암아 율법을 무효화하는가?",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003686",
+      "tsu_id": "TSU-0003686",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "Yea, we establish the law.",
+      "claim": "우리는 율법을 확립한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003687",
+      "tsu_id": "TSU-0003687",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Scripture / Authority",
+      "original_text": "The law is holy, and the commandment holy, and just, and good.",
+      "claim": "율법은 거룩하고, 계명도 거룩하며, 의로우며, 좋다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003688",
+      "tsu_id": "TSU-0003688",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "The carnal mind is enmity against God; for it is not subject to the law of God, neither indeed can be.",
+      "claim": "육적인 마음은 하나님께 대하여 원수가 되며, 하나님의 법에 복종하지도 않고, 또한 그렇게 할 수도 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003689",
+      "tsu_id": "TSU-0003689",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "So then they that are in the flesh cannot please God.",
+      "claim": "육신에 있는 자는 하나님을 기쁘게 할 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003690",
+      "tsu_id": "TSU-0003690",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "For the law of the Spirit of life in Christ Jesus hath made me free from the law of sin and death.",
+      "claim": "그리스도 예수 안에 있는 생명의 영의 법이 나를 죄와 사망의 법에서 자유롭게 하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003691",
+      "tsu_id": "TSU-0003691",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Justification",
+      "original_text": "For what the law could not do, in that it was weak through the flesh, God sending his own Son in the likeness of sinful flesh, and for sin, condemned sin in the flesh : that the righteousness of the law might be fulfilled in us, who walk not after the flesh, but after the Spirit.",
+      "claim": "율법은 육체의 약점으로 인해 실패했지만, 하나님은 아들을 보내서 육체에서 죄를 판결하여 우리가 성령에 따라 산다면 율법의 의를 이루도록 하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003692",
+      "tsu_id": "TSU-0003692",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "We believe the Scriptures teach that a visible Church of Christ is a company of baptized believers,1 associated by covenant in the faith and fellowship of the gospel;2 observing the ordinances of Christ;3 governed by his laws;4 and exercising the FOR BAPTIST CHURCHES. 69",
+      "claim": "교회는 세례를 받은 신자들의 모임으로서 언약을 통해 연합하여 복음의 믿음과 교제를 지키고, 그리스도의 계명을 준수하며, 그의 법에 따라 관리되고, 권징을 행사하는 공동체이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003693",
+      "tsu_id": "TSU-0003693",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "gifts, rights, and privileges invested in them by his word ; 5 that its only scriptural officers are bishops or pastors, and deacons,6 whose qualifications, claims, and duties are defined in the Epistles to Timothy and Titus.",
+      "claim": "교회는 성경에 의해 주어진 선물, 권利, 특권을 가지고 있으며, 감독자 또는 목사와 집사의 자격, 요구, 의무를 정의하는 팀전서와 디도서에 따라 성경적 직분만을 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003694",
+      "tsu_id": "TSU-0003694",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Then they that gladly received Ms word were baptized; and the same day there were added to them, about three thousand souls.",
+      "claim": "성도들은 기쁨으로 말씀을 받았으며 세례를 받았고 그 날에 약 3천 명의 영혼이 추가되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003695",
+      "tsu_id": "TSU-0003695",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They first gave their own selves to the Lord, and unto us by the will of God.",
+      "claim": "그들은 먼저 자신들을 주님께 드렸고, 하나님의 뜻으로 우리에게",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003696",
+      "tsu_id": "TSU-0003696",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Now I praise you, brethren, that ye remember me in all things, and keep the ordinances as I delivered them to you.",
+      "claim": "교회는 사도들의 가르침을 기억하고 지키는 것이 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003697",
+      "tsu_id": "TSU-0003697",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Teaching them to observe all things whatsoever I have commanded you.",
+      "claim": "예수님의 모든 계명을 지키도록 제자들을 가르치라",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003698",
+      "tsu_id": "TSU-0003698",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "We believe the Scriptures teach that Christian baptism is the immersion in water of a believer in Christ,1 into the name of the Father, and Son, and Holy Ghost;2 to show forth in a solemn and beautiful emblem his faith in the crucified, buried, and risen Saviour, with its effect, in his death to sin and resurrection to a new life;3 that it is prerequisite to the privileges of a church relation, and to the Lord's Supper.4 70 STANDARD MANUAL",
+      "claim": "기독교 세례는 그리스도에 대한 믿음과 죽은 죄와 새로운 삶으로의 부활을 상징하는 것으로 교회 관계와 성찬식의 선행 조건이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003699",
+      "tsu_id": "TSU-0003699",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "And the eunuch said, See, here is water; what doth hinder me to be baptized?",
+      "claim": "세례를 받는 데 방해되는 것이 무엇인지 물어보는 구절",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003700",
+      "tsu_id": "TSU-0003700",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "And Philip said, If thou believest with all thy heart, thou mayest. , . .",
+      "claim": "세례를 받으려면 마음을 다하여 믿어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003701",
+      "tsu_id": "TSU-0003701",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Baptizing them in the name of the Father, and of the Son, and of the Holy Ghost.",
+      "claim": "세례는 성부와 성자와 성령의 이름으로 行해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003702",
+      "tsu_id": "TSU-0003702",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Therefore we are buried with him by baptism into death ; that like as Christ was raised from the dead by the glory of the Father, even so we also, should walk in newness of life.",
+      "claim": "세례를 통해 그리스도와 함께 죽음에 매장되며, 아버지의 영광으로 말미암아 그리스도가 죽은 자 가운데서 부활하심과 같이 우리도 새 생명의 삶을 살게 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003703",
+      "tsu_id": "TSU-0003703",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Then they that gladly received his word were baptized, and there were added to them, the same day, about three thousand souls.",
+      "claim": "그들이 기쁨으로 그의 말씀을 받았으므로 세례를 받았고 그 날에 약 삼천 명의 영혼이 그들에게 더해졌다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003704",
+      "tsu_id": "TSU-0003704",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And they continued steadfastly in the apostles' doctrine and fellowship, and in breaking of bread, and in prayers.",
+      "claim": "초기 교회는 사도들의 가르침과 친교, 떡을 떼고 기도하는 것을 지속적으로 실천하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003705",
+      "tsu_id": "TSU-0003705",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Lords Supper is a provision of bread and wine, representing Christ's body and blood, partaken of by the members of the church assembled for that purpose/ in commemoration of the death of their Lord,2 showing their faith and participation in the merits of his sacrifice, their dependence on him for spiritual life and nourishment,3 and their hope of life eternal through his resurrection from the dead ; its observance to be preceded by faithful self-examination.4",
+      "claim": "성찬식은 교회 회원들이 주님의 죽음을 기념하기 위해 모인 자리에서 빵과 포도주를 나누어 먹는 것으로, 그리스도의 몸과 피를 상징하며, 신자들은 이 성찬식을 통해 그리스도의 희생의 공로에 대한 믿음과 참여, 영적 생명과 양식에 대한 의존, 그리고 부활을 통한 영원한 삶에 대한 소망을 보여준다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003706",
+      "tsu_id": "TSU-0003706",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "And he took bread, and gave thanks and brake, and gave unto them, saying, This is my body, which is given for you ; this do in remembrance of me.",
+      "claim": "그리스도는 제자들에게 빵을 나누어 주시며 그분의 몸이 그들을 위해 주신 것임을 상기시키라고 하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003707",
+      "tsu_id": "TSU-0003707",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Likewise the cup after supper, saying, This cup is the new testament in my blood, which is shed for you.",
+      "claim": "그 잔은 새 언약의 상징으로, 그리스도의 피로 세워진 것으로 우리를 위한 대속물입니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003708",
+      "tsu_id": "TSU-0003708",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "For as oft as ye eat this bread, and drink this cup, ye do shew the Lord's death until he come.",
+      "claim": "주님의 죽음을 나타내는 것은 주님께서 오실 때까지 반복적으로 행해지는 행동이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003709",
+      "tsu_id": "TSU-0003709",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Jesus said unto them, I am the bread of life.",
+      "claim": "예수님은 생명의 빵이라고 말씀하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003710",
+      "tsu_id": "TSU-0003710",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "Whoso eateth my flesh and drinketh my blood hath eternal life.",
+      "claim": "예수님의 육체를 먹고 그의 피를 마시는 자는 영생을 얻는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003711",
+      "tsu_id": "TSU-0003711",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "He that eateth my flesh and drinketh my blood dwelleth in me, and I in him.",
+      "claim": "그리스도의 육체를 먹고 그의 피를 마시는 자는 그리스도와 하나가 되어 함께 거하는 것",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003712",
+      "tsu_id": "TSU-0003712",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "But let a man examine himself, and so let him eat of that bread, and drink of that cup.",
+      "claim": "성도들은 성찬을 받기 전에 스스로를 반성해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003713",
+      "tsu_id": "TSU-0003713",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "first day of the week is the Lord's Day/ and is to be kept sacred to religious purposes2 by abstaining from all secular labor, except works of mercy and necessity ; 3 by the devout observance of all the means of grace, both private and public;4 and by preparation for that rest that remaineth for the people of God.",
+      "claim": "주일은 주님의 날로서, 모든 세속적인 노동을 피하고, 은혜의 수단들을 개인적이고 공적으로 경건하게 지키며, 하나님의 백성에게 남아 있는 안식을 준비함으로써 거룩한 종교적 목적에 헌신힌다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003714",
+      "tsu_id": "TSU-0003714",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "On the first day of the week, when the disciples came together to break bread, Paul preached to them.",
+      "claim": "주일 첫날에 제자들이 모여 빵을 떼는 자리에서 바울이 그들에게 설교하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003715",
+      "tsu_id": "TSU-0003715",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "Remember the Sabbath Day, to keep it holy.",
+      "claim": "안식일을 기억하여 거룩하게 지키라",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003716",
+      "tsu_id": "TSU-0003716",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "If thou turn away thy foot from the Sabbath, from doing thy pleasure on my holy day; and call the Sabbath a delight, the holy of the Lord honourable ; and shalt honour him, not doing thine own ways, nor finding thine own",
+      "claim": "안식일을 지키는 것은 주님의 날에 자기의 기쁨을 찾지 않고, 안식일을 즐거움으로 여기고, 주님을 존중하는 것",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003717",
+      "tsu_id": "TSU-0003717",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "f)leasure, nor speaking thine own words; then shall thou deight thyself in the Lord, and 1 will cause thee to ride upon the high places of the earth, and feed thee with the heritage of Jacob.",
+      "claim": "하나님을 기뻐하고 그의 말씀에 순종하면 하나님은 우리를 지상 높은 곳으로 인도하시고 야곱의 유산으로 우리를 먹이실 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003718",
+      "tsu_id": "TSU-0003718",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Not forsaking the assembling of yourselves together, as the manner of some is.",
+      "claim": "교회의 모임을 포기하지 말라",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003719",
+      "tsu_id": "TSU-0003719",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Providence",
+      "original_text": "We believe the Scriptures teach that civil government is of divine appointment, for the interest and good order of human society ; 1 and that magistrates are to be prayed for, conscientiously honored, and obeyed ; 2 except only in things opposed to the will of our Lord Jesus Christ,3 who is the only Lord of the conscience, and the Prince of the kings of the earth.4",
+      "claim": "성경은 세속 정부가 인간 사회의 이익과 질서를 위해 신적 임명이라고 가르친다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003720",
+      "tsu_id": "TSU-0003720",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Providence",
+      "original_text": "The powers that be are ordained of God.",
+      "claim": "신이 정한 권위가 존재한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

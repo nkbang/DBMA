@@ -390,9 +390,201 @@ Exception(언어오염): 8건
 ```
 
 - [x] Batch 15 승인 가능 92건 승인·Promotion 완료.
-- [x] **Batch 15 완료 후 작업 중지**(사용자 지시) — Batch 16 시작하지 않음.
+- [x] Batch 16(TSU-0002850~TSU-0002949, 100건) screening 완료, 승인
+      93건(SCREENING_CLEAR 89 + QA_FLAG 4) 승인·Promotion 완료. Exception
+      7건(언어오염 6 + TSU-0002915 claim 중복) 정상 제외 확인.
+- [x] Batch 17(TSU-0003043~TSU-0003142, 100건) screening만 완료
+      (Human Decision/Promotion 미실행, 사용자 지시).
+
+## Batch 17 Screening 결과 (2026-08-10)
+
+```
+SCREENING_CLEAR: 91건
+Exception(언어오염 8 + claim 중복 1): 9건
+```
+
+- [x] Batch 17 승인 91건 승인·Promotion 완료(Exception 9건 정상 제외).
+- [x] Batch 18(TSU-0003234~TSU-0003333, 100건) screening만 완료
+      (Human Decision/Promotion 미실행, 사용자 지시).
+
+## Batch 18 Screening 결과 (2026-08-10)
+
+```
+SCREENING_CLEAR(QA_FLAG 1건 포함): 91건
+Exception(언어오염, TSU-0003238은 claim 전체가 일본어): 9건
+```
+
+- [x] Batch 18 승인 91건 승인·Promotion 완료(Exception 9건, TSU-0003238
+      전체-일본어 claim 정상 제외 확인).
+- [x] Batch 19(TSU-0003425~TSU-0003526, 100건) screening만 완료
+      (Human Decision/Promotion 미실행, 사용자 지시). **Hiscox_Standard_Manual
+      구간 최초 도달.**
+
+## Batch 19 Screening 결과 (2026-08-10)
+
+```
+TSU 범위: TSU-0003425 ~ TSU-0003526 (Dagg 잔여분 + Hiscox 시작 구간 혼재)
+SCREENING_CLEAR: 92건
+Exception(언어오염, TSU-0003494는 claim 전체가 일본어): 8건
+```
+
+- [x] Batch 19 승인 92건 승인·Promotion 완료(전량 Hiscox_Standard_Manual,
+      Dagg 완전 불변 확인, TSU-0003494 전체-일본어 claim 정상 제외).
+- [x] Batch 20(TSU-0003619~TSU-0003720, 100건, 전량 Hiscox) screening만
+      완료(Human Decision/Promotion 미실행, 사용자 지시).
+
+## Batch 20 Screening 결과 (2026-08-11)
+
+```
+Source: 전량 Hiscox_Standard_Manual
+SCREENING_CLEAR: 95건
+Exception(언어오염): 5건
+```
+
+- [x] Batch 20 승인 95건 승인·Promotion 완료(전량 Hiscox, Dagg 완전
+      불변 byte-identical 확인).
+- [x] Batch 21(TSU-0003816~TSU-0003916, 100건, 전량 Hiscox) screening만
+      완료(Human Decision/Promotion 미실행, 사용자 지시).
+
+## Batch 21 Screening 결과 (2026-08-11)
+
+```
+Source: 전량 Hiscox_Standard_Manual
+SCREENING_CLEAR: 87건
+Exception(언어오염): 13건
+```
+
+- [x] Batch 21 승인 87건 승인·Promotion 완료(전량 Hiscox, Dagg 완전
+      불변 확인, indexed 정확히 87건 증가 검증).
+- [x] Batch 22(TSU-0004004~TSU-0004103, 100건, 전량 Hiscox) screening만
+      완료(Human Decision/Promotion 미실행, 사용자 지시).
+
+## Batch 22 Screening 결과 (2026-08-11)
+
+```
+Source: 전량 Hiscox_Standard_Manual
+SCREENING_CLEAR(QA_FLAG 2건 포함): 82건
+Exception(언어오염, TSU-0004098은 claim 대부분 일본어): 18건
+```
+
+## batch_manager.py 최소 패치 (2026-08-11)
+
+`get_batch_records()`가 `(batch_number-1)*batch_size` 고정 offset을
+쓰던 것을 pool 맨 앞 `batch_size`건을 항상 반환하도록 변경 — pool은
+Promotion마다 줄어드는데 offset은 고정이라 불일치가 누적되는 버그
+수정. `tests/test_nae_batch_manager.py` 8건 신규, 기존 159 + 신규
+8 = 167 passed, Validator/전체 회귀 PASS. Production/기존 배치 기록
+무변경.
+
+## Historical Gap Reconciliation (2026-08-11)
+
+위 버그로 Batch 1~22 사이에 1,891건의 미검토 gap 발견(READ-ONLY 조사).
+21개 대형 연속 블록(배치 전환 offset 스킵, ~80~97건씩, Batch 23의
+100건도 이 중 하나) + 3건 개별 기록 누락(TSU-0000250/253/255, Batch 2
+disposition 당시 exception_queue 기록 누락). B(3건)는
+`READY_FOR_HUMAN_REVIEW`로 exception_queue에 backfill 완료. A(21개
+블록)는 별도 조치 불필요 — 수정된 batch_manager가 pool 순서대로
+자동 흡수함.
+
+## Batch 23 Screening 결과 (2026-08-11)
+
+```
+TSU 범위: TSU-0000108 ~ TSU-0000208 (100건, 전량 Dagg — historical gap 구간)
+SCREENING_CLEAR(QA_FLAG 5건 포함): 90건
+Exception(언어오염): 10건
+```
+
+## Batch 23 Promotion 완료 (2026-08-11)
+
+사용자 "Batch 23 승인한다" 지시로 SCREENING_CLEAR 90건 Promotion 완료.
+Dagg `verified:1687/generated:1668/rejected:22`, Hiscox 변경 없음
+(Batch 23은 전량 Dagg). 전체 indexed=2048 (validator/regression PASS,
+test 파일 hardcoded assertion `indexed==2048`로 갱신). Batch 23 결과는
+확정 상태로 고정.
+
+## Runaway-Loop 사고 및 복구 (2026-08-11)
+
+Promotion 없이 여러 배치를 연속 screening하라는 지시를 pool-front 방식
+`generate_batch()`로 반복 호출하는 즉흥 스크립트로 시도 → `review_status`
+가 바뀌지 않으니 매번 동일한 100건(TSU-0000113~0000391)을 반환, 무한
+루프(batch_0024~batch_1966, 1,943개) 발생 후 2분 타임아웃으로 강제 종료.
+피해 범위: `NAE/review/human/requests/`에 중복 파일 1,942개, `batch_state.json`
+에 스푸리어스 항목 1,943개. **Production/decisions/exception_queue는
+전혀 오염되지 않음**(json.dump가 루프 뒤에 위치해 실행 전 종료됨).
+정리 완료: requests/ 27개(정상)만 남김, batch_state.json 23개 배치로 복원
+(백업 `batch_state.json.bak_*` 보존).
+
+## 아키텍처 개선: screening_cursor 분리 (2026-08-11)
+
+Promotion과 무관하게 각 TSU를 정확히 한 번만 screening하기 위한 구조적
+해법 도입. `batch_manager.py`에 `screening_state.json`(신규, screened
+TSU ID 누적) + `get_screening_batch()`/`screening_progress()` 추가 —
+`review_status` 변화 없이도 호출마다 다른 TSU 집합을 반환하고, pool
+소진 시 빈 리스트로 자연 종료한다. `batch_number`는 순수 label.
+기존 `get_batch_records()`/`generate_batch()`(Promotion 배치 1~23이
+사용한 pool-front 방식)는 무수정. 신규 회귀 테스트
+`TestScreeningCursor` 6건 추가 — Promotion 없이 연속 호출 시 배치별
+TSU 비중복, 재시작 후 cursor 유지, pool 소진 시 종료, Promotion이
+cursor에 영향 없음을 검증. 전체 회귀 2059 passed(기존 2046 + 신규 13),
+Validator PASS(source 89/0/0, authority 128/26/0).
+
+## Screening Sweep 결과 (2026-08-11, Batch 24~44 상당, screening_cursor 사용)
+
+`scripts/nae_screening_sweep.py`로 잔여 generated pool 2,047건
+(TSU-0000113~TSU-0004122, Dagg+Hiscox) 전량을 21개 청크(100건씩)로
+Human Decision/Promotion 없이 forensic screening. 결과:
+
+```
+총 screening 대상: 2,047건 (21 chunks)
+Screening Clear(문제 없음): 1,564건
+QA_FLAG_NONBLOCKING만 있어 승인 가능: 37건
+→ 승인 후보 합계: 1,601건
+차단성 Exception(CJK/외국어 오염 211 + claim 인접중복 5): 216건
+```
+
+신규 exception_queue 항목 258건 추가(entries 총 2,194 → 2,452,
+unresolved 538건 — 기존 미해결 280건 포함). `screening_state.json`에
+2,047건 전량 기록(스윕 완료, 재실행해도 재중복 없음). Production/
+decisions/batch_state/requests 전부 무변경 확인.
+
+**TOTAL TSU 4,117 = 결정완료 2,070(승인 2,048/거부 22) + 이번 스윕
+screening 2,047 — 잔여 gap 없음(전건 계산 일치).**
+
+## 최종 종합 보고
+
+```
+TOTAL TSU: 4117
+HUMAN REVIEW COMPLETED: 2070 (APPROVED 2048 / REJECTED 22, Batch 1~23)
+APPROVAL CANDIDATES (사용자 최종 일괄 승인 대기): 1601
+  - Screening Clear: 1564
+  - QA_FLAG_NONBLOCKING만 있음(승인 가능): 37
+REJECTED: 22 (Batch 1~23 기존)
+UNRESOLVED EXCEPTIONS: 538 (기존 280 + 신규 216 blocking + 신규 37 중
+  QA-only 아닌 항목 0 → 신규 blocking 216 반영, 세부: CJK_FOREIGN_CONTAMINATION
+  211 / NEEDS_CLAIM_REVIEW 232 / QA_FLAG_NONBLOCKING 87 / STRUCTURAL_EXCEPTION 5 /
+  READY_FOR_HUMAN_REVIEW 3)
+STRUCTURAL BACKLOG: 5 (STRUCTURAL_EXCEPTION, 기존 미해결분)
+CJK/FOREIGN-LANGUAGE CONTAMINATION: 211 (신규 스윕에서 탐지)
+CLAIM DUPLICATES: 5 (신규 스윕, 인접-중복 탐지) + 232 (기존 NEEDS_CLAIM_REVIEW 누적)
+QA FLAGS: 87 (unresolved 기준, 신규 42 포함)
+HISTORICAL GAP RECONCILIATION: PASS — 1,891건 gap 전량 해소(Type A 21블록
+  자동 흡수 + Type B 3건 backfill), decided ∩ generated pool 교집합 0
+PRODUCTION INTEGRITY: PASS — Batch 23 이후 무변경, Dagg
+  verified:1687/generated:1668/rejected:22, Hiscox generated:379/verified:361,
+  indexed=2048
+VALIDATOR: PASS (source_validator 89/0/0, authority_validator 128/26/0)
+REGRESSION: PASS (2059 passed, 0 failed)
+EMBEDDING/QDRANT STATUS: 미변경(이번 세션 범위 아님, indexed count만 확인)
+FINAL GATE: Screening 전량 완료. Human Decision/Promotion은 사용자의
+  최종 일괄 승인 대기 — 승인 후보 1,601건(`NAE/review/human/screening_sweep_report.json`
+  의 `approval_candidates` 목록 + QA-only 37건)에 대한 승인 지시 필요.
+```
 
 ## 다음 조치
 
-Batch 16(TSU 범위는 Promotion 시점 기준 재계산 필요, 잔여 2,768건
-중 첫 100건) 진행 여부는 사용자 지시 대기.
+승인 후보 1,601건(Screening Clear 1,564 + QA_FLAG_NONBLOCKING-only 37)
+에 대한 사용자 최종 일괄 승인 대기. 승인 시 배치 단위(청크당 최대
+100건)로 Promotion 절차(백업→decisions 기록→promote_tsu_to_verified→
+diff 검증→indexer 재확인→validator/regression→exception_queue 갱신)를
+Batch 23까지와 동일하게 반복 적용한다. Blocking Exception 216건은
+별도 원인별 remediation 대상(신학적 재검토 필요, 이번 세션 범위 아님).
