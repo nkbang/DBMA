@@ -57,8 +57,20 @@ def main() -> None:
     excluded_theological = theo32 & candidates_1601
     # 3. Hiscox 전체(C1 evidence 없음)
     excluded_hiscox = hiscox_candidates
+    # 4. 기존(이번 스윕 이전) unresolved blocking exception과의 충돌 —
+    #    nae_screening_sweep.py의 기계적 검사(CJK/베트남어/공백-doctrine/
+    #    인접-중복)는 exception_queue를 교차검증하지 않으므로, Batch 2
+    #    disposition backfill(READY_FOR_HUMAN_REVIEW)이나 구조적 결함
+    #    (STRUCTURAL_EXCEPTION) 등 이미 기록된 미해결 예외가 후보에
+    #    섞여 들어올 수 있다. Promotion 직전 반드시 걸러낸다.
+    eq_entries = json.loads((REPO_ROOT / "NAE/review/human/exception_queue.json").read_text(encoding="utf-8"))["entries"]
+    pre_existing_blocking = {
+        e["tsu_id"] for e in eq_entries
+        if e.get("status") not in ("RESOLVED", "QA_FLAG_NONBLOCKING")
+    }
+    excluded_pre_existing_exception = candidates_1601 & pre_existing_blocking - excluded_duplicates - excluded_theological - excluded_hiscox
 
-    excluded_union = excluded_duplicates | excluded_theological | excluded_hiscox
+    excluded_union = excluded_duplicates | excluded_theological | excluded_hiscox | excluded_pre_existing_exception
     final_candidates = candidates_1601 - excluded_union
 
     # QA/CLEAR 구분 보존
@@ -67,15 +79,23 @@ def main() -> None:
     assert final_clear | final_qa == final_candidates
     assert final_clear & final_qa == set()
 
-    human_review_required_ids = excluded_duplicates | excluded_theological
+    human_review_required_ids = excluded_duplicates | excluded_theological | excluded_pre_existing_exception
+
+    eq_by_tsu: dict[str, list[dict]] = defaultdict(list)
+    for e in eq_entries:
+        eq_by_tsu[e["tsu_id"]].append(e)
 
     def rec_summary(tid: str) -> dict:
         r = recs.get(tid, {})
+        reason = r.get("reconciliation_status", "N/A")
+        if tid in excluded_pre_existing_exception:
+            statuses = sorted({e["status"] for e in eq_by_tsu.get(tid, []) if e.get("status") not in ("RESOLVED", "QA_FLAG_NONBLOCKING")})
+            reason = f"PRE_EXISTING_UNRESOLVED_EXCEPTION({','.join(statuses)})"
         return {
             "tsu_id": tid,
             "corpus": "Dagg_Church_Order" if tid in dagg_ids else "Hiscox_Standard_Manual",
             "was_candidate_type": "SCREENING_CLEAR" if tid in clear_ids else "QA_FLAG_NONBLOCKING",
-            "exclusion_reason": r.get("reconciliation_status", "N/A"),
+            "exclusion_reason": reason,
             "c1_evidence_categories": r.get("c1_disposition", []),
         }
 
@@ -92,6 +112,11 @@ def main() -> None:
             "tsu_ids": sorted(excluded_theological),
             "reason": "SEMANTIC_DUPLICATE(31, within 1,601 candidate scope) per C1 evidence — never auto-approvable per instruction 6. Note: TSU-0001756(THEOLOGICAL_WEAKENING) is separately already Promoted(verified) prior to this sweep and outside the 2,047-TSU generated-pool scope; not part of this 40-item queue.",
         },
+        "pre_existing_unresolved_exception": {
+            "count": len(excluded_pre_existing_exception),
+            "tsu_ids": sorted(excluded_pre_existing_exception),
+            "reason": "TSU already had an unresolved exception_queue entry from an earlier batch (READY_FOR_HUMAN_REVIEW backfill or STRUCTURAL_EXCEPTION) that nae_screening_sweep.py's mechanical checks (CJK/Vietnamese/blank-doctrine/adjacent-duplicate only) never cross-checked — found during pre-Promotion validation.",
+        },
         "records": [rec_summary(t) for t in sorted(human_review_required_ids)],
     }
 
@@ -100,11 +125,12 @@ def main() -> None:
         "total": len(final_candidates),
         "screening_clear": {"count": len(final_clear), "tsu_ids": sorted(final_clear)},
         "qa_flag_nonblocking": {"count": len(final_qa), "tsu_ids": sorted(final_qa)},
-        "scope": "Dagg_Church_Order only — C1-verified, no discrepancy, no theological-review flag",
+        "scope": "Dagg_Church_Order only — C1-verified, no discrepancy, no theological-review flag, no pre-existing unresolved exception",
         "excluded_from_1601": {
             "exact_duplicate_discrepancy": len(excluded_duplicates),
             "theological_review_required": len(excluded_theological),
             "hiscox_pending_independent_verification": len(excluded_hiscox),
+            "pre_existing_unresolved_exception": len(excluded_pre_existing_exception),
             "total_excluded": len(excluded_union),
         },
     }
@@ -148,6 +174,7 @@ def main() -> None:
         "excluded_duplicates_9": len(excluded_duplicates),
         "excluded_theological_32": len(excluded_theological),
         "excluded_hiscox": len(excluded_hiscox),
+        "excluded_pre_existing_exception": len(excluded_pre_existing_exception),
         "excluded_total_union": len(excluded_union),
         "FINAL_HUMAN_REVIEW_CANDIDATE": len(final_candidates),
         "  screening_clear": len(final_clear),

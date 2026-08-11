@@ -49,7 +49,11 @@ class TestNoProductionMutation:
         hiscox = json.loads((REPO_ROOT / "output/hiscox_cue_forensic_package.json").read_text(encoding="utf-8"))
 
         final_ids = set(final["screening_clear"]["tsu_ids"]) | set(final["qa_flag_nonblocking"]["tsu_ids"])
-        hr_ids = set(human_review["exact_duplicate_discrepancy"]["tsu_ids"]) | set(human_review["theological_review_required"]["tsu_ids"])
+        hr_ids = (
+            set(human_review["exact_duplicate_discrepancy"]["tsu_ids"])
+            | set(human_review["theological_review_required"]["tsu_ids"])
+            | set(human_review["pre_existing_unresolved_exception"]["tsu_ids"])
+        )
         hiscox_ids = {r["tsu_id"] for r in hiscox["records"]}
 
         assert final["total"] == len(final_ids)
@@ -63,6 +67,19 @@ class TestNoProductionMutation:
 
         clear_ids, qa_only_ids = mod.load_1601_candidates()
         assert final_ids | hr_ids | hiscox_ids == (clear_ids | qa_only_ids)
+
+    def test_pre_existing_unresolved_exceptions_excluded_from_final(self):
+        """회귀 방지: nae_screening_sweep.py의 기계적 검사는 exception_queue
+        의 기존(이번 스윕 이전) unresolved 항목을 교차검증하지 않으므로,
+        Batch 2 backfill(READY_FOR_HUMAN_REVIEW)이나 STRUCTURAL_EXCEPTION
+        같은 기존 미해결 예외가 최종 승인 후보에 섞여 들어가면 안 된다."""
+        final = json.loads((REPO_ROOT / "output/final_human_review_candidate.json").read_text(encoding="utf-8"))
+        final_ids = set(final["screening_clear"]["tsu_ids"]) | set(final["qa_flag_nonblocking"]["tsu_ids"])
+        known_conflicts = {"TSU-0000250", "TSU-0000253", "TSU-0000255", "TSU-0000256", "TSU-0000265", "TSU-0000271"}
+        assert final_ids & known_conflicts == set()
+
+        human_review = json.loads((REPO_ROOT / "output/human_review_required.json").read_text(encoding="utf-8"))
+        assert set(human_review["pre_existing_unresolved_exception"]["tsu_ids"]) == known_conflicts
 
     def test_hiscox_package_marked_not_approved(self):
         hiscox = json.loads((REPO_ROOT / "output/hiscox_cue_forensic_package.json").read_text(encoding="utf-8"))
