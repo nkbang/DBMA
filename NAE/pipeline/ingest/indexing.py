@@ -12,6 +12,8 @@ from typing import Any
 from NAE.pipeline.index import qdrant_store
 from NAE.pipeline.index import config as index_config
 
+UPSERT_BATCH_SIZE = 100
+
 
 class VectorLifecycle(str, Enum):
     ACTIVE = "ACTIVE"       # 현재 Qdrant에 존재, 최신 content_hash와 일치
@@ -66,7 +68,14 @@ def execute_incremental_index(
         record = records_by_id[tsu_id]
         points.append(qdrant_store.build_point(record, vector))
 
-    qdrant_store.upsert_points(client, points, collection_name=collection_name)
+    # Qdrant HTTP API의 payload 크기 제한(기본 32MB)을 넘지 않도록 배치로
+    # 나눠 upsert한다 — 한 번의 대량 upsert(예: 1,682건)가 33.5MB 제한을
+    # 넘겨 통째로 실패하는 사고가 실측 확인됨(2026-08-11, Batch 1-23
+    # backlog embedding 중). source_text/claim이 긴 레코드가 섞이면
+    # 100건도 위험할 수 있으므로 UPSERT_BATCH_SIZE는 보수적으로 잡는다.
+    for i in range(0, len(points), UPSERT_BATCH_SIZE):
+        batch = points[i:i + UPSERT_BATCH_SIZE]
+        qdrant_store.upsert_points(client, batch, collection_name=collection_name)
 
     lifecycle = {
         tsu_id: (VectorLifecycle.REPLACED if tsu_id in existing_ids else VectorLifecycle.ACTIVE).value

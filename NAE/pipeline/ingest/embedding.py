@@ -71,6 +71,19 @@ def execute_incremental_embed(
     for tsu_id, action in plan.items():
         if action == "SKIP":
             skipped.append(tsu_id)
+            # SKIP이어도 vector 자체는 캐시에서 읽어 반환한다 — 그래야
+            # downstream indexing 단계(pipeline.apply -> execute_incremental_index)
+            # 가 이 레코드를 계속 색인 대상으로 취급한다. embedding
+            # 캐시에는 있지만 Qdrant upsert가 이전에 실패했던 레코드를
+            # 재시도할 때, "이미 embedding됨"과 "이미 Qdrant에 있음"을
+            # 혼동해 색인을 건너뛰는 사고가 실측 확인됨(2026-08-11,
+            # Batch 1-23 backlog embedding 중 payload 크기 초과로 최초
+            # upsert가 실패한 뒤 재실행 시 indexed_count=0이 된 사례).
+            record = by_id[tsu_id]
+            content_hash = compute_content_hash(record)
+            cached_vector = embed_client.get_cached(content_hash, cache_root)
+            if cached_vector is not None:
+                vectors[tsu_id] = cached_vector
             continue
         record = by_id[tsu_id]
         claim = record.get("claim")

@@ -173,7 +173,10 @@ class TestIncrementalEmbedding:
         assert result["skipped"] == ["TSU-0009001"]
         assert result["embedded"] == ["TSU-0009002"]
         assert "TSU-0009002" in result["vectors"]
-        assert "TSU-0009001" not in result["vectors"]
+        # SKIP이어도 vector는 캐시에서 채워져 반환된다(embed_fn 재호출 없이) —
+        # 그래야 embedding 이후 indexing만 실패했던 레코드를 재시도할 때
+        # 색인 단계가 이 레코드를 계속 포함할 수 있다.
+        assert result["vectors"]["TSU-0009001"] == [1.0, 1.0, 1.0, 1.0]
 
 
 class TestIncrementalIndexing:
@@ -193,6 +196,30 @@ class TestIncrementalIndexing:
         existing_after = idx.existing_point_ids(client, "test_col")
         assert existing_after == {"TSU-0009001", "TSU-0009002"}  # 기존 것 유지 + 신규 추가
 
+    def test_large_batch_splits_into_multiple_upsert_calls(self):
+        """Qdrant HTTP payload 크기 제한(2026-08-11, Batch 1-23 backlog
+        embedding 중 1,682건 단일 upsert가 33.5MB로 거부된 실사고) 재발
+        방지 회귀 테스트 — UPSERT_BATCH_SIZE를 넘는 건수는 여러 번의
+        upsert 호출로 나뉘어야 한다."""
+        call_count = {"n": 0}
+        client = FakeQdrantClient()
+        original_upsert = client.upsert
+
+        def counting_upsert(collection_name, points):
+            call_count["n"] += 1
+            return original_upsert(collection_name, points)
+
+        client.upsert = counting_upsert
+
+        n = idx.UPSERT_BATCH_SIZE * 2 + 30  # 배치 크기의 2.x배
+        records_by_id = {f"TSU-{i:07d}": _record(f"TSU-{i:07d}", claim=f"claim {i}") for i in range(1, n + 1)}
+        vectors_by_id = {tid: [1.0, 2.0, 3.0, 4.0] for tid in records_by_id}
+
+        idx.execute_incremental_index(records_by_id, vectors_by_id, client=client, collection_name="test_col")
+
+        assert call_count["n"] == 3  # ceil(n / UPSERT_BATCH_SIZE)
+        assert idx.existing_point_ids(client, "test_col") == set(records_by_id.keys())
+
     def test_lifecycle_active_vs_replaced(self):
         client = FakeQdrantClient()
         rec = _record("TSU-0009001")
@@ -201,6 +228,51 @@ class TestIncrementalIndexing:
 
         r2 = idx.execute_incremental_index({"TSU-0009001": rec}, {"TSU-0009001": [9.0] * 4}, client=client, collection_name="test_col")
         assert r2["lifecycle"]["TSU-0009001"] == "REPLACED"
+
+
+class TestEmbedSucceedsIndexFailsRetry:
+    """회귀 방지 — 2026-08-11 Batch 1-23 backlog embedding 실사고 재현:
+    embedding은 전부 성공(Ollama 호출+cache 기록)했으나 단일 대량 upsert가
+    Qdrant payload 크기 제한으로 실패한 뒤, 재시도 시 캐시 hit(SKIP)이라는
+    이유로 indexing까지 건너뛰어 0건 색인되는 문제가 있었다."""
+
+    def test_retry_after_index_failure_still_indexes_cached_records(self, tmp_path):
+        cache_root = tmp_path / "cache"
+        state_path = tmp_path / "state.json"
+        records = [_record(f"TSU-000900{i}", claim=f"claim {i}") for i in range(1, 4)]
+
+        class FailingThenWorkingClient(FakeQdrantClient):
+            def __init__(self):
+                super().__init__()
+                self.fail_next = True
+
+            def upsert(self, collection_name, points):
+                if self.fail_next:
+                    self.fail_next = False
+                    raise RuntimeError("simulated Qdrant payload-too-large failure")
+                return super().upsert(collection_name, points)
+
+        failing_client = FailingThenWorkingClient()
+        store1 = IncrementalStateStore(state_path)
+        with pytest.raises(RuntimeError):
+            pipeline.apply(records, state_store=store1, embed_fn=_fake_embed_fn, qdrant_client=failing_client, cache_root=cache_root)
+
+        # embedding cache는 이미 채워졌다(embed_fn이 upsert 실패 이전에 호출됨)
+        assert len(list(cache_root.glob("*.json"))) == 3
+
+        # 재시도 — 이번엔 upsert가 성공하는 클라이언트로, 캐시는 그대로 재사용
+        working_client = FakeQdrantClient()
+        store2 = IncrementalStateStore(state_path)
+        result = pipeline.apply(records, state_store=store2, embed_fn=_fake_embed_fn, qdrant_client=working_client, cache_root=cache_root)
+
+        assert result["embedded"] == []  # 전부 캐시 hit, embed_fn 재호출 없음
+        assert result["indexed_count"] == 3  # 그럼에도 3건 전부 색인되어야 한다
+        assert idx.existing_point_ids(working_client, index_config_collection()) == {r["id"] for r in records}
+
+
+def index_config_collection():
+    from NAE.pipeline.index import config as index_config
+    return index_config.COLLECTION_NAME
 
 
 class TestDryRunVsApply:
