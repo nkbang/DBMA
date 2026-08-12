@@ -24,15 +24,16 @@
       Quality Gate=WARNING우선, 2026-08-11)
 - [x] ADR-021 FINAL-DRAFT 개정 (raw immutability 실질 메커니즘 확정,
       duplicate 2계층, exception queue 경계, dry-run 후보 3건 조사, 2026-08-11)
-- [ ] C1 Final Review
-- [ ] ADR-021 Approved 승격 (구현 완료 후 — Evidence Before Promotion Rule)
-- [ ] Phase A: Legacy Authority Snapshot 생성 (Option C)
+- [x] C1 Final Review — GREEN (baseline 수치 오류 재감사 후 정정 확인, 2026-08-11)
+- [x] Phase A: Legacy Authority Snapshot 생성 (Option C, commit `61d4f59`,
+      2026-08-11) — 2 authors/2 works/2 editions, Production mutation 0
+- [ ] ADR-021 Approved 승격 (Phase B~F 구현 완료 후 — Evidence Before Promotion Rule)
 - [ ] Phase B: NAE/pipeline/registration/ 모듈 구현
 - [ ] Phase C: Quality Gate 구현 (WARNING 우선, FAIL 7항목 고정)
 - [ ] Phase D: 단위 테스트
 - [ ] Phase E: 샘플 신규 source 1건 dry-run (후보 3건 중 선정)
 - [ ] Phase F: Evidence Package + 회귀
-진행률: 25%
+진행률: 40%
 ```
 
 ## 2. Phase 순서 및 산출물
