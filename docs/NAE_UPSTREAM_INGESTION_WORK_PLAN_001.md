@@ -1,7 +1,8 @@
 # NAE Upstream Ingestion Layer — Work Plan v1
 
 작성일: 2026-08-11
-대상 ADR: [ADR-021](architecture/ADR-021-NAE-Source-Registration-Raw-Preservation-Extraction.md) (Proposed, 승인 대기)
+최종 개정: 2026-08-11 (FINAL-DRAFT 반영)
+대상 ADR: [ADR-021](architecture/ADR-021-NAE-Source-Registration-Raw-Preservation-Extraction.md) (Proposed/FINAL-DRAFT, C1 Final Review 대기)
 상태: 계획 단계 — **코드 구현 미착수**
 
 ---
@@ -18,74 +19,93 @@
 ## 1. 진행률
 
 ```
-- [x] ADR-021 C1 Review (CONDITIONAL GREEN, 2026-08-11)
+- [x] ADR-021 C1 1차 리뷰 (CONDITIONAL GREEN, 2026-08-11)
 - [x] 4개 조건 사용자 승인 (Authority=Option C / dry-run=C1권장안 /
-      Quality Gate=WARNING우선 / validator=기존확장, 2026-08-11)
+      Quality Gate=WARNING우선, 2026-08-11)
+- [x] ADR-021 FINAL-DRAFT 개정 (raw immutability 실질 메커니즘 확정,
+      duplicate 2계층, exception queue 경계, dry-run 후보 3건 조사, 2026-08-11)
+- [ ] C1 Final Review
 - [ ] ADR-021 Approved 승격 (구현 완료 후 — Evidence Before Promotion Rule)
-- [ ] Phase A: authority 시드 파일 생성 (Option C — read-only legacy snapshot)
+- [ ] Phase A: Legacy Authority Snapshot 생성 (Option C)
 - [ ] Phase B: NAE/pipeline/registration/ 모듈 구현
-- [ ] Phase C: Quality Gate 구현 (WARNING 우선)
+- [ ] Phase C: Quality Gate 구현 (WARNING 우선, FAIL 7항목 고정)
 - [ ] Phase D: 단위 테스트
-- [ ] Phase E: 샘플 신규 source 1건 dry-run (C1 권장 검색조건)
+- [ ] Phase E: 샘플 신규 source 1건 dry-run (후보 3건 중 선정)
 - [ ] Phase F: Evidence Package + 회귀
-진행률: 15%
+진행률: 25%
 ```
 
 ## 2. Phase 순서 및 산출물
 
-### Phase A — Authority 시드 (결정 완료: Option C)
-- 기존 3,319건의 Author/Work Authority를 `NAE/authority/legacy_snapshot/`
-  (읽기전용)로 보존
+### Phase A — Legacy Authority Snapshot (결정 완료: Option C)
+- 기존 3,319건(전체 4,117건, review_status 무관)의 Author/Work Authority를
+  `NAE/authority/legacy_snapshot/`(읽기전용)로 파생 생성(ADR-021 §4 생성 절차)
 - `NAE/authority/authors.yaml`, `NAE/authority/works.yaml`은 빈 상태로 신설
-  (신규 registration 전용, legacy snapshot과 분리)
+  (신규 registration 전용, legacy snapshot과 물리적으로 분리, write target
+  아님)
+- 생성 과정 자체를 Evidence로 기록(입출력 해시, Production 무변경 확인)
 
 ### Phase B — `NAE/pipeline/registration/` 모듈
 | 파일 | 책임 |
 |---|---|
 | `identity.py` | source_id/author_id/work_id/edition_id 발급 + 충돌 시 suffix 규칙(ADR-021 §4) |
-| `raw_preservation.py` | SHA256 체크섬 기록, read-only 권한 부여, 재확인 로직(ADR-021 §5) |
-| `authority.py` | Author/Work Authority 대조·병합 후보 제시(자동 병합 금지) |
+| `source_validator.py` | **신규 upstream validator**(ADR-021 §5) — Raw/Metadata/Provenance/Integrity 검사. 기존 `scripts/source_validator.py`(manifest 필드 검사)와는 별개 모듈, 호출 관계 없음 |
+| `raw_preservation.py` | SHA256 체크섬 기록 + append-only ledger, 접근 시점 재검증, duplicate detection 2계층(ADR-021 §6, §9) |
+| `authority.py` | Author/Work Authority 대조·병합 후보 제시(자동 병합 금지), legacy snapshot 참조만 |
 | `manifest_writer.py` | `source_manifest.yaml` entry 작성/갱신(기존 schema v1.2 재사용) |
-| `state.py` | ADR-021 §7 상태 머신(DISCOVERED~QUALITY_PASSED + 4 실패 상태) |
+| `state.py` | ADR-021 §10 상태 머신 + §11 exception queue(Production review 큐와 물리적 분리) |
+| `quality_gate.py` | PASS/WARNING/FAIL, FAIL 7항목 고정(ADR-021 §8) |
 | `pipeline.py` | 위 모듈을 오케스트레이션, `extract.py`/`tsu/builder.py` 호출 지점만 연결(코드 무수정) |
 
 ### Phase C — Quality Gate (결정 완료: WARNING 우선)
-- `quality_gate.py` — Phase 7 3범주(File/OCR/Metadata) 체크, PASS/WARNING/FAIL
-- FAIL은 치명적 오류(원본 파일 손실, OCR 0페이지)로만 한정, 나머지는 WARNING
-  으로 진행하고 사람이 확인. 실측 샘플 축적 후 임계값 조정
+- FAIL은 §8 7항목(원본 손실/체크섬 불일치/추출결과 없음/0페이지/손상/
+  identity 없음/필수 메타데이터 없음)으로만 한정
+- WARNING(OCR confidence 낮음 등)은 초기엔 비차단, 임계값은 첫 dry-run
+  실측 후 결정 — 임의로 숫자 확정하지 않음
 
 ### Phase D — 테스트
-- ADR-020 패턴 그대로: fake client/isolated fixture, Production 파일 미접근
-- 최소 커버: identity 충돌 처리, 체크섬 불일치 감지, duplicate 감지, quality gate 3판정, 상태 전이(성공/4개 실패 경로)
+- ADR-021 §17 Test Specification 그대로 사용(14개 영역, 표 정의 완료)
+- 핵심 불변식: dry-run 후 Qdrant points_count 불변 + 기존 3,319 TSU ID셋 불변
 
-### Phase E — Dry-run (대상 선정 기준 확정: C1 권장안)
-- 검색 조건: `possible-copyright-status:"Public" AND ocr:"hocr" AND (language:kor OR language:eng)`,
-  1900년 이전 한국 관련 Protestant missionary 문서, 50페이지 이하
-- Phase E 착수 시 Archive.org 조회로 구체 항목 1건 확정
-- 전체 경로 실행, **manifest/raw 파일만 생성, TSU Builder 호출 직전에 정지**
-  (Quality Gate 결과까지만 확인, TSU 생성은 별도 승인 후)
+### Phase E — Dry-run (후보 3건 조사 완료, ADR-021 §13)
+- Candidate 1: Gifford, "Forward mission movement in North Korea"(1897,
+  36p, hOCR) — 정상 PASS/WARNING 경로 검증에 적합, 1순위 추천
+- Candidate 2: Hall, "Mrs. Esther Kim Pak, Korea's first woman doctor"
+  (18p, hOCR)
+- Candidate 3: "Kim Chang Sik: a Korean circuit rider"(10p, hOCR, 저자
+  정보 결여) — FAIL 경로(Required metadata missing) 검증에 유용
+- 최종 선정은 Phase A 착수 시 사용자 확인. 전체 경로 실행 후 **TSU Builder
+  호출 직전 정지**(manifest/raw/state만 생성, TSU 생성은 별도 승인 후)
 
 ### Phase F — Evidence + 회귀
 - `scripts/generate_*_evidence.py` 패턴 재사용해 신규 evidence generator 작성
 - 전체 회귀(NAE 관련 스위트) 통과 확인, Production mutation 0 재확인
 
-## 3. 착수 전 결정 사항 — 전부 승인 완료 (2026-08-11)
+## 3. 착수 전 결정 사항 — 결정 이력
 
-1. **첫 dry-run 대상 source 기준** — C1 권장 검색조건 채택(§Phase E)
-2. **Authority 시드 방식** — Option C(read-only legacy snapshot) 채택
-3. **Quality Gate 초기 임계값 성향** — WARNING 우선 채택
-4. **`source_validator.py` 처리** — 기존 확장(신규 validator 신설 안 함)
+| 항목 | 최초 결정(1차 승인) | 최종 결정(FINAL-DRAFT) |
+|---|---|---|
+| Authority 시드 | Option C | **Option C 유지** |
+| Quality Gate 성향 | WARNING 우선 | **WARNING 우선 유지**, FAIL 7항목 고정 |
+| 첫 dry-run 대상 | C1 권장 검색조건만 | **후보 3건 실제 조사 완료**(§Phase E) |
+| Source Validator | 기존 `source_validator.py` 확장 | **번복 — 신규 module로 분리**(이번 작업 명령서 §5, C1 권고 반영) |
+
+**투명성 노트**: Source Validator 결정이 1차 승인(기존 확장)에서 이번
+작업 명령서(신규 module 분리)로 번복되었다. 사용자가 이번 명령서에서
+직접 지시한 내용이라 그대로 반영했으나, 의도치 않은 번복이면 정정 필요.
 
 ## 4. 예상 변경 파일 (Phase B~D)
 
 ```
 신규:
-  docs/architecture/ADR-021-*.md          (완료, 본 커밋)
-  docs/NAE_UPSTREAM_INGESTION_WORK_PLAN_001.md  (완료, 본 커밋)
-  NAE/authority/authors.yaml
-  NAE/authority/works.yaml
+  docs/architecture/ADR-021-*.md          (완료, 커밋됨)
+  docs/NAE_UPSTREAM_INGESTION_WORK_PLAN_001.md  (완료, 커밋됨)
+  NAE/authority/legacy_snapshot/{authors,works}.yaml   (Phase A)
+  NAE/authority/authors.yaml                            (Phase A, 빈 상태)
+  NAE/authority/works.yaml                              (Phase A, 빈 상태)
   NAE/pipeline/registration/__init__.py
   NAE/pipeline/registration/identity.py
+  NAE/pipeline/registration/source_validator.py
   NAE/pipeline/registration/raw_preservation.py
   NAE/pipeline/registration/authority.py
   NAE/pipeline/registration/manifest_writer.py
@@ -103,11 +123,12 @@
   NAE/pipeline/embed/*
   NAE/collectors/*
   core/dataset_registry.py
+  scripts/source_validator.py (기존 — 신규 upstream validator와 별개로 존치)
 ```
 
 ---
 
 ## 비고
 
-이 문서는 ADR-021 승인 전까지 계획 문서로만 유지한다. 승인 후 각 Phase
-완료 시 진행률(§1)을 갱신한다.
+이 문서는 ADR-021 Approved 승인 전까지 계획 문서로만 유지한다. C1 Final
+Review 통과 및 Approved 승격 후 각 Phase 완료 시 진행률(§1)을 갱신한다.
