@@ -27,13 +27,16 @@
 - [x] C1 Final Review — GREEN (baseline 수치 오류 재감사 후 정정 확인, 2026-08-11)
 - [x] Phase A: Legacy Authority Snapshot 생성 (Option C, commit `61d4f59`,
       2026-08-11) — 2 authors/2 works/2 editions, Production mutation 0
-- [ ] ADR-021 Approved 승격 (Phase B~F 구현 완료 후 — Evidence Before Promotion Rule)
-- [ ] Phase B: NAE/pipeline/registration/ 모듈 구현
-- [ ] Phase C: Quality Gate 구현 (WARNING 우선, FAIL 7항목 고정)
-- [ ] Phase D: 단위 테스트
+- [x] Phase B: NAE/pipeline/registration/ 모듈 구현 (8개 파일, commit
+      `b1ebc3a`, 2026-08-11) — quality_gate.py 포함(Phase C와 통합 구현됨)
+- [x] Phase C: Quality Gate 구현 (WARNING 우선, FAIL 7항목 고정) — Phase B에 포함되어 완료
+- [~] Phase D: 단위 테스트 — smoke test 6건 완료(happy path/충돌/누락raw/
+      체크섬변조/duplicate/Production무변경 guard), 106/106 PASS, 14개
+      영역 전체 커버리지는 아직 부분적
 - [ ] Phase E: 샘플 신규 source 1건 dry-run (후보 3건 중 선정)
 - [ ] Phase F: Evidence Package + 회귀
-진행률: 40%
+- [ ] ADR-021 Approved 승격 (Phase E~F 완료 후 — Evidence Before Promotion Rule)
+진행률: 70%
 ```
 
 ## 2. Phase 순서 및 산출물
