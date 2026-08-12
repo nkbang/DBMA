@@ -1,0 +1,13 @@
+# Legacy Authority Snapshot — Authors (READ-ONLY, ADR-021 SS4)
+# 4,117건 TSU(verified+generated+rejected)에서 파생. 신규 registry의
+# write target이 아님 — reference/audit 전용. 이 파일을 재생성해도
+# 소스가 바뀌지 않는 한 동일한 내용이 나온다(deterministic derivation).
+generated_at: "2026-08-12T03:39:59.786792+00:00"
+source_record_count: 4117
+authors:
+  - author_id: "dagg_john_l"
+    canonical_name: "John L. Dagg"
+    tsu_count: 3377
+  - author_id: "hiscox_edward_t"
+    canonical_name: "Edward T. Hiscox"
+    tsu_count: 740
