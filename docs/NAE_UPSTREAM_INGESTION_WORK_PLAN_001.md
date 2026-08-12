@@ -18,22 +18,26 @@
 ## 1. 진행률
 
 ```
-- [ ] ADR-021 C1 Review
-- [ ] ADR-021 사용자 승인 → Approved 승격
-- [ ] Phase A: authority 시드 파일 생성
+- [x] ADR-021 C1 Review (CONDITIONAL GREEN, 2026-08-11)
+- [x] 4개 조건 사용자 승인 (Authority=Option C / dry-run=C1권장안 /
+      Quality Gate=WARNING우선 / validator=기존확장, 2026-08-11)
+- [ ] ADR-021 Approved 승격 (구현 완료 후 — Evidence Before Promotion Rule)
+- [ ] Phase A: authority 시드 파일 생성 (Option C — read-only legacy snapshot)
 - [ ] Phase B: NAE/pipeline/registration/ 모듈 구현
-- [ ] Phase C: Quality Gate 구현
+- [ ] Phase C: Quality Gate 구현 (WARNING 우선)
 - [ ] Phase D: 단위 테스트
-- [ ] Phase E: 샘플 신규 source 1건 dry-run
+- [ ] Phase E: 샘플 신규 source 1건 dry-run (C1 권장 검색조건)
 - [ ] Phase F: Evidence Package + 회귀
-진행률: 0%
+진행률: 15%
 ```
 
 ## 2. Phase 순서 및 산출물
 
-### Phase A — Authority 시드 (ADR-021 §12.2 결정 후)
-- `NAE/authority/authors.yaml`, `NAE/authority/works.yaml` 최초 생성
-- 결정 사항: 기존 3,319 TSU에서 역산 시드 vs 빈 상태 시작 — 사용자 확인 필요
+### Phase A — Authority 시드 (결정 완료: Option C)
+- 기존 3,319건의 Author/Work Authority를 `NAE/authority/legacy_snapshot/`
+  (읽기전용)로 보존
+- `NAE/authority/authors.yaml`, `NAE/authority/works.yaml`은 빈 상태로 신설
+  (신규 registration 전용, legacy snapshot과 분리)
 
 ### Phase B — `NAE/pipeline/registration/` 모듈
 | 파일 | 책임 |
@@ -45,28 +49,32 @@
 | `state.py` | ADR-021 §7 상태 머신(DISCOVERED~QUALITY_PASSED + 4 실패 상태) |
 | `pipeline.py` | 위 모듈을 오케스트레이션, `extract.py`/`tsu/builder.py` 호출 지점만 연결(코드 무수정) |
 
-### Phase C — Quality Gate
+### Phase C — Quality Gate (결정 완료: WARNING 우선)
 - `quality_gate.py` — Phase 7 3범주(File/OCR/Metadata) 체크, PASS/WARNING/FAIL
-- 초기 임계값은 보수적으로 설정(WARNING 우선), 실측 샘플로 후속 보정
+- FAIL은 치명적 오류(원본 파일 손실, OCR 0페이지)로만 한정, 나머지는 WARNING
+  으로 진행하고 사람이 확인. 실측 샘플 축적 후 임계값 조정
 
 ### Phase D — 테스트
 - ADR-020 패턴 그대로: fake client/isolated fixture, Production 파일 미접근
 - 최소 커버: identity 충돌 처리, 체크섬 불일치 감지, duplicate 감지, quality gate 3판정, 상태 전이(성공/4개 실패 경로)
 
-### Phase E — Dry-run
-- 샘플 1건(신규 Public-Domain 소스, 아직 미정 — 사용자 지정 필요)으로 전체
-  경로 실행, **manifest/raw 파일만 생성, TSU Builder 호출 직전에 정지**
+### Phase E — Dry-run (대상 선정 기준 확정: C1 권장안)
+- 검색 조건: `possible-copyright-status:"Public" AND ocr:"hocr" AND (language:kor OR language:eng)`,
+  1900년 이전 한국 관련 Protestant missionary 문서, 50페이지 이하
+- Phase E 착수 시 Archive.org 조회로 구체 항목 1건 확정
+- 전체 경로 실행, **manifest/raw 파일만 생성, TSU Builder 호출 직전에 정지**
   (Quality Gate 결과까지만 확인, TSU 생성은 별도 승인 후)
 
 ### Phase F — Evidence + 회귀
 - `scripts/generate_*_evidence.py` 패턴 재사용해 신규 evidence generator 작성
 - 전체 회귀(NAE 관련 스위트) 통과 확인, Production mutation 0 재확인
 
-## 3. 사용자 확인이 필요한 미결 사항 (착수 전)
+## 3. 착수 전 결정 사항 — 전부 승인 완료 (2026-08-11)
 
-1. **첫 dry-run 대상 source** — 어떤 Public-Domain 원자료로 파이프라인을 처음 검증할지
-2. **Authority 시드 방식** — 기존 3,319 역산 vs 빈 상태 시작
-3. **Quality Gate 초기 임계값 보수/완화 성향** — WARNING 우선(안전) vs PASS 우선(속도)
+1. **첫 dry-run 대상 source 기준** — C1 권장 검색조건 채택(§Phase E)
+2. **Authority 시드 방식** — Option C(read-only legacy snapshot) 채택
+3. **Quality Gate 초기 임계값 성향** — WARNING 우선 채택
+4. **`source_validator.py` 처리** — 기존 확장(신규 validator 신설 안 함)
 
 ## 4. 예상 변경 파일 (Phase B~D)
 

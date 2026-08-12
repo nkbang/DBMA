@@ -194,13 +194,44 @@ incremental pipeline은 `review_status=verified`인 레코드만 처리하므로
 
 ---
 
-## 12. 미결 사항 (구현 전 확인 필요)
+## 12. 미결 사항 — 결정 완료 (C1 CONDITIONAL GREEN → 사용자 승인, 2026-08-11)
 
-1. Quality Gate의 OCR 품질 임계값 — 실측 샘플 부재로 초기값 미정(설계
-   문서도 "후속 정의"로 명시). 초기 구현은 보수적으로 WARNING 우선 처리
-   제안, 사람이 실측 후 조정.
-2. Author/Work Authority 파일(`authority/authors.yaml`,
-   `authority/works.yaml`) 최초 생성 — 기존 3,319 TSU에서 역산해 초기
-   시드를 만들지, 빈 상태로 시작할지 결정 필요.
-3. `source_validator.py` 확장 범위 — Phase 3 신규 필드까지 검사하도록
-   넓힐지, 별도 validator를 신설할지.
+C1 독립 리뷰(`NAE_ADR021_C1_INDEPENDENT_REVIEW_001` 요지, 대화로 전달) 결과
+CONDITIONAL GREEN. 아래 4개 조건에 대해 사용자가 전부 C1 권장안대로 승인함:
+
+1. **Quality Gate 초기 임계값**: **WARNING 우선**(안전측)으로 확정. FAIL은
+   치명적 오류(원본 파일 손실, OCR 결과 0페이지)로만 한정. 나머지는
+   WARNING으로 진행 가능하되 사람이 확인. 실측 샘플 축적 후 조정.
+2. **Authority 시드 방식**: **Option C — read-only legacy snapshot** 채택.
+   기존 3,319건의 Author/Work Authority를 별도 읽기전용 snapshot으로
+   보존하고, 신규 registry(`authority/authors.yaml`, `authority/works.yaml`)
+   는 빈 상태로 시작한다. 근거(C1): Option A(3,319 역산)의 동명이인/오타
+   오류 위험과 Option B(빈 상태 단독)의 운영 병목을 모두 회피.
+3. **`source_validator.py` 처리**: **기존 확장**(신규 validator 신설 안 함)
+   — v1.2/v2.0.0 스키마 양쪽에 Phase 3 신규 필드(author_id/work_id/
+   edition_id 등) 검사 로직을 추가한다.
+4. **첫 dry-run 대상**: C1 권장 검색 조건대로 진행 —
+   `possible-copyright-status:"Public" AND ocr:"hocr" AND (language:kor OR language:eng)`,
+   1900년 이전 한국 관련 Protestant missionary 문서, 50페이지 이하.
+   기존 3,319와 identity collision 가능성 낮음(신규 수집 대상 확률 높음).
+   구체적 항목은 Phase E 착수 시 Archive.org 조회로 확정한다.
+
+### C1 Non-blocking Findings에 대한 처리
+- 경로 일관성(work plan ↔ ADR based_on) — 실제 확인 결과 양쪽 모두
+  `docs/...` 상대경로로 이미 일치. 오탐으로 판단, 조치 불필요.
+- Duplicate detection이 collector 단계(catalog 내)에서만 동작하는 문제 —
+  Phase B `raw_preservation.py` 구현 시 raw 영역 전체 대상 Exact
+  Duplicate(해시 비교) 검사를 포함시킨다(§6 Idempotency와 통합).
+- Checksum 불일치 시 `exception_queue.json` 이관 미명시 — Phase B
+  `state.py` 구현 시 `RAW_CHECKSUM_MISMATCH` 상태 진입과 함께
+  ADR-020 §5 스타일의 exception 기록을 추가한다(신규 큐 파일, 기존
+  `NAE/review/human/exception_queue.json`과는 분리 — Production
+  review 큐를 이 upstream 계층이 오염시키지 않도록).
+
+### 승격 판단
+Evidence Before Promotion Rule 4개 조건: (1) 구현 완료 — **미충족**(Phase
+B~F 미착수), (2) 회귀 테스트 통과 — 해당 없음(구현 없음), (3) C1 독립
+리뷰 — **완료**(CONDITIONAL GREEN), (4) 사용자 승인 — **완료**(위 4개
+조건 전부 승인). **구현이 아직 없으므로 ADR-021은 Approved로 승격하지
+않고 Proposed 상태를 유지**하되, 설계상의 모든 미결 사항은 해소되어
+Phase B 구현에 착수할 수 있는 상태다.
