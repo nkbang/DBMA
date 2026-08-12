@@ -23,8 +23,8 @@ NAE Incremental Ingestion Architecture v1을 **GREEN으로 최종 승인**한다
    재현(hash 동일), `total_tsu=4117` vs `total_vectors=1281` 혼동 없음,
    `index_all()` 정상 경로 미호출 확인.
 3. **CUE 재확인**(C1 감사 이후): Qdrant `localhost:7333` 접속 재확인,
-   `points_count=1281` 실측. `total_tsu=4117 = verified 3,319 + generated 797
-   + rejected 22` 산술 확인.
+   `points_count=1281` 실측. `total_tsu=4117 = verified 3,319 + generated 776
+   + rejected 22` 산술 확인.[^797-correction]
 
 ## 승인된 감사 기록 caveat (Rev. Bang 명시 승인, 2026-08-11)
 
@@ -69,3 +69,16 @@ Checkpoint mutation: 0
 Full regression independently reproduced by C1: NO (CUE evidence accepted)
 Qdrant point count independently verified by C1: NO (manifest/cache/CUE agree at 1,281)
 ```
+
+---
+
+## 정정 기록 (2026-08-11, 후속 세션)
+
+[^797-correction]: §검증 이력 3의 "generated 797"은 산술 오기였다. 실측
+    `review_status` 분포는 `verified=3,319 / generated=776 / rejected=22`이며
+    `3,319+776+22=4,117`로 `total_tsu`와 정확히 일치한다(`3,319+797+22=4,138`은
+    실측 총합과 불일치). 이 오기는 GATE 판정 자체에는 영향이 없다(판정 근거는
+    `points_count`와 `total_tsu` 일치였지 `generated` 세부값이 아니었음). 이후
+    Batch 1-23 backlog 실행(commit `cc78781`~`1e338af`)으로 Qdrant는
+    1,281→3,319에 도달했으며, 3,319 Qdrant point와 3,319 verified TSU ID는
+    ID 단위로 완전히 일치함(고아/누락 벡터 0건)을 재확인했다.
