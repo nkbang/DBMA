@@ -19,7 +19,7 @@ scope: 신규 모듈 NAE/pipeline/registration/ (설계 확정, 구현 미착수
 
 | | |
 |---|---|
-| Status | **Proposed / FINAL-DRAFT** (C1 Final Review 대기, 구현 미착수) |
+| Status | **Proposed / FINAL-DRAFT** (C1 Final Review GREEN 완료, 사용자 최종 승인 대기, 구현 미착수) |
 | Date | 2026-08-11 (최초), 2026-08-11 (FINAL-DRAFT 개정) |
 | Deciders | Rev. Bang, CUE |
 | Extends | ADR-020(Incremental Ingestion, downstream 절반 — 이미 Approved/GREEN) |
@@ -526,7 +526,8 @@ Evidence Package → C1 Independent Audit → User Approval → Production promo
 | 2026-08-11 | C1 1차 독립 리뷰 | CONDITIONAL GREEN (4개 조건) |
 | 2026-08-11 | 사용자 승인 | Authority=Option C / Quality Gate=WARNING우선 / dry-run=C1권장조건 / validator=신규 module(최종, §5) |
 | 2026-08-11 | FINAL-DRAFT 개정(본 문서) | §4~§17 전면 구체화, dry-run 후보 3건 조사 완료 |
-| (예정) | C1 Final Review | 대기 |
-| (예정) | Phase A 구현 착수 | C1 Final Review 통과 후 |
+| 2026-08-11 | C1 Final Review 1차 제출 | GREEN, 단 Baseline Protection 수치 오류 발견(Generated 776→4,893 오기, Qdrant nae_tsu_v1 3,319→0 오기) — CUE가 직접 재측정으로 대조 후 재감사 요청 |
+| 2026-08-11 | C1 재감사 제출 | 오류 원인 규명(전역 tsu.json 탐색으로 backup/migration 혼입, 잘못된 로컬 임베디드 Qdrant 경로 조회) 및 정정. 정정값(verified=3319/generated=776/rejected=22/total=4117, Qdrant nae_tsu_v1 points=3319)이 CUE 직접 재측정과 정확히 일치 — **FINAL: GREEN** |
 
-**FINAL STATUS: READY FOR C1 FINAL REVIEW**
+**FINAL STATUS: C1 FINAL REVIEW COMPLETE — GREEN. 사용자 최종 승인 시
+Phase A(Legacy Authority Snapshot 생성) 구현 착수 가능.**
