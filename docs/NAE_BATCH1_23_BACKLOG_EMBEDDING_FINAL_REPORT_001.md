@@ -158,8 +158,8 @@ Rejected: 22
 남은 embedding 작업: 없음
 ```
 
-## 10. 다음 단계 (미착수, 별도 지시 필요)
+## 10. 다음 단계
 
-- Generated 상태 776건(Dagg 397 + Hiscox 379)의 Human Review — 이번 작업 범위 밖
-- NAE Optional Module(`nae_pd`) 실제 활성화 및 DBMA 배포 반영 여부 결정
-- 신규 공공 신학 자료 ingestion (ADR-020 incremental 경로로 처리 가능, 실행은 별도 승인 필요)
+- **Generated 상태 776건(Dagg 397 + Hiscox 379)의 Human Review — HOLD (Rev. Bang 결정, 2026-08-12).** 이번 세션 범위 밖이며, 재개 시점은 별도 지시로 확정한다. 그 전까지 이 776건에 대한 screening/Promotion/embedding 작업을 시작하지 않는다.
+- NAE Optional Module(`nae_pd`) 실제 활성화 및 DBMA 배포 반영 여부 결정 — 미착수, 별도 지시 필요
+- 신규 공공 신학 자료 ingestion (ADR-020 incremental 경로로 처리 가능, 실행은 별도 승인 필요) — 미착수
