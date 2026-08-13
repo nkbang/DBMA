@@ -19,7 +19,7 @@ scope: 신규 모듈 NAE/pipeline/registration/ (설계 확정, 구현 미착수
 
 | | |
 |---|---|
-| Status | **Proposed / FINAL-DRAFT** (C1 Final Review GREEN 완료, 사용자 최종 승인 대기, 구현 미착수) |
+| Status | **Proposed / FINAL-DRAFT** (Phase E hOCR 재실행 GREEN 승격 조건 충족, 사용자 최종 승인 대기) |
 | Date | 2026-08-11 (최초), 2026-08-11 (FINAL-DRAFT 개정) |
 | Deciders | Rev. Bang, CUE |
 | Extends | ADR-020(Incremental Ingestion, downstream 절반 — 이미 Approved/GREEN) |
@@ -528,6 +528,12 @@ Evidence Package → C1 Independent Audit → User Approval → Production promo
 | 2026-08-11 | FINAL-DRAFT 개정(본 문서) | §4~§17 전면 구체화, dry-run 후보 3건 조사 완료 |
 | 2026-08-11 | C1 Final Review 1차 제출 | GREEN, 단 Baseline Protection 수치 오류 발견(Generated 776→4,893 오기, Qdrant nae_tsu_v1 3,319→0 오기) — CUE가 직접 재측정으로 대조 후 재감사 요청 |
 | 2026-08-11 | C1 재감사 제출 | 오류 원인 규명(전역 tsu.json 탐색으로 backup/migration 혼입, 잘못된 로컬 임베디드 Qdrant 경로 조회) 및 정정. 정정값(verified=3319/generated=776/rejected=22/total=4117, Qdrant nae_tsu_v1 points=3319)이 CUE 직접 재측정과 정확히 일치 — **FINAL: GREEN** |
+| 2026-08-11 | Phase B/C 구현 | `NAE/pipeline/registration/` 8개 모듈(commit `b1ebc3a`), smoke test 6건 106/106 PASS |
+| 2026-08-11 | Phase E/F FREEZE | CUE는 dry-run/Evidence 생성 보류, C1 독립 Phase E/F 감사 대기(`NAE_ADR021_PHASE_E_READINESS_FREEZE_001.md`) |
+| 2026-08-12 | C1 Phase E 1차 dry-run | 3개 후보 전부 EXTRACTION_FAILED. CUE가 evidence 교차대조로 "OCR 레이어 부재"가 아니라 dry-run staging이 hocr.html/ocr.txt를 배치하지 않은 test fixture 문제임을 규명(사용자 확인) |
+| 2026-08-12 | C1 Phase E 2차 재실행(hOCR staging 보완) | gifford(29p, PASS)·kim(6p, PASS)·hall(metadata 누락, QUALITY_GATE_FAILED — 정상 동작) — `extraction_source` 필드로 hOCR 경로 실사용 확인. 최소 1개(실제 2개) 후보에서 PASS 도달 — **GREEN 승격 조건 충족**(commit `5ed5562`) |
+| 2026-08-12 | Phase D 전체 커버리지 | ADR-021 §17 14개 영역 커버 테스트 36건 추가(총 42/42 PASS), evidence generator 추가(commit `de8eeb7`). CUE가 안전성(Production 읽기전용, 쓰기는 자체 output만) 직접 검증 후 커밋 |
 
-**FINAL STATUS: C1 FINAL REVIEW COMPLETE — GREEN. 사용자 최종 승인 시
-Phase A(Legacy Authority Snapshot 생성) 구현 착수 가능.**
+**FINAL STATUS: Phase A/B/C/D 완료, Phase E GREEN 승격 조건 충족(2개
+후보 PASS, `extraction_source=hocr` 확인). Phase F(전체 Evidence
+Package + 회귀) 및 ADR-021 Approved 최종 승격은 사용자 승인 대기.**
