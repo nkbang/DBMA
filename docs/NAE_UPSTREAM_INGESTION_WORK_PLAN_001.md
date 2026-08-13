@@ -30,13 +30,11 @@
 - [x] Phase B: NAE/pipeline/registration/ 모듈 구현 (8개 파일, commit
       `b1ebc3a`, 2026-08-11) — quality_gate.py 포함(Phase C와 통합 구현됨)
 - [x] Phase C: Quality Gate 구현 (WARNING 우선, FAIL 7항목 고정) — Phase B에 포함되어 완료
-- [~] Phase D: 단위 테스트 — smoke test 6건 완료(happy path/충돌/누락raw/
-      체크섬변조/duplicate/Production무변경 guard), 106/106 PASS, 14개
-      영역 전체 커버리지는 아직 부분적
+- [x] Phase D: 단위 테스트 — smoke test 6건 + coverage test 36건 완료(ADR-021 §17 14개 영역 전체), 42/42 PASS, Evidence Package(output/phase_b_evidence.jsonl) 생성 완료
 - [ ] Phase E: 샘플 신규 source 1건 dry-run (후보 3건 중 선정)
 - [ ] Phase F: Evidence Package + 회귀
 - [ ] ADR-021 Approved 승격 (Phase E~F 완료 후 — Evidence Before Promotion Rule)
-진행률: 70%
+진행률: 85%
 ```
 
 ## 2. Phase 순서 및 산출물
