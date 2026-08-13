@@ -1,0 +1,83 @@
+[
+  {
+    "candidate": "gifford_forward_mission",
+    "ia_id": "forwardmission00giff",
+    "pdf_size_bytes": 643720,
+    "sha256": "54c1c36d7d6a6f035251d75f146d27e0f8be3fb638e5ccc7f6680b26d3cdc0f1",
+    "final_state": "EXTRACTION_FAILED",
+    "identity": {
+      "author_id": "gifford",
+      "work_id": "gifford-forward_mission_movement_in_north_korea",
+      "edition_id": "gifford-forward_mission_movement_in_north_korea",
+      "author_collided": false,
+      "work_collided": false,
+      "edition_collided": false
+    },
+    "preservation": {
+      "checksum": "54c1c36d7d6a6f035251d75f146d27e0f8be3fb638e5ccc7f6680b26d3cdc0f1",
+      "duplicate_of": null
+    },
+    "validation": {
+      "passed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "page_count": 0,
+    "gate": null,
+    "notes": []
+  },
+  {
+    "candidate": "hall_esther_kim_pak",
+    "ia_id": "mrsestherkimpakk00hall",
+    "pdf_size_bytes": 613135,
+    "sha256": "5dfc5eddb6e0e059e08f2ac473b542a6b0ea751579f69c23b3aa3eb068b9307f",
+    "final_state": "EXTRACTION_FAILED",
+    "identity": {
+      "author_id": "hall",
+      "work_id": "hall-mrs_esther_kim_pak_korea_s_first_woman_doctor",
+      "edition_id": "hall-mrs_esther_kim_pak_korea_s_first_woman_doctor",
+      "author_collided": false,
+      "work_collided": false,
+      "edition_collided": false
+    },
+    "preservation": {
+      "checksum": "5dfc5eddb6e0e059e08f2ac473b542a6b0ea751579f69c23b3aa3eb068b9307f",
+      "duplicate_of": null
+    },
+    "validation": {
+      "passed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "page_count": 0,
+    "gate": null,
+    "notes": []
+  },
+  {
+    "candidate": "kim_chang_sik_circuit_rider",
+    "ia_id": "kimchangsikkorea00unse",
+    "pdf_size_bytes": 153802,
+    "sha256": "a5b99d1b411dc58ffabd5cd1748d9f4f15320bd7197b4a44c64e9a41ed6a6ded",
+    "final_state": "EXTRACTION_FAILED",
+    "identity": {
+      "author_id": "kim_chang_sik",
+      "work_id": "kim_chang_sik-kim_chang_sik_a_korean_circuit_rider",
+      "edition_id": "kim_chang_sik-kim_chang_sik_a_korean_circuit_rider",
+      "author_collided": false,
+      "work_collided": false,
+      "edition_collided": false
+    },
+    "preservation": {
+      "checksum": "a5b99d1b411dc58ffabd5cd1748d9f4f15320bd7197b4a44c64e9a41ed6a6ded",
+      "duplicate_of": null
+    },
+    "validation": {
+      "passed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "page_count": 0,
+    "gate": null,
+    "notes": []
+  }
+]

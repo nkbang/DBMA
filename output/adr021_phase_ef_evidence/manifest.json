@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-08-12T16:57:19.815213+00:00",
+  "git_commit": "a1e48dd46e0925c203025d7c543d2c1fb7393c98",
+  "evidence_files": [
+    "baseline.json",
+    "dry_run_results.json",
+    "quality_gate_results.json",
+    "failure_path_results.json",
+    "production_integrity.json",
+    "test_results.json",
+    "final_report.md"
+  ],
+  "staging_dir": "/tmp/nae_dryrun_oz221f7f"
+}

@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-08-12T16:57:19.814977+00:00",
+  "dry_run_candidates": [
+    {
+      "candidate": "gifford_forward_mission",
+      "ia_id": "forwardmission00giff",
+      "page_count": 0,
+      "ocr_confidence": "N/A (no OCR layer)",
+      "character_anomaly_ratio": "N/A",
+      "encoding_anomalies": "N/A",
+      "missing_metadata_fields": 0,
+      "extraction_completeness": "0% (no extractable text)",
+      "checksum_integrity": "PASS",
+      "final_verdict": "EXTRACTION_FAILED"
+    },
+    {
+      "candidate": "hall_esther_kim_pak",
+      "ia_id": "mrsestherkimpakk00hall",
+      "page_count": 0,
+      "ocr_confidence": "N/A (no OCR layer)",
+      "character_anomaly_ratio": "N/A",
+      "encoding_anomalies": "N/A",
+      "missing_metadata_fields": 0,
+      "extraction_completeness": "0% (no extractable text)",
+      "checksum_integrity": "PASS",
+      "final_verdict": "EXTRACTION_FAILED"
+    },
+    {
+      "candidate": "kim_chang_sik_circuit_rider",
+      "ia_id": "kimchangsikkorea00unse",
+      "page_count": 0,
+      "ocr_confidence": "N/A (no OCR layer)",
+      "character_anomaly_ratio": "N/A",
+      "encoding_anomalies": "N/A",
+      "missing_metadata_fields": 0,
+      "extraction_completeness": "0% (no extractable text)",
+      "checksum_integrity": "PASS",
+      "final_verdict": "EXTRACTION_FAILED"
+    }
+  ],
+  "measurements": {},
+  "threshold_recommendations": {
+    "note": "Thresholds must be determined from real OCR data. Current candidates are scanned PDFs without OCR layers.",
+    "page_count": {
+      "pass": ">= 1",
+      "warning": "< 10",
+      "fail": "== 0"
+    },
+    "ocr_confidence": {
+      "pass": ">= 85%",
+      "warning": "60-85%",
+      "fail": "< 60%"
+    },
+    "character_anomaly_ratio": {
+      "pass": "< 2%",
+      "warning": "2-5%",
+      "fail": "> 5%"
+    },
+    "encoding_anomalies": {
+      "pass": "0",
+      "warning": "1-3",
+      "fail": "> 3"
+    },
+    "missing_metadata_fields": {
+      "pass": "0",
+      "warning": "1-2",
+      "fail": "> 2"
+    },
+    "extraction_completeness": {
+      "pass": ">= 95%",
+      "warning": "80-95%",
+      "fail": "< 80%"
+    }
+  }
+}

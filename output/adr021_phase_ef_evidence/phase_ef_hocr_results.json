@@ -1,0 +1,94 @@
+[
+  {
+    "candidate": "gifford_forward_mission",
+    "final_state": "QUALITY_PASSED",
+    "page_count": 29,
+    "identity": {
+      "author_id": "gifford_daniel_l",
+      "work_id": "gifford_daniel_l-a_forward_mission_movement_in_north_korea",
+      "edition_id": "gifford_daniel_l-a_forward_mission_movement_in_north_korea-gifford_forward_mission_movement_in_north_korea",
+      "source_id": "gifford_forward_mission",
+      "author_collided": false,
+      "work_collided": false,
+      "edition_collided": false
+    },
+    "preservation": {
+      "checksum": "9c6fec968f6c4f1d1e2eff552d27fd5b4cab8322f1e229d2333176b6c6005ebd",
+      "duplicate_of": null,
+      "raw_path": "/tmp/nae_dryrun_oz221f7f/gifford_forward_mission/raw/hocr.html"
+    },
+    "validation": {
+      "passed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "gate_result": {
+      "verdict": "PASS",
+      "fail_reasons": [],
+      "warning_reasons": []
+    },
+    "extraction_source": "hocr",
+    "notes": []
+  },
+  {
+    "candidate": "hall_esther_kim_pak",
+    "final_state": "QUALITY_GATE_FAILED",
+    "page_count": 0,
+    "identity": {
+      "author_id": "hall_rosetta_sherwood",
+      "work_id": "hall_rosetta_sherwood-dr_pak_the_first_korean_woman_doctor",
+      "edition_id": "hall_rosetta_sherwood-dr_pak_the_first_korean_woman_doctor-hall_mrs_esther_kim_pak_korea_s_first_woman_doctor",
+      "source_id": "hall_esther_kim_pak",
+      "author_collided": false,
+      "work_collided": false,
+      "edition_collided": false
+    },
+    "preservation": {
+      "checksum": "79dae4509f37ab23bdb5a6b4d105b1a4ad59712beb42f2925c7084a47e2e7ef8",
+      "duplicate_of": null,
+      "raw_path": "/tmp/nae_dryrun_oz221f7f/hall_esther_kim_pak/raw/hocr.html"
+    },
+    "validation": {
+      "passed": false,
+      "errors": [
+        "required metadata field missing: publication_year",
+        "required metadata field missing: copyright_status"
+      ],
+      "warnings": []
+    },
+    "gate_result": null,
+    "extraction_source": "hocr",
+    "notes": []
+  },
+  {
+    "candidate": "kim_chang_sik_circuit_rider",
+    "final_state": "QUALITY_PASSED",
+    "page_count": 6,
+    "identity": {
+      "author_id": "kim_chang_sik",
+      "work_id": "kim_chang_sik-kim_chang_sik_a_korean_circuit_rider",
+      "edition_id": "kim_chang_sik-kim_chang_sik_a_korean_circuit_rider-kim_chang_sik_kim_chang_sik_a_korean_circuit_rider",
+      "source_id": "kim_chang_sik_circuit_rider",
+      "author_collided": false,
+      "work_collided": false,
+      "edition_collided": false
+    },
+    "preservation": {
+      "checksum": "15f4edfb77eae470ea9b5578f927715e66eea96d5d6abb213bb696c713cfd42e",
+      "duplicate_of": null,
+      "raw_path": "/tmp/nae_dryrun_oz221f7f/kim_chang_sik_circuit_rider/raw/hocr.html"
+    },
+    "validation": {
+      "passed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "gate_result": {
+      "verdict": "PASS",
+      "fail_reasons": [],
+      "warning_reasons": []
+    },
+    "extraction_source": "hocr",
+    "notes": []
+  }
+]

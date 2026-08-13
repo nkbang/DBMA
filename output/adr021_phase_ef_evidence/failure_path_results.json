@@ -1,0 +1,82 @@
+[
+  {
+    "test_name": "raw_missing",
+    "final_state": "RAW_CHECKSUM_MISMATCH",
+    "fail_reasons": [],
+    "in_exception_queue": false,
+    "exception_entry": {
+      "state": "RAW_CHECKSUM_MISMATCH",
+      "reason": "no raw files found in raw_item_dir"
+    }
+  },
+  {
+    "test_name": "checksum_mismatch",
+    "final_state": "EXTRACTION_FAILED",
+    "fail_reasons": [],
+    "in_exception_queue": true,
+    "exception_entry": {
+      "state": "EXTRACTION_FAILED",
+      "reason": "extraction produced 0 pages (source=none)"
+    }
+  },
+  {
+    "test_name": "extraction_output_missing",
+    "final_state": "EXTRACTION_FAILED",
+    "fail_reasons": [],
+    "in_exception_queue": true,
+    "exception_entry": {
+      "state": "EXTRACTION_FAILED",
+      "reason": "extraction produced 0 pages (source=none)"
+    }
+  },
+  {
+    "test_name": "zero_page",
+    "final_state": "EXTRACTION_FAILED",
+    "fail_reasons": [],
+    "in_exception_queue": true,
+    "exception_entry": {
+      "state": "EXTRACTION_FAILED",
+      "reason": "extraction produced 0 pages (source=none)"
+    }
+  },
+  {
+    "test_name": "corrupt_source",
+    "final_state": "EXTRACTION_FAILED",
+    "fail_reasons": [],
+    "in_exception_queue": true,
+    "exception_entry": {
+      "state": "EXTRACTION_FAILED",
+      "reason": "extraction produced 0 pages (source=none)"
+    }
+  },
+  {
+    "test_name": "identity_unavailable",
+    "final_state": "QUALITY_GATE_FAILED",
+    "fail_reasons": [],
+    "in_exception_queue": true,
+    "exception_entry": {
+      "state": "QUALITY_GATE_FAILED",
+      "reason": "required metadata field missing: publication_year; required metadata field missing: copyright_status"
+    }
+  },
+  {
+    "test_name": "required_metadata_missing",
+    "final_state": "QUALITY_GATE_FAILED",
+    "fail_reasons": [],
+    "in_exception_queue": true,
+    "exception_entry": {
+      "state": "QUALITY_GATE_FAILED",
+      "reason": "required metadata field missing: publication_year; required metadata field missing: copyright_status"
+    }
+  },
+  {
+    "test_name": "raw_absent",
+    "final_state": "RAW_CHECKSUM_MISMATCH",
+    "fail_reasons": [],
+    "in_exception_queue": false,
+    "exception_entry": {
+      "state": "RAW_CHECKSUM_MISMATCH",
+      "reason": "no raw files found in raw_item_dir"
+    }
+  }
+]
