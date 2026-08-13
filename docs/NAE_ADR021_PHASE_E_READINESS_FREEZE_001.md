@@ -15,6 +15,87 @@ Phase E/F = NOT YET AUTHORIZED — HOLD
 
 ---
 
+## G. Phase E 1차 실행 결과 및 진단 정정 (2026-08-12)
+
+C1이 Phase E/F 독립 감사를 1차 실행(evidence: `output/adr021_phase_ef_evidence/`,
+gitignored, 미커밋)했다. CUE가 원본 evidence(`manifest.json`,
+`dry_run_results.json`)를 자체 조사 결과(이전 세션의 Archive.org
+메타데이터 직접 조회)와 교차 대조해 진단 오류를 발견했다.
+
+**정정 전 (C1 1차 보고)**: "Internet Archive 스캔 PDF에 OCR 레이어가
+부재하여 Quality Gate 지표 측정 불가" → CONDITIONAL GREEN
+
+**정정 후 (CUE 교차대조 + 사용자 확인, 2026-08-12)**: Archive.org에
+3개 후보 전부 OCR artifact(hOCR)가 실재함이 이미 확인된 상태였다
+(forwardmission00giff_hocr.html 824,806B / mrsestherkimpakk00hall_hocr.html
+594,821B / kimchangsikkorea00unse_hocr.html 127,203B). C1의 dry-run은
+`manifest.json`의 `staging_dir`(`/tmp/nae_dryrun_oz221f7f`)에
+`original.pdf`만 배치했고 hOCR/OCR TXT는 받아오지 않았다 —
+`extract_pages()`가 1순위(`hocr.html`)·2순위(`ocr.txt`)를 건너뛰고
+3순위(PyMuPDF PDF 텍스트 추출)로 폴백했으나, 스캔 이미지 PDF는
+임베디드 텍스트 레이어가 없어 빈 텍스트를 반환했다(PyMuPDF 자체는
+dbma311 venv에 정상 설치 확인됨). **결론: OCR 레이어 부재가 아니라
+dry-run staging이 OCR artifact를 포함하지 않은 test fixture 구성
+문제다.** ADR-021 설계(Production 안전성/failure handling)와 이번
+테스트 실행 결함은 서로 다른 층위 — 설계 결함이 아님이 오히려 이번
+교차대조로 명확해졌다.
+
+**CONDITIONAL GREEN 판정 자체는 유지**하되 사유를 이 정정된 진단으로
+교체한다. 이미 확정된 검증 결과(재검증 불필요):
+
+```
+[x] Production TSU 무결성
+[x] Qdrant 3,319 points 무변경
+[x] Baseline 수치(verified=3319/generated=776/rejected=22/total=4117)
+[x] Regression 36/36 (+ 기존 106)
+[x] FAIL-path 8/8
+[x] Evidence 내부 정합성(baseline.json ↔ git HEAD ↔ 직접 재측정 일치)
+[x] Archive.org 3개 후보 OCR artifact 실재 확인
+```
+
+아직 검증되지 않은 것(2차 재실행 대상):
+
+```
+[ ] hOCR extraction 경로 실제 동작(extract_from_hocr 성공 경로)
+[ ] OCR confidence 실측
+[ ] character anomaly ratio 실측
+[ ] PASS 경로 최소 1건
+[ ] WARNING 경로 최소 1건
+[ ] Quality Gate threshold의 empirical validation
+```
+
+### GREEN 승격 조건 (2차 재실행 성공 기준, 사용자 확정 2026-08-12)
+
+단순 "파일 다운로드 성공"이 아니라 아래 경로 전체가 실제로 동작해야
+한다:
+
+```
+Candidate → hOCR staging → extract_pages() → register_source()
+  → Quality Gate → PASS/WARNING → evidence 기록
+```
+
+그리고 최소 1개 후보에서 PASS 또는 WARNING이 실제로 발생해야
+CONDITIONAL GREEN → GREEN 승격이 가능하다.
+
+### 재실행 시 evidence에 필수로 남겨야 할 필드 (사용자 요구사항)
+
+같은 종류의 누락이 재발했는지 evidence만으로 즉시 판별할 수 있도록,
+candidate별로 최소 다음을 기록해야 한다:
+
+```
+original.pdf       present=true
+hocr.html          present=true
+hocr_size_bytes    > 0
+ocr extraction     source=hocr.html
+text_length        > 0
+extraction_source  = "hocr.html"   # extract_pages()가 실제로 선택한 경로
+```
+
+`extraction_source` 필드가 없으면 이후 PASS가 나오더라도 "정말 hOCR을
+사용한 것인가"를 다시 확인해야 하는 문제가 생기므로 필수로 요구한다.
+
+---
+
 ## E. 현재 git HEAD 및 Production baseline hash
 
 ```
