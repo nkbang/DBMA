@@ -142,6 +142,7 @@ Acceptance Criteria #10("향후 Gold Standard로 승격할 근거를
 | `docs/NAE_TSU_REVIEW_WORKFLOW_DESIGN_001.md`(Pilot 001 Gate 설계) | 본 설계는 그 상위 확장 — Pilot 001의 10건은 이미 `verified`이므로 본 워크플로우의 776건 대상에서 제외됨(중복 판정 없음) |
 | ADR-020 (`NAE/pipeline/ingest/`) | 무수정. Admission 이후 `review_status="verified"`가 된 TSU만 여전히 ADR-020 incremental pipeline이 처리 |
 | ADR-021 (`NAE/pipeline/registration/`) | 무수정. 완전히 다른 계층(신규 source 등록) — 본 설계와 직접 상호작용 없음 |
+| `NAE/review/human/decision_gate.py` + `NAE/review/human/decisions/*.json` | 무수정. **기존에 이미 운영되어 현재 Production baseline(3,319건 verified)을 만들어낸 실제 시스템**(NAE-HUMAN-DECISION-GATE-PILOT-IMPLEMENTATION-001) — Pastor가 A/R/C로 답한 결과가 `HumanDecisionRecord`(`final_decision: APPROVED/REJECTED/CONDITIONAL`)로 `decisions/` 하위 40개 파일(3,347건: APPROVED 3,320/REJECTED 22/CONDITIONAL 5)에 저장된다. 본 설계의 disposition 스키마(`ACCEPT/REJECT/ACCEPT_WITH_CORRECTION/NEEDS_REVIEW/DUPLICATE_MERGE`)와 **어휘가 다르지만 매핑이 필요하지 않다** — 두 시스템은 서로 다른 레코드셋을 다룬다: 기존 3,347건은 **이미 완료되어 승격까지 끝난 3,319건**에 대한 과거 기록이고, 본 설계는 **아직 검토되지 않은 776건**(review_status=generated)만을 대상으로 한다. 대상이 겹치지 않으므로 신규 disposition record가 기존 decision 파일을 참조/변경/마이그레이션할 필요가 없다. (2026-08-13 추가 — B1 evidence report 검증 후 보강) |
 
 ## 8. Acceptance Criteria — 응답
 
