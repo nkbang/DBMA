@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dbma.local/schemas/nae_human_review_disposition.schema.json",
+  "title": "NAE Human Review Disposition Record v1",
+  "description": "Design-only draft. See docs/NAE_HUMAN_REVIEW_DISPOSITION_SCHEMA_v1.md for full field rationale. Never validated against real 776-record data as of this draft's creation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "review_id",
+    "tsu_id",
+    "source_id",
+    "work_id",
+    "edition_id",
+    "review_status",
+    "schema_version",
+    "created_at"
+  ],
+  "properties": {
+    "review_id": {
+      "type": "string",
+      "pattern": "^REVIEW-.+-[0-9]+$",
+      "description": "Immutable. Newly issued, format REVIEW-{tsu_id}-{seq}."
+    },
+    "tsu_id": {
+      "type": "string",
+      "pattern": "^TSU-[0-9]{7}$",
+      "description": "Immutable. Must reference an existing Production TSU record."
+    },
+    "source_id": { "type": "string", "description": "Immutable. Derived from the referenced TSU record." },
+    "work_id": { "type": "string", "description": "Immutable. Derived from the referenced TSU record." },
+    "edition_id": { "type": "string", "description": "Immutable. Derived from the referenced TSU record." },
+    "review_status": {
+      "type": "string",
+      "enum": ["UNREVIEWED", "IN_REVIEW", "DISPOSITIONED", "ADJUDICATION_REQUIRED", "FINALIZED"],
+      "description": "Mutable ONLY via the state machine in docs/NAE_HUMAN_REVIEW_WORKFLOW_v1.md SS2. Every transition must be recorded in a separate append-only provenance log (docs/NAE_HUMAN_REVIEW_GOVERNANCE_v1.md SS4.3)."
+    },
+    "disposition": {
+      "type": "string",
+      "enum": ["ACCEPT", "ACCEPT_WITH_CORRECTION", "NEEDS_REVIEW", "REJECT", "DUPLICATE_MERGE"],
+      "description": "Required once review_status reaches DISPOSITIONED. Append-only — a changed disposition means a new record via supersedes_review_id, never an edit."
+    },
+    "reason_code": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "CONTENT_VALIDITY", "METADATA", "EXTRACTION", "CHUNK_BOUNDARY",
+          "DUPLICATION", "SOURCE_AUTHORITY", "COPYRIGHT", "OTHER"
+        ]
+      },
+      "description": "Required once disposition is set. Independent axis from disposition (see schema doc SS1.2)."
+    },
+    "reviewer_id": { "type": "string", "description": "Required once review_status reaches IN_REVIEW." },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "review_note": {
+      "type": "string",
+      "description": "Required if reason_code includes OTHER. Otherwise optional."
+    },
+    "correction_payload": {
+      "type": "array",
+      "description": "Required if disposition == ACCEPT_WITH_CORRECTION.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["correction_type", "field", "original_value", "corrected_value", "correction_reason"],
+        "properties": {
+          "correction_type": { "type": "string" },
+          "field": { "type": "string" },
+          "original_value": { "type": "string" },
+          "corrected_value": { "type": "string" },
+          "correction_reason": { "type": "string" },
+          "evidence_ref": { "$ref": "#/$defs/evidence_ref" }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Required once disposition is set. References only — no original artifact bodies are duplicated into this record (docs/NAE_HUMAN_REVIEW_GOVERNANCE_v1.md SS3).",
+      "items": { "$ref": "#/$defs/evidence_ref" }
+    },
+    "previous_disposition": {
+      "type": "string",
+      "enum": ["ACCEPT", "ACCEPT_WITH_CORRECTION", "NEEDS_REVIEW", "REJECT", "DUPLICATE_MERGE"],
+      "description": "Set only when this record supersedes an earlier one (re-review)."
+    },
+    "supersedes_review_id": {
+      "type": "string",
+      "description": "review_id of the record this one replaces. The superseded record is never deleted or edited."
+    },
+    "merged_into_tsu_id": {
+      "type": "string",
+      "pattern": "^TSU-[0-9]{7}$",
+      "description": "Required if disposition == DUPLICATE_MERGE."
+    },
+    "adjudication_status": {
+      "type": "string",
+      "enum": ["NOT_REQUIRED", "PENDING", "RESOLVED"]
+    },
+    "adjudicator_id": { "type": "string", "description": "Required once review_status reaches ADJUDICATION_REQUIRED." },
+    "adjudicated_at": { "type": "string", "format": "date-time" },
+    "final_disposition": {
+      "type": "string",
+      "enum": ["ACCEPT", "ACCEPT_WITH_CORRECTION", "NEEDS_REVIEW", "REJECT", "DUPLICATE_MERGE"],
+      "description": "Set by the adjudicator only. The original conflicting reviewer records are preserved unchanged."
+    },
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "evidence_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ref"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "source_page", "tsu_text", "metadata", "ocr_evidence",
+            "source_identifier", "external_authority", "reviewer_note"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "description": "Reference string (e.g. 'source_id:BAP-CHURCH-DAGG-001#page=42', 'tsu_id:TSU-0000123', a URL, or free-text citation for external_authority)."
+        }
+      }
+    }
+  }
+}
