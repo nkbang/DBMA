@@ -1,9 +1,9 @@
 # NAE Upstream Ingestion Layer — Work Plan v1
 
 작성일: 2026-08-11
-최종 개정: 2026-08-11 (FINAL-DRAFT 반영)
-대상 ADR: [ADR-021](architecture/ADR-021-NAE-Source-Registration-Raw-Preservation-Extraction.md) (Proposed/FINAL-DRAFT, C1 Final Review 대기)
-상태: 계획 단계 — **코드 구현 미착수**
+최종 개정: 2026-08-13 (ADR-021 Approved 승격 반영)
+대상 ADR: [ADR-021](architecture/ADR-021-NAE-Source-Registration-Raw-Preservation-Extraction.md) (**Approved**, 2026-08-13)
+상태: **Phase A~F 전체 완료**
 
 ---
 
@@ -31,10 +31,17 @@
       `b1ebc3a`, 2026-08-11) — quality_gate.py 포함(Phase C와 통합 구현됨)
 - [x] Phase C: Quality Gate 구현 (WARNING 우선, FAIL 7항목 고정) — Phase B에 포함되어 완료
 - [x] Phase D: 단위 테스트 — smoke test 6건 + coverage test 36건 완료(ADR-021 §17 14개 영역 전체), 42/42 PASS, Evidence Package(output/phase_b_evidence.jsonl) 생성 완료
-- [ ] Phase E: 샘플 신규 source 1건 dry-run (후보 3건 중 선정)
-- [ ] Phase F: Evidence Package + 회귀
-- [ ] ADR-021 Approved 승격 (Phase E~F 완료 후 — Evidence Before Promotion Rule)
-진행률: 85%
+- [x] Phase E: hOCR staging 재실행 후 GREEN 승격 조건 충족 (gifford 29p/PASS,
+      kim 6p/PASS via 실제 `extraction_source=hocr` 경로, commit `5ed5562`,
+      2026-08-12) — hall은 metadata 누락으로 Extraction 이전 단계에서 정상 반려
+- [x] Phase F: Final Evidence Freeze — 단일 writer 원칙(`scripts/generate_adr021_final_evidence.py`,
+      commit `6c1d9cd`)로 governance 문제(경쟁 writer, gitignore 오추적)
+      교정 후 재실행: production_integrity PASS, regression 142/142,
+      FAIL-path 8/8, manifest↔disk 완전 일치, self-consistency 검증 완료
+      (2026-08-13)
+- [x] ADR-021 Approved 승격 (2026-08-13) — Evidence Before Promotion Rule
+      4개 조건(구현완료/회귀PASS/C1독립리뷰/사용자승인) 전부 충족
+진행률: 100%
 ```
 
 ## 2. Phase 순서 및 산출물
@@ -132,5 +139,8 @@
 
 ## 비고
 
-이 문서는 ADR-021 Approved 승인 전까지 계획 문서로만 유지한다. C1 Final
-Review 통과 및 Approved 승격 후 각 Phase 완료 시 진행률(§1)을 갱신한다.
+**2026-08-13: ADR-021 Approved 승격 완료, Phase A~F 전체 완료.** 이
+work plan은 계획 문서에서 완료 기록 문서로 전환되었다. 776건 Human
+Review disposition 설계(별도 트랙, 현재 보류)와 실제 Production
+신규 source ingestion 실행(본 work plan은 dry-run까지만 다룸)은 이
+문서 범위 밖으로 남는다 — 재개 시 별도 작업 명령으로 착수한다.

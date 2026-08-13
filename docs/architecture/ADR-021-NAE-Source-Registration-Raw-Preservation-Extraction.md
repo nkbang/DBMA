@@ -8,8 +8,8 @@ based_on:
   - docs/architecture/ADR-020-NAE-Incremental-Ingestion-Architecture.md
   - docs/NAE_METADATA_GOVERNANCE_v1.md
 created: 2026-08-11
-revised: 2026-08-11 (FINAL-DRAFT — C1 CONDITIONAL GREEN 조건 반영)
-scope: 신규 모듈 NAE/pipeline/registration/ (설계 확정, 구현 미착수). 기존
+revised: 2026-08-13 (Approved — Phase A~F 전체 완료, Final Evidence Freeze 통과)
+scope: 신규 모듈 NAE/pipeline/registration/ (구현 완료, Phase A~D). 기존
   NAE/pipeline/canonical/*, NAE/pipeline/tsu/*, NAE/pipeline/ingest/*,
   NAE/pipeline/index/*, NAE/pipeline/embed/*, NAE/collectors/*,
   core/dataset_registry.py 무수정 — 전량 재사용만.
@@ -19,7 +19,7 @@ scope: 신규 모듈 NAE/pipeline/registration/ (설계 확정, 구현 미착수
 
 | | |
 |---|---|
-| Status | **Proposed / FINAL-DRAFT** (Phase E hOCR 재실행 GREEN 승격 조건 충족, 사용자 최종 승인 대기) |
+| Status | **Approved** (2026-08-13, 4개 조건 — 구현완료/회귀PASS/C1리뷰/사용자승인 — 전부 충족) |
 | Date | 2026-08-11 (최초), 2026-08-11 (FINAL-DRAFT 개정) |
 | Deciders | Rev. Bang, CUE |
 | Extends | ADR-020(Incremental Ingestion, downstream 절반 — 이미 Approved/GREEN) |
@@ -533,7 +533,14 @@ Evidence Package → C1 Independent Audit → User Approval → Production promo
 | 2026-08-12 | C1 Phase E 1차 dry-run | 3개 후보 전부 EXTRACTION_FAILED. CUE가 evidence 교차대조로 "OCR 레이어 부재"가 아니라 dry-run staging이 hocr.html/ocr.txt를 배치하지 않은 test fixture 문제임을 규명(사용자 확인) |
 | 2026-08-12 | C1 Phase E 2차 재실행(hOCR staging 보완) | gifford(29p, PASS)·kim(6p, PASS)·hall(metadata 누락, QUALITY_GATE_FAILED — 정상 동작) — `extraction_source` 필드로 hOCR 경로 실사용 확인. 최소 1개(실제 2개) 후보에서 PASS 도달 — **GREEN 승격 조건 충족**(commit `5ed5562`) |
 | 2026-08-12 | Phase D 전체 커버리지 | ADR-021 §17 14개 영역 커버 테스트 36건 추가(총 42/42 PASS), evidence generator 추가(commit `de8eeb7`). CUE가 안전성(Production 읽기전용, 쓰기는 자체 output만) 직접 검증 후 커밋 |
+| 2026-08-12 | Git governance 교정 | `output/adr021_phase_ef_evidence/`가 실수로 git 추적 상태였음을 CUE가 발견, `.gitignore` 예외 규칙 제거 + `git rm --cached`로 untrack(history rewrite 없음, commit `b9d8865`). 동일 편집에서 발생한 `.gitignore` 병합 실수(`output/`+`output_sav/`→`output/output_sub/`)도 같은 커밋에서 자체 발견·수정 |
+| 2026-08-12 | Phase F 1차 감사 — Evidence Freshness FAIL 발견 | CUE가 evidence 디렉토리를 감사하는 도중 다른 프로세스가 실시간으로 파일을 재작성하는 것을 직접 관측(경쟁 writer). 한 스냅샷에서 `production_integrity.json`이 `qdrant_reachable=false`이면서도 `production_mutation=false`를 주장하는 자기모순 발견 — Final Approval을 HOLD 처리 |
+| 2026-08-13 | Phase F Final Evidence Freeze | 단일 writer 원칙으로 `scripts/generate_adr021_final_evidence.py` 신설(commit `6c1d9cd`) — staging에서 전량 생성 후 manifest.json을 마지막에 계산, atomic move로 발행. hall의 서술을 "register_source extraction = NOT_REACHED(Source Validation이 Extraction보다 먼저 실행되어 도달하지 않음), 별도 direct hOCR test에서만 15p 확인"으로 정정. 재실행 결과: production_integrity PASS(Qdrant reachable, points=3319, TSU SHA256 일치), regression 142/142, FAIL-path 8/8(이전 in_exception_queue 오차 수정됨), manifest↔disk 완전 일치, 3초 재해시 드리프트 0 — **Self-consistency PASS** |
+| 2026-08-13 | ADR-021 Approved 승격 | Evidence Before Promotion Rule 4개 조건(구현완료/회귀PASS/C1독립리뷰/사용자승인) 전부 충족 확인 |
 
-**FINAL STATUS: Phase A/B/C/D 완료, Phase E GREEN 승격 조건 충족(2개
-후보 PASS, `extraction_source=hocr` 확인). Phase F(전체 Evidence
-Package + 회귀) 및 ADR-021 Approved 최종 승격은 사용자 승인 대기.**
+**FINAL STATUS: Approved. Phase A~F 전체 완료 — Legacy Authority
+Snapshot(Phase A), `NAE/pipeline/registration/` 8개 모듈(Phase B/C),
+전체 테스트 커버리지 42건(Phase D), hOCR 경로 실증 PASS 2건(Phase E),
+Final Evidence Freeze로 governance 문제 교정 및 self-consistency 검증
+완료(Phase F). Production mutation 0, 기존 3,319 verified TSU / Qdrant
+3,319 vector 불변.**
