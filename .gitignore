@@ -83,8 +83,6 @@ logs/*.jsonl
 
 # Runtime outputs
 output/
-# ADR-021 evidence package — must be committed
-!output/adr021_phase_ef_evidence/
 output_sav/
 /reports/
 
