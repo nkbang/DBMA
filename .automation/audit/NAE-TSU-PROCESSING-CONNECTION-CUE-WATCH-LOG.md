@@ -37,3 +37,44 @@ Baseline:
 - `git diff core/retrieval.py NAE/pipeline/tsu/*.py NAE/pipeline/ingest/*.py` — 비어 있음
 
 이후 각 check-in은 이 파일 하단에 append.
+
+## 2026-08-15 15:42 UTC(추정, 세션 재개 후) — C1 보고 독립 검증 + 중대 구조적 발견
+
+### C1 보고 검증
+
+PID 88689가 C1이 launchd로 띄운 프로세스임을 확인(C1 보고서와 대조 일치).
+`tsu_report.json` 재조회 결과 CUE가 아까 직접 읽었던 값과 일치(300/5,452,
+claims 207, elapsed 3248.91s) — 서로 다른 체크포인트 시점(C1은 100건째,
+CUE는 300건째) 관측이라 속도 차이(12.65s vs 10.83s/candidate)는 정상 변동,
+불일치 아님. Evidence 파일(`MISSION-003-STATUS.md`,
+`phase-1-tsu-generation/README.md`) 실재 확인.
+
+**실측 기반 전체 완료 예상**: 볼륨당 16~21시간, 8볼륨 전부면 130~170시간+.
+
+### 🔴 구조적 발견 — Phase 2/3는 TSU 생성이 끝나도 자동으로 진행되지 않는다
+
+`scripts/nae_incremental_ingest.py:33`:
+```python
+return [r for r in data if r.get("review_status") == "verified"]
+```
+
+`NAE/pipeline/tsu/review_promotion.py` 모듈 docstring이 명시: `review_status
+== "verified"`는 **"사람이 신학적 검토를 완료했다"**는 뜻이며, 이 모듈은
+"the only path by which a TSU record's review_status may become verified"다.
+새로 생성되는 TSU는 전부 `review_status: "generated"`로 시작한다(builder.py
+자체 docstring).
+
+즉 Phase 1이 20시간 뒤 완료돼도, Phase 2(embedding dry-run)는 **검토·승격된
+레코드가 0건이라 아무것도 하지 않을 것**이다. Dagg/Hiscox의 기존
+`index_report.json`이 `records_total_raw: 3377/740` 중 `gate_pass: 5,
+indexed: 5`였던 이유가 바로 이것 — 원래도 사람이 수천 개 후보 중 5개만
+검토·승격한 결과였다.
+
+**결론**: 이건 버그나 설계 공백이 아니라 **의도된 human-in-the-loop 품질
+게이트**다. C1/CUE가 임의로 우회·자동화하면 안 된다(Order 003의 "새 아키텍처
+임의 구현 금지"와 review_promotion.py의 설계 의도 둘 다 위반). Phase 1
+완료 후 Phase 2로 넘어가려면 **사람의 검토·승격 결정이 별도로 필요**하다는
+사실을 Rev. Bang에게 미리 보고함.
+
+Rev. Bang 결정: 현재 프로세스(PID 88689) 그대로 계속 진행. Phase 1 완료 후
+review/promotion 필요성은 그때 다시 보고.
