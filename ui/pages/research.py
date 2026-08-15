@@ -12,7 +12,7 @@ Stitch-style redesign:
 
 import os
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 import streamlit as st
 from pathlib import Path
@@ -163,6 +163,10 @@ def render_research_page() -> None:
         # ── Search Results ─────────────────────────────────────
         page.render_section("검색 결과", icon="📊")
         _render_search_results()
+
+        # ── NAE Public Theology (ADR-024 Bridge) ───────────────
+        # nae_pd module이 enabled일 때만 표시 — §F module gating 준수
+        _render_nae_section()
 
         # ── Query Analysis ─────────────────────────────────────
         page.render_section("검색 분석", icon="📈")
@@ -421,6 +425,98 @@ def _render_saved_sessions() -> None:
             if st.button("이 검색어 불러오기", key=f"load_query_{session_id}_{i}"):
                 st.session_state["research_query"] = q.get("query", "")
                 st.success("검색어를 검색창에 불러왔습니다. '검색 실행'을 눌러 재검색하세요.")
+
+
+# ── NAE Public Theology Bridge (ADR-024) ────────────────────────
+
+def _render_nae_section() -> None:
+    """NAE Public Theology 검색 섹션 — module gating 준수 (§F).
+
+    nae_pd가 disabled면 이 함수가 아무것도 렌더링하지 않는다.
+    enabled일 때만 "NAE Public Theology (Beta)" 섹션을 표시하고,
+    DBMA 결과와 별도 영역으로 보여준다 (§B 병합 금지).
+    """
+    from core import module_registry
+
+    if not module_registry.is_enabled("nae_pd"):
+        return  # §F: disabled면 렌더링하지 않음
+
+    st.divider()
+    st.subheader("📖 NAE Public Theology (Beta)")
+    st.caption("공개 신학 corpus — DBMA 결과와 별도 검색")
+
+    # NAE 전용 검색어 입력 (DBMA 검색어와 분리)
+    nae_query = st.text_input(
+        "NAE 검색어",
+        placeholder="NAE corpus에서 검색할 질문을 입력하세요...",
+        key="nae_research_query",
+    )
+
+    if not nae_query:
+        st.info("NAE 검색어를 입력하고 '검색'을 클릭하세요.")
+        return
+
+    # NAE 검색 실행 버튼
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        if st.button("🔍 NAE 검색", type="primary", use_container_width=True):
+            nae_results = _execute_nae_retrieval(nae_query)
+            st.session_state["nae_research_results"] = nae_results
+            st.session_state["nae_search_status"] = (
+                f"NAE 결과 {len(nae_results)}건" if nae_results else "NAE 결과 없음"
+            )
+
+    # NAE 결과 표시
+    nae_results = st.session_state.get("nae_research_results")
+    nae_status = st.session_state.get("nae_search_status", "")
+
+    if not nae_results and not nae_status:
+        return
+
+    if nae_status:
+        st.caption(nae_status)
+
+    if not nae_results:
+        st.info("NAE corpus에서 일치하는 결과가 없습니다.")
+        return
+
+    # NAE 결과 카드 표시
+    for i, citation in enumerate(nae_results, 1):
+        score = getattr(citation, "retrieval_score", 0)
+        author = getattr(citation, "source_author", "") or "Unknown"
+        excerpt = getattr(citation, "content_excerpt", "") or ""
+        scripture = getattr(citation, "scripture_reference", "Unmapped")
+        source_title = getattr(citation, "source_title", "") or "Unknown Work"
+
+        with st.container():
+            st.markdown(f"**{i}. {source_title}**")
+            st.caption(f"Score: {score:.4f} | {scripture}")
+            st.caption(f"Author: {author}")
+            st.caption(excerpt[:300])
+            if getattr(citation, "tsu_id", None):
+                st.caption(f"TSU ID: {citation.tsu_id}")
+
+
+def _execute_nae_retrieval(query: str) -> list[Any]:
+    """NAE Qdrant 검색 실행 — bridge_query() 호출.
+
+    §G fail-closed: 모든 예외를 캐치하고 [] 반환.
+    """
+    try:
+        from NAE.retrieval_adapter import bridge_query, NaePdModuleDisabledError
+
+        # module gate는 bridge_query 내부에서 처리 — limit_check=True (기본값)
+        citations = bridge_query(query, top_k=10, limit_check=True)
+        return citations or []
+
+    except NaePdModuleDisabledError:
+        # 설정 오류 — UI가 구분해서 보여줘야 함
+        st.error("NAE 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")
+        return []
+
+    except Exception:  # noqa: BLE001 — §G fail-closed
+        st.warning("NAE 검색 중 오류가 발생했습니다. (fail-closed: 빈 결과)")
+        return []
 
 
 # ── Query Analysis ─────────────────────────────────────────────
