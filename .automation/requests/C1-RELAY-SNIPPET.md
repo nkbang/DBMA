@@ -1,6 +1,43 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 5 — Night Shift Order 002: NAE Production Ingestion (2026-08-15 07:40 UTC, 현재 유효)
+## 릴레이 6 — Correction Order 003 (2026-08-15 07:45 UTC, 현재 유효)
+
+```
+10건 파일럿/확대 실행이 전부 exit 0/QUALITY_PASSED로 나왔지만, 등록 결과가
+어디에도 영구 저장되지 않는 버그를 CUE가 발견했다. pilot-summary.json에
+네가 직접 "registration_state_json NOT WRITTEN"이라고 정직하게 적어놓은 건
+잘했다 — 다만 원인 설명("manifest_writer가 authority 파일에 쓴다")은 틀렸다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-CORRECTION-ORDER-003-CLI-DRIVER-EPHEMERAL-STATE.md
+
+요약 (원인은 이미 CUE가 코드로 확정했다 — 재조사하지 마라):
+cli_driver.py가 매 호출마다 tempfile.mkdtemp()로 새 임시 디렉터리를 만들고
+거기에 state_store와 manifest_path를 둔다 — 프로세스 종료와 함께 전부
+사라진다. 수정 2건:
+1. state_store를 config.DEFAULT_REGISTRATION_STATE_PATH로 바꿔라(이미
+   RegistrationStateStore의 기본값으로 설계돼 있다 — 그냥 그거 써라).
+2. manifest_path는 resources/theological_sources/baptist/source_manifest.yaml
+   에 쓰지 마라 — 그건 사람이 큐레이션한 다른 목적의 파일이고, 지금 등록하는
+   10건은 그 안에 없다. 대신 config.py에
+   DEFAULT_SOURCE_MANIFEST_PATH = STATE_DIR / "source_manifest.yaml"을
+   추가하고 그걸 써라(기존 CHECKSUM_LEDGER_PATH/REGISTRATION_STATE_PATH와
+   같은 패턴).
+
+수정 후 10건을 다시 처리해라 — 안전하다(같은 source_id는 duplicate로 안
+잡힘, chmod는 멱등, 체크섬 원장은 append-only). 이번엔 registration_state.json
+과 source_manifest.yaml에 실제로 10개 항목씩 기록되는지 evidence로 남겨라.
+
+NAE/authority/*.yaml과 resources/theological_sources/ 아래는 절대 건드리지
+마라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 5 — Night Shift Order 002: NAE Production Ingestion (2026-08-15 07:40 UTC, 완료·참고용)
 
 ```
 새 장기 Night Shift 미션이다. 아래 파일을 열어서 Phase 1부터 순서대로

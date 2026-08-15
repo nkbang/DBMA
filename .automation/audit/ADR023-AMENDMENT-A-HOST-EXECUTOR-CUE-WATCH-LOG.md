@@ -58,3 +58,32 @@ AskUserQuestion으로 확인 → **Rev. Bang이 "Registration까지만(권장)" 
 `C1-NIGHT-SHIFT-ORDER-002-NAE-PRODUCTION-INGESTION.md` 발행: Phase 3/4를
 Registration Full Processing(QUALITY_PASSED까지)으로 명시 축소, TSU/embedding/
 Qdrant는 "긴급 중단 조건"에 추가(시도 자체가 범위 이탈). 릴레이 5로 전달.
+
+## 2026-08-15 07:45 UTC — Registration 10건 "PASS" 그러나 등록 결과 미영구화 → Correction Order 003
+
+- 릴레이 5(Registration 범위)로 실행된 결과: 파일럿(Dagg) + 확대 9건
+  전부 `exit 0`, `final_state: QUALITY_PASSED` — 10/10 `done/`으로 이동.
+- **그러나 CUE 독립 확인 결과 등록 기록 자체가 남지 않음**:
+  - ✅ 정상 영구 저장: `raw_checksum_ledger.jsonl`(22줄, 10건 preserve+reverify),
+    raw 파일 chmod 0o444 확인(`ls -la` 직접 확인)
+  - ✅ 의도대로 무변경: `NAE/authority/*.yaml` (git status 무변화)
+  - ❌ `registration_state.json` — 여전히 미존재
+  - ❌ 등록 카탈로그(`source_manifest.yaml`) — 어디에도 존재하지 않음
+- C1은 `pilot-summary.json`에 `"registration_state_json": "NOT WRITTEN"`을
+  스스로 정직하게 기록함(Correction Order 001 이후 개선된 패턴) — 다만
+  원인 설명("manifest_writer가 authority 파일에 씀")은 **CUE 확인 결과 틀림**
+  (authority 파일은 읽기 전용으로만 쓰임, git status로 확인).
+- Root cause(코드로 확정): `cli_driver.py::main()`이 매 호출마다
+  `tempfile.mkdtemp()`로 새 임시 디렉터리에 state_store/manifest_path를
+  둠 — 프로세스 종료와 함께 소실. `RegistrationStateStore`는 원래
+  `config.DEFAULT_REGISTRATION_STATE_PATH`가 기본값으로 설계돼 있음(코드
+  확인, `state.py:46`) — 그 기본값을 안 쓴 게 버그.
+- manifest_path 관련 위험 발견: `resources/theological_sources/baptist/
+  source_manifest.yaml`은 **사람이 큐레이션한 다른 목적의 문서**(확보 예정
+  후보 카탈로그, 상이한 스키마)임을 확인 — 여기 잘못 쓰면 오염 위험. 새
+  `config.DEFAULT_SOURCE_MANIFEST_PATH`(automation 소유, 기존 패턴과 일관)를
+  신설하도록 지시, 큐레이션 문서는 절대 건드리지 않게 명시.
+- 재실행 안전성 확인(코드로): duplicate 판정은 `exclude_source_id=source_id`로
+  자기 자신 제외(거짓 duplicate 없음), chmod 멱등, ledger append-only —
+  10건 재처리해도 데이터 손실 없음.
+- Correction Order 003 발행, 릴레이 6으로 전달.
