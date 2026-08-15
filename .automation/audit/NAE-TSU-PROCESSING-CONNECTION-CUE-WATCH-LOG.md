@@ -78,3 +78,30 @@ indexed: 5`였던 이유가 바로 이것 — 원래도 사람이 수천 개 후
 
 Rev. Bang 결정: 현재 프로세스(PID 88689) 그대로 계속 진행. Phase 1 완료 후
 review/promotion 필요성은 그때 다시 보고.
+
+## 2026-08-15 16:05 CDT — CUE Directive 채택: NAE TSU Extraction Continuation
+
+Rev. Bang 지시로 아래를 운영 원칙으로 고정한다(요약, 전문은 대화 기록 참고):
+
+- Vol01 production run(PID 88689, `llama-server --parallel 1`) 무변경 유지.
+  Ollama 재시작·모델 unload/load·`OLLAMA_NUM_PARALLEL` 변경·프로세스 중단
+  전부 금지.
+- C1에게 새 성능 실험 하달 안 함(병렬화 실험 취소).
+- CUE는 1시간 간격으로 다음만 확인: processed/total, throughput,
+  process alive, error/failure count, evidence/state integrity. 정상이면
+  개입하지 않는다.
+- 개입 조건(이것만): 프로세스 종료, 반복 오류, state/evidence corruption,
+  데이터 손상 가능성, production boundary violation. 단일 candidate 실패는
+  개입 사유 아님. **"느리다"는 이유만으로 중단·재설계 금지.**
+- Vol01 완료 시 CUE가 즉시 확인: candidate count, TSU output count,
+  실패/누락 count, evidence completeness, quality gate 결과, git diff.
+  그 후 Vol02가 자동 큐(`run_tsu_queue.sh`)에서 이어서 시작 — Rev. Bang
+  승인 대기 없이 진행.
+- 모델 최적화 검토는 볼륨 간 경계(Vol01→Vol02 등)에서만, 별도 소규모
+  benchmark로. Vol01을 위해 지금 재시작하지 않는다.
+- 운영 원칙: "정상적으로 느리게 진행되는 작업은 방해하지 않는다." 현재
+  0/400 failure, throughput 실측 진행 중 — 이 상태로는 무개입.
+- 아침까지 Rev. Bang 추가 입력 대기 없이: C1 생산 계속, CUE 감시·장애
+  대응·다음 batch 완료 감사만 수행.
+
+이 시점부터 위 원칙이 기본 운영 모드다. 이후 이탈 시에만 이 로그에 기록.
