@@ -1,0 +1,403 @@
+[2026-08-15T07:30:03.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:30:03.000Z] queue depth: 1
+[2026-08-15T07:30:03.000Z]   found 1 processable queue items
+[2026-08-15T07:30:19.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:30:19.000Z] queue depth: 1
+[2026-08-15T07:30:19.000Z]   found 1 processable queue items
+[2026-08-15T07:30:19.000Z] === Processing NAE-REG-BAP-CHURCH-DAGG-001 ===
+[2026-08-15T07:30:19.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:30:19.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-CHURCH-DAGG-001", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-CHURCH-DAGG-001#11356", "production_mutation": false}
+[2026-08-15T07:30:19.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-CHURCH-DAGG-001)
+[2026-08-15T07:30:19.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:30:19.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-DAGG-001_ay08zmt2.json
+[2026-08-15T07:30:19.000Z]   cli_driver exit_code=2
+[2026-08-15T07:30:19.000Z]   stdout=
+[2026-08-15T07:30:19.000Z]   stderr={"error": "missing field: automation.processing_input"}
+
+[2026-08-15T07:30:19.000Z]   -> terminal_state=FAILED failure_code=VALIDATION_FAILED
+[2026-08-15T07:30:19.000Z]   -> task file updated to FAILED
+[2026-08-15T07:30:19.000Z] done: {'FAIL': 1}
+[2026-08-15T07:31:04.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:31:04.000Z] queue depth: 1
+[2026-08-15T07:31:04.000Z]   found 1 processable queue items
+[2026-08-15T07:31:04.000Z] === Processing NAE-REG-BAP-CHURCH-DAGG-001 ===
+[2026-08-15T07:31:04.000Z]   -> already VALIDATION_PASSED (from task file)
+[2026-08-15T07:31:04.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:31:04.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-DAGG-001_dwnr0qhd.json
+[2026-08-15T07:31:04.000Z]   cli_driver exit_code=0
+[2026-08-15T07:31:04.000Z]   stdout={"source_id": "BAP-CHURCH-DAGG-001", "final_state": "QUALITY_PASSED", "page_count": 305, "notes": [], "identity": {"author_id": "dagg_john_l", "work_id": "dagg_john_l-church_order", "edition_id": "dagg_john_l-church_order-1871", "source_id": "BAP-CHURCH-DAGG-001", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b", "preserved_path": "/Users/David/DBMA/NAE/corpus/raw/archive_
+[2026-08-15T07:31:04.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:31:04.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:31:04.000Z]   -> moved NAE-REG-BAP-CHURCH-DAGG-001.json to done/
+[2026-08-15T07:31:04.000Z] done: {'PASS': 1}
+[2026-08-15T07:33:17.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:33:17.000Z] queue depth: 9
+[2026-08-15T07:33:17.000Z]   found 9 processable queue items
+[2026-08-15T07:33:17.000Z] === Processing NAE-REG-BAP-CHURCH-HISCOX ===
+[2026-08-15T07:33:17.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:17.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-CHURCH-HISCOX", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-CHURCH-HISCOX#11357", "production_mutation": false}
+[2026-08-15T07:33:17.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-CHURCH-HISCOX)
+[2026-08-15T07:33:17.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:17.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-HISCOX_2rkg_di2.json
+[2026-08-15T07:33:17.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:17.000Z]   stdout={"source_id": "BAP-CHURCH-HISCOX", "final_state": "QUALITY_PASSED", "page_count": 176, "notes": [], "identity": {"author_id": "hiscox_edward_t", "work_id": "hiscox_edward_t-the_standard_manual_for_baptist_churches", "edition_id": "hiscox_edward_t-the_standard_manual_for_baptist_churches-1890", "source_id": "BAP-CHURCH-HISCOX", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "83ee409602520d60559edd74ecb935835b2d82722e2c02a2d5052f8a12ad147
+[2026-08-15T07:33:17.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:17.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:17.000Z]   -> moved NAE-REG-BAP-CHURCH-HISCOX.json to done/
+[2026-08-15T07:33:17.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL01 ===
+[2026-08-15T07:33:17.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:17.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL01", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL01#11358", "production_mutation": false}
+[2026-08-15T07:33:17.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL01)
+[2026-08-15T07:33:17.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:17.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL01_a7c31imo.json
+[2026-08-15T07:33:17.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:17.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL01", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ-1820_charlesto
+[2026-08-15T07:33:17.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:17.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:17.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL01.json to done/
+[2026-08-15T07:33:17.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL02 ===
+[2026-08-15T07:33:17.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:17.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL02", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL02#11359", "production_mutation": false}
+[2026-08-15T07:33:17.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL02)
+[2026-08-15T07:33:17.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:17.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL02_jtrkkgle.json
+[2026-08-15T07:33:17.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:17.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL02", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL02", "aut
+[2026-08-15T07:33:17.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:17.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:17.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL02.json to done/
+[2026-08-15T07:33:17.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL03 ===
+[2026-08-15T07:33:17.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:17.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL03", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL03#11360", "production_mutation": false}
+[2026-08-15T07:33:17.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL03)
+[2026-08-15T07:33:17.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:17.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL03_zsoewmg2.json
+[2026-08-15T07:33:17.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:17.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL03", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL03", "author_collided": false, "work_collided": false, "edition_collided"
+[2026-08-15T07:33:17.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:17.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:17.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL03.json to done/
+[2026-08-15T07:33:17.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL04 ===
+[2026-08-15T07:33:17.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:17.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL04", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL04#11361", "production_mutation": false}
+[2026-08-15T07:33:17.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL04)
+[2026-08-15T07:33:17.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:17.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL04_y1d60q3r.json
+[2026-08-15T07:33:17.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:17.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL04", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL04", "author_collided": false
+[2026-08-15T07:33:17.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:17.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:17.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL04.json to done/
+[2026-08-15T07:33:17.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL05 ===
+[2026-08-15T07:33:17.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:18.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL05", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL05#11362", "production_mutation": false}
+[2026-08-15T07:33:18.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL05)
+[2026-08-15T07:33:18.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:18.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL05_q613fdb7.json
+[2026-08-15T07:33:18.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:18.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL05", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL05", "author_collided": false, "work_
+[2026-08-15T07:33:18.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:18.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:18.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL05.json to done/
+[2026-08-15T07:33:18.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL06 ===
+[2026-08-15T07:33:18.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:18.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL06", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL06#11363", "production_mutation": false}
+[2026-08-15T07:33:18.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL06)
+[2026-08-15T07:33:18.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:18.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL06_3mjfuy_j.json
+[2026-08-15T07:33:18.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:18.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL06", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL06", "author_collided": false, "work_collided":
+[2026-08-15T07:33:18.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:18.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:18.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL06.json to done/
+[2026-08-15T07:33:18.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL07 ===
+[2026-08-15T07:33:18.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:18.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL07", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL07#11364", "production_mutation": false}
+[2026-08-15T07:33:18.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL07)
+[2026-08-15T07:33:18.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:18.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL07_odn25m1r.json
+[2026-08-15T07:33:18.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:18.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL07", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL07", "author_collided": false, "work_collided": false, "edition_collide
+[2026-08-15T07:33:18.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:18.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:18.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL07.json to done/
+[2026-08-15T07:33:18.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL08 ===
+[2026-08-15T07:33:18.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:33:18.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL08", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL08#11365", "production_mutation": false}
+[2026-08-15T07:33:18.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL08)
+[2026-08-15T07:33:18.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:33:18.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL08_b68pqqfp.json
+[2026-08-15T07:33:18.000Z]   cli_driver exit_code=0
+[2026-08-15T07:33:18.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL08", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts-1824_1825_new_haven", "source_
+[2026-08-15T07:33:18.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:33:18.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:33:18.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL08.json to done/
+[2026-08-15T07:33:18.000Z] done: {'PASS': 9}
+[2026-08-15T07:40:09.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:40:09.000Z] queue depth: 1
+[2026-08-15T07:40:09.000Z]   found 1 processable queue items
+[2026-08-15T07:40:09.000Z] === Processing NAE-REG-BAP-CHURCH-DAGG-001 ===
+[2026-08-15T07:40:09.000Z]   -> already VALIDATION_PASSED (from task file)
+[2026-08-15T07:40:09.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:40:09.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-DAGG-001_9yx8gfox.json
+[2026-08-15T07:40:09.000Z]   cli_driver exit_code=0
+[2026-08-15T07:40:09.000Z]   stdout={"source_id": "BAP-CHURCH-DAGG-001", "final_state": "QUALITY_PASSED", "page_count": 305, "notes": [], "identity": {"author_id": "dagg_john_l", "work_id": "dagg_john_l-church_order", "edition_id": "dagg_john_l-church_order-1871", "source_id": "BAP-CHURCH-DAGG-001", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b", "preserved_path": "/Users/David/DBMA/NAE/corpus/raw/archive_
+[2026-08-15T07:40:09.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:40:09.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:40:09.000Z]   -> moved NAE-REG-BAP-CHURCH-DAGG-001.json to done/
+[2026-08-15T07:40:09.000Z] done: {'PASS': 1}
+[2026-08-15T07:42:34.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:42:34.000Z] queue depth: 1
+[2026-08-15T07:42:34.000Z]   found 1 processable queue items
+[2026-08-15T07:42:34.000Z] === Processing NAE-REG-BAP-CHURCH-DAGG-001 ===
+[2026-08-15T07:42:34.000Z]   -> already VALIDATION_PASSED (from task file)
+[2026-08-15T07:42:34.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:42:34.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-DAGG-001_uq81opvp.json --production
+[2026-08-15T07:42:34.000Z]   cli_driver exit_code=0
+[2026-08-15T07:42:34.000Z]   stdout={"source_id": "BAP-CHURCH-DAGG-001", "final_state": "QUALITY_PASSED", "page_count": 305, "notes": [], "identity": {"author_id": "dagg_john_l", "work_id": "dagg_john_l-church_order", "edition_id": "dagg_john_l-church_order-1871", "source_id": "BAP-CHURCH-DAGG-001", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b", "preserved_path": "/Users/David/DBMA/NAE/corpus/raw/archive_
+[2026-08-15T07:42:34.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:42:34.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:42:34.000Z]   -> moved NAE-REG-BAP-CHURCH-DAGG-001.json to done/
+[2026-08-15T07:42:34.000Z] done: {'PASS': 1}
+[2026-08-15T07:43:30.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:43:30.000Z] queue depth: 1
+[2026-08-15T07:43:30.000Z]   found 1 processable queue items
+[2026-08-15T07:43:30.000Z] === Processing NAE-REG-BAP-CHURCH-DAGG-001 ===
+[2026-08-15T07:43:30.000Z]   -> already VALIDATION_PASSED (from task file)
+[2026-08-15T07:43:30.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:43:30.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-DAGG-001_e68tlkvz.json --production
+[2026-08-15T07:43:30.000Z]   cli_driver exit_code=1
+[2026-08-15T07:43:30.000Z]   stdout=
+[2026-08-15T07:43:30.000Z]   stderr={"error": "source_id already registered in /Users/David/DBMA/NAE/authority/source_manifest.yaml: BAP-CHURCH-DAGG-001"}
+
+[2026-08-15T07:43:30.000Z]   -> terminal_state=FAILED failure_code=FILE_ERROR
+[2026-08-15T07:43:30.000Z]   -> task file updated to FAILED
+[2026-08-15T07:43:30.000Z] done: {'FAIL': 1}
+[2026-08-15T07:43:54.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:43:54.000Z] queue depth: 1
+[2026-08-15T07:43:54.000Z]   found 1 processable queue items
+[2026-08-15T07:43:54.000Z] === Processing NAE-REG-BAP-CHURCH-DAGG-001 ===
+[2026-08-15T07:43:54.000Z]   -> already VALIDATION_PASSED (from task file)
+[2026-08-15T07:43:54.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:43:54.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-DAGG-001_su9ehb2d.json --production
+[2026-08-15T07:43:55.000Z]   cli_driver exit_code=0
+[2026-08-15T07:43:55.000Z]   stdout={"source_id": "BAP-CHURCH-DAGG-001", "final_state": "QUALITY_PASSED", "page_count": 305, "notes": [], "identity": {"author_id": "dagg_john_l", "work_id": "dagg_john_l-church_order", "edition_id": "dagg_john_l-church_order-1871", "source_id": "BAP-CHURCH-DAGG-001", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b", "preserved_path": "/Users/David/DBMA/NAE/corpus/raw/archive_
+[2026-08-15T07:43:55.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:43:55.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:43:55.000Z]   -> moved NAE-REG-BAP-CHURCH-DAGG-001.json to done/
+[2026-08-15T07:43:55.000Z] done: {'PASS': 1}
+[2026-08-15T07:46:20.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:46:20.000Z] queue depth: 9
+[2026-08-15T07:46:20.000Z]   found 9 processable queue items
+[2026-08-15T07:46:20.000Z] === Processing NAE-REG-BAP-CHURCH-HISCOX ===
+[2026-08-15T07:46:20.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:20.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-CHURCH-HISCOX", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-CHURCH-HISCOX#11366", "production_mutation": false}
+[2026-08-15T07:46:20.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-CHURCH-HISCOX)
+[2026-08-15T07:46:20.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:20.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-HISCOX_tjt19xh6.json --production
+[2026-08-15T07:46:20.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:20.000Z]   stdout={"source_id": "BAP-CHURCH-HISCOX", "final_state": "QUALITY_PASSED", "page_count": 176, "notes": [], "identity": {"author_id": "hiscox_edward_t", "work_id": "hiscox_edward_t-the_standard_manual_for_baptist_churches", "edition_id": "hiscox_edward_t-the_standard_manual_for_baptist_churches-1890", "source_id": "BAP-CHURCH-HISCOX", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "83ee409602520d60559edd74ecb935835b2d82722e2c02a2d5052f8a12ad147
+[2026-08-15T07:46:20.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:20.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:20.000Z]   -> moved NAE-REG-BAP-CHURCH-HISCOX.json to done/
+[2026-08-15T07:46:20.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL01 ===
+[2026-08-15T07:46:20.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:20.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL01", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL01#11367", "production_mutation": false}
+[2026-08-15T07:46:20.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL01)
+[2026-08-15T07:46:20.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:20.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL01_kdznnxsr.json --production
+[2026-08-15T07:46:20.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:20.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL01", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ-1820_charlesto
+[2026-08-15T07:46:20.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:20.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:20.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL01.json to done/
+[2026-08-15T07:46:20.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL02 ===
+[2026-08-15T07:46:20.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:20.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL02", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL02#11368", "production_mutation": false}
+[2026-08-15T07:46:20.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL02)
+[2026-08-15T07:46:20.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:20.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL02_q322s9sy.json --production
+[2026-08-15T07:46:20.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:20.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL02", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL02", "aut
+[2026-08-15T07:46:20.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:20.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:20.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL02.json to done/
+[2026-08-15T07:46:20.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL03 ===
+[2026-08-15T07:46:20.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:20.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL03", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL03#11369", "production_mutation": false}
+[2026-08-15T07:46:20.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL03)
+[2026-08-15T07:46:20.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:20.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL03_8qlhs2kk.json --production
+[2026-08-15T07:46:20.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:20.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL03", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL03", "author_collided": false, "work_collided": false, "edition_collided"
+[2026-08-15T07:46:20.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:20.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:20.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL03.json to done/
+[2026-08-15T07:46:20.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL04 ===
+[2026-08-15T07:46:20.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:20.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL04", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL04#11370", "production_mutation": false}
+[2026-08-15T07:46:20.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL04)
+[2026-08-15T07:46:20.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:20.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL04_g4g0w5ca.json --production
+[2026-08-15T07:46:20.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:20.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL04", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL04", "author_collided": false
+[2026-08-15T07:46:20.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:20.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:20.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL04.json to done/
+[2026-08-15T07:46:20.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL05 ===
+[2026-08-15T07:46:20.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:21.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL05", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL05#11371", "production_mutation": false}
+[2026-08-15T07:46:21.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL05)
+[2026-08-15T07:46:21.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:21.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL05_3elik1qq.json --production
+[2026-08-15T07:46:21.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:21.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL05", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL05", "author_collided": false, "work_
+[2026-08-15T07:46:21.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:21.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:21.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL05.json to done/
+[2026-08-15T07:46:21.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL06 ===
+[2026-08-15T07:46:21.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:21.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL06", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL06#11372", "production_mutation": false}
+[2026-08-15T07:46:21.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL06)
+[2026-08-15T07:46:21.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:21.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL06_or5alazf.json --production
+[2026-08-15T07:46:21.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:21.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL06", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL06", "author_collided": false, "work_collided":
+[2026-08-15T07:46:21.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:21.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:21.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL06.json to done/
+[2026-08-15T07:46:21.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL07 ===
+[2026-08-15T07:46:21.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:21.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL07", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL07#11373", "production_mutation": false}
+[2026-08-15T07:46:21.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL07)
+[2026-08-15T07:46:21.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:21.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL07__wdeui0u.json --production
+[2026-08-15T07:46:21.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:21.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL07", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL07", "author_collided": false, "work_collided": false, "edition_collide
+[2026-08-15T07:46:21.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:21.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:21.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL07.json to done/
+[2026-08-15T07:46:21.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL08 ===
+[2026-08-15T07:46:21.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:46:21.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL08", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL08#11374", "production_mutation": false}
+[2026-08-15T07:46:21.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL08)
+[2026-08-15T07:46:21.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:46:21.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL08_wfqiyuq7.json --production
+[2026-08-15T07:46:21.000Z]   cli_driver exit_code=0
+[2026-08-15T07:46:21.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL08", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts-1824_1825_new_haven", "source_
+[2026-08-15T07:46:21.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:46:21.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:46:21.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL08.json to done/
+[2026-08-15T07:46:21.000Z] done: {'PASS': 9}
+[2026-08-15T07:51:26.000Z] host executor start (once=True watch=None dry_run=False)
+[2026-08-15T07:51:26.000Z] queue depth: 10
+[2026-08-15T07:51:26.000Z]   found 10 processable queue items
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-CHURCH-DAGG-001 ===
+[2026-08-15T07:51:26.000Z]   -> already VALIDATION_PASSED (from task file)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-DAGG-001__vnn8rzo.json --production
+[2026-08-15T07:51:26.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:26.000Z]   stdout={"source_id": "BAP-CHURCH-DAGG-001", "final_state": "QUALITY_PASSED", "page_count": 305, "notes": [], "identity": {"author_id": "dagg_john_l", "work_id": "dagg_john_l-church_order", "edition_id": "dagg_john_l-church_order-1871", "source_id": "BAP-CHURCH-DAGG-001", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b", "preserved_path": "/Users/David/DBMA/NAE/corpus/raw/archive_
+[2026-08-15T07:51:26.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:26.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:26.000Z]   -> moved NAE-REG-BAP-CHURCH-DAGG-001.json to done/
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-CHURCH-HISCOX ===
+[2026-08-15T07:51:26.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:26.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-CHURCH-HISCOX", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-CHURCH-HISCOX#11456", "production_mutation": false}
+[2026-08-15T07:51:26.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-CHURCH-HISCOX)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-CHURCH-HISCOX_rlmwoonq.json --production
+[2026-08-15T07:51:26.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:26.000Z]   stdout={"source_id": "BAP-CHURCH-HISCOX", "final_state": "QUALITY_PASSED", "page_count": 176, "notes": [], "identity": {"author_id": "hiscox_edward_t", "work_id": "hiscox_edward_t-the_standard_manual_for_baptist_churches", "edition_id": "hiscox_edward_t-the_standard_manual_for_baptist_churches-1890", "source_id": "BAP-CHURCH-HISCOX", "author_collided": false, "work_collided": false, "edition_collided": false}, "preservation": {"checksum": "83ee409602520d60559edd74ecb935835b2d82722e2c02a2d5052f8a12ad147
+[2026-08-15T07:51:26.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:26.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:26.000Z]   -> moved NAE-REG-BAP-CHURCH-HISCOX.json to done/
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL01 ===
+[2026-08-15T07:51:26.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:26.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL01", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL01#11457", "production_mutation": false}
+[2026-08-15T07:51:26.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL01)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL01_3h4vw50r.json --production
+[2026-08-15T07:51:26.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:26.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL01", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ-1820_charlesto
+[2026-08-15T07:51:26.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:26.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:26.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL01.json to done/
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL02 ===
+[2026-08-15T07:51:26.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:26.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL02", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL02#11458", "production_mutation": false}
+[2026-08-15T07:51:26.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL02)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL02_ppyyadoc.json --production
+[2026-08-15T07:51:26.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:26.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL02", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL02", "aut
+[2026-08-15T07:51:26.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:26.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:26.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL02.json to done/
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL03 ===
+[2026-08-15T07:51:26.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:26.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL03", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL03#11459", "production_mutation": false}
+[2026-08-15T07:51:26.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL03)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL03_sachxyod.json --production
+[2026-08-15T07:51:26.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:26.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL03", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL03", "author_collided": false, "work_collided": false, "edition_collided"
+[2026-08-15T07:51:26.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:26.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:26.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL03.json to done/
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL04 ===
+[2026-08-15T07:51:26.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:26.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL04", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL04#11460", "production_mutation": false}
+[2026-08-15T07:51:26.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL04)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL04_xbtfj5ep.json --production
+[2026-08-15T07:51:26.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:26.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL04", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL04", "author_collided": false
+[2026-08-15T07:51:26.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:26.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:26.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL04.json to done/
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL05 ===
+[2026-08-15T07:51:26.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:26.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL05", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL05#11461", "production_mutation": false}
+[2026-08-15T07:51:26.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL05)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL05_1k0d2bpd.json --production
+[2026-08-15T07:51:26.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:26.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL05", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL05", "author_collided": false, "work_
+[2026-08-15T07:51:26.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:26.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:26.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL05.json to done/
+[2026-08-15T07:51:26.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL06 ===
+[2026-08-15T07:51:26.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:26.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL06", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL06#11462", "production_mutation": false}
+[2026-08-15T07:51:26.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL06)
+[2026-08-15T07:51:26.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:26.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL06_wjwuq10p.json --production
+[2026-08-15T07:51:27.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:27.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL06", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL06", "author_collided": false, "work_collided":
+[2026-08-15T07:51:27.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:27.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:27.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL06.json to done/
+[2026-08-15T07:51:27.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL07 ===
+[2026-08-15T07:51:27.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:27.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL07", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL07#11463", "production_mutation": false}
+[2026-08-15T07:51:27.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL07)
+[2026-08-15T07:51:27.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:27.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL07_9ovjug10.json --production
+[2026-08-15T07:51:27.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:27.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL07", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects-1824_1825_new_haven", "source_id": "BAP-MISS-FULLER-VOL07", "author_collided": false, "work_collided": false, "edition_collide
+[2026-08-15T07:51:27.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:27.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:27.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL07.json to done/
+[2026-08-15T07:51:27.000Z] === Processing NAE-REG-BAP-MISS-FULLER-VOL08 ===
+[2026-08-15T07:51:27.000Z]   Step 1: submitting via webhook...
+[2026-08-15T07:51:27.000Z]   webhook submit: http=200 resp={"status": "validation_passed", "task_id": "NAE-REG-BAP-MISS-FULLER-VOL08", "state": "VALIDATION_PASSED", "transition_id": "NAE-REG-BAP-MISS-FULLER-VOL08#11464", "production_mutation": false}
+[2026-08-15T07:51:27.000Z]   -> VALIDATION_PASSED (task_id=NAE-REG-BAP-MISS-FULLER-VOL08)
+[2026-08-15T07:51:27.000Z]   Step 2: invoking cli_driver...
+[2026-08-15T07:51:27.000Z]   subprocess: /Users/David/envs/dbma311/bin/python -m NAE.pipeline.registration.cli_driver --request-json /Users/David/DBMA/.automation/night-shift/he_NAE-REG-BAP-MISS-FULLER-VOL08_5mr7nmhe.json --production
+[2026-08-15T07:51:27.000Z]   cli_driver exit_code=0
+[2026-08-15T07:51:27.000Z]   stdout={"source_id": "BAP-MISS-FULLER-VOL08", "final_state": "QUALITY_PASSED", "page_count": 1, "notes": [], "identity": {"author_id": "fuller_andrew", "work_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts", "edition_id": "fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts-1824_1825_new_haven", "source_
+[2026-08-15T07:51:27.000Z]   -> terminal_state=COMPLETED failure_code=None
+[2026-08-15T07:51:27.000Z]   -> task file updated to COMPLETED
+[2026-08-15T07:51:27.000Z]   -> moved NAE-REG-BAP-MISS-FULLER-VOL08.json to done/
+[2026-08-15T07:51:27.000Z] done: {'PASS': 10}

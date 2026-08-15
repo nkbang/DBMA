@@ -1,0 +1,5 @@
+{
+  "file": "NAE/pipeline/registration/state/registration_state.json",
+  "exists": false,
+  "note": "cli_driver uses temp path for state_store; production mutation via manifest_writer.write_entry() to authority files"
+}

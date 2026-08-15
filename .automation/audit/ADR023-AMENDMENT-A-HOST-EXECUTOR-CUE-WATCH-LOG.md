@@ -87,3 +87,32 @@ Qdrant는 "긴급 중단 조건"에 추가(시도 자체가 범위 이탈). 릴�
   자기 자신 제외(거짓 duplicate 없음), chmod 멱등, ledger append-only —
   10건 재처리해도 데이터 손실 없음.
 - Correction Order 003 발행, 릴레이 6으로 전달.
+
+## 2026-08-15 07:52 UTC — Correction Order 003 재실행: CUE 독립 재검증 **PASS**
+
+C1 보고를 신뢰하지 않고 CUE가 전부 재실행/재확인했다.
+
+| 확인 항목 | CUE 독립 확인 |
+|---|---|
+| 큐레이션 문서 무오염 | `git diff resources/theological_sources/baptist/source_manifest.yaml` = 0줄 ✅ |
+| `registration_state.json` | 10개 항목 전부 `QUALITY_PASSED` — 파일 직접 열람 확인 ✅ |
+| 신규 `source_manifest.yaml`(automation 전용) | 10개 entry, 스키마 정상(source_id/author_id/work_id/edition_id/checksum) ✅ |
+| Production boundary | `git diff core/retrieval.py NAE/pipeline/registration/pipeline.py` = 0줄 ✅ |
+| `NAE/corpus/tsu/` 무변경 | `git status` 무변화 ✅ |
+| NAE Qdrant 무변경 | CUE가 직접 `get_collection` 재실행 — `nae_tsu_v1` points **3319 → 3319** ✅ |
+| Registration 테스트 | CUE가 직접 재실행 — `tests/nae/registration/`: **152 passed, 0 failed** ✅ |
+| ADR-022 회귀 | CUE가 직접 `scenario-1-repeat.sh` 재실행 — PASS (webhook 계약 생존 확인) ✅ |
+| 체크섬 원장 | append-only, 66줄(재실행 이력 포함, 데이터 손실 없음) ✅ |
+
+**판정: NAE-REG-BAP-CHURCH-DAGG-001 + HISCOX + FULLER VOL01-08, 총 10건
+Registration Full Processing 완료 — 실제 production mutation 확인됨(QUALITY_PASSED
+×10). Retrieval/TSU/embedding/Qdrant는 정확히 미접촉.**
+
+## 미션 종료 — NAE Production Ingestion (Registration 범위)
+
+- Host Executor(Option A) 구현·검증 완료
+- 10/10 RAW source registration 완료, 전량 CUE 독립 재검증
+- `NAE/corpus/raw/`의 알려진 원문 전부 소진 — 억지로 다음 batch 생성 안 함(Night
+  Shift Order 002 §Phase 6 원칙대로)
+- 다음 단계(TSU 생성/embedding/indexing)는 의도적으로 미착수 — 이 미션 범위
+  밖(승인된 ADR 없음), 별도 미션 필요

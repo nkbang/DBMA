@@ -16,6 +16,7 @@ STATE_DIR = Path(__file__).resolve().parent / "state"
 DEFAULT_REGISTRATION_STATE_PATH = STATE_DIR / "registration_state.json"
 DEFAULT_EXCEPTION_QUEUE_PATH = STATE_DIR / "exception_queue.json"
 DEFAULT_CHECKSUM_LEDGER_PATH = STATE_DIR / "raw_checksum_ledger.jsonl"
+DEFAULT_SOURCE_MANIFEST_PATH = STATE_DIR / "source_manifest.yaml"
 
 # Raw files get this permission after preservation — accident deterrent only,
 # NOT the enforcement mechanism (see raw_preservation.py / ADR-021 SS6).
