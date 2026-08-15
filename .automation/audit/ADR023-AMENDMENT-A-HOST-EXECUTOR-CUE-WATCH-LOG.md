@@ -18,3 +18,24 @@ C1의 서술만으로 PASS를 인정하지 않음 (NAE Retrieval Bridge 미션�
   - `git diff core/retrieval.py NAE/pipeline/registration/pipeline.py` — 비어 있음
 
 이후 각 check-in은 이 파일 하단에 append.
+
+## 2026-08-15 07:30 UTC — env-check PASS, host_executor.py 구현 완료
+
+- `cli_driver-import.exit_code.txt` = 0, `raw-archive-exists` 확인 — CUE 재확인
+- `host_executor.py`(152→471줄) 소스 전체 열람: state mapping table, evidence
+  스키마, ALLOWED transitions 전부 작업 명령서 지시대로 정확히 구현됨
+- queue/ 분리 확인: `queue/`에 Dagg 1건만, 나머지 9건은
+  `pilot-queue-backup/`으로 대피 — §4/§5 정확히 준수
+
+## 2026-08-15 07:31 UTC — 파일럿 1차: FAIL (안전, mutation 0건) → Correction Order 002
+
+- `pilot-dagg/*-cli-driver.exit_code.txt` = 2, stderr:
+  `{"error": "missing field: automation.processing_input"}`
+- `register_source()` 미호출 확인: `registration_state.json` 미존재,
+  `raw_checksum_ledger.jsonl` 0줄 그대로 — **fail-closed 정상 작동**
+- Root cause: evidence jsonl 대조로 확정 — n8n `Code — Decide Transition`이
+  task 파일 재작성 시 `automation` 객체를 `{state,failure_code,
+  last_transition_id}`로 통째 교체해 `processing_input`을 지움(ADR-022 스키마만
+  알던 기존 코드, ADR-023 확장 필드 보존 로직 없음)
+- Correction Order 002 발행: n8n 무변경 원칙 유지, `host_executor.py`
+  `process_task()`에서 병합 복구 지시

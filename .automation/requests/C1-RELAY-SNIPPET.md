@@ -1,6 +1,37 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 3 — Host Executor Runtime (2026-08-15 07:25 UTC, 현재 유효)
+## 릴레이 4 — Correction Order 002 (2026-08-15 07:31 UTC, 현재 유효)
+
+```
+파일럿 1차 실행 결과가 나왔다. exit 2, "missing field: automation.processing_input"
+— 그러나 register_source()는 호출 전에 막혔으므로 production mutation은 0건이다
+(안전하게 fail-closed됨).
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-CORRECTION-ORDER-002-HOST-EXECUTOR-PROCESSING-INPUT.md
+
+요약 (근본 원인은 이미 CUE가 evidence로 확정했다 — 재조사하지 마라):
+n8n의 Code — Decide Transition 노드가 task 파일을 다시 쓸 때
+`automation: {state, failure_code, last_transition_id}`로 통째로 교체해서
+`processing_input`을 지운다. n8n 노드는 건드리지 마라. host_executor.py의
+process_task()에서, cli_driver에 넘기기 직전에 queue_item이 갖고 있던 원본
+processing_input을 task_data.automation에 다시 병합해 넣어라(양쪽 진입
+경로 — webhook 신규 제출 / 이미 VALIDATION_PASSED된 task 파일 재사용 — 둘
+다에서 적용되게).
+
+수정 후:
+1. NAE-REG-BAP-CHURCH-DAGG-001의 기존 task/evidence 파일을 지우고 INITIATED로
+   재제출해서 파일럿을 다시 돌려라.
+2. 이번에도 실패하면 멈추고 evidence만 남겨라. 성공(exit 0, QUALITY_PASSED)
+   해야만 pilot-queue-backup/의 9건을 queue/로 되돌려 확대해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 3 — Host Executor Runtime (2026-08-15 07:25 UTC, 완료·참고용)
 
 ```
 NAE Retrieval Bridge 미션은 종료됐다(커밋 4a3e616, 더 이상 손대지 마라).
