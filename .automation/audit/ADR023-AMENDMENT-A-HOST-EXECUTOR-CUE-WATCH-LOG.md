@@ -39,3 +39,22 @@ C1의 서술만으로 PASS를 인정하지 않음 (NAE Retrieval Bridge 미션�
   알던 기존 코드, ADR-023 확장 필드 보존 로직 없음)
 - Correction Order 002 발행: n8n 무변경 원칙 유지, `host_executor.py`
   `process_task()`에서 병합 복구 지시
+
+## 2026-08-15 07:40 UTC — Night Shift Order 002 발행 (범위 확정)
+
+Rev. Bang이 장기 무인 Night Shift 명령서 초안을 제시했으나, CUE 검토에서
+Phase 3/4가 "RAW→register→...→TSU→embedding→Qdrant"를 요구해 **Approved
+ADR과 충돌**함을 발견:
+
+- ADR-023(Approved) §"Full Processing 정의": TSU Builder 이후 downstream은
+  이 ADR 범위 밖, 별도 ADR 필요.
+- ADR-020(Approved, Incremental Embedding/Indexing) 재확인: **이미 존재하는
+  TSU 레코드**만 대상 — "신규 원문 등록→최초 TSU 생성" 앞단은 문서 자체가
+  "아직 코드로 구현되어 있지 않다"고 명시.
+- 결론: "신규 등록 원문 → TSU 생성"을 잇는 코드는 어떤 Approved ADR에도
+  없음 — 즉석 구현은 Architecture Freeze Rule 위반, Qdrant mutation 리스크.
+
+AskUserQuestion으로 확인 → **Rev. Bang이 "Registration까지만(권장)" 선택.**
+`C1-NIGHT-SHIFT-ORDER-002-NAE-PRODUCTION-INGESTION.md` 발행: Phase 3/4를
+Registration Full Processing(QUALITY_PASSED까지)으로 명시 축소, TSU/embedding/
+Qdrant는 "긴급 중단 조건"에 추가(시도 자체가 범위 이탈). 릴레이 5로 전달.

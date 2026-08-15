@@ -1,6 +1,42 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 4 — Correction Order 002 (2026-08-15 07:31 UTC, 현재 유효)
+## 릴레이 5 — Night Shift Order 002: NAE Production Ingestion (2026-08-15 07:40 UTC, 현재 유효)
+
+```
+새 장기 Night Shift 미션이다. 아래 파일을 열어서 Phase 1부터 순서대로
+끝까지 수행하라. 한 Phase가 PASS하면 즉시 다음 Phase로 넘어가라. 응답을
+기다리지 마라.
+
+  .automation/requests/C1-NIGHT-SHIFT-ORDER-002-NAE-PRODUCTION-INGESTION.md
+
+가장 중요한 것: 이번 미션은 Registration까지만 다룬다(RAW -> register_source()
+-> QUALITY_PASSED). TSU 생성/embedding/Qdrant write는 절대 시도하지 마라 —
+그 연결부는 어떤 Approved ADR에도 구현돼 있지 않다. 그 단계가 필요하다고
+판단되면 코드를 쓰지 말고 evidence에만 기록하고 멈춰라.
+
+순서:
+0. 아직 안 했다면 릴레이 4(Correction Order 002)의 processing_input 버그부터
+   고쳐라 — n8n 노드는 건드리지 말고 host_executor.py의 process_task()에서
+   원본 processing_input을 재병합해라.
+1. Dagg 파일럿을 다시 돌려서 registration_state.json에 실제 QUALITY_PASSED가
+   기록되는지 확인해라.
+2. 성공하면 pilot-queue-backup/의 나머지 9건을 queue/로 되돌려 순차 실행해라
+   (동시 실행 금지, 1건 실패해도 나머지는 계속 진행).
+3. ADR-022 회귀(run-all-cycle.sh) + tests/nae/registration/ + production
+   mutation 경계 확인(core/retrieval.py, pipeline.py, Qdrant points 수,
+   NAE/corpus/tsu/ 전부 무변화)을 실행해라.
+4. 10건이 전부 처리되면 미션 완료다 — 억지로 다음 batch를 만들지 마라.
+
+모든 증거는 .automation/evidence/night-shift/host-executor-implementation/
+아래 남겨라. Qdrant mutation을 시도하게 되면(원래는 시도하면 안 되지만) 그
+즉시 멈추고 STOP.md에 기록해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 4 — Correction Order 002 (2026-08-15 07:31 UTC, 완료·참고용)
 
 ```
 파일럿 1차 실행 결과가 나왔다. exit 2, "missing field: automation.processing_input"
