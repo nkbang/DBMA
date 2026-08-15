@@ -1,6 +1,38 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 6 — Correction Order 003 (2026-08-15 07:45 UTC, 현재 유효)
+## 릴레이 7 — Night Shift Order 003: TSU Processing 연결 (2026-08-15 07:58 UTC, 현재 유효)
+
+```
+새 미션이다. 아래 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-NIGHT-SHIFT-ORDER-003-NAE-TSU-PROCESSING-CONNECTION.md
+
+가장 중요한 것 먼저: CUE가 확인해보니 등록한 10건 중 Dagg와 Hiscox는 이미
+2026-08-09에 TSU 생성/embedding/Qdrant indexing이 끝나 있었다(Qdrant에 실제
+포인트 존재, work_id 확인함). 게다가 그 기존 레코드의 work_id 스킴이 어젯밤
+Registration이 새로 계산한 work_id와 다르다(identity 불일치). 그래서 파일럿은
+Dagg가 아니라 Fuller_Complete_Works_Vol01로 해야 한다 — Dagg/Hiscox를 다시
+처리하면 중복 임베딩이 생긴다. Fuller Vol01-08 8건은 TSU가 아직 없다(확인함)
+— 이게 진짜 신규 처리 대상이다.
+
+기존 컴포넌트를 그대로 재사용해라(새 코드 작성 없음, 이미 완성돼 있음):
+1. python -m NAE.pipeline.tsu.runner --identifier Fuller_Complete_Works_Vol01
+   (canonical.json은 이미 존재 — 추출은 끝나 있음, TSU만 생성하면 됨)
+2. python scripts/nae_incremental_ingest.py --identifier Fuller_Complete_Works_Vol01
+   (dry-run 먼저, 그 다음 --apply로 실제 embedding+Qdrant indexing)
+3. Qdrant points 수를 실행 전후 직접 재확인해서 기록해라(스크립트 출력만
+   믿지 마라).
+4. 성공하면 Vol02~Vol08 순차 반복. Dagg/Hiscox는 절대 건드리지 마라.
+
+builder.py/embedding.py/indexing.py/pipeline.py 코드는 수정하지 말고 호출만
+해라. 어느 한 건이 이미 TSU가 있는 걸로 드러나면 건너뛰고 계속해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 6 — Correction Order 003 (2026-08-15 07:45 UTC, 완료·참고용)
 
 ```
 10건 파일럿/확대 실행이 전부 exit 0/QUALITY_PASSED로 나왔지만, 등록 결과가
