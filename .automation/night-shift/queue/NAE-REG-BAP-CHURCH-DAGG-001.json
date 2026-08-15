@@ -1,0 +1,31 @@
+{
+ "schema_version": "1.2.0",
+ "task_id": "NAE-REG-BAP-CHURCH-DAGG-001",
+ "title": "NAE Source Registration — Church Order",
+ "owner": "CUE",
+ "state": "INITIATED",
+ "phase": "REGISTRATION",
+ "requires_human_approval": false,
+ "production_mutation": false,
+ "evidence": [],
+ "audit": {
+  "status": "pending"
+ },
+ "document_type": "book",
+ "automation": {
+  "state": null,
+  "failure_code": null,
+  "last_transition_id": null,
+  "processing_input": {
+   "raw_item_dir": "/Users/David/DBMA/NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order",
+   "surname": "Dagg",
+   "given_name": "John L.",
+   "title": "Church Order",
+   "edition_slug": "1871",
+   "publication_year": 1871,
+   "copyright_status": "public_domain",
+   "archive_source": "archive_org",
+   "source_id": "BAP-CHURCH-DAGG-001"
+  }
+ }
+}
