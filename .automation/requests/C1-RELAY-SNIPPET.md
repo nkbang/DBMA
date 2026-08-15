@@ -1,6 +1,43 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 2 — Correction Order 001 (2026-08-15 07:15 UTC, 현재 유효)
+## 릴레이 3 — Host Executor Runtime (2026-08-15 07:25 UTC, 현재 유효)
+
+```
+NAE Retrieval Bridge 미션은 종료됐다(커밋 4a3e616, 더 이상 손대지 마라).
+
+새 미션이다. 아래 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-TASK-ORDER-ADR023-AMENDMENT-A-HOST-EXECUTOR.md
+
+배경: n8n의 executeCommand 노드는 2.29.9에서 기본 비활성화되어 있고, n8n
+컨테이너에는 Python도 NAE 소스도 없다 — ADR-023이 지정한 "n8n이 cli_driver를
+직접 호출"하는 경로는 실행 불가능하다는 게 CUE 실측으로 확인됐다. Rev. Bang이
+Option A(Host Executor — n8n은 orchestrator, 별도 host 프로세스가 cli_driver를
+직접 호출)를 승인했다.
+
+핵심 요구사항 (전체는 위 파일 참고, 재조사 금지 — 계약은 이미 다 정리되어 있다):
+1. .automation/night-shift/host_executor.py 신규 구현. n8n 워크플로우 노드는
+   1개도 건드리지 마라.
+2. state mapping(exit code -> COMPLETED/FAILED+failure_code), evidence entry
+   스키마, 허용된 전이(VALIDATION_PASSED->PROCESSING->COMPLETED/FAILED만,
+   FAILED->RETRY_PENDING 자동승격 절대 금지)는 작업 명령서 표에 정확히 적혀
+   있다 — 그대로 구현해라, 재설계하지 마라.
+3. cli_driver는 subprocess로 호출해라(import 금지 — 프로세스 경계 유지).
+4. .automation/night-shift/queue/NAE-REG-BAP-CHURCH-DAGG-001.json 1건만
+   먼저 end-to-end로 실행해라. 이건 실제 production mutation이다
+   (registration_state.json에 실제로 기록된다). 성공하면 나머지 9건으로
+   확대하고, 실패하면 멈추고 원인만 기록해라 — 자동으로 다음 건에 진행하지 마라.
+5. core/retrieval.py, NAE/pipeline/registration/pipeline.py는 절대 건드리지
+   마라. 새 ADR도 만들지 마라.
+6. 모든 증거는 .automation/evidence/night-shift/host-executor-implementation/
+   아래 남겨라 (command.txt, exit_code.txt 숫자만, stdout.log, stderr.log).
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 2 — Correction Order 001 (완료, 참고용)
 
 ```
 CUE 독립 검증 결과가 나왔다. Phase 1~3은 PASS로 인정됐고, Phase 4~6은 반려됐다.
@@ -32,7 +69,7 @@ Qdrant read-only, core/retrieval.py 무변경, research.py의 _render_nae_sectio
 
 ---
 
-## 릴레이 1 — 최초 Mission Order (2026-08-15 07:03 UTC, 전달 완료)
+## 릴레이 1 — 최초 Mission Order (완료, 참고용)
 
 ```
 너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.

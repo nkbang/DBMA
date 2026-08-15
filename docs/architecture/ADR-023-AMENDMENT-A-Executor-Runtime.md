@@ -11,10 +11,11 @@ scope_modified: docs/architecture/ only — 코드·워크플로우 무수정 (�
 
 | | |
 |---|---|
-| Status | **Proposed** (Rev. Bang 승인 대기) |
+| Status | **Approved** (2026-08-15, Rev. Bang — "Option A를 승인해 주시면 됩니다" / "여기서 Option A를 승인" 채택 지시) |
 | Amends | ADR-023 §4 (Execute Command 노드로 `cli_driver` 호출) |
 | Trigger | 2026-08-15 CUE Night Shift 검증에서 ADR-023 Full Processing 경로가 **실행 환경상 작동 불가능**함을 실측으로 확인 |
 | 영향 | ADR-023의 결정(“얇은 CLI 드라이버 1개만 추가, `register_source()` 무수정 호출”)은 유지. 그 드라이버를 **어디서 실행하는가**만 정정한다 |
+| 채택 옵션 | **Option A — Host Executor.** n8n은 §2의 검증된 범위(수신·검증·상태 전이·증거 기록)만 계속 담당하고, `PROCESSING` 실행은 호스트에서 도는 얇은 실행자가 담당한다. 구현 착수 승인: Rev. Bang, 2026-08-15. Task Order: `.automation/requests/C1-TASK-ORDER-ADR023-AMENDMENT-A-HOST-EXECUTOR.md` |
 
 ---
 
