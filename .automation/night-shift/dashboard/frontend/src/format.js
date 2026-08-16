@@ -30,3 +30,19 @@ export function volumeLabel(identifier) {
   const m = /Vol(\d+)$/.exec(identifier || '')
   return m ? `VOL.${m[1]}` : identifier || '—'
 }
+
+export function formatGB(bytes) {
+  if (bytes === null || bytes === undefined) return '—'
+  return `${(bytes / 1e9).toFixed(1)} GB`
+}
+
+export function formatExpiresIn(isoString) {
+  if (!isoString) return '—'
+  const ms = new Date(isoString).getTime() - Date.now()
+  if (!isFinite(ms)) return '—'
+  if (ms <= 0) return 'expiring…'
+  const totalMin = Math.round(ms / 60000)
+  const h = Math.floor(totalMin / 60)
+  const m = totalMin % 60
+  return h > 0 ? `${h}h ${m}m` : `${m}m`
+}

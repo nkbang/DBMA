@@ -16,6 +16,7 @@ pandas
 requests
 fastapi
 uvicorn
+psutil
 PyYAML
 ruamel.yaml
 docling

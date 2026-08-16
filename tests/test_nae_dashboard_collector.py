@@ -231,3 +231,113 @@ class TestQueueSnapshot:
         assert queue["Fuller_Complete_Works_Vol03"]["status"] == "FAILED"
         assert snap["queue_stopped"] is True
         assert "Vol03" in snap["queue_stop_reason"]
+
+
+# Real `ioreg -r -d 1 -c IOAccelerator` output is not JSON — a captured,
+# trimmed sample of the actual property-list-style text (Apple M5 Max).
+SAMPLE_IOREG_TEXT = (
+    '+-o AGXAcceleratorG17X  <class AGXAcceleratorG17X, id 0x1000006f7, registered>\n'
+    '    {\n'
+    '      "PerformanceStatistics" = {"In use system memory (driver)"=0,'
+    '"Renderer Utilization %"=8,"Device Utilization %"=87,'
+    '"In use system memory"=54969483264}\n'
+    '      "model" = "Apple M5 Max"\n'
+    '      "gpu-core-count" = 40\n'
+    '    }\n'
+)
+
+SAMPLE_OLLAMA_PS = {
+    "models": [
+        {
+            "name": "my-theology-bot-v2:latest",
+            "size": 53493230468,
+            "size_vram": 53493230468,
+            "details": {"parameter_size": "70.6B", "quantization_level": "Q4_K_M"},
+            "context_length": 32768,
+            "expires_at": "2026-08-16T22:24:12.859989-05:00",
+        },
+    ],
+}
+
+
+class TestGpuAndOllamaModelParsers:
+    def test_parse_gpu_stats_from_real_shaped_ioreg_text(self):
+        gpu = collector.parse_gpu_stats(SAMPLE_IOREG_TEXT)
+        assert gpu == {
+            "model": "Apple M5 Max",
+            "core_count": 40,
+            "device_utilization_pct": 87,
+            "in_use_memory_bytes": 54969483264,
+        }
+
+    def test_parse_gpu_stats_returns_none_when_no_accelerator(self):
+        assert collector.parse_gpu_stats("") is None
+        assert collector.parse_gpu_stats("no matching fields here") is None
+
+    def test_parse_ollama_models(self):
+        models = collector.parse_ollama_models(SAMPLE_OLLAMA_PS)
+        assert len(models) == 1
+        assert models[0]["name"] == "my-theology-bot-v2:latest"
+        assert models[0]["size_vram_bytes"] == 53493230468
+        assert models[0]["parameter_size"] == "70.6B"
+        assert models[0]["quantization"] == "Q4_K_M"
+
+    def test_parse_ollama_models_empty(self):
+        assert collector.parse_ollama_models({}) == []
+        assert collector.parse_ollama_models(None) == []
+
+
+class TestMonitorStateSystemMetrics:
+    def _make_state(self, tmp_path, **overrides):
+        defaults = dict(
+            tsu_root=tmp_path / "tsu",
+            queue_log_path=tmp_path / "queue.log",
+            stop_marker_path=tmp_path / "STOP.md",
+            ps_reader=lambda: PS_ACTIVE_VOL01,
+            ollama_checker=lambda: True,
+            memory_reader=lambda: {"total_bytes": 137438953472, "used_bytes": 82696290304,
+                                    "available_bytes": 23069376512, "percent": 83.2},
+            cpu_reader=lambda: {"percent": 18.9, "core_count": 18, "load_avg_1m": 8.5},
+            gpu_reader=lambda: SAMPLE_IOREG_TEXT,
+            ollama_models_reader=lambda: collector.parse_ollama_models(SAMPLE_OLLAMA_PS),
+        )
+        defaults.update(overrides)
+        return collector.MonitorState(**defaults)
+
+    def test_snapshot_includes_system_metrics(self, tmp_path):
+        state = self._make_state(tmp_path)
+        state.poll()
+        snap = state.snapshot()
+
+        assert snap["system"]["memory"]["percent"] == 83.2
+        assert snap["system"]["cpu"]["percent"] == 18.9
+        assert snap["system"]["gpu"]["model"] == "Apple M5 Max"
+        assert snap["system"]["gpu"]["device_utilization_pct"] == 87
+        assert snap["ollama_models"][0]["name"] == "my-theology-bot-v2:latest"
+
+    def test_one_bad_system_reader_does_not_break_tsu_progress_polling(self, tmp_path):
+        """A GPU reader failure (e.g. ioreg absent on non-Apple hardware)
+        must not prevent processed/total from updating — these are
+        independent, best-effort reads bundled in the same poll cycle."""
+        _write_report(tmp_path / "tsu", "Fuller_Complete_Works_Vol01",
+                       candidates_evaluated=10, candidates_total=100)
+
+        def boom():
+            raise RuntimeError("ioreg not found")
+
+        state = self._make_state(tmp_path, gpu_reader=boom)
+        state.poll()
+        snap = state.snapshot()
+
+        assert snap["system"]["gpu"] is None
+        assert snap["processed"] == 10
+        assert snap["total"] == 100
+        assert snap["last_poll_ok"] is True
+
+    def test_missing_system_metrics_default_to_none_before_first_poll(self, tmp_path):
+        state = self._make_state(tmp_path)
+        snap = state.snapshot()
+        assert snap["system"]["memory"] is None
+        assert snap["system"]["cpu"] is None
+        assert snap["system"]["gpu"] is None
+        assert snap["ollama_models"] == []

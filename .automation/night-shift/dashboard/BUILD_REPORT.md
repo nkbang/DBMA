@@ -122,3 +122,37 @@ Path를 전혀 수정하지 않는 순수 추가(new files) + `requirements.txt`
   볼륨 전환 시점에 한 번 더 육안 확인 권장(로직은 테스트로 커버됨)
 - `queue-vol02-08.log`의 `STOP.md` 발생 시 대시보드에 정지 사유가 정확히
   뜨는지는 실제 실패 사례가 아직 없어 유닛 테스트로만 검증됨
+
+## 10. Addendum (2026-08-15) — 시스템 리소스 패널 추가
+
+사용자 요청으로 메모리/CPU/GPU/Ollama 로드 모델 현황을 추가했다. 전부 읽기
+전용, 신규 write 경로 없음.
+
+- **메모리/CPU**: `psutil.virtual_memory()` / `psutil.cpu_percent()` /
+  `os.getloadavg()` — OS 커널 카운터 읽기만.
+- **GPU**: `ioreg -r -d 1 -c IOAccelerator` (Apple Silicon 전용). `powermetrics`
+  와 달리 **sudo 불필요** — IORegistry 조회 플래그(`-r`/`-d`/`-c`)만 사용해
+  장치에 어떤 명령도 보내지 않는다. `Device Utilization %`, `In use system
+  memory`, GPU 모델명/코어 수를 텍스트 파싱으로 추출(ioreg는 JSON 모드가
+  없음). 실측: Apple M5 Max, 40-core, 87~99% 사용률(Ollama 추론 중이므로
+  높은 게 정상), ~55GB in use.
+- **Ollama 로드 모델**: `GET /api/ps`(Ollama 자체 read-only 엔드포인트) —
+  현재 로드된 모델명, VRAM 점유량, context length, TTL(`expires_at`)을
+  보여준다. 실측: `my-theology-bot-v2:latest`(70.6B, 53.5GB)와
+  `qwen3.6:35b-DBMAcode`(36B, 24.9GB) 2개 동시 로드 확인.
+
+**버그 발견 및 수정**: 최초 구현에서 Memory 바의 채움 비율을 psutil의
+`percent` 필드(가용 메모리 기준 "메모리 압력" 지표, 이번 실측 83.1%)로
+계산했는데, 옆에 표시되는 "82.6 GB / 137.4 GB" 텍스트는 60.1%에 해당해서
+막대와 숫자가 서로 다른 값을 시각화하는 모순이 있었다. 막대 채움을
+`used_bytes/total_bytes`로 바꿔 텍스트와 항상 일치하도록 수정(프론트엔드만
+수정, `system.memory.percent` 필드 자체는 API에 그대로 유지).
+
+**견고성**: GPU 리더가 예외를 던져도(예: 다른 하드웨어에서 `ioreg` 부재)
+TSU 진행률 폴링은 계속 정상 동작함을 유닛 테스트로 확인
+(`test_one_bad_system_reader_does_not_break_tsu_progress_polling`) — 4개
+신규 리더(memory/cpu/gpu/ollama_models) 전부 개별 try/except로 격리.
+
+테스트: `tests/test_nae_dashboard_collector.py` 16 → 23 passed. 실 runtime
+값 재확인 및 launchd 재기동 완료, Vol01 프로세스(PID 88689)·Ollama 프로세스
+수 불변 재확인.

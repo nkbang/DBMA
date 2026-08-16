@@ -5,6 +5,8 @@ import StatGrid from './components/StatGrid.vue'
 import StatusPills from './components/StatusPills.vue'
 import ThroughputChart from './components/ThroughputChart.vue'
 import QueueList from './components/QueueList.vue'
+import SystemPanel from './components/SystemPanel.vue'
+import OllamaModelsPanel from './components/OllamaModelsPanel.vue'
 
 const POLL_MS = 7000
 
@@ -62,6 +64,14 @@ onUnmounted(() => {
       :ollama-online="status?.ollama_online ?? null"
       :monitor-online="monitorOnline"
     />
+
+    <SystemPanel
+      :memory="status?.system?.memory ?? null"
+      :cpu="status?.system?.cpu ?? null"
+      :gpu="status?.system?.gpu ?? null"
+    />
+
+    <OllamaModelsPanel :models="status?.ollama_models ?? []" />
 
     <ThroughputChart :history="status?.throughput_history ?? []" />
 
