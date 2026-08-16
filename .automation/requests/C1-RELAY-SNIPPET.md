@@ -1,6 +1,39 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 12 — Incident Evidence Capture (2026-08-16 14:20 CDT, 현재 유효, ADR-025와 별개)
+## 릴레이 13 — Phase 3 잔여 작업 재개 (2026-08-16 15:00 CDT, 현재 유효)
+
+```
+Incident 조사는 종결됐다(RESOLVED-OBSERVED, evidence 보존 완료) — 이건
+ADR-025와 완전히 별개 트랙이니 다시 언급하지 마라. 이제 Phase 3 남은
+작업을 재개한다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-TASK-ORDER-PHASE3-COMPLETION.md
+
+핵심:
+1. NAE/pipeline/tsu/worker/test_worker.py 신규 작성 — 특히 FAILED->READY가
+   retry_failed()를 거치지 않고는 절대 자동으로 일어나지 않음을 증명하는
+   테스트가 가장 중요하다. pytest 실제 실행 결과를 evidence로 남겨라.
+2. runner.py에 --worker-mode, --retry-failed <id> 옵션 추가. retry-failed는
+   candidate_id를 명시적으로 받아야 한다 — 일괄 자동 재시도 옵션은 만들지
+   마라.
+3. 소규모(수십 candidate) 실제 실행으로 wiring을 검증해라. Fuller Vol02-08
+   전체를 이걸로 돌리지 마라 — 그건 이번 작업 범위 밖이다.
+
+state.py/worker.py의 기존 검증된 로직(자동재시도 금지 등)은 이미 CUE가
+확인했다 — 재작성하지 마라. core/retrieval.py, data/제련완성본/는 이번에도
+절대 건드리지 마라.
+
+완료 후 ADR-025 §4 체크리스트를 갱신하되 "CUE Review" 항목은 체크하지
+마라 — CUE가 재감사한다.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 12 — Incident Evidence Capture (2026-08-16 14:20 CDT, 완료·참고용, ADR-025와 별개)
 
 ```
 Phase 3 작업과 별개로 심각한 사안이 발견됐다. CUE가 test_tsu_build.py를

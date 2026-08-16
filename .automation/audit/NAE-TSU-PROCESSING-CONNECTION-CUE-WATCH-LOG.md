@@ -296,3 +296,15 @@ Rev. Bang 최종 판정 수용, 정확한 구분 지시 반영:
 
 최종 상태: Phase 3 CONTINUE / ADR-025 PROPOSED(변경 없음) / Incident
 RESOLVED-OBSERVED(증거보존 완료).
+
+## 2026-08-16 15:00 CDT — Phase 3 잔여 작업(runner.py 연동 + unit test) 재개 지시
+
+Rev. Bang 지시로 ADR-025 §4 미완 항목(test_worker.py, runner.py 연동,
+--worker-mode/--retry-failed CLI) 착수 명령 발행.
+
+- `--retry-failed`는 candidate_id 명시 필수, 일괄/자동 재시도 옵션 금지
+  (ADR-022 §8 재확인)
+- 검증은 소규모(수십 candidate)로 제한 — Fuller Vol02-08 전체 배치는
+  이번 작업 범위 밖, 별도 지시 필요
+- Incident(RESOLVED-OBSERVED)와 완전히 분리된 트랙임을 명령서에 재명시
+- C1-TASK-ORDER-PHASE3-COMPLETION.md 발행, 릴레이 13으로 전달
