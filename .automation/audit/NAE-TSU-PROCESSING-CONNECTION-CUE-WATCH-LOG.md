@@ -327,3 +327,26 @@ Rev. Bang 지시로 ADR-025 §4 미완 항목(test_worker.py, runner.py 연동,
   분리(자동 연쇄 금지 — 암묵적 자동화 방지), Vol02 소규모(`--max-candidates
   20`)로 실제 enqueue→worker-mode→실패유발→retry-failed 전 과정을
   raw output으로 남기도록 지시. 릴레이 14로 전달.
+
+## 2026-08-16 15:4x CDT — Correction 007 진행 중 추가 버그 2건 발견 (Correction 008)
+
+Rev. Bang "n8n으로 계속 진행" 지시 → AskUserQuestion으로 범위 확인 →
+"선호 없음" → 권장안(Phase 3 먼저 완료 후 순서대로 Phase 9 n8n
+orchestration 착수)으로 진행 결정, 그 사이 Correction 007 진행 상황을
+계속 검증하던 중 발견:
+
+- **버그 1**: `worker/config.py`의 `_PROJECT_ROOT = parents[3]`가
+  `NAE/`까지만 올라감(worker→tsu→pipeline→NAE 4단계인데 3만 셈) —
+  `worker_state.json`이 `NAE/NAE/corpus/tsu/`(중복 경로)에 생성됨을
+  파일시스템에서 직접 확인. `parents[4]`로 정정 지시, 기존 파일(실제
+  Fuller Vol02 candidate 20건 포함, 재추출 불필요) 이동 지시
+- **버그 2**: `_run_worker_mode()`가 `loader.py`가 채운 실제 텍스트를
+  읽지 않고 여전히 `f"candidate_text_for_{cid}"` placeholder 사용 —
+  `--enqueue`로 실제 데이터를 넣어도 LLM에는 가짜 문자열이 전달됨.
+  `loader.py`가 120자 truncate 대신 전체 텍스트 저장하도록, 그리고
+  `_run_worker_mode()`가 그걸 읽도록 정정 지시
+
+한편 `enqueue_from_canonical()` 자체는 CUE가 state store를 직접 열어
+검증: 실제 Fuller Vol02 book/author/page/paragraph 메타데이터 정확함 —
+로더의 핵심 로직은 정상, 배선(wiring) 2곳만 결함. Correction Order 008
+발행, 릴레이 15로 전달.

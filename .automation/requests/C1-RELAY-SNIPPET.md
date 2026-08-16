@@ -1,6 +1,36 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 14 — Correction Order 007: READY 큐 채우는 경로 누락 (2026-08-16 15:xx CDT, 현재 유효)
+## 릴레이 15 — Correction Order 008: 경로 버그 + placeholder 텍스트 버그 (2026-08-16 15:4x CDT, 현재 유효)
+
+```
+enqueue_from_canonical()의 실제 데이터 추출은 정확했다(Fuller Vol02 실제
+book/author/page/paragraph 20건 확인함, 잘했다). 다만 CUE가 실행 중에
+버그 2건을 발견했다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-CORRECTION-ORDER-008-PHASE3-PATH-AND-PLACEHOLDER-BUGS.md
+
+핵심:
+1. worker/config.py의 _PROJECT_ROOT가 parents[3]으로 돼있어서 NAE/까지만
+   올라간다(4단계인데 3만 셈) — worker_state.json이 NAE/corpus/tsu/가
+   아니라 NAE/NAE/corpus/tsu/에 생기고 있다. parents[4]로 고치고, 이미
+   생긴 파일을 올바른 위치로 옮겨라(재enqueue 불필요, 데이터는 이미
+   정확하다).
+2. runner.py의 _run_worker_mode()가 여전히 "candidate_text_for_{cid}"
+   placeholder를 쓰고 있다 — loader가 넣어둔 실제 텍스트를 전혀 안 읽는다.
+   loader.py가 text_preview(120자 잘림) 대신 전체 문장을 저장하게 고치고,
+   _run_worker_mode()가 그걸 실제로 읽어서 LLM에 넘기게 고쳐라.
+3. 버그 수정 후 큐를 지우고 --enqueue부터 다시 실행해라(이번엔 진짜
+   텍스트가 들어가게). --worker-mode 실행해서 실제 claim이 진짜 Fuller
+   Vol02 내용을 반영하는지 눈으로 확인 가능하게 evidence에 남겨라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 14 — Correction Order 007: READY 큐 채우는 경로 누락 (2026-08-16 15:xx CDT, 완료·참고용)
 
 ```
 Work 1(unit test 31개)은 CUE가 재실행해서 PASS 확인했다. 잘했다. 다만
