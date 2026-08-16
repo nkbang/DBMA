@@ -1,6 +1,35 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 13 — Phase 3 잔여 작업 재개 (2026-08-16 15:00 CDT, 현재 유효)
+## 릴레이 14 — Correction Order 007: READY 큐 채우는 경로 누락 (2026-08-16 15:xx CDT, 현재 유효)
+
+```
+Work 1(unit test 31개)은 CUE가 재실행해서 PASS 확인했다. 잘했다. 다만
+--worker-mode를 CUE가 직접 실행해보니 큐가 항상 비어있었다 —
+worker.py 어디에도 실제 candidate를 READY로 넣는 함수가 없어서 Work 3
+(실제 실행 검증)이 애초에 불가능한 상태였다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-CORRECTION-ORDER-007-PHASE3-MISSING-LOADER.md
+
+핵심:
+1. parser.py의 기존 candidate 추출 로직을 재사용해서 READY 큐를 채우는
+   함수(enqueue_from_canonical 등)를 추가해라. candidate_id는 결정적으로
+   생성해라.
+2. runner.py에 --enqueue <identifier> 옵션을 별도로 추가해라.
+   --worker-mode가 큐를 자동으로 채우게 만들지 마라 — 두 단계를 사람이
+   명시적으로 거치게 해라.
+3. Vol02 중 --max-candidates 20 정도로 소규모로 실제 --enqueue ->
+   --worker-mode -> (의도적 실패 유발) -> --retry-failed까지 진짜로
+   실행해서 raw command+output을 evidence로 남겨라. Vol02 전체를 돌리지
+   마라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 13 — Phase 3 잔여 작업 재개 (2026-08-16 15:00 CDT, 완료·참고용)
 
 ```
 Incident 조사는 종결됐다(RESOLVED-OBSERVED, evidence 보존 완료) — 이건

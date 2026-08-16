@@ -308,3 +308,22 @@ Rev. Bang 지시로 ADR-025 §4 미완 항목(test_worker.py, runner.py 연동,
   이번 작업 범위 밖, 별도 지시 필요
 - Incident(RESOLVED-OBSERVED)와 완전히 분리된 트랙임을 명령서에 재명시
 - C1-TASK-ORDER-PHASE3-COMPLETION.md 발행, 릴레이 13으로 전달
+
+## 2026-08-16 15:xx CDT — Phase 3 완료 작업 감사: Work1 PASS, Work2/3 반려(근본 원인 발견)
+
+- Work 1(test_worker.py): CUE가 직접 `pytest` 재실행 — **31/31 PASS**.
+  `TestNoAutoRetry` 클래스 코드 직접 확인 — `process_batch()`를 FAILED
+  candidate에 여러 번 돌려도 `final_state != READY` assertion으로 실제
+  검증함(약한 테스트 아님). **PASS**
+- Work 2(runner.py CLI): `git diff` 검토 — `--retry-failed`는
+  candidate_id 명시 필수, `--worker-mode`는 READY만 소비. 구조는 맞으나
+  **큐를 채우는(populate) 경로가 전혀 없음**을 CUE가 코드 검색으로 발견
+  (`worker.py`에 READY로 set_state하는 함수 없음)
+- Work 3(실제 실행 검증): evidence 디렉터리에 pytest 결과만 있고 실행
+  로그 없음. CUE가 직접 `--worker-mode` 실행 → `ready_candidates: 0` —
+  큐가 항상 비어있어 애초에 검증이 불가능했던 상태로 확인됨
+- Correction Order 007 발행: `parser.py` 기존 추출 로직 재사용해 loader
+  함수 추가 지시, `--enqueue <id>`를 `--worker-mode`와 별도 옵션으로
+  분리(자동 연쇄 금지 — 암묵적 자동화 방지), Vol02 소규모(`--max-candidates
+  20`)로 실제 enqueue→worker-mode→실패유발→retry-failed 전 과정을
+  raw output으로 남기도록 지시. 릴레이 14로 전달.
