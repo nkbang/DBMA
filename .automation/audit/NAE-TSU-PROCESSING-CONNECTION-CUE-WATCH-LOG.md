@@ -115,3 +115,28 @@ Rev. Bang이 무인모드로 전환. 이후 CUE Directive(§8) 그대로 무인 
   violation)에서만 능동 대응, 그 외엔 사용자 응답 기다리지 않고 계속 진행
 - Vol01 완료 시 6항목 완료 감사 자동 실행 후 Vol02 자동 시작(승인 대기 없음)
 - 대시보드(http://127.0.0.1:8799, launchd KeepAlive) 계속 서빙
+
+## 2026-08-15 23:38 CDT — Vol02 자동전환 취소, Corpus Factory 전환 명령 준비
+
+Rev. Bang 지시: "v1 완료시 v2 로 가지말고 다음 작업을 실행하라" +
+NAE Corpus Factory 전환 상세 명령서(Phase 0-10, Acceptance Criteria 포함).
+
+- 기존 `run_tsu_queue.sh`(Vol01 완료 시 자동으로 Vol02 시작하던 큐,
+  PID 26127)를 **즉시 kill**. Vol01(PID 88689) 프로세스 자체는 무손상 확인.
+- `capture_vol01_baseline.sh` 신설 — Vol01 완료 시 Processing/TSU/System/
+  Integrity 전 항목을 자동 캡처해 영구 baseline 문서로 남김(Qdrant
+  point 수, production boundary git diff 포함).
+- `wait_vol01_then_baseline.sh` 신설 — Vol01 완료(partial:false)만 감지,
+  baseline 캡처까지만 자동 실행. **Vol02는 시작하지 않음.**
+  1차 시도(Bash run_in_background)에서 2회 연속 false-positive
+  "process died" 발생 — 직접 `ps aux`로 재확인 결과 Vol01은 실제로는
+  완전히 정상(대시보드 API도 `process_alive: true` 동시 확인). 원인:
+  이 환경의 `run_in_background: true` Bash 샌드박스가 다른 Bash 호출로
+  띄운 프로세스를 `ps aux`로 못 보는 격리 특성으로 추정(1시간 감시는
+  Monitor 도구로 동일 패턴을 계속 정상 인식해왔음 — 대조 확인). 조치:
+  사망 감지 로직을 스크립트에서 제거하고(1시간 Monitor가 이미 담당),
+  Bash 대신 **Monitor 도구**로 재실행 — 정상 기동 확인.
+- `.automation/requests/C1-TASK-ORDER-NAE-CORPUS-FACTORY-TRANSITION.md`
+  발행(Phase 0-10, §13 병렬화 정책 — 실험은 제안만, CUE 승인 필요, §21
+  C1 PASS 보고를 최종 근거로 안 씀 원칙 재확인). 릴레이 8로 relay
+  snippet에 준비 완료, **Vol01 완료 전에는 사용하지 않음**.

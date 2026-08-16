@@ -1,6 +1,41 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 7 — Night Shift Order 003: TSU Processing 연결 (2026-08-15 07:58 UTC, 현재 유효)
+## 릴레이 8 — NAE Corpus Factory 전환 (Vol.1 완료 후에만 사용 — 아직 붙여넣지 말 것)
+
+**Vol.1이 아직 완료되지 않았다면 이 블록을 붙여넣지 마십시오.** CUE가 Vol.1
+완료를 자동 감지해 `PHASE0-VOL01-BASELINE.md`를 먼저 생성한 뒤 이 릴레이를
+사용하라고 별도로 알려드립니다.
+
+```
+NAE Corpus Factory 전환 미션이다. 아래 파일을 열어서 §0 실행 조건부터
+확인하고, Phase 1부터 순서대로 진행하라.
+
+  .automation/requests/C1-TASK-ORDER-NAE-CORPUS-FACTORY-TRANSITION.md
+
+핵심:
+- Vol.1 baseline은 이미 .automation/evidence/night-shift/corpus-factory-transition/
+  PHASE0-VOL01-BASELINE.md 에 CUE가 자동 생성해뒀다 — Phase 0을 다시 만들지
+  마라, 그 파일의 실측 수치로 Phase 1(병목 분석)부터 시작해라.
+- Vol.2를 그냥 순차로 다시 도는 게 아니다 — Book 단위 순차 처리를 Pipeline
+  단위 동시 처리로 바꾸는 게 이번 미션이다.
+- 병렬화(worker 수 변경)는 제안만 해라, 직접 실행하지 마라 — CUE 승인 필요.
+- 새 ADR/schema 변경이 필요하면 C1이 만들지 말고 CUE에게 먼저 제안해라.
+- core/retrieval.py, DBMA Core, 기존 Qdrant schema, ADR 경계는 절대 건드리지
+  마라.
+- Dashboard(http://127.0.0.1:8799)는 계속 read-only로 유지, write route
+  추가 금지.
+- 중요한 결과는 서술로 끝내지 말고 CUE가 재실행할 수 있는 형태(command,
+  exit code, 실제 output)로 evidence를 남겨라.
+
+Phase 1부터 시작하되, 각 Phase 끝날 때마다 CUE 검증을 기다려라(자동으로
+다음 Phase까지 몰아서 진행하지 말고, 이번엔 Phase 경계마다 보고).
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 7 — Night Shift Order 003: TSU Processing 연결 (2026-08-15 07:58 UTC, 완료·참고용)
 
 ```
 새 미션이다. 아래 파일을 열어서 그대로 수행하라.
