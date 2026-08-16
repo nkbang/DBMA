@@ -105,3 +105,13 @@ Rev. Bang 지시로 아래를 운영 원칙으로 고정한다(요약, 전문은
   대응·다음 batch 완료 감사만 수행.
 
 이 시점부터 위 원칙이 기본 운영 모드다. 이후 이탈 시에만 이 로그에 기록.
+
+## 2026-08-15 23:10 CDT — Rev. Bang 무인모드 진입
+
+Rev. Bang이 무인모드로 전환. 이후 CUE Directive(§8) 그대로 무인 운영:
+- Vol01 production run 무변경 유지, 1시간 간격 감시 계속
+- 정상 진행(processed↑, errors=0, process alive)이면 무개입, 보고만
+- 개입 조건(프로세스 사망/반복 오류/state corruption/production boundary
+  violation)에서만 능동 대응, 그 외엔 사용자 응답 기다리지 않고 계속 진행
+- Vol01 완료 시 6항목 완료 감사 자동 실행 후 Vol02 자동 시작(승인 대기 없음)
+- 대시보드(http://127.0.0.1:8799, launchd KeepAlive) 계속 서빙
