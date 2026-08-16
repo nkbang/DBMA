@@ -1,0 +1,23 @@
+{
+  "source_id": "BAP-CHURCH-DAGG-001",
+  "success": true,
+  "elapsed": 97.42764687538147,
+  "document_id": "0d849d7ba30bafddaa0a544c93dd8c66",
+  "chunk_count": 725,
+  "tsu_records": 725,
+  "error": null,
+  "logs": [
+    "[Phase 1] Raw dir: /Users/David/DBMA/NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order",
+    "[Phase 1] Files: ['hocr.html', 'original.pdf', 'metadata.json', 'ocr.txt']",
+    "[Phase 1] Processing PDF: original.pdf",
+    "[Phase 1] process_one_file success=True, skipped=True",
+    "[Phase 1] MD saved: /Users/David/DBMA/data/제련완성본/original_pdf.md",
+    "[Phase 1] Registry: doc_id=0d849d7ba30bafddaa0a544c93dd8c66, chunks=725",
+    "[Phase 1] Building TSU for 1 doc(s), 725 total chunks...",
+    "[Phase 1] TSU records built: 725 total",
+    "[Phase 1] TSU records built: 725 total, 725 for this source",
+    "[Phase 1] Sample TSU record keys: ['tsu_id', 'document_id', 'chunk_id', 'content', 'verse_mapping', 'themes', 'title', 'author', 'chapter', 'page', 'source_file', 'language', 'source_type', 'content_quality', 'structure', 'theological_claim', 'doctrine_category', 'baptist_theme', 'source_provenance', 'nae_metadata']",
+    "[Phase 1] Sample claim length: 0"
+  ],
+  "_note_by_CUE": "이 파일은 원래 /tmp/ns003_phase1_result.json에 있었으나 CUE가 정리 과정에서 삭제함. 이 내용은 삭제 직전 CUE가 cat으로 읽어 대화 로그에 남긴 것을 그대로 복원한 것이며, 원본 바이트와 100% 동일함을 보장하지 않음(재타이핑이 아닌 복사이므로 실질적으로는 동일할 것으로 판단)."
+}

@@ -1,6 +1,40 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 11 — Correction Order 006: 작은 잔여 이슈 (2026-08-16 13:30 CDT, 현재 유효)
+## 릴레이 12 — Incident Evidence Capture (2026-08-16 14:20 CDT, 현재 유효, ADR-025와 별개)
+
+```
+Phase 3 작업과 별개로 심각한 사안이 발견됐다. CUE가 test_tsu_build.py를
+실행하다가 NAE 소스(Dagg)가 DBMA 코어 프로덕션 파이프라인을 거쳐
+data/제련완성본/에 이미 등록돼 있었던 걸 발견했다(2026-08-15 03:07:18,
+오늘 Corpus Factory 미션과 무관한 훨씬 이전 시점). CUE가 실수로 증거보존
+없이 이미 일부 삭제(data/제련완성본/original_pdf.md, 관련 임시 파일)를
+실행했다 — 되돌릴 수 없다. 이제부터는 증거수집만 한다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-TASK-ORDER-INCIDENT-EVIDENCE-CAPTURE.md
+
+가장 중요한 것:
+- 정리/삭제/복구/재실행 절대 금지. scripts/ns003_nae_ingestion.py,
+  ns004_build_tsu.py, test_tsu_build.py는 읽기만 해라, 실행하지 마라.
+- 증거 패키지가 이미 준비돼 있다:
+  .automation/evidence/incidents/2026-08-16-dbma-core-nae-isolation-violation/
+  (삭제 전 documents.json 백업, 세 스크립트 스냅샷, 삭제된 결과 파일 복원본)
+- 12개 조사 항목 중 몇 개는 CUE가 이미 확인해서 명령서에 적어놨다(재조사
+  금지 명시함) — git history(전부 미커밋 확인됨), Qdrant/registration_state
+  무영향 확인, NAE 오염 범위 Dagg 1건뿐 확인 등.
+- "누가/왜 실행했는가"는 절대 추정하지 마라. 코드/로그가 말해주는 사실만
+  적고, 모르면 "확인 불가"라고 정직하게 적어라.
+
+결과는 03-C1-INVESTIGATION-REPORT.md로 저장해라. 이건 ADR-025 승인과는
+완전히 별개 사안이다 — ADR-025는 계속 Proposed 상태로 둔다.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 11 — Correction Order 006: 작은 잔여 이슈 (2026-08-16 13:30 CDT, 완료·참고용)
 
 ```
 Correction 005 재검증 결과 핵심은 통과했다 — CUE가 phase2-upper-bound-recount.py를

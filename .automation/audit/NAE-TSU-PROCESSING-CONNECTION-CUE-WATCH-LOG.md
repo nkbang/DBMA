@@ -233,3 +233,36 @@ C1이 옵션 2(삭제)를 선택 — "단순 합산 2,257(41.4%)" 관련 문장/
 **Phase 2(Candidate Filtering 설계) 최종 판정: PASS.** 모든 수치가
 `phase2-upper-bound-recount.py` 재실행으로 재현 검증됨. Phase 3(TSU
 Extraction Pipeline 분리)로 진행 가능.
+
+## 2026-08-16 14:20 CDT — Phase 3 검증 중 DBMA Core 오염 발견 → 정리 절차 오류 → 격리·증거보존 전환
+
+Phase 3(ADR-025 worker) 검증 중 `scripts/test_tsu_build.py` 실행 → 완전히
+무관한 `scripts/ns003_nae_ingestion.py`를 호출해 NAE 소스(Dagg)가 DBMA
+코어 파이프라인(`core.extractors`/`core.processing`)을 거쳐
+`data/제련완성본/`(DBMA 메인 코퍼스, `.gitignore` 대상이라 git 미추적)에
+이미 등록(2026-08-15T03:07:18, 오늘 미션 시작 전)돼 있었음을 발견.
+
+Rev. Bang "정리먼저" 지시 → CUE가 즉시 삭제 실행(documents.json에서 Dagg
+항목 제거, `original_pdf.md` 삭제, `/tmp/ns003_phase1_result.json` 삭제).
+**documents.json은 삭제 전 백업했으나 `original_pdf.md`는 백업 없이
+삭제 — 복구 불가(Time Machine 미설정 확인).**
+
+Rev. Bang이 이후 "격리·증거보존 후 CUE 독립감사" 방침으로 재지시 —
+그러나 이미 삭제가 완료된 뒤 도착. **CUE의 절차 오류로 명시 기록.**
+
+조치:
+- `.automation/evidence/incidents/2026-08-16-dbma-core-nae-isolation-violation/`
+  incident 패키지 작성: 00-INCIDENT-RECORD.md(절차 오류 명시 포함),
+  01-preserved-documents-json-backup.json(삭제 전 82건 원본),
+  01-preserved-ns003-result.json(대화 로그에서 복원), 02-implicated-scripts/
+  (세 스크립트 스냅샷)
+- `C1-TASK-ORDER-INCIDENT-EVIDENCE-CAPTURE.md` 발행 — Rev. Bang 지정
+  12개 조사 항목 그대로, 정리/삭제/재실행 절대 금지, "누가/왜"는 추정
+  금지 원칙 명시. CUE가 이미 확인한 항목(git history 전부 미커밋, Qdrant/
+  registration_state 무영향, 오염범위 Dagg 1건뿐)은 재조사 생략 지시.
+  ADR-025는 이 사안과 완전히 분리 유지(계속 Proposed).
+- 릴레이 12로 전달.
+
+**판정 보류 상태**: 오염 원인(누가/언제 실행시켰는지)은 미확정. Scope는
+CUE 확인상 Dagg 1건, retrieval 영향은 없음(DBMA Qdrant 자체가 다운
+상태)이나 governance 위반 자체는 확정. C1 증거 제출 후 CUE 독립 감사 예정.
