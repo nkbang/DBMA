@@ -223,3 +223,13 @@ C1이 `phase2-upper-bound-recount.py`(165줄)와 `PHASE2-UPPER-BOUND-VERIFIED.md
 합집합(1,536)이라 이 비교 수치는 결정에 영향 없으나, "추정값이나
 서술만으로 PASS 처리하지 않음" 원칙상 반려. Correction Order 006(작은
 범위) 발행, 릴레이 11로 전달.
+
+## 2026-08-16 13:35 CDT — Correction 006 확인: PASS, Phase 2 완전 종료
+
+C1이 옵션 2(삭제)를 선택 — "단순 합산 2,257(41.4%)" 관련 문장/행을 §1 표,
+§3, §4에서 전부 제거하고 검증된 "합집합 1,536건(28.2%)"만 남김. §1 표
+재확인 결과 미검증 행 없이 스크립트 실측값만 남아있음을 CUE가 직접 확인.
+
+**Phase 2(Candidate Filtering 설계) 최종 판정: PASS.** 모든 수치가
+`phase2-upper-bound-recount.py` 재실행으로 재현 검증됨. Phase 3(TSU
+Extraction Pipeline 분리)로 진행 가능.
