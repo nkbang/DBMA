@@ -10,6 +10,7 @@ import BottleneckPanel from './components/BottleneckPanel.vue'
 import TimeSeriesPanel from './components/TimeSeriesPanel.vue'
 import QueueList from './components/QueueList.vue'
 import EventLog from './components/EventLog.vue'
+import HelpModal from './components/HelpModal.vue'
 import { formatClockTime } from './format.js'
 
 const REFRESH_OPTIONS = [5, 10, 30, 60]
@@ -19,6 +20,7 @@ const monitorOnline = ref(null)
 const monitoringEnabled = ref(true)
 const refreshSeconds = ref(5)
 const lastUpdateAt = ref(null)
+const showHelp = ref(false)
 let timer = null
 
 async function poll() {
@@ -87,10 +89,13 @@ onUnmounted(() => {
             <span class="brand-credit">제작총괄: d'Bang</span>
           </div>
         </div>
-        <span class="live">
-          <span class="dot" :class="!monitoringEnabled ? 'dot--unknown' : monitorOnline ? 'dot--on' : 'dot--off'"></span>
-          {{ !monitoringEnabled ? 'PAUSED' : monitorOnline ? 'LIVE' : 'RECONNECTING…' }}
-        </span>
+        <div class="header-right">
+          <span class="live">
+            <span class="dot" :class="!monitoringEnabled ? 'dot--unknown' : monitorOnline ? 'dot--on' : 'dot--off'"></span>
+            {{ !monitoringEnabled ? 'PAUSED' : monitorOnline ? 'LIVE' : 'RECONNECTING…' }}
+          </span>
+          <button class="help-btn" @click="showHelp = true">? Help</button>
+        </div>
       </div>
       <div class="header-controls">
         <label class="control">
@@ -173,6 +178,8 @@ onUnmounted(() => {
       read-only monitor — no controls are sent to C1, Ollama, TSU, or Qdrant.
       Pausing MONITOR only stops this dashboard's own polling; production keeps running either way.
     </footer>
+
+    <HelpModal :open="showHelp" @close="showHelp = false" />
   </div>
 </template>
 
@@ -224,12 +231,33 @@ onUnmounted(() => {
   color: var(--text-dim);
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .live {
   display: flex;
   align-items: center;
   font-size: 11px;
   letter-spacing: 0.1em;
   color: var(--text-dim);
+}
+
+.help-btn {
+  background: var(--bg);
+  color: var(--text-dim);
+  border: 1px solid var(--panel-border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.help-btn:hover {
+  color: var(--text);
+  border-color: var(--accent-dim);
 }
 
 .header-controls {
