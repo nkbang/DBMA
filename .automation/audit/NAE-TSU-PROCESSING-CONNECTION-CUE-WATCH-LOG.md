@@ -266,3 +266,33 @@ Rev. Bang이 이후 "격리·증거보존 후 CUE 독립감사" 방침으로 재
 **판정 보류 상태**: 오염 원인(누가/언제 실행시켰는지)은 미확정. Scope는
 CUE 확인상 Dagg 1건, retrieval 영향은 없음(DBMA Qdrant 자체가 다운
 상태)이나 governance 위반 자체는 확정. C1 증거 제출 후 CUE 독립 감사 예정.
+
+## 2026-08-16 14:50 CDT — Incident 최종 판정: RESOLVED-OBSERVED, Phase 3 재개
+
+C1의 `03-C1-INVESTIGATION-REPORT.md` 도착, 금지된 재실행 없이 안전하게
+완료(감시 확인). 내용 검증:
+
+- 스크립트 docstring이 "Night Shift Order 003"을 직접 언급 — 이번 미션
+  초기(제가 그 Order를 발행한 시각과 거의 일치하는 03:06-03:07 CDT)의
+  구현 시도로 강하게 추정됨(확정 아님, C1도 실행자 특정 안 함 — 원칙 준수)
+- `.automation/night-shift/logs/ns003/phase1_BAP-CHURCH-DAGG-001.json`에서
+  1차 실행이 경로 오타(`제륨완성벾n`)로 실패, 2차 실행이 성공했음을 확인 —
+  단순 1회 실행이 아니라 디버깅 과정이 있었음을 시사
+- CUE 직접 재확인 2건: (1) registration_state.json mtime "02:51 CDT"와
+  내용의 "07:51:26" UTC 표기가 사실 동일 시각(CDT=UTC-5) — C1이 열어둔
+  시각 불일치 의문 해소, 이 파일은 오염 사건 이후 무변경 확정. (2) NAE
+  Qdrant 3,319 재확인(오늘 5회 이상 일관) — C1이 "확인 불가"로 남긴 항목
+  CUE가 직접 닫음
+
+Rev. Bang 최종 판정 수용, 정확한 구분 지시 반영:
+- **정리 행위 자체의 증거 vs "production에 없다"는 결과 서술은 다른
+  것**이라는 지적에 따라 `04-CLEANUP-ACTION-LOG.md` 신설 — 실행 명령
+  전문, raw output, 즉시 사후검증을 별도 문서로 재구성·보존
+- Governance track 분리 명시: **ADR-025(Proposed 유지, runner.py+test
+  완료 후 재감사)**와 **이 incident(RESOLVED-OBSERVED)**는 독립된 두
+  트랙 — 서로의 승인/종결 조건에 섞지 않음
+- **Phase 3(Corpus Factory)는 이 incident로 인해 HOLD하지 않고 계속
+  진행** — `00-INCIDENT-RECORD.md` 상태 필드에 명시 반영
+
+최종 상태: Phase 3 CONTINUE / ADR-025 PROPOSED(변경 없음) / Incident
+RESOLVED-OBSERVED(증거보존 완료).

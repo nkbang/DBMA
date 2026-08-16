@@ -2,7 +2,21 @@
 
 - 발견: CUE, 2026-08-16 13:36 CDT (Phase 3 검증 중 우연히 발견)
 - 분류: DBMA/NAE corpus isolation 위반 (governance incident)
-- 상태: **QUARANTINED — 추가 조사 대기, 판정 보류**
+- 상태: **RESOLVED-OBSERVED (증거보존 완료)** — Rev. Bang 최종 판정,
+  2026-08-16 확정. 오염 범위 확정(Dagg 1건), production state 정상
+  복귀 확인, 원인은 정황상 추정되나 실행자 특정 증거 없음(미확정으로
+  유지). Cleanup 행위 자체의 증거는 `04-CLEANUP-ACTION-LOG.md` 참고.
+
+## Governance Track 분리 (Rev. Bang 지시)
+
+이 incident와 ADR-025(Phase 3 worker)는 **서로 독립된 두 개의 governance
+track**이다:
+
+- **ADR-025**: Status `Proposed` 유지. `runner.py` 연동 + unit test 완료 후
+  CUE 재감사를 거쳐야 Approved 승격 검토. 이 incident와 승인 조건을
+  섞지 않는다.
+- **이 incident**: `RESOLVED-OBSERVED`로 종결. Phase 3(Corpus Factory)
+  진행의 HOLD 사유가 아니다 — Phase 3는 계속 진행한다.
 
 ## ⚠️ CUE의 절차 오류 — 반드시 먼저 밝힘
 
