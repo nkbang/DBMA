@@ -160,3 +160,21 @@ NAE Corpus Factory 전환 상세 명령서(Phase 0-10, Acceptance Criteria 포�
 두 감시 프로세스(Vol01 완료 watcher, 1시간 감시) 전부 정상 종료 처리 —
 Vol01 대상 process가 더 이상 없으므로 재가동 대상 아님. 다음 작업
 (Corpus Factory Phase 1 착수, 릴레이 8)은 Rev. Bang 지시 대기.
+
+## 2026-08-16 07:05 CDT — Corpus Factory Phase 1: 반려(계산 오류 1건 + 과대해석 1건)
+
+릴레이 8로 착수, C1이 Phase 1(병목분석) 완료 보고. CUE 재계산 결과:
+
+- Q3(duplicate 15/1) 등 대부분 정확(CUE 직접 재계산 일치)
+- **Q1 오류**: "57726.8s/3644 calls=15.84s/call"은 틀림 — extract_claim()은
+  candidates_evaluated 5,452건 전부에 호출됨(3,644는 결과가 있었던 건수일
+  뿐). 올바른 값 10.59s/call은 같은 문서 Processing 표에 이미 있어
+  자기모순.
+- **Q2 과대해석**: "1,808건 33% deterministic filtering 가능"을 이미
+  검증된 효과처럼 서술. 그러나 1,808은 LLM을 실제로 호출해 나온 사후
+  결과이지, 저비용 rule의 사전 필터링 가능성을 증명하지 않음 — 명령서
+  §4가 정확히 경고한 실수("Recall 손실 가능성 있는 filtering은 반드시
+  benchmark 검증"). Phase 1 종합결론 표도 확정형으로 서술돼 있어 Phase 2가
+  잘못된 전제로 시작할 위험.
+
+Correction Order 004 발행, 릴레이 9로 전달.

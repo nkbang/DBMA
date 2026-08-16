@@ -1,6 +1,35 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 8 — NAE Corpus Factory 전환 (Vol.1 완료 후에만 사용 — 아직 붙여넣지 말 것)
+## 릴레이 9 — Correction Order 004: Phase 1 재계산 (2026-08-16 07:05 CDT, 현재 유효)
+
+```
+Phase 1 분석 중 계산 오류 1건과 과대해석 1건을 CUE가 발견했다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-CORRECTION-ORDER-004-PHASE1-BOTTLENECK-ANALYSIS.md
+
+요약:
+1. Q1의 "15.84s/call"은 계산 오류다. extract_claim()은 candidates_evaluated
+   5,452건 전부에 호출된다(3,644건이 아니다 — 그건 결과가 있었던 건수일
+   뿐). 57726.8/5452=10.59s/call로 정정해라 — 이미 같은 문서 Processing
+   표에 적힌 값과 일치시켜라.
+2. Q2의 "33% 절감"은 이미 검증된 효과처럼 썼는데, 1,808건이라는 숫자
+   자체가 LLM을 실제로 돌려서 나온 사후 결과다. 이게 "저비용 rule로
+   사전에 걸러낼 수 있다"는 증거가 아니다. "달성 가능한 상한선(benchmark
+   검증 필요)"으로 정정하고, 종합결론 표의 확정형 표현도 고쳐라.
+
+Q3-Q10은 CUE가 재계산해서 전부 정확함을 확인했다 — 다시 손대지 마라.
+
+정정 후 Phase 2(Candidate Filtering 설계)로 넘어가라. Phase 2에서도
+benchmark 없이 절감 효과를 확정형으로 쓰면 안 된다.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 8 — NAE Corpus Factory 전환 (완료·참고용)
 
 **Vol.1이 아직 완료되지 않았다면 이 블록을 붙여넣지 마십시오.** CUE가 Vol.1
 완료를 자동 감지해 `PHASE0-VOL01-BASELINE.md`를 먼저 생성한 뒤 이 릴레이를
