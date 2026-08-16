@@ -178,3 +178,25 @@ Vol01 대상 process가 더 이상 없으므로 재가동 대상 아님. 다음 
   잘못된 전제로 시작할 위험.
 
 Correction Order 004 발행, 릴레이 9로 전달.
+
+## 2026-08-16 07:15 CDT — Phase 1 정정 확인(PASS), Phase 2 반려(카운트 재현 안 됨)
+
+Phase 1 정정 재검증: Q1(10.59s/call로 정정, 문서 내 다른 값과 이제 일치),
+Q2("상한선/benchmark 필요"로 정정, 종합결론 표도 "최대 33%(검증 필요)"로
+수정됨) — **PASS**.
+
+Phase 2(`PHASE2-CANDIDATE-FILTERING-DESIGN.md`) 설계 구조는 견고함(상한선/
+검증효과 구분을 문서 전체 일관 적용, benchmark 우선 설계, Priority
+분류 — 명령서 §4 원칙 정확히 반영) — **PASS**.
+
+단 §6 "Upper Bound 요약" 표의 실측 카운트를 CUE가 문서에 적힌 정규식
+그대로 재현한 결과 불일치:
+- L1b(페이지 번호): 문서 291건 vs CUE 재현 1,153건(4배)
+- L4b(소문자 시작): 문서 666건 vs CUE 재현 374건(약 절반)
+- candidate 총수(5,452)는 일치 — baseline 대조 가능한 값이라 당연히 맞음
+- 문서에 실행 코드/raw output이 없어 숫자 출처 확인 불가(Phase 0의
+  `capture_vol01_baseline.sh`와 다른 패턴 — 재실행 가능한 형태 아님)
+
+CUE 재현 스크립트를 evidence로 남김
+(`cue-phase2-recount.py`). Correction Order 005 발행, 릴레이 10으로 전달.
+§6 표만 반려, §0-5/§7 설계 원칙은 PASS 유지.

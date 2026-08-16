@@ -1,6 +1,37 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 9 — Correction Order 004: Phase 1 재계산 (2026-08-16 07:05 CDT, 현재 유효)
+## 릴레이 10 — Correction Order 005: Phase 2 재현 안 되는 카운트 (2026-08-16 07:15 CDT, 현재 유효)
+
+```
+Phase 1 정정은 정확했다(Q1/Q2 잘 고침, 다시 손대지 마라). Phase 2도 설계
+원칙은 좋다 — 상한선/검증효과 구분을 문서 전체에 일관되게 적용한 것 좋았다.
+다만 §6 "Upper Bound 요약" 표의 카운트 2개를 CUE가 문서에 적힌 그 정규식
+그대로 재현해봤더니 크게 달랐다:
+- page number 패턴 매칭: 문서 291건 vs CUE 재현 1,153건
+- 소문자 시작: 문서 666건 vs CUE 재현 374건
+- candidate 총수(5,452)는 정확히 일치했다 — 이 2개만 문제다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-CORRECTION-ORDER-005-PHASE2-UNVERIFIED-COUNTS.md
+
+CUE의 재현 스크립트도 참고용으로 남겨뒀다:
+  .automation/evidence/night-shift/corpus-factory-transition/cue-phase2-recount.py
+
+§6 표 8개 행 전부를 실제로 실행한 코드+raw output으로 다시 만들어서
+evidence로 남기고, CUE 재현값과 차이가 나면 어느 패턴 정의가 맞는지
+문서에 명확히 적어라. "~42%" 합계도 재계산하고, Layer 간 중복(겹치는
+candidate)도 합집합으로 계산해서 표기해라.
+
+§0-5, §7(설계 원칙, layer 구조, benchmark 설계)은 PASS다 — 다시 손대지
+마라. §6 표만 고쳐라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 9 — Correction Order 004: Phase 1 재계산 (2026-08-16 07:05 CDT, 완료·참고용)
 
 ```
 Phase 1 분석 중 계산 오류 1건과 과대해석 1건을 CUE가 발견했다.
