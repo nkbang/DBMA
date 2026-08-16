@@ -2,25 +2,28 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  history: { type: Array, default: () => [] },
+  title: { type: String, required: true },
+  data: { type: Array, default: () => [] }, // [{t, value}]
+  formatValue: { type: Function, default: (v) => `${Math.round(v)}` },
+  emptyLabel: { type: String, default: 'collecting samples…' },
 })
 
 const VIEW_W = 600
-const VIEW_H = 120
-const PAD = 8
+const VIEW_H = 90
+const PAD = 6
 
 const points = computed(() => {
-  const h = props.history
+  const h = props.data
   if (!h || h.length < 2) return null
 
   const tMin = h[0].t
   const tMax = h[h.length - 1].t
   const tSpan = Math.max(tMax - tMin, 1)
-  const rMax = Math.max(...h.map((s) => s.rate_per_hour), 1) * 1.15
+  const rMax = Math.max(...h.map((s) => s.value), 1) * 1.15
 
   return h.map((s) => {
     const x = PAD + ((s.t - tMin) / tSpan) * (VIEW_W - PAD * 2)
-    const y = VIEW_H - PAD - (s.rate_per_hour / rMax) * (VIEW_H - PAD * 2)
+    const y = VIEW_H - PAD - (s.value / rMax) * (VIEW_H - PAD * 2)
     return [x, y]
   })
 })
@@ -37,11 +40,19 @@ const areaPath = computed(() => {
   const last = pts[pts.length - 1]
   return `${linePath.value} L${last[0].toFixed(1)},${VIEW_H - PAD} L${first[0].toFixed(1)},${VIEW_H - PAD} Z`
 })
+
+const latest = computed(() => {
+  const h = props.data
+  return h && h.length ? h[h.length - 1].value : null
+})
 </script>
 
 <template>
-  <section class="panel throughput-panel">
-    <h3 class="panel-title">Throughput — Last 60 Minutes</h3>
+  <div class="chart-block">
+    <div class="chart-header">
+      <span class="chart-title">{{ title }}</span>
+      <span class="chart-latest" v-if="latest !== null">{{ formatValue(latest) }}</span>
+    </div>
     <svg
       v-if="points"
       class="chart"
@@ -51,14 +62,33 @@ const areaPath = computed(() => {
       <path :d="areaPath" class="chart-area" />
       <path :d="linePath" class="chart-line" />
     </svg>
-    <p v-else class="chart-empty">collecting throughput samples…</p>
-  </section>
+    <p v-else class="chart-empty">{{ emptyLabel }}</p>
+  </div>
 </template>
 
 <style scoped>
+.chart-block {
+  padding: 8px 0;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.chart-latest {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
 .chart {
   width: 100%;
-  height: 90px;
+  height: 56px;
   display: block;
 }
 
@@ -77,8 +107,8 @@ const areaPath = computed(() => {
 
 .chart-empty {
   color: var(--text-dim);
-  font-size: 12px;
-  margin: 24px 0;
+  font-size: 11px;
+  margin: 18px 0;
   text-align: center;
 }
 </style>

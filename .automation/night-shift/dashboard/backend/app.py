@@ -20,7 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from collector import MonitorState, PollLoop
+from monitor_state import MonitorState, PollLoop
 
 POLL_INTERVAL_SECONDS = 5.0
 FRONTEND_DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"

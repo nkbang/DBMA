@@ -46,3 +46,30 @@ export function formatExpiresIn(isoString) {
   const m = totalMin % 60
   return h > 0 ? `${h}h ${m}m` : `${m}m`
 }
+
+// UNKNOWN/N/A fields (GPU temp/power/clock/pstate/XID, power_throttle, ...)
+// share one formatter so "not obtainable here" always reads the same way.
+export function formatOrUnknown(v, suffix = '') {
+  if (v === null || v === undefined) return 'UNKNOWN'
+  return `${v}${suffix}`
+}
+
+export function formatBytesPerSec(v) {
+  if (v === null || v === undefined) return '—'
+  if (v >= 1e6) return `${(v / 1e6).toFixed(1)} MB/s`
+  if (v >= 1e3) return `${(v / 1e3).toFixed(1)} KB/s`
+  return `${Math.round(v)} B/s`
+}
+
+export function formatClockTime(epochSeconds) {
+  if (!epochSeconds) return '—'
+  const d = new Date(epochSeconds * 1000)
+  return d.toLocaleTimeString('en-US', { hour12: false })
+}
+
+export function formatAgo(epochSeconds) {
+  if (!epochSeconds) return '—'
+  const s = Math.max(0, Math.round(Date.now() / 1000 - epochSeconds))
+  if (s < 60) return `${s}s ago`
+  return `${Math.floor(s / 60)}m ${s % 60}s ago`
+}

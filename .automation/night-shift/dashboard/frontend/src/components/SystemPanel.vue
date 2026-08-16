@@ -1,11 +1,13 @@
 <script setup>
 import { computed } from 'vue'
-import { formatGB, formatPercent } from '../format.js'
+import { formatGB, formatPercent, formatBytesPerSec } from '../format.js'
 
 const props = defineProps({
   memory: { type: Object, default: null },
   cpu: { type: Object, default: null },
-  gpu: { type: Object, default: null },
+  disk: { type: Object, default: null },
+  diskIoRate: { type: Object, default: null },
+  networkIoRate: { type: Object, default: null },
 })
 
 // Bar fill mirrors the used/total GB text exactly (psutil's own `percent`
@@ -15,7 +17,6 @@ const memoryPct = computed(() => {
   if (!props.memory?.total_bytes) return 0
   return (props.memory.used_bytes / props.memory.total_bytes) * 100
 })
-const gpuPct = computed(() => props.gpu?.device_utilization_pct ?? 0)
 
 function barClass(pct) {
   if (pct >= 90) return 'bar--danger'
@@ -26,7 +27,7 @@ function barClass(pct) {
 
 <template>
   <section class="panel system-panel">
-    <h3 class="panel-title">System</h3>
+    <h3 class="panel-title">Resource</h3>
 
     <div class="row">
       <span class="row-label">Memory</span>
@@ -40,18 +41,6 @@ function barClass(pct) {
     </div>
 
     <div class="row">
-      <span class="row-label">GPU</span>
-      <div class="row-bar-track">
-        <div class="row-bar-fill" :class="barClass(gpuPct)" :style="{ width: `${Math.min(100, gpuPct)}%` }"></div>
-      </div>
-      <span class="row-value mono-num">{{ gpu ? formatPercent(gpu.device_utilization_pct) : '—' }}</span>
-    </div>
-    <p class="row-sub" v-if="gpu">
-      {{ gpu.model }}<template v-if="gpu.core_count">, {{ gpu.core_count }}-core</template>
-      <template v-if="gpu.in_use_memory_bytes"> — {{ formatGB(gpu.in_use_memory_bytes) }} in use</template>
-    </p>
-
-    <div class="row">
       <span class="row-label">CPU</span>
       <div class="row-bar-track">
         <div class="row-bar-fill bar--ok" :style="{ width: `${Math.min(100, cpu?.percent ?? 0)}%` }"></div>
@@ -61,6 +50,27 @@ function barClass(pct) {
     <p class="row-sub" v-if="cpu?.load_avg_1m != null">
       load avg {{ cpu.load_avg_1m.toFixed(2) }} · {{ cpu.core_count }} cores
     </p>
+
+    <div class="row">
+      <span class="row-label">Disk</span>
+      <div class="row-bar-track">
+        <div class="row-bar-fill bar--ok" :style="{ width: `${Math.min(100, disk?.percent ?? 0)}%` }"></div>
+      </div>
+      <span class="row-value mono-num">
+        <template v-if="disk">{{ formatGB(disk.used_bytes) }} / {{ formatGB(disk.total_bytes) }}</template>
+        <template v-else>—</template>
+      </span>
+    </div>
+    <p class="row-sub" v-if="diskIoRate">
+      read {{ formatBytesPerSec(diskIoRate.read_bytes_per_sec) }} · write {{ formatBytesPerSec(diskIoRate.write_bytes_per_sec) }}
+    </p>
+
+    <div class="row" v-if="networkIoRate">
+      <span class="row-label">Network</span>
+      <span class="row-value mono-num net-value">
+        ↑ {{ formatBytesPerSec(networkIoRate.sent_bytes_per_sec) }} · ↓ {{ formatBytesPerSec(networkIoRate.recv_bytes_per_sec) }}
+      </span>
+    </div>
   </section>
 </template>
 
@@ -113,6 +123,10 @@ function barClass(pct) {
 .row-value {
   text-align: right;
   font-size: 12px;
+}
+
+.net-value {
+  grid-column: 2 / span 2;
 }
 
 .row-sub {

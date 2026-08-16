@@ -1,17 +1,24 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import ProgressPanel from './components/ProgressPanel.vue'
 import StatGrid from './components/StatGrid.vue'
-import StatusPills from './components/StatusPills.vue'
-import ThroughputChart from './components/ThroughputChart.vue'
-import QueueList from './components/QueueList.vue'
+import HealthBar from './components/HealthBar.vue'
+import PipelineFlow from './components/PipelineFlow.vue'
 import SystemPanel from './components/SystemPanel.vue'
-import OllamaModelsPanel from './components/OllamaModelsPanel.vue'
+import GpuOperationsPanel from './components/GpuOperationsPanel.vue'
+import BottleneckPanel from './components/BottleneckPanel.vue'
+import TimeSeriesPanel from './components/TimeSeriesPanel.vue'
+import QueueList from './components/QueueList.vue'
+import EventLog from './components/EventLog.vue'
+import { formatClockTime } from './format.js'
 
-const POLL_MS = 7000
+const REFRESH_OPTIONS = [5, 10, 30, 60]
 
 const status = ref(null)
 const monitorOnline = ref(null)
+const monitoringEnabled = ref(true)
+const refreshSeconds = ref(5)
+const lastUpdateAt = ref(null)
 let timer = null
 
 async function poll() {
@@ -20,14 +27,45 @@ async function poll() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     status.value = await res.json()
     monitorOnline.value = true
+    lastUpdateAt.value = Date.now() / 1000
   } catch (e) {
     monitorOnline.value = false
   }
 }
 
+function startTimer() {
+  if (timer) clearInterval(timer)
+  timer = setInterval(poll, refreshSeconds.value * 1000)
+}
+
+function toggleMonitoring() {
+  monitoringEnabled.value = !monitoringEnabled.value
+  if (monitoringEnabled.value) {
+    poll()
+    startTimer()
+  } else if (timer) {
+    clearInterval(timer)
+    timer = null
+  }
+}
+
+function onRefreshChange() {
+  if (monitoringEnabled.value) startTimer()
+}
+
+const nextUpdateAt = computed(() => {
+  if (!monitoringEnabled.value || !lastUpdateAt.value) return null
+  return lastUpdateAt.value + refreshSeconds.value
+})
+
+const pipelineRunning = computed(() => {
+  const stages = status.value?.pipeline_stages || []
+  return stages.length ? stages.some((s) => s.status === 'RUNNING') : null
+})
+
 onMounted(() => {
   poll()
-  timer = setInterval(poll, POLL_MS)
+  startTimer()
 })
 
 onUnmounted(() => {
@@ -38,12 +76,37 @@ onUnmounted(() => {
 <template>
   <div class="dashboard">
     <header class="panel header">
-      <h1>NAE NIGHT SHIFT</h1>
-      <span class="live">
-        <span class="dot" :class="monitorOnline ? 'dot--on' : 'dot--off'"></span>
-        {{ monitorOnline ? 'LIVE' : 'RECONNECTING…' }}
-      </span>
+      <div class="header-top">
+        <h1>NAE NIGHT SHIFT</h1>
+        <span class="live">
+          <span class="dot" :class="!monitoringEnabled ? 'dot--unknown' : monitorOnline ? 'dot--on' : 'dot--off'"></span>
+          {{ !monitoringEnabled ? 'PAUSED' : monitorOnline ? 'LIVE' : 'RECONNECTING…' }}
+        </span>
+      </div>
+      <div class="header-controls">
+        <label class="control">
+          refresh
+          <select v-model.number="refreshSeconds" @change="onRefreshChange">
+            <option v-for="s in REFRESH_OPTIONS" :key="s" :value="s">{{ s }}s</option>
+          </select>
+        </label>
+        <button class="toggle" @click="toggleMonitoring">
+          {{ monitoringEnabled ? 'MONITOR: ON' : 'MONITOR: OFF' }}
+        </button>
+        <span class="updated">
+          last {{ formatClockTime(lastUpdateAt) }} · next {{ formatClockTime(nextUpdateAt) }}
+        </span>
+      </div>
     </header>
+
+    <HealthBar
+      :process-alive="status?.process_alive ?? null"
+      :pipeline-running="pipelineRunning"
+      :ollama-online="status?.ollama_online ?? null"
+      :gpu-health="status?.gpu_health?.status ?? null"
+      :monitor-online="monitorOnline"
+      :n8n-online="status?.n8n_online ?? null"
+    />
 
     <ProgressPanel
       :title="status?.current_source?.title"
@@ -59,21 +122,35 @@ onUnmounted(() => {
       :errors="status?.errors ?? 0"
     />
 
-    <StatusPills
-      :process-alive="status?.process_alive ?? null"
-      :ollama-online="status?.ollama_online ?? null"
-      :monitor-online="monitorOnline"
+    <PipelineFlow :stages="status?.pipeline_stages ?? []" />
+
+    <GpuOperationsPanel
+      :gpu="status?.system?.gpu ?? null"
+      :gpu-health="status?.gpu_health ?? null"
+      :gpu-extended="status?.gpu_extended ?? null"
+      :memory-total-bytes="status?.system?.memory?.total_bytes ?? null"
+      :ollama-models="status?.ollama_models ?? []"
+      :llama-parallelism="status?.llama_parallelism ?? []"
     />
+
+    <BottleneckPanel :bottleneck="status?.bottleneck ?? null" :ollama-active="(status?.ollama_models ?? []).length > 0" />
 
     <SystemPanel
       :memory="status?.system?.memory ?? null"
       :cpu="status?.system?.cpu ?? null"
-      :gpu="status?.system?.gpu ?? null"
+      :disk="status?.system?.disk ?? null"
+      :disk-io-rate="status?.system?.disk_io_rate ?? null"
+      :network-io-rate="status?.system?.network_io_rate ?? null"
     />
 
-    <OllamaModelsPanel :models="status?.ollama_models ?? []" />
-
-    <ThroughputChart :history="status?.throughput_history ?? []" />
+    <TimeSeriesPanel
+      :throughput-history="status?.throughput_history ?? []"
+      :latency-history="status?.latency_history ?? []"
+      :gpu-history="status?.gpu_history ?? []"
+      :vram-history="status?.vram_history ?? []"
+      :ram-history="status?.ram_history ?? []"
+      :cpu-history="status?.cpu_history ?? []"
+    />
 
     <QueueList
       :queue="status?.queue ?? []"
@@ -81,14 +158,23 @@ onUnmounted(() => {
       :stop-reason="status?.queue_stop_reason ?? null"
     />
 
+    <EventLog :events="status?.events ?? []" />
+
     <footer class="panel footer">
-      read-only monitor — no controls are sent to C1, Ollama, TSU, or Qdrant
+      read-only monitor — no controls are sent to C1, Ollama, TSU, or Qdrant.
+      Pausing MONITOR only stops this dashboard's own polling; production keeps running either way.
     </footer>
   </div>
 </template>
 
 <style scoped>
 .header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -108,10 +194,55 @@ onUnmounted(() => {
   color: var(--text-dim);
 }
 
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.control select {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 4px;
+}
+
+.toggle {
+  background: var(--bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  background: var(--panel-border);
+}
+
+.updated {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
 .footer {
   text-align: center;
   font-size: 10px;
   color: var(--text-dim);
   letter-spacing: 0.03em;
+  line-height: 1.6;
 }
 </style>

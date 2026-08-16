@@ -1,12 +1,20 @@
-"""NAE Live Dashboard — read-only state collector.
+"""NAE Live Dashboard — read-only IO layer.
+
+Every function here is either a raw IO boundary (subprocess/psutil/HTTP
+GET/file read) or a pure parser next to the boundary it parses. Nothing
+in this module holds state, polls on a timer, or computes a judgment —
+that orchestration lives in monitor_state.py (MonitorState/PollLoop),
+which calls these functions from a background thread and caches the
+results so request handlers never block on IO.
 
 Observes the existing Fuller TSU extraction production run (`NAE.pipeline.
 tsu.runner`, PID managed elsewhere) purely by reading files it already
 writes (`tsu_report.json`, `tsu_id_state.json`), the queue log written by
-`.automation/night-shift/run_tsu_queue.sh`, `ps aux` output, and Ollama's
-own health/`/api/ps` endpoints. System resource visibility (memory/CPU via
-psutil, Apple Silicon GPU via `ioreg` — no sudo required) is read the same
-way: OS/kernel counters and IORegistry queries, never a write.
+`.automation/night-shift/run_tsu_queue.sh`, `ps aux` output, Ollama's own
+health/`/api/ps` endpoints, and n8n's `/healthz`. System resource
+visibility (memory/CPU via psutil, Apple Silicon GPU via `ioreg`, thermal
+pressure via `pmset -g therm` — none require sudo) is read the same way:
+OS/kernel counters and IORegistry queries, never a write.
 
 This module performs NO writes to any NAE/production path and sends NO
 commands to any process — it only reads. Mirrors the same read set as
@@ -20,12 +28,7 @@ import json
 import os
 import re
 import subprocess
-import threading
-import time
-from collections import deque
-from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable
 
 import psutil
 import requests
@@ -35,8 +38,10 @@ TSU_ROOT = REPO_ROOT / "NAE" / "corpus" / "tsu"
 NIGHT_SHIFT_EVIDENCE = REPO_ROOT / ".automation" / "evidence" / "night-shift" / "tsu-processing-connection"
 QUEUE_LOG_PATH = NIGHT_SHIFT_EVIDENCE / "queue-vol02-08.log"
 STOP_MARKER_PATH = NIGHT_SHIFT_EVIDENCE / "STOP.md"
+REGISTRATION_STATE_PATH = REPO_ROOT / "NAE" / "pipeline" / "registration" / "state" / "registration_state.json"
 OLLAMA_HEALTH_URL = "http://127.0.0.1:11434/api/version"
 OLLAMA_PS_URL = "http://127.0.0.1:11434/api/ps"
+N8N_HEALTH_URL = "http://127.0.0.1:5678/healthz"
 
 # Mirrors run_tsu_queue.sh's VOLUMES list (Vol02-08) with Vol01 prepended —
 # Vol01 was launched separately, before the queue script existed.
@@ -55,6 +60,10 @@ _GPU_MEM_PATTERN = re.compile(r'"In use system memory"\s*=\s*(\d+)')
 _GPU_MODEL_PATTERN = re.compile(r'"model"\s*=\s*"([^"]*)"')
 _GPU_CORES_PATTERN = re.compile(r'"gpu-core-count"\s*=\s*(\d+)')
 
+# One llama-server process per loaded model (see ps aux); `-np N` is its
+# actual concurrency setting, read straight off its own command line.
+_LLAMA_SERVER_NP_PATTERN = re.compile(r"llama-server.*-np (\d+)")
+
 
 def read_ps_aux() -> str:
     """IO boundary — real `ps aux` call. Read-only; sends no signal to any process."""
@@ -72,6 +81,66 @@ def check_ollama_online(timeout: float = 1.5) -> bool:
         return resp.status_code == 200
     except requests.RequestException:
         return False
+
+
+def check_n8n_online(timeout: float = 1.5) -> bool:
+    """IO boundary — GET only, n8n's own /healthz (lighter than hitting
+    the app's root HTML on every 5s poll)."""
+    try:
+        resp = requests.get(N8N_HEALTH_URL, timeout=timeout)
+        return resp.status_code == 200
+    except requests.RequestException:
+        return False
+
+
+def parse_llama_server_parallelism(ps_text: str) -> list[int]:
+    return [int(n) for n in _LLAMA_SERVER_NP_PATTERN.findall(ps_text)]
+
+
+def read_disk_usage(path: Path = REPO_ROOT) -> dict:
+    """IO boundary — psutil reads the filesystem's own statvfs counters."""
+    du = psutil.disk_usage(str(path))
+    return {"total_bytes": du.total, "used_bytes": du.used, "percent": du.percent}
+
+
+def read_disk_io_raw() -> dict | None:
+    """Cumulative byte counters since boot — the caller derives a rate
+    from the delta between two samples, same pattern as throughput."""
+    counters = psutil.disk_io_counters()
+    if counters is None:
+        return None
+    return {"read_bytes": counters.read_bytes, "write_bytes": counters.write_bytes}
+
+
+def read_net_io_raw() -> dict | None:
+    counters = psutil.net_io_counters()
+    if counters is None:
+        return None
+    return {"bytes_sent": counters.bytes_sent, "bytes_recv": counters.bytes_recv}
+
+
+def read_thermal_pressure_raw(timeout: float = 3.0) -> str:
+    """IO boundary — `pmset -g therm` reports the OS's own recorded
+    thermal *warning* flag, not a numeric temperature. Real Celsius/Watts
+    figures require `powermetrics`, which needs sudo — deliberately not
+    used anywhere in this dashboard (see CLAUDE.md Production 보호 원칙:
+    never elevate privileges, never touch anything that could affect the
+    running Ollama process)."""
+    try:
+        result = subprocess.run(["pmset", "-g", "therm"], capture_output=True, text=True, timeout=timeout)
+        return result.stdout
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
+def parse_thermal_pressure(pmset_text: str) -> str:
+    """Returns 'nominal' | 'elevated' | 'unknown'. Coarse on purpose —
+    this is the only sudo-free thermal signal macOS exposes."""
+    if not pmset_text:
+        return "unknown"
+    if "No thermal warning level has been recorded" in pmset_text:
+        return "nominal"
+    return "elevated"
 
 
 def read_gpu_stats_raw(timeout: float = 3.0) -> str:
@@ -180,6 +249,21 @@ def read_json_safe(path: Path) -> dict | list | None:
         return None
 
 
+def read_registration_state(path: Path = REGISTRATION_STATE_PATH) -> dict:
+    """source_id -> {state, updated_at} map written by
+    NAE/pipeline/registration/state.py::RegistrationStateStore."""
+    data = read_json_safe(path)
+    return data if isinstance(data, dict) else {}
+
+
+def read_index_report(tsu_root: Path, identifier: str) -> dict | None:
+    """NAE/pipeline/index/indexer.py writes index_report.json to the same
+    per-identifier directory as tsu_report.json — cheap to check, no
+    tree-wide search needed."""
+    data = read_json_safe(tsu_root / identifier / "index_report.json")
+    return data if isinstance(data, dict) else None
+
+
 def volume_title(identifier: str) -> str:
     match = _VOLUME_NUM_PATTERN.search(identifier)
     num = match.group(1) if match else "?"
@@ -201,248 +285,3 @@ def parse_queue_log(log_text: str) -> dict[str, str]:
             statuses[m.group(1)] = "FAILED"
     return statuses
 
-
-def _safe(reader: Callable[[], object], default: object):
-    """A slow/unavailable system-metrics reader (psutil hiccup, ioreg
-    absent on non-Apple hardware, Ollama briefly unreachable) must not
-    knock out the TSU progress read it's bundled with in the same poll
-    cycle — each of these is independently best-effort."""
-    try:
-        return reader()
-    except Exception:
-        return default
-
-
-@dataclass
-class ThroughputSample:
-    ts: float
-    evaluated: int
-
-
-@dataclass
-class _ActiveState:
-    active: str | None = None
-    process_alive: bool = False
-    ollama_online: bool = False
-    last_poll_ts: float | None = None
-    last_poll_ok: bool = False
-    memory: dict | None = None
-    cpu: dict | None = None
-    gpu: dict | None = None
-    ollama_models: list = field(default_factory=list)
-
-
-class MonitorState:
-    """Background-polled, read-only view of the current TSU extraction run.
-
-    `poll()` is meant to be called on a timer from a background thread;
-    `snapshot()` is safe to call from request handlers at any time and
-    never blocks on IO.
-    """
-
-    def __init__(
-        self,
-        *,
-        tsu_root: Path = TSU_ROOT,
-        queue_log_path: Path = QUEUE_LOG_PATH,
-        stop_marker_path: Path = STOP_MARKER_PATH,
-        history_window_seconds: float = 3600.0,
-        ps_reader: Callable[[], str] = read_ps_aux,
-        ollama_checker: Callable[[], bool] = check_ollama_online,
-        memory_reader: Callable[[], dict] = read_system_memory,
-        cpu_reader: Callable[[], dict] = read_cpu_stats,
-        gpu_reader: Callable[[], str] = read_gpu_stats_raw,
-        ollama_models_reader: Callable[[], list] = read_ollama_models,
-    ) -> None:
-        self._tsu_root = tsu_root
-        self._queue_log_path = queue_log_path
-        self._stop_marker_path = stop_marker_path
-        self._history_window = history_window_seconds
-        self._ps_reader = ps_reader
-        self._ollama_checker = ollama_checker
-        self._memory_reader = memory_reader
-        self._cpu_reader = cpu_reader
-        self._gpu_reader = gpu_reader
-        self._ollama_models_reader = ollama_models_reader
-
-        self._lock = threading.Lock()
-        self._state = _ActiveState()
-        self._reports: dict[str, dict] = {}
-        self._history: dict[str, deque[ThroughputSample]] = {}
-
-    def poll(self) -> None:
-        """One read cycle. Never raises — a failed poll just leaves the
-        previous snapshot in place so the dashboard degrades gracefully
-        instead of going blank."""
-        try:
-            ps_text = self._ps_reader()
-            active = parse_active_identifier(ps_text)
-            ollama_online = self._ollama_checker()
-            memory = _safe(self._memory_reader, None)
-            cpu = _safe(self._cpu_reader, None)
-            gpu = _safe(lambda: parse_gpu_stats(self._gpu_reader()), None)
-            ollama_models = _safe(self._ollama_models_reader, [])
-
-            report = None
-            if active:
-                report = read_json_safe(self._tsu_root / active / "tsu_report.json")
-
-            now = time.time()
-            with self._lock:
-                self._state.active = active
-                self._state.process_alive = active is not None
-                self._state.ollama_online = ollama_online
-                self._state.memory = memory
-                self._state.cpu = cpu
-                self._state.gpu = gpu
-                self._state.ollama_models = ollama_models
-                self._state.last_poll_ts = now
-                self._state.last_poll_ok = True
-                if active and report is not None:
-                    self._reports[active] = report
-                    hist = self._history.setdefault(active, deque())
-                    hist.append(ThroughputSample(ts=now, evaluated=report.get("candidates_evaluated", 0)))
-                    cutoff = now - self._history_window
-                    while hist and hist[0].ts < cutoff:
-                        hist.popleft()
-        except Exception:
-            with self._lock:
-                self._state.last_poll_ts = time.time()
-                self._state.last_poll_ok = False
-
-    def _queue_snapshot(self, active: str | None) -> tuple[list[dict], bool, str | None]:
-        log_text = ""
-        try:
-            log_text = self._queue_log_path.read_text(encoding="utf-8")
-        except OSError:
-            pass
-        queue_statuses = parse_queue_log(log_text)
-
-        stopped = self._stop_marker_path.exists()
-        stop_reason = None
-        if stopped:
-            try:
-                stop_reason = self._stop_marker_path.read_text(encoding="utf-8").strip().splitlines()[0]
-            except (OSError, IndexError):
-                stop_reason = "STOP.md present"
-
-        entries = []
-        for vol in VOLUME_QUEUE:
-            if vol == active:
-                report = self._reports.get(vol, {})
-                total = report.get("candidates_total") or 0
-                evaluated = report.get("candidates_evaluated") or 0
-                pct = round(100 * evaluated / total, 1) if total else 0.0
-                entries.append({"identifier": vol, "status": "RUNNING", "progress_pct": pct})
-                continue
-
-            on_disk = read_json_safe(self._tsu_root / vol / "tsu_report.json")
-            if isinstance(on_disk, dict) and on_disk.get("partial") is False:
-                entries.append({"identifier": vol, "status": "COMPLETE", "progress_pct": 100.0})
-                continue
-
-            logged = queue_statuses.get(vol)
-            if logged == "FAILED":
-                entries.append({"identifier": vol, "status": "FAILED", "progress_pct": 0.0})
-            elif logged == "COMPLETE":
-                entries.append({"identifier": vol, "status": "COMPLETE", "progress_pct": 100.0})
-            elif logged == "RUNNING":
-                entries.append({"identifier": vol, "status": "RUNNING", "progress_pct": 0.0})
-            else:
-                entries.append({"identifier": vol, "status": "QUEUED", "progress_pct": 0.0})
-
-        return entries, stopped, stop_reason
-
-    def snapshot(self) -> dict:
-        with self._lock:
-            active = self._state.active
-            process_alive = self._state.process_alive
-            ollama_online = self._state.ollama_online
-            last_poll_ts = self._state.last_poll_ts
-            last_poll_ok = self._state.last_poll_ok
-            memory = dict(self._state.memory) if self._state.memory else None
-            cpu = dict(self._state.cpu) if self._state.cpu else None
-            gpu = dict(self._state.gpu) if self._state.gpu else None
-            ollama_models = list(self._state.ollama_models)
-            report = dict(self._reports.get(active, {})) if active else None
-            history = list(self._history.get(active, [])) if active else []
-
-        processed = report.get("candidates_evaluated", 0) if report else 0
-        total = report.get("candidates_total", 0) if report else 0
-        errors = report.get("llm_errors", 0) if report else 0
-        elapsed = report.get("elapsed_seconds", 0.0) if report else 0.0
-        percentage = round(100 * processed / total, 2) if total else 0.0
-
-        avg_rate_per_sec = (processed / elapsed) if elapsed > 0 else 0.0
-        throughput_per_hour = round(avg_rate_per_sec * 3600, 1)
-        sec_per_item = round(elapsed / processed, 2) if processed > 0 else None
-        remaining = max(total - processed, 0)
-        eta_seconds = round(remaining / avg_rate_per_sec, 0) if avg_rate_per_sec > 0 else None
-
-        sparkline = []
-        for prev, cur in zip(history, history[1:]):
-            dt = cur.ts - prev.ts
-            d_ev = cur.evaluated - prev.evaluated
-            rate_per_hour = (d_ev / dt * 3600) if dt > 0 else 0.0
-            sparkline.append({"t": cur.ts, "rate_per_hour": round(rate_per_hour, 1)})
-
-        queue, queue_stopped, stop_reason = self._queue_snapshot(active)
-
-        return {
-            "current_source": {
-                "identifier": active,
-                "title": volume_title(active) if active else None,
-            },
-            "processed": processed,
-            "total": total,
-            "percentage": percentage,
-            "throughput_per_hour": throughput_per_hour,
-            "sec_per_item": sec_per_item,
-            "eta_seconds": eta_seconds,
-            "errors": errors,
-            "elapsed_seconds": elapsed,
-            "process_alive": process_alive,
-            "ollama_online": ollama_online,
-            "system": {
-                "memory": memory,
-                "cpu": cpu,
-                "gpu": gpu,
-            },
-            "ollama_models": ollama_models,
-            "queue": queue,
-            "queue_stopped": queue_stopped,
-            "queue_stop_reason": stop_reason,
-            "throughput_history": sparkline,
-            "last_poll_at": last_poll_ts,
-            "last_poll_ok": last_poll_ok,
-            "server_time": time.time(),
-        }
-
-
-class PollLoop:
-    """Owns the background thread that calls MonitorState.poll() on a timer."""
-
-    def __init__(self, state: MonitorState, interval_seconds: float = 5.0) -> None:
-        self._state = state
-        self._interval = interval_seconds
-        self._stop = threading.Event()
-        self._thread: threading.Thread | None = None
-
-    def start(self) -> None:
-        if self._thread is not None:
-            return
-        self._state.poll()  # populate before first request
-        self._thread = threading.Thread(target=self._run, name="nae-dashboard-poll", daemon=True)
-        self._thread.start()
-
-    def _run(self) -> None:
-        while not self._stop.is_set():
-            self._stop.wait(self._interval)
-            if self._stop.is_set():
-                break
-            self._state.poll()
-
-    def stop(self) -> None:
-        self._stop.set()
-        if self._thread is not None:
-            self._thread.join(timeout=2)
