@@ -140,3 +140,23 @@ NAE Corpus Factory 전환 상세 명령서(Phase 0-10, Acceptance Criteria 포�
   발행(Phase 0-10, §13 병렬화 정책 — 실험은 제안만, CUE 승인 필요, §21
   C1 PASS 보고를 최종 근거로 안 씀 원칙 재확인). 릴레이 8로 relay
   snippet에 준비 완료, **Vol01 완료 전에는 사용하지 않음**.
+
+## 2026-08-16 06:47 CDT — Vol.1 완료 확정, Phase 0 baseline 캡처 완료
+
+`tsu_report.json`: `partial: False`, `candidates_evaluated: 5452/5452`,
+`claims_extracted: 3643`, `llm_errors: 1`. 총 소요 16.04시간(57726.8초).
+
+`capture_vol01_baseline.sh` 실행 결과(`PHASE0-VOL01-BASELINE.md`):
+- successful 3643 / rejected(non-claim) 1808 / failed 1
+- confidence 분포: 0.8-0.9구간 2764건, 0.9-1.0구간 879건(전부 0.8 이상 —
+  낮은 confidence 없음, 모델의 self-report 특성상 참고용)
+- doctrine breakdown: Soteriology 2314건 압도적, 나머지는 소수 분산
+- duplicate claim text 15건, duplicate source_text 1건
+- review_status 전부 `generated`(자동 승격 없음 확인)
+- **Production boundary 전부 정상**: `core/retrieval.py` 등 무변경,
+  Qdrant `nae_tsu_v1` 3319 유지(mutation 없음), registration_state
+  10/10 QUALITY_PASSED 그대로
+
+두 감시 프로세스(Vol01 완료 watcher, 1시간 감시) 전부 정상 종료 처리 —
+Vol01 대상 process가 더 이상 없으므로 재가동 대상 아님. 다음 작업
+(Corpus Factory Phase 1 착수, 릴레이 8)은 Rev. Bang 지시 대기.
