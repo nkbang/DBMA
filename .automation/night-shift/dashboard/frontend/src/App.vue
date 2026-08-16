@@ -77,7 +77,16 @@ onUnmounted(() => {
   <div class="dashboard">
     <header class="panel header">
       <div class="header-top">
-        <h1>NAE NIGHT SHIFT</h1>
+        <div class="brand">
+          <div class="brand-line">
+            <span class="brand-title">내서재 작업현황모니터</span>
+            <span class="brand-version">v1.0.0</span>
+          </div>
+          <div class="brand-line">
+            <span class="brand-subtitle">NAE Observatory</span>
+            <span class="brand-credit">제작총괄: d'Bang</span>
+          </div>
+        </div>
         <span class="live">
           <span class="dot" :class="!monitoringEnabled ? 'dot--unknown' : monitorOnline ? 'dot--on' : 'dot--off'"></span>
           {{ !monitoringEnabled ? 'PAUSED' : monitorOnline ? 'LIVE' : 'RECONNECTING…' }}
@@ -180,10 +189,39 @@ onUnmounted(() => {
   justify-content: space-between;
 }
 
-.header h1 {
-  font-size: 15px;
-  letter-spacing: 0.14em;
-  margin: 0;
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand-line {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.brand-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.brand-subtitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+}
+
+.brand-version {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.brand-credit {
+  font-size: 10px;
+  color: var(--text-dim);
 }
 
 .live {
