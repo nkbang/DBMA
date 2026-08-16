@@ -14,6 +14,8 @@ numpy<2
 watchdog
 pandas
 requests
+fastapi
+uvicorn
 PyYAML
 ruamel.yaml
 docling

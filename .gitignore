@@ -106,3 +106,8 @@ scripts/_classify_early_baptist_meta.jsonl
 
 # Scratch/working tmp directory
 tmp/
+
+# NAE Live Dashboard frontend (Node build artifacts — regenerate with
+# `npm install && npm run build` in .automation/night-shift/dashboard/frontend/)
+node_modules/
+.automation/night-shift/dashboard/logs/

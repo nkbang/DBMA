@@ -7,6 +7,10 @@
       "runtimeArgs": ["run", "dbma_ui.py", "--server.headless", "true"],
       "port": 8520,
       "autoPort": true
+    },
+    {
+      "name": "nae-dashboard",
+      "url": "http://127.0.0.1:8799"
     }
   ]
 }
