@@ -1,6 +1,43 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 15 — Correction Order 008: 경로 버그 + placeholder 텍스트 버그 (2026-08-16 15:4x CDT, 현재 유효)
+## 릴레이 16 — Correction Order 009: PROCESSING stuck 조사 (2026-08-16 20:00 CDT, 현재 유효)
+
+```
+경로 버그·placeholder 버그(Correction 008) 수정은 확인됐다, 잘했다. 다만
+CUE가 실제(non-mocked) LLM으로 --worker-mode를 돌려보니 candidate 1건이
+PROCESSING에 멈추고 EXTRACTED도 FAILED도 안 됐다. exception queue도
+비어있었다. 이건 심각하게 다뤄야 한다 — worker state machine의
+terminal-state 보장이 실제 실행에서 검증 안 된 상태라는 뜻이다.
+
+다음 파일을 열어서 순서대로(Phase A→F) 그대로 수행하라. 수정부터 하지
+말고 재현→원인확정부터 해라.
+
+  .automation/requests/C1-CORRECTION-ORDER-009-PROCESSING-STUCK-INVESTIGATION.md
+
+가장 중요한 것:
+1. Single-writer 원칙 — 이 작업 동안 CUE는 worker_state.json을 안 건드린다
+   (이미 발견 시점 상태를 통째로 보존해뒀다). 너도 한 번에 프로세스
+   하나만 실행해라.
+2. 같은 candidate(cand-eea68df881b336e1) 재사용 금지 — 새 candidate로
+   재현해라.
+3. set_state()의 merge가 원인이라는 건 아직 가설이다 — 확정 짓지 말고
+   먼저 증명해라.
+4. PROCESSING→READY 자동 recovery/timeout 추가 절대 금지(ADR-022 §8
+   위반). set_state()를 성급하게 overwrite로 바꾸지 마라 — 먼저 metadata
+   필드를 immutable/execution/error/attempt로 분류하고 권고만 해라.
+5. 최종 증거는 mock이 아니라 실제 LLM이어야 한다. candidate 2~5건
+   수준으로 제한해라. Vol02 전체는 여전히 금지.
+
+CUE가 닫아야 할 4개 게이트: PROCESSING stuck 재현 여부, 원인 확정 여부,
+실제 LLM에서 terminal state 도달 여부, --retry-failed 명시 경로 정상
+작동 여부. 이 4개가 evidence로 안 닫히면 ADR-025는 Approved로 안 간다.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 15 — Correction Order 008: 경로 버그 + placeholder 텍스트 버그 (2026-08-16 15:4x CDT, 완료·참고용)
 
 ```
 enqueue_from_canonical()의 실제 데이터 추출은 정확했다(Fuller Vol02 실제

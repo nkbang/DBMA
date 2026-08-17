@@ -350,3 +350,32 @@ orchestration 착수)으로 진행 결정, 그 사이 Correction 007 진행 상�
 검증: 실제 Fuller Vol02 book/author/page/paragraph 메타데이터 정확함 —
 로더의 핵심 로직은 정상, 배선(wiring) 2곳만 결함. Correction Order 008
 발행, 릴레이 15로 전달.
+
+## 2026-08-16 20:00 CDT — PROCESSING stuck 발견, Correction Order 009 발행 (재현→원인확정→최소수정 절차)
+
+CUE가 실제(non-mocked) LLM으로 `--worker-mode` 단독 실행 중 candidate
+1건(`cand-eea68df881b336e1`)이 PROCESSING에 멈추고 EXTRACTED/FAILED
+어느 쪽으로도 종결 안 됨을 발견. `elapsed_seconds: 4.493`(비정상적으로
+짧음), `worker_exception_queue.json` 빈 배열 — 실패 원인 미기록.
+metadata에 이전 mock 테스트 잔여 필드(`error_type: TEST_FAILURE`)가
+섞여 있어 CUE와 C1이 같은 state 파일을 거의 동시에 건드린 동시성 문제로
+추정.
+
+Rev. Bang 지시로 Correction Order 009 발행 — "지금 이건 단순 혼선으로
+치부하면 안 된다"는 판단 반영:
+- **확정된 사실과 가설을 구분**: PROCESSING stuck 자체는 확정 관찰,
+  set_state() merge가 원인이라는 건 아직 가설(단정 금지)
+- **Single-writer 원칙**: CUE는 이후 worker_state.json을 건드리지 않음
+  (발견 시점 상태를 `correction-009-preserved/`에 통째로 보존 완료:
+  worker_state, exception_queue, CUE 실행 raw output, git diff)
+- **Phase A(추가보존)→B(원인분리, 새 candidate로 재현)→C(invariant
+  검증)→D(원인 확정 후에만 최소수정)→E(metadata 분류·권고만, merge/
+  overwrite 성급히 안 바꿈)→F(mock 아닌 실제 LLM으로 최종 재검증)** 순서
+  명시, 수정부터 하지 않도록 강제
+- PROCESSING→READY 자동 recovery 절대 금지(ADR-022 §8), stale
+  PROCESSING을 위한 새 상태 도입은 구현 아닌 설계 제안까지만
+- **CUE Gate 4개** 규정: ①재현여부 ②원인확정 ③실제LLM terminal state
+  도달 ④--retry-failed 실제 LLM 기준 정상작동 — 4개 전부 닫혀야
+  ADR-025 Approved 검토 가능(그전엔 Proposed 유지 확정)
+
+릴레이 16으로 전달.
