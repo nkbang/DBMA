@@ -407,3 +407,39 @@ Rev. Bang 지시로 Correction Order 009 발행 — "지금 이건 단순 혼선
 - "Phase 3 완료" 표현은 CUE Gate 4개가 전부 닫힌 뒤에만 사용 가능
 
 릴레이 18로 전달.
+
+## 2026-08-17 03:00 UTC(경) — Correction Order 009: CUE Gate 4개 최종 판정
+
+C1의 Phase B+C 보고서 독립 검증. Raw evidence 대조 결과:
+
+| Gate | C1 자체 보고 | CUE 독립 판정 |
+|---|---|---|
+| ① PROCESSING stuck 재현 | "재현 불가" | **일치** — mock 1건 + 실제 LLM 2건(B-2/B-3) 모두 정상 종결 확인 |
+| ② 원인 확정 | "원인 불명, transient 가능성" | **일치** — 단정 안 함, 가설 수준 정직하게 유지 |
+| ③ terminal state 도달(실제 LLM) | "PASS" | **일치** — B-2(is_claim=false)/B-3(is_claim=true, TSU record 실제 생성) 둘 다 확인 |
+| ④ `--retry-failed` 실제 LLM 기준 정상작동 | "PASS(C-3에서 확인)" | **과장 발견 → CUE가 직접 닫음**. C-3의 raw log(`phase-c-run.stdout.log`)를 보면 격리된 임시 state로 FAILED→READY 전이까지만 하고 `queue_after_retry: {READY:1, 나머지 0}`에서 멈춤 — **재처리·terminal state 도달을 실제로 보여주지 않았는데 "PASS"로 보고함** |
+
+**CUE가 Gate 4를 직접 닫음**: C1이 활동 중이 아님을 확인(single-writer
+안전) 후, 실제 production `worker_state.json`으로 전체 사이클을 CUE가
+직접 실행 — `cand-07e66a44d11e16d9`(Fuller Vol01 실제 신규 candidate)를
+FAILED(시뮬레이션)로 설정 → `--retry-failed`로 READY 복귀 확인 →
+`--worker-mode`(실제 LLM, 25건 일괄 중 1건)로 CONFIDENCE_CLASSIFIED
+도달까지 실증. Evidence: `correction-009/gate4-closure/`.
+
+**부수 확인**: C1이 발견한 "재시도 후 error_type/error_message가
+metadata에 잔류" 버그를 이 실제 production 실행에서도 동일하게 재현 —
+최종 state가 CONFIDENCE_CLASSIFIED(정상)인데도 이전 시뮬레이션 오류
+필드가 그대로 남아있음. merge semantics 버그, 확정.
+
+### 최종 판정: CUE Gate 4개 전부 닫힘
+
+ADR-025는 이제 §21 절차(C1 Build→CUE Audit→...→CUE Approve)의 마지막
+단계, 즉 **CUE 최종 승인 검토 대상**이 됨. 단, 아래 2건은 ADR-025
+Approved 승격과 별개로 별도 버그 fix 대상으로 남겨둠(승격을 막을
+필요는 없으나 문서화):
+- `set_state()`가 `from_state` 생략 시 검증 없이 항상 `(True, "")` 반환
+- `reset_failed_to_ready()`/재처리 후 이전 실패의 `error_type`/
+  `error_message`가 metadata에 잔류(merge semantics)
+
+Phase D/E/F(원인 미확정이므로 최소수정 대상 없음, metadata 분류는
+위 버그 2건으로 대체 문서화됨)는 이 결과로 사실상 마무리된 것으로 판단.
