@@ -452,3 +452,26 @@ PRE-APPROVAL.md 발행 — from_state 생략 시 현재 저장 state 조회해 �
 (신규 candidate 최초 생성은 예외), clear_metadata_fields() 헬퍼로 새
 시도 시작 시점에만 이전 error 필드 제거(FAILED 종결 시엔 유지) 지시.
 회귀 테스트 추가 + Gate 4 절차 재실행으로 재검증 요구. 릴레이 20으로 전달.
+
+## 2026-08-17 04:10 UTC(경) — 버그 2건 수정 확인(코드+테스트+실제LLM 3중 검증), ADR-025 승격 준비 완료
+
+C1 수정 코드 직접 확인:
+- `set_state()`: `from_state` 생략 시 `self.get_state()`로 현재 상태
+  조회 후 검증, 신규 candidate(현재 상태 없음)는 예외 처리 — 지시대로
+  정확히 구현
+- `clear_metadata_fields()` 헬퍼 신설 확인, `worker.py`에서
+  READY→PROCESSING 전이 직후·LLM 호출 직전에 호출 — 배치 위치 정확
+
+단위 테스트: `pytest` 재실행 — **41 passed**(신규 9개: Bugfix1 4개,
+Bugfix2 5개, `test_failed_candidate_preserves_error_fields`로 "FAILED
+종결 시 유지" 케이스까지 커버 확인)
+
+CUE 실제 LLM 최종 재현: 새 candidate(`cand-ece6226f0caf085e`)로
+READY→PROCESSING→FAILED(시뮬레이션)→`--retry-failed`→READY→
+`--worker-mode`(실제 LLM)→CONFIDENCE_CLASSIFIED 전체 사이클 재실행.
+**버그 1 부수 확인**: READY→FAILED 직행 시도가 이번엔 실제로 거부됨(이전
+같은 트릭이 통했던 것과 대조) — 수정이 실전에서 작동함을 방증. **버그 2
+확인**: 최종 metadata에 `error_type`/`error_message` 완전히 제거됨.
+
+**판정: 버그 2건 모두 코드·단위테스트·실제 프로덕션 조건 실행 3중으로
+해소 확인. ADR-025 승격 검토 가능 상태.**
