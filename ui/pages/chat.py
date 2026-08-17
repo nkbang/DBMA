@@ -38,7 +38,7 @@ import streamlit as st
 
 from ui.pages._base import BasePage
 from core.config import DATA_DIR
-from core.retrieval import QueryProcessor, RankedCandidate
+from core.retrieval import QueryProcessor, RankedCandidate, Citation
 from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
@@ -142,7 +142,7 @@ def _init_chat_state() -> None:
 
 def _serialize_messages(messages: list[dict]) -> list[dict]:
     """chat_messages를 JSON 저장 가능한 형태로 변환 - RankedCandidate/
-    ClaimGuardResult 같은 객체를 dict로 풀어낸다. 원본 리스트는 건드리지
+    ClaimGuardResult/Citation 같은 객체를 dict로 풀어낸다. 원본 리스트는 건드리지
     않는다(session_state 내용을 그대로 두고 저장용 사본만 만듦)."""
     out = []
     for msg in messages:
@@ -151,6 +151,12 @@ def _serialize_messages(messages: list[dict]) -> list[dict]:
         if sources:
             m["sources"] = [
                 s.to_dict() if hasattr(s, "to_dict") else s for s in sources
+            ]
+        citations = m.get("citations")
+        if citations:
+            m["citations"] = [
+                dataclasses.asdict(c) if hasattr(c, "__dataclass_fields__") else c
+                for c in citations
             ]
         claim_guard_result = m.get("claim_guard_result")
         if claim_guard_result is not None:
@@ -161,7 +167,7 @@ def _serialize_messages(messages: list[dict]) -> list[dict]:
 
 def _deserialize_messages(raw: list[dict]) -> list[dict]:
     """_serialize_messages()의 역변환 - 저장된 dict를 RankedCandidate/
-    ClaimGuardResult 객체로 복원한다. 필드가 안 맞는 등 손상된 레코드는
+    ClaimGuardResult/Citation 객체로 복원한다. 필드가 안 맞는 등 손상된 레코드는
     건너뛴다(저장 파일이 낡은 스키마여도 채팅 자체는 죽지 않게)."""
     out = []
     for msg in raw:
@@ -175,6 +181,15 @@ def _deserialize_messages(raw: list[dict]) -> list[dict]:
                 except TypeError:
                     continue
             m["sources"] = restored
+        citations = m.get("citations")
+        if citations:
+            restored_citations = []
+            for c in citations:
+                try:
+                    restored_citations.append(Citation(**c))
+                except (TypeError, KeyError):
+                    continue
+            m["citations"] = restored_citations
         claim_guard_result = m.get("claim_guard_result")
         if claim_guard_result is not None:
             try:
@@ -315,13 +330,16 @@ def _handle_user_message(question: str) -> None:
             msgs = st.session_state.get("chat_messages", [])
             _turn_msg_idx = len(msgs) - 1  # the assistant message just appended
             with st.expander(f"출처 ({len(response.top_k_results)}개)", expanded=False):
+                citations = getattr(response, "citations", None)
                 for _src_idx, candidate in enumerate(response.top_k_results):
-                    _render_source(candidate, _turn_msg_idx, _src_idx)
+                    citation = citations[_src_idx] if citations else None
+                    _render_source(candidate, _turn_msg_idx, _src_idx, citation=citation)
 
     st.session_state["chat_messages"].append({
         "role": "assistant",
         "content": result.answer,
         "sources": response.top_k_results,
+        "citations": getattr(response, "citations", None),
         "error": result.error,
         "low_confidence": low_confidence,
         "claim_guard_result": claim_guard_result,
@@ -414,6 +432,7 @@ def _render_source(
     candidate: RankedCandidate,
     msg_index: int,
     source_index_in_msg: int,
+    citation: Optional[Citation] = None,
 ) -> None:
     """출처를 표시하고, 헤드라인을 클릭하면 우측에 문서 상세 패널을 연다.
 
@@ -425,11 +444,13 @@ def _render_source(
         chat_messages 리스트에서의 메시지 인덱스 — key 안정성 보장
     source_index_in_msg : int
         해당 메시지 내 sources 리스트에서의 순번 — key 안정성 보장
+    citation : Citation, optional
+        대응하는 Citation 객체 — author/source_title/evidence_confidence 표시용
     """
     source_file = candidate.metadata.get("source_file", "Unknown source")
     document_id = candidate.metadata.get("document_id", "")
 
-    _render_clickable_source(candidate, source_file, document_id, msg_index, source_index_in_msg)
+    _render_clickable_source(candidate, source_file, document_id, msg_index, source_index_in_msg, citation=citation)
 
 
 def _render_clickable_source(
@@ -438,6 +459,7 @@ def _render_clickable_source(
     document_id: str,
     msg_index: int,
     source_index_in_msg: int,
+    citation: Optional[Citation] = None,
 ) -> None:
     """클릭 가능한 출처 headline을 렌더링한다.
 
@@ -490,6 +512,15 @@ def _render_clickable_source(
 
     # Score 표시 (살아있는 기능 — 유지)
     score = getattr(candidate, "final_score", 0.0)
-    st.caption(f"신뢰도: {score:.4f}")
+    caption_parts = [f"신뢰도(final_score): {score:.4f}"]
+    if citation is not None:
+        if citation.source_author:
+            caption_parts.append(f"저자: {citation.source_author}")
+        if citation.source_title:
+            caption_parts.append(f"출처: {citation.source_title}")
+        if citation.evidence_confidence is not None:
+            caption_parts.append(f"근거 신뢰도(citation): {citation.evidence_confidence:.4f}")
+    for part in caption_parts:
+        st.caption(part)
 
 

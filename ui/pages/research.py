@@ -23,7 +23,7 @@ from ui.state.store import StateStore
 from core.config import DEFAULT_OUTPUT_DIR
 
 # Production retrieval imports (LOOP 3 — binding)
-from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate
+from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate, Citation
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 
@@ -350,6 +350,11 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
             <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 8px;">
                 {source}
             </div>
+            {'<div style="font-size: 11px; color: ' + THEME.TEXT_SECONDARY + '; margin-bottom: 4px;">' +
+             ('저자: ' + result.get("author", "") + ' / ' if result.get("author") else '') +
+             ('출처: ' + result.get("source_title", "") + ' / ' if result.get("source_title") else '') +
+             ('근거 신뢰도(citation): ' + f'{result.get("evidence_confidence"):.4f}' if result.get("evidence_confidence") is not None else '') +
+             '</div>' if result.get("author") or result.get("source_title") or result.get("evidence_confidence") is not None else ''}
             {f'<div style="font-family: Source Serif 4, serif; font-style: italic; font-size: 14px; color: {THEME.TEXT_SECONDARY}; line-height: 1.6;">{snippet}</div>' if snippet else ''}
         </div>
         """
@@ -647,8 +652,10 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
 
         # Format candidates for UI display
         results = []
-        for candidate in response.top_k_results:
-            formatted = _format_candidate(candidate, response.parsed_query)
+        citations = getattr(response, "citations", None)
+        for i, candidate in enumerate(response.top_k_results):
+            citation = citations[i] if citations else None
+            formatted = _format_candidate(candidate, response.parsed_query, citation=citation)
             results.append(formatted)
 
         return results, response, f"검색 완료 ({len(results)}개 결과)"
@@ -659,12 +666,16 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
         return [], None, f"에러: 검색 실행 중 오류 발생 — {str(e)}"
 
 
-def _format_candidate(candidate: RankedCandidate, parsed_query) -> dict:
+def _format_candidate(candidate: RankedCandidate, parsed_query, *, citation: Optional[Citation] = None) -> dict:
     """
     Map a production RankedCandidate to UI display format.
 
     Transforms core/retrieval.py data models into the dictionary format
     expected by search_results_table() component.
+
+    When citation is provided and has values, adds author/source_title/
+    evidence_confidence keys (additive only — never overwrites existing keys).
+    Missing values are omitted entirely (never filled with '' or '-').
     """
     # Build verse reference string from metadata
     # [DBMA-UX-004] book_id는 원시 코드(예: "ROM")라 한글 성경 이름으로
@@ -691,7 +702,7 @@ def _format_candidate(candidate: RankedCandidate, parsed_query) -> dict:
     # Get source file from metadata
     source_file = candidate.metadata.get("source_file", "Unknown source")
 
-    return {
+    result: dict[str, Any] = {
         "title": title,
         "score": candidate.final_score,
         "type": "tsu",
@@ -708,6 +719,17 @@ def _format_candidate(candidate: RankedCandidate, parsed_query) -> dict:
         "verse_mapping": verse_ref,
         "explanation": candidate.explanation,
     }
+
+    # Add citation fields additively — only when present and non-None
+    if citation is not None:
+        if citation.source_author:
+            result["author"] = citation.source_author
+        if citation.source_title:
+            result["source_title"] = citation.source_title
+        if citation.evidence_confidence is not None:
+            result["evidence_confidence"] = citation.evidence_confidence
+
+    return result
 
 
 # ── Detail Panel Layout ────────────────────────────────────────
