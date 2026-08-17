@@ -1,6 +1,62 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 18 — Correction Order 009로 즉시 복귀, 다른 작업 금지 (2026-08-16 22:45 CDT, 현재 유효)
+## 릴레이 20 — ADR-025 승격 전 버그 2건 수정 (2026-08-17, 현재 유효)
+
+```
+CUE Gate 4개가 전부 닫혔다(Correction Order 009 완료, CUE가 Gate 4를
+직접 실증). ADR-025 승격 전에 발견된 버그 2건만 고치면 된다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-TASK-ORDER-WORKER-BUGFIX-PRE-APPROVAL.md
+
+핵심:
+1. state.py::set_state()가 from_state 생략 시 검증을 완전히 스킵하는
+   버그 — from_state가 None이면 현재 저장된 실제 state를 조회해서 그걸
+   기준으로 검증해라. 단, 신규 candidate 최초 생성(이전 state 없음)은
+   계속 허용해라.
+2. 재시도/재처리 성공 후에도 이전 실패의 error_type/error_message가
+   metadata에 남는 버그 — 새 시도가 PROCESSING에 진입할 때 이전 error
+   필드만 지우는 clear_metadata_fields() 헬퍼를 추가해라. FAILED로 끝난
+   경우엔 당연히 유지해야 한다 — 새 시도 시작 시점에만 지워라.
+
+수정 후 test_worker.py에 각 버그의 회귀 테스트를 추가하고 pytest 실제
+실행 결과를 남겨라. Correction Order 009 Gate 4 절차를 한 번만 다시
+돌려서 stale error 필드가 사라졌는지 확인해라.
+
+완료 후 ADR-025 체크리스트 갱신하고 CUE 최종 재감사 요청해라. 승격
+여부는 CUE/Rev. Bang이 결정한다.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 19 — Phase B-1 스크립트 import 경로 버그 수정 (2026-08-16 22:5x CDT, 완료·참고용)
+
+```
+correction-009-phase-b-reproduce.py가 크래시했다:
+
+  ModuleNotFoundError: No module named 'NAE'
+
+원인: 파일 상단에서 sys.path.insert(0, .../NAE) 한 뒤 from pipeline.tsu...
+로 import했는데, patch("NAE.pipeline.tsu.claim.extract_claim", ...)만
+다른 prefix(NAE.)를 쓰고 있다. sys.path 트릭 때문에 'NAE'라는 이름
+자체는 top-level에서 안 잡힌다.
+
+수정: patch("NAE.pipeline.tsu.claim.extract_claim", ...) 를
+patch("pipeline.tsu.claim.extract_claim", ...) 로 바꿔라(스크립트의
+다른 import들과 동일한 방식으로 통일). 다른 건 건드리지 마라 — 스크립트
+설계 자체(새 candidate 사용, 임시 state 파일 사용)는 좋았다.
+
+수정 후 다시 실행해서 evidence를 남겨라.
+
+질문하지 말고 지금 고쳐라.
+```
+
+---
+
+## 릴레이 18 — Correction Order 009로 즉시 복귀, 다른 작업 금지 (2026-08-16 22:45 CDT, 완료·참고용)
 
 ```
 방금 보고한 "Phase 1~7 설계 완료"는 받아들이지 않는다. 아무도 그 작업을

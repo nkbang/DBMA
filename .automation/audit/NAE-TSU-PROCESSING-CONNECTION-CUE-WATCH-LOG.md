@@ -443,3 +443,12 @@ Approved 승격과 별개로 별도 버그 fix 대상으로 남겨둠(승격을 
 
 Phase D/E/F(원인 미확정이므로 최소수정 대상 없음, metadata 분류는
 위 버그 2건으로 대체 문서화됨)는 이 결과로 사실상 마무리된 것으로 판단.
+
+## 2026-08-17 03:10 UTC(경) — 승격 전 버그 2건 수정 지시
+
+Rev. Bang 결정: 버그 2건(set_state() 검증 스킵, 재시도 후 stale error
+metadata 잔류) 수정 후 ADR-025 승격. C1-TASK-ORDER-WORKER-BUGFIX-
+PRE-APPROVAL.md 발행 — from_state 생략 시 현재 저장 state 조회해 검증
+(신규 candidate 최초 생성은 예외), clear_metadata_fields() 헬퍼로 새
+시도 시작 시점에만 이전 error 필드 제거(FAILED 종결 시엔 유지) 지시.
+회귀 테스트 추가 + Gate 4 절차 재실행으로 재검증 요구. 릴레이 20으로 전달.
