@@ -475,3 +475,23 @@ READY→PROCESSING→FAILED(시뮬레이션)→`--retry-failed`→READY→
 
 **판정: 버그 2건 모두 코드·단위테스트·실제 프로덕션 조건 실행 3중으로
 해소 확인. ADR-025 승격 검토 가능 상태.**
+
+## 2026-08-17 04:15 UTC(경) — ADR-025 Approved 승격
+
+Rev. Bang 최종 승인("네, 승격해주세요"). 승격 조건 4개 전부 충족 확인:
+1. 구현 완료 — worker module(state/queue/config/worker/loader) + runner.py
+   CLI 연동 + 버그 2건 수정 전부 완료
+2. 회귀 테스트 통과 — pytest 41/41 PASS(Correction 007/008/009 관련
+   회귀 9건 포함)
+3. 독립 검증 완료 — CUE가 Correction Order 007(READY 큐 populate 경로
+   누락)/008(경로 중복+placeholder 텍스트)/009(PROCESSING stuck 조사,
+   Gate 4 CUE 직접 완결) 전 과정 실제 실행으로 검증, 최종 버그 2건은
+   코드+단위테스트+실제 프로덕션 LLM 실행 3중 검증
+4. 사용자 승인 — Rev. Bang, 2026-08-17
+
+ADR-025 문서 Status를 Approved로 갱신(승격 근거 요약 포함), §4.3 CUE
+Review 체크리스트(Architecture review/Governance check/Approval gate)
+전부 [x] 처리. C1이 자기 항목(§3.1/3.1.1/3.2)만 정직하게 체크하고
+§4.3(CUE 담당)은 비워둔 것 확인 — 지시 그대로 준수.
+
+**NAE Corpus Factory Phase 3(TSU Extraction Pipeline 분리) 최종 완료.**
