@@ -1,5 +1,63 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
+## 릴레이 18 — Correction Order 009로 즉시 복귀, 다른 작업 금지 (2026-08-16 22:45 CDT, 현재 유효)
+
+```
+방금 보고한 "Phase 1~7 설계 완료"는 받아들이지 않는다. 아무도 그 작업을
+지시하지 않았다. 지금 유일하게 진행 중이어야 할 작업은
+Correction Order 009 Phase B(PROCESSING stuck 재현)이고, 그건
+phase-b-real-llm-run.stdout.log가 20:32에 빈 파일로 생성된 이후 2시간
+넘게 전혀 진행되지 않았다.
+
+특히 "Phase 3 완료"라는 주장은 틀렸다. 방금 쓴
+phase3-pipeline-separation/PHASE3-PIPELINE-SEPARATION.md를 확인했는데,
+거기엔 우리가 지금 조사 중인 PROCESSING stuck 버그(Correction Order
+007/008/009)가 한 마디도 언급되지 않는다. worker.py::process_batch()가
+"이미 구현되고 검증됨"이라고 전제하고 그 위에 새 설계를 얹었는데, 그
+전제 자체가 틀렸다 — 그 코드에 아직 원인 미확정인 버그가 있다.
+
+지금부터:
+
+1. 방금 만든 8개 문서(CORPUS-FACTORY-TRANSITION-SUMMARY.md,
+   phase1-bottleneck-analysis/, phase2-candidate-filtering/,
+   phase3-pipeline-separation/, phase4-confidence-review/,
+   phase5-embedding-promotion/, phase6-orchestration/,
+   phase7-implementation/)는 지우지 않아도 되지만, 진행된 작업으로
+   인정하지 않는다. 이 문서들을 근거로 뭔가를 더 진행하지 마라.
+2. 즉시 Correction Order 009로 돌아가라:
+   .automation/requests/C1-CORRECTION-ORDER-009-PROCESSING-STUCK-INVESTIGATION.md
+   지금 있어야 할 지점은 Phase B(새 candidate로 재현) — 아직 안 끝났다면
+   왜 안 끝났는지부터 말해라(막힌 게 있으면 구체적으로).
+3. Phase B가 끝나기 전까지 Phase C/D/E/F로도, Corpus Factory의 다른
+   Phase로도 넘어가지 마라. 하나씩만 순서대로.
+4. "Phase 3 완료"라는 이름을 쓰려면, 최소한 Correction Order 009의 CUE
+   Gate 4개(재현 여부/원인 확정/실제 LLM terminal state 도달/
+   --retry-failed 정상작동)가 전부 닫힌 뒤여야 한다. 지금은 아니다.
+
+질문하지 말고 Phase B부터 다시 시작해라.
+```
+
+---
+
+## 릴레이 17 — 진행 상황 확인 (2026-08-16 22:32 CDT, 완료·참고용)
+
+```
+Correction Order 009 Phase B 진행 상황을 확인하고 싶다. 지금 상태를
+보고해라:
+
+1. 지금 뭘 하고 있는가(어느 Phase, 어느 단계)?
+2. phase-b-real-llm-run.stdout.log가 20:32에 빈 파일로 생성된 뒤 갱신이
+   없는데, 그 실행이 아직 진행 중인가, 끝났는데 로그를 안 썼는가, 아니면
+   막힌 게 있는가?
+3. 막힌 게 있다면 무엇인지 구체적으로 말해라(에러 메시지, 어느 명령이
+   응답이 없는지 등).
+
+작업을 계속 진행 중이면 그대로 진행해라 — 이건 진행을 멈추라는 지시가
+아니라 상태 확인 요청이다.
+```
+
+---
+
 ## 릴레이 16 — Correction Order 009: PROCESSING stuck 조사 (2026-08-16 20:00 CDT, 현재 유효)
 
 ```

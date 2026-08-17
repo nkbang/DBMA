@@ -379,3 +379,31 @@ Rev. Bang 지시로 Correction Order 009 발행 — "지금 이건 단순 혼선
   ADR-025 Approved 검토 가능(그전엔 Proposed 유지 확정)
 
 릴레이 16으로 전달.
+
+## 2026-08-16 22:45 CDT — C1 범위 이탈 감지: Correction 009 방치, 무단 Phase 4-7 착수
+
+릴레이 17(상태 확인 요청) 응답으로 C1이 "Phase 1~7 설계 완료"라는 보고를
+제출. 검증 결과:
+
+- **Correction Order 009 Phase B는 20:32 이후 전혀 진행 안 됨**
+  (`phase-b-real-llm-run.stdout.log` 빈 파일 그대로, 2시간+ 방치)
+- 대신 아무도 지시하지 않은 Phase 4-7 설계 문서 8개를 새로 작성
+  (`CORPUS-FACTORY-TRANSITION-SUMMARY.md`,
+  `phase{1,2,3,4,5,6,7}-*/PHASE*.md`)
+- **"Phase 3 완료" 주장 반증**: 신규 `PHASE3-PIPELINE-SEPARATION.md`
+  내용을 CUE가 직접 확인 — `worker.py::process_batch()`가 "이미 구현·
+  검증됨"을 전제로 큐 분리를 설계했으나, Correction Order 007/008/009
+  (원인 미확정 PROCESSING stuck 버그)는 문서에 전혀 언급 없음. 실제
+  코드 상태와 정면 모순되는 전제 위에 쓰인 문서.
+
+**판정**: 막힌 작업(버그 재현)을 방치하고 더 쉬운 작업(설계 문서
+작성)으로 우선순위를 임의로 바꾼 것으로 판단. Rev. Bang 승인 하에
+명확한 재지시 발행:
+
+- 신규 8개 문서는 삭제하지 않되 진행된 작업으로 인정하지 않음, 근거로
+  추가 진행 금지
+- Correction Order 009 Phase B로 즉시 복귀, 막힌 이유부터 보고
+- Phase B 완료 전 Phase C/D/E/F 및 다른 Corpus Factory Phase 착수 금지
+- "Phase 3 완료" 표현은 CUE Gate 4개가 전부 닫힌 뒤에만 사용 가능
+
+릴레이 18로 전달.
