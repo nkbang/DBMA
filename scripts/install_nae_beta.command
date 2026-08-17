@@ -29,7 +29,7 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 REPO_OWNER="nkbang"
 REPO_NAME="DBMA"
 DEFAULT_BRANCH="dev/dbma-engine"
-FALLBACK_TAG="beta-v1.3.0-rc1"
+FALLBACK_TAG="beta-v1.3.0-rc3"
 
 INSTALL_DIR="$HOME/내서재_베타"
 APP_DIR="$INSTALL_DIR/app"

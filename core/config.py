@@ -32,7 +32,7 @@ if _config_path.exists():
 
 # ── 앱 메타 ──────────────────────────────────────────────
 _yaml_app = CFG.get("app", {})
-APP_VERSION = _yaml_app.get("version", "0.6.4")
+APP_VERSION = _yaml_app.get("version", "1.3.0")
 APP_NAME = _yaml_app.get("name", "DBMAr")
 
 warnings.filterwarnings("ignore", category=UserWarning)

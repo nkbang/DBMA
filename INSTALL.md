@@ -1,295 +1,159 @@
-# DBMA Sprint 1 — Installation Guide
-**Generated:** 2026-07-04  
-**Objective:** Fresh installation of the complete runtime environment for Sprint 1
+# 내서재 (NAE) 설치 가이드
+
+이 가이드는 macOS 환경에서 내서재 (NAE)를 설치하고 실행하는 방법을 설명합니다. DBMA는 내부 engineering identifier입니다.
 
 ---
 
-## Prerequisites
+## 1. 사전 요구사항
 
-| Item | Minimum | Recommended |
-|------|---------|-------------|
-| Python | 3.11.x or 3.12.x | 3.11.9 |
-| Disk Space | 5 GB | 10 GB |
+| 항목 | 최소 | 권장 |
+|------|------|------|
+| Python | 3.11.x | 3.11.9 |
+| 디스크 | 5 GB | 10 GB+ |
 | RAM | 4 GB | 8 GB+ |
-| Internet | Required (model download ~3 GB) | Required |
+| 인터넷 | 모델 다운로드 (~3 GB) | 필요 |
 
-### Python Version Check
+**macOS 우선 가이드** — Windows/Linux 사용자는 각 OS의 패키지 매니저 명령으로 대체하세요.
+
+---
+
+## 2. Python / venv 준비
+
+DBMA는 `~/envs/dbma311` 가상 환경에서 운영됩니다.
 
 ```bash
-python3 --version
-# Must output: Python 3.11.x or Python 3.12.x
-# If output is 3.13+ or lower than 3.9, DO NOT proceed — install Python 3.11 or 3.12 first
+# Python 3.11 확인
+python3.11 --version
+# Python 3.11이 없으면:
+brew install python@3.11
+
+# 가상 환경 생성 (처음 한 번만)
+python3.11 -m venv ~/envs/dbma311
+
+# 활성화
+source ~/envs/dbma311/bin/activate
+
+# pip 업그레이드
+pip install --upgrade pip
 ```
 
-### Installing Python 3.11/3.12 (if not present)
+> **참고**: 프로젝트 로컬 `.venv`와 `~/envs/dbma311` 중 하나를 선택해 일관되게 사용하세요. 이 가이드는 `~/envs/dbma311`을 기준으로 합니다.
+
+---
+
+## 3. Ollama 설치
+
+DBMA의 RAG 검색·생성 기능에 Ollama가 필요합니다.
 
 ```bash
 # macOS (Homebrew)
-brew install python@3.11
+brew install ollama
 
-# Ubuntu/Debian
-sudo apt-get update
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt-get install -y python3.11 python3.11-venv python3.11-dev
+# 시작
+ollama serve &
 
-# Windows
-# Download from https://www.python.org/downloads/ — select 3.11.x or 3.12.x
-# IMPORTANT: Check "Add Python to PATH" during installation
+# 또는 백그라운드 서비스로:
+brew services start ollama
 ```
+
+> **Windows**: [ollama.ai](https://ollama.ai)에서 인스톨러 다운로드 후 설치하세요.
 
 ---
 
-## macOS Installation
+## 4. Ollama 모델 준비
 
-### Step 1: Install System Dependencies
+`config.yaml`에 정의된 모델을 pull합니다.
 
 ```bash
-# Install poppler (PDF rendering for pdf2image)
-brew install poppler
+# 임베딩 모델 (검색용)
+ollama pull bge-m3:latest
 
-# Install tesseract (OCR engine)
-brew install tesseract
-
-# Verify Xcode Command Line Tools are installed
-xcode-select --install
-
-# Verify Python version
-python3.11 --version  # Should be 3.11.x
+# 생성 모델 (설교문 작성·채팅용)
+ollama pull llama3.1:8b
 ```
 
-### Step 2: Create Virtual Environment
+> **참고**: `config.yaml::ollama.gen_model_options`에서 사용 가능한 생성 모델 목록을 확인할 수 있습니다.
+
+---
+
+## 5. DBMA 설치 / 실행
 
 ```bash
-cd /path/to/DBMA
+# 프로젝트 클론 (또는 이미 로컬에 있는 경우 해당 디렉터리로 이동)
+cd ~/DBMA
 
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-```
+# 가상 환경 활성화
+source ~/envs/dbma311/bin/activate
 
-### Step 3: Install Python Dependencies
-
-```bash
+# 의존성 설치
 pip install -r requirements.txt
+
+# 실행
+streamlit run dbma_ui.py
 ```
 
-### Step 4: Verify Installation
-
-```bash
-# Verify core imports resolve correctly
-python -c "import streamlit; import chromadb; import docling; print('OK')"
-
-# Or manually:
-python -c "from core.config import DEFAULT_CHUNK_SIZE; print(f'OK: chunk={DEFAULT_CHUNK_SIZE}')"
-```
+브라우저가 자동으로 열리고 Streamlit UI가 표시됩니다.
 
 ---
 
-## Ubuntu/Debian Installation
+## 6. 최초 실행 확인
 
-### Step 1: Install System Dependencies
+첫 실행 시 다음을 확인하세요:
 
-```bash
-# Install poppler (PDF rendering for pdf2image)
-sudo apt-get update
-sudo apt-get install -y poppler-utils
-
-# Install tesseract (OCR engine) — version 4.x or 5.x
-sudo apt-get install -y tesseract-ocr
-
-# Additional dependencies for easyocr and PyTorch
-sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
-
-# If compiling from source is needed (e.g., pyobjc-core alternative on Linux)
-sudo apt-get install -y build-essential gcc g++
-```
-
-### Step 2: Create Virtual Environment
-
-```bash
-cd /path/to/DBMA
-
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-```
-
-### Step 3: Install Python Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Step 4: Verify Installation
-
-```bash
-python -c "import streamlit; import chromadb; import docling; print('OK')"
-```
+1. **Onboarding 화면** — 초기 설정向导가 표시되면 안내에 따르세요.
+2. **9개 페이지 로드** — 사이드바에서 다음 페이지를 모두 클릭하여 에러 없이 열리는지 확인:
+   - Dashboard, Library, Processing, Research, Chat, 설교문 작성, 설교 리뷰, Monitor, 도움말
 
 ---
 
-## Windows Installation
+## 7. 기본 검색 / Chat 사용 예시
 
-### Step 1: Install System Dependencies
-
-**poppler for pdf2image:**
-1. Download from: https://github.com/oschwartz10612/poppler-windows/releases/
-2. Extract to `C:\poppler\`
-3. Add `C:\poppler\Library\bin` to PATH
-
-**tesseract OCR engine:**
-1. Download installer from: https://github.com/tesseract-ocr/tesseract/wiki
-2. Run the `.exe` installer (select "Base" and "langdata" packages)
-3. Default install path: `C:\Program Files\Tesseract-OCR\`
-
-### Step 2: Create Virtual Environment
-
-```cmd
-cd C:\path\to\DBMA
-
-python3.11 -m venv .venv
-.venv\Scripts\activate
-pip install --upgrade pip
-```
-
-### Step 3: Install Python Dependencies
-
-```cmd
-pip install -r requirements.txt
-```
-
-### Step 4: Configure Tesseract Path (if not auto-detected)
-
-Create or edit `.env` in project root:
-```
-TESSERACT_PATH=C:\Program Files\Tesseract-OCR\tesseract.exe
-```
-
-### Step 5: Verify Installation
-
-```cmd
-python -c "from core.config import DEFAULT_CHUNK_SIZE; print(f'OK: chunk={DEFAULT_CHUNK_SIZE}')"
-```
+1. **문서 처리**: `Processing` 페이지에서 `data/RAW`에 문서를 추가하고 처리를 시작하세요.
+2. **검색**: `Research` 페이지에서 키워드를 입력하면 관련 문서가 표시됩니다.
+3. **Chat**: `Chat` 페이지에서 질문하면 문서 인용(Citation)과 함께 답변이 표시됩니다.
+   - 각 답변에는 author, source_title, evidence_confidence가 포함되어 출처를 확인할 수 있습니다.
 
 ---
 
-## Conda Environment (Optional Alternative)
+## 8. 문제 발생 시 진단 절차
 
-For users who prefer conda over venv, or need GPU support:
+### 로그 위치
+- 프로젝트 로그: `logs/`
+- Streamlit 로그: 터미널 출력
 
-### Step 1: Install Conda (if not installed)
+### 흔한 오류 5가지
 
-```bash
-# Download from https://docs.conda.io/en/latest/miniconda.html
-# Then:
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh
-```
-
-### Step 2: Create Environment from YAML
-
-```bash
-cd /path/to/DBMA
-
-conda env create -f environment.yml
-conda activate dbma-sprint1
-```
-
-### Step 3: Verify Installation
-
-```bash
-python -c "from core.config import DEFAULT_CHUNK_SIZE; print(f'OK: chunk={DEFAULT_CHUNK_SIZE}')"
-```
+| 증상 | 해결 방법 |
+|------|-----------|
+| `PyYAML is required` | `pip install pyyaml` |
+| `ollama: command not found` | Ollama 설치 확인 (`which ollama`) |
+| 모델 pull 실패 | 인터넷 연결 확인 후 `ollama pull bge-m3:latest` 재시도 |
+| Streamlit 포트 충돌 | 다른 Streamlit 프로세스 종료 또는 `--server.port 8502` 옵션 |
+| `ModuleNotFoundError` | `source ~/envs/dbma311/bin/activate` 후 `pip install -r requirements.txt` 재실행 |
 
 ---
 
-## GPU Support (Optional)
+## 고급 / 선택 기능
 
-For CUDA-enabled NVIDIA GPUs:
+### NAE Public Theology Module (opt-in)
 
-### Prerequisites
-- NVIDIA GPU with compute capability >=5.0
-- NVIDIA drivers >=520.x
-- CUDA Toolkit >=11.8
+`config.yaml`에서 다음을 설정하면 활성화됩니다:
 
-### Installation
-
-```bash
-# After creating the virtual environment:
-pip uninstall -y torch torchvision
-
-# Install PyTorch with CUDA 11.8 support
-pip install torch==2.2.2 torchvision==0.17.2 \
-  --index-url https://download.pytorch.org/whl/cu118
+```yaml
+modules:
+  nae_pd:
+    enabled: true
 ```
 
-For ROCm (AMD GPUs):
+활성화 시 별도 corpus 경로와 manifest가 필요합니다.
+
+### Qdrant (선택 사항)
+
+NAE opt-in 모듈과 함께 사용할 경우에만 필요합니다. DBMA production 검색에는 사용되지 않습니다.
+
 ```bash
-pip uninstall -y torch torchvision
-pip install torch==2.2.2 torchvision==0.17.2 \
-  --index-url https://download.pytorch.org/whl/rocm6.0
+docker run -d -p 7333:6333 --name nae_qdrant qdrant/qdrant
 ```
-
----
-
-## Docker Services (Qdrant + n8n)
-
-These are **optional** Sprint 2/3 services. They run in Docker containers.
-
-```bash
-# Start only Qdrant (Sprint 2 vector store)
-docker compose up -d qdrant
-
-# Start all services
-docker compose up -d
-```
-
-Verify:
-```bash
-docker ps | grep qdrant
-# Should show running dbma_qdrant container
-
-# Test API
-curl http://localhost:6333/  # Should return {"status":"ok"}```
-
----
-
-## Troubleshooting
-
-### Issue: `pyobjc-core` fails to build on macOS with Python 3.13+
-**Resolution:** Downgrade to Python 3.11 or 3.12. This is a hard constraint from Apple's Python packaging pipeline.
-
-### Issue: `torch` download fails (network/proxy)
-```bash
-# Use mirror
-export PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
-pip install torch==2.2.2
-
-# Or manually download wheel:
-# https://download.pytorch.org/whl/torch/
-```
-
-### Issue: `poppler` / `pdftoppm` not found (pdf2image error)
-**macOS:** `brew install poppler`
-**Ubuntu:** `sudo apt-get install -y poppler-utils`
-**Windows:** Download from poppler-windows releases and add to PATH
-
-### Issue: Tesseract binary not found (OCR errors)
-```bash
-# macOS
-brew install tesseract
-
-# Ubuntu
-sudo apt-get install -y tesseract-ocr
-
-# Verify
-tesseract --version
-```
-
-### Issue: `docling` import error after install
-**Resolution:** Ensure torch 2.2.2 is installed: `pip show torch | grep Version`  
-Expected: `Version: 2.2.2`
 
 ---
 
