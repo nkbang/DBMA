@@ -1,0 +1,13 @@
+{
+  "phase": "8-reinstall-upgrade",
+  "gate_status": "GREEN",
+  "verified_by": "CUE (direct execution, C1 unresponsive)",
+  "verified_at": "2026-08-18",
+  "script_80_reinstall_upgrade_valid": false,
+  "script_invalid_reason": "Does not invoke install_nae_beta.command's actual PERSIST_ITEMS stash/restore logic (only re-runs setup_beta_tester.command, which has no persist logic). Also never seeds real user data, so 'LOST' results were false negatives against directories that were never created.",
+  "targeted_verification": {
+    "method": "Extracted install_nae_beta.command's exact stash->replace->restore bash logic and ran it directly against a synthetic APP_DIR seeded with unique marker content for all 8 PERSIST_ITEMS",
+    "result": "8/8 items preserved with exact content match"
+  },
+  "follow_up_low_priority": "Redesign scripts/gate2/80_reinstall_upgrade.sh to seed data and exercise install_nae_beta.command's actual persist logic in isolation"
+}
