@@ -51,7 +51,8 @@ Boundary Detector → Hierarchical Chunk Builder → D-5 Metrics 공식 평가)�
 - [x] C1(Cline 창#1) 위임 거버넌스 문서 체계 도입 (`docs/agents/c1/`, `docs/agent_governance/`)
 
 ### 미결 (다음 우선순위)
-- [ ] chunk overflow 하위결함 B 수정 방향 결정 (HQ 승인 대기 — 별도 ADR 필요, 후보: `split_sentences_mixed` 무개행 폴백 / `_merge_sentence_fragments` word-safe hard slice)
+- [x] chunk overflow 하위결함 B 수정 방향 설계 (ADR-009 — 대안 1 `split_sentences_mixed` 무개행 위임 + 대안 2 `_merge_sentence_fragments` word-safe hard slice 병행 권고, 코드 미수정)
+- [ ] ADR-009 HQ 승인 및 구현 착수 여부 결정
 - [ ] Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측 상태)
 - [ ] ADR-008 제안 항목 착수 여부 결정 (threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature)
 - [ ] Legacy Artifact 정리 (`output/registry/`, `output/baseline/`, `output_sav/` 등) — 미결
