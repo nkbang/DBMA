@@ -1,0 +1,19 @@
+{
+  "phase": "5-clean-install",
+  "gate_status": "GREEN",
+  "verified_by": "CUE (independent re-execution, unattended night shift)",
+  "verified_at": "2026-08-18",
+  "c1_original_report_accurate": false,
+  "critical_finding": "App actually crashed on startup (ModuleNotFoundError: tantivy) despite C1 reporting success. HTTP-200-per-page verification methodology was invalid (Streamlit returns 200 for any path regardless of script success). CUE initially also missed this by trusting process-alive + port-listening as success signal, then caught it by reading beta_app.log directly.",
+  "root_cause": "requirements.txt missing tantivy, required transitively by ui/pages/__init__.py -> ui.pages.library -> core.index_orchestrator -> core.candidate_generator",
+  "fix_commit": "0db4987",
+  "masked_by": "~/envs/dbma311 (dev env) already had tantivy installed separately, so all prior headless verification tonight (and Gate 1 DoD#7) never exercised a truly clean requirements.txt-only install",
+  "final_reverification": {
+    "isolated_dir": "/tmp/dbma-gate2-run-1787035965 (cleaned up after verification)",
+    "beta_app_log_clean": true,
+    "nine_pages_direct_import": "PASS (9/9)",
+    "citation_tests": "7 passed",
+    "hunspell": "PASS",
+    "live_repo_isolation": "PASS (no diff on config.yaml/core/retrieval.py/pyproject.toml, no stray .venv_beta)"
+  }
+}
