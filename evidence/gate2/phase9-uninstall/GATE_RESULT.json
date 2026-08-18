@@ -1,0 +1,11 @@
+{
+  "phase": "9-uninstall",
+  "gate_status": "GREEN",
+  "verified_by": "CUE (direct execution, C1 unresponsive)",
+  "verified_at": "2026-08-18",
+  "target_dir": "/tmp/dbma-gate2-run-1787068053",
+  "directory_removed": true,
+  "orphans_found": false,
+  "live_repo_unaffected": true,
+  "note": "First attempt found no target because CUE had already cleaned up from Phase 8; a fresh isolated install was created via 40_clean_install.sh to properly test uninstall. During this a stray process from earlier testing (port 8520) was discovered and cleaned up — CUE's own cleanup oversight, not a script defect."
+}
