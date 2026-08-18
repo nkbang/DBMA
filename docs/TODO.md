@@ -107,11 +107,13 @@ Fallback 구현, 임베딩 기반 6번째 feature)과 Beta corpus 발생 빈도
 ---
 
 ## 현재 우선순위
-1. chunk overflow 하위결함 B 수정 여부/방향 결정 (별도 ADR 필요)
-2. Beta corpus 대상 하위결함 B 발생 빈도 실측
-3. ADR-008 후속 항목 착수 여부 결정
-4. Legacy artifact 정리 여부 결정
-5. TODO.md/STATE.md를 커밋 이력과 상시 동기화 (본 작업으로 1회성 정정 완료, 이후 갱신 습관화)
+1. ~~chunk overflow 하위결함 B 수정 여부/방향 결정~~ → 완료 (ADR-009 대안 2 구현, commit `28830c2`)
+2. push 완료 — GitHub 권한(installation token) 반영 대기, 로컬 커밋 3건 보류 중
+3. **(로컬/Mac 환경 필요)** Beta corpus 대상 하위결함 B 발생 빈도 실측
+4. **(로컬/Mac 환경 필요)** ADR-009 대안 1(무개행 위임) 구현 여부 — 3번 실측 후 결정
+5. **(로컬/Mac 환경 필요)** ADR-008 후속 항목(threshold 재산정 / Level 3 / 6번째 feature) 착수 여부 결정
+6. **(로컬/Mac 환경 필요)** Legacy artifact(`output/registry/` 등) 정리 여부 결정
+7. TODO.md/STATE.md를 커밋 이력과 상시 동기화 (습관화, 진행 중)
 
 ---
 
