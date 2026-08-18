@@ -9,10 +9,12 @@ Boundary Detector → Hierarchical Chunk Builder → D-5 Metrics 공식 평가)�
 결함**(순수 단일 언어 장문단에서 chunk_size 상한 자체가 깨지는 심각한
 하위결함 B)을 발견했다. 하위결함 B는 HQ 지시로 2026-08-18에 수정
 완료(`_merge_sentence_fragments`에 word-safe hard slice 적용, 회귀
-테스트 3건 추가). ADR-008 제안 1~3(threshold 재산정, Level 3 Hard
-Fallback 구현, 임베딩 기반 6번째 feature)과 Beta corpus 발생 빈도
-실측은 이 원격 세션에 `output/`(생성된 corpus 산출물) 자체가 없어
-착수하지 못했다 — 로컬(Mac) 환경 작업 필요.
+테스트 3건 추가). 같은 날 ADR-008 제안 2(Level 3 Hard Fallback)도
+`core/hierarchical_chunk_builder.py`(dormant 모듈)에 구현 완료(회귀
+테스트 5건). ADR-008 제안 1/3(threshold 재산정, 임베딩 기반 6번째
+feature), ADR-009 대안 1(무개행 위임), Beta corpus 발생 빈도 실측,
+Legacy artifact 정리는 이 원격 세션에 `output/`(생성된 corpus 산출물)
+자체가 없어 착수하지 못했다 — 로컬(Mac) 환경 작업 필요.
 
 ---
 
@@ -57,7 +59,9 @@ Fallback 구현, 임베딩 기반 6번째 feature)과 Beta corpus 발생 빈도
 - [x] ADR-009 대안 2(word-safe hard slice 안전망) 구현 완료 (2026-08-18, HQ 지시) — `_merge_sentence_fragments`에 `_word_safe_hard_slice()` 적용, 회귀 테스트 3건 추가, 기존 스위트 전부 통과
 - [ ] ADR-009 대안 1(무개행 위임 폴백) 구현 — 보류. `core/utils.py::detect_broken_line_ratio()`/`scripts/shadow_d5_metrics.py` Axis 3 정의가 현재 동작에 의존해 Beta corpus 재검증 없이는 리스크 있음
 - [ ] Beta corpus 대상 하위결함 B 발생 빈도 실측 — **이 원격 세션에 `output/` 데이터 자체가 없어 실행 불가**. 로컬(Mac) 환경 필요
-- [ ] ADR-008 제안 항목 착수 여부 결정 (threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) — threshold 재산정은 Beta corpus 실측 선행 필요, 이 세션에서 착수 불가
+- [x] ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18, dormant 모듈 `core/hierarchical_chunk_builder.py`, production 무접촉, 회귀 테스트 5건)
+- [ ] ADR-008 제안 1/3 착수 여부 결정 (threshold 재산정 / 임베딩 기반 6번째 feature) — Beta corpus 실측·로컬 Ollama 선행 필요, 이 세션에서 착수 불가
+- [ ] Level 3 구현의 Axis 3 개선 효과 재측정 — Beta corpus 필요, 로컬 환경
 - [ ] Legacy Artifact 정리 (`output/registry/`, `output/baseline/`, `output_sav/` 등) — **이 원격 세션에 `output/` 디렉터리 자체가 없어 점검 불가**. 로컬(Mac) 환경 필요
 - [ ] Documentation Synchronization 상시화 (TODO.md/STATE.md가 실제 커밋 이력보다 지연되는 문제 재발 방지)
 
@@ -96,7 +100,8 @@ Fallback 구현, 임베딩 기반 6번째 feature)과 Beta corpus 발생 빈도
 - [x] chunk overflow 결함(하위 A/B) 원인 규명 (Preflight, 코드 미수정)
 - [x] 하위결함 B 수정 방향 설계 (ADR-009) 및 대안 2 구현 (2026-08-18)
 - [ ] ADR-009 대안 1(무개행 위임) 구현 — 보류, 로컬 환경에서 Beta corpus 재검증 후 진행
-- [ ] ADR-008 후속 항목(threshold 재산정 / Level 3 구현 / 6번째 feature) 착수 여부 결정 — Beta corpus 실측 선행 필요
+- [x] ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18)
+- [ ] ADR-008 제안 1/3(threshold 재산정 / 6번째 feature) 착수 여부 결정 — Beta corpus 실측 선행 필요
 - [ ] Legacy artifact(`output/registry/` 등) 정리 여부 결정 — `output/`이 이 세션에 없어 점검 불가
 
 ### 5단계: 운영 정리
@@ -108,12 +113,13 @@ Fallback 구현, 임베딩 기반 6번째 feature)과 Beta corpus 발생 빈도
 
 ## 현재 우선순위
 1. ~~chunk overflow 하위결함 B 수정 여부/방향 결정~~ → 완료 (ADR-009 대안 2 구현, commit `28830c2`)
-2. push 완료 — GitHub 권한(installation token) 반영 대기, 로컬 커밋 3건 보류 중
-3. **(로컬/Mac 환경 필요)** Beta corpus 대상 하위결함 B 발생 빈도 실측
-4. **(로컬/Mac 환경 필요)** ADR-009 대안 1(무개행 위임) 구현 여부 — 3번 실측 후 결정
-5. **(로컬/Mac 환경 필요)** ADR-008 후속 항목(threshold 재산정 / Level 3 / 6번째 feature) 착수 여부 결정
-6. **(로컬/Mac 환경 필요)** Legacy artifact(`output/registry/` 등) 정리 여부 결정
-7. TODO.md/STATE.md를 커밋 이력과 상시 동기화 (습관화, 진행 중)
+2. ~~ADR-008 제안 2(Level 3 Hard Fallback 구현)~~ → 완료 (2026-08-18, dormant 모듈, production 무접촉)
+3. push 완료 — GitHub 권한(installation token) 반영 대기, 로컬 커밋 보류 중
+4. **(로컬/Mac 환경 필요)** Beta corpus 대상 하위결함 B 발생 빈도 실측
+5. **(로컬/Mac 환경 필요)** ADR-009 대안 1(무개행 위임) 구현 여부 — 4번 실측 후 결정
+6. **(로컬/Mac 환경 필요)** ADR-008 제안 1/3(threshold 재산정 / 6번째 feature) 착수 여부 결정, Level 3 Axis 3 효과 재측정
+7. **(로컬/Mac 환경 필요)** Legacy artifact(`output/registry/` 등) 정리 여부 결정
+8. TODO.md/STATE.md를 커밋 이력과 상시 동기화 (습관화, 진행 중)
 
 ---
 

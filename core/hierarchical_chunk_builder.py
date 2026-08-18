@@ -35,6 +35,22 @@ is reproduced here from core.heading_provider's exported matching
 functions — no new detection logic, same pattern already duplicated once
 in scripts/shadow_boundary_analysis.py.
 
+Level 3 (Hard Fallback Split, ADR-007 Amendment A / ADR-008 제안 2): when a
+single candidate is already longer than the safety cap on its own (the
+"Unsplittable Outlier" case Axis 3 measures — content with no semantic
+boundary AND no sentence boundary inside it, e.g. a long run-on paragraph
+or an original-language quotation), Level 2's per-buffer cap cannot help
+because the candidate alone already exceeds it before any merging. Level 3
+recovers this by word-safe hard-slicing that one candidate into bounded
+pieces — no semantic or heading signal is consulted for this decision
+(Amendment A: "word-safe 강제 절단만 수행, semantic 정보 미참조"), it is a
+pure last-resort length cut. Per Amendment A's explicit anti-coupling
+principle, this does NOT import core.chunking_optimizer's private
+_slice_preserving_words (nor core.text_normalizer's independent copy of
+the same logic, _word_safe_hard_slice) — it is a third, deliberately
+independent implementation local to this module. All three must be kept
+in sync by hand if the word-safe slicing algorithm itself ever changes.
+
 Known limitations inherited from Pre-SPRINT33-D Preflight
 (docs/SPRINT33-D-preflight-issues.md), NOT addressed here:
   - PageHeaderArtifact not implemented — running-header repeats in
@@ -50,6 +66,7 @@ this is ever promoted toward production.
 
 from __future__ import annotations
 
+import re
 from typing import List, Tuple
 
 from core.heading_provider import (
@@ -85,6 +102,49 @@ def _advance_heading_cursor(cursor: int, headings: List[ProviderHeading], key: s
     if offset is None:
         return cursor
     return cursor + offset + 1
+
+
+def _word_safe_hard_slice(s: str, max_chars: int) -> List[str]:
+    """Level 3 primitive: split one oversized unit into <= max_chars pieces
+    without cutting inside a word. Falls back to a hard slice only if a
+    single token (no spaces at all) itself exceeds max_chars.
+
+    Deliberately independent implementation — see module docstring's
+    "Level 3" section for why this is not imported from elsewhere.
+    """
+    tokens = re.split(r"(\s+)", s)
+    pieces: List[str] = []
+    buf = ""
+    for tok in tokens:
+        if len(buf) + len(tok) <= max_chars:
+            buf += tok
+        else:
+            if buf.strip():
+                pieces.append(buf.strip())
+            if len(tok) > max_chars:
+                for i in range(0, len(tok), max_chars):
+                    pieces.append(tok[i:i + max_chars].strip())
+                buf = ""
+            else:
+                buf = tok
+    if buf.strip():
+        pieces.append(buf.strip())
+    return [p for p in pieces if p]
+
+
+def _hard_fallback_split(text: str, offset: int, max_chars: int) -> List[Tuple[str, int]]:
+    """Level 3: word-safe hard-slice one oversized candidate, pairing each
+    piece with its real start offset within the original candidate text
+    (found positionally, since _word_safe_hard_slice only trims
+    surrounding whitespace and never alters interior characters)."""
+    pieces = _word_safe_hard_slice(text, max_chars)
+    out: List[Tuple[str, int]] = []
+    cursor = 0
+    for piece in pieces:
+        idx = text.index(piece, cursor)
+        out.append((piece, offset + idx))
+        cursor = idx + len(piece)
+    return out
 
 
 def build_chunks(
@@ -133,6 +193,19 @@ def build_chunks(
 
         if buf and event.is_boundary and buf_len >= min_chunk_size:
             flush()
+
+        # Level 3 — Hard Fallback: this candidate is already longer than
+        # the safety cap by itself (an "Unsplittable Outlier", Axis 3).
+        # Level 2's cap check below only fires *after* merging, so it
+        # cannot bound a single already-oversized candidate. Flush
+        # whatever is already buffered first so this abnormal candidate
+        # is never merged with normal neighbors, then emit it as its own
+        # bounded chunk(s) and move on — no semantic/heading signal is
+        # consulted for this decision.
+        if len(text) > safety_cap:
+            flush()
+            chunks.extend(_hard_fallback_split(text, offset, chunk_size))
+            continue
 
         if not buf:
             buf_start = offset

@@ -85,7 +85,8 @@ SPRINT27/31~33 계열도 각 Phase 목표(D-5 metric 공식 평가까지)는 100
 - D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건): 100%
 - chunk overflow 결함 원인 규명 (Preflight, 코드 미수정): 100%
 - chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현: 100%
-- ADR-009 대안 1(무개행 위임) / ADR-008 후속 항목 착수 / Beta corpus 실측 / Legacy artifact 정리: 0% (원격 세션에 `output/` 데이터 없어 로컬 환경 필요)
+- ADR-008 제안 2 — Level 3 Hard Fallback 구현 (dormant 모듈): 100%
+- ADR-009 대안 1(무개행 위임) / ADR-008 제안 1·3 착수 / Level 3 Axis 3 효과 재측정 / Beta corpus 실측 / Legacy artifact 정리: 0% (원격 세션에 `output/` 데이터 없어 로컬 환경 필요)
 
 ---
 
@@ -108,6 +109,7 @@ Status:    STABLE — GA 검토 단계
 ## 잔여 (비blocker, 향후)
 - GA 선언 여부 판단 (안정화 기간 후)
 - ADR-009 대안 1(`split_sentences_mixed` 무개행 위임) 구현 여부 — 로컬 환경에서 Beta corpus 재검증 후 결정
+- Level 3 Hard Fallback(ADR-008 제안 2) 구현이 Beta corpus Profile B Axis 3(unsplittable outlier)를 실제로 개선하는지 재측정 — 로컬 환경 필요
 - Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측 — 원격 세션에 `output/` 없어 로컬 필요)
 - ADR-008 후속 항목(threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) 착수 여부 결정 — threshold 재산정은 Beta corpus 실측 선행 필요
 - Legacy Artifact(`output/registry/`, `output/baseline/`, `output_sav/` 등) 정리 여부 — 원격 세션에 `output/` 자체가 없어 점검 불가, 로컬 환경 필요
@@ -141,6 +143,36 @@ Status:    STABLE — GA 검토 단계
 ---
 
 ## 최근 상태
+
+### ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18)
+- 상태: 완료
+- 설명: `core/hierarchical_chunk_builder.py`(dormant 프로토타입, SPRINT33-D)에
+  ADR-007 Amendment A가 "설계만 완료, 미구현"으로 남겨둔 Level 3(Hard
+  Fallback Split)를 구현했다. Level 1(semantic)/Level 2(safety-cap)는
+  이미 존재했으나, 단일 candidate가 그 자체로 이미 safety cap을
+  초과하는 "Unsplittable Outlier"(Axis 3 측정 대상) 케이스는 Level 2로도
+  bound되지 않는 결함이 있었다. 신규 `_word_safe_hard_slice()`/
+  `_hard_fallback_split()`을 추가해, 이런 candidate를 만나면 먼저 기존
+  버퍼를 flush하고 이 candidate만 word-safe hard slice로 여러 bounded
+  chunk로 분리 — semantic/heading 신호는 참조하지 않는 순수 길이 기반
+  최후 수단(Amendment A 원칙 그대로).
+  Amendment A의 "production private 함수 직접 import 금지" 원칙에 따라
+  `core/chunking_optimizer.py::_slice_preserving_words()`도,
+  `core/text_normalizer.py::_word_safe_hard_slice()`(오늘 하위결함 B
+  수정에서 추가)도 import하지 않고 이 모듈에 세 번째 독립 사본으로
+  구현 — 세 사본의 알고리즘 drift 방지는 수동 관리 필요(모듈 docstring에
+  명시).
+  기존 테스트 1건(`test_force_flushes_at_safety_cap_without_any_semantic_signal`)이
+  의도치 않게 이 신규 경로를 타고 있어(각 candidate가 이미 safety cap
+  초과) Level 2를 순수하게 테스트하도록 fixture를 정상 크기 candidate로
+  교정. 신규 `TestHardFallbackSplit` 5건 추가(bound 보장/word-safety/
+  공백 없는 토큰 처리/인접 정상 candidate와 미병합/offset 정확성).
+  `tests/test_hierarchical_chunk_builder.py` 12건 전부 통과. 여전히
+  dormant 모듈이라 production(`chunking_optimizer.py`/`processing.py`)
+  경로는 무접촉.
+- 다음 조치: Profile B(학술 주석서, Axis 3 최악 18.6%) 대상 실제 개선
+  효과를 Beta corpus로 재측정 — 이 원격 세션에 corpus 데이터가 없어
+  로컬(Mac) 환경 필요.
 
 ### chunk overflow 하위결함 B 안전망(대안 2) 구현 (2026-08-18)
 - 상태: 완료(대안 2), 대안 1은 보류
@@ -355,7 +387,8 @@ Status:    STABLE — GA 검토 단계
 - [x] `.gitignore` 오버매칭 버그 수정 (commit `14ed5ed`)
 - [x] chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현 (2026-08-18)
 - [ ] ADR-009 대안 1(무개행 위임) 구현 — 보류, 로컬 환경 Beta corpus 재검증 필요
-- [ ] ADR-008 후속 항목 착수 여부 결정 (threshold 재산정 / Level 3 구현 / 6번째 feature) — Beta corpus 실측 선행 필요
+- [x] ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18, dormant 모듈)
+- [ ] ADR-008 제안 1/3(threshold 재산정 / 6번째 feature) 착수 여부 결정, Level 3 Axis 3 효과 재측정 — Beta corpus 실측 선행 필요
 - [ ] Legacy artifact 정리 — 원격 세션에 `output/` 없어 점검 불가
 
 ---
