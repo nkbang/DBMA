@@ -1,44 +1,49 @@
 #!/usr/bin/env bash
-# 80_reinstall_upgrade.sh — Reinstall and upgrade in isolated temp directory
-# Task Order: C1-TASK-ORDER-GATE2-PHASEB-TODO-IMPLEMENTATION.md §3 Phase 2
+# 80_reinstall_upgrade.sh — Reinstall and upgrade in isolated temp directory (git archive snapshot)
+# Task Order: C1-TASK-ORDER-GATE2-CLEAN-INSTALL-ISOLATION-REDESIGN.md §3
 #
-# Isolation method: HOME=${FAKE_HOME} subshell trick (same as 40_clean_install.sh).
-# Reuses the same FAKE_HOME across two invocations to simulate upgrade scenario.
-# PERSIST_ITEMS are verified after reinstallation.
+# IMPORTANT: This script writes ONLY to /tmp/dbma-gate2-run-* paths.
+# It NEVER touches ~/내서재_베타 (real beta installation path).
+# It NEVER executes any script from the live repository (${PROJECT_ROOT}).
+#
+# Isolation method (dual):
+#   1. git archive HEAD → tar -x into ISOLATED_REPO (script file itself is isolated)
+#   2. HOME=${FAKE_HOME} override (brew/ollama config cache isolation)
+# These are independent safety nets — both must be used together.
 set -euo pipefail
 
 TIMESTAMP=$(date +%s)
 ISOLATED_DIR="/tmp/dbma-gate2-run-${TIMESTAMP}"
+ISOLATED_REPO="${ISOLATED_DIR}/repo"
+FAKE_HOME="${ISOLATED_DIR}/fakehome"
 DRY_RUN="${DRY_RUN:-false}"
 
 echo "=== 80_reinstall_upgrade.sh ==="
 echo "Isolated directory: ${ISOLATED_DIR}"
-echo "Dry run: ${DRY_RUN}"
+echo "Isolated repo:      ${ISOLATED_REPO}"
+echo "Fake HOME:          ${FAKE_HOME}"
+echo "Dry run:            ${DRY_RUN}"
 
-# Create isolated directory and fake HOME (shared across both invocations)
-mkdir -p "${ISOLATED_DIR}"
-FAKE_HOME="${ISOLATED_DIR}/fakehome"
-mkdir -p "${FAKE_HOME}"
+# Create isolated directory structure (shared across both invocations)
+mkdir -p "${ISOLATED_REPO}" "${FAKE_HOME}"
 
-# Resolve paths relative to PROJECT_ROOT
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-INSTALL_SCRIPT="${PROJECT_ROOT}/scripts/install_nae_beta.command"
-
-if [ ! -f "${INSTALL_SCRIPT}" ]; then
-    echo "FATAL: install_nae_beta.command not found at ${INSTALL_SCRIPT}" >&2
-    exit 1
+# Snapshot HEAD into the isolated directory.
+# .gitattributes export-ignore automatically excludes NAE/, .automation/, test_seal_*/
+if [ "${DRY_RUN}" = "true" ]; then
+    echo "[DRY-RUN] git archive HEAD | tar -x -C ${ISOLATED_REPO}"
+else
+    git archive HEAD | tar -x -C "${ISOLATED_REPO}"
 fi
 
-ISOLATED_INSTALL_DIR="${FAKE_HOME}/내서재_베타"
+ISOLATED_INSTALL_DIR="${ISOLATED_REPO}"
 
 # ── Step 1: First install (simulates initial beta installation) ──
 echo ""
 echo "--- Step 1: Initial install ---"
 if [ "${DRY_RUN}" = "true" ]; then
-    echo "[DRY-RUN] mkdir -p ${FAKE_HOME}"
-    echo "[DRY-RUN] HOME=${FAKE_HOME} bash ${INSTALL_SCRIPT}"
+    echo "[DRY-RUN] HOME=${FAKE_HOME} bash ${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 else
-    HOME="${FAKE_HOME}" bash "${INSTALL_SCRIPT}"
+    HOME="${FAKE_HOME}" bash "${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 fi
 
 if [ -d "${ISOLATED_INSTALL_DIR}" ]; then
@@ -51,9 +56,9 @@ fi
 echo ""
 echo "--- Step 2: Reinstall/upgrade (same FAKE_HOME) ---"
 if [ "${DRY_RUN}" = "true" ]; then
-    echo "[DRY-RUN] HOME=${FAKE_HOME} bash ${INSTALL_SCRIPT}"
+    echo "[DRY-RUN] HOME=${FAKE_HOME} bash ${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 else
-    HOME="${FAKE_HOME}" bash "${INSTALL_SCRIPT}"
+    HOME="${FAKE_HOME}" bash "${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 fi
 
 echo "Reinstall completed: ${ISOLATED_INSTALL_DIR}"
