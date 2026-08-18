@@ -6,9 +6,9 @@ Production Candidate). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
 
 ```
-Release State:  v1.3.0 RC READY
-Development:    FROZEN
-Next:           GA validation / tag preparation
+Release State:  v1.3.0 released, post-release 개발 재개(ACTIVE)
+Development:    SPRINT33-D 계열 진행 중 — 결함 수정/ADR-008 착수 여부 결정 대기
+Next:           chunk overflow 하위결함 B 수정 방향 결정, ADR-008 후속 항목 착수 여부
 ```
 
 ## 현재 상태
@@ -21,6 +21,20 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 이동했으며, Legacy(`dbma.py` + Chroma/Qdrant island + md_manager)를
 `archive/legacy/`로 분리 완료했다. v1.3.0으로 태그·검증되었다.
 
+v1.3.0 이후 SPRINT27(Research Workspace — 6번째 Authority/Memory Layer),
+SPRINT31~32(PdfHeadingProvider 정식 배선, HeadingAssembler 안정화),
+SPRINT33-A~D(Dormant Semantic Boundary Detector → Shadow scoring →
+Hierarchical Chunk Builder 프로토타입 → D-5 Metrics 공식 평가)로 개발이
+이어졌다. SPRINT33-D Phase 3-A에서 Beta corpus 12개 문서에 대한 D-5 metric
+(ADR-007 Amendment A의 recovery/semantic flush/unsplittable outlier 3축)을
+공식 산출하는 과정에서 `core/text_normalizer.py::split_sentences_mixed()`의
+개행(`\n`) 의존성으로 인한 **chunk overflow 결함**을 발견했다 — 특히 순수
+단일 언어 장문단에서 `chunk_size`/`chunk_overlap` 설정이 사실상 무시되고
+청크 상한 자체가 깨지는 심각한 하위결함(B)이 포함되어 있다. 원인 규명과
+재현은 완료(Preflight 문서, 코드 미수정)했고, 수정 여부·방향은 HQ 승인
+대기 중이다. 같은 흐름에서 Dashboard/Monitor 탭 책임 분리, Monitor 가짜
+지표의 실측화, `.gitignore` 오버매칭 버그 수정도 함께 진행됐다.
+
 ---
 
 ## 아키텍처 결정 (ADR)
@@ -30,14 +44,28 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
   Engine Authority. `dbma.py`의 인라인 RAG(`query_rag` 등)는 폐기 대상.
 - 공식 실행 진입점: `dbma_ui.py` → `ui/app.py` (SPRINT20-G2에서 README/
   `.github/instructions/*` 문서 정렬 완료).
+- `docs/architecture/ADR-004-Research-Workspace-Layer.md` (accepted):
+  `core/research_workspace.py`를 5개 기존 Authority와 나란한 독립 6번째
+  Layer(Memory)로 신설.
+- `docs/architecture/ADR-007-*.md` + Amendment A (accepted): D-5 semantic
+  boundary rebuild gate — Hierarchical Chunk Builder 정식 채택 여부를
+  판단할 3축 metric(Axis1 recovery / Axis2 semantic flush ratio / Axis3
+  unsplittable outlier ratio) 정의.
+- `docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md`
+  (제안만, 미확정): threshold 재산정, Level 3 Hard Fallback 구현, 임베딩
+  기반 6번째 feature, `split_sentences_mixed` 버그 후속 티켓 분리를 제안.
+  코드 변경 없음 — 착수 여부 HQ 결정 대기.
 
 ---
 
 ## 프로젝트 진행률
 
-전체 진행률: 100% (SPRINT20-I Architecture Consolidation 완료, v1.3.0 태그·검증 완료)
+전체 진행률: v1.3.0 Architecture Consolidation은 100% 완료. 이후
+SPRINT27/31~33 계열도 각 Phase 목표(D-5 metric 공식 평가까지)는 100%
+완료됐으나, 그 과정에서 드러난 chunk overflow 결함 수정과 ADR-008 후속
+항목은 착수 여부 결정 대기 상태로 **미완**이다.
 
-### 세부 진행 (SPRINT20-I 완료)
+### 세부 진행 (SPRINT20-I, v1.3.0 — 완료)
 - Retrieval Engine 단일화 (ADR-001): 100%
 - Citation Layer / Metadata Propagation: 100%
 - Configuration / Execution Env / Logging Authority: 100%
@@ -47,6 +75,15 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 - Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP): 100%
 - Legacy Vector Store 정책 (ADR-003 Finalization): 100%
 - Release: v1.3.0 태그 + chapter-level benchmark PASS + beta validation: 100%
+
+### 세부 진행 (SPRINT27, SPRINT31~33 — Phase 목표 완료, 후속 결정 대기)
+- Research Workspace Layer (ADR-004, 6번째 Authority): 100%
+- PdfHeadingProvider 배선 / HeadingAssembler 안정화 (SPRINT31~32): 100%
+- Dormant Semantic Boundary Detector + Shadow scoring feature군 (SPRINT33-A~C): 100%
+- ADR-007/Amendment A D-5 게이트 정의 + Hierarchical Chunk Builder 프로토타입 (SPRINT33-D Phase1~2): 100%
+- D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건): 100%
+- chunk overflow 결함 원인 규명 (Preflight, 코드 미수정): 100%
+- chunk overflow 하위결함 B 수정 / ADR-008 후속 항목 착수: 0% (결정 대기)
 
 ---
 
@@ -67,8 +104,11 @@ Status:    STABLE — GA 검토 단계
 - Benchmark evidence: output/bench/chapter_level_result_v1.3.0_cap2.json
 
 ## 잔여 (비blocker, 향후)
-- monitor.py 정적 하드코딩 값(메모리 72% 등) → 실시간화 (P3)
 - GA 선언 여부 판단 (안정화 기간 후)
+- chunk overflow 하위결함 B 수정 방향 결정 및 구현 (HQ 승인 대기, 별도 ADR 필요)
+- Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측)
+- ADR-008 후속 항목(threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) 착수 여부 결정
+- SPRINT27-D — Research Workspace를 MIE(Ministry Intelligence Engine) Memory Layer로 확장하는 Architecture Preflight (조사만, 구현 없음)
 
 ---
 
@@ -98,6 +138,71 @@ Status:    STABLE — GA 검토 단계
 ---
 
 ## 최근 상태
+
+### .gitignore 오버매칭 수정 + C1 거버넌스 문서 커밋 (2026-07-20)
+- 상태: 완료
+- 설명: `.gitignore` 패턴 불일치로 `backups/`(381M), `cache/`(1.7G,
+  embeddings_backup_* 포함), `backup_chroma.log`가 새고 있었음(`backup/`
+  단수만 지정돼 `backups/` 복수 미매칭 등). `reports/`(무슬래시)가 루트
+  뿐 아니라 `docs/agent_governance/reports/`, `docs/reports/`까지 잡아먹어
+  `OPS-001`/`OPS-002`/`ARCHITECTURE_AUDIT_2026-07-16.md`가 한 번도
+  커밋되지 못한 상태였음을 발견 — `/reports/`로 스코프 축소해 정정.
+  `.claude/worktrees/` 패턴도 추가(leftover worktree 재발 방지).
+  `docs/agents/c1/*.md`(8개), `docs/agent_governance/*.md`를 함께 커밋.
+- 커밋: `14ed5ed`.
+- 다음 조치: 없음.
+
+### DBMA_CURRENT_STATE_SNAPSHOT.md Legacy 경로 보강 (2026-07-20)
+- 상태: 완료
+- 설명: Legacy: dbma.py 항목의 분류는 정확했으나 실제 이동 경로
+  (`archive/legacy/dbma.py`, commit `ce6b05a`)가 누락되어 있었음. C1(Cline
+  창#1)에게 OLD/NEW find/replace 스키마로 위임하고 CUE 검증(형식/OLD 값
+  일치/범위 준수) 통과 후 적용 — shadow 실사용 사례 #1로 기록
+  (`docs/agents/c1/C1-TASK-ORDER-001.md`).
+- 커밋: `10e72c9`.
+- 다음 조치: 없음.
+
+### `split_sentences_mixed()` 개행 의존성 chunk overflow 확정 (2026-07-20)
+- 상태: 완료(Preflight 고정, 코드 미수정)
+- 설명: SPRINT33-D Phase 3-A가 관찰만 하고 넘어간 "원어/혼합 언어
+  문단에서 문장 분할이 거의 안 될 가능성"을 코드 추적 + 실제 재현으로
+  확정. `collapse_soft_linebreaks()`가 문단 내부 줄바꿈을 전부 병합하고
+  `split_sentences_mixed()`는 오직 `\n` 기준으로만 분할하므로, 어떤 문단이든
+  `split_paragraphs()`를 거치면 내부에 `\n`이 남지 않아 항상 1개 원소로
+  반환됨을 확인. 이는 두 하위결함으로 갈린다:
+  - 하위결함 A(경미): mixed/원어 문단 — `_slice_preserving_words()`로
+    떨어져 chunk_size 상한은 지켜지나 문장 경계 무시.
+  - 하위결함 B(심각): 순수 단일 언어 장문단 — `_merge_sentence_fragments()`가
+    "이미 초과한 문장 1개"를 자르지 않고 그대로 추가, **chunk_size/overlap
+    설정이 사실상 무시됨**(실측: 한국어 2999자, 영어 2429자 청크 1개
+    그대로 생성, target 1200의 2~2.5배).
+  `chunking_optimizer.py:305`가 `split_sentences_mixed`를 무조건 우선
+  호출해 정규식 기반 `split_sentences()`(동일 입력에서 정상 동작 확인됨)는
+  production에서 도달 불가능한 dead fallback임도 확인.
+- 커밋: `ae78866`.
+- 다음 조치(HQ 승인 대기, 이 문서 범위 밖): Beta corpus 12개 문서 대상
+  하위결함 B 발생 빈도 실측, 수정 방향 후보(무개행 자동 위임 폴백 /
+  word-safe hard slice) 검토용 ADR.
+
+### Dashboard/Monitor 탭 분리 + Monitor 가짜 지표 실측화 + ADR-008 제안 (2026-07-20)
+- 상태: 완료
+- 설명: Dashboard가 콘텐츠 소유자 요약(문서 수/코퍼스 크기/마지막 처리)과
+  개발자·운영 내부 지표(단계별 파이프라인 %, 벡터DB/임베딩/파일시스템/
+  메모리 상태)를 뒤섞고 있었고, Monitor는 이미 같은 역할의 헬스 개요
+  섹션을 갖고 있었으나 실제 아무것도 연결되지 않은 mock 데이터("healthy",
+  "72%" 등 하드코딩)였음 — Dashboard의 실제 ExecutionContext 기반 수치와
+  중복·모순. Dashboard는 파이프라인 상태/시스템 헬스 섹션을 "전체 상태"
+  카드 하나로 축소하고, Monitor가 단계별 파이프라인 섹션을 흡수하며
+  `_render_health_overview()`의 하드코딩을 실측값으로 교체했다. 이어서
+  Monitor의 `_render_performance_metrics()`가 갖고 있던 4개 하드코딩
+  리터럴(142ms/8.3건/sec/0.8923 "RRF"/156MB)도 실측값으로 교체(응답
+  시간은 `record_query_latency`, 처리 속도는
+  `runtime_state.get_processing_throughput()` 등). 같은 흐름에서
+  Hierarchical Chunk Builder의 SPRINT33-D Phase 3-A 공식 측정 완료를
+  계기로 ADR-008(semantic chunking production 전환 경로, 제안만·미확정)도
+  작성됨.
+- 커밋: `70a9d4d`, `a3c28cd`, `be1ceef`, `27f0ff3`, `dbb36c3`.
+- 다음 조치: ADR-008 제안 항목 착수 여부는 HQ 결정 대기.
 
 ### 문서 정합성 점검 및 정정 (2026-07-20)
 - 상태: 완료
@@ -200,13 +305,23 @@ Status:    STABLE — GA 검토 단계
 - [x] `dbma.py` Legacy Archive 완료 (SPRINT20-I-D, archive/legacy/)
 - [x] Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP)
 - [x] Legacy Vector Store 정책 확정 (ADR-003 Finalization)
-- [ ] v1.3.0 Release Candidate 선언 (본 항목 진행 중)
-- [x] Release validation (chapter-level benchmark 1500q — PASS, 회귀 없음)
+- [x] v1.3.0 Release 태그 (07ec084) + Release validation (chapter-level
+      benchmark 1500q — PASS, 회귀 없음)
 - [x] Ollama HTTP 500 수정 (P2, char/token 4→2, commit f5f2753)
 - [x] 잔여 cleanup (data/rag_index, 빈 backup 폴더, md_manager archive)
 - [x] Research Workspace Layer — 첫 번째 Memory Layer (SPRINT27-B/C, ADR-004,
       `core/research_workspace.py`, commit `519d719`)
-- [ ] SPRINT27-D — Memory Layer 확장 Architecture Preflight (진행 중)
+- [ ] SPRINT27-D — Memory Layer 확장 Architecture Preflight (미착수)
+- [x] PdfHeadingProvider 배선 + HeadingAssembler 안정화 (SPRINT31~32)
+- [x] Dormant Semantic Boundary Detector + Shadow scoring feature군 (SPRINT33-A~C)
+- [x] ADR-007/Amendment A D-5 게이트 정의 + Hierarchical Chunk Builder 프로토타입 (SPRINT33-D Phase1~2)
+- [x] D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건, commit `71ef068`)
+- [x] `split_sentences_mixed()` chunk overflow 원인 규명 (Preflight, commit `ae78866`)
+- [x] Dashboard/Monitor 탭 분리 + Monitor 실측 지표화 (commit `70a9d4d`/`dbb36c3`)
+- [x] ADR-008 semantic chunking production 전환 경로 제안 (commit `27f0ff3`, 미확정)
+- [x] `.gitignore` 오버매칭 버그 수정 (commit `14ed5ed`)
+- [ ] chunk overflow 하위결함 B 수정 방향 결정 및 구현 (HQ 승인 대기)
+- [ ] ADR-008 후속 항목 착수 여부 결정 (threshold 재산정 / Level 3 구현 / 6번째 feature)
 
 ---
 
