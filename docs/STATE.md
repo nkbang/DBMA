@@ -56,6 +56,17 @@ caveats.**
 진짜 기능 공백도 발견 — `docs/DBMA-UX-005-DOCUMENT-READING-PLAN.md`로
 분리 발행, 착수 전 HQ 결정(옵션 A/B) 대기 중.**
 
+**[2026-07-31 갱신 #3] HQ 지시로 DBMA-UX-006(독립 재감사) →
+DBMA-UX-007(Implementation Specification) 발행. Gate 체계 도입:
+Gate 1~5(Audit/Product Identity/IA/Visual Direction/Architecture Safety)
+PASS, **Gate 6(Implementation Specification) PASS**(`docs/DBMA-UX-007-IMPLEMENTATION-SPEC.md`),
+**HQ 승인 대기 → C1 Implementation BLOCKED**. 읽기 화면은 "document
+viewer"가 아니라 "research workspace"로 확정(본문+연구+행동 3영역).
+"기술적 leakage 금지"를 UX invariant로 명문화 — `chat.py`의
+`신뢰도(final_score)`/`근거 신뢰도(citation)` 원시 노출이 미해결 위반으로
+공식 기록됨, §11 용어집으로 향후 위반 판정 기준 고정. mockup.html은
+"시각 참조"로만 쓰고 구현 권한은 스펙 문서에 있음을 명시.**
+
 ---
 
 ## 아키텍처 결정 (ADR)
