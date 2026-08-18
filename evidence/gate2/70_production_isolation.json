@@ -1,0 +1,51 @@
+{
+  "script": "70_production_isolation.py",
+  "timestamp": "2026-08-18T04:49:35Z",
+  "all_pass": true,
+  "checks": {
+    "before_tsu_dataset_jsonl": {
+      "status": "PASS",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "before_tsu_manifest_json": {
+      "status": "PASS",
+      "sha256": "40fe3cfcef62aaa7b2f2404b1a876dc6862b311317690b06d66031667c7c6124",
+      "size_bytes": 516
+    },
+    "before_tsu_id_state_json": {
+      "status": "PASS",
+      "sha256": "f42e5fab69d270e2d48320997c8fa7204a8a43f0607dc040e97ef78fc88891ed",
+      "size_bytes": 17
+    },
+    "before_documents_registry": {
+      "status": "PASS",
+      "sha256": "bd2c5ecfb3997bad903ea1a867323546075b05eab32f2003dffe88c6e5ddc6b0",
+      "size_bytes": 106216
+    },
+    "tripwire_tsu_dataset_jsonl": {
+      "status": "PASS",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "note": "No mutation — isolation verified"
+    },
+    "tripwire_tsu_manifest_json": {
+      "status": "PASS",
+      "sha256": "40fe3cfcef62aaa7b2f2404b1a876dc6862b311317690b06d66031667c7c6124",
+      "note": "No mutation — isolation verified"
+    },
+    "tripwire_tsu_id_state_json": {
+      "status": "PASS",
+      "sha256": "f42e5fab69d270e2d48320997c8fa7204a8a43f0607dc040e97ef78fc88891ed",
+      "note": "No mutation — isolation verified"
+    },
+    "tripwire_documents_registry": {
+      "status": "PASS",
+      "sha256": "bd2c5ecfb3997bad903ea1a867323546075b05eab32f2003dffe88c6e5ddc6b0",
+      "note": "No mutation — isolation verified"
+    },
+    "qdrant_nae_tsu_v1": {
+      "status": "WARN",
+      "http_status": 404
+    }
+  }
+}

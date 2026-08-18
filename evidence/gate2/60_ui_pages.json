@@ -1,0 +1,77 @@
+{
+  "script": "60_ui_pages.py",
+  "timestamp": "2026-08-18T04:49:30Z",
+  "all_pass": true,
+  "expected_pages_count": 9,
+  "expected_pages": [
+    "ui.pages.dashboard",
+    "ui.pages.library",
+    "ui.pages.processing",
+    "ui.pages.research",
+    "ui.pages.monitor",
+    "ui.pages.chat",
+    "ui.pages.sermon_draft",
+    "ui.pages.sermon_review",
+    "ui.pages.help"
+  ],
+  "excluded_modules": [
+    "ui.pages.onboarding",
+    "ui.tabs",
+    "ui.sidebar"
+  ],
+  "checks": {
+    "page_count": {
+      "status": "PASS",
+      "count": 9
+    },
+    "excluded_ui.pages.onboarding": {
+      "status": "PASS"
+    },
+    "excluded_ui.tabs": {
+      "status": "PASS"
+    },
+    "excluded_ui.sidebar": {
+      "status": "PASS"
+    },
+    "ui.pages.dashboard": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/dashboard.py"
+    },
+    "ui.pages.library": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/library.py"
+    },
+    "ui.pages.processing": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/processing.py"
+    },
+    "ui.pages.research": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/research.py"
+    },
+    "ui.pages.monitor": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/monitor.py"
+    },
+    "ui.pages.chat": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/chat.py"
+    },
+    "ui.pages.sermon_draft": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/sermon_draft.py"
+    },
+    "ui.pages.sermon_review": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/sermon_review.py"
+    },
+    "ui.pages.help": {
+      "status": "PASS",
+      "file": "/Users/David/DBMA/ui/pages/help.py"
+    },
+    "disk_files": {
+      "status": "PASS",
+      "found": 10
+    }
+  }
+}

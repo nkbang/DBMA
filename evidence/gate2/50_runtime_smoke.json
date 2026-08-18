@@ -1,0 +1,19 @@
+{
+  "script": "50_runtime_smoke.py",
+  "timestamp": "2026-08-18T04:49:27Z",
+  "all_pass": true,
+  "checks": {
+    "env_exists": {
+      "status": "PASS",
+      "path": "/Users/David/envs/dbma311"
+    },
+    "ui_file": {
+      "status": "PASS",
+      "path": "/Users/David/DBMA/dbma_ui.py"
+    },
+    "http_response": {
+      "status": "PASS",
+      "code": 200
+    }
+  }
+}
