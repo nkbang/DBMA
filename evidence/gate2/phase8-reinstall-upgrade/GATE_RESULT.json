@@ -1,13 +1,17 @@
 {
   "phase": "8-reinstall-upgrade",
   "gate_status": "GREEN",
-  "verified_by": "CUE (direct execution, C1 unresponsive)",
+  "verified_by": "CUE (real non-dry-run execution)",
   "verified_at": "2026-08-18",
-  "script_80_reinstall_upgrade_valid": false,
-  "script_invalid_reason": "Does not invoke install_nae_beta.command's actual PERSIST_ITEMS stash/restore logic (only re-runs setup_beta_tester.command, which has no persist logic). Also never seeds real user data, so 'LOST' results were false negatives against directories that were never created.",
-  "targeted_verification": {
-    "method": "Extracted install_nae_beta.command's exact stash->replace->restore bash logic and ran it directly against a synthetic APP_DIR seeded with unique marker content for all 8 PERSIST_ITEMS",
-    "result": "8/8 items preserved with exact content match"
-  },
-  "follow_up_low_priority": "Redesign scripts/gate2/80_reinstall_upgrade.sh to seed data and exercise install_nae_beta.command's actual persist logic in isolation"
+  "script_redesigned_by": "C1",
+  "bash_syntax_check": "PASS",
+  "dry_run_result": "PASS (simulated)",
+  "first_real_execution": "FAIL (1/8 content mismatch: config.yaml)",
+  "root_cause": "Seeding logic skipped already-existing files (config.yaml, shipped in git archive) instead of appending a marker, so verification had nothing to check for that item",
+  "fix": "CUE changed seeding logic to append marker to pre-existing files instead of skipping",
+  "second_real_execution": "PASS (8/8 preserved, 8/8 content matched)",
+  "live_repo_unaffected": true,
+  "persist_items_preserved": 8,
+  "persist_items_total": 8,
+  "content_match_verified": 8
 }
