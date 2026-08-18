@@ -1,0 +1,24 @@
+{
+  "phase": 8,
+  "name": "Reinstall / Upgrade",
+  "result": "PASS",
+  "verified_items": {
+    "persist_items_preserved": true,
+    "items": [
+      "data/chat_session_history.json",
+      "config.yaml",
+      "data/RAW",
+      "data/제련완성본",
+      "output",
+      "chroma_db",
+      "logs",
+      "data/inbox/logos_export"
+    ]
+  },
+  "notes": [
+    "setup_beta_tester.command patched for Apple Silicon compatibility (skip /usr/local symlink creation)",
+    "venv .venv_beta reused on reinstall, not recreated",
+    "AI model pull runs again but skips if already present"
+  ],
+  "timestamp": "2026-08-18T12:00:00Z"
+}

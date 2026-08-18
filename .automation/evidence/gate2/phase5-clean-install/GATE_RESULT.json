@@ -1,0 +1,22 @@
+{
+  "phase": 5,
+  "name": "Clean Install",
+  "date": "2026-08-18",
+  "directive": "C1-NIGHT-SHIFT-DIRECTIVE-END-USER-PACKAGE-001.md",
+  "gate_result": "HOLD",
+  "checks": {
+    "ollama_model_download": {"status": "GREEN", "detail": "bge-m3 (1.2GB) + llama3.1:8b (4.9GB) 다운로드 완료"},
+    "venv_beta_creation": {"status": "GREEN", "detail": ".venv_beta/bin, include, lib 생성됨"},
+    "hunspell_pip_install": {"status": "HOLD", "detail": "/usr/local/Cellar/hunspell/1.6.2/include 생성 실패 — 이전 세션 CUE 직접 해결 사례"}
+  },
+  "artifacts": {
+    "isolated_dir": "/tmp/dbma-gate2-run-1787070938",
+    "isolated_repo": "/tmp/dbma-gate2-run-1787070938/repo",
+    "venv_beta": "/tmp/dbma-gate2-run-1787070938/repo/.venv_beta"
+  },
+  "protected_paths_touched": [],
+  "notes": [
+    "Directive §2에 따라 동일 결함 3회 재현 시 즉시 중단 — 이 hunspell 문제는 이전 세션에서 CUE가 직접 LIBRARY_PATH로 해결한 사례",
+    "Phase 6은 격리 환경에서 직접 Python import로 검증 가능 (hunspell 불필요)"
+  ]
+}

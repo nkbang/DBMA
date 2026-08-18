@@ -107,12 +107,20 @@ notify "4/5 환경 준비" "맞춤법 사전 구성 요소를 준비하는 중..
 if ! brew list hunspell >/dev/null 2>&1; then
     brew install hunspell || fatal "hunspell 설치에 실패했습니다."
 fi
-mkdir -p /usr/local/Cellar/hunspell/1.6.2/include || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
-mkdir -p /usr/local/lib || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
-ln -sf "$(brew --prefix hunspell)/include/hunspell" \
-    /usr/local/Cellar/hunspell/1.6.2/include/hunspell
-ln -sf "$(brew --prefix hunspell)/lib/libhunspell-1.7.dylib" \
-    /usr/local/lib/libhunspell.dylib
+# Apple Silicon Homebrew는 /opt/homebrew/Cellar/에 설치되므로,
+# Intel Mac용 경로(/usr/local/Cellar/hunspell/1.6.2/include)가 이미 존재하지 않으면
+# symlink 생성을 건너뛰고 LIBRARY_PATH만 설정한다 (pip install에서 -L로 해결).
+if [ ! -d "/usr/local/Cellar/hunspell/1.6.2" ]; then
+    # /usr/local에 쓰기 권한이 없을 수 있음 — LIBRARY_PATH만으로 우회
+    : # skip symlink creation, rely on LIBRARY_PATH in pip install
+else
+    mkdir -p /usr/local/Cellar/hunspell/1.6.2/include || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
+    mkdir -p /usr/local/lib || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
+    ln -sf "$(brew --prefix hunspell)/include/hunspell" \
+        /usr/local/Cellar/hunspell/1.6.2/include/hunspell
+    ln -sf "$(brew --prefix hunspell)/lib/libhunspell-1.7.dylib" \
+        /usr/local/lib/libhunspell.dylib
+fi
 # [Gate 2 실측] hunspell(0.5.5)의 setup.py는 macOS에서 library_dirs를
 # 전혀 지정하지 않는다(include_dirs만 하드코딩) — 링커가 -lhunspell을
 # 찾으려면 기본 검색 경로에 있어야 한다. distutils는 이 케이스에서

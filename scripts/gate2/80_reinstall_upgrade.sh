@@ -43,7 +43,7 @@ echo "--- Step 1: Initial install ---"
 if [ "${DRY_RUN}" = "true" ]; then
     echo "[DRY-RUN] HOME=${FAKE_HOME} bash ${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 else
-    HOME="${FAKE_HOME}" bash "${ISOLATED_REPO}/scripts/setup_beta_tester.command"
+    HOME="${FAKE_HOME}" LDFLAGS="-L/usr/local/lib" LIBRARY_PATH="/usr/local/lib${LIBRARY_PATH:+:$LIBRARY_PATH}" bash "${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 fi
 
 if [ -d "${ISOLATED_INSTALL_DIR}" ]; then
@@ -58,7 +58,7 @@ echo "--- Step 2: Reinstall/upgrade (same FAKE_HOME) ---"
 if [ "${DRY_RUN}" = "true" ]; then
     echo "[DRY-RUN] HOME=${FAKE_HOME} bash ${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 else
-    HOME="${FAKE_HOME}" bash "${ISOLATED_REPO}/scripts/setup_beta_tester.command"
+    HOME="${FAKE_HOME}" LDFLAGS="-L/usr/local/lib" LIBRARY_PATH="/usr/local/lib${LIBRARY_PATH:+:$LIBRARY_PATH}" bash "${ISOLATED_REPO}/scripts/setup_beta_tester.command"
 fi
 
 echo "Reinstall completed: ${ISOLATED_INSTALL_DIR}"

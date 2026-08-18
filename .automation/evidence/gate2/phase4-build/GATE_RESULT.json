@@ -1,0 +1,24 @@
+{
+  "phase": 4,
+  "name": "Build Validation",
+  "date": "2026-08-18",
+  "directive": "C1-NIGHT-SHIFT-DIRECTIVE-END-USER-PACKAGE-001.md",
+  "gate_result": "GREEN",
+  "checks": {
+    "app_bundle_creation": {"status": "GREEN", "detail": ".app 번들 생성 완료 (Info.plist, launcher, install_nae_beta.command)"},
+    "dmg_creation": {"status": "GREEN", "detail": "UDZO .dmg 생성 (24966 bytes, SHA-256: 58d3fe4b...)"},
+    "export_ignore": {"status": "GREEN", "detail": "NAE/, .automation/, test_seal_*/ 모두 git archive에서 제외됨"},
+    "clean_checkout_reproducibility": {"status": "GREEN", "detail": "git archive HEAD 추출물에서 핵심 파일 존재, protected paths 제외 확인"}
+  },
+  "artifacts": {
+    "app_bundle": "/Users/David/DBMA/dist/내서재 베타 설치.app",
+    "dmg_file": "/Users/David/DBMA/dist/내서재_베타_설치.dmg",
+    "dmg_sha256": "58d3fe4bb384f38d50959cc21befd04fd256faaf861cd7863a5c2d305c6c9673",
+    "installer_script": "/Users/David/DBMA/dist/내서재 베타 설치.app/Contents/Resources/install_nae_beta.command"
+  },
+  "protected_paths_touched": [],
+  "notes": [
+    "export-ignore가 .gitattributes에 올바르게 적용됨",
+    "clean checkout에서 핵심 빌드 파일 모두 존재, protected paths 제외 확인"
+  ]
+}
