@@ -376,6 +376,35 @@ def _sentence_overlap_tail(units: list[str], overlap_chars: int) -> list[str]:
     return tail
 
 
+def _word_safe_hard_slice(s: str, max_chars: int) -> list[str]:
+    """Split a single oversized unit into <= max_chars pieces without cutting
+    inside a word. Mirrors core.chunking_optimizer._slice_preserving_words
+    (kept as a separate copy to avoid a text_normalizer -> chunking_optimizer
+    import cycle, since chunking_optimizer already imports from this module).
+
+    Falls back to a hard slice only if one token (no spaces at all) itself
+    exceeds max_chars.
+    """
+    tokens = re.split(r"(\s+|׃)", s)
+    pieces: list[str] = []
+    buf = ""
+    for tok in tokens:
+        if len(buf) + len(tok) <= max_chars:
+            buf += tok
+        else:
+            if buf.strip():
+                pieces.append(buf.strip())
+            if len(tok) > max_chars:
+                for i in range(0, len(tok), max_chars):
+                    pieces.append(tok[i:i + max_chars].strip())
+                buf = ""
+            else:
+                buf = tok
+    if buf.strip():
+        pieces.append(buf.strip())
+    return [p for p in pieces if p]
+
+
 def _merge_sentence_fragments(sentences: list[str], max_chars: int, overlap_chars: int = 0) -> list[str]:
     if not sentences:
         return []
@@ -403,7 +432,7 @@ def _merge_sentence_fragments(sentences: list[str], max_chars: int, overlap_char
             continue
         if len(sent) > max_chars:
             flush(carry_overlap=False)
-            chunks.append(sent)
+            chunks.extend(_word_safe_hard_slice(sent, max_chars))
             continue
         if total + len(sent) + 1 <= max_chars:
             buf.append(sent)

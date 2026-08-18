@@ -1,7 +1,33 @@
 # Preflight — `split_sentences_mixed()` 줄바꿈 의존성으로 인한 Chunk Overflow
 
-상태: 고정(fixed). ADR-008 제안 4의 후속 조사. 코드 미수정, 조사·재현만
-수행(`core/chunking_optimizer.py`, `core/text_normalizer.py` 무접촉).
+상태: 고정(fixed) + 하위결함 B 수정 완료(2026-08-18). ADR-008 제안 4의
+후속 조사로 시작해, 조사·재현 완료 후 §4 "다음 조치" 후보 (b)를
+채택·적용함. 하위결함 A는 이 Preflight의 범위 밖(기존에도 chunk_size
+상한은 지켜지고 있었음)이라 미변경.
+
+## 수정 내역 (하위결함 B — chunk_size 상한 붕괴)
+
+`core/text_normalizer.py::_merge_sentence_fragments()`의 "단일 oversized
+항목" 분기(`if len(sent) > max_chars`)가 그 문장을 자르지 않고 그대로
+추가하던 것을, `core/chunking_optimizer.py::_slice_preserving_words()`와
+동일한 word-safe hard slice(신규 헬퍼 `_word_safe_hard_slice()`)로 교체.
+`chunking_optimizer.py`가 이미 `_merge_sentence_fragments`를
+`text_normalizer.py`에서 import하므로 별도 배선 변경 없이 production
+경로에 즉시 적용됨. import 순환을 피하기 위해
+`_slice_preserving_words`를 이동하지 않고 `text_normalizer.py`에
+독립된 사본으로 추가(두 함수는 동일 로직을 유지해야 함 — 향후 한쪽만
+고치는 drift에 주의).
+
+회귀 테스트: `tests/test_text_normalizer.py::TestMergeSentenceFragmentsOversizedUnit`
+(3건 — hard slice가 max_chars를 지키는지, word-safe한지, 이 문서의
+재현 사례가 더 이상 상한을 넘지 않는지). `tests/test_text_normalizer.py`
+14건, `tests/test_chunking_optimizer.py` 19건 전부 통과, 회귀 없음.
+
+하위결함 B 실제 발생 빈도(Beta corpus 12개 문서 기준)는 이 세션
+환경에 `output/beta_validation_v5/`(생성된 corpus 산출물)가 없어
+측정하지 못했다 — 로컬(Mac) 환경에서 `scripts/shadow_d5_metrics.py`
+패턴을 따라 별도 스크립트로 사후 측정 권장(§4 "다음 조치" 1번, 여전히
+미완).
 
 ## 배경
 

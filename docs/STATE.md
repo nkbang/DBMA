@@ -7,8 +7,9 @@ Production Candidate). 버전·Authority 정의는
 
 ```
 Release State:  v1.3.0 released, post-release 개발 재개(ACTIVE)
-Development:    SPRINT33-D 계열 진행 중 — 결함 수정/ADR-008 착수 여부 결정 대기
-Next:           chunk overflow 하위결함 B 수정 방향 결정, ADR-008 후속 항목 착수 여부
+Development:    SPRINT33-D 계열 진행 중 — chunk overflow 하위결함 B 안전망 적용 완료,
+                나머지(대안 1/빈도 실측/ADR-008/Legacy 정리)는 로컬 환경 필요
+Next:           로컬(Mac) 환경에서 Beta corpus 발생 빈도 실측 → 대안 1 구현 여부 결정
 ```
 
 ## 현재 상태
@@ -83,7 +84,8 @@ SPRINT27/31~33 계열도 각 Phase 목표(D-5 metric 공식 평가까지)는 100
 - ADR-007/Amendment A D-5 게이트 정의 + Hierarchical Chunk Builder 프로토타입 (SPRINT33-D Phase1~2): 100%
 - D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건): 100%
 - chunk overflow 결함 원인 규명 (Preflight, 코드 미수정): 100%
-- chunk overflow 하위결함 B 수정 / ADR-008 후속 항목 착수: 0% (결정 대기)
+- chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현: 100%
+- ADR-009 대안 1(무개행 위임) / ADR-008 후속 항목 착수 / Beta corpus 실측 / Legacy artifact 정리: 0% (원격 세션에 `output/` 데이터 없어 로컬 환경 필요)
 
 ---
 
@@ -105,9 +107,10 @@ Status:    STABLE — GA 검토 단계
 
 ## 잔여 (비blocker, 향후)
 - GA 선언 여부 판단 (안정화 기간 후)
-- chunk overflow 하위결함 B 수정 방향 결정 및 구현 (HQ 승인 대기, 별도 ADR 필요)
-- Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측)
-- ADR-008 후속 항목(threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) 착수 여부 결정
+- ADR-009 대안 1(`split_sentences_mixed` 무개행 위임) 구현 여부 — 로컬 환경에서 Beta corpus 재검증 후 결정
+- Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측 — 원격 세션에 `output/` 없어 로컬 필요)
+- ADR-008 후속 항목(threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) 착수 여부 결정 — threshold 재산정은 Beta corpus 실측 선행 필요
+- Legacy Artifact(`output/registry/`, `output/baseline/`, `output_sav/` 등) 정리 여부 — 원격 세션에 `output/` 자체가 없어 점검 불가, 로컬 환경 필요
 - SPRINT27-D — Research Workspace를 MIE(Ministry Intelligence Engine) Memory Layer로 확장하는 Architecture Preflight (조사만, 구현 없음)
 
 ---
@@ -138,6 +141,36 @@ Status:    STABLE — GA 검토 단계
 ---
 
 ## 최근 상태
+
+### chunk overflow 하위결함 B 안전망(대안 2) 구현 (2026-08-18)
+- 상태: 완료(대안 2), 대안 1은 보류
+- 설명: `docs/architecture/ADR-009-Chunk-Overflow-Fix-Design.md`(대안 1
+  무개행 위임 + 대안 2 word-safe hard slice 병행 권고)를 근거로, HQ
+  지시에 따라 대안 2를 구현했다. `core/text_normalizer.py::
+  _merge_sentence_fragments()`의 `if len(sent) > max_chars` 분기가
+  자르지 않고 그대로 chunk에 추가하던 것을, 신규 헬퍼
+  `_word_safe_hard_slice()`(`core/chunking_optimizer.py::
+  _slice_preserving_words()`와 동일 로직의 독립 사본 — import 순환
+  회피)로 교체해 word-safe hard slice로 상한을 강제한다.
+  `chunking_optimizer.py`가 이미 `_merge_sentence_fragments`를 이 모듈에서
+  import하므로 배선 변경 없이 production 경로에 즉시 적용됨.
+  회귀 테스트 3건 추가(`tests/test_text_normalizer.py::
+  TestMergeSentenceFragmentsOversizedUnit`) — 이 세션에서 실행 가능한
+  `tests/test_text_normalizer.py`(14건) + `tests/test_chunking_optimizer.py`
+  (19건) 전부 통과.
+  대안 1(무개행 위임)은 `grep`으로 확인한 결과 `core/utils.py::
+  detect_broken_line_ratio()`와 `scripts/shadow_d5_metrics.py`의 Axis 3
+  정의가 현재 동작에 의존하고 있어, Beta corpus 재검증 없이 진행하면
+  회귀 위험이 있다고 판단해 이번에는 보류했다(이 원격 세션에는
+  `output/beta_validation_v5/` 데이터 자체가 없어 검증 불가).
+- 다음 조치: 로컬(Mac) 환경에서 Beta corpus 발생 빈도 실측 → 대안 1
+  구현 여부 결정 → `core/utils.py`/`scripts/shadow_d5_metrics.py` 영향
+  확인 → D-5 metric 재측정.
+- 함께 확인된 환경 제약: 이 원격 세션(claude.ai/code 클라우드 컨테이너)에는
+  `output/`, `data/`, `chroma_db/`, `cache/`, `backups/` 등 로컬 전용
+  산출물이 전혀 없다 — ADR-008 제안 1(threshold 재산정), Beta corpus
+  발생 빈도 실측, Legacy Artifact(`output/registry/` 등) 정리는 모두
+  이 세션에서 착수 불가하며 로컬(Mac) 환경 작업이 필요하다.
 
 ### .gitignore 오버매칭 수정 + C1 거버넌스 문서 커밋 (2026-07-20)
 - 상태: 완료
@@ -320,8 +353,10 @@ Status:    STABLE — GA 검토 단계
 - [x] Dashboard/Monitor 탭 분리 + Monitor 실측 지표화 (commit `70a9d4d`/`dbb36c3`)
 - [x] ADR-008 semantic chunking production 전환 경로 제안 (commit `27f0ff3`, 미확정)
 - [x] `.gitignore` 오버매칭 버그 수정 (commit `14ed5ed`)
-- [ ] chunk overflow 하위결함 B 수정 방향 결정 및 구현 (HQ 승인 대기)
-- [ ] ADR-008 후속 항목 착수 여부 결정 (threshold 재산정 / Level 3 구현 / 6번째 feature)
+- [x] chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현 (2026-08-18)
+- [ ] ADR-009 대안 1(무개행 위임) 구현 — 보류, 로컬 환경 Beta corpus 재검증 필요
+- [ ] ADR-008 후속 항목 착수 여부 결정 (threshold 재산정 / Level 3 구현 / 6번째 feature) — Beta corpus 실측 선행 필요
+- [ ] Legacy artifact 정리 — 원격 세션에 `output/` 없어 점검 불가
 
 ---
 

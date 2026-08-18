@@ -7,10 +7,12 @@ Boundary Detector → Hierarchical Chunk Builder → D-5 Metrics 공식 평가)�
 이어진 라인이 D-5 metric 공식 산출(Beta corpus 12건)까지 완료됐고, 그
 과정에서 `split_sentences_mixed()`의 개행 의존성으로 인한 **chunk overflow
 결함**(순수 단일 언어 장문단에서 chunk_size 상한 자체가 깨지는 심각한
-하위결함 B 포함)을 발견해 원인 규명까지 마쳤다(코드 미수정, Preflight
-문서 고정). 현재는 이 결함의 수정 여부와 ADR-008이 제안한 후속 항목
-(threshold 재산정, Level 3 Hard Fallback 구현, 임베딩 기반 6번째 feature)의
-착수 여부를 HQ가 결정하는 단계다.
+하위결함 B)을 발견했다. 하위결함 B는 HQ 지시로 2026-08-18에 수정
+완료(`_merge_sentence_fragments`에 word-safe hard slice 적용, 회귀
+테스트 3건 추가). ADR-008 제안 1~3(threshold 재산정, Level 3 Hard
+Fallback 구현, 임베딩 기반 6번째 feature)과 Beta corpus 발생 빈도
+실측은 이 원격 세션에 `output/`(생성된 corpus 산출물) 자체가 없어
+착수하지 못했다 — 로컬(Mac) 환경 작업 필요.
 
 ---
 
@@ -51,14 +53,17 @@ Boundary Detector → Hierarchical Chunk Builder → D-5 Metrics 공식 평가)�
 - [x] C1(Cline 창#1) 위임 거버넌스 문서 체계 도입 (`docs/agents/c1/`, `docs/agent_governance/`)
 
 ### 미결 (다음 우선순위)
-- [x] chunk overflow 하위결함 B 수정 방향 설계 (ADR-009 — 대안 1 `split_sentences_mixed` 무개행 위임 + 대안 2 `_merge_sentence_fragments` word-safe hard slice 병행 권고, 코드 미수정)
-- [ ] ADR-009 HQ 승인 및 구현 착수 여부 결정
-- [ ] Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측 상태)
-- [ ] ADR-008 제안 항목 착수 여부 결정 (threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature)
-- [ ] Legacy Artifact 정리 (`output/registry/`, `output/baseline/`, `output_sav/` 등) — 미결
+- [x] chunk overflow 하위결함 B 수정 방향 설계 (ADR-009 — 대안 1 `split_sentences_mixed` 무개행 위임 + 대안 2 `_merge_sentence_fragments` word-safe hard slice 병행 권고)
+- [x] ADR-009 대안 2(word-safe hard slice 안전망) 구현 완료 (2026-08-18, HQ 지시) — `_merge_sentence_fragments`에 `_word_safe_hard_slice()` 적용, 회귀 테스트 3건 추가, 기존 스위트 전부 통과
+- [ ] ADR-009 대안 1(무개행 위임 폴백) 구현 — 보류. `core/utils.py::detect_broken_line_ratio()`/`scripts/shadow_d5_metrics.py` Axis 3 정의가 현재 동작에 의존해 Beta corpus 재검증 없이는 리스크 있음
+- [ ] Beta corpus 대상 하위결함 B 발생 빈도 실측 — **이 원격 세션에 `output/` 데이터 자체가 없어 실행 불가**. 로컬(Mac) 환경 필요
+- [ ] ADR-008 제안 항목 착수 여부 결정 (threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) — threshold 재산정은 Beta corpus 실측 선행 필요, 이 세션에서 착수 불가
+- [ ] Legacy Artifact 정리 (`output/registry/`, `output/baseline/`, `output_sav/` 등) — **이 원격 세션에 `output/` 디렉터리 자체가 없어 점검 불가**. 로컬(Mac) 환경 필요
 - [ ] Documentation Synchronization 상시화 (TODO.md/STATE.md가 실제 커밋 이력보다 지연되는 문제 재발 방지)
 
-진행률: SPRINT33-D Phase 3-A까지 100% 완료, 후속 결정(수정/ADR-008 착수) 대기 중
+진행률: chunk overflow 하위결함 B는 안전망(대안 2) 적용으로 해소. 나머지
+(대안 1, 빈도 실측, ADR-008 제안 1~3, Legacy artifact 정리)는 로컬(Mac)
+환경에서 `output/` 데이터를 갖고 이어서 진행 필요.
 
 ---
 
@@ -89,9 +94,10 @@ Boundary Detector → Hierarchical Chunk Builder → D-5 Metrics 공식 평가)�
 - [x] ADR-007/Amendment A D-5 게이트 정의 및 Hierarchical Chunk Builder 프로토타입
 - [x] D-5 Metrics 공식 평가 (Beta corpus 12건, Profile A/B 분리 산출)
 - [x] chunk overflow 결함(하위 A/B) 원인 규명 (Preflight, 코드 미수정)
-- [ ] 하위결함 B 수정 방향 결정 및 구현 (HQ 승인 대기)
-- [ ] ADR-008 후속 항목(threshold 재산정 / Level 3 구현 / 6번째 feature) 착수 여부 결정
-- [ ] Legacy artifact(`output/registry/` 등) 정리 여부 결정
+- [x] 하위결함 B 수정 방향 설계 (ADR-009) 및 대안 2 구현 (2026-08-18)
+- [ ] ADR-009 대안 1(무개행 위임) 구현 — 보류, 로컬 환경에서 Beta corpus 재검증 후 진행
+- [ ] ADR-008 후속 항목(threshold 재산정 / Level 3 구현 / 6번째 feature) 착수 여부 결정 — Beta corpus 실측 선행 필요
+- [ ] Legacy artifact(`output/registry/` 등) 정리 여부 결정 — `output/`이 이 세션에 없어 점검 불가
 
 ### 5단계: 운영 정리
 - [x] Dashboard/Monitor 책임 분리 및 Monitor 실측 지표화

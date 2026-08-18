@@ -6,8 +6,8 @@ based_on:
   - docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md (제안 4)
   - docs/PREFLIGHT-split-sentences-mixed-chunk-overflow.md
 created: 2026-08-18
-status: Architecture Decision (구현 전, 승인 대기 — 코드 미수정)
-scope_modified: docs/architecture/ only (코드 미수정)
+status: 대안 2 구현 완료(2026-08-18, HQ 지시) / 대안 1 보류
+scope_modified: docs/architecture/, core/text_normalizer.py, tests/test_text_normalizer.py
 ---
 
 # ADR-009: chunk overflow 결함(하위결함 A/B) 수정 방향 설계
@@ -196,9 +196,36 @@ Level 2(안전 상한)" 원칙과 production 경로에서도 일관성을 갖는
 
 ## Next Steps (HQ 승인 대기)
 
-1. 이 ADR(대안 비교·권고안)에 대한 HQ 승인 여부 결정.
-2. 승인 시 우선순위: ① Beta corpus 발생 빈도 실측(TODO.md 미결 항목,
-   이 ADR과 독립적으로 먼저 수행 가능) → ② 대안 1+2 구현 → ③ 검증
-   계획 실행 → ④ D-5 metric 재측정으로 회귀 없음 확인.
-3. `_slice_preserving_words` 코드 중복 vs 공용 유틸 승격 여부는 구현
-   착수 시점에 별도로 결정(이 ADR 범위 밖).
+1. ~~이 ADR(대안 비교·권고안)에 대한 HQ 승인 여부 결정.~~ → HQ가 2026-08-18
+   구현 진행을 지시(대화 지시, 별도 문서화된 Task Order 없음).
+2. ~~승인 시 우선순위: ① Beta corpus 발생 빈도 실측~~ → 이 세션(원격) 환경에
+   `output/`(생성된 corpus 산출물) 자체가 없어 실측 불가 확인. 순서를
+   바꿔 **대안 2(안전망)만 우선 구현**하고 대안 1은 보류.
+
+### 구현 결과 (2026-08-18)
+
+- **대안 2 구현 완료**: `text_normalizer.py::_merge_sentence_fragments()`에
+  신규 헬퍼 `_word_safe_hard_slice()` 추가, oversized 단일 문장을
+  chunk_size 이내로 word-safe hard slice. `_slice_preserving_words`는
+  이동하지 않고 독립 사본으로 둠(공용 유틸 승격은 이 ADR 범위 밖, 향후
+  drift 방지에 주의 — §Consequences에서 이미 지적한 리스크).
+  회귀 테스트 3건 추가(`tests/test_text_normalizer.py::
+  TestMergeSentenceFragmentsOversizedUnit`), 기존 `tests/test_text_normalizer.py`
+  11건 + `tests/test_chunking_optimizer.py` 19건 전부 통과(이 세션에서
+  실행 가능한 스위트 기준 — `tests/` 전체 520+ 기준선은 로컬 확인 필요).
+- **대안 1은 이번 구현에서 보류**: `grep -rn split_sentences_mixed`로
+  확인한 결과 `core/utils.py::detect_broken_line_ratio()`(품질 노이즈
+  점수 산정에 사용, 원문 그대로의 줄바꿈 유지 텍스트에 호출)와
+  `scripts/shadow_d5_metrics.py`(Axis 3 unsplittable outlier 정의 자체가
+  `split_sentences_mixed(text) <= 1`)가 이 함수의 **현재** 줄바꿈 의존
+  동작에 암묵적으로 기대고 있음이 확인됐다. 무개행 위임(대안 1)을
+  추가하면 이 두 호출부의 동작/지표 정의가 함께 바뀌는데, Beta corpus
+  재측정으로 회귀를 검증할 방법이 이 세션에는 없어 리스크를 감수하고
+  진행하지 않았다. 대안 2는 이런 부작용이 없는 순수 안전망(상한 초과
+  케이스에서만 발동, 기존에도 깨져 있던 경로)이라 우선 적용.
+3. `_slice_preserving_words` 코드 중복 vs 공용 유틸 승격 여부는 여전히
+   결정되지 않음(이 ADR 범위 밖).
+4. 대안 1(무개행 위임)과 Beta corpus 발생 빈도 실측은 로컬(Mac) 환경에서
+   `output/beta_validation_v5/` 데이터를 갖고 별도로 진행 필요 — 순서는
+   원안대로 ① 빈도 실측 → ② 대안 1 구현 → ③ `core/utils.py`/
+   `scripts/shadow_d5_metrics.py` 영향 확인 → ④ D-5 metric 재측정.
