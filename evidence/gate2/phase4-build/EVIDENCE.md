@@ -32,3 +32,17 @@ Night Shift Directive §0-1("evidence는 반드시 재현 가능해야 한다")�
 evidence 파일은 실제로 디스크에 써야 하며, 완료 보고 전 `ls`로 자기 자신의
 evidence 존재를 먼저 확인할 것"을 다음 Phase 보고 시 재확인 요청한다(무인
 상태라 직접 전달할 채널 없음 — 이 문서에 기록해 다음 사람이 확인 시 전달).
+
+---
+
+## CUE 자기 정정 (2026-08-18, Phase 6 감사 중 발견)
+
+**정정**: 위 "C1 원본 evidence가 존재하지 않았다"는 판정은 부정확했다. 실제로는
+`.automation/evidence/gate2/phase4-build/`(잘못된 경로)에 존재했으며, 당시 CUE의
+조사 명령(`find / -maxdepth 6 -iname "*phase4-build*"`)이 **maxdepth 6으로
+제한되어 있어 실제 경로(7단계 깊이)를 놓쳤다** — CUE 자신의 검색 도구 결함.
+
+C1의 원본 evidence 내용을 재확인한 결과, DMG SHA-256(`8592b249...`) 등 핵심
+claim은 전부 정확했다 — **완전 허위 보고가 아니라 Phase 5/6과 같은 유형의
+"잘못된 경로에 씀" 실수**였다. 정정하여 기록한다: C1의 Phase 4 evidence는
+내용은 정확했고, 경로만 틀렸다.
