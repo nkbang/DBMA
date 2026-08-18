@@ -97,6 +97,33 @@ if [ ! -d "$PROJECT_ROOT/.venv_beta" ]; then
 fi
 source "$PROJECT_ROOT/.venv_beta/bin/activate"
 pip install -q --upgrade pip
+
+# ── hunspell Apple Silicon 빌드 워크어라운드 ──────────────────
+# core/tli/hunspell_adapter.py 모듈 docstring 참고 — pip hunspell(0.5.5)의
+# setup.py가 Intel Mac 경로(/usr/local/Cellar/hunspell/1.6.2/...)를 리터럴로
+# 하드코딩하고 있어, Apple Silicon Homebrew(/opt/homebrew/...)뿐 아니라 brew가
+# 1.6.2가 아닌 버전을 설치하는 모든 경우(Intel 포함)에 symlink 우회가 필요하다.
+notify "4/5 환경 준비" "맞춤법 사전 구성 요소를 준비하는 중..."
+if ! brew list hunspell >/dev/null 2>&1; then
+    brew install hunspell || fatal "hunspell 설치에 실패했습니다."
+fi
+mkdir -p /usr/local/Cellar/hunspell/1.6.2/include || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
+mkdir -p /usr/local/lib || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
+ln -sf "$(brew --prefix hunspell)/include/hunspell" \
+    /usr/local/Cellar/hunspell/1.6.2/include/hunspell
+ln -sf "$(brew --prefix hunspell)/lib/libhunspell-1.7.dylib" \
+    /usr/local/lib/libhunspell.dylib
+# [Gate 2 실측] hunspell(0.5.5)의 setup.py는 macOS에서 library_dirs를
+# 전혀 지정하지 않는다(include_dirs만 하드코딩) — 링커가 -lhunspell을
+# 찾으려면 기본 검색 경로에 있어야 한다. distutils는 이 케이스에서
+# LDFLAGS를 실제 clang++ 링크 커맨드에 반영하지 않음을 실측 확인
+# (역시 안전망으로 같이 export는 해두되, 실제 동작은 LIBRARY_PATH에
+# 의존) — clang/ld는 LIBRARY_PATH를 gcc처럼 직접 읽어 -L 없이도
+# 해당 경로를 검색한다. 별도 임시 venv에서 LIBRARY_PATH만으로 빌드
+# 성공을 확인했다(LDFLAGS 단독으로는 실패 재현됨).
+export LDFLAGS="-L/usr/local/lib"
+export LIBRARY_PATH="/usr/local/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
+
 pip install -q -r "$PROJECT_ROOT/requirements.txt" || fatal "필요한 프로그램 구성 요소 설치에 실패했습니다."
 
 # ── 5) 이 Mac에 맞는 생성 모델을 config.yaml 기본값으로 반영 ──
