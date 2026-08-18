@@ -99,7 +99,7 @@ python -m pytest tests/ -v
 
 ## NAE Public Theology Module (opt-in)
 
-`config.yaml::modules.nae_pd`를 `enabled: true`로 활성화하면 NAE Public Theology corpus 처리 모듈을 사용할 수 있습니다. 기본값은 `false`이며, 활성화 시 별도 corpus 경로와 manifest가 필요합니다.
+`config.yaml::modules.nae_pd`를 `enabled: true`로 활성화하면 NAE Public Theology corpus 처리 모듈을 사용할 수 있습니다. 기본값은 `false`이며, **현재 배포판에는 해당 모듈 코드가 포함되어 있지 않아 활성화해도 동작하지 않습니다**(오류 없이 안전하게 빈 결과로 처리됨).
 
 ---
 

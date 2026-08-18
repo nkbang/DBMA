@@ -37,7 +37,10 @@ VERSION_FILE="$INSTALL_DIR/.installed_tag"
 MANIFEST_URL="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${DEFAULT_BRANCH}/BETA_LATEST_TAG.txt"
 
 # 업데이트 때 앱 소스 교체와 별개로 보존할 테스터 개인 데이터
-PERSIST_ITEMS=("data/RAW" "data/제련완성본" "output" "chroma_db" "logs" "config.yaml")
+# [Gate 2 Phase 1 발견 3] chat_session_history.json/logos_export는 data/RAW,
+# data/제련완성본 하위가 아니라 data/ 바로 아래에 저장되어 이전에는 이
+# 목록에서 빠져 업데이트 시 유실되었다 — 개별 항목으로 명시 추가.
+PERSIST_ITEMS=("data/RAW" "data/제련완성본" "output" "chroma_db" "logs" "config.yaml" "data/chat_session_history.json" "data/inbox/logos_export")
 
 notify() {
     osascript -e "display notification \"$2\" with title \"내서재(NAE) 베타\" subtitle \"$1\"" >/dev/null 2>&1 || true

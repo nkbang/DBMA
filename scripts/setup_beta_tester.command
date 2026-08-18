@@ -70,6 +70,18 @@ fi
 brew services start ollama >/dev/null 2>&1 || (ollama serve >/dev/null 2>&1 &)
 sleep 2
 
+# 스캔 PDF OCR(requirements.txt의 pdf2image/pytesseract)에 필요한 시스템
+# 바이너리 — 없어도 앱은 뜨지만 스캔 문서 처리 시 조용히 실패한다
+# (Gate 2 Phase 1 발견 1, docs/END_USER_PACKAGE_GATE2_PHASE1_CLOSURE.md).
+if ! command -v pdftoppm >/dev/null 2>&1; then
+    notify "3/5 설치 중" "PDF 처리 구성 요소(poppler)를 설치합니다..."
+    brew install poppler || fatal "poppler 설치에 실패했습니다."
+fi
+if ! command -v tesseract >/dev/null 2>&1; then
+    notify "3/5 설치 중" "OCR 구성 요소(tesseract)를 설치합니다..."
+    brew install tesseract || fatal "tesseract 설치에 실패했습니다."
+fi
+
 notify "3/5 모델 다운로드" "AI 모델을 내려받는 중입니다 — 최초 1회, 네트워크 상태에 따라 수 분 소요됩니다."
 ollama pull "$EMBED_MODEL" || fatal "임베딩 모델(${EMBED_MODEL}) 다운로드에 실패했습니다."
 ollama pull "$GEN_MODEL" || fatal "생성 모델(${GEN_MODEL}) 다운로드에 실패했습니다."
