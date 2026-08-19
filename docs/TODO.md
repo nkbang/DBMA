@@ -57,11 +57,17 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
   before CUE approval.** audit이 시작될 때까지 이 영역을 임의로 변경하지 않는다.
 
 ### 현재 우선순위 (2026-08-19 확정)
-1. 현재 진행 중인 TASK-039 closure
-2. n8n Loop Operating Model activation 준비
-3. 첫 loop의 State Discovery 및 iteration 운영
-4. 기존 NAE/Figma UI 자산 보존 및 consistency 작업
+1. ~~현재 진행 중인 TASK-039 closure~~ — **완료** (2026-08-19, PASS 조건부 종료 재확인)
+2. ~~n8n Loop Operating Model activation 준비~~ — **완료**, ACTIVATED/READY 상태로
+   대기 중(신규 raw source 없어 Iteration #1 미정의, `docs/STATE.md` 참고)
+3. **오늘 밤 Primary Night Shift — UI 작업** (2026-08-19 확정): 기존
+   Figma/Stitch 자산(`landing.html` 등) 재생성·덮어쓰기 금지, UX-007
+   Gate 6 구현 트랙(§15 순서: §2 홈 → §3 내 자료 → §5 읽기 → §4 검색·연구
+   → §7 설교 연구)을 이어서 진행. 오늘 밤 착수: C1 Task Order 040
+   (파이프라인 상세 Home→Library 이관, `docs/agents/c1/C1-TASK-ORDER-040.md`)
+4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
+   — 이번 UI night shift 범위 아님
 
 ## 현재 목표
 [2026-07-22 갱신] 이 문서는 SPRINT20-RC 시점에서 오래 갱신이 밀려 있었다
