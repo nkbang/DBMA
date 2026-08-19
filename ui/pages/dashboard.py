@@ -29,9 +29,10 @@ def render_dashboard_page() -> None:
 
     _render_greeting()
     _render_status_banner()
-    _render_quick_actions()
     _render_continue_reading_card()
     _render_recent_search_card()
+    _render_recent_materials()
+    _render_quick_actions()
 
     st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
     st.markdown(
@@ -99,15 +100,22 @@ def _render_status_banner() -> None:
 
 
 def _render_quick_actions() -> None:
-    """Jump straight to the three things a user actually comes here to do."""
-    st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.button("질문하기", use_container_width=True, on_click=_go_to, args=("Chat",))
-    with c2:
-        st.button("자료 검색", use_container_width=True, on_click=_go_to, args=("Research",))
-    with c3:
-        st.button("문서 추가", use_container_width=True, on_click=_go_to, args=("Processing",))
+    """Stitch 홈("빠른 작업" 아이콘 그리드)을 물려받은 4-버튼 진입점.
+    사용자가 바로 다음에 뭘 누르면 되는지를 아이콘+라벨로 보여준다."""
+    st.markdown(
+        f"<div style='font-size: 15px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 1.5rem 0 0.75rem;'>빠른 작업</div>",
+        unsafe_allow_html=True,
+    )
+    actions = [
+        ("자료 찾기", "Research"),
+        ("질문하기", "Chat"),
+        ("설교 준비", "설교문 작성"),
+        ("도움말", "도움말"),
+    ]
+    cols = st.columns(4)
+    for col, (label, target) in zip(cols, actions):
+        with col:
+            st.button(label, use_container_width=True, on_click=_go_to, args=(target,), key=f"_quick_{target}")
 
 
 def _render_continue_reading_card() -> None:
@@ -190,6 +198,46 @@ def _render_recent_search_card() -> None:
         args=("Research",),
         key="recent_search_continue",
     )
+
+
+def _render_recent_materials() -> None:
+    """Stitch 홈("최근 본 자료" 카드 그리드)을 물려받는다 — 실제
+    '조회' 이력은 아직 추적하지 않으므로, 대신 최근 처리 완료된 문서
+    4건을 registry의 last_processed_at 기준으로 보여준다(실데이터,
+    가짜 카드 아님)."""
+    effective_docs = _get_effective_documents()
+    if not effective_docs:
+        return
+
+    ranked = sorted(
+        effective_docs.values(),
+        key=lambda d: d.get("last_processed_at", ""),
+        reverse=True,
+    )[:4]
+
+    st.markdown(
+        f"<div style='font-size: 15px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 1.5rem 0 0.75rem;'>최근 정리된 자료</div>",
+        unsafe_allow_html=True,
+    )
+    cols = st.columns(len(ranked))
+    for col, doc in zip(cols, ranked):
+        with col:
+            badge = doc.get("doc_type") or "기타"
+            title = doc.get("source_file", "제목 없음")
+            stamp = (doc.get("last_processed_at") or "")[:10]
+            st.markdown(
+                f"""
+                <div style="background: {THEME.BG_SURFACE}; border: 1px solid {THEME.BORDER_LIGHT};
+                            border-radius: 10px; padding: 12px 14px; height: 100%;">
+                    <span style="font-size: 10px; font-weight: 700; color: {THEME.TEXT_SECONDARY};
+                                 background: {THEME.BORDER_LIGHT}; padding: 2px 6px; border-radius: 4px;">{badge}</span>
+                    <div style="font-size: 13px; font-weight: 600; color: {THEME.TEXT_PRIMARY};
+                                margin-top: 8px; line-height: 1.3;">{html.escape(title)}</div>
+                    <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-top: 6px;">{stamp}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
 
 def _render_library_summary() -> None:
