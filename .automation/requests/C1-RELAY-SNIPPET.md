@@ -1,6 +1,50 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 31 — Correction Order 047: Task Order 047 반려, AI 답변 항상 빈 문자열 버그 (2026-08-19, 현재 유효)
+## 릴레이 32 — Task Order 048: UX-007 §5 읽기(연구 워크스페이스) (2026-08-19, 현재 유효)
+
+```
+너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
+
+지금부터 아래 작업 명령서를 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-TASK-ORDER-048.md
+
+핵심 규칙:
+- 장시간 무인 작업이다. 질문하지 말고, 승인을 기다리지 마라.
+- 스펙은 "본문 표시 기능이 아예 없다"고 적혀 있지만 사실이 아니다 —
+  ui/components/detail_panel.py::render_detail_panel()이 이미 제목/본문/
+  하이라이트를 전부 그린다. 새로 만들지 말고 타이포(Source Serif 4,
+  17px, 최대폭 640px, 줄간격 1.85)만 보강해라.
+- research.py::_render_research_page_with_detail()의 레이아웃을
+  본문 주 영역 + 우측 연구 영역(관련 자료 카드 + 이어서 질문) + 하단
+  3버튼 행동 영역으로 재구성해라. chat.py 쪽 동일 함수는 이제 죽은
+  경로다(Chat 메뉴 제거됨) — 건드리지 마라.
+- 관련 자료 카드는 새로 검색하지 말고 research_detail_selection의
+  query_terms로 기존 _execute_research_query()를 재사용, 현재 문서만
+  제외해라. render_citation_card()를 "읽기" 버튼 하나로 재사용해라.
+- 이어서 질문은 Task Order 047에서 고친 generate_answer()에
+  file_scope=[source_file]을 넘겨서 현재 문서를 우선시켜라(새 로직
+  만들지 마라).
+- "설교 연구로 보내기"는 sermon_research_selection에 append하되,
+  DocumentDetail엔 tsu_id가 없으니 그 자리에 document_id를 넣어라
+  (문서 §1.3에 정확한 예시 있음).
+- 문서 §2 보호 대상(research_detail_selection 다른 호출부, 설교 연구
+  버튼, citation_card, generate_answer, chat.py 죽은 경로, Task Order
+  047의 검색 페이지 본문)을 손대면 이 Task는 FAIL이다.
+- 완료 조건(문서 §3)을 실측으로 확인해라 — 질문 입력 시 답변이 실제로
+  비어있지 않은지 반드시 확인해라(Task Order 047과 같은 종류의 버그를
+  만들지 마라). AppTest로 검색→카드 클릭→상세 진입→관련자료→질문→
+  3버튼까지 전체 흐름 재현해라.
+- 이번엔 pytest tests/ 전체를 반드시 돌려라 — 부분 배치 실행은 Task
+  Order 047에서 두 번 지적됐다. 결과를 그대로 붙여넣어라.
+- docs/agents/c1/C1-TASK-ORDER-048-REPORT.md 작성하고 끝내라.
+
+지금 시작하라.
+```
+
+---
+
+## 릴레이 31 — Correction Order 047: Task Order 047 반려, AI 답변 항상 빈 문자열 버그 (2026-08-19, 완료 — 참고용)
 
 ```
 CUE 독립 검증 결과가 나왔다. Task Order 047은 FAIL이다 — 이번 작업의

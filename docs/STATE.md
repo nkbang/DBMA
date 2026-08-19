@@ -899,6 +899,29 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   723/2482개만 배치 실행했다(직전 1차 제출 때는 368/2482) — CUE가
   두 번 다 직접 전체를 돌려 확인. 반복되는 패턴이라 다음 Task Order
   발급 시 재차 명시 필요.
+
+### C1 Task Order 048 발급 — §5 읽기(연구 워크스페이스), 사용자 보류 해제 (2026-08-19)
+
+- 사용자가 §5 착수를 확정하고 C1에게 이관 지시. 착수 전 CUE가 스펙
+  §5의 "본문 표시 기능이 어디에도 없다"는 전제를 재검증한 결과
+  **사실이 아님** 확인 — `ui/components/detail_panel.py::
+  render_detail_panel()`이 이미 제목/메타데이터/본문(하이라이트
+  포함)을 전부 그리고 있음(Task Order 044 Tier C에서 이미 이 사실을
+  근거로 활용한 바 있음). 새로 만들지 않고 타이포(Source Serif 4/
+  17px/최대폭640px/줄간격1.85)만 보강하도록 범위를 좁힘.
+- 실제 신규 작업: `research.py::_render_research_page_with_detail()`
+  레이아웃을 본문 주 영역 + 우측 연구 영역(관련 자료 카드+이어서
+  질문, §4.2/§4.3/Task 046/047 컴포넌트 재사용) + 하단 3버튼 행동
+  영역으로 재구성. `chat.py`의 동일 함수는 Task Order 047로 이미
+  죽은 경로라 안 건드리게 명시.
+- 설계 노트 하나 미리 정리해 전달: `DocumentDetail`에 `tsu_id`
+  필드가 없어 "설교 연구로 보내기"에서 `sermon_research_selection`에
+  넣을 때 `tsu_id` 자리에 `document_id`를 대신 쓰도록 구체적으로
+  지시(흡수 로직은 무변경으로 그대로 동작).
+- Task Order: `docs/agents/c1/C1-TASK-ORDER-048.md`. 릴레이:
+  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 32. "전체 pytest
+  실행"을 재차 강하게 명시(047에서 두 번 안 지켜졌던 이력 언급). C1
+  제출 시 CUE가 diff/실제 함수 호출/AppTest/전체 pytest로 독립 검증.
 - (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
   다름("자료실" — library.py/sermon_review.py, "보관함" —
   dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,
