@@ -1,6 +1,45 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 30 — Task Order 047: UX-007 §4 검색·연구 통합 (단일 입력 + 항상 둘 다 실행) (2026-08-19, 현재 유효)
+## 릴레이 31 — Correction Order 047: Task Order 047 반려, AI 답변 항상 빈 문자열 버그 (2026-08-19, 현재 유효)
+
+```
+CUE 독립 검증 결과가 나왔다. Task Order 047은 FAIL이다 — 이번 작업의
+핵심 목적("검색+AI 답변을 항상 둘 다 보여준다")이 실제로는 동작하지
+않는다. grep 검증으로는 못 잡는 런타임 버그다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-CORRECTION-ORDER-047.md
+
+요약(상세는 위 파일):
+1. (CRITICAL) ui/pages/chat.py::generate_answer()가 GenerationStream을
+   한 번도 순회(iterate)하지 않고 바로 to_result()를 부른다.
+   GenerationStream(core/generation.py:137)은 lazy generator라서 순회해야만
+   _answer_parts가 채워진다 — to_result() docstring에 "Call only after
+   full iteration"이라고 직접 적혀 있다. CUE가 실제로 generate_answer()를
+   호출해봤고 answer가 항상 빈 문자열(길이 0)이었다. research.py에서
+   실제 검색을 실행해도 AI 답변 블록에 빈 placeholder 캡션만 계속 뜬다.
+   for _ in stream: pass 로 먼저 소비한 다음에 to_result()를 불러라.
+2. research.py:266이 generate_answer(..., conversation_history=None, ...)로
+   부르는데 이게 core/generation.py::_build_prompt()까지 가면
+   None.strip()에서 AttributeError가 난다(지금은 try/except가 삼켜서
+   안 보일 뿐). generate_answer() 안에서 conversation_history or ""로
+   방어해라.
+3. research.py:270의 logger.warning(...)이 이 파일에 정의/import 안 된
+   logger를 쓴다 — import logging + logger = logging.getLogger(__name__)
+   추가해라.
+- 이번엔 grep만으로 끝내지 마라. generate_answer()를 실제로 호출해서
+  answer 길이가 0보다 큰지 직접 확인하고, AppTest로 실제 검색 클릭까지
+  재현해서 화면에 답변이 실제로 뜨는지 확인해라.
+- pytest tests/ 전체(부분 아님)를 다시 돌리고 결과를 그대로 붙여넣어라.
+- C1-TASK-ORDER-047-REPORT.md에 수정 내역과 실측 결과를 추가해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 30 — Task Order 047: UX-007 §4 검색·연구 통합 (단일 입력 + 항상 둘 다 실행) (2026-08-19, C1 1차 제출 — 참고용)
 
 ```
 너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
