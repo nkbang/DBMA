@@ -99,10 +99,12 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      신규 화면은 미착수). 상세: `docs/agents/c1/C1-TASK-ORDER-044-REPORT.md`
    - UX-007 §13 관련 Tier A/B/C + §7 어댑터 **전부 완료**.
    - §5 읽기 전체 구현: 사용자 지시로 **보류**.
-   - **C1 Task Order 045(§11 용어집 전역 적용)** — 1차 제출 **FAIL
-     (조건부)**: 14곳 중 12곳 정확, 2곳(`source_link.py:131`,
-     `library.py:461`)이 "N/A 하드코딩"으로 정보 손실 버그. Correction
-     Order 발행, 릴레이 28. 재제출 대기 중.
+   - ~~C1 Task Order 045(§11 용어집 전역 적용)~~ — **완료 (PASS)**.
+     1차 제출 FAIL(조건부, 2곳 N/A 하드코딩) → Correction Order 045 →
+     재제출 CUE 재검증 PASS(2026-08-19). 상세:
+     `docs/agents/c1/C1-TASK-ORDER-045-REPORT.md`
+   - (참고) "RAW 폴더" 번역이 파일마다 다름("자료실"/"보관함") — 기능
+     버그 아니라 이번 범위 밖, 다음 §11 관련 작업 시 통일 필요
    - 남은 후보(§11 다음): §6 인용 카드 공용 컴포넌트, §4 검색·연구
      통합 — 미착수
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)

@@ -119,7 +119,6 @@ def render_pending_source_detail() -> None:
         return
 
     source_file = nav.get("source_file", "")
-    document_id = nav.get("document_id", "")
     label = nav.get("label", "출처")
 
     st.divider()
@@ -128,7 +127,6 @@ def render_pending_source_detail() -> None:
     # Show available metadata
     c1, c2 = st.columns(2)
     with c1:
-        st.markdown(f"**문서 ID:** `{document_id[:16] + '...' if document_id else 'N/A'}`")
         st.markdown(f"**파일:** {source_file or 'N/A'}")
     with c2:
         st.markdown(f"**출처 헤드라인:** {label}")

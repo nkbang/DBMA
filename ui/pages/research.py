@@ -522,7 +522,7 @@ def _render_nae_section() -> None:
             st.caption(f"Author: {author}")
             st.caption(excerpt[:300])
             if getattr(citation, "tsu_id", None):
-                st.caption(f"TSU ID: {citation.tsu_id}")
+                st.caption(f"출처 ID: {citation.tsu_id}")
 
 
 def _execute_nae_retrieval(query: str) -> list[Any]:
@@ -728,7 +728,7 @@ def _format_candidate(candidate: RankedCandidate, parsed_query, *, citation: Opt
     result: dict[str, Any] = {
         "title": title,
         "score": candidate.final_score,
-        "type": "tsu",
+        "type": "설교 자료",
         "snippet": candidate.content[:300].replace("\n", " "),
         "source": source_file,
         # DBMA-UI-NAV-001: Source navigation metadata

@@ -207,7 +207,7 @@ def _render_document_collection() -> None:
         _render_sample_library_section(sample_docs)
 
     if not all_documents:
-        st.info("문서가 없습니다. RAW 폴더에 문서를 추가하세요.")
+        st.info("문서가 없습니다. 자료실에 문서를 추가하세요.")
         return
 
     # Read file type filter from session state
@@ -458,7 +458,7 @@ def _render_provenance_section(source_filename: str) -> None:
             for record in chain:
                 status = "현재" if record.get("superseded_by") is None else "이전 버전(대체됨)"
                 st.markdown(
-                    f"- `{record.get('document_id', '?')[:16]}...` — {status}, "
+                    f"- {status}, "
                     f"pipeline_state={record.get('pipeline_state', '?')}, "
                     f"chunk_count={record.get('chunk_count', '?')}"
                 )
@@ -517,10 +517,10 @@ def _render_metadata_edit_form(source_filename: str) -> None:
 def _render_exclude_section(source_filename: str) -> None:
     """처리 제외(exclude) 토글 UI. RAW 원본은 건드리지 않는다.
 
-    제외 시: registry ingest_status를 EXCLUDED로 표시하고, TSU 레코드/청크
+    제외 시: registry 처리 상태를 EXCLUDED로 표시하고, 색인 데이터/청크
     파일을 backups/excluded_documents_{date}/로 이동해 검색 대상에서 뺀다
     (core/index_orchestrator.py::exclude_document_from_index()).
-    재포함 시: ingest_status만 PROCESSED로 되돌린다 — 검색되게 하려면
+    재포함 시: 처리 상태만 정리됨으로 되돌린다 — 검색되게 하려면
     별도로 재처리(재색인)가 필요하다는 점을 안내한다.
     """
     document_id, record = _find_registry_record(source_filename)
@@ -553,7 +553,7 @@ def _render_exclude_section(source_filename: str) -> None:
                 registry = load_identity_registry(str(registry_path))
                 if exclude_document(registry, document_id, reason=reason) is not None and save_identity_registry(registry, str(registry_path)):
                     st.success(
-                        f"제외 처리되었습니다. TSU 레코드 {cleanup['purged_tsu_records']}건 제거, "
+                        f"제외 처리되었습니다. 색인 데이터 {cleanup['purged_tsu_records']}건 제거, "
                         f"파일 {len(cleanup['moved_files'])}개를 {cleanup['backup_dir']}/로 이동했습니다."
                     )
                     st.rerun()

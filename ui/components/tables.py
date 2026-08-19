@@ -112,6 +112,10 @@ def search_results_table(results: list[dict],
         else:
             score_color = THEME.STATUS_ERROR
 
+        # [DBMA-UX-007 §11] RRF 알고리즘명 + 원시 소수점은 금지 — 별점으로 단순화
+        filled = min(5, max(0, round(score * 5)))
+        stars = "\u2b50" * filled + "\u2606" * (5 - filled)
+
         html = f"""
         <div style="
             background: {THEME.BG_SURFACE};
@@ -128,7 +132,7 @@ def search_results_table(results: list[dict],
                     font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px;
                     background: {score_color}18; color: {score_color};
                 ">
-                    RRF {score:.4f}
+                    {stars}
                 </span>
             </div>
             <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 6px;">

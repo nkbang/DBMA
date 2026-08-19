@@ -798,7 +798,17 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   재확인)은 정확해 그대로 인정.
 - `docs/agents/c1/C1-CORRECTION-ORDER-045.md` 발행 — 위 2곳만 수정
   지시(나머지 12곳은 다시 건드리지 말라고 명시), 릴레이 28
-  (`.automation/requests/C1-RELAY-SNIPPET.md`). C1 재제출 시 CUE 재검증.
+  (`.automation/requests/C1-RELAY-SNIPPET.md`).
+- **재제출 CUE 재검증 — PASS 확정** (2026-08-19): diff 대조로 두 곳
+  모두 지시한 대로 정확히 삭제(임시방편 재도입 없음) 확인. `grep "N/A"`
+  로 재검사 — 남은 항목은 전부 기존의 정당한 `.get(key, 'N/A')`
+  fallback뿐, 지적한 두 자리는 완전히 제거됨. 직접 `_render_
+  provenance_section()`을 몽키패치로 "이전 버전" 2건 chain을 만들어
+  실행 — 두 줄이 서로 다르게 렌더됨을 실측 확인(status/pipeline_state/
+  chunk_count로 구분됨, 더 이상 "N/A" 충돌 없음). `AppTest`로 Library
+  페이지 포함 전체 재확인 예외 0건, `pytest -k "research or library or
+  source_navigation or tables"` 43 passed 재확인. **Task Order 045
+  최종 PASS.**
 - (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
   다름("자료실" — library.py/sermon_review.py, "보관함" —
   dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,

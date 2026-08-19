@@ -188,9 +188,9 @@ def _render_library_summary() -> None:
     c1, c2 = st.columns(2)
     with c1:
         st.metric(
-            "RAW 폴더 파일",
+            "보유 문서",
             f"{raw_breakdown['total']}권",
-            help="data/RAW 폴더에 현재 남아있는 파일 수 — 처리 여부와 무관합니다. 처리된 원본이 삭제되지 않고 RAW에 남아있는 경우가 흔해, 아래 처리 완료/미처리 구분을 함께 보세요.",
+            help="문서 보관함에 현재 남아있는 파일 수 — 처리 여부와 무관합니다. 처리된 원본이 삭제되지 않고 보관함에 남아있는 경우가 흔해, 아래 처리 완료/미처리 구분을 함께 보세요.",
         )
         st.caption(
             f"처리 완료 {raw_breakdown['processed']}권 · "

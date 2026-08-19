@@ -114,7 +114,7 @@ def _render_upload_section() -> None:
 
     st.caption(f"{len(uploaded_files)}개 파일 선택됨: {', '.join(f.name for f in uploaded_files)}")
 
-    if st.button("📥 RAW 폴더에 저장", key="save_uploads"):
+    if st.button("📥 보관함에 저장", key="save_uploads"):
         raw_dir = Path(DEFAULT_RAW_DIR)
         raw_dir.mkdir(parents=True, exist_ok=True)
         saved, skipped = [], []
@@ -131,7 +131,7 @@ def _render_upload_section() -> None:
             saved.append(safe_name)
 
         if saved:
-            st.success(f"RAW에 저장됨: {', '.join(saved)} — 아래에서 처리를 시작하세요.")
+            st.success(f"보관함에 저장됨: {', '.join(saved)} — 아래에서 처리를 시작하세요.")
         if skipped:
             st.warning(f"지원하지 않는 형식이라 건너뜀: {', '.join(skipped)}")
         st.rerun()
@@ -210,7 +210,7 @@ def _render_ingestion_form() -> None:
     # Ensure current DEFAULT_RAW_DIR is always available
     if DEFAULT_RAW_DIR not in _available_dirs:
         _available_dirs.insert(0, DEFAULT_RAW_DIR)
-        _dir_labels.setdefault(DEFAULT_RAW_DIR, f"기본 RAW 폴더")
+        _dir_labels.setdefault(DEFAULT_RAW_DIR, f"기본 보관함")
 
     # Helper: open folder in system file browser
     def _open_folder_in_browser(folder_path: str) -> None:
