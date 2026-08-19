@@ -1,5 +1,35 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
+## 릴레이 26 — Task Order 041: UX-007 §1 Global Navigation 부분 적용 (2026-08-19, 현재 유효)
+
+```
+너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
+
+지금부터 아래 작업 명령서를 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-TASK-ORDER-041.md
+
+핵심 규칙:
+- 장시간 무인 작업이다. 질문하지 말고, 승인을 기다리지 마라.
+- 대상 파일은 ui/app.py::_render_sidebar() (164~223행) 하나뿐이다. 다른 파일은
+  건드리지 마라.
+- emoji 전체 제거, 라벨 3개 변경(Library→내 자료, Research→검색·연구,
+  도움말→도움말 단순화), Processing을 NAE_ADMIN_MODE 게이트로 Monitor와
+  같이 묶어라. Chat/설교문 작성/설교 리뷰 항목·라벨은 절대 건드리지 마라.
+- 라디오 선택 로직(key="nav_page"), _go_to 콜백, page_renderers 매핑은 변경
+  금지. Core/retrieval/registry 로직 무접촉.
+- 완료 조건(문서 §3)을 전부 실측으로 확인해라 — mock으로 위젯을 치환하는
+  방식은 이번에도 인정하지 않는다(TASK-040에서 이미 지적됨).
+  streamlit.testing.v1.AppTest로 앱 전체를 실제로 띄워서 관리자모드 on/off
+  양쪽 다 직접 테스트하고, pytest tests/ -k "sidebar or nav or app" 실행
+  결과를 그대로 붙여넣어라.
+- docs/agents/c1/C1-TASK-ORDER-041-REPORT.md 작성하고 끝내라.
+
+지금 시작하라.
+```
+
+---
+
 ## 릴레이 25 — 오늘 밤 세션 요약 공유 (2026-08-17, 현재 유효, 작업 지시 아님)
 
 ```
