@@ -1,6 +1,37 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 27 — Task Order 045: UX-007 §11 용어집 전역 적용 (2026-08-19, 현재 유효)
+## 릴레이 28 — Correction Order 045: Task Order 045 반려, 2건 정정 (2026-08-19, 현재 유효)
+
+```
+CUE 독립 검증 결과가 나왔다. Task Order 045는 FAIL(조건부)이다 —
+14곳 중 12곳은 정확했지만 2곳이 진짜 버그다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-CORRECTION-ORDER-045.md
+
+요약(상세는 위 파일):
+1. ui/components/source_link.py:131 — "출처 ID: N/A"를 매번 고정으로
+   찍고 있다(실제 값이 있어도 무조건 N/A). document_id를 안전하게
+   순화할 방법이 없으면 그 줄 자체를 삭제해라 — 죽은 자리로 놔두지
+   마라. 122행의 document_id 변수가 이제 안 쓰이면 같이 지워라.
+2. ui/pages/library.py:461 — 버전 이력 목록(for record in chain:) 안에서
+   같은 문제가 더 심각하게 난다. 이전 버전이 2개 이상이면 전부 `N/A`로
+   찍혀서 서로 구분이 안 된다 — 실제 정보 손실 버그다. `` `N/A` — ``
+   부분을 통째로 삭제하고 status/pipeline_state/chunk_count만 남겨라.
+
+나머지 12곳은 이미 PASS로 인정됐다 — 다시 건드리지 마라.
+
+수정 → grep으로 두 자리에 고정 N/A 없는지 확인 → AppTest로 Library
+버전 이력 2건 이상인 케이스 실제 확인 → pytest 재실행 결과 그대로
+붙여넣기 → C1-TASK-ORDER-045-REPORT.md에 두 수정 내역만 추가.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 27 — Task Order 045: UX-007 §11 용어집 전역 적용 (2026-08-19, C1 1차 제출 완료 — 참고용)
 
 ```
 너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.

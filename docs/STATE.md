@@ -779,6 +779,33 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
 - C1 제출 시 CUE가 diff 대조 + grep 재현 + `AppTest` 재확인으로 독립
   검증(기존 040/041과 동일 절차).
 
+### C1 Task Order 045 — 1차 제출 FAIL(조건부), Correction Order 발행 (2026-08-19)
+
+- C1이 14곳 수정 + grep/AppTest/43 passed 근거로 PASS 보고. CUE가 diff
+  전체 재검토·grep 재현·AppTest 재실행으로 독립 검증한 결과 12곳은
+  정확했으나 **2곳이 진짜 버그**로 확인됨:
+  1. `source_link.py:131` — "출처 ID: N/A"를 실제 값 유무와 무관하게
+     항상 고정 출력(하드코딩), 122행 `document_id` 변수가 죽은 코드로
+     남음.
+  2. `library.py:461` — 문서 버전 이력 리스트(`for record in chain`)
+     안에서 동일 문제가 더 심각하게 발생 — 이전 버전이 2개 이상이면
+     전부 `N/A`로 찍혀 **서로 구분이 안 되는 실제 정보 손실**.
+  둘 다 C1이 "값을 안전하게 순화"가 아니라 "그 자리를 죽은 값으로
+  대체"하는 방식으로 처리한 동일 패턴의 오류 — 보고서(§2 표)에도
+  "N/A"가 의도된 결과로 명시돼 있어 실수가 아니라 잘못된 설계 판단.
+  나머지 12곳(§11 표 기준 grep 재현 0건, AppTest 예외 0건, `pytest -k
+  "research or library or source_navigation or tables"` 43 passed
+  재확인)은 정확해 그대로 인정.
+- `docs/agents/c1/C1-CORRECTION-ORDER-045.md` 발행 — 위 2곳만 수정
+  지시(나머지 12곳은 다시 건드리지 말라고 명시), 릴레이 28
+  (`.automation/requests/C1-RELAY-SNIPPET.md`). C1 재제출 시 CUE 재검증.
+- (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
+  다름("자료실" — library.py/sermon_review.py, "보관함" —
+  dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,
+  §11의 "고정 용어집" 취지에는 어긋나지만 기능 버그는 아니라 이번
+  Correction Order 범위에는 넣지 않음. 다음에 §11 관련 작업할 때 한
+  용어로 통일 필요.
+
 ---
 
 **Final State 요약**:
