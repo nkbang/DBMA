@@ -566,7 +566,7 @@ def _render_doc_type_detail(docs: dict, selected_type: str, untyped_ids: list[st
     with col_title:
         st.markdown(f"**{selected_type} 문서**")
     with col_close:
-        if st.button("✕", key=f"_close_{selected_type}", help="닫기"):
+        if st.button("", icon=":material/close:", key=f"_close_{selected_type}", help="닫기"):
             st.session_state["selected_doc_type"] = None
             st.rerun()
     

@@ -12,7 +12,10 @@ identity_registry에 개별 문서로 등록하는 단계는 별도 범위(아�
 
 from pathlib import Path
 
+import logging
 import streamlit as st
+
+logger = logging.getLogger(__name__)
 
 from ui.pages._base import BasePage
 from core.config import DEFAULT_RAW_DIR, DEFAULT_REGISTRY_PATH, SUPPORTED_EXTENSIONS
@@ -96,7 +99,8 @@ def _render_file_selector() -> None:
                 text = extract_text_from_file(path)["text"]
                 records = split_sermon_collection(text)
             except Exception as e:
-                st.error(f"[처리 실패] {e}")
+                logger.exception("Sermon review: extraction/split failed")
+                st.error("문서 추출·분리 중 문제가 있었습니다. 파일 형식을 확인하고 다시 시도해주세요.")
                 return
         st.session_state["sermon_review_records"] = records
         st.session_state["sermon_review_index"] = 0
@@ -230,14 +234,16 @@ def _render_save_as_document(records: list[SermonRecord]) -> None:
         st.caption(f"⚠️ 개별 문서로 저장하려면 {', '.join(missing)}이(가) 필요합니다 — 위 수동 분할에서 채워주세요.")
         return
 
-    if st.button("💾 이 설교를 개별 문서로 저장", key=f"sermon_save_{index}"):
+    if st.button("이 설교를 개별 문서로 저장", icon=":material/save:", key=f"sermon_save_{index}"):
         try:
             path = save_sermon_record(record, DEFAULT_RAW_DIR)
         except FileExistsError as e:
-            st.error(f"[저장 실패] {e}")
+            logger.exception("Sermon review: save - file exists")
+            st.error("이 설교가 이미 저장돼 있습니다. 다른 이름으로 저장하려면 메타데이터를 수정하세요.")
             return
         except ValueError as e:
-            st.error(f"[저장 실패] {e}")
+            logger.exception("Sermon review: save - validation failed")
+            st.error("필수 항목(제목·날짜·성구)이 누락됐습니다. 모두 채운 뒤 다시 저장하세요.")
             return
         st.success(f"저장 완료: {Path(path).name} — Dashboard의 \"🆕 미처리\" 카드에서 처리하러 갈 수 있습니다.")
 
@@ -261,7 +267,7 @@ def _render_manual_split(records: list[SermonRecord]) -> None:
     if len(lines) < 2:
         return  # 본문이 한 줄뿐이면 나눌 대상이 없음
 
-    with st.expander("🔀 이 안에 설교가 2개 이상 섞여 있나요? 수동으로 분할"):
+    with st.expander("이 안에 설교가 2개 이상 섞여 있나요? 수동으로 분할", icon=":material/shuffle:"):
         st.caption("아래에서 새 설교가 시작되는 줄 번호를 확인하세요.")
         st.code("\n".join(f"{i + 1:>4} | {line}" for i, line in enumerate(lines)), line_numbers=False, height=300)
 
@@ -315,7 +321,7 @@ def _render_manual_split(records: list[SermonRecord]) -> None:
         if missing:
             st.caption(f"⚠️ 아직 입력 안 됨: {', '.join(missing)} — 전부 입력해야 분할할 수 있습니다.")
 
-        if st.button("✂️ 이 지점에서 분할 실행", disabled=bool(missing), key=f"sermon_split_go_{index}"):
+        if st.button("이 지점에서 분할 실행", icon=":material/content_cut:", disabled=bool(missing), key=f"sermon_split_go_{index}"):
             try:
                 first, second = manual_split(
                     record,
@@ -325,7 +331,8 @@ def _render_manual_split(records: list[SermonRecord]) -> None:
                     new_scripture=new_scripture.strip(),
                 )
             except ValueError as e:
-                st.error(f"[분할 실패] {e}")
+                logger.exception("Sermon review: manual split failed")
+                st.error("분할 중 문제가 있었습니다. 제목·날짜·성구가 모두 올바르게 입력됐는지 확인하세요.")
                 return
             records[index] = first
             records.insert(index + 1, second)

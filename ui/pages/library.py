@@ -329,7 +329,8 @@ def _render_document_detail_panel() -> None:
 
     # Add clear selection button — uses on_click callback for full page sync
     st.button(
-        "✕ 선택 해제",
+        "선택 해제",
+        icon=":material/close:",
         key="clear_selection_btn",
         type="secondary",
         use_container_width=True,
@@ -475,6 +476,10 @@ def _render_metadata_edit_form(source_filename: str) -> None:
     document_id, record = _find_registry_record(source_filename)
     if document_id is None:
         st.caption("아직 처리되지 않은 문서입니다 — 메타데이터 수정은 처리 완료 후 가능합니다.")
+        if os.environ.get("NAE_ADMIN_MODE") == "1":
+            if st.button("📝 자료 등록으로 이동", use_container_width=True):
+                st.session_state["nav_page"] = "Processing"
+                st.rerun()
         return
 
     with st.expander("문서 메타데이터 수정 (title / author / chapter / page)", expanded=False):

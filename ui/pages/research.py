@@ -251,7 +251,7 @@ def _render_search_interface() -> None:
     st.divider()
     col1, col2 = st.columns([1, 4])
     with col1:
-        if st.button("🔍 검색 실행", type="primary", use_container_width=True):
+        if st.button("검색 실행", type="primary", icon=":material/search:", use_container_width=True):
             user_query = st.session_state.get("research_query", "")
             user_top_k = st.session_state.get("research_top_k", 10)
 
@@ -329,7 +329,7 @@ def _render_search_results() -> None:
     # Session save
     st.divider()
     st.subheader("세션 저장")
-    if st.button("📌 세션에 저장", type="secondary", use_container_width=True):
+    if st.button("세션에 저장", type="secondary", icon=":material/push_pin:", use_container_width=True):
         query = st.session_state.get("research_query", "")
         response_obj = st.session_state.get("research_response")
         
@@ -343,7 +343,8 @@ def _render_search_results() -> None:
                 else:
                     st.error("세션 저장에 실패했습니다.")
             except Exception as e:
-                st.error(f"세션 저장 중 오류 발생: {str(e)}")
+                logger.exception("Session save failed")
+                st.error("검색 세션 저장 중 문제가 있었습니다. 다시 시도해주세요.")
         else:
             st.warning("저장할 검색 결과가 없습니다.")
 
@@ -501,7 +502,7 @@ def _render_nae_section() -> None:
     # NAE 검색 실행 버튼
     col1, col2 = st.columns([1, 4])
     with col1:
-        if st.button("🔍 NAE 검색", type="primary", use_container_width=True):
+        if st.button("NAE 검색", type="primary", icon=":material/search:", use_container_width=True):
             nae_results = _execute_nae_retrieval(nae_query)
             st.session_state["nae_research_results"] = nae_results
             st.session_state["nae_search_status"] = (
@@ -698,9 +699,12 @@ def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object 
         return results, response, f"검색 완료 ({len(results)}개 결과)"
 
     except FileNotFoundError as e:
-        return [], None, f"에러: 자료를 찾을 수 없습니다 — {str(e)}"
+        logger.exception("Search: source file not found")
+        return [], None, "자료를 찾을 수 없습니다. 파일 경로가 올바른지 확인하고 다시 시도해주세요."
+
     except Exception as e:
-        return [], None, f"에러: 검색 실행 중 오류 발생 — {str(e)}"
+        logger.exception("Search execution failed")
+        return [], None, "검색 실행 중 문제가 있었습니다. 다시 시도해주세요."
 
 
 def _format_candidate(candidate: RankedCandidate, parsed_query, *, citation: Optional[Citation] = None) -> dict:

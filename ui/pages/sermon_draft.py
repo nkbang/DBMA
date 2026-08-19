@@ -16,6 +16,9 @@
 """
 
 import streamlit as st
+import logging
+
+logger = logging.getLogger(__name__)
 
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
@@ -126,7 +129,7 @@ def _render_book_coverage_buttons() -> None:
     버튼은 st.form 밖에 있어야 한다(Streamlit 제약 — st.button은 form
     안에서 즉시 클릭 반응하지 않음, st.form_submit_button만 가능)."""
     coverage = _get_processor().engine.book_coverage()
-    with st.expander("📖 전체 성경 이름 (책마다 등록된 자료 수)"):
+    with st.expander("전체 성경 이름 (책마다 등록된 자료 수)", icon=":material/menu_book:"):
         cols = st.columns(6)
         for i, (name, book_id) in enumerate(BIBLE_BOOKS):
             count = coverage.get(book_id, 0)
@@ -181,7 +184,7 @@ def _render_input_step() -> None:
             max_selections=3,
         )
 
-        submitted = st.form_submit_button("📝 개요 생성", type="primary", use_container_width=True)
+        submitted = st.form_submit_button("개요 생성", type="primary", icon=":material/edit_note:", use_container_width=True)
 
     if submitted:
         if not scripture_and_theme.strip():
@@ -199,7 +202,8 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
         try:
             response = processor.process(scripture_and_theme, query_id="sermon-draft", k=_CANDIDATE_K)
         except Exception as e:
-            st.error(f"검색 실패: {e}")
+            logger.exception("Sermon draft search failed")
+            st.error("검색 중 문제가 있었습니다. 다시 시도해주세요.")
             return
         outline, error = service.generate_outline(
             scripture_and_theme, response.top_k_results, sermon_format=sermon_format
@@ -283,7 +287,7 @@ def _render_outline_step() -> None:
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("💾 수정 반영", use_container_width=True):
+        if st.button("수정 반영", icon=":material/save:", use_container_width=True):
             # 맞춤법 검사 플래그 설정 (다음 render에서 check_korean_spelling 호출)
             st.session_state["_spellcheck_pending_outline"] = True
             state["outline"] = SermonOutline(
@@ -293,7 +297,7 @@ def _render_outline_step() -> None:
             st.success("반영되었습니다.")
             st.rerun()
     with col2:
-        if st.button("✅ 개요 승인 — 확장 단계로", type="primary", use_container_width=True):
+        if st.button("개요 승인 — 확장 단계로", type="primary", icon=":material/check_circle:", use_container_width=True):
             state["outline"] = SermonOutline(
                 title=title, introduction=introduction, points=edited_points, conclusion=conclusion
             )
@@ -344,11 +348,11 @@ def _render_expansion_step() -> None:
         with st.expander(f"대지 {i + 1}: {point[:40]}", expanded=not already_done):
             if already_done:
                 st.markdown(state["expanded"][i])
-                if st.button("🔄 다시 생성", key=f"sermon_regen_{i}"):
+                if st.button("다시 생성", icon=":material/refresh:", key=f"sermon_regen_{i}"):
                     del state["expanded"][i]
                     st.rerun()
             else:
-                if st.button("✍️ 이 대지 확장하기", key=f"sermon_expand_{i}"):
+                if st.button("이 대지 확장하기", icon=":material/edit:", key=f"sermon_expand_{i}"):
                     with st.spinner("작성 중..."):
                         text, error = service.expand_point(
                             point,
