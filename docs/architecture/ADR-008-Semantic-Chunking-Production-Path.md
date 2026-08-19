@@ -87,6 +87,15 @@ Profile B의 Unsplittable Outlier(축 3, 최악 18.6%) 케이스가 이 계층�
 private 함수(`_slice_preserving_words` 등)를 직접 import하지 않고
 독립 구현.
 
+> **2026-08-18 구현 완료.** `core/hierarchical_chunk_builder.py`에
+> `_word_safe_hard_slice`/`_hard_fallback_split`을 독립 구현으로 추가,
+> 단일 candidate가 safety cap을 초과하면 word-safe hard slice로
+> bounded chunk를 생성하도록 배선. 회귀 테스트 5건
+> (`TestHardFallbackSplit`) 추가, 기존 7건 포함 12건 전부 통과. dormant
+> 모듈 상태 유지(production 무접촉). **미완**: Profile B 대상 실제
+> Axis 3 개선 효과 재측정 — 이 세션에 Beta corpus(`output/
+> beta_validation_v5/`) 데이터가 없어 로컬 환경에서 별도 진행 필요.
+
 ### 제안 3 — 임베딩 기반 Semantic Chunking을 6번째 Feature로 검토
 
 현재 5-feature Boundary Score(heading/paragraph/tiny fragment/sentence

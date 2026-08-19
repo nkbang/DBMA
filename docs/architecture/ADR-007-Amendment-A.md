@@ -187,3 +187,16 @@ core/hierarchical_chunk_builder.py       (dormant, Level 1+2만 구현,
 scripts/shadow_hierarchical_chunks.py
 tests/test_hierarchical_chunk_builder.py
 ```
+
+> **2026-08-18 갱신 노트** (이 Frozen Artifact Set 이후, 문서 본문은
+> 미변경): `core/hierarchical_chunk_builder.py`에 Level 3(Hard Fallback
+> Split)를 구현했다(ADR-008 제안 2). `_word_safe_hard_slice`/
+> `_hard_fallback_split` 독립 구현 추가, `core/chunking_optimizer.py`의
+> private 함수를 import하지 않는 원칙(위 §Amendment C) 준수. 여전히
+> dormant 모듈이며 production(`chunking_optimizer.py`/`processing.py`)
+> 경로에는 영향 없음. 회귀 테스트 5건 추가(`tests/
+> test_hierarchical_chunk_builder.py::TestHardFallbackSplit`). 상세는
+> `docs/architecture/ADR-009-Chunk-Overflow-Fix-Design.md`와 STATE.md
+> 최근 상태 참고. Beta corpus 재측정(D-5 metric Axis 3 개선 여부
+> 검증)은 이 세션 환경에 corpus 데이터가 없어 미실행 — 로컬 환경
+> 필요.

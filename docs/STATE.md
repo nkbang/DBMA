@@ -6,9 +6,10 @@ Production Candidate). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
 
 ```
-Release State:  v1.3.0 RC READY
-Development:    FROZEN
-Next:           GA validation / tag preparation
+Release State:  v1.3.0 released, post-release 개발 재개(ACTIVE)
+Development:    SPRINT33-D 계열 진행 중 — chunk overflow 하위결함 B 안전망 적용 완료,
+                나머지(대안 1/빈도 실측/ADR-008/Legacy 정리)는 로컬 환경 필요
+Next:           로컬(Mac) 환경에서 Beta corpus 발생 빈도 실측 → 대안 1 구현 여부 결정
 ```
 
 ## 현재 상태
@@ -21,6 +22,20 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 이동했으며, Legacy(`dbma.py` + Chroma/Qdrant island + md_manager)를
 `archive/legacy/`로 분리 완료했다. v1.3.0으로 태그·검증되었다.
 
+v1.3.0 이후 SPRINT27(Research Workspace — 6번째 Authority/Memory Layer),
+SPRINT31~32(PdfHeadingProvider 정식 배선, HeadingAssembler 안정화),
+SPRINT33-A~D(Dormant Semantic Boundary Detector → Shadow scoring →
+Hierarchical Chunk Builder 프로토타입 → D-5 Metrics 공식 평가)로 개발이
+이어졌다. SPRINT33-D Phase 3-A에서 Beta corpus 12개 문서에 대한 D-5 metric
+(ADR-007 Amendment A의 recovery/semantic flush/unsplittable outlier 3축)을
+공식 산출하는 과정에서 `core/text_normalizer.py::split_sentences_mixed()`의
+개행(`\n`) 의존성으로 인한 **chunk overflow 결함**을 발견했다 — 특히 순수
+단일 언어 장문단에서 `chunk_size`/`chunk_overlap` 설정이 사실상 무시되고
+청크 상한 자체가 깨지는 심각한 하위결함(B)이 포함되어 있다. 원인 규명과
+재현은 완료(Preflight 문서, 코드 미수정)했고, 수정 여부·방향은 HQ 승인
+대기 중이다. 같은 흐름에서 Dashboard/Monitor 탭 책임 분리, Monitor 가짜
+지표의 실측화, `.gitignore` 오버매칭 버그 수정도 함께 진행됐다.
+
 ---
 
 ## 아키텍처 결정 (ADR)
@@ -30,14 +45,28 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
   Engine Authority. `dbma.py`의 인라인 RAG(`query_rag` 등)는 폐기 대상.
 - 공식 실행 진입점: `dbma_ui.py` → `ui/app.py` (SPRINT20-G2에서 README/
   `.github/instructions/*` 문서 정렬 완료).
+- `docs/architecture/ADR-004-Research-Workspace-Layer.md` (accepted):
+  `core/research_workspace.py`를 5개 기존 Authority와 나란한 독립 6번째
+  Layer(Memory)로 신설.
+- `docs/architecture/ADR-007-*.md` + Amendment A (accepted): D-5 semantic
+  boundary rebuild gate — Hierarchical Chunk Builder 정식 채택 여부를
+  판단할 3축 metric(Axis1 recovery / Axis2 semantic flush ratio / Axis3
+  unsplittable outlier ratio) 정의.
+- `docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md`
+  (제안만, 미확정): threshold 재산정, Level 3 Hard Fallback 구현, 임베딩
+  기반 6번째 feature, `split_sentences_mixed` 버그 후속 티켓 분리를 제안.
+  코드 변경 없음 — 착수 여부 HQ 결정 대기.
 
 ---
 
 ## 프로젝트 진행률
 
-전체 진행률: 100% (SPRINT20-I Architecture Consolidation 완료, v1.3.0 태그·검증 완료)
+전체 진행률: v1.3.0 Architecture Consolidation은 100% 완료. 이후
+SPRINT27/31~33 계열도 각 Phase 목표(D-5 metric 공식 평가까지)는 100%
+완료됐으나, 그 과정에서 드러난 chunk overflow 결함 수정과 ADR-008 후속
+항목은 착수 여부 결정 대기 상태로 **미완**이다.
 
-### 세부 진행 (SPRINT20-I 완료)
+### 세부 진행 (SPRINT20-I, v1.3.0 — 완료)
 - Retrieval Engine 단일화 (ADR-001): 100%
 - Citation Layer / Metadata Propagation: 100%
 - Configuration / Execution Env / Logging Authority: 100%
@@ -47,6 +76,17 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 - Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP): 100%
 - Legacy Vector Store 정책 (ADR-003 Finalization): 100%
 - Release: v1.3.0 태그 + chapter-level benchmark PASS + beta validation: 100%
+
+### 세부 진행 (SPRINT27, SPRINT31~33 — Phase 목표 완료, 후속 결정 대기)
+- Research Workspace Layer (ADR-004, 6번째 Authority): 100%
+- PdfHeadingProvider 배선 / HeadingAssembler 안정화 (SPRINT31~32): 100%
+- Dormant Semantic Boundary Detector + Shadow scoring feature군 (SPRINT33-A~C): 100%
+- ADR-007/Amendment A D-5 게이트 정의 + Hierarchical Chunk Builder 프로토타입 (SPRINT33-D Phase1~2): 100%
+- D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건): 100%
+- chunk overflow 결함 원인 규명 (Preflight, 코드 미수정): 100%
+- chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현: 100%
+- ADR-008 제안 2 — Level 3 Hard Fallback 구현 (dormant 모듈): 100%
+- ADR-009 대안 1(무개행 위임) / ADR-008 제안 1·3 착수 / Level 3 Axis 3 효과 재측정 / Beta corpus 실측 / Legacy artifact 정리: 0% (원격 세션에 `output/` 데이터 없어 로컬 환경 필요)
 
 ---
 
@@ -67,8 +107,13 @@ Status:    STABLE — GA 검토 단계
 - Benchmark evidence: output/bench/chapter_level_result_v1.3.0_cap2.json
 
 ## 잔여 (비blocker, 향후)
-- monitor.py 정적 하드코딩 값(메모리 72% 등) → 실시간화 (P3)
 - GA 선언 여부 판단 (안정화 기간 후)
+- ADR-009 대안 1(`split_sentences_mixed` 무개행 위임) 구현 여부 — 로컬 환경에서 Beta corpus 재검증 후 결정
+- Level 3 Hard Fallback(ADR-008 제안 2) 구현이 Beta corpus Profile B Axis 3(unsplittable outlier)를 실제로 개선하는지 재측정 — 로컬 환경 필요
+- Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측 — 원격 세션에 `output/` 없어 로컬 필요)
+- ADR-008 후속 항목(threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) 착수 여부 결정 — threshold 재산정은 Beta corpus 실측 선행 필요
+- Legacy Artifact(`output/registry/`, `output/baseline/`, `output_sav/` 등) 정리 여부 — 원격 세션에 `output/` 자체가 없어 점검 불가, 로컬 환경 필요
+- SPRINT27-D — Research Workspace를 MIE(Ministry Intelligence Engine) Memory Layer로 확장하는 Architecture Preflight (조사만, 구현 없음)
 
 ---
 
@@ -98,6 +143,131 @@ Status:    STABLE — GA 검토 단계
 ---
 
 ## 최근 상태
+
+### ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18)
+- 상태: 완료
+- 설명: `core/hierarchical_chunk_builder.py`(dormant 프로토타입, SPRINT33-D)에
+  ADR-007 Amendment A가 "설계만 완료, 미구현"으로 남겨둔 Level 3(Hard
+  Fallback Split)를 구현했다. Level 1(semantic)/Level 2(safety-cap)는
+  이미 존재했으나, 단일 candidate가 그 자체로 이미 safety cap을
+  초과하는 "Unsplittable Outlier"(Axis 3 측정 대상) 케이스는 Level 2로도
+  bound되지 않는 결함이 있었다. 신규 `_word_safe_hard_slice()`/
+  `_hard_fallback_split()`을 추가해, 이런 candidate를 만나면 먼저 기존
+  버퍼를 flush하고 이 candidate만 word-safe hard slice로 여러 bounded
+  chunk로 분리 — semantic/heading 신호는 참조하지 않는 순수 길이 기반
+  최후 수단(Amendment A 원칙 그대로).
+  Amendment A의 "production private 함수 직접 import 금지" 원칙에 따라
+  `core/chunking_optimizer.py::_slice_preserving_words()`도,
+  `core/text_normalizer.py::_word_safe_hard_slice()`(오늘 하위결함 B
+  수정에서 추가)도 import하지 않고 이 모듈에 세 번째 독립 사본으로
+  구현 — 세 사본의 알고리즘 drift 방지는 수동 관리 필요(모듈 docstring에
+  명시).
+  기존 테스트 1건(`test_force_flushes_at_safety_cap_without_any_semantic_signal`)이
+  의도치 않게 이 신규 경로를 타고 있어(각 candidate가 이미 safety cap
+  초과) Level 2를 순수하게 테스트하도록 fixture를 정상 크기 candidate로
+  교정. 신규 `TestHardFallbackSplit` 5건 추가(bound 보장/word-safety/
+  공백 없는 토큰 처리/인접 정상 candidate와 미병합/offset 정확성).
+  `tests/test_hierarchical_chunk_builder.py` 12건 전부 통과. 여전히
+  dormant 모듈이라 production(`chunking_optimizer.py`/`processing.py`)
+  경로는 무접촉.
+- 다음 조치: Profile B(학술 주석서, Axis 3 최악 18.6%) 대상 실제 개선
+  효과를 Beta corpus로 재측정 — 이 원격 세션에 corpus 데이터가 없어
+  로컬(Mac) 환경 필요.
+
+### chunk overflow 하위결함 B 안전망(대안 2) 구현 (2026-08-18)
+- 상태: 완료(대안 2), 대안 1은 보류
+- 설명: `docs/architecture/ADR-009-Chunk-Overflow-Fix-Design.md`(대안 1
+  무개행 위임 + 대안 2 word-safe hard slice 병행 권고)를 근거로, HQ
+  지시에 따라 대안 2를 구현했다. `core/text_normalizer.py::
+  _merge_sentence_fragments()`의 `if len(sent) > max_chars` 분기가
+  자르지 않고 그대로 chunk에 추가하던 것을, 신규 헬퍼
+  `_word_safe_hard_slice()`(`core/chunking_optimizer.py::
+  _slice_preserving_words()`와 동일 로직의 독립 사본 — import 순환
+  회피)로 교체해 word-safe hard slice로 상한을 강제한다.
+  `chunking_optimizer.py`가 이미 `_merge_sentence_fragments`를 이 모듈에서
+  import하므로 배선 변경 없이 production 경로에 즉시 적용됨.
+  회귀 테스트 3건 추가(`tests/test_text_normalizer.py::
+  TestMergeSentenceFragmentsOversizedUnit`) — 이 세션에서 실행 가능한
+  `tests/test_text_normalizer.py`(14건) + `tests/test_chunking_optimizer.py`
+  (19건) 전부 통과.
+  대안 1(무개행 위임)은 `grep`으로 확인한 결과 `core/utils.py::
+  detect_broken_line_ratio()`와 `scripts/shadow_d5_metrics.py`의 Axis 3
+  정의가 현재 동작에 의존하고 있어, Beta corpus 재검증 없이 진행하면
+  회귀 위험이 있다고 판단해 이번에는 보류했다(이 원격 세션에는
+  `output/beta_validation_v5/` 데이터 자체가 없어 검증 불가).
+- 다음 조치: 로컬(Mac) 환경에서 Beta corpus 발생 빈도 실측 → 대안 1
+  구현 여부 결정 → `core/utils.py`/`scripts/shadow_d5_metrics.py` 영향
+  확인 → D-5 metric 재측정.
+- 함께 확인된 환경 제약: 이 원격 세션(claude.ai/code 클라우드 컨테이너)에는
+  `output/`, `data/`, `chroma_db/`, `cache/`, `backups/` 등 로컬 전용
+  산출물이 전혀 없다 — ADR-008 제안 1(threshold 재산정), Beta corpus
+  발생 빈도 실측, Legacy Artifact(`output/registry/` 등) 정리는 모두
+  이 세션에서 착수 불가하며 로컬(Mac) 환경 작업이 필요하다.
+
+### .gitignore 오버매칭 수정 + C1 거버넌스 문서 커밋 (2026-07-20)
+- 상태: 완료
+- 설명: `.gitignore` 패턴 불일치로 `backups/`(381M), `cache/`(1.7G,
+  embeddings_backup_* 포함), `backup_chroma.log`가 새고 있었음(`backup/`
+  단수만 지정돼 `backups/` 복수 미매칭 등). `reports/`(무슬래시)가 루트
+  뿐 아니라 `docs/agent_governance/reports/`, `docs/reports/`까지 잡아먹어
+  `OPS-001`/`OPS-002`/`ARCHITECTURE_AUDIT_2026-07-16.md`가 한 번도
+  커밋되지 못한 상태였음을 발견 — `/reports/`로 스코프 축소해 정정.
+  `.claude/worktrees/` 패턴도 추가(leftover worktree 재발 방지).
+  `docs/agents/c1/*.md`(8개), `docs/agent_governance/*.md`를 함께 커밋.
+- 커밋: `14ed5ed`.
+- 다음 조치: 없음.
+
+### DBMA_CURRENT_STATE_SNAPSHOT.md Legacy 경로 보강 (2026-07-20)
+- 상태: 완료
+- 설명: Legacy: dbma.py 항목의 분류는 정확했으나 실제 이동 경로
+  (`archive/legacy/dbma.py`, commit `ce6b05a`)가 누락되어 있었음. C1(Cline
+  창#1)에게 OLD/NEW find/replace 스키마로 위임하고 CUE 검증(형식/OLD 값
+  일치/범위 준수) 통과 후 적용 — shadow 실사용 사례 #1로 기록
+  (`docs/agents/c1/C1-TASK-ORDER-001.md`).
+- 커밋: `10e72c9`.
+- 다음 조치: 없음.
+
+### `split_sentences_mixed()` 개행 의존성 chunk overflow 확정 (2026-07-20)
+- 상태: 완료(Preflight 고정, 코드 미수정)
+- 설명: SPRINT33-D Phase 3-A가 관찰만 하고 넘어간 "원어/혼합 언어
+  문단에서 문장 분할이 거의 안 될 가능성"을 코드 추적 + 실제 재현으로
+  확정. `collapse_soft_linebreaks()`가 문단 내부 줄바꿈을 전부 병합하고
+  `split_sentences_mixed()`는 오직 `\n` 기준으로만 분할하므로, 어떤 문단이든
+  `split_paragraphs()`를 거치면 내부에 `\n`이 남지 않아 항상 1개 원소로
+  반환됨을 확인. 이는 두 하위결함으로 갈린다:
+  - 하위결함 A(경미): mixed/원어 문단 — `_slice_preserving_words()`로
+    떨어져 chunk_size 상한은 지켜지나 문장 경계 무시.
+  - 하위결함 B(심각): 순수 단일 언어 장문단 — `_merge_sentence_fragments()`가
+    "이미 초과한 문장 1개"를 자르지 않고 그대로 추가, **chunk_size/overlap
+    설정이 사실상 무시됨**(실측: 한국어 2999자, 영어 2429자 청크 1개
+    그대로 생성, target 1200의 2~2.5배).
+  `chunking_optimizer.py:305`가 `split_sentences_mixed`를 무조건 우선
+  호출해 정규식 기반 `split_sentences()`(동일 입력에서 정상 동작 확인됨)는
+  production에서 도달 불가능한 dead fallback임도 확인.
+- 커밋: `ae78866`.
+- 다음 조치(HQ 승인 대기, 이 문서 범위 밖): Beta corpus 12개 문서 대상
+  하위결함 B 발생 빈도 실측, 수정 방향 후보(무개행 자동 위임 폴백 /
+  word-safe hard slice) 검토용 ADR.
+
+### Dashboard/Monitor 탭 분리 + Monitor 가짜 지표 실측화 + ADR-008 제안 (2026-07-20)
+- 상태: 완료
+- 설명: Dashboard가 콘텐츠 소유자 요약(문서 수/코퍼스 크기/마지막 처리)과
+  개발자·운영 내부 지표(단계별 파이프라인 %, 벡터DB/임베딩/파일시스템/
+  메모리 상태)를 뒤섞고 있었고, Monitor는 이미 같은 역할의 헬스 개요
+  섹션을 갖고 있었으나 실제 아무것도 연결되지 않은 mock 데이터("healthy",
+  "72%" 등 하드코딩)였음 — Dashboard의 실제 ExecutionContext 기반 수치와
+  중복·모순. Dashboard는 파이프라인 상태/시스템 헬스 섹션을 "전체 상태"
+  카드 하나로 축소하고, Monitor가 단계별 파이프라인 섹션을 흡수하며
+  `_render_health_overview()`의 하드코딩을 실측값으로 교체했다. 이어서
+  Monitor의 `_render_performance_metrics()`가 갖고 있던 4개 하드코딩
+  리터럴(142ms/8.3건/sec/0.8923 "RRF"/156MB)도 실측값으로 교체(응답
+  시간은 `record_query_latency`, 처리 속도는
+  `runtime_state.get_processing_throughput()` 등). 같은 흐름에서
+  Hierarchical Chunk Builder의 SPRINT33-D Phase 3-A 공식 측정 완료를
+  계기로 ADR-008(semantic chunking production 전환 경로, 제안만·미확정)도
+  작성됨.
+- 커밋: `70a9d4d`, `a3c28cd`, `be1ceef`, `27f0ff3`, `dbb36c3`.
+- 다음 조치: ADR-008 제안 항목 착수 여부는 HQ 결정 대기.
 
 ### 문서 정합성 점검 및 정정 (2026-07-20)
 - 상태: 완료
@@ -200,13 +370,26 @@ Status:    STABLE — GA 검토 단계
 - [x] `dbma.py` Legacy Archive 완료 (SPRINT20-I-D, archive/legacy/)
 - [x] Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP)
 - [x] Legacy Vector Store 정책 확정 (ADR-003 Finalization)
-- [ ] v1.3.0 Release Candidate 선언 (본 항목 진행 중)
-- [x] Release validation (chapter-level benchmark 1500q — PASS, 회귀 없음)
+- [x] v1.3.0 Release 태그 (07ec084) + Release validation (chapter-level
+      benchmark 1500q — PASS, 회귀 없음)
 - [x] Ollama HTTP 500 수정 (P2, char/token 4→2, commit f5f2753)
 - [x] 잔여 cleanup (data/rag_index, 빈 backup 폴더, md_manager archive)
 - [x] Research Workspace Layer — 첫 번째 Memory Layer (SPRINT27-B/C, ADR-004,
       `core/research_workspace.py`, commit `519d719`)
-- [ ] SPRINT27-D — Memory Layer 확장 Architecture Preflight (진행 중)
+- [ ] SPRINT27-D — Memory Layer 확장 Architecture Preflight (미착수)
+- [x] PdfHeadingProvider 배선 + HeadingAssembler 안정화 (SPRINT31~32)
+- [x] Dormant Semantic Boundary Detector + Shadow scoring feature군 (SPRINT33-A~C)
+- [x] ADR-007/Amendment A D-5 게이트 정의 + Hierarchical Chunk Builder 프로토타입 (SPRINT33-D Phase1~2)
+- [x] D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건, commit `71ef068`)
+- [x] `split_sentences_mixed()` chunk overflow 원인 규명 (Preflight, commit `ae78866`)
+- [x] Dashboard/Monitor 탭 분리 + Monitor 실측 지표화 (commit `70a9d4d`/`dbb36c3`)
+- [x] ADR-008 semantic chunking production 전환 경로 제안 (commit `27f0ff3`, 미확정)
+- [x] `.gitignore` 오버매칭 버그 수정 (commit `14ed5ed`)
+- [x] chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현 (2026-08-18)
+- [ ] ADR-009 대안 1(무개행 위임) 구현 — 보류, 로컬 환경 Beta corpus 재검증 필요
+- [x] ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18, dormant 모듈)
+- [ ] ADR-008 제안 1/3(threshold 재산정 / 6번째 feature) 착수 여부 결정, Level 3 Axis 3 효과 재측정 — Beta corpus 실측 선행 필요
+- [ ] Legacy artifact 정리 — 원격 세션에 `output/` 없어 점검 불가
 
 ---
 

@@ -8,6 +8,9 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+import pytest
+
+from core.config import DEFAULT_TSU_DATASET_PATH
 from core.retrieval import (
     BOOK_ID_TO_NAMES,
     NAME_TO_BOOK_ID,
@@ -208,10 +211,13 @@ class TestTypoTolerance:
 class TestIntegration:
     """Full pipeline integration tests."""
 
+    @pytest.mark.skipif(
+        not os.path.exists(DEFAULT_TSU_DATASET_PATH),
+        reason=f"requires a built TSU dataset at {DEFAULT_TSU_DATASET_PATH} (not present in CI)",
+    )
     def test_korean_query_full_pipeline(self):
         """요한복음 3:16 should resolve to JHN through QueryProcessor."""
         from core.retrieval import RetrievalEngine, QueryProcessor
-        from core.config import DEFAULT_TSU_DATASET_PATH
 
         engine = RetrievalEngine(tsu_dataset_path=DEFAULT_TSU_DATASET_PATH)
         processor = QueryProcessor(engine)

@@ -36,11 +36,15 @@ class TestNoHeadingsFallsBackToSafetyCap:
         assert chunks[0][1] == 0  # starts at first candidate's offset
 
     def test_force_flushes_at_safety_cap_without_any_semantic_signal(self):
-        # chunk_size=10 -> safety cap = 15. Each candidate is 20 chars, so
-        # every single candidate alone already exceeds the cap.
-        candidates = _cands("x" * 20, "y" * 20, "z" * 20)
+        # chunk_size=10 -> safety cap = 15. Each candidate is 8 chars (below
+        # the cap on its own -- this is Level 2 territory, not Level 3):
+        # two candidates together (8+2+8=18) exceed the cap and force a
+        # flush, the third starts a fresh buffer.
+        candidates = _cands("x" * 8, "y" * 8, "z" * 8)
         chunks = build_chunks(candidates, headings=[], chunk_size=10, min_chunk_size=1)
-        assert len(chunks) == 3
+        assert len(chunks) == 2
+        assert chunks[0][0] == ("x" * 8) + "\n\n" + ("y" * 8)
+        assert chunks[1][0] == "z" * 8
 
 
 class TestMinChunkSizeFloor:
@@ -86,6 +90,49 @@ class TestSemanticBoundarySplitsBuffer:
         for chunk_text, chunk_offset in chunks:
             first_candidate = chunk_text.split("\n\n")[0]
             assert offsets[first_candidate] == chunk_offset
+
+
+class TestHardFallbackSplit:
+    """Level 3 (ADR-007 Amendment A / ADR-008 제안 2) — a single candidate
+    already longer than the safety cap on its own, the "Unsplittable
+    Outlier" case Axis 3 measures."""
+
+    def test_single_oversized_candidate_is_hard_sliced_under_chunk_size(self):
+        # chunk_size=10 -> safety cap=15. One candidate, 40 space-separated
+        # chars -- well past the cap on its own.
+        candidate = " ".join("ab" for _ in range(20))  # "ab ab ab ..." len 59
+        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=10, min_chunk_size=1)
+        assert len(chunks) > 1
+        assert all(len(text) <= 10 for text, _ in chunks)
+
+    def test_hard_slice_is_word_safe(self):
+        candidate = " ".join(f"word{i}" for i in range(30))
+        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=20, min_chunk_size=1)
+        assert all(len(text) <= 20 for text, _ in chunks)
+        rejoined = " ".join(text for text, _ in chunks)
+        assert rejoined.split() == candidate.split()
+
+    def test_single_unbreakable_token_falls_back_to_character_hard_slice(self):
+        # No spaces at all -- even word-safe slicing has no boundary to use.
+        candidate = "x" * 55
+        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=20, min_chunk_size=1)
+        assert all(len(text) <= 20 for text, _ in chunks)
+        assert "".join(text for text, _ in chunks) == candidate
+
+    def test_oversized_candidate_does_not_merge_with_surrounding_normal_candidates(self):
+        oversized = "z" * 60
+        candidates = _cands("정상 문단 하나", oversized, "정상 문단 둘")
+        chunks = build_chunks(candidates, headings=[], chunk_size=20, min_chunk_size=1)
+        texts = [t for t, _ in chunks]
+        assert "정상 문단 하나" in texts
+        assert "정상 문단 둘" in texts
+        assert all(len(t) <= 20 for t in texts)
+
+    def test_piece_offsets_are_positionally_correct_within_source_text(self):
+        candidate = " ".join(f"word{i}" for i in range(30))
+        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=20, min_chunk_size=1)
+        for text, offset in chunks:
+            assert candidate[offset:offset + len(text)] == text
 
 
 class TestEmptyInput:
