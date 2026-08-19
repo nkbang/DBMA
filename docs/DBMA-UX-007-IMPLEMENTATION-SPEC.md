@@ -19,9 +19,9 @@
 | 3 | IA | PASS |
 | 4 | Visual Direction | PASS |
 | 5 | Architecture Safety | PASS |
-| 6 | Implementation Specification | **PASS (본 문서)** |
-| — | HQ 승인 | **대기** |
-| — | C1 Implementation | **BLOCKED — HQ 승인 후 착수** |
+| 6 | Implementation Specification | PASS (본 문서) |
+| — | HQ 승인 | **PASS (2026-07-31)** |
+| — | C1 Implementation | **IN PROGRESS — Phase 1 발급됨** ([C1 Task Order 039](agents/c1/C1-TASK-ORDER-039.md): 용어집 전역 적용 + 인용 카드 컴포넌트) |
 
 ---
 

@@ -67,6 +67,13 @@ viewer"가 아니라 "research workspace"로 확정(본문+연구+행동 3영역
 공식 기록됨, §11 용어집으로 향후 위반 판정 기준 고정. mockup.html은
 "시각 참조"로만 쓰고 구현 권한은 스펙 문서에 있음을 명시.**
 
+**[2026-07-31 갱신 #4] HQ가 DBMA-UX-007 승인. §12 CUE/C1 경계 원칙에
+따라 구현을 한 번에 넘기지 않고 스펙 §15 순서대로 단계 발급 시작 —
+[C1 Task Order 039](agents/c1/C1-TASK-ORDER-039.md)(Phase 1: 기술적
+leakage 제거 + 인용·출처 공용 컴포넌트) 발급. `chat.py`의
+`신뢰도(final_score)`/`근거 신뢰도(citation)` 원시 노출이 이번 Phase의
+1순위 수정 대상. Phase 2(홈 화면)는 Phase 1 완료·CUE 검토 후 발급 예정.**
+
 ---
 
 ## 아키텍처 결정 (ADR)
