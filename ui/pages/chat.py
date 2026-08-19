@@ -360,7 +360,8 @@ def _handle_user_message(question: str) -> None:
         response = processor.process(question, query_id="chat-ui", k=k, file_scope=file_scope)
         record_query_latency(response.performance_metrics.total_ms)
     except Exception as e:
-        error_msg = f"[검색 실패] {e}"
+        logger.exception("Chat: retrieval failed")
+        error_msg = "검색 중 문제가 있었습니다. 다시 시도해주세요."
         with st.chat_message("assistant"):
             st.markdown(error_msg)
         st.session_state["chat_messages"].append({

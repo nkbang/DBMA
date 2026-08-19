@@ -708,6 +708,20 @@ P0 복원 후 남아있던 78/82 문서 커버리지 갭 해소. dry-run으로 �
 - Task Order: `docs/agents/c1/C1-TASK-ORDER-049.md`. 릴레이:
   `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 34. "전체 pytest
   실행"을 재차 명시(이번이 세 번째 반복 지시).
+- **CUE 독립 검증 — PASS 확정** (2026-08-19): grep으로 §1(원시 예외
+  노출 9곳) 전부 제거 확인(`research.py`/`sermon_draft.py`/
+  `sermon_review.py`는 병행 세션의 아이콘 마이그레이션 커밋에 이미
+  같이 반영돼 있었음, `chat.py`/`processing.py`는 이번에 처리).
+  `library.py`의 "자료 등록으로 이동" 버튼이 스펙 원문대로
+  `NAE_ADMIN_MODE=1`일 때만 노출되는 것을 코드로 직접 확인. `AppTest`
+  로 admin 0/1 두 모드에서 Library/Research/Dashboard/Processing 렌더
+  예외 0건 재확인. 전체 `pytest tests/` **2482 passed**.
+  **참고(비차단)**: C1 보고서가 §3(빈 화면 Dead End 감사표)/§4(로딩
+  패턴 확인)를 요구한 표 형식 없이 "문제 없음"으로만 간단히 적었고,
+  "전체 pytest 실행" 대신 67개 배치로 나눠 돌렸다(네 번째 반복
+  위반) — 그러나 CUE가 직접 전체 스위트를 재실행해 통과를 확인했고
+  §1/§2의 실제 코드 변경분은 정확했으므로 PASS 유지. **Task Order
+  049 최종 PASS.**
 
 ---
 

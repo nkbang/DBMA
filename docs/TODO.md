@@ -130,12 +130,13 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      재현, 전체 `pytest tests/` 2482 passed). 상세:
      `docs/agents/c1/C1-TASK-ORDER-048-REPORT.md`
    - UX-007 §2/§3/§4/§5/§6/§7/§11/§13 **전부 완료**.
-   - **C1 Task Order 049(§9 Empty/Loading/Error States 전역 원칙)
-     발급, C1에게 이관** (2026-08-19) — 원시 예외 노출 제거(9곳 예시,
-     `research.py`의 `f"에러: {str(e)}"`는 스펙 §4.4가 직접 지목했던
-     미수정 위반), "처리되지 않은 문서" 메시지에 관리자 모드 조건부
-     버튼 추가, 빈 화면 Dead End 감사. 릴레이:
-     `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 34.
+   - ~~C1 Task Order 049(§9 Empty/Loading/Error States 전역 원칙)~~ —
+     **완료 (PASS)**, 2026-08-19. 원시 예외 노출 9곳 전부 제거(로그로만
+     기록), library.py "자료 등록으로 이동" 버튼을 관리자 모드
+     조건부로 추가. CUE 독립 검증: grep 재확인 + AppTest(admin 0/1
+     양쪽) + 전체 `pytest tests/` 2482 passed. 상세:
+     `docs/agents/c1/C1-TASK-ORDER-049-REPORT.md`
+   - UX-007 §2/§3/§4/§5/§6/§7/§9/§11/§13 **전부 완료**.
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님
