@@ -655,6 +655,16 @@ build+audit을 겸행했고, 이후(Task Order 045~048)부터는 C1(Cline)에게
   **잔여 갭**: 현재 registry 82개 문서 중 4개는 이 스냅샷에 없음 —
   완전한 커버리지는 `scripts/build_tsu_dataset.py` 재빌드 필요(별도
   판단, 이번엔 "즉시 복원"만 진행).
+- **TSU dataset 재빌드 완료** (2026-08-19, 사용자 승인 후 실행): 위
+  잔여 갭 해소. `--dry-run`으로 먼저 안전 확인(53,963건/82문서,
+  에러 없음) 후 현재 파일 백업(`output/bench/backup/tsu_dataset_
+  pre_rebuild_20260819T142722.jsonl`) → 실제 재빌드 실행(dry-run
+  포함 총 약 22분, I/O가 아니라 실제 재처리라 느림). 결과: 53,963건/
+  82개 문서(78→82, 이전 누락 4개 문서 전부 포함). `QueryProcessor
+  ().process("로마서 8장")` 재검증 — 이전에 안 잡히던 문서("로마서
+  8장 연구 - 성령의 자유.md")가 최상위 결과로 확인됨. 전체 `pytest
+  tests/` 2482 passed(회귀 없음). TSU dataset coverage gap **완전
+  해소**.
 - **§4 분기 로직 사전 검증**: 스펙이 "검색/질문 분류가 기존 백엔드에
   있다"고 전제했으나 실제로 없음을 사전 확인 → 새 분류기를 만들지
   않고 "항상 둘 다 실행"으로 사용자와 확정(`AskUserQuestion`).

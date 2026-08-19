@@ -33,10 +33,11 @@
       호출, pipeline 코드 무변경)로 매니페스트를 현재 registry/git
       commit/config 기준으로 재생성. `QueryProcessor().process("로마서
       8장")` 실측으로 3건 응답 확인(복원 전 0건).
-      **잔여 갭**: 현재 registry는 82개 문서(2026-08-19 갱신)인데 복원된
-      TSU는 78개 문서 스냅샷이라 최근 처리된 문서 4개가 검색에 아직
-      안 잡힘 — 완전한 커버리지가 필요하면 `scripts/build_tsu_dataset.py`
-      재빌드로 후속 필요(더 오래 걸림, 별도 판단).
+      **잔여 갭 — 해소됨**: `scripts/build_tsu_dataset.py` 재빌드 완료
+      (2026-08-19, 사용자 승인 후 실행, 총 약 22분 — dry-run으로 먼저
+      안전 확인 후 기존 파일 백업하고 실제 재빌드). 53,231건/78문서
+      → 53,963건/82문서(전체 커버). 재검증: "로마서 8장" 검색에
+      이전 누락 문서가 최상위로 잡힘, `pytest tests/` 2482 passed.
 - [ ] **P1** — BM25 `_tokenize()` 한국어 미지원 (한글 토크나이저 부재, `core/retrieval.py`).
 - [ ] **P2** — Chat "단일 파일" 모드 `file_scope` 제한 재검토 (TSU 복원 후 재검증 필요).
 
