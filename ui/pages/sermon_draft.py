@@ -67,21 +67,21 @@ def _apply_sermon_draft_styles() -> None:
 def render_sermon_draft_page() -> None:
     """Render the DBMA Sermon Draft workshop page."""
     _apply_sermon_draft_styles()
-    page = BasePage(title="설교문 작성", icon="📖")
+    page = BasePage(title="설교문 작성", icon="menu_book")
     page.render_header()
 
     _init_state()
     state = st.session_state["sermon_draft_state"]
 
-    page.render_section("1단계: 본문과 주제", icon="📖")
+    page.render_section("1단계: 본문과 주제", icon="menu_book")
     _render_input_step()
 
     if state["status"] in _STATUS_HAS_OUTLINE and state["outline"] is not None:
-        page.render_section("2단계: 개요 검토", icon="📋")
+        page.render_section("2단계: 개요 검토", icon="list_alt")
         _render_outline_step()
 
     if state["status"] in _STATUS_HAS_EXPANSION:
-        page.render_section("3단계: 본문 확장", icon="✍️")
+        page.render_section("3단계: 본문 확장", icon="edit_note")
         _render_expansion_step()
 
     page.render_footer()

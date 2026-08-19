@@ -62,6 +62,12 @@ def _apply_global_styles() -> None:
     st.markdown(f"""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+        .material-symbols-outlined {{
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }}
 
         /* Stitch Scholar design system typography */
         html, body, [class*="css"] {{

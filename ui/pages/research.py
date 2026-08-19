@@ -158,19 +158,19 @@ def render_research_page() -> None:
     if detail_selection is not None:
         _render_research_page_with_detail()
     else:
-        page = BasePage(title="연구 공간", icon="🧪")
+        page = BasePage(title="연구 공간", icon="science")
         page.render_header()
 
         # ── Search Interface ───────────────────────────────────
-        page.render_section("검색", icon="🔍")
+        page.render_section("검색", icon="search")
         _render_search_interface()
 
         # ── AI Answer (always alongside search results) ────────
-        page.render_section("AI 답변", icon="💡")
+        page.render_section("AI 답변", icon="lightbulb")
         _render_ai_answer()
 
         # ── Search Results ─────────────────────────────────────
-        page.render_section("참고한 자료", icon="📊")
+        page.render_section("참고한 자료", icon="bar_chart")
         _render_search_results()
 
         # ── NAE Public Theology (ADR-024 Bridge) ───────────────
@@ -178,7 +178,7 @@ def render_research_page() -> None:
         _render_nae_section()
 
         # ── Query Analysis ─────────────────────────────────────
-        page.render_section("검색 분석", icon="📈")
+        page.render_section("검색 분석", icon="trending_up")
         _render_query_analysis()
 
         page.render_footer()

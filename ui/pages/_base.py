@@ -14,23 +14,33 @@ from ui.theme.colors import THEME
 class BasePage:
     """Base class for DBMA pages with common rendering utilities."""
 
-    def __init__(self, title: str, icon: str = "📄"):
+    def __init__(self, title: str, icon: str = "description"):
         self.title = title
         self.icon = icon
 
     def render_header(self) -> None:
         """Render the standard page header.
 
-        사용자-facing 캡션은 내서재/NAE — DBMA는 내부 식별자로만 유지
-        (docs/governance/DBMA-BRAND-GOV-001.md).
+        icon은 Material Symbols 아이콘 이름(예: "search")이다 — 빈 문자열이면
+        아이콘 없이 제목만 렌더링한다. 사용자-facing 캡션은 내서재/NAE —
+        DBMA는 내부 식별자로만 유지(docs/governance/DBMA-BRAND-GOV-001.md).
         """
-        st.markdown(f"## {self.icon} {self.title}")
+        icon_html = (
+            f'<span class="material-symbols-outlined" style="font-size: 26px; vertical-align: -4px;">{self.icon}</span> '
+            if self.icon else ""
+        )
+        st.markdown(f"## {icon_html}{self.title}", unsafe_allow_html=True)
         st.caption(f"내서재 · NAE — v{APP_VERSION}")
 
-    def render_section(self, title: str, icon: str = "📋") -> None:
-        """Render a section heading with divider."""
+    def render_section(self, title: str, icon: str = "list_alt") -> None:
+        """Render a section heading with divider. icon은 Material Symbols
+        아이콘 이름 — 빈 문자열이면 아이콘 없이 제목만 렌더링한다."""
         st.divider()
-        st.markdown(f"### {icon} {title}")
+        icon_html = (
+            f'<span class="material-symbols-outlined" style="font-size: 20px; vertical-align: -3px;">{icon}</span> '
+            if icon else ""
+        )
+        st.markdown(f"### {icon_html}{title}", unsafe_allow_html=True)
 
     def render_error_box(self, message: str) -> None:
         """Render an error message box."""

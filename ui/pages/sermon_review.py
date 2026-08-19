@@ -26,7 +26,7 @@ from core.multi_doc_splitter import (
 
 def render_sermon_review_page() -> None:
     """Render the Sermon Review page."""
-    page = BasePage(title="설교 리뷰", icon="🗂️")
+    page = BasePage(title="설교 리뷰", icon="folder_open")
     page.render_header()
 
     _render_file_selector()
