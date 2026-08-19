@@ -834,6 +834,26 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   실행 — 원시 소수점 미노출, 좌측 색상바 CSS 존재, 제목/발췌문 정상
   표시, "📄" 내비게이션 버튼과 "설교 연구에 추가" 버튼 둘 다 그대로
   존재함을 실측 확인. **Task Order 046 PASS.**
+
+### C1 Task Order 047 발급 — §4 검색·연구 통합, C1에게 이관 (2026-08-19)
+
+- 착수 전 스펙 검증에서 중대한 gap 발견: §4.1은 "검색인지 질문인지
+  기존 백엔드가 이미 판단해준다"고 적혀 있으나, `core/retrieval.py`
+  확인 결과 그런 분류기가 없음 — `ParsedQuery.intent`는 영어 정규식
+  기반 "주제 유형"(주석/비교/묵상 등) 분류일 뿐 "검색 vs 질문" 이진
+  판단이 아니고, 한국어 입력엔 사실상 안 먹음. `AskUserQuestion`으로
+  확인 → 사용자가 **"항상 둘 다 실행"**(분기 없음, 검색 카드 + AI
+  답변을 모든 입력에 항상 같이 표시)을 선택 — [[feedback_avoid_risky_uncertain_design]]
+  원칙과 일치(검증 안 된 분류기 위에 다중 경로를 얹지 않음).
+- Task Order: `docs/agents/c1/C1-TASK-ORDER-047.md`. `research.py`가
+  유일한 진입점이 되고 `chat.py`의 생성 로직은 삭제 없이 import 재사용,
+  사이드바에서 "Chat" 메뉴만 제거. 보호 대상(설교 연구 버튼/
+  research_detail_selection/citation_card/research_workspace 세션
+  저장/채팅 히스토리 디스크 저장) 명시, 이번엔 범위가 넓어 전체
+  `pytest tests/` 실행을 요구.
+- 릴레이: `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 30. C1
+  제출 시 CUE가 diff 전체 대조 + 보호 항목 개별 재현 + 전체 pytest로
+  꼼꼼히 검증(범위가 넓어 이번엔 대충 넘어가지 않음).
 - (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
   다름("자료실" — library.py/sermon_review.py, "보관함" —
   dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,

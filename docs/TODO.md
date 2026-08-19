@@ -110,6 +110,12 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      완료(실제 결과 데이터로 AppTest 직접 실행, 원시 소수점 미노출/
      좌측 색상바/보호 버튼 무손상 확인). 상세:
      `docs/agents/c1/C1-TASK-ORDER-046-REPORT.md`
+   - **C1 Task Order 047(§4 검색·연구 통합) 발급, C1에게 이관**
+     (2026-08-19) — 착수 전 스펙 검증에서 "백엔드가 검색/질문을 이미
+     분류해준다"는 전제가 사실이 아님을 발견(그런 분류기 없음),
+     `AskUserQuestion`으로 확인해 "항상 둘 다 실행"(분기 없음)으로
+     확정. 릴레이: `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 30.
+     범위가 넓어 전체 `pytest tests/` 요구, 보호 대상 다수 명시.
    - 남은 후보(§11 다음): §6 인용 카드 공용 컴포넌트, §4 검색·연구
      통합 — 미착수
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)

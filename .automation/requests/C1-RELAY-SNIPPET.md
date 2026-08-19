@@ -1,6 +1,43 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 29 — Task Order 046: UX-007 §6 인용 카드 공용 컴포넌트, research.py 마이그레이션 (2026-08-19, 현재 유효)
+## 릴레이 30 — Task Order 047: UX-007 §4 검색·연구 통합 (단일 입력 + 항상 둘 다 실행) (2026-08-19, 현재 유효)
+
+```
+너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
+
+지금부터 아래 작업 명령서를 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-TASK-ORDER-047.md
+
+핵심 규칙 (이번엔 특히 중요하다, 문서 전체를 먼저 읽어라):
+- 장시간 무인 작업이다. 질문하지 말고, 승인을 기다리지 마라.
+- 스펙 원문은 "검색인지 질문인지 백엔드가 이미 판단해준다"고 하지만
+  그건 사실이 아니다(문서 §0에 CUE가 직접 확인한 근거 있음) — 절대
+  새 분류기를 만들지 마라. 사용자가 확정한 방식대로 모든 입력에
+  검색 경로 + AI 답변 경로를 항상 둘 다 실행해라. 분기 없음.
+- research.py가 유일한 진입점이 된다. chat.py의 생성 로직은 복제하지
+  말고 import해서 재사용해라(필요하면 순수 함수로 뽑아서 공유 —
+  GenerationService 호출 방식 자체는 바꾸지 마라). chat.py 파일이나
+  render_chat_page()는 지우지 마라 — Chat 메뉴만 사이드바에서 제거.
+- 문서 §3에 나열된 보호 대상(설교 연구에 추가 버튼, research_detail_selection,
+  render_citation_card, research_workspace 세션 저장, 채팅 히스토리
+  디스크 저장)을 손대면 이 Task는 FAIL이다 — 하나씩 반드시 재확인해라.
+- 문서 §4의 "이번 범위 아님" 항목(3버튼 재배열, §5 읽기, 새 분류기)은
+  건드리지 마라.
+- 완료 조건(문서 §5)을 전부 실측으로 확인해라. 이번엔 pytest tests/
+  전체를 돌려라(부분 grep 말고) — 결과를 그대로 붙여넣고,
+  test_sermon_research_hub.py/test_reading_session.py/
+  test_source_navigation.py가 통과하는지 개별로 언급해라.
+- docs/agents/c1/C1-TASK-ORDER-047-REPORT.md 작성하고 끝내라 — 함수를
+  어디서 어디로 옮겼는지 표로 정리하고, chat_messages 디스크 저장
+  로직을 어떻게 처리했는지 명시해라.
+
+지금 시작하라.
+```
+
+---
+
+## 릴레이 29 — Task Order 046: UX-007 §6 인용 카드 공용 컴포넌트, research.py 마이그레이션 (2026-08-19, 완료 — 참고용)
 
 ```
 너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
