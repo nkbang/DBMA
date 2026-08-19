@@ -118,15 +118,14 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      모든 입력에 검색+AI 답변 항상 병렬 실행, 사이드바 "Chat" 제거.
      상세: `docs/agents/c1/C1-TASK-ORDER-047-REPORT.md`
    - UX-007 §2/§3/§6/§7/§11/§13 + §4 **전부 완료**.
-   - **C1 Task Order 048(§5 읽기 — 연구 워크스페이스) 발급, C1에게
-     이관** (2026-08-19) — 사용자 보류 해제, 착수 확정. 스펙의 "본문
-     표시 기능 없음" 전제가 사실이 아님(detail_panel.py가 이미 구현)을
-     CUE가 사전 확인해 문서에 명시, 새로 만들지 않고 타이포만 보강
-     지시. `research_detail_selection`/`sermon_research_selection`/
-     `render_citation_card`/`generate_answer` 전부 재사용, chat.py의
-     죽은 경로는 안 건드림. 릴레이:
-     `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 32. 전체
-     `pytest tests/` 실행 재차 명시(047에서 두 번 안 지켜졌던 부분).
+   - **C1 Task Order 048(§5 읽기 — 연구 워크스페이스)** — 1차 제출
+     **FAIL**(C1 보고는 "예외 없음"이었으나 CUE 실측에서 크래시 2건
+     확인). ①"인용하기" 버튼이 자신의 위젯 key를 덮어써 클릭할 때마다
+     `StreamlitAPIException`, ②관련 자료 카드의 버튼 key가
+     `source_file`에만 의존해 같은 파일에서 여러 청크가 나오면(실제
+     "로마서 8장" 검색으로 재현: 10건 중 4건 동일 파일)
+     `StreamlitDuplicateElementKey`로 크래시. Correction Order 048
+     발행, 릴레이 33. 재제출 대기 중.
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님

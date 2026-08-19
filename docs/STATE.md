@@ -919,9 +919,34 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   넣을 때 `tsu_id` 자리에 `document_id`를 대신 쓰도록 구체적으로
   지시(흡수 로직은 무변경으로 그대로 동작).
 - Task Order: `docs/agents/c1/C1-TASK-ORDER-048.md`. 릴레이:
-  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 32. "전체 pytest
-  실행"을 재차 강하게 명시(047에서 두 번 안 지켜졌던 이력 언급). C1
-  제출 시 CUE가 diff/실제 함수 호출/AppTest/전체 pytest로 독립 검증.
+  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 32.
+
+### C1 Task Order 048 — 1차 제출 FAIL, 크래시 2건 확인 (2026-08-19)
+
+- C1 보고서는 "각 버튼 클릭 시 예외 없음", "관련 자료 기능 정상"
+  이라고 적었으나, CUE가 실제 코퍼스로 재현한 결과 **확정적으로
+  크래시**하는 버그 2건을 발견:
+  1. **"인용하기" 버튼(100% 재현)**: `st.session_state[cite_key] =
+     citation_text`가 버튼 자신의 위젯 key를 클릭 직후 같은 런에서
+     덮어써 `StreamlitAPIException: cannot be modified after the
+     widget with key ... is instantiated`. 데이터 무관, 클릭할 때마다
+     크래시.
+  2. **관련 자료 카드(실제 데이터에서 사실상 항상 발생)**:
+     `citation_card.py`의 버튼 key가 `source_file` 값에만 의존 —
+     검색 결과가 청크 단위라 같은 파일에서 여러 청크가 흔히 나옴(CUE
+     실측: "로마서 8장" 검색 10건 중 4건이 "9. 로마서1.pdf" 동일
+     파일). `on_view_original=True`로 호출하는 관련 자료 루프에서
+     `StreamlitDuplicateElementKey`로 렌더링 시점에 즉시 크래시.
+  C1 보고서 §7의 "코퍼스가 작아서 관련 자료 0개, 정상 동작"이라는
+  서술은 사실 우연히 크래시 조건을 피해간 것이었음 — CUE가 지적.
+  부수 발견(비차단): `DocumentDetail`에 `excerpt` 필드가 없어
+  "설교 연구로 보내기"의 발췌문이 항상 비어있음(`hasattr` 가드가
+  항상 False로 조용히 빠짐).
+- `docs/agents/c1/C1-CORRECTION-ORDER-048.md` 발행 — 버튼 key 분리
+  (인용하기), `citation_card.py`에 `key_suffix` 파라미터 추가(기본값
+  ""로 기존 호출부 무영향) 지시. 릴레이 33
+  (`.automation/requests/C1-RELAY-SNIPPET.md`). "전체 pytest 실행"을
+  세 번째로 재차 강하게 명시.
 - (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
   다름("자료실" — library.py/sermon_review.py, "보관함" —
   dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,

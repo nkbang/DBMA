@@ -1,6 +1,42 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 32 — Task Order 048: UX-007 §5 읽기(연구 워크스페이스) (2026-08-19, 현재 유효)
+## 릴레이 33 — Correction Order 048: Task Order 048 반려, 크래시 2건 (2026-08-19, 현재 유효)
+
+```
+CUE 독립 검증 결과가 나왔다. Task Order 048은 FAIL이다 — 보고서는
+"예외 없음"이라고 적었지만 실제 코퍼스로 재현하니 두 곳에서 확정적으로
+크래시한다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-CORRECTION-ORDER-048.md
+
+요약(상세는 위 파일):
+1. (100% 재현) "인용하기" 버튼 — st.session_state[cite_key] = citation_text가
+   버튼 자신의 위젯 key를 덮어써서 StreamlitAPIException으로 클릭할
+   때마다 크래시한다. 버튼 key와 텍스트 저장 key를 분리해라
+   (cite_text_key = f"{cite_key}_text" 같은 식).
+2. (실제 데이터에서 사실상 항상 발생) 관련 자료 카드 —
+   citation_card.py의 버튼 key가 source_file 값에만 의존해서, 검색
+   결과가 청크 단위라 같은 source_file에서 여러 개 나오면(CUE가
+   "로마서 8장" 검색으로 실제 재현: 10건 중 4건이 같은 파일)
+   StreamlitDuplicateElementKey로 크래시한다. citation_card.py에
+   key_suffix 파라미터를 추가하고(기본값 ""라 기존 호출부는 영향
+   없음), 관련 자료 루프에서 enumerate 인덱스를 넘겨라.
+- 문서 §3(선택, 강제 아님): DocumentDetail에 excerpt 필드가 없어서
+  "설교 연구로 보내기"의 발췌문이 항상 비어있다 — 시간 되면 full_text
+  일부로 대체해라.
+- 이번엔 "코퍼스가 작아서 우연히 안 터졌다" 같은 조건 말고, 실제로
+  여러 관련 자료가 뜨는 검색어로 재현해서 확인해라.
+- pytest tests/ 전체를 반드시 돌려라 — 이게 세 번째 지시다.
+- C1-TASK-ORDER-048-REPORT.md에 수정 내역과 실측 결과를 추가해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 32 — Task Order 048: UX-007 §5 읽기(연구 워크스페이스) (2026-08-19, C1 1차 제출 — 참고용)
 
 ```
 너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
