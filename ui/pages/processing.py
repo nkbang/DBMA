@@ -300,10 +300,18 @@ def _render_ingestion_form() -> None:
     # 엔지니어링 유지보수용 위험 옵션 — 일반 사용자(베타 테스터)에게는 불필요해
     # 숨긴다. NAE_ADMIN_MODE=1일 때만 노출 (ui/app.py의 Monitor 게이트와 동일 패턴).
     if os.environ.get("NAE_ADMIN_MODE") == "1":
-        force_rechunk = st.checkbox(
-            "⚠️ 전체 재청킹 (내용이 같아도 다시 청킹)", value=False, key="force_rechunk",
-            help="청킹 알고리즘이 바뀐 뒤 이미 처리된 문서를 새 로직으로 다시 청킹할 때만 사용하세요. 자동으로 '강제 재처리'도 함께 적용됩니다.",
-        )
+        icon_col, checkbox_col = st.columns([1, 30])
+        with icon_col:
+            st.markdown(
+                '<span class="material-symbols-outlined" style="font-size: 18px; color: '
+                f'{THEME.STATUS_WARNING}; vertical-align: -4px;">warning</span>',
+                unsafe_allow_html=True,
+            )
+        with checkbox_col:
+            force_rechunk = st.checkbox(
+                "전체 재청킹 (내용이 같아도 다시 청킹)", value=False, key="force_rechunk",
+                help="청킹 알고리즘이 바뀐 뒤 이미 처리된 문서를 새 로직으로 다시 청킹할 때만 사용하세요. 자동으로 '강제 재처리'도 함께 적용됩니다.",
+            )
     else:
         force_rechunk = False
     store.set("force_rechunk", force_rechunk)
