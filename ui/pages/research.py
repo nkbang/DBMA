@@ -192,11 +192,12 @@ def _render_search_interface() -> None:
 
     # Primary search input — rounded search bar
     query = st.text_area(
-        "",  # Empty label for Stitch style (placeholder only)
+        "검색어",
         value=st.session_state.get("research_query", ""),
         placeholder="성경 구절, 주제, 질문을 입력하세요…",
         height=100,
         key="research_query",
+        label_visibility="collapsed",
     )
 
     if query:
