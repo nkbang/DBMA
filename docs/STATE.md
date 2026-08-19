@@ -659,8 +659,14 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   예외 0건, `pytest -k "sidebar or nav or app"` 122 passed, `pytest -k
   "dashboard or library or source_navigation"` 105 passed(회귀 없음).
   상세: `docs/agents/c1/C1-TASK-ORDER-041-REPORT.md`.
-- 다음 후보(§2 빠른 시작 버튼 재배치)는 **미발급** — 사용자 복귀 후
-  우선순위 확인 후 착수.
+- 다음 후보(§2) 검토 후 **미착수로 보류**: `DBMA-UX-007-IMPLEMENTATION-
+  SPEC.md` §2 실제 내용을 확인한 결과 "빠른 시작 버튼 재배치" 수준이
+  아니라 Home 전체 재구성(이어서 읽기 카드, 최근 연구 2열 그리드,
+  "조용한 통계" 등)이며, 명시적으로 "§13 참고"(신규 세션 상태, 아직
+  미구현)에 의존한다. 041과 달리 저위험 단순 작업이 아니라 신규
+  session-state 설계 판단이 필요해 무인 상태로 진행하지 않고 보류 —
+  TODO.md의 "§2 빠른 시작 버튼 재배치" 표현은 스펙 규모를 과소평가한
+  것이었음을 함께 정정.
 - `.automation/`(night-shift/control-plane), n8n Loop, RAW/Retrieval/
   Embedding Engine, 기존 ADR — 오늘 밤 무접촉 유지(확인함, 변경 없음).
 

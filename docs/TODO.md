@@ -70,8 +70,11 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
    - ~~C1 Task Order 041 (§1 Global Navigation 부분 적용)~~ —
      **완료 (PASS)**, 2026-08-19 야간 무인 작업(사용자 부재, CUE가
      build+audit 겸행). 상세: `docs/agents/c1/C1-TASK-ORDER-041-REPORT.md`
-   - 다음 iteration 미정의 — §2 빠른 시작 버튼 재배치 후보(미발급,
-     사용자 복귀 후 확인)
+   - 다음 후보였던 §2("빠른 시작 버튼 재배치")는 실제로는 Home 전체
+     재구성(이어서 읽기 카드/최근 연구 그리드/§13 신규 세션 상태 의존)
+     — 무인 작업 저위험 범위를 벗어나 보류. 재개 전 §13 세션 상태
+     설계를 사용자와 먼저 확정할 것. 상세: `docs/STATE.md` "오늘 밤
+     무인 작업" 절
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님
