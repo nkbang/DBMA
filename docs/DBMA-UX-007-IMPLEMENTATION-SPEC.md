@@ -48,6 +48,27 @@
 
 ---
 
+## 0.1 UX Invariant #2 — 이모지 사용 금지 (2026-08-19 추가, HQ 지시)
+
+> No emoji anywhere in the UI — buttons, menus, cards, status indicators,
+> navigation, or Streamlit `icon` parameters. If an icon is needed, use
+> the project's existing SVG/icon component system. Do not invent a new
+> icon system unilaterally.
+
+본 문서(§1 이하)와 `mockup.html`(Deliverable 4)이 지금까지 아이콘으로
+이모지(🏠📚🔎✍️💡 등)를 광범위하게 써왔다 — **이 부분은 이 개정으로
+무효화된다.** 앞으로 이 스펙을 구현하거나 참조할 때 각 섹션의 이모지
+표기는 무시하고 텍스트 라벨만 따른다(예: "🏠 홈" → "홈").
+
+**현재 상태**: 코드베이스에 재사용 가능한 SVG/아이콘 컴포넌트 체계가
+없다(`ui/pages/_base.py::BasePage.icon` 기본값 자체가 이모지,
+`DBMA_core.svg`는 로고 전용). 아이콘 체계를 새로 만드는 것은 이번
+개정의 범위가 아니다 — 아이콘 없이 텍스트 라벨만으로 화면이
+이해되게 하는 것을 기본으로 하고, SVG 아이콘 도입 여부는 별도 HQ
+결정을 기다린다.
+
+---
+
 ## 1. Global Navigation Specification
 
 **사이드바 구성 (5메뉴, 고정)**
