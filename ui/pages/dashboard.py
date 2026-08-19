@@ -23,7 +23,7 @@ def render_dashboard_page() -> None:
     파이프라인 %, 벡터DB/메모리 등 개발자용 상세는 Monitor로 옮겨져 있다
     (같은 정보를 두 곳에서 실데이터/가짜 데이터로 중복 보여주던 문제 해소).
     """
-    page = BasePage(title="홈", icon="🏠")
+    page = BasePage(title="홈", icon="")
     page.render_header()
 
     _render_status_banner()
@@ -71,11 +71,11 @@ def _render_quick_actions() -> None:
     st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.button("💬 질문하기", use_container_width=True, on_click=_go_to, args=("Chat",))
+        st.button("질문하기", use_container_width=True, on_click=_go_to, args=("Chat",))
     with c2:
-        st.button("🔍 자료 검색", use_container_width=True, on_click=_go_to, args=("Research",))
+        st.button("자료 검색", use_container_width=True, on_click=_go_to, args=("Research",))
     with c3:
-        st.button("📤 문서 추가", use_container_width=True, on_click=_go_to, args=("Processing",))
+        st.button("문서 추가", use_container_width=True, on_click=_go_to, args=("Processing",))
 
 
 def _render_library_summary() -> None:
@@ -108,8 +108,8 @@ def _render_library_summary() -> None:
             help="data/RAW 폴더에 현재 남아있는 파일 수 — 처리 여부와 무관합니다. 처리된 원본이 삭제되지 않고 RAW에 남아있는 경우가 흔해, 아래 처리 완료/미처리 구분을 함께 보세요.",
         )
         st.caption(
-            f"✅ 처리 완료 {raw_breakdown['processed']}권 · "
-            f"⏳ 미처리 {raw_breakdown['unprocessed']}권"
+            f"처리 완료 {raw_breakdown['processed']}권 · "
+            f"미처리 {raw_breakdown['unprocessed']}권"
         )
     with c2:
         st.metric("정리된 자료", f"{len(effective_docs)}개 문서", help="정리가 끝나 검색·연구에 바로 쓸 수 있는 문서 수입니다 — 아래 '유형별 문서'와 항상 같은 기준입니다.")
@@ -128,10 +128,10 @@ def _get_overall_status() -> tuple[str, str, str, str]:
     """
     stages = ExecutionContext().get_pipeline_status()
     if stages and all(s.status == "complete" for s in stages):
-        return "정상", "✅", THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG
+        return "정상", "", THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG
     if any(s.status == "active" for s in stages):
-        return "처리 중", "🔄", THEME.STATUS_INFO, THEME.STATUS_INFO_BG
-    return "확인 필요", "⚠️", THEME.STATUS_WARNING, THEME.STATUS_WARNING_BG
+        return "처리 중", "", THEME.STATUS_INFO, THEME.STATUS_INFO_BG
+    return "확인 필요", "", THEME.STATUS_WARNING, THEME.STATUS_WARNING_BG
 
 
 # ── Utility Functions ──────────────────────────────────────────────
@@ -254,14 +254,6 @@ def _get_effective_documents() -> dict:
 # ── Document Type (doc_type) Summary & Manual Labeling ──────────────
 
 _DOC_TYPE_ORDER = ["주석", "설교", "사전", "논문", "조직신학", "기타"]
-_DOC_TYPE_ICONS = {
-    "주석": "📖",
-    "설교": "🎤",
-    "사전": "📚",
-    "논문": "📜",
-    "조직신학": "⛪",
-    "기타": "📁",
-}
 # 유형별 수량사 — 책 형태 자료는 "권", 낱건 자료는 "건"으로 구분.
 _DOC_TYPE_UNITS = {
     "주석": "권",
@@ -321,7 +313,7 @@ def _render_doc_type_summary() -> None:
     cols = st.columns(len(card_types))
     for i, doc_type in enumerate(card_types):
         with cols[i]:
-            icon = "🆕" if doc_type == "미처리" else _DOC_TYPE_ICONS.get(doc_type, "📁")
+            icon = ""
             count = len(unprocessed_files) if doc_type == "미처리" else counts[doc_type]
             unit = "권" if doc_type == "미처리" else _DOC_TYPE_UNITS.get(doc_type, "개")
             # Use button with on_click to toggle selection
@@ -393,12 +385,12 @@ def _render_unprocessed_detail(unprocessed_files: list[str]) -> None:
     없어 저장할 자리가 없고, 처리하면 guess_doc_type()이 자동으로
     타입을 붙인다."""
     st.divider()
-    st.markdown(f"**🆕 미처리 ({len(unprocessed_files)}권)** — 아직 정리 과정을 거치지 않았습니다.")
+    st.markdown(f"**미처리 ({len(unprocessed_files)}권)** — 아직 정리 과정을 거치지 않았습니다.")
     for name in unprocessed_files:
         st.markdown(f"- {name}")
     st.caption("처리하면 유형이 자동으로 추정되어 붙습니다(불확실하면 \"기타\").")
     st.button(
-        "📤 지금 처리하러 가기", key="_go_process_unprocessed",
+        "지금 처리하러 가기", key="_go_process_unprocessed",
         on_click=_go_to, args=("Processing",),
     )
 
@@ -410,8 +402,7 @@ def _render_doc_type_detail(docs: dict, selected_type: str, untyped_ids: list[st
     # Header with deselect button
     col_title, col_close = st.columns([5, 1])
     with col_title:
-        icon = _DOC_TYPE_ICONS.get(selected_type, "📁")
-        st.markdown(f"**{icon} {selected_type} 문서**")
+        st.markdown(f"**{selected_type} 문서**")
     with col_close:
         if st.button("✕", key=f"_close_{selected_type}", help="닫기"):
             st.session_state["selected_doc_type"] = None
@@ -424,7 +415,7 @@ def _render_doc_type_detail(docs: dict, selected_type: str, untyped_ids: list[st
             type_docs[doc_id] = doc
     
     if not type_docs:
-        st.info(f"{_DOC_TYPE_ICONS.get(selected_type, '')} {selected_type} 문서가 없습니다.")
+        st.info(f"{selected_type} 문서가 없습니다.")
         return
     
     st.caption(f"{len(type_docs)}개 문서")
@@ -445,7 +436,7 @@ def _render_doc_type_detail(docs: dict, selected_type: str, untyped_ids: list[st
 
         col_name, col_select = st.columns([4, 1])
         with col_name:
-            st.markdown(f"**{_DOC_TYPE_ICONS.get(current_type, '📁')} {source_file}**")
+            st.markdown(f"**{source_file}**")
 
         with col_select:
             options = list(_DOC_TYPE_ORDER)
@@ -456,7 +447,7 @@ def _render_doc_type_detail(docs: dict, selected_type: str, untyped_ids: list[st
                 index=current_index,
                 key=f"_type_select_{doc_id}",
                 label_visibility="collapsed",
-                format_func=lambda t: f"{_DOC_TYPE_ICONS.get(t, '📁')} {t}",
+                format_func=lambda t: t,
             )
             if chosen != current_type:
                 _save_doc_type(doc_id, chosen)
@@ -489,7 +480,7 @@ def _render_manual_labeler(docs: dict, untyped_ids: list[str]) -> None:
                 options=_DOC_TYPE_ORDER,
                 index=_DOC_TYPE_ORDER.index(current_val) if current_val in _DOC_TYPE_ORDER else 0,
                 key=f"_dt_label_{target_id}",
-                format_func=lambda x: f"{_DOC_TYPE_ICONS.get(x, '📁')} {x}",
+                format_func=lambda x: x,
                 label_visibility="collapsed",
             )
         

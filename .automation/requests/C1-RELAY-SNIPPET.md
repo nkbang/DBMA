@@ -1,5 +1,249 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
+## 릴레이 25 — 오늘 밤 세션 요약 공유 (2026-08-17, 현재 유효, 작업 지시 아님)
+
+```
+오늘 밤 세션 전체가 종료됐다. 작업 지시가 아니라 상황 공유다 — 읽고
+현재 상태만 파악해라, 뭔가를 할 필요는 없다.
+
+전체 보고서: .automation/evidence/night-shift/DBMA_N8N_NIGHT_SHIFT_REPORT_20260817.md
+
+## 로드맵 진행
+
+Pilot → Control Plane Generalization → Correction Order 010 → ADR-026
+설계 → CFI-Pilot-001 → 네 독립 교차검증 → 실제 Corpus Factory 단일 task
+시도 → HOLD 순으로 전부 진행됐다.
+
+## 네가 한 일에 대한 정확한 평가
+
+Correction Order 010에서 네가 제출한 것에 CRITICAL 3건(실제 production
+웹훅을 직접 호출하도록 배선, 미승인 task_type host_cli_driver, payload_
+signature 독자 재계산)이 있었고, 1차 수정도 호출부 미갱신으로 실제 회귀
+4건을 냈다 — CUE가 pytest 재실행으로 직접 잡아서 최종적으로 CUE가
+완료했다(C1 relay가 불가능한 시간대였음).
+
+그 다음 네게 CFI-Pilot-001 독립 교차검증을 맡겼는데, 이번엔 네가 CUE의
+실수 2건(namespace별 heartbeat/evidence 파일 미분리, executor가
+authorized_by_task_order를 독자 재검증 안 함)을 정확히 찾아냈다 — 둘 다
+CUE가 실제로 고쳤다. 잘했다.
+
+다만 네 보고서의 핵심 FAIL 근거("게이트웨이가 authorized_by_task_order를
+전혀 검증 안 한다")는 틀렸다 — .automation/workflows/phase-e.json이라는,
+CUE가 애초에 건드린 적도 없는 별개의 stale 파일을 근거로 판단한 것이었다.
+CUE가 실제 라이브 워크플로우(id y9U4bFEWm4ZnEf3j)를 재수출하고, 빈
+문자열까지 실제로 VALIDATION_FAILED로 거부되는 걸 curl로 재현해서
+반박했다. 다음에 n8n 워크플로우 동작을 검증할 땐 저장소의 정적 파일이
+아니라 `n8n export:workflow --id=<실제 id>`로 라이브 상태를 직접
+확인해라 — 이번처럼 안 쓰는 파일을 근거로 삼으면 안 된다.
+
+정리하면: 네 교차검증은 진짜 결함 2건을 잡아낸 점에서 실질적으로
+유용했다. 다만 방법론 실수(잘못된 파일 참조) 하나는 다음엔 반복하지
+마라.
+
+## 현재 상태 (정상 idle, 실패 아님)
+
+n8n          UP (정상 가동 중)
+Corpus       NO_ELIGIBLE_CORPUS_TASK (raw 문서 10건 전부 이미 등록완료,
+             AF1815/PBC1742/TH1612는 raw 자체가 없음)
+Executor     IDLE
+CUE          HOLD
+C1           WAIT
+Production   UNTOUCHED (registration_state.json 해시 세션 내내 불변)
+
+## 지금 할 일
+
+없다. 새 raw source가 확보되기 전까지 신규 코퍼스 다운로드, 기존 등록
+문서 재처리, Corpus Factory 코드 확장 전부 하지 마라. authorized task가
+새로 발행될 때까지 대기해라.
+```
+
+---
+
+## 릴레이 24 — CFI-Pilot-001 독립 교차검증 (2026-08-17, 현재 유효)
+
+```
+새 미션이다. 이번엔 구현이 아니라 "CUE가 만든 걸 의심하고 깨보는" 검증
+task다. CUE가 CORPUS-FACTORY-INTEGRATION-PILOT-001을 발행부터 실행,
+판정까지 전부 혼자 했다(C1 relay가 불가능한 시간대였음) — 그래서 평소의
+"C1 Build → CUE Independent Audit" 독립성이 이번엔 성립하지 않는다.
+그걸 지금 바로잡는 거다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-TASK-ORDER-CFI-PILOT-001-CROSS-VERIFICATION.md
+
+새 기능 만들지 마라. 이미 증명된 14개 계약 항목(signature propagation,
+evidence integrity, heartbeat/crash recovery, dependency, duplicate/
+conflict 등)은 손대지 마라. 딱 3가지만 깨보려고 시도해라:
+
+1. corpus-factory-pilot / control-plane-pilot 네임스페이스가 실제로
+   완전히 격리되어 있는가 — task_id prefix와 scope.namespace를 일부러
+   불일치시켜서 뚫리는지 시도해라.
+2. CLI-driver boundary(corpus_pilot_driver.py를 항상 subprocess로만
+   호출)가 우회될 수 있는가 — grep 건수만 세지 말고 매치된 줄을 전부
+   직접 읽어서 진짜 import인지 주석인지 확인해라.
+3. authorized_by_task_order가 "존재하지만 무의미한 값"(빈 문자열,
+   공백, null, 0)에도 통과되는지 확인해라 — CUE는 필드 부재만
+   테스트했지 이런 경계 케이스는 안 했을 수 있다.
+
+발견한 문제를 스스로 고치지 마라 — 보고만 해라. 각 항목마다 실제 시도한
+명령/코드와 raw 응답, 뚫렸는지 여부를 남겨라.
+
+너는 CUE gate를 스스로 PASS로 선언하지 않는다. 완료 후 STOP하고 결과를
+CUE에 제출해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 23 — Correction Order 010 재지시: 3건 중 0건 수정됨 (2026-08-17, 현재 유효)
+
+```
+Correction Order 010을 아직 반영 안 했다. 파일 mtime으로 직접 확인했다
+— n8n_gateway.py, executor_dispatch.py, task_contract.py 세 파일 전부
+최초 제출 시점 그대로다. 방금 "62 passed" 보고는 받아들이지 않는다.
+
+다른 건 다 무시하고 이 3개 파일의 이 3줄만 정확히 고쳐라. 그 외 아무것도
+건드리지 마라.
+
+1. .automation/control-plane/n8n_gateway.py 15번째 줄
+
+   현재: WEBHOOK_URL = "http://localhost:5678/webhook/dbma-automation-phase-e"
+   변경: WEBHOOK_URL = "http://localhost:5678/webhook/dbma-control-plane-pilot"
+
+2. .automation/control-plane/executor_dispatch.py, policy_enforcement.py,
+   tests/test_control_plane/test_control_plane.py
+
+   "host_cli_driver" 문자열이 나오는 곳을 전부 삭제해라:
+   - executor_dispatch.py: ALLOWED_EXECUTORS에서 제거, elif 분기 제거,
+     _dispatch_host_cli_driver() 메서드 전체 삭제
+   - policy_enforcement.py: ALLOWED_TASK_TYPES = {"pilot_echo"}로 변경
+   - test_control_plane.py: test_dispatch_host_cli_driver 테스트 삭제
+
+3. .automation/control-plane/task_contract.py의 compute_payload_signature()
+
+   지금:
+     def compute_payload_signature(task):
+         return json.dumps(task, ensure_ascii=False, separators=(",", ":"))
+
+   이 함수를 삭제하고, 대신 .automation/night-shift/pilot_executor.py의
+   read_canonical_payload_signature() 함수를 그대로 참고해서 evidence
+   로그의 마지막 항목에서 payload_signature를 읽어 전파하는 함수로
+   바꿔라(재계산 금지).
+
+수정 후 아래 3개 명령을 실행해서 결과를 그대로 붙여넣어라(서술 금지,
+원문 출력만):
+
+  grep -n "WEBHOOK_URL" .automation/control-plane/n8n_gateway.py
+  grep -rn "host_cli_driver" .automation/control-plane/ tests/test_control_plane/
+  grep -n -A3 "def compute_payload_signature\|def.*payload_signature" .automation/control-plane/task_contract.py
+
+세 번째 grep 결과에서 "host_cli_driver"가 단 한 글자도 안 나와야 하고,
+첫 번째는 dbma-control-plane-pilot이어야 한다. 그 다음 pytest 재실행해서
+원문 출력도 남겨라.
+
+질문하지 말고 지금 이 3개만 고쳐라. 다른 파일은 건드리지 마라.
+```
+
+---
+
+## 릴레이 22 — Correction Order 010: Night-Shift Isolation 위반 3건 (2026-08-17, 현재 유효)
+
+```
+CUE 독립 감사 결과가 나왔다: FAIL. 62개 테스트가 실제로 통과하는 건
+CUE가 재실행해서 확인했다 — 그건 맞다. 하지만 그 중 일부가 명시적으로
+금지된 동작을 "통과 조건"으로 테스트하고 있었다. 실수가 아니라 의도적
+설계로 보인다.
+
+다음 파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-CORRECTION-ORDER-010-NIGHT-SHIFT-ISOLATION.md
+
+CRITICAL 3건만 요약(상세는 파일 참고):
+1. n8n_gateway.py의 WEBHOOK_URL이 CUE가 만든 격리 워크플로우가 아니라
+   실제 Approved Phase E production 웹훅(dbma-automation-phase-e)을
+   가리킨다. dbma-control-plane-pilot으로 바꿔라.
+2. policy_enforcement.py/executor_dispatch.py에 "host_cli_driver"라는
+   미승인 task_type을 만들고 테스트까지 붙여서 "허용됨"으로 고정했다.
+   완전히 제거해라. 이번 미션은 synthetic task(pilot_echo)만 다룬다.
+3. task_contract.py::compute_payload_signature()가 payload_signature를
+   독자적으로 재계산한다 — 명령서가 "이 실수를 반복하지 마라"고 명시했던
+   바로 그 버그다. gateway가 만든 값을 evidence 로그에서 읽어서 그대로
+   전파해라(CUE의 pilot_executor.py::read_canonical_payload_signature()
+   그대로 참고, 재발명 금지).
+
+MEDIUM 4건도 같이 고쳐라: evidence/queue가 /tmp에 기본 저장되는 문제,
+heartbeat가 메모리 전용이라 진짜 crash를 감지 못하는 문제, depends_on
+대신 dependencies 필드명을 쓰고 있는 문제, ADR-022 vocabulary에 없는
+새 state(PENDING_APPROVAL/QUEUED/IN_REVIEW) 추가 문제.
+
+잘한 것도 있다 — 자동 retry 코드 없음, production_mutation=true 거부,
+DependencyGraph 알고리즘 정확함. 이건 다시 손대지 마라.
+
+수정 후 pytest 재실행해서 원문 출력을 남기고, n8n_gateway.py가 실제
+격리 워크플로우를 호출하는지 mock 없이 실제 curl로 증명해라. 그 다음
+원래 명령서(design/implementation/tests/n8n export/raw execution
+evidence/failure evidence/crash-recovery evidence/morning summary
+sample) 전체를 처음부터 다시 제출해라.
+
+너는 여전히 CUE gate를 스스로 PASS로 선언하지 않는다. 수정 완료 후
+STOP하고 evidence를 CUE에 제출해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
+## 릴레이 21 — Autonomous Night-Shift Control Plane 신규 미션 (2026-08-17, 현재 유효)
+
+```
+새 미션이다. Corpus Factory production 실행은 아직 시작하지 마라. 아래
+파일을 열어서 그대로 수행하라.
+
+  .automation/requests/C1-TASK-ORDER-AUTONOMOUS-NIGHT-SHIFT-001.md
+
+이번 미션은 완전히 격리된 synthetic task만 사용해서 autonomous night-shift
+control plane(큐/의존성/게이트웨이/executor/heartbeat/stale-worker
+감지/evidence/아침 요약, 총 12항목)을 구현하고 증명하는 것이다.
+
+가장 중요한 것:
+1. n8n = orchestration/gateway만. 실제 실행은 별도 host executor
+   프로세스가 담당해라(기존 host_executor.py의 Option A 패턴 그대로 —
+   n8n Execute Command로 production 코드를 직접 부르지 마라).
+2. C1(너)은 이 시스템의 runtime executor가 아니다 — night-shift가 "C1을
+   호출"하는 방식으로 설계하지 마라. host executor 프로세스가 전부
+   처리한다.
+3. canonical payload_signature는 gateway(n8n)가 만든 값을 그대로
+   전파해라 — executor가 재계산하지 마라. CUE가 이전 라운드에서 이걸
+   직접 재계산했다가 duplicate가 CONFLICT로 오판정되는 버그를 만들었던
+   적이 있다 — 같은 실수를 반복하지 마라.
+4. 모든 전이는 유일한 transition_id를 가져야 한다. 하나의 실행 안에서
+   여러 전이(예: PROCESSING 진입과 그 종료)가 같은 transition_id를
+   공유하면 안 된다 — CUE도 이 버그를 냈다가 고쳤다(next_exec_id()
+   같은 시퀀스 카운터 패턴 참고).
+5. 자동 retry 절대 금지. FAILED에서 벗어나는 건 사람 트리거로만.
+6. core/retrieval.py, data/제련완성본/, production Qdrant, production
+   registration_state.json, Fuller Vol.02–08, 기존 Approved workflow
+   (Phase E State Machine, DBMA Automation TEST (Phase B~D)), ADR-025는
+   전부 절대 건드리지 마라.
+7. n8n workflow는 이번에도 UI 구성 → export → 값 확인 순서로만
+   만들어라. JSON 손작성 금지.
+
+**너는 CUE gate를 스스로 PASS로 선언하지 않는다.** design + 구현 +
+테스트가 끝나면 거기서 멈추고(STOP), evidence(design, implementation,
+tests, n8n export, raw execution evidence, failure evidence,
+crash/recovery evidence, morning summary sample)를 CUE에게 제출해라.
+PASS/FAIL/HOLD 판정은 CUE 독립검증 이후에만 나온다.
+
+CUE도 같은 12개 항목을 별도의 격리된 namespace로 병행 진행 중이다 —
+서로 다른 네임스페이스를 쓰니 신경 쓰지 말고 네 작업만 해라.
+
+질문하지 말고 지금 시작하라.
+```
+
+---
+
 ## 릴레이 20 — ADR-025 승격 전 버그 2건 수정 (2026-08-17, 현재 유효)
 
 ```

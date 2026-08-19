@@ -91,7 +91,7 @@ def _apply_library_styles() -> None:
 def render_library_page() -> None:
     """Render the DBMA Library workspace page."""
     _apply_library_styles()
-    page = BasePage(title="자료 찾기", icon="🔍")
+    page = BasePage(title="자료 찾기", icon="")
     page.render_header()
 
     # ── Pipeline Summary (from Dashboard) ──────────────────────
@@ -102,11 +102,11 @@ def render_library_page() -> None:
     _render_search_bar()
 
     # ── Document Collection ────────────────────────────────────
-    page.render_section("문서 컬렉션", icon="📁")
+    page.render_section("문서 컬렉션", icon="")
     _render_document_collection()
 
     # ── Document Detail Panel ──────────────────────────────────
-    page.render_section("문서 상세", icon="📋")
+    page.render_section("문서 상세", icon="")
     _render_document_detail_panel()
 
     page.render_footer()
@@ -117,7 +117,7 @@ def _render_search_bar() -> None:
     store = StateStore()
 
     query = st.text_input(
-        "🔍 내 자료에서 찾기",
+        "내 자료에서 찾기",
         placeholder="문서 제목, 메타데이터 또는 내용으로 검색...",
         key="library_search",
         help="문서 이름, 타입, 메타데이터로 필터링합니다.",
@@ -157,7 +157,7 @@ def _render_sample_library_section(sample_docs: list[dict]) -> None:
     st.markdown(
         f"""
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-            <span style="font-weight:600; color:{THEME.TEXT_PRIMARY};">📚 기본 자료</span>
+            <span style="font-weight:600; color:{THEME.TEXT_PRIMARY};">기본 자료</span>
             <span style="font-size:10px; font-weight:700; letter-spacing:0.03em;
                          background:#F0DCC8; color:#6F6050; padding:2px 8px; border-radius:10px;">
                 읽기 전용
@@ -207,7 +207,7 @@ def _render_document_collection() -> None:
         _render_sample_library_section(sample_docs)
 
     if not all_documents:
-        st.info("📂 문서가 없습니다. RAW 폴더에 문서를 추가하세요.")
+        st.info("문서가 없습니다. RAW 폴더에 문서를 추가하세요.")
         return
 
     # Read file type filter from session state
@@ -295,7 +295,7 @@ def _render_document_detail_panel() -> None:
     selected_doc = store.get("library_selected_doc")
 
     if selected_doc is None:
-        st.caption("📁 문서 컬렉션에서 문서를 선택하여 세부 정보를 확인하세요.")
+        st.caption("문서 컬렉션에서 문서를 선택하여 세부 정보를 확인하세요.")
         return
 
     col1, col2 = st.columns(2)
@@ -452,7 +452,7 @@ def _render_provenance_section(source_filename: str) -> None:
     if not chain and not failures:
         return  # nothing to show — avoid an empty "이력" expander for untouched files
 
-    with st.expander("🕓 이력 (버전 / 실패 기록)", expanded=False):
+    with st.expander("이력 (버전 / 실패 기록)", expanded=False):
         if chain:
             st.caption(f"버전 {len(chain)}개")
             for record in chain:
@@ -474,10 +474,10 @@ def _render_metadata_edit_form(source_filename: str) -> None:
     """
     document_id, record = _find_registry_record(source_filename)
     if document_id is None:
-        st.caption("ℹ️ 아직 처리되지 않은 문서입니다 — 메타데이터 수정은 처리 완료 후 가능합니다.")
+        st.caption("아직 처리되지 않은 문서입니다 — 메타데이터 수정은 처리 완료 후 가능합니다.")
         return
 
-    with st.expander("📝 문서 메타데이터 수정 (title / author / chapter / page)", expanded=False):
+    with st.expander("문서 메타데이터 수정 (title / author / chapter / page)", expanded=False):
         with st.form(key=f"metadata_edit_form_{document_id}"):
             new_title = st.text_input("제목 (title)", value=record.get("title") or "")
             new_author = st.text_input("저자 (author)", value=record.get("author") or "")
@@ -529,7 +529,7 @@ def _render_exclude_section(source_filename: str) -> None:
 
     is_excluded = record.get("ingest_status") == "EXCLUDED"
 
-    with st.expander("🚫 처리 제외 관리", expanded=is_excluded):
+    with st.expander("처리 제외 관리", expanded=is_excluded):
         if is_excluded:
             st.warning(
                 f"이 문서는 제외 상태입니다 (사유: {record.get('exclude_reason') or '-'}, "
@@ -547,7 +547,7 @@ def _render_exclude_section(source_filename: str) -> None:
             st.caption("RAW 원본은 삭제되지 않습니다 — 정리된 자료만 삭제하고 향후 처리 대상에서 제외합니다.")
             reason = st.text_input("제외 사유", key=f"exclude_reason_{document_id}")
             confirm = st.checkbox("이 문서를 처리 대상에서 제외하고 기존 색인 데이터를 정리합니다.", key=f"exclude_confirm_{document_id}")
-            if st.button("🚫 처리 제외", key=f"exclude_btn_{document_id}", disabled=not confirm, use_container_width=True):
+            if st.button("처리 제외", key=f"exclude_btn_{document_id}", disabled=not confirm, use_container_width=True):
                 cleanup = exclude_document_from_index(document_id, output_dir=DEFAULT_OUTPUT_DIR, execute=True)
                 registry_path = _registry_path()
                 registry = load_identity_registry(str(registry_path))
@@ -615,7 +615,7 @@ def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
     if not md_matches:
         return  # 아직 처리되지 않은 문서 — 미리볼 MD가 없음
 
-    with st.expander("🔍 청킹 미리보기", expanded=False):
+    with st.expander("청킹 미리보기", expanded=False):
         state_key = f"_chunk_preview_result_{stem}"
 
         saved_path = _chunks_meta_path(stem)
@@ -623,9 +623,9 @@ def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
             try:
                 saved_meta = json.loads(saved_path.read_text(encoding="utf-8"))
                 st.caption(
-                    f"💾 마지막 저장: {saved_meta.get('saved_at', '?')} • "
+                    f"마지막 저장: {saved_meta.get('saved_at', '?')} • "
                     f"청크 {saved_meta.get('chunk_count', '?')}개 • "
-                    f"통과 여부: {'✅' if saved_meta.get('quality', {}).get('passed') else '⚠️'}"
+                    f"통과 여부: {'통과' if saved_meta.get('quality', {}).get('passed') else '미달'}"
                 )
             except (json.JSONDecodeError, OSError):
                 pass
@@ -639,14 +639,14 @@ def _render_chunk_preview_section(source_filename: str, doc_type: str) -> None:
             return
 
         quality = result.quality
-        badge = "✅ 통과" if quality.passed else "⚠️ 기준 미달"
+        badge = "통과" if quality.passed else "기준 미달"
         st.caption(
             f"{badge} • 청크 {len(result.chunks)}개 • 전략={result.strategy} • "
             f"평균 noise={quality.avg_noise:.3f} • 평균 중복={quality.avg_dup:.3f} • "
             f"짧은청크비율={quality.short_ratio:.3f}"
         )
 
-        if st.button("💾 이 결과 저장", key=f"chunk_preview_save_{stem}"):
+        if st.button("이 결과 저장", key=f"chunk_preview_save_{stem}"):
             document_id, _ = _find_registry_record(source_filename)
             saved = _save_chunk_snapshot(stem, source_filename, document_id, result)
             st.success(f"저장됨: {saved}")
@@ -738,7 +738,7 @@ def _render_document_rows(documents: list[dict]) -> None:
                 f"""
                 <div class="{card_class}">
                     <span class="{badge_class}">{doc.get('type', '?')}</span>
-                    <div class="lib-title">📄 {doc.get('title', 'Unknown')}</div>
+                    <div class="lib-title">{doc.get('title', 'Unknown')}</div>
                     <div class="lib-meta">{doc.get('size', '?')} · {doc.get('modified', '?')}</div>
                 </div>
                 """,
