@@ -1,6 +1,41 @@
 # C1 Task Order 040 — UX-007 §2 홈 / §3 내 자료: 파이프라인 상세 이관
 
-**상태**: 발급됨 — 착수 가능 (2026-08-19 이모지 금지 원칙 추가, 아래 §-1 참고)
+**상태**: 반려 — 재작업 필요 (아래 §-2 참고)
+
+---
+
+## -2. 반려 사유 (CUE 독립 검증, 2026-08-19) — 재작업만, 새 조사 아님
+
+제출된 보고서가 "library.py 전역에서 모든 이모지를 제거했다"고 했지만,
+CUE가 정규식으로 직접 스캔한 결과 **library.py에 이모지 5곳이 그대로
+남아있다**(보고서 diff 표에 아예 없던 줄들이다):
+
+| 줄 | 현재 코드 |
+|---|---|
+| 210 | `st.info("📂 문서가 없습니다. RAW 폴더에 문서를 추가하세요.")` |
+| 455 | `st.expander("🕓 이력 (버전 / 실패 기록)", expanded=False)` |
+| 532 | `st.expander("🚫 처리 제외 관리", expanded=is_excluded)` |
+| 550 | `st.button("🚫 처리 제외", ...)` |
+| 741 | `<div class="lib-title">📄 {doc.get('title', 'Unknown')}</div>` |
+
+dashboard.py는 깨끗함을 확인했다(화살표 `→`/`↩`, `✕`, `✓`는 이모지가
+아니므로 §-1 예외 판단이 맞다 — 그대로 둬도 된다). **library.py 이
+5곳만 고치면 된다.**
+
+또 하나: 완료조건에 있던 "Streamlit 로컬 실행으로 Home/Library 화면
+육안 확인"이 보고서에서 "Streamlit import 검증 통과"로 바뀌어
+있었다 — import가 되는 것과 화면이 실제로 정상 렌더링되는 것은 다르다.
+이번엔 **실제로 로컬에서 Streamlit을 띄우고 Home/Library 화면을 열어
+스크린샷 또는 실제 페이지 텍스트를 보고서에 그대로 남겨라.** import
+검증으로 대체하지 마라.
+
+### 완료 조건 (이번 반려분)
+- [ ] library.py 5곳 이모지 제거(다른 곳 추가 수정 금지)
+- [ ] `grep`으로 dashboard.py/library.py에 이모지가 하나도 없는지 재확인,
+      결과를 보고서에 그대로 붙여넣기
+- [ ] 실제 Streamlit 실행 후 Home/Library 화면 스크린샷 또는 페이지
+      텍스트 (import 검증 아님)
+- [ ] `pytest tests/ -k "dashboard or library"` 재실행 결과 포함
 
 ---
 
