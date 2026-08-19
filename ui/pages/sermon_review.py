@@ -84,7 +84,7 @@ def _list_candidate_files() -> list[str]:
 def _render_file_selector() -> None:
     files = _list_candidate_files()
     if not files:
-        st.warning("자료실에 파일이 없습니다.")
+        st.warning("보관함에 파일이 없습니다.")
         return
 
     selected = st.selectbox("설교 모음 파일 선택", options=files, key="sermon_review_file")

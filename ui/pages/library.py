@@ -207,7 +207,7 @@ def _render_document_collection() -> None:
         _render_sample_library_section(sample_docs)
 
     if not all_documents:
-        st.info("문서가 없습니다. 자료실에 문서를 추가하세요.")
+        st.info("문서가 없습니다. 보관함에 문서를 추가하세요.")
         return
 
     # Read file type filter from session state

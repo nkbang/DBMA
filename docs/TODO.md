@@ -103,8 +103,12 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      1차 제출 FAIL(조건부, 2곳 N/A 하드코딩) → Correction Order 045 →
      재제출 CUE 재검증 PASS(2026-08-19). 상세:
      `docs/agents/c1/C1-TASK-ORDER-045-REPORT.md`
-   - (참고) "RAW 폴더" 번역이 파일마다 다름("자료실"/"보관함") — 기능
-     버그 아니라 이번 범위 밖, 다음 §11 관련 작업 시 통일 필요
+   - ~~"RAW 폴더" 번역 통일("자료실"/"보관함" 혼용)~~ — **완료**,
+     2026-08-19. "보관함"으로 통일(다수 사용 + Processing 페이지
+     핵심 동작 라벨과 일치). `library.py`/`sermon_review.py`의
+     "자료실" 2곳 → "보관함"으로 변경, CUE가 직접 처리(간단한 문자열
+     치환, C1 이관 불필요). `pytest -k "library or sermon_review"`
+     7 passed.
    - ~~C1 Task Order 046(§6 인용 카드 공용 컴포넌트 — research.py
      마이그레이션)~~ — **완료 (PASS)**, 2026-08-19. CUE 독립 검증
      완료(실제 결과 데이터로 AppTest 직접 실행, 원시 소수점 미노출/
