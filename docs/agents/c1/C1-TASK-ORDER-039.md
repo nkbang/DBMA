@@ -1,6 +1,6 @@
 # C1 Task Order 039 (재발부 v5) — 최종 범위: 대칭성 실측 + 정직한 미검증 표기
 
-**상태**: §1-B 근본 원인 결론 검증 미완 + §1-A 라벨링 원칙 위반 — 마지막 좁은 재작업
+**상태**: **종료 (CUE 최종 판단 완료, 2026-08-18)** — 상세: [C1-TASK-ORDER-039-REPORT.md](C1-TASK-ORDER-039-REPORT.md) §2
 **우선순위**: P1
 **근거 문서**: [DBMA-UX-007-IMPLEMENTATION-SPEC.md](../../DBMA-UX-007-IMPLEMENTATION-SPEC.md)
 **작성일:** v1 2026-07-31 / v2 반려 / v3 / v4 REWORK / **v5 2026-07-31 (최종 범위)**

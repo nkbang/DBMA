@@ -111,3 +111,12 @@ tmp/
 # `npm install && npm run build` in .automation/night-shift/dashboard/frontend/)
 node_modules/
 .automation/night-shift/dashboard/logs/
+
+# Local agent/IDE tool configs — not DBMA project source (per-machine,
+# per-tool skill/rule installs: Claude Code, Continue, Cursor, Roo, etc.)
+.agents/
+.claude/
+.continue/
+.cursor/
+.roo/
+.idea/
