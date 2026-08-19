@@ -709,6 +709,22 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   전달), Tier C(`core/reading_session.py`, 이어서 읽기 영속화 — C1
   Review 권장).
 
+### C1 Task Order 043 — §7 어댑터 PASS (2026-08-19, CUE 직접 실행)
+
+- `sermon_research.py`에 어댑터 구현: `scripture_and_theme` 프리필
+  (자료+메모+개요 합성), `style_files` 매칭(코퍼스가 이번 세션에
+  이미 로드된 경우만 시도, 아니면 편의 기능 때문에 새로 로드하지
+  않음), `candidates`/`outline`은 채우지 않고 정상 재검색 경로 유지.
+  진행 중인 초안(`status != "input"` 또는 이미 입력된 본문)은 덮어
+  쓰지 않도록 보호.
+- 검증: `AppTest`로 허브→"이어가기"→설교 준비 화면까지 실제 전환해
+  텍스트 영역 프리필 확인(예외 0건), 진행 중인 초안 보호 2가지 케이스
+  확인, `style_files` 매칭(fake processor, 실제 코퍼스 로드 트리거
+  없음) 확인. 신규 회귀 테스트 4건 추가(총 12건), 전체 스위트
+  `pytest tests/` 재확인. 상세: `docs/agents/c1/C1-TASK-ORDER-043-REPORT.md`.
+- 남은 것: Tier C(이어서 읽기 영속화, C1 Review 권장 후 착수) — 오늘
+  밤 무인 작업 범위에서는 여기까지.
+
 ---
 
 **Final State 요약**:
