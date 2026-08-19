@@ -42,6 +42,7 @@ from core.retrieval import QueryProcessor, RankedCandidate, Citation
 from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
+from ui.components.citation_card import render_citation_card
 
 logger = logging.getLogger(__name__)
 
@@ -510,17 +511,51 @@ def _render_clickable_source(
         # Graceful degradation
         st.caption(f"출처 정보 부족: {display_label}")
 
-    # Score 표시 (살아있는 기능 — 유지)
+    # Citation card per DBMA-UX-007 §6 (replaces raw score exposure)
     score = getattr(candidate, "final_score", 0.0)
-    caption_parts = [f"신뢰도(final_score): {score:.4f}"]
-    if citation is not None:
-        if citation.source_author:
-            caption_parts.append(f"저자: {citation.source_author}")
-        if citation.source_title:
-            caption_parts.append(f"출처: {citation.source_title}")
-        if citation.evidence_confidence is not None:
-            caption_parts.append(f"근거 신뢰도(citation): {citation.evidence_confidence:.4f}")
-    for part in caption_parts:
-        st.caption(part)
+    structure = candidate.metadata.get("structure", {})
+
+    # Use heading_path (real field) instead of non-existent text_location
+    heading_path = structure.get("heading_path", [])
+    text_location = " > ".join(heading_path) if heading_path else None
+
+    doc_type_val = candidate.metadata.get("doc_type") or None
+
+    # Restore author/source info that was lost in v1 (problem 2)
+    author_val = citation.source_author if citation else None
+    title_val = citation.source_title if citation else None
+
+    render_citation_card(
+        source_file=source_file,
+        text_location=text_location,
+        doc_type=doc_type_val,
+        author=author_val,
+        citation_title=title_val,
+        relevance_score=score,
+        on_view_original=True,
+        on_copy_citation=False,
+    )
+
+    # Connect "원문 다시 보기" button to actual navigation (problem 1)
+    # The button key must match the key used in render_citation_card
+    btn_key_base = f"cite_btn_{abs(hash(source_file)) & 0xFFFFFFFF:x}"
+    view_btn_key = f"{btn_key_base}_view"
+
+    if st.session_state.get(view_btn_key, False):
+        # Get the current question for query_terms
+        chat_messages = st.session_state.get("chat_messages", [])
+        query_terms = []
+        for msg in reversed(chat_messages):
+            if msg["role"] == "user":
+                query_terms = msg["content"].split()
+                break
+
+        # Navigate to document detail panel (same logic as the headline button)
+        st.session_state["chat_detail_selection"] = {
+            "source_file": source_file,
+            "document_id": document_id,
+            "query_terms": query_terms,
+        }
+        st.rerun()
 
 

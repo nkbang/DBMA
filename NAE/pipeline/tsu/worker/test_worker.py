@@ -567,3 +567,196 @@ class TestWorkerResult:
         assert wr.state == TSUExtractionState.CONFIDENCE_CLASSIFIED
         assert wr.confidence == 0.95
         assert wr.elapsed_seconds == 0.0
+
+
+# ====================================================================
+# 11. Bugfix regression tests — Correction Order 009 pre-approval
+# ====================================================================
+
+class TestBugfix1_SetStateFromStateOmission:
+    """Regression test for Bug 1: set_state() skips validation when from_state is omitted."""
+
+    def test_from_state_none_rejects_invalid_transition(self):
+        """CONFIDENCE_CLASSIFIED -> READY without from_state must be rejected."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            # First, create a candidate in CONFIDENCE_CLASSIFIED state
+            ok, msg = store.set_state(
+                "cand-bug1-1",
+                TSUExtractionState.CONFIDENCE_CLASSIFIED,
+                from_state=TSUExtractionState.EXTRACTED,
+            )
+            assert ok, f"Initial setup failed: {msg}"
+            assert store.get_state("cand-bug1-1") == TSUExtractionState.CONFIDENCE_CLASSIFIED
+
+            # Now try to go back to READY without specifying from_state
+            ok, msg = store.set_state(
+                "cand-bug1-1",
+                TSUExtractionState.READY,
+            )
+            assert not ok, "Should reject CONFIDENCE_CLASSIFIED -> READY without from_state"
+            assert "not allowed" in msg
+
+    def test_from_state_none_allows_valid_transition(self):
+        """READY -> PROCESSING without from_state must succeed (current state is READY)."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            ok, msg = store.set_state("cand-bug1-2", TSUExtractionState.READY)
+            assert ok, f"Initial setup failed: {msg}"
+
+            ok, msg = store.set_state(
+                "cand-bug1-2",
+                TSUExtractionState.PROCESSING,
+            )
+            assert ok, f"Should allow READY->PROCESSING without from_state: {msg}"
+            assert store.get_state("cand-bug1-2") == TSUExtractionState.PROCESSING
+
+    def test_from_state_none_allows_new_candidate_creation(self):
+        """Setting state on a never-before-seen candidate must succeed (no prior state)."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            ok, msg = store.set_state("cand-bug1-new", TSUExtractionState.READY)
+            assert ok, f"Should allow first-time READY creation: {msg}"
+            assert store.get_state("cand-bug1-new") == TSUExtractionState.READY
+
+    def test_from_state_none_rejects_PROCESSING_to_READY(self):
+        """PROCESSING -> READY without from_state must be rejected (not a valid transition)."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            ok, msg = store.set_state(
+                "cand-bug1-3",
+                TSUExtractionState.PROCESSING,
+                from_state=TSUExtractionState.READY,
+            )
+            assert ok, f"Setup failed: {msg}"
+
+            ok, msg = store.set_state(
+                "cand-bug1-3",
+                TSUExtractionState.READY,
+            )
+            assert not ok, "Should reject PROCESSING->READY without from_state"
+
+
+class TestBugfix2_StaleErrorFieldsOnRetry:
+    """Regression test for Bug 2: stale error_type/error_message after retry."""
+
+    def test_clear_metadata_fields_removes_only_specified_keys(self):
+        """clear_metadata_fields removes only the specified keys, preserves others."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            store.set_state(
+                "cand-bug2-1",
+                TSUExtractionState.FAILED,
+                from_state=TSUExtractionState.PROCESSING,
+                metadata={
+                    "error_type": "LLM_ERROR",
+                    "error_message": "simulated failure",
+                    "model": "test-model",
+                    "text_length": 42,
+                },
+            )
+
+            store.clear_metadata_fields("cand-bug2-1", ["error_type", "error_message"])
+
+            entry = store.get_entry("cand-bug2-1")
+            assert entry.metadata["model"] == "test-model"
+            assert entry.metadata["text_length"] == 42
+            assert "error_type" not in entry.metadata
+            assert "error_message" not in entry.metadata
+
+    def test_clear_metadata_fields_noop_for_missing_candidate(self):
+        """clear_metadata_fields on non-existent candidate must not raise."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+            store.clear_metadata_fields("nonexistent", ["error_type"])
+
+    def test_clear_metadata_fields_noop_for_missing_keys(self):
+        """clear_metadata_fields when keys don't exist must not raise."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            store.set_state(
+                "cand-bug2-2",
+                TSUExtractionState.READY,
+                metadata={"model": "test"},
+            )
+            store.clear_metadata_fields("cand-bug2-2", ["error_type", "error_message"])
+
+    @patch("NAE.pipeline.tsu.claim.extract_claim", _mock_extract_claim)
+    def test_retry_then_process_clears_stale_error(self):
+        """FAILED -> retry -> reprocess: stale error fields must be cleared on new PROCESSING entry."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            # Simulate a failed attempt with error metadata
+            store.set_state(
+                "cand-bug2-3",
+                TSUExtractionState.FAILED,
+                from_state=TSUExtractionState.PROCESSING,
+                metadata={
+                    "error_type": "LLM_ERROR",
+                    "error_message": "simulated failure for Gate 4 closure test",
+                    "model": "my-theology-bot-v2:latest",
+                    "text_length": 100,
+                },
+            )
+
+            entry = store.get_entry("cand-bug2-3")
+            assert entry.metadata["error_type"] == "LLM_ERROR"
+            assert entry.metadata["error_message"] == "simulated failure for Gate 4 closure test"
+
+            # Retry: FAILED -> READY
+            ok, msg = retry_failed("cand-bug2-3", state_store=store)
+            assert ok, f"retry_failed failed: {msg}"
+            assert store.get_state("cand-bug2-3") == TSUExtractionState.READY
+
+            # Re-process: should clear stale error fields on PROCESSING entry
+            result = process_candidate(
+                candidate_id="cand-bug2-3",
+                candidate_text="test text for retry verification",
+                state_store=store,
+            )
+
+            assert result.state == TSUExtractionState.CONFIDENCE_CLASSIFIED
+
+            final_entry = store.get_entry("cand-bug2-3")
+            assert "error_type" not in final_entry.metadata, (
+                f"Bug 2 NOT fixed: stale error_type still present: {final_entry.metadata}"
+            )
+            assert "error_message" not in final_entry.metadata, (
+                f"Bug 2 NOT fixed: stale error_message still present: {final_entry.metadata}"
+            )
+
+    @patch("NAE.pipeline.tsu.claim.extract_claim", _mock_extract_claim)
+    def test_failed_candidate_preserves_error_fields(self):
+        """FAILED state must retain error_type/error_message — only new trials clear them."""
+        with tempfile.TemporaryDirectory() as td:
+            state_path = Path(td) / "state.json"
+            store = TSUExtractionStateStore(state_path)
+
+            store.set_state(
+                "cand-bug2-4",
+                TSUExtractionState.FAILED,
+                from_state=TSUExtractionState.PROCESSING,
+                metadata={
+                    "error_type": "LLM_ERROR",
+                    "error_message": "this failure must persist",
+                },
+            )
+
+            entry = store.get_entry("cand-bug2-4")
+            assert entry.metadata["error_type"] == "LLM_ERROR"
+            assert entry.metadata["error_message"] == "this failure must persist"

@@ -127,6 +127,9 @@ def process_candidate(
             elapsed_seconds=elapsed,
         )
 
+    # Clear stale error fields from any prior attempt — this is a new trial.
+    state_store.clear_metadata_fields(candidate_id, ["error_type", "error_message"])
+
     # Step 2: Extract claim via LLM (reuse existing claim.py)
     from .. import claim as claim_mod
 

@@ -106,7 +106,16 @@ class TSUExtractionStateStore:
         from_state: TSUExtractionState | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> tuple[bool, str]:
-        if from_state is not None:
+        # Validate transition: if from_state not provided, query current stored state.
+        # If current is None (new candidate with no prior state), skip validation —
+        # this is the normal first-time creation path.
+        if from_state is None:
+            current = self.get_state(candidate_id)
+            if current is not None:
+                valid, reason = validate_transition(current, new_state)
+                if not valid:
+                    return False, reason
+        else:
             valid, reason = validate_transition(from_state, new_state)
             if not valid:
                 return False, reason
@@ -117,6 +126,21 @@ class TSUExtractionStateStore:
         if metadata:
             entry["metadata"] = {**entry.get("metadata", {}), **metadata}
         return True, ""
+
+    def clear_metadata_fields(self, candidate_id: str, keys: list[str]) -> None:
+        """Remove specific keys from a candidate's metadata without touching other fields.
+
+        Only affects the in-memory store; call save() to persist.
+        No-op if candidate_id does not exist or keys are absent.
+        """
+        entry = self._data.get(candidate_id)
+        if entry is None:
+            return
+        meta = entry.get("metadata")
+        if meta is None:
+            return
+        for key in keys:
+            meta.pop(key, None)
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)

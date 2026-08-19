@@ -64,6 +64,12 @@ class DBMADesignSystemColors:
     PRIORITY_MEDIUM: str = "#E65100"
     PRIORITY_LOW: str = "#2D7D5B"
 
+    # ── Citation / Star Colors ─────────────────────────────────
+    CITE_STAR_FILLED: str = "#C8943E"
+    CITE_STAR_EMPTY: str = "#C0B8A8"
+    CITE_BG: str = "#FDF8EE"
+    CITE_BORDER: str = "#EDE5D6"
+
     # ── Chart / Data Visualization Colors ──────────────────────
     CHART_SEQUENCE: tuple[str, ...] = (
         "#1B365D",  # primary navy

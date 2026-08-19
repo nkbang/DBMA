@@ -1,3 +1,0 @@
-# Seal Test
-
-Content.
