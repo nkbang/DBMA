@@ -277,7 +277,7 @@ def _render_outline_step() -> None:
                 with cols[0]:
                     st.caption(f"`{err['word']}` (위치: {err['offset']})")
                 with cols[1]:
-                    if st.button("✓ 정상", key=f"spell_ok_{err['word']}"):
+                    if st.button("정상", icon=":material/check:", key=f"spell_ok_{err['word']}"):
                         _spell_engine.add_to_custom_dictionary(err["word"])
                         st.session_state["_spellcheck_pending_outline"] = False
                         st.rerun()
@@ -335,7 +335,7 @@ def _render_expansion_step() -> None:
                 with cols[0]:
                     st.caption(f"`{err['word']}` (위치: {err['offset']})")
                 with cols[1]:
-                    if st.button("✓ 정상", key=f"spell_ok_exp_{err['word']}"):
+                    if st.button("정상", icon=":material/check:", key=f"spell_ok_exp_{err['word']}"):
                         _spell_engine_exp.add_to_custom_dictionary(err["word"])
                         st.session_state["_spellcheck_pending_expansion"] = False
                         st.rerun()
@@ -371,7 +371,10 @@ def _render_expansion_step() -> None:
     if outline.points and len(state["expanded"]) == len(outline.points):
         state["status"] = "draft_complete"
         st.divider()
-        st.subheader("📄 완성된 설교문 초안")
+        st.markdown(
+            '<h3><span class="material-symbols-outlined" style="font-size:22px; vertical-align:-4px;">description</span> 완성된 설교문 초안</h3>',
+            unsafe_allow_html=True,
+        )
         full_draft = _assemble_draft(outline, state["expanded"])
         with st.container(border=True):
             st.markdown(full_draft)

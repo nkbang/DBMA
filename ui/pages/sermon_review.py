@@ -18,6 +18,7 @@ import streamlit as st
 logger = logging.getLogger(__name__)
 
 from ui.pages._base import BasePage
+from ui.theme.colors import THEME
 from core.config import DEFAULT_RAW_DIR, DEFAULT_REGISTRY_PATH, SUPPORTED_EXTENSIONS
 from core.extractors import extract_text_from_file
 from core.identity_registry import find_by_source_file, load_identity_registry
@@ -200,14 +201,18 @@ def _render_selected_sermon(records: list[SermonRecord]) -> None:
 
     st.divider()
     st.markdown(f"### {record.title}")
+    _icon = '<span class="material-symbols-outlined" style="font-size: 13px; vertical-align: -2px;">{}</span>'
     meta_parts = []
     if record.date:
-        meta_parts.append(f"📅 {record.date}")
+        meta_parts.append(f"{_icon.format('calendar_today')} {record.date}")
     else:
-        meta_parts.append("📅 날짜 미상")
+        meta_parts.append(f"{_icon.format('calendar_today')} 날짜 미상")
     if record.scripture:
-        meta_parts.append(f"📖 {record.scripture}")
-    st.caption(" · ".join(meta_parts))
+        meta_parts.append(f"{_icon.format('menu_book')} {record.scripture}")
+    st.markdown(
+        f'<div style="font-size: 12px; color: {THEME.TEXT_TERTIARY};">{" · ".join(meta_parts)}</div>',
+        unsafe_allow_html=True,
+    )
 
     st.markdown(record.body if record.body else "_본문 없음_")
 

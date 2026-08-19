@@ -477,7 +477,7 @@ def _render_metadata_edit_form(source_filename: str) -> None:
     if document_id is None:
         st.caption("아직 처리되지 않은 문서입니다 — 메타데이터 수정은 처리 완료 후 가능합니다.")
         if os.environ.get("NAE_ADMIN_MODE") == "1":
-            if st.button("📝 자료 등록으로 이동", use_container_width=True):
+            if st.button("자료 등록으로 이동", icon=":material/upload_file:", use_container_width=True):
                 st.session_state["nav_page"] = "Processing"
                 st.rerun()
         return
@@ -751,9 +751,10 @@ def _render_document_rows(documents: list[dict]) -> None:
             )
         
         with cols[1]:
-            sel_label = "✓ 선택됨" if is_selected else "선택"
+            sel_label = "선택됨" if is_selected else "선택"
             st.button(
                 sel_label,
+                icon=":material/check:" if is_selected else None,
                 key=btn_key,
                 type="primary" if is_selected else "secondary",
                 use_container_width=True,

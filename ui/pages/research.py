@@ -390,7 +390,8 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
             query_terms = research_query.split() if research_query else []
 
             if st.button(
-                f"📄 {source_file}",
+                f"{source_file}",
+                icon=":material/description:",
                 key=btn_key,
                 type="primary",
                 use_container_width=True,
@@ -485,7 +486,10 @@ def _render_nae_section() -> None:
         return  # §F: disabled면 렌더링하지 않음
 
     st.divider()
-    st.subheader("📖 NAE Public Theology (Beta)")
+    st.markdown(
+        '<h3><span class="material-symbols-outlined" style="font-size:22px; vertical-align:-4px;">menu_book</span> NAE Public Theology (Beta)</h3>',
+        unsafe_allow_html=True,
+    )
     st.caption("공개 신학 corpus — DBMA 결과와 별도 검색")
 
     # NAE 전용 검색어 입력 (DBMA 검색어와 분리)
@@ -614,8 +618,9 @@ def _render_query_analysis() -> None:
     suggestions_html = "".join(f"<div>• {s}</div>" for s in suggestions)
     
     _render_insight_card(
-        title="🧪 검색어 확장 제안",
+        title="검색어 확장 제안",
         content=suggestions_html,
+        icon="science",
     )
 
     # Display scripture references if detected
@@ -627,19 +632,25 @@ def _render_query_analysis() -> None:
         book_names = [_BOOK_ID_TO_NAME.get(b, b) for b in detected_books]
         books_html = f"{', '.join(book_names)}"
         _render_insight_card(
-            title="📖 감지된 성서 도서",
+            title="감지된 성서 도서",
             content=books_html,
             color=THEME.BRAND_SECONDARY,
+            icon="menu_book",
         )
 
 
-def _render_insight_card(title: str, content: str, color: str = THEME.TEXT_LINK) -> None:
-    """Render an AI insight card (Stitch style)."""
+def _render_insight_card(title: str, content: str, color: str = THEME.TEXT_LINK, icon: str = "") -> None:
+    """Render an AI insight card (Stitch style). icon은 Material Symbols
+    아이콘 이름 — 빈 문자열이면 아이콘 없이 제목만 렌더링한다."""
+    icon_html = (
+        f'<span class="material-symbols-outlined" style="font-size: 18px; vertical-align: -3px;">{icon}</span> '
+        if icon else ""
+    )
     st.markdown(
         f"""
         <div class="research-insight-card" style="border-left: 4px solid {color};">
             <div style="font-weight: 600; color: {THEME.TEXT_PRIMARY}; margin-bottom: 8px;">
-                {title}
+                {icon_html}{title}
             </div>
             <div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.8;">
                 {content}
@@ -853,7 +864,7 @@ def _render_research_page_with_detail() -> None:
             did = rd.get("document_id", "")
             if src or did:
                 rkey = f"rel_nav_{i}_{abs(hash(src + did)) & 0xFFFFFFFF:x}"
-                if st.button(f"📄 {src}", key=rkey, use_container_width=True):
+                if st.button(f"{src}", icon=":material/description:", key=rkey, use_container_width=True):
                     st.session_state["research_detail_selection"] = {
                         "source_file": src,
                         "document_id": did,

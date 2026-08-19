@@ -16,9 +16,30 @@ _FONT_LINKS = """
 
 _STYLE = """
 <style>
+.nae-topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 4px 32px;
+    border-bottom: 1px solid #e4e2dd;
+    margin-bottom: 40px;
+}
+.nae-topnav .brand {
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #171e1e;
+}
+.nae-topnav .links {
+    display: flex;
+    gap: 24px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+    color: #6a5c4c;
+}
 .nae-hero {
     text-align: center;
-    padding: 48px 24px 0;
+    padding: 0 24px;
 }
 .nae-hero .classical-title {
     font-family: 'Source Serif 4', serif;
@@ -50,7 +71,17 @@ _STYLE = """
     line-height: 1.8;
     color: #434848;
     max-width: 520px;
-    margin: 0 auto 32px;
+    margin: 0 auto 8px;
+}
+.nae-section-title {
+    text-align: center;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #6f6050;
+    text-transform: uppercase;
+    margin: 8px 0 20px;
 }
 .nae-card {
     background: #ffffff;
@@ -98,7 +129,7 @@ _STYLE = """
     color: #171e1e;
     opacity: 0.85;
     max-width: 640px;
-    margin: 40px auto 8px;
+    margin: 48px auto 8px;
 }
 .nae-quote .rule {
     width: 64px;
@@ -108,7 +139,7 @@ _STYLE = """
 }
 .nae-footer {
     text-align: center;
-    margin-top: 32px;
+    margin-top: 40px;
     padding-top: 24px;
     border-top: 1px solid #e4e2dd;
 }
@@ -159,6 +190,19 @@ def render_onboarding_page() -> None:
     """첫 실행 환영/온보딩 화면을 렌더링한다."""
     st.markdown(_FONT_LINKS + _STYLE, unsafe_allow_html=True)
 
+    # ── Top Nav (장식용 — 아직 로그인/탐색 기능 없음, 프리미엄 랜딩
+    # 톤만 물려받는다) ────────────────────────────────────────────
+    st.markdown(
+        """
+        <div class="nae-topnav">
+            <span class="brand">內書齋</span>
+            <span class="links">서재 · 연구 · 탐색</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # ── Hero ───────────────────────────────────────────────────
     st.markdown(
         """
         <div class="nae-hero">
@@ -167,20 +211,39 @@ def render_onboarding_page() -> None:
             <div class="headline">책이 답하고,<br>기록이 말합니다.</div>
             <p class="subheadline">
                 개인의 자료와 연구를 하나의 지식으로 연결하는<br>
-                목회자를 위한 AI 연구실, <b>내서재</b>를 시작해보세요.
+                목회자를 위한 AI 연구실
             </p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
+    # ── Hero Actions ───────────────────────────────────────────
+    _, btn_col1, btn_col2, _ = st.columns([2, 1.4, 1.4, 2])
+    with btn_col1:
+        start_clicked = st.button(
+            "연구 시작하기", use_container_width=True, type="primary"
+        )
+    with btn_col2:
+        load_clicked = st.button("자료 불러오기", use_container_width=True)
+
+    if start_clicked or load_clicked:
+        st.session_state["show_onboarding"] = False
+        st.session_state["nav_page"] = "Library"
+        st.rerun()
+
+    st.write("")
+    st.write("")
+
+    # ── Feature Cards (소개용 — 클릭 이동 없음, 랜딩 원본과 동일) ──
+    st.markdown('<div class="nae-section-title">내서재가 하는 일</div>', unsafe_allow_html=True)
     cards = [
-        ("auto_stories", "자료 찾기", "방대한 성경과 신학 자료를 한곳에서 검색하세요.", "Research"),
-        ("account_tree", "AI 연구 도우미", "맥락을 이해하는 AI와 함께 깊이 있는 신학 연구를 수행하세요.", "Research"),
-        ("auto_awesome", "설교 준비", "연구 결과를 바탕으로 자연스럽게 설교문을 작성하세요.", "설교문 작성"),
+        ("auto_stories", "나의 서재", "모든 흩어진 자료를 하나의 지식 저장소로. PDF, 텍스트, 이미지 자료까지 스마트하게 관리합니다."),
+        ("account_tree", "지식 연결", "문서와 설교, 개인의 메모를 의미 중심으로 연결하여 당신만의 독창적인 신학 세계를 구축합니다."),
+        ("auto_awesome", "목회 연구", "말씀 연구와 설교 준비를 위한 AI 동반자. 방대한 텍스트에서 통찰을 추출하고 구조를 제안합니다."),
     ]
     cols = st.columns(3)
-    for col, (icon, title, desc, target) in zip(cols, cards):
+    for col, (icon, title, desc) in zip(cols, cards):
         with col:
             st.markdown(
                 f"""
@@ -192,11 +255,8 @@ def render_onboarding_page() -> None:
                 """,
                 unsafe_allow_html=True,
             )
-            if st.button(f"{title} 바로가기", key=f"_onboard_card_{title}", use_container_width=True):
-                st.session_state["show_onboarding"] = False
-                st.session_state["nav_page"] = target
-                st.rerun()
 
+    # ── Quote ──────────────────────────────────────────────────
     st.markdown(
         """
         <div class="nae-quote">
@@ -210,23 +270,12 @@ def render_onboarding_page() -> None:
     )
 
     st.write("")
-    btn_col1, btn_col2, btn_col3 = st.columns([2, 1, 1])
-    with btn_col2:
-        start_clicked = st.button(
-            "연구 시작하기", use_container_width=True, type="primary"
-        )
-    with btn_col3:
-        skip_clicked = st.button("나중에 하기", use_container_width=True)
-
-    if start_clicked:
-        st.session_state["show_onboarding"] = False
-        st.session_state["nav_page"] = "Library"
-        st.rerun()
-
+    skip_clicked = st.button("나중에 하기", key="_onboard_skip")
     if skip_clicked:
         st.session_state["show_onboarding"] = False
         st.rerun()
 
+    # ── Footer ─────────────────────────────────────────────────
     st.markdown(
         """
         <div class="nae-footer">

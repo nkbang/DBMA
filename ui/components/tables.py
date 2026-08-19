@@ -30,7 +30,7 @@ def document_table(documents: list[dict],
 
     search_col, *_ = st.columns([1, 19]) if searchable else [None]
     if searchable and search_col:
-        query = st.text_input("🔍 문서 검색", placeholder="문서 이름 또는 메타데이터...", key="doc_search_input")
+        query = st.text_input("문서 검색", icon=":material/search:", placeholder="문서 이름 또는 메타데이터...", key="doc_search_input")
     else:
         query = None
 
