@@ -120,3 +120,21 @@ node_modules/
 .cursor/
 .roo/
 .idea/
+
+# docker-compose ad-hoc backups (n8n/file-access config edits, 2026-08-13) —
+# not version-controlled, just save with a new name if you need to keep one
+docker-compose.yml.bak*
+docker-compose.yml.backup-*
+
+# Runtime logs
+beta_app.log
+*.log
+
+# Local Qdrant runtime DB (legacy path, ADR-003 — not the production store)
+qdrant_db/
+
+# TSU Extraction Queue Worker runtime state (mutates on every run, not
+# source — see NAE/pipeline/tsu/worker/config.py DEFAULT_STATE_PATH /
+# DEFAULT_EXCEPTION_QUEUE_PATH)
+NAE/corpus/tsu/worker_state*.json
+NAE/corpus/tsu/worker_exception_queue.json
