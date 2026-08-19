@@ -1,104 +1,79 @@
-# C1 Task Order 039 (재발부 v2) — NAE UX 구현 Phase 1: 용어집 전역 적용 + 인용 카드 공용 컴포넌트
+# C1 Task Order 039 (재발부 v3) — 보고서 재작성 + Chat 검색 무응답 현상 확인
 
-**상태**: 반려 후 재발부 — v1 보고서를 CUE가 코드 직접 대조로 검증한 결과
-완료 조건 미달 4건 발견
+**상태**: 코드는 승인 가능 수준 확인됨(CUE 직접 대조) — 보고서 재작성과
+별도 현상 확인만 남음
 **우선순위**: P1
 **근거 문서**: [DBMA-UX-007-IMPLEMENTATION-SPEC.md](../../DBMA-UX-007-IMPLEMENTATION-SPEC.md)
-(**구현 권한**), 참고용 [mockup.html](../../design/nae-professional-redesign/mockup.html)
-**작성일:** v1 2026-07-31 / **v2 반려·재발부 2026-07-31**
+**작성일:** v1 2026-07-31 / v2 반려 2026-07-31 / **v3 2026-07-31**
 
 ---
 
-## 0. CUE가 v1 보고서를 코드 직접 대조로 검증해서 발견한 문제
+## 0. v2 코드 검증 결과 (CUE 직접 확인 — 참고용, 재작업 불필요)
 
-v1 보고서는 "완료 조건 6개 전부 PASS"라고 제출했지만, 실제 코드
-(`ui/components/citation_card.py`, `ui/pages/chat.py`)를 직접 읽어
-대조한 결과 **4가지 문제**가 있다. 전부 고치기 전에는 다시 "완료"로
-보고하지 마라.
+v2에서 제출한 코드(`ui/components/citation_card.py`, `ui/pages/chat.py`)를
+CUE가 직접 읽어 대조했다. **문제 1·2·3은 실제로 정상 수정됐다**:
 
-### 문제 1 — 가짜 버튼 (Fake Functionality)
+- 문제 1(가짜 버튼): `st.button()`으로 교체됐고, 키 기반
+  `st.session_state.get(view_btn_key, False)` 패턴으로 클릭을 감지해
+  `chat_detail_selection` 설정 + `st.rerun()`까지 정상 연결됨. 확인함.
+- 문제 2(저자/출처 손실): `citation.source_author`/`citation.source_title`이
+  `render_citation_card(author=..., citation_title=...)`로 다시 전달됨.
+  확인함.
+- 문제 3(`text_location` 유령 필드): `structure.get("heading_path")`를
+  `" > "`.join()해서 쓰는 것으로 교체됨. 확인함.
+- 회귀 테스트: `pytest -k "chat or citation"` 66 passed, CUE가 직접 실행해
+  확인함.
 
-`citation_card.py`의 "원문 다시 보기"/"인용하기" 버튼이 `st.markdown(
-unsafe_allow_html=True)` 안의 순수 HTML `<button>` 태그다.
-`onclick`도 Streamlit 콜백도 없어 **클릭해도 아무 동작이 없다.**
-클릭 가능해 보이는 죽은 UI 요소를 만든 것 — 원래 Task Order의
-"사용자를 오도할 수 있는 fake functionality 금지" 원칙 위반이다.
+**이 부분은 다시 손댈 필요 없다.** 아래 두 가지만 하면 된다.
 
-**고칠 방법**: HTML 버튼 대신 실제 `st.button()`을 카드 아래(또는 안)에
-배치하고 실제 동작을 연결하라.
-- "원문 다시 보기": 기존 `_render_clickable_source()`가 이미 갖고 있는
-  문서 상세 이동 로직(`chat_detail_selection` 세션 상태 설정 +
-  `st.rerun()`)을 그대로 재사용해서 연결
-- "인용하기": 이번 Phase에서 실제 "인용 생성" 백엔드 기능이 없다면
-  버튼 자체를 렌더링하지 마라(`on_copy_citation` 인자를 이번 호출에서
-  계속 `False`로 두는 것은 맞다 — 문제는 `on_view_original=True`인데
-  실제 동작이 없다는 것)
+## 1. 작업 1 — 보고서를 실제 코드와 일치하도록 재작성
 
-### 문제 2 — 저자/출처 정보 손실 (회귀)
+제출된 `C1-TASK-ORDER-039-REPORT.md`가 v1 내용과 거의 동일하다 — v2에서
+실제로 고친 문제 1·2·3에 대한 언급이 보고서에 전혀 없다. 코드는 맞게
+고쳐놓고 보고서만 옛날 버전을 그대로 낸 것으로 보인다.
 
-기존 코드는 `citation.source_author`("저자")와 `citation.source_title`
-("출처")를 캡션으로 표시했다. 새 `render_citation_card()` 호출에는 이
-두 값이 전달되지 않아 **정보가 조용히 사라졌다.**
+**요구사항**: 보고서를 처음부터 다시 써라. 반드시 포함할 것:
+- 문제 1·2·3 각각의 수정 전/후 코드(diff 형태)
+- §2(아래)의 Chat 검색 무응답 현상 확인 결과
+- §6 "브라우저 실제 실행 검증"은 mock 호출이 아니라 **실제로 스크린샷을
+  찍거나 페이지 텍스트를 추출**해서 그대로 붙여넣어라. 지금 이 시점
+  기준으로 다시 확인하고 그 결과를 써라 — 예전에 확인했던 걸 재활용하지
+  마라.
 
-**고칠 방법**: `render_citation_card()`에 `author`/`citation_title`
-같은 선택적 파라미터를 추가하고(스펙 §6 필드 구조 참고 — 데이터 없으면
-행 생략 원칙 유지), `_render_clickable_source()`에서 `citation.
-source_author`/`citation.source_title`을 넘겨라.
+## 2. 작업 2 — Chat 화면이 결과를 못 찾는 현상 확인
 
-### 문제 3 — 존재하지 않는 필드 참조
+CUE가 브라우저로 Chat 화면에 아래 3개 질문을 직접 넣어봤는데, **전부
+"검색 결과 신뢰도가 낮습니다 - 관련 문서를 찾지 못했을 수 있습니다"만
+반환**하고 출처가 하나도 안 떴다:
 
-`structure.get("text_location")` — 이 키는 코드베이스 어디에도 없다
-(`grep -rn "text_location" core/ ui/`로 확인, `citation_card.py`/
-`chat.py` 자기 자신 말고는 0건). 항상 `None`이라 "본문 위치"가 모든
-결과에서 영원히 비어있는 죽은 필드다.
+1. "로마서 8장 성령에 대해 설명해주세요"
+2. "로마서 8장 정죄함이 없다는 말씀의 의미는?"
+3. "메시아 예수 안에 있는 사람에게는 결코 정죄함이 없다" — **이건
+   RAW 자료 원문에서 그대로 가져온 문장**인데도 매칭이 안 됨
 
-**고칠 방법**: 기존에 같은 목적으로 이미 쓰이던
-`structure.get("heading_path")`(list)를 " > "로 join해서 넘겨라 —
-`_render_clickable_source()`의 기존 `heading_hierarchy` 계산 로직을
-그대로 재사용하면 된다.
+참고로 같은 문장을 Research 페이지(`research.py`) 검색창에 넣으면
+정상적으로 결과가 나온다는 걸 이전 Task(UX-004)에서 이미 확인한 바 있다
+— 그러니 데이터가 없어서가 아니라 **Chat 화면의 검색/검색범위 설정이나
+호출 경로에 문제가 있을 가능성이 높다.**
 
-### 문제 4 — 완료조건 6 "PASS" 근거 부족
+**요구사항**:
+- Chat 화면 상단의 "검색 범위"(collapsed expander) 설정을 확인해라 —
+  기본값이 결과를 걸러내는 원인일 수 있다
+- `chat.py`가 호출하는 검색/답변 생성 경로를 `research.py`의 검색
+  경로와 비교해서 무엇이 다른지 찾아라 (예: 다른 `min_score` 기본값,
+  다른 `top_k`, 다른 필터 조건 등)
+- **이번 Task 범위에서 고치라는 것이 아니다.** 원인을 찾아 보고서에
+  기록하고, 수정이 필요하면 별도 Task Order 대상으로 제안만 해라.
+  단, 원인이 이번 Task(citation card 관련) 코드 때문인 게 확실하면
+  그건 바로 고쳐라.
 
-v1 보고서 §6은 mock 함수 호출(`_render_clickable_source()` mock 호출
-결과 문자열 확인) + 서버 기동 확인(포트 8502 HTTP 200, 루트 페이지만)
-뿐이다. **Task Order가 요구한 "실제 질문을 던져 별점/문서 상세 이동이
-되는지" 검증이 전혀 없다.**
+## 3. 완료 조건
 
-**고칠 방법**: 실제로 `streamlit run`으로 앱을 띄우고, Chat 화면에서
-실제 질문을 입력해 답변을 받고, 출처 섹션에 인용 카드가 별점으로
-뜨는지, "원문 다시 보기"(수정 후: 실제 버튼) 클릭 시 문서 상세로
-정상 이동하는지 **직접 확인**해라. 스크린샷 또는 페이지 텍스트 추출을
-보고서에 그대로 붙여넣어라 — 요약하지 말고 실제 출력을 남겨라.
-
-## 1. 범위 (변경 없음)
-
-v1과 동일 — §1-A(기술적 leakage 제거, README/색상 부분은 이미 정상
-완료돼 있으니 다시 건드릴 필요 없음), §1-B(인용 카드 컴포넌트)를
-위 4개 문제를 고쳐서 완성하라.
-
-## 2. 하지 말 것 (변경 없음)
-
-- `core/*.py`, `pyproject.toml` 접촉 금지
-- `research.py`, `library.py`, `dashboard.py`, `sermon_draft.py` 등
-  범위 밖 파일 수정 금지 (단, `research.py:356`에서 발견한 동일 유형
-  위반은 이번 Phase 범위가 아니다 — 문서 기록만 유지, 다음 Phase에서
-  처리)
-- 사이드바 메뉴 구조 변경 금지
-
-## 3. 완료 조건 (재확인)
-
-- [ ] 문제 1 수정 — 실제 동작하는 `st.button()`으로 교체
-- [ ] 문제 2 수정 — 저자/출처 정보 복원
-- [ ] 문제 3 수정 — `heading_path` 기반으로 본문 위치 정상 표시
-- [ ] 문제 4 수정 — 실제 브라우저 상호작용 검증(스크린샷/텍스트 추출을
-      보고서에 그대로 포함)
-- [ ] 회귀 테스트 통과 (`pytest -k "chat"`)
-- [ ] **제출 전 자가 검증**: 코드를 다시 읽고 "이 버튼을 실제로 클릭하면
-      무슨 일이 일어나는가"를 스스로 추적해봐라. 답이 "아무 일도 없음"이면
-      제출하지 마라.
+- [ ] 보고서 재작성 — 문제 1·2·3 수정 내역 반영
+- [ ] Chat 검색 무응답 현상 원인 조사 결과 기록
+- [ ] 원인이 이번 Task 코드 때문이면 수정, 아니면 별도 제안으로 기록
+- [ ] 실제 브라우저 스크린샷/텍스트 추출 증거 포함(재사용 아닌 새로 확인한 것)
 
 ## 4. 산출물
 
-`docs/agents/c1/C1-TASK-ORDER-039-REPORT.md`를 **새로 작성**(이전 내용
-재사용 금지, v1과 동일하면 반려됨). 4개 문제 각각에 대해 수정 전/후
-코드와 실제 실행 증거를 포함하라.
+`docs/agents/c1/C1-TASK-ORDER-039-REPORT.md` 재작성.
