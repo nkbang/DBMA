@@ -388,6 +388,29 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
             filled = min(5, max(0, round(score * 5)))
             st.caption("⭐" * filled + "☆" * (5 - filled))
 
+        _render_send_to_sermon_research_button(result, i)
+
+
+def _render_send_to_sermon_research_button(result: dict, index: int) -> None:
+    """UX-007 §13 설계(Tier B) — 검색 결과를 설교 연구 허브로 보낸다.
+    §4.5: 클릭 시 화면은 그대로 유지(이동하지 않음). 전환 버퍼는
+    sermon_research_selection(신규 session_state 키) — 허브 화면이
+    열릴 때 흡수한다. 참고: docs/DBMA-UX-007-SessionState-Design.md §2.1"""
+    tsu_id = result.get("tsu_id", "")
+    btn_key = f"send_sermon_{index}_{abs(hash(tsu_id)) & 0xFFFFFFFF:x}"
+    if st.button("설교 연구에 추가", key=btn_key, use_container_width=True):
+        import datetime
+
+        st.session_state.setdefault("sermon_research_selection", [])
+        st.session_state["sermon_research_selection"].append({
+            "tsu_id": tsu_id,
+            "document_id": result.get("document_id", ""),
+            "excerpt": result.get("snippet", ""),
+            "source_label": result.get("source", ""),
+            "added_at": datetime.datetime.now().isoformat(timespec="seconds"),
+        })
+        st.toast("설교 연구에 추가되었습니다")
+
 
 # ── Saved Sessions ─────────────────────────────────────────────
 

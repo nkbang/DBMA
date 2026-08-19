@@ -3,6 +3,7 @@
 System overview with document statistics, processing status, and system health monitoring.
 """
 
+import html
 from typing import Optional
 
 import streamlit as st
@@ -28,6 +29,7 @@ def render_dashboard_page() -> None:
 
     _render_status_banner()
     _render_quick_actions()
+    _render_recent_search_card()
 
     effective_docs = _get_effective_documents()
     st.markdown(
@@ -76,6 +78,46 @@ def _render_quick_actions() -> None:
         st.button("자료 검색", use_container_width=True, on_click=_go_to, args=("Research",))
     with c3:
         st.button("문서 추가", use_container_width=True, on_click=_go_to, args=("Processing",))
+
+
+def _render_recent_search_card() -> None:
+    """UX-007 §13 설계(Tier A) — 최근 검색 1건을 읽기 전용으로 보여준다.
+    신규 저장소를 만들지 않고 기존 research_workspace(ADR-004) 세션
+    로그만 읽는다 — research.py의 "세션에 저장" 버튼으로 기록된 항목만
+    대상이며(자동 저장 아님), 여기서는 조회만 한다.
+    참고: docs/DBMA-UX-007-SessionState-Design.md §1.1"""
+    from core.research_workspace import list_sessions
+
+    sessions = list_sessions()
+    if not sessions:
+        return
+
+    latest_session = max(sessions, key=lambda s: s.get("created_at", ""))
+    queries = latest_session.get("queries", [])
+    if not queries:
+        return
+
+    query_text = queries[-1].get("query", "")
+    if not query_text:
+        return
+
+    st.markdown(
+        f"""
+        <div style="background: {THEME.BG_SURFACE}; border: 1px solid {THEME.BORDER_LIGHT};
+                    border-radius: 12px; padding: 14px 18px; margin-top: 12px;">
+            <div style="font-size: 12px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 4px;">최근 검색</div>
+            <div style="font-size: 14px; color: {THEME.TEXT_PRIMARY};">{html.escape(query_text)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.button(
+        "이어서 검색하기",
+        use_container_width=False,
+        on_click=_go_to,
+        args=("Research",),
+        key="recent_search_continue",
+    )
 
 
 def _render_library_summary() -> None:

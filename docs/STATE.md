@@ -692,6 +692,23 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
 - `.automation/`(night-shift/control-plane), n8n Loop, RAW/Retrieval/
   Embedding Engine, 기존 ADR — 오늘 밤 무접촉 유지(확인함, 변경 없음).
 
+### C1 Task Order 042 — Tier A/B 구현 PASS (2026-08-19, CUE 직접 실행)
+
+- 사용자 지시로 무인 작업 계속 진행. Tier A: `dashboard.py`에 "최근
+  검색" 카드(읽기 전용, `research_workspace.list_sessions()`). Tier B:
+  `research.py` 결과 카드에 "설교 연구에 추가" 버튼 +
+  `sermon_research_selection` 전환 버퍼 + 신규
+  `ui/pages/sermon_research.py`(설교 연구 허브, 수동 입력까지) +
+  `ui/app.py` 사이드바/라우팅에 "설교 연구" 추가.
+- 검증: `AppTest` 실구동 전체 플로우 재현(검색→추가→허브 흡수→메모/
+  개요 입력→제거→"이어가기"→`nav_page` 전환) 예외 0건, 신규 회귀
+  테스트 `tests/test_sermon_research_hub.py` 8건 PASS, 전체 스위트
+  `pytest tests/` **2474 passed**(회귀 없음). 상세:
+  `docs/agents/c1/C1-TASK-ORDER-042-REPORT.md`.
+- 범위 밖(미착수): §7 어댑터(자료·메모·개요 `sermon_draft_state` 자동
+  전달), Tier C(`core/reading_session.py`, 이어서 읽기 영속화 — C1
+  Review 권장).
+
 ---
 
 **Final State 요약**:
