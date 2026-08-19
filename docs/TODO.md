@@ -72,9 +72,11 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      build+audit 겸행). 상세: `docs/agents/c1/C1-TASK-ORDER-041-REPORT.md`
    - 다음 후보였던 §2("빠른 시작 버튼 재배치")는 실제로는 Home 전체
      재구성(이어서 읽기 카드/최근 연구 그리드/§13 신규 세션 상태 의존)
-     — 무인 작업 저위험 범위를 벗어나 보류. 재개 전 §13 세션 상태
-     설계를 사용자와 먼저 확정할 것. 상세: `docs/STATE.md` "오늘 밤
-     무인 작업" 절
+     — 무인 작업 저위험 범위를 벗어나 보류.
+   - ~~§13 세션 상태 설계~~ — **완료** (2026-08-19, 사용자 지시로 진행).
+     `docs/DBMA-UX-007-SessionState-Design.md`. Tier A(기존 인프라
+     재사용)/B(신규 session_state 키, 저위험)/C(신규 영속 모듈, C1
+     Review 권장)로 구분. 다음: Tier A부터 순서대로 Task Order 발행.
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님

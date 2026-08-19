@@ -667,6 +667,28 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   session-state 설계 판단이 필요해 무인 상태로 진행하지 않고 보류 —
   TODO.md의 "§2 빠른 시작 버튼 재배치" 표현은 스펙 규모를 과소평가한
   것이었음을 함께 정정.
+
+### §13 Session State 설계 확정 (2026-08-19, CUE, 사용자 지시로 진행)
+
+- 산출물: [DBMA-UX-007-SessionState-Design.md](DBMA-UX-007-SessionState-Design.md)
+  — §13이 "신규 세션 상태 필요"라고만 적고 스키마를 정의하지 않았던
+  부분을 구체화. 새 아키텍처 도입 없이 기존 3개 패턴(순수
+  `st.session_state` / `chat.py` 식 단일파일 덮어쓰기 /
+  `research_workspace.py`(ADR-004) append-only 세션 로그)에 매핑.
+- **Tier A**(신규 코드 없음): Home "최근 검색" 카드 →
+  `research_workspace.list_sessions()` 읽기 전용 연결.
+- **Tier B**(신규 `st.session_state` 키만, Core 무변경, 저위험):
+  `sermon_research_selection`(전환 버퍼) + `sermon_research_state`
+  (§7 허브 상태) + §7 어댑터(텍스트 프리필만, `candidates`/`outline`
+  직접 주입은 v1 범위 밖으로 명시).
+- **Tier C**(신규 모듈 `core/reading_session.py`, "이어서 읽기" 영속화):
+  ADR-004 범위를 넓히지 않기 위해 `research_workspace.py` 확장 대신
+  `chat.py` 패턴을 복제한 별도 파일 제안 — **C1 Review 권장 후 착수**
+  (강제 게이트는 아니나 신규 영속 모듈이라 단독 판단으로 바로 구현하지
+  않음).
+- 구현 순서 제안: Tier A → Tier B(허브 화면) → §7 어댑터 → Tier C.
+  각 단계는 041처럼 개별 Task Order로 쪼갠다. **이번 문서는 설계까지만,
+  구현 미착수.**
 - `.automation/`(night-shift/control-plane), n8n Loop, RAW/Retrieval/
   Embedding Engine, 기존 ADR — 오늘 밤 무접촉 유지(확인함, 변경 없음).
 
