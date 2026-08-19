@@ -737,9 +737,31 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   dashboard or sermon_research or reading_session or research or
   chat"` 150 passed, 전체 스위트 재확인. 상세:
   `docs/agents/c1/C1-TASK-ORDER-044-REPORT.md`.
-- UX-007 §13 설계 문서의 Tier A/B/C + §7 어댑터 **전부 완료**. 오늘
-  밤 무인 작업은 여기서 마무리 — 다음은 §5 읽기 전체 구현 등 더 큰
-  스코프 판단이 필요해 사용자 복귀 후 확인.
+- UX-007 §13 설계 문서의 Tier A/B/C + §7 어댑터 **전부 완료**.
+
+### P0 TSU dataset 복원 (2026-08-19, 사용자 승인 후 CUE 실행)
+
+- §5 읽기 전체 구현은 사용자가 보류 지시. 대신 "다음 우선순위"를 다시
+  확인한 결과 `output/bench/tsu_dataset.jsonl`이 0바이트라 Chat/
+  Research 검색이 전부 0건인 P0가 UI 작업보다 훨씬 심각하다고 판단 —
+  CLAUDE.md가 "TSU Pipeline"을 절대 변경 금지 영역으로 명시해 무인
+  자동 진행하지 않고 `AskUserQuestion`으로 복원 방법을 확인, 사용자가
+  "백업 파일 복원(즉시)"을 선택.
+- 실행: `output/bench/backup/tsu_dataset_pre_fixA_20260727T014820.jsonl`
+  (2026-07-24 스냅샷, 53,231 TSU / 78개 문서)을 `output/bench/
+  tsu_dataset.jsonl`로 복사 + `core/tsu_builder.py::write_manifest()`
+  (기존 함수 그대로 호출, pipeline 코드 무변경)로 매니페스트를 현재
+  registry(82개 문서)/git commit/config 기준으로 재생성.
+- 검증: `QueryProcessor().process("로마서 8장")` 실측 3건 응답(복원
+  전 0건), `pytest -k "retrieval or tsu or manifest"` 408 passed, 전체
+  스위트 재확인.
+- **잔여 갭(의도적으로 남김)**: 복원본은 78개 문서 스냅샷이라 현재
+  registry의 82개 중 최근 처리된 4개 문서는 검색에 아직 안 잡힘 —
+  완전한 커버리지는 `scripts/build_tsu_dataset.py` 재빌드가 필요(더
+  오래 걸림), 이번엔 "즉시 복원"만 사용자가 선택했으므로 재빌드는
+  별도 판단으로 남김.
+- 두 파일 모두 `.gitignore` 대상(`output/`) — 코드 변경 없음, git
+  commit 없음.
 
 ---
 

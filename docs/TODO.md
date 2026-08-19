@@ -25,9 +25,18 @@
   자기모순 해소), 37/37 PASS
 
 남은 후속 과제 (별도 Task Order로 발행 전 상태):
-- [ ] **P0** — `output/bench/tsu_dataset.jsonl` 복원 (0바이트로 비어있어 Chat/Research 검색이 전부 0건).
-      백업: `output/bench/backup/tsu_dataset_pre_fixA_20260727T014820.jsonl` (600MB, 53,231건) 또는
-      `scripts/build_tsu_dataset.py` 재빌드.
+- [x] **P0** — `output/bench/tsu_dataset.jsonl` 복원 **완료** (2026-08-19,
+      사용자 승인 후 CUE 실행 — TSU Pipeline 보호 영역이라 무인 자동
+      진행 않고 승인받음). `output/bench/backup/tsu_dataset_pre_fixA_
+      20260727T014820.jsonl`(2026-07-24 스냅샷, 53,231건/78개 문서)을
+      복사하고 `core/tsu_builder.py::write_manifest()`(기존 함수 그대로
+      호출, pipeline 코드 무변경)로 매니페스트를 현재 registry/git
+      commit/config 기준으로 재생성. `QueryProcessor().process("로마서
+      8장")` 실측으로 3건 응답 확인(복원 전 0건).
+      **잔여 갭**: 현재 registry는 82개 문서(2026-08-19 갱신)인데 복원된
+      TSU는 78개 문서 스냅샷이라 최근 처리된 문서 4개가 검색에 아직
+      안 잡힘 — 완전한 커버리지가 필요하면 `scripts/build_tsu_dataset.py`
+      재빌드로 후속 필요(더 오래 걸림, 별도 판단).
 - [ ] **P1** — BM25 `_tokenize()` 한국어 미지원 (한글 토크나이저 부재, `core/retrieval.py`).
 - [ ] **P2** — Chat "단일 파일" 모드 `file_scope` 제한 재검토 (TSU 복원 후 재검증 필요).
 
