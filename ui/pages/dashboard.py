@@ -27,21 +27,50 @@ def render_dashboard_page() -> None:
     page = BasePage(title="홈", icon="")
     page.render_header()
 
+    _render_greeting()
     _render_status_banner()
     _render_quick_actions()
     _render_continue_reading_card()
     _render_recent_search_card()
 
-    effective_docs = _get_effective_documents()
+    st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
     st.markdown(
-        f"<div style='font-size: 13px; color: {THEME.TEXT_SECONDARY}; margin: 1.5rem 0 0.5rem;'>"
-        f"내 서재 \xb7 자료 {len(effective_docs)}건 정리됨 \xb7 "
-        f"</div>",
+        f"<div style='font-size: 15px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin-bottom: 0.75rem;'>내 서재 요약</div>",
         unsafe_allow_html=True,
     )
+    _render_library_summary()
     st.button("자세히 보기", use_container_width=False, on_click=_go_to, args=("Library",))
 
     page.render_footer()
+
+
+def _render_greeting() -> None:
+    """Stitch 홈 대시보드("좋은 아침입니다, 연구자님.")의 인사말
+    헤드라인을 물려받는다 — 시간대에 따라 아침/오후/저녁으로 바뀐다."""
+    from datetime import datetime
+
+    hour = datetime.now().hour
+    if hour < 12:
+        greeting = "좋은 아침입니다"
+    elif hour < 18:
+        greeting = "좋은 오후입니다"
+    else:
+        greeting = "좋은 저녁입니다"
+
+    st.markdown(
+        f"""
+        <div style="margin-bottom: 1rem;">
+            <div style="font-family: 'Source Serif 4', serif; font-size: 28px;
+                        font-weight: 700; color: {THEME.TEXT_PRIMARY}; line-height: 1.2;">
+                {greeting}, 연구자님.
+            </div>
+            <div style="font-size: 14px; color: {THEME.TEXT_SECONDARY}; margin-top: 4px;">
+                오늘의 연구를 이어나갈 준비가 되었습니다.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def _go_to(page_name: str) -> None:
