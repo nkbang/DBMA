@@ -79,6 +79,23 @@ _STYLE = """
     opacity: 0.7;
     margin-top: 8px;
 }
+.nae-quote {
+    text-align: center;
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.6;
+    color: #171e1e;
+    opacity: 0.85;
+    max-width: 640px;
+    margin: 32px auto 8px;
+}
+.nae-quote .rule {
+    width: 64px;
+    height: 1px;
+    background: #c3c7c7;
+    margin: 24px auto;
+}
 div[data-testid="stButton"] button[kind="primary"] {
     background-color: #171e1e !important;
     border-color: #171e1e !important;
@@ -140,6 +157,18 @@ def render_onboarding_page() -> None:
                 """,
                 unsafe_allow_html=True,
             )
+
+    st.markdown(
+        """
+        <div class="nae-quote">
+            <div class="rule"></div>
+            "책을 읽는 것은 대화하는 것이다. 지혜의 거장들과 대화하며
+            나의 신학을 세워가는 이 거룩한 노동을 돕습니다."
+            <div class="rule"></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.write("")
     btn_col1, btn_col2, btn_col3 = st.columns([2, 1, 1])
