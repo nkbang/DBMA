@@ -67,8 +67,11 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
    - ~~C1 Task Order 040 (파이프라인 상세 Home→Library 이관)~~ —
      **완료 (PASS)**, 1차 제출 FAIL(st.page_link 크래시) → 교정 후
      CUE 재검증 통과. 상세: `docs/agents/c1/C1-TASK-ORDER-040-REPORT.md`
-   - 다음 iteration 미정의 — §1 Global Navigation 또는 §2 빠른 시작
-     버튼 재배치 후보
+   - ~~C1 Task Order 041 (§1 Global Navigation 부분 적용)~~ —
+     **완료 (PASS)**, 2026-08-19 야간 무인 작업(사용자 부재, CUE가
+     build+audit 겸행). 상세: `docs/agents/c1/C1-TASK-ORDER-041-REPORT.md`
+   - 다음 iteration 미정의 — §2 빠른 시작 버튼 재배치 후보(미발급,
+     사용자 복귀 후 확인)
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님

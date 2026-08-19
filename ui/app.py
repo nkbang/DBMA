@@ -170,24 +170,25 @@ def _render_sidebar() -> str:
         The selected page name.
     """
     with st.sidebar:
-        st.markdown("### 📑 네비게이션")
+        st.markdown("### 네비게이션")
 
         pages = {
-            "Dashboard": ("🏠", "홈"),
-            "Library": ("🔍", "자료 찾기 · 내 자료"),
-            "Processing": ("📄", "자료 등록"),
-            "Research": ("🧪", "연구하기"),
-            "Chat": ("💬", "AI에게 질문"),
-            "설교문 작성": ("📖", "설교 준비"),
-            "설교 리뷰": ("🗂️", "설교 모음 정리"),
+            "Dashboard": "홈",
+            "Library": "내 자료",
+            "Research": "검색·연구",
+            "Chat": "AI에게 질문",
+            "설교문 작성": "설교 준비",
+            "설교 리뷰": "설교 모음 정리",
         }
-        # 엔지니어링 내부 진단 화면 — 일반 사용자(베타 테스터)에게는 불필요해
-        # 백본으로 숨긴다. NAE_ADMIN_MODE=1 환경변수를 설정한 경우에만 노출
-        # (David 본인 로컬 진단용). scripts/setup_beta_tester.command는 이
-        # 변수를 설정하지 않으므로 테스터 화면에는 기본적으로 나타나지 않는다.
+        # 엔지니어링 내부 진단 화면과 자료 등록 화면 — 일반 사용자(베타
+        # 테스터)에게는 불필요해 기본으로 숨긴다. NAE_ADMIN_MODE=1
+        # 환경변수를 설정한 경우에만 노출(David 본인 로컬 진단용).
+        # scripts/setup_beta_tester.command는 이 변수를 설정하지 않으므로
+        # 테스터 화면에는 기본적으로 나타나지 않는다.
         if os.environ.get("NAE_ADMIN_MODE") == "1":
-            pages["Monitor"] = ("💚", "시스템 모니터링")
-        pages["도움말"] = ("❓", "내서재 활용 가이드")
+            pages["Processing"] = "자료 등록"
+            pages["Monitor"] = "시스템 모니터링"
+        pages["도움말"] = "도움말"
 
         # key="nav_page" lets other pages switch tabs programmatically
         # (e.g. Dashboard's quick-action buttons) by setting
@@ -197,6 +198,7 @@ def _render_sidebar() -> str:
         selected = st.radio(
             "페이지 선택",
             options=list(pages.keys()),
+            format_func=lambda key: pages[key],
             label_visibility="collapsed",
             key="nav_page",
         )
@@ -204,7 +206,7 @@ def _render_sidebar() -> str:
         st.divider()
 
         # System status summary
-        st.markdown("### 📊 시스템 상태")
+        st.markdown("### 시스템 상태")
         st.caption("자료 검색: 정상")
         st.caption("AI 분석: 정상")
         st.caption("저장 공간: 정상")

@@ -628,23 +628,41 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
 확인), `pytest -k "dashboard or library"` 97/97 재확인. 상세:
 `docs/agents/c1/C1-TASK-ORDER-040-REPORT.md`.
 
-**다음 iteration 후보** (UX-007 §15 순서): §1 Global Navigation(5메뉴
-라벨) 또는 §2 빠른 시작 버튼 재배치 — 아직 미정의.
+**다음 iteration 후보** (UX-007 §15 순서): ~~§1 Global Navigation(5메뉴
+라벨)~~ — 아래 Task Order 041로 완료. §2 빠른 시작 버튼 재배치 — 아직
+미정의.
 
-## 오늘 밤 무인 작업 착수 (2026-08-19, CUE 기록)
+## 오늘 밤 무인 작업 (2026-08-19, CUE 기록)
 
 - 직전 세션이 `docs/agents/HANDOFF-PERPLEXITY-CLAUDE-001.md`로 UX-007 후속
   판단을 외부 Perplexity Claude로 이관했으나, 사용자 확인 후 **이 세션
   기준으로 진행하기로 확정** — Perplexity 트랙은 오늘 밤 보류. 이중 채널
   충돌(동일 Task Order를 두 곳에서 판단) 방지.
-- **C1 Task Order 041**(§1 Global Navigation 부분 적용, `ui/app.py::
-  _render_sidebar()` 한정)을 오늘 밤 무인 작업으로 릴레이 — 릴레이 문구:
-  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 26.
-- 041 PASS 확인 전까지 Task Order 042(§2 빠른 시작 버튼)는 발급하지
-  않는다. 041 완료 시 CUE가 diff 대조 + `AppTest` 재현 + 관리자모드
-  on/off 양쪽 재검증 후 STATE.md/TODO.md 갱신.
+- 사용자가 자리를 비우며 "무인 시스템으로 가동"을 명시적으로 지시 —
+  C1(Cline) 릴레이 대기 대신 **CUE가 build+audit 역할을 겸해 직접
+  실행**하기로 판단(사용자 부재 시 진행 정지보다 낫다고 판단, 근거:
+  Task Order 041이 이미 Core/retrieval 무접촉·저위험으로 스코프됨).
+
+### C1 Task Order 041 — PASS (CUE 직접 구현 + 자체 검증)
+
+- 대상: `ui/app.py::_render_sidebar()` 한정. emoji 전체 제거, 라벨
+  3곳 정렬(내 자료/검색·연구/도움말), `Processing`을 `Monitor`와 같은
+  `NAE_ADMIN_MODE` 게이트로 이동.
+- **부수 발견**: 기존 `st.radio`에 `format_func`가 없어 라벨이 애초에
+  화면에 렌더되지 않고 내부 키가 그대로 노출되던 상태였음 — 완료
+  조건(라벨 표시 확인) 충족을 위해 `format_func` 배선 추가, `nav_page`
+  반환값(내부 키)·`page_renderers` 라우팅은 무변경.
+- `Processing`으로 가는 사이드바 외 진입점 확인: `ui/pages/dashboard.py`
+  "문서 추가" 빠른 시작 버튼 — 이번 범위 밖이라 그대로 둠, 사실관계만
+  기록.
+- 검증: `AppTest` 실구동(mock 없음) 비관리자/관리자 양쪽 전 메뉴 클릭
+  예외 0건, `pytest -k "sidebar or nav or app"` 122 passed, `pytest -k
+  "dashboard or library or source_navigation"` 105 passed(회귀 없음).
+  상세: `docs/agents/c1/C1-TASK-ORDER-041-REPORT.md`.
+- 다음 후보(§2 빠른 시작 버튼 재배치)는 **미발급** — 사용자 복귀 후
+  우선순위 확인 후 착수.
 - `.automation/`(night-shift/control-plane), n8n Loop, RAW/Retrieval/
-  Embedding Engine, 기존 ADR — 오늘 밤 무접촉 유지.
+  Embedding Engine, 기존 ADR — 오늘 밤 무접촉 유지(확인함, 변경 없음).
 
 ---
 
