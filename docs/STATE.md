@@ -565,6 +565,68 @@ UI 클릭 배선은 C1 리디자인 완료 후 보류). 남은 것은 그 UI 배
 
 ---
 
+## n8n Loop Operating Model — Activation 상태 (2026-08-19, CUE 기록)
+
+**TASK-039**: PASS (conditional closure) — 2026-08-18 CUE 최종 판단 유지.
+2026-08-19 00:10 재실측으로 재확인(§1-B): Research=0건, Chat=0건,
+`output/bench/tsu_dataset.jsonl` 여전히 0바이트. §1-A는 정직하게
+NOT VERIFIED로 유지(물리 브라우저 검증 미수행을 PASS로 위장하지 않음).
+근거: `docs/agents/c1/C1-TASK-ORDER-039-REPORT.md`.
+
+**n8n Loop**: ACTIVATED / READY — 역할 고정.
+n8n = Execution Engine / C1 = Implementation Worker /
+CUE = Architecture·Governance·Verification Authority.
+
+**State Discovery**: COMPLETE.
+- n8n: `dbma_n8n` 컨테이너 가동 중(재기동 안 함), workflow 4개
+  (`dbma`, `DBMA Automation TEST (Phase B~D)`, `Phase E State Machine`,
+  `Control Plane Pilot (Isolated)`) 모두 active, 최근 48h 실질 실행 없음.
+- 마지막 loop 상태: HOLD (2026-08-17,
+  `.automation/audit/CORPUS-FACTORY-SINGLE-TASK-PILOT-CUE-HOLD.json`) —
+  신규 미등록 raw corpus 없음(`AF1815`/`PBC1742`/`TH1612` 0 files,
+  나머지 10개 소스 전부 QUALITY_PASSED 등록 완료). 2026-08-19 재확인
+  결과 변동 없음.
+- Production mutation: NONE (HOLD 이후 `registration_state.json` 불변).
+
+**Iteration #1**: NOT DEFINED. 사유: NO VALID NEW INPUT
+(신규 raw source 없음 / 이미 QUALITY_PASSED 소스 재등록은 무의미한
+iteration / production mutation 정당화할 input 없음).
+No Input → No Iteration → No Execution 원칙 적용.
+
+**현재 금지 사항** (다음 유효 input 전까지):
+이미 등록된 source 재등록, 동일 source 재처리, synthetic iteration 생성,
+production state mutation, n8n restart, `.automation/` audit 착수,
+night-shift/control-plane script 수정, ADR-026을 Approved처럼 사용,
+신규 workflow architecture 구현.
+
+**ADR Authority**: ADR-022(N8N State Machine) Approved,
+ADR-023(Full Processing/Executor) Approved,
+ADR-026(Control Plane Corpus Factory Integration) **Proposed —
+implementation authority 아님**. ADR-026이 필요한 architecture 변경
+발견 시 HOLD → ADR Review로 처리, 우회 구현 금지.
+
+**Re-entry 조건**: 새로운 유효 raw source가 존재하고, 해당 source가
+현재 governance/ADR 범위 안에서 처리 가능한 상태일 것. 확인 전
+절차: ① input provenance 확인 → ② 중복 여부 확인 → ③ production
+mutation 가능성 확인 → ④ 관련 ADR 확인 → ⑤ iteration 정의 →
+⑥ C1 전달 → ⑦ C1 execution → ⑧ CUE 독립 검증.
+
+**Final State 요약**:
+```
+TASK-039: PASS (conditional closure)
+n8n Loop: ACTIVATED / READY — LOOP READY, WAITING FOR VALID INPUT
+State Discovery: COMPLETE
+Iteration #1: NOT DEFINED (NO VALID NEW INPUT)
+Production Mutation: NONE
+.automation/: DEFERRED
+Night-shift / Control-plane scripts: DEFERRED
+ADR-026: PROPOSED / NOT AUTHORITY
+```
+새 유효 input이 확인되거나 사용자가 별도 iteration을 명시적으로
+지시하기 전에는 loop execution을 시작하지 않는다.
+
+---
+
 ## 비고
 
 이 문서는 작업 상태를 빠르게 확인하기 위한 기준 문서다.
