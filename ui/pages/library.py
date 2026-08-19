@@ -36,6 +36,7 @@ from core.index_orchestrator import exclude_document_from_index
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
+from ui.pages.dashboard import _render_library_summary, _render_doc_type_summary
 
 
 def _apply_library_styles() -> None:
@@ -93,6 +94,10 @@ def render_library_page() -> None:
     page = BasePage(title="자료 찾기", icon="🔍")
     page.render_header()
 
+    # ── Pipeline Summary (from Dashboard) ──────────────────────
+    _render_library_summary()
+    _render_doc_type_summary()
+
     # ── Search Bar ─────────────────────────────────────────────
     _render_search_bar()
 
@@ -112,7 +117,7 @@ def _render_search_bar() -> None:
     store = StateStore()
 
     query = st.text_input(
-        "🔍 문서 검색",
+        "🔍 내 자료에서 찾기",
         placeholder="문서 제목, 메타데이터 또는 내용으로 검색...",
         key="library_search",
         help="문서 이름, 타입, 메타데이터로 필터링합니다.",

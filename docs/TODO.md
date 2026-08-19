@@ -63,8 +63,12 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
 3. **오늘 밤 Primary Night Shift — UI 작업** (2026-08-19 확정): 기존
    Figma/Stitch 자산(`landing.html` 등) 재생성·덮어쓰기 금지, UX-007
    Gate 6 구현 트랙(§15 순서: §2 홈 → §3 내 자료 → §5 읽기 → §4 검색·연구
-   → §7 설교 연구)을 이어서 진행. 오늘 밤 착수: C1 Task Order 040
-   (파이프라인 상세 Home→Library 이관, `docs/agents/c1/C1-TASK-ORDER-040.md`)
+   → §7 설교 연구)을 이어서 진행.
+   - ~~C1 Task Order 040 (파이프라인 상세 Home→Library 이관)~~ —
+     **완료 (PASS)**, 1차 제출 FAIL(st.page_link 크래시) → 교정 후
+     CUE 재검증 통과. 상세: `docs/agents/c1/C1-TASK-ORDER-040-REPORT.md`
+   - 다음 iteration 미정의 — §1 Global Navigation 또는 §2 빠른 시작
+     버튼 재배치 후보
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님

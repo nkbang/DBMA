@@ -611,6 +611,28 @@ implementation authority 아님**. ADR-026이 필요한 architecture 변경
 mutation 가능성 확인 → ④ 관련 ADR 확인 → ⑤ iteration 정의 →
 ⑥ C1 전달 → ⑦ C1 execution → ⑧ CUE 독립 검증.
 
+## UI Night Shift — C1 Task Order 040 (2026-08-19, CUE 기록)
+
+**범위**: UX-007 §2(홈)/§3(내 자료) — 파이프라인 진행률 상세를
+Home→Library로 이관 + Library 검색창 라벨 변경. `landing.html`/기존
+Figma·Stitch 자산은 재생성·변경 없음(보존).
+
+**1차 제출**: FAIL — `st.page_link("pages/library.py", icon="")`가
+(a) 빈 문자열 icon이 유효하지 않아 `render_dashboard_page()` 호출 시
+즉시 크래시, (b) 이 앱이 네이티브 멀티페이지 구조가 아니라 해당 경로
+자체가 존재하지 않음. CUE가 `streamlit.testing.v1.AppTest`로 재현
+확인 후 `_go_to` 콜백 재사용 + `<div>` 닫기로 교정 지시.
+
+**재제출**: **PASS** — CUE가 실제 `AppTest`로 재검증(Home/Library
+렌더 예외 0건, "자세히 보기" 클릭 시 `nav_page`→`"Library"` 정확 전환
+확인), `pytest -k "dashboard or library"` 97/97 재확인. 상세:
+`docs/agents/c1/C1-TASK-ORDER-040-REPORT.md`.
+
+**다음 iteration 후보** (UX-007 §15 순서): §1 Global Navigation(5메뉴
+라벨) 또는 §2 빠른 시작 버튼 재배치 — 아직 미정의.
+
+---
+
 **Final State 요약**:
 ```
 TASK-039: PASS (conditional closure)

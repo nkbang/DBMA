@@ -29,9 +29,14 @@ def render_dashboard_page() -> None:
     _render_status_banner()
     _render_quick_actions()
 
-    st.markdown(f"<div style='font-size: 13px; color: {THEME.TEXT_SECONDARY}; margin: 1.5rem 0 0.5rem;'>내 서재</div>", unsafe_allow_html=True)
-    _render_library_summary()
-    _render_doc_type_summary()
+    effective_docs = _get_effective_documents()
+    st.markdown(
+        f"<div style='font-size: 13px; color: {THEME.TEXT_SECONDARY}; margin: 1.5rem 0 0.5rem;'>"
+        f"내 서재 \xb7 자료 {len(effective_docs)}건 정리됨 \xb7 "
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+    st.button("자세히 보기", use_container_width=False, on_click=_go_to, args=("Library",))
 
     page.render_footer()
 
