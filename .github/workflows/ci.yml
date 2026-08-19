@@ -26,14 +26,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # The benchmark stage runs scripts/benchmark_pipeline.py against
+      # data/**/*.pdf — real theological commentary PDFs that cannot be
+      # committed to this public repo, so a fresh checkout (including CI)
+      # never has them. --skip-benchmark uses validate_pipeline.py's own
+      # supported flag for this rather than letting the benchmark stage
+      # hard-fail with "No input files found." pytest still runs in full.
+      # See PR #2 discussion for the corpus-fixture tradeoffs considered.
       - name: Run validation pipeline
         run: |
-          python3 scripts/validate_pipeline.py --pytest-args "-v --tb=short" --benchmark-limit 2
-
-      - name: Upload benchmark artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dbma-benchmark-results
-          path: |
-            output/bench/benchmark_results.csv
-            output/bench/benchmark_summary.json
+          python3 scripts/validate_pipeline.py --pytest-args "-v --tb=short" --skip-benchmark
