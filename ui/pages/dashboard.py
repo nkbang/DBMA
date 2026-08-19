@@ -29,6 +29,7 @@ def render_dashboard_page() -> None:
 
     _render_status_banner()
     _render_quick_actions()
+    _render_continue_reading_card()
     _render_recent_search_card()
 
     effective_docs = _get_effective_documents()
@@ -78,6 +79,48 @@ def _render_quick_actions() -> None:
         st.button("자료 검색", use_container_width=True, on_click=_go_to, args=("Research",))
     with c3:
         st.button("문서 추가", use_container_width=True, on_click=_go_to, args=("Processing",))
+
+
+def _render_continue_reading_card() -> None:
+    """UX-007 §13 설계(Tier C) — 마지막으로 읽은 자료를 이어서 볼 수
+    있게 한다. core/reading_session.py(신규, chat.py 단일파일 덮어쓰기
+    패턴 복제)에서 조회만 하고, 재진입은 기존 research_detail_selection
+    패턴을 그대로 재사용(research.py가 이미 이 키로 상세 패널을 연다) —
+    새 내비게이션 경로를 만들지 않는다.
+    참고: docs/DBMA-UX-007-SessionState-Design.md §3.1"""
+    from core.reading_session import load_last_read
+
+    last_read = load_last_read()
+    if not last_read or not (last_read.get("source_label") or last_read.get("document_id")):
+        return
+
+    title = last_read.get("title") or last_read.get("source_label") or "이전 자료"
+    st.markdown(
+        f"""
+        <div style="background: {THEME.BG_SURFACE}; border: 1px solid {THEME.BORDER_LIGHT};
+                    border-radius: 12px; padding: 14px 18px; margin-top: 12px;">
+            <div style="font-size: 12px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 4px;">이어서 읽기</div>
+            <div style="font-size: 14px; color: {THEME.TEXT_PRIMARY};">{html.escape(title)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.button(
+        "이어서 읽기",
+        use_container_width=False,
+        on_click=_continue_reading,
+        args=(last_read,),
+        key="continue_reading_btn",
+    )
+
+
+def _continue_reading(last_read: dict) -> None:
+    st.session_state["research_detail_selection"] = {
+        "source_file": last_read.get("source_label", ""),
+        "document_id": last_read.get("document_id", ""),
+        "query_terms": [],
+    }
+    st.session_state["nav_page"] = "Research"
 
 
 def _render_recent_search_card() -> None:

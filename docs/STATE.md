@@ -722,8 +722,24 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   확인, `style_files` 매칭(fake processor, 실제 코퍼스 로드 트리거
   없음) 확인. 신규 회귀 테스트 4건 추가(총 12건), 전체 스위트
   `pytest tests/` 재확인. 상세: `docs/agents/c1/C1-TASK-ORDER-043-REPORT.md`.
-- 남은 것: Tier C(이어서 읽기 영속화, C1 Review 권장 후 착수) — 오늘
-  밤 무인 작업 범위에서는 여기까지.
+### C1 Task Order 044 — Tier C PASS (2026-08-19, CUE 직접 실행, C1 Review 생략)
+
+- 사용자가 "C1 Review 없이 계속 진행"을 명시적으로 지시. 신규
+  `core/reading_session.py`(chat.py 단일파일 원자적 덮어쓰기 패턴
+  복제, ADR-004 스키마 확장 안 함) + `research.py`/`chat.py`의 기존
+  상세 패널 렌더 성공 시 저장 한 줄 추가 + Home "이어서 읽기" 카드
+  (기존 `research_detail_selection` 패턴으로 재진입, 새 내비게이션
+  없음).
+- §5 읽기(3영역 워크스페이스) 전체는 여전히 미착수 — 이미 존재하는
+  detail_panel("문서 상세 패널을 봤다" = "읽었다")로 범위를 좁혀
+  결합했을 뿐, 새 화면을 만들지 않았음을 명시.
+- 검증: 신규 회귀 테스트 4건 PASS, `pytest -k "source_navigation or
+  dashboard or sermon_research or reading_session or research or
+  chat"` 150 passed, 전체 스위트 재확인. 상세:
+  `docs/agents/c1/C1-TASK-ORDER-044-REPORT.md`.
+- UX-007 §13 설계 문서의 Tier A/B/C + §7 어댑터 **전부 완료**. 오늘
+  밤 무인 작업은 여기서 마무리 — 다음은 §5 읽기 전체 구현 등 더 큰
+  스코프 판단이 필요해 사용자 복귀 후 확인.
 
 ---
 

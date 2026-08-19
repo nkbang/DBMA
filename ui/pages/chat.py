@@ -417,6 +417,10 @@ def _render_chat_page_with_detail() -> None:
             query_terms=query_terms,
         )
 
+        if not detail.error:
+            from core.reading_session import save_last_read
+            save_last_read(document_id, detail.title or "", source_file)
+
         # 상세 패널 렌더링
         render_detail_panel(detail, query_terms)
 

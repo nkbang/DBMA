@@ -84,7 +84,13 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      2026-08-19 야간 무인 작업 계속. `scripture_and_theme` 프리필 +
      `style_files` 매칭(코퍼스 미로드 시 시도 안 함) + 진행 중인 초안
      보호. 상세: `docs/agents/c1/C1-TASK-ORDER-043-REPORT.md`
-   - 다음 미착수: Tier C(이어서 읽기 영속화, C1 Review 권장)
+   - ~~Tier C(이어서 읽기 영속화)~~ — **완료 (PASS)**, 2026-08-19 야간
+     무인 작업 계속(사용자가 C1 Review 없이 진행 지시). 신규
+     `core/reading_session.py` + 기존 detail_panel 흐름에 결합(§5 전체
+     신규 화면은 미착수). 상세: `docs/agents/c1/C1-TASK-ORDER-044-REPORT.md`
+   - UX-007 §13 관련 Tier A/B/C + §7 어댑터 **전부 완료**. 다음
+     남은 후보: §5 읽기(연구 워크스페이스) 전체 구현, §4 검색·연구
+     통합, §11 용어집 등 — 전부 미착수, 별도 판단 필요
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님
