@@ -1,22 +1,67 @@
 # DBMA TODO
 
-## 즉시 확인 (2026-08-18, CUE 정리)
+## 즉시 확인 (2026-08-18~19, CUE 정리)
 
-C1 Task Order 039 종료(`docs/agents/c1/C1-TASK-ORDER-039-REPORT.md` §2/§3)로
-발견된 후속 과제 — 아직 이 문서 하단 우선순위 목록에는 반영 안 됨, 별도 Task Order로 발행 전 상태:
+### 완료된 정리 (2026-08-18~19 세션)
 
+세션 시작 시 `git status`에 8,500여 개 파일이 어지럽게 staged/untracked 상태였다.
+정리 경과:
+- 프로젝트와 무관한 로컬 툴 설정(`.agents/`, `.claude/`, `.continue/`, `.cursor/`,
+  `.roo/`, `.idea/`) `.gitignore` 등록 + unstage
+- C1 Task Order 039 종료 (CUE 최종 판단, `docs/agents/c1/C1-TASK-ORDER-039-REPORT.md` §2/§3)
+- citation card 실 배선(`ui/pages/chat.py`/`ui/components/citation_card.py`) +
+  브랜드 문구 정리 커밋
+- NAE TSU worker Phase 3 wiring 커밋 (50/50 PASS)
+- 로컬 잡동사니(vsix/docker-compose 백업/log/qdrant_db 캐시/worker 런타임 상태) 삭제 +
+  gitignore 보강
+- `core/review_disposition_v2.py` + 776 Human Review Disposition v2 스키마/문서 커밋
+  (110/110 PASS)
+- **ADR 번호 충돌 3건 정리**: ADR-022/023 빈 번호 채움(이미 승인된 문서였는데
+  미커밋 상태였음), ADR-021 Pilot Spec → ADR-027로 재번호(내용 무변경),
+  ADR-016 Retrieval Authority 초안은 미승인·중복(ADR-001과 동일 취지)이라 커밋
+  안 하고 파일명만 정리해 로컬 보존
+- `tests/test_source_navigation.py` stale 테스트 2건 수정 (document_id를 "존재
+  자체 금지"에서 "browser 노출 패턴 금지"로 좁힘 — Search Detail Panel 기능과의
+  자기모순 해소), 37/37 PASS
+
+남은 후속 과제 (별도 Task Order로 발행 전 상태):
 - [ ] **P0** — `output/bench/tsu_dataset.jsonl` 복원 (0바이트로 비어있어 Chat/Research 검색이 전부 0건).
       백업: `output/bench/backup/tsu_dataset_pre_fixA_20260727T014820.jsonl` (600MB, 53,231건) 또는
       `scripts/build_tsu_dataset.py` 재빌드.
 - [ ] **P1** — BM25 `_tokenize()` 한국어 미지원 (한글 토크나이저 부재, `core/retrieval.py`).
 - [ ] **P2** — Chat "단일 파일" 모드 `file_scope` 제한 재검토 (TSU 복원 후 재검증 필요).
 
-또한 세션 시작 시 `git status`가 8,000+ 파일 staged 상태였다 — 대부분
-`.automation/`(control-plane 코드+evidence, 81MB, HOLD 상태로 이미 완료된 산출물)
-정상 산출물이지만, 프로젝트와 무관한 로컬 툴 설정(`.agents/`, `.claude/`, `.continue/`,
-`.cursor/`, `.roo/`, `.idea/` — Higgsfield 플러그인 스킬 등)이 섞여 staged된 것을 발견해
-`.gitignore`에 추가하고 unstage 완료. `.automation/` 대량 커밋 여부는 아직 미결정 —
-사용자 확인 후 진행.
+### DEFERRED — Night-Shift / `.automation/` (2026-08-19, 사용자 확정)
+
+아래 두 항목은 **지금 착수하지 않는다**. 현재 진행 중인 TASK-039 closure /
+n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
+자산 보존 작업과 절대 섞지 않고, 별도 window에서 처리한다.
+
+**⑦ Night-shift / Control-plane Scripts** — 상태: **DEFERRED**
+- 현재 TASK-039와 분리, 현재 n8n Loop Activation과 분리
+- 개별 script를 임의로 수정하지 말 것
+- production process에 영향을 주는 정리 작업을 수행하지 말 것
+- 향후 `.automation/` audit과 하나의 통합 작업으로 처리한다.
+
+**`.automation/` Review** — 상태: **NOT STARTED / DEFERRED / KNOWN BACKLOG — NOT YET AUDITED**
+- 약 8,000개 artifact 존재. 숫자만으로 정리·삭제 필요성을 추론하지 않는다.
+- 단순 파일 정리나 개별 script 검토로 시작하지 않는다 — control plane의 실제
+  상태·중복·obsolete artifact·실행 경로·state/evidence 구조를 조사하는 별도
+  audit으로 취급한다.
+- 착수 시 먼저 수행할 순서: ① 전체 inventory → ② artifact 유형 분류 →
+  ③ 실제 execution path 확인 → ④ active/obsolete/duplicate 구분 →
+  ⑤ state/evidence/control-plane 관계 확인 → ⑥ n8n과의 관계 확인 →
+  ⑦ production process와의 관계 확인 → ⑧ ADR/governance와의 충돌 여부 확인 →
+  ⑨ 삭제·이동 후보 별도 목록화 → ⑩ CUE audit 후에만 mutation 여부 결정.
+- **No cleanup before inventory. No mutation before provenance. No deletion
+  before CUE approval.** audit이 시작될 때까지 이 영역을 임의로 변경하지 않는다.
+
+### 현재 우선순위 (2026-08-19 확정)
+1. 현재 진행 중인 TASK-039 closure
+2. n8n Loop Operating Model activation 준비
+3. 첫 loop의 State Discovery 및 iteration 운영
+4. 기존 NAE/Figma UI 자산 보존 및 consistency 작업
+5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
 
 ## 현재 목표
 [2026-07-22 갱신] 이 문서는 SPRINT20-RC 시점에서 오래 갱신이 밀려 있었다
