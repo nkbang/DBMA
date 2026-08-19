@@ -763,6 +763,22 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
 - 두 파일 모두 `.gitignore` 대상(`output/`) — 코드 변경 없음, git
   commit 없음.
 
+### C1 Task Order 045 발급 — §11 용어집 전역 적용, C1에게 이관 (2026-08-19)
+
+- 사용자 지시: "다음 작업은 c1에게 이관해라" — 여기서부터 CUE가 직접
+  구현하지 않고 C1(Cline)에게 넘긴다. UX-007 §15가 스스로 "위험도
+  낮은 것부터 — §11 용어집 전역 적용(단순 치환, C1 가능)"이라 명시한
+  항목을 다음 순서로 선택.
+- CUE가 grep으로 위반 사례 4곳을 미리 찾아 문서에 남겼다(직접 고치지
+  않음): `research.py:525`(TSU ID 노출), `source_link.py:131`
+  (document_id 원문 노출), `tables.py:131`(RRF 원시 점수 노출),
+  `library.py`/`dashboard.py`의 "RAW 폴더" 라벨(관리자 게이트 여부
+  확인 필요). `ui/tabs.py`는 비활성 경로로 확인, 대상에서 제외.
+- Task Order: `docs/agents/c1/C1-TASK-ORDER-045.md`. 릴레이 문구:
+  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 27.
+- C1 제출 시 CUE가 diff 대조 + grep 재현 + `AppTest` 재확인으로 독립
+  검증(기존 040/041과 동일 절차).
+
 ---
 
 **Final State 요약**:

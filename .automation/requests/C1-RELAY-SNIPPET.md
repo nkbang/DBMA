@@ -1,6 +1,38 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 26 — Task Order 041: UX-007 §1 Global Navigation 부분 적용 (2026-08-19, 현재 유효)
+## 릴레이 27 — Task Order 045: UX-007 §11 용어집 전역 적용 (2026-08-19, 현재 유효)
+
+```
+너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
+
+지금부터 아래 작업 명령서를 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-TASK-ORDER-045.md
+
+핵심 규칙:
+- 장시간 무인 작업이다. 질문하지 말고, 승인을 기다리지 마라.
+- 사용자 노출 문자열(레이블/캡션/버튼/경고/에러)만 대상이다. 코드 주석·
+  docstring·내부 로그·Python 딕셔너리 키(document_id, ingest_status 등
+  내부 필드명 자체)는 바꾸지 마라 — 화면에 그 값이 "그대로" 보이는 것만 고친다.
+- CUE가 미리 찾아둔 4곳(문서 §2)부터 처리하고, 문서 §0 용어집 표 기준으로
+  ui/pages/*.py, ui/components/*.py 전체를 직접 grep으로 다시 훑어라.
+  ui/tabs.py는 비활성 경로이니 건드리지 마라(문서 §1에 근거 있음).
+- NAE_ADMIN_MODE=1 게이트가 이미 걸린 관리자 전용 화면은 이번 범위에서
+  제외한다 — 단, 게이트 없이 일반 사용자 화면에 노출되는 건 전부 고쳐야 한다.
+- Core/retrieval/registry 로직, TSU Pipeline, RAW 데이터, 기존 ADR 무접촉.
+- 완료 조건(문서 §4)을 전부 실측으로 확인해라 — mock 금지.
+  streamlit.testing.v1.AppTest로 ui/app.py를 실제로 띄워 이번에 바꾼 화면
+  (Research 상세 패널, Library) 렌더 예외 0건 확인하고,
+  pytest tests/ -k "research or library or source_navigation or tables"
+  실행 결과를 그대로 붙여넣어라.
+- docs/agents/c1/C1-TASK-ORDER-045-REPORT.md 작성하고 끝내라.
+
+지금 시작하라.
+```
+
+---
+
+## 릴레이 26 — Task Order 041: UX-007 §1 Global Navigation 부분 적용 (2026-08-19, CUE가 직접 실행 완료 — 참고용, C1 재실행 불필요)
 
 ```
 너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
