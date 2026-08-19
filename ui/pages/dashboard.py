@@ -108,7 +108,7 @@ def _render_quick_actions() -> None:
     )
     actions = [
         ("자료 찾기", "Research"),
-        ("질문하기", "Chat"),
+        ("질문하기", "Research"),
         ("설교 준비", "설교문 작성"),
         ("도움말", "도움말"),
     ]

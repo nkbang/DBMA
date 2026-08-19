@@ -106,7 +106,7 @@ export한다(2026-07-24 수정 — 이전에는 `render_chat_page`/
 
 - `_render_status_banner()` — 전체 시스템 상태(정상/처리 중/확인 필요)
 - `_render_quick_actions()` — Chat/Research/Processing 바로가기 버튼
-  - "💬 질문하기" → `st.session_state["nav_page"] = "Chat"`
+  - "💬 질문하기" → `st.session_state["nav_page"] = "Research"` (Chat은 "검색·연구 통합" 리팩터로 Research에 병합됨, app.py에 더 이상 별도 라우트 없음)
   - "🔍 자료 검색" → `st.session_state["nav_page"] = "Research"`
   - "📤 문서 추가" → `st.session_state["nav_page"] = "Processing"`
 - `_go_to(page_name)` — session_state에 페이지명 저장 → app.py의 st.radio(`key="nav_page"`)가 감지하여 페이지 전환

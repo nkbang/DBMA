@@ -140,12 +140,12 @@ def render_onboarding_page() -> None:
     )
 
     cards = [
-        ("🔍", "#dde4e3", "자료 찾기", "방대한 성경과 신학 자료를 한곳에서 검색하세요."),
-        ("🧪", "#c2e8fe", "AI 연구 도우미", "맥락을 이해하는 AI와 함께 깊이 있는 신학 연구를 수행하세요."),
-        ("📖", "#f3dfcb", "설교 준비", "연구 결과를 바탕으로 자연스럽게 설교문을 작성하세요."),
+        ("🔍", "#dde4e3", "자료 찾기", "방대한 성경과 신학 자료를 한곳에서 검색하세요.", "Research"),
+        ("🧪", "#c2e8fe", "AI 연구 도우미", "맥락을 이해하는 AI와 함께 깊이 있는 신학 연구를 수행하세요.", "Research"),
+        ("📖", "#f3dfcb", "설교 준비", "연구 결과를 바탕으로 자연스럽게 설교문을 작성하세요.", "설교문 작성"),
     ]
     cols = st.columns(3)
-    for col, (icon, bg, title, desc) in zip(cols, cards):
+    for col, (icon, bg, title, desc, target) in zip(cols, cards):
         with col:
             st.markdown(
                 f"""
@@ -157,6 +157,10 @@ def render_onboarding_page() -> None:
                 """,
                 unsafe_allow_html=True,
             )
+            if st.button(f"{title} 바로가기", key=f"_onboard_card_{title}", use_container_width=True):
+                st.session_state["show_onboarding"] = False
+                st.session_state["nav_page"] = target
+                st.rerun()
 
     st.markdown(
         """
