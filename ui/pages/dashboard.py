@@ -115,7 +115,7 @@ def _render_quick_actions() -> None:
     cols = st.columns(4)
     for col, (label, target) in zip(cols, actions):
         with col:
-            st.button(label, use_container_width=True, on_click=_go_to, args=(target,), key=f"_quick_{target}")
+            st.button(label, use_container_width=True, on_click=_go_to, args=(target,), key=f"_quick_{label}")
 
 
 def _render_continue_reading_card() -> None:
