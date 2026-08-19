@@ -682,6 +682,33 @@ build+audit을 겸행했고, 이후(Task Order 045~048)부터는 C1(Cline)에게
 및 해당 `C1-CORRECTION-ORDER-*.md`에 남아있다(이 요약은 그 문서들의
 축약본).
 
+### 추가 — TSU dataset 재빌드 완료 (2026-08-19)
+
+P0 복원 후 남아있던 78/82 문서 커버리지 갭 해소. dry-run으로 안전
+확인(53,963건/82문서) → 기존 파일 백업 → 실제 재빌드(총 약 22분).
+결과 53,231건/78문서 → 53,963건/82문서. `QueryProcessor` 재검증(이전
+누락 문서가 실제 검색 최상위 결과로 확인), 전체 `pytest tests/`
+2482 passed. 상세: `docs/TODO.md` P0 항목.
+
+### 추가 — C1 Task Order 049 발급: §9 Empty/Loading/Error States (2026-08-19)
+
+- §4 검색·연구 통합 후속으로 남아있던 §9(전역 원칙 — 빈 화면/로딩/
+  오류/미처리 문서 클릭)를 C1에게 이관. grep으로 원시 예외 노출
+  9곳을 미리 찾아 문서에 남김 — 그중 `research.py:701,703`의
+  `f"에러: ... {str(e)}"`는 스펙 §4.4가 애초에 "교체 대상"으로 직접
+  지목했던 위반인데 여태 미수정 상태였음을 확인.
+- `library.py`의 "처리되지 않은 문서" 메시지에 버튼 추가 지시하되,
+  스펙 원문("관리자 경로 안내는 제외")에 따라 `NAE_ADMIN_MODE=1`일
+  때만 "자료 등록으로 이동" 버튼을 보이게 조건부로 명시(Processing
+  페이지 자체가 Task Order 041로 관리자 전용이 됐으므로).
+- 빈 화면(`st.info`/`st.warning`) 목록을 CUE가 grep으로 정리해
+  전달하되, "이미 다음 행동이 명확/성공 상태"는 그대로 두고 "진짜
+  Dead End"만 버튼 추가하도록 판단 기준을 명시(억지로 버튼 붙이지
+  않게).
+- Task Order: `docs/agents/c1/C1-TASK-ORDER-049.md`. 릴레이:
+  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 34. "전체 pytest
+  실행"을 재차 명시(이번이 세 번째 반복 지시).
+
 ---
 
 ## 비고
