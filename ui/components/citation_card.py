@@ -36,6 +36,7 @@ def render_citation_card(
     relevance_score: float = 0.0,
     on_view_original: bool = False,
     on_copy_citation: bool = False,
+    key_suffix: str = "",
 ) -> None:
     """Render a citation/provenance card per DBMA-UX-007 §6.
 
@@ -98,7 +99,7 @@ def render_citation_card(
     st.markdown(card_html, unsafe_allow_html=True)
 
     # Real Streamlit buttons (not HTML) — placed below the card
-    btn_key_base = f"cite_btn_{abs(hash(source_file)) & 0xFFFFFFFF:x}"
+    btn_key_base = f"cite_btn_{abs(hash(source_file + key_suffix)) & 0xFFFFFFFF:x}"
     if on_view_original:
         st.button(
             "원문 다시 보기",

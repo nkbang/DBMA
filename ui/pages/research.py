@@ -772,7 +772,11 @@ def _format_candidate(candidate: RankedCandidate, parsed_query, *, citation: Opt
 # ── Detail Panel Layout ────────────────────────────────────────
 
 def _render_research_page_with_detail() -> None:
-    """2단 레이아웃: 왼쪽 검색/결과, 오른쪽 문서 상세 패널."""
+    """3영역 레이아웃: 본문(좌주) + 연구 영역(우측) + 행동 영역(하단 3버튼).
+
+    UX-007 §5 Reading Specification — Task Order 048.
+    """
+    import datetime
     from core.document_detail import get_document_detail
     from ui.components.detail_panel import render_detail_panel
 
@@ -784,31 +788,30 @@ def _render_research_page_with_detail() -> None:
     document_id = detail_selection["document_id"]
     query_terms = detail_selection.get("query_terms", [])
 
+    # ── Typography CSS for body text ──────────────────────────────
+    st.markdown(
+        "<style>"
+        ".dbma-body-text {"
+        "  font-family: 'Source Serif 4', serif;"
+        "  font-size: 17px;"
+        "  max-width: 640px;"
+        "  line-height: 1.85;"
+        "}"
+        "</style>",
+        unsafe_allow_html=True,
+    )
+
+    # ── Top row: body (left) + research area (right) ────────────
     cols = st.columns([2, 1])
+
+    # === LEFT: Document body ===
     with cols[0]:
-        page = BasePage(title="연구 공간", icon="🧪")
-        page.render_header()
-
-        page.render_section("검색", icon="🔍")
-        _render_search_interface()
-
-        page.render_section("검색 결과", icon="📊")
-        _render_search_results()
-
-        page.render_section("검색 분석", icon="📈")
-        _render_query_analysis()
-
-        page.render_footer()
-
-    with cols[1]:
-        # Close button
+        # Close button (top-left of body area)
         if st.button("닫기", key="research_detail_close_btn", type="primary"):
             st.session_state["research_detail_selection"] = None
             st.rerun()
 
-        st.divider()
-
-        # Document detail info
+        # Fetch and render document detail
         detail = get_document_detail(
             source_file=source_file,
             document_id=document_id,
@@ -819,5 +822,154 @@ def _render_research_page_with_detail() -> None:
             from core.reading_session import save_last_read
             save_last_read(document_id, detail.title or "", source_file)
 
-        # Render detail panel
+        # Wrap render_detail_panel output in typography container
+        st.markdown('<div class="dbma-body-text">', unsafe_allow_html=True)
         render_detail_panel(detail, query_terms)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # === RIGHT: Research area ===
+    with cols[1]:
+        st.subheader("연구 영역")
+
+        # --- Related docs ---
+        st.markdown("**관련 자료**")
+        related_results = _fetch_related_docs(query_terms, document_id)
+        for i, rd in enumerate(related_results):
+            render_citation_card(
+                source_file=rd.get("source_file", ""),
+                text_location=None,
+                doc_type=None,
+                author=rd.get("author") or None,
+                citation_title=rd.get("source_title") or None,
+                relevance_score=rd.get("score", 0.0),
+                on_view_original=True,
+                key_suffix=f"related_{i}",
+            )
+            src = rd.get("source_file", "")
+            did = rd.get("document_id", "")
+            if src or did:
+                rkey = f"rel_nav_{i}_{abs(hash(src + did)) & 0xFFFFFFFF:x}"
+                if st.button(f"📄 {src}", key=rkey, use_container_width=True):
+                    st.session_state["research_detail_selection"] = {
+                        "source_file": src,
+                        "document_id": did,
+                        "query_terms": query_terms,
+                    }
+                    st.rerun()
+
+        st.divider()
+
+        # --- Follow-up question ---
+        st.markdown("**이어서 질문**")
+        q_key = f"followup_q_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        a_key = f"followup_a_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        if st.text_input("질문 입력", key=q_key, placeholder="현재 문맥에서 질문하세요"):
+            user_question = st.session_state[q_key]
+            try:
+                answer_text, _ = generate_answer(
+                    user_question,
+                    conversation_history="",
+                    file_scope=[source_file],
+                )
+                st.session_state[a_key] = answer_text if answer_text else "답변을 생성하지 못했습니다."
+            except Exception as e:
+                logger.warning("Follow-up question failed: %s", e)
+                st.session_state[a_key] = "답변 생성 중 오류가 발생했습니다."
+        if a_key in st.session_state and st.session_state[a_key]:
+            st.markdown(st.session_state[a_key])
+
+    # ── Bottom row: 3 action buttons ─────────────────────────────
+    st.divider()
+    _render_detail_action_buttons(detail, source_file, document_id)
+
+
+def _fetch_related_docs(query_terms: list[str], exclude_document_id: str) -> list[dict]:
+    """query_terms로 검색하되 exclude_document_id와 일치하는 문서는 제외."""
+    if not query_terms:
+        return []
+    query = " ".join(query_terms)
+    results, _, _ = _execute_research_query(query, top_k=10)
+    return [r for r in results if r.get("document_id", "") != exclude_document_id]
+
+
+def _render_detail_action_buttons(
+    detail: Any, source_file: str, document_id: str
+) -> None:
+    """하단 행동 영역: 인용하기 / 연구에 추가 / 설교 연구로 보내기."""
+    btn_cols = st.columns(3)
+
+    # 1. 인용하기
+    with btn_cols[0]:
+        cite_key = f"cite_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        cite_text_key = f"{cite_key}_text"
+        if st.button("인용하기", key=cite_key, use_container_width=True):
+            citation_text = _build_citation_text(detail, source_file, document_id)
+            st.session_state[cite_text_key] = citation_text
+        if st.session_state.get(cite_text_key):
+            st.code(st.session_state[cite_text_key], language=None)
+
+    # 2. 연구에 추가
+    with btn_cols[1]:
+        add_key = f"add_to_res_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        if st.button("연구에 추가", key=add_key, use_container_width=True):
+            _add_to_research_session(detail, source_file, document_id)
+            st.toast("연구 세션에 추가되었습니다")
+
+    # 3. 설교 연구로 보내기
+    with btn_cols[2]:
+        sermon_key = f"send_sermon_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        if st.button("설교 연구로 보내기", key=sermon_key, use_container_width=True):
+            _send_to_sermon_research(source_file, document_id, detail)
+            st.toast("설교 연구에 추가되었습니다")
+
+
+def _build_citation_text(detail: Any, source_file: str, document_id: str) -> str:
+    """문서의 출처/저자/위치 정보를 텍스트로 구성."""
+    parts = []
+    if detail and detail.title:
+        parts.append(f"제목: {detail.title}")
+    if detail and detail.author:
+        parts.append(f"저자: {detail.author}")
+    if source_file:
+        parts.append(f"출처: {source_file}")
+    if document_id:
+        parts.append(f"문서 ID: {document_id}")
+    if detail and detail.document_type:
+        parts.append(f"유형: {detail.document_type}")
+    if detail and detail.created_at:
+        parts.append(f"생성일: {detail.created_at}")
+    return "\n".join(parts)
+
+
+def _add_to_research_session(detail: Any, source_file: str, document_id: str) -> None:
+    """현재 문서를 현재 연구 세션에 참조로 추가."""
+    session_id = st.session_state.get("research_session_id", "")
+    if not session_id:
+        return
+    resp_pkg = {
+        "top_k_results": [
+            {
+                "document_id": document_id,
+                "source_file": source_file,
+                "title": detail.title if detail else "",
+                "author": detail.author if detail else "",
+                "score": 1.0,
+            }
+        ],
+        "citations": [],
+    }
+    add_query_result(session_id, "", resp_pkg)
+
+
+def _send_to_sermon_research(
+    source_file: str, document_id: str, detail: Any
+) -> None:
+    """sermon_research_selection 버퍼에 현재 문서 추가 (Task Order 042 패턴)."""
+    st.session_state.setdefault("sermon_research_selection", [])
+    st.session_state["sermon_research_selection"].append({
+        "tsu_id": document_id,
+        "document_id": document_id,
+        "excerpt": (detail.full_text[:300] if (detail and detail.full_text) else ""),
+        "source_label": source_file,
+        "added_at": datetime.datetime.now().isoformat(timespec="seconds"),
+    })

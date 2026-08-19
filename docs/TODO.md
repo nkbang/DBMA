@@ -118,14 +118,13 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      모든 입력에 검색+AI 답변 항상 병렬 실행, 사이드바 "Chat" 제거.
      상세: `docs/agents/c1/C1-TASK-ORDER-047-REPORT.md`
    - UX-007 §2/§3/§6/§7/§11/§13 + §4 **전부 완료**.
-   - **C1 Task Order 048(§5 읽기 — 연구 워크스페이스)** — 1차 제출
-     **FAIL**(C1 보고는 "예외 없음"이었으나 CUE 실측에서 크래시 2건
-     확인). ①"인용하기" 버튼이 자신의 위젯 key를 덮어써 클릭할 때마다
-     `StreamlitAPIException`, ②관련 자료 카드의 버튼 key가
-     `source_file`에만 의존해 같은 파일에서 여러 청크가 나오면(실제
-     "로마서 8장" 검색으로 재현: 10건 중 4건 동일 파일)
-     `StreamlitDuplicateElementKey`로 크래시. Correction Order 048
-     발행, 릴레이 33. 재제출 대기 중.
+   - ~~C1 Task Order 048(§5 읽기 — 연구 워크스페이스)~~ — **완료
+     (PASS)**, 2026-08-19. 1차 제출 FAIL(크래시 2건: "인용하기" 버튼
+     자기 key 덮어쓰기, 관련 자료 카드 key 중복) → Correction Order
+     048 → 재제출 CUE 재검증 PASS(격리된 세션으로 5개 버튼 전부 개별
+     재현, 전체 `pytest tests/` 2482 passed). 상세:
+     `docs/agents/c1/C1-TASK-ORDER-048-REPORT.md`
+   - UX-007 §2/§3/§4/§5/§6/§7/§11/§13 **전부 완료**.
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님
