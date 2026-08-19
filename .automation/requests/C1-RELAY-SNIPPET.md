@@ -1,6 +1,44 @@
 # C1(Cline) 작업창에 그대로 붙여넣을 지시문
 
-## 릴레이 28 — Correction Order 045: Task Order 045 반려, 2건 정정 (2026-08-19, 현재 유효)
+## 릴레이 29 — Task Order 046: UX-007 §6 인용 카드 공용 컴포넌트, research.py 마이그레이션 (2026-08-19, 현재 유효)
+
+```
+너는 DBMA 프로젝트의 구현 담당(C1)이다. 프로젝트 루트는 /Users/David/DBMA 이다.
+
+지금부터 아래 작업 명령서를 열어서 그대로 수행하라.
+
+  docs/agents/c1/C1-TASK-ORDER-046.md
+
+핵심 규칙:
+- 장시간 무인 작업이다. 질문하지 말고, 승인을 기다리지 마라.
+- ui/components/citation_card.py와 chat.py::_render_clickable_source()는
+  이미 §6를 구현해뒀다(다른 세션에서 완료, 무변경 대상) — 먼저 그 두 곳을
+  읽고 똑같은 패턴을 research.py에 적용해라. 새로 설계하지 마라.
+- research.py::_render_search_results_as_cards()(318~412행)에서 별점
+  배지 + 저자/출처/근거신뢰도 메타 줄만 render_citation_card() 호출로
+  바꿔라. 제목/순번 헤더와 발췌문(snippet)은 citation_card.py에 그
+  파라미터가 없으니 카드 밖에 그대로 남겨라 — 새 파라미터 추가 금지.
+- "📄 {source_file}" 내비게이션 버튼과 "설교 연구에 추가" 버튼
+  (_render_send_to_sermon_research_button)은 절대 건드리지 마라 —
+  tests/test_sermon_research_hub.py가 이 버튼들의 key/라벨에 의존한다.
+- citation_card.py에 좌측 4px 색상 바 추가(THEME.CITE_STAR_FILLED 재사용,
+  새 색상 토큰 추가 금지) — spec mockup 반영.
+- CUE가 이번에 §11 위반 1건도 같이 찾았다: research.py 356행의
+  "근거 신뢰도(citation): {value:.4f}"가 원시 소수점 노출이다 —
+  render_citation_card로 옮기면 자동 해결되니 별도로 안 고쳐도 된다.
+- 완료 조건(문서 §5)을 전부 실측으로 확인해라 — mock 금지. AppTest로
+  Research 페이지 실제 렌더 확인하고,
+  pytest tests/ -k "research or sermon_research or citation or tables"
+  실행 결과를 그대로 붙여넣어라. test_sermon_research_hub.py가 깨지면
+  이 Task는 FAIL이다.
+- docs/agents/c1/C1-TASK-ORDER-046-REPORT.md 작성하고 끝내라.
+
+지금 시작하라.
+```
+
+---
+
+## 릴레이 28 — Correction Order 045: Task Order 045 반려, 2건 정정 (2026-08-19, 완료 — 참고용)
 
 ```
 CUE 독립 검증 결과가 나왔다. Task Order 045는 FAIL(조건부)이다 —

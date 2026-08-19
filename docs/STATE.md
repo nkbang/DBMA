@@ -809,6 +809,25 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   페이지 포함 전체 재확인 예외 0건, `pytest -k "research or library or
   source_navigation or tables"` 43 passed 재확인. **Task Order 045
   최종 PASS.**
+
+### C1 Task Order 046 발급 — §6 인용 카드 공용 컴포넌트, C1에게 이관 (2026-08-19)
+
+- 사용자 지시로 §6를 C1에게 이관. 착수 전 확인한 결과 `ui/components/
+  citation_card.py`와 `chat.py::_render_clickable_source()`가 **이미
+  다른 세션에서 §6를 구현 완료**해둔 상태(커밋 이력엔 별도 Task Order로
+  안 남아있었음, CUE가 grep으로 재발견) — 이번 Task Order는 새로 만드는
+  게 아니라 그 패턴을 아직 안 옮겨진 `research.py`에 적용하는 마이그레이션.
+- 부수 발견: `research.py:356`의 `f"근거 신뢰도(citation): {value:.4f}"`
+  가 원시 소수점 노출로 §11 위반인데 Task Order 045의 grep(정확한
+  키워드 "RRF"/"TSU" 등만 검색)이 놓쳤음 — 이번 마이그레이션으로
+  자동 해결되도록 범위에 포함.
+- 명시적 보호: "📄 {source_file}" 내비게이션 버튼, "설교 연구에 추가"
+  버튼(Task Order 042/043) 무변경 지시 — `tests/test_sermon_research_hub.py`
+  가 이 버튼들에 의존.
+- Task Order: `docs/agents/c1/C1-TASK-ORDER-046.md`. 릴레이:
+  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 29. C1 제출 시
+  CUE가 diff/grep/AppTest/pytest로 독립 검증(특히 `test_sermon_
+  research_hub.py` 무손상 여부 최우선 확인).
 - (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
   다름("자료실" — library.py/sermon_review.py, "보관함" —
   dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,
