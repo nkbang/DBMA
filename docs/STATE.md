@@ -884,6 +884,21 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   클릭까지 재현해서 확인하라"고 명시. 릴레이 31
   (`.automation/requests/C1-RELAY-SNIPPET.md`). C1이 TODO.md에 직접
   "완료 (PASS)"라고 적어뒀던 항목은 CUE가 FAIL로 정정.
+- **재제출 CUE 재검증 — PASS 확정** (2026-08-19): diff 대조로 3개
+  버그 전부 지시한 대로 수정됨 확인(`for _ in stream: pass`로 스트림
+  소비 후 `to_result()`, `conversation_history or ""` 방어,
+  `research.py`에 `logging`/`logger` 추가). CUE가 직접
+  `generate_answer("로마서 8장이 무슨 내용인가요?")` 호출 —
+  147자 실제 답변 확인(이전엔 0자). `AppTest`로 Research 페이지 실제
+  검색 클릭까지 재현 — `research_ai_answer` 408자 비어있지 않음,
+  검색 결과 10건, "설교 연구에 추가"/내비게이션 버튼 각 10개 무손상,
+  사이드바 7개 메뉴("Chat" 없음) 전체 예외 0건 확인. 전체
+  `pytest tests/` 재실행 **2482 passed**(회귀 없음). **Task Order 047
+  최종 PASS.**
+- (참고, 블로킹 아님) C1이 이번에도 "전체 pytest 실행" 지시를 어기고
+  723/2482개만 배치 실행했다(직전 1차 제출 때는 368/2482) — CUE가
+  두 번 다 직접 전체를 돌려 확인. 반복되는 패턴이라 다음 Task Order
+  발급 시 재차 명시 필요.
 - (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
   다름("자료실" — library.py/sermon_review.py, "보관함" —
   dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,

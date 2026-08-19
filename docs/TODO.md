@@ -110,17 +110,15 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      완료(실제 결과 데이터로 AppTest 직접 실행, 원시 소수점 미노출/
      좌측 색상바/보호 버튼 무손상 확인). 상세:
      `docs/agents/c1/C1-TASK-ORDER-046-REPORT.md`
-   - **C1 Task Order 047(§4 검색·연구 통합)** — 1차 제출 **FAIL**
-     (C1 자체 보고는 PASS였으나 CUE 독립 검증에서 핵심 기능 미작동
-     확인). `ui/pages/chat.py::generate_answer()`가 `GenerationStream`을
-     순회(iterate)하지 않고 바로 `to_result()`를 호출해 AI 답변이
-     **항상 빈 문자열** — 실제 검색 실행해도 화면에 답변이 절대 안 뜸.
-     부수 버그 2건(`conversation_history=None` 크래시,
-     `research.py`에 미정의 `logger` 사용) 추가 발견. C1이 지시했던
-     전체 `pytest tests/`도 안 돌리고 368/2482개만 배치 실행 —
-     CUE가 전체 재실행(2482 passed, 회귀는 없으나 이 버그 자체를
-     잡는 테스트가 없다는 뜻이기도 함). Correction Order 047 발행,
-     릴레이 31. 재제출 대기 중.
+   - ~~C1 Task Order 047(§4 검색·연구 통합)~~ — **완료 (PASS)**,
+     2026-08-19. 1차 제출 FAIL(AI 답변 항상 빈 문자열 — `GenerationStream`
+     미순회, grep으로 못 잡는 런타임 버그) → Correction Order 047 →
+     재제출 CUE 재검증 PASS(실제 함수 호출로 147/408자 답변 확인,
+     전체 `pytest tests/` 2482 passed). `research.py` 단일 진입점,
+     모든 입력에 검색+AI 답변 항상 병렬 실행, 사이드바 "Chat" 제거.
+     상세: `docs/agents/c1/C1-TASK-ORDER-047-REPORT.md`
+   - UX-007 §2/§3/§6/§7/§11/§13 + §4 **전부 완료**. 남은 건 §5 읽기
+     (사용자 보류)뿐.
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)
 5. 이후 별도 window에서: `.automation/` audit / Night-shift·control-plane script audit
    — 이번 UI night shift 범위 아님

@@ -10,6 +10,7 @@ Stitch-style redesign:
 - Session management with expandable history
 """
 
+import logging
 import os
 from dataclasses import dataclass
 from typing import Any, Optional
@@ -22,11 +23,14 @@ from ui.theme.colors import THEME
 from ui.state.store import StateStore
 from core.config import DEFAULT_OUTPUT_DIR
 
+logger = logging.getLogger(__name__)
+
 # Production retrieval imports (LOOP 3 — binding)
 from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate, Citation
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 from ui.components.citation_card import render_citation_card
+from ui.pages.chat import generate_answer
 
 # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑨] Top1/Top5 click tracking — only
 # meaningful when USE_INVERTED_INDEX routes through HybridQueryProcessor
@@ -161,8 +165,12 @@ def render_research_page() -> None:
         page.render_section("검색", icon="🔍")
         _render_search_interface()
 
+        # ── AI Answer (always alongside search results) ────────
+        page.render_section("AI 답변", icon="💡")
+        _render_ai_answer()
+
         # ── Search Results ─────────────────────────────────────
-        page.render_section("검색 결과", icon="📊")
+        page.render_section("참고한 자료", icon="📊")
         _render_search_results()
 
         # ── NAE Public Theology (ADR-024 Bridge) ───────────────
@@ -186,7 +194,7 @@ def _render_search_interface() -> None:
     query = st.text_area(
         "",  # Empty label for Stitch style (placeholder only)
         value=st.session_state.get("research_query", ""),
-        placeholder="연구 주제, 키워드 또는 질문을 입력하세요...",
+        placeholder="성경 구절, 주제, 질문을 입력하세요…",
         height=100,
         key="research_query",
     )
@@ -255,6 +263,16 @@ def _render_search_interface() -> None:
             st.session_state["search_status"] = status_msg
             st.session_state["research_response"] = response_obj  # For query analysis
 
+            # Always run AI answer path alongside search (UX-007 §4.1)
+            try:
+                answer_text, _sources = generate_answer(
+                    user_query, conversation_history="", k=user_top_k
+                )
+                st.session_state["research_ai_answer"] = answer_text if answer_text else ""
+            except Exception as e:
+                logger.warning("AI answer generation failed in research page: %s", e)
+                st.session_state["research_ai_answer"] = ""
+
             # Show visual feedback
             if "에러" in status_msg:
                 st.error(status_msg)
@@ -264,7 +282,23 @@ def _render_search_interface() -> None:
                 st.success(status_msg)
 
 
-# ── Search Results ─────────────────────────────────────────────
+# ── AI Answer ────────────────────────────────────────────────
+
+
+def _render_ai_answer() -> None:
+    """Render the AI-generated answer block.
+
+    Always called (UX-007 §4.1) — shows nothing when no answer is available,
+    never blocks search results from rendering.
+    """
+    answer = st.session_state.get("research_ai_answer", "")
+    if not answer:
+        st.caption("검색어를 입력하고 '검색 실행'을 클릭하세요.")
+        return
+    st.markdown(answer)
+
+
+# ── Search Results ───────────────────────────────────────────────
 
 def _render_search_results() -> None:
     """Render the search results display (Stitch style cards)."""

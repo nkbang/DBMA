@@ -269,6 +269,65 @@ def _get_generation_service() -> GenerationService:
     return st.session_state["chat_generation_service"]
 
 
+def generate_answer(
+    question: str,
+    *,
+    conversation_history: str | None = None,
+    k: int = 5,
+    file_scope: list[str] | None = None,
+) -> tuple[str, list[RankedCandidate]]:
+    """Run retrieval + generation for a single question.
+
+    Pure-ish function: returns (answer_text, sources) without depending on
+    chat_messages session state or rendering anything.  Designed to be
+    imported by research.py so both pages share the same GenerationService
+    call path.
+
+    Parameters
+    ----------
+    question : str
+        The user's query/question.
+    conversation_history : str, optional
+        Prior conversation text for the generation prompt.  None means
+        no history (used by research.py).
+    k : int
+        Number of retrieval results to return.
+    file_scope : list[str] | None
+        Optional file scope for retrieval.
+
+    Returns
+    -------
+    tuple[str, list[RankedCandidate]]
+        (answer_text, sources) — answer_text may be empty on generation
+        failure; sources is always a list (possibly empty).
+    """
+    processor = _get_processor()
+    generator = _get_generation_service()
+
+    try:
+        response = processor.process(question, query_id="shared-gen", k=k, file_scope=file_scope)
+    except Exception as e:
+        logger.warning("Retrieval failed in generate_answer: %s", e)
+        return ("", [])
+
+    # Even if retrieval returns no results, try generation (may still produce
+    # a useful answer from system prompt / prior context).
+    try:
+        stream = generator.generate_stream(
+            response, conversation_history=conversation_history or ""
+        )
+        for _ in stream:  # consume the lazy generator to fill _answer_parts
+            pass
+        result = stream.to_result()
+        answer_text = result.answer if hasattr(result, "answer") else ""
+    except Exception as e:
+        logger.warning("Generation failed in generate_answer: %s", e)
+        answer_text = ""
+
+    sources = response.top_k_results if response and response.top_k_results else []
+    return (answer_text, sources)
+
+
 def _handle_user_message(question: str) -> None:
     """Run one retrieval-generation round for a single question.
 
