@@ -30,7 +30,7 @@ _STAGE_LABELS = {
 
 def render_monitor_page() -> None:
     """Render the DBMA System Monitor page."""
-    page = BasePage(title="시스템 모니터", icon="💚")
+    page = BasePage(title="시스템 모니터", icon="monitor_heart")
     page.render_header()
 
     # 파이프라인 상태와 건강 상태 둘 다 같은 ExecutionContext 스냅샷을
@@ -38,27 +38,27 @@ def render_monitor_page() -> None:
     pipeline_stages = ExecutionContext().get_pipeline_status()
 
     # ── Processing Pipeline Status (moved from Dashboard) ───────
-    page.render_section("처리 파이프라인 상태", icon="⚙️")
+    page.render_section("처리 파이프라인 상태", icon="settings")
     _render_pipeline_status(pipeline_stages)
 
     # ── Health Overview ────────────────────────────────────────
-    page.render_section("시스템 건강 상태", icon="🏥")
+    page.render_section("시스템 건강 상태", icon="health_and_safety")
     _render_health_overview(pipeline_stages)
 
     # ── Performance Metrics ────────────────────────────────────
-    page.render_section("성능 지표", icon="📊")
+    page.render_section("성능 지표", icon="bar_chart")
     _render_performance_metrics()
 
     # ── Resource Usage ─────────────────────────────────────────
-    page.render_section("리소스 사용량", icon="💻")
+    page.render_section("리소스 사용량", icon="memory")
     _render_resource_usage()
 
     # ── Embedding Coverage Report ────────────────────────────────
-    page.render_section("임베딩 커버리지 리포트", icon="📚")
+    page.render_section("임베딩 커버리지 리포트", icon="auto_stories")
     _render_embedding_coverage_report()
 
     # ── Log Viewer ─────────────────────────────────────────────
-    page.render_section("운영 로그", icon="📜")
+    page.render_section("운영 로그", icon="receipt_long")
     _render_log_viewer()
 
     page.render_footer()
@@ -378,13 +378,13 @@ def _render_embedding_coverage_report() -> None:
         return
 
     if not coverage:
-        st.info("📚 모든 책의 임베딩 커버리지가 100%입니다.")
+        st.info("모든 책의 임베딩 커버리지가 100%입니다.", icon=":material/auto_stories:")
         return
 
     # coverage_ratio < 1.0인 책만 필터 (coverage 0은 dict에 없음)
     incomplete = {k: v for k, v in coverage.items() if v["coverage_ratio"] < 1.0}
     if not incomplete:
-        st.info("📚 모든 책의 임베딩 커버리지가 100%입니다.")
+        st.info("모든 책의 임베딩 커버리지가 100%입니다.", icon=":material/auto_stories:")
         return
 
     st.markdown("**커버리지 미달 책**")

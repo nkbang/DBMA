@@ -65,27 +65,27 @@ def _failure_label(failure: dict) -> str:
 
 def render_processing_page() -> None:
     """Render the DBMA Document Processing page."""
-    page = BasePage(title="문서 처리", icon="📄")
+    page = BasePage(title="문서 처리", icon="description")
     page.render_header()
 
     # ── File Upload (Drag & Drop) ───────────────────────────────
-    page.render_section("파일 업로드", icon="📤")
+    page.render_section("파일 업로드", icon="upload")
     _render_upload_section()
 
     # ── Ingestion Form ─────────────────────────────────────────
-    page.render_section("문서 처리", icon="📥")
+    page.render_section("문서 처리", icon="settings_applications")
     _render_ingestion_form()
 
     # ── Processing Queue ───────────────────────────────────────
-    page.render_section("처리 대기열", icon="📋")
+    page.render_section("처리 대기열", icon="list_alt")
     _render_processing_queue()
 
     # ── Processing History ─────────────────────────────────────
-    page.render_section("처리 기록", icon="📜")
+    page.render_section("처리 기록", icon="receipt_long")
     _render_processing_history()
 
     # ── Recent Failures ──────────────────────────────────────────
-    page.render_section("최근 실패", icon="⚠️")
+    page.render_section("최근 실패", icon="warning")
     _render_recent_failures()
 
     page.render_footer()
@@ -114,7 +114,7 @@ def _render_upload_section() -> None:
 
     st.caption(f"{len(uploaded_files)}개 파일 선택됨: {', '.join(f.name for f in uploaded_files)}")
 
-    if st.button("📥 보관함에 저장", key="save_uploads"):
+    if st.button("보관함에 저장", icon=":material/download:", key="save_uploads"):
         raw_dir = Path(DEFAULT_RAW_DIR)
         raw_dir.mkdir(parents=True, exist_ok=True)
         saved, skipped = [], []
@@ -246,7 +246,7 @@ def _render_ingestion_form() -> None:
 
     with c2:
         # "Open Folder" button — opens system file browser at target_dir
-        if st.button("📁 폴더 열기", key="open_folder_btn", use_container_width=True):
+        if st.button("폴더 열기", icon=":material/folder_open:", key="open_folder_btn", use_container_width=True):
             _open_folder_in_browser(target_dir)
             st.info(f"'{target_dir}' 폴더를 파일 브라우저에서 열었습니다.")
 
@@ -345,11 +345,11 @@ def _render_ingestion_form() -> None:
 
     if pending_count == 0:
         st.info("처리할 문서가 없습니다.")
-        st.button("🚀 문서 처리 시작", type="primary", use_container_width=True, disabled=True)
+        st.button("문서 처리 시작", icon=":material/rocket_launch:", type="primary", use_container_width=True, disabled=True)
     else:
         st.caption(f"처리 가능: {pending_count}개 문서")
 
-        if st.button("🚀 문서 처리 시작", type="primary", use_container_width=True):
+        if st.button("문서 처리 시작", icon=":material/rocket_launch:", type="primary", use_container_width=True):
             _execute_processing(file_list, chunk_size, overlap, use_ocr, effective_force_reingest, force_rechunk)
 
 
@@ -358,7 +358,7 @@ def _render_item_row(icon: str, name: str, detail: str, border_color: str, badge
     with a colored left border and a status badge."""
     html = f"""
     <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {border_color}; margin-bottom: 4px;">
-        <span style="font-size: 16px; margin-right: 12px;">{icon}</span>
+        <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 12px; color: {border_color};">{icon}</span>
         <div style="flex: 1;">
             <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
                 {name}
@@ -447,7 +447,7 @@ def _render_processing_queue() -> None:
             badge_bg, badge_fg, badge_text = THEME.STATUS_INFO_BG, THEME.STATUS_INFO, "대기 중"
             detail = f"{size_kb:.0f} KB"
 
-        _render_item_row("📄", f.name, detail, border_color, badge_bg, badge_fg, badge_text)
+        _render_item_row("description", f.name, detail, border_color, badge_bg, badge_fg, badge_text)
 
     visible, rest = queued[:10], queued[10:]
     for f in visible:
@@ -500,10 +500,10 @@ def _render_processing_history() -> None:
         size_kb = f.stat().st_size / 1024 if f.exists() else 0
         detail = f"{dt.strftime('%Y-%m-%d %H:%M')} • {size_kb:.0f} KB"
         if f.stem in completed_stems:
-            _render_item_row("✅", f.stem, detail, THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS, "완료")
+            _render_item_row("check_circle", f.stem, detail, THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS, "완료")
         else:
             detail += " • 청킹 미완료"
-            _render_item_row("⏳", f.stem, detail, THEME.STATUS_WARNING, THEME.STATUS_WARNING_BG, THEME.STATUS_WARNING, "처리 중")
+            _render_item_row("hourglass_empty", f.stem, detail, THEME.STATUS_WARNING, THEME.STATUS_WARNING_BG, THEME.STATUS_WARNING, "처리 중")
 
     visible, rest = file_times[:5], file_times[5:]
     for f, dt in visible:
@@ -545,14 +545,14 @@ def _execute_processing(
         # Define report callback for inline progress updates
         def report_callback(stage: str, message: str, progress: Optional[float] = None):
             if stage == "done":
-                status_text.success(f"✅ {message}")
+                status_text.success(f"{message}", icon=":material/check_circle:")
                 progress_bar.progress(1.0)
             elif stage.startswith("extract"):
-                status_text.info(f"📖 추출 중: {message}")
+                status_text.info(f"추출 중: {message}", icon=":material/menu_book:")
                 p = progress or 0.2
                 progress_bar.progress(p * total_files / total_files)
             elif stage == "chunk_done":
-                status_text.info(f"✂️ 청킹 중: {message}")
+                status_text.info(f"청킹 중: {message}", icon=":material/content_cut:")
             else:
                 status_text.info(f"⏳ {message}")
         
@@ -591,7 +591,7 @@ def _execute_processing(
                             logs = r.get("logs", [])
                             for log in logs:
                                 msg = log.get("msg", "")
-                                st.error(f"❌ {msg}")
+                                st.error(f"{msg}", icon=":material/error:")
 
             # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑧ Background Index Builder]
             # reconcile_pending()을 여기서 직접 기다리는 대신(예전엔 이 한
@@ -601,14 +601,14 @@ def _execute_processing(
             # core/index_orchestrator.py::reconcile_pending()을 그대로 호출해
             # 수행한다(재구현 없음).
             get_shared_background_builder().trigger_now()
-            st.info("📥 백그라운드에서 검색 색인을 갱신하고 있습니다 — 잠시 후 검색에 반영됩니다.")
+            st.info("백그라운드에서 검색 색인을 갱신하고 있습니다 — 잠시 후 검색에 반영됩니다.", icon=":material/download:")
 
             # Refresh the page state
             st.rerun()
             
         except Exception as e:
             logger.exception("Processing pipeline failed")
-            st.error(f"처리 중 오류가 발생했습니다: {str(e)}")
+            st.error("문서 처리 중 문제가 있었습니다. 다시 시도해주세요.")
 
 
 def _render_recent_failures() -> None:
