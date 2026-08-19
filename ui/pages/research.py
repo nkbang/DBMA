@@ -26,6 +26,7 @@ from core.config import DEFAULT_OUTPUT_DIR
 from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate, Citation
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
+from ui.components.citation_card import render_citation_card
 
 # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑨] Top1/Top5 click tracking — only
 # meaningful when USE_INVERTED_INDEX routes through HybridQueryProcessor
@@ -321,48 +322,33 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
         score = result.get("score", 0)
         title = result.get("title", "제목 없음")
         snippet = result.get("snippet", "")
-        source = result.get("source", "")
-
-        # [DBMA-UX-004] "RRF {score}"(알고리즘명+원시 점수)는 검색 엔진
-        # 내부 노출이라 별점으로 단순화(Design Brief §8, "RRF"는 금지
-        # 용어 목록에 직접 해당). doc_type도 항상 "tsu"(내부 코퍼스
-        # 포맷명)로 고정되어 사용자에게 의미가 없어 표시하지 않는다.
-        filled = min(5, max(0, round(score * 5)))
-        score_badge = "⭐" * filled + "☆" * (5 - filled)
-
-        html = f"""
-        <div style="
-            background: {THEME.BG_SURFACE};
-            border: 1px solid {THEME.BORDER_LIGHT};
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        ">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                <span style="font-size: 15px; font-weight: 600; color: {THEME.BRAND_PRIMARY};">
-                    {i + 1}. {title}
-                </span>
-                <span style="font-size: 13px; color: #C8943E; letter-spacing: 1px;">
-                    {score_badge}
-                </span>
-            </div>
-            <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 8px;">
-                {source}
-            </div>
-            {'<div style="font-size: 11px; color: ' + THEME.TEXT_SECONDARY + '; margin-bottom: 4px;">' +
-             ('저자: ' + result.get("author", "") + ' / ' if result.get("author") else '') +
-             ('출처: ' + result.get("source_title", "") + ' / ' if result.get("source_title") else '') +
-             ('근거 신뢰도(citation): ' + f'{result.get("evidence_confidence"):.4f}' if result.get("evidence_confidence") is not None else '') +
-             '</div>' if result.get("author") or result.get("source_title") or result.get("evidence_confidence") is not None else ''}
-            {f'<div style="font-family: Source Serif 4, serif; font-style: italic; font-size: 14px; color: {THEME.TEXT_SECONDARY}; line-height: 1.6;">{snippet}</div>' if snippet else ''}
-        </div>
-        """
-        st.markdown(html, unsafe_allow_html=True)
-
-        # Clickable source button
         source_file = result.get("source_file", "")
         document_id = result.get("document_id", "")
+
+        # 제목/순번 헤더 — 카드 밖에 별도 표시 (render_citation_card에 title 파라미터 없음)
+        st.markdown(f"**{i + 1}. {title}**")
+
+        # Citation card — 별점 배지 + 저자/출처/근거신뢰도 메타 줄을 위임
+        render_citation_card(
+            source_file=source_file,
+            text_location=None,  # research.py 결과엔 heading_path 없음
+            doc_type=None,        # doc_type이 "tsu" 고정이라 표시 가치 없음
+            author=result.get("author") or None,
+            citation_title=result.get("source_title") or None,
+            relevance_score=score,
+            on_view_original=False,  # 내비게이션은 아래 "📄" 버튼이 담당 — 중복 버튼 금지
+            on_copy_citation=False,
+        )
+
+        # 발췌문 — 카드 밖에 별도 표시 (render_citation_card에 snippet 파라미터 없음)
+        if snippet:
+            st.markdown(
+                f'<div style="font-family: Source Serif 4, serif; font-style: italic; '
+                f'font-size: 14px; color: {THEME.TEXT_SECONDARY}; line-height: 1.6;">{snippet}</div>',
+                unsafe_allow_html=True,
+            )
+
+        # Clickable source button (무변경 — tests/test_sermon_research_hub.py 의존)
         if source_file or document_id:
             btn_key = f"nav_res_{i}_{abs(hash(result.get('tsu_id', ''))) & 0xFFFFFFFF:x}"
             research_query = st.session_state.get("research_query", "")
@@ -381,12 +367,6 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
                     "query_terms": query_terms,
                 }
                 st.rerun()
-
-            # [DBMA-UX-004] 원시 relevance score(소수점 4자리)는 기술적
-            # 수치라 노출하지 않는다(Design Brief §8) — 별점으로 단순화.
-            score = result.get("score", 0.0)
-            filled = min(5, max(0, round(score * 5)))
-            st.caption("⭐" * filled + "☆" * (5 - filled))
 
         _render_send_to_sermon_research_button(result, i)
 

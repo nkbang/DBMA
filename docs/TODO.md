@@ -105,14 +105,11 @@ n8n Loop Operating Model activation / 첫 loop State Discovery / NAE·Figma UI
      `docs/agents/c1/C1-TASK-ORDER-045-REPORT.md`
    - (참고) "RAW 폴더" 번역이 파일마다 다름("자료실"/"보관함") — 기능
      버그 아니라 이번 범위 밖, 다음 §11 관련 작업 시 통일 필요
-   - **C1 Task Order 046(§6 인용 카드 공용 컴포넌트 — research.py
-     마이그레이션) 발급, C1에게 이관** (2026-08-19) — `citation_card.py`/
-     `chat.py`는 이미 다른 세션에서 §6 구현 완료돼 있음을 CUE가 이번에
-     확인, research.py만 아직 raw HTML로 남아있어 같은 패턴으로 이전
-     지시. 부수 발견: research.py 356행 "근거 신뢰도(citation): N.NNNN"
-     원시 소수점 노출(§11 위반, Task Order 045 grep이 놓침) — 이 이관
-     작업으로 자동 해결됨. 릴레이:
-     `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 29.
+   - ~~C1 Task Order 046(§6 인용 카드 공용 컴포넌트 — research.py
+     마이그레이션)~~ — **완료 (PASS)**, 2026-08-19. CUE 독립 검증
+     완료(실제 결과 데이터로 AppTest 직접 실행, 원시 소수점 미노출/
+     좌측 색상바/보호 버튼 무손상 확인). 상세:
+     `docs/agents/c1/C1-TASK-ORDER-046-REPORT.md`
    - 남은 후보(§11 다음): §6 인용 카드 공용 컴포넌트, §4 검색·연구
      통합 — 미착수
 4. n8n Loop는 valid input 없으므로 대기 유지(Re-entry 조건: `docs/STATE.md` 참고)

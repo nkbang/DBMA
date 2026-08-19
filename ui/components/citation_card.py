@@ -81,6 +81,7 @@ def render_citation_card(
     <div style="
         background:{THEME.CITE_BG};
         border:1px solid {THEME.CITE_BORDER};
+        border-left:4px solid {THEME.CITE_STAR_FILLED};
         border-radius:8px;
         padding:16px 20px;
         margin-top:8px;

@@ -825,9 +825,15 @@ Figma·Stitch 자산은 재생성·변경 없음(보존).
   버튼(Task Order 042/043) 무변경 지시 — `tests/test_sermon_research_hub.py`
   가 이 버튼들에 의존.
 - Task Order: `docs/agents/c1/C1-TASK-ORDER-046.md`. 릴레이:
-  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 29. C1 제출 시
-  CUE가 diff/grep/AppTest/pytest로 독립 검증(특히 `test_sermon_
-  research_hub.py` 무손상 여부 최우선 확인).
+  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 29.
+- **CUE 독립 검증 — PASS 확정** (2026-08-19): diff 대조로 지시대로만
+  변경됐음 확인(제목/발췌문 카드 밖 유지, `render_citation_card()`로
+  메타+별점 위임, 좌측 4px 색상 바 추가). `pytest -k "research or
+  sermon_research or citation or tables"` 78 passed 재확인. 실제
+  결과 데이터(evidence_confidence=0.8234 포함)로 `AppTest` 직접
+  실행 — 원시 소수점 미노출, 좌측 색상바 CSS 존재, 제목/발췌문 정상
+  표시, "📄" 내비게이션 버튼과 "설교 연구에 추가" 버튼 둘 다 그대로
+  존재함을 실측 확인. **Task Order 046 PASS.**
 - (참고, 이번 정정 지시에는 포함 안 함) "RAW 폴더" 번역이 파일마다
   다름("자료실" — library.py/sermon_review.py, "보관함" —
   dashboard.py/processing.py) — 같은 내부 개념이 두 용어로 갈라짐,
