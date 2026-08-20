@@ -645,7 +645,7 @@ def _render_recent_failures() -> None:
     for f in recent:
         html = f"""
         <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {THEME.STATUS_ERROR}; margin-bottom: 4px;">
-            <span style="font-size: 16px; margin-right: 12px;">⚠️</span>
+            <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 12px; color: {THEME.STATUS_ERROR};">warning</span>
             <div style="flex: 1;">
                 <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
                     {f.get("source_file", "?")}

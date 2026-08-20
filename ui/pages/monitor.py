@@ -84,9 +84,9 @@ def _render_pipeline_status(runtime_stages) -> None:
         "pending": THEME.TEXT_TERTIARY,
     }
     stage_icons = {
-        "complete": "✅",
-        "active": "🔄",
-        "pending": "⏳",
+        "complete": "check_circle",
+        "active": "autorenew",
+        "pending": "hourglass_empty",
     }
 
     cols = st.columns(len(stages) + (len(stages) - 1))
@@ -96,7 +96,7 @@ def _render_pipeline_status(runtime_stages) -> None:
             icon = stage_icons.get(stage["status"], stage_icons["pending"])
             html = f"""
             <div style="text-align: center; padding: {8}px 4px;" title="{stage['detail']}">
-                <div style="font-size: 20px; margin-bottom: 4px;">{icon}</div>
+                <div style="margin-bottom: 4px;"><span class="material-symbols-outlined" style="font-size: 22px; color: {color};">{icon}</span></div>
                 <div style="font-size: 12px; color: {color}; font-weight: 600;">
                     {stage['label']}
                 </div>
@@ -162,10 +162,10 @@ def _render_health_overview(pipeline_stages) -> None:
         "info": "정보",
     }
     status_icons = {
-        "healthy": "✅",
-        "warning": "⚠️",
-        "error": "❌",
-        "info": "ℹ️",
+        "healthy": "check_circle",
+        "warning": "warning",
+        "error": "cancel",
+        "info": "info",
     }
 
     cols = st.columns(len(components))
@@ -173,11 +173,11 @@ def _render_health_overview(pipeline_stages) -> None:
         with cols[i]:
             color = status_colors.get(comp["status"], THEME.TEXT_TERTIARY)
             label = status_labels.get(comp["status"], comp["status"])
-            icon = status_icons.get(comp["status"], "⏳")
+            icon = status_icons.get(comp["status"], "hourglass_empty")
 
             html = f"""
             <div style="text-align: center; padding: {12}px 4px;">
-                <div style="font-size: 20px; margin-bottom: 4px;">{icon}</div>
+                <div style="margin-bottom: 4px;"><span class="material-symbols-outlined" style="font-size: 22px; color: {color};">{icon}</span></div>
                 <div style="font-size: 11px; font-weight: 600; color: {color}; margin-bottom: 2px;">
                     {comp['name']}
                 </div>
