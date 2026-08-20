@@ -38,3 +38,8 @@ tantivy==0.26.0
 # setup.py가 Intel Homebrew 경로를 하드코딩) — 설치 절차는
 # core/tli/hunspell_adapter.py 모듈 docstring 참고.
 hunspell
+
+# core/tli/korean_tokenizer.py — BM25 한국어 형태소 분석(P1, docs/TODO.md).
+# 순수 wheel 배포(Cython 컴파일, 시스템 mecab/JVM 불필요) — Apple Silicon
+# 포함 어디서나 pip install만으로 설치된다.
+kiwipiepy

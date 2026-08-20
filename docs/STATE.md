@@ -723,6 +723,33 @@ P0 복원 후 남아있던 78/82 문서 커버리지 갭 해소. dry-run으로 �
   §1/§2의 실제 코드 변경분은 정확했으므로 PASS 유지. **Task Order
   049 최종 PASS.**
 
+### P1 — BM25 한국어 형태소 분석기 적용 (2026-08-19, CUE 직접 실행)
+
+- §5/§9 완료 후 남은 후속 과제(§5 스크롤 위치 복원 vs P1 BM25) 중
+  P1을 CUE가 우선 권고 — 이 코퍼스가 한국어 신학 문서 위주라 실질
+  영향이 더 크고, §5는 스펙 자체가 이미 "안 되면 문서 상단 진입으로
+  폴백" 허용한 항목이라 급하지 않다고 판단. 사용자가 "형태소 분석기
+  방식으로 진행" 확정.
+- `core/retrieval.py`는 CLAUDE.md의 "절대 변경 금지"(Retrieval
+  Engine) 목록에 있어 명령 확인 후 진행 — ADR-001을 재확인한 결과
+  "어떤 구현이 Authority인가"만 다루고 토크나이저 내부 알고리즘은
+  규율하지 않아 별도 ADR Amendment 없이 진행 가능 판단(새 병행 검색
+  경로 생성이 아니라 기존 단일 엔진 내부 구현 교체).
+- 구현: `core/tli/korean_tokenizer.py` 신규 — `core/tli/spell_engine.py`
+  와 동일한 TLI Protocol+factory 패턴(kiwipiepy 미설치 시 기존
+  whitespace 동작으로 안전하게 폴백). `core/retrieval.py::_tokenize()`
+  는 이 factory가 반환한 토크나이저를 프로세스당 1회만 생성해 재사용
+  (Kiwi 모델 로드 비용 때문 — 매 BM25 호출마다 재생성하지 않음).
+  `requirements.txt`에 `kiwipiepy` 추가(순수 wheel, Apple Silicon
+  포함 시스템 의존성 없음).
+- 실측 검증: `_tokenize("성령의 은혜")`/`_tokenize("성령께서 임하셨다")`
+  둘 다 "성령"을 포함 — 이전엔 조사가 붙은 채로 서로 다른 토큰이라
+  BM25 매칭이 0점이었던 케이스가 이제 정상 점수 반영됨(직접 재현
+  확인). 신규 회귀 테스트 `tests/test_korean_tokenizer.py` 6건 PASS.
+  전체 `pytest tests/` 2481 passed + 1 fail(`test_core_retrieval_py_
+  not_modified` — uncommitted diff 존재만 보는 가드라 커밋 후 자동
+  해소, 실제 회귀 아님) 확인.
+
 ---
 
 ## 비고

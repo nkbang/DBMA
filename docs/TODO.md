@@ -38,7 +38,19 @@
       안전 확인 후 기존 파일 백업하고 실제 재빌드). 53,231건/78문서
       → 53,963건/82문서(전체 커버). 재검증: "로마서 8장" 검색에
       이전 누락 문서가 최상위로 잡힘, `pytest tests/` 2482 passed.
-- [ ] **P1** — BM25 `_tokenize()` 한국어 미지원 (한글 토크나이저 부재, `core/retrieval.py`).
+- [x] **P1** — BM25 한국어 미지원 **완료** (2026-08-19, 사용자 승인 후
+      CUE 직접 실행 — Retrieval Engine 보호 영역이라 명령 확인 후 진행).
+      `core/tli/korean_tokenizer.py` 신규(TLI Protocol+factory 패턴,
+      `core/tli/spell_engine.py`와 동일 구조) — `kiwipiepy` 형태소
+      분석기로 조사/어미를 제거하고 명사/동사/형용사/숫자 등 내용
+      형태소만 토큰으로 남김(순수 wheel, 시스템 mecab/JVM 불필요).
+      `core/retrieval.py::_tokenize()`가 이 factory를 프로세스당 1회
+      캐싱해서 사용하도록 교체(기존 `text.split()` 대체). 실측:
+      "성령의"/"성령께서"가 이제 둘 다 "성령"으로 매칭 — 이전엔
+      BM25 점수 0이었던 케이스가 실제 점수 반영됨. 신규 회귀 테스트
+      `tests/test_korean_tokenizer.py` 6건 PASS, 전체 `pytest tests/`
+      회귀 없음(단 `test_core_retrieval_py_not_modified`는 uncommitted
+      diff 존재 여부만 보는 가드라 커밋 후 자동 해소).
 - [ ] **P2** — Chat "단일 파일" 모드 `file_scope` 제한 재검토 (TSU 복원 후 재검증 필요).
 
 ### DEFERRED — Night-Shift / `.automation/` (2026-08-19, 사용자 확정)

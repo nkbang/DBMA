@@ -728,13 +728,31 @@ class EmbeddingCache:
 # SECTION 5: BM25 KEYWORD SCORING — TASK 5
 # ============================================================
 
+_korean_tokenizer = None  # lazily built once per process — see _tokenize()
+
+
 def _tokenize(text: str) -> list[str]:
-    """Simple tokenizer: lowercase, strip punctuation, split."""
-    text = text.lower()
-    import string as _string
-    translator = str.maketrans("", "", _string.punctuation)
-    text = text.translate(translator)
-    return [t for t in text.split() if len(t) > 0]
+    """Tokenize text for BM25 scoring.
+
+    [P1 fix, docs/TODO.md] Korean 어절 carry agglutinated particles/endings
+    (조사/어미) — a prior whitespace-split tokenizer meant "성령의"/
+    "성령께서"/"성령을" never matched each other as the same BM25 term.
+    Delegates to core/tli/korean_tokenizer.py's morphological analyzer
+    (kiwipiepy), which strips particles/endings and keeps only content
+    morphemes (nouns/verbs/adjectives/numbers) — the TLI factory falls
+    back to the original whitespace behavior if kiwipiepy isn't installed,
+    so this never hard-fails the retrieval path.
+
+    The tokenizer instance is built once per process (Kiwi's model load
+    is the expensive part) and reused — this function is called per
+    candidate document on every query via bm25_score(), so re-building
+    Kiwi() per call would be a real cost.
+    """
+    global _korean_tokenizer
+    if _korean_tokenizer is None:
+        from core.tli.korean_tokenizer import create_korean_tokenizer
+        _korean_tokenizer = create_korean_tokenizer()
+    return _korean_tokenizer.tokenize(text)
 
 
 def bm25_score(query_tokens: list[str], doc_text: str, k1: float = 1.2, b: float = 0.75) -> float:
