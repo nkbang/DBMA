@@ -20,7 +20,7 @@ TARGET_DIR="${1:-}"
 if [ -z "${TARGET_DIR}" ]; then
     # No argument given — look for any existing gate2 run directories
     echo "No target directory specified. Scanning for existing gate2 runs..."
-    TARGET_DIRS=$(find /tmp -maxdepth 1 -name "dbma-gate2-run-*" -type d 2>/dev/null | sort -r)
+    TARGET_DIRS=$(find -L /tmp -maxdepth 1 -name "dbma-gate2-run-*" -type d 2>/dev/null | sort -r)
     if [ -z "${TARGET_DIRS}" ]; then
         echo "No isolated directories found (nothing to remove)"
         echo "=== Done ==="
@@ -59,7 +59,7 @@ fi
 # Check for orphan files in /tmp matching gate2 pattern
 echo ""
 echo "Checking for orphan gate2 files..."
-ORPHANS=$(find /tmp -maxdepth 1 -name "dbma-gate2-run-*" -type d 2>/dev/null | head -5)
+ORPHANS=$(find -L /tmp -maxdepth 1 -name "dbma-gate2-run-*" -type d 2>/dev/null | head -5)
 if [ -n "${ORPHANS}" ]; then
     echo "Found orphans:"
     echo "${ORPHANS}"
