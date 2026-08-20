@@ -338,14 +338,29 @@ main > .stMarkdown {
     display: flex;
     gap: 32px;
 }
-.nae-footer .link-row a {
+.nae-footer .link-row-disabled {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+}
+@media (min-width: 768px) {
+    .nae-footer .link-row-disabled {
+        justify-content: flex-end;
+    }
+}
+.nae-footer .link-row-disabled span {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 14px;
-    color: #6a5c4c;
-    text-decoration: none;
+    color: #c3c7c7;
+    cursor: not-allowed;
 }
-.nae-footer .link-row a:hover {
-    text-decoration: underline;
+.st-key-footer_help button {
+    color: #6a5c4c !important;
+    font-family: 'Hanken Grotesk', sans-serif !important;
+    font-size: 14px !important;
+}
+.st-key-footer_help button:hover {
+    text-decoration: underline !important;
 }
 .nae-footer .copyright {
     font-family: 'Hanken Grotesk', sans-serif;
@@ -515,6 +530,9 @@ def render_onboarding_page() -> None:
         st.rerun()
 
     # ── Footer ───────────────────────────────────────────────
+    # "이용약관"/"개인정보처리방침"은 아직 실제 문서가 없어 비활성 텍스트로
+    # 표시한다("로그인" 버튼과 동일한 처리). "도움말"은 실제 화면이 있어
+    # 클릭 시 이동하는 버튼으로 교체(원본 Stitch 목업의 <a href="#">를 대체).
     st.markdown(
         """
         <div class="nae-footer">
@@ -524,11 +542,18 @@ def render_onboarding_page() -> None:
                     <p class="tagline">"생각을 쌓고, 말씀을 잇다."</p>
                 </div>
                 <div class="link-col">
-                    <div class="link-row">
-                        <a href="#">이용약관</a>
-                        <a href="#">개인정보처리방침</a>
-                        <a href="#">도움말</a>
+                    <div class="link-row-disabled">
+                        <span>이용약관</span>
+                        <span>개인정보처리방침</span>
                     </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    _, help_col = st.columns([5, 1])
+    with help_col:
+        help_clicked = st.button("도움말", key="footer_help", type="tertiary")
+    st.markdown(
+        """
                     <p class="copyright">© 2026 NAE. Powered by NAE</p>
                 </div>
             </div>
@@ -536,3 +561,7 @@ def render_onboarding_page() -> None:
         """,
         unsafe_allow_html=True,
     )
+    if help_clicked:
+        st.session_state["show_onboarding"] = False
+        st.session_state["nav_page"] = "도움말"
+        st.rerun()

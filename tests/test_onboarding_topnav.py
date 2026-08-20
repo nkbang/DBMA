@@ -43,3 +43,11 @@ def test_topnav_explore_button_navigates_to_ai_chat():
 def test_topnav_login_button_is_disabled():
     at = _run_onboarding()
     assert at.button(key="topnav_login").disabled is True
+
+
+def test_footer_help_button_navigates_to_help():
+    at = _run_onboarding()
+    at.button(key="footer_help").click().run()
+    assert not at.exception
+    assert at.session_state["show_onboarding"] is False
+    assert at.session_state["nav_page"] == "도움말"
