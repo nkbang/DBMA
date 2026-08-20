@@ -16,10 +16,9 @@ _FONT_LINKS = """
 
 _STYLE = """
 <style>
-/* ── 전역 배경 (따뜻한 아이보리 + 종이 질감) ─────────────── */
+/* ── 전역 배경 (따뜻한 아이보리) ─────────────────────────── */
 .stApp {
     background-color: #F8F6F2;
-    background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
 }
 main > .stMarkdown {
     padding-top: 0 !important;
