@@ -42,30 +42,25 @@ main > .stMarkdown {
     font-weight: 700;
     color: #171e1e;
 }
-.nae-topnav .links {
-    display: flex;
-    gap: 24px;
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: #6a5c4c;
+.st-key-topnav_library button,
+.st-key-topnav_research button,
+.st-key-topnav_explore button {
+    color: #6a5c4c !important;
+    font-family: 'Hanken Grotesk', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
 }
-.nae-topnav .links a {
-    color: #6a5c4c;
-    text-decoration: none;
-    transition: color 0.2s;
+.st-key-topnav_library button:hover,
+.st-key-topnav_research button:hover,
+.st-key-topnav_explore button:hover {
+    color: #171e1e !important;
 }
-.nae-topnav .links a:hover {
-    color: #171e1e;
-}
-.nae-topnav .login-btn {
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: #6a5c4c;
-    background: none;
-    border: none;
-    cursor: pointer;
+.st-key-topnav_login button {
+    color: #c3c7c7 !important;
+    cursor: not-allowed !important;
+    font-family: 'Hanken Grotesk', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
 }
 
 /* ── Hero ────────────────────────────────────────────────── */
@@ -393,20 +388,31 @@ def render_onboarding_page() -> None:
     st.markdown(_FONT_LINKS + _STYLE, unsafe_allow_html=True)
 
     # ── Top Nav ──────────────────────────────────────────────
-    st.markdown(
-        """
-        <div class="nae-topnav">
-            <span class="brand">內書齋</span>
-            <span class="links">
-                <a href="#">서재</a>
-                <a href="#">연구</a>
-                <a href="#">탐색</a>
-            </span>
-            <button class="login-btn">로그인</button>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    # 원본 Stitch 목업은 정적 <a href="#">였다 — 실제 페이지 전환이
+    # 되도록 st.button + nav_page 전환 패턴(히어로 버튼과 동일)으로 교체.
+    st.markdown('<div class="nae-topnav">', unsafe_allow_html=True)
+    brand_col, lib_col, research_col, explore_col, spacer_col, login_col = st.columns(
+        [3, 1, 1, 1, 3, 1]
     )
+    with brand_col:
+        st.markdown('<span class="brand">內書齋</span>', unsafe_allow_html=True)
+    with lib_col:
+        nav_library = st.button("서재", key="topnav_library", type="tertiary")
+    with research_col:
+        nav_research = st.button("연구", key="topnav_research", type="tertiary")
+    with explore_col:
+        nav_explore = st.button("탐색", key="topnav_explore", type="tertiary")
+    with login_col:
+        # 로그인/계정 기능이 없는 로컬 앱이라 비활성 상태로만 표시한다.
+        st.button("로그인", key="topnav_login", type="tertiary", disabled=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if nav_library or nav_research or nav_explore:
+        st.session_state["show_onboarding"] = False
+        st.session_state["nav_page"] = (
+            "Library" if nav_library else "Research" if nav_research else "AI에게 질문"
+        )
+        st.rerun()
 
     # ── Hero ─────────────────────────────────────────────────
     st.markdown(
