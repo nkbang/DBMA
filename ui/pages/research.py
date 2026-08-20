@@ -12,6 +12,7 @@ Stitch-style redesign:
 
 import logging
 import os
+import html
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -788,10 +789,7 @@ def _format_candidate(candidate: RankedCandidate, parsed_query, *, citation: Opt
 # ── Detail Panel Layout ────────────────────────────────────────
 
 def _render_research_page_with_detail() -> None:
-    """3영역 레이아웃: 본문(좌주) + 연구 영역(우측) + 행동 영역(하단 3버튼).
-
-    UX-007 §5 Reading Specification — Task Order 048.
-    """
+    """검색 결과 목록과 선택 문서의 상세 패널을 함께 렌더링한다."""
     import datetime
     from core.document_detail import get_document_detail
     from ui.components.detail_panel import render_detail_panel
@@ -803,96 +801,147 @@ def _render_research_page_with_detail() -> None:
     source_file = detail_selection["source_file"]
     document_id = detail_selection["document_id"]
     query_terms = detail_selection.get("query_terms", [])
+    results = st.session_state.get("research_results", [])
 
-    # ── Typography CSS for body text ──────────────────────────────
+    page = BasePage(title="연구 공간", icon="science")
+    page.render_header()
+
+    # 상단 탭 바는 현재 화면의 작업 맥락을 유지한다.
     st.markdown(
-        "<style>"
-        ".dbma-body-text {"
-        "  font-family: 'Source Serif 4', serif;"
-        "  font-size: 17px;"
-        "  max-width: 640px;"
-        "  line-height: 1.85;"
-        "}"
-        "</style>",
+        f"""
+        <div class="research-tab-bar">
+            <div class="research-tab research-tab-active">
+                <span class="material-symbols-outlined">chat_bubble</span> Chat
+            </div>
+            <div class="research-tab-divider"></div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
-    # ── Top row: body (left) + research area (right) ────────────
-    cols = st.columns([2, 1])
+    if not results:
+        st.info("검색 결과가 없습니다. 검색어를 입력하고 다시 실행하세요.")
+        return
 
-    # === LEFT: Document body ===
-    with cols[0]:
-        # Close button (top-left of body area)
-        if st.button("닫기", key="research_detail_close_btn", type="primary"):
+    # ── Typography and split-panel styles ─────────────────────────
+    st.markdown(
+        f"""
+        <style>
+        .research-tab-bar {{ display:flex; align-items:center; gap:18px; border-bottom:1px solid {THEME.BORDER_LIGHT}; margin-bottom:20px; }}
+        .research-tab {{ display:flex; align-items:center; gap:7px; padding:0 4px 11px; color:{THEME.TEXT_TERTIARY}; font-size:14px; }}
+        .research-tab-active {{ color:{THEME.BRAND_PRIMARY}; font-weight:700; border-bottom:2px solid {THEME.BRAND_PRIMARY}; }}
+        .research-tab .material-symbols-outlined {{ font-size:18px; }}
+        .research-tab-divider {{ flex:1; }}
+        .research-detail-shell {{ background:{THEME.BG_SURFACE}; border:1px solid {THEME.BORDER_LIGHT}; border-radius:12px; padding:22px 24px; }}
+        .research-detail-title {{ color:{THEME.TEXT_PRIMARY}; font-family:'Source Serif 4', serif; font-size:24px; line-height:1.3; margin-bottom:12px; }}
+        .research-detail-meta {{ color:{THEME.TEXT_TERTIARY}; font-size:12px; line-height:1.7; margin-bottom:16px; }}
+        .research-source-path {{ color:{THEME.TEXT_SECONDARY}; font-family:'Source Code Pro', monospace; font-size:12px; word-break:break-all; padding:10px 12px; background:{THEME.BG_PAGE}; border:1px solid {THEME.BORDER_LIGHT}; border-radius:6px; margin-bottom:18px; }}
+        .research-body {{ font-family:'Source Serif 4', serif; font-size:16px; color:{THEME.TEXT_PRIMARY}; line-height:1.85; white-space:pre-wrap; }}
+        mark {{ background:{THEME.CITE_BG}; color:{THEME.TEXT_PRIMARY}; border-bottom:2px solid {THEME.CITE_STAR_FILLED}; padding:0 2px; }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # 결과 목록 40%, 상세 패널 60%.
+    list_col, detail_col = st.columns([2, 3], gap="large")
+
+    with list_col:
+        st.caption(f"검색 결과 {len(results)}건")
+        with st.container(height=650, border=False):
+            for index, result in enumerate(results):
+                result_source = result.get("source_file", "")
+                result_document_id = result.get("document_id", "")
+                score = float(result.get("score", 0) or 0)
+                title = result.get("title", "제목 없음")
+                snippet = result.get("snippet", "").replace("\n", " ")
+                is_selected = result_source == source_file and result_document_id == document_id
+                score_color = THEME.STATUS_SUCCESS if score >= 0.8 else THEME.STATUS_WARNING if score >= 0.5 else THEME.STATUS_ERROR
+                st.markdown(
+                    f"""
+                    <div class="research-result-card" style="border-color:{THEME.BORDER_FOCUS if is_selected else THEME.BORDER_LIGHT}; background:{THEME.CITE_BG if is_selected else THEME.BG_SURFACE};">
+                        <div style="display:flex;justify-content:space-between;gap:10px;align-items:start;">
+                            <strong style="color:{THEME.TEXT_PRIMARY};font-size:14px;line-height:1.4;">{index + 1}. {html.escape(title)}</strong>
+                            <span style="color:{score_color};font-size:12px;font-weight:700;white-space:nowrap;">{score:.0%}</span>
+                        </div>
+                        <div style="color:{THEME.TEXT_SECONDARY};font-family:'Source Serif 4', serif;font-size:13px;line-height:1.55;margin-top:8px;">{html.escape(snippet[:220])}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                if st.button("결과 선택", key=f"detail_result_{index}_{abs(hash(result_source + result_document_id)) & 0xFFFFFFFF:x}", use_container_width=True, type="primary" if is_selected else "secondary"):
+                    st.session_state["research_detail_selection"] = {
+                        "source_file": result_source,
+                        "document_id": result_document_id,
+                        "query_terms": st.session_state.get("research_query", "").split(),
+                    }
+                    st.rerun()
+
+    with detail_col:
+        if st.button("검색 결과로 돌아가기", key="research_detail_close_btn", icon=":material/arrow_back:"):
             st.session_state["research_detail_selection"] = None
             st.rerun()
 
-        # Fetch and render document detail
-        detail = get_document_detail(
-            source_file=source_file,
-            document_id=document_id,
-            query_terms=query_terms,
-        )
+        detail = get_document_detail(source_file=source_file, document_id=document_id, query_terms=query_terms)
+        st.markdown('<div class="research-detail-shell">', unsafe_allow_html=True)
+        # render_detail_panel은 제목, 메타데이터, 원문 하이라이트, 경로를 담당한다.
+        with st.container(height=650, border=False):
+            render_detail_panel(detail, query_terms)
+        st.markdown('</div>', unsafe_allow_html=True)
 
         if not detail.error:
             from core.reading_session import save_last_read
             save_last_read(document_id, detail.title or "", source_file)
 
-        # Wrap render_detail_panel output in typography container
-        st.markdown('<div class="dbma-body-text">', unsafe_allow_html=True)
-        render_detail_panel(detail, query_terms)
-        st.markdown('</div>', unsafe_allow_html=True)
+    # ── Research area: related docs + follow-up question ─────────
+    st.divider()
+    with st.expander("관련 자료 · 이어서 질문", expanded=False):
+        research_col, followup_col = st.columns(2, gap="large")
 
-    # === RIGHT: Research area ===
-    with cols[1]:
-        st.subheader("연구 영역")
-
-        # --- Related docs ---
-        st.markdown("**관련 자료**")
-        related_results = _fetch_related_docs(query_terms, document_id)
-        for i, rd in enumerate(related_results):
-            render_citation_card(
-                source_file=rd.get("source_file", ""),
-                text_location=None,
-                doc_type=None,
-                author=rd.get("author") or None,
-                citation_title=rd.get("source_title") or None,
-                relevance_score=rd.get("score", 0.0),
-                on_view_original=True,
-                key_suffix=f"related_{i}",
-            )
-            src = rd.get("source_file", "")
-            did = rd.get("document_id", "")
-            if src or did:
-                rkey = f"rel_nav_{i}_{abs(hash(src + did)) & 0xFFFFFFFF:x}"
-                if st.button(f"{src}", icon=":material/description:", key=rkey, use_container_width=True):
-                    st.session_state["research_detail_selection"] = {
-                        "source_file": src,
-                        "document_id": did,
-                        "query_terms": query_terms,
-                    }
-                    st.rerun()
-
-        st.divider()
-
-        # --- Follow-up question ---
-        st.markdown("**이어서 질문**")
-        q_key = f"followup_q_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
-        a_key = f"followup_a_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
-        if st.text_input("질문 입력", key=q_key, placeholder="현재 문맥에서 질문하세요"):
-            user_question = st.session_state[q_key]
-            try:
-                answer_text, _ = generate_answer(
-                    user_question,
-                    conversation_history="",
-                    file_scope=[source_file],
+        with research_col:
+            st.markdown("**관련 자료**")
+            related_results = _fetch_related_docs(query_terms, document_id)
+            for i, rd in enumerate(related_results):
+                render_citation_card(
+                    source_file=rd.get("source_file", ""),
+                    text_location=None,
+                    doc_type=None,
+                    author=rd.get("author") or None,
+                    citation_title=rd.get("source_title") or None,
+                    relevance_score=rd.get("score", 0.0),
+                    on_view_original=True,
+                    key_suffix=f"related_{i}",
                 )
-                st.session_state[a_key] = answer_text if answer_text else "답변을 생성하지 못했습니다."
-            except Exception as e:
-                logger.warning("Follow-up question failed: %s", e)
-                st.session_state[a_key] = "답변 생성 중 오류가 발생했습니다."
-        if a_key in st.session_state and st.session_state[a_key]:
-            st.markdown(st.session_state[a_key])
+                src = rd.get("source_file", "")
+                did = rd.get("document_id", "")
+                if src or did:
+                    rkey = f"rel_nav_{i}_{abs(hash(src + did)) & 0xFFFFFFFF:x}"
+                    if st.button(f"{src}", icon=":material/description:", key=rkey, use_container_width=True):
+                        st.session_state["research_detail_selection"] = {
+                            "source_file": src,
+                            "document_id": did,
+                            "query_terms": query_terms,
+                        }
+                        st.rerun()
+
+        with followup_col:
+            st.markdown("**이어서 질문**")
+            q_key = f"followup_q_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+            a_key = f"followup_a_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+            if st.text_input("질문 입력", key=q_key, placeholder="현재 문맥에서 질문하세요"):
+                user_question = st.session_state[q_key]
+                try:
+                    answer_text, _ = generate_answer(
+                        user_question,
+                        conversation_history="",
+                        file_scope=[source_file],
+                    )
+                    st.session_state[a_key] = answer_text if answer_text else "답변을 생성하지 못했습니다."
+                except Exception as e:
+                    logger.warning("Follow-up question failed: %s", e)
+                    st.session_state[a_key] = "답변 생성 중 오류가 발생했습니다."
+            if a_key in st.session_state and st.session_state[a_key]:
+                st.markdown(st.session_state[a_key])
 
     # ── Bottom row: 3 action buttons ─────────────────────────────
     st.divider()
@@ -914,12 +963,12 @@ def _render_detail_action_buttons(
     """하단 행동 영역: 인용하기 / 연구에 추가 / 설교 연구로 보내기."""
     btn_cols = st.columns(3)
 
-    # 1. 인용하기
+    # 1. 인용하기 (풋노트 형식, Zotero 벤치마킹)
     with btn_cols[0]:
         cite_key = f"cite_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
         cite_text_key = f"{cite_key}_text"
         if st.button("인용하기", key=cite_key, use_container_width=True):
-            citation_text = _build_citation_text(detail, source_file, document_id)
+            citation_text = _build_footnote_citation(detail, source_file, document_id)
             st.session_state[cite_text_key] = citation_text
         if st.session_state.get(cite_text_key):
             st.code(st.session_state[cite_text_key], language=None)
@@ -940,7 +989,7 @@ def _render_detail_action_buttons(
 
 
 def _build_citation_text(detail: Any, source_file: str, document_id: str) -> str:
-    """문서의 출처/저자/위치 정보를 텍스트로 구성."""
+    """문서의 출처/저자/위치 정보를 텍스트로 구성 (기존 평문 형식, 하위 호환 유지)."""
     parts = []
     if detail and detail.title:
         parts.append(f"제목: {detail.title}")
@@ -955,6 +1004,43 @@ def _build_citation_text(detail: Any, source_file: str, document_id: str) -> str
     if detail and detail.created_at:
         parts.append(f"생성일: {detail.created_at}")
     return "\n".join(parts)
+
+
+def _extract_citation_year(created_at: str | None) -> str | None:
+    """ISO 날짜 문자열(YYYY-...)에서 연도만 추출."""
+    if not created_at or len(created_at) < 4 or not created_at[:4].isdigit():
+        return None
+    return created_at[:4]
+
+
+def _build_footnote_citation(detail: Any, source_file: str, document_id: str) -> str:
+    """Zotero 풋노트 인용 스타일을 벤치마킹한 각주 텍스트를 만든다.
+
+    각주 번호는 세션 내 인용 삽입마다 새로 증가한다(워드프로세서 각주와 동일).
+    같은 자료를 연속으로 재인용하면 "Ibid.", 비연속 재인용이면 약식 서지를 쓴다.
+    """
+    footnotes: list[str] = st.session_state.setdefault("research_footnotes", [])
+    previously_cited = document_id in footnotes
+    is_consecutive = bool(footnotes) and footnotes[-1] == document_id
+    footnotes.append(document_id)
+    number = len(footnotes)
+
+    author = (detail.author if detail else None) or ""
+    title = (detail.title if detail else None) or source_file or "제목 미상"
+    doc_type = detail.document_type if detail else None
+    year = _extract_citation_year(detail.created_at if detail else None)
+
+    if is_consecutive:
+        body = "Ibid."
+    elif previously_cited:
+        short_title = title if len(title) <= 20 else f"{title[:20]}…"
+        body = f"{author}, *{short_title}*." if author else f"*{short_title}*."
+    else:
+        meta = ", ".join(x for x in (doc_type, year) if x)
+        head = f"{author}, *{title}*" if author else f"*{title}*"
+        body = f"{head} ({meta})." if meta else f"{head}."
+
+    return f"{number}. {body}"
 
 
 def _add_to_research_session(detail: Any, source_file: str, document_id: str) -> None:
