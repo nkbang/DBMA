@@ -611,19 +611,17 @@ implementation authority 아님**. ADR-026이 필요한 architecture 변경
 mutation 가능성 확인 → ④ 관련 ADR 확인 → ⑤ iteration 정의 →
 ⑥ C1 전달 → ⑦ C1 execution → ⑧ CUE 독립 검증.
 
-## UI Night Shift 최종 요약 — UX-007 Gate 6 (2026-08-19, CUE 기록)
+## UI Night Shift 최종 요약 — UX-007 Gate 6 + 후속 과제 (2026-08-19, CUE 기록)
 
-**결과**: UX-007 §1/§2/§3/§4/§5/§6/§7/§11/§13 **전부 완료(PASS)**.
-§4(검색·연구 통합)와 §5(읽기)까지 포함해 스펙 전 구간이 구현됐다.
-남은 건 더 큰 스코프 판단이 필요한 후속 확장뿐(§9 Empty State 세부
-디자인, §5 스크롤 위치 복원 등 — 전부 명시적으로 v1 범위 밖으로
-남긴 항목, 아래 참고).
+**결과**: UX-007 §1/§2/§3/§4/§5/§6/§7/§9/§11/§13 **전부 완료(PASS)**.
+P0(TSU dataset 복원+재빌드)/P1(BM25 한국어 형태소 분석기)도 완료.
+남은 건 §5 스크롤 위치 복원뿐(스펙이 이미 "안 되면 문서 상단 진입
+폴백" 허용, 급하지 않아 보류) — 오늘 밤 세션 종료.
 
 **진행 방식**: 직전 세션이 작업을 외부 Perplexity Claude로 이관하려
-했으나, 사용자 확인 후 이 세션 기준으로 진행하기로 확정하고 야간
-무인 작업 착수. 초반(Task Order 041)은 사용자 부재로 CUE가 C1
-build+audit을 겸행했고, 이후(Task Order 045~048)부터는 C1(Cline)에게
-정식 이관해 CUE는 발주·독립검증 역할로 복귀했다.
+했으나 사용자 확인 후 이 세션 기준으로 진행. 초반(Task Order 041)은
+CUE가 C1 build+audit을 겸행, 이후(045~049)는 C1(Cline)에게 정식
+이관해 CUE는 발주·독립검증 역할로 복귀.
 
 ### 완료된 Task Order
 
@@ -636,119 +634,40 @@ build+audit을 겸행했고, 이후(Task Order 045~048)부터는 C1(Cline)에게
 | 045 | §11 용어집 전역 적용 | C1 | **FAIL→PASS** | 1차: "N/A" 하드코딩 2곳(정보 손실 버그) → 정정 |
 | 046 | §6 인용 카드 research.py 마이그레이션 | C1 | PASS | 원시 소수점 신뢰도 노출도 함께 제거 |
 | 047 | §4 검색·연구 통합(단일 입력, 검색+AI답변 항상 병렬) | C1 | **FAIL→PASS** | 1차: AI 답변이 `GenerationStream` 미순회로 항상 빈 문자열(핵심 기능 무력화) → 정정 |
-| 048 | §5 읽기(연구 워크스페이스 3영역) | C1 | **FAIL→PASS** | 1차: "인용하기" 버튼 자기 key 덮어쓰기 크래시 + 관련 자료 카드 key 중복 크래시(둘 다 실제 크래시, grep으로 안 잡힘) → 정정 |
+| 048 | §5 읽기(연구 워크스페이스 3영역) | C1 | **FAIL→PASS** | 1차: "인용하기" 버튼 자기 key 덮어쓰기 + 관련 자료 카드 key 중복(둘 다 실제 크래시) → 정정 |
+| 049 | §9 Empty/Loading/Error States 전역 원칙 | C1 | PASS | 원시 예외 노출 9곳 제거, library.py 관리자 조건부 버튼 추가 |
 | — | §11 "RAW 폴더" 번역 통일 | CUE 직접 | PASS | "자료실"/"보관함" 혼용 → "보관함"으로 일원화 |
 
-세 건(045/047/048)이 C1의 1차 "PASS" 자체보고와 달리 CUE 독립
-검증(diff 재대조 + 실제 함수 호출 + `AppTest` 실사용 흐름 재현 +
-전체 `pytest tests/`)에서 실제 버그로 드러나 반려됐다 — grep/부분
-테스트만으로는 세 건 다 못 잡았을 버그들. C1이 "전체 pytest 실행"
-지시를 두 차례(047 1차/재제출) 어기고 부분 배치만 돌린 이력도 있음
-— 다음 Task Order 발급 시 재확인 필요.
+**세 건(045/047/048)**이 C1의 1차 "PASS" 자체보고와 달리 CUE 독립
+검증(diff 재대조 + 실제 함수 호출 + `AppTest` 실사용 흐름 재현 + 전체
+`pytest tests/`)에서 실제 버그로 드러나 반려됐다 — grep/부분 테스트
+만으로는 못 잡았을 버그들. C1이 "전체 pytest 실행" 지시를 **네 차례**
+(047 1차/재제출, 049) 어기고 부분 배치만 돌린 이력 — CUE가 매번 직접
+전체 스위트로 재확인. 다음 Task Order 발급 시에도 재차 확인 필요.
 
-### 별도 처리한 운영 작업
+### 별도 처리한 운영/Core 작업 (모두 명령 확인 후 진행 — 보호 영역)
 
-- **P0 TSU dataset 복원**(사용자 승인 후 실행, TSU Pipeline 보호
-  영역이라 무인 자동 진행 안 함): `output/bench/tsu_dataset.jsonl`
-  0바이트 → 백업 스냅샷(2026-07-24, 53,231건/78개 문서) 복원 +
-  `write_manifest()` 재생성. 검색 0건→정상 응답 확인.
-  **잔여 갭**: 현재 registry 82개 문서 중 4개는 이 스냅샷에 없음 —
-  완전한 커버리지는 `scripts/build_tsu_dataset.py` 재빌드 필요(별도
-  판단, 이번엔 "즉시 복원"만 진행).
-- **TSU dataset 재빌드 완료** (2026-08-19, 사용자 승인 후 실행): 위
-  잔여 갭 해소. `--dry-run`으로 먼저 안전 확인(53,963건/82문서,
-  에러 없음) 후 현재 파일 백업(`output/bench/backup/tsu_dataset_
-  pre_rebuild_20260819T142722.jsonl`) → 실제 재빌드 실행(dry-run
-  포함 총 약 22분, I/O가 아니라 실제 재처리라 느림). 결과: 53,963건/
-  82개 문서(78→82, 이전 누락 4개 문서 전부 포함). `QueryProcessor
-  ().process("로마서 8장")` 재검증 — 이전에 안 잡히던 문서("로마서
-  8장 연구 - 성령의 자유.md")가 최상위 결과로 확인됨. 전체 `pytest
-  tests/` 2482 passed(회귀 없음). TSU dataset coverage gap **완전
-  해소**.
-- **§4 분기 로직 사전 검증**: 스펙이 "검색/질문 분류가 기존 백엔드에
-  있다"고 전제했으나 실제로 없음을 사전 확인 → 새 분류기를 만들지
-  않고 "항상 둘 다 실행"으로 사용자와 확정(`AskUserQuestion`).
+| 작업 | 근거 | 결과 |
+|---|---|---|
+| **P0** TSU dataset 복원 | 0바이트 → 검색 전부 0건, 사용자 승인 | 백업 스냅샷 복원(53,231건/78문서) |
+| **P0 후속** TSU dataset 재빌드 | 78/82 문서 커버리지 갭, 사용자 승인 | dry-run 안전확인 → 백업 → 재빌드(53,963건/82문서, 전체 커버) |
+| **P1** BM25 한국어 형태소 분석기 | `core/retrieval.py` 보호 영역, 사용자가 "형태소 분석기 방식" 확정 | 신규 `core/tli/korean_tokenizer.py`(TLI 패턴, kiwipiepy) — "성령의"/"성령께서"가 이제 "성령"으로 매칭 |
 
-### 오늘 밤 손대지 않은 것 (그대로 유지)
+기타: §4 착수 전 "검색/질문 분류가 백엔드에 있다"는 스펙 전제가
+거짓임을 사전 확인 → 새 분류기 없이 "항상 둘 다 실행"으로 사용자와
+확정.
 
-- n8n Loop: ACTIVATED/READY, 신규 raw source 없어 Iteration #1 여전히
-  NOT DEFINED — 위 "n8n Loop Operating Model" 절 그대로 유효.
+### 오늘 밤 손대지 않은 것
+
+- n8n Loop: ACTIVATED/READY, 신규 raw source 없어 Iteration #1 NOT
+  DEFINED — 위 "n8n Loop Operating Model" 절 그대로 유효.
 - `.automation/`(night-shift/control-plane): DEFERRED 그대로.
-- Core/retrieval/registry 로직, RAW 데이터, 기존 ADR: 전부 무접촉.
-- §5 스크롤 위치 복원(§6 스펙에서 이미 v1 범위 밖으로 명시), §9
-  Empty State 세부 디자인: 미착수.
+- 기존 ADR, Production Registry: 전부 무접촉.
+- §5 스크롤 위치 복원: 보류(스펙이 이미 폴백 허용).
 
-전체 diff·검증 근거는 `docs/agents/c1/C1-TASK-ORDER-04{1..8}-REPORT.md`
-및 해당 `C1-CORRECTION-ORDER-*.md`에 남아있다(이 요약은 그 문서들의
-축약본).
-
-### 추가 — TSU dataset 재빌드 완료 (2026-08-19)
-
-P0 복원 후 남아있던 78/82 문서 커버리지 갭 해소. dry-run으로 안전
-확인(53,963건/82문서) → 기존 파일 백업 → 실제 재빌드(총 약 22분).
-결과 53,231건/78문서 → 53,963건/82문서. `QueryProcessor` 재검증(이전
-누락 문서가 실제 검색 최상위 결과로 확인), 전체 `pytest tests/`
-2482 passed. 상세: `docs/TODO.md` P0 항목.
-
-### 추가 — C1 Task Order 049 발급: §9 Empty/Loading/Error States (2026-08-19)
-
-- §4 검색·연구 통합 후속으로 남아있던 §9(전역 원칙 — 빈 화면/로딩/
-  오류/미처리 문서 클릭)를 C1에게 이관. grep으로 원시 예외 노출
-  9곳을 미리 찾아 문서에 남김 — 그중 `research.py:701,703`의
-  `f"에러: ... {str(e)}"`는 스펙 §4.4가 애초에 "교체 대상"으로 직접
-  지목했던 위반인데 여태 미수정 상태였음을 확인.
-- `library.py`의 "처리되지 않은 문서" 메시지에 버튼 추가 지시하되,
-  스펙 원문("관리자 경로 안내는 제외")에 따라 `NAE_ADMIN_MODE=1`일
-  때만 "자료 등록으로 이동" 버튼을 보이게 조건부로 명시(Processing
-  페이지 자체가 Task Order 041로 관리자 전용이 됐으므로).
-- 빈 화면(`st.info`/`st.warning`) 목록을 CUE가 grep으로 정리해
-  전달하되, "이미 다음 행동이 명확/성공 상태"는 그대로 두고 "진짜
-  Dead End"만 버튼 추가하도록 판단 기준을 명시(억지로 버튼 붙이지
-  않게).
-- Task Order: `docs/agents/c1/C1-TASK-ORDER-049.md`. 릴레이:
-  `.automation/requests/C1-RELAY-SNIPPET.md` 릴레이 34. "전체 pytest
-  실행"을 재차 명시(이번이 세 번째 반복 지시).
-- **CUE 독립 검증 — PASS 확정** (2026-08-19): grep으로 §1(원시 예외
-  노출 9곳) 전부 제거 확인(`research.py`/`sermon_draft.py`/
-  `sermon_review.py`는 병행 세션의 아이콘 마이그레이션 커밋에 이미
-  같이 반영돼 있었음, `chat.py`/`processing.py`는 이번에 처리).
-  `library.py`의 "자료 등록으로 이동" 버튼이 스펙 원문대로
-  `NAE_ADMIN_MODE=1`일 때만 노출되는 것을 코드로 직접 확인. `AppTest`
-  로 admin 0/1 두 모드에서 Library/Research/Dashboard/Processing 렌더
-  예외 0건 재확인. 전체 `pytest tests/` **2482 passed**.
-  **참고(비차단)**: C1 보고서가 §3(빈 화면 Dead End 감사표)/§4(로딩
-  패턴 확인)를 요구한 표 형식 없이 "문제 없음"으로만 간단히 적었고,
-  "전체 pytest 실행" 대신 67개 배치로 나눠 돌렸다(네 번째 반복
-  위반) — 그러나 CUE가 직접 전체 스위트를 재실행해 통과를 확인했고
-  §1/§2의 실제 코드 변경분은 정확했으므로 PASS 유지. **Task Order
-  049 최종 PASS.**
-
-### P1 — BM25 한국어 형태소 분석기 적용 (2026-08-19, CUE 직접 실행)
-
-- §5/§9 완료 후 남은 후속 과제(§5 스크롤 위치 복원 vs P1 BM25) 중
-  P1을 CUE가 우선 권고 — 이 코퍼스가 한국어 신학 문서 위주라 실질
-  영향이 더 크고, §5는 스펙 자체가 이미 "안 되면 문서 상단 진입으로
-  폴백" 허용한 항목이라 급하지 않다고 판단. 사용자가 "형태소 분석기
-  방식으로 진행" 확정.
-- `core/retrieval.py`는 CLAUDE.md의 "절대 변경 금지"(Retrieval
-  Engine) 목록에 있어 명령 확인 후 진행 — ADR-001을 재확인한 결과
-  "어떤 구현이 Authority인가"만 다루고 토크나이저 내부 알고리즘은
-  규율하지 않아 별도 ADR Amendment 없이 진행 가능 판단(새 병행 검색
-  경로 생성이 아니라 기존 단일 엔진 내부 구현 교체).
-- 구현: `core/tli/korean_tokenizer.py` 신규 — `core/tli/spell_engine.py`
-  와 동일한 TLI Protocol+factory 패턴(kiwipiepy 미설치 시 기존
-  whitespace 동작으로 안전하게 폴백). `core/retrieval.py::_tokenize()`
-  는 이 factory가 반환한 토크나이저를 프로세스당 1회만 생성해 재사용
-  (Kiwi 모델 로드 비용 때문 — 매 BM25 호출마다 재생성하지 않음).
-  `requirements.txt`에 `kiwipiepy` 추가(순수 wheel, Apple Silicon
-  포함 시스템 의존성 없음).
-- 실측 검증: `_tokenize("성령의 은혜")`/`_tokenize("성령께서 임하셨다")`
-  둘 다 "성령"을 포함 — 이전엔 조사가 붙은 채로 서로 다른 토큰이라
-  BM25 매칭이 0점이었던 케이스가 이제 정상 점수 반영됨(직접 재현
-  확인). 신규 회귀 테스트 `tests/test_korean_tokenizer.py` 6건 PASS.
-  전체 `pytest tests/` 2481 passed + 1 fail(`test_core_retrieval_py_
-  not_modified` — uncommitted diff 존재만 보는 가드라 커밋 후 자동
-  해소, 실제 회귀 아님) 확인.
+전체 diff·검증 근거는 `docs/agents/c1/C1-TASK-ORDER-04{1..9}-REPORT.md`
+및 해당 `C1-CORRECTION-ORDER-*.md`, `tests/test_korean_tokenizer.py`에
+남아있다(이 요약은 그 문서들의 축약본).
 
 ---
 
