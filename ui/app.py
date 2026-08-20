@@ -28,6 +28,7 @@ from ui.pages.dashboard import render_dashboard_page
 from ui.pages.library import render_library_page
 from ui.pages.processing import render_processing_page
 from ui.pages.research import render_research_page
+from ui.pages.chat import render_chat_page
 from ui.pages.monitor import render_monitor_page
 from ui.pages.sermon_draft import render_sermon_draft_page
 from ui.pages.sermon_research import render_sermon_research_hub_page
@@ -182,6 +183,7 @@ def _render_sidebar() -> str:
             "Dashboard": "홈",
             "Library": "내 자료",
             "Research": "검색·연구",
+            "AI에게 질문": "AI에게 질문",
             "설교 연구": "설교 연구",
             "설교문 작성": "설교 준비",
             "설교 리뷰": "설교 모음 정리",
@@ -244,6 +246,7 @@ def _render_page_content(page: str) -> None:
         "Library": render_library_page,
         "Processing": render_processing_page,
         "Research": render_research_page,
+        "AI에게 질문": render_chat_page,
         "설교 연구": render_sermon_research_hub_page,
         "설교문 작성": render_sermon_draft_page,
         "설교 리뷰": render_sermon_review_page,

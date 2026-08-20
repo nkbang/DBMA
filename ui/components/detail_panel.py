@@ -122,11 +122,16 @@ def render_detail_panel(detail: DocumentDetail, query_terms: list[str]) -> None:
     if detail.match_locations:
         st.caption(f"검색어 {len(detail.match_locations)}개 위치 발견")
 
-    # 5. 본문 렌더링 (highlight_terms 적용)
+    # 5. 원본 파일 경로는 실행 가능한 링크가 아닌 텍스트로만 표시
+    if detail.source_path:
+        st.caption("원본 파일 경로")
+        st.code(detail.source_path, language=None)
+
+    # 6. 본문 렌더링 (highlight_terms 적용)
     if detail.full_text:
         highlighted = highlight_terms(detail.full_text, query_terms)
 
-        # 6. "첫 매치로 스크롤" 실험
+        # "첫 매치로 스크롤" 실험
         # Streamlit은 네이티브 스크롤 제어 API가 없다.
         # 첫 매치 앞에 앵커를 심고 script로 scrollIntoView 시도.
         # 만약 Streamlit이 <script>를 실행 안 시켜줄 수 있으므로,
@@ -149,7 +154,6 @@ def render_detail_panel(detail: DocumentDetail, query_terms: list[str]) -> None:
                 highlighted = '<span style="color:#888;">...</span>\n\n' + highlighted
 
             st.markdown(highlighted, unsafe_allow_html=True)
-
             # "본문 처음부터 보기" 토글
             with st.expander("본문 처음부터 보기"):
                 full_highlighted = highlight_terms(detail.full_text, query_terms)
@@ -158,7 +162,3 @@ def render_detail_panel(detail: DocumentDetail, query_terms: list[str]) -> None:
             # 첫 매치가 없거나 첫 부분이면 전체 표시
             st.markdown(highlighted, unsafe_allow_html=True)
 
-    # 7. source_path 텍스트 표시 (실행 트리거 아님)
-    if detail.source_path:
-        st.caption("출처 경로:")
-        st.code(detail.source_path, language=None)

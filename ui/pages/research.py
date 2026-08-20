@@ -473,13 +473,13 @@ def _render_saved_sessions() -> None:
                 st.success("검색어를 검색창에 불러왔습니다. '검색 실행'을 눌러 재검색하세요.")
 
 
-# ── NAE Public Theology Bridge (ADR-024) ────────────────────────
+# ── 내서재 공개 자료 (Beta) ────────────────────────
 
 def _render_nae_section() -> None:
-    """NAE Public Theology 검색 섹션 — module gating 준수 (§F).
+    """내서재 공개 자료 검색 섹션 — module gating 준수 (§F).
 
     nae_pd가 disabled면 이 함수가 아무것도 렌더링하지 않는다.
-    enabled일 때만 "NAE Public Theology (Beta)" 섹션을 표시하고,
+    enabled일 때만 "내서재 공개 자료 (Beta)" 섹션을 표시하고,
     DBMA 결과와 별도 영역으로 보여준다 (§B 병합 금지).
     """
     from core import module_registry
@@ -489,33 +489,33 @@ def _render_nae_section() -> None:
 
     st.divider()
     st.markdown(
-        '<h3><span class="material-symbols-outlined" style="font-size:22px; vertical-align:-4px;">menu_book</span> NAE Public Theology (Beta)</h3>',
+        '<h3><span class="material-symbols-outlined" style="font-size:22px; vertical-align:-4px;">menu_book</span> 내서재 공개 자료 (Beta)</h3>',
         unsafe_allow_html=True,
     )
-    st.caption("공개 신학 corpus — DBMA 결과와 별도 검색")
+    st.caption("공개 신학 자료 — 내서재 자료와 별도 검색")
 
-    # NAE 전용 검색어 입력 (DBMA 검색어와 분리)
+    # 내서재 전용 검색어 입력 (DBMA 검색어와 분리)
     nae_query = st.text_input(
-        "NAE 검색어",
-        placeholder="NAE corpus에서 검색할 질문을 입력하세요...",
+        "공개 자료 검색어",
+        placeholder="공개 신학 자료에서 검색할 질문을 입력하세요...",
         key="nae_research_query",
     )
 
     if not nae_query:
-        st.info("NAE 검색어를 입력하고 '검색'을 클릭하세요.")
+        st.info("검색어를 입력하고 '검색'을 클릭하세요.")
         return
 
-    # NAE 검색 실행 버튼
+    # 내서재 검색 실행 버튼
     col1, col2 = st.columns([1, 4])
     with col1:
-        if st.button("NAE 검색", type="primary", icon=":material/search:", use_container_width=True):
+        if st.button("검색", type="primary", icon=":material/search:", use_container_width=True):
             nae_results = _execute_nae_retrieval(nae_query)
             st.session_state["nae_research_results"] = nae_results
             st.session_state["nae_search_status"] = (
-                f"NAE 결과 {len(nae_results)}건" if nae_results else "NAE 결과 없음"
+                f"결과 {len(nae_results)}건" if nae_results else "결과 없음"
             )
 
-    # NAE 결과 표시
+    # 내서재 결과 표시
     nae_results = st.session_state.get("nae_research_results")
     nae_status = st.session_state.get("nae_search_status", "")
 
@@ -526,10 +526,10 @@ def _render_nae_section() -> None:
         st.caption(nae_status)
 
     if not nae_results:
-        st.info("NAE corpus에서 일치하는 결과가 없습니다.")
+        st.info("공개 자료에서 일치하는 결과가 없습니다.")
         return
 
-    # NAE 결과 카드 표시
+    # 내서재 결과 카드 표시
     for i, citation in enumerate(nae_results, 1):
         score = getattr(citation, "retrieval_score", 0)
         author = getattr(citation, "source_author", "") or "Unknown"
@@ -560,11 +560,11 @@ def _execute_nae_retrieval(query: str) -> list[Any]:
 
     except NaePdModuleDisabledError:
         # 설정 오류 — UI가 구분해서 보여줘야 함
-        st.error("NAE 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")
+        st.error("공개 자료 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")
         return []
 
     except Exception:  # noqa: BLE001 — §G fail-closed
-        st.warning("NAE 검색 중 오류가 발생했습니다. (fail-closed: 빈 결과)")
+        st.warning("공개 자료 검색 중 오류가 발생했습니다. (fail-closed: 빈 결과)")
         return []
 
 

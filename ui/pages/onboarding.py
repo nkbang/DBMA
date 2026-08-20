@@ -3,7 +3,7 @@
 Stitch "프리미엄 랜딩 페이지" 디자인을 Streamlit으로 옮긴 첫 실행
 환영 화면. 브랜드 표기는 사용자-facing이므로 "내서재"/"NAE"를 사용하고,
 내부 식별자 DBMA는 그대로 유지한다
-(``docs/governance/DBMA-BRAND-GOV-001.md`` 참고).
+(`docs/governance/DBMA-BRAND-GOV-001.md` 참고).
 """
 
 import streamlit as st
@@ -16,17 +16,30 @@ _FONT_LINKS = """
 
 _STYLE = """
 <style>
+/* ── 전역 배경 (따뜻한 아이보리 + 종이 질감) ─────────────── */
+.stApp {
+    background-color: #F8F6F2;
+    background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+}
+main > .stMarkdown {
+    padding-top: 0 !important;
+}
+
+/* ── Top Nav ─────────────────────────────────────────────── */
 .nae-topnav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 4px 32px;
+    padding: 16px 48px;
     border-bottom: 1px solid #e4e2dd;
-    margin-bottom: 40px;
+    background: #fbf9f4;
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 .nae-topnav .brand {
     font-family: 'Source Serif 4', serif;
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 700;
     color: #171e1e;
 }
@@ -35,44 +48,160 @@ _STYLE = """
     gap: 24px;
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 14px;
+    font-weight: 500;
     color: #6a5c4c;
 }
+.nae-topnav .links a {
+    color: #6a5c4c;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.nae-topnav .links a:hover {
+    color: #171e1e;
+}
+.nae-topnav .login-btn {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6a5c4c;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
 .nae-hero {
     text-align: center;
-    padding: 0 24px;
+    padding: 96px 24px 64px;
+    max-width: 1280px;
+    margin: 0 auto;
 }
 .nae-hero .classical-title {
     font-family: 'Source Serif 4', serif;
-    font-size: 52px;
+    font-size: 60px;
     line-height: 1.1;
     font-weight: 700;
     color: #171e1e;
-    margin: 0 0 6px;
+    margin: 0 0 8px;
 }
 .nae-hero .classical-subtitle {
     font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 300;
     letter-spacing: 0.1em;
     color: #6a5c4c;
-    margin: 0 0 40px;
+    margin: 0 0 48px;
 }
 .nae-hero .headline {
+    text-align: center;
     font-family: 'Source Serif 4', serif;
-    font-size: 30px;
+    font-size: 36px;
     font-weight: 600;
     color: #1b1c19;
     line-height: 1.35;
-    margin: 0 0 16px;
+    margin: 0 0 24px;
+    max-width: 672px;
 }
 .nae-hero .subheadline {
     font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.8;
     color: #434848;
-    max-width: 520px;
-    margin: 0 auto 8px;
+    max-width: 448px;
+    margin: 0 auto 80px;
 }
+
+/* ── Hero Illustration (CSS-only premium art) ───────────── */
+.nae-hero-illustration {
+    width: 100%;
+    max-width: 896px;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #c3c7c7;
+    background: linear-gradient(135deg, #f5f3ee 0%, #e8e4dc 30%, #d6c3b0 60%, #f0dcc8 100%);
+    margin: 0 auto;
+    position: relative;
+}
+.nae-hero-illustration .illust-bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 600px 400px at 30% 50%, rgba(106,92,76,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 300px at 70% 40%, rgba(26,30,30,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 200px 200px at 50% 70%, rgba(12,54,71,0.06) 0%, transparent 50%);
+}
+.nae-hero-illustration .illust-lines {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+}
+.nae-hero-illustration .illust-lines::before,
+.nae-hero-illustration .illust-lines::after {
+    content: '';
+    position: absolute;
+    background: #171e1e;
+}
+.nae-hero-illustration .illust-lines::before {
+    width: 60%;
+    height: 1px;
+    top: 35%;
+    left: 20%;
+    transform: rotate(-2deg);
+}
+.nae-hero-illustration .illust-lines::after {
+    width: 40%;
+    height: 1px;
+    top: 55%;
+    right: 20%;
+    transform: rotate(1deg);
+}
+.nae-hero-illustration .illust-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(23,30,30,0.1);
+}
+.nae-hero-illustration .illust-circle:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    top: 20%;
+    left: 25%;
+}
+.nae-hero-illustration .illust-circle:nth-child(2) {
+    width: 80px;
+    height: 80px;
+    top: 45%;
+    right: 30%;
+}
+.nae-hero-illustration .illust-circle:nth-child(3) {
+    width: 60px;
+    height: 60px;
+    bottom: 25%;
+    left: 45%;
+}
+.nae-hero-illustration .illust-dots {
+    position: absolute;
+    inset: 0;
+}
+.nae-hero-illustration .illust-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(23,30,30,0.15);
+}
+.nae-hero-illustration .illust-dot:nth-child(1) { top: 30%; left: 35%; }
+.nae-hero-illustration .illust-dot:nth-child(2) { top: 60%; right: 35%; }
+.nae-hero-illustration .illust-dot:nth-child(3) { bottom: 35%; left: 55%; }
+.nae-hero-illustration .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(248,246,242,0.15), transparent);
+    pointer-events: none;
+}
+
+/* ── Feature Cards ───────────────────────────────────────── */
 .nae-section-title {
     text-align: center;
     font-family: 'Hanken Grotesk', sans-serif;
@@ -83,14 +212,24 @@ _STYLE = """
     text-transform: uppercase;
     margin: 8px 0 20px;
 }
+.nae-features-section {
+    padding: 96px 48px;
+    background: #f5f3ee;
+    border-top: 1px solid #c3c7c7;
+    border-bottom: 1px solid #c3c7c7;
+}
 .nae-card {
     background: #ffffff;
     border: 1px solid #c3c7c7;
     border-radius: 16px;
-    padding: 32px 24px;
+    padding: 40px 24px;
     text-align: center;
     height: 100%;
     box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.03);
+    transition: border-color 0.3s;
+}
+.nae-card:hover {
+    border-color: #171e1e;
 }
 .nae-card .icon {
     width: 48px;
@@ -108,79 +247,143 @@ _STYLE = """
 }
 .nae-card h3 {
     font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     color: #171e1e;
-    margin: 0 0 10px;
+    margin: 0 0 16px;
 }
 .nae-card p {
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 14px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
     color: #434848;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.65;
 }
-.nae-quote {
+
+/* ── Quote ───────────────────────────────────────────────── */
+.nae-quote-section {
+    padding: 128px 48px;
+    max-width: 720px;
+    margin: 0 auto;
     text-align: center;
-    font-family: 'Source Serif 4', serif;
-    font-style: italic;
-    font-size: 19px;
-    line-height: 1.6;
-    color: #171e1e;
-    opacity: 0.85;
-    max-width: 640px;
-    margin: 48px auto 8px;
 }
 .nae-quote .rule {
     width: 64px;
     height: 1px;
     background: #c3c7c7;
-    margin: 24px auto;
+    margin: 40px auto;
 }
-.nae-footer {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 1px solid #e4e2dd;
-}
-.nae-footer .tagline {
+.nae-quote blockquote {
+    word-break: keep-all;
+    overflow-wrap: normal;
     font-family: 'Source Serif 4', serif;
     font-style: italic;
-    font-size: 15px;
+    font-size: 28px;
+    line-height: 1.6;
+    color: #171e1e;
+    opacity: 0.85;
+    margin: 0;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.nae-footer {
+    padding: 48px;
+    background: #f0eee9;
+    border-top: 1px solid #c3c7c7;
+}
+.nae-footer .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+@media (min-width: 768px) {
+    .nae-footer .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+.nae-footer .brand-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+@media (min-width: 768px) {
+    .nae-footer .brand-col {
+        align-items: flex-start;
+    }
+}
+.nae-footer .brand-col .brand-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #171e1e;
+    margin: 0 0 8px;
+}
+.nae-footer .brand-col .tagline {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 16px;
     color: #6a5c4c;
-    margin: 0 0 4px;
+    margin: 0;
+}
+.nae-footer .link-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+@media (min-width: 768px) {
+    .nae-footer .link-col {
+        align-items: flex-end;
+    }
+}
+.nae-footer .link-row {
+    display: flex;
+    gap: 32px;
+}
+.nae-footer .link-row a {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+    color: #6a5c4c;
+    text-decoration: none;
+}
+.nae-footer .link-row a:hover {
+    text-decoration: underline;
 }
 .nae-footer .copyright {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 12px;
     color: #737878;
-    opacity: 0.7;
     margin: 0;
 }
-div[data-testid="stButton"] button[kind="primary"] {
-    background-color: #171e1e !important;
-    border-color: #171e1e !important;
+
+/* ── Buttons (Stitch 원본 스타일) ────────────────────────── */
+button[kind="primary"] {
+    background: #171e1e !important;
     color: #ffffff !important;
+    border: none !important;
     border-radius: 12px !important;
+    font-family: 'Hanken Grotesk', sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    padding: 16px 40px !important;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.03) !important;
 }
-div[data-testid="stButton"] button[kind="primary"]:hover {
-    background-color: #434848 !important;
-    border-color: #434848 !important;
-    color: #ffffff !important;
+button[kind="primary"]:hover {
+    opacity: 0.9 !important;
 }
-div[data-testid="stButton"] button[kind="primary"] p {
-    color: #ffffff !important;
-}
-div[data-testid="stButton"] button[kind="secondary"] {
-    background-color: transparent !important;
-    border-color: #737878 !important;
-    color: #1b1c19 !important;
+div[data-testid="stButton"] > button:not([kind="primary"]) {
+    background: transparent !important;
+    color: #171e1e !important;
+    border: 1px solid #737878 !important;
     border-radius: 12px !important;
-}
-div[data-testid="stButton"] button[kind="secondary"]:hover {
-    background-color: #f0eee9 !important;
-    border-color: #737878 !important;
-    color: #1b1c19 !important;
+    font-family: 'Hanken Grotesk', sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    padding: 16px 40px !important;
 }
 </style>
 """
@@ -190,25 +393,31 @@ def render_onboarding_page() -> None:
     """첫 실행 환영/온보딩 화면을 렌더링한다."""
     st.markdown(_FONT_LINKS + _STYLE, unsafe_allow_html=True)
 
-    # ── Top Nav (장식용 — 아직 로그인/탐색 기능 없음, 프리미엄 랜딩
-    # 톤만 물려받는다) ────────────────────────────────────────────
+    # ── Top Nav ──────────────────────────────────────────────
     st.markdown(
         """
         <div class="nae-topnav">
             <span class="brand">內書齋</span>
-            <span class="links">서재 · 연구 · 탐색</span>
+            <span class="links">
+                <a href="#">서재</a>
+                <a href="#">연구</a>
+                <a href="#">탐색</a>
+            </span>
+            <button class="login-btn">로그인</button>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    # ── Hero ───────────────────────────────────────────────────
+    # ── Hero ─────────────────────────────────────────────────
     st.markdown(
         """
         <div class="nae-hero">
-            <div class="classical-title">內書齋</div>
-            <div class="classical-subtitle">내서재</div>
-            <div class="headline">책이 답하고,<br>기록이 말합니다.</div>
+            <div style="margin-bottom: 48px;">
+                <div class="classical-title">內書齋</div>
+                <div class="classical-subtitle">내서재</div>
+            </div>
+            <div class="headline" style="text-align: center;">책이 답하고,<br>기록이 말합니다.</div>
             <p class="subheadline">
                 개인의 자료와 연구를 하나의 지식으로 연결하는<br>
                 목회자를 위한 AI 연구실
@@ -218,12 +427,10 @@ def render_onboarding_page() -> None:
         unsafe_allow_html=True,
     )
 
-    # ── Hero Actions ───────────────────────────────────────────
+    # ── Hero Actions ─────────────────────────────────────────
     _, btn_col1, btn_col2, _ = st.columns([2, 1.4, 1.4, 2])
     with btn_col1:
-        start_clicked = st.button(
-            "연구 시작하기", use_container_width=True, type="primary"
-        )
+        start_clicked = st.button("연구 시작하기", use_container_width=True, type="primary")
     with btn_col2:
         load_clicked = st.button("자료 불러오기", use_container_width=True)
 
@@ -235,8 +442,33 @@ def render_onboarding_page() -> None:
     st.write("")
     st.write("")
 
-    # ── Feature Cards (소개용 — 클릭 이동 없음, 랜딩 원본과 동일) ──
+    # ── Hero Illustration (CSS-only premium art) ─────────────
+    st.markdown(
+        """
+        <div class="nae-hero-illustration">
+            <div class="illust-bg"></div>
+            <div class="illust-lines"></div>
+            <div class="illust-circle"></div>
+            <div class="illust-circle"></div>
+            <div class="illust-circle"></div>
+            <div class="illust-dots">
+                <div class="illust-dot"></div>
+                <div class="illust-dot"></div>
+                <div class="illust-dot"></div>
+            </div>
+            <div class="overlay"></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.write("")
+    st.write("")
+
+    # ── Feature Cards ────────────────────────────────────────
     st.markdown('<div class="nae-section-title">내서재가 하는 일</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="nae-features-section">', unsafe_allow_html=True)
     cards = [
         ("auto_stories", "나의 서재", "모든 흩어진 자료를 하나의 지식 저장소로. PDF, 텍스트, 이미지 자료까지 스마트하게 관리합니다."),
         ("account_tree", "지식 연결", "문서와 설교, 개인의 메모를 의미 중심으로 연결하여 당신만의 독창적인 신학 세계를 구축합니다."),
@@ -255,15 +487,17 @@ def render_onboarding_page() -> None:
                 """,
                 unsafe_allow_html=True,
             )
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # ── Quote ──────────────────────────────────────────────────
+    # ── Quote ────────────────────────────────────────────────
     st.markdown(
         """
-        <div class="nae-quote">
-            <div class="rule"></div>
-            "책을 읽는 것은 대화하는 것이다. 지혜의 거장들과 대화하며
-            나의 신학을 세워가는 이 거룩한 노동을 돕습니다."
-            <div class="rule"></div>
+        <div class="nae-quote-section">
+            <div class="nae-quote">
+                <div class="rule"></div>
+                <blockquote>"책을 읽는 것은 대화하는 것이다.<br> 지혜의 거장들과 대화하며<br>나의 신학을 세워가는 이 거룩한 노동을 돕습니다."</blockquote>
+                <div class="rule"></div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -275,12 +509,24 @@ def render_onboarding_page() -> None:
         st.session_state["show_onboarding"] = False
         st.rerun()
 
-    # ── Footer ─────────────────────────────────────────────────
+    # ── Footer ───────────────────────────────────────────────
     st.markdown(
         """
         <div class="nae-footer">
-            <p class="tagline">"생각을 쌓고, 말씀을 잇다."</p>
-            <p class="copyright">© 2026 내서재. 목회자를 위한 디지털 서재입니다.</p>
+            <div class="footer-inner">
+                <div class="brand-col">
+                    <span class="brand-name">內書齋</span>
+                    <p class="tagline">"생각을 쌓고, 말씀을 잇다."</p>
+                </div>
+                <div class="link-col">
+                    <div class="link-row">
+                        <a href="#">이용약관</a>
+                        <a href="#">개인정보처리방침</a>
+                        <a href="#">도움말</a>
+                    </div>
+                    <p class="copyright">© 2026 NAE. Powered by NAE</p>
+                </div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,

@@ -243,11 +243,71 @@ def _render_doctrine_warning() -> None:
         st.caption(f"관련 범주: {', '.join(report.flagged_categories)} · 신뢰도: {report.confidence}")
 
 
+def _render_candidate_review_report() -> None:
+    """개요 생성 후 사용자에게 제시하는 검토 리포트 — 관련 자료의 유형 배지
+    + 신뢰도 점수를 한눈에 보여준다. GAP §3-6 요구사항."""
+    state = st.session_state["sermon_draft_state"]
+    candidates = state.get("candidates", [])
+    if not candidates:
+        return
+
+    st.divider()
+    st.markdown(
+        '<h4 style="margin:0.5rem 0 0.25rem 0;"><span class="material-symbols-outlined" style="font-size:18px; vertical-align:-3px;">fact_check</span> 관련 자료 검토 리포트</h4>',
+        unsafe_allow_html=True,
+    )
+    st.caption(f"개요 생성에 사용된 자료 {len(candidates)}건")
+
+    # 배지 스타일 매핑
+    badge_styles = {
+        "성경": f'background:{THEME.PRIMARY_CONTAINER};color:{THEME.TEXT_PRIMARY};',
+        "책": f'background:{THEME.PRIMARY_FIXED};color:{THEME.TEXT_PRIMARY};',
+        "신학자료": f'background:{THEME.SECONDARY_CONTAINER};color:{THEME.TEXT_PRIMARY};',
+        "설교": f'background:{THEME.TERTIARY_CONTAINER};color:{THEME.TEXT_PRIMARY};',
+    }
+
+    total_score = 0.0
+    for i, candidate in enumerate(candidates, 1):
+        # doc_type 또는 source_label에서 배지 라벨 추론
+        doc_type = getattr(candidate, "doc_type", None) or candidate.get("doc_type", "")
+        source = getattr(candidate, "source", None) or candidate.get("source", "")
+        score = getattr(candidate, "relevance_score", None) or candidate.get("score", 0.0)
+        title = getattr(candidate, "title", None) or candidate.get("title", source or "출처 미상")
+
+        # 배지 라벨 결정
+        if doc_type in badge_styles:
+            badge_label = doc_type
+        elif "성경" in str(source) or "성경" in str(title):
+            badge_label = "성경"
+        elif "설교" in str(source) or "설교" in str(title):
+            badge_label = "설교"
+        else:
+            badge_label = "신학자료"
+
+        style = badge_styles.get(badge_label, f'background:{THEME.SECONDARY_CONTAINER};color:{THEME.TEXT_PRIMARY};')
+        score_str = f"{score:.2f}" if isinstance(score, (int, float)) else "?"
+        total_score += score if isinstance(score, (int, float)) else 0.0
+
+        st.markdown(
+            f'<div style="display:flex;align-items:center;gap:8px;padding:6px 0;">'
+            f'<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;'
+            f'{style};text-transform:uppercase;letter-spacing:0.03em;">{badge_label}</span>'
+            f'<span style="font-weight:500;color:{THEME.TEXT_PRIMARY};font-size:13px;">{title}</span>'
+            f'<span style="margin-left:auto;font-size:12px;color:{THEME.TEXT_SECONDARY};">신뢰도 {score_str}</span>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
+    avg = total_score / len(candidates) if candidates else 0.0
+    st.caption(f"평균 신뢰도: {avg:.2f} · 자료 기반 개요가 생성되었습니다.")
+
+
 def _render_outline_step() -> None:
     state = st.session_state["sermon_draft_state"]
     outline: SermonOutline = state["outline"]
 
     _render_doctrine_warning()
+    _render_candidate_review_report()
     st.caption(f"설교 형식: {state['sermon_format']}")
     title = st.text_input("제목", value=outline.title, key="sermon_outline_title")
     introduction = st.text_area("서론", value=outline.introduction, height=80, key="sermon_outline_intro")
