@@ -354,6 +354,11 @@ main > .stMarkdown {
     color: #c3c7c7;
     cursor: not-allowed;
 }
+.st-key-footer_help_row {
+    background: #f0eee9;
+    margin-top: -68px;
+    padding-bottom: 40px;
+}
 .st-key-footer_help button {
     color: #6a5c4c !important;
     font-family: 'Hanken Grotesk', sans-serif !important;
@@ -549,9 +554,10 @@ def render_onboarding_page() -> None:
         """,
         unsafe_allow_html=True,
     )
-    _, help_col = st.columns([5, 1])
-    with help_col:
-        help_clicked = st.button("도움말", key="footer_help", type="tertiary")
+    with st.container(key="footer_help_row"):
+        _, help_col = st.columns([5, 1])
+        with help_col:
+            help_clicked = st.button("도움말", key="footer_help", type="tertiary")
     st.markdown(
         """
                     <p class="copyright">© 2026 NAE. Powered by NAE</p>
