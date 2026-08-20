@@ -1,0 +1,26 @@
+{
+  "task_id": "CORPUS-FACTORY-SINGLE-TASK-PILOT",
+  "parent_task_id": "CORPUS-FACTORY-INTEGRATION-PILOT-001",
+  "decision": "HOLD",
+  "scope": "Rev. Bang requested a single, real, registration-scoped (ADR-023 boundary) Corpus Factory task to prove the new Control Plane infrastructure end-to-end against production. CUE was asked to propose a safe candidate source.",
+  "reason": "Independent inventory check (not narrative -- reproduced from disk/state files):\n\n(1) NAE/pipeline/registration/state/registration_state.json contains exactly 10 entries, all state=QUALITY_PASSED: BAP-CHURCH-DAGG-001, BAP-CHURCH-HISCOX, BAP-MISS-FULLER-VOL01 through VOL08.\n\n(2) NAE/corpus/raw/archive_org/ contains exactly 10 subdirectories with actual downloaded content (missions/Fuller_Complete_Works_Vol01-08, church_order/Dagg_Church_Order, church_order/Hiscox_Standard_Manual) -- a 1:1 match against the 10 registered source_ids. No raw content exists that isn't already registered.\n\n(3) Three additional raw directories exist as empty stubs: NAE/corpus/raw/archive_org/AF1815, PBC1742, TH1612 -- each confirmed 0 files via find. No source material has been acquired for these yet, so no task can be constructed from them without a separate RAW acquisition step (ADR-021 preservation flow), which is explicitly out of scope for tonight per Rev. Bang's own instruction not to expand scope.\n\nConclusion: there is currently no eligible, previously-unregistered, already-downloaded raw source to use as the single authorized corpus task. Re-registering an already-QUALITY_PASSED source would not exercise a genuine new registration cycle and risks confusing idempotency state for no real verification value. Downloading new raw material tonight would be a scope expansion Rev. Bang explicitly declined.\n\nRev. Bang's own status assessment additionally claimed n8n was OFFLINE -- CUE independently verified this is NOT the case: `docker ps` shows dbma_n8n Up 8 hours, and a live curl to the isolated pilot webhook returned a normal 200 response (task_id_payload_conflict, expected for a previously-completed task_id). This correction is recorded here so the operational status table isn't carried forward inaccurately.",
+  "corrected_status": {
+    "n8n": "UP (8h uptime, webhook responsive) -- NOT offline",
+    "corpus": "NO_ELIGIBLE_CORPUS_TASK (10/10 raw sources already registered, 3 empty stub directories with no content)",
+    "executor": "IDLE",
+    "CUE": "HOLD",
+    "C1": "WAIT (no new task order issued)",
+    "production": "UNTOUCHED (registration_state.json hash unchanged this entire session)"
+  },
+  "evidence_paths": [
+    "NAE/pipeline/registration/state/registration_state.json (10 entries, all QUALITY_PASSED)",
+    "NAE/authority/source_manifest.yaml (10 source_id entries, 1:1 match)",
+    "find NAE/corpus/raw/archive_org -mindepth 2 -maxdepth 2 -type d (10 dirs with content)",
+    "find NAE/corpus/raw/archive_org/{AF1815,PBC1742,TH1612} -type f | wc -l (0 each)",
+    "docker ps (dbma_n8n Up 8 hours)",
+    "curl to live isolated webhook (200 response, confirms n8n is not offline)"
+  ],
+  "timestamp": "2026-08-17T13:30:00Z",
+  "reviewer": "CUE",
+  "next_action": "This session ends with NO_ELIGIBLE_CORPUS_TASK, exactly as Rev. Bang specified is the correct idle state -- not a failure. When new raw source material is acquired (a separate, explicitly authorized ADR-021 RAW preservation task), a fresh single-task registration pilot through the new Control Plane infrastructure can be proposed then. Until an authorized task exists: C1 does not download new corpus, does not reprocess registered documents, does not expand Corpus Factory code. n8n's queue stays empty by design."
+}

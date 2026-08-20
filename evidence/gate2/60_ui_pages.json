@@ -1,6 +1,6 @@
 {
   "script": "60_ui_pages.py",
-  "timestamp": "2026-08-18T04:49:30Z",
+  "timestamp": "2026-08-20T06:54:51Z",
   "all_pass": true,
   "expected_pages_count": 9,
   "expected_pages": [
@@ -71,7 +71,7 @@
     },
     "disk_files": {
       "status": "PASS",
-      "found": 10
+      "found": 11
     }
   }
 }

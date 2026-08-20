@@ -11,6 +11,13 @@
     {
       "name": "nae-dashboard",
       "url": "http://127.0.0.1:8799"
+    },
+    {
+      "name": "dbma-ui-admin",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": ["scripts/run_admin_ui.sh"],
+      "port": 8521,
+      "autoPort": true
     }
   ]
 }

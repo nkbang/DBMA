@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "NSQ-SMOKE-1786776027",
+  "title": "Night Shift Queue Runner Smoke Test",
+  "owner": "CUE",
+  "state": "INITIATED",
+  "phase": "VALIDATION",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "evidence": [],
+  "audit": {
+    "status": "pending"
+  },
+  "document_type": "sermon",
+  "source": {
+    "type": "youtube",
+    "url": "https://www.youtube.com/watch?v=nsq-smoke"
+  },
+  "automation": {
+    "state": "VALIDATION_PASSED",
+    "failure_code": null,
+    "last_transition_id": "NSQ-SMOKE-1786776027#11253"
+  }
+}

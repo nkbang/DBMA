@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "NSQ-FAILROUTE-1786776039",
+  "title": "Night Shift fail-routing test (missing raw_item_dir)",
+  "owner": "CUE",
+  "state": "INITIATED",
+  "phase": "VALIDATION",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "evidence": [],
+  "audit": {
+    "status": "pending"
+  },
+  "document_type": "book",
+  "automation": {
+    "state": "VALIDATION_PASSED",
+    "failure_code": null,
+    "last_transition_id": "NSQ-FAILROUTE-1786776039#11254"
+  }
+}

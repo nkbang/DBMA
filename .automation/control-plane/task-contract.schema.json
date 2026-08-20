@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "title": "CONTROL-PLANE-GENERALIZATION-001 Task Contract (G1)",
+    "purpose": "Generalized task contract for the isolated Control Plane pilot family (task_id prefix CONTROL-PLANE-PILOT-). This is a NEW, additive file -- it does NOT modify .automation/tasks/schema.json (Approved under ADR-022 Section 13), and existing task files/consumers are unaffected.",
+    "does_not_extend": ".automation/tasks/schema.json v1.2.0 (Approved, ADR-022). Any future decision to fold these fields into the Approved schema requires a separate ADR Amendment -- out of scope for this generalization task.",
+    "convention": "Follows the same style as .automation/tasks/schema.json: an annotated example task, validated by the gateway's Code node (manual field checks in JS), not a strict JSON-Schema $ref validator -- consistent with existing project convention."
+  },
+  "example": {
+    "schema_version": "1.2.0",
+    "task_id": "CONTROL-PLANE-PILOT-<slug>",
+    "parent_task_id": null,
+    "depends_on": [],
+    "title": "string, human-readable",
+    "owner": "CUE",
+    "state": "IDLE",
+    "phase": "PILOT",
+    "requires_human_approval": false,
+    "production_mutation": false,
+    "task_type": "pilot_echo",
+    "scope": {
+      "namespace": "control-plane-pilot",
+      "allowed_paths": []
+    },
+    "authorized_by": "Rev. Bang | CUE",
+    "authorized_by_task_order": "CORPUS-FACTORY-INTEGRATION-PILOT-001",
+    "required_evidence": ["gateway_transition", "executor_transition", "stdout", "stderr", "exit_code"],
+    "constraints": {
+      "max_runtime_s": 30,
+      "allow_production_paths": false
+    },
+    "evidence": [],
+    "audit": { "status": null, "verdict": null, "reviewer": null, "report": null },
+    "notes": [],
+    "automation": {
+      "state": null,
+      "failure_code": null,
+      "last_transition_id": null,
+      "processing_input": {}
+    },
+    "failure_codes": [
+      "VALIDATION_FAILED",
+      "FILE_ERROR",
+      "PARSE_ERROR",
+      "TASK_ID_PAYLOAD_CONFLICT",
+      "TASK_TYPE_NOT_AUTHORIZED",
+      "NAMESPACE_VIOLATION",
+      "PRODUCTION_MUTATION_NOT_ALLOWED",
+      "PILOT_EXEC_FAILED",
+      "INTERNAL_STATE_MAPPING_ERROR"
+    ]
+  },
+  "field_contract": {
+    "task_id": "string, required. MUST start with 'CONTROL-PLANE-PILOT-' for this pilot family -- this string prefix IS the namespace boundary enforced at both gateway and executor.",
+    "parent_task_id": "string|null. Links a task to the governance decision that authorized it (e.g. the CUE decision record task_id).",
+    "depends_on": "array of task_id strings, required (may be empty). AUTONOMOUS-NIGHT-SHIFT-001 G7: the executor will not process this task until every task_id listed here has automation.state == COMPLETED. A dependency on a nonexistent or non-COMPLETED task_id blocks (fail-closed).",
+    "task_type": "string, required. MUST be a member of the executor's ALLOWED_TASK_TYPES allowlist (currently: ['pilot_echo'] only). Any other value is rejected at the gateway (VALIDATION_FAILED) before it ever reaches the executor -- this is the G3/G8 isolation mechanism, not a convention the executor merely promises to respect.",
+    "scope.namespace": "string, required. MUST equal 'control-plane-pilot'. Any other value is rejected -- this is the task-namespace / production-namespace separation boundary (G3/G8).",
+    "scope.allowed_paths": "array, required (may be empty). Reserved for future task_types that touch the filesystem; task_type=pilot_echo touches no paths at all, so this stays empty. The executor MUST reject any task_type declaring a non-empty allowed_paths until a future generalization task explicitly authorizes it.",
+    "authorized_by": "string, required, non-empty. Who/what authorized this task's creation (a person's name, or 'CUE' for a CUE-issued pilot task). Not a cryptographic signature -- an audit-trail field, consistent with this repo's existing evidence conventions.",
+    "authorized_by_task_order": "string, required, non-empty (CORPUS-FACTORY-INTEGRATION-PILOT-001, ADR-026 Section 2.4). Names the specific Task Order or ADR that authorized this task -- distinct from authorized_by (which names the person/agent). Only required for corpus-factory-pilot namespace tasks; control-plane-pilot tasks predate this field and remain valid without it.",
+    "production_mutation": "boolean, required. MUST be false for every task in this namespace. A task declaring true is rejected at the gateway (VALIDATION_FAILED) -- there is no code path in this generalization that permits true to proceed.",
+    "required_evidence": "array of strings, required. Names of evidence artifacts the executor MUST produce for a task_type. Used only as a documentation/checklist field in this pilot -- not yet enforced by code (would require a post-hoc evidence-completeness checker, explicitly out of scope for this task per the prohibition list; a future generalization task could add it).",
+    "constraints.max_runtime_s": "number, required. Upper bound the executor should honor for subprocess timeouts.",
+    "constraints.allow_production_paths": "boolean, required. MUST be false. Present so a future task_type cannot silently default into touching production paths -- the field must exist and be explicitly false."
+  }
+}

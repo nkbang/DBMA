@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "CONTROL-PLANE-PILOT-011-DEPENDENT",
+  "parent_task_id": "AUTONOMOUS-NIGHT-SHIFT-001",
+  "depends_on": [
+    "CONTROL-PLANE-PILOT-010-BASE"
+  ],
+  "title": "G12 night simulation — depends on 010-BASE, must block until it is COMPLETED",
+  "owner": "CUE",
+  "state": "IDLE",
+  "phase": "PILOT",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "task_type": "pilot_echo",
+  "scope": {
+    "namespace": "control-plane-pilot",
+    "allowed_paths": []
+  },
+  "authorized_by": "Rev. Bang",
+  "required_evidence": [
+    "gateway_transition",
+    "executor_transition",
+    "stdout",
+    "stderr",
+    "exit_code"
+  ],
+  "constraints": {
+    "max_runtime_s": 30,
+    "allow_production_paths": false
+  },
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "notes": [
+    "G12/G7 dependency test: must be skipped by the executor while CONTROL-PLANE-PILOT-010-BASE is not yet COMPLETED, and processed only after."
+  ],
+  "automation": {
+    "state": "COMPLETED",
+    "failure_code": null,
+    "last_transition_id": "CONTROL-PLANE-PILOT-011-DEPENDENT#1786944037062"
+  },
+  "failure_codes": [
+    "VALIDATION_FAILED",
+    "FILE_ERROR",
+    "PARSE_ERROR",
+    "TASK_ID_PAYLOAD_CONFLICT",
+    "TASK_TYPE_NOT_AUTHORIZED",
+    "NAMESPACE_VIOLATION",
+    "PRODUCTION_MUTATION_NOT_ALLOWED",
+    "PILOT_EXEC_FAILED",
+    "STALE_WORKER_TIMEOUT",
+    "INTERNAL_STATE_MAPPING_ERROR"
+  ]
+}

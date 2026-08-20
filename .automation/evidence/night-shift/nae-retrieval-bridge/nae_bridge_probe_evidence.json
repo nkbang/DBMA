@@ -1,0 +1,485 @@
+{
+  "probe_version": "1.0.0",
+  "timestamp": "2026-08-15T00:15:39",
+  "compatibility": {
+    "dbma_embedding_dimension": 1024,
+    "nae_collection": "nae_tsu_v1",
+    "nae_vector_size": 1024,
+    "nae_embed_model": "bge-m3:latest",
+    "nae_embed_dimension": 1024,
+    "nae_actual_points": 3319,
+    "nae_actual_distance": "Cosine",
+    "nae_actual_vector_size": 1024,
+    "dimension_compatible": true,
+    "model_compatible": true,
+    "distance_compatible": true
+  },
+  "queries": [
+    {
+      "query": "What does Paul say about suffering in Romans?",
+      "result": {
+        "query": "What does Paul say about suffering in Romans?",
+        "embedding_dimension": 1024,
+        "embedding_model": "bge-m3:latest",
+        "embed_ms": 921.17,
+        "qdrant_ms": 25.28,
+        "total_ms": 946.46,
+        "results": [
+          {
+            "tsu_id": "TSU-0002742",
+            "score": 0.5782851,
+            "content": "바울은 자신의 고난이 그리스도의 몸인 교회를 위한 것이라고 말한다.",
+            "source_text": "This is apparent, from the words of Paul: “ Who now rejoice in my sufferings for you, and fill up that which is behind of the afflictions of Christ, in my flesh, for his body’s sake, which is the church, whereof I am made a minister.” 1",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 1298,
+              "verse_start": 2
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.160902+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0002258",
+            "score": 0.5207913,
+            "content": "바울은 주의 만찬과 관련하여 사람들로 하여금 스스로를 살피고 먹게 하라고 말한다.",
+            "source_text": "Paul says, “ Let no man judge you in meat or in drink.” The abrogated ceremonies are now without divine authority; and, therefore, he calls these meats and drinks the commandments of men.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 1096,
+              "verse_start": 7
+            },
+            "themes": [
+              "Lord's Supper"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.158743+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0001166",
+            "score": 0.5194073,
+            "content": "그리스도의 고난을 내가 몸으로 채워야 한다.",
+            "source_text": "« And fill up that which is behind of the afflictions of Christ in my flesh for his body’s sake, which is the church.” ?",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 652,
+              "verse_start": 0
+            },
+            "themes": [
+              "Soteriology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.154825+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0000817",
+            "score": 0.5127615,
+            "content": "바울의 행동이 언제나 따라야 하는 것은 아님을 어떻게 알 수 있는가?",
+            "source_text": "But how do we know that these acts of Paul are not to be imitated?",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 512,
+              "verse_start": 1
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.153586+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0001054",
+            "score": 0.50505084,
+            "content": "그리스도는 사울에게 \"왜 나를 박해하느냐?\"라고 말하였다.",
+            "source_text": "When Christ met Saul on his way to Damascus, he said to hin, “ Why persecutest thou me?",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 609,
+              "verse_start": 0
+            },
+            "themes": [
+              "Soteriology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.154440+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          }
+        ],
+        "result_count": 5
+      },
+      "evidence_integrity": {
+        "total_results": 5,
+        "complete_evidence_count": 5,
+        "evidence_completeness_rate": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "query": "교회에서 장로 직분에 대한 성경적 근거",
+      "result": {
+        "query": "교회에서 장로 직분에 대한 성경적 근거",
+        "embedding_dimension": 1024,
+        "embedding_model": "bge-m3:latest",
+        "embed_ms": 94.97,
+        "qdrant_ms": 17.57,
+        "total_ms": 112.54,
+        "results": [
+          {
+            "tsu_id": "TSU-0003026",
+            "score": 0.7842574,
+            "content": "장로교회의 장로직은 특정 성경 본문을 근거로 한다.",
+            "source_text": "The only Scripture authority claimed for this office, is the text last referred to.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 1401,
+              "verse_start": 1
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.161926+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0001416",
+            "score": 0.72483134,
+            "content": "교회 장로의 자격은 성령이 결정한다.",
+            "source_text": "The qualifications for the officers enumerated are mentioned in the first verses of the chapter, and attributed to the Holy Spirit, dividing, not according to the vote of the church, but according to his own will.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 738,
+              "verse_start": 10
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.155718+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0002973",
+            "score": 0.7147972,
+            "content": "성경의 여러 구절은 교회에서 권위를 행사하는 사람들에 대해 말하고 있다.",
+            "source_text": "Numerous passages of Scripture speak of persons who bore rule in the churches.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 1383,
+              "verse_start": 0
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.161715+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0003022",
+            "score": 0.70904815,
+            "content": "장로와 감독이 성경에서 동일한 용어로 불릴 수 있다",
+            "source_text": "Some have thought that deacons, as well as bishops, are called elders in the Scripture.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 1400,
+              "verse_start": 0
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.161886+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0003019",
+            "score": 0.657688,
+            "content": "장로의 직분은 교회에서 영속적으로 유지될 것을 목적으로 설계되었다.",
+            "source_text": "These facts authorize the conclusion, that the deacon’s office was designed to be perpetual in the churches.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 1399,
+              "verse_start": 4
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.161876+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.9
+          }
+        ],
+        "result_count": 5
+      },
+      "evidence_integrity": {
+        "total_results": 5,
+        "complete_evidence_count": 5,
+        "evidence_completeness_rate": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "query": "Grace and faith in justification theology",
+      "result": {
+        "query": "Grace and faith in justification theology",
+        "embedding_dimension": 1024,
+        "embedding_model": "bge-m3:latest",
+        "embed_ms": 87.35,
+        "qdrant_ms": 11.41,
+        "total_ms": 98.77,
+        "results": [
+          {
+            "tsu_id": "TSU-0000623",
+            "score": 0.57647705,
+            "content": "믿음과 세례는 구원에 필요한 자격이다.",
+            "source_text": "He that believeth, and is baptized, shall be saved.”® “Go, make disciples of all nations, baptizing them.” 6",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 421,
+              "verse_start": 1
+            },
+            "themes": [
+              "Baptism"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.152904+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0000614",
+            "score": 0.5524827,
+            "content": "회개와 믿음은 세례의 자격요건으로 각각 언급될 수 있다.",
+            "source_text": "Sometimes one of them is particularly mentioned as a qualification for baptism, and sometimes the other.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 417,
+              "verse_start": 1
+            },
+            "themes": [
+              "Baptism"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.152869+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.8
+          },
+          {
+            "tsu_id": "TSU-0000269",
+            "score": 0.5491617,
+            "content": "믿음은 하나님과의 용납을 위해 그리스도의 작품에 의존한다.",
+            "source_text": "But faith relies, for acceptance with God, on the work of Christ.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 264,
+              "verse_start": 3
+            },
+            "themes": [
+              "Justification"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.151597+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.9
+          },
+          {
+            "tsu_id": "TSU-0000278",
+            "score": 0.54734164,
+            "content": "세례와 신앙 고백은 그 주체가 진실한 한 도덕적 변화의 필요성을 암시한다.",
+            "source_text": "The baptism and the profession are alike, in implying a moral change in the subject, only so far as he is sincere.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 267,
+              "verse_start": 7
+            },
+            "themes": [
+              "Baptism"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.151628+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.9
+          },
+          {
+            "tsu_id": "TSU-0003256",
+            "score": 0.5396236,
+            "content": "교회는 하나님의 뜻에 따라 판단하고 그 판단을 규정해야 한다.",
+            "source_text": "The church is bound to judge, and to regulate its judgment by the will of God.",
+            "book": "Church Order",
+            "author": "John L. Dagg",
+            "verse_mapping": {
+              "book_id": "Church Order",
+              "chapter": 1503,
+              "verse_start": 1
+            },
+            "themes": [
+              "Ecclesiology"
+            ],
+            "citations": [],
+            "source_id": "BAP-CHURCH-DAGG-001",
+            "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+            "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+            "metadata_provenance": {
+              "crosswalk_id": "f914f6c442983e59",
+              "resolved_at": "2026-08-08T18:04:32.162742+00:00",
+              "resolver_version": "1.0.0"
+            },
+            "review_status": "verified",
+            "quality_score": 0.9
+          }
+        ],
+        "result_count": 5
+      },
+      "evidence_integrity": {
+        "total_results": 5,
+        "complete_evidence_count": 5,
+        "evidence_completeness_rate": 1.0,
+        "issues": []
+      }
+    }
+  ],
+  "verdict": "FEASIBLE"
+}

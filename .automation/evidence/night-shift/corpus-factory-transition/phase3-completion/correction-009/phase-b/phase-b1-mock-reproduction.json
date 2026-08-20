@@ -1,0 +1,93 @@
+{
+  "phase": "B-1",
+  "test_candidate": "cand-b1-mock-test-001",
+  "final_state": "CONFIDENCE_CLASSIFIED",
+  "final_metadata_keys": [
+    "canonical_version",
+    "collector_version",
+    "confidence_label",
+    "confidence_score",
+    "doctrine",
+    "is_claim",
+    "model",
+    "page",
+    "paragraph_index",
+    "sentence_index",
+    "source_identifier",
+    "text",
+    "text_length"
+  ],
+  "has_error_fields": false,
+  "state_transitions": [
+    {
+      "step": 0,
+      "state": "READY",
+      "metadata_keys": [
+        "canonical_version",
+        "collector_version",
+        "page",
+        "paragraph_index",
+        "sentence_index",
+        "source_identifier",
+        "text"
+      ]
+    },
+    {
+      "step": 1,
+      "state": "CONFIDENCE_CLASSIFIED",
+      "metadata_keys": [
+        "canonical_version",
+        "collector_version",
+        "confidence_label",
+        "confidence_score",
+        "doctrine",
+        "is_claim",
+        "model",
+        "page",
+        "paragraph_index",
+        "sentence_index",
+        "source_identifier",
+        "text",
+        "text_length"
+      ]
+    },
+    {
+      "step": 2,
+      "state": "CONFIDENCE_CLASSIFIED",
+      "metadata_keys": [
+        "canonical_version",
+        "collector_version",
+        "confidence_label",
+        "confidence_score",
+        "doctrine",
+        "is_claim",
+        "model",
+        "page",
+        "paragraph_index",
+        "sentence_index",
+        "source_identifier",
+        "text",
+        "text_length"
+      ]
+    },
+    {
+      "step": 3,
+      "state": "CONFIDENCE_CLASSIFIED",
+      "metadata_keys": [
+        "canonical_version",
+        "collector_version",
+        "confidence_label",
+        "confidence_score",
+        "doctrine",
+        "is_claim",
+        "model",
+        "page",
+        "paragraph_index",
+        "sentence_index",
+        "source_identifier",
+        "text",
+        "text_length"
+      ]
+    }
+  ]
+}

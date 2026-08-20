@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "NAE-REG-BAP-CHURCH-HISCOX",
+  "title": "NAE Source Registration — The Standard Manual for Baptist Churches",
+  "owner": "CUE",
+  "state": "INITIATED",
+  "phase": "VALIDATION",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "evidence": [],
+  "audit": {
+    "status": "pending"
+  },
+  "document_type": "book",
+  "automation": {
+    "state": "COMPLETED",
+    "failure_code": null,
+    "last_transition_id": "NAE-REG-BAP-CHURCH-HISCOX#1786780286348"
+  }
+}

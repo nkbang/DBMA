@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "CONTROL-PLANE-PILOT-005-GENERALIZED",
+  "parent_task_id": "CONTROL-PLANE-GENERALIZATION-001",
+  "title": "G10 end-to-end pilot — full generalized task contract, happy path",
+  "owner": "CUE",
+  "state": "IDLE",
+  "phase": "PILOT",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "task_type": "pilot_echo",
+  "scope": {
+    "namespace": "control-plane-pilot",
+    "allowed_paths": []
+  },
+  "authorized_by": "Rev. Bang",
+  "required_evidence": [
+    "gateway_transition",
+    "executor_transition",
+    "stdout",
+    "stderr",
+    "exit_code"
+  ],
+  "constraints": {
+    "max_runtime_s": 30,
+    "allow_production_paths": false
+  },
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "notes": [
+    "G10 happy-path case for CONTROL-PLANE-GENERALIZATION-001."
+  ],
+  "automation": {
+    "state": "COMPLETED",
+    "failure_code": null,
+    "last_transition_id": "CONTROL-PLANE-PILOT-005-GENERALIZED#1786943115940"
+  },
+  "failure_codes": [
+    "VALIDATION_FAILED",
+    "FILE_ERROR",
+    "PARSE_ERROR",
+    "TASK_ID_PAYLOAD_CONFLICT",
+    "TASK_TYPE_NOT_AUTHORIZED",
+    "NAMESPACE_VIOLATION",
+    "PRODUCTION_MUTATION_NOT_ALLOWED",
+    "PILOT_EXEC_FAILED",
+    "INTERNAL_STATE_MAPPING_ERROR"
+  ]
+}

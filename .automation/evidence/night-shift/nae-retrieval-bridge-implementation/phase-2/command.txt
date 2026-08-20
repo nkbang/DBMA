@@ -1,0 +1,7 @@
+Phase 2: Production Retrieval Bridge Verification
+1. Enable nae_pd module
+2. Test bridge_query with Korean query: '교회의 직분에 대해'
+3. Test bridge_query with English query: 'What is the role of elders in the church?'
+4. Verify Citation object fields (tsu_id, source_author, retrieval_score, source_type, content_excerpt, scripture_reference)
+5. Verify module gate (NaePdModuleDisabledError when disabled)
+6. Restore nae_pd.enabled to false

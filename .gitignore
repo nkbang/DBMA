@@ -138,3 +138,4 @@ qdrant_db/
 # DEFAULT_EXCEPTION_QUEUE_PATH)
 NAE/corpus/tsu/worker_state*.json
 NAE/corpus/tsu/worker_exception_queue.json
+.env
