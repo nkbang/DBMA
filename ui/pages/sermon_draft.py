@@ -37,7 +37,11 @@ _STATUS_HAS_EXPANSION = {"approved", "expanding", "draft_complete"}
 
 
 def _apply_sermon_draft_styles() -> None:
-    """설교 준비 Stitch 화면 스타일 — 노트 카드, 원고 카드, 확장 대지 카드."""
+    """설교 준비 Stitch 화면 스타일 — 노트 카드, 원고 카드, 확장 대지 카드.
+
+    UX-006 Deliverable 3 — Accessibility 보완 (2026-08-20):
+    - textarea/input focus 표시 추가 (outline + box-shadow)
+    """
     st.markdown(
         f"""
         <style>
@@ -45,6 +49,12 @@ def _apply_sermon_draft_styles() -> None:
         div[data-testid="stTextInput"] input {{
             border-radius: 10px !important;
             border-color: {THEME.BORDER_MEDIUM} !important;
+        }}
+        div[data-testid="stTextArea"] textarea:focus,
+        div[data-testid="stTextInput"] input:focus {{
+            border-color: {THEME.BRAND_PRIMARY} !important;
+            box-shadow: 0 0 0 4px {THEME.BRAND_PRIMARY}33 !important;
+            outline: 2px solid {THEME.BRAND_PRIMARY} !important;
         }}
         div[data-testid="stExpander"] {{
             border: 1px solid {THEME.BORDER_LIGHT} !important;

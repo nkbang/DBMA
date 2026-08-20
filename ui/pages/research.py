@@ -86,7 +86,13 @@ class QueryInsight:
 # ── Style Functions ─────────────────────────────────────────────
 
 def _apply_research_styles() -> None:
-    """연구하기 워크스페이스 Stitch 화면 스타일 — 둥근 검색창, AI 인사이트 카드."""
+    """연구하기 워크스페이스 Stitch 화면 스타일 — 둥근 검색창, AI 인사이트 카드.
+
+    UX-006 Deliverable 3 — Spacing/Accessibility 보완 (2026-08-20):
+    - padding 16px → 24px (SPACING_XL 통일)
+    - margin-bottom 12px → 16px (SPACING_LG 통일)
+    - 포커스 표시 box-shadow 2px → 4px 확대 (WCAG 2.1 AA 대비)
+    """
     st.markdown(
         f"""
         <style>
@@ -96,29 +102,30 @@ def _apply_research_styles() -> None:
             border-color: {THEME.BORDER_MEDIUM} !important;
             font-family: 'Source Serif 4', serif;
             font-size: 15px;
-            padding: 16px 20px;
+            padding: 24px 24px;
         }}
         div[data-testid="stTextArea"] textarea:focus {{
             border-color: {THEME.BRAND_PRIMARY} !important;
-            box-shadow: 0 0 0 2px {THEME.BRAND_PRIMARY}22 !important;
+            box-shadow: 0 0 0 4px {THEME.BRAND_PRIMARY}33 !important;
+            outline: 2px solid {THEME.BRAND_PRIMARY} !important;
         }}
 
-        /* Insight cards */
+        /* Insight cards — spacing 통일 (UX-006 Deliverable 3) */
         .research-insight-card {{
             background: {THEME.TEXT_LINK}14;
             border: 1px solid {THEME.TEXT_LINK}33;
             border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
         }}
 
-        /* Session cards */
+        /* Session cards — spacing 통일 */
         .research-session-card {{
             background: {THEME.BG_SURFACE};
             border: 1px solid {THEME.BORDER_LIGHT};
             border-radius: 8px;
-            padding: 12px 16px;
-            margin-bottom: 8px;
+            padding: 16px 24px;
+            margin-bottom: 12px;
         }}
 
         /* Expander styling */

@@ -40,7 +40,7 @@ def render_dashboard_page() -> None:
         unsafe_allow_html=True,
     )
     _render_library_summary()
-    st.button("자세히 보기", use_container_width=False, on_click=_go_to, args=("Library",))
+    _render_library_navigation()
 
     page.render_footer()
 
@@ -116,6 +116,29 @@ def _render_quick_actions() -> None:
     for col, (label, target) in zip(cols, actions):
         with col:
             st.button(label, use_container_width=True, on_click=_go_to, args=(target,), key=f"_quick_{label}")
+
+
+def _render_library_navigation() -> None:
+    """홈 하단의 내서재 관련 주요 화면 진입점을 렌더링한다."""
+    st.markdown(
+        f"<div style='font-size: 13px; color: {THEME.TEXT_SECONDARY}; margin: 1rem 0 0.6rem;'>내서재에서 이어가기</div>",
+        unsafe_allow_html=True,
+    )
+    actions = [
+        ("나의 서재", "Library"),
+        ("지식 연결", "Research"),
+        ("목회 연구", "설교 연구"),
+    ]
+    cols = st.columns(3)
+    for col, (label, target) in zip(cols, actions):
+        with col:
+            st.button(
+                label,
+                use_container_width=True,
+                on_click=_go_to,
+                args=(target,),
+                key=f"_library_nav_{label}",
+            )
 
 
 def _render_continue_reading_card() -> None:

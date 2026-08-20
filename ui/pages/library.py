@@ -67,8 +67,8 @@ def _apply_library_styles() -> None:
             background: {THEME.BG_SURFACE};
             border: 1px solid {THEME.BORDER_LIGHT};
             border-radius: 8px;
-            padding: 16px 20px;
-            margin-bottom: 10px;
+            padding: 24px;
+            margin-bottom: 16px;
         }}
         .lib-card.selected {{
             border-color: {THEME.BRAND_PRIMARY};
