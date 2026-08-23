@@ -38,6 +38,13 @@ logger = logging.getLogger(__name__)
 # needed, so the two can't drift apart again.
 SUPPORTED_EXTS = {".pdf", ".txt", ".md", ".docx", ".epub", ".html", ".htm", ".rtf"}
 
+# [SPRINT-UPLOAD-AUTO] 업로드 즉시 자동 처리는 Streamlit 요청 스레드에서
+# 동기적으로 실행된다 — 무제한 업로드를 허용하면 한 번의 클릭이 UI를
+# 장시간(수십 개 문서 분량) 멈춰 세울 수 있어, 한 배치당 처리량을 3권으로
+# 제한한다. 대기 중인 백로그(이미 RAW에 있던 미처리 파일)는 이 자동 처리
+# 대상에서 제외되며, 기존 "🚀 문서 처리 시작" 버튼으로 별도 처리한다.
+MAX_UPLOAD_BATCH = 3
+
 # [SPRINT25-B-2] Human-readable labels for the exception classes actually
 # reachable in the extraction path (verified in SPRINT25-B-1 Preflight —
 # never guessed). An error_type not in this map is shown verbatim, so a new
@@ -91,14 +98,15 @@ def render_processing_page() -> None:
 
 
 def _render_upload_section() -> None:
-    """[SPRINT22-A] Drag & drop file upload.
+    """[SPRINT22-A][SPRINT-UPLOAD-AUTO] Drag & drop file upload.
 
-    Saves uploaded files directly into DEFAULT_RAW_DIR and stops there —
-    it is purely an alternate intake mechanism for RAW. The existing
-    processing pipeline (_build_file_list/process_batch/process_one_file)
-    picks the saved files up completely unchanged on the next "🚀 문서
-    처리 시작" click, exactly as if the user had copied them into RAW
-    manually. No core/processing.py changes needed.
+    Saves uploaded files into DEFAULT_RAW_DIR and immediately runs them
+    through the processing pipeline (build_converter/build_splitter/
+    process_batch) — no separate "🚀 문서 처리 시작" click needed for the
+    files just uploaded here. Batch size is capped at MAX_UPLOAD_BATCH
+    since auto-processing runs synchronously on the Streamlit request
+    thread. Pre-existing backlog in RAW is untouched by this path; it
+    still goes through the manual ingestion form below.
     """
     uploaded_files = st.file_uploader(
         "파일을 끌어다 놓거나 선택하세요",
@@ -108,12 +116,19 @@ def _render_upload_section() -> None:
     )
 
     if not uploaded_files:
-        st.caption("지원 형식: PDF, TXT, MD, DOCX, EPUB, HTML, RTF")
+        st.caption(f"지원 형식: PDF, TXT, MD, DOCX, EPUB, HTML, RTF (한 번에 최대 {MAX_UPLOAD_BATCH}권까지 업로드 가능)")
+        return
+
+    if len(uploaded_files) > MAX_UPLOAD_BATCH:
+        st.error(
+            f"한 번에 최대 {MAX_UPLOAD_BATCH}권까지 업로드할 수 있습니다. "
+            f"({len(uploaded_files)}개 선택됨 — 파일 선택을 줄여주세요)"
+        )
         return
 
     st.caption(f"{len(uploaded_files)}개 파일 선택됨: {', '.join(f.name for f in uploaded_files)}")
 
-    if st.button("📥 RAW 폴더에 저장", key="save_uploads"):
+    if st.button("📥 업로드 및 자동 처리", key="save_uploads"):
         raw_dir = Path(DEFAULT_RAW_DIR)
         raw_dir.mkdir(parents=True, exist_ok=True)
         saved, skipped = [], []
@@ -129,11 +144,31 @@ def _render_upload_section() -> None:
             dest.write_bytes(f.getvalue())
             saved.append(safe_name)
 
-        if saved:
-            st.success(f"RAW에 저장됨: {', '.join(saved)} — 아래에서 처리를 시작하세요.")
         if skipped:
             st.warning(f"지원하지 않는 형식이라 건너뜀: {', '.join(skipped)}")
-        st.rerun()
+
+        if not saved:
+            st.rerun()
+            return
+
+        st.success(f"RAW에 저장됨: {', '.join(saved)} — 자동 처리를 시작합니다.")
+        auto_file_list = [
+            {
+                "path": str(raw_dir / name),
+                "name": name,
+                "ext": Path(name).suffix.lower().lstrip("."),
+                "use_ocr": False,
+            }
+            for name in saved
+        ]
+        _execute_processing(
+            target_dir=str(raw_dir),
+            chunk_size=1000,
+            overlap=200,
+            use_ocr=False,
+            force_reingest=False,
+            file_list=auto_file_list,
+        )
 
 
 def _build_file_list(target_dir: str, force_reingest: bool) -> List[Dict[str, Any]]:
@@ -397,12 +432,17 @@ def _execute_processing(
     overlap: int,
     use_ocr: bool,
     force_reingest: bool,
+    file_list: Optional[List[Dict[str, Any]]] = None,
 ) -> None:
-    """Execute the document processing pipeline."""
-    
-    # Build file list
-    file_list = _build_file_list(target_dir, force_reingest)
-    
+    """Execute the document processing pipeline.
+
+    file_list overrides the default RAW-directory scan — used by the
+    upload auto-process path (_render_upload_section) to restrict the run
+    to just-uploaded files instead of picking up the whole backlog.
+    """
+    if file_list is None:
+        file_list = _build_file_list(target_dir, force_reingest)
+
     if not file_list:
         st.info("처리할 파일이 없습니다. (이미 처리되었거나 파일이 없는 경우)")
         return

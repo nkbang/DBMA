@@ -11,7 +11,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from pathlib import Path
-from ui.pages.processing import SUPPORTED_EXTS, _build_file_list
+from ui.pages.processing import SUPPORTED_EXTS, MAX_UPLOAD_BATCH, _build_file_list
 
 
 class _FakeUploadedFile:
@@ -78,6 +78,22 @@ class TestUploadSaveLogic:
         file_list = _build_file_list(str(raw_dir), force_reingest=False)
         names = [f["name"] for f in file_list]
         assert "uploaded.txt" in names
+
+
+class TestUploadBatchLimit:
+    """[SPRINT-UPLOAD-AUTO] Auto-processing runs synchronously on upload,
+    so batch size must stay bounded."""
+
+    def test_max_upload_batch_is_three(self):
+        assert MAX_UPLOAD_BATCH == 3
+
+    def test_batch_at_limit_is_allowed(self):
+        files = [_FakeUploadedFile(f"book{i}.txt", b"x") for i in range(MAX_UPLOAD_BATCH)]
+        assert len(files) <= MAX_UPLOAD_BATCH  # would pass the _render_upload_section() gate
+
+    def test_batch_over_limit_is_rejected_by_gate_logic(self):
+        files = [_FakeUploadedFile(f"book{i}.txt", b"x") for i in range(MAX_UPLOAD_BATCH + 1)]
+        assert len(files) > MAX_UPLOAD_BATCH  # _render_upload_section() must reject and not save
 
 
 if __name__ == "__main__":

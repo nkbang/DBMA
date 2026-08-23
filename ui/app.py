@@ -136,6 +136,7 @@ def _render_sidebar() -> str:
         selected = st.radio(
             "페이지 선택",
             options=list(pages.keys()),
+            format_func=lambda key: f"{pages[key][0]} {pages[key][1]}",
             label_visibility="collapsed",
             key="nav_page",
         )
