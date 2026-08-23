@@ -43,7 +43,7 @@ class DBMADesignSystemColors:
     TEXT_LINK: str = "#264B5D"
 
     # ── Border / Divider Colors ────────────────────────────────
-    BORDER_LIGHT: str = "#E4E2DD"
+    BORDER_LIGHT: str = "#E5E1D8"  # DESIGN.md §Elevation: "1px solid border (#E5E1D8)"
     BORDER_MEDIUM: str = "#C3C7C7"
     BORDER_FOCUS: str = "#264B5D"
 

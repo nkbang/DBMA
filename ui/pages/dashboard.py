@@ -28,21 +28,47 @@ def render_dashboard_page() -> None:
     page.render_header()
 
     _render_greeting()
+    _render_dashboard_search()
+    _render_quick_actions()
     _render_status_banner()
     _render_continue_reading_card()
     _render_recent_search_card()
     _render_recent_materials()
-    _render_quick_actions()
 
-    st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
     st.markdown(
-        f"<div style='font-size: 15px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin-bottom: 0.75rem;'>내 서재 요약</div>",
+        f"<div style='font-size: 15px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 1.5rem 0 0.75rem;'>내 서재 요약</div>",
         unsafe_allow_html=True,
     )
     _render_library_summary()
     _render_library_navigation()
 
     page.render_footer()
+
+
+def _render_dashboard_search() -> None:
+    """Stitch 홈의 대표 검색창을 실제 연구 화면과 연결한다."""
+    st.markdown(
+        f"<div style='font-family: "
+        f"Source Serif 4, serif; font-size: 24px; font-weight: 600; "
+        f"color: {THEME.TEXT_PRIMARY}; margin: 1.25rem 0 0.75rem;'>"
+        "무엇을 깊이 읽으시겠습니까?</div>",
+        unsafe_allow_html=True,
+    )
+    query = st.text_input(
+        "홈 검색",
+        placeholder="문서, 저자, 주제 또는 성경 구절 검색...",
+        key="dashboard_search_query",
+        label_visibility="collapsed",
+    )
+    if query:
+        st.session_state["research_query"] = query
+        st.button(
+            "검색 결과 보기",
+            type="primary",
+            on_click=_go_to,
+            args=("Research",),
+            key="dashboard_search_submit",
+        )
 
 
 def _render_greeting() -> None:
@@ -108,7 +134,7 @@ def _render_quick_actions() -> None:
     )
     actions = [
         ("자료 찾기", "Research"),
-        ("질문하기", "Research"),
+        ("질문하기", "AI에게 질문"),
         ("설교 준비", "설교문 작성"),
         ("도움말", "도움말"),
     ]

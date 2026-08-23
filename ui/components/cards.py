@@ -114,7 +114,7 @@ def status_card(cfg: StatusCardConfig) -> None:
     html = f"""
     <div style="
         background: {bg_color};
-        border: 1px solid {color}44;
+        border: 1px solid {THEME.BORDER_LIGHT};
         border-radius: 8px;
         padding: {12}px {16}px;
         margin-bottom: {8}px;

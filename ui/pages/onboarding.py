@@ -399,6 +399,31 @@ div[data-testid="stButton"] > button:not([kind="primary"]) {
     font-weight: 500 !important;
     padding: 16px 40px !important;
 }
+
+/* 상단 네비 버튼은 히어로 CTA와 달리 텍스트 링크 형태 — 위 전역
+   버튼 규칙(16px 40px, border-radius 12px)을 덮어써 좁은 컬럼 안에서
+   텍스트가 세로로 줄바꿈되지 않게 한다. 아래에 두어 소스 순서상
+   전역 규칙보다 우선하도록 한다(동일 우선순위 tie-break). */
+.st-key-topnav_library div[data-testid="stButton"] button,
+.st-key-topnav_research div[data-testid="stButton"] button,
+.st-key-topnav_explore div[data-testid="stButton"] button,
+.st-key-topnav_login div[data-testid="stButton"] button {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 4px 0 !important;
+    white-space: nowrap !important;
+    width: auto !important;
+}
+
+/* 히어로 CTA 버튼(연구 시작하기/자료 불러오기)도 같은 문제 — 좁은
+   컬럼(비율 1.4)에 전역 40px 좌우 패딩이 그대로 들어가 텍스트가
+   줄바꿈된다. 좌우 패딩만 줄여 한 줄에 들어가게 한다. */
+.st-key-hero_start div[data-testid="stButton"] button,
+.st-key-hero_load div[data-testid="stButton"] button {
+    padding: 16px 12px !important;
+    white-space: nowrap !important;
+}
 </style>
 """
 
@@ -455,9 +480,13 @@ def render_onboarding_page() -> None:
     # ── Hero Actions ─────────────────────────────────────────
     _, btn_col1, btn_col2, _ = st.columns([2, 1.4, 1.4, 2])
     with btn_col1:
-        start_clicked = st.button("연구 시작하기", use_container_width=True, type="primary")
+        start_clicked = st.button(
+            "연구 시작하기", use_container_width=True, type="primary", key="hero_start"
+        )
     with btn_col2:
-        load_clicked = st.button("자료 불러오기", use_container_width=True)
+        load_clicked = st.button(
+            "자료 불러오기", use_container_width=True, key="hero_load"
+        )
 
     if start_clicked or load_clicked:
         st.session_state["show_onboarding"] = False

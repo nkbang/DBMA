@@ -29,18 +29,27 @@ class BasePage:
             f'<span class="material-symbols-outlined" style="font-size: 26px; vertical-align: -4px;">{self.icon}</span> '
             if self.icon else ""
         )
-        st.markdown(f"## {icon_html}{self.title}", unsafe_allow_html=True)
-        st.caption(f"내서재 · NAE — v{APP_VERSION}")
+        st.markdown(
+            f"""
+            <header class="nae-page-header">
+                <div class="nae-page-title">{icon_html}{self.title}</div>
+                <div class="nae-page-meta">내서재 · NAE · v{APP_VERSION}</div>
+            </header>
+            """,
+            unsafe_allow_html=True,
+        )
 
     def render_section(self, title: str, icon: str = "list_alt") -> None:
         """Render a section heading with divider. icon은 Material Symbols
         아이콘 이름 — 빈 문자열이면 아이콘 없이 제목만 렌더링한다."""
-        st.divider()
         icon_html = (
             f'<span class="material-symbols-outlined" style="font-size: 20px; vertical-align: -3px;">{icon}</span> '
             if icon else ""
         )
-        st.markdown(f"### {icon_html}{title}", unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="nae-section-heading">{icon_html}{title}</div>',
+            unsafe_allow_html=True,
+        )
 
     def render_error_box(self, message: str) -> None:
         """Render an error message box."""
@@ -136,5 +145,12 @@ class BasePage:
 
     def render_footer(self) -> None:
         """Render the standard page footer."""
-        st.divider()
-        st.caption(f"내서재 · NAE — v{APP_VERSION}")
+        st.markdown(
+            f"""
+            <footer class="nae-fixed-footer">
+                <span>현재 보고 있는 화면: {self.title}</span>
+                <span class="nae-footer-link">내서재에게 물어보세요</span>
+            </footer>
+            """,
+            unsafe_allow_html=True,
+        )

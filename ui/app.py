@@ -48,9 +48,6 @@ def main() -> None:
         render_onboarding_page()
         return
 
-    # ── Application Header ─────────────────────────────────────
-    _render_app_header()
-
     # ── Sidebar Navigation ─────────────────────────────────────
     page = _render_sidebar()
 
@@ -82,6 +79,92 @@ def _apply_global_styles() -> None:
         [data-testid="stSidebar"] {{
             background-color: {THEME.BG_SIDEBAR};
             border-right: 1px solid {THEME.BORDER_LIGHT};
+            min-width: 280px;
+            max-width: 280px;
+        }}
+        [data-testid="stSidebar"] > div:first-child {{
+            padding: 48px 16px 24px;
+        }}
+        .nae-sidebar-brand {{
+            margin: 0 16px 32px;
+        }}
+        .nae-sidebar-name {{
+            color: {THEME.TEXT_PRIMARY};
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1.1;
+        }}
+        .nae-sidebar-subtitle {{
+            color: {THEME.TEXT_SECONDARY};
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 14px;
+            margin-top: 4px;
+        }}
+        [data-testid="stSidebar"] h3 {{
+            color: {THEME.TEXT_PRIMARY};
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 20px;
+            margin: 0 16px 24px;
+        }}
+        [data-testid="stSidebar"] [data-testid="stRadio"] label {{
+            border-radius: 4px;
+            color: {THEME.TEXT_SECONDARY};
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 14px;
+            padding: 8px 12px;
+        }}
+        [data-testid="stSidebar"] [data-testid="stRadio"] label:hover {{
+            background: {THEME.BG_PAGE};
+            color: {THEME.TEXT_PRIMARY};
+        }}
+        .nae-page-header {{
+            align-items: center;
+            border-bottom: 1px solid {THEME.BORDER_MEDIUM};
+            display: flex;
+            justify-content: space-between;
+            margin: -32px -48px 32px;
+            min-height: 64px;
+            padding: 0 32px;
+        }}
+        .nae-page-title {{
+            color: {THEME.TEXT_PRIMARY};
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+        }}
+        .nae-page-meta {{
+            color: {THEME.TEXT_TERTIARY};
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 12px;
+        }}
+        .nae-section-heading {{
+            border-bottom: 1px solid {THEME.BORDER_LIGHT};
+            color: {THEME.TEXT_PRIMARY};
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 8px;
+        }}
+        .nae-fixed-footer {{
+            align-items: center;
+            background: {THEME.BRAND_PRIMARY};
+            bottom: 0;
+            color: {THEME.TEXT_INVERSE};
+            display: flex;
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: 12px;
+            justify-content: space-between;
+            left: 280px;
+            min-height: 40px;
+            padding: 0 32px;
+            position: fixed;
+            right: 0;
+            z-index: 100;
+        }}
+        .nae-footer-link {{
+            color: #c2e8fe;
         }}
         [data-testid="stHeader"] {{
             background-color: transparent;
@@ -89,7 +172,8 @@ def _apply_global_styles() -> None:
 
         /* Main container styling */
         .main > div {{
-            padding: 2rem 3rem;
+            padding: 48px;
+            padding-bottom: 72px;
         }}
 
         /* Custom component styles */
@@ -128,7 +212,7 @@ def _apply_global_styles() -> None:
         }}
 
         /* Footer styling */
-        footer {{
+        body > footer {{
             visibility: hidden;
         }}
         </style>
@@ -177,15 +261,23 @@ def _render_sidebar() -> str:
         The selected page name.
     """
     with st.sidebar:
-        st.markdown("### 네비게이션")
+        st.markdown(
+            """
+            <div class="nae-sidebar-brand">
+                <div class="nae-sidebar-name">내서재</div>
+                <div class="nae-sidebar-subtitle">NAE</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         pages = {
             "Dashboard": "홈",
             "Library": "내 자료",
             "Processing": "자료 등록",
-            "Research": "검색·연구",
+            "Research": "자료 찾기",
             "AI에게 질문": "AI에게 질문",
-            "설교 연구": "설교 연구",
+            "설교 연구": "연구하기",
             "설교문 작성": "설교 준비",
             "설교 리뷰": "설교 모음 정리",
         }
@@ -212,19 +304,8 @@ def _render_sidebar() -> str:
             key="nav_page",
         )
 
-        st.divider()
-
-        # System status summary
-        st.markdown("### 시스템 상태")
-        st.caption("자료 검색: 정상")
-        st.caption("AI 분석: 정상")
-        st.caption("저장 공간: 정상")
-
-        st.divider()
-
-        # Version info
         st.markdown(f"""
-        <div style="text-align: center; padding: 0.5rem 0;">
+        <div style="text-align: left; padding: 24px 16px 0;">
                 <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
                 내서재 · NAE v{APP_VERSION}
             </span>
