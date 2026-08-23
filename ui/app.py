@@ -182,19 +182,20 @@ def _render_sidebar() -> str:
         pages = {
             "Dashboard": "홈",
             "Library": "내 자료",
+            "Processing": "자료 등록",
             "Research": "검색·연구",
             "AI에게 질문": "AI에게 질문",
             "설교 연구": "설교 연구",
             "설교문 작성": "설교 준비",
             "설교 리뷰": "설교 모음 정리",
         }
-        # 엔지니어링 내부 진단 화면과 자료 등록 화면 — 일반 사용자(베타
-        # 테스터)에게는 불필요해 기본으로 숨긴다. NAE_ADMIN_MODE=1
-        # 환경변수를 설정한 경우에만 노출(David 본인 로컬 진단용).
-        # scripts/setup_beta_tester.command는 이 변수를 설정하지 않으므로
-        # 테스터 화면에는 기본적으로 나타나지 않는다.
+        # [NAE-UPLOAD-AUTO] 자료 등록(업로드) 화면은 일반 사용자도 직접
+        # 자료를 올릴 수 있어야 해서 항상 노출한다 — 이전에는 "일반
+        # 사용자에게 불필요"하다는 가정으로 NAE_ADMIN_MODE 뒤에 숨겨져
+        # 있었으나, 그러면 베타 테스터는 UI로 문서를 업로드할 방법이
+        # 아예 없었다(사용자 보고, 2026-08-23). 엔지니어링 내부 진단
+        # 화면(시스템 모니터링)만 계속 NAE_ADMIN_MODE=1일 때만 노출한다.
         if os.environ.get("NAE_ADMIN_MODE") == "1":
-            pages["Processing"] = "자료 등록"
             pages["Monitor"] = "시스템 모니터링"
         pages["도움말"] = "도움말"
 
