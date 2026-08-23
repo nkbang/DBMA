@@ -109,6 +109,17 @@ def build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> int:
     schema = build_schema()
     idx = tantivy.Index(schema, str(index_dir))
     writer = idx.writer()
+    # [bug fix] tantivy.Index(schema, path) re-opens an existing index dir
+    # rather than truncating it, and add_document() only appends — so a
+    # second build_index() call on the same dir left every previous
+    # document (old tsu_id, stale content) permanently in the index
+    # alongside the new ones, despite this function's docstring claiming
+    # to overwrite. Confirmed: after two builds, a re-processed document's
+    # old tsu_id (no longer in tsu_by_id) still matched queries, causing
+    # HybridRetriever to silently drop those hits (tsu_by_id.get() -> None)
+    # and return 0 results. delete_all_documents() actually clears the
+    # index before this build's documents are added.
+    writer.delete_all_documents()
 
     count = 0
     with open(tsu_dataset_path, "r", encoding="utf-8") as f:

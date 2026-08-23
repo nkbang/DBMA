@@ -175,6 +175,28 @@ class BibleIndex:
         return self.lookup(book_key)
 
 
+def _row_count(db_path: str | Path) -> int:
+    """Return the number of rows in bible_posting without opening a full
+    BibleIndex instance — used to detect empty/stale index files.
+
+    Catches sqlite3.Error (not just OSError) because the exact case this
+    exists for — a file that exists but was never populated with the
+    bible_posting schema — raises sqlite3.OperationalError ("no such
+    table"), which is not an OSError subclass and would otherwise crash
+    here uncaught."""
+    import sqlite3 as _sqlite3
+
+    try:
+        conn = _sqlite3.connect(str(db_path))
+        try:
+            cur = conn.execute("SELECT COUNT(*) FROM bible_posting")
+            return cur.fetchone()[0]
+        finally:
+            conn.close()
+    except (OSError, _sqlite3.Error):
+        return 0
+
+
 def build_index(tsu_dataset_path: str | Path, db_path: str | Path) -> int:
     """Build a fresh BibleIndex from a TSU JSONL dataset. Returns the number
     of posting rows written. Overwrites any existing index at db_path."""

@@ -225,7 +225,7 @@ class HybridQueryProcessor:
             DEFAULT_TSU_DATASET_PATH,
             DEFAULT_TSU_MANIFEST_PATH,
         )
-        from core.bible_index import build_index as build_bible_index
+        from core.bible_index import build_index as build_bible_index, _row_count
         from core.search_telemetry import SearchTelemetry
         from pathlib import Path
 
@@ -239,7 +239,10 @@ class HybridQueryProcessor:
 
         generator = open_or_build_index(tsu_dataset_path, candidate_index_dir)
         tsu_by_id = load_tsu_by_id(tsu_dataset_path)
-        if not Path(bible_index_path).exists():
+        bible_path = Path(bible_index_path)
+        # Build BibleIndex if file doesn't exist OR has 0 rows (empty/stale index).
+        # A bare file check misses the case where the file was created but never populated.
+        if not bible_path.exists() or _row_count(bible_path) == 0:
             build_bible_index(tsu_dataset_path, bible_index_path)
         bible_index = BibleIndex(bible_index_path)
         self.retriever = HybridRetriever(generator, tsu_by_id, bible_index=bible_index)

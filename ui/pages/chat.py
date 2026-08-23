@@ -409,11 +409,51 @@ def _handle_user_message(question: str) -> None:
 
 
 def _is_low_confidence(top_k_results: list) -> bool:
-    """See _LOW_CONFIDENCE_SCORE_THRESHOLD docstring above - soft signal
-    only, no retrieval/generation behavior changes here."""
+    """Soft confidence signal that adapts to the scoring engine.
+
+    Legacy (weighted-sum) path: uses `final_score` with _LOW_CONFIDENCE_SCORE_THRESHOLD
+    (0.45), calibrated for weighted-sum scores in ~0.35~0.52 range.
+
+    Hybrid (RRF) path: RRF scores (~0.04~0.05 scale) cannot serve as confidence
+    signals — all relevant and irrelevant queries cluster in the same narrow range.
+    Instead, we use `theological_score` (semantic relevance) as the primary signal,
+    which better correlates with actual relevance regardless of score scale.
+
+    Detection heuristic: RRF scores are always < 0.1 while legacy weighted-sum
+    scores are >= 0.35. This cleanly separates the two paths without schema changes.
+
+    Observed theological_score ranges:
+        관련 있음(신학): 0.135~0.315 (BibleIndex boost can also raise confidence)
+        관련 없음(일상): 0.135 or lower (top-1 rarely exceeds 0.165)
+
+    Threshold 0.15 on theological_score separates the clusters with margin.
+    """
     if not top_k_results:
         return True
-    return top_k_results[0].final_score < _LOW_CONFIDENCE_SCORE_THRESHOLD
+
+    top = top_k_results[0]
+
+    # Detect scoring engine by final_score scale
+    is_rrf_path = top.final_score < 0.1
+
+    if is_rrf_path:
+        # Hybrid (RRF) path — use theological_score as confidence signal
+        theo = top.theological_score
+        passage = top.passage_score
+
+        # BibleIndex hit → very specific match, high confidence
+        if passage > 0:
+            return False
+
+        # Semantic relevance threshold
+        if theo >= 0.15:
+            return False
+
+        return True
+    else:
+        # Legacy (weighted-sum) path — unchanged from the original signal
+        # (Task Order 050 scope: hybrid path only, legacy path untouched).
+        return top.final_score < _LOW_CONFIDENCE_SCORE_THRESHOLD
 
 
 def _render_low_confidence_warning() -> None:
@@ -589,6 +629,8 @@ def _render_clickable_source(
     author_val = citation.source_author if citation else None
     title_val = citation.source_title if citation else None
 
+    citation_key_suffix = f"{msg_index}_{source_index_in_msg}"
+
     render_citation_card(
         source_file=source_file,
         text_location=text_location,
@@ -598,11 +640,12 @@ def _render_clickable_source(
         relevance_score=score,
         on_view_original=True,
         on_copy_citation=False,
+        key_suffix=citation_key_suffix,
     )
 
     # Connect "원문 다시 보기" button to actual navigation (problem 1)
     # The button key must match the key used in render_citation_card
-    btn_key_base = f"cite_btn_{abs(hash(source_file)) & 0xFFFFFFFF:x}"
+    btn_key_base = f"cite_btn_{abs(hash(source_file + citation_key_suffix)) & 0xFFFFFFFF:x}"
     view_btn_key = f"{btn_key_base}_view"
 
     if st.session_state.get(view_btn_key, False):

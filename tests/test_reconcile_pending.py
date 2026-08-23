@@ -34,6 +34,11 @@ def _make_registry(tmp_path, docs):
 def _patch_paths(tmp_path, monkeypatch):
     monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_DATASET_PATH", str(tmp_path / "tsu.jsonl"))
     monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_MANIFEST_PATH", str(tmp_path / "manifest.json"))
+    # See tests/test_reindex_document.py::_patch_paths for why these two
+    # also need patching — rebuild_tsu_index() rebuilds both from
+    # DEFAULT_BIBLE_INDEX_PATH/DEFAULT_CANDIDATE_INDEX_DIR unconditionally.
+    monkeypatch.setattr("core.index_orchestrator.DEFAULT_BIBLE_INDEX_PATH", str(tmp_path / "bible_index.sqlite3"))
+    monkeypatch.setattr("core.index_orchestrator.DEFAULT_CANDIDATE_INDEX_DIR", str(tmp_path / "tantivy_index"))
 
 
 def test_only_processed_documents_are_reconciled(tmp_path, monkeypatch):

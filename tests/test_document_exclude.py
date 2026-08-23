@@ -62,6 +62,11 @@ class TestExcludeDocumentFromIndex:
         monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_DATASET_PATH", str(tmp_path / "tsu.jsonl"))
         monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_MANIFEST_PATH", str(tmp_path / "manifest.json"))
         monkeypatch.setattr("core.index_orchestrator.BACKUP_ROOT", tmp_path / "backups")
+        # See tests/test_reindex_document.py::_patch_paths for why these two
+        # also need patching — the exclude path touches DEFAULT_BIBLE_INDEX_PATH/
+        # DEFAULT_CANDIDATE_INDEX_DIR directly.
+        monkeypatch.setattr("core.index_orchestrator.DEFAULT_BIBLE_INDEX_PATH", str(tmp_path / "bible_index.sqlite3"))
+        monkeypatch.setattr("core.index_orchestrator.DEFAULT_CANDIDATE_INDEX_DIR", str(tmp_path / "tantivy_index"))
 
         reg_dir = tmp_path / "registry"
         reg_dir.mkdir()
