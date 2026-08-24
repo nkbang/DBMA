@@ -64,6 +64,27 @@ class TestPendingCountMatchesQueueDefinition:
         assert len(_build_file_list(str(raw_dir), force_reingest=False)) == 0
         assert len(_build_file_list(str(raw_dir), force_reingest=True)) == 1
 
+    def test_files_in_raw_subfolder_are_pending(self, tmp_path, monkeypatch):
+        """[버그 수정 2026-08-24] 이전엔 raw_path.iterdir()로 최상위만
+        스캔해서, RAW/설교_분리/ 같은 하위 폴더의 파일은 "문서 처리
+        시작"을 몇 번 눌러도 대기열에 절대 안 잡혔다(사용자 보고: "전체
+        처리를 했는데 다 끝내지 않는다" — 실측 확인: 미처리 36권 전부
+        하위 폴더에 있었음). Dashboard의 보유 문서 카운트는 이미
+        rglob()으로 재귀 탐색하므로 여기도 일치시켜야 한다."""
+        raw_dir = tmp_path / "RAW"
+        raw_dir.mkdir()
+        (raw_dir / "top.txt").write_text("x")
+        subfolder = raw_dir / "설교_분리"
+        subfolder.mkdir()
+        (subfolder / "sermon1.txt").write_text("y")
+        (subfolder / "sermon2.txt").write_text("z")
+        output_dir = tmp_path / "output"
+        monkeypatch.setattr(processing_mod, "DEFAULT_OUTPUT_DIR", str(output_dir))
+
+        pending = _build_file_list(str(raw_dir), force_reingest=False)
+        names = {f["name"] for f in pending}
+        assert names == {"top.txt", "sermon1.txt", "sermon2.txt"}
+
 
 if __name__ == "__main__":
     import pytest

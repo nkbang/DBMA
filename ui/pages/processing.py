@@ -166,17 +166,28 @@ def _render_upload_section() -> None:
 
 
 def _build_file_list(target_dir: str, force_reingest: bool) -> List[Dict[str, Any]]:
-    """Build file list from target directory, respecting force_reingest flag."""
+    """Build file list from target directory, respecting force_reingest flag.
+
+    [버그 수정 2026-08-24] raw_path.iterdir()는 최상위 파일만 봐서
+    RAW/설교_분리/ 같은 하위 폴더의 파일은 "문서 처리 시작"을 몇 번을
+    눌러도 절대 대기열에 잡히지 않았다(사용자 보고: "전체 처리를
+    했는데 다 끝내지 않는다" — 실측 확인: 미처리 36권 전부 하위 폴더에
+    있었음, 최상위엔 0건). Dashboard의 _count_documents()/
+    _get_raw_processing_breakdown()는 이미 rglob()으로 재귀 탐색하므로
+    여기도 맞춘다.
+    """
     raw_path = Path(target_dir)
     if not raw_path.exists():
         return []
 
     files = []
 
-    for f in sorted(raw_path.iterdir()):
+    for f in sorted(raw_path.rglob("*")):
         if f.suffix.lower() not in SUPPORTED_EXTS:
             continue
         if not f.is_file():
+            continue
+        if f.name.startswith("."):
             continue
 
         name = f.name
@@ -423,8 +434,10 @@ def _render_processing_queue() -> None:
         st.info("처리할 문서가 없습니다.")
         return
 
-    files = list(raw_dir.iterdir())
-    supported = [f for f in files if f.suffix.lower() in SUPPORTED_EXTS and f.is_file()]
+    # [버그 수정 2026-08-24] _build_file_list()와 동일하게 재귀 탐색 —
+    # 최상위만 보면 하위 폴더 파일이 대기열에서 영원히 안 보인다.
+    files = list(raw_dir.rglob("*"))
+    supported = [f for f in files if f.suffix.lower() in SUPPORTED_EXTS and f.is_file() and not f.name.startswith(".")]
 
     if not supported:
         st.info("지원되지 않는 파일 유형입니다. (PDF, TXT, MD, DOCX, EPUB, HTML, RTF)")
