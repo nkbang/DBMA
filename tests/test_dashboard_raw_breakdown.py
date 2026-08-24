@@ -96,6 +96,30 @@ def test_nfd_vs_nfc_filename_still_counts_as_processed(tmp_path, monkeypatch):
     assert result == {"total": 1, "processed": 1, "unprocessed": 0}
 
 
+def test_get_unprocessed_raw_files_shares_normalization(tmp_path, monkeypatch):
+    """[버그 수정 2026-08-24] _get_raw_processing_breakdown()과
+    _get_unprocessed_raw_files()가 각자 raw/TSU 대조 로직을 따로
+    구현하고 있어서, 전자만 NFC 정규화를 고쳤을 때 후자는 여전히
+    이미 처리된 문서를 "미처리"로 잘못 반환했다("정리된 자료"는
+    110/110인데 "유형별 문서" 카드는 "미처리 40권"을 보여준 재발,
+    사용자 보고). 이제 breakdown이 이 함수 하나에서 파생되므로 함께
+    검증한다."""
+    raw_dir = tmp_path / "RAW"
+    raw_dir.mkdir()
+    nfd_name = unicodedata.normalize("NFD", "고린도전서.pdf")
+    nfc_name = unicodedata.normalize("NFC", "고린도전서.pdf")
+    (raw_dir / nfd_name).write_text("x")
+
+    tsu_path = tmp_path / "tsu.jsonl"
+    _write_tsu_dataset(tsu_path, [nfc_name])
+
+    monkeypatch.setattr(mod, "DEFAULT_RAW_DIR", str(raw_dir))
+    monkeypatch.setattr("core.config.DEFAULT_TSU_DATASET_PATH", str(tsu_path))
+
+    assert mod._get_unprocessed_raw_files() == []
+    assert mod._get_raw_processing_breakdown() == {"total": 1, "processed": 1, "unprocessed": 0}
+
+
 def test_count_documents_includes_rtf_extension(tmp_path, monkeypatch):
     """[버그 수정] _count_documents()가 core.config.SUPPORTED_EXTENSIONS
     (rtf/html/htm 포함 8종)를 쓰는지 확인 — 이전엔 5종만 하드코딩돼

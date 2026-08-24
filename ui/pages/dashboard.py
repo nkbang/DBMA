@@ -388,39 +388,27 @@ def _get_raw_processing_breakdown() -> dict:
     "미처리"로 잘못 집계됐다(사용자 보고: "정리했는데 모두 미처리
     110권으로 집계됨" — 실측 결과 실제로는 110권 중 74권이 이미
     처리·색인 완료 상태였음, TestOrder-050 조사 중 재현·확정).
-    양쪽 다 NFC로 정규화한 뒤 비교한다."""
-    import json
-    import unicodedata
-    from core.config import DEFAULT_TSU_DATASET_PATH, SUPPORTED_EXTENSIONS
+    양쪽 다 NFC로 정규화한 뒤 비교한다.
+
+    [버그 수정 2026-08-24] raw/TSU 대조 로직을 여기와
+    _get_unprocessed_raw_files()가 각자 따로 구현하고 있어서, 8/23에
+    이 함수만 NFC 정규화를 고치고 나니 "정리된 자료"는 110/110인데
+    "유형별 문서" 카드는 여전히 "미처리 40권"을 보여주는 재발이
+    있었다(사용자 보고). 로직을 하나로 합쳐 같은 버그를 두 번 겪지
+    않게 한다 — total/unprocessed 모두 _get_unprocessed_raw_files()
+    한 곳에서만 계산한다."""
+    from core.config import SUPPORTED_EXTENSIONS
 
     raw_dir = Path(DEFAULT_RAW_DIR)
     if not raw_dir.exists():
         return {"total": 0, "processed": 0, "unprocessed": 0}
 
-    raw_files = {
-        unicodedata.normalize("NFC", f.name) for f in raw_dir.rglob("*")
+    total = sum(
+        1 for f in raw_dir.rglob("*")
         if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
-    }
-
-    tsu_sources: set[str] = set()
-    tsu_path = Path(DEFAULT_TSU_DATASET_PATH)
-    if tsu_path.exists():
-        with open(tsu_path, "r", encoding="utf-8") as fh:
-            for line in fh:
-                line = line.strip()
-                if not line or line.startswith("$"):
-                    continue
-                try:
-                    rec = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
-                source_file = rec.get("source_file")
-                if source_file:
-                    tsu_sources.add(unicodedata.normalize("NFC", source_file))
-
-    processed = len(raw_files & tsu_sources)
-    total = len(raw_files)
-    return {"total": total, "processed": processed, "unprocessed": total - processed}
+    )
+    unprocessed = len(_get_unprocessed_raw_files())
+    return {"total": total, "processed": total - unprocessed, "unprocessed": unprocessed}
 
 
 def _get_last_processed() -> str:
@@ -568,8 +556,17 @@ def _get_unprocessed_raw_files() -> list[str]:
     """RAW에 있지만 TSU 데이터셋에 없는(=처리 안 된) 파일명 목록.
 
     _get_raw_processing_breakdown()과 같은 기준(source_file 대조)을
-    쓰되, 파일명 목록 자체가 필요해 별도로 계산한다."""
+    쓰되, 파일명 목록 자체가 필요해 별도로 계산한다.
+
+    [버그 수정 2026-08-24] _get_raw_processing_breakdown()과 로직이
+    중복되면서 NFC 정규화(2026-08-23 수정)가 이쪽엔 반영이 안 돼,
+    "정리된 자료"는 110/110인데 "유형별 문서" 카드엔 이미 처리된
+    문서가 "미처리 40권"으로 다시 나타났다(사용자 보고). 두 함수가
+    같은 버그를 두 번 겪지 않도록 원본 파일명(raw_name)을 값으로 갖는
+    dict로 매칭해, 반환값은 여전히 실제 파일명(NFC 정규화 전)을
+    유지한다."""
     import json
+    import unicodedata
     from core.config import DEFAULT_TSU_DATASET_PATH, SUPPORTED_EXTENSIONS
 
     raw_dir = Path(DEFAULT_RAW_DIR)
@@ -577,7 +574,8 @@ def _get_unprocessed_raw_files() -> list[str]:
         return []
 
     raw_files = {
-        f.name for f in raw_dir.rglob("*")
+        unicodedata.normalize("NFC", f.name): f.name
+        for f in raw_dir.rglob("*")
         if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
     }
 
@@ -595,9 +593,9 @@ def _get_unprocessed_raw_files() -> list[str]:
                     continue
                 source_file = rec.get("source_file")
                 if source_file:
-                    tsu_sources.add(source_file)
+                    tsu_sources.add(unicodedata.normalize("NFC", source_file))
 
-    return sorted(raw_files - tsu_sources)
+    return sorted(raw_files[nfc_name] for nfc_name in raw_files if nfc_name not in tsu_sources)
 
 
 def _render_unprocessed_detail(unprocessed_files: list[str]) -> None:
