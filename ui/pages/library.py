@@ -32,7 +32,12 @@ from core.identity_registry import (
     exclude_document,
     unexclude_document,
 )
-from core.index_orchestrator import exclude_document_from_index, delete_raw_source
+from core.index_orchestrator import (
+    exclude_document_from_index,
+    delete_raw_source,
+    list_trashed_raw_files,
+    restore_raw_source,
+)
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
@@ -108,6 +113,9 @@ def render_library_page() -> None:
     # ── Document Detail Panel ──────────────────────────────────
     page.render_section("문서 상세", icon="")
     _render_document_detail_panel()
+
+    # ── 휴지통 (2026-08-24 사용자 요청: "휴지통이라면 복구도 가능해야 한다") ──
+    _render_trash_section()
 
     page.render_footer()
 
@@ -614,6 +622,38 @@ def _render_delete_section(source_filename: str) -> None:
                 st.success(f"삭제되었습니다{detail}. 휴지통: {result['trash_path']}")
                 _clear_selected_document()
                 st.rerun()
+
+
+def _render_trash_section() -> None:
+    """[2026-08-24 사용자 요청] "휴지통이라면 복구도 가능해야 한다".
+
+    _render_delete_section()이 backups/deleted_raw_.../로 옮긴 파일들을
+    나열하고, 각각 "복구" 버튼으로 RAW에 되돌린다
+    (core/index_orchestrator.py::list_trashed_raw_files()/
+    restore_raw_source()). 문서 상세와 무관하게 항상 존재하는 전역
+    목록이라 문서 선택 여부와 상관없이 페이지 맨 아래에 둔다.
+    """
+    trashed = list_trashed_raw_files()
+    with st.expander(f"휴지통 ({len(trashed)})", expanded=False):
+        if not trashed:
+            st.caption("휴지통이 비어 있습니다.")
+            return
+
+        st.caption("삭제된 자료를 여기서 복구할 수 있습니다.")
+        for item in trashed:
+            c1, c2 = st.columns([4, 1])
+            with c1:
+                st.markdown(f"**{item['name']}**")
+                st.caption(f"삭제일: {item['deleted_at']}")
+            with c2:
+                if st.button("복구", key=f"restore_btn_{item['trash_path']}", use_container_width=True):
+                    result = restore_raw_source(item["trash_path"])
+                    if result["restored"]:
+                        note = " 검색되게 하려면 재처리(재색인)가 필요합니다." if result["document_id"] else ""
+                        st.success(f"'{item['name']}'을(를) 복구했습니다.{note}")
+                        st.rerun()
+                    else:
+                        st.error(result["reason"] or "복구에 실패했습니다.")
 
 
 def _chunks_meta_path(stem: str) -> Path:

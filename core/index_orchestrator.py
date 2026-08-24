@@ -33,6 +33,7 @@ from core.identity_registry import (
     save_identity_registry,
     registry_lock,
     exclude_document,
+    unexclude_document,
     find_by_source_file,
 )
 from core.document_context import set_pipeline_state
@@ -458,3 +459,69 @@ def delete_raw_source(
         "trash_path": str(trash_path) if trash_path else None,
         "executed": execute,
     }
+
+
+def list_trashed_raw_files() -> list[dict[str, Any]]:
+    """[2026-08-24] delete_raw_source()가 backups/deleted_raw_{날짜}/로
+    옮긴 파일 목록. "휴지통이라면 복구도 가능해야 한다"는 사용자 요청 —
+    복구 UI가 무엇을 되돌릴 수 있는지 보여주는 목록.
+
+    Returns: 최근 삭제 순으로 정렬된
+        [{"trash_path", "name", "deleted_at"(YYYY-MM-DD)}, ...]
+    """
+    if not BACKUP_ROOT.exists():
+        return []
+
+    items: list[dict[str, Any]] = []
+    for sub in BACKUP_ROOT.glob("deleted_raw_*"):
+        if not sub.is_dir():
+            continue
+        date_str = sub.name.removeprefix("deleted_raw_")
+        deleted_at = f"{date_str[0:4]}-{date_str[4:6]}-{date_str[6:8]}" if len(date_str) == 8 else date_str
+        for f in sub.iterdir():
+            if f.is_file():
+                items.append({"trash_path": str(f), "name": f.name, "deleted_at": deleted_at})
+
+    items.sort(key=lambda x: x["deleted_at"], reverse=True)
+    return items
+
+
+def restore_raw_source(
+    trash_path: str,
+    raw_dir: str = DEFAULT_RAW_DIR,
+    output_dir: str = DEFAULT_OUTPUT_DIR,
+) -> dict[str, Any]:
+    """[2026-08-24] delete_raw_source()가 휴지통으로 옮긴 파일을 RAW로
+    되돌린다. 삭제 당시 registry 레코드가 EXCLUDED로 바뀐 문서였다면
+    unexclude_document()로 상태를 되돌리되(기존 "제외 해제" UI와 동일
+    패턴), 검색 색인(TSU)은 삭제 시 이미 정리됐으므로 재처리(재색인)해야
+    다시 검색된다는 점은 그대로 안내해야 한다 — 이 함수는 파일/registry
+    상태만 되돌리고 색인은 재생성하지 않는다.
+
+    Returns: {"restored": bool, "raw_path": str|None, "document_id": str|None,
+              "reason": str|None}
+    """
+    src = Path(trash_path)
+    if not src.is_file():
+        return {"restored": False, "raw_path": None, "document_id": None, "reason": "휴지통에서 파일을 찾을 수 없습니다."}
+
+    raw_root = Path(raw_dir)
+    raw_root.mkdir(parents=True, exist_ok=True)
+    dest = raw_root / src.name
+    counter = 2
+    while dest.exists():
+        dest = raw_root / f"{src.stem} ({counter}){src.suffix}"
+        counter += 1
+    shutil.move(str(src), str(dest))
+
+    registry_path = registry_path_for(output_dir)
+    document_id: Optional[str] = None
+    with registry_lock(registry_path):
+        registry = load_identity_registry(registry_path)
+        record = find_by_source_file(registry, dest.name)
+        if record is not None and record.get("ingest_status") == "EXCLUDED":
+            document_id = record["document_id"]
+            unexclude_document(registry, document_id)
+            save_identity_registry(registry, registry_path)
+
+    return {"restored": True, "raw_path": str(dest), "document_id": document_id, "reason": None}
