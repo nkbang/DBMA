@@ -32,7 +32,7 @@ from core.identity_registry import (
     exclude_document,
     unexclude_document,
 )
-from core.index_orchestrator import exclude_document_from_index
+from core.index_orchestrator import exclude_document_from_index, delete_raw_source
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
@@ -318,6 +318,9 @@ def _render_document_detail_panel() -> None:
     # ── 처리 제외 (exclude) ──────────────────────────────────────
     _render_exclude_section(selected_doc.get("title", ""))
 
+    # ── 자료 삭제 (휴지통, 2026-08-24 사용자 요청) ─────────────────
+    _render_delete_section(selected_doc.get("title", ""))
+
     # ── Provenance: version history + failure history (SPRINT24-2) ──
     _render_provenance_section(selected_doc.get("title", ""))
 
@@ -571,6 +574,46 @@ def _render_exclude_section(source_filename: str) -> None:
                     st.rerun()
                 else:
                     st.error("registry 저장에 실패했습니다.")
+
+
+def _render_delete_section(source_filename: str) -> None:
+    """[2026-08-24 사용자 요청] "필요없는 자기 자료를 제거"하는 기능.
+
+    "처리 제외"와 달리 RAW 원본 파일 자체를 목록에서 없앤다 — 다만
+    os.remove()가 아니라 backups/deleted_raw_{날짜}/로 이동해 실수해도
+    복구 가능하게 한다("원본 절대 삭제 안 함" 정책은 os.remove()
+    금지로 해석 — core/processing.py 참고). 이미 처리된 문서면 검색
+    색인도 함께 정리한다(core/index_orchestrator.py::delete_raw_source()).
+    아직 처리 전인 raw 파일도 삭제할 수 있다 — exclude와 달리 registry
+    레코드가 없어도 동작한다.
+    """
+    if not source_filename:
+        return
+
+    with st.expander("자료 삭제"):
+        st.caption(
+            "RAW 원본 파일을 목록·검색에서 완전히 제거합니다. 실수를 대비해 "
+            "즉시 지우지 않고 backups/deleted_raw_.../로 이동합니다 — 필요하면 그 폴더에서 복구할 수 있습니다."
+        )
+        reason = st.text_input("삭제 사유(선택)", key=f"delete_reason_{source_filename}")
+        confirm = st.checkbox(
+            "이 자료를 삭제(휴지통으로 이동)합니다.", key=f"delete_confirm_{source_filename}"
+        )
+        if st.button(
+            "자료 삭제", key=f"delete_btn_{source_filename}",
+            disabled=not confirm, type="primary", use_container_width=True,
+        ):
+            result = delete_raw_source(source_filename, reason=reason, execute=True)
+            if not result["found"]:
+                st.error("원본 파일을 RAW에서 찾을 수 없습니다.")
+            else:
+                detail = (
+                    f" (색인 데이터 {result['purged_tsu_records']}건도 함께 정리)"
+                    if result["document_id"] else ""
+                )
+                st.success(f"삭제되었습니다{detail}. 휴지통: {result['trash_path']}")
+                _clear_selected_document()
+                st.rerun()
 
 
 def _chunks_meta_path(stem: str) -> Path:

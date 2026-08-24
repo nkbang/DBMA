@@ -13,6 +13,7 @@ embedding을 생성하지 않는다(TSU 레코드 생성 + 데이터셋/매니�
 
 import json
 import shutil
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
@@ -21,11 +22,19 @@ from core.config import (
     DEFAULT_BIBLE_INDEX_PATH,
     DEFAULT_CANDIDATE_INDEX_DIR,
     DEFAULT_OUTPUT_DIR,
+    DEFAULT_RAW_DIR,
     DEFAULT_TSU_DATASET_PATH,
     DEFAULT_TSU_MANIFEST_PATH,
+    SUPPORTED_EXTENSIONS,
     registry_path_for,
 )
-from core.identity_registry import load_identity_registry, save_identity_registry, registry_lock
+from core.identity_registry import (
+    load_identity_registry,
+    save_identity_registry,
+    registry_lock,
+    exclude_document,
+    find_by_source_file,
+)
 from core.document_context import set_pipeline_state
 from core.tsu_builder import build_tsu_records, write_tsu_dataset, write_manifest
 from core.utils import make_safe_stem
@@ -348,5 +357,104 @@ def exclude_document_from_index(
         "purged_tsu_records": purged,
         "moved_files": moved if execute else [str(f) for f in existing_files],
         "backup_dir": str(backup_dir),
+        "executed": execute,
+    }
+
+
+def delete_raw_source(
+    source_filename: str,
+    raw_dir: str = DEFAULT_RAW_DIR,
+    output_dir: str = DEFAULT_OUTPUT_DIR,
+    reason: str = "",
+    execute: bool = False,
+) -> dict[str, Any]:
+    """[2026-08-24] 사용자가 더 이상 필요 없는 RAW 원본을 휴지통으로
+    옮긴다 — "원본 절대 삭제 안 함"(Sprint 2 정책, core/processing.py
+    참고)을 os.remove()가 아닌 이동으로 지키면서도, 사용자가 요청한
+    "진짜 제거"(목록/검색에서 완전히 빠짐)를 만족시킨다.
+
+    이미 처리된 문서라면 먼저 exclude_document()(registry 상태) +
+    exclude_document_from_index()(TSU/청크 정리)를 그대로 재사용해
+    검색 대상에서 뺀 뒤, RAW 파일 자체를 backups/deleted_raw_{날짜}/로
+    이동한다. 아직 처리 전인 raw 파일은 정리할 색인이 없으므로 파일
+    이동만 한다.
+
+    RAW 안의 파일명을 찾을 때 rglob()으로 하위 폴더까지 재귀 탐색하고
+    NFC로 정규화해 대조한다 — 2026-08-24 processing.py 하위 폴더 스캔
+    수정, 2026-08-23 find_by_source_file() 정규화 수정과 동일 기준.
+
+    execute=False(기본)면 dry-run — 무엇이 지워지고 이동될지만 계산해
+    반환하고 registry/파일은 건드리지 않는다.
+
+    Returns:
+        {"found": bool, "document_id": str|None, "purged_tsu_records": int,
+         "moved_index_files": [...], "raw_path": str|None,
+         "trash_path": str|None, "executed": bool}
+    """
+    target_nfc = unicodedata.normalize("NFC", source_filename)
+    raw_root = Path(raw_dir)
+    raw_path: Optional[Path] = None
+    if raw_root.exists():
+        for f in raw_root.rglob("*"):
+            if (
+                f.is_file()
+                and not f.name.startswith(".")
+                and f.suffix.lower() in SUPPORTED_EXTENSIONS
+                and unicodedata.normalize("NFC", f.name) == target_nfc
+            ):
+                raw_path = f
+                break
+
+    if raw_path is None:
+        return {
+            "found": False, "document_id": None, "purged_tsu_records": 0,
+            "moved_index_files": [], "raw_path": None, "trash_path": None,
+            "executed": execute,
+        }
+
+    registry_path = registry_path_for(output_dir)
+    purged_tsu_records = 0
+    moved_index_files: list[str] = []
+    document_id: Optional[str] = None
+
+    with registry_lock(registry_path):
+        registry = load_identity_registry(registry_path)
+        record = find_by_source_file(registry, source_filename)
+        if record is not None:
+            document_id = record["document_id"]
+            if execute:
+                cleanup = exclude_document_from_index(document_id, output_dir=output_dir, execute=True)
+                purged_tsu_records = cleanup["purged_tsu_records"]
+                moved_index_files = cleanup["moved_files"]
+                exclude_document(registry, document_id, reason=reason or "RAW 원본 삭제(휴지통 이동)")
+                save_identity_registry(registry, registry_path)
+            else:
+                # dry-run: 실제로 삭제될 TSU 레코드 수만 미리 계산 —
+                # exclude_document_from_index(execute=False)는 파일은
+                # 건드리지 않고 개수만 센다.
+                cleanup = exclude_document_from_index(document_id, output_dir=output_dir, execute=False)
+                purged_tsu_records = cleanup["purged_tsu_records"]
+                moved_index_files = cleanup["moved_files"]
+
+    trash_path: Optional[Path] = None
+    if execute:
+        timestamp = datetime.now().strftime("%Y%m%d")
+        trash_dir = BACKUP_ROOT / f"deleted_raw_{timestamp}"
+        trash_dir.mkdir(parents=True, exist_ok=True)
+        dest = trash_dir / raw_path.name
+        counter = 2
+        while dest.exists():
+            dest = trash_dir / f"{raw_path.stem}_{counter}{raw_path.suffix}"
+            counter += 1
+        shutil.move(str(raw_path), str(dest))
+        trash_path = dest
+
+    return {
+        "found": True,
+        "document_id": document_id,
+        "purged_tsu_records": purged_tsu_records,
+        "moved_index_files": moved_index_files,
+        "raw_path": str(raw_path),
+        "trash_path": str(trash_path) if trash_path else None,
         "executed": execute,
     }
