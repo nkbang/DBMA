@@ -49,6 +49,7 @@ from core.identity_registry import (
     load_identity_registry,
     register_document,
     save_identity_registry,
+    registry_lock,
     find_by_document_id,
     find_by_file_hash,
     find_by_source_file,
@@ -815,37 +816,51 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # at this point (still used at Point C-1 for save_md_with_language()).
         document_meta = _document_context.to_metadata_dict()
 
-        # ── [PT-PROCESSING-012] Update content hash on success ──────
-        _hash_updated = update_content_hash(_registry, document_id, file_hash)
+        # ── [PT-PROCESSING-012/RACE-FIX] Persist identity registry ──
+        # _registry was loaded at the top of this function (for the
+        # PROCESS/SKIP/REPROCESS decision) and may now be stale relative
+        # to concurrent writers (the background reconciler thread saves
+        # to the same file on its own timer — see registry_lock()'s
+        # docstring). Re-load fresh under the lock immediately before
+        # mutating, so this save can never clobber a concurrent one.
+        # existing_record/_prior_version were only used above to decide
+        # *what* to do (PROCESS vs REPROCESS) and are referenced below
+        # only by document_id (a stable content hash), so reloading here
+        # does not invalidate them.
+        with registry_lock(registry_path):
+            _registry = load_identity_registry(registry_path)
 
-        # ── [PT-PROCESSING-010-C/012] Persist identity registry ────
-        record, is_new = register_document(_registry, document_meta, output_dir)
+            # ── [PT-PROCESSING-012] Update content hash on success ──
+            _hash_updated = update_content_hash(_registry, document_id, file_hash)
 
-        # [SPRINT21-G-2 Option C] Link the edited document to the prior
-        # version found above, now that the new record actually exists in
-        # the registry. document_id/content of either record is untouched.
-        if _prior_version is not None and is_new:
-            mark_superseded(_registry, _prior_version["document_id"], document_id)
-            emit(
-                "supersede",
-                f"이전 버전 대체: {_prior_version['document_id'][:16]}... → {document_id[:16]}...",
-                0.99, level="warn",
-            )
+            record, is_new = register_document(_registry, document_meta, output_dir)
 
-        persisted_ok = save_identity_registry(_registry, registry_path)
+            # [SPRINT21-G-2 Option C] Link the edited document to the prior
+            # version found above, now that the new record actually exists
+            # in the registry. document_id/content of either record is
+            # untouched.
+            if _prior_version is not None and is_new:
+                mark_superseded(_registry, _prior_version["document_id"], document_id)
+                emit(
+                    "supersede",
+                    f"이전 버전 대체: {_prior_version['document_id'][:16]}... → {document_id[:16]}...",
+                    0.99, level="warn",
+                )
 
-        # ── [SPRINT2] Set pipeline completion flags on successful persist ──
-        _pipeline_flags_set = False
-        if persisted_ok and record:
-            updated = update_pipeline_flags(
-                _registry, document_id,
-                {"ingested": True, "copied": True, "extracted": True,
-                 "cleaned": True, "chunked": True, "output_generated": True,
-                 "verified": True},
-            )
-            if updated:
-                save_identity_registry(_registry, registry_path)
-                _pipeline_flags_set = True
+            persisted_ok = save_identity_registry(_registry, registry_path)
+
+            # ── [SPRINT2] Set pipeline completion flags on successful persist ──
+            _pipeline_flags_set = False
+            if persisted_ok and record:
+                updated = update_pipeline_flags(
+                    _registry, document_id,
+                    {"ingested": True, "copied": True, "extracted": True,
+                     "cleaned": True, "chunked": True, "output_generated": True,
+                     "verified": True},
+                )
+                if updated:
+                    save_identity_registry(_registry, registry_path)
+                    _pipeline_flags_set = True
 
         if persisted_ok:
             emit("identity_persist", f"Identity registered: {document_id[:16]}..." if is_new else "Identity synced to registry", 0.98)

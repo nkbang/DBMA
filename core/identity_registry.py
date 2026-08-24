@@ -28,12 +28,43 @@ Usage:
 
 from __future__ import annotations
 
+import fcntl
 import json
 import os
 import datetime
+from contextlib import contextmanager
 from typing import Optional, Dict, Tuple, Literal
 from core.document_identity import PROCESSING_VERSION
 from core.document_context import set_pipeline_state
+
+
+@contextmanager
+def registry_lock(registry_path: str):
+    """Serialize registry read-modify-write across threads/processes.
+
+    core/processing.py's process_one_file() (foreground, per-file during
+    batch processing) and core/index_orchestrator.py's reconcile_pending()
+    (background daemon thread, core/background_index_builder.py) each
+    independently load_identity_registry() -> mutate -> save_identity_
+    registry() the same file with no coordination. A batch run of any real
+    size takes long enough for the 5-second background tick to fire mid-
+    batch: it can load a snapshot that predates the foreground's latest
+    addition, then save its own (older) snapshot back, silently discarding
+    that addition — no exception, no log line, since neither save call
+    itself fails (confirmed 2026-08-23: 49 freshly-chunked documents
+    vanished from the registry this way in one batch run). This advisory
+    OS file lock (flock on a sibling .lock file, not the registry file
+    itself, so save_identity_registry()'s atomic os.replace() is
+    undisturbed) makes each side's load+mutate+save critical section
+    mutually exclusive."""
+    lock_path = registry_path + ".lock"
+    os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
+    with open(lock_path, "w") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(f, fcntl.LOCK_UN)
 
 
 def load_identity_registry(registry_path: str) -> dict:

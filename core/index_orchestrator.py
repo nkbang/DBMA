@@ -25,7 +25,7 @@ from core.config import (
     DEFAULT_TSU_MANIFEST_PATH,
     registry_path_for,
 )
-from core.identity_registry import load_identity_registry, save_identity_registry
+from core.identity_registry import load_identity_registry, save_identity_registry, registry_lock
 from core.document_context import set_pipeline_state
 from core.tsu_builder import build_tsu_records, write_tsu_dataset, write_manifest
 from core.utils import make_safe_stem
@@ -185,72 +185,84 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
         {"pending": int, "reconciled": int, "failed": [...], "purged": int}
     """
     registry_path = Path(registry_path_for(output_dir))
-    registry = load_identity_registry(str(registry_path))
 
-    pending = [
-        doc_id for doc_id, doc in registry.get("documents", {}).items()
-        if doc.get("pipeline_state") == "PROCESSED"
-    ]
+    # [RACE-FIX 2026-08-23] This function's load->mutate->save runs on a
+    # background timer (core/background_index_builder.py) while
+    # core/processing.py::process_one_file() does its own independent
+    # load->mutate->save on the same registry file during foreground batch
+    # processing. Without coordination, whichever side saves last silently
+    # discards the other's in-memory-only additions (confirmed: 49
+    # freshly-registered documents vanished this way in one batch run —
+    # no exception, no log line, since neither individual save call
+    # fails). registry_lock() (see core/identity_registry.py) makes the
+    # two critical sections mutually exclusive.
+    with registry_lock(str(registry_path)):
+        registry = load_identity_registry(str(registry_path))
 
-    reconciled: list[str] = []
-    failed: list[dict[str, str]] = []
-    for doc_id in pending:
-        try:
-            reindex_document(doc_id, output_dir=output_dir)
-        except Exception as e:
-            failed.append({"document_id": doc_id, "error": str(e)})
-            continue
-        # TSU record build + dataset/manifest write both completed inside
-        # reindex_document() above — TSU_READY and INDEXED happen together
-        # in this implementation (no partial/observable midpoint), so only
-        # the final state is persisted.
-        set_pipeline_state(registry["documents"][doc_id], "INDEXED")
-        reconciled.append(doc_id)
+        pending = [
+            doc_id for doc_id, doc in registry.get("documents", {}).items()
+            if doc.get("pipeline_state") == "PROCESSED"
+        ]
 
-    # [SPRINT21-G-2 Option C] Purge superseded documents' TSU records so
-    # edited-then-reprocessed content stops being searchable under its old
-    # document_id, without disturbing anything else in the dataset.
-    superseded_ids = {
-        doc_id for doc_id, doc in registry.get("documents", {}).items()
-        if doc.get("superseded_by") is not None
-    }
-    purged = 0
-    if superseded_ids:
-        dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
-        if dataset_path.exists():
-            with open(dataset_path, "r", encoding="utf-8") as f:
-                existing = [json.loads(line) for line in f if line.strip()]
-            kept = [r for r in existing if r.get("document_id") not in superseded_ids]
-            purged = len(existing) - len(kept)
-            if purged > 0:
-                write_tsu_dataset(kept, dataset_path)
-                manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
-                config_path = Path(__file__).resolve().parent.parent / "config.yaml"
-                write_manifest(
-                    kept, registry, manifest_path,
-                    registry_path=registry_path,
-                    dataset_path=dataset_path,
-                    config_path=config_path,
-                )
-                # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the purge to the
-                # candidate index — otherwise superseded content stays
-                # searchable there even though the TSU dataset dropped it.
-                candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
-                if (candidate_index_dir / "meta.json").exists():
-                    generator = open_or_build_index(dataset_path, candidate_index_dir)
-                    for doc_id in superseded_ids:
-                        generator.delete_document(doc_id)
-                # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to
-                # the Bible index.
-                bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
-                if bible_index_path.exists():
-                    bible_index = BibleIndex(bible_index_path)
-                    for doc_id in superseded_ids:
-                        bible_index.delete_document(doc_id)
-                    bible_index.close()
+        reconciled: list[str] = []
+        failed: list[dict[str, str]] = []
+        for doc_id in pending:
+            try:
+                reindex_document(doc_id, output_dir=output_dir)
+            except Exception as e:
+                failed.append({"document_id": doc_id, "error": str(e)})
+                continue
+            # TSU record build + dataset/manifest write both completed inside
+            # reindex_document() above — TSU_READY and INDEXED happen together
+            # in this implementation (no partial/observable midpoint), so only
+            # the final state is persisted.
+            set_pipeline_state(registry["documents"][doc_id], "INDEXED")
+            reconciled.append(doc_id)
 
-    if reconciled:
-        save_identity_registry(registry, str(registry_path))
+        # [SPRINT21-G-2 Option C] Purge superseded documents' TSU records so
+        # edited-then-reprocessed content stops being searchable under its old
+        # document_id, without disturbing anything else in the dataset.
+        superseded_ids = {
+            doc_id for doc_id, doc in registry.get("documents", {}).items()
+            if doc.get("superseded_by") is not None
+        }
+        purged = 0
+        if superseded_ids:
+            dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
+            if dataset_path.exists():
+                with open(dataset_path, "r", encoding="utf-8") as f:
+                    existing = [json.loads(line) for line in f if line.strip()]
+                kept = [r for r in existing if r.get("document_id") not in superseded_ids]
+                purged = len(existing) - len(kept)
+                if purged > 0:
+                    write_tsu_dataset(kept, dataset_path)
+                    manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
+                    config_path = Path(__file__).resolve().parent.parent / "config.yaml"
+                    write_manifest(
+                        kept, registry, manifest_path,
+                        registry_path=registry_path,
+                        dataset_path=dataset_path,
+                        config_path=config_path,
+                    )
+                    # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the purge to the
+                    # candidate index — otherwise superseded content stays
+                    # searchable there even though the TSU dataset dropped it.
+                    candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+                    if (candidate_index_dir / "meta.json").exists():
+                        generator = open_or_build_index(dataset_path, candidate_index_dir)
+                        for doc_id in superseded_ids:
+                            generator.delete_document(doc_id)
+                    # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to
+                    # the Bible index.
+                    bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+                    if bible_index_path.exists():
+                        bible_index = BibleIndex(bible_index_path)
+                        for doc_id in superseded_ids:
+                            bible_index.delete_document(doc_id)
+                        bible_index.close()
+
+        if reconciled:
+            save_identity_registry(registry, str(registry_path))
 
     return {"pending": len(pending), "reconciled": len(reconciled), "failed": failed, "purged": purged}
 
