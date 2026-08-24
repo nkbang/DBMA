@@ -445,18 +445,34 @@ def _get_effective_documents() -> dict:
         없는 구버전 레코드는 register_document()의 기본값과 동일하게
         "PROCESSED"로 간주 — core/identity_registry.py:275)
       - superseded_by is None       (대체된 옛 버전 제외, 최신본만)
+
+    [기능 추가 2026-08-24] "기본 자료"(DEFAULT_SAMPLE_LIBRARY_PATH,
+    ui/pages/library.py의 읽기 전용 예제 3건)는 사용자 본인이 올린
+    자료가 아니므로 제외한다(사용자 요청) — source_file 문자열이
+    아닌 document_id로 걸러 NFC/NFD 정규화 문제를 애초에 피한다.
     """
-    from core.config import DEFAULT_REGISTRY_PATH
+    import json
+    from core.config import DEFAULT_REGISTRY_PATH, DEFAULT_SAMPLE_LIBRARY_PATH
     from core.identity_registry import load_identity_registry
 
     registry = load_identity_registry(DEFAULT_REGISTRY_PATH)
     docs = registry.get("documents", {})
+
+    sample_ids: set[str] = set()
+    if os.path.exists(DEFAULT_SAMPLE_LIBRARY_PATH):
+        try:
+            with open(DEFAULT_SAMPLE_LIBRARY_PATH, "r", encoding="utf-8") as f:
+                sample_ids = set(json.load(f).get("document_ids", []))
+        except (json.JSONDecodeError, OSError):
+            pass
+
     return {
         doc_id: doc
         for doc_id, doc in docs.items()
         if doc.get("chunk_count", 0) > 0
         and doc.get("ingest_status", "PROCESSED") == "PROCESSED"
         and doc.get("superseded_by") is None
+        and doc_id not in sample_ids
     }
 
 
