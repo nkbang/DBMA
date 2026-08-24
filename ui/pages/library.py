@@ -346,13 +346,20 @@ def _find_registry_record(source_filename: str) -> "tuple[Optional[str], Optiona
     """Find the registry record whose source_file matches the given filename.
 
     Returns (document_id, record) or (None, None) if not found/not yet processed.
+
+    [버그 수정 2026-08-23] NFC 정규화 후 비교 — 한글 파일명이 macOS
+    파일시스템(NFD)과 등록 시점 추출 경로(NFC)에서 서로 다른 정규화
+    형태를 가져, 정규화 없이 비교하면 이미 처리된 문서도 "아직 처리되지
+    않음"으로 잘못 표시됐다(dashboard.py::_get_raw_processing_breakdown()
+    와 동일한 근본원인, 2026-08-23 확정).
     """
     registry_path = _registry_path()
     if not registry_path.exists():
         return None, None
     registry = load_identity_registry(str(registry_path))
+    target = unicodedata.normalize("NFC", source_filename)
     for doc_id, record in registry.get("documents", {}).items():
-        if record.get("source_file") == source_filename:
+        if unicodedata.normalize("NFC", record.get("source_file", "")) == target:
             return doc_id, record
     return None, None
 

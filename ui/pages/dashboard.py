@@ -379,8 +379,18 @@ def _get_raw_processing_breakdown() -> dict:
 
     RetrievalEngine 전체를 띄우지 않고 TSU JSONL을 직접 스트리밍해
     source_file만 모은다 — Dashboard 렌더마다 52,064건 전체를 메모리에
-    올리는 무거운 경로를 피하기 위함."""
+    올리는 무거운 경로를 피하기 위함.
+
+    [버그 수정 2026-08-23] raw_files와 tsu_sources를 정규화 없이 그대로
+    집합 비교하면, 한글 파일명이 macOS 파일시스템(NFD, 자모 분리)과
+    PDF 텍스트 추출 경로(NFC, 완성형)에서 서로 다른 정규화 형태로
+    나와 시각적으로 동일한 파일명이 바이트 단위로는 달라 전부
+    "미처리"로 잘못 집계됐다(사용자 보고: "정리했는데 모두 미처리
+    110권으로 집계됨" — 실측 결과 실제로는 110권 중 74권이 이미
+    처리·색인 완료 상태였음, TestOrder-050 조사 중 재현·확정).
+    양쪽 다 NFC로 정규화한 뒤 비교한다."""
     import json
+    import unicodedata
     from core.config import DEFAULT_TSU_DATASET_PATH, SUPPORTED_EXTENSIONS
 
     raw_dir = Path(DEFAULT_RAW_DIR)
@@ -388,7 +398,7 @@ def _get_raw_processing_breakdown() -> dict:
         return {"total": 0, "processed": 0, "unprocessed": 0}
 
     raw_files = {
-        f.name for f in raw_dir.rglob("*")
+        unicodedata.normalize("NFC", f.name) for f in raw_dir.rglob("*")
         if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
     }
 
@@ -406,7 +416,7 @@ def _get_raw_processing_breakdown() -> dict:
                     continue
                 source_file = rec.get("source_file")
                 if source_file:
-                    tsu_sources.add(source_file)
+                    tsu_sources.add(unicodedata.normalize("NFC", source_file))
 
     processed = len(raw_files & tsu_sources)
     total = len(raw_files)

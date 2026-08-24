@@ -32,6 +32,7 @@ import fcntl
 import json
 import os
 import datetime
+import unicodedata
 from contextlib import contextmanager
 from typing import Optional, Dict, Tuple, Literal
 from core.document_identity import PROCESSING_VERSION
@@ -213,9 +214,19 @@ def find_by_source_file(registry: dict, source_file: str) -> Optional[dict]:
     Returns the record if found, None otherwise. If more than one
     non-superseded record shares source_file (should not happen under
     normal operation), returns the first match.
+
+    [버그 수정 2026-08-23] NFC 정규화 후 비교 — 한글 파일명이 호출자마다
+    (파일시스템 rglob vs 등록 시점 추출 경로) 서로 다른 유니코드 정규화
+    형태(NFC/NFD)를 가질 수 있어, 정규화 없이 비교하면 이미 등록된
+    문서도 못 찾는다(2026-08-23 확정, ui/pages/dashboard.py의
+    _get_raw_processing_breakdown()과 동일 근본원인).
     """
+    target = unicodedata.normalize("NFC", source_file)
     for doc in registry["documents"].values():
-        if doc.get("source_file") == source_file and doc.get("superseded_by") is None:
+        if (
+            unicodedata.normalize("NFC", doc.get("source_file", "")) == target
+            and doc.get("superseded_by") is None
+        ):
             return doc
     return None
 
