@@ -288,8 +288,13 @@ def exclude_document_from_index(
     1. TSU 데이터셋에서 해당 document_id 레코드 제거(reindex_document()의
        필터 패턴 재사용, 재빌드 없이 순수 삭제) — RetrievalEngine이 TSU
        데이터셋을 직접 로드하므로 이것만으로 검색 대상에서 제외된다.
-    2. {stem}_chunks.txt / {stem}.md를 scripts/cleanup_legacy_outputs.py와
-       동일한 패턴(backups/excluded_documents/{YYYYMMDD}/로 이동)으로 정리.
+    2. {stem}_chunks.txt / {stem}_chunks_meta.json / {stem}.md를
+       scripts/cleanup_legacy_outputs.py와 동일한 패턴(backups/
+       excluded_documents/{YYYYMMDD}/로 이동)으로 정리. [2026-08-24
+       사용자 요청 "원본 파일이 삭제되면 그와 관련된 모든 처리 파일,
+       청크를 다 삭제" — _chunks_meta.json(청킹 미리보기 스냅샷,
+       ui/pages/library.py::_save_chunk_snapshot())이 빠져있던 걸
+       추가해 파생 산출물 3종을 전부 정리한다.]
 
     execute=False(기본)면 dry-run — 무엇이 지워지고 이동될지만 계산해
     반환하고 파일/데이터셋은 건드리지 않는다.
@@ -340,7 +345,11 @@ def exclude_document_from_index(
 
     stem = make_safe_stem(record.get("source_file", ""))
     out_dir = Path(output_dir)
-    candidates = [out_dir / f"{stem}_chunks.txt", out_dir / f"{stem}.md"]
+    candidates = [
+        out_dir / f"{stem}_chunks.txt",
+        out_dir / f"{stem}_chunks_meta.json",
+        out_dir / f"{stem}.md",
+    ]
     existing_files = [f for f in candidates if f.exists()]
 
     timestamp = datetime.now().strftime("%Y%m%d")

@@ -121,3 +121,18 @@ class TestExcludeDocumentFromIndex:
             assert False, "expected KeyError"
         except KeyError:
             pass
+
+    def test_execute_also_moves_chunks_meta_json(self, tmp_path, monkeypatch):
+        """[버그 수정 2026-08-24] chunks_meta.json(청킹 미리보기 스냅샷)이
+        정리 대상에서 빠져 있어, 문서를 제외/삭제해도 그 산출물만 output에
+        영구히 남았다(사용자 요청: "원본 파일이 삭제되면 그와 관련된 모든
+        처리 파일, 청크를 다 삭제")."""
+        self._seed(tmp_path, monkeypatch)
+        (tmp_path / "a_md_chunks_meta.json").write_text("{}", encoding="utf-8")
+
+        result = exclude_document_from_index("d1", output_dir=str(tmp_path), execute=True)
+
+        assert not (tmp_path / "a_md_chunks_meta.json").exists()
+        assert len(result["moved_files"]) == 3
+        for f in result["moved_files"]:
+            assert os.path.exists(f)

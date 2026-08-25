@@ -38,6 +38,7 @@ from core.index_orchestrator import (
     list_trashed_raw_files,
     restore_raw_source,
 )
+from core.raw_hygiene import find_exact_duplicate_raw_files
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
@@ -102,6 +103,10 @@ def render_library_page() -> None:
     # ── Pipeline Summary (from Dashboard) ──────────────────────
     _render_library_summary()
     _render_doc_type_summary()
+
+    # ── 중복 파일 검사 (2026-08-24 사용자 요청: "동일한 내용 듀플리케이트
+    # 파일은 하나로 정리해야 한다 — 워닝하고 삭제하도록 하라") ──────
+    _render_duplicate_check_section()
 
     # ── Search Bar ─────────────────────────────────────────────
     _render_search_bar()
@@ -622,6 +627,59 @@ def _render_delete_section(source_filename: str) -> None:
                 st.success(f"삭제되었습니다{detail}. 휴지통: {result['trash_path']}")
                 _clear_selected_document()
                 st.rerun()
+
+
+def _render_duplicate_check_section() -> None:
+    """[2026-08-24 사용자 요청] "원본 폴더에 동일한 내용 듀플리케이트
+    파일은 하나로 정리해야 한다. 워닝하고 삭제하도록 하라."
+
+    RAW 전체를 바이트 단위로 다시 읽어야 해서(core/raw_hygiene.py::
+    find_exact_duplicate_raw_files()) 페이지를 열 때마다 자동 실행하지
+    않고 버튼을 눌렀을 때만 검사한다 — 문서가 많아지면 매 렌더마다
+    수십 MB씩 다시 읽는 건 낭비. 삭제는 delete_raw_source()를 그대로
+    재사용해 RAW 원본 + 처리 파일/청크(.md, _chunks.txt,
+    _chunks_meta.json)까지 한 번에 정리한다("원본이 삭제되면 관련
+    처리 파일도 다 삭제"를 자동으로 만족).
+    """
+    # 검사를 실행한 뒤에는 결과가 보이게 열어둔다 — expanded=False 고정이면
+    # "지금 검사" 버튼 클릭 자체가 rerun을 일으켜 expander가 다시 접히고
+    # 결과가 안 보이는 버그가 있었다(2026-08-24 실측).
+    with st.expander("중복 파일 검사", expanded="_dup_check_groups" in st.session_state):
+        st.caption(
+            "RAW 폴더 안에서 내용이 완전히 동일한 파일을 찾습니다(바이트 단위 비교, "
+            "재스캔본처럼 내용만 비슷한 경우는 잡히지 않습니다). 전체를 다시 읽어야 해서 "
+            "버튼을 눌렀을 때만 검사합니다."
+        )
+        if st.button("지금 검사", key="dup_check_btn"):
+            st.session_state["_dup_check_groups"] = find_exact_duplicate_raw_files()
+
+        groups = st.session_state.get("_dup_check_groups")
+        if groups is None:
+            return
+        if not groups:
+            st.success("완전히 동일한 내용의 중복 파일이 없습니다.")
+            return
+
+        st.warning(
+            f"내용이 완전히 동일한 파일이 {len(groups)}그룹 있습니다. "
+            "하나만 남기고 나머지는 삭제(휴지통 이동)하는 걸 권장합니다."
+        )
+        for i, group in enumerate(groups):
+            size_kb = group["files"][0]["size"] / 1024
+            st.markdown(f"**그룹 {i + 1}** — {len(group['files'])}개, 각 {size_kb:.0f} KB (내용 동일)")
+            for f in group["files"]:
+                c1, c2 = st.columns([4, 1])
+                with c1:
+                    st.caption(f["name"])
+                with c2:
+                    if st.button("삭제", key=f"dup_del_{f['path']}", use_container_width=True):
+                        result = delete_raw_source(f["name"], reason="중복 파일 정리", execute=True)
+                        if result["found"]:
+                            st.success(f"'{f['name']}' 삭제됨.")
+                            st.session_state.pop("_dup_check_groups", None)
+                            st.rerun()
+                        else:
+                            st.error("삭제에 실패했습니다.")
 
 
 def _render_trash_section() -> None:
