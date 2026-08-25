@@ -39,7 +39,12 @@ from core.index_orchestrator import (
     list_trashed_raw_files,
     restore_raw_source,
 )
-from core.raw_hygiene import find_exact_duplicate_raw_files, maybe_purge_expired_trash
+from core.raw_hygiene import (
+    find_exact_duplicate_raw_files,
+    maybe_purge_expired_trash,
+    find_orphaned_processed_documents,
+    cleanup_orphaned_document,
+)
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
@@ -100,6 +105,10 @@ def render_library_page() -> None:
     _apply_library_styles()
     page = BasePage(title="자료 찾기", icon="")
     page.render_header()
+
+    # ── 원본 소실 알림 (2026-08-24 사용자 요청: "원본 파일이 웹 밖에서
+    # 지워지면 사용자에게 노티스 하고 관련 파일을 다 삭제하도록 하라") ──
+    _render_orphaned_documents_notice()
 
     # ── Pipeline Summary (from Dashboard) ──────────────────────
     _render_library_summary()
@@ -628,6 +637,48 @@ def _render_delete_section(source_filename: str) -> None:
                 st.success(f"삭제되었습니다{detail}. 휴지통: {result['trash_path']}")
                 _clear_selected_document()
                 st.rerun()
+
+
+def _render_orphaned_documents_notice() -> None:
+    """[2026-08-24 사용자 요청] "원본 파일이 웹 밖에서 지워지면 사용자에게
+    노티스 하고 관련 파일을 다 삭제하도록 하라".
+
+    앱의 "자료 삭제" 버튼이 아니라 Finder/터미널에서 직접 RAW 파일을
+    지운 경우를 감지한다(2026-08-24 실측: 사용자가 RAW/설교_분리/
+    파일들을 Finder에서 직접 지워, 처리·색인 데이터만 고아로 남았던
+    실제 사례). 파일 존재 여부만 확인해 가볍기 때문에(내용을 읽지
+    않음) 중복 검사와 달리 페이지를 열 때마다 자동으로 확인한다.
+
+    자동으로 지우지는 않는다 — 오늘 세션에서 "원본이 사라진 문서"
+    상당수가 실은 사용자가 되찾고 싶어한 것으로 드러난 적이 있어(37건
+    복원, 13건만 실제 정리 대상이었음), 조용히 자동 삭제하면 사용자가
+    되찾고 싶은 걸 놓칠 위험이 있다. 눈에 띄게 알리고, 정리는 사용자가
+    버튼으로 결정한다.
+    """
+    orphans = find_orphaned_processed_documents()
+    if not orphans:
+        return
+
+    st.warning(
+        f"⚠️ RAW 원본이 사라진 처리 완료 문서가 {len(orphans)}건 있습니다 — "
+        "앱이 아니라 Finder나 다른 곳에서 직접 지워진 것으로 보입니다. "
+        "원본이 다시 필요하면 먼저 RAW 폴더에 복사해 두고, 필요 없으면 "
+        "아래에서 처리 데이터를 정리하세요."
+    )
+    with st.expander(f"원본이 사라진 문서 {len(orphans)}건", expanded=True):
+        for orphan in orphans:
+            c1, c2 = st.columns([4, 1])
+            with c1:
+                st.markdown(f"**{orphan['source_file']}**")
+                st.caption(f"청크 {orphan['chunk_count']}개 — RAW에 원본 없음")
+            with c2:
+                if st.button("정리", key=f"orphan_cleanup_{orphan['document_id']}", use_container_width=True):
+                    result = cleanup_orphaned_document(orphan["document_id"])
+                    st.success(
+                        f"'{orphan['source_file']}' 처리 데이터를 정리했습니다 "
+                        f"(색인 {result['purged_tsu_records']}건, 파일 {len(result['moved_files'])}개 → {result['backup_dir']})."
+                    )
+                    st.rerun()
 
 
 def _render_duplicate_check_section() -> None:

@@ -19,12 +19,20 @@ from __future__ import annotations
 
 import hashlib
 import shutil
+import unicodedata
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR, SUPPORTED_EXTENSIONS, TRASH_RETENTION_DAYS
-from core.index_orchestrator import BACKUP_ROOT
+from core.config import (
+    DEFAULT_RAW_DIR,
+    DEFAULT_OUTPUT_DIR,
+    SUPPORTED_EXTENSIONS,
+    TRASH_RETENTION_DAYS,
+    registry_path_for,
+)
+from core.index_orchestrator import BACKUP_ROOT, exclude_document_from_index
+from core.identity_registry import load_identity_registry, save_identity_registry, registry_lock, exclude_document
 
 
 def _hash_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
@@ -134,3 +142,71 @@ def maybe_purge_expired_trash(
     marker.parent.mkdir(parents=True, exist_ok=True)
     marker.write_text(today, encoding="utf-8")
     return result
+
+
+def find_orphaned_processed_documents(
+    raw_dir: str = DEFAULT_RAW_DIR,
+    output_dir: str = DEFAULT_OUTPUT_DIR,
+) -> list[dict[str, Any]]:
+    """[2026-08-24 사용자 요청: "원본 파일이 웹 밖에서 지워지면 사용자에게
+    노티스"] 정상 등록된 문서 중 RAW 원본이 더 이상 존재하지 않는 것을
+    찾는다 — 앱의 "자료 삭제" 버튼이 아니라 Finder/터미널에서 직접
+    RAW 파일을 지운 경우를 감지한다(2026-08-24 실측 확인된 실제 사례:
+    사용자가 RAW/설교_분리/의 파일을 Finder에서 직접 지워, 처리·색인
+    데이터만 고아로 남았었다).
+
+    RAW 파일 목록은 존재 여부만 확인(내용을 읽지 않음)하므로 가볍다 —
+    find_exact_duplicate_raw_files()와 달리 페이지 렌더마다 실행해도
+    된다. 재귀 탐색 + NFC 정규화는 processing.py/dashboard.py와 동일
+    기준(2026-08-23/24 반복 확인된 근본원인).
+
+    Returns:
+        [{"document_id", "source_file", "chunk_count"}, ...]
+        superseded/이미 EXCLUDED인 문서는 제외 — "정상 등록 상태인데
+        원본만 사라진" 경우만 대상으로 한다.
+    """
+    raw_root = Path(raw_dir)
+    raw_files = {
+        unicodedata.normalize("NFC", f.name)
+        for f in raw_root.rglob("*")
+        if f.is_file() and not f.name.startswith(".") and f.suffix.lower() in SUPPORTED_EXTENSIONS
+    } if raw_root.exists() else set()
+
+    registry_path = registry_path_for(output_dir)
+    registry = load_identity_registry(registry_path)
+
+    orphans = []
+    for doc_id, doc in registry.get("documents", {}).items():
+        if doc.get("ingest_status") != "PROCESSED":
+            continue
+        if doc.get("superseded_by") is not None:
+            continue
+        source_file = doc.get("source_file", "")
+        if unicodedata.normalize("NFC", source_file) not in raw_files:
+            orphans.append({
+                "document_id": doc_id,
+                "source_file": source_file,
+                "chunk_count": doc.get("chunk_count", 0),
+            })
+
+    orphans.sort(key=lambda o: o["source_file"])
+    return orphans
+
+
+def cleanup_orphaned_document(document_id: str, output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
+    """[2026-08-24 사용자 요청] 원본이 사라진 문서의 처리 파일/청크/색인을
+    전부 정리한다 — RAW 원본이 이미 없으므로 delete_raw_source()처럼
+    파일을 휴지통으로 옮기는 단계만 빠지고, 나머지(TSU/후보색인/성경색인
+    purge + .md/_chunks.txt/_chunks_meta.json 이동 + registry EXCLUDED
+    표시)는 exclude_document_from_index()/exclude_document()를 그대로
+    재사용한다 — delete_raw_source()와 동일한 정리 로직, 다른 진입점.
+
+    Returns: exclude_document_from_index()의 결과 dict.
+    """
+    cleanup = exclude_document_from_index(document_id, output_dir=output_dir, execute=True)
+    registry_path = registry_path_for(output_dir)
+    with registry_lock(registry_path):
+        registry = load_identity_registry(registry_path)
+        exclude_document(registry, document_id, reason="RAW 원본이 앱 밖에서 삭제됨 - 자동 감지")
+        save_identity_registry(registry, registry_path)
+    return cleanup

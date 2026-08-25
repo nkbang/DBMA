@@ -16,7 +16,10 @@ from core.raw_hygiene import (
     find_exact_duplicate_raw_files,
     purge_expired_trash,
     maybe_purge_expired_trash,
+    find_orphaned_processed_documents,
+    cleanup_orphaned_document,
 )
+from core.identity_registry import save_identity_registry, load_identity_registry, _empty_registry
 
 
 class TestFindExactDuplicateRawFiles:
@@ -167,6 +170,133 @@ class TestMaybePurgeExpiredTrash:
 
         assert first is not None
         assert second is None  # 같은 날 두 번째 호출은 마커 때문에 건너뜀
+
+
+def _write_registry(path, documents: dict) -> None:
+    registry = _empty_registry()
+    registry["documents"] = documents
+    save_identity_registry(registry, str(path))
+
+
+def _make_doc(doc_id: str, source_file: str, **overrides) -> dict:
+    base = {
+        "document_id": doc_id,
+        "file_hash": doc_id,
+        "source_file": source_file,
+        "chunk_count": 2,
+        "ingest_status": "PROCESSED",
+        "superseded_by": None,
+    }
+    base.update(overrides)
+    return base
+
+
+class TestFindOrphanedProcessedDocuments:
+    """[2026-08-24 사용자 요청: "원본 파일이 웹 밖에서 지워지면 사용자에게
+    노티스"]"""
+
+    def test_no_orphans_when_all_raw_present(self, tmp_path, monkeypatch):
+        raw_dir = tmp_path / "RAW"
+        raw_dir.mkdir()
+        (raw_dir / "a.pdf").write_bytes(b"x")
+        output_dir = tmp_path / "output"
+        registry_path = output_dir / "registry" / "documents.json"
+        registry_path.parent.mkdir(parents=True)
+        _write_registry(registry_path, {"d1": _make_doc("d1", "a.pdf")})
+
+        assert find_orphaned_processed_documents(str(raw_dir), str(output_dir)) == []
+
+    def test_missing_raw_file_is_flagged(self, tmp_path, monkeypatch):
+        raw_dir = tmp_path / "RAW"
+        raw_dir.mkdir()
+        output_dir = tmp_path / "output"
+        registry_path = output_dir / "registry" / "documents.json"
+        registry_path.parent.mkdir(parents=True)
+        _write_registry(registry_path, {"d1": _make_doc("d1", "gone.pdf")})
+
+        orphans = find_orphaned_processed_documents(str(raw_dir), str(output_dir))
+        assert len(orphans) == 1
+        assert orphans[0]["document_id"] == "d1"
+        assert orphans[0]["source_file"] == "gone.pdf"
+
+    def test_excluded_document_not_flagged(self, tmp_path):
+        """이미 제외 처리된 문서는 원본이 없어도 재알림 대상이 아니다 —
+        사용자가 이미 처리한 케이스."""
+        raw_dir = tmp_path / "RAW"
+        raw_dir.mkdir()
+        output_dir = tmp_path / "output"
+        registry_path = output_dir / "registry" / "documents.json"
+        registry_path.parent.mkdir(parents=True)
+        _write_registry(registry_path, {
+            "d1": _make_doc("d1", "gone.pdf", ingest_status="EXCLUDED"),
+        })
+        assert find_orphaned_processed_documents(str(raw_dir), str(output_dir)) == []
+
+    def test_superseded_document_not_flagged(self, tmp_path):
+        raw_dir = tmp_path / "RAW"
+        raw_dir.mkdir()
+        output_dir = tmp_path / "output"
+        registry_path = output_dir / "registry" / "documents.json"
+        registry_path.parent.mkdir(parents=True)
+        _write_registry(registry_path, {
+            "d1": _make_doc("d1", "gone.pdf", superseded_by="d2"),
+        })
+        assert find_orphaned_processed_documents(str(raw_dir), str(output_dir)) == []
+
+    def test_nfd_vs_nfc_filename_not_falsely_flagged(self, tmp_path):
+        import unicodedata
+        raw_dir = tmp_path / "RAW"
+        raw_dir.mkdir()
+        nfd_name = unicodedata.normalize("NFD", "고린도전서.pdf")
+        nfc_name = unicodedata.normalize("NFC", "고린도전서.pdf")
+        (raw_dir / nfd_name).write_bytes(b"x")
+
+        output_dir = tmp_path / "output"
+        registry_path = output_dir / "registry" / "documents.json"
+        registry_path.parent.mkdir(parents=True)
+        _write_registry(registry_path, {"d1": _make_doc("d1", nfc_name)})
+
+        assert find_orphaned_processed_documents(str(raw_dir), str(output_dir)) == []
+
+    def test_file_in_raw_subfolder_not_falsely_flagged(self, tmp_path):
+        raw_dir = tmp_path / "RAW"
+        sub = raw_dir / "설교_분리"
+        sub.mkdir(parents=True)
+        (sub / "sermon.md").write_bytes(b"x")
+
+        output_dir = tmp_path / "output"
+        registry_path = output_dir / "registry" / "documents.json"
+        registry_path.parent.mkdir(parents=True)
+        _write_registry(registry_path, {"d1": _make_doc("d1", "sermon.md")})
+
+        assert find_orphaned_processed_documents(str(raw_dir), str(output_dir)) == []
+
+
+class TestCleanupOrphanedDocument:
+    def test_purges_tsu_and_marks_excluded(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_DATASET_PATH", str(tmp_path / "tsu.jsonl"))
+        monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_MANIFEST_PATH", str(tmp_path / "manifest.json"))
+        monkeypatch.setattr("core.index_orchestrator.BACKUP_ROOT", tmp_path / "backups")
+        monkeypatch.setattr("core.index_orchestrator.DEFAULT_BIBLE_INDEX_PATH", str(tmp_path / "bible.sqlite3"))
+        monkeypatch.setattr("core.index_orchestrator.DEFAULT_CANDIDATE_INDEX_DIR", str(tmp_path / "tantivy"))
+
+        output_dir = tmp_path / "output"
+        registry_path = output_dir / "registry" / "documents.json"
+        registry_path.parent.mkdir(parents=True)
+        _write_registry(registry_path, {"d1": _make_doc("d1", "gone.pdf")})
+
+        import json
+        tsu_path = tmp_path / "tsu.jsonl"
+        tsu_path.write_text(
+            json.dumps({"document_id": "d1", "source_file": "gone.pdf", "content": "x"}) + "\n",
+            encoding="utf-8",
+        )
+
+        result = cleanup_orphaned_document("d1", output_dir=str(output_dir))
+
+        assert result["purged_tsu_records"] == 1
+        reg = load_identity_registry(str(registry_path))
+        assert reg["documents"]["d1"]["ingest_status"] == "EXCLUDED"
 
 
 if __name__ == "__main__":
