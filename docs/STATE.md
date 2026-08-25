@@ -671,6 +671,53 @@ CUE가 C1 build+audit을 겸행, 이후(045~049)는 C1(Cline)에게 정식
 
 ---
 
+## C1 역할 점검 + DBMA-ECP 잔여 Hook 제거 (2026-08-24, CUE 기록)
+
+**결과**: C1(Cline)이 `.clinerules/`를 통해 자기 역할을 정확히 인지하고
+있음을 확인. 그 과정에서 발견한 무관 저장소(DBMA-ECP)의 잔여
+post-commit hook 오작동을 원인까지 추적해 완전 제거.
+
+### C1 역할 인지 검증
+
+- `.clinerules/*.md`(DBMA_CORE_RULES.md, dbma-engineering.md,
+  NAE_C1_FORENSIC_AUDITOR_RULES.md, DBMA_BRAND_RULES.md,
+  DBMA_VERIFICATION_RULES.md) 전체를 실제 C1 공식 모델
+  (`qwen3.6:35b-DBMAcode`)에 그대로 주입해 역할 질의 → 기본
+  역할(DBMA Core Software Engineer)과 NAE Forensic Audit 역할
+  전환 조건·금지사항을 정확히 재현함을 확인.
+- `NAE_C1_FORENSIC_AUDITOR_RULES.md` ↔ 원본
+  `docs/NAE_C1_FORENSIC_AUDITOR_SPEC_v1.md` 대조 → 드리프트 없음.
+  단, spec 문서의 존재하지 않는 "§12 참고" 오류 참조를 발견해
+  실제 검증 결과로 대체 수정(커밋 `1d54237`).
+
+### DBMA-ECP 잔여 Hook 오작동 발견·제거
+
+- 위 검증 중 `.git/hooks/post-commit`(실행권한 없음 상태)을 발견,
+  권한을 켜고 실제 트리거해본 결과 **DBMA 커밋이 아니라 별개
+  저장소 `~/DBMA-ECP`의 정지된 2026-07-13 스냅샷을 잘못된
+  파이썬(`/opt/homebrew` python3.14, pytest 미설치)으로 검사**해
+  매 커밋마다 가짜 `repair_task`를 `Cline1`에게 생성함을 확인.
+- `docs/CHANGELOG.md:95-98`(2026-07-14)에 DBMA-ECP는 이미
+  **"향후 개발에서 제외"** 결정이 기록돼 있었음(DBMA-ECP 자동화가
+  `SPRINT2_FEATURES`를 무단 재활성화하는 충돌 사고 때문) — 즉 이
+  hook은 그 제외 결정 이후에도 한 달 넘게 정리되지 않고 남아있던
+  잔재였다.
+- 조치: DBMA `.git/hooks/post-commit` 완전 삭제. DBMA-ECP 쪽은
+  staged된 미커밋 작업(controller.py 등 50개 파일, 7711줄, 6주간
+  방치)을 사용자 지시로 baseline 커밋(`ad54fd6`)까지
+  `git reset --hard`로 폐기, pycache 잔재 정리. DBMA-ECP는 hook
+  없이 baseline 상태로만 유지(재개 계획 없으면 재손대지 않음).
+- 상세 경위는 memory `project_dbma_ecp_hook_removed`에 기록.
+
+### 손대지 않은 것
+
+- `docs/CHANGELOG.md`, `docs/architecture/DBMA-dbma-Operational-Status-v1.md`의
+  DBMA-ECP 이력 언급 — 정식 기록이라 보존.
+- `.git_corrupted_20260711/`, `.git_initial_corrupt/`(DBMA-ECP 내
+  과거 git 손상 복구 백업으로 추정) — 범위 밖, 무접촉.
+
+---
+
 ## 비고
 
 이 문서는 작업 상태를 빠르게 확인하기 위한 기준 문서다.
