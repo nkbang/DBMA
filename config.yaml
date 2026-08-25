@@ -121,6 +121,10 @@ ui:
   chunk_overlap: 120
   use_ocr: false
 
+# ── Maintenance (2026-08-24, 휴지통 자동 비우기) ────────
+maintenance:
+  trash_retention_days: 30
+
 # ── Optional Modules (NAE-OPTIONAL-MODULE-PACKAGING-001) ─────
 # DBMA Core는 이 섹션이 없거나 전부 disabled여도 완전히 정상 동작한다.
 # 내부 코드 식별자는 "nae_pd"(NAE Public Theology Domain — Dagg/Hiscox 등

@@ -8,10 +8,15 @@
 
 import sys
 import os
+from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from core.raw_hygiene import find_exact_duplicate_raw_files
+from core.raw_hygiene import (
+    find_exact_duplicate_raw_files,
+    purge_expired_trash,
+    maybe_purge_expired_trash,
+)
 
 
 class TestFindExactDuplicateRawFiles:
@@ -70,6 +75,98 @@ class TestFindExactDuplicateRawFiles:
         groups = find_exact_duplicate_raw_files(str(tmp_path))
         assert len(groups) == 1
         assert len(groups[0]["files"]) == 3
+
+
+class TestPurgeExpiredTrash:
+    """[2026-08-24 사용자 요청: "휴지통 자동 비우기 정책"]"""
+
+    def test_no_backup_root_returns_zero(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", tmp_path / "backups")
+        assert purge_expired_trash() == {"purged_dirs": [], "purged_file_count": 0}
+
+    def test_old_trash_dir_is_purged(self, tmp_path, monkeypatch):
+        backup_root = tmp_path / "backups"
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", backup_root)
+
+        old_dir = backup_root / "deleted_raw_20260101"
+        old_dir.mkdir(parents=True)
+        (old_dir / "a.pdf").write_bytes(b"x")
+        (old_dir / "b.pdf").write_bytes(b"y")
+
+        result = purge_expired_trash(retention_days=30, now=datetime(2026, 8, 24))
+
+        assert result == {"purged_dirs": [str(old_dir)], "purged_file_count": 2}
+        assert not old_dir.exists()
+
+    def test_recent_trash_dir_is_kept(self, tmp_path, monkeypatch):
+        backup_root = tmp_path / "backups"
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", backup_root)
+
+        recent_dir = backup_root / "deleted_raw_20260820"
+        recent_dir.mkdir(parents=True)
+        (recent_dir / "a.pdf").write_bytes(b"x")
+
+        result = purge_expired_trash(retention_days=30, now=datetime(2026, 8, 24))
+
+        assert result == {"purged_dirs": [], "purged_file_count": 0}
+        assert recent_dir.exists()
+
+    def test_exactly_at_boundary_is_purged(self, tmp_path, monkeypatch):
+        """정확히 retention_days 지난 경계는 삭제(>=)."""
+        backup_root = tmp_path / "backups"
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", backup_root)
+
+        now = datetime(2026, 8, 24)
+        boundary_dir = backup_root / (now - timedelta(days=30)).strftime("deleted_raw_%Y%m%d")
+        boundary_dir.mkdir(parents=True)
+        (boundary_dir / "a.pdf").write_bytes(b"x")
+
+        result = purge_expired_trash(retention_days=30, now=now)
+        assert result["purged_dirs"] == [str(boundary_dir)]
+
+    def test_excluded_documents_dirs_are_never_touched(self, tmp_path, monkeypatch):
+        """"휴지통"은 deleted_raw_*만 가리킨다 — excluded_documents_*는
+        범위 밖(모듈 docstring 근거)."""
+        backup_root = tmp_path / "backups"
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", backup_root)
+
+        old_excluded = backup_root / "excluded_documents_20260101"
+        old_excluded.mkdir(parents=True)
+        (old_excluded / "a.md").write_bytes(b"x")
+
+        purge_expired_trash(retention_days=30, now=datetime(2026, 8, 24))
+        assert old_excluded.exists()
+
+    def test_malformed_dir_name_is_skipped_not_crashed(self, tmp_path, monkeypatch):
+        backup_root = tmp_path / "backups"
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", backup_root)
+        weird_dir = backup_root / "deleted_raw_not-a-date"
+        weird_dir.mkdir(parents=True)
+
+        result = purge_expired_trash(retention_days=30, now=datetime(2026, 8, 24))
+        assert result == {"purged_dirs": [], "purged_file_count": 0}
+        assert weird_dir.exists()
+
+
+class TestMaybePurgeExpiredTrash:
+    def test_first_call_runs_check_and_writes_marker(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", tmp_path / "backups")
+        output_dir = tmp_path / "output"
+
+        result = maybe_purge_expired_trash(output_dir=str(output_dir))
+
+        assert result == {"purged_dirs": [], "purged_file_count": 0}
+        assert (output_dir / ".trash_cleanup_marker").exists()
+
+    def test_second_call_same_day_is_skipped(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", tmp_path / "backups")
+        output_dir = tmp_path / "output"
+
+        first = maybe_purge_expired_trash(output_dir=str(output_dir))
+        second = maybe_purge_expired_trash(output_dir=str(output_dir))
+
+        assert first is not None
+        assert second is None  # 같은 날 두 번째 호출은 마커 때문에 건너뜀
 
 
 if __name__ == "__main__":

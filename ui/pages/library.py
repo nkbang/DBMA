@@ -22,6 +22,7 @@ from core.config import (
     DEFAULT_OUTPUT_DIR,
     DEFAULT_REGISTRY_PATH,
     DEFAULT_SAMPLE_LIBRARY_PATH,
+    TRASH_RETENTION_DAYS,
 )
 from core.processing import build_converter, build_splitter, process_one_file
 from core.identity_registry import (
@@ -38,7 +39,7 @@ from core.index_orchestrator import (
     list_trashed_raw_files,
     restore_raw_source,
 )
-from core.raw_hygiene import find_exact_duplicate_raw_files
+from core.raw_hygiene import find_exact_duplicate_raw_files, maybe_purge_expired_trash
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
@@ -683,21 +684,35 @@ def _render_duplicate_check_section() -> None:
 
 
 def _render_trash_section() -> None:
-    """[2026-08-24 사용자 요청] "휴지통이라면 복구도 가능해야 한다".
+    """[2026-08-24 사용자 요청] "휴지통이라면 복구도 가능해야 한다" +
+    "휴지통 자동 비우기 정책도 만들어줘".
 
     _render_delete_section()이 backups/deleted_raw_.../로 옮긴 파일들을
     나열하고, 각각 "복구" 버튼으로 RAW에 되돌린다
     (core/index_orchestrator.py::list_trashed_raw_files()/
     restore_raw_source()). 문서 상세와 무관하게 항상 존재하는 전역
     목록이라 문서 선택 여부와 상관없이 페이지 맨 아래에 둔다.
+
+    렌더마다 core/raw_hygiene.py::maybe_purge_expired_trash()를 불러
+    보관기간(기본 30일, config.yaml::maintenance.trash_retention_days)
+    지난 항목을 자동으로 영구 삭제한다 — 실제 검사는 하루 1회로
+    제한(마커 파일)돼 있어 페이지를 열 때마다 backups/를 다시 훑지
+    않는다.
     """
+    auto_purged = maybe_purge_expired_trash()
+    if auto_purged and auto_purged["purged_dirs"]:
+        st.info(
+            f"보관기간({TRASH_RETENTION_DAYS}일)이 지난 휴지통 항목 "
+            f"{auto_purged['purged_file_count']}개를 자동으로 정리했습니다."
+        )
+
     trashed = list_trashed_raw_files()
     with st.expander(f"휴지통 ({len(trashed)})", expanded=False):
         if not trashed:
-            st.caption("휴지통이 비어 있습니다.")
+            st.caption(f"휴지통이 비어 있습니다. (보관기간 {TRASH_RETENTION_DAYS}일 후 자동 삭제)")
             return
 
-        st.caption("삭제된 자료를 여기서 복구할 수 있습니다.")
+        st.caption(f"삭제된 자료를 여기서 복구할 수 있습니다. (보관기간 {TRASH_RETENTION_DAYS}일 후 자동 삭제)")
         for item in trashed:
             c1, c2 = st.columns([4, 1])
             with c1:

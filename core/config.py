@@ -277,3 +277,11 @@ UI_USE_OCR = _yaml_ui.get("use_ocr", False)
 # ── Sprint 1 출력 형식 ──────────────────────────────────
 _yaml_output = CFG.get("output", {})
 OUTPUT_FORMAT_MD_ONLY = _yaml_output.get("md_only", True)  # True = .md만 생성 (기본값)
+
+# ── 유지보수 (2026-08-24 사용자 요청: "휴지통 자동 비우기 정책") ────
+# backups/deleted_raw_{날짜}/(core/index_orchestrator.py::delete_raw_source()
+# 의 휴지통)가 이 일수보다 오래되면 core/raw_hygiene.py::
+# maybe_purge_expired_trash()가 영구 삭제한다. 사용자가 잘못 삭제해도
+# 되돌릴 시간을 주면서, 무한정 쌓이는 것도 막는 절충값.
+_yaml_maintenance = CFG.get("maintenance", {})
+TRASH_RETENTION_DAYS = _yaml_maintenance.get("trash_retention_days", 30)
