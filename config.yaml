@@ -62,13 +62,18 @@ embedding:
   dimension: 384
 
 # ── Ollama Models (dbma.py UI용) ─────────────────────
-# [베타] 기본 생성 모델을 llama3.1:8b로 낮춤(2026-07-28) — my-theology-bot-v2
-# (llama3.3:70b Q4_K_M)는 128GB 유니파이드 메모리를 요구해 베타 테스터
-# 하드웨어(16GB 기준 최소 스펙)에서 실행 불가. 품질 기준선(골든셋 5.00/5)은
-# 70b 기준 실측치이므로 8b 전환 후 재실측 필요 — scripts/run_sermon_eval.py.
+# [2026-08-25] 기본 생성 모델을 my-theology-bot-v2로 복원 — 2026-07-28에
+# 베타 16GB 호환성 때문에 llama3.1:8b로 낮췄었으나(git blame 참고),
+# 신학 시스템 프롬프트가 없는 llama3.1:8b가 근거 문서 없이도 공허하고
+# 반복적인 답변을 생성하는 문제가 human-runtime-debugging 세션에서
+# 확인됨(fresh-install 상태, "하나님의 공의" 질의). 8b 유지 시 답변
+# 품질 저하가 베타 배포 자체의 신뢰도를 해친다고 판단해 품질을
+# 우선하기로 결정 — 16GB급 기기 호환성은 이번 결정으로 포기함.
+# 재도입하려면 GEN_MODEL_OPTIONS 기반 UI 모델 선택 또는 기기 메모리
+# 감지 분기가 필요(core/config.py:240 GEN_MODEL_OPTIONS 참고).
 ollama:
   default_embed_model: "bge-m3:latest"
-  default_gen_model: "llama3.1:8b"
+  default_gen_model: "my-theology-bot-v2:latest"
   embed_model_options:
     - "bge-m3:latest"
     - "nomic-embed-text"

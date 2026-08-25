@@ -43,6 +43,7 @@ from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from ui.components.citation_card import render_citation_card
+from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
 
 logger = logging.getLogger(__name__)
 
@@ -287,6 +288,98 @@ def _settings_overrides() -> dict:
     return overrides
 
 
+def _format_smith_context(smith_results: list[dict]) -> str:
+    """Format Smith Bible Dictionary results as a distinct context block.
+
+    Results are separated from TSU context with a clear delimiter so the LLM
+    knows these are background reference entries, not scripture passages.
+
+    Args:
+        smith_results: Raw results from search_reference() for Smith entries.
+
+    Returns:
+        Formatted string block, or empty string if no results.
+    """
+    if not smith_results:
+        return ""
+
+    lines = ["[참고 자료: Smith Bible Dictionary]", ""]
+    for i, entry in enumerate(smith_results, 1):
+        heading = entry.get("heading_context", "") or entry.get("text", "")[:80]
+        volume = entry.get("volume", "")
+        page = entry.get("page_start")
+        page_info = ""
+        if volume and page:
+            page_info = f" (Vol. {volume}, p.{page})"
+        elif page:
+            page_info = f" (p.{page})"
+
+        text = entry.get("text", "")
+        lines.append(f"[{i}] {heading}{page_info}")
+        lines.append(text)
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+def _inject_smith_context(
+    response: "ResponsePackage",
+    query: str,
+) -> list[dict]:
+    """Check Smith activation and inject context into the response.
+
+    This is a side-effect function that mutates `response.llm_context_block`
+    in-place to append Smith results. It also returns Smith results for
+    potential display in the UI.
+
+    Args:
+        response: The ResponsePackage from TSU retrieval.
+        query: The original user question.
+
+    Returns:
+        Smith results list (may be empty if not activated or no results).
+    """
+    # Check if Smith should be activated for this query
+    if not should_activate_smith(query):
+        return []
+
+    # Rewrite query for better Smith search
+    search_query = rewrite_query_for_smith(query) or query
+
+    # Search Smith reference corpus (fault-isolated — never raises)
+    try:
+        from NAE.reference_retrieval_adapter import search_reference
+        smith_results = search_reference(search_query, top_k=3)
+    except Exception as e:
+        logger.warning("[chat] Smith retrieval failed (TSU unaffected): %s", e)
+        return []
+
+    # Filter to only Smith Bible Dictionary entries
+    smith_entries = [
+        r for r in smith_results
+        if "smith" in str(r.get("source_id", "")).lower()
+        or "smith" in str(r.get("volume", "")).lower()
+    ]
+
+    if not smith_entries:
+        return []
+
+    # Format Smith context block
+    smith_context = _format_smith_context(smith_entries)
+
+    # Append to existing TSU context (if any) — distinct section
+    if response.llm_context_block:
+        response.llm_context_block += f"\n\n{smith_context}"
+    else:
+        response.llm_context_block = smith_context
+
+    logger.info(
+        "[chat] Smith Bible Dictionary activated for query=%r → %d entries injected",
+        query[:50], len(smith_entries),
+    )
+    return smith_entries
+
+
 def generate_answer(
     question: str,
     *,
@@ -300,6 +393,10 @@ def generate_answer(
     chat_messages session state or rendering anything.  Designed to be
     imported by research.py so both pages share the same GenerationService
     call path.
+
+    SPRINT34-SMITH-PHASEB: Smith Bible Dictionary context is now injected
+    between TSU retrieval and generation when query intent matches dictionary-
+    style lookups (proper nouns, theological terms, definition-seeking).
 
     Parameters
     ----------
@@ -327,6 +424,10 @@ def generate_answer(
     except Exception as e:
         logger.warning("Retrieval failed in generate_answer: %s", e)
         return ("", [])
+
+    # SPRINT34-SMITH-PHASEB: Inject Smith Bible Dictionary context
+    # between TSU retrieval and generation — fault-isolated, zero regression.
+    smith_results = _inject_smith_context(response, question)
 
     # Even if retrieval returns no results, try generation (may still produce
     # a useful answer from system prompt / prior context).

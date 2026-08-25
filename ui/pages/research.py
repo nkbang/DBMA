@@ -31,7 +31,7 @@ from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate, Cit
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 from ui.components.citation_card import render_citation_card
-from ui.pages.chat import generate_answer
+from ui.pages.chat import generate_answer, _is_low_confidence, _render_low_confidence_warning
 
 # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑨] Top1/Top5 click tracking — only
 # meaningful when USE_INVERTED_INDEX routes through HybridQueryProcessor
@@ -274,13 +274,15 @@ def _render_search_interface() -> None:
 
             # Always run AI answer path alongside search (UX-007 §4.1)
             try:
-                answer_text, _sources = generate_answer(
+                answer_text, ai_sources = generate_answer(
                     user_query, conversation_history="", k=user_top_k
                 )
                 st.session_state["research_ai_answer"] = answer_text if answer_text else ""
+                st.session_state["research_ai_low_confidence"] = _is_low_confidence(ai_sources)
             except Exception as e:
                 logger.warning("AI answer generation failed in research page: %s", e)
                 st.session_state["research_ai_answer"] = ""
+                st.session_state["research_ai_low_confidence"] = False
 
             # Show visual feedback
             if "에러" in status_msg:
@@ -305,6 +307,8 @@ def _render_ai_answer() -> None:
         st.caption("검색어를 입력하고 '검색 실행'을 클릭하세요.")
         return
     st.markdown(answer)
+    if st.session_state.get("research_ai_low_confidence"):
+        _render_low_confidence_warning()
 
 
 # ── Search Results ───────────────────────────────────────────────
@@ -935,20 +939,25 @@ def _render_research_page_with_detail() -> None:
             st.markdown("**이어서 질문**")
             q_key = f"followup_q_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
             a_key = f"followup_a_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+            fa_key = f"{a_key}_low_confidence"
             if st.text_input("질문 입력", key=q_key, placeholder="현재 문맥에서 질문하세요"):
                 user_question = st.session_state[q_key]
                 try:
-                    answer_text, _ = generate_answer(
+                    answer_text, fu_sources = generate_answer(
                         user_question,
                         conversation_history="",
                         file_scope=[source_file],
                     )
                     st.session_state[a_key] = answer_text if answer_text else "답변을 생성하지 못했습니다."
+                    st.session_state[fa_key] = _is_low_confidence(fu_sources)
                 except Exception as e:
                     logger.warning("Follow-up question failed: %s", e)
                     st.session_state[a_key] = "답변 생성 중 오류가 발생했습니다."
+                    st.session_state[fa_key] = False
             if a_key in st.session_state and st.session_state[a_key]:
                 st.markdown(st.session_state[a_key])
+                if st.session_state.get(fa_key):
+                    _render_low_confidence_warning()
 
     # ── Bottom row: 3 action buttons ─────────────────────────────
     st.divider()

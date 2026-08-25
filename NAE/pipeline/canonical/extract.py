@@ -1,4 +1,5 @@
-"""Stage 2.1a - extract raw per-page text from hOCR (preferred), OCR TXT, or PDF (fallback)."""
+"""Stage 2.1a - extract raw per-page text from hOCR (preferred), DjVu XML,
+OCR TXT, or PDF (fallback), in that order."""
 from __future__ import annotations
 
 import html
@@ -15,6 +16,16 @@ _HOCR_PAGE_SPLIT_RE = re.compile(r'<div class="ocr_page"')
 _HOCR_PAR_SPLIT_RE = re.compile(r'<p class="ocr_par"')
 _HOCR_LINE_SPLIT_RE = re.compile(r'<span class="ocr_line"')
 _HOCR_WORD_RE = re.compile(r'<span class="ocrx_word"[^>]*>([^<]*)</span>')
+
+# Internet Archive's djvutoxml output: one <OBJECT> per page, mirroring
+# hOCR's ocr_page/ocr_par/ocr_line hierarchy but with a DjVu-specific
+# vocabulary (OBJECT/PARAGRAPH/LINE/WORD). Used when an item has no hOCR
+# but does have djvu.xml — this still carries real page boundaries, unlike
+# IA's flat _djvu.txt dump (see extract_from_ocr docstring below).
+_DJVU_OBJECT_SPLIT_RE = re.compile(r"<OBJECT[ >]")
+_DJVU_PARAGRAPH_SPLIT_RE = re.compile(r"<PARAGRAPH>")
+_DJVU_LINE_SPLIT_RE = re.compile(r"<LINE>")
+_DJVU_WORD_RE = re.compile(r'<WORD coords="[^"]*">([^<]*)</WORD>')
 
 
 @dataclass
@@ -99,6 +110,47 @@ def extract_from_hocr(item_dir: Path) -> ExtractionResult | None:
     return ExtractionResult(pages=pages, source="hocr")
 
 
+def extract_from_djvu_xml(item_dir: Path) -> ExtractionResult | None:
+    """DjVu XML (djvutoxml output), second choice after hOCR.
+
+    Some Internet Archive items ship no hOCR at all but do ship djvu.xml,
+    which still encodes one <OBJECT> per page with PARAGRAPH/LINE/WORD
+    nesting underneath — real page boundaries, just a different tag
+    vocabulary than hOCR. Falling straight through to extract_from_ocr()
+    for such items loses page boundaries entirely: IA's flat _djvu.txt
+    dump has no reliable page-break marker (confirmed on the Smith's
+    Bible Dictionary Hackett/Abbot volumes: 0 form-feed bytes across
+    ~5.8-6.5MB of text, so the whole ~900-page volume collapses into a
+    single "page" and every page-boundary heuristic downstream — header/
+    footer repetition, page-number stripping, TOC/index removal — never
+    fires, identical to the PBC1765 hOCR-vs-flat-text gap documented on
+    extract_from_hocr() above).
+    """
+    xml_path = item_dir / "djvu.xml"
+    if not xml_path.exists() or xml_path.stat().st_size < config.MIN_OCR_BYTES:
+        return None
+    raw_xml = xml_path.read_text(encoding="utf-8", errors="replace")
+    if "<OBJECT" not in raw_xml:
+        return None
+
+    pages: list[str] = []
+    for page_chunk in _DJVU_OBJECT_SPLIT_RE.split(raw_xml)[1:]:
+        paragraphs: list[str] = []
+        for par_chunk in _DJVU_PARAGRAPH_SPLIT_RE.split(page_chunk)[1:]:
+            lines: list[str] = []
+            for line_chunk in _DJVU_LINE_SPLIT_RE.split(par_chunk)[1:]:
+                words = [html.unescape(w).strip() for w in _DJVU_WORD_RE.findall(line_chunk)]
+                line_text = " ".join(w for w in words if w)
+                if line_text:
+                    lines.append(line_text)
+            if lines:
+                paragraphs.append("\n".join(lines))
+        pages.append("\n\n".join(paragraphs))
+    if not pages:
+        return None
+    return ExtractionResult(pages=pages, source="djvu_xml")
+
+
 def extract_from_ocr(item_dir: Path) -> ExtractionResult | None:
     ocr_path = item_dir / "ocr.txt"
     if not ocr_path.exists() or ocr_path.stat().st_size < config.MIN_OCR_BYTES:
@@ -130,9 +182,13 @@ def extract_from_pdf(item_dir: Path) -> ExtractionResult | None:
 
 
 def extract_pages(item_dir: Path) -> ExtractionResult:
-    """hOCR (page-structure-aware) is preferred; plain OCR TXT next; PDF
-    text extraction is the last-resort fallback."""
+    """hOCR (page-structure-aware) is preferred; DjVu XML next (same
+    page-structure guarantee, different vocabulary); plain OCR TXT after
+    that; PDF text extraction is the last-resort fallback."""
     result = extract_from_hocr(item_dir)
+    if result is not None:
+        return result
+    result = extract_from_djvu_xml(item_dir)
     if result is not None:
         return result
     result = extract_from_ocr(item_dir)
