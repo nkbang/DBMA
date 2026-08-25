@@ -225,6 +225,77 @@ class TestHybridRetrieverFileScope:
         assert ids == {"TSU-ROM-001", "TSU-ACT-001"}
 
 
+BIBLE_FILE_SCOPE_FIXTURE_TSUS = QUERY_PLANNER_FIXTURE_TSUS + [
+    {
+        # Same scripture reference as TSU-ROM-828 (ROM 8:28), different
+        # source_file — lets a file_scope test distinguish "found via bible
+        # route" from "found via bible route AND respects file_scope".
+        "tsu_id": "TSU-ROM-828-OTHERFILE",
+        "content": "롬 8:28에 대한 다른 문서의 설명",
+        "title": "다른 로마서 해설",
+        "author": "무명",
+        "source_file": "other_commentary.pdf",
+        "verse_mapping": {"book_id": "ROM", "chapter": 8, "verse_start": 28},
+        "language": "ko",
+    },
+]
+
+
+@pytest.fixture()
+def bible_file_scope_dataset_path(tmp_path):
+    path = tmp_path / "tsu_dataset.jsonl"
+    with open(path, "w", encoding="utf-8") as f:
+        for tsu in BIBLE_FILE_SCOPE_FIXTURE_TSUS:
+            f.write(json.dumps(tsu, ensure_ascii=False) + "\n")
+    return path
+
+
+@pytest.fixture()
+def bible_file_scope_retriever(tmp_path, bible_file_scope_dataset_path):
+    index_dir = tmp_path / "tantivy_index"
+    build_index(bible_file_scope_dataset_path, index_dir)
+    generator = CandidateGenerator(index_dir)
+    tsu_by_id = load_tsu_by_id(str(bible_file_scope_dataset_path))
+
+    bible_index_path = tmp_path / "bible_index.sqlite3"
+    bible_index = BibleIndex(bible_index_path)
+    bible_index.add_tsus(BIBLE_FILE_SCOPE_FIXTURE_TSUS)
+
+    return HybridRetriever(generator, tsu_by_id, bible_index=bible_index)
+
+
+class TestBibleRouteFileScope:
+    """[Bug found 2026-08-25] The "bible" route in HybridRetriever.retrieve()
+    builds candidate_tsu_ids straight from BibleIndex.lookup_scripture_ref()
+    with no file_scope filtering at all — every other route (exact/metadata/
+    hybrid) passes source_files=file_scope to CandidateGenerator.search().
+    Both fixture TSUs match "롬 8:28" (same verse_mapping) but live in
+    different source_file values, so file_scope must be able to tell them
+    apart."""
+
+    def test_bible_route_respects_file_scope(self, bible_file_scope_retriever):
+        parsed = _parser.parse("롬 8:28")
+        results = bible_file_scope_retriever.retrieve(
+            parsed, k_output=10, file_scope=["unrelated.pdf"]
+        )
+        ids = {r.tsu_id for r in results}
+        assert ids == {"TSU-ROM-828"}
+
+    def test_bible_route_file_scope_excludes_other_file(self, bible_file_scope_retriever):
+        parsed = _parser.parse("롬 8:28")
+        results = bible_file_scope_retriever.retrieve(
+            parsed, k_output=10, file_scope=["unrelated.pdf"]
+        )
+        ids = {r.tsu_id for r in results}
+        assert "TSU-ROM-828-OTHERFILE" not in ids
+
+    def test_bible_route_file_scope_none_returns_both(self, bible_file_scope_retriever):
+        parsed = _parser.parse("롬 8:28")
+        results = bible_file_scope_retriever.retrieve(parsed, k_output=10, file_scope=None)
+        ids = {r.tsu_id for r in results}
+        assert ids == {"TSU-ROM-828", "TSU-ROM-828-OTHERFILE"}
+
+
 class TestHybridQueryProcessor:
     """[DBMA-SEARCH-INFRA-001 Phase 2-6] Drop-in replacement for
     core.retrieval.QueryProcessor's .process() interface."""

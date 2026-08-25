@@ -111,6 +111,11 @@ class HybridRetriever:
             for ref in parsed_query.scripture_refs:
                 for tsu_id in self.bible_index.lookup_scripture_ref(ref):
                     if tsu_id not in seen:
+                        # [Bug fix] Respect file_scope the same way other routes do.
+                        if file_scope is not None and (
+                            self.tsu_by_id.get(tsu_id, {}).get("source_file") not in file_scope
+                        ):
+                            continue
                         seen.add(tsu_id)
                         candidate_tsu_ids.append(tsu_id)
             # bm25_score has no meaning for a posting-list hit — every match
