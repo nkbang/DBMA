@@ -22,8 +22,8 @@ Usage:
 from __future__ import annotations
 
 import json
-import os
 import sys
+import unicodedata
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -35,15 +35,28 @@ BATCH_STATE_PATH = OUTPUT_DIR / ".batch_state.json"
 
 def find_output_only_originals() -> list[str]:
     """.batch_state.json의 processed(원본 파일명) 목록 중 RAW에 없는
-    것을 반환한다. RAW 원본이 이미 존재하는 파일은 제외."""
+    것을 반환한다. RAW 원본이 이미 존재하는 파일은 제외.
+
+    [버그 수정 2026-08-24] 두 가지 결함이 있었다:
+    1. os.listdir(RAW_DIR)은 최상위만 봐서 RAW/설교_분리/ 같은 하위
+       폴더의 원본을 전부 "RAW에 없음"으로 오탐(ui/pages/processing.py
+       의 동일 버그, 2026-08-24 수정과 같은 원인).
+    2. 정규화 없이 문자열 비교해서, 한글 파일명이 macOS 파일시스템
+       (NFD)과 등록 시점 경로(NFC)에서 다른 형태를 가지면 실제로
+       RAW에 있는데도 오탐(ui/pages/dashboard.py 등에서 반복 확인된
+       근본원인, 2026-08-23/24).
+    두 수정 다 rglob() 재귀 탐색 + NFC 정규화로 통일한다."""
     if not BATCH_STATE_PATH.exists():
         return []
     state = json.loads(BATCH_STATE_PATH.read_text(encoding="utf-8"))
     processed = state.get("processed", [])
 
-    raw_files = set(os.listdir(RAW_DIR)) if RAW_DIR.exists() else set()
+    raw_files = {
+        unicodedata.normalize("NFC", f.name)
+        for f in RAW_DIR.rglob("*") if f.is_file()
+    } if RAW_DIR.exists() else set()
 
-    return sorted(p for p in processed if p not in raw_files)
+    return sorted(p for p in processed if unicodedata.normalize("NFC", p) not in raw_files)
 
 
 def main() -> None:
