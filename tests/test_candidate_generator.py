@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from core.candidate_generator import CandidateGenerator, build_index
+from core.candidate_generator import CandidateGenerator, build_index, open_or_build_index
 from core.retrieval import ParsedQuery
 
 # NOTE: Tantivy's default tokenizer splits on whitespace only — no Korean
@@ -71,6 +71,59 @@ class TestBuildIndex:
         index_dir = tmp_path / "idx"
         count = build_index(dataset_path, index_dir)
         assert count == 3
+
+
+class TestOpenOrBuildIndexStaleness:
+    """[Bug tracked since C1-TASK-ORDER-050-REPORT.md §5 "영어 쿼리 결과
+    없음": BM25 인덱스(~80,000 docs)가 현재 tsu_by_id(53,963 entries)와
+    데이터가 안 맞아 결과가 필터링됨] open_or_build_index() only checks
+    whether meta.json exists — never whether the on-disk index still
+    matches the current dataset on disk. Once a dataset changes (grows,
+    shrinks, or gets reprocessed) without the index_dir also being wiped,
+    every future call silently keeps serving the stale index forever."""
+
+    def test_stale_index_is_rebuilt_when_dataset_changes(self, tmp_path, dataset_path):
+        index_dir = tmp_path / "tantivy_index"
+        open_or_build_index(dataset_path, index_dir)  # builds from the 3-doc fixture
+
+        # Dataset changes on disk (same path, new content) — index_dir/
+        # meta.json from the old build is still sitting there untouched.
+        new_tsus = FIXTURE_TSUS + [
+            {
+                "tsu_id": "TSU-NEW-001",
+                "content": "새로 추가된 유일무이스핑크스단어 문서",
+                "title": "새 문서",
+                "author": "무명",
+                "source_file": "new_doc.pdf",
+                "verse_mapping": {},
+                "language": "ko",
+            },
+        ]
+        with open(dataset_path, "w", encoding="utf-8") as f:
+            for tsu in new_tsus:
+                f.write(json.dumps(tsu, ensure_ascii=False) + "\n")
+
+        generator = open_or_build_index(dataset_path, index_dir)
+
+        assert generator._index.searcher().num_docs == len(new_tsus)
+        results = generator.search(_pq("유일무이스핑크스단어"), k=10)
+        ids = {c.tsu_id for c in results}
+        assert "TSU-NEW-001" in ids
+
+    def test_matching_index_is_not_rebuilt_unnecessarily(self, tmp_path, dataset_path):
+        # Perf guard: at real corpus scale a rebuild costs 60~200+ seconds
+        # (C1-TASK-ORDER-033-REPORT.md §2 — Tantivy 100k=61.87s, 300k=195.37s).
+        # A staleness fix that rebuilds on every open_or_build_index() call
+        # regardless of whether anything changed would be a correctness fix
+        # that silently reintroduces a much worse performance regression.
+        index_dir = tmp_path / "tantivy_index"
+        open_or_build_index(dataset_path, index_dir)
+        mtime_before = (index_dir / "meta.json").stat().st_mtime
+
+        open_or_build_index(dataset_path, index_dir)  # dataset unchanged
+        mtime_after = (index_dir / "meta.json").stat().st_mtime
+
+        assert mtime_after == mtime_before
 
 
 class TestSearch:

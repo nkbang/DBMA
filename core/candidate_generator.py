@@ -132,16 +132,48 @@ def build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> int:
             count += 1
     writer.commit()
     idx.reload()
+
+    # Persist record count so open_or_build_index() can detect staleness
+    # (Tantivy also writes its own meta.json — use a different name to
+    # avoid confusion.)
+    with open(index_dir / "index_meta.json", "w", encoding="utf-8") as f:
+        json.dump({"record_count": count}, f)
+
     return count
 
 
 def open_or_build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> "CandidateGenerator":
     """Open the Tantivy index at `index_dir`, building it from
     `tsu_dataset_path` first if it doesn't exist yet (bootstrap case — first
-    call in a fresh environment, before any rebuild_tsu_index() has run)."""
+    call in a fresh environment, before any rebuild_tsu_index() has run).
+
+    Also rebuilds when the dataset record count no longer matches the
+    on-disk index (staleness detection).
+    """
     index_dir = Path(index_dir)
-    if not (index_dir / "meta.json").exists():
+    meta_file = index_dir / "index_meta.json"
+
+    if not meta_file.exists():
         build_index(tsu_dataset_path, index_dir)
+    else:
+        # Detect staleness: compare stored record count with current dataset
+        with open(meta_file, "r", encoding="utf-8") as f:
+            stored = json.load(f)
+        stored_count = stored.get("record_count", 0)
+
+        # Count current dataset records (same logic as build_index does)
+        current_count = 0
+        with open(tsu_dataset_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("$"):
+                    continue
+                json.loads(line)  # validate JSON
+                current_count += 1
+
+        if current_count != stored_count:
+            build_index(tsu_dataset_path, index_dir)
+
     return CandidateGenerator(index_dir)
 
 
