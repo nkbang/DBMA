@@ -32,7 +32,9 @@ Approximate model footprint:
 통한 C1 작업에는 적용되지 않는다. Cline은 `.clinerules/*.md`만 읽어 자체
 시스템 프롬프트를 구성하므로, 이 문서가 규정하는 규칙(§4~6)이 C1의 실제
 행동에 반영되려면 `.clinerules/`에도 동일 취지의 규칙이 등재되어 있어야
-한다(운영 확인 필요, §12 참고).
+한다 — `.clinerules/NAE_C1_FORENSIC_AUDITOR_RULES.md`에 동일 취지로
+등재되어 있음을 2026-08-24 운영 확인 완료(내용 대조 및 모델 질의 테스트,
+드리프트 없음).
 
 ## 2. Role
 
