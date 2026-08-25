@@ -269,6 +269,24 @@ def _get_generation_service() -> GenerationService:
     return st.session_state["chat_generation_service"]
 
 
+def _settings_overrides() -> dict:
+    """Sidebar 설정(ui/app.py::_render_settings_expander)에서 고른 값만
+    generate_stream()에 넘긴다 — 고른 적이 없으면 빈 dict이라 core의
+    DEFAULT_GEN_MODEL/DEFAULT_TEMPERATURE 기본값이 그대로 쓰인다.
+
+    ui.app을 import하지 않고 session_state 키를 직접 읽는다: ui/app.py가
+    ui.pages.chat을 import하므로 반대 방향 import는 순환이 된다.
+    """
+    overrides: dict = {}
+    gen_model = st.session_state.get("settings_gen_model")
+    if gen_model:
+        overrides["gen_model"] = gen_model
+    temperature = st.session_state.get("settings_temperature")
+    if temperature is not None:
+        overrides["temperature"] = float(temperature)
+    return overrides
+
+
 def generate_answer(
     question: str,
     *,
@@ -314,7 +332,9 @@ def generate_answer(
     # a useful answer from system prompt / prior context).
     try:
         stream = generator.generate_stream(
-            response, conversation_history=conversation_history or ""
+            response,
+            conversation_history=conversation_history or "",
+            **_settings_overrides(),
         )
         for _ in stream:  # consume the lazy generator to fill _answer_parts
             pass
@@ -375,7 +395,11 @@ def _handle_user_message(question: str) -> None:
     low_confidence = _is_low_confidence(response.top_k_results)
 
     with st.chat_message("assistant"):
-        stream = generator.generate_stream(response, conversation_history=conversation_history)
+        stream = generator.generate_stream(
+            response,
+            conversation_history=conversation_history,
+            **_settings_overrides(),
+        )
         st.write_stream(stream)
         result = stream.to_result()
         claim_guard_result = getattr(result, "claim_guard_result", None)

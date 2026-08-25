@@ -22,7 +22,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-from core.config import APP_VERSION
+from core.config import APP_VERSION, DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE, GEN_MODEL_OPTIONS
 from ui.theme.colors import THEME
 from ui.pages.dashboard import render_dashboard_page
 from ui.pages.library import render_library_page
@@ -304,6 +304,8 @@ def _render_sidebar() -> str:
             key="nav_page",
         )
 
+        _render_settings_expander()
+
         st.markdown(f"""
         <div style="text-align: left; padding: 24px 16px 0;">
                 <span style="font-size: 10px; color: {THEME.TEXT_TERTIARY};">
@@ -313,6 +315,68 @@ def _render_sidebar() -> str:
         """, unsafe_allow_html=True)
 
         return selected
+
+
+# Session-state keys the answer path reads its overrides from. Kept here (not
+# in core/config.py) because they are a UI-session concept — core defaults
+# stay the single source of truth for anything running outside Streamlit.
+SETTINGS_GEN_MODEL_KEY = "settings_gen_model"
+SETTINGS_TEMPERATURE_KEY = "settings_temperature"
+
+
+def _render_settings_expander() -> None:
+    """Sidebar 설정 — 답변 생성에 쓰이는 모델/창의성을 세션 단위로 바꾼다.
+
+    [docs/UI-REALIGNMENT-PROPOSAL-v1.md §P1] 이 앱에는 설정 UI가 아예
+    없었다 — 설정 화면이던 ui/sidebar.py가 어디서도 import되지 않는 죽은
+    코드였기 때문(2026-08-25 격리, §P2). 특히 생성 모델 선택이 없어서
+    config.yaml의 default_gen_model을 바꾸는 것 외에는 방법이 없었고,
+    config.yaml 주석 스스로가 "재도입하려면 GEN_MODEL_OPTIONS 기반 UI
+    모델 선택이 필요"하다고 지적해둔 상태였다 — 무거운 기본 모델
+    (my-theology-bot-v2, 128GB급)과 가벼운 대안(llama3.1:8b) 사이의
+    선택을 사용자 기기에 맞게 넘겨주는 것이 이 위젯의 목적이다.
+
+    범위가 이 둘뿐인 이유(조사 결과, 나머지는 이미 다른 탭에 있음):
+    chunk_size/overlap/OCR은 자료 등록 탭(ui/pages/processing.py)에,
+    top_k는 자료 찾기 탭 슬라이더(ui/pages/research.py)에 이미 있어
+    여기 또 넣으면 중복이다. 휴지통 보관기간은 config.yaml을 읽는
+    모듈 상수라 재시작 없이는 바꿔도 반영되지 않아 제외했다.
+
+    세션 범위인 것도 의도적이다 — config.yaml에 쓰면 재시작해야 반영되고,
+    git 추적 파일을 UI가 실행 중에 고쳐 쓰게 된다.
+    """
+    with st.expander("설정", expanded=False):
+        options = list(GEN_MODEL_OPTIONS)
+        if DEFAULT_GEN_MODEL not in options:
+            options.insert(0, DEFAULT_GEN_MODEL)
+        current = st.session_state.get(SETTINGS_GEN_MODEL_KEY, DEFAULT_GEN_MODEL)
+
+        st.selectbox(
+            "답변 생성 모델",
+            options=options,
+            index=options.index(current) if current in options else 0,
+            key=SETTINGS_GEN_MODEL_KEY,
+            help=(
+                "AI 답변을 만들 때 쓰는 모델입니다. 기본 모델이 무거워 "
+                "느리거나 메모리가 부족하면 더 가벼운 모델로 바꾸세요. "
+                "이 창을 닫으면(앱 재시작) 기본값으로 돌아갑니다."
+            ),
+        )
+        st.slider(
+            "답변 창의성",
+            min_value=0.0,
+            max_value=1.0,
+            value=float(st.session_state.get(SETTINGS_TEMPERATURE_KEY, DEFAULT_TEMPERATURE)),
+            step=0.05,
+            key=SETTINGS_TEMPERATURE_KEY,
+            help=(
+                "낮을수록 근거 문서에 충실하고 일관된 답변, 높을수록 "
+                "표현이 자유로워집니다. 신학 자료 인용에는 낮은 값을 권합니다."
+            ),
+        )
+        st.caption(
+            "청킹·OCR 설정은 '자료 등록' 탭, 검색 결과 개수는 '자료 찾기' 탭에 있습니다."
+        )
 
 
 def _render_page_content(page: str) -> None:

@@ -103,7 +103,7 @@ def _apply_library_styles() -> None:
 def render_library_page() -> None:
     """Render the DBMA Library workspace page."""
     _apply_library_styles()
-    page = BasePage(title="자료 찾기", icon="")
+    page = BasePage(title="내 자료", icon="")
     page.render_header()
 
     # ── 원본 소실 알림 (2026-08-24 사용자 요청: "원본 파일이 웹 밖에서
