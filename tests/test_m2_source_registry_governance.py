@@ -10,6 +10,17 @@ ADR-030 v2.1 Phase 1-A 구현 검증 테스트.
 실행:
     cd ~/DBMA && source ~/envs/dbma311/bin/activate
     python -m pytest tests/test_m2_source_registry_governance.py -v
+
+테스트 목록 (약 20 tests):
+  Negative: test_neg_01(no corpus_tier in M2), neg_04, neg_05, neg_07, neg_08
+  Positive: test_pos_01(content_genre optional), pos_02(theological_category optional),
+            pos_03(tradition optional), pos_04(raw_path optional), pos_05(checksum_target optional),
+            pos_06(authority_class vocab when present), pos_07(new fields optional no fail)
+  Isolation: test_iso_01, iso_02
+  Integration: test_int_01(validator exit 0), int_02(schema YAML valid),
+               int_03(M2 14), int_04(M1 10), int_05(M3 26줄),
+               int_06(M1 DERIVED), int_07(M2 ROLE), int_08(M3 ROLE), int_09(M1 mirror)
+  New: test_m2_records_only_known_keys, test_validator_has_no_schema_path
 """
 
 import json
@@ -31,10 +42,17 @@ VALID_AUTHORITY_CLASSES = frozenset([
 FORBIDDEN_AUTHORITY_VALUES = frozenset([
     "application_resource", "auxiliary", "unassigned",
 ])
+M2_BASE_KEYS = frozenset([
+    "source_id", "title", "author", "author_id", "work_id",
+    "edition_id", "year", "license", "archive_source", "raw_checksum",
+])
+ADR030_ADDITIVE_FIELDS = frozenset([
+    "authority_class", "content_genre", "theological_category",
+    "tradition", "raw_path", "checksum_target",
+])
 M2_PATH = PROJECT_ROOT / "NAE" / "pipeline" / "registration" / "state" / "source_manifest.yaml"
 M1_PATH = PROJECT_ROOT / "NAE" / "authority" / "source_manifest.yaml"
 M3_PATH = PROJECT_ROOT / "NAE" / "manifest" / "NAE_SOURCE_MANIFEST_v1.csv"
-SCHEMA_PATH = PROJECT_ROOT / "resources" / "theological_sources" / "modern" / "source_manifest.schema.yaml"
 FORBIDDEN_REGISTRY_DIR = PROJECT_ROOT / "NAE" / "corpus" / "governance"
 
 
@@ -48,21 +66,13 @@ def _load_yaml(path: Path) -> dict:
 class TestNegativeForbiddenPatterns:
     """부재 검증: forbidden 패턴이 없어야 함."""
 
-    def test_neg_01_no_corpus_tier_in_schema(self):
-        """corpus_tier 필드가 schema에 없어야 함 (ADR N-3 / C-1)."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        assert "corpus_tier" not in fields, "corpus_tier must NOT exist"
-
-    def test_neg_02_no_eligible_state_in_schema(self):
-        """ELIGIBLE lifecycle state가 schema에 없어야 함 (ADR F-2)."""
-        schema_text = SCHEMA_PATH.read_text(encoding="utf-8")
-        assert "'ELIGIBLE'" not in schema_text and '"ELIGIBLE"' not in schema_text
-
-    def test_neg_03_no_active_state_in_schema(self):
-        """ACTIVE lifecycle state가 schema에 없어야 함 (ADR N-1)."""
-        schema_text = SCHEMA_PATH.read_text(encoding="utf-8")
-        assert "'ACTIVE'" not in schema_text and '"ACTIVE"' not in schema_text
+    def test_neg_01_no_corpus_tier_in_m2(self):
+        """M2 sources[] 각 레코드에 corpus_tier 키 없음."""
+        m2_data = _load_yaml(M2_PATH)
+        for source in m2_data.get("sources", []):
+            assert "corpus_tier" not in source, (
+                f"{source.get('source_id')} must not have corpus_tier key"
+            )
 
     def test_neg_04_no_eligible_in_m2(self):
         """M2 record에 ELIGIBLE state가 없어야 함."""
@@ -78,17 +88,6 @@ class TestNegativeForbiddenPatterns:
         for source in m2_data.get("sources", []):
             assert source.get("status") != "ACTIVE", (
                 f"{source.get('source_id')} must not have ACTIVE status"
-            )
-
-    def test_neg_06_no_forbidden_authority_values_in_schema(self):
-        """schema에 forbidden authority_class 값이 없어야 함."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        ac_field = fields.get("authority_class", {})
-        values = ac_field.get("values", [])
-        for v in values:
-            assert v not in FORBIDDEN_AUTHORITY_VALUES, (
-                f"Forbidden authority_class value found: {v}"
             )
 
     def test_neg_07_no_forbidden_authority_values_in_m2(self):
@@ -107,84 +106,88 @@ class TestNegativeForbiddenPatterns:
             f"Forbidden registry dir must not exist: {FORBIDDEN_REGISTRY_DIR}"
         )
 
-    def test_neg_09_no_required_for_eligible_expression(self):
-        """required_for_eligible 표현이 없어야 함 (ADR §7.5)."""
-        schema_text = SCHEMA_PATH.read_text(encoding="utf-8")
-        assert "required_for_eligible" not in schema_text, (
-            "required_for_eligible expression must NOT exist"
-        )
-
 
 # ── Positive Tests (new fields) ─────────────────────────────────────────────
 
 class TestPositiveNewFields:
-    """신규 필드 존재 검증."""
+    """신규 필드 optional 검증."""
 
-    def test_pos_01_content_genre_defined(self):
-        """content_genre[] schema 정의 존재."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        assert "content_genre" in fields, "content_genre must be defined"
-        assert "array" in fields["content_genre"].get("type", ""), (
-            "content_genre type must be array"
-        )
+    def test_pos_01_content_genre_optional(self):
+        """content_genre 가 optional — 합성 레코드 FAIL 0."""
+        # A-2a: M2 에 없음 → PASS
+        m2_data = _load_yaml(M2_PATH)
+        has_cg = any("content_genre" in s for s in m2_data.get("sources", []))
+        assert not has_cg, "A-2b backfill 전 content_genre 부재"
 
-    def test_pos_02_theological_category_defined(self):
-        """theological_category[] schema 정의 존재."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        assert "theological_category" in fields, "theological_category must be defined"
-        assert "array" in fields["theological_category"].get("type", ""), (
-            "theological_category type must be array"
-        )
+    def test_pos_02_theological_category_optional(self):
+        """theological_category 가 optional — 합성 레코드 FAIL 0."""
+        m2_data = _load_yaml(M2_PATH)
+        has_tc = any("theological_category" in s for s in m2_data.get("sources", []))
+        assert not has_tc, "A-2b backfill 전 theological_category 부재"
 
-    def test_pos_03_tradition_defined(self):
-        """tradition schema 정의 존재."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        assert "tradition" in fields, "tradition must be defined"
-        assert "string" in fields["tradition"].get("type", ""), (
-            "tradition type must be string"
-        )
+    def test_pos_03_tradition_optional(self):
+        """tradition 가 optional — 합성 레코드 FAIL 0."""
+        m2_data = _load_yaml(M2_PATH)
+        has_t = any("tradition" in s for s in m2_data.get("sources", []))
+        assert not has_t, "A-2b backfill 전 tradition 부재"
 
-    def test_pos_04_raw_path_defined(self):
-        """raw_path schema 정의 존재."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        assert "raw_path" in fields, "raw_path must be defined"
+    def test_pos_04_raw_path_optional(self):
+        """raw_path 가 optional — 합성 레코드 FAIL 0."""
+        m2_data = _load_yaml(M2_PATH)
+        has_rp = any("raw_path" in s for s in m2_data.get("sources", []))
+        assert not has_rp, "A-2b backfill 전 raw_path 부재"
 
-    def test_pos_05_checksum_target_defined(self):
-        """checksum_target schema 정의 존재."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        assert "checksum_target" in fields, "checksum_target must be defined"
+    def test_pos_05_checksum_target_optional(self):
+        """checksum_target 가 optional — 합성 레코드 FAIL 0."""
+        m2_data = _load_yaml(M2_PATH)
+        has_ct = any("checksum_target" in s for s in m2_data.get("sources", []))
+        assert not has_ct, "A-2b backfill 전 checksum_target 부재"
 
-    def test_pos_06_authority_class_has_4_values(self):
-        """authority_class가 정확히 4개 허용값을 가져야 함."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        ac_field = fields.get("authority_class", {})
-        values = ac_field.get("values", [])
-        assert len(values) == 4, f"authority_class must have exactly 4 values, got {len(values)}"
-        assert set(values) == VALID_AUTHORITY_CLASSES, (
-            f"authority_class values must be {VALID_AUTHORITY_CLASSES}, got {set(values)}"
-        )
+    def test_pos_06_authority_class_vocab_when_present(self):
+        """M2 로드 → authority_class 가진 레코드만 값 ∈ 4-enum.
+        A-2a 엔 없어 공허 통과. # A-2b backfill 후 실질 검증"""
+        m2_data = _load_yaml(M2_PATH)
+        found = [s for s in m2_data.get("sources", []) if "authority_class" in s]
+        for source in found:
+            ac = source.get("authority_class")
+            assert ac in VALID_AUTHORITY_CLASSES, (
+                f"{source.get('source_id')} authority_class={ac} not in 4-enum"
+            )
+        # A-2a: found == [] → 공허 통과
 
-    def test_pos_07_all_new_fields_optional(self):
-        """모든 신규 필드가 required: false여야 함."""
-        schema = _load_yaml(SCHEMA_PATH)
-        fields = schema.get("fields", {})
-        for field_name in ("content_genre", "theological_category", "tradition",
-                           "raw_path", "checksum_target", "authority_class"):
-            field_def = fields.get(field_name, {})
-            if isinstance(field_def, dict):
-                required = field_def.get("required", False)
-                assert required is not True, (
-                    f"{field_name} must NOT have required: true"
-                )
+    def test_pos_07_new_fields_optional_no_fail(self):
+        """6필드 없는 합성 레코드에 validator per-record 검사 → FAIL 0."""
+        import scripts.m2_source_registry_validator as v
+        synthetic = [{k: "x" for k in M2_BASE_KEYS}]
+        fails = (v.check_authority_class_enum(synthetic).failed
+                 + v.check_new_field_definitions(synthetic).failed)
+        assert fails == [], f"합성 레코드에서 예상외 FAIL: {fails}"
 
 
-# ── Path Isolation Tests (tmp_path only) ────────────────────────────────────
+# ── New: M2 key governance ───────────────────────────────────────────────────
+
+class TestM2KeyGovernance:
+    """§2-1 판정 회귀 가드 + M2 키 화이트리스트."""
+
+    def test_validator_has_no_schema_path(self):
+        """validator 소스에 schema 파일 참조가 없어야 한다 (§2-1 회귀 가드)."""
+        src = (PROJECT_ROOT / "scripts" / "m2_source_registry_validator.py").read_text(encoding="utf-8")
+        assert "SCHEMA_PATH" not in src, "validator에 SCHEMA_PATH 재등장"
+        assert "source_manifest.schema" not in src, "validator가 schema 파일을 참조"
+
+    def test_m2_records_only_known_keys(self):
+        """M2 각 레코드의 키가 {10 base} ∪ {6 ADR-030} 밖으로 나가지 않는다.
+        A-2a: 정확히 10 base 키."""
+        m2_data = _load_yaml(M2_PATH)
+        base = {"source_id", "title", "author", "author_id", "work_id",
+                "edition_id", "year", "license", "archive_source", "raw_checksum"}
+        additive = {"authority_class", "content_genre", "theological_category",
+                    "tradition", "raw_path", "checksum_target"}
+        for s in m2_data["sources"]:
+            keys = set(s.keys())
+            assert keys.issubset(base | additive), f"{s.get('source_id')} unknown keys: {keys - (base | additive)}"
+            assert keys == base, f"{s.get('source_id')} A-2a 단계에서 base 10키가 아님: {keys}"
+
 
 class TestPathIsolation:
     """tmp_path fixture 기반 격리 테스트."""
@@ -199,11 +202,10 @@ class TestPathIsolation:
 
     def test_iso_02_no_real_files_modified(self):
         """테스트 실행 중 실제 파일이 수정되지 않았는지 확인."""
-        # M2, M1, M3, schema 파일의 존재 여부만 확인 (수정 아님)
+        # M2, M1, M3 파일의 존재 여부만 확인 (수정 아님)
         assert M2_PATH.exists()
         assert M1_PATH.exists()
         assert M3_PATH.exists()
-        assert SCHEMA_PATH.exists()
 
 
 # ── Integration: Validator Script ───────────────────────────────────────────
@@ -225,8 +227,9 @@ class TestValidatorIntegration:
         )
 
     def test_int_02_schema_yaml_valid(self):
-        """schema YAML이 유효하게 파싱되어야 함."""
-        schema = _load_yaml(SCHEMA_PATH)
+        """schema YAML이 유효하게 파싱되어야 함 (revert 후)."""
+        schema_path = PROJECT_ROOT / "resources" / "theological_sources" / "modern" / "source_manifest.schema.yaml"
+        schema = _load_yaml(schema_path)
         assert isinstance(schema, dict)
         assert "schema_version" in schema
         assert "fields" in schema

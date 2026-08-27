@@ -115,7 +115,7 @@ fields:
   language:
     type: string
     required: false
-    description: 원문 언어(예: en, ko, grc, heb).
+    description: "원문 언어(예: en, ko, grc, heb)."
 
   category:
     type: string

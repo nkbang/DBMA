@@ -1,39 +1,66 @@
 # NAE Manifest & Authority SSOT
 
-| 항목 | 경로 | 역할 | Writer | Authority |
+**Governing ADR**: ADR-030 v2.1 §8 · **Baseline**: dev/dbma-engine @ fcaa380 (2026-08-27)
+
+| 라벨 | 경로 | 역할 | Writer | Authority |
 |------|------|------|--------|-----------|
-| **M2** (SSOT) | `NAE/pipeline/registration/state/source_manifest.yaml` | Source Registry (14 records, schema '1.2') | registration pipeline (`manifest_writer.py`) | **최종 권위** |
-| **M1** (mirror) | `NAE/authority/source_manifest.yaml` | Authority Mirror (10 records, schema '1.2') | derived from M2 | non-authoritative |
-| **M3** (backlog) | `NAE/manifest/NAE_SOURCE_MANIFEST_v1.csv` | Acquisition Backlog Tracker (25 rows, CSV) | acquisition layer | backlog only |
+| **M2** | `NAE/pipeline/registration/state/source_manifest.yaml` | Source Registry (14 records, schema_version '1.2') | registration pipeline — `NAE/pipeline/registration/manifest_writer.py::write_entry()` | **SSOT (최종 권위)** |
+| **M1** | `NAE/authority/source_manifest.yaml` | Non-authoritative mirror (10 records) | — (M2 앞 10 레코드의 byte-identical 복사본) | derived, non-authoritative |
+| **M3** | `NAE/manifest/NAE_SOURCE_MANIFEST_v1.csv` | Acquisition Backlog Tracker (25 rows, CSV) | acquisition layer (수동/외부) | backlog only — **source registry 아님** |
 
-## Category (TSU) vs Authority Class (M2) 계층 구분
+## M2 governance (CUE §2-1 forensic determination)
 
-ADR-030 v2.1 §7에 따라 두 분류 체계는 완전히 분리된다:
+- **M2 는 enforced schema file 이 없다.**
+  - `resources/theological_sources/modern/source_manifest.schema.yaml` — M2 의 governing schema **아님**.
+    ADR-030 governance validator/test 만 참조. documentation schema 로만 취급.
+  - `resources/theological_sources/source_manifest.schema.yaml` — `scripts/source_validator.py` 전용.
+    이 validator 는 `resources/theological_sources/**` 만 스캔하며 `manifest_id` 를 요구한다. M2 경로를 읽지 않음.
+  - `NAE/pipeline/registration/source_validator.py` — 하드코딩 필드 튜플. YAML 스키마 미사용.
+- **M2 레코드 구조는 코드로 정의된다**: `NAE/pipeline/registration/pipeline.py:165` 의 dict 리터럴.
+  현재 base 키 10개: `source_id, title, author, author_id, work_id, edition_id, year, license, archive_source, raw_checksum`.
+- **Writer**: `manifest_writer.write_entry()` — append-only, `source_id` 중복 시 예외, 덮어쓰기 없음.
+  내부 동작 = `yaml.safe_load → list.append → yaml.safe_dump(sort_keys=False, allow_unicode=True)`.
+- **M2 YAML 주석은 내구적이지 않다**: 위 round-trip 에서 소실된다. M2 상단 `# ROLE: …` 주석은 다음 registration
+  write 때 사라질 수 있으며, **그것은 회귀가 아니다.** M2 의 역할·권위에 대한 **내구적 authority 는 본 문서**다.
+  (M1 `# DERIVED`, M3 `# ROLE` 은 코드 writer 가 없어 내구적이다.)
+- **Validation**: `scripts/m2_source_registry_validator.py` 는 ADR-030 불변식을 **M2 YAML + 파일시스템 baseline
+  에 직접** 검사한다. 어떤 스키마 파일도 그 PASS 판정에 관여하지 않는다.
 
-| 계층 | 필드 | 수준 | 정의 |
-|------|------|------|------|
-| **TSU** (document-level) | `content_genre`, `theological_category` | 문서 단위 | 실제 TSU record의 콘텐츠/신학적 분류 |
-| **M2 Source** (governance-level) | `authority_class` | source 단위 | source-level governance classification |
+## 계층 구분 — Category (TSU) vs authority_class (M2 source)
 
-```
-author → work → edition → source_file → authority_class (M2 governance)
-                                      → content_genre (TSU document)
-                                      → theological_category (TSU document)
-```
+ADR-030 v2.1 §7.3: 두 축은 다른 계층이며 서로를 결정하지 않는다.
 
-## M2 Schema 필드 (ADR-030 §5)
+| 계층 | 필드 | 수준 | 축 |
+|------|------|------|----|
+| TSU record (per-claim) | `content_genre`, `theological_category`, `category` | 문서/claim 단위 | "무엇에 관한 것인가" (주제/장르) |
+| M2 source (per-source) | `authority_class` | source 단위 | "근거로서 얼마나 무겁게 다룰 것인가" (교리적 무게) |
 
-- `authority_class`: enum — `primary_doctrinal | historical_witness | reference | application`
-- `content_genre`: list[str] — document-level content classification
-- `theological_category`: list[str] — document-level theological classification
-- `tradition`: str — source의 신학적 전통/교파 소속
-- `raw_path`: str — RAW 디렉토리 내 원본 파일 상대 경로
-- `checksum_target`: str — 해시 계산 대상 식별자
+`authority_class` 는 TSU record 에 쓰지 않는다. 기존 3,319 production TSU 의 `category` 는 `None` /
+`AUTHORITATIVE_SOURCE_MISSING` 유지(migration 없음).
 
-모든 필드 `required: false`. 미결정 레코드는 키 자체를 생략 (WARNING-first, ADR §7.5).
+## Additive metadata (ADR-030 v2.1 §7.4 / §8.4) — status: **A-2b PENDING**
+
+아래 6필드는 **아직 어느 M2 레코드에도 없다.** backfill = A-2b.
+
+| 필드 | 타입 | required | 확정 상태 |
+|------|------|----------|-----------|
+| `authority_class` | enum `primary_doctrinal\|historical_witness\|reference\|application` | false | 값·source별 배정 **확정** (v2.1 §7.2/§7.3: Dagg/Hiscox/Fuller=historical_witness, Smith=reference) |
+| `raw_path` | str | false | **14/14 forensic 확정** — `docs/agents/cue/CUE-ADR030-M2-RAWPATH-CHECKSUM-TARGET-DETERMINATION.md` §3 |
+| `checksum_target` | str | false | **14/14 forensic 확정** — 동 문서 |
+| `content_genre` | list[str] | false | 레코드별 값 미확정 (HQ 확인 대기, v2.1 §8 S-8) |
+| `theological_category` | list[str] | false | 동상 |
+| `tradition` | str | false | 동상 |
+
+미결정 레코드는 키 자체를 생략(WARNING-first, ADR-030 v2.1 §7.5).
+
+## Future SHOULD (A-2a/A-2b 아님)
+
+- **S-9**: explicit enforced M2 schema + `manifest_writer` 검증 훅. 지금은 만들지 않는다. 새 스키마 파일 생성 금지.
+- **S-3** (v2.1): M1 archival migration — consumer 0 전수 재확인 후 (`grep *.py` 결과 M1 `source_manifest.yaml`
+  로드 코드 0건, 확인됨).
 
 ## References
 
-- ADR-030 v2.1 §7 (Source Authority Model)
-- ADR-030 v2.1 §8 (Manifest & Authority SSOT)
-- `resources/theological_sources/modern/source_manifest.schema.yaml` (M2 governing schema)
+- ADR-030 v2.1 §7 (Metadata Authority), §8 (M2 SSOT / M3 Backlog / M1), §10 (State Authority Map)
+- `docs/agents/cue/CUE-ADR-030-POST-FORENSIC-REASSESSMENT.md`
+- `docs/agents/cue/CUE-ADR030-M2-RAWPATH-CHECKSUM-TARGET-DETERMINATION.md`
