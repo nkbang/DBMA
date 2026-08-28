@@ -14,13 +14,14 @@ ADR-030 v2.1 Phase 1-A 구현 검증 테스트.
 테스트 목록 (약 20 tests):
   Negative: test_neg_01(no corpus_tier in M2), neg_04, neg_05, neg_07, neg_08
   Positive: test_pos_01(content_genre optional), pos_02(theological_category optional),
-            pos_03(tradition optional), pos_04(raw_path optional), pos_05(checksum_target optional),
+            pos_03(tradition optional), pos_04(raw_path present), pos_05(checksum_target present),
             pos_06(authority_class vocab when present), pos_07(new fields optional no fail)
   Isolation: test_iso_01, iso_02
   Integration: test_int_01(validator exit 0), int_02(schema YAML valid),
                int_03(M2 14), int_04(M1 10), int_05(M3 26줄),
                int_06(M1 DERIVED), int_07(M2 ROLE), int_08(M3 ROLE), int_09(M1 mirror)
-  New: test_m2_records_only_known_keys, test_validator_has_no_schema_path
+  New: test_m2_records_only_known_keys, test_validator_has_no_schema_path,
+        test_authority_class_matches_adr030_7_3, test_raw_path_checksum_target_files_exist
 """
 
 import json
@@ -131,17 +132,17 @@ class TestPositiveNewFields:
         has_t = any("tradition" in s for s in m2_data.get("sources", []))
         assert not has_t, "A-2b backfill 전 tradition 부재"
 
-    def test_pos_04_raw_path_optional(self):
-        """raw_path 가 optional — 합성 레코드 FAIL 0."""
+    def test_pos_04_raw_path_present(self):
+        """raw_path 가 모든 M2 레코드에 존재 (A-2b-1)."""
         m2_data = _load_yaml(M2_PATH)
-        has_rp = any("raw_path" in s for s in m2_data.get("sources", []))
-        assert not has_rp, "A-2b backfill 전 raw_path 부재"
+        for s in m2_data.get("sources", []):
+            assert "raw_path" in s, f"{s.get('source_id')}: raw_path 부재"
 
-    def test_pos_05_checksum_target_optional(self):
-        """checksum_target 가 optional — 합성 레코드 FAIL 0."""
+    def test_pos_05_checksum_target_present(self):
+        """checksum_target 가 모든 M2 레코드에 존재 (A-2b-1)."""
         m2_data = _load_yaml(M2_PATH)
-        has_ct = any("checksum_target" in s for s in m2_data.get("sources", []))
-        assert not has_ct, "A-2b backfill 전 checksum_target 부재"
+        for s in m2_data.get("sources", []):
+            assert "checksum_target" in s, f"{s.get('source_id')}: checksum_target 부재"
 
     def test_pos_06_authority_class_vocab_when_present(self):
         """M2 로드 → authority_class 가진 레코드만 값 ∈ 4-enum.
@@ -177,16 +178,42 @@ class TestM2KeyGovernance:
 
     def test_m2_records_only_known_keys(self):
         """M2 각 레코드의 키가 {10 base} ∪ {6 ADR-030} 밖으로 나가지 않는다.
-        A-2a: 정확히 10 base 키."""
+        A-2b-1: 정확히 13키 (base 10 + authority_class + raw_path + checksum_target)."""
         m2_data = _load_yaml(M2_PATH)
         base = {"source_id", "title", "author", "author_id", "work_id",
                 "edition_id", "year", "license", "archive_source", "raw_checksum"}
         additive = {"authority_class", "content_genre", "theological_category",
                     "tradition", "raw_path", "checksum_target"}
+        expected_13 = base | {"authority_class", "raw_path", "checksum_target"}
         for s in m2_data["sources"]:
             keys = set(s.keys())
             assert keys.issubset(base | additive), f"{s.get('source_id')} unknown keys: {keys - (base | additive)}"
-            assert keys == base, f"{s.get('source_id')} A-2a 단계에서 base 10키가 아님: {keys}"
+            assert keys == expected_13, f"{s.get('source_id')} A-2b-1 단계에서 13키가 아님: {keys}"
+
+    def test_authority_class_matches_adr030_7_3(self):
+        """ADR-030 v2.1 §7.3 배정: historical_witness×10 / reference×4."""
+        m2_data = _load_yaml(M2_PATH)
+        sources = m2_data["sources"]
+        counts = {}
+        for s in sources:
+            ac = s.get("authority_class")
+            if ac is not None:
+                counts[ac] = counts.get(ac, 0) + 1
+        assert counts.get("historical_witness", 0) == 10, \
+            f"historical_witness expected 10, got {counts.get('historical_witness', 0)}"
+        assert counts.get("reference", 0) == 4, \
+            f"reference expected 4, got {counts.get('reference', 0)}"
+        assert len(counts) == 2, f"expected exactly 2 authority_class values, got {list(counts.keys())}"
+
+    def test_raw_path_checksum_target_files_exist(self):
+        """raw_path / checksum_target 가 모든 M2 레코드에서 실제 파일 존재."""
+        m2_data = _load_yaml(M2_PATH)
+        for s in m2_data["sources"]:
+            sid = s.get("source_id", "UNKNOWN")
+            for k in ("raw_path", "checksum_target"):
+                path = s.get(k)
+                assert path is not None, f"{sid}: {k} 부재"
+                assert (PROJECT_ROOT / path).exists(), f"{sid} {k}: {path}"
 
 
 class TestPathIsolation:

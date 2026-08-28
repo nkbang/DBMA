@@ -191,13 +191,15 @@ def check_authority_class_enum(sources=None) -> ValidationResult:
 
 
 def check_no_required_metadata() -> ValidationResult:
-    """V5: optionality 계약 self-check — 합성 레코드 FAIL 0."""
+    """V5: 6필드 없는 합성 레코드에 per-record 검사 → FAIL 0 (optionality 계약)."""
     result = ValidationResult()
-    # 6필드가 전혀 없는 합성 레코드에 V4·V6 로직 돌려 FAIL 0 임을 assert
-    synthetic = {k: "x" for k in M2_BASE_KEYS}
-    # authority_class 가 없으므로 V4 PASS
-    # content_genre 등 ADR030_ADDITIVE_FIELDS 가 없으므로 V6 skip
-    result.add("PASS", "V5: synthetic record (no ADR-030 fields) → FAIL 0")
+    synthetic = [{k: "x" for k in M2_BASE_KEYS}]
+    fails = (check_authority_class_enum(synthetic).failed
+             + check_new_field_definitions(synthetic).failed)
+    if fails:
+        result.add("FAIL", f"V5: 합성 레코드에서 예상외 FAIL: {fails}")
+    else:
+        result.add("PASS", "V5: 합성 레코드(ADR-030 필드 0) → per-record FAIL 0")
     return result
 
 
@@ -228,6 +230,18 @@ def check_new_field_definitions(sources=None) -> ValidationResult:
                 val = source[field_name]
                 if not isinstance(val, (str, type(None))):
                     result.add("FAIL", f"V6: M2 record {sid} '{field_name}' must be str|null")
+    # V6 확장: raw_path / checksum_target 파일 존재 검사
+    missing = []
+    for source in sources:
+        sid = source.get("source_id", "UNKNOWN")
+        for field_name in ("raw_path", "checksum_target"):
+            v = source.get(field_name)
+            if isinstance(v, str) and not (PROJECT_ROOT / v).exists():
+                missing.append(f"{sid}.{field_name}={v}")
+    if missing:
+        result.add("FAIL", f"V6: raw_path/checksum_target 파일 없음: {missing}")
+    else:
+        result.add("PASS", f"V6: raw_path/checksum_target 파일 전부 존재")
     result.add("PASS", "V6: all present ADR-030 fields have correct shape")
     return result
 

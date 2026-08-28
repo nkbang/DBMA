@@ -11,6 +11,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order/hocr.html
+  checksum_target: NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order/hocr.html
 - source_id: BAP-CHURCH-HISCOX
   title: The Standard Manual for Baptist Churches
   author: Edward T. Hiscox
@@ -21,6 +24,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 83ee409602520d60559edd74ecb935835b2d82722e2c02a2d5052f8a12ad1471
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/church_order/Hiscox_Standard_Manual/hocr.html
+  checksum_target: NAE/corpus/raw/archive_org/church_order/Hiscox_Standard_Manual/hocr.html
 - source_id: BAP-MISS-FULLER-VOL01
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 1: The Gospel
     Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ'
@@ -32,6 +38,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 74416a8f10e1ff21b40876ea018d4a88afbbe55fd2c36ef7cc74af57ca40cb9f
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol01/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol01/original.pdf
 - source_id: BAP-MISS-FULLER-VOL02
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 2: The Calvinistic
     and Socinian Systems Examined and Compared'
@@ -43,6 +52,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 352d7edff567a4f979579847d56dc2586df17ec432362685394556d1051be408
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol02/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol02/original.pdf
 - source_id: BAP-MISS-FULLER-VOL03
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 3: The Gospel
     Its Own Witness'
@@ -54,6 +66,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 787e185cf4c25f1ce45ec2a9177b8e58f42de42b9ff1bc7eab0b2c8b7e2b18a1
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol03/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol03/original.pdf
 - source_id: BAP-MISS-FULLER-VOL04
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 4: Dialogues,
     Letters, and Essays, on Various Subjects'
@@ -65,6 +80,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 8f4ba47eb6db7f8ee6cccce97b2e4bd8c4e45493f0a7f3b901df0ce9dd4079af
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol04/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol04/original.pdf
 - source_id: BAP-MISS-FULLER-VOL05
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 5: Expository
     Discourses on the Book of Genesis'
@@ -76,6 +94,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 20da331a39a2f288f5782196fb7590f837178622cf98e606a70fe1558740e074
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol05/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol05/original.pdf
 - source_id: BAP-MISS-FULLER-VOL06
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 6: Expository
     Discourses on the Apocalypse'
@@ -87,6 +108,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 95b2fe115f2098f37472d7a563de01ab9ca60eb30b6b0867c5a71eb6b318cef6
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol06/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol06/original.pdf
 - source_id: BAP-MISS-FULLER-VOL07
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 7: Sermons
     on Various Subjects'
@@ -98,6 +122,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 78cd86c9d99f71a4e5ac80690dda4cc06ed63facf0ae11eec76f0da9b83a8fa0
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol07/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol07/original.pdf
 - source_id: BAP-MISS-FULLER-VOL08
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 8: Miscellanies:
     Magazine Papers, Sketches of Sermons, Association Letters, Tracts'
@@ -109,6 +136,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: bc66c8216ee8a6fa647b1699e033faa1dab398a08d2f7c17136fbe3e17726c8c
+  authority_class: historical_witness
+  raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol08/ocr.txt
+  checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol08/original.pdf
 - source_id: BAP-REF-SMITH-VOL01
   title: 'A Dictionary of the Bible — Vol. 1: A–G (Hackett & Abbot American Edition)'
   author: William Smith
@@ -119,6 +149,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 31694703c69334f924724f4b000c3b8f4888ba20d670a05edb9cc9d5b5ec83dd
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol1/djvu.xml
+  checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol1/original.pdf
 - source_id: BAP-REF-SMITH-VOL02
   title: 'A Dictionary of the Bible — Vol. 2: G–M (Hackett & Abbot American Edition)'
   author: William Smith
@@ -129,6 +162,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: 18009c38fc6d1772471d4e79ca1a7ef59a90a05af10e35ae4c8b7806b154204c
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol2/djvu.xml
+  checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol2/original.pdf
 - source_id: BAP-REF-SMITH-VOL03
   title: 'A Dictionary of the Bible — Vol. 3: M–R (Hackett & Abbot American Edition)'
   author: William Smith
@@ -139,6 +175,9 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: fd540747b90caca5f42329abe284795e3bc605afb97d91f50dcdf93199f8f744
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol3/djvu.xml
+  checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol3/original.pdf
 - source_id: BAP-REF-SMITH-VOL04
   title: 'A Dictionary of the Bible — Vol. 4: R–Z (Hackett & Abbot American Edition)'
   author: William Smith
@@ -149,3 +188,6 @@ sources:
   license: public_domain
   archive_source: archive_org
   raw_checksum: c6388fe84707f30cddda485406a5684d2acf7c1bdd4a78172d74d269de3b81e5
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol4/djvu.xml
+  checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol4/original.pdf

@@ -38,20 +38,20 @@ ADR-030 v2.1 §7.3: 두 축은 다른 계층이며 서로를 결정하지 않는
 `authority_class` 는 TSU record 에 쓰지 않는다. 기존 3,319 production TSU 의 `category` 는 `None` /
 `AUTHORITATIVE_SOURCE_MISSING` 유지(migration 없음).
 
-## Additive metadata (ADR-030 v2.1 §7.4 / §8.4) — status: **A-2b PENDING**
+## Additive metadata (ADR-030 v2.1 §7.4 / §8.4) — status: **A-2b-1 완료 / A-2b-2 PENDING**
 
-아래 6필드는 **아직 어느 M2 레코드에도 없다.** backfill = A-2b.
+아래 6필드 중 3개는 A-2b-1 으로 M2 레코드에 반영됨. 나머지 3개는 A-2b-2 로 미정리.
 
 | 필드 | 타입 | required | 확정 상태 |
 |------|------|----------|-----------|
-| `authority_class` | enum `primary_doctrinal\|historical_witness\|reference\|application` | false | 값·source별 배정 **확정** (v2.1 §7.2/§7.3: Dagg/Hiscox/Fuller=historical_witness, Smith=reference) |
-| `raw_path` | str | false | **14/14 forensic 확정** — `docs/agents/cue/CUE-ADR030-M2-RAWPATH-CHECKSUM-TARGET-DETERMINATION.md` §3 |
-| `checksum_target` | str | false | **14/14 forensic 확정** — 동 문서 |
-| `content_genre` | list[str] | false | 레코드별 값 미확정 (HQ 확인 대기, v2.1 §8 S-8) |
-| `theological_category` | list[str] | false | 동상 |
-| `tradition` | str | false | 동상 |
+| `authority_class` | enum `primary_doctrinal\|historical_witness\|reference\|application` | false | **populated 14/14 (A-2b-1)** — 값 per ADR-030 v2.1 §7.3 (historical_witness ×10 / reference ×4) |
+| `raw_path` | str | false | **populated 14/14 (A-2b-1)** — CUE-ADR030-M2-RAWPATH-…md §3 |
+| `checksum_target` | str | false | **populated 14/14 (A-2b-1)** — 동 §3 |
+| `content_genre` | list[str] | false | **A-2b-2 PENDING** — per-record 값 CUE 판정 + HQ 비준 필요 |
+| `theological_category` | list[str] | false | **A-2b-2 PENDING** — per-record 값 CUE 판정 + HQ 비준 필요 |
+| `tradition` | str | false | **A-2b-2 PENDING** — per-record 값 CUE 판정 + HQ 비준 필요 |
 
-미결정 레코드는 키 자체를 생략(WARNING-first, ADR-030 v2.1 §7.5).
+현재 M2 레코드 키 = **13** (base 10 + authority_class + raw_path + checksum_target). 나머지 3필드는 A-2b-2 까지 키 생략 (WARNING-first §7.5). M1 은 backfill 미적용 — derived 미러, M1↔M2 prefix 불일치는 예상된 것 (archival = S-3).
 
 ## Future SHOULD (A-2a/A-2b 아님)
 
