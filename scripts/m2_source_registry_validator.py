@@ -43,6 +43,13 @@ VALID_AUTHORITY_CLASSES = frozenset([
 FORBIDDEN_AUTHORITY_VALUES = frozenset([
     "application_resource", "auxiliary", "unassigned",
 ])
+VALID_CONTENT_GENRE_VALUES = frozenset([
+    "confession", "theology", "history", "commentary",
+    "sermon", "mission", "church_practice", "pastoral",
+])
+VALID_THEOLOGICAL_CATEGORIES = frozenset([
+    "confession", "ecclesiology", "soteriology", "missions",
+])
 M2_BASE_KEYS = frozenset([
     "source_id", "title", "author", "author_id", "work_id",
     "edition_id", "year", "license", "archive_source", "raw_checksum",
@@ -224,12 +231,21 @@ def check_new_field_definitions(sources=None) -> ValidationResult:
                 val = source[field_name]
                 if not isinstance(val, list) or not all(isinstance(x, str) for x in val):
                     result.add("FAIL", f"V6: M2 record {sid} '{field_name}' must be list[str]")
-        # tradition / raw_path / checksum_target → str
-        for field_name in ("tradition", "raw_path", "checksum_target"):
-            if field_name in source:
-                val = source[field_name]
-                if not isinstance(val, (str, type(None))):
-                    result.add("FAIL", f"V6: M2 record {sid} '{field_name}' must be str|null")
+                elif field_name == "content_genre":
+                    invalid = [v for v in val if v not in VALID_CONTENT_GENRE_VALUES]
+                    if invalid:
+                        result.add("FAIL", f"V6: M2 record {sid} content_genre unknown values: {invalid}")
+                elif field_name == "theological_category":
+                    invalid = [v for v in val if v not in VALID_THEOLOGICAL_CATEGORIES]
+                    if invalid:
+                        result.add("FAIL", f"V6: M2 record {sid} theological_category unknown values: {invalid}")
+        # tradition → str, 값은 canonical 표기 3개 중 하나
+        if "tradition" in source:
+            val = source["tradition"]
+            if not isinstance(val, str):
+                result.add("FAIL", f"V6: M2 record {sid} 'tradition' must be str")
+            elif val not in ("Particular Baptist", "American Baptist", "Baptist Evangelical"):
+                result.add("FAIL", f"V6: M2 record {sid} tradition unknown value: {val}")
     # V6 확장: raw_path / checksum_target 파일 존재 검사
     missing = []
     for source in sources:

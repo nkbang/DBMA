@@ -43,6 +43,13 @@ VALID_AUTHORITY_CLASSES = frozenset([
 FORBIDDEN_AUTHORITY_VALUES = frozenset([
     "application_resource", "auxiliary", "unassigned",
 ])
+VALID_CONTENT_GENRE_VALUES = frozenset([
+    "confession", "theology", "history", "commentary",
+    "sermon", "mission", "church_practice", "pastoral",
+])
+VALID_THEOLOGICAL_CATEGORIES = frozenset([
+    "confession", "ecclesiology", "soteriology", "missions",
+])
 M2_BASE_KEYS = frozenset([
     "source_id", "title", "author", "author_id", "work_id",
     "edition_id", "year", "license", "archive_source", "raw_checksum",
@@ -113,24 +120,43 @@ class TestNegativeForbiddenPatterns:
 class TestPositiveNewFields:
     """신규 필드 optional 검증."""
 
-    def test_pos_01_content_genre_optional(self):
-        """content_genre 가 optional — 합성 레코드 FAIL 0."""
-        # A-2a: M2 에 없음 → PASS
+    def test_pos_01_content_genre_present(self):
+        """content_genre 가 모든 M2 레코드에 존재 (A-2b-2)."""
         m2_data = _load_yaml(M2_PATH)
-        has_cg = any("content_genre" in s for s in m2_data.get("sources", []))
-        assert not has_cg, "A-2b backfill 전 content_genre 부재"
+        for s in m2_data.get("sources", []):
+            assert "content_genre" in s, f"{s.get('source_id')}: content_genre 부재"
+            cg = s["content_genre"]
+            assert isinstance(cg, list), f"{s.get('source_id')}: content_genre must be list"
+            for v in cg:
+                assert v in VALID_CONTENT_GENRE_VALUES, (
+                    f"{s.get('source_id')}: unknown content_genre={v}"
+                )
 
-    def test_pos_02_theological_category_optional(self):
-        """theological_category 가 optional — 합성 레코드 FAIL 0."""
+    def test_pos_02_theological_category_vocab(self):
+        """theological_category 가 있는 레코드만 존재하고 값 ∈ 4-enum (A-2b-2)."""
         m2_data = _load_yaml(M2_PATH)
-        has_tc = any("theological_category" in s for s in m2_data.get("sources", []))
-        assert not has_tc, "A-2b backfill 전 theological_category 부재"
+        found = [s for s in m2_data.get("sources", []) if "theological_category" in s]
+        assert len(found) == 5, f"theological_category populated expected 5, got {len(found)}"
+        for s in found:
+            tc = s["theological_category"]
+            assert isinstance(tc, list), f"{s.get('source_id')}: theological_category must be list"
+            for v in tc:
+                assert v in VALID_THEOLOGICAL_CATEGORIES, (
+                    f"{s.get('source_id')}: unknown theological_category={v}"
+                )
 
-    def test_pos_03_tradition_optional(self):
-        """tradition 가 optional — 합성 레코드 FAIL 0."""
+    def test_pos_03_tradition_vocab(self):
+        """tradition 가 있는 레코드만 존재하고 값 ∈ canonical 3 (A-2b-2)."""
         m2_data = _load_yaml(M2_PATH)
-        has_t = any("tradition" in s for s in m2_data.get("sources", []))
-        assert not has_t, "A-2b backfill 전 tradition 부재"
+        found = [s for s in m2_data.get("sources", []) if "tradition" in s]
+        assert len(found) == 10, f"tradition populated expected 10, got {len(found)}"
+        canonical_traditions = ("Particular Baptist", "American Baptist", "Baptist Evangelical")
+        for s in found:
+            t = s["tradition"]
+            assert isinstance(t, str), f"{s.get('source_id')}: tradition must be str"
+            assert t in canonical_traditions, (
+                f"{s.get('source_id')}: unknown tradition={t}"
+            )
 
     def test_pos_04_raw_path_present(self):
         """raw_path 가 모든 M2 레코드에 존재 (A-2b-1)."""
@@ -178,17 +204,16 @@ class TestM2KeyGovernance:
 
     def test_m2_records_only_known_keys(self):
         """M2 각 레코드의 키가 {10 base} ∪ {6 ADR-030} 밖으로 나가지 않는다.
-        A-2b-1: 정확히 13키 (base 10 + authority_class + raw_path + checksum_target)."""
+        A-2b-2: 키 수 14~16 (content_genre 14 + theological_category 5 + tradition 10).
+        """
         m2_data = _load_yaml(M2_PATH)
         base = {"source_id", "title", "author", "author_id", "work_id",
                 "edition_id", "year", "license", "archive_source", "raw_checksum"}
         additive = {"authority_class", "content_genre", "theological_category",
                     "tradition", "raw_path", "checksum_target"}
-        expected_13 = base | {"authority_class", "raw_path", "checksum_target"}
         for s in m2_data["sources"]:
             keys = set(s.keys())
             assert keys.issubset(base | additive), f"{s.get('source_id')} unknown keys: {keys - (base | additive)}"
-            assert keys == expected_13, f"{s.get('source_id')} A-2b-1 단계에서 13키가 아님: {keys}"
 
     def test_authority_class_matches_adr030_7_3(self):
         """ADR-030 v2.1 §7.3 배정: historical_witness×10 / reference×4."""
@@ -306,3 +331,60 @@ class TestValidatorIntegration:
         m1_text = M1_PATH.read_text(encoding="utf-8")
         assert "Non-authoritative mirror" in m1_text
         assert "Do NOT hand-edit" in m1_text
+
+
+# ── New: A-2b-2 classification tests ─────────────────────────────────────────
+
+class TestClassificationA2b2:
+    """A-2b-2 RATIFIED v1.1 §4.1 verbatim 대조 + vocab 검사."""
+
+    def test_classification_matches_a2b2_v1_1(self):
+        """M2 14 레코드 분류값이 CUE-ADR-030-A2B2-CLASSIFICATION-RULE.md §4.1 A2B2 dict verbatim 일치."""
+        m2_data = _load_yaml(M2_PATH)
+        sources = {s["source_id"]: s for s in m2_data["sources"]}
+
+        A2B2 = {
+            "BAP-CHURCH-DAGG-001": {"content_genre": ["church_practice"], "theological_category": ["ecclesiology"], "tradition": "Particular Baptist"},
+            "BAP-CHURCH-HISCOX": {"content_genre": ["church_practice", "pastoral"], "theological_category": ["ecclesiology"], "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL01": {"content_genre": ["theology"], "theological_category": ["soteriology"], "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL02": {"content_genre": ["theology"], "theological_category": ["soteriology"], "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL03": {"content_genre": ["theology"], "theological_category": None, "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL04": {"content_genre": ["theology"], "theological_category": None, "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL05": {"content_genre": ["commentary"], "theological_category": None, "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL06": {"content_genre": ["commentary"], "theological_category": None, "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL07": {"content_genre": ["sermon"], "theological_category": None, "tradition": "Particular Baptist"},
+            "BAP-MISS-FULLER-VOL08": {"content_genre": ["theology", "sermon", "mission"], "theological_category": ["missions"], "tradition": "Particular Baptist"},
+            "BAP-REF-SMITH-VOL01": {"content_genre": ["commentary"], "theological_category": None, "tradition": None},
+            "BAP-REF-SMITH-VOL02": {"content_genre": ["commentary"], "theological_category": None, "tradition": None},
+            "BAP-REF-SMITH-VOL03": {"content_genre": ["commentary"], "theological_category": None, "tradition": None},
+            "BAP-REF-SMITH-VOL04": {"content_genre": ["commentary"], "theological_category": None, "tradition": None},
+        }
+
+        for sid, expected in A2B2.items():
+            rec = sources.get(sid)
+            assert rec is not None, f"{sid} M2에 부재"
+            for field, exp_val in expected.items():
+                if exp_val is None:
+                    assert field not in rec, f"{sid}.{field}: None이므로 키 부재해야 함, 실제={rec.get(field)}"
+                else:
+                    assert field in rec, f"{sid}.{field}: 부재"
+                    actual = rec[field]
+                    assert actual == exp_val, (
+                        f"{sid}.{field}: expected {exp_val}, got {actual}"
+                    )
+
+    def test_no_unratified_classification_vocab(self):
+        """M2 classification 필드에 RATIFIED vocab 밖 값 없음."""
+        m2_data = _load_yaml(M2_PATH)
+        for s in m2_data["sources"]:
+            sid = s.get("source_id", "UNKNOWN")
+            if "content_genre" in s:
+                for v in s["content_genre"]:
+                    assert v in VALID_CONTENT_GENRE_VALUES, (
+                        f"{sid}: unratified content_genre={v}"
+                    )
+            if "theological_category" in s:
+                for v in s["theological_category"]:
+                    assert v in VALID_THEOLOGICAL_CATEGORIES, (
+                        f"{sid}: unratified theological_category={v}"
+                    )

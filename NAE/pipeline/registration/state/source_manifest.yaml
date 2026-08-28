@@ -14,6 +14,9 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order/hocr.html
   checksum_target: NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order/hocr.html
+  content_genre: [church_practice]
+  theological_category: [ecclesiology]
+  tradition: "Particular Baptist"
 - source_id: BAP-CHURCH-HISCOX
   title: The Standard Manual for Baptist Churches
   author: Edward T. Hiscox
@@ -27,6 +30,9 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/church_order/Hiscox_Standard_Manual/hocr.html
   checksum_target: NAE/corpus/raw/archive_org/church_order/Hiscox_Standard_Manual/hocr.html
+  content_genre: [church_practice, pastoral]
+  theological_category: [ecclesiology]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL01
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 1: The Gospel
     Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ'
@@ -41,6 +47,9 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol01/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol01/original.pdf
+  content_genre: [theology]
+  theological_category: [soteriology]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL02
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 2: The Calvinistic
     and Socinian Systems Examined and Compared'
@@ -55,6 +64,9 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol02/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol02/original.pdf
+  content_genre: [theology]
+  theological_category: [soteriology]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL03
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 3: The Gospel
     Its Own Witness'
@@ -69,6 +81,8 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol03/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol03/original.pdf
+  content_genre: [theology]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL04
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 4: Dialogues,
     Letters, and Essays, on Various Subjects'
@@ -83,6 +97,8 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol04/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol04/original.pdf
+  content_genre: [theology]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL05
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 5: Expository
     Discourses on the Book of Genesis'
@@ -97,6 +113,8 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol05/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol05/original.pdf
+  content_genre: [commentary]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL06
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 6: Expository
     Discourses on the Apocalypse'
@@ -111,6 +129,8 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol06/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol06/original.pdf
+  content_genre: [commentary]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL07
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 7: Sermons
     on Various Subjects'
@@ -125,6 +145,8 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol07/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol07/original.pdf
+  content_genre: [sermon]
+  tradition: "Particular Baptist"
 - source_id: BAP-MISS-FULLER-VOL08
   title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 8: Miscellanies:
     Magazine Papers, Sketches of Sermons, Association Letters, Tracts'
@@ -139,6 +161,9 @@ sources:
   authority_class: historical_witness
   raw_path: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol08/ocr.txt
   checksum_target: NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol08/original.pdf
+  content_genre: [theology, sermon, mission]
+  theological_category: [missions]
+  tradition: "Particular Baptist"
 - source_id: BAP-REF-SMITH-VOL01
   title: 'A Dictionary of the Bible — Vol. 1: A–G (Hackett & Abbot American Edition)'
   author: William Smith
@@ -152,6 +177,7 @@ sources:
   authority_class: reference
   raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol1/djvu.xml
   checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol1/original.pdf
+  content_genre: [commentary]
 - source_id: BAP-REF-SMITH-VOL02
   title: 'A Dictionary of the Bible — Vol. 2: G–M (Hackett & Abbot American Edition)'
   author: William Smith
@@ -165,6 +191,7 @@ sources:
   authority_class: reference
   raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol2/djvu.xml
   checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol2/original.pdf
+  content_genre: [commentary]
 - source_id: BAP-REF-SMITH-VOL03
   title: 'A Dictionary of the Bible — Vol. 3: M–R (Hackett & Abbot American Edition)'
   author: William Smith
@@ -178,6 +205,7 @@ sources:
   authority_class: reference
   raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol3/djvu.xml
   checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol3/original.pdf
+  content_genre: [commentary]
 - source_id: BAP-REF-SMITH-VOL04
   title: 'A Dictionary of the Bible — Vol. 4: R–Z (Hackett & Abbot American Edition)'
   author: William Smith
@@ -191,3 +219,4 @@ sources:
   authority_class: reference
   raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol4/djvu.xml
   checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol4/original.pdf
+  content_genre: [commentary]

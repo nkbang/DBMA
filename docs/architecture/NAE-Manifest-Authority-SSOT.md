@@ -38,20 +38,20 @@ ADR-030 v2.1 §7.3: 두 축은 다른 계층이며 서로를 결정하지 않는
 `authority_class` 는 TSU record 에 쓰지 않는다. 기존 3,319 production TSU 의 `category` 는 `None` /
 `AUTHORITATIVE_SOURCE_MISSING` 유지(migration 없음).
 
-## Additive metadata (ADR-030 v2.1 §7.4 / §8.4) — status: **A-2b-1 완료 / A-2b-2 PENDING**
+## Additive metadata (ADR-030 v2.1 §7.4 / §8.4) — status: **A-2b-1 완료 / A-2b-2 완료**
 
-아래 6필드 중 3개는 A-2b-1 으로 M2 레코드에 반영됨. 나머지 3개는 A-2b-2 로 미정리.
+아래 6필드 전부 M2 레코드에 반영됨.
 
 | 필드 | 타입 | required | 확정 상태 |
 |------|------|----------|-----------|
 | `authority_class` | enum `primary_doctrinal\|historical_witness\|reference\|application` | false | **populated 14/14 (A-2b-1)** — 값 per ADR-030 v2.1 §7.3 (historical_witness ×10 / reference ×4) |
 | `raw_path` | str | false | **populated 14/14 (A-2b-1)** — CUE-ADR030-M2-RAWPATH-…md §3 |
 | `checksum_target` | str | false | **populated 14/14 (A-2b-1)** — 동 §3 |
-| `content_genre` | list[str] | false | **A-2b-2 PENDING** — per-record 값 CUE 판정 + HQ 비준 필요 |
-| `theological_category` | list[str] | false | **A-2b-2 PENDING** — per-record 값 CUE 판정 + HQ 비준 필요 |
-| `tradition` | str | false | **A-2b-2 PENDING** — per-record 값 CUE 판정 + HQ 비준 필요 |
+| `content_genre` | list[str] | false | **populated 14/14 (A-2b-2)** — per-record 값 CUE 판정 + HQ 비준 (RATIFIED v1.1) |
+| `theological_category` | list[str] | false | **populated 5/14 (A-2b-2)** — ecclesiology×2, soteriology×2, missions×1. 나머지 9 키 생략 |
+| `tradition` | str | false | **populated 10/14 (A-2b-2)** — `"Particular Baptist"` ×10. Smith×4 키 생략 |
 
-현재 M2 레코드 키 = **13** (base 10 + authority_class + raw_path + checksum_target). 나머지 3필드는 A-2b-2 까지 키 생략 (WARNING-first §7.5). M1 은 backfill 미적용 — derived 미러, M1↔M2 prefix 불일치는 예상된 것 (archival = S-3).
+현재 M2 레코드 키 = **14~16** (base 10 + authority_class + raw_path + checksum_target + content_genre 14건 + [theological_category 5건] + [tradition 10건]). 분류 권위 = `docs/agents/cue/CUE-ADR-030-A2B2-CLASSIFICATION-RULE.md` (RATIFIED v1.1).
 
 ## Future SHOULD (A-2a/A-2b 아님)
 
