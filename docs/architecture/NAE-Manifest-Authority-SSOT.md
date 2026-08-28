@@ -64,3 +64,13 @@ ADR-030 v2.1 §7.3: 두 축은 다른 계층이며 서로를 결정하지 않는
 - ADR-030 v2.1 §7 (Metadata Authority), §8 (M2 SSOT / M3 Backlog / M1), §10 (State Authority Map)
 - `docs/agents/cue/CUE-ADR-030-POST-FORENSIC-REASSESSMENT.md`
 - `docs/agents/cue/CUE-ADR030-M2-RAWPATH-CHECKSUM-TARGET-DETERMINATION.md`
+
+## Corpus Admission (ADR-030 v2.1 §11)
+
+`QUALITY_PASSED` 이후 · TSU 생성 / reference chunking 이전에, HQ 가
+`NAE/governance/corpus_admissions.jsonl` 에 admission 결정 1줄을 기록한다 (track / authority_class /
+classification / (reference 시) reference_quality_confirmed / rationale / evidence_refs).
+이 기록이 없는 source 는 다음 단계로 진행하지 않는다 (현재 수기 게이트; 코드 강제 = ADR-030 S-4).
+기존 3,319 verified TSU (Dagg·Hiscox) + Smith Vol1–4 는 소급 항목으로 충족 — 재처리 없음.
+Flow 상세: ADR-030 v2.1 §11.2.
+
