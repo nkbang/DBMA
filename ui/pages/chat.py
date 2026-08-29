@@ -303,7 +303,7 @@ def _format_smith_context(smith_results: list[dict]) -> str:
     if not smith_results:
         return ""
 
-    lines = ["[참고 자료: Smith Bible Dictionary]", ""]
+    lines = ["<reference>", "[참고 자료: Smith Bible Dictionary]", ""]
     for i, entry in enumerate(smith_results, 1):
         heading = entry.get("heading_context", "") or entry.get("text", "")[:80]
         volume = entry.get("volume", "")
@@ -319,6 +319,7 @@ def _format_smith_context(smith_results: list[dict]) -> str:
         lines.append(text)
         lines.append("")
 
+    lines.append("</reference>")
     return "\n".join(lines)
 
 
@@ -367,11 +368,21 @@ def _inject_smith_context(
     # Format Smith context block
     smith_context = _format_smith_context(smith_entries)
 
+    # ADR-028 §8/§5: hierarchy instruction inserted exactly once, between
+    # TSU evidence and the <reference> block — Smith must never be read as
+    # primary evidence or override TSU theological corpus / scripture.
+    hierarchy_notice = (
+        "참고: 아래 <reference> 항목은 보조 자료(Smith Bible Dictionary)입니다. "
+        "주요 근거는 위 신학 문헌(TSU) 및 성경 본문을 우선하고, "
+        "이 참고 자료가 그 해석을 대체하거나 덮어쓰지 않도록 하십시오."
+    )
+    smith_block = f"{hierarchy_notice}\n\n{smith_context}"
+
     # Append to existing TSU context (if any) — distinct section
     if response.llm_context_block:
-        response.llm_context_block += f"\n\n{smith_context}"
+        response.llm_context_block += f"\n\n{smith_block}"
     else:
-        response.llm_context_block = smith_context
+        response.llm_context_block = smith_block
 
     logger.info(
         "[chat] Smith Bible Dictionary activated for query=%r → %d entries injected",
