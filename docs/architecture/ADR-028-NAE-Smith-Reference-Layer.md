@@ -14,9 +14,11 @@ scope_modified: NAE/reference_retrieval_adapter.py, ui/pages/chat.py, ui/pages/s
 
 | | |
 |---|---|
-| Status | Draft |
+| Status | Accepted |
 | Date | 2026-08-25 |
-| Deciders | 사용자 승인 필요 |
+| Deciders | Rev. Bang / HQ |
+| Approved | 2026-08-29 |
+| Approver | Rev. Bang / HQ |
 | Supersedes | — |
 | Superseded by | — |
 
