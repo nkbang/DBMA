@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| **Status** | **ACCEPTED (2026-08-27, v2.1 consolidated)** |
+| **Status** | **IMPLEMENTED / §12 MUST COMPLETE (2026-08-28)** — 채택: ACCEPTED 2026-08-27 (v2.1 consolidated). §12 MUST M-1~M-5 전량 완료, 각 단계 CUE 독립검증 GREEN (§12 표 · Appendix C) |
 | **Date** | 2026-08-27 |
 | **Approved** | 2026-08-27 — Rev. Bang / HQ ("ADR-030 v1을 v2.1 내용으로 교체" 지시) |
 | **Supersedes** | ADR-030 v1 (2026-08-27). 개정 경로: v1 → v2 REV-DRAFT → v2.1 → 본 최종본 |
@@ -419,13 +419,13 @@ source acquisition (collector / 수동)
 
 ### MUST HAVE
 
-| # | 항목 | 산출물 | mutation |
-|---|---|---|---|
-| M-1 | M2 = Source Registry SSOT, M3 = Acquisition Backlog Tracker, M1 = `derived` mirror — 각 파일 헤더 주석 + 1페이지 "NAE Manifest & Authority SSOT" 문서 | 문서 + 주석 | 코드 0 |
-| M-2 | M2 schema에 `content_genre[]` / `theological_category[]` / `tradition` / `authority_class` / `raw_path` / `checksum_target` 추가 (`required: false`), 14 레코드 backfill | schema + M2 YAML | manifest만 |
-| M-3 | `NAE/governance/corpus_admissions.jsonl` 신설 + Dagg / Hiscox / Smith back-fill 항목(기존 증거 인용) + admission flow 문서화 | 신규 governance 파일 (append-only) | governance 기록만 |
-| M-4 | read-only reconciliation 명령 (`scripts/nae_corpus_reconcile.py`) — M2 ↔ `incremental_state.json` ↔ `tsu.json::review_status` ↔ Qdrant count drift 출력, `--apply` 없음 | 신규 script (read-only) | 0 |
-| M-5 | ADR-030 status 갱신 (본 문서 = 완료) | ADR 상태 변경 | — |
+| # | 항목 | 산출물 | mutation | 종결 (2026-08-28) |
+|---|---|---|---|---|
+| M-1 | M2 = Source Registry SSOT, M3 = Acquisition Backlog Tracker, M1 = `derived` mirror — 각 파일 헤더 주석 + 1페이지 "NAE Manifest & Authority SSOT" 문서 | 문서 + 주석 | 코드 0 | ✅ `470a1b5` (헤더 주석) + `NAE-Manifest-Authority-SSOT.md` (`fcaa380`~`0931e0c`) · CUE 검증 |
+| M-2 | M2 schema에 `content_genre[]` / `theological_category[]` / `tradition` / `authority_class` / `raw_path` / `checksum_target` 추가 (`required: false`), 14 레코드 backfill | schema + M2 YAML | manifest만 | ✅ `5f4e300` (A-2a) → `1fa6fce` (A-2b-1) → `0931e0c` (A-2b-2) · CUE 독립검증 ×3 · 분류 권위 `CUE-ADR-030-A2B2-CLASSIFICATION-RULE.md` RATIFIED v1.1 |
+| M-3 | `NAE/governance/corpus_admissions.jsonl` 신설 + Dagg / Hiscox / Smith back-fill 항목(기존 증거 인용) + admission flow 문서화 | 신규 governance 파일 (append-only) | governance 기록만 | ✅ `ad1464d` · HQ CLOSED |
+| M-4 | read-only reconciliation 명령 (`scripts/nae_corpus_reconcile.py`) — M2 ↔ `incremental_state.json` ↔ `tsu.json::review_status` ↔ Qdrant count drift 출력, `--apply` 없음 | 신규 script (read-only) | 0 | ✅ `5b0a867` · HQ GREEN/CLOSED (F-1/F-2/F-3 correction 포함) |
+| M-5 | ADR-030 status 갱신 (본 문서 = 완료) | ADR 상태 변경 | — | ✅ 본 커밋 · CUE |
 
 ### SHOULD HAVE
 
@@ -582,5 +582,26 @@ Tier는 등록 의무가 아니다. 등록 시 §7.4의 M2 필드 할당이 의�
 
 ---
 
-**STATUS: ACCEPTED (2026-08-27, v2.1 consolidated). Supersedes ADR-030 v1. 채택 시점 mutation 0 —
-구현 항목은 §12 MUST. Production Contact NO. Migration NO.**
+## Appendix C — §12 MUST 종결 기록 (2026-08-28)
+
+ADR-030 v2.1 §12 MUST 5개 항목 전량 완료. 각 항목 CUE 독립검증 → 단일 커밋 landing. Production mutation 0.
+
+| 항목 | 종결 커밋 | 검증 | 핵심 산출물 |
+|---|---|---|---|
+| M-1 | `470a1b5` + `fcaa380`~`0931e0c` (SSOT 문서) | CUE | M1/M2/M3 역할 주석 + `docs/architecture/NAE-Manifest-Authority-SSOT.md` |
+| M-2 | `5f4e300` (A-2a) → `1fa6fce` (A-2b-1) → `0931e0c` (A-2b-2) | CUE 독립검증 ×3 | M2 additive 6필드 (`required: false`): authority_class·raw_path·checksum_target·content_genre 14/14, theological_category 5/14, tradition 10/14 (RATIFIED v1.1). validator 16/0, governance test 29 passed |
+| M-3 | `ad1464d` | HQ CLOSED | `NAE/governance/corpus_admissions.jsonl` (append-only) + Dagg/Hiscox/Smith 소급 + flow 문서 |
+| M-4 | `5b0a867` | HQ GREEN/CLOSED | `scripts/nae_corpus_reconcile.py` (read-only, `--apply` 없음). test 20 passed · 인접 regression 49 passed · 실데이터 smoke "No drift detected" exit 0. F-1/F-2/F-3 bounded correction 포함 |
+| M-5 | 본 커밋 | CUE | 본 문서 status = IMPLEMENTED / §12 MUST COMPLETE |
+
+- 분류 권위: `docs/agents/cue/CUE-ADR-030-A2B2-CLASSIFICATION-RULE.md` (RATIFIED v1.1, HQ 2026-08-28).
+- M-4 설계 권위: `docs/agents/cue/CUE-ADR-030-M4-RECONCILE.md` (RATIFIED v1.1).
+- M-1/M-2 종결 감사: CUE read-only audit 2026-08-28 = GREEN.
+- SHOULD (S-1~S-9) / NOT-YET (N-1~N-10)는 자동 착수 안 함 — 별도 HQ 우선순위 결정 대상.
+
+---
+
+**STATUS: IMPLEMENTED / §12 MUST COMPLETE (2026-08-28). 채택 ACCEPTED 2026-08-27 (v2.1 consolidated),
+supersedes ADR-030 v1. §12 MUST M-1~M-5 전량 완료 — 각 단계 CUE 독립검증 GREEN, production mutation 0
+(TSU 3,319 / nae_tsu_v1 3,319 / nae_ref_v1 34,948 / Qdrant / incremental_state / config 무변경).
+SHOULD (S-1~S-9) / NOT-YET (N-1~N-10)는 별도 HQ 우선순위 대상. Production Contact NO. Migration NO.**
