@@ -1,5 +1,59 @@
 # C1 Task Order 053 — Chat 파일 선택 목록에서 삭제된 원본 필터링
 
+**상태**: 반려 — 재작업 필요 (아래 §-1 참고)
+
+---
+
+## -1. 반려 사유 (CUE 독립 검증) — 이 수정은 프로덕션에서 동작하지 않는다
+
+제출본은 CUE가 채팅으로 명시 지시한 "`registry_path`를 `core.config.
+DEFAULT_REGISTRY_PATH`로 기본값 지정"을 따르지 않고, 대신 **경로 추론
+로직**을 넣었다 — "`tsu_dataset_path`의 부모의 부모 아래
+`registry/documents.json`이 있다"고 가정한 것. 이 가정이 이 코드베이스의
+실제 설정과 맞지 않는다는 걸 CUE가 직접 계산으로 확인했다:
+
+```
+DEFAULT_TSU_DATASET_PATH = "output/bench/tsu_dataset.jsonl"
+DEFAULT_OUTPUT_DIR       = "data/제련완성본"   (TSU 경로와 무관한 별개 경로)
+DEFAULT_REGISTRY_PATH    = "data/제련완성본/registry/documents.json"  ← 실제 정답
+
+C1의 추론 결과 = "output/registry/documents.json"  ← 존재하지 않음
+```
+
+추론된 경로가 존재하지 않으므로 `registry_path`는 `None`으로 남고,
+"후진 호환성" 분기가 **TSU 원본을 필터링 없이 그대로 반환한다** — 원래
+버그가 프로덕션에서 그대로 재현된다. 17개 테스트가 통과한 건 테스트
+픽스처가 우연히 그 추론 가정과 맞는 경로 관계로 구성됐기 때문일 뿐,
+실제 `DEFAULT_TSU_DATASET_PATH`/`DEFAULT_REGISTRY_PATH` 값으로는 한
+번도 검증되지 않았다.
+
+### 고쳐야 할 것
+
+1. `registry_path: str | None = None` + 추론 로직을 **삭제**하고,
+   `registry_path: str = DEFAULT_REGISTRY_PATH`(`core.config`에서
+   import)로 바꿔라. 이건 지시였고 선택이 아니다 — 이유: 이미 같은
+   파일의 `QueryProcessor.__init__`이
+   `RetrievalEngine(tsu_dataset_path=DEFAULT_TSU_DATASET_PATH)`처럼
+   상수 기본값을 쓰는 동일한 관례가 있다.
+2. "registry가 없으면 TSU 원본 그대로 반환"하는 후진 호환 분기는
+   유지해도 되지만(진짜로 registry 파일 자체가 없는 신규 설치
+   상황 대응), **경로를 추론하는 로직은 없어야 한다** — 상수가 항상
+   실제 registry 위치를 가리키므로 추론이 필요 없다.
+3. **회귀 방지 테스트 1개 추가**: `from core.config import
+   DEFAULT_REGISTRY_PATH, DEFAULT_TSU_DATASET_PATH`를 실제로 import해서
+   `RetrievalEngine(tsu_dataset_path=DEFAULT_TSU_DATASET_PATH).
+   list_source_files()`를 인자 없이 호출했을 때 **실제
+   `DEFAULT_REGISTRY_PATH` 상수를 쓰는지**(mock/monkeypatch로
+   `load_identity_registry`가 어떤 경로로 호출됐는지 확인) 검증하는
+   테스트를 추가하라 — 이번처럼 "실제 상수 관계를 안 쓰고 임의
+   추론을 넣는" 실수가 테스트로 걸러지도록.
+4. 기존 8개 테스트(`test_list_source_files_registry_filter.py`)는
+   `registry_path`를 명시적으로 넘기는 방식이면 그대로 둬도 된다 —
+   다만 위 3번 테스트가 "기본값(인자 없이 호출)"에서도 맞는 경로를
+   쓰는지를 반드시 커버해야 한다.
+
+---
+
 **상태**: 발급됨 — 착수 가능
 **우선순위**: P1
 **근거**: HQ 실사용 보고 — "Chat(AI에게 질문) 검색 범위에서 파일을 선택하면
