@@ -37,7 +37,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
-from core.config import DEFAULT_TSU_DATASET_PATH, RETRIEVAL_DOCUMENT_CAP
+from core.config import DEFAULT_REGISTRY_PATH, DEFAULT_TSU_DATASET_PATH, RETRIEVAL_DOCUMENT_CAP
 
 # [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
 logger = logging.getLogger(__name__)
@@ -1273,10 +1273,33 @@ class RetrievalEngine:
         self.tfidf_vectorizer.fit(token_docs)
         self.vectors = [self.tfidf_vectorizer.transform(tokens) for tokens in token_docs]
 
-    def list_source_files(self) -> list[str]:
-        """Unique tsu["source_file"] values in the loaded corpus, sorted.
-        Used by UI file-scope pickers (see retrieve()'s file_scope arg)."""
-        return sorted({sf for t in self.tsus if (sf := t.get("source_file"))})
+    def list_source_files(self, registry_path: str = DEFAULT_REGISTRY_PATH) -> list[str]:
+        """Unique source_file values in the loaded corpus that are still valid
+        in the identity registry (ingest_status == "PROCESSED" and no
+        superseded_by), sorted. Used by UI file-scope pickers.
+
+        Args:
+            registry_path: Path to documents.json. Defaults to
+                DEFAULT_REGISTRY_PATH from core.config. If the registry file
+                does not exist, returns all TSU source_files (backward
+                compatibility for installations without a registry).
+        """
+        valid_sources: set[str] = set()
+        if os.path.exists(registry_path):
+            from core.identity_registry import load_identity_registry
+            registry = load_identity_registry(registry_path)
+            for doc in registry.get("documents", {}).values():
+                if (doc.get("ingest_status") == "PROCESSED"
+                        and doc.get("superseded_by") is None):
+                    sf = doc.get("source_file")
+                    if sf:
+                        valid_sources.add(sf)
+
+        result = {sf for t in self.tsus if (sf := t.get("source_file"))}
+        if os.path.exists(registry_path):
+            result &= valid_sources
+
+        return sorted(result)
 
     def book_coverage(self) -> dict[str, int]:
         """[2026-07-21] Distinct source_file count per Bible book_id,
