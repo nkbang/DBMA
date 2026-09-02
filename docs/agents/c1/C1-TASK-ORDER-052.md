@@ -1,6 +1,6 @@
 # C1 Task Order 052 — open_or_build_index()가 stale 인덱스를 감지 못하는 버그 수정 (TDD 게이팅)
 
-**상태**: 발급됨 — 착수 가능
+**상태**: 종료 — 승인 (커밋 `ca5e8a4`, 2026-08-25. CUE 재검증: 2026-09-02, 테스트 재실행 통과)
 **우선순위**: P2 (`C1-TASK-ORDER-050-REPORT.md` §5 Remaining Blockers #1 —
 "영어 쿼리 결과 없음"의 근본원인. gold standard 96개 재실행이 이 수정을
 전제조건으로 막혀있음)
