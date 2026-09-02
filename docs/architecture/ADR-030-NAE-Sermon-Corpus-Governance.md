@@ -452,7 +452,7 @@ source acquisition (collector / 수동)
 | N-6 | automatic corpus classification / automatic embedding approval | Admission Decision은 사람 몫 (§11) |
 | N-7 | ADR-027 v2 776 pilot | 별도 HQ 승인 |
 | N-8 | SLBC1689 / PBC1742 provenance 재구성 | BROKEN, HQ decision 대기 |
-| N-9 | Fuller Vol01–08 TSU/embedding, M3 CLAIM-ONLY 19건 acquisition | backlog, ADR-029 PHASE 순서 |
+| N-9 | Fuller Vol01–08 TSU/embedding, M3 CLAIM-ONLY 19건 acquisition | admission-in-principle 승인 (HQ, 2026-09-02) — TSU generation / TSU verification / human review / embedding / production ingestion 전부 HOLD 유지. corpus_admissions.jsonl ledger 기입 + 수기 게이트 활성화는 M3 모델 확장(별도 CUE 단계) 후. provenance: `docs/NAE_FULLER_ADMISSION_PROVENANCE_DISCLOSURE_001.md`. backlog, ADR-029 PHASE 순서 |
 | N-10 | corpus-wide reprocessing / Qdrant migration | Production Freeze (§14) |
 
 ---
