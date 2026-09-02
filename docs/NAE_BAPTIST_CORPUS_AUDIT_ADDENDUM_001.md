@@ -7,6 +7,21 @@
 
 ---
 
+> **⚠️ SUPERSEDED — 2026-08-29 (HQ audit, WS-C).** This addendum records a raw acquisition
+> inventory (`history/` 28 works + `early_baptist_collection` 34 GB, `missions/` 24 works)
+> that is **NOT present in the current `dev/dbma-engine` checkout**. Direct filesystem check
+> (2026-08-29): `NAE/corpus/raw/archive_org/` contains only `church_order/` (Dagg, Hiscox),
+> `missions/Fuller_Complete_Works_Vol01–08`, `reference/` (Smith Vol1–4), and 3 empty dirs
+> (`AF1815`, `PBC1742`, `TH1612`). Do **not** read the counts, sizes, coverage grades, or
+> work lists below as current inventory truth.
+>
+> `superseded_by`: `docs/agents/cue/CUE-NAE-BAPTIST-CORPUS-001-FINAL-GOVERNANCE-RECONCILIATION.md`
+> (current source-governance state) and `docs/agents/cue/CUE-NAE-BAPTIST-CORPUS-3WAY-FORENSIC-RECONCILIATION.md`
+> (production baseline). Historical content below is retained unchanged as a point-in-time
+> record (2026-08-02).
+
+---
+
 ## 1. Executive Summary
 
 Audit-001에서 제외된 세 카테고리(history, missions, church_order)에 대한 읽기 전용 감사를 수행했습니다.

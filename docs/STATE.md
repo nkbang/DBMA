@@ -115,6 +115,15 @@ leakage 제거 + 인용·출처 공용 컴포넌트) 발급. `chat.py`의
   결과: 효과 0(delta=0) 확인 — 이 corpus엔 candidate 스트림에 살아남는
   running header가 없어 프로덕션 반영은 보류(추가 조치 불필요, 코드는
   향후 재평가용으로 유지). 상세: 문서 본문 Next Steps(160~208행) 참고.
+- `docs/architecture/ADR-028-NAE-Smith-Reference-Layer.md` (**DRAFT**):
+  Smith Bible Dictionary Vol.1~4 reference layer — conditional heuristic
+  activation, authority hierarchy (Scripture > TSU > Smith), UI non-exposure.
+  Raw registration 완료(`NAE_SMITH_BIBLE_DICTIONARY_REGISTRATION_001.md`),
+  TSU/임베딩 경로 설계 보류.
+- `docs/architecture/ADR-029-NAE-Research-Corpus-Expansion-Pipeline-Lock.md`
+  (**DRAFT**): Smith 이후 corpus expansion pipeline 고정 — Phase 0~7,
+  Terminology Corpus 분리, NAC pilot 우선, cross-lingual gate,
+  Library Source Control 시기. governance document.
 
 ---
 

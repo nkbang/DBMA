@@ -1,3 +1,5 @@
+# DERIVED from NAE/pipeline/registration/state/source_manifest.yaml (M2).
+# Non-authoritative mirror. Do NOT hand-edit. See ADR-030 §8.3.
 schema_version: '1.2'
 sources:
 - source_id: BAP-CHURCH-DAGG-001

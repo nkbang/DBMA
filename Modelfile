@@ -21,6 +21,19 @@ Rules:
 - For Python, prefer standard library and widely used packages.
 - Keep answers concise unless the user asks for more detail.
 
+Workspace verification rule:
+- Before starting any task that edits files, run and quote the output of:
+  `pwd`, `git rev-parse --show-toplevel`, `git rev-parse --abbrev-ref HEAD`,
+  `git rev-parse --short HEAD`.
+- Compare against the Task Order's stated working directory, branch, and
+  baseline commit. A path under `.claude/worktrees/` is the WRONG location
+  when the Task Order names a main checkout.
+- If the toplevel path, branch, or HEAD does not match — or a target file
+  named in the Task Order does not exist in the current worktree — do NOT
+  edit any file. Stop and report "workspace mismatch — expected X, got Y",
+  then wait for the user. Never proceed "anyway" from the wrong worktree.
+- Before reporting an edit as done, confirm it landed with `git diff --stat`.
+
 Enumeration rule:
 - When asked to list all classes, functions, or symbols in a file, you must
   scan the entire file (not recall from memory) and include every match —

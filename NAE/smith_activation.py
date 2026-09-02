@@ -57,7 +57,7 @@ _BIBLICAL_PROPER_NOUN_ENGLISH_LOOSE = [
     r"|\bEli\b|\bSamuel\b|\bSaul\b|\bPeter\b|\bPaul\b|\bAndrew\b|\bJohn\b|\bPhilip\b|\bThomas\b "
     r"|\bLuke\b|\bMatthew\b|\bMark\b|\bTimothy\b|\bTitus\b|\bJesus\b|\bJerusalem\b|\bNazareth\b "
     r"|\bGalilee\b|\bBethlehem\b|\bEden\b|\bBabylon\b|\bEgypt\b|\bZion\b|\bSamaria\b|\bJordan\b "
-    r"|\bHermon\b|\bPhilippi\b|\bCorinth\b|\bEphesus\b|\bRome\b|\bPharisee\b|\bPharisees\b|\bRed Sea\b",
+    r"|\bHermon\b|\bPhilippi\b|\bCorinth\b|\bEphesus\b|\bRome\b|\bPharisee\b|\bPharisees\b|\bRed Sea\b|\bExodus\b",
 ]
 
 # ── Theological concept keywords ─────────────────────────────────────
@@ -98,6 +98,23 @@ def should_activate_smith(query: str) -> bool:
     if not query or not query.strip():
         return False
 
+    # Biblical proper nouns bypass length guard — registered names must
+    # activate even as standalone 2-character Korean terms (모세, 다윗, etc.)
+    for pattern in _BIBLICAL_PROPER_NOUN_PATTERNS:
+        if re.search(pattern, query):  # case-sensitive for proper nouns
+            logger.debug("[smith_activation] matched proper noun (strict)")
+            return True
+
+    for pattern in _BIBLICAL_PROPER_NOUN_KOREAN_LOOSE:
+        if re.search(pattern, query):
+            logger.debug("[smith_activation] matched proper noun (Korean loose)")
+            return True
+
+    for pattern in _BIBLICAL_PROPER_NOUN_ENGLISH_LOOSE:
+        if re.search(pattern, query):
+            logger.debug("[smith_activation] matched proper noun (English loose)")
+            return True
+
     lower = query.lower()
     # Skip very short queries — unlikely to be dictionary-style
     if len(query.strip()) < 3:
@@ -113,23 +130,6 @@ def should_activate_smith(query: str) -> bool:
     for pattern in _THEOLOGICAL_CONCEPTS:
         if re.search(pattern, lower):
             logger.debug("[smith_activation] matched theological concept")
-            return True
-
-    # Check biblical proper nouns (strict — case-sensitive)
-    for pattern in _BIBLICAL_PROPER_NOUN_PATTERNS:
-        if re.search(pattern, query):  # case-sensitive for proper nouns
-            logger.debug("[smith_activation] matched proper noun (strict)")
-            return True
-
-    # Check loose patterns (Korean without \b, English with \b)
-    for pattern in _BIBLICAL_PROPER_NOUN_KOREAN_LOOSE:
-        if re.search(pattern, query):
-            logger.debug("[smith_activation] matched proper noun (Korean loose)")
-            return True
-
-    for pattern in _BIBLICAL_PROPER_NOUN_ENGLISH_LOOSE:
-        if re.search(pattern, query):
-            logger.debug("[smith_activation] matched proper noun (English loose)")
             return True
 
     return False

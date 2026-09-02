@@ -120,6 +120,37 @@ Never continue after environment errors without correction.
 
 ---
 
+## 3.1 Workspace Verification Gate
+
+[2026-08-28 추가] 반복 실패 사례: C1이 `.claude/worktrees/*` 등 **잘못된 워크트리**에서
+파일을 편집해, 작업이 Task Order가 지정한 저장소에 전혀 반영되지 않음 — 한 사이클에서 3회.
+(1) 지시서 파일을 못 찾음, (2) 다시 못 찾음, (3) 엉뚱한 워크트리에서 M2를 편집.
+
+파일을 편집하는 작업을 시작하기 전에 **반드시** 다음을 실행하고, 그 원본 출력을 보고서에 인용한다:
+
+```bash
+pwd
+git rev-parse --show-toplevel
+git rev-parse --abbrev-ref HEAD
+git rev-parse --short HEAD
+```
+
+그리고 Task Order가 명시한 값과 대조한다:
+
+- `git rev-parse --show-toplevel` 이 Task Order의 작업 디렉터리와 **정확히** 일치해야 한다.
+  경로가 `.claude/worktrees/...` 하위이면 **잘못된 위치다** — Task Order가 지정한 메인 체크아웃이 아니다.
+- 현재 브랜치가 Task Order가 지정한 브랜치와 일치해야 한다.
+- `git rev-parse --short HEAD` 가 Task Order의 baseline commit 과 일치해야 한다.
+- Task Order가 대상 파일 경로를 명시했으면, 편집 전에 그 경로가 현재 워크트리에 존재하는지
+  (`test -f <path>` / `ls <path>`) 확인한다.
+
+**셋(경로/브랜치/HEAD) 중 하나라도 불일치하거나 대상 파일이 없으면: 파일을 편집하지 말고 즉시 중단한다.**
+"작업 디렉터리/브랜치/HEAD 불일치 — 기대 X, 실제 Y" 를 보고하고 사용자 지시를 기다린다.
+잘못된 워크트리에서 "일단 진행" 하지 않는다. 편집이 성공했다고 보고하기 전에 `git diff --stat` 으로
+변경이 실제로 그 파일에 기록됐는지 확인한다.
+
+---
+
 ## 4. File Placement Rules
 
 ## Production Code
