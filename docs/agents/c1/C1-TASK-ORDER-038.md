@@ -1,6 +1,6 @@
 # C1 Task Order 038 — Evidence Package 도구 구현 (`scripts/evidence/`)
 
-**상태**: 승인됨 — 즉시 착수 가능
+**상태**: 종료 — 승인 (CUE 재발견, 2026-09-03). 이미 구현 완료돼 있었으나 상태 라인 갱신 누락. `scripts/evidence/` 4개 스크립트(build_manifest/verify_manifest/build_seal/verify_package) 전부 존재, `verify_package.py`의 핵심 요구사항(항목 9 — 워킹 디렉터리가 아닌 E 커밋 시점 git tree 기반 검증)도 코드에 반영 확인. `tests/test_evidence_tools.py` 18/18 재실행 통과(CUE).
 **우선순위**: P1 (Evidence Package Standard v1.1이 문서로만 존재하고 실행 가능한 검증 도구가 없음 — 표준 자체가 "manifest는 수동 입력 금지, 생성 스크립트로 작성"을 요구하므로 도구가 없으면 표준을 지킬 방법이 없음)
 **대상 파일 (신규)**: `scripts/evidence/build_manifest.py`, `scripts/evidence/verify_manifest.py`, `scripts/evidence/build_seal.py`, `scripts/evidence/verify_package.py`, `tests/test_evidence_tools.py`
 **참고 파일 (읽기 전용, 규격 원본)**: `docs/agent_governance/EVIDENCE_PACKAGE_STANDARD_v1.1.md`
