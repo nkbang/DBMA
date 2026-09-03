@@ -1,6 +1,6 @@
 # C1 Task Order 034 — 검색 결과 상세보기를 Research 페이지로 확장
 
-**상태**: 발급됨 — 구현 착수 가능
+**상태**: 종료 — 승인 (CUE 재발견, 2026-09-03). 이미 다른 경로/세션에서 구현 완료되었으나 상태 라인 갱신이 누락돼 있었음. `ui/pages/research.py`에 `research_detail_selection` 세션 키 + `get_document_detail()`/`render_detail_panel()` 배선 확인, `ui/components/tables.py`의 `clickable_source`/`_dbma_table_btn_counter`/`_render_clickable_result_row` 죽은 코드 전부 제거 확인. 관련 테스트 55/55 통과(CUE 재실행).
 **우선순위**: P1
 **선행 작업**: Task Order 029~032(Chat 페이지 MVP) 완료·검증됨(전체 회귀 1066/1066, 실제 브라우저 클릭
 검증 완료). `core/document_detail.py`, `ui/components/detail_panel.py`의 기존 함수/시그니처 재사용,
