@@ -1,6 +1,6 @@
 # C1 Task Order 036 — NAE-CORPUS-FIX-001: source_candidates.csv 데이터 정합성 복구
 
-**상태**: 발급됨 — 구현 착수 가능
+**상태**: 종료 — 승인 (CUE 재발견, 2026-09-03). 이미 2026-07-31경 완료돼 있었으나 상태 라인 갱신 누락. CSV 7행 전부 `csv.DictReader` 재검증 PASS(초과 필드 0건), JS1608은 (a) "English, Dutch" 병기로 판단·quoting 처리됨, license=public_domain_possible로 CSV/manifest 양쪽 일치 확인(manifest에는 "[2026-07-31 갱신]" 주석까지 남아있어 당시 CUE가 후속 조치까지 완료했음을 확인). validator 재실행 PASS=89/WARNING=0/FAIL=0.
 **우선순위**: P0 (다음 단계인 NAE-SOURCE-DEDUP-001, RAW Acquisition의 선행 조건)
 **대상 파일**: `resources/theological_sources/baptist/source_candidates.csv` (수정 대상)
 **참고 파일 (읽기 전용)**: `resources/theological_sources/baptist/source_manifest.yaml`, `scripts/source_validator.py`, `docs/NAE_SOURCE_REGISTRY_REPORT.md`(문제 발견 경위 기록됨)
