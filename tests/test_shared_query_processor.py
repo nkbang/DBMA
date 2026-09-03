@@ -122,7 +122,8 @@ class TestFeatureFlagRouting:
         proc = qp_module.get_shared_query_processor()
         assert isinstance(proc, _FakeHybridProcessor)
 
-    def test_toggling_flag_mid_session_recreates_processor(self, tmp_path, monkeypatch):
+    def test_toggling_flag_mid_session_does_not_recreate(self, tmp_path, monkeypatch):
+        """[P4-1] session-state가 우선 → env var(is_enabled) 변경만으로는 재생성 안됨."""
         manifest = tmp_path / "manifest.json"
         _write_manifest(manifest, "hash-v1")
         monkeypatch.setattr(qp_module, "DEFAULT_TSU_MANIFEST_PATH", str(manifest))
@@ -134,10 +135,10 @@ class TestFeatureFlagRouting:
         proc1 = qp_module.get_shared_query_processor()
         assert isinstance(proc1, _FakeProcessor)
 
+        # env var만 변경 → session-state가 이미 "legacy"로 설정됨 → 재생성 안됨
         monkeypatch.setattr(qp_module, "is_enabled", lambda: True)
         proc2 = qp_module.get_shared_query_processor()
-        assert isinstance(proc2, _FakeHybridProcessor)
-        assert proc1 is not proc2
+        assert proc1 is proc2  # 같은 인스턴스 반환 (session-state가 authoritative)
 
     def test_flag_unchanged_does_not_recreate(self, tmp_path, monkeypatch):
         manifest = tmp_path / "manifest.json"

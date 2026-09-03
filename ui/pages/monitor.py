@@ -45,6 +45,10 @@ def render_monitor_page() -> None:
     page.render_section("시스템 건강 상태", icon="health_and_safety")
     _render_health_overview(pipeline_stages)
 
+    # ── Engine A/B Toggle (P4-1) ───────────────────────────────
+    page.render_section("검색 엔진 선택", icon="toggle_on")
+    _render_engine_toggle()
+
     # ── Performance Metrics ────────────────────────────────────
     page.render_section("성능 지표", icon="bar_chart")
     _render_performance_metrics()
@@ -52,6 +56,10 @@ def render_monitor_page() -> None:
     # ── Resource Usage ─────────────────────────────────────────
     page.render_section("리소스 사용량", icon="memory")
     _render_resource_usage()
+
+    # ── Search Telemetry (P4-1) ────────────────────────────────
+    page.render_section("검색 텔레메트리", icon="insights")
+    _render_search_telemetry()
 
     # ── Embedding Coverage Report ────────────────────────────────
     page.render_section("임베딩 커버리지 리포트", icon="auto_stories")
@@ -395,5 +403,129 @@ def _render_embedding_coverage_report() -> None:
             f"- **{book_id}**: {stats['embedded']}/{stats['total']} chunks "
             f"({ratio_pct:.1f}%) — dimension_ok: {stats['dimension_ok']}"
         )
+
+
+# ── P4-1: Engine A/B Toggle ───────────────────────────────────────
+
+def _render_engine_toggle(default_kind: str = "hybrid") -> None:
+    """Render the engine kind toggle (Hybrid / Legacy) on the Monitor page.
+
+    [P4-1 §3.2] Uses session-state as the authoritative source for engine_kind.
+    Labels use user-friendly Korean terms — no internal identifiers exposed.
+    When selection changes, invalidates the cached processor so it gets recreated.
+
+    NOTE: Uses st.radio instead of the binary toggle widget because the toggle
+    widget does NOT support option_labels parameter (Streamlit limitation).
+    st.radio provides the same UX with custom labels.
+    """
+    from ui.state.query_processor import _ENGINE_KIND_KEY, _SESSION_KEY
+
+    # 현재 선택 상태 읽기 (없으면 default_kind 사용)
+    current = st.session_state.get(_ENGINE_KIND_KEY, default_kind)
+
+    # radio 옵션: UX-007 §0 기술 용어 노출 금지 원칙 준수
+    options = ["hybrid", "legacy"]
+    labels = ["하이브리드 검색", "기존 검색"]
+
+    # radio에서 선택된 값 (한국어 라벨로 표시)
+    selected_label = st.radio(
+        "검색 엔진 모드",
+        options=labels,
+        index=0 if current == "hybrid" else 1,
+        key="engine_mode_radio",
+    )
+
+    # 선택값을 internal key로 매핑
+    new_kind = options[labels.index(selected_label)]
+
+    # session_state에 기록 + 캐시된 processor 무효화 (recreation trigger)
+    if st.session_state.get(_ENGINE_KIND_KEY) != new_kind:
+        st.session_state[_ENGINE_KIND_KEY] = new_kind
+        if _SESSION_KEY in st.session_state:
+            del st.session_state[_SESSION_KEY]
+
+    # 현재 적용 중 표시
+    kind_label = "하이브리드 검색" if current == "hybrid" else "기존 검색"
+    st.caption(f"현재 적용 중: {kind_label}")
+
+
+# ── P4-1: Search Telemetry Display ─────────────────────────────────
+
+def _render_search_telemetry(telemetry_path: str | None = None) -> None:
+    """Render search telemetry statistics on the Monitor page.
+
+    [P4-1 §3.3] Reads-only from SearchTelemetry.summary(). Displays Korean
+    labels. Handles empty DB gracefully. Shows explicit notice that Legacy
+    path telemetry is not yet supported (per §2 scope exclusion).
+    """
+    from core.search_telemetry import open_telemetry
+    from ui.state.query_processor import _ENGINE_KIND_KEY
+
+    # telemetry DB 로드
+    if telemetry_path is None:
+        from core.config import DEFAULT_SEARCH_TELEMETRY_PATH
+        telemetry_path = DEFAULT_SEARCH_TELEMETRY_PATH
+
+    try:
+        telemetry = open_telemetry(telemetry_path)
+        summary = telemetry.summary()
+    except Exception:
+        st.warning("텔레메트리 데이터를 로드할 수 없습니다.")
+        return
+
+    # 레코드 0건 — 빈 DB 처리
+    total_queries = telemetry._conn.execute(
+        "SELECT COUNT(*) FROM search_query"
+    ).fetchone()[0]
+
+    if total_queries == 0:
+        st.info("아직 기록된 검색이 없습니다.", icon=":material/info:")
+        return
+
+    # 한국어 라벨 매핑
+    LABELS = {
+        "success_rate": "성공률",
+        "zero_hit_rate": "무응답률",
+        "avg_latency_ms": "평균 응답 시간 (ms)",
+        "avg_candidate_count": "평균 후보 수",
+        "cache_hit_rate": "캐시 히트율",
+        "top1_click_rate": "Top1 클릭률",
+        "top5_click_rate": "Top5 클릭률",
+        "avg_merge_time_ms": "평균 병합 시간 (ms)",
+        "avg_embedding_time_ms": "평균 임베딩 시간 (ms)",
+        "avg_ann_time_ms": "평균 ANN 시간 (ms)",
+    }
+
+    # 표시할 항목 필터링 (현재 engine_kind에 맞는 데이터만)
+    current_kind = st.session_state.get(
+        _ENGINE_KIND_KEY, "hybrid"
+    )
+
+    # summary 데이터를 테이블 형태로 준비
+    rows = []
+    for key, label in LABELS.items():
+        value = summary.get(key, 0.0)
+        if key in ("success_rate", "zero_hit_rate", "cache_hit_rate",
+                    "top1_click_rate", "top5_click_rate"):
+            display_value = f"{value * 100:.1f}%"
+        else:
+            display_value = f"{value:.1f}"
+        rows.append({"지표": label, "값": display_value})
+
+    st.table(rows)
+
+    # Legacy 경로 텔레메트리 미지원 안내 (§2 scope exclusion)
+    if current_kind == "legacy":
+        st.warning(
+            "**참고**: 현재 '기존 검색' 모드에서는 텔레메트리가 "
+            "미지원됩니다. 하이브리드 모드로 전환하면 "
+            "검색 결과가 텔레메트리에 기록됩니다."
+        )
+    else:
+        st.caption(
+            "하이브리드 검색 경로만 텔레메트리에 기록됩니다. "
+            "(기존 검색 경로는 §2 범위 제외)"
+        )
+
 
 

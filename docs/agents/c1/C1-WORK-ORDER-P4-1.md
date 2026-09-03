@@ -1,7 +1,7 @@
 # C1 WORK ORDER — P4-1 IMPLEMENTATION
 ## Monitor A/B Toggle + Search Telemetry Display
 
-**상태**: 반려 (v2) — 재작업 필요 (아래 §-2 참고, §-1은 v1 반려 기록으로 보존)
+**상태**: 종료 — 승인 (CUE 최종 판단, `C1-WORK-ORDER-P4-1-REPORT.md` §CUE 최종 판단 참고. 오타 1건은 CUE가 직접 수정)
 **Mode**: IMPLEMENTATION (TDD 게이팅)
 **Branch**: `dev/dbma-engine`
 **전제**: P4-0 PREFLIGHT = PASS (CUE 독립 검증 완료, `C1-WORK-ORDER-P4-0-REPORT.md` 참고)
