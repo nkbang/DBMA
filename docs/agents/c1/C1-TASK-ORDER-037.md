@@ -1,10 +1,36 @@
 # C1 Task Order 037 — NAE Phase 5.1: Gold Benchmark Dataset v1 Infrastructure
 
-**상태**: **보류 — 아래 "0. 착수 전 선행 조건" 충족 전까지 실행 금지**
-**우선순위**: P0 (Phase 5.2 Qdrant 연결의 선행 조건 — TASK 1을 먼저 하지 않으면 Phase 5.2에서 모든 질문의 recall/precision이 항상 0.0으로 나옴)
-**대상 파일**: `NAE/benchmark/schema.py`, `NAE/benchmark/config.py`(신규), `NAE/benchmark/evaluator.py`, `NAE/benchmark/runner.py`, `NAE/benchmark/datasets/`, 관련 테스트
+**상태**: **재발부(2026-09-03) — TASK 2~4만 범위, 착수 가능**
+**우선순위**: P1 (TASK 1은 이미 완료 확인됨 — 아래 "0-2" 참고)
+**대상 파일**: `NAE/benchmark/config.py`(신규), `NAE/benchmark/template.py`(신규), `NAE/benchmark/review.py`(신규), `NAE/benchmark/schema.py`(TASK 2 필드 추가분만), 관련 테스트
 **참고 파일 (읽기 전용)**: `NAE/pipeline/tsu/config.py`(`DOCTRINE_CATEGORIES` — import로만 재사용), `docs/agents/c1/C1-TASK-NAE-PHASE5-BENCHMARK-INFRASTRUCTURE.md`, `docs/agents/cue/CUE-PHASE5.1-ARCHITECTURE-REVIEW.md`(이번 개정의 근거), `NAE/benchmark/GOLD_BENCHMARK_AUTHORING_GUIDE.md`
 **모드 제약**: 이번 작업은 **데이터 구조·도구**만 만든다. 실제 신학적 질문/정답 100문항의 **내용을 C1이 창작하지 않는다** — 0번·아래 3번 참고.
+
+---
+
+## 0-2. 재발부 사유 (CUE 재검증, 2026-09-03)
+
+원래 "0. 착수 전 선행 조건"(corpus·Qdrant가 비어있음)은 더 이상 유효하지
+않다. CUE가 직접 확인:
+
+```
+NAE/corpus/raw:       50개 파일
+NAE/corpus/canonical: 44개 파일
+NAE/corpus/tsu:       94개 파일
+Qdrant collection "nae_tsu_v1": 3,319 points (curl로 직접 확인)
+```
+
+**TASK 1(gold_tsu_ids 연결)은 이미 완료돼 있다** — CUE가 코드 직접 확인:
+`NAE/benchmark/evaluator.py:82`에서 이미 `relevant_ids = item.gold_tsu_ids`를
+쓰고 있고, `schema.py`에도 `gold_tsu_ids`가 canonical 필드로 존재한다
+(누가 언제 했는지는 불명이나 기존 코드에 이미 반영됨). **이번 재발부는
+TASK 2~4만 대상으로 한다** — 아래 §2의 TASK 2/3/4를 그대로 진행하고,
+TASK 1은 다시 손대지 마라(이미 완료돼 있으므로 재작업하면 오히려
+회귀 위험).
+
+**주의**: 원본 TASK 1 diff를 만든 사람이 CUE 기록에 없다 — 이 필드가
+TASK 2 작업 중 예상과 다르게 동작하면(예: 필드명이 문서와 다르면)
+추측하지 말고 먼저 CUE에게 보고해라.
 
 ---
 
@@ -160,16 +186,16 @@ KNOWN ISSUES:
 
 ---
 
-## C1 전달용 지시 문구 (복사해서 그대로 전달 — HQ가 "0. 착수 전 선행 조건"을 확인·승인한 후에만 전달할 것)
+## C1 전달용 지시 문구 (복사해서 그대로 전달)
 
 ```
 C1, 다음 작업을 진행해줘.
 
 작업명령서: docs/agents/c1/C1-TASK-ORDER-037.md
 
-TASK 1부터 TASK 5까지 순서대로 진행해. TASK 1이 가장 중요해 — relevant_tsu_ids
-필드가 evaluator.py/runner.py에서 전혀 쓰이지 않는 문제부터 고쳐야 나머지
-작업이 의미가 있어.
+이번엔 TASK 2, 3, 4만 진행해줘 — TASK 1(gold_tsu_ids 연결)은 CUE가 확인한
+결과 이미 완료돼 있으니 절대 다시 손대지 마. evaluator.py/runner.py를
+건드릴 필요가 없다는 뜻이야.
 
 TASK 2의 question_type/difficulty/theology_area는 자유 텍스트가 아니라
 NAE/benchmark/config.py에 새로 만드는 닫힌 리스트를 써야 해. theology_area는
@@ -184,5 +210,6 @@ TASK 4의 --promote 커맨드가 이번에 새로 추가된 요구사항이야. 
 교리 분류)을 네가 만들어내면 안 돼. 스키마와 도구만 만들고, 실제 값은 전부
 빈 상태(placeholder)로 남겨.
 
-완료되면 문서에 명시된 "완료 보고 형식"으로 보고하고, git commit은 하지 마.
+완료되면 문서에 명시된 "완료 보고 형식"에서 TASK 2/3/4 부분만 작성하고
+(TASK 1은 생략), git commit은 하지 마.
 ```
