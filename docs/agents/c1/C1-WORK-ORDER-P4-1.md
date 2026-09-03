@@ -1,10 +1,75 @@
 # C1 WORK ORDER — P4-1 IMPLEMENTATION
 ## Monitor A/B Toggle + Search Telemetry Display
 
-**상태**: 발급됨 — 착수 가능
+**상태**: 반려 — 재작업 필요 (아래 §-1 참고)
 **Mode**: IMPLEMENTATION (TDD 게이팅)
 **Branch**: `dev/dbma-engine`
 **전제**: P4-0 PREFLIGHT = PASS (CUE 독립 검증 완료, `C1-WORK-ORDER-P4-0-REPORT.md` 참고)
+
+---
+
+## -1. 반려 사유 (CUE 독립 검증) — Monitor 탭 렌더링 시 크래시함
+
+제출본은 18/18 테스트 통과로 보고됐지만, CUE가 실제 Streamlit API
+시그니처를 직접 확인한 결과 `_render_engine_toggle()`이 **런타임에
+크래시하는 코드**임을 확인했다.
+
+```
+$ python3 -c "import streamlit as st, inspect; print(inspect.signature(st.toggle))"
+(label, value=False, key=None, help=None, on_change=None, args=None,
+ kwargs=None, *, disabled=False, label_visibility='visible',
+ width='content', bind=None) -> bool
+```
+
+`st.toggle()`은 `option_labels` 파라미터를 받지 않는다. 그런데
+`ui/pages/monitor.py::_render_engine_toggle()`은:
+
+```python
+selected_label = st.toggle(
+    "검색 엔진 모드",
+    option_labels=labels,   # ← 존재하지 않는 파라미터
+    value=current == "hybrid",
+    key="engine_mode_toggle",
+)
+```
+
+이렇게 호출한다 — 실제로 Monitor 탭을 열면 `TypeError:
+toggle() got an unexpected keyword argument 'option_labels'`로
+**즉시 크래시**한다.
+
+18개 테스트가 이걸 못 잡은 이유: `tests/test_p41_toggle_and_telemetry.py`가
+`st.toggle`을 mock으로 치환해서(`mock_st.toggle = mock_toggle`, 임의의
+kwargs를 다 받아주는 가짜 함수) 실제 Streamlit API 계약을 전혀 검증하지
+않았다. Mock이 "이 함수가 이런 인자로 호출된다"만 확인했지 "그 인자
+조합이 실제 Streamlit에서 유효한가"는 확인하지 않은 것 — TASK-053과
+동일한 패턴의 실수(가정을 실제 계약과 대조하지 않음).
+
+부가 발견(경미): `_render_search_telemetry()`의 caption 문자열에
+`"텔레메ตรี"` — 한글 사이에 태국어 문자가 섞인 오타가 있다
+("텔레메트리"로 수정할 것).
+
+### 고쳐야 할 것
+
+1. `_render_engine_toggle()`을 실제 `st.toggle()` 시그니처(`label, value,
+   key, ...` — bool 반환)에 맞게 다시 작성해라. "하이브리드 검색" /
+   "기존 검색" 두 라벨을 보여주려면 `option_labels` 같은 존재하지 않는
+   기능에 의존하지 말고, 예를 들어 toggle 옆에 `st.caption`으로 현재
+   상태를 라벨링하거나(이미 하고 있음), toggle 자체의 `label` 인자
+   하나로 "하이브리드 검색 사용" 같은 단일 라벨을 쓰는 방식으로 바꿔라.
+   Streamlit에 실제로 존재하는 API만 써라 — 근거 없이 파라미터를
+   추측하지 마라.
+2. "텔레메ตรี" 오타를 "텔레메트리"로 고쳐라. 다른 문자열도 전부
+   한 번 더 읽고 이런 문자 혼입이 없는지 확인해라.
+3. **회귀 방지**: 이번처럼 mock이 실제 API 계약과 다른 시그니처를
+   허용해서 버그를 가리는 걸 막기 위해, 최소 하나의 테스트는 mock 없이
+   실제 `st.toggle()`을 (또는 그에 준하는 실제 Streamlit 위젯 호출
+   경로를) 직접 호출해서 `TypeError` 없이 성공하는지 확인해라 —
+   Streamlit AppTest(`from streamlit.testing.v1 import AppTest`)를
+   쓰거나, 최소한 `inspect.signature(st.toggle)`로 실제 파라미터
+   목록을 가져와 코드가 넘기는 kwargs가 그 안에 포함되는지 assert하는
+   테스트를 추가해라.
+4. 기존 mock 기반 테스트들은 유지해도 되지만(로직 자체는 맞을 수 있음),
+   위 3번 없이는 반려 재발 방지가 안 된다.
 
 ---
 
