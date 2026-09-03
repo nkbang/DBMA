@@ -43,16 +43,24 @@ chunking:
   max_chunk_size: 5000
 
 # ── Vector Database (Primary) ──────────────────────────
+# [NAE-2026-09-02] Qdrant가 실제 primary 벡터DB입니다. ChromaDB는 legacy
+# corpus history로만 보존되며, 현재 검색 경로에서 쿼리되지 않습니다.
 vector_db:
-  primary: "chroma"
+  primary: "qdrant"
   chroma:
     collection_name: "dbmar_docs"
     persist_directory: "chroma_db"
   qdrant:
-    url: "http://localhost:6333"
+    # [2026-09-03] 실제 컨테이너(nae_qdrant)는 호스트 포트 7333에 매핑됨
+    # (0.0.0.0:7333->6333/tcp) — 6333은 컨테이너 내부 포트, 호스트에서는
+    # 열려있지 않음. core.config.QDRANT_URL이 이 값을 그대로 읽으므로
+    # 여기서 반드시 실제 호스트 포트를 써야 함.
+    url: "http://localhost:7333"
     collections:
       sermon: "dbma_sermon"
       chunks: "dbma_chunks"
+      tsu: "nae_tsu_v1"
+      ref: "nae_ref_v1"
 
 # ── Embedding Model ────────────────────────────────────
 # LangChain 기반 임베딩 — legacy/폴백 전용 (기본 백엔드 아님)
