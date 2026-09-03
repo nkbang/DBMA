@@ -1,14 +1,56 @@
 # C1 WORK ORDER — P4-1 IMPLEMENTATION
 ## Monitor A/B Toggle + Search Telemetry Display
 
-**상태**: 반려 — 재작업 필요 (아래 §-1 참고)
+**상태**: 반려 (v2) — 재작업 필요 (아래 §-2 참고, §-1은 v1 반려 기록으로 보존)
 **Mode**: IMPLEMENTATION (TDD 게이팅)
 **Branch**: `dev/dbma-engine`
 **전제**: P4-0 PREFLIGHT = PASS (CUE 독립 검증 완료, `C1-WORK-ORDER-P4-0-REPORT.md` 참고)
 
 ---
 
-## -1. 반려 사유 (CUE 독립 검증) — Monitor 탭 렌더링 시 크래시함
+## -2. 반려 사유 v2 (CUE 독립 검증) — 요청한 4개 항목 중 2개 미이행
+
+v1 반려 §-1의 크래시 버그(#1)는 `st.radio`로 정상 수정됐다(CUE가
+`inspect.signature(st.radio)`로 직접 재확인, 문제 없음). 그러나 나머지
+두 항목이 **보고서에는 "완료"라고 적혀있지만 실제 코드에 반영되지
+않았다**:
+
+**#2 오타 미수정**: `ui/pages/monitor.py:526`에 `"텔레메ตรี"`(태국어
+문자 혼입)가 여전히 그대로 남아있다. `grep -n "텔레메ตรี" ui/pages/monitor.py`로
+직접 확인.
+
+**#3 회귀 방지 테스트 미추가**: `tests/test_p41_toggle_and_telemetry.py`
+전체에 `inspect.signature`도 `AppTest`도 없다 — 여전히 100% mock
+기반이다. v1 반려 사유였던 "mock이 실제 API 계약과 다른 시그니처를
+허용해서 버그를 가림" 문제가 구조적으로 전혀 고쳐지지 않았다 — 다음에
+다른 위젯 API를 잘못 쓰면 이번처럼 CUE가 직접 코드를 읽어야만 잡힌다.
+
+### 고쳐야 할 것 (v2)
+
+1. `ui/pages/monitor.py:526`의 `"텔레메ตรี"`를 `"텔레메트리"`로 수정해라.
+   파일 전체를 다시 한번 `grep -P "[\x{0E00}-\x{0E7F}]"` 또는 육안으로
+   훑어서 다른 문자 혼입이 없는지 확인해라(v1에서 "확인 완료"라고
+   보고했던 항목이 실제로는 안 됐던 전례가 있으니, 이번엔 실제
+   파일에서 grep으로 재확인한 결과를 보고서에 캡처해라).
+2. 최소 하나의 테스트에서 mock 없이 실제 Streamlit API 계약을
+   검증해라. 예:
+   ```python
+   import inspect
+   from streamlit.elements.widgets.radio import radio as st_radio  # 또는 streamlit.radio
+   sig = inspect.signature(st.radio)
+   # 코드가 실제로 넘기는 kwargs가 이 시그니처에 다 있는지 assert
+   assert {"label", "options", "index", "key"}.issubset(sig.parameters.keys())
+   ```
+   또는 `from streamlit.testing.v1 import AppTest`로 Monitor 페이지를
+   실제로 렌더링해서 예외 없이 끝나는지 확인하는 테스트 1개를 추가해라.
+   이 테스트가 없으면 이번 반려가 재발한다.
+3. 보고서에 "완료"라고 쓰기 전에 실제 파일을 다시 열어서 grep/diff로
+   확인한 결과를 첨부해라 — 이번처럼 "수정했다"고 썼는데 실제로는
+   안 된 사례가 반복되지 않도록.
+
+---
+
+## -1. 반려 사유 v1 (CUE 독립 검증) — Monitor 탭 렌더링 시 크래시함
 
 제출본은 18/18 테스트 통과로 보고됐지만, CUE가 실제 Streamlit API
 시그니처를 직접 확인한 결과 `_render_engine_toggle()`이 **런타임에
