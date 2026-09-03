@@ -4,7 +4,7 @@
 
 확장 스키마 (C1-TASK-ORDER-037):
 - gold_tsu_ids: retrieval ground truth (TSU ID 공간 기준)
-- question_type / difficulty / review_status: 메타 필드
+- question_type / difficulty / theology_area / review_status: 메타 필드
 - metadata: tsu_schema_version, collector_version, canonical_version
 """
 
@@ -66,6 +66,7 @@ class BenchmarkQuestion:
     text: str = ""
     language: str = "ko"  # "ko" | "en"
     question_type: str = "other"  # QUESTION_TYPES 중 하나
+    theology_area: str = ""  # THEOLOGY_AREA_CATEGORIES 중 하나 (빈 값 가능)
 
 
 @dataclass
@@ -224,6 +225,16 @@ class BenchmarkItem:
             errors.append(
                 f"review_status must be one of {REVIEW_STATUSES}, got '{self.review_status}'"
             )
+
+        # theology_area: 빈 값("")은 허용, 값이 있으면 THEOLOGY_AREA_CATEGORIES에 속해야 함
+        if self.question.theology_area != "":
+            from NAE.benchmark.config import THEOLOGY_AREA_CATEGORIES
+
+            if self.question.theology_area not in THEOLOGY_AREA_CATEGORIES:
+                errors.append(
+                    f"question.theology_area must be '' or one of {THEOLOGY_AREA_CATEGORIES}, "
+                    f"got '{self.question.theology_area}'"
+                )
 
         # gold_tsu_ids 중복 검사
         if len(self.gold_tsu_ids) != len(set(self.gold_tsu_ids)):

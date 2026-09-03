@@ -1,6 +1,6 @@
 # C1 Task Order 037 — NAE Phase 5.1: Gold Benchmark Dataset v1 Infrastructure
 
-**상태**: **재발부(2026-09-03) — TASK 2~4만 범위, 착수 가능**
+**상태**: 종료 — 승인 (CUE 최종 판단, 2026-09-03. TASK 2~4 범위. 아래 "0-3" 참고)
 **우선순위**: P1 (TASK 1은 이미 완료 확인됨 — 아래 "0-2" 참고)
 **대상 파일**: `NAE/benchmark/config.py`(신규), `NAE/benchmark/template.py`(신규), `NAE/benchmark/review.py`(신규), `NAE/benchmark/schema.py`(TASK 2 필드 추가분만), 관련 테스트
 **참고 파일 (읽기 전용)**: `NAE/pipeline/tsu/config.py`(`DOCTRINE_CATEGORIES` — import로만 재사용), `docs/agents/c1/C1-TASK-NAE-PHASE5-BENCHMARK-INFRASTRUCTURE.md`, `docs/agents/cue/CUE-PHASE5.1-ARCHITECTURE-REVIEW.md`(이번 개정의 근거), `NAE/benchmark/GOLD_BENCHMARK_AUTHORING_GUIDE.md`
@@ -31,6 +31,27 @@ TASK 1은 다시 손대지 마라(이미 완료돼 있으므로 재작업하면 
 **주의**: 원본 TASK 1 diff를 만든 사람이 CUE 기록에 없다 — 이 필드가
 TASK 2 작업 중 예상과 다르게 동작하면(예: 필드명이 문서와 다르면)
 추측하지 말고 먼저 CUE에게 보고해라.
+
+## 0-3. CUE 최종 판단 (TASK 2~4 완료 보고 검증, 2026-09-03)
+
+| 항목 | 판정 | 근거 |
+|---|---|---|
+| `THEOLOGY_AREA_CATEGORIES` import 별칭(값 복사 아님) | PASS | `NAE/benchmark/config.py:16` `from NAE.pipeline.tsu.config import DOCTRINE_CATEGORIES as THEOLOGY_AREA_CATEGORIES` 직접 확인 |
+| 100개 placeholder 전부 빈 값 | PASS | `gold_v1_draft.jsonl` 1번 레코드 직접 열어 확인 — text/성경구절/교리 등 전부 빈 문자열·빈 배열 |
+| `--promote` 필수 필드 재검증 | PASS | `review.py::cmd_promote()` 코드 확인 |
+| 신규 테스트 | PASS | CUE가 직접 재실행 — config/template/review/schema 66개, benchmark 전체 177개 |
+| Forbidden path (`NAE/pipeline/`, `evaluator.py`, `runner.py`) | PASS | git status 무접촉 확인, TASK 1 재작업 없음 |
+| git commit 안 함 | PASS | 지시대로 미커밋 확인 |
+
+**차이점(반려 아님, 기록용)**: 작업지시서 TASK 2-2가 요구한 `review:
+BenchmarkReview` 전용 dataclass 대신, 기존 코드베이스에 이미 있던 flat
+`review_status` 필드 + `review.py`가 raw dict로 직접 쓰는
+`{status, reviewer, reviewed_at, notes}` 조합으로 구현됨. 기능은
+동작하지만 `BenchmarkItem.from_dict()`가 이 `review` dict를 공식
+인식하지 않아 dataclass 왕복 시 유실 가능 — 후속 과제로 기록, 이번
+승인을 막지는 않음.
+
+**TASK-037(2~4) — CUE가 지금 이 판단으로 공식 종료한다.**
 
 ---
 

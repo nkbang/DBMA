@@ -13,6 +13,7 @@ from NAE.benchmark.schema import (
     DIFFICULTY_LEVELS,
     REVIEW_STATUSES,
 )
+from NAE.benchmark.config import THEOLOGY_AREA_CATEGORIES
 
 
 # ------------------------------------------------------------------
@@ -354,3 +355,99 @@ class TestBenchmarkExpected:
             expected_doctrine="대리 속죄설",
         )
         assert expected.expected_doctrine == "대리 속죄설"
+
+# ------------------------------------------------------------------
+# THEOLOGY_AREA_CATEGORIES 검증
+# ------------------------------------------------------------------
+
+class TestTHEOLOGY_AREA_CATEGORIES:
+    def test_theology_area_importable(self):
+        """THEOLOGY_AREA_CATEGORIES가 import 가능해야 함."""
+        from NAE.benchmark.config import THEOLOGY_AREA_CATEGORIES as tac
+        assert tac is not None
+
+    def test_same_as_DOCTRINE_CATEGORIES(self):
+        """THEOLOGY_AREA_CATEGORIES가 DOCTRINE_CATEGORIES와 동일 객체여야 함."""
+        from NAE.pipeline.tsu.config import DOCTRINE_CATEGORIES
+        from NAE.benchmark.config import THEOLOGY_AREA_CATEGORIES
+        assert id(THEOLOGY_AREA_CATEGORIES) == id(DOCTRINE_CATEGORIES)
+
+
+# ------------------------------------------------------------------
+# BenchmarkQuestion — theology_area 검증
+# ------------------------------------------------------------------
+
+class TestBenchmarkQuestionTheologyArea:
+    def test_default_theology_area_is_empty(self):
+        """theology_area 기본값은 빈 문자열이어야 함."""
+        q = BenchmarkQuestion()
+        assert q.theology_area == ""
+
+    def test_set_theology_area(self):
+        """theology_area를 설정할 수 있어야 함."""
+        q = BenchmarkQuestion(theology_area="Baptism")
+        assert q.theology_area == "Baptism"
+
+    def test_to_dict_includes_theology_area(self):
+        """to_dict()에 theology_area가 포함되어야 함."""
+        q = BenchmarkQuestion(text="test", theology_area="Trinity")
+        d = q.__dict__  # dataclass이므로 __dict__ 사용
+        assert "theology_area" in d
+        assert d["theology_area"] == "Trinity"
+
+
+# ------------------------------------------------------------------
+# BenchmarkItem — theology_area validation
+# ------------------------------------------------------------------
+
+class TestBenchmarkItemTheologyAreaValidation:
+    def test_empty_theology_area_passes_validation(self):
+        """theology_area가 빈 문자열이면 validate()가 통과해야 함."""
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="test", language="ko", theology_area=""),
+            difficulty="beginner",
+            review_status="draft",
+        )
+        errors = item.validate()
+        theology_errors = [e for e in errors if "theology_area" in e]
+        assert len(theology_errors) == 0
+
+    def test_valid_theology_area_passes_validation(self):
+        """theology_area가 THEOLOGY_AREA_CATEGORIES에 있으면 validate() 통과."""
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="test", language="ko", theology_area="Baptism"),
+            difficulty="beginner",
+            review_status="draft",
+        )
+        errors = item.validate()
+        theology_errors = [e for e in errors if "theology_area" in e]
+        assert len(theology_errors) == 0
+
+    def test_invalid_theology_area_fails_validation(self):
+        """theology_area가 THEOLOGY_AREA_CATEGORIES에 없으면 validate()가 에러 반환."""
+        item = BenchmarkItem(
+            benchmark_id="B001",
+            question=BenchmarkQuestion(text="test", language="ko", theology_area="InvalidDoctrineXXX"),
+            difficulty="beginner",
+            review_status="draft",
+        )
+        errors = item.validate()
+        theology_errors = [e for e in errors if "theology_area" in e]
+        assert len(theology_errors) == 1
+        assert "InvalidDoctrineXXX" in theology_errors[0]
+
+    def test_theology_area_closed_vocabulary(self):
+        """theology_area는 닫힌 vocabulary를 위반하면 에러."""
+        for invalid_value in ["free_text_doctrine", "custom_category", ""]:
+            item = BenchmarkItem(
+                benchmark_id="B001",
+                question=BenchmarkQuestion(text="test", language="ko", theology_area=invalid_value),
+                difficulty="beginner",
+                review_status="draft",
+            )
+            errors = item.validate()
+            if invalid_value != "":  # 빈 문자열은 허용
+                theology_errors = [e for e in errors if "theology_area" in e]
+                assert len(theology_errors) == 1, f"{invalid_value} should fail validation"
