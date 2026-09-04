@@ -1,0 +1,90 @@
+# Pilot Authority Registry — Fuller Source Files — NAE-METADATA-PILOT-002
+# 주의: 기존 NAE_SOURCE_MANIFEST_v1.csv에는 8개 volume 전체가 단일
+# source_id(BAP-MISS-FULLER)로 등록되어 있음 — 이번 pilot은 volume별로
+# 신규 source_id를 부여해 검증한다(기존 manifest는 변경하지 않음, 이
+# registry는 pilot 전용 신규 ID 체계). §Duplicate Analysis Volume Conflict 참고.
+schema_version: "1.0-pilot"
+
+sources:
+  - source_id: BAP-MISS-FULLER-VOL01
+    volume_id: FULLER-COMPLETE-WORKS-VOL01
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol01/"
+    file_type: [pdf, txt]
+    file_size_mb: 30
+    archive_source: "NYPL Research Libraries 소장본 스캔(추정, ocr.txt 첫 줄 'NYPL RESEARCH LIBRARIES' 바코드 표기 실측) — archive.org 사이드카 메타데이터 파일 없음"
+    ocr_available: true
+    hocr_available: false
+    quality_status: WARNING
+    notes: "제목면 OCR 노이즈 심함(발행처 표기 부분 인식 오류) — Edition 판단에 사람 확인 필요."
+
+  - source_id: BAP-MISS-FULLER-VOL02
+    volume_id: FULLER-COMPLETE-WORKS-VOL02
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol02/"
+    file_type: [pdf, txt]
+    file_size_mb: 26
+    archive_source: "NYPL 소장본으로 추정(Vol02는 첫 줄 NYPL 바코드 미검출, 동일 시리즈 타 volume과의 정황상 추정) — 사이드카 메타데이터 없음"
+    ocr_available: true
+    hocr_available: false
+    quality_status: PASS
+
+  - source_id: BAP-MISS-FULLER-VOL03
+    volume_id: FULLER-COMPLETE-WORKS-VOL03
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol03/"
+    file_type: [pdf, txt]
+    file_size_mb: 25
+    archive_source: "NYPL Research Libraries 소장본 스캔(바코드 실측) — 개인 소장 이력 메모('MRS. S.V.V. HUNTINGTON, 15 JUNE') 표지에 존재"
+    ocr_available: true
+    hocr_available: false
+    quality_status: PASS
+
+  - source_id: BAP-MISS-FULLER-VOL04
+    volume_id: FULLER-COMPLETE-WORKS-VOL04
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol04/"
+    file_type: [pdf, txt]
+    file_size_mb: 31
+    archive_source: "NYPL Research Libraries 소장본 스캔(바코드 실측), 동일 개인 소장 이력 메모 존재(Vol03과 동일 인물 추정)"
+    ocr_available: true
+    hocr_available: false
+    quality_status: PASS
+
+  - source_id: BAP-MISS-FULLER-VOL05
+    volume_id: FULLER-COMPLETE-WORKS-VOL05
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol05/"
+    file_type: [pdf, txt]
+    file_size_mb: 26
+    archive_source: "NYPL Research Libraries 소장본 스캔(바코드 실측)"
+    ocr_available: true
+    hocr_available: false
+    quality_status: PASS
+
+  - source_id: BAP-MISS-FULLER-VOL06
+    volume_id: FULLER-COMPLETE-WORKS-VOL06
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol06/"
+    file_type: [pdf, txt]
+    file_size_mb: 23
+    archive_source: "Princeton Theological Seminary 도서관 기증 장서인 존재(ocr.txt 첫 페이지 실측) — NYPL 계열과 다른 소장처, 사이드카 메타데이터 없음"
+    ocr_available: true
+    hocr_available: false
+    quality_status: WARNING
+    notes: "제목면 OCR 노이즈 심함(장서인 고서체 인식 실패로 초반 다수 행이 판독 불가) — 본문 상태는 별도 확인 필요."
+
+  - source_id: BAP-MISS-FULLER-VOL07
+    volume_id: FULLER-COMPLETE-WORKS-VOL07
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol07/"
+    file_type: [pdf, txt]
+    file_size_mb: 30
+    archive_source: "소장처 불명 — 바코드/장서인 미검출"
+    ocr_available: true
+    hocr_available: false
+    quality_status: WARNING
+    notes: "발행연도 OCR 잘림('1824-') — publication_year 잠정치, 사람 확인 필요."
+
+  - source_id: BAP-MISS-FULLER-VOL08
+    volume_id: FULLER-COMPLETE-WORKS-VOL08
+    path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol08/"
+    file_type: [pdf, txt]
+    file_size_mb: 35
+    archive_source: "NYPL Research Libraries 소장본 스캔(바코드 실측)"
+    ocr_available: true
+    hocr_available: false
+    quality_status: PASS

@@ -18,7 +18,7 @@ from ui.theme.colors import THEME
 from ui.components.status import progress_indicator, status_badge
 from ui.state.store import StateStore
 from core.config import DEFAULT_RAW_DIR, DEFAULT_OUTPUT_DIR
-from core.index_orchestrator import reconcile_pending
+from ui.state.background_builder import get_shared_background_builder
 from core.extraction_failures import load_extraction_failures
 from core.processing import (
     build_converter,
@@ -26,6 +26,7 @@ from core.processing import (
     process_batch,
     get_processed_files,
 )
+from core.utils import make_safe_stem
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,13 @@ logger = logging.getLogger(__name__)
 # One constant now, referenced everywhere a supported-extension check is
 # needed, so the two can't drift apart again.
 SUPPORTED_EXTS = {".pdf", ".txt", ".md", ".docx", ".epub", ".html", ".htm", ".rtf"}
+
+# [NAE-UPLOAD-AUTO] 업로드 즉시 자동 처리는 Streamlit 요청 스레드에서
+# 동기적으로 실행된다 — 무제한 업로드를 허용하면 한 번의 클릭이 UI를
+# 장시간(수십 개 문서 분량) 멈춰 세울 수 있어, 한 배치당 처리량을 3권으로
+# 제한한다. 대기 중인 백로그(이미 보관함에 있던 미처리 파일)는 이 자동
+# 처리 대상에서 제외되며, 아래 "문서 처리 시작" 버튼으로 별도 처리한다.
+MAX_UPLOAD_BATCH = 3
 
 # [SPRINT25-B-2] Human-readable labels for the exception classes actually
 # reachable in the extraction path (verified in SPRINT25-B-1 Preflight —
@@ -64,41 +72,42 @@ def _failure_label(failure: dict) -> str:
 
 def render_processing_page() -> None:
     """Render the DBMA Document Processing page."""
-    page = BasePage(title="Document Processing", icon="📄")
+    page = BasePage(title="문서 처리", icon="description")
     page.render_header()
 
     # ── File Upload (Drag & Drop) ───────────────────────────────
-    page.render_section("파일 업로드", icon="📤")
+    page.render_section("파일 업로드", icon="upload")
     _render_upload_section()
 
     # ── Ingestion Form ─────────────────────────────────────────
-    page.render_section("문書 처리", icon="📥")
+    page.render_section("문서 처리", icon="settings_applications")
     _render_ingestion_form()
 
     # ── Processing Queue ───────────────────────────────────────
-    page.render_section("처리 대기열", icon="📋")
+    page.render_section("처리 대기열", icon="list_alt")
     _render_processing_queue()
 
     # ── Processing History ─────────────────────────────────────
-    page.render_section("처리 기록", icon="📜")
+    page.render_section("처리 기록", icon="receipt_long")
     _render_processing_history()
 
     # ── Recent Failures ──────────────────────────────────────────
-    page.render_section("최근 실패", icon="⚠️")
+    page.render_section("최근 실패", icon="warning")
     _render_recent_failures()
 
     page.render_footer()
 
 
 def _render_upload_section() -> None:
-    """[SPRINT22-A] Drag & drop file upload.
+    """[SPRINT22-A][NAE-UPLOAD-AUTO] Drag & drop file upload.
 
-    Saves uploaded files directly into DEFAULT_RAW_DIR and stops there —
-    it is purely an alternate intake mechanism for RAW. The existing
-    processing pipeline (_build_file_list/process_batch/process_one_file)
-    picks the saved files up completely unchanged on the next "🚀 문서
-    처리 시작" click, exactly as if the user had copied them into RAW
-    manually. No core/processing.py changes needed.
+    Saves uploaded files into 보관함(DEFAULT_RAW_DIR) and immediately runs
+    them through the processing pipeline (build_converter/build_splitter/
+    process_batch) — no separate "문서 처리 시작" click needed for the
+    files just uploaded here. Batch size is capped at MAX_UPLOAD_BATCH
+    since auto-processing runs synchronously on the Streamlit request
+    thread. Pre-existing backlog in 보관함 is untouched by this path; it
+    still goes through the manual ingestion form below.
     """
     uploaded_files = st.file_uploader(
         "파일을 끌어다 놓거나 선택하세요",
@@ -108,12 +117,19 @@ def _render_upload_section() -> None:
     )
 
     if not uploaded_files:
-        st.caption("지원 형식: PDF, TXT, MD, DOCX, EPUB, HTML, RTF")
+        st.caption(f"지원 형식: PDF, TXT, MD, DOCX, EPUB, HTML, RTF (한 번에 최대 {MAX_UPLOAD_BATCH}권까지 업로드 가능)")
+        return
+
+    if len(uploaded_files) > MAX_UPLOAD_BATCH:
+        st.error(
+            f"한 번에 최대 {MAX_UPLOAD_BATCH}권까지 업로드할 수 있습니다. "
+            f"({len(uploaded_files)}개 선택됨 — 파일 선택을 줄여주세요)"
+        )
         return
 
     st.caption(f"{len(uploaded_files)}개 파일 선택됨: {', '.join(f.name for f in uploaded_files)}")
 
-    if st.button("📥 RAW 폴더에 저장", key="save_uploads"):
+    if st.button("업로드 및 자동 처리", icon=":material/bolt:", key="save_uploads"):
         raw_dir = Path(DEFAULT_RAW_DIR)
         raw_dir.mkdir(parents=True, exist_ok=True)
         saved, skipped = [], []
@@ -129,25 +145,49 @@ def _render_upload_section() -> None:
             dest.write_bytes(f.getvalue())
             saved.append(safe_name)
 
-        if saved:
-            st.success(f"RAW에 저장됨: {', '.join(saved)} — 아래에서 처리를 시작하세요.")
         if skipped:
             st.warning(f"지원하지 않는 형식이라 건너뜀: {', '.join(skipped)}")
-        st.rerun()
+
+        if not saved:
+            st.rerun()
+            return
+
+        st.success(f"보관함에 저장됨: {', '.join(saved)} — 자동 처리를 시작합니다.")
+        auto_file_list = [
+            {
+                "path": str(raw_dir / name),
+                "name": name,
+                "ext": Path(name).suffix.lower().lstrip("."),
+                "use_ocr": False,
+            }
+            for name in saved
+        ]
+        _execute_processing(auto_file_list, 1000, 200, False, False)
 
 
 def _build_file_list(target_dir: str, force_reingest: bool) -> List[Dict[str, Any]]:
-    """Build file list from target directory, respecting force_reingest flag."""
+    """Build file list from target directory, respecting force_reingest flag.
+
+    [버그 수정 2026-08-24] raw_path.iterdir()는 최상위 파일만 봐서
+    RAW/설교_분리/ 같은 하위 폴더의 파일은 "문서 처리 시작"을 몇 번을
+    눌러도 절대 대기열에 잡히지 않았다(사용자 보고: "전체 처리를
+    했는데 다 끝내지 않는다" — 실측 확인: 미처리 36권 전부 하위 폴더에
+    있었음, 최상위엔 0건). Dashboard의 _count_documents()/
+    _get_raw_processing_breakdown()는 이미 rglob()으로 재귀 탐색하므로
+    여기도 맞춘다.
+    """
     raw_path = Path(target_dir)
     if not raw_path.exists():
         return []
 
     files = []
 
-    for f in sorted(raw_path.iterdir()):
+    for f in sorted(raw_path.rglob("*")):
         if f.suffix.lower() not in SUPPORTED_EXTS:
             continue
         if not f.is_file():
+            continue
+        if f.name.startswith("."):
             continue
 
         name = f.name
@@ -175,20 +215,81 @@ def _build_file_list(target_dir: str, force_reingest: bool) -> List[Dict[str, An
     return files
 
 
+def _filter_selected_files(
+    file_list: List[Dict[str, Any]], selected_names: Optional[List[str]]
+) -> List[Dict[str, Any]]:
+    """[2026-07-21] _build_file_list()가 만든 후보 목록을 사용자가 고른
+    파일명(selected_names)으로 좁힌다. selected_names가 None이면(선택
+    UI 미표시 — 강제 옵션이 꺼진 일반 처리 경로) 전체 목록을 그대로
+    반환해 기존 동작을 바꾸지 않는다. 순서는 항상 file_list 원래 순서를
+    따른다(선택 UI에서 고른 순서가 아니라)."""
+    if selected_names is None:
+        return file_list
+    selected_set = set(selected_names)
+    return [f for f in file_list if f["name"] in selected_set]
+
+
 def _render_ingestion_form() -> None:
     """Render the document ingestion form."""
     store = StateStore()
 
-    c1, c2 = st.columns([1, 1])
+    # Available folders for processing
+    _available_dirs: List[str] = []
+    _dir_labels: Dict[str, str] = {}
+    try:
+        _base = Path(DEFAULT_RAW_DIR).parent
+        if _base.exists():
+            for d in sorted(_base.iterdir()):
+                if d.is_dir() and any(f.suffix.lower() in SUPPORTED_EXTS for f in d.iterdir() if f.is_file()):
+                    _available_dirs.append(str(d))
+                    _dir_labels[str(d)] = f"{d.name} ({len([f for f in d.iterdir() if f.is_file()])} files)"
+    except OSError:
+        pass
+
+    # Ensure current DEFAULT_RAW_DIR is always available
+    if DEFAULT_RAW_DIR not in _available_dirs:
+        _available_dirs.insert(0, DEFAULT_RAW_DIR)
+        _dir_labels.setdefault(DEFAULT_RAW_DIR, f"기본 보관함")
+
+    # Helper: open folder in system file browser
+    def _open_folder_in_browser(folder_path: str) -> None:
+        """Open a folder in the system's native file browser."""
+        import platform
+        system = platform.system()
+        if system == "Darwin":  # macOS
+            os.system(f"open '{folder_path}'")
+        elif system == "Linux":
+            os.system(f"xdg-open '{folder_path}'")
+        else:  # Windows
+            os.system(f'explorer "{folder_path}"')
+
+    c1, c2, c3 = st.columns([3, 1, 2])
     with c1:
-        target_dir = st.text_input(
+        # Folder selector dropdown
+        selected = st.selectbox(
             "처리 대상 폴더",
-            value=DEFAULT_RAW_DIR,
-            key="processing_target",
+            options=_available_dirs,
+            format_func=lambda x: str(_dir_labels.get(x, "")) if _dir_labels.get(x) else x,
+            key="processing_target_selector",
+            help="처리할 폴더를 선택하거나 아래에 직접 경로를 입력하세요.",
         )
+        # Allow manual override
+        manual_dir = st.text_input(
+            "또는 직접 경로 입력",
+            value=selected if selected != DEFAULT_RAW_DIR else "",
+            placeholder=DEFAULT_RAW_DIR,
+            key="processing_target_manual",
+        )
+        target_dir = (manual_dir or "").strip() or selected
         store.set("processing_target", target_dir)
 
     with c2:
+        # "Open Folder" button — opens system file browser at target_dir
+        if st.button("폴더 열기", icon=":material/folder_open:", key="open_folder_btn", use_container_width=True):
+            _open_folder_in_browser(target_dir)
+            st.info(f"'{target_dir}' 폴더를 파일 브라우저에서 열었습니다.")
+
+    with c3:
         # [SPRINT29-B] Labeled "(토큰)" not "(문자)": this value feeds
         # build_splitter() -> SentenceTransformersTokenTextSplitter, which
         # counts tokens, not characters. It also applies only on the
@@ -220,30 +321,83 @@ def _render_ingestion_form() -> None:
     with col2:
         use_ocr = st.checkbox("OCR 사용", value=False, key="use_ocr")
     with col3:
-        force_reingest = st.checkbox("강제 재처리", value=False, key="force_reingest")
+        force_reingest = st.checkbox("강제 재처리", value=False, key="force_reingest",
+                                      help="이미 처리된 파일명도 다시 시도합니다. 다만 내용이 기존과 동일하면 여전히 건너뜁니다.")
     with col4:
         store.set("use_ocr", use_ocr)
         store.set("force_reingest", force_reingest)
 
+    # [2026-07-21] force_reingest("강제 재처리")와는 별개 기능 — 파일명
+    # 게이트만 우회하는 force_reingest와 달리, 콘텐츠 해시가 동일해도
+    # classify_ingest_decision()의 SKIP을 무시하고 실제로 청킹을 다시
+    # 실행한다. 청킹 알고리즘 자체를 고친 뒤(예: _merge_sentence_fragments
+    # word-safe hard slice 수정) 이미 처리된 문서들을 새 로직으로
+    # 재청킹하고 싶을 때 쓴다. 기존 "강제 재처리" 체크박스 의미를 바꾸면
+    # tests/test_process_batch_force_reingest.py의 명시적 계약("두 게이트를
+    # 혼동하지 말 것")을 깨므로, 반드시 별도 컨트롤로 둔다
+    # (tests/test_force_rechunk.py 참고).
+    # 엔지니어링 유지보수용 위험 옵션 — 일반 사용자(베타 테스터)에게는 불필요해
+    # 숨긴다. NAE_ADMIN_MODE=1일 때만 노출 (ui/app.py의 Monitor 게이트와 동일 패턴).
+    if os.environ.get("NAE_ADMIN_MODE") == "1":
+        icon_col, checkbox_col = st.columns([1, 30])
+        with icon_col:
+            st.markdown(
+                '<span class="material-symbols-outlined" style="font-size: 18px; color: '
+                f'{THEME.STATUS_WARNING}; vertical-align: -4px;">warning</span>',
+                unsafe_allow_html=True,
+            )
+        with checkbox_col:
+            force_rechunk = st.checkbox(
+                "전체 재청킹 (내용이 같아도 다시 청킹)", value=False, key="force_rechunk",
+                help="청킹 알고리즘이 바뀐 뒤 이미 처리된 문서를 새 로직으로 다시 청킹할 때만 사용하세요. 자동으로 '강제 재처리'도 함께 적용됩니다.",
+            )
+    else:
+        force_rechunk = False
+    store.set("force_rechunk", force_rechunk)
+    effective_force_reingest = force_reingest or force_rechunk
+
     # Count pending files
-    raw_path = Path(target_dir)
-    pending_count = 0
-    if raw_path.exists():
-        for f in raw_path.iterdir():
-            if f.suffix.lower() in SUPPORTED_EXTS and f.is_file():
-                pending_count += 1
+    # [버그 수정 2026-07-21] 이전에는 RAW의 지원 형식 파일 총 개수를 셌다 —
+    # 이미 처리 완료된 파일도 포함되어, 대기열이 0개인데 "처리 가능: 64개"로
+    # 표시되는 모순이 있었다(사용자 보고). _build_file_list()는 이미
+    # .batch_state.json으로 처리 완료 파일을 걸러내고 force_reingest를
+    # 반영하므로(SPRINT22-A, tests/test_processing_upload.py로 검증됨),
+    # 그 결과를 그대로 재사용해 대기열과 정의를 일치시킨다.
+    candidate_files = _build_file_list(target_dir, effective_force_reingest)
+
+    # [2026-07-21] 강제 재처리 문서 선택 기능 — "강제 재처리"/"전체
+    # 재청킹"을 켜면 이미 처리된 문서까지 전부 대상이 되어 특정 문서만
+    # 다시 처리하고 싶어도 방법이 없었다(사용자 보고). 강제 옵션이 켜진
+    # 경우에만 멀티셀렉트를 보여주고, 꺼져 있으면(일반 신규 처리) 기존
+    # 동작 그대로 전체를 처리한다 — 매번 선택을 강요하지 않는다.
+    selected_names: Optional[List[str]] = None
+    if effective_force_reingest and candidate_files:
+        all_names = [f["name"] for f in candidate_files]
+        selected_names = st.multiselect(
+            "재처리할 문서 선택 (비워두면 전체)",
+            options=all_names,
+            default=all_names,
+            key="force_reprocess_selection",
+            help="강제 재처리/전체 재청킹 대상 문서를 좁힐 수 있습니다.",
+        )
+
+    file_list = _filter_selected_files(candidate_files, selected_names)
+    pending_count = len(file_list)
 
     # Start processing button
     st.divider()
-    
+
+    if force_rechunk:
+        st.warning("전체 재청킹이 켜져 있습니다 — 내용이 동일한 문서도 청킹을 처음부터 다시 실행합니다. 문서 수가 많으면 오래 걸릴 수 있습니다.")
+
     if pending_count == 0:
         st.info("처리할 문서가 없습니다.")
-        st.button("🚀 문서 처리 시작", type="primary", use_container_width=True, disabled=True)
+        st.button("문서 처리 시작", icon=":material/rocket_launch:", type="primary", use_container_width=True, disabled=True)
     else:
         st.caption(f"처리 가능: {pending_count}개 문서")
-        
-        if st.button("🚀 문서 처리 시작", type="primary", use_container_width=True):
-            _execute_processing(target_dir, chunk_size, overlap, use_ocr, force_reingest)
+
+        if st.button("문서 처리 시작", icon=":material/rocket_launch:", type="primary", use_container_width=True):
+            _execute_processing(file_list, chunk_size, overlap, use_ocr, effective_force_reingest, force_rechunk)
 
 
 def _render_item_row(icon: str, name: str, detail: str, border_color: str, badge_bg: str, badge_fg: str, badge_text: str) -> None:
@@ -251,7 +405,7 @@ def _render_item_row(icon: str, name: str, detail: str, border_color: str, badge
     with a colored left border and a status badge."""
     html = f"""
     <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {border_color}; margin-bottom: 4px;">
-        <span style="font-size: 16px; margin-right: 12px;">{icon}</span>
+        <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 12px; color: {border_color};">{icon}</span>
         <div style="flex: 1;">
             <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
                 {name}
@@ -280,8 +434,10 @@ def _render_processing_queue() -> None:
         st.info("처리할 문서가 없습니다.")
         return
 
-    files = list(raw_dir.iterdir())
-    supported = [f for f in files if f.suffix.lower() in SUPPORTED_EXTS and f.is_file()]
+    # [버그 수정 2026-08-24] _build_file_list()와 동일하게 재귀 탐색 —
+    # 최상위만 보면 하위 폴더 파일이 대기열에서 영원히 안 보인다.
+    files = list(raw_dir.rglob("*"))
+    supported = [f for f in files if f.suffix.lower() in SUPPORTED_EXTS and f.is_file() and not f.name.startswith(".")]
 
     if not supported:
         st.info("지원되지 않는 파일 유형입니다. (PDF, TXT, MD, DOCX, EPUB, HTML, RTF)")
@@ -340,7 +496,7 @@ def _render_processing_queue() -> None:
             badge_bg, badge_fg, badge_text = THEME.STATUS_INFO_BG, THEME.STATUS_INFO, "대기 중"
             detail = f"{size_kb:.0f} KB"
 
-        _render_item_row("📄", f.name, detail, border_color, badge_bg, badge_fg, badge_text)
+        _render_item_row("description", f.name, detail, border_color, badge_bg, badge_fg, badge_text)
 
     visible, rest = queued[:10], queued[10:]
     for f in visible:
@@ -352,7 +508,16 @@ def _render_processing_queue() -> None:
 
 
 def _render_processing_history() -> None:
-    """Render the processing history."""
+    """Render the processing history.
+
+    [버그 수정 2026-07-21] 이전에는 .md 파일 존재만으로 "완료"라고 표시했다
+    (추출·정제 직후 생성됨). 그런데 대기열(_render_processing_queue)은
+    .batch_state.json의 processed 목록(청킹+원본 복사까지 끝나야 mark_
+    processed()로 기록됨, core/processing.py:732)을 기준으로 삼는다 —
+    청킹 단계에서 멈춘 파일은 .md만 있고 processed에는 없어, 히스토리엔
+    "완료"로, 대기열엔 "대기 중"으로 동시에 나타나는 모순이 있었다.
+    make_safe_stem()으로 processed 파일명 -> .md stem을 정방향 매핑해
+    실제 파이프라인 완료 여부로 상태를 나눈다."""
     output_dir = Path(DEFAULT_OUTPUT_DIR)
 
     if not output_dir.exists():
@@ -363,6 +528,8 @@ def _render_processing_history() -> None:
     if not md_files:
         st.info("처리 기록이 없습니다.")
         return
+
+    completed_stems = {make_safe_stem(name) for name in get_processed_files(DEFAULT_OUTPUT_DIR)}
 
     # Show recent processing history (last 5)
     file_times = []
@@ -375,12 +542,17 @@ def _render_processing_history() -> None:
 
     file_times.sort(key=lambda x: x[1], reverse=True)
 
-    st.caption(f"전체 {len(file_times)}개 완료")
+    done_count = sum(1 for f, _ in file_times if f.stem in completed_stems)
+    st.caption(f"전체 {len(file_times)}개 중 {done_count}개 완료")
 
     def _render_history_item(f: Path, dt: datetime) -> None:
         size_kb = f.stat().st_size / 1024 if f.exists() else 0
         detail = f"{dt.strftime('%Y-%m-%d %H:%M')} • {size_kb:.0f} KB"
-        _render_item_row("✅", f.stem, detail, THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS, "완료")
+        if f.stem in completed_stems:
+            _render_item_row("check_circle", f.stem, detail, THEME.STATUS_SUCCESS, THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS, "완료")
+        else:
+            detail += " • 청킹 미완료"
+            _render_item_row("hourglass_empty", f.stem, detail, THEME.STATUS_WARNING, THEME.STATUS_WARNING_BG, THEME.STATUS_WARNING, "처리 중")
 
     visible, rest = file_times[:5], file_times[5:]
     for f, dt in visible:
@@ -392,17 +564,20 @@ def _render_processing_history() -> None:
 
 
 def _execute_processing(
-    target_dir: str,
+    file_list: List[Dict[str, Any]],
     chunk_size: int,
     overlap: int,
     use_ocr: bool,
     force_reingest: bool,
+    force_rechunk: bool = False,
 ) -> None:
-    """Execute the document processing pipeline."""
-    
-    # Build file list
-    file_list = _build_file_list(target_dir, force_reingest)
-    
+    """Execute the document processing pipeline.
+
+    [2026-07-21] file_list는 호출부(_render_ingestion_form)에서 이미
+    _build_file_list() + _filter_selected_files()로 확정된 목록을
+    그대로 받는다 — 여기서 target_dir을 다시 스캔하면 사용자가 고른
+    문서 선택이 무시되므로 재빌드하지 않는다."""
+
     if not file_list:
         st.info("처리할 파일이 없습니다. (이미 처리되었거나 파일이 없는 경우)")
         return
@@ -419,14 +594,14 @@ def _execute_processing(
         # Define report callback for inline progress updates
         def report_callback(stage: str, message: str, progress: Optional[float] = None):
             if stage == "done":
-                status_text.success(f"✅ {message}")
+                status_text.success(f"{message}", icon=":material/check_circle:")
                 progress_bar.progress(1.0)
             elif stage.startswith("extract"):
-                status_text.info(f"📖 추출 중: {message}")
+                status_text.info(f"추출 중: {message}", icon=":material/menu_book:")
                 p = progress or 0.2
                 progress_bar.progress(p * total_files / total_files)
             elif stage == "chunk_done":
-                status_text.info(f"✂️ 청킹 중: {message}")
+                status_text.info(f"청킹 중: {message}", icon=":material/content_cut:")
             else:
                 status_text.info(f"⏳ {message}")
         
@@ -447,6 +622,7 @@ def _execute_processing(
                 chunk_overlap=overlap,
                 report=report_callback,
                 force_reingest=force_reingest,
+                force_rechunk=force_rechunk,
             )
             
             # Summarize results
@@ -464,25 +640,24 @@ def _execute_processing(
                             logs = r.get("logs", [])
                             for log in logs:
                                 msg = log.get("msg", "")
-                                st.error(f"❌ {msg}")
+                                st.error(f"{msg}", icon=":material/error:")
 
-            # [SPRINT21-F-1] Processing → TSU Reconciliation, one click.
-            # reconcile_pending()은 무예외(never raises) — pending 문서가
-            # 없거나 개별 문서가 실패해도 결과 dict만 반환한다(SPRINT21-B).
-            reconcile_result = reconcile_pending(output_dir)
-            if reconcile_result["reconciled"] > 0:
-                st.success(f"색인 갱신: {reconcile_result['reconciled']}개 문서 검색 반영 완료")
-            if reconcile_result["failed"]:
-                with st.expander(f"색인 실패 {len(reconcile_result['failed'])}건 보기"):
-                    for f in reconcile_result["failed"]:
-                        st.error(f"❌ {f['document_id']}: {f['error']}")
+            # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑧ Background Index Builder]
+            # reconcile_pending()을 여기서 직접 기다리는 대신(예전엔 이 한
+            # 줄이 전체 재색인이 끝날 때까지 이 페이지를 블로킹했음), 백그라운드
+            # 워커를 깨우기만 하고 바로 돌아온다 — "사용자는 기다리지 않는다".
+            # 실제 색인은 core/background_index_builder.py의 데몬 스레드가
+            # core/index_orchestrator.py::reconcile_pending()을 그대로 호출해
+            # 수행한다(재구현 없음).
+            get_shared_background_builder().trigger_now()
+            st.info("백그라운드에서 검색 색인을 갱신하고 있습니다 — 잠시 후 검색에 반영됩니다.", icon=":material/download:")
 
             # Refresh the page state
             st.rerun()
             
         except Exception as e:
             logger.exception("Processing pipeline failed")
-            st.error(f"처리 중 오류가 발생했습니다: {str(e)}")
+            st.error("문서 처리 중 문제가 있었습니다. 다시 시도해주세요.")
 
 
 def _render_recent_failures() -> None:
@@ -511,7 +686,7 @@ def _render_recent_failures() -> None:
     for f in recent:
         html = f"""
         <div style="display: flex; align-items: center; padding: 8px 12px; border-left: 3px solid {THEME.STATUS_ERROR}; margin-bottom: 4px;">
-            <span style="font-size: 16px; margin-right: 12px;">⚠️</span>
+            <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 12px; color: {THEME.STATUS_ERROR};">warning</span>
             <div style="flex: 1;">
                 <div style="font-size: 13px; font-weight: 500; color: {THEME.TEXT_PRIMARY};">
                     {f.get("source_file", "?")}

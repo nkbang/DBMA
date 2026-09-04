@@ -1,0 +1,11 @@
+{
+  "source_id": "BAP-CHURCH-DAGG-001",
+  "success": false,
+  "error": "process_one_file failed: [Errno 2] No such file or directory: '/Users/David/DBMA/data/제륨완성벾n/original_pdf.md'",
+  "logs": [
+    "[Phase 1] Raw dir: /Users/David/DBMA/NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order",
+    "[Phase 1] Files: ['hocr.html', 'original.pdf', 'metadata.json', 'ocr.txt']",
+    "[Phase 1] Processing PDF: original.pdf",
+    "[Phase 1] process_one_file success=False, skipped=None"
+  ]
+}

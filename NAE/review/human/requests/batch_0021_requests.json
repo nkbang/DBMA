@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0021",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0003816",
+      "tsu_id": "TSU-0003816",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Bingham, in his Origines, the ablest work we have in English on Christian Antiquities, says : \" The ancients thought that immersion, or burying under water, did more lively represent the death, burial, and resurrection of Christ, as well as our own death to sin and rising again unto righteousness.\" Christ.",
+      "claim": "고대 기독교인들은 물에 잠기거나 물 아래에 묻는 것이 그리스도의 죽음, 매장, 부활과 우리의 죄에 대한 죽음과 의로움으로의 부활을 더 생생하게 표현한다고 생각했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003817",
+      "tsu_id": "TSU-0003817",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Schaff says : \" Finally, so far as it respects the mode and maimer of outward baptizing, there can be no doubt that immersion, and not sprinkling, was the original normal form.\" Hist.",
+      "claim": "세례의 외부적인 방법과 방식에 관하여, 침례가 원래의 정상적인 형태였으며 뿌림이 아니라는 점에 대해서는 의심의 여지가 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003818",
+      "tsu_id": "TSU-0003818",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Pressense says : \" Baptism, which was the sign of admission into the church, was administered by immersion.",
+      "claim": "세례는 침례로 시행되었으며 교회에 입교하는 표시였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003819",
+      "tsu_id": "TSU-0003819",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "The convert was plunged beneath the water, and as he rose from it he received the laying on of hands.\" Early Years of Christianity, p. 371^.",
+      "claim": "세례는 침례 방식으로 시행되었으며, 세례받은人は 물 밑으로沒시고 다시 올라오면서 손임을 받았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003820",
+      "tsu_id": "TSU-0003820",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Kurtz gays : \" Baptism took place by a complete immersion.\" Church History, p.",
+      "claim": "세례는 완전한 침례에 의해서 행해졌다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003821",
+      "tsu_id": "TSU-0003821",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Kraus says : \" Baptism was performed bv immersion in the name of the Trinity.\" Church History, p. 56. 1882.",
+      "claim": "세례는 삼위일체의 이름으로 침수에 의해 수행되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003822",
+      "tsu_id": "TSU-0003822",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Ellicott says : u Jewish ablutions arrived at a ceremonial purity in the Levitical sense, and had nothing in common with the figurative act which portrayed through immersion the complete disappearance of the old nature, and by the emerging again the beginning of 98 STANDARD MANUAL !",
+      "claim": "유대인의 세례는 레위기적 의미에서 의식적인 깨끗함에 도달했지만, 침수와 부상으로 구현된 옛 성품의 완전한消滅과 새로운 시작에는 아무 관련이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003823",
+      "tsu_id": "TSU-0003823",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Hagenbach says: \"From the thirteenth century sprinkling came into more general use in the West.",
+      "claim": "13세기부터 서방에서 물 뿌림이 일반적으로 사용되기 시작했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003824",
+      "tsu_id": "TSU-0003824",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "The Greek Church, however, and the church of Milan still retained the practice of immersion.\" Mist.",
+      "claim": "그리스도 교회와 밀라노 교회는 침례의 관행을 유지했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003825",
+      "tsu_id": "TSU-0003825",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Vas Oosterzee, says : \"This sprinkling, which appears to have first come generally into use in the thirteenth century in place of the entire immersion of the body, in imitation of the previous baptism of the sick, has certainly this imperfection, that the symbolical character of the act is expressed by it much less conspicuously than by complete immersion and burial under the water.\" Christ.",
+      "claim": "세례의 상징적 특성이 물에 완전히 잠기고 매장하는 것보다 뿌리기 방식으로 더 약하게 표현된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003826",
+      "tsu_id": "TSU-0003826",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Coleman says : \" The practice of immersion continued even until the thirteenth or fourteenth century.",
+      "claim": "침례의 관행은 13세기나 14세기까지 지속되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003827",
+      "tsu_id": "TSU-0003827",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Indeed, it has never been formally abandoned.\" Anc.",
+      "claim": "침례의 관행은 공식적으로 폐기된 적이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003828",
+      "tsu_id": "TSU-0003828",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "The Edinburg Encyclopedia says: \"The Greek Church, as well as the Schismatics in the East, retained the custom of immersing the whole body ; but the Western Church adopted, in the thirteenth century, the mode of sprinkling, which has been continued by the Protestants, Baptists only excepted.\" Eney.",
+      "claim": "서방 교회는 13세기에 물 뿌림 방식을 채택하였고, 침례교를 제외한 개신교들이 이를 계승하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003829",
+      "tsu_id": "TSU-0003829",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "As a religious rite it meant something, had some symbolic force, and represented some moral or spiritual fact or truth.",
+      "claim": "세례는 어떤 종교 의식으로서 의미를 가지며, 상징적인 힘을 가지고 있으며, 도덕적 또는 영적 사실이나 진리를 대표한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003830",
+      "tsu_id": "TSU-0003830",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Its meaning was clearly this : to show forth the death, burial, and resurrection of Christ, who died for our sins, and rose again for our justification.",
+      "claim": "세례의 의미는 그리스도의 죽음, 매장, 부활을 나타내며, 우리의 죄를 위하여 죽으시고 우리의 의롭다 함을 위하여 다시 살아나신 것을 보여준다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003831",
+      "tsu_id": "TSU-0003831",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "And every believer who receives this ordinance, professes thereby to have faith in the merits of Christ's death, as the ground of his own hope of salvation ■ to have fellowship also with his sufferings, and makes a declaration of his own death to sin, and rising to a new life in Christ.",
+      "claim": "세례를 받는 모든 신자는 그리스도의 죽음의 공로가 자신의 구원의 소망의 근거라는 믿음을 고백하며, 또한 그리스도의 고통에 동참하고, 죄에 대한 죽음과 그리스도 안에서 새로운 삶을 살기 위해 일어나는 것을 선언한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003832",
+      "tsu_id": "TSU-0003832",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "It also typifies the washing of regeneration ; it further declares the candidate's hope of a resurrection from the dead, even as Christ, into the likeness of whose death he is buried, was raised up by the glory of the Father.",
+      "claim": "세례는 재생의 씻음과 죽은 자 가운데서의 부활을 상징하며, 그리스도의 죽음과 같은 죽음에 묻히고 아버지의 영광으로 부활하신 것처럼 믿는 이들의 희망을 선언한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003833",
+      "tsu_id": "TSU-0003833",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Chiefly death, burial, and resurrection; the great facts of redemptive grace are by it set forth.",
+      "claim": "세례는 주로 죽음, 매장, 부활을 통해 구속의 은혜를 나타낸다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003834",
+      "tsu_id": "TSU-0003834",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Immersion in baptism does teach all this, and immersion alone can teach it.",
+      "claim": "침례는 죽음, 매장, 부활을 통해 구속의 은혜를 가르친다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003835",
+      "tsu_id": "TSU-0003835",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Bishop Newton says: \"Baptism was usually performed by immersion, or dipping the whole body under water, to represent the death, burial, and resurrection of Christ, and thereby signify the person's own dying to sin, the destruction of its power, and his resurrection to a new life.\" PracL Expos.",
+      "claim": "세례는 일반적으로 물에 완전히 잠기거나 몸을 물 아래에 담그는 것으로, 그리스도의 죽음, 매장, 부활을 상징하며, 개인의 죄에 대한 죽음, 그 권力的 파괴, 새로운 삶으로의 부활을 의미한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003836",
+      "tsu_id": "TSU-0003836",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Bloomfield, Barnes, Schaff, Poole, Hammond, Barrows, Baxter, MacKnight, Olshausen, Grotius, Saurin, Buddeus, Pictetus, Frankius, Wall, Towerson, Adam Clark, Tyndale, and others, bear similar testimony as to the design of the ordinance, and how it is answered in immersion only.",
+      "claim": "세례의 목적은 침례만이 완전히 성취한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003837",
+      "tsu_id": "TSU-0003837",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "There have been found persons so ignorant, or so weak, or so perverse in their opposition to immersion, as to assert that the Jordan was a small stream, so nearly dry in the summer, that it had not sufficient depth of water for the immersion of the multitudes of the disciples of John and of Jesus said to have been baptized in it ; and FOR BAPTIST CHURCHES. 103",
+      "claim": "일부 사람들은 요단강이 여름에는 거의 물이 말라서 요한과 예수의 제자들이 세례를 받은 곳으로 알려진 많은 사람들이 침례를 받기에 충분한 수심이 없다고 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003838",
+      "tsu_id": "TSU-0003838",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "also that Jerusalem had no sufficient accommodation for the immersion of the thousands of converts at the Pentecost, and on subsequent occasions.",
+      "claim": "예루살렘에는 오순절과 그 이후의 다른 경우에 수천 명의 회심자들의 침례를 위한 충분한 시설이 없었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003839",
+      "tsu_id": "TSU-0003839",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "The question will naturally arise, and very properly, when did sprinkling for baptism first come into use?",
+      "claim": "세례에서 뿌림이 언제부터 사용되기 시작했는지에 대한 질문이 자연스럽게 생길 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003840",
+      "tsu_id": "TSU-0003840",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "And how came it to pass, that a human device superseded and took the place of a divine institution ?",
+      "claim": "인간의 발명이 하나님의 제도를 대체하여 그 자리를 차지하게 된 이유는 무엇인가?",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003841",
+      "tsu_id": "TSU-0003841",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "These questions are fully and satisfactorily answered by Pedobaptist scholars themselves, whose testimony we accept as a justification of Baptist views.",
+      "claim": "침례교 학자들의 증언은 침례교의 관점을 정당화한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003842",
+      "tsu_id": "TSU-0003842",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "For two hundred and fifty years after Christ we have no evideuce of any departure from the primitive practice of immersion.",
+      "claim": "초기 기독교인들은 250년 동안 침례를 행하는 원시적인 관행에서 벗어나지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003843",
+      "tsu_id": "TSU-0003843",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "At length the idea came to prevail that baptism possessed saving virtue, and had power to purify and sanctify the soul, making its salvation more secure.",
+      "claim": "세례는 구원의 덕을 가지고 있으며, 영혼을 정화하고 성결시켜 그 구원을 더 안전하게 만드는 힘을 가진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003844",
+      "tsu_id": "TSU-0003844",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "It was consequently thought unsafe to die unbaptized.",
+      "claim": "세례를 받지 않고 죽는 것은 안전하지 않다고 생각했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003845",
+      "tsu_id": "TSU-0003845",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Here was the germ of the pernicious dogma of \" baptismal regeneration,\" the foundation alike of infant baptism, and of sprinkling instead of immersion.",
+      "claim": "세례의 회생 교리는 유아 세례와 뿌림 대신에浸礼를 기반으로 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003846",
+      "tsu_id": "TSU-0003846",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "The controversy between Baptists and other denominations, so far as the Lord's Supper is concerned, has no reference to its nature, the purpose for which it was instituted, the manner of its administration, or the effect of the elements on the participants.",
+      "claim": "세례교와 다른 교단 사이의 성찬에 관한 논쟁은 성찬의 본질, 목적, 집행 방식, 또는 성찬 참여자의 효과와는 관련이 없으며, 오직 성찬에 참여할 수 있는 적절한 대상에 대한 것임을 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003847",
+      "tsu_id": "TSU-0003847",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "It has reference simply to the proper sub^ jects for participation in the privilege.",
+      "claim": "주님의 만찬에 참여할 수 있는 적절한 대상은 누구인가?",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003848",
+      "tsu_id": "TSU-0003848",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Who may, and who may not properly and of right come to the Lord's Table?",
+      "claim": "누가 주의 만찬에 참석할 수 있는지에 대한 문제",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003849",
+      "tsu_id": "TSU-0003849",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "On the question of what are the Scriptural qualifications of participants, Baptists and Pedobaptists differ — differ not as to the general rule to be applied, but as to its particular application.",
+      "claim": "세례교와 유아세례교는 성만찬에 참여하는 자격 요건의 적용 방식에 대해 다르게 생각한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003850",
+      "tsu_id": "TSU-0003850",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "What is open communion f Open, free or mixed communion is, strictly speaking, that which allows any one who desires, and believes himself qualified, to come to the Lord's Table, without any questions being asked, or conditions imposed by the church in which the ordinance is observed.",
+      "claim": "공개 영 ヾ은 누구든지 자격이 있다고 믿는 사람이 주님의 식탁에 오도록 허용하는 것입니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003851",
+      "tsu_id": "TSU-0003851",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But ordinarily the term is applied to the practice of the greater part of the Pedobaptist churches, which hold that sprinkling is lawful baptism, and invite, not all persons, but members of all evangelical churches, whatever be their view of church order and ordinances; holding them all as being baptized because they have been sprinkled.",
+      "claim": "개신교 교회 대부분은 세례에 대해 다른 견해를 가지고 있더라도 모든 복음주의 교회의 회원들을 주의 만찬에 초대한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003852",
+      "tsu_id": "TSU-0003852",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "baptized believers, they mean, of course, immersed believers ; not admitting sprinkling to be baptism at all.",
+      "claim": "세례는 물에 잠기기를 의미하며, 뿌리는 세례가 아님을 뜻한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003853",
+      "tsu_id": "TSU-0003853",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Observe further : That Baptists and Pedobaptists have one and the same rule in theory as to the proper qualification for participants, namely, they all hold that baptism is a prerequisite.",
+      "claim": "세례와 영유아 세례를 받은 사람들은 이론적으로 참여자에 대한 적절한 자격 요건으로 동일한 규칙을 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003854",
+      "tsu_id": "TSU-0003854",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "That unbaptized persons have no legal right to the Lord's Supper, and cannot consistently be invited to it.",
+      "claim": "세례 받지 않은 사람들은 주의 만찬에 합법적인 권리를 가지지 못하며 일관되게 초대될 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003855",
+      "tsu_id": "TSU-0003855",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Pedobaptists would not invite unbaptized persons to the Lord's Table, however good Christians, since such could not become church members, and the Supper is for those within the church, not for the outside world.",
+      "claim": "세례받지 않은 사람들은 주의 만찬에 참석할 수 있는 법적 권리를 가지고 있지 않으며, 일관성 있게 초대될 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003856",
+      "tsu_id": "TSU-0003856",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "For though a few churches and a few pastors, who in their extreme liberality might be disposed to invite everybody to the sacred ordinance, yet such a course would be contrary to their denominational standards, and opposed to the usages of their churches generally.",
+      "claim": "일부 교회와 목사들이極端한 자유주의적 관점으로 모든 사람을 성찬에 초대할 수 있지만, 이는 그들의 종파 표준과 일반적인 교회 관행에 반대된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003857",
+      "tsu_id": "TSU-0003857",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Further observe: They all practice a restriction, since they restrict the privilege to a particular class ; namely, baptized believers, walking in orderly church fellowr 112 STANDARD MANUAL",
+      "claim": "세례받은 신자들만이 특정 교회 공동체의 특권을 누릴 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003858",
+      "tsu_id": "TSU-0003858",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Bat Baptists and Pedobaptists differ as to what constitutes baptism, the one rejecting, and the other accepting the validity of sprinkling.",
+      "claim": "침례교도와 유아세례교도는 침례의 구성 요소에 대해 의견이 다르며, 하나는 뿌림을 거부하고 다른 하나는 유효성을接受한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003859",
+      "tsu_id": "TSU-0003859",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Thus Baptists' custom is more \" close\" and Pedobaptists' is more \" open\" by the difference between their views of baptism ; and by that difference only.",
+      "claim": "침례교도와 유아세례교도의 침례에 대한 관점의 차이로 인해 전자는 더 '폐쇄적'이고 후자는 더 '개방적'이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003860",
+      "tsu_id": "TSU-0003860",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Therefore, it is manifest that the question so called of \" close \" and \" open \" communion is really not a question of u communion \" at all, but of what constitutes Scriptural baptism.",
+      "claim": "세례의 성경적 의미가 결정되면 주님의 만찬에 대한 제한과 관련된 논쟁이 사라질 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003861",
+      "tsu_id": "TSU-0003861",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Let that be settled, and the controversy as to the restriction of the Lord's Supper will cease.",
+      "claim": "주님의 만찬에 대한 논쟁은 성경적 세례의 정의가 결정되면 사라질 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003862",
+      "tsu_id": "TSU-0003862",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Baptists hold that there are three imperative conditions precedent to the privileges of the Lord's Supper. 1.",
+      "claim": "침례교도들은 주의 만찬의 특권에 앞서 세 가지 필수 조건이 있다고 믿는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003863",
+      "tsu_id": "TSU-0003863",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "No unconverted person can with propriety, or of right, eat and drink at that sacred feast, in commemoration of Christ's death.",
+      "claim": "주님의 만찬에 참여하기 위해서는 회심한 사람이어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003864",
+      "tsu_id": "TSU-0003864",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "They must be persons dead to sin, and alive to God ; born again, through the operation of the Spirit. 2.",
+      "claim": "주님의 만찬에 참여하기 위해서는 죄에서 죽고 하나님께 살아난 사람들, 즉 성령의 역사로 거듭난 사람들이어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003865",
+      "tsu_id": "TSU-0003865",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Buried with Christ in baptism on a profession of faith iii him.",
+      "claim": "세례는 그리스도와 함께 매장되는 것으로 믿음의 고백에 따라 행해진다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003866",
+      "tsu_id": "TSU-0003866",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "No person, however good, and however manifestly regenerate, is pre- FOR BAPTIST CHURCHES. 113",
+      "claim": "어떤 사람도, 아무리 선한데도 그리고 아무리 분명하게 재생되었더라도, 세례를 받기 전에 충분하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003867",
+      "tsu_id": "TSU-0003867",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "pared without baptism, according to the divine order, to receive the Supper.",
+      "claim": "세례를 받지 않은 사람은 하나님의 계시에 따라 성만찬을 받기 위해 준비되어 있지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003868",
+      "tsu_id": "TSU-0003868",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Without baptism he cannot enter the fellowship of the church, where the Supper alone is to be enjoyed. 3.",
+      "claim": "세례는 교회 공동체에서 만찬을 즐길 수 있는 자격을 얻기 위해 필요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003869",
+      "tsu_id": "TSU-0003869",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "An orderly walk is necessary.",
+      "claim": "신자에게는 규칙적인 삶의 방식이 필요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003870",
+      "tsu_id": "TSU-0003870",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Sanctification",
+      "original_text": "An upright and consistent Christian walk, and godly conversation among the saints, and before the world.",
+      "claim": "그리스도인들은 성도들 사이에서 그리고 세상을 향해 올바르고 일관된 삶의 방식과 경건한 대화를 유지해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003871",
+      "tsu_id": "TSU-0003871",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "For though one may be truly regenerate, and properly baptized, yet if he be a disorderly walker, violating his covenant obligations, living in sin, and bringing reproach on the Christian profession, he has no right to sit at the Lord's Table.",
+      "claim": "참된 재생과 올바른 세례를 받았더라도, 하나님의 계명에違反하고 죄로 살아가며 그리스도인 신앙을 욕되게 하는 자는 주의 만찬에 참여할 권리가 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003872",
+      "tsu_id": "TSU-0003872",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "tinction between the church and the world ; would bring in a carnal and unconverted membership, and transfer the sacred mysteries of the body and the blood of Christ from the temple of God to the temple of Belial.",
+      "claim": "교회와 세상을 분별하지 않으면 교회에 속한 사람들이 육신적이고 회심하지 않은 상태로 남게 되고, 그리스도의 몸과 피의 신비를 하나님의 성전에서 벨리알의 성전에 옮기게 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003873",
+      "tsu_id": "TSU-0003873",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This would be disloyalty to Christ.",
+      "claim": "그리스도에게 대한 불충성이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003874",
+      "tsu_id": "TSU-0003874",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "The apostolic plan was as follows : Those who believed and gladly received the word, were baptized.",
+      "claim": "믿고 말씀을 기쁘게 받은 사람들은 세례를 받았다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003875",
+      "tsu_id": "TSU-0003875",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Then they were added to the church.",
+      "claim": "믿은 자들은 세례를 받은 후 교회에 추가되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003876",
+      "tsu_id": "TSU-0003876",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Then they continued steadfast in the apostles' doctrine, and fellowship, and in breaking of bread, and in praya\\",
+      "claim": "초기 교회는 사도들의 가르침, 교제, 빵을 떼어 쓰고, 기도에坚持했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003877",
+      "tsu_id": "TSU-0003877",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It has already been shown that Pedobaptists themselves practice a restricted or close communion, limiting the privilege to baptized (as they call them) members of evangelical churches, and that their communion FOR BAPTIST CHURCHES. 115",
+      "claim": "침례교회의 교인들은 침례받은 개신교 교회 회원들에게만 성찬의 특권을 제한하는 폐쇄적 공동체를 실천한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003878",
+      "tsu_id": "TSU-0003878",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "is more liberal than that of the Baptists only, and only by so mucli as their baptism (socalled) is more liberal than that of Baptists.",
+      "claim": "침례교도보다 유아 침례파의 침례 관행이 더 자유롭다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003879",
+      "tsu_id": "TSU-0003879",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "But in some respects Pedobaptists practice a \"close communion/' restrictive in its conditions, far beyond anything known to Baptists whose illiberality they are accustomed to magnify.",
+      "claim": "일부 침례교인들은 성만찬에 대해 엄격한 기준을 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003880",
+      "tsu_id": "TSU-0003880",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "They exclude a large class of their own members from the Lord's Table — namely, baptized children!",
+      "claim": "침례교는 성찬식에 참여하는 자격 요건이 엄격하여, 침례받지 않은 아이들은 성찬식에 참여하지 못한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003881",
+      "tsu_id": "TSU-0003881",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Baptists do not deny the Lord's Supper to their own members in good standing.",
+      "claim": "침례교도들은 좋은 신앙을 가진 자들에게 성찬을 거부하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003882",
+      "tsu_id": "TSU-0003882",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "If children are suitable subjects for baptism, it seems most unreasonable and unjust to deny them the Supper.",
+      "claim": "세례에 적합한 자격을 가진 아이들은 주의 만찬에도 참여할 수 있어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003883",
+      "tsu_id": "TSU-0003883",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "If they can be benefited by one ordinance, can they not be equally benefited by the other ?",
+      "claim": "어린이는 세례의 적절한 대상이라면, 성찬도 받을 수 있어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003884",
+      "tsu_id": "TSU-0003884",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "If they can receive the one on the faith of sponsors, can they not receive the other in the same way ?",
+      "claim": "세례를 후견인의 믿음으로 받을 수 있다면, 주의 만찬도 같은 방식으로 받을 수 있어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003885",
+      "tsu_id": "TSU-0003885",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Who has authorized parents or ministers to give baptism to unconverted and unconscious children, and refuse them the Lord's Supper ?",
+      "claim": "부모나 목사들은 회심하지 못한 아이들에게 세례를 주지만 성찬을 거부할 권한이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003886",
+      "tsu_id": "TSU-0003886",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "By denying the Supper to baptized children, Pedobaptists act contrary to the traditions of the ancient churches, which they are accustomed to cite with so much assurance, in defense of infant baptism.",
+      "claim": "영유아 세례를 주장하는 사람들은 영유아 세례의 옹호에서 자주 인용하는 고대 교회의 전통에 반하여, 세례받은 아이들에게 성찬을 거부한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003887",
+      "tsu_id": "TSU-0003887",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Dr. Coleman says : \"After the general introduction of infant baptism, in the second and third centuries, the sacrament continued to be administered to all who had been baptized, whether infants or adults.",
+      "claim": "2세기와 3세기에 일반적으로 유아 세례가 도입된 후, 성례는 모든 사람에게, 유아나 성인에 관계없이 계속 시행되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003888",
+      "tsu_id": "TSU-0003888",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "The reason alleged by Cyprian and others for this practice was, that age was no impediment.",
+      "claim": "키프리아노와 다른 사람들은 세례의 관행이 연령에 의해 방해받지 않는다고 주장했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003889",
+      "tsu_id": "TSU-0003889",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Augustine strongly advocates the practice.",
+      "claim": "아우구스티누스(Augustine)는 이 관행을 강력하게 옹호한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003890",
+      "tsu_id": "TSU-0003890",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "D. 1545, only decreed that it should not be considered essential to salvation.",
+      "claim": "트렌트 공의회에서 1545년에 결정한 바에 따르면, 특정 사항은 구원에 필수적으로 고려되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003891",
+      "tsu_id": "TSU-0003891",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "There is a small class of Baptists who are at times inclined to desire, and it may be, to seek a wider liberty at the Lord's Table FOR BAPTIST CHURCHES. 117",
+      "claim": "일부 침례교도들은 침례교회에서 주의 만찬에 대한 더 широк은 자유를 원하고 찾기도 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003892",
+      "tsu_id": "TSU-0003892",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The one prevailing argument with them is sympathy.",
+      "claim": "감정적인 동정이 그들의 주된 논증이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003894",
+      "tsu_id": "TSU-0003894",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Even if they have not been baptized, they themselves believe they have, and they are good Christian people.",
+      "claim": "세례를 받지 않은 사람이라도 그들이 스스로 세례를 받았다고 믿고 좋은 기독교인이라고 생각한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003895",
+      "tsu_id": "TSU-0003895",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "To such the service is merely a sentimental service ; a kind of love feast to show Christian fellowship, rather than an instituted commemoration of their dying Lord.",
+      "claim": "주님의 만찬은 기독교인들의 감정적인 모임이나 사랑의 잔치가 아니라 주님께서 돌아가신 것을 기념하는 제도적인 행사이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003896",
+      "tsu_id": "TSU-0003896",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "They have neither Scripture, logic, expediency, the scholarship, nor the concurrent practice of Christendom, either past or present, to sustain their position.",
+      "claim": "일부 사람들은 성경, 논리, 효용성, 학문, 그리고 과거와 현재의 기독교 세계의 일치된 관행을 근거로 하여 주님의 만찬에 대한 자신의 입장을 지지할 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003897",
+      "tsu_id": "TSU-0003897",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But sympathy influences them ; yet sympathy should not control conduct in matters of faith, or in acts of conscience.",
+      "claim": "신앙과 양심의 문제에서는 동정심이 행동을 지배해서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003898",
+      "tsu_id": "TSU-0003898",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is a grave perversion when affection for his disciples sways us more than fidelity to our Lord.",
+      "claim": "주님의 신실함보다 제자에 대한 애정이 우리를 더 많이左右해서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003899",
+      "tsu_id": "TSU-0003899",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "We should not be so kind to them as. to be untrue to him.",
+      "claim": "우리는 주님께 대한 충성보다 제자들을 향한 애정이 우리를 더 많이左右해서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003900",
+      "tsu_id": "TSU-0003900",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Sincere Christians will honor those who are loyal to Christ, even though they differ in opinion. 118 STANDARD MANUAL",
+      "claim": "진정한 기독교인들은 그들이 의견이 다르더라도 예수님께 충성하는 사람들을 존중할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003901",
+      "tsu_id": "TSU-0003901",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "They do not invite Pedobaptists to the Lord's Supper with them, because such persons are not baptized, as has been shown, they being simply sprinkled.",
+      "claim": "침례교인들은 유아세례 교인을 주의 만찬에 초대하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003902",
+      "tsu_id": "TSU-0003902",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "They may be true converts, and have the spiritual qualifications, but they are destitute of the ceremonial qualification — baptism.",
+      "claim": "세례받지 않은 사람들은 영적인 자격은 있더라도 세례라는 예식적 자격이 없기 때문에 주의 만찬에 초대되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003903",
+      "tsu_id": "TSU-0003903",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "The \" buried in baptism \" comes before the \" breaking of bread.\"",
+      "claim": "세례는 성찬전에 선행한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003904",
+      "tsu_id": "TSU-0003904",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "They do not accept the invitation of Pedobaptist churches to eat at the Lord's Table with them, for the same reason; they are not baptized Christians.",
+      "claim": "침례교인들은 침례를 받지 않은 다른 교회와 함께 주의 만찬에 참여하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003905",
+      "tsu_id": "TSU-0003905",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "And while they appreciate their Christian fellowship, they could not accept their church fellowship, and sit at the Lord's Table with them, without accepting their sprinkling and indorsing their baptismal errors.",
+      "claim": "침례받지 않은 기독교인과 함께 주의 만찬에 참여할 수 없으며, 그들의 세례 오류를 인정하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003906",
+      "tsu_id": "TSU-0003906",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "of Pedobaptist churches to the Lord's Supper with them, because such persons, though they may be truly regenerate and properly baptized, are walking disorderly by remaining in and giving countenance to churches which FOR BAPTIST CHURCHES. 119",
+      "claim": "침례교회의 관점에서 볼 때, 침례받지 않은 사람들은 주의 만찬에 참여할 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003907",
+      "tsu_id": "TSU-0003907",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "hold and practice serious errors as to both the ordinances.",
+      "claim": "일부 교회는 세례와 관련하여 심각한 오류를 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003908",
+      "tsu_id": "TSU-0003908",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "These churches use sprinkling for baptism and administer the ordinance to infants, both of which are unscriptural.",
+      "claim": "일부 교회는 세례에 대해 심각한 오류를 가지고 있으며, 뿌림으로 세례를 행하고 아기에게도 세례를 집행한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003909",
+      "tsu_id": "TSU-0003909",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And yet such persons, by remaining in them, encourage and support these errors, instead of protesting against them by leaving them.",
+      "claim": "교회의 오류를 지지하는 것은 잘못이다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003910",
+      "tsu_id": "TSU-0003910",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "They insist on immersion for themselves, and yet by a strange inconsistency give their fellowship and influence to perpetuate and sanction sprinkling for others.",
+      "claim": "침례를 받은 사람들은 침례에 대한 자신의 믿음을坚持하지만 다른 사람들에게는 뿌림을 허용하는 모순된 행동을 취한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003911",
+      "tsu_id": "TSU-0003911",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "This is inconsistent and disorderly Christian walking ; and, therefore, very properly, Baptists decline to invite them to the Lord's Supper.",
+      "claim": "침례교도들은 다른 사람들에게 물방울 세례를 허용하는 자들과의 교제를 거부해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003912",
+      "tsu_id": "TSU-0003912",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "In further proof that the position of Baptists as to the Lord's Supper is correct and Scriptural ; that the difficulty lies with baptism, and not with the Supper ; and that they must still continue to restrict the ordinance to baptized believers, or else admit that sprinkling is baptism, we cite the concessions of distinguished Pedobaptist scholars and divines in evidence on our side.",
+      "claim": "침례교도의 주님의 만찬에 대한 입장은 성경적이며, 어려움이 침례에서 비롯된 것이지 만찬에서 비롯된 것이 아니므로, 침례받은 신자들에게만 제한해야 하며, 그렇지 않으면 뿌림이 침례라는 것을 인정해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003913",
+      "tsu_id": "TSU-0003913",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Neander, ' the great Church historian, says : i; At this celebration, as may be easily concluded, no one could be present who was not a member of the Christian Church, and incorporated into it bv the rite of baptism.\" Ch. Hist, Vol 1, 327.",
+      "claim": "세례의 예식으로 기독교 교회에 속한 사람만이 이 축제에 참석할 수 있었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003914",
+      "tsu_id": "TSU-0003914",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Bingham, in his able wort on the Antiquities of the Christian Church, says of the early Christians : \"As soon as a man was baptized he was communicated \" — that is, admitted to the communion.",
+      "claim": "초기 기독교인들은 세례를 받은 직후에 성찬에 참여할 수 있었다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003915",
+      "tsu_id": "TSU-0003915",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Baptism, therefore, essentially preceded the Supper. —Christ Antiq.",
+      "claim": "세례는 주의 만찬에 선행한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003916",
+      "tsu_id": "TSU-0003916",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Dr. Wall, who searched the records of antiquity for facts illustrating the history of the ordinances, says : \" No church ever gave the communion to any persons before they were baptized.",
+      "claim": "교회는 세례를 받지 않은 사람에게 성찬을 주지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

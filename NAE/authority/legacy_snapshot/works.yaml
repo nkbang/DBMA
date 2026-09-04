@@ -1,0 +1,20 @@
+# Legacy Authority Snapshot — Works (READ-ONLY, ADR-021 SS4)
+# 4,117건 TSU(verified+generated+rejected)에서 파생. 신규 registry의
+# write target이 아님 — reference/audit 전용.
+generated_at: "2026-08-12T03:39:59.787033+00:00"
+source_record_count: 4117
+works:
+  - work_id: "WORK-DAGG-CHURCH-ORDER-001"
+    author_id: "dagg_john_l"
+    canonical_title: "Church Order"
+    editions:
+      - edition_id: "WORK-DAGG-CHURCH-ORDER-001-1871"
+        edition: "1871"
+        source_ids: ["BAP-CHURCH-DAGG-001"]
+  - work_id: "WORK-HISCOX-STANDARD-MANUAL-001"
+    author_id: "hiscox_edward_t"
+    canonical_title: "The Standard Manual for Baptist Churches"
+    editions:
+      - edition_id: "WORK-HISCOX-STANDARD-MANUAL-001-1890"
+        edition: "1890"
+        source_ids: ["BAP-CHURCH-HISCOX"]

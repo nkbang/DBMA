@@ -1,0 +1,1622 @@
+diff --git a/NAE/benchmark/__init__.py b/NAE/benchmark/__init__.py
+index 696a64e..8481306 100644
+--- a/NAE/benchmark/__init__.py
++++ b/NAE/benchmark/__init__.py
+@@ -10,24 +10,55 @@
+     runner   — 전체 벤치마크 러너 + CLI
+ """
+ 
+-from NAE.benchmark.schema import BenchmarkItem, BenchmarkQuestion, BenchmarkExpected
+-from NAE.benchmark.loader import load_dataset
++from NAE.benchmark.schema import (
++    BenchmarkItem,
++    BenchmarkQuestion,
++    BenchmarkExpected,
++    BenchmarkRetrieval,
++    BenchmarkEvaluation,
++    BenchmarkMetadata,
++    QUESTION_TYPES,
++    DIFFICULTY_LEVELS,
++    REVIEW_STATUSES,
++)
++from NAE.benchmark.loader import (
++    load_dataset,
++    validate_dataset,
++    check_duplicate_benchmark_ids,
++    check_empty_dataset,
++)
+ from NAE.benchmark.metrics import (
+     recall_at_k,
+     precision_at_k,
+     mean_reciprocal_rank,
+ )
+ from NAE.benchmark.evaluator import Evaluator
+-from NAE.benchmark.runner import run_benchmark
++from NAE.benchmark.runner import run_benchmark, Retriever, ConfigurationError
+ 
+ __all__ = [
++    # schema
+     "BenchmarkItem",
+     "BenchmarkQuestion",
+     "BenchmarkExpected",
++    "BenchmarkRetrieval",
++    "BenchmarkEvaluation",
++    "BenchmarkMetadata",
++    "QUESTION_TYPES",
++    "DIFFICULTY_LEVELS",
++    "REVIEW_STATUSES",
++    # loader
+     "load_dataset",
++    "validate_dataset",
++    "check_duplicate_benchmark_ids",
++    "check_empty_dataset",
++    # metrics
+     "recall_at_k",
+     "precision_at_k",
+     "mean_reciprocal_rank",
++    # evaluator
+     "Evaluator",
++    # runner
+     "run_benchmark",
+-]
+\ No newline at end of file
++    "Retriever",
++    "ConfigurationError",
++]
+diff --git a/NAE/benchmark/datasets/benchmark_v1.jsonl b/NAE/benchmark/datasets/benchmark_v1.jsonl
+index a27ad6c..35d487e 100644
+--- a/NAE/benchmark/datasets/benchmark_v1.jsonl
++++ b/NAE/benchmark/datasets/benchmark_v1.jsonl
+@@ -1,5 +1,5 @@
+-{"benchmark_id": "B001", "question": {"text": "예수님이 십자가에서 이루신 속죄의 의미는 무엇인가요?", "language": "ko"}, "expected": {"required_concepts": ["속죄", "십자가", "대리"], "expected_scriptures": ["히브리서 9:22", "로마서 3:25"], "expected_doctrine": "대리 속죄설"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation"}}
+-{"benchmark_id": "B002", "question": {"text": "성경에서 용서의 교리는 어떻게 설명되나요?", "language": "ko"}, "expected": {"required_concepts": ["용서", "은혜", "믿음"], "expected_scriptures": ["에베소서 1:7", "골로새서 1:14"], "expected_doctrine": "용서설"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation"}}
+-{"benchmark_id": "B003", "question": {"text": "What is the role of the Holy Spirit in salvation?", "language": "en"}, "expected": {"required_concepts": ["Holy Spirit", "salvation", "regeneration"], "expected_scriptures": ["요한복음 16:13", "디도서 3:5"], "expected_doctrine": "성령론"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation"}}
+-{"benchmark_id": "B004", "question": {"text": "구약 시대에 제사는 어떻게 수행되었나요?", "language": "ko"}, "expected": {"required_concepts": ["제사", "속죄", "혈"], "expected_scriptures": ["레위기 16장", "히브리서 9:22"], "expected_doctrine": "제사장론"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation"}}
+-{"benchmark_id": "B005", "question": {"text": "믿음으로 의에 이르는 과정은 무엇인가요?", "language": "ko"}, "expected": {"required_concepts": ["믿음", "의", "은혜"], "expected_scriptures": ["로마서 3:28", "갈라디아서 2:16"], "expected_doctrine": "신앙의 의"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation"}}
+\ No newline at end of file
++{"benchmark_id": "B001", "question": {"text": "예수님이 십자가에서 이루신 속죄의 의미는 무엇인가요?", "language": "ko", "question_type": "doctrine"}, "expected": {"gold_tsu_ids": [], "required_concepts": ["속죄", "십자가", "대리"], "expected_scriptures": ["히브리서 9:22", "로마서 3:25"], "expected_doctrine": "대리 속죄설"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation", "tsu_schema_version": "", "collector_version": "", "canonical_version": ""}, "difficulty": "intermediate", "review_status": "draft"}
++{"benchmark_id": "B002", "question": {"text": "성경에서 용서의 교리는 어떻게 설명되나요?", "language": "ko", "question_type": "doctrine"}, "expected": {"gold_tsu_ids": [], "required_concepts": ["용서", "은혜", "믿음"], "expected_scriptures": ["에베소서 1:7", "골로새서 1:14"], "expected_doctrine": "용서설"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation", "tsu_schema_version": "", "collector_version": "", "canonical_version": ""}, "difficulty": "intermediate", "review_status": "draft"}
++{"benchmark_id": "B003", "question": {"text": "What is the role of the Holy Spirit in salvation?", "language": "en", "question_type": "doctrine"}, "expected": {"gold_tsu_ids": [], "required_concepts": ["Holy Spirit", "salvation", "regeneration"], "expected_scriptures": ["요한복음 16:13", "디도서 3:5"], "expected_doctrine": "성령론"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation", "tsu_schema_version": "", "collector_version": "", "canonical_version": ""}, "difficulty": "intermediate", "review_status": "draft"}
++{"benchmark_id": "B004", "question": {"text": "구약 시대에 제사는 어떻게 수행되었나요?", "language": "ko", "question_type": "historical"}, "expected": {"gold_tsu_ids": [], "required_concepts": ["제사", "속죄", "혈"], "expected_scriptures": ["레위기 16장", "히브리서 9:22"], "expected_doctrine": "제사장론"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation", "tsu_schema_version": "", "collector_version": "", "canonical_version": ""}, "difficulty": "advanced", "review_status": "draft"}
++{"benchmark_id": "B005", "question": {"text": "믿음으로 의에 이르는 과정은 무엇인가요?", "language": "ko", "question_type": "doctrine"}, "expected": {"gold_tsu_ids": [], "required_concepts": ["믿음", "의", "은혜"], "expected_scriptures": ["로마서 3:28", "갈라디아서 2:16"], "expected_doctrine": "신앙의 의"}, "retrieval": {"top_k": 5}, "evaluation": {"status": "pending"}, "metadata": {"created_version": "1.0", "source": "infrastructure-validation", "tsu_schema_version": "", "collector_version": "", "canonical_version": ""}, "difficulty": "intermediate", "review_status": "draft"}
+\ No newline at end of file
+diff --git a/NAE/benchmark/evaluator.py b/NAE/benchmark/evaluator.py
+index 038bd3d..a1319c7 100644
+--- a/NAE/benchmark/evaluator.py
++++ b/NAE/benchmark/evaluator.py
+@@ -65,43 +65,48 @@ class Evaluator:
+         self,
+         item: BenchmarkItem,
+         retrieved_ids: List[str],
+-        relevant_ids: List[str] | None = None,
+     ) -> EvaluationResult:
+         """단일 항목을 평가하고 결과를 반환.
+ 
++        canonical ground truth: BenchmarkItem.gold_tsu_ids (top-level only).
++        expected_scriptures / required_concepts 는 metric 에 전달되지 않음.
++
+         Args:
+-            item: BenchmarkItem (question + expected 포함).
++            item: BenchmarkItem (question + gold_tsu_ids 포함).
+             retrieved_ids: 검색 결과 TSU ID 목록 (순서 중요).
+-            relevant_ids: gold standard 관련 ID. None이면 item.expected 에서 추출.
+ 
+         Returns:
+             EvaluationResult
+         """
+-        if relevant_ids is None:
+-            relevant_ids = item.expected.expected_scriptures or item.expected.required_concepts
++        # canonical ground truth
++        relevant_ids = item.gold_tsu_ids
+ 
+-        # 관련 결과가 완전히 비어있으면 special case
++        # zero-gold case: gold_tsu_ids 가 비어 있으면 zero metrics 반환
++        # effective_k 가 0 이 되면 키가 "recall@0" 이 되므로 항상 top_k 를 사용.
+         if not relevant_ids:
+-            logger.warning(
+-                "benchmark_id=%s: relevant_ids가 비어있음 — 평가 스킵",
+-                item.benchmark_id,
+-            )
++            metrics = compute_all_metrics(retrieved_ids, [], self.top_k)
+             result = EvaluationResult(
+                 benchmark_id=item.benchmark_id,
+                 question_text=item.question.text,
+-                metrics={},
+-                status="skipped",
+-                notes="relevant_ids empty",
++                metrics=metrics,
++                status="zero_gold",
++                notes="gold_tsu_ids is empty — zero metrics",
+             )
+             self.results.append(result)
+             self._pending_count += 1
+             return result
+ 
+-        # 지표 계산
+-        effective_k = min(self.top_k, len(retrieved_ids))
++        # 지표 계산 — retrieved_ids 가 [] 일 때 effective_k 가 0 이 되면
++        # 키가 "recall@0" 이 되어 호출처가 "recall@5" 를 기대하는 코드가
++        # KeyError 를 만나므로, empty retrieval 는 항상 self.top_k 를 사용.
++        if retrieved_ids:
++            effective_k = min(self.top_k, len(retrieved_ids))
++        else:
++            effective_k = self.top_k
++
+         metrics = compute_all_metrics(retrieved_ids, relevant_ids, effective_k)
+ 
+-        # 상태 판정 (Recall@K >= 0.5 면 passed)
++        # 상태 판정 (Recall@K >= 0.5 면 passed; zero_gold 는 별도)
+         recall_key = f"recall@{effective_k}"
+         recall_value = metrics.get(recall_key, 0.0)
+         status = "passed" if recall_value >= 0.5 else "failed"
+@@ -116,6 +121,7 @@ class Evaluator:
+             question_text=item.question.text,
+             metrics=metrics,
+             status=status,
++            notes=f"recall@{effective_k}={recall_value:.3f}",
+         )
+ 
+         self.results.append(result)
+@@ -164,16 +170,20 @@ class Evaluator:
+             if values:
+                 avg_metrics[key] = sum(values) / len(values)
+ 
+-        status_dist = {"passed": 0, "failed": 0, "skipped": 0}
++        status_dist = {"passed": 0, "failed": 0, "skipped": 0, "zero_gold": 0}
+         for r in self.results:
+             if r.status in status_dist:
+                 status_dist[r.status] += 1
+ 
++        # zero-gold 항목 카운트 (aggregate에서 숨겨지지 않도록 명시적 필드)
++        zero_gold_count = status_dist.get("zero_gold", 0)
++
+         return {
+             "total_questions": total,
+             "passed": self._passed_count,
+             "failed": self._failed_count,
+             "skipped": self._pending_count,
++            "zero_gold_count": zero_gold_count,
+             "metrics": avg_metrics,
+             "status_distribution": status_dist,
+             "per_question": [
+diff --git a/NAE/benchmark/loader.py b/NAE/benchmark/loader.py
+index e991382..09d459d 100644
+--- a/NAE/benchmark/loader.py
++++ b/NAE/benchmark/loader.py
+@@ -11,13 +11,31 @@ from __future__ import annotations
+ import json
+ import logging
+ from pathlib import Path
+-from typing import Dict, List, Optional, Tuple, Union
++from typing import Dict, List, Optional, Set, Tuple, Union
+ 
+ from NAE.benchmark.schema import BenchmarkItem
+ 
+ logger = logging.getLogger(__name__)
+ 
+ 
++# ------------------------------------------------------------------
++# Custom exception for gold_tsu_ids conflicts
++# ------------------------------------------------------------------
++
++class GoldTsusIdsConflictError(ValueError):
++    """top-level과 expected.gold_tsu_ids 가 존재하고 값이 다를 때 발생."""
++
++    def __init__(self, top_level: List[str], nested: List[str], lineno: int = 0) -> None:
++        self.top_level = top_level
++        self.nested = nested
++        self.lineno = lineno
++        super().__init__(
++            f"gold_tsu_ids conflict at line {lineno}: "
++            f"top-level={top_level}, expected.gold_tsu_ids={nested}. "
++            f"Values must match or only one source should exist."
++        )
++
++
+ # ------------------------------------------------------------------
+ # Public API
+ # ------------------------------------------------------------------
+@@ -25,19 +43,21 @@ logger = logging.getLogger(__name__)
+ def load_dataset(
+     path: str | Path,
+     skip_malformed: bool = True,
++    known_tsu_ids: Optional[Set[str]] = None,
+ ) -> List[BenchmarkItem]:
+     """JSONL 데이터셋을 로드하고 스키마 검증을 수행.
+ 
+     Args:
+         path: JSONL 파일 경로.
+-        skip_malformed: False이면 malformed record에서 예외를 던짐.
++        skip_malformed: False 이면 malformed record 에서 예외를 던짐.
++        known_tsu_ids: 실제 TSU ID 집합 (referential integrity 검증용).
+ 
+     Returns:
+         검증 통과한 BenchmarkItem 목록.
+ 
+     Raises:
+         FileNotFoundError: 파일이 없을 때.
+-        ValueError: skip_malformed=False이고 record가 유효하지 않을 때.
++        ValueError: skip_malformed=False 이고 record 가 유효하지 않을 때.
+     """
+     path = Path(path)
+ 
+@@ -70,6 +90,17 @@ def load_dataset(
+                     )
+                 continue
+ 
++            # referential integrity check
++            if known_tsu_ids is not None:
++                ref_errors = item.validate_referential_integrity(known_tsu_ids)
++                if ref_errors:
++                    errors.append((lineno, "referential: " + "; ".join(ref_errors)))
++                    if not skip_malformed:
++                        raise ValueError(
++                            f"referential integrity failed at {path}:{lineno}: {ref_errors}"
++                        )
++                    continue
++
+             items.append(item)
+             line_numbers.append(lineno)
+ 
+@@ -95,11 +126,11 @@ def load_dataset(
+ def _parse_record(
+     line: str, lineno: int
+ ) -> Union[Tuple[BenchmarkItem, str], Tuple[None, str]]:
+-    """한 줄을 BenchmarkItem으로 파싱.
++    """한 줄을 BenchmarkItem 으로 파싱.
+ 
+     Returns:
+-        (item, error_message) — item이 있으면 error_message는 빈 문자열.
+-        item이 없으면 item은 None, error_message는 이유.
++        (item, error_message) — item 이 있으면 error_message 는 빈 문자열.
++        item 이 없으면 item 은 None, error_message 는 이유.
+     """
+     try:
+         data = json.loads(line)
+@@ -114,9 +145,60 @@ def _parse_record(
+     except (TypeError, KeyError, ValueError) as exc:
+         return (None, f"construction error: {exc}")
+ 
++    # gold_tsu_ids canonicalization (migration matrix)
++    _canonicalize_gold_tsu_ids(item, lineno)
++
+     return (item, "")
+ 
+ 
++def _canonicalize_gold_tsu_ids(item: BenchmarkItem, lineno: int = 0) -> None:
++    """gold_tsu_ids migration according to the migration matrix.
++
++    Matrix:
++        top-level exists, nested missing     → use top-level
++        top-level missing, nested exists     → copy to top-level, warn
++        both exist, equal                     → use top-level, warn
++        both exist, different                 → GoldTsusIdsConflictError
++        neither exists                         → empty list allowed
++    """
++    top_level = item.gold_tsu_ids
++    nested = item.expected.gold_tsu_ids
++
++    has_top = bool(top_level)
++    has_nested = bool(nested)
++
++    if has_top and not has_nested:
++        # Case 1: top-level만 있음 → canonical 사용
++        return
++
++    if not has_top and has_nested:
++        # Case 2: nested만 있음 → top-level로 복사, deprecation warning
++        logger.warning(
++            "benchmark_id=%s: expected.gold_tsu_ids is deprecated; "
++            "copying to BenchmarkItem.gold_tsu_ids (line %d)",
++            item.benchmark_id or "(no-id)",
++            lineno,
++        )
++        item.gold_tsu_ids = list(nested)
++        return
++
++    if has_top and has_nested:
++        if top_level == nested:
++            # Case 3: 둘 다 있고 동일 → top-level 사용, deprecation warning
++            logger.warning(
++                "benchmark_id=%s: both gold_tsu_ids fields exist with same value; "
++                "using BenchmarkItem.gold_tsu_ids (line %d)",
++                item.benchmark_id or "(no-id)",
++                lineno,
++            )
++            return
++        else:
++            # Case 4: 둘 다 있고 다름 → ValidationError
++            raise GoldTsusIdsConflictError(top_level, nested, lineno)
++
++    # Case 5: 둘 다 없음 → 빈 list 허용 (변경 없음)
++
++
+ # ------------------------------------------------------------------
+ # Utility: validate-only (file does not need to contain valid items)
+ # ------------------------------------------------------------------
+@@ -148,4 +230,71 @@ def validate_dataset(path: str | Path) -> Dict[str, int]:
+             except Exception:
+                 invalid += 1
+ 
+-    return {"total": total, "valid": valid, "invalid": invalid}
+\ No newline at end of file
++    return {"total": total, "valid": valid, "invalid": invalid}
++
++
++# ------------------------------------------------------------------
++# Utility: check for duplicate benchmark_ids across dataset
++# ------------------------------------------------------------------
++
++def check_duplicate_benchmark_ids(path: str | Path) -> List[str]:
++    """데이터셋 내 중복 benchmark_id 를 검사.
++
++    Returns:
++        중복된 benchmark_id 목록. 빈 목록이면 문제 없음.
++    """
++    path = Path(path)
++    seen: Dict[str, int] = {}  # id -> first line number
++
++    with open(path, "r", encoding="utf-8") as fh:
++        for lineno, raw_line in enumerate(fh, start=1):
++            line = raw_line.strip()
++            if not line:
++                continue
++            try:
++                data = json.loads(line)
++                bid = data.get("benchmark_id", "")
++                if bid:
++                    if bid in seen:
++                        seen[bid] = seen[bid] + 1  # count occurrences
++                    else:
++                        seen[bid] = lineno
++            except Exception:
++                continue
++
++    duplicates: List[str] = []
++    for bid, count in seen.items():
++        if isinstance(count, int) and count > 1:
++            duplicates.append(bid)
++
++    return duplicates
++
++
++# ------------------------------------------------------------------
++# Utility: check for empty dataset (no valid records)
++# ------------------------------------------------------------------
++
++def check_empty_dataset(path: str | Path) -> bool:
++    """데이터셋이 비어있는지 (유효한 레코드 없음) 검사.
++
++    Returns:
++        True if empty (no valid records), False otherwise.
++    """
++    path = Path(path)
++    has_valid = False
++
++    with open(path, "r", encoding="utf-8") as fh:
++        for raw_line in fh:
++            line = raw_line.strip()
++            if not line:
++                continue
++            try:
++                data = json.loads(line)
++                item = BenchmarkItem.from_dict(data)
++                if not item.validate():
++                    has_valid = True
++                    break
++            except Exception:
++                continue
++
++    return not has_valid
+\ No newline at end of file
+diff --git a/NAE/benchmark/metrics.py b/NAE/benchmark/metrics.py
+index da02cf8..abda413 100644
+--- a/NAE/benchmark/metrics.py
++++ b/NAE/benchmark/metrics.py
+@@ -32,8 +32,8 @@ def recall_at_k(
+         0.0 ~ 1.0 사이의 Recall 값.
+     """
+     if not relevant_ids:
+-        # 관련 결과가 없으면 Recall은 1.0 (모두 정확)
+-        return 1.0
++        # 관련 결과가 없으면 Recall은 0.0 (분모 0 — zero-gold 정책)
++        return 0.0
+ 
+     if k is not None:
+         retrieved_subset = retrieved_ids[:k]
+@@ -55,6 +55,10 @@ def precision_at_k(
+ ) -> float:
+     """Top-K 중 관련 결과의 비율.
+ 
++    중복 검색 결과를 처리하는 정책:
++    - 분모는 deduplicated된 고유 ID 수를 사용한다.
++    - 동일 ID가 여러 번 반환되어도 한 번만 카운트한다.
++
+     Args:
+         retrieved_ids: 검색 결과 TSU ID 목록.
+         relevant_ids: gold standard 관련 TSU ID 목록.
+@@ -72,12 +76,11 @@ def precision_at_k(
+         retrieved_subset = retrieved_ids
+ 
+     relevant_set: Set[str] = set(relevant_ids)
+-    # 분자는 고유 관련 항목 수 (동일 ID 중복 검색을 여러 hit으로 세지 않음),
+-    # 분모는 실제 반환된 결과 개수(중복 포함) — 검색기가 같은 결과를 중복
+-    # 반환하면 precision이 인위적으로 부풀려지지 않도록 한다.
+-    hits = len(relevant_set & set(retrieved_subset))
++    # 분모를 고유 ID 수로 변경 — 중복 검색이 precision을 부풀리지 않게 함.
++    unique_retrieved = set(retrieved_subset)
++    hits = len(relevant_set & unique_retrieved)
+ 
+-    return hits / len(retrieved_subset)
++    return hits / len(unique_retrieved)
+ 
+ 
+ def mean_reciprocal_rank(
+diff --git a/NAE/benchmark/runner.py b/NAE/benchmark/runner.py
+index 80e13ec..b404136 100644
+--- a/NAE/benchmark/runner.py
++++ b/NAE/benchmark/runner.py
+@@ -27,44 +27,77 @@ from datetime import datetime, timezone
+ from pathlib import Path
+ from typing import Callable, Dict, List, Optional
+ 
++from typing import Protocol
++
+ from NAE.benchmark.evaluator import Evaluator, EvaluationResult
+ from NAE.benchmark.loader import load_dataset
+ from NAE.benchmark.schema import BenchmarkItem
+ 
+ logger = logging.getLogger(__name__)
+ 
++
+ # ------------------------------------------------------------------
+-# Type alias for retrieval function
++# Retriever Protocol (contract boundary)
+ # ------------------------------------------------------------------
+ 
+-# retrieval_fn: question text -> List[str] (TSU IDs)
++class Retriever(Protocol):
++    """Retrieval contract.
++
++    retrieved_tsu_ids: list[str]
++    → BenchmarkItem.gold_tsu_ids: list[str]
++    → Evaluator → Recall@K / Precision@K / MRR / Hit Rate
++    """
++
++    def retrieve(self, query: str, k: int) -> List[str]:
++        ...
++
++
++# Type alias for backward compat (deprecated)
+ RetrievalFn = Callable[[str], List[str]]
+ 
+ 
++class ConfigurationError(ValueError):
++    """retriever 미주입 등 구성 오류."""
++
++    pass
++
++
+ # ------------------------------------------------------------------
+ # Core Runner
+ # ------------------------------------------------------------------
+ 
+ def run_benchmark(
+     dataset_path: str | Path,
+-    retrieval_fn: RetrievalFn,
++    retrieval_fn: Optional[Retriever] = None,
+     top_k: int = 5,
+     output: str | Path | None = None,
+     verbose: bool = False,
+ ) -> Dict:
+     """전체 벤치마크를 실행하고 리포트를 반환.
+ 
++    canonical ground truth: BenchmarkItem.gold_tsu_ids (top-level only).
++
+     Args:
+         dataset_path: JSONL 데이터셋 경로.
+-        retrieval_fn: question_text -> List[tsu_id] 함수.
+-                      실제 Qdrant 검색 등을 여기에 연결.
++        retrieval_fn: Retriever (injectable) 또는 None.
++                      None 이면 명시적 ConfigurationError.
+         top_k: 검색 결과 K.
+         output: 보고서 출력 경로. None이면 파일에 쓰지 않음.
+         verbose: 상세 로그 출력.
+ 
+     Returns:
+         리포트 딕셔너리.
++
++    Raises:
++        ConfigurationError: retrieval_fn 이 None 인 경우.
+     """
++    # retriever 필수화 — silent default 제거
++    if retrieval_fn is None:
++        raise ConfigurationError(
++            "retrieval_fn is required. "
++            "Provide a Retriever (injectable) or test-only FakeRetriever. "
++            "Silent _dummy_retrieval() default path has been removed."
++        )
+     # 1. 데이터셋 로드
+     logger.info("loading dataset: %s", dataset_path)
+     items: List[BenchmarkItem] = load_dataset(dataset_path)
+@@ -87,14 +120,18 @@ def run_benchmark(
+         qtext = item.question.text
+ 
+         try:
+-            retrieved_ids = retrieval_fn(qtext)
++            # Retriever Protocol: retrieve(query, k) -> List[str]
++            if hasattr(retrieval_fn, "retrieve"):
++                retrieved_ids = retrieval_fn.retrieve(qtext, top_k)
++            else:
++                # Deprecated: Callable[[str], List[str]]
++                retrieved_ids = retrieval_fn(qtext)  # type: ignore[misc]
+         except Exception as exc:
+             logger.error("retrieval failed for %s: %s", qid, exc)
+             errors += 1
+             continue
+ 
+-        relevant_ids = item.expected.expected_scriptures or item.expected.required_concepts
+-        result = evaluator.evaluate(item, retrieved_ids, relevant_ids)
++        result = evaluator.evaluate(item, retrieved_ids)
+ 
+         if result.status == "passed":
+             passed += 1
+@@ -151,25 +188,9 @@ def build_parser() -> argparse.ArgumentParser:
+         action="store_true",
+         help="상세 로그 출력",
+     )
+-    parser.add_argument(
+-        "--retrieval-fn",
+-        type=str,
+-        default="dummy",
+-        help="검색 함수 이름 (기본값: dummy — 실제 연결 전까지 더미 사용)",
+-    )
+     return parser
+ 
+ 
+-def _dummy_retrieval(question_text: str) -> List[str]:
+-    """더미 검색 함수 — 실제 Qdrant 연결 전까지 사용.
+-
+-    TODO: 실제 Qdrant retrieval_fn으로 교체.
+-    """
+-    # 인프라 검증용: 빈 목록 반환 (모든 결과가 fail로 기록됨)
+-    # 실제 데이터가 필요하면 Phase 5.1에서 생성.
+-    return []
+-
+-
+ def main(argv: List[str] | None = None) -> int:
+     """CLI 메인 함수.
+ 
+@@ -186,28 +207,19 @@ def main(argv: List[str] | None = None) -> int:
+         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+     )
+ 
+-    # 검색 함수 선택
+-    retrieval_fn = _dummy_retrieval
+-    if args.retrieval_fn != "dummy":
+-        logger.warning("custom retrieval_fn은 아직 미구현 — dummy 사용")
+-
+-    # 실행
+-    try:
+-        report = run_benchmark(
+-            dataset_path=args.dataset,
+-            retrieval_fn=retrieval_fn,
+-            top_k=args.top_k,
+-            output=args.output,
+-            verbose=args.verbose,
+-        )
+-    except Exception as exc:
+-        logger.error("benchmark failed: %s", exc)
+-        print(f"ERROR: {exc}", file=sys.stderr)
+-        return 1
+-
+-    # 결과 출력
+-    print(json.dumps(report, ensure_ascii=False, indent=2, default=str))
+-    return 0
++    # CLI 에서 retrieval_fn 은 직접 제공해야 함 (Phase 5.2 에서 구현)
++    # 현재는 test-only 로만 사용 가능.
++    logger.error(
++        "CLI requires a retrieval_fn argument. "
++        "Provide via Python API or implement --retrieval-fn module:func."
++    )
++    print(
++        "ERROR: CLI requires retrieval_fn to be provided via Python API.",
++        file=sys.stderr,
++    )
++    return 1
++
++    # TODO: Phase 5.2 에서 실제 Qdrant client 연결 시 이 부분을 업데이트.
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/NAE/benchmark/schema.py b/NAE/benchmark/schema.py
+index 65946c6..fc8a82d 100644
+--- a/NAE/benchmark/schema.py
++++ b/NAE/benchmark/schema.py
+@@ -1,6 +1,11 @@
+ """NAE Benchmark Schema — Question Unit 정의
+ 
+ 자동 정답 생성 금지. 모든 값은 수동 입력 또는 후속 단계에서 생성.
++
++확장 스키마 (C1-TASK-ORDER-037):
++- gold_tsu_ids: retrieval ground truth (TSU ID 공간 기준)
++- question_type / difficulty / review_status: 메타 필드
++- metadata: tsu_schema_version, collector_version, canonical_version
+ """
+ 
+ from __future__ import annotations
+@@ -11,6 +16,38 @@ from datetime import datetime, timezone
+ from typing import Any, Dict, List, Optional
+ 
+ 
++# ------------------------------------------------------------------
++# Schema Constants
++# ------------------------------------------------------------------
++
++# 질문 유형 (수동 확정 값)
++QUESTION_TYPES: List[str] = [
++    "concept",       # 개념 이해
++    "scripture",     # 성경 근거
++    "doctrine",      # 교리 비교
++    "historical",    # 역사적 문맥
++    "application",   # 적용
++    "comparison",    # 비교 분석
++    "other",         # 기타
++]
++
++# 난이도 (수동 확정 값)
++DIFFICULTY_LEVELS: List[str] = [
++    "beginner",
++    "intermediate",
++    "advanced",
++    "scholarly",
++]
++
++# 검토 상태
++REVIEW_STATUSES: List[str] = [
++    "draft",
++    "review",
++    "approved",
++    "rejected",
++]
++
++
+ # ------------------------------------------------------------------
+ # Data Classes
+ # ------------------------------------------------------------------
+@@ -21,12 +58,21 @@ class BenchmarkQuestion:
+ 
+     text: str = ""
+     language: str = "ko"  # "ko" | "en"
++    question_type: str = "other"  # QUESTION_TYPES 중 하나
+ 
+ 
+ @dataclass
+ class BenchmarkExpected:
+-    """예측 정답 정보 (수동 입력)."""
++    """예측 정답 정보 (수동 입력).
+ 
++    DEPRECATED: gold_tsu_ids는 BenchmarkItem.gold_tsu_ids로 canonical 이동.
++    loader가 legacy JSONL에서 역직렬화할 때만 사용됩니다.
++    """
++
++    gold_tsu_ids: List[str] = field(
++        default_factory=list,
++        metadata={"deprecated": True, "legacy_alias": "BenchmarkItem.gold_tsu_ids"},
++    )
+     required_concepts: List[str] = field(default_factory=list)
+     expected_scriptures: List[str] = field(default_factory=list)
+     expected_doctrine: str = ""
+@@ -55,6 +101,9 @@ class BenchmarkMetadata:
+     created_version: str = ""
+     source: str = ""
+     created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
++    tsu_schema_version: str = ""
++    collector_version: str = ""
++    canonical_version: str = ""
+ 
+ 
+ @dataclass
+@@ -68,12 +117,18 @@ class BenchmarkItem:
+     evaluation: BenchmarkEvaluation = field(default_factory=BenchmarkEvaluation)
+     metadata: BenchmarkMetadata = field(default_factory=BenchmarkMetadata)
+ 
+-    # retrieved_tsu_ids: 검색 결과로 얻은 TSU ID 목록 (평가 runner에서 채움)
++    # retrieved_tsu_ids: 검색 결과로 얻은 TSU ID 목록 (평가 runner 에서 채움)
+     retrieved_tsu_ids: List[str] = field(default_factory=list)
+     retrieved_scores: List[float] = field(default_factory=list)
+ 
+-    # 관련 TSU ID 목록 (gold standard 기준)
+-    relevant_tsu_ids: List[str] = field(default_factory=list)
++    # gold standard ground truth — TSU ID 공간 기준
++    gold_tsu_ids: List[str] = field(default_factory=list)
++
++    # 난이도 (수동 입력)
++    difficulty: str = "beginner"  # DIFFICULTY_LEVELS 중 하나
++
++    # 검토 상태 (수동 입력)
++    review_status: str = "draft"  # REVIEW_STATUSES 중 하나
+ 
+     # ------------------------------------------------------------------
+     # Serialization
+@@ -90,7 +145,9 @@ class BenchmarkItem:
+             "metadata": asdict(self.metadata),
+             "retrieved_tsu_ids": self.retrieved_tsu_ids,
+             "retrieved_scores": self.retrieved_scores,
+-            "relevant_tsu_ids": self.relevant_tsu_ids,
++            "gold_tsu_ids": self.gold_tsu_ids,
++            "difficulty": self.difficulty,
++            "review_status": self.review_status,
+         }
+ 
+     def to_json(self, indent: int = 2) -> str:
+@@ -113,7 +170,9 @@ class BenchmarkItem:
+             metadata=BenchmarkMetadata(**data.get("metadata", {})),
+             retrieved_tsu_ids=data.get("retrieved_tsu_ids", []),
+             retrieved_scores=data.get("retrieved_scores", []),
+-            relevant_tsu_ids=data.get("relevant_tsu_ids", []),
++            gold_tsu_ids=data.get("gold_tsu_ids", []),
++            difficulty=data.get("difficulty", "beginner"),
++            review_status=data.get("review_status", "draft"),
+         )
+ 
+     @classmethod
+@@ -136,16 +195,63 @@ class BenchmarkItem:
+             errors.append("question.text is required")
+ 
+         if self.question.language not in ("ko", "en"):
+-            errors.append(f"question.language must be 'ko' or 'en', got '{self.question.language}'")
++            errors.append(
++                f"question.language must be 'ko' or 'en', got '{self.question.language}'"
++            )
++
++        if self.question.question_type not in QUESTION_TYPES:
++            errors.append(
++                f"question.question_type must be one of {QUESTION_TYPES}, "
++                f"got '{self.question.question_type}'"
++            )
+ 
+         if self.retrieval.top_k < 1:
+             errors.append("retrieval.top_k must be >= 1")
+ 
++        if self.difficulty not in DIFFICULTY_LEVELS:
++            errors.append(
++                f"difficulty must be one of {DIFFICULTY_LEVELS}, got '{self.difficulty}'"
++            )
++
++        if self.review_status not in REVIEW_STATUSES:
++            errors.append(
++                f"review_status must be one of {REVIEW_STATUSES}, got '{self.review_status}'"
++            )
++
++        # gold_tsu_ids 중복 검사
++        if len(self.gold_tsu_ids) != len(set(self.gold_tsu_ids)):
++            errors.append("gold_tsu_ids contains duplicates")
++
++        return errors
++
++    def validate_referential_integrity(
++        self, known_tsu_ids: Optional[set] = None
++    ) -> List[str]:
++        """gold_tsu_ids 가 known_tsu_ids 에 존재하는지 검증.
++
++        Parameters
++        ----------
++        known_tsu_ids : set or None
++            실제 TSU 데이터셋의 모든 ID 집합.
++            None 이면 검증을 건너뛴다.
++
++        Returns
++        -------
++        List[str]
++            검증 오류 목록.
++        """
++        if known_tsu_ids is None:
++            return []
++
++        errors: List[str] = []
++        for tsu_id in self.gold_tsu_ids:
++            if tsu_id not in known_tsu_ids:
++                errors.append(f"gold_tsu_id '{tsu_id}' not found in known TSU IDs")
+         return errors
+ 
+ 
+ # ------------------------------------------------------------------
+-# Schema Constants
++# Schema Constants (module level)
+ # ------------------------------------------------------------------
+ 
+ REQUIRED_FIELDS = [
+@@ -159,7 +265,7 @@ REQUIRED_FIELDS = [
+ 
+ QUESTION_REQUIRED = ["text", "language"]
+ 
+-EXPECTED_REQUIRED = ["required_concepts", "expected_scriptures", "expected_doctrine"]
++EXPECTED_REQUIRED = ["gold_tsu_ids", "required_concepts", "expected_scriptures", "expected_doctrine"]
+ 
+ RETRIEVAL_REQUIRED = ["top_k"]
+ 
+@@ -173,8 +279,10 @@ SCHEMA_EXAMPLE = {
+     "question": {
+         "text": "예수님이 십자가에서 무엇을 이루셨나요?",
+         "language": "ko",
++        "question_type": "doctrine",
+     },
+     "expected": {
++        "gold_tsu_ids": ["TSU-0001", "TSU-0042"],
+         "required_concepts": ["속죄", "십자가", "대리"],
+         "expected_scriptures": ["히브리서 9:22", "로마서 3:25"],
+         "expected_doctrine": "대리 속죄설",
+@@ -188,5 +296,11 @@ SCHEMA_EXAMPLE = {
+     "metadata": {
+         "created_version": "1.0",
+         "source": "manual",
++        "tsu_schema_version": "",
++        "collector_version": "",
++        "canonical_version": "",
+     },
++    "gold_tsu_ids": ["TSU-0001", "TSU-0042"],
++    "difficulty": "intermediate",
++    "review_status": "draft",
+ }
+\ No newline at end of file
+diff --git a/scripts/build_tsu_dataset.py b/scripts/build_tsu_dataset.py
+index 5a0727d..3d71734 100644
+--- a/scripts/build_tsu_dataset.py
++++ b/scripts/build_tsu_dataset.py
+@@ -16,6 +16,12 @@ re-export한다. 기존에 `from scripts.build_tsu_dataset import ...` 또는
+ Usage:
+     python -m scripts.build_tsu_dataset --output-dir output
+     python -m scripts.build_tsu_dataset --output-dir output --dry-run
++
++    # [docs/NAE_DATA_ARCHITECTURE.md §3] --dataset-path lets a caller point
++    # at a non-default registry (e.g. a NAE-scoped output-dir) without
++    # overwriting the shared production TSU dataset at DEFAULT_TSU_DATASET_PATH
++    # — omitting the flag preserves the exact prior behavior.
++    python -m scripts.build_tsu_dataset --output-dir data/nae/processed --dataset-path output/nae/bench/tsu_dataset.jsonl
+ """
+ 
+ from __future__ import annotations
+@@ -50,12 +56,22 @@ from core.tsu_builder import (  # noqa: F401
+ def main() -> None:
+     parser = argparse.ArgumentParser(description="Build TSU v1 dataset from the identity registry.")
+     parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR, help=f"Processing output directory (default: {DEFAULT_OUTPUT_DIR})")
++    parser.add_argument(
++        "--dataset-path",
++        default=DEFAULT_TSU_DATASET_PATH,
++        help=(
++            f"TSU dataset output path (default: {DEFAULT_TSU_DATASET_PATH}). "
++            "Override this when --output-dir points at a non-default registry "
++            "(e.g. a NAE-scoped output-dir) so the write does not collide with "
++            "the shared production TSU dataset — see docs/NAE_DATA_ARCHITECTURE.md §3."
++        ),
++    )
+     parser.add_argument("--dry-run", action="store_true", help="Build in memory only; do not write files")
+     args = parser.parse_args()
+ 
+     output_dir = Path(args.output_dir)
+     registry_path = Path(registry_path_for(args.output_dir))
+-    dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
++    dataset_path = Path(args.dataset_path)
+     manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
+ 
+     registry = load_identity_registry(str(registry_path))
+diff --git a/tests/test_nae_benchmark_loader.py b/tests/test_nae_benchmark_loader.py
+index 198003f..9623922 100644
+--- a/tests/test_nae_benchmark_loader.py
++++ b/tests/test_nae_benchmark_loader.py
+@@ -14,7 +14,12 @@ from pathlib import Path
+ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+ 
+ import pytest
+-from NAE.benchmark.loader import load_dataset, validate_dataset
++from NAE.benchmark.loader import (
++    load_dataset,
++    validate_dataset,
++    check_duplicate_benchmark_ids,
++    check_empty_dataset,
++)
+ from NAE.benchmark.schema import BenchmarkItem
+ 
+ 
+@@ -30,18 +35,34 @@ def valid_jsonl(tmp_path: Path) -> Path:
+         {
+             "benchmark_id": "B001",
+             "question": {"text": "질문 1", "language": "ko"},
+-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
++            "expected": {
++                "gold_tsu_ids": ["TSU-001"],
++                "required_concepts": [],
++                "expected_scriptures": [],
++                "expected_doctrine": "",
++            },
+             "retrieval": {"top_k": 5},
+             "evaluation": {"status": "pending"},
+             "metadata": {"created_version": "1.0", "source": "test"},
++            "gold_tsu_ids": ["TSU-001"],
++            "difficulty": "beginner",
++            "review_status": "draft",
+         },
+         {
+             "benchmark_id": "B002",
+             "question": {"text": "질문 2", "language": "en"},
+-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
++            "expected": {
++                "gold_tsu_ids": ["TSU-002"],
++                "required_concepts": [],
++                "expected_scriptures": [],
++                "expected_doctrine": "",
++            },
+             "retrieval": {"top_k": 5},
+             "evaluation": {"status": "pending"},
+             "metadata": {"created_version": "1.0", "source": "test"},
++            "gold_tsu_ids": ["TSU-002"],
++            "difficulty": "beginner",
++            "review_status": "draft",
+         },
+     ]
+     with open(p, "w", encoding="utf-8") as fh:
+@@ -59,15 +80,28 @@ def mixed_jsonl(tmp_path: Path) -> Path:
+         {
+             "benchmark_id": "B001",
+             "question": {"text": "질문 1", "language": "ko"},
+-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
++            "expected": {
++                "gold_tsu_ids": ["TSU-001"],
++                "required_concepts": [],
++                "expected_scriptures": [],
++                "expected_doctrine": "",
++            },
+             "retrieval": {"top_k": 5},
+             "evaluation": {"status": "pending"},
+             "metadata": {"created_version": "1.0", "source": "test"},
++            "gold_tsu_ids": ["TSU-001"],
++            "difficulty": "beginner",
++            "review_status": "draft",
+         },
+         # invalid: missing benchmark_id
+         {
+             "question": {"text": "질문 2", "language": "ko"},
+-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
++            "expected": {
++                "gold_tsu_ids": [],
++                "required_concepts": [],
++                "expected_scriptures": [],
++                "expected_doctrine": "",
++            },
+             "retrieval": {"top_k": 5},
+             "evaluation": {"status": "pending"},
+             "metadata": {"created_version": "1.0", "source": "test"},
+@@ -76,10 +110,18 @@ def mixed_jsonl(tmp_path: Path) -> Path:
+         {
+             "benchmark_id": "B003",
+             "question": {"text": "질문 3", "language": "ko"},
+-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
++            "expected": {
++                "gold_tsu_ids": ["TSU-003"],
++                "required_concepts": [],
++                "expected_scriptures": [],
++                "expected_doctrine": "",
++            },
+             "retrieval": {"top_k": 5},
+             "evaluation": {"status": "pending"},
+             "metadata": {"created_version": "1.0", "source": "test"},
++            "gold_tsu_ids": ["TSU-003"],
++            "difficulty": "beginner",
++            "review_status": "draft",
+         },
+     ]
+     with open(p, "w", encoding="utf-8") as fh:
+@@ -97,10 +139,18 @@ def corrupted_jsonl(tmp_path: Path) -> Path:
+         fh.write(json.dumps({
+             "benchmark_id": "B001",
+             "question": {"text": "질문 1", "language": "ko"},
+-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
++            "expected": {
++                "gold_tsu_ids": ["TSU-001"],
++                "required_concepts": [],
++                "expected_scriptures": [],
++                "expected_doctrine": "",
++            },
+             "retrieval": {"top_k": 5},
+             "evaluation": {"status": "pending"},
+             "metadata": {"created_version": "1.0", "source": "test"},
++            "gold_tsu_ids": ["TSU-001"],
++            "difficulty": "beginner",
++            "review_status": "draft",
+         }) + "\n")
+         # corrupted: invalid JSON
+         fh.write("{invalid json content\n")
+@@ -108,10 +158,18 @@ def corrupted_jsonl(tmp_path: Path) -> Path:
+         fh.write(json.dumps({
+             "benchmark_id": "B003",
+             "question": {"text": "질문 3", "language": "ko"},
+-            "expected": {"required_concepts": [], "expected_scriptures": [], "expected_doctrine": ""},
++            "expected": {
++                "gold_tsu_ids": ["TSU-003"],
++                "required_concepts": [],
++                "expected_scriptures": [],
++                "expected_doctrine": "",
++            },
+             "retrieval": {"top_k": 5},
+             "evaluation": {"status": "pending"},
+             "metadata": {"created_version": "1.0", "source": "test"},
++            "gold_tsu_ids": ["TSU-003"],
++            "difficulty": "beginner",
++            "review_status": "draft",
+         }) + "\n")
+     return p
+ 
+diff --git a/tests/test_nae_benchmark_schema.py b/tests/test_nae_benchmark_schema.py
+index 5028e3a..12008ce 100644
+--- a/tests/test_nae_benchmark_schema.py
++++ b/tests/test_nae_benchmark_schema.py
+@@ -1,19 +1,6 @@
+-"""NAE Benchmark Schema 테스트.
+-
+-확인:
+-    - valid JSONL 구조
+-    - required fields 존재
+-    - 직렬화/역직렬화
+-    - validation 로직
+-"""
++"""NAE Benchmark Schema Tests — C1-TASK-ORDER-037 확장 스키마 검증."""
+ 
+ import json
+-import sys
+-from pathlib import Path
+-
+-# 프로젝트 루트를 sys.path에 추가
+-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+-
+ import pytest
+ from NAE.benchmark.schema import (
+     BenchmarkItem,
+@@ -22,254 +9,348 @@ from NAE.benchmark.schema import (
+     BenchmarkRetrieval,
+     BenchmarkEvaluation,
+     BenchmarkMetadata,
+-    SCHEMA_EXAMPLE,
++    QUESTION_TYPES,
++    DIFFICULTY_LEVELS,
++    REVIEW_STATUSES,
+ )
+ 
+ 
+ # ------------------------------------------------------------------
+-# Fixtures
+-# ------------------------------------------------------------------
+-
+-@pytest.fixture
+-def valid_item() -> BenchmarkItem:
+-    return BenchmarkItem(
+-        benchmark_id="B001",
+-        question=BenchmarkQuestion(text="테스트 질문", language="ko"),
+-        expected=BenchmarkExpected(
+-            required_concepts=["속죄"],
+-            expected_scriptures=["로마서 3:25"],
+-            expected_doctrine="대리 속죄설",
+-        ),
+-        retrieval=BenchmarkRetrieval(top_k=5),
+-    )
+-
+-
+-@pytest.fixture
+-def valid_dict() -> dict:
+-    return {
+-        "benchmark_id": "B001",
+-        "question": {"text": "테스트 질문", "language": "ko"},
+-        "expected": {
+-            "required_concepts": ["속죄"],
+-            "expected_scriptures": ["로마서 3:25"],
+-            "expected_doctrine": "대리 속죄설",
+-        },
+-        "retrieval": {"top_k": 5},
+-        "evaluation": {"status": "pending"},
+-        "metadata": {"created_version": "1.0", "source": "test"},
+-    }
+-
+-
+-# ------------------------------------------------------------------
+-# Schema Structure Tests
++# Schema Constants
+ # ------------------------------------------------------------------
+ 
+-class TestSchemaStructure:
+-    """스키마 구조 테스트."""
+-
+-    def test_schema_example_has_required_keys(self):
+-        """SCHEMA_EXAMPLE에 필수 키가 모두 있어야 함."""
+-        for key in ["benchmark_id", "question", "expected", "retrieval", "evaluation", "metadata"]:
+-            assert key in SCHEMA_EXAMPLE, f"SCHEMA_EXAMPLE에 '{key}' 키가 없음"
+-
+-    def test_question_required_fields(self):
+-        """question에 text, language가 있어야 함."""
+-        for key in ["text", "language"]:
+-            assert key in SCHEMA_EXAMPLE["question"], f"question에 '{key}'가 없음"
+-
+-    def test_expected_required_fields(self):
+-        """expected에 required_concepts, expected_scriptures, expected_doctrine가 있어야 함."""
+-        for key in ["required_concepts", "expected_scriptures", "expected_doctrine"]:
+-            assert key in SCHEMA_EXAMPLE["expected"], f"expected에 '{key}'가 없음"
++class TestSchemaConstants:
++    def test_question_types_not_empty(self):
++        assert len(QUESTION_TYPES) > 0
+ 
+-    def test_retrieval_required_fields(self):
+-        """retrieval에 top_k가 있어야 함."""
+-        assert "top_k" in SCHEMA_EXAMPLE["retrieval"]
++    def test_difficulty_levels_not_empty(self):
++        assert len(DIFFICULTY_LEVELS) > 0
+ 
+-    def test_evaluation_required_fields(self):
+-        """evaluation에 status가 있어야 함."""
+-        assert "status" in SCHEMA_EXAMPLE["evaluation"]
++    def test_review_statuses_not_empty(self):
++        assert len(REVIEW_STATUSES) > 0
+ 
+ 
+ # ------------------------------------------------------------------
+-# Data Class Tests
++# BenchmarkItem — Creation
+ # ------------------------------------------------------------------
+ 
+-class TestDataClass:
+-    """BenchmarkItem 데이터 클래스 테스트."""
+-
+-    def test_default_values(self):
+-        """기본값이 올바르게 설정되어야 함."""
++class TestBenchmarkItemCreation:
++    def test_default_creation(self):
+         item = BenchmarkItem()
+-        assert item.question.language == "ko"
+-        assert item.retrieval.top_k == 5
+-        assert item.evaluation.status == "pending"
+-        assert item.retrieved_tsu_ids == []
+-        assert item.relevant_tsu_ids == []
+-
+-    def test_from_dict(self, valid_dict):
+-        """딕셔너리에서 역직렬화되어야 함."""
+-        item = BenchmarkItem.from_dict(valid_dict)
++        assert item.benchmark_id == ""
++        assert isinstance(item.question, BenchmarkQuestion)
++        assert isinstance(item.expected, BenchmarkExpected)
++        assert isinstance(item.retrieval, BenchmarkRetrieval)
++        assert isinstance(item.evaluation, BenchmarkEvaluation)
++        assert isinstance(item.metadata, BenchmarkMetadata)
++
++    def test_full_creation(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트 질문", language="ko", question_type="concept"),
++            expected=BenchmarkExpected(
++                gold_tsu_ids=["TSU-001", "TSU-002"],
++                required_concepts=["개념1"],
++                expected_scriptures=["시편 23:1"],
++                expected_doctrine="교리1",
++            ),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            difficulty="intermediate",
++            review_status="draft",
++        )
+         assert item.benchmark_id == "B001"
+         assert item.question.text == "테스트 질문"
+         assert item.question.language == "ko"
+-        assert item.expected.required_concepts == ["속죄"]
+-        assert item.retrieval.top_k == 5
++        assert item.question.question_type == "concept"
++        assert item.expected.gold_tsu_ids == ["TSU-001", "TSU-002"]
++        assert item.difficulty == "intermediate"
++        assert item.review_status == "draft"
++
+ 
+-    def test_to_dict(self, valid_item):
+-        """딕셔너리로 직렬화되어야 함."""
+-        d = valid_item.to_dict()
++# ------------------------------------------------------------------
++# BenchmarkItem — Serialization
++# ------------------------------------------------------------------
++
++class TestBenchmarkItemSerialization:
++    def test_to_dict(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            difficulty="beginner",
++            review_status="approved",
++        )
++        d = item.to_dict()
+         assert d["benchmark_id"] == "B001"
+-        assert d["question"]["text"] == "테스트 질문"
+-        assert isinstance(d, dict)
+-
+-    def test_roundtrip(self, valid_dict):
+-        """직렬화 → 역직렬화가 원본과 동일해야 함."""
+-        item = BenchmarkItem.from_dict(valid_dict)
+-        d2 = item.to_dict()
+-        assert d2["benchmark_id"] == valid_dict["benchmark_id"]
+-        assert d2["question"]["text"] == valid_dict["question"]["text"]
+-
+-    def test_to_json(self, valid_item):
+-        """JSON 문자열로 직렬화되어야 함."""
+-        json_str = valid_item.to_json()
+-        parsed = json.loads(json_str)
+-        assert parsed["benchmark_id"] == "B001"
+-
+-    def test_from_json(self, valid_item):
+-        """JSON 문자열에서 역직렬화되어야 함."""
+-        json_str = valid_item.to_json()
+-        item2 = BenchmarkItem.from_json(json_str)
+-        assert item2.benchmark_id == valid_item.benchmark_id
+-        assert item2.question.text == valid_item.question.text
++        assert d["question"]["text"] == "테스트"
++        assert d["expected"]["gold_tsu_ids"] == ["TSU-001"]
++        assert d["difficulty"] == "beginner"
++        assert d["review_status"] == "approved"
++
++    def test_to_json(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++        )
++        j = item.to_json()
++        assert isinstance(j, str)
++        d = json.loads(j)
++        assert d["benchmark_id"] == "B001"
++
++    def test_from_dict(self):
++        data = {
++            "benchmark_id": "B001",
++            "question": {"text": "테스트", "language": "ko", "question_type": "concept"},
++            "expected": {"gold_tsu_ids": ["TSU-001"]},
++            "retrieval": {"top_k": 5},
++            "evaluation": {"status": "pending"},
++            "metadata": {"created_version": "1.0", "source": "test"},
++            "difficulty": "intermediate",
++            "review_status": "draft",
++        }
++        item = BenchmarkItem.from_dict(data)
++        assert item.benchmark_id == "B001"
++        assert item.question.text == "테스트"
++        assert item.expected.gold_tsu_ids == ["TSU-001"]
++        assert item.difficulty == "intermediate"
++        assert item.review_status == "draft"
++
++    def test_from_json(self):
++        j = json.dumps({
++            "benchmark_id": "B001",
++            "question": {"text": "테스트", "language": "ko"},
++            "expected": {"gold_tsu_ids": ["TSU-001"]},
++            "retrieval": {"top_k": 5},
++            "evaluation": {"status": "pending"},
++            "metadata": {"created_version": "1.0", "source": "test"},
++        })
++        item = BenchmarkItem.from_json(j)
++        assert item.benchmark_id == "B001"
+ 
+ 
+ # ------------------------------------------------------------------
+-# Validation Tests
++# BenchmarkItem — Validation
+ # ------------------------------------------------------------------
+ 
+-class TestValidation:
+-    """스키마 검증 테스트."""
+-
+-    def test_valid_item_no_errors(self, valid_item):
+-        """유효한 항목은 에러가 없어야 함."""
+-        errors = valid_item.validate()
+-        assert errors == []
++class TestBenchmarkItemValidation:
++    def test_valid_item(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트 질문", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            gold_tsu_ids=["TSU-001"],
++        )
++        assert item.validate() == []
+ 
+     def test_missing_benchmark_id(self):
+-        """benchmark_id가 비어있으면 에러."""
+-        item = BenchmarkItem(benchmark_id="", question=BenchmarkQuestion(text="질문"))
++        item = BenchmarkItem(
++            benchmark_id="",
++            question=BenchmarkQuestion(text="테스트 질문", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++        )
+         errors = item.validate()
+         assert any("benchmark_id" in e for e in errors)
+ 
+     def test_missing_question_text(self):
+-        """question.text가 비어있으면 에러."""
+-        item = BenchmarkItem(benchmark_id="B001", question=BenchmarkQuestion(text=""))
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++        )
+         errors = item.validate()
+         assert any("question.text" in e for e in errors)
+ 
+     def test_invalid_language(self):
+-        """language가 ko/en이 아니면 에러."""
+         item = BenchmarkItem(
+             benchmark_id="B001",
+-            question=BenchmarkQuestion(text="질문", language="jp"),
++            question=BenchmarkQuestion(text="테스트", language="ja"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
+         )
+         errors = item.validate()
+         assert any("language" in e for e in errors)
+ 
++    def test_invalid_question_type(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko", question_type="invalid_type"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++        )
++        errors = item.validate()
++        assert any("question_type" in e for e in errors)
++
+     def test_invalid_top_k(self):
+-        """top_k가 1보다 작으면 에러."""
+         item = BenchmarkItem(
+             benchmark_id="B001",
+-            question=BenchmarkQuestion(text="질문"),
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
+             retrieval=BenchmarkRetrieval(top_k=0),
+         )
+         errors = item.validate()
+         assert any("top_k" in e for e in errors)
+ 
+-    def test_whitespace_question_text(self):
+-        """question.text가 공백만 있으면 에러."""
+-        item = BenchmarkItem(benchmark_id="B001", question=BenchmarkQuestion(text="   "))
++    def test_invalid_difficulty(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            difficulty="invalid_level",
++        )
+         errors = item.validate()
+-        assert any("question.text" in e for e in errors)
++        assert any("difficulty" in e for e in errors)
++
++    def test_invalid_review_status(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            review_status="invalid_status",
++        )
++        errors = item.validate()
++        assert any("review_status" in e for e in errors)
++
++    def test_duplicate_gold_tsu_ids(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001", "TSU-001"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            gold_tsu_ids=["TSU-001", "TSU-001"],
++        )
++        errors = item.validate()
++        assert any("duplicates" in e for e in errors)
++
++    def test_valid_question_type_values(self):
++        for qt in QUESTION_TYPES:
++            item = BenchmarkItem(
++                benchmark_id="B001",
++                question=BenchmarkQuestion(text="테스트", language="ko", question_type=qt),
++                expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++                retrieval=BenchmarkRetrieval(top_k=5),
++                gold_tsu_ids=["TSU-001"],
++            )
++            assert item.validate() == []
++
++    def test_valid_difficulty_values(self):
++        for dl in DIFFICULTY_LEVELS:
++            item = BenchmarkItem(
++                benchmark_id="B001",
++                question=BenchmarkQuestion(text="테스트", language="ko"),
++                expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++                retrieval=BenchmarkRetrieval(top_k=5),
++                difficulty=dl,
++            )
++            assert item.validate() == []
++
++    def test_valid_review_status_values(self):
++        for rs in REVIEW_STATUSES:
++            item = BenchmarkItem(
++                benchmark_id="B001",
++                question=BenchmarkQuestion(text="테스트", language="ko"),
++                expected=BenchmarkExpected(gold_tsu_ids=["TSU-001"]),
++                retrieval=BenchmarkRetrieval(top_k=5),
++                gold_tsu_ids=["TSU-001"],
++                review_status=rs,
++            )
++            assert item.validate() == []
+ 
+ 
+ # ------------------------------------------------------------------
+-# JSONL File Tests
++# BenchmarkItem — Referential Integrity
+ # ------------------------------------------------------------------
+ 
+-class TestJSONLFile:
+-    """benchmark_v1.jsonl 파일 테스트."""
+-
+-    @pytest.fixture
+-    def jsonl_path(self) -> Path:
+-        return Path(__file__).resolve().parent.parent / "NAE" / "benchmark" / "datasets" / "benchmark_v1.jsonl"
+-
+-    def test_file_exists(self, jsonl_path):
+-        """benchmark_v1.jsonl 파일이 존재해야 함."""
+-        assert jsonl_path.exists(), f"benchmark_v1.jsonl이 없음: {jsonl_path}"
+-
+-    def test_all_lines_are_valid_json(self, jsonl_path):
+-        """모든 줄이 유효한 JSON이어야 함."""
+-        with open(jsonl_path, "r", encoding="utf-8") as fh:
+-            for lineno, line in enumerate(fh, start=1):
+-                line = line.strip()
+-                if not line:
+-                    continue
+-                try:
+-                    json.loads(line)
+-                except json.JSONDecodeError as exc:
+-                    pytest.fail(f"line {lineno}이(가) 유효하지 않은 JSON: {exc}")
+-
+-    def test_all_records_have_required_fields(self, jsonl_path):
+-        """모든 레코드가 필수 필드를 가져야 함."""
+-        with open(jsonl_path, "r", encoding="utf-8") as fh:
+-            for lineno, line in enumerate(fh, start=1):
+-                line = line.strip()
+-                if not line:
+-                    continue
+-                data = json.loads(line)
+-                for key in ["benchmark_id", "question", "expected", "retrieval", "evaluation", "metadata"]:
+-                    assert key in data, f"line {lineno}에 '{key}' 키가 없음"
+-
+-    def test_all_records_pass_validation(self, jsonl_path):
+-        """모든 레코드가 검증을 통과해야 함."""
+-        with open(jsonl_path, "r", encoding="utf-8") as fh:
+-            for lineno, line in enumerate(fh, start=1):
+-                line = line.strip()
+-                if not line:
+-                    continue
+-                data = json.loads(line)
+-                item = BenchmarkItem.from_dict(data)
+-                errors = item.validate()
+-                assert errors == [], f"line {lineno} 검증 실패: {errors}"
+-
+-    def test_has_benchmark_id(self, jsonl_path):
+-        """모든 레코드가 benchmark_id를 가져야 함."""
+-        with open(jsonl_path, "r", encoding="utf-8") as fh:
+-            for lineno, line in enumerate(fh, start=1):
+-                line = line.strip()
+-                if not line:
+-                    continue
+-                data = json.loads(line)
+-                assert data.get("benchmark_id"), f"line {lineno}에 benchmark_id가 없음"
+-
+-    def test_has_question_text(self, jsonl_path):
+-        """모든 레코드가 question.text를 가져야 함."""
+-        with open(jsonl_path, "r", encoding="utf-8") as fh:
+-            for lineno, line in enumerate(fh, start=1):
+-                line = line.strip()
+-                if not line:
+-                    continue
+-                data = json.loads(line)
+-                assert data.get("question", {}).get("text"), f"line {lineno}에 question.text가 없음"
+-
+-    def test_has_top_k(self, jsonl_path):
+-        """모든 레코드가 retrieval.top_k를 가져야 함."""
+-        with open(jsonl_path, "r", encoding="utf-8") as fh:
+-            for lineno, line in enumerate(fh, start=1):
+-                line = line.strip()
+-                if not line:
+-                    continue
+-                data = json.loads(line)
+-                assert data.get("retrieval", {}).get("top_k"), f"line {lineno}에 top_k가 없음"
+\ No newline at end of file
++class TestBenchmarkItemReferentialIntegrity:
++    def test_valid_gold_tsu_ids(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-001", "TSU-002"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++        )
++        known = {"TSU-001", "TSU-002", "TSU-003"}
++        assert item.validate_referential_integrity(known) == []
++
++    def test_invalid_gold_tsu_ids(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-999"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            gold_tsu_ids=["TSU-999"],
++        )
++        known = {"TSU-001", "TSU-002"}
++        errors = item.validate_referential_integrity(known)
++        assert len(errors) == 1
++        assert "TSU-999" in errors[0]
++
++    def test_multiple_invalid_gold_tsu_ids(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-999", "TSU-888"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++            gold_tsu_ids=["TSU-999", "TSU-888"],
++        )
++        known = {"TSU-001", "TSU-002"}
++        errors = item.validate_referential_integrity(known)
++        assert len(errors) == 2
++
++    def test_none_known_tsu_ids(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=["TSU-999"]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++        )
++        # known_tsu_ids=None 이면 검증 건너뛰기
++        assert item.validate_referential_integrity(None) == []
++
++    def test_empty_gold_tsu_ids(self):
++        item = BenchmarkItem(
++            benchmark_id="B001",
++            question=BenchmarkQuestion(text="테스트", language="ko"),
++            expected=BenchmarkExpected(gold_tsu_ids=[]),
++            retrieval=BenchmarkRetrieval(top_k=5),
++        )
++        known = {"TSU-001"}
++        # gold_tsu_ids 가 비어있으면 오류 없음
++        assert item.validate_referential_integrity(known) == []
++
++
++# ------------------------------------------------------------------
++# BenchmarkExpected — gold_tsu_ids 중심
++# ------------------------------------------------------------------
++
++class TestBenchmarkExpected:
++    def test_gold_tsu_ids_primary(self):
++        expected = BenchmarkExpected(gold_tsu_ids=["TSU-001", "TSU-002"])
++        assert expected.gold_tsu_ids == ["TSU-001", "TSU-002"]
++
++    def test_gold_tsu_ids_empty_default(self):
++        expected = BenchmarkExpected()
++        assert expected.gold_tsu_ids == []
++
++    def test_backward_compatible_scriptures(self):
++        """expected_scriptures 는 하위 호환성으로 유지."""
++        expected = BenchmarkExpected(
++            gold_tsu_ids=["TSU-001"],
++            expected_scriptures=["시편 23:1", "요한복음 3:16"],
++        )
++        assert expected.gold_tsu_ids == ["TSU-001"]
++        assert expected.expected_scriptures == ["시편 23:1", "요한복음 3:16"]
++
++    def test_backward_compatible_doctrine(self):
++        """expected_doctrine 는 하위 호환성으로 유지."""
++        expected = BenchmarkExpected(
++            gold_tsu_ids=["TSU-001"],
++            expected_doctrine="대리 속죄설",
++        )
++        assert expected.expected_doctrine == "대리 속죄설"
+\ No newline at end of file

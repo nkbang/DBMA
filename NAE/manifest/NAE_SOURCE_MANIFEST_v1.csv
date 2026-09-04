@@ -1,0 +1,28 @@
+# ROLE: Acquisition Backlog Tracker — NOT a source registry.
+# 2026-08-29 HQ audit (WS-B/WS-C): 21 rows with no filesystem evidence or broken provenance changed ACQUIRED->UNACQUIRED; BAP-CHURCH-DAGG-002 -> DUPLICATE_ALIAS_OF_BAP-CHURCH-DAGG-001. Evidence-backed rows unchanged (BAP-CHURCH-DAGG-001, BAP-CHURCH-HISCOX, BAP-MISS-FULLER). Authoritative disposition: docs/agents/cue/CUE-NAE-BAPTIST-CORPUS-001-FINAL-GOVERNANCE-RECONCILIATION.md + ADR-030 N-8.
+id,title,author,year,category,source_url,archive_identifier,license,file_format,sha256,status
+BAP-CONF-1689,The Second London Baptist Confession of Faith,London Particular Baptists,1689,Confession,https://archive.org/details/bim_early-english-books-1641-1700_a-confession-of-faith-p_1677,bim_early-english-books-1641-1700_a-confession-of-faith-p_1677,public_domain,pdf+ocr+hocr,,UNACQUIRED
+BAP-CONF-PHIL-1742,The Baptist Confession of Faith,Philadelphia Baptist Association,1742,Confession,https://archive.org/details/philadelphiaconf0000vari,philadelphiaconf0000vari,public_domain_possible,pdf+ocr+hocr,,UNACQUIRED
+BAP-SYS-GILL-001,A Body of Doctrinal Divinity,John Gill,1767,Systematic Theology,,,,,UNACQUIRED
+BAP-SYS-BOYCE-001,Abstract of Systematic Theology,James Petigru Boyce,1887,Systematic Theology,,,,,UNACQUIRED
+BAP-SYS-STRONG-001,Systematic Theology,A.H. Strong,1886,Systematic Theology,,,,,UNACQUIRED
+BAP-SYS-PENDLETON-001,Christian Doctrines,James Madison Pendleton,,Baptist Doctrine,,,,,UNACQUIRED
+BAP-COM-GILL-001,Exposition of the Entire Bible (partial: OT vol2-3/Prophets vol1-2/Canticles/NT vol3 - no single complete set found),John Gill,1765,Bible Commentary,https://archive.org/details/expositionofoldt0003gill,multiple (see NAE/corpus/raw/archive_org/commentary/Gill_*),public_domain,pdf+ocr,,UNACQUIRED
+BAP-COM-BROADUS-MAT,Commentary on Matthew,John A. Broadus,,Bible Commentary,,,,,UNACQUIRED
+PROT-COM-HENRY-001,Commentary on the Whole Bible,Matthew Henry,,Bible Commentary,,,,,UNACQUIRED
+PROT-COM-HAWKER-001,Poor Man's Commentary,Robert Hawker,,Bible Commentary,,,,,UNACQUIRED
+BAP-SER-SPURGEON-001,Lectures to My Students,Charles Haddon Spurgeon,,Preaching,,,,,UNACQUIRED
+BAP-SER-SPURGEON-MTP,The Metropolitan Tabernacle Pulpit,Charles Spurgeon,,Sermons,https://archive.org/details/SpurgeonMetropolitanPt15,multiple (see NAE/corpus/raw/archive_org/sermons/Spurgeon_MTP_Vol*),public_domain,pdf+ocr,,UNACQUIRED
+BAP-COM-SPURGEON-DAVID,The Treasury of David,Charles Spurgeon,,Psalm Commentary,,,,,UNACQUIRED
+BAP-SER-KEACH-001,Tropologia (substitute for Sermons of Benjamin Keach - no exact title match found),Benjamin Keach,1681,Early Baptist Sermons,https://archive.org/details/bim_early-english-books-1641-1700_tropologia-or-a-key-to_bk-benjamin-keach_1681,bim_early-english-books-1641-1700_tropologia-or-a-key-to_bk-benjamin-keach_1681,public_domain,pdf+ocr,,UNACQUIRED
+BAP-SPIRIT-BUNYAN,Bunyan's Devotional Works (substitute for Complete Works - both candidates access-restricted CDL items),John Bunyan,1850,Baptist Spirituality,https://archive.org/details/bunyansdevotion00socigoog,bunyansdevotion00socigoog,public_domain,pdf+ocr,,UNACQUIRED
+BAP-SER-MACLAREN,Expositions of Holy Scripture,Alexander Maclaren,1900,Expository Sermons,https://archive.org/details/expositionsofhol00macl,multiple (see NAE/corpus/raw/archive_org/sermons/Maclaren_Expositions_Vol*),public_domain,pdf+ocr,,UNACQUIRED
+BAP-CHURCH-DAGG-001,Manual of Church Order,John Dagg,,Church Order,,,,,ACQUIRED
+BAP-CHURCH-DAGG-002,Treatise on Church Discipline,John Dagg,,Church Order,,,,,DUPLICATE_ALIAS_OF_BAP-CHURCH-DAGG-001
+BAP-CHURCH-HISCOX,The Standard Manual for Baptist Churches,Edward Hiscox,,Church Administration,,,,,ACQUIRED
+BAP-HIST-ARMITAGE,A History of the Baptists,Thomas Armitage,,Church History,,,,,UNACQUIRED
+BAP-HIST-BENEDICT,A General History of the Baptist Denomination,David Benedict,,Church History,,,,,UNACQUIRED
+BAP-HIST-CATHCART,The Baptist Encyclopedia,William Cathcart,,Reference,,,,,UNACQUIRED
+BAP-MISS-FULLER,Complete Works of Andrew Fuller,Andrew Fuller,,Mission Theology,,,,,ACQUIRED
+BAP-MISS-CAREY,An Enquiry into the Obligations of Christians to Use Means for the Conversion of the Heathens,William Carey,1792,Mission Theology,,,,,UNACQUIRED
+BAP-MISS-JUDSON,Life and Letters of Adoniram Judson,Adoniram Judson,,Mission History,,,,,UNACQUIRED

@@ -1,0 +1,4 @@
+# NAE Authority Registry — Works (신규 ingestion 전용 write target)
+# ADR-021 SS4 Option C: 기존 3,319/4,117 TSU에서 역산하지 않고 빈 상태로
+# 시작한다. 참고 자료는 NAE/authority/legacy_snapshot/works.yaml(read-only).
+works: []

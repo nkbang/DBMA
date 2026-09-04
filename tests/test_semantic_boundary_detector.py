@@ -13,17 +13,20 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core.config import DEFAULT_MIN_CHUNK_SIZE, SCRIPTURE_REFERENCE_HEAD_WINDOW
 from core.heading_provider import ProviderHeading
+from core.repetition_detector import RepetitionSignal
 from core.semantic_boundary_detector import (
     BoundaryContext,
     BoundaryEvent,
     FeatureRegistry,
     HeadingBoundaryFeature,
+    PageHeaderArtifactFeature,
     ParagraphBoundaryFeature,
     ScriptureReferenceBoundaryFeature,
     SentenceBoundaryConfidenceFeature,
     TinyFragmentPenaltyFeature,
     DEFAULT_THRESHOLD,
     get_registry,
+    registry_with_page_header_artifact,
     score_boundary,
 )
 
@@ -290,13 +293,13 @@ class TestFeatureRegistry:
     def test_default_registry_does_not_register_blank_line_feature(self):
         # SPRINT33-C Phase 2 Preflight: "Blank line" was explicitly excluded
         # (HQ-approved) because split_paragraphs() already splits on blank
-        # lines, making it a duplicate of "paragraph". Only these five
-        # feature names should exist in the default registry.
+        # lines, making it a duplicate of "paragraph". [ADR-008 제안 3,
+        # 2026-07-21] embedding_similarity 추가로 6개가 됨.
         reg = get_registry()
         ctx = BoundaryContext(candidate_text=_long("아무 문단."), position=0)
         assert set(reg.score_all(ctx).keys()) == {
             "heading", "paragraph", "tiny_fragment", "sentence_boundary",
-            "scripture_reference",
+            "scripture_reference", "embedding_similarity",
         }
 
 
@@ -371,7 +374,52 @@ class TestScoreBoundary:
             heading_cursor=0,
         )
         event = score_boundary(ctx)
+        # [ADR-008 제안 3, 2026-07-21] embedding_similarity 추가 —
+        # previous_candidate_text 미설정(기본값 "")이라 0.0으로 폴백.
         assert event.features == {
             "heading": 100.0, "paragraph": 30.0, "tiny_fragment": 0.0,
             "sentence_boundary": 10.0, "scripture_reference": 0.0,
+            "embedding_similarity": 0.0,
         }
+
+
+class TestPageHeaderArtifactFeature:
+    """[ADR-011 제안 3] Dormant — not in get_registry()'s default set."""
+
+    def test_no_repetition_signal_scores_zero(self):
+        ctx = BoundaryContext(candidate_text="본문", position=0)
+        assert PageHeaderArtifactFeature().score(ctx) == 0.0
+
+    def test_repeat_signal_scores_one(self):
+        ctx = BoundaryContext(
+            candidate_text="본문",
+            position=1,
+            repetition_signal=RepetitionSignal(is_repeat=True, occurrences=2, distance_since_last=25),
+        )
+        assert PageHeaderArtifactFeature().score(ctx) == 1.0
+
+    def test_non_repeat_signal_scores_zero(self):
+        ctx = BoundaryContext(
+            candidate_text="본문",
+            position=1,
+            repetition_signal=RepetitionSignal(is_repeat=False, occurrences=1, distance_since_last=None),
+        )
+        assert PageHeaderArtifactFeature().score(ctx) == 0.0
+
+    def test_default_registry_does_not_include_page_header_artifact(self):
+        event = score_boundary(BoundaryContext(candidate_text="본문", position=0))
+        assert "page_header_artifact" not in event.features
+
+    def test_registry_with_page_header_artifact_applies_negative_weight_on_repeat(self):
+        reg = registry_with_page_header_artifact()
+        ctx = BoundaryContext(
+            candidate_text=_long("본문"),
+            position=1,
+            headings=[_heading("본문")],
+            heading_cursor=0,
+            repetition_signal=RepetitionSignal(is_repeat=True, occurrences=2, distance_since_last=25),
+        )
+        event = score_boundary(ctx, registry=reg)
+        assert event.features["page_header_artifact"] == -60.0
+        # heading(100) + paragraph(30) + sentence(10) - page_header_artifact(60) = 80, still >= threshold
+        assert event.total_score == 80.0

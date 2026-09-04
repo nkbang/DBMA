@@ -1,0 +1,17 @@
+{
+  "phase": "8-reinstall-upgrade",
+  "gate_status": "GREEN",
+  "verified_by": "CUE (real non-dry-run execution)",
+  "verified_at": "2026-08-18",
+  "script_redesigned_by": "C1",
+  "bash_syntax_check": "PASS",
+  "dry_run_result": "PASS (simulated)",
+  "first_real_execution": "FAIL (1/8 content mismatch: config.yaml)",
+  "root_cause": "Seeding logic skipped already-existing files (config.yaml, shipped in git archive) instead of appending a marker, so verification had nothing to check for that item",
+  "fix": "CUE changed seeding logic to append marker to pre-existing files instead of skipping",
+  "second_real_execution": "PASS (8/8 preserved, 8/8 content matched)",
+  "live_repo_unaffected": true,
+  "persist_items_preserved": 8,
+  "persist_items_total": 8,
+  "content_match_verified": 8
+}

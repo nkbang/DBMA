@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0002_remediation2",
+  "requests": [
+    {
+      "tsu_id": "TSU-0000230",
+      "original_claim": "예시들의 모음을 철저하게 조사한 결과, 그것들이浸ける 의미를 완전히 확립한다는 것을 발견했다.",
+      "proposed_claim": "그것들이 침수의 의미를 완전히 확립한다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000235",
+      "original_claim": "다른 의미를 thử해본 결과,洗礼의 적절한 의미는 다른 것들이 아님을 알 수 있다.",
+      "proposed_claim": "다른 의미를 시험해본 결과, 세례의 적절한 의미는 다른 것들이 아님을 알 수 있다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000254",
+      "original_claim": "그리스어 단어 xaraôvo와 xaradvors는 침례와 세례를 나타내는 것으로 사용되었으며, 이는 물에 들어가는 것 또는浸礼를 의미한다.",
+      "proposed_claim": "그리스어 단어 xaraôvo와 xaradvors는 침례와 세례를 나타내는 것으로 사용되었으며, 이는 물에 들어가는 것 또는 침례를 의미한다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000264",
+      "original_claim": "세례에서 고백하는 믿음은 그리스도에 대한 믿음이며, 세례 의식은 우리의 구원에 의지하는 그리스도의伟大한 작품을 의미있게 대표한다.",
+      "proposed_claim": "세례에서 고백하는 믿음은 그리스도에 대한 믿음이며, 세례 의식은 우리의 구원에 의지하는 그리스도의 위대한 작품을 의미있게 대표한다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000297",
+      "original_claim": "그리스도께서 \"나는 받을 세례가 있다\"라고 말씀하셨을 때, 이는 정화의 수단으로의 침례를 의미하지 않고, скорее 고난에 대한 침례를 意味한다",
+      "proposed_claim": "그리스도께서 \"나는 받을 세례가 있다\"라고 말씀하셨을 때, 이는 정화의 수단으로의 침례를 의미하지 않고, 오히려 고난에 대한 침례를 의미한다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000300",
+      "original_claim": "성경에서 세례에 대한 언급 중 일부는 정화 의식으로 말하지만, 모든 경우가如此한 것은 아님",
+      "proposed_claim": "성경에서 세례에 대한 언급 중 일부는 정화 의식으로 말하지만, 모든 경우가 그러한 것은 아님.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000307",
+      "original_claim": "바울이 말한 세례는 이스라엘人が 구름과 바다로 인해 받은 물방울에 의한 세례였다.",
+      "proposed_claim": "바울이 말한 세례는 이스라엘인이 구름과 바다로 인해 받은 물방울에 의한 세례였다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000249",
+      "original_claim": "중세 시대에 침례 대신 부어주기 방식의 세례는 허용되었지만, 이는 불완전한 세례로 여겨졌다.",
+      "proposed_claim": "침례 대신 붓는 방식의 세례는 병중에 허용되었지만, 이는 불완전한 세례로 여겨졌다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000251",
+      "original_claim": "초기 기독교 교회에서 세례에 대한 구체적인 언급은 드물다",
+      "proposed_claim": "세례는 자주 언급되지만, 대개 막연하게만 언급된다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000258",
+      "original_claim": "예외적인 경우에 세례의 방법이 허용되었다",
+      "proposed_claim": "예외적인 경우가 있었다는 것은 사실이다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000261",
+      "original_claim": "세례의 중요성은 침례를 요구한다.",
+      "proposed_claim": "세례의 상징적 의미는 침수를 요구한다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000268",
+      "original_claim": "성례는 성령의 내면 작업을 나타내는 외적인 표징이다.",
+      "proposed_claim": "이런 관점에서 볼 때, 성례는 성령의 내면 작업을 나타내는 외적인 표징으로 여겨져 왔다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000276",
+      "original_claim": "갈라디아서의 구절에 대한 해석이 잘못되었다",
+      "proposed_claim": "이 해석은 잘못되었다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000291",
+      "original_claim": "물세례는 물리적인 세례를 의미한다",
+      "proposed_claim": "할례는 \"손으로 하지 않은 할례\"로 명시적으로 한정되지만 세례는 그런 한정이 없으므로, 이 구절의 세례는 물리적 세례를 가리킨다.",
+      "decision_status": "APPROVED"
+    },
+    {
+      "tsu_id": "TSU-0000302",
+      "original_claim": "구름과 바다의 물은 이스라엘 백성을 건너는 동안 그들을 만지지 않았지만, 그들은 구름과 바다를 통해 세례를 받았다.",
+      "proposed_claim": "구름도 바닷물도 그들에게 닿지 않았다.",
+      "decision_status": "APPROVED"
+    }
+  ]
+}

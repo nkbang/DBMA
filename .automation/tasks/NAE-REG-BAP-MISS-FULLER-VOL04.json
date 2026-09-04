@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "NAE-REG-BAP-MISS-FULLER-VOL04",
+  "title": "NAE Source Registration — The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 4: Dialogues, Letters, and Essays, on Various Subjects",
+  "owner": "CUE",
+  "state": "INITIATED",
+  "phase": "VALIDATION",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "evidence": [],
+  "audit": {
+    "status": "pending"
+  },
+  "document_type": "book",
+  "automation": {
+    "state": "COMPLETED",
+    "failure_code": null,
+    "last_transition_id": "NAE-REG-BAP-MISS-FULLER-VOL04#1786780286808"
+  }
+}

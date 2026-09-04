@@ -1,0 +1,73 @@
+{
+  "query": {
+    "source_id": "PBC1765",
+    "legacy_source_id": "PBC1742",
+    "expected_identifier": "plainbookofconfe00phil",
+    "expected_work": "The Baptist Confession of Faith",
+    "expected_manifestation": "Philadelphia, 1765"
+  },
+  "metadata_api_response": {
+    "url": "https://archive.org/metadata/plainbookofconfe00phil",
+    "http_status": 200,
+    "body": {},
+    "interpretation": "Empty JSON object — item does not exist at this identifier"
+  },
+  "item_page_response": {
+    "url": "https://archive.org/details/plainbookofconfe00phil",
+    "http_status": 404,
+    "final_url": "https://archive.org/details/plainbookofconfe00phil",
+    "interpretation": "Not Found — identifier does not resolve to any item"
+  },
+  "search_api_response": {
+    "advancedsearch": {
+      "url": "https://archive.org/advancedsearch?q=Baptist+Confession+Philadelphia",
+      "http_status": 404,
+      "interpretation": "Endpoint not available / returned error page"
+    },
+    "web_search": {
+      "url": "https://archive.org/search?query=Baptist+Confession+Philadelphia+1765",
+      "http_status": 200,
+      "interpretation": "Page rendered but requires JavaScript for search results"
+    },
+    "post_search": {
+      "url": "https://archive.org/search",
+      "http_status": 405,
+      "interpretation": "POST method not allowed"
+    }
+  },
+  "openlibrary_response": {
+    "query": "Baptist Confession Philadelphia",
+    "results_found": true,
+    "closest_matches": [
+      {
+        "key": "/works/OL997746W",
+        "title": "A confession of faith",
+        "first_publish_year": 1743,
+        "author_name": ["Philadelphia Baptist Association."],
+        "note": "Closest year match but NOT 1765"
+      },
+      {
+        "key": "/works/OL27760574W",
+        "title": "The Philadelphia confession of faith",
+        "first_publish_year": 1900,
+        "author_name": ["Philadelphia Baptist Association"],
+        "note": "Title match but year is 1900, NOT 1765"
+      }
+    ],
+    "interpretation": "No 1765 manifestation found on Open Library either"
+  },
+  "registry_check": {
+    "source_candidates_csv": "resources/theological_sources/baptist/source_candidates.csv",
+    "PBC1765_found": false,
+    "PBC1742_found": true,
+    "PBC1742_entry": {
+      "source_id": "PBC1742",
+      "title": "Philadelphia Baptist Confession (1742)",
+      "author": "Philadelphia Association of Baptist Churches",
+      "year": 1742,
+      "rights": "public_domain_original",
+      "access": "Free Access",
+      "repository": "Internet Archive; Google Books; Reformed archives"
+    }
+  }
+}

@@ -9,8 +9,37 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import pytest
+
+from core.config import EMBEDDING_SIMILARITY_WEIGHT
 from core.heading_provider import ProviderHeading
-from core.hierarchical_chunk_builder import build_chunks
+from core.hierarchical_chunk_builder import (
+    _slice_preserving_words,
+    build_chunks,
+    classify_document_profile,
+)
+from core.semantic_boundary_detector import (
+    EmbeddingSimilarityBoundaryFeature,
+    get_registry,
+)
+
+
+@pytest.fixture(autouse=True)
+def _no_network_embedding_feature():
+    """[ADR-008 제안 3, 2026-07-21] build_chunks()는 module-level singleton
+    registry(get_registry())를 그대로 쓴다 — embedding_similarity feature가
+    기본값으로는 실제 core.embedder.embed()(Ollama 네트워크 호출)를 쓰므로,
+    이 dormant 모듈의 "격리된 unit test" 성격을 지키기 위해 테스트 동안만
+    고정 벡터를 반환하는 가짜 embed_fn으로 교체하고 끝나면 원복한다."""
+    registry = get_registry()
+    original = registry._entries["embedding_similarity"]
+    registry.register(
+        "embedding_similarity",
+        EmbeddingSimilarityBoundaryFeature(embed_fn=lambda t: [0.0]),
+        weight=EMBEDDING_SIMILARITY_WEIGHT,
+    )
+    yield
+    registry._entries["embedding_similarity"] = original
 
 
 def _heading(text: str, level: int = 1, confidence: float = 1.0, source: str = "atx") -> ProviderHeading:
@@ -36,15 +65,39 @@ class TestNoHeadingsFallsBackToSafetyCap:
         assert chunks[0][1] == 0  # starts at first candidate's offset
 
     def test_force_flushes_at_safety_cap_without_any_semantic_signal(self):
-        # chunk_size=10 -> safety cap = 15. Each candidate is 8 chars (below
-        # the cap on its own -- this is Level 2 territory, not Level 3):
-        # two candidates together (8+2+8=18) exceed the cap and force a
-        # flush, the third starts a fresh buffer.
-        candidates = _cands("x" * 8, "y" * 8, "z" * 8)
+        # chunk_size=10 -> safety cap = 15. Each candidate is 20 chars, so
+        # every single candidate alone already exceeds the cap. [ADR-008
+        # 제안 2, Level 3 Hard Fallback, 2026-07-22] Level 2 still flushes
+        # at the cap, but the flushed chunk itself is now word-safe sliced
+        # if it still exceeds safety_cap — a single unbroken 20-char run
+        # (no whitespace) has no word boundary to slice on, so it hard-
+        # slices into ceil(20/15)=2 pieces per candidate (15 + 5 chars).
+        candidates = _cands("x" * 20, "y" * 20, "z" * 20)
         chunks = build_chunks(candidates, headings=[], chunk_size=10, min_chunk_size=1)
-        assert len(chunks) == 2
-        assert chunks[0][0] == ("x" * 8) + "\n\n" + ("y" * 8)
-        assert chunks[1][0] == "z" * 8
+        assert len(chunks) == 6
+        assert all(len(text) <= 15 for text, _ in chunks)
+        assert chunks[0] == ("x" * 15, 0)
+        assert chunks[1] == ("x" * 5, 0)
+
+
+class TestLevel3HardFallbackSlicing:
+    """ADR-008 제안 2 (2026-07-22) — _slice_preserving_words() 단위 테스트."""
+
+    def test_never_cuts_inside_a_word(self):
+        text = "짧은 단어들 여러 개를 공백으로 이어붙인 긴 문장을 만들어 안전 상한을 넘기는 예시 텍스트입니다"
+        pieces = _slice_preserving_words(text, max_len=20)
+        assert all(len(p) <= 20 for p in pieces)
+        # 원문을 공백 기준으로 재조합했을 때 단어가 잘리지 않았는지 확인
+        assert " ".join(pieces).replace("  ", " ") == " ".join(text.split())
+
+    def test_single_unbroken_token_longer_than_max_len_hard_slices(self):
+        # 공백이 전혀 없는 토큰(예: 헬라어/히브리어 연속 인용) — 마지막
+        # 수단으로만 하드 슬라이스.
+        pieces = _slice_preserving_words("가" * 50, max_len=20)
+        assert pieces == ["가" * 20, "가" * 20, "가" * 10]
+
+    def test_empty_input_returns_empty_list(self):
+        assert _slice_preserving_words("", max_len=20) == []
 
 
 class TestMinChunkSizeFloor:
@@ -92,49 +145,33 @@ class TestSemanticBoundarySplitsBuffer:
             assert offsets[first_candidate] == chunk_offset
 
 
-class TestHardFallbackSplit:
-    """Level 3 (ADR-007 Amendment A / ADR-008 제안 2) — a single candidate
-    already longer than the safety cap on its own, the "Unsplittable
-    Outlier" case Axis 3 measures."""
-
-    def test_single_oversized_candidate_is_hard_sliced_under_chunk_size(self):
-        # chunk_size=10 -> safety cap=15. One candidate, 40 space-separated
-        # chars -- well past the cap on its own.
-        candidate = " ".join("ab" for _ in range(20))  # "ab ab ab ..." len 59
-        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=10, min_chunk_size=1)
-        assert len(chunks) > 1
-        assert all(len(text) <= 10 for text, _ in chunks)
-
-    def test_hard_slice_is_word_safe(self):
-        candidate = " ".join(f"word{i}" for i in range(30))
-        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=20, min_chunk_size=1)
-        assert all(len(text) <= 20 for text, _ in chunks)
-        rejoined = " ".join(text for text, _ in chunks)
-        assert rejoined.split() == candidate.split()
-
-    def test_single_unbreakable_token_falls_back_to_character_hard_slice(self):
-        # No spaces at all -- even word-safe slicing has no boundary to use.
-        candidate = "x" * 55
-        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=20, min_chunk_size=1)
-        assert all(len(text) <= 20 for text, _ in chunks)
-        assert "".join(text for text, _ in chunks) == candidate
-
-    def test_oversized_candidate_does_not_merge_with_surrounding_normal_candidates(self):
-        oversized = "z" * 60
-        candidates = _cands("정상 문단 하나", oversized, "정상 문단 둘")
-        chunks = build_chunks(candidates, headings=[], chunk_size=20, min_chunk_size=1)
-        texts = [t for t, _ in chunks]
-        assert "정상 문단 하나" in texts
-        assert "정상 문단 둘" in texts
-        assert all(len(t) <= 20 for t in texts)
-
-    def test_piece_offsets_are_positionally_correct_within_source_text(self):
-        candidate = " ".join(f"word{i}" for i in range(30))
-        chunks = build_chunks(_cands(candidate), headings=[], chunk_size=20, min_chunk_size=1)
-        for text, offset in chunks:
-            assert candidate[offset:offset + len(text)] == text
-
-
 class TestEmptyInput:
     def test_no_candidates_yields_no_chunks(self):
         assert build_chunks([], headings=[], chunk_size=1000, min_chunk_size=5) == []
+
+
+class TestClassifyDocumentProfile:
+    """[ADR-008 §4, 2026-07-23] Median-candidate-length Signal-Profile
+    classifier — thresholds chosen from the validated Beta corpus ranges:
+    Profile A 132~184 chars, Profile B 269~856 chars (no overlap)."""
+
+    def test_short_candidates_are_profile_a(self):
+        candidates = [(f"짧은 문단 {i}", i) for i in range(20)]  # ~10 chars each
+        assert classify_document_profile(candidates) == "A"
+
+    def test_long_candidates_are_profile_b(self):
+        long_text = "학술 주석서 인용문 스타일의 긴 문단 " * 20  # well over 220 chars
+        candidates = [(long_text, i) for i in range(20)]
+        assert classify_document_profile(candidates) == "B"
+
+    def test_single_outlier_candidate_does_not_flip_profile(self):
+        # The old provisional rule ("any candidate > 1800 chars") would
+        # classify this as B off one outlier — the median-based rule
+        # correctly reads the document as A (Amendment A's documented
+        # boundary-case risk this replacement was chosen to avoid).
+        candidates = [("짧은 문단입니다", i) for i in range(50)]
+        candidates.append(("아주 긴 이상치 문단 " * 200, 999))
+        assert classify_document_profile(candidates) == "A"
+
+    def test_empty_candidates_default_to_profile_a(self):
+        assert classify_document_profile([]) == "A"

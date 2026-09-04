@@ -30,6 +30,14 @@ def _make_registry(tmp_path, docs):
 def _patch_paths(tmp_path, monkeypatch):
     monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_DATASET_PATH", str(tmp_path / "tsu.jsonl"))
     monkeypatch.setattr("core.index_orchestrator.DEFAULT_TSU_MANIFEST_PATH", str(tmp_path / "manifest.json"))
+    # rebuild_tsu_index()/reindex_document() also rebuild the Bible posting
+    # index and the Tantivy candidate index from DEFAULT_BIBLE_INDEX_PATH /
+    # DEFAULT_CANDIDATE_INDEX_DIR — unpatched, this test's tiny fixture
+    # dataset overwrites the real production indexes (confirmed: this is
+    # what emptied output/bench/bible_index.sqlite3 from 46,088 rows to 0
+    # during a full `pytest tests/` run).
+    monkeypatch.setattr("core.index_orchestrator.DEFAULT_BIBLE_INDEX_PATH", str(tmp_path / "bible_index.sqlite3"))
+    monkeypatch.setattr("core.index_orchestrator.DEFAULT_CANDIDATE_INDEX_DIR", str(tmp_path / "tantivy_index"))
 
 
 def test_reindex_only_target_changes(tmp_path, monkeypatch):

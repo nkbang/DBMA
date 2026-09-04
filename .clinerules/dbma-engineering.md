@@ -12,14 +12,13 @@ Production Engineering / Release Stabilization
 
 Development Boundary:
 
-Sprint 15 is the FINAL development sprint.
-
-After Sprint 15:
-
-* Maintenance only
-* Bug fixes only
-* No architectural expansion
-* No speculative features
+[2026-07-26 정정] "Sprint 15가 마지막"이라는 아래 경계는 이미 지난
+사실이다 — 실제로는 SPRINT27~33까지 아키텍처급 변경(Research Workspace
+Layer, Boundary Score 모델, Hierarchical Chunk Builder 등, ADR-004~008)이
+사용자 승인 하에 계속 진행됐다. "Sprint 15 이후 아키텍처 확장 금지"를
+현재 유효한 제약으로 취급하지 마라. 현재 진행 상태의 유일한 권위 소스는
+docs/STATE.md이다 — 작업 전 반드시 그 파일을 먼저 확인하라. 아래
+숫자(Sprint 13/14/15)는 참고용 이력으로만 남겨둔다.
 
 ---
 
@@ -118,6 +117,37 @@ dbma311
 Never execute commands blindly.
 
 Never continue after environment errors without correction.
+
+---
+
+## 3.1 Workspace Verification Gate
+
+[2026-08-28 추가] 반복 실패 사례: C1이 `.claude/worktrees/*` 등 **잘못된 워크트리**에서
+파일을 편집해, 작업이 Task Order가 지정한 저장소에 전혀 반영되지 않음 — 한 사이클에서 3회.
+(1) 지시서 파일을 못 찾음, (2) 다시 못 찾음, (3) 엉뚱한 워크트리에서 M2를 편집.
+
+파일을 편집하는 작업을 시작하기 전에 **반드시** 다음을 실행하고, 그 원본 출력을 보고서에 인용한다:
+
+```bash
+pwd
+git rev-parse --show-toplevel
+git rev-parse --abbrev-ref HEAD
+git rev-parse --short HEAD
+```
+
+그리고 Task Order가 명시한 값과 대조한다:
+
+- `git rev-parse --show-toplevel` 이 Task Order의 작업 디렉터리와 **정확히** 일치해야 한다.
+  경로가 `.claude/worktrees/...` 하위이면 **잘못된 위치다** — Task Order가 지정한 메인 체크아웃이 아니다.
+- 현재 브랜치가 Task Order가 지정한 브랜치와 일치해야 한다.
+- `git rev-parse --short HEAD` 가 Task Order의 baseline commit 과 일치해야 한다.
+- Task Order가 대상 파일 경로를 명시했으면, 편집 전에 그 경로가 현재 워크트리에 존재하는지
+  (`test -f <path>` / `ls <path>`) 확인한다.
+
+**셋(경로/브랜치/HEAD) 중 하나라도 불일치하거나 대상 파일이 없으면: 파일을 편집하지 말고 즉시 중단한다.**
+"작업 디렉터리/브랜치/HEAD 불일치 — 기대 X, 실제 Y" 를 보고하고 사용자 지시를 기다린다.
+잘못된 워크트리에서 "일단 진행" 하지 않는다. 편집이 성공했다고 보고하기 전에 `git diff --stat` 으로
+변경이 실제로 그 파일에 기록됐는지 확인한다.
 
 ---
 
@@ -226,7 +256,68 @@ large redesigns
 
 ---
 
-## 7. Documentation Policy
+## 7. Git Commit Policy
+
+* NEVER run `git add` or `git commit` unless the user's Task Order
+  explicitly asks for a commit in that same request.
+* A request to investigate, report, fix, or implement does NOT imply
+  permission to commit — implementing and committing are separate
+  approvals.
+* Read-only/investigation tasks (status reports, audits, greps) must
+  leave `git status` unchanged. Do not stage or commit anything as a
+  side effect of "cleaning up" while investigating.
+* If you believe a commit is warranted but the Task Order didn't ask
+  for one, say so in your report ("이 변경은 커밋이 필요해 보입니다")
+  and wait for explicit approval — do not commit preemptively.
+* Never use `git checkout --`, `git reset --hard`, `git restore`, or
+  any other command that discards working-tree changes unless the
+  user explicitly asked for that revert. If asked to "start over" or
+  something looks wrong, ask first — a prior session's uncommitted
+  work may be in that working tree.
+
+---
+
+## 8. Verification & Anti-Fabrication Policy
+
+[2026-07-26/27 추가] 이 세션에서 반복적으로 발생한 실패 패턴을 막기
+위한 규칙이다. 발생했던 실제 사례: (a) 정적 문서(STATE.md/TODO.md)의
+낡은 서술을 실제 소스(ADR 파일 결론부)와 대조 없이 그대로 인용, (b)
+`git log`를 실행하지 않고 커밋 개수를 지어냄(47개라 했지만 실제
+180개), (c) 코드 docstring이 "no hardcoded values"라고 명시한 걸
+반대로 "하드코딩 문제 있음"으로 지어냄, (d) canary 테스트에서 실제
+문서 데이터 대신 doc_type별 하드코딩 mock 텍스트를 만들어 넣고 그
+결과를 실측 결과인 것처럼 보고함.
+
+* **숫자·상태·결론은 항상 재현 가능한 명령/파일 근거를 대라.** "N개
+  커밋", "M% 통과", "하드코딩됨/안 됨" 같은 주장을 쓰기 전에, 그
+  주장을 만든 정확한 명령(`git log ...`, `grep ...`, 실행한 스크립트
+  등)을 실제로 실행하고, 그 출력을 보고서에 그대로 인용하라. 암산하거나
+  이전 기억으로 대체하지 마라.
+* **정적 문서(STATE.md, TODO.md, ADR 요약 등)를 인용하기 전에 그
+  문서가 가리키는 원본(해당 ADR 파일의 결론/Next Steps 섹션, 실제
+  코드 파일)을 다시 열어서 확인하라.** 정적 문서는 항상 낡아있을 수
+  있다는 것을 기본 가정으로 삼는다.
+* **테스트/검증 스크립트에 mock, synthetic, 하드코딩된 샘플 데이터를
+  쓰지 마라 — 이미 "샘플 데이터 생성 금지" 규칙(§5)이 있지만, 이는
+  seed_generator류 도구뿐 아니라 canary/benchmark/validation 스크립트
+  내부에서 즉석으로 만드는 가짜 입력에도 동일하게 적용된다.** 실제
+  데이터를 못 구하면(예: 실제 heading을 못 가져오겠으면) mock으로
+  채우지 말고 막힌 지점을 그대로 보고하고 멈춰라.
+* **측정/판정 로직을 새로 만들기 전에 기존 코드에 이미 있는지 먼저
+  찾아라.** 후보 추출, 지표 계산, 분류 기준 등은 보통 이미 어딘가
+  구현돼 있다(예: `scripts/shadow_boundary_delta.py::candidates_
+  with_offsets()`, `core.hierarchical_chunk_builder.classify_
+  document_profile()`). grep으로 기존 구현을 먼저 찾고, 없다는 게
+  확실할 때만 새로 만들어라.
+* **"문제가 있다"거나 "해야 할 일"로 목록에 올리는 것 자체가 사실
+  주장이다.** 다른 상태 판단과 동일한 검증 기준(직접 파일/코드를
+  열어서 확인)을 적용하라 — 확인 안 하고 목록에 넣지 마라.
+* 여러 개의 서로 다른 Task Order 결과를 하나의 보고서에 섞지 마라.
+  각 작업은 그 작업이 요청한 것만 보고하라.
+
+---
+
+## 9. Documentation Policy
 
 Documentation is required only when:
 
@@ -250,7 +341,7 @@ Priority:
 
 ---
 
-## 8. Validation Requirements
+## 10. Validation Requirements
 
 Every engineering change must verify:
 
@@ -276,7 +367,7 @@ Required checks:
 
 ---
 
-## 9. DBMA Pipeline Integrity
+## 11. DBMA Pipeline Integrity
 
 Maintain this pipeline:
 
@@ -320,7 +411,7 @@ Never bypass validation layers.
 
 ---
 
-## 10. Benchmark Rules
+## 12. Benchmark Rules
 
 Benchmark execution must use:
 
@@ -348,7 +439,7 @@ Metrics:
 
 ---
 
-## 11. Regression Rules
+## 13. Regression Rules
 
 Maintain:
 
@@ -370,22 +461,17 @@ baseline_v3.json
 
 ---
 
-## 12. Sprint Control
+## 14. Sprint Control
 
-Current:
+[2026-07-26 정정] 이 섹션의 "Sprint 13 → 14 → 15" 계획은 낡았다(파일
+최종 수정 2026-07-10, 실제로는 SPRINT33-D까지 진행됨). Sprint 번호를
+여기 다시 하드코딩하지 않는다 — 매번 새로 낡아지는 문제가 반복되므로,
+**현재 진행 중인 스프린트/체크포인트는 항상 docs/STATE.md를 읽어서
+확인**한다. 이 파일은 "이 프로젝트가 언젠가 유지보수 전용으로
+동결된다"는 원칙(아래 Final objectives)만 유지하고, 구체적 스프린트
+번호는 더 이상 여기서 관리하지 않는다.
 
-Sprint 13
-
-Remaining:
-
-Sprint 14
-Sprint 15
-
-Sprint 15 completion means:
-
-DBMA development freeze.
-
-Final objectives:
+동결 시 최종 목표(원칙은 유효, 시점은 docs/STATE.md 참고):
 
 * stable retrieval
 * validated corpus
@@ -394,7 +480,7 @@ Final objectives:
 
 ---
 
-## 13. Current Priority Order
+## 15. Current Priority Order
 
 Priority 1:
 
@@ -420,7 +506,7 @@ Do not prioritize UI or additional features.
 
 ---
 
-## 14. Response Format for Engineering Tasks
+## 16. Response Format for Engineering Tasks
 
 When completing tasks, report only:
 
@@ -434,7 +520,7 @@ Avoid unnecessary summaries.
 
 ---
 
-## 15. Final Engineering Principle
+## 17. Final Engineering Principle
 
 DBMA is no longer a prototype.
 

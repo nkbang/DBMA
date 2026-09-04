@@ -1,0 +1,55 @@
+{
+  "test_type": "phase3_integration",
+  "steps": [
+    {
+      "step": 1,
+      "command": "--enqueue Fuller_Complete_Works_Vol02 --max-candidates 3",
+      "result": {
+        "enqueue": true,
+        "identifier": "Fuller_Complete_Works_Vol02",
+        "new_ready": 3
+      }
+    },
+    {
+      "step": 2,
+      "command": "--worker-mode (mocked LLM)",
+      "result": {
+        "total": 3,
+        "extracted": 3,
+        "failed": 0,
+        "success_rate": 1.0
+      }
+    },
+    {
+      "step": 3,
+      "command": "의도적 실패 — candidate를 FAILED 상태로 변경",
+      "result": {
+        "stuck_candidate": "cand-eea68df881b336e1",
+        "state": "FAILED"
+      }
+    },
+    {
+      "step": 4,
+      "command": "--worker-mode 재실행 (FAILED 자동 재시도 확인)",
+      "result": {
+        "ready_candidates": 0,
+        "processed": 0,
+        "message": "No READY candidates in queue."
+      }
+    },
+    {
+      "step": 5,
+      "command": "--retry-failed cand-eea68df881b336e1",
+      "result": {
+        "success": true,
+        "previous_state": "FAILED",
+        "new_state": "READY"
+      }
+    }
+  ],
+  "verifications": [
+    "READY -> CONFIDENCE_CLASSIFIED: PASS (3/3 candidates)",
+    "FAILED stays FAILED without auto-retry: PASS",
+    "--retry-failed moves FAILED -> READY: PASS"
+  ]
+}

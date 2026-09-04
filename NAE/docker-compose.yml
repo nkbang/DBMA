@@ -1,0 +1,22 @@
+# NAE-only Qdrant instance. Fully separate from the legacy dbma_qdrant
+# container (port 6333, volume dbma_qdrant_storage) that ADR-003 preserves
+# as a frozen artifact - see docs/architecture/ADR-013-NAE-Vector-Store.md.
+#
+# Usage:
+#   cd NAE && docker compose up -d       # start (restart: unless-stopped)
+#   cd NAE && docker compose down        # stop (data persists in the volume)
+#   cd NAE && docker compose logs -f     # tail logs
+services:
+  nae_qdrant:
+    image: qdrant/qdrant:latest
+    container_name: nae_qdrant
+    restart: unless-stopped
+    ports:
+      - "7333:6333"
+      - "7334:6334"
+    volumes:
+      - nae_qdrant_storage:/qdrant/storage
+
+volumes:
+  nae_qdrant_storage:
+    external: true

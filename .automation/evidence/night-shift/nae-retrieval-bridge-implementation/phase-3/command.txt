@@ -1,0 +1,8 @@
+Phase 3: Production Boundary Verification (7 items)
+1. core/retrieval.py unchanged: git diff HEAD -- core/retrieval.py = 0 lines
+2. DBMA corpus unchanged: git status --porcelain -- data/RAW = empty
+3. NAE raw corpus unchanged: git status --porcelain -- NAE/corpus/raw = empty
+4. NAE Qdrant read-only: before=3319, after=3319 points (5 searches)
+5. nae_pd disabled -> NaePdModuleDisabledError propagated, no Qdrant connection log
+6. nae_pd enabled -> real NAE results returned (hits + latency captured)
+7. Citation/provenance actual objects: all Citation instances with tsu_id/source_id/work_id/edition_id/metadata_provenance

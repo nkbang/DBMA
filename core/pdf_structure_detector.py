@@ -89,6 +89,13 @@ class DocumentProfile:
     bold_hits: int          # plausible bold-signal heading candidates
     selected_signal: Optional[Signal]
     line_count: int
+    # [Root cause fix, SPRINT33-D Preflight 2026-07-23] The size actually
+    # used as the "is this a heading?" reference for the size signal —
+    # normally equals body_size, but raised to include a second,
+    # comparably-sized body text band when one exists (see
+    # _effective_size_ceiling). bold_hits/bold candidacy still compares
+    # against body_size directly, unaffected by this field.
+    size_ceiling: float = 0.0
 
 
 def _letter_ratio(text: str) -> float:
@@ -134,11 +141,93 @@ def _collect_lines(path: str, start_page: int = 0, max_pages: Optional[int] = No
     return lines
 
 
-def _body_size(lines: List[_Line]) -> float:
-    weight: dict = {}
+# [Root cause fix, SPRINT33-D Preflight 2026-07-23] Real PDFs — especially
+# scanned/OCR'd ones — report the "same" nominal font size with small
+# floating-point jitter across spans (e.g. 14.0/14.1/14.2/14.3/14.4 all
+# being one 14pt body-text band). Treating each raw float as its own bucket
+# fragments a single band into many, and (more importantly, see below)
+# masks a second real body-text band from view. Two sizes within this many
+# points of each other are treated as the same band.
+SIZE_BAND_TOLERANCE = 0.5
+
+# A second size band (above the primary body band) counts as body text —
+# not headings — if it has at least this many lines AND at most this
+# fraction of them are is_block_top (start of a new block). Real headings
+# are structurally block starts (root cause data: "Notes"/"Comment" section
+# headings, 86/86 = 100% is_block_top; a genuinely heading-heavy document,
+# "8. 사도행전2", 84.3% is_block_top). Wrapped body-text continuation
+# lines are not (root cause data: the false-positive ~16.1pt band in "2
+# Kings, Anchor Bible Commentary" — quoted Scripture text set larger than
+# commentary prose — was only 15.6% is_block_top, 4008 lines).
+#
+# The line-count requirement has two parts, both needed (2026-07-23
+# regression fix): an absolute floor (guards small samples — a handful of
+# real headings must not be mistaken for a body band merely because none
+# happens to be a block start in a tiny sample) AND a floor relative to the
+# primary body band's own line count (guards LARGE documents — a fixed
+# absolute floor alone let small noise bands, e.g. 11 and 47 lines out of
+# 7705 total in "11. 고린도전서", masquerade as a second body band and
+# wrongly suppress that document's real headings down to 0; real secondary
+# body bands are comparable in scale to the primary body band, e.g. 4008 of
+# ~6353 lines = 63% in the Anchor Bible root-cause case, not a few dozen).
+SECONDARY_BAND_MIN_LINES = 30
+SECONDARY_BAND_MIN_RELATIVE_SHARE = 0.15
+SECONDARY_BAND_MAX_BLOCK_TOP_RATIO = 0.5
+
+
+def _size_bands(lines: List[_Line]) -> dict:
+    """size -> (char_weight, line_count, block_top_count), tolerance-merged
+    (see SIZE_BAND_TOLERANCE) so near-duplicate floats (OCR/rendering
+    jitter) don't fragment one real font size into many tiny buckets. Band
+    keys are the first raw size seen for that band — order-dependent, but
+    safe here since real bands in practice are separated by gaps well
+    beyond the tolerance (root cause data: ~1.5pt gap between the two real
+    bands vs. 0.5pt tolerance), so there is no cross-band merging risk."""
+    stats: dict = {}
     for ln in lines:
-        weight[ln.size] = weight.get(ln.size, 0) + len(ln.text)
-    return max(weight, key=lambda k: weight[k]) if weight else 0.0
+        band_key = None
+        for existing in stats:
+            if abs(existing - ln.size) <= SIZE_BAND_TOLERANCE:
+                band_key = existing
+                break
+        if band_key is None:
+            band_key = ln.size
+        weight, count, block_top = stats.get(band_key, (0, 0, 0))
+        stats[band_key] = (
+            weight + len(ln.text),
+            count + 1,
+            block_top + (1 if ln.is_block_top else 0),
+        )
+    return stats
+
+
+def _body_size(lines: List[_Line]) -> float:
+    bands = _size_bands(lines)
+    return max(bands, key=lambda k: bands[k][0]) if bands else 0.0
+
+
+def _effective_size_ceiling(lines: List[_Line], body: float) -> float:
+    """Raises `body` to include any second, comparably-sized body text band
+    above it (see SECONDARY_BAND_MIN_LINES/SECONDARY_BAND_MAX_BLOCK_TOP_
+    RATIO) — the reference size the "size" signal's SIZE_HEADING_FACTOR
+    check should use, so that band isn't swept into heading candidates.
+    Returns `body` unchanged when no such secondary band exists (single-
+    body-size documents, the common case, are unaffected)."""
+    if body <= 0:
+        return body
+    bands = _size_bands(lines)
+    body_stats = bands.get(body)
+    if not body_stats:
+        return body
+    _, body_count, _ = body_stats
+    min_required = max(SECONDARY_BAND_MIN_LINES, body_count * SECONDARY_BAND_MIN_RELATIVE_SHARE)
+    candidates = [
+        size for size, (_, count, block_top) in bands.items()
+        if size > body
+        and count >= min_required
+        and (block_top / count) <= SECONDARY_BAND_MAX_BLOCK_TOP_RATIO
+    ]
+    return max(candidates) if candidates else body
 
 
 def profile_document(lines: List[_Line]) -> DocumentProfile:
@@ -150,18 +239,29 @@ def profile_document(lines: List[_Line]) -> DocumentProfile:
     a long document with sparse-but-real headings is not wrongly rejected.
     """
     if not lines:
-        return DocumentProfile(0.0, 0, 0, None, 0)
+        return DocumentProfile(0.0, 0, 0, None, 0, 0.0)
 
     body = _body_size(lines)
+    ceiling = _effective_size_ceiling(lines, body)
     short = [ln for ln in lines if len(ln.text) < MAX_HEADING_CHARS]
 
     size_hits = sum(
         1 for ln in short
-        if ln.size > body * SIZE_HEADING_FACTOR and _letter_ratio(ln.text) >= MIN_LETTER_RATIO
+        if ln.size > ceiling * SIZE_HEADING_FACTOR and _letter_ratio(ln.text) >= MIN_LETTER_RATIO
     )
+    # [Root cause fix, SPRINT33-D Preflight 2026-07-23] is_block_top gates
+    # bold candidacy too, mirroring the size-signal fix above — root cause
+    # data: "2 Kings, Volume 13" (Hubbard/Barker WBC) had 6768 bold-at-body
+    # lines, but only 841 were block starts (real section headers like
+    # "Form/Structure/Setting"/"Bibliography" and verse-number markers);
+    # the other 5927 were bolded in-body text — overwhelmingly bolded
+    # original-language citations (Hebrew words like יהוה, אל, ישראל), not
+    # headings. Without this filter, bold_hits was 5100 (vs. 94 for size),
+    # so "bold" was selected and every bolded Hebrew word became a false
+    # heading candidate.
     bold_hits = sum(
         1 for ln in short
-        if ln.bold and ln.size == body and _letter_ratio(ln.text) >= MIN_LETTER_RATIO
+        if ln.bold and ln.size == body and ln.is_block_top and _letter_ratio(ln.text) >= MIN_LETTER_RATIO
     )
 
     selected: Optional[Signal]
@@ -178,15 +278,16 @@ def profile_document(lines: List[_Line]) -> DocumentProfile:
         bold_hits=bold_hits,
         selected_signal=selected,
         line_count=len(lines),
+        size_ceiling=ceiling,
     )
 
 
 def _signal_strength(line: _Line, profile: DocumentProfile) -> float:
     if profile.selected_signal == "size":
-        if profile.body_size <= 0:
+        if profile.size_ceiling <= 0:
             return 0.0
         # 15% larger -> 0.3, 50%+ larger -> 1.0
-        return max(0.0, min((line.size / profile.body_size - 1.0) / 0.5, 1.0))
+        return max(0.0, min((line.size / profile.size_ceiling - 1.0) / 0.5, 1.0))
     # bold signal is reliable-but-binary per line
     return 0.8 if line.bold else 0.0
 
@@ -205,9 +306,9 @@ def _is_candidate(line: _Line, profile: DocumentProfile) -> bool:
     if _letter_ratio(line.text) < MIN_LETTER_RATIO:
         return False
     if profile.selected_signal == "size":
-        return line.size > profile.body_size * SIZE_HEADING_FACTOR
+        return line.size > profile.size_ceiling * SIZE_HEADING_FACTOR
     if profile.selected_signal == "bold":
-        return line.bold and line.size == profile.body_size
+        return line.bold and line.size == profile.body_size and line.is_block_top
     return False
 
 

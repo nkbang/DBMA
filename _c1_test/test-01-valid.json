@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "task_id": "ADR-021-PILOT-001",
+  "title": "ADR-021 Pilot Specification",
+  "owner": "C1",
+  "state": "IDLE",
+  "phase": "PILOT_SPECIFICATION",
+  "requires_human_approval": false,
+  "created_at": "2026-08-13T00:00:00Z",
+  "started_at": null,
+  "evidence_at": null,
+  "audit_at": null,
+  "approved_at": null,
+  "attempt": 0,
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "production_mutation": false,
+  "notes": []
+}

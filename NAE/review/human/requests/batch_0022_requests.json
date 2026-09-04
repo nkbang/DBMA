@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0022",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0004004",
+      "tsu_id": "TSU-0004004",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The independent, in which the body is self-governing, each single and local church administering its own government by the voice of the majority of its members; as among Baptists, Congregationalists, Independents, and some other bodies.",
+      "claim": "독립교회는 자치적이며, 각 지역 교회가 회원들의 다수결에 따라 자신의 정부를 관리한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004005",
+      "tsu_id": "TSU-0004005",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "That this style of church structure is according to the New Testament appears evident from a study of the sacred records themselves.",
+      "claim": "신약 성경에 따르면 교회의 구조는 독립적인 본체로 운영되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004006",
+      "tsu_id": "TSU-0004006",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The apostles treated the churches as independent bodies.",
+      "claim": "사도들은 교회를 독립적인 단체로 대했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004007",
+      "tsu_id": "TSU-0004007",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Their epistles were addressed to the churches as such ; they reported their doings to them ; enjoined upon them the duty of discipline ; exhorted, instructed, and reproved them as independent and responsible bodies.",
+      "claim": "사도들은 각 교회를 독립된 공동체로 대우하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004008",
+      "tsu_id": "TSU-0004008",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They recognized the right of the churches to elect their own teachers and officers, a primary and fundamental right, which, when conceded, supposes all other rights and powers necessary to a self-governing community acting under divinely given laws.",
+      "claim": "교회는 자체 교사와 직원을 선출할 권리를 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004009",
+      "tsu_id": "TSU-0004009",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "to govern themselves.\" \" The brethren chose their own officers from among themselves.\" \" In respect to the election of church officers, the ancient principle was still adhered to : that the consent of the community was necessary to the validity of every such election, and each one was at liberty to offer reasons against it.\" Introd.",
+      "claim": "교회는 자체적으로 교회 직원을 선택하고 그들의 선거에 대한 동의를 필요로 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004010",
+      "tsu_id": "TSU-0004010",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Mosheim says of the first century : \" In those primitive times, each Christian Church was composed of the people, the presiding officer's, and the assistants, or deacons.",
+      "claim": "초기 기독교 교회는 성도들, 주재官자들, 그리고 집사들로 구성되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004011",
+      "tsu_id": "TSU-0004011",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "These must be the component parts of every society.",
+      "claim": "모든 사회는 반드시 구성원, 책임자, 그리고 조력자로 구성되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004012",
+      "tsu_id": "TSU-0004012",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The principal voice was that of the people, or of the whole body of Christians.\" \" The assembled people, therefore, elected their own rulers and teachers.\" Of the second century, he adds : \" One president, or bishop, presides over each church.",
+      "claim": "초기 기독교 교회에서는 총회에서 지도자와 교사를 선출하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004013",
+      "tsu_id": "TSU-0004013",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "He was created by the common suffrages of the people.\" \" During a great part of this century, all the churches continued to be, as at first, independent of each other.",
+      "claim": "초기 교회에서는 주교나 지도자가 공동체의 일반적인 동의에 의해 선택되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004014",
+      "tsu_id": "TSU-0004014",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Each church was a kind of small, independent republic, governing itself by its own laws, enacted, or at least sanctioned, by the people.\" JEccl. 144 STANDARD MANUAL",
+      "claim": "각 교회는 자체 법률에 따라 스스로를 관리하는 독립적인 공화국과 같은 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004015",
+      "tsu_id": "TSU-0004015",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Coleman says : \" These churches, where ever formed, became separate and independent bodies, competent to appoint their own officers and administer their own government without reference or subordination to any control, authority, or foreign power.",
+      "claim": "초기 교회에서 형성된 각 교회는 독립적이고 자율적인 단체로, 자신의 직원을 임명하고 외국勢력의 통제나 권위에 대한 참조 또는 종속 없이 자신의 정부를 관리할 수 있었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004016",
+      "tsu_id": "TSU-0004016",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "No fact connected with the history of the primitive church is more fully established or more generally conceded.\" Prim.",
+      "claim": "초기 교회의 역사와 관련된 사실 중에서 가장 잘 확립되어 있고 일반적으로 받아들여지는 것은 이러한 교회들이 독립적이고 자율적인 신체로 기능했다는 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004017",
+      "tsu_id": "TSU-0004017",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The point is proven, and the independent form of church government is manifestly primitive and apostolic, as advocated and practiced by Baptists.",
+      "claim": "교회 정부의 독립적 형태는 초기 기독교와 사도들의 방식으로서 침례교도들이 주장하고 실천하는 바와 같이 원시적이고 사도적인 것임을 증명한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004018",
+      "tsu_id": "TSU-0004018",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "For a church, being a society, must have not only laws, but officers to execute them.",
+      "claim": "교회는 사회이므로 법뿐만 아니라 그 법을 집행하는 직분자들이 있어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004019",
+      "tsu_id": "TSU-0004019",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Baptists assert that the officers of a church are tivo, — and of right, can be no more, — \"pastor and deacons.",
+      "claim": "침례교도들은 교회의 직분이 두 가지이며, 정당하게는 더 이상 늘어나지 않는다고 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004020",
+      "tsu_id": "TSU-0004020",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "In this opinion agree some other denominations, while the various Episcopal sects insist that there should be three sects — deacons, priests, and bishops, to which the Church of England adds archbishops.",
+      "claim": "일부 교단은 목사와 집사의 두 가지 직분만을 인정하지만, 주교파 교단들은 집사, 사제, 주교의 세 가지 직분을 주장하며, 영국 성공회는 대주교를 추가한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004021",
+      "tsu_id": "TSU-0004021",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Others add to this number indefinitely ; and the Romish Church carries the list up to ten or twelve, ending with the pope.",
+      "claim": "일부 교회는 성직자의 수를 무제한으로 추가하며 로마 가톨릭교회는 교황까지 포함하여 10~12개로 늘린다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004022",
+      "tsu_id": "TSU-0004022",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Lord did not live to shape, and model, and put in order all things for the full equipment of his people, that they might be thoroughly furnished unto all good works, but he did give to his apostles a spirit of wisdom by which they should be able to do all this, and carry out his plans, in the organization of his kingdom after he had left them.",
+      "claim": "주님은 그의 백성들이 모든 선한 일을 위해 완전히 장비될 수 있도록 모든 것을 형성하고 모델링하고 정렬하기 위해 살지 않았지만, 그의 사도들에게는 그의 왕국의 조직에서 그의 계획을 수행할 수 있는 지혜의 영을 주셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004023",
+      "tsu_id": "TSU-0004023",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "We assume that the first churches were organized on the divine plan, and seek to ascertain what that plan was.",
+      "claim": "초기 교회는 하나님의 계획에 따라 조직되었다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004024",
+      "tsu_id": "TSU-0004024",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "In the New Testament, the words bishop, presbyter, elder are used to designate church officers.",
+      "claim": "신약성경에서 감독자, 장로, 長老라는 단어는 교회 직분을 지칭하는 데 사용된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004025",
+      "tsu_id": "TSU-0004025",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They all, however, designate the same office, and therefore officially mean the same thing ; indeed, they are not unfrequently applied to the same individual.",
+      "claim": "신약성경에서 주교, 장로, 長老라는 단어는 모두 교회 직분을 가리키며, 공식적으로 같은 의미를 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004026",
+      "tsu_id": "TSU-0004026",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The bishop — called also presbyter, or elder —was the pastor, or overseer of the spiritual flock, watching, guiding, and feeding it, as the shepherd does his sheep.",
+      "claim": "장로교회의 감독자나 장로는 영적 양떼의 목자로서 그것을 지켜야 하고 인도해야 하며 먹여야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004027",
+      "tsu_id": "TSU-0004027",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The deacon^ were chosen to attend to the temporal interests of the church, as appears by the election of the seven, recorded in the sixth chapter of Acts.",
+      "claim": "교회에서 집사들은 교회의 世俗적인 관심사를 돌보는 역할을 맡았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004028",
+      "tsu_id": "TSU-0004028",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This was done in order that the apostles might be free from the temporal cares, and thus able to give their attention 148 STANDARD MANUAL",
+      "claim": "사도들이 교회의 世俗적인 문제에서 자유로워져 사역에 집중할 수 있도록 집사들이 선택되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004029",
+      "tsu_id": "TSU-0004029",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The word deacon means a minister, a servant It is sometimes applied to the apostles, and even to Christ himself, in that general sense as one who \" came, not to be ministered unto, but to minister, and to give his life a ransom for many.\" Some of the first deacons were also efficient preachers of the gospel, but their work as deacons pertained to other service in the churches.",
+      "claim": "디아코노스(deacon)의 의미는 사역자 또는 봉사자를 뜻하며, 때때로 사도나 예수 그리스도에게도 적용되며, 일부 초기 디아코노스는 복음의 능력 있는 설교자이기도 하였지만, 디아코노스의 역할은 교회 내에서의 다른 종류의 봉사에 관한 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004030",
+      "tsu_id": "TSU-0004030",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "While, therefore, the deacon is a church officer, his office does not constitute an order in the ministry at all, its functions belonging to temporal concerns, and not to a spiritual service.",
+      "claim": "디아코노스(deacon)의 직분은 교회에서 영적인 사역이 아닌 世俗적인 문제에 관한 기능을 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004031",
+      "tsu_id": "TSU-0004031",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The service usually performed by clerks, trustees, and the like, it may be presumed, so far as such service was needed in the first churches, was devolved on the deacons.",
+      "claim": "초기 교회에서 필요했던 서비스는 사제나 이사 등이 아닌 집사들이 수행했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004032",
+      "tsu_id": "TSU-0004032",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "might chance to be several to whom the titles bishop, presbyter, or elder were applied, they were all of equal rank or authority, though one might be selected to serve as the pastor of the church, and devote himself to its local interests ; while the others might give themselves to more general missionary work.",
+      "claim": "초기 교회에서 주교, 장로, 長老라는 직함을 받은 사람들이 모두 같은 계급이나 권위를 가지고 있었지만, 한 사람은 교회의 목사로서 선택될 수 있고, 다른 사람들은 더 일반적인 선교 활동에 헌신할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004033",
+      "tsu_id": "TSU-0004033",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Neander says : \" The word presbyter, or elder, indicates rather the dignity of the office, since presbyters among the Jews were usually aged and venerable ; while bishop, or episeopos, designated the nature of their work as overseers, or pastors of the churches.",
+      "claim": "장로와 감독의 용어는 교회의 직무와 관련하여 서로 다른 의미를 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004034",
+      "tsu_id": "TSU-0004034",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The former title was used by Jewish Christians as a name familiar in the synagogue; while the latter was chiefly used by the Greek and other Gentile converts, as more familiar and expressive to them.\" \"They were not designed to exercise absolute authority, but to act as presiding officers and guides of an ecclesiastical republic : to conduct all things, with the co-operation of the communities, as their ministers, and not as their masters.\" Introd. to Cole.",
+      "claim": "초기 기독교에서 장로와 감독의 칭호는 권위의 정도가 아니라 업무의 특성과 공동체 내에서의 역할을 나타낸다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004035",
+      "tsu_id": "TSU-0004035",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "churches were denominated sometimes presbyters, or elders, sl designation borrowed from the Jews, and indicative rather of the wisdom than the age of the persons, and sometimes also bishops; for it is most manifest that both terms are promiscuously used in the New Testament of one and the same class of persons.\" \" In these primitive times, each Christian church was composed of the people, the presiding officers, and the assistants, or deacons.",
+      "claim": "초기 기독교 교회는 장로와 감독으로 불리는 지도자들로 구성되어 있었으며, 이 용어들은 동일한 계층的人들을 가리키는 것으로 사용되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004036",
+      "tsu_id": "TSU-0004036",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "These must be the components of every society.\" Eccl. Hist, Cent 1, p. 2; Ch., 2, Sees. 5, 8.",
+      "claim": "모든 사회는 구성원, 지도자, 그리고 조력자로 구성되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004037",
+      "tsu_id": "TSU-0004037",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "or presbyter, were in the first instance and for a short period, sometime used synonymously, and indiscriminately applied to the same order in the ministry.\" Mist.",
+      "claim": "초기 교회에서 장로와 감독은 일시적으로 같은 직분으로 사용되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004038",
+      "tsu_id": "TSU-0004038",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Archbishop Usher says that \" bishop and presbyter differed only in degree, and not in order.\" See Cole.",
+      "claim": "주교와 장로가 차이점은 정도에만 있고, 직분의 순서에는 차이가 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004039",
+      "tsu_id": "TSU-0004039",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Bishop Burnett says: \"As for the notion of distinct offices of bishop and presbyter, I confess it is not so clear to me.\" Vindic.",
+      "claim": "비숍과 장로의 구별된 직분에 대한 개념은 명확하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004040",
+      "tsu_id": "TSU-0004040",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Dr. Coleman savs: \"It is generally admitted by Episcopal writers on this subject, that in the New Testament, and in the earliest ecclesiastical writings, the terms bishops and presbyters, or elders, are synonymous, and denote one and the same office.\" \" The office of presbyter was undeniably identical with that of bishop, as has been shown above.\" \" Only two orders of officers are known in the church until the close of the second century.",
+      "claim": "초기 기독교 교회에서 주교와 장로라는 용어는 같은 직무를 가리킨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004041",
+      "tsu_id": "TSU-0004041",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Those of the first are styled either bishops or presbyters ; of the second, deacons.77 Anc.",
+      "claim": "초기 교회에서 주교와 장로라는 용어는 같은 직분을 가리킨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004042",
+      "tsu_id": "TSU-0004042",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The Apostle Paul, it is stated (Acts 20 : 17, 18), called together the elders (presbyters) of the Ephesian Church.",
+      "claim": "사도 바울이 에베소 교회의 장로들을 불러모았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004043",
+      "tsu_id": "TSU-0004043",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But in verse 28; he calls these officers overseers (episcopous).",
+      "claim": "바울은 에베소 교회의 장로들을 감독자라고도 불렀다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004044",
+      "tsu_id": "TSU-0004044",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Here the terms presbuteros and episcopos were certainly used interchangeably.",
+      "claim": "장로(presbuteros)와 감독(episcopos)의 용어는 확실히 상호 교환적으로 사용되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004045",
+      "tsu_id": "TSU-0004045",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Paul and Timothy, in their address to the Philippian Christians, specify three classes as evidently constituting the entire body of ; disciples.",
+      "claim": "필립보의 그리스도인 공동체는 성도, 감독, 집사 세 가지 계층으로 구성되어 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004046",
+      "tsu_id": "TSU-0004046",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They say: \" To all the saints in Christ Jesus, which are at Philippi, with the bishops and deacons\" Saints, bishops, and deacons embraced the whole",
+      "claim": "필립보의 교회는 성도와 감독과 집사로 구성되어 있다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004047",
+      "tsu_id": "TSU-0004047",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Timothy was instructed by Paul as to the qualifications of pastors to be placed over the churches. (1 Tim. 3 : 1.) Particular directions are given as to both bishops and deacons, but no mention is made of elders — clearly because they were the same as bishops.",
+      "claim": "바울은 디모데에게 교회를 감독할 목사의 자격에 대해 가르쳤고, 주교와 집사에 대한 지침이 주어졌지만 장로에 대한 언급은 없으며, 이는 장로가 주교와 동일한 것으로 간주되었기 때문이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004048",
+      "tsu_id": "TSU-0004048",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "tors for the church in Crete. (Titus 1 : 5, 7.) These pastors are called elders in verse 5 and bishops in verse 7.",
+      "claim": "크레타 교회를 위한 감독자들은 장로와 주교라고 불린다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004049",
+      "tsu_id": "TSU-0004049",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Pastors and deacons, therefore, are two orders, and these officers simply were known or needed in the apostolic churches.",
+      "claim": "장로와 집사들은 두 가지 직분이며, 초대교회에서 이러한 직분이 필요했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004050",
+      "tsu_id": "TSU-0004050",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "In this, also, the views held by Baptists are in harmony with the customs of the churches in the first and purest age of Christian history. 3,54 STANDARD MANUAL",
+      "claim": "침례교회의 관점은 초기 기독교 교회들의 관행과 일치한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004051",
+      "tsu_id": "TSU-0004051",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "What is their history?\" These are questions of interest; but a more important one would be : \"Are they right?",
+      "claim": "真正한 교회의 역사나 설립자보다 중요한 것은 그들의 신앙이 새约 성경의 가르침에 따라 있는가 하는 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004052",
+      "tsu_id": "TSU-0004052",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Scripture / Authority",
+      "original_text": "Is their faith according to the teachings of the New Testament?\" Many things which are old are not true.",
+      "claim": "신앙이 신약의 가르침에 따라야 한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004053",
+      "tsu_id": "TSU-0004053",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Creeds and sects may boast a venerable antiquity, while the word of God utterly condemns them.",
+      "claim": "오래된 교파나 신조는 하나님의 말씀에 의해 완전히 거부될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004054",
+      "tsu_id": "TSU-0004054",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Any organization that cannot reasonably claim Christ for its founder has small right to the name of a Christian church, no matter how old it may be.",
+      "claim": "기독교 교회는 그 기원이 예수 그리스도에게 있는지 여부에 따라 평가되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004055",
+      "tsu_id": "TSU-0004055",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Baptists claim to be built on the foundation of the apostles and prophets, Jesus Christ himself being the chief Corner Stone.",
+      "claim": "침례교는 사도와 선지자들의 기초 위에 세워졌으며 예수 그리스도가 주요 모퉁이 돌이라고 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004056",
+      "tsu_id": "TSU-0004056",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "If this claim be well founded, whether they have a written history of one century or of twenty, matters little.",
+      "claim": "바プ티스트 교회가 사도와 예언자들의 기초 위에 세워졌으며, 이 기초의 머릿돌은 예수 그리스도 자신이라는 주장이 옳다면, 그들이 1세기나 20세기의 기록된 역사を持고 있는지 여부는 중요하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004057",
+      "tsu_id": "TSU-0004057",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And Baptist history constitutes one of the most interesting chapters in the records of Christianity.",
+      "claim": "침례교회의 역사는 기독교의 기록 중 가장 흥미로운 장 중 하나를 구성한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004058",
+      "tsu_id": "TSU-0004058",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "When at length the period of martyrdom and persecution terminated ; when a nominal Christianity took possession of a throne, and Church and State became united, then religion, in its prevailing forms, lost its simplicity, its spirituality, and its power, and a 156 STANDARD MANUAL",
+      "claim": "교회와 국가가 연합하여 기독교가 권력을 잡게 되면, 종교는 그 순수성과 영적 힘을 잃어버린다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004059",
+      "tsu_id": "TSU-0004059",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "temporal hierarchy took the place of the church of Christ.",
+      "claim": "시간적 계층이 그리스도의 교회를 대체했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004060",
+      "tsu_id": "TSU-0004060",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This was the great apostasy of the early times.",
+      "claim": "초기 기독교 시대에 큰 배교가 발생했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004061",
+      "tsu_id": "TSU-0004061",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But all the churches and all disciples did not follow in the wake of this sad departure from the truth.",
+      "claim": "초기 기독교 교회 중 일부는 진리를 배신하지 않고 순수한 형태의 복음과 예배를 유지했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004062",
+      "tsu_id": "TSU-0004062",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Many congregations and communities of true worshipers kept the doctrines of the gospel, and practiced its ordinances, nearly, or quite, in their primitive purity.",
+      "claim": "많은 교회와 신자 공동체는 복음의 가르침을 지키고 그 예식들을 거의 또는 완전히 초기의 순수한 형태로 실천하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004063",
+      "tsu_id": "TSU-0004063",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And this they continued to do through all the ages of darkness and corruption which followed.",
+      "claim": "진정한 예배자들의 공동체는 어둠과 부패의 시대에도 복음의 교리와 규례를 지켰다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004064",
+      "tsu_id": "TSU-0004064",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They were never identified with the Roman or Greek churches : they never were in alliance with States ; never formed hierarchies.",
+      "claim": "일부 교회는 로마나 그리스도교회의 일원으로 확인되지 않았으며 국가와의 동맹을 형성하지도 않고 계층 구조를 만들지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004065",
+      "tsu_id": "TSU-0004065",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "As independent congregations, or small communities, with no other bond of union than a common faith, fellowship, and sympathy, often obscure and unobtrusive, taking the word of God as their guide, they sought to realize the idea, not of a temporal, but a spiritual kingdom in the gospel dispensation.",
+      "claim": "독립적인 교회 공동체는 하나님의 말씀을 따라 영적 왕국을 실현하려고 노력했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004066",
+      "tsu_id": "TSU-0004066",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "As such they were traduced and persecuted continually.",
+      "claim": "종교적 소수자들은 지속적으로 중상과 박해를 받았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004067",
+      "tsu_id": "TSU-0004067",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And though they may have had their errors, they were the best and purest defenders of FOR BAPTIST CHURCHES. 157",
+      "claim": "침례교회의 가장 순수하고 올바른 수호자들은 그들의 오류에도 불구하고 침례교회를 옹호했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004068",
+      "tsu_id": "TSU-0004068",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "the Christian faith, and the truest representatives of the first disciples of Christ then existing.",
+      "claim": "그 당시 존재하는 그리스도의 첫 번째 제자의真正한 대표자들은 기독교 신앙을 지녔으며",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004069",
+      "tsu_id": "TSU-0004069",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The State churches were the heretics ; while those so-called sects were the true successors of the first Christians.",
+      "claim": "국교는 이단이었으며, 소위 종파들은 최초의 기독교인들의 진정한 후계자였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004070",
+      "tsu_id": "TSU-0004070",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Calumniated and martyred because they bore witness to the truth of God and testified against the errors and vices of the so-called churches.",
+      "claim": "하나님의 진리를 증거하고 자칭 교회들의 오류와 악행에 대해 증언한 사람들이 중상과 순교를 당했다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004071",
+      "tsu_id": "TSU-0004071",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "",
+      "original_text": "History has never done them justice, and perhaps never will; because history has been too much written in the interest of their enemies, or from their standpoint.",
+      "claim": "역사적 기록은 종종 진실을 증거한 사람들의 적들에 의해 편향되거나 그들의 관점에서 작성되어서 그들에게 정의를 주지 못했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004072",
+      "tsu_id": "TSU-0004072",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "And this they nobly did as Christ's faithful witnesses.",
+      "claim": "그들은 고난을 겪으며도 기독교의 충실한 증인으로서 고결하게 행동했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004073",
+      "tsu_id": "TSU-0004073",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Still they increased greatly, notwithstanding their many persecutions.",
+      "claim": "파울리카누스교도들은 많은 박해에도 불구하고 크게 증가했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004074",
+      "tsu_id": "TSU-0004074",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "That these Christian communities should have been faultless could not be supposed.",
+      "claim": "기독교 공동체가 완전무결할 수 없었다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004075",
+      "tsu_id": "TSU-0004075",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But they were the best of the ages in which they lived, and maintained the purest forms of gospel truth and practice.",
+      "claim": "초기 기독교 공동체는 그들이 살았던 시대에서 가장 훌륭했고, 복음의 진리와 관행을 가장 순수하게 유지했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004076",
+      "tsu_id": "TSU-0004076",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Scripture / Authority",
+      "original_text": "But in general they all professed to take the New Testament as the rule of their faith and practice.",
+      "claim": "대부분의 사람들은 신앙과 실천의 규칙으로 새로운 약속을 따른다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004077",
+      "tsu_id": "TSU-0004077",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They held to a spiritual church membership, and received only professedly regenerated persons to the ordinances.",
+      "claim": "그들은 영적 교회 회원제를 주장하며, 오직 거듭난 사람들만 예배에 참여시켰다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004078",
+      "tsu_id": "TSU-0004078",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Denying the orthodoxy of the Romish Church, they re-baptized persons received from that body, and hence were FOR BAPTIST CHURCHES. 159",
+      "claim": "로마 가톨릭교회가 정통 교회라는 것을 부인하며, 그 教會에서 온 사람들을 재세례하고, 따라서 침례교회의 특징을 보였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004079",
+      "tsu_id": "TSU-0004079",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "They too rejected infant baptism, and protested against the corruptions of the Romish Church ; in consequence of which they suffered long and severe persecutions.",
+      "claim": "파테린교도는 유아 세례를 거부하고 로마 가톨릭 교회의 부패에 항의하여 장기간과 심한 박해를 겪었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004080",
+      "tsu_id": "TSU-0004080",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "",
+      "original_text": "These were new names, and names usually given by their enemies.",
+      "claim": "11세기와 그 이후의 시기에活躍한 종교개혁자들의 이름은 주로 적들에 의해 붙여진 것들이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004081",
+      "tsu_id": "TSU-0004081",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "",
+      "original_text": "They increased, even under their persecutions, to a wonderful extent, and attracted the notice, if not the sympathy, of all Europe.",
+      "claim": "그들의 박해 아래서도 그들은 놀라운 정도로 증가하여 유럽의 모든 사람들의 주목을 끌었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004082",
+      "tsu_id": "TSU-0004082",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They declared and defended the rights of faith and conscience and the freedom of worship. 2.",
+      "claim": "침례교는 신앙과 양심의 권利 및 예배의 자유를 선언하고 옹호했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004083",
+      "tsu_id": "TSU-0004083",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They denied the authority of popes and the right of kings and States to interfere with the people in matters of religion. 3.",
+      "claim": "개혁주의자들은 종교 문제에 있어서 교황과 왕 및 국가의 간섭을 거부했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004084",
+      "tsu_id": "TSU-0004084",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "They rejected infant baptism. 4.",
+      "claim": "그들은 유아 세례를 거부했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004085",
+      "tsu_id": "TSU-0004085",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "They baptized by dipping. 5.",
+      "claim": "그들은 침례를浸礼로 시행했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004086",
+      "tsu_id": "TSU-0004086",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Scripture / Authority",
+      "original_text": "They held the Bible to be the only rule and authority in concerns of religious faith and practice. 6.",
+      "claim": "성경은 종교적 신앙과 실천에 관한 유일한 규칙이자 권위이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004087",
+      "tsu_id": "TSU-0004087",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They admitted none to the churches except such as professed to be regenerated and godly persons.",
+      "claim": "교회에 가입하는 사람으로는 재생하고 경건한 사람만을 인정했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004088",
+      "tsu_id": "TSU-0004088",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "fluence of the reformers, did from sympathy what the persecutions of the Papists had never been able to compel them to do — abandon dipping for sprinkling in baptism, adopted infant baptism, and took the general forms of religious life, into which Pedobaptist Protestantism grew.",
+      "claim": "개혁주의자들의 영향으로 침례에서 뿌림 방식의 세례로 바뀌었고, 유아세례를 채택하였으며, 일반적인 종교 형식을 따랐고, 이는 유아세례를 받는 개신교의 특징이 되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004089",
+      "tsu_id": "TSU-0004089",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Few denominations have a better claim to antiquity than the Welsh Baptists.",
+      "claim": "웨일즈 침례교단은 다른 교단보다 더 오랜 역사를 자랑할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004090",
+      "tsu_id": "TSU-0004090",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They trace their descent directly from the Apostles, and urge in favor of their claim arguments which have never been confuted.",
+      "claim": "웨일즈 침례교는 사도로부터 직접적으로 그들의 출신을 추적하며, 그들의 주장을 위해 반박되지 않은 논증들을 제시한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004091",
+      "tsu_id": "TSU-0004091",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They were independent of the Romish See, and wholly rejected its authority.",
+      "claim": "6세기 말 웨일즈의 기독교 공동체는 로마 교황청의 권위에 대해 독립적이었고 이를 완전히 거부했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004092",
+      "tsu_id": "TSU-0004092",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Austin labored hard to convert them — that is, to bring them under the Papal yoke ; but entirelv failed in the effort.",
+      "claim": "오스틴은 그들을 로마 가톨릭 교회의 권위 아래로 데려가기 위해 노력했지만 완전히 실패했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004093",
+      "tsu_id": "TSU-0004093",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "That they should observe Easter in due form, as ordered by the church. 2.",
+      "claim": "교회에서 정한 대로 부활절을 제대로 지키라고 요구했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004094",
+      "tsu_id": "TSU-0004094",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "That they should preach to the English the word of God, as directed.1",
+      "claim": "그들이 지시된 대로 영어인들에게 하나님의 말씀을 전해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004095",
+      "tsu_id": "TSU-0004095",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "These demands of Austin prove that they neither observed the Popish ordinance of Easter, nor baptized their children.",
+      "claim": "오스틴의 요구는 그들이 가톨릭의 부활절 관행이나 아기 세례를 지키지 않았다는 것을 보여준다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004096",
+      "tsu_id": "TSU-0004096",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The Baptists of Holland have a history that reaches back to a very remote period, if not to the apostolic age, as some confidently assert.",
+      "claim": "네덜란드의 침례교도들은 사도 시대까지 거슬러 올라가는悠久한 역사를 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004097",
+      "tsu_id": "TSU-0004097",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And this antiquity is conceded by historians who have no sympathy with their denominational sentiments.",
+      "claim": "네덜란드의 침례교회의 역사는 매우 오래되며, 일부 사람들은 그것이 사도 시대까지 거슬러 올라간다고 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004098",
+      "tsu_id": "TSU-0004098",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Mosheim, in his church historv, savs : \" The true origin of that sect which acquired the name Anabaptist is hid in the remote depths of antiquity, and is consequently extremely difficult to be ascer-",
+      "claim": "아나바티스트 교파의真正한起源은古代의遠い過去에隠されており, 따라서非常に難しく調べることができる",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004099",
+      "tsu_id": "TSU-0004099",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Zwixgle, the Swiss reformer, contemporary with Luther, declares : u The instituof Anabaptism is no novelty, but for thirteen hundred years has caused great disturbance in the church.\" Introd.",
+      "claim": "아나바티스트의 제도는 새로운 것이 아니라 1300년 동안 교회에서 큰 혼란을 일으켰다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004100",
+      "tsu_id": "TSU-0004100",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "That history, prepared under royal sanction, and officially published, contains the following manly and generous testimony to the antiquity and orthodoxy of the Dutch Baptists.",
+      "claim": "네덜란드 침례교회의 역사적 정통성과 고대성을 인정하는 내용이 공식적으로 출판된 역사서에 기록되어 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004101",
+      "tsu_id": "TSU-0004101",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "\"We have now seen that the Baptists, who were formerly called Anabaptists, and in later times Mennonites, were the original Waldenses, and have long in the history of the church received the honor of that origin.",
+      "claim": "네덜란드 침례교도들은 원래 발두파(Waldenses)였으며, 교회 역사에서 그 기원을 오랫동안 받았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004102",
+      "tsu_id": "TSU-0004102",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "On this account, the Baptists may be considered the only Christian community which has 164 STANDARD MANUAL",
+      "claim": "침례교는 유일한 기독교 공동체로 간주될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004103",
+      "tsu_id": "TSU-0004103",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "stood since the apostles, and as a Christian society, which has preserved pure the doctrines of the gospel through all agesP Hist.",
+      "claim": "기독교 사회는 사도 시대부터 순수한 복음의 교리를 모든 시대에 보존해 왔다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMA 설교 본문-제목 대시보드</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif; background: #0f1923; color: #e0e0e0; }
+        
+        /* Header */
+        .header { background: linear-gradient(135deg, #1a237e, #283593); padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .header h1 { font-size: 24px; color: #fff; }
+        .header p { font-size: 13px; color: #90caf9; margin-top: 4px; }
+        
+        /* Tabs */
+        .tab-bar { display: flex; background: #1a2733; border-bottom: 2px solid #283593; padding: 0 40px; }
+        .tab { padding: 12px 24px; cursor: pointer; border: none; background: none; color: #90a4ae; font-size: 14px; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .tab:hover { color: #e0e0e0; background: rgba(40, 53, 147, 0.1); }
+        .tab.active { color: #5c6bc0; border-bottom-color: #5c6bc0; background: rgba(92, 107, 192, 0.08); }
+        
+        /* Content */
+        .content { padding: 24px 40px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Cards */
+        .card { background: #1a2733; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border: 1px solid #263540; }
+        .card h3 { font-size: 16px; color: #5c6bc0; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #263540; }
+        
+        /* Stats grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+        .stat-card { background: linear-gradient(135deg, #1e3a5f, #1a2733); border-radius: 10px; padding: 20px; text-align: center; border: 1px solid #263540; }
+        .stat-card .value { font-size: 32px; font-weight: 700; color: #5c6bc0; }
+        .stat-card .label { font-size: 12px; color: #90a4ae; margin-top: 6px; }
+        
+        /* Chart containers */
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .chart-container { min-height: 350px; }
+        
+        /* Table */
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #0f1923; color: #5c6bc0; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; }
+        td { padding: 8px 12px; border-bottom: 1px solid #263540; font-size: 13px; }
+        tr:hover td { background: rgba(92, 107, 192, 0.05); }
+        
+        /* Heatmap legend */
+        .heatmap-cell { display: inline-block; width: 28px; height: 28px; border-radius: 4px; margin: 1px; text-align: center; line-height: 28px; font-size: 10px; color: #fff; }
+        
+        /* File input */
+        .file-upload { margin-bottom: 20px; }
+        .file-upload label { display: inline-block; padding: 10px 20px; background: #283593; color: #fff; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .file-upload label:hover { background: #3949ab; }
+        .file-upload input { display: none; }
+        .file-info { margin-left: 12px; color: #90a4ae; font-size: 13px; }
+        
+        /* Loading */
+        .loading { text-align: center; padding: 60px; color: #5c6bc0; }
+        .loading::after { content: '...'; animation: dots 1.5s infinite; }
+        @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
+        
+        /* Badge */
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .badge-ot { background: #1b5e20; color: #a5d6a7; }
+        .badge-nt { background: #4a148c; color: #ce93d8; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📖 DBMA 설교 본문-제목 대시보드</h1>
+    <p>설교은행 & 대형교회 유튜브 데이터 기반 성경 권별/장별 설교 빈도 및 핵심 키워드 시각화</p>
+</div>
+
+<div class="tab-bar">
+    <button class="tab active" onclick="switchTab('overview')">📊 전체 개요</button>
+    <button class="tab" onclick="switchTab('frequency')">📈 설교 빈도</button>
+    <button class="tab" onclick="switchTab('keywords')">🔑 키워드 분석</button>
+    <button class="tab" onclick="switchTab('correlation')">🔗 본문-주제 상관관계</button>
+    <button class="tab" onclick="switchTab('timeline')">📅 연도/연대별 통계</button>
+    <button class="tab" onclick="switchTab('preview')">📋 데이터 미리보기</button>
+</div>
+
+<div class="content">
+    <!-- File Upload -->
+    <div style="padding: 0 40px; margin-bottom: 10px;">
+        <div class="file-upload">
+            <label for="dataFile">📂 데이터 파일 선택 (JSONL/CSV)</label>
+            <input type="file" id="dataFile" accept=".jsonl,.json,.csv" onchange="loadData(event)">
+            <span class="file-info" id="fileInfo">데이터 파일을 업로드하세요</span>
+        </div>
+    </div>
+
+    <!-- Tab 1: Overview -->
+    <div id="tab-overview" class="tab-content active" style="padding: 0 40px;">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="value" id="stat-total">-</div><div class="label">총 설교 수</div></div>
+            <div class="stat-card"><div class="value" id="stat-books">-</div><div class="label">성경 책 수</div></div>
+            <div class="stat-card"><div class="value" id="stat-chapters">-</div><div class="label">장 수</div></div>
+            <div class="stat-card"><div class="value" id="stat-keywords">-</div><div class="label">키워드 수</div></div>
+        </div>
+        <div class="chart-row">
+            <div class="card"><h3>📜 성경(구약/신약)별 설교 분포</h3><div id="chart-testament" class="chart-container"></div></div>
+            <div class="card"><h3>📖 성경 전체 구조</h3><div id="chart-bible-structure" class="chart-container"></div></div>
+        </div>
+    </div>
+
+    <!-- Tab 2: Frequency -->
+    <div id="tab-frequency" class="tab-content" style="padding: 0 40px;">
+        <div class="card"><h3>📊 권별 설교 빈도 (Top 30)</h3><div id="chart-book-freq" class="chart-container"></div></div>
+        <div class="card"><h3>📈 장별 설교 빈도 (Top 25)</h3><div id="chart-chapter-freq" class="chart-container"></div></div>
+        <div class="card"><h3>📉 구약 vs 신약 비교</h3><div id="chart-ot-nt-compare" class="chart-container"></div></div>
+    </div>
+
+    <!-- Tab 3: Keywords -->
+    <div id="tab-keywords" class="tab-content" style="padding: 0 40px;">
+        <div class="card"><h3>🔑 설교 제목 키워드 (Top 40)</h3><div id="chart-keywords" class="chart-container"></div></div>
+        <div class="card"><h3>📊 주제 카테고리 분포</h3><div id="chart-categories" class="chart-container"></div></div>
+    </div>
+
+    <!-- Tab 4: Correlation -->
+    <div id="tab-correlation" class="tab-content" style="padding: 0 40px;">
+        <div class="card"><h3>🔗 성경 책별 핵심 주제</h3><div id="chart-key-themes" class="chart-container"></div></div>
+        <div class="card"><h3>📊 본문-키워드 상관관계 행렬</h3><div id="chart-correlation-matrix" class="chart-container"></div></div>
+    </div>
+
+    <!-- Tab 6: Timeline (NEW!) -->
+    <div id="tab-timeline" class="tab-content" style="padding: 0 40px;">
+        <div class="card">
+            <h3>📅 연도별 설교 빈도</h3>
+            <div id="chart-year-freq" class="chart-container"></div>
+        </div>
+        <div class="chart-row">
+            <div class="card">
+                <h3>🕐 연대별 설교 분포</h3>
+                <div id="chart-decade-pie" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <h3>🔑 연대별 핵심 키워드</h3>
+                <div id="chart-decade-keywords" style="min-height: 350px; overflow-y: auto;"></div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>📊 연도 × 성경 책별 설교 빈도 (Top 10 책)</h3>
+            <div id="chart-year-book-heatmap" class="chart-container"></div>
+        </div>
+    </div>
+
+    <!-- Tab 5: Preview -->
+    <div id="tab-preview" class="tab-content" style="padding: 0 40px;">
+        <div class="card">
+            <h3>📋 샘플 제목 목록 (Top 50)</h3>
+            <div id="table-preview" style="max-height: 600px; overflow-y: auto;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Bible book metadata
+const BIBLE_BOOKS = [
+    {name:"Genesis",chapters:50,testament:"OT",short:"창"},
+    {name:"Exodus",chapters:40,testament:"OT",short:"출"},
+    {name:"Leviticus",chapters:27,testament:"OT",short:"레"},
+    {name:"Numbers",chapters:36,testament:"OT",short:"민"},
+    {name:"Deuteronomy",chapters:34,testament:"OT",short:"신"},
+    {name:"Joshua",chapters:24,testament:"OT",short:"수"},
+    {name:"Judges",chapters:21,testament:"OT",short:"사"},
+    {name:"Ruth",chapters:4,testament:"OT",short:"룻"},
+    {name:"1 Samuel",chapters:31,testament:"OT",short:"삼1"},
+    {name:"2 Samuel",chapters:24,testament:"OT",short:"삼2"},
+    {name:"1 Kings",chapters:22,testament:"OT",short:"왕1"},
+    {name:"2 Kings",chapters:25,testament:"OT",short:"왕2"},
+    {name:"1 Chronicles",chapters:29,testament:"OT",short:"대1"},
+    {name:"2 Chronicles",chapters:36,testament:"OT",short:"대2"},
+    {name:"Ezra",chapters:10,testament:"OT",short:"스"},
+    {name:"Nehemiah",chapters:13,testament:"OT",short:"느"},
+    {name:"Esther",chapters:10,testament:"OT",short:"에"},
+    {name:"Job",chapters:42,testament:"OT",short:"욥"},
+    {name:"Psalms",chapters:150,testament:"OT",short:"시"},
+    {name:"Proverbs",chapters:31,testament:"OT",short:"잠"},
+    {name:"Ecclesiastes",chapters:12,testament:"OT",short:"전"},
+    {name:"Song of Solomon",chapters:8,testament:"OT",short:"송"},
+    {name:"Isaiah",chapters:66,testament:"OT",short:"사"},
+    {name:"Jeremiah",chapters:52,testament:"OT",short:"렘"},
+    {name:"Lamentations",chapters:5,testament:"OT",short:"애"},
+    {name:"Ezekiel",chapters:48,testament:"OT",short:"겔"},
+    {name:"Daniel",chapters:12,testament:"OT",short:"단"},
+    {name:"Hosea",chapters:14,testament:"OT",short:"호"},
+    {name:"Joel",chapters:3,testament:"OT",short:"욜"},
+    {name:"Amos",chapters:9,testament:"OT",short:"암"},
+    {name:"Obadiah",chapters:1,testament:"OT",short:"옵"},
+    {name:"Jonah",chapters:4,testament:"OT",short:"욘"},
+    {name:"Micah",chapters:7,testament:"OT",short:"미"},
+    {name:"Nahum",chapters:3,testament:"OT",short:"나"},
+    {name:"Habakkuk",chapters:3,testament:"OT",short:"합"},
+    {name:"Zephaniah",chapters:3,testament:"OT",short:"습"},
+    {name:"Haggai",chapters:2,testament:"OT",short:"학"},
+    {name:"Zechariah",chapters:14,testament:"OT",short:"슥"},
+    {name:"Malachi",chapters:4,testament:"OT",short:"말"},
+    {name:"Matthew",chapters:28,testament:"NT",short:"마"},
+    {name:"Mark",chapters:16,testament:"NT",short:"막"},
+    {name:"Luke",chapters:24,testament:"NT",short:"눅"},
+    {name:"John",chapters:21,testament:"NT",short:"요"},
+    {name:"Acts",chapters:28,testament:"NT",short:"행"},
+    {name:"Romans",chapters:16,testament:"NT",short:"롬"},
+    {name:"1 Corinthians",chapters:16,testament:"NT",short:"고전"},
+    {name:"2 Corinthians",chapters:13,testament:"NT",short:"고후"},
+    {name:"Galatians",chapters:6,testament:"NT",short:"갈"},
+    {name:"Ephesians",chapters:6,testament:"NT",short:"엡"},
+    {name:"Philippians",chapters:4,testament:"NT",short:"빌"},
+    {name:"Colossians",chapters:4,testament:"NT",short:"골"},
+    {name:"1 Thessalonians",chapters:5,testament:"NT",short:"살전"},
+    {name:"2 Thessalonians",chapters:3,testament:"NT",short:"살후"},
+    {name:"1 Timothy",chapters:6,testament:"NT",short:"딤전"},
+    {name:"2 Timothy",chapters:4,testament:"NT",short:"딤후"},
+    {name:"Titus",chapters:3,testament:"NT",short:"딛"},
+    {name:"Philemon",chapters:1,testament:"NT",short:"빌"},
+    {name:"Hebrews",chapters:13,testament:"NT",short:"히"},
+    {name:"James",chapters:5,testament:"NT",short:"약"},
+    {name:"1 Peter",chapters:5,testament:"NT",short:"벧전"},
+    {name:"2 Peter",chapters:3,testament:"NT",short:"벧후"},
+    {name:"1 John",chapters:5,testament:"NT",short:"요일"},
+    {name:"2 John",chapters:1,testament:"NT",short:"이요"},
+    {name:"3 John",chapters:1,testament:"NT",short:"삼요"},
+    {name:"Jude",chapters:1,testament:"NT",short:"유"},
+    {name:"Revelation",chapters:22,testament:"NT",short:"계"}
+];
+
+// Korean stop words
+const KOREAN_STOPWORDS = new Set("의 는 를 이 가 에 에서 으로 와 과 에도 의가 을로 한 다".split());
+
+// Theme categories mapping
+const THEME_CATEGORIES = {
+    "faith":{"kr":"믿음","en":"faith"},
+    "grace":{"kr":"은혜","en":"grace"},
+    "love":{"kr":"사랑","en":"love"},
+    "prayer":{"kr":"기도","en":"prayer"},
+    "forgiveness":{"kr":"용서","en":"forgiveness"},
+    "salvation":{"kr":"구원","en":"salvation"},
+    "hope":{"kr":"소망","en":"hope"},
+    "wisdom":{"kr":"지혜","en":"wisdom"},
+    "justice":{"kr":"정의","en":"justice"},
+    "covenant":{"kr":"언약","en":"covenant"},
+    "worship":{"kr":"예배","en":"worship"},
+    "spirit":{"kr":"성령","en":"spirit"},
+    "kingdom":{"kr":"천국","en":"kingdom"},
+    "truth":{"kr":"진리","en":"truth"},
+    "holiness":{"kr":"거룩","en":"holiness"},
+    "mercy":{"kr":"자비","en":"mercy"},
+    "peace":{"kr":"평화","en":"peace"},
+    "joy":{"kr":"기쁨","en":"joy"},
+    "patience":{"kr":"인내","en":"patience"},
+    "humility":{"kr":"겸손","en":"humility"}
+};
+
+// Korean keyword mapping
+const KOREAN_KEYWORD_MAP = {
+    "은혜":"grace","믿음":"faith","기도":"prayer","사랑":"love","용서":"forgiveness",
+    "구원":"salvation","소망":"hope","지혜":"wisdom","정의":"justice","언약":"covenant",
+    "예배":"worship","성령":"spirit","천국":"kingdom","진리":"truth","거룩":"holiness",
+    "자비":"mercy","평화":"peace","기쁨":"joy","인내":"patience","겸손":"humility",
+    "율법":"law","약속":"promise","구속":"redemption","광야":"wilderness","출애굽":"exodus",
+    "창조":"creation","죄":"sin","심판":"judgment","생명":"life","영광":"glory",
+    "복":"blessing","회개":"repentance","순종":"obedience","시험":"trial","감사":"thanksgiving"
+};
+
+// [설계 변경] "성경 책별 핵심 주제"는 설교 제목 키워드 다수결로 매번
+// 다시 추정할 대상이 아니라 조직신학/성서신학이 이미 정해둔 것이므로
+// 고정 상수로 둔다. Python 쪽 sermon_corpus/analyzer/book_themes.py::
+// BOOK_KEY_THEMES와 내용을 동일하게 유지 — 한쪽만 고치면 두 대시보드
+// (Streamlit / 이 독립형 HTML)가 서로 다른 주제를 보여주게 되므로
+// 수정 시 두 파일을 함께 맞출 것.
+const BOOK_KEY_THEMES = {
+    "Genesis": "창조와 언약",
+    "Exodus": "구속과 언약 백성의 형성",
+    "Leviticus": "거룩과 예배(제사)",
+    "Numbers": "광야 순례와 하나님의 신실하심",
+    "Deuteronomy": "언약 갱신과 순종의 축복",
+    "Joshua": "약속의 땅 정복과 성취",
+    "Judges": "배교와 구원의 순환",
+    "Ruth": "인애(헤세드)와 구속",
+    "1 Samuel": "왕정의 시작과 하나님의 주권적 선택",
+    "2 Samuel": "다윗 언약과 왕국의 확립",
+    "1 Kings": "성전 건축과 왕국의 분열",
+    "2 Kings": "불순종에 대한 심판과 포로",
+    "1 Chronicles": "다윗 왕조와 예배의 회복",
+    "2 Chronicles": "성전 중심의 개혁과 회복",
+    "Ezra": "성전 재건과 언약 공동체의 회복",
+    "Nehemiah": "성벽 재건과 개혁",
+    "Esther": "하나님의 섭리적 보호",
+    "Job": "고난 속의 신정론과 신뢰",
+    "Psalms": "찬양과 탄원을 통한 하나님과의 교제",
+    "Proverbs": "여호와 경외와 실천적 지혜",
+    "Ecclesiastes": "헛됨 속에서 하나님을 경외함",
+    "Song of Solomon": "언약적 사랑의 아름다움",
+    "Isaiah": "심판과 메시아를 통한 구원",
+    "Jeremiah": "심판과 새 언약의 약속",
+    "Lamentations": "심판 중의 애가와 하나님의 신실하심",
+    "Ezekiel": "하나님의 영광과 영적 회복",
+    "Daniel": "하나님의 절대 주권과 종말론적 소망",
+    "Hosea": "신실하지 못한 백성을 향한 하나님의 언약적 사랑",
+    "Joel": "성령 강림과 여호와의 날",
+    "Amos": "사회 정의와 언약적 심판",
+    "Obadiah": "교만에 대한 심판과 여호와의 통치",
+    "Jonah": "하나님의 보편적 자비와 선교",
+    "Micah": "정의와 겸손한 신앙",
+    "Nahum": "니느웨 심판과 하나님의 공의",
+    "Habakkuk": "믿음으로 사는 의인",
+    "Zephaniah": "여호와의 날의 심판과 회복",
+    "Haggai": "성전 재건의 우선순위",
+    "Zechariah": "메시아를 통한 회복과 통치",
+    "Malachi": "언약적 신실함에 대한 요구",
+    "Matthew": "언약의 성취자 메시아 왕 예수",
+    "Mark": "고난받는 종으로서의 그리스도",
+    "Luke": "만민을 향한 구원자 예수",
+    "John": "하나님이신 그리스도를 믿음으로 얻는 영생",
+    "Acts": "성령을 통한 교회의 확장과 복음 증거",
+    "Romans": "이신칭의와 복음의 능력",
+    "1 Corinthians": "그리스도 안에서의 교회의 연합과 거룩",
+    "2 Corinthians": "약함 속에 나타나는 그리스도의 능력",
+    "Galatians": "율법이 아닌 믿음으로 얻는 자유",
+    "Ephesians": "그리스도 안에서 하나 된 교회",
+    "Philippians": "그리스도 안에서의 기쁨",
+    "Colossians": "만물의 으뜸이신 그리스도의 우월성",
+    "1 Thessalonians": "재림에 대한 소망과 거룩한 삶",
+    "2 Thessalonians": "주의 날에 대한 바른 이해와 인내",
+    "1 Timothy": "건전한 교리와 교회 질서",
+    "2 Timothy": "복음을 위한 인내와 신앙의 계승",
+    "Titus": "선한 행실로 나타나는 건전한 교리",
+    "Philemon": "그리스도 안에서의 용서와 화해",
+    "Hebrews": "그리스도의 우월성과 새 언약의 완전함",
+    "James": "행함으로 증명되는 참된 믿음",
+    "1 Peter": "고난 중의 소망과 거룩한 삶",
+    "2 Peter": "거짓 교사 경계와 재림에 대한 확신",
+    "1 John": "하나님과의 교제와 형제 사랑",
+    "2 John": "진리 안에서의 사랑과 분별",
+    "3 John": "진리를 위한 협력",
+    "Jude": "믿음을 위해 힘써 싸움",
+    "Revelation": "그리스도의 최종 승리와 새 하늘과 새 땅"
+};
+
+// 영어 성경 책명 -> 한글 성경 책명 (UI에 영어 책명이 노출되지 않도록 —
+// Python 쪽 keywords.py::BIBLE_BOOK_KOREAN_MAP과 동일 내용)
+const BIBLE_BOOK_KOREAN_MAP = {
+    "Genesis":"창세기","Exodus":"출애굽기","Leviticus":"레위기","Numbers":"민수기",
+    "Deuteronomy":"신명기","Joshua":"여호수아","Judges":"사사기","Ruth":"룻",
+    "1 Samuel":"사무엘상","2 Samuel":"사무엘하","1 Kings":"열왕기상","2 Kings":"열왕기하",
+    "1 Chronicles":"역대상","2 Chronicles":"역대하","Ezra":"에스라","Nehemiah":"느헤미야",
+    "Esther":"에스더","Job":"욥","Psalms":"시편","Proverbs":"잠언","Ecclesiastes":"전도서",
+    "Song of Solomon":"아가","Isaiah":"이사야","Jeremiah":"예레미야","Lamentations":"예레미야애가",
+    "Ezekiel":"에스겔","Daniel":"다니엘","Hosea":"호세아","Joel":"요엘","Amos":"아모스",
+    "Obadiah":"오바댜","Jonah":"요나","Micah":"미가","Nahum":"나훔","Habakkuk":"하박국",
+    "Zephaniah":"스바냐","Haggai":"학개","Zechariah":"스가랴","Malachi":"말라기",
+    "Matthew":"마태복음","Mark":"마가복음","Luke":"누가복음","John":"요한복음","Acts":"사도행전",
+    "Romans":"로마서","1 Corinthians":"고린도전서","2 Corinthians":"고린도후서",
+    "Galatians":"갈라디아서","Ephesians":"에베소서","Philippians":"빌립보서","Colossians":"골로새서",
+    "1 Thessalonians":"데살로니가전서","2 Thessalonians":"데살로니가후서",
+    "1 Timothy":"디모데전서","2 Timothy":"디모데후서","Titus":"디도서","Philemon":"빌레몬서",
+    "Hebrews":"히브리서","James":"야고보서","1 Peter":"베드로전서","2 Peter":"베드로후서",
+    "1 John":"요한일서","2 John":"요한이서","3 John":"요한삼서","Jude":"유다","Revelation":"요한계시록"
+};
+function toKoreanBook(name) { return BIBLE_BOOK_KOREAN_MAP[name] || name; }
+
+// [버그 수정] title.includes(kr)는 제목 문자열 어디든 kr이 부분
+// 문자열로 있으면 매칭시켰다 — "정의"(justice)처럼 짧은 한글 패턴은
+// "가정의"("of the family", 가정+조사 "의")처럼 뜻이 전혀 다른 단어
+// 중간/끝에 우연히 포함되는 경우가 많아 실제로 무관한 제목이
+// justice로 잘못 집계됐다(Python 쪽 keywords.py::_categorize_keyword
+// 에서 먼저 발견/수정한 것과 동일한 버그). 제목을 띄어쓰기로 토큰화한
+// 뒤 각 단어가 kr로 "시작하는지"로 바꿔 오탐을 없앤다 — 한국어 단어는
+// 대부분 "패턴+조사"(정의를/정의가) 형태라 시작 매칭으로 정상 케이스는
+// 그대로 잡힌다.
+function titleMatchesKeyword(title, kr) {
+    return title.split(/\s+/).some(word => word.startsWith(kr));
+}
+
+let GLOBAL_DATA = null;
+
+// ---- Security: HTML escaping ----
+// [버그 수정] renderPreview()가 업로드된 JSONL의 title/preacher/
+// passage_raw/published_date를 이스케이프 없이 innerHTML 템플릿
+// 문자열에 그대로 꽂아 넣어 XSS에 노출돼 있었다. 이 페이지는 외부
+// 스크래핑 데이터(설교은행/유튜브)를 업로드해 보는 용도로 설계된
+// 도구라 실제로 발생 가능한 시나리오다. DOM API(textContent 등)를
+// 쓰는 대신 이 헬퍼로 통일 — 이 파일 전체가 템플릿 문자열 기반
+// 렌더링 스타일이라 기존 패턴과 가장 자연스럽게 맞물린다.
+function escapeHtml(value) {
+    const div = document.createElement('div');
+    div.textContent = value == null ? '' : String(value);
+    return div.innerHTML;
+}
+
+// ---- Tab switching ----
+function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-'+name).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// ---- Plotly dark theme ----
+const DARK_LAYOUT = {
+    paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+    font: {color: '#90a4ae', family: 'Segoe UI, sans-serif'},
+    margin: {l: 60, r: 20, t: 30, b: 60},
+    xaxis: {gridcolor: '#263540', zerolinecolor: '#263540'},
+    yaxis: {gridcolor: '#263540', zerolinecolor: '#263540'},
+};
+
+// ---- 파일 형식 감지 및 로드 ----
+function loadData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const ext = file.name.split('.').pop().toLowerCase();
+    
+    updateProgress(1, 1, "파일 읽는 중...");
+    
+    if (ext === 'xlsx' || ext === 'xls') {
+        // 엑셀 파일 - XLSX.js 라이브러리 필요 (이 예제에서는 생략)
+        alert('⚠️ 엑셀 파일은 별도 라이브러리가 필요합니다. CSV로 변환 후 업로드하세요.');
+        return;
+    }
+    
+    if (ext === 'db' || ext === 'sqlite' || ext === 'sqlite3') {
+        // SQLite 파일 - 브라우저에서 직접 접근 불가
+        alert('⚠️ SQLite 파일은 별도 서버가 필요합니다. JSON/CSV로 내보내서 사용하세요.');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            let rawData;
+            
+            if (ext === 'json' || ext === 'jsonl') {
+                updateProgress(0, 1, "JSON 처리 중...");
+                
+                if (ext === 'json') {
+                    // JSON 배열
+                    const parsed = JSON.parse(e.target.result);
+                    rawData = Array.isArray(parsed) ? parsed : [parsed];
+                } else {
+                    // JSONL
+                    rawData = e.target.result.split('\n').filter(l=>l.trim()).map(JSON.parse);
+                }
+                
+                // 중복 제거
+                GLOBAL_DATA = deduplicateRecords(rawData);
+                const originalCount = rawData.length;
+                document.getElementById('fileInfo').textContent = `📂 ${file.name} (${originalCount}건 → ${GLOBAL_DATA.length}건, 중복 ${originalCount - GLOBAL_DATA.length}건 제거)`;
+                
+            } else if (ext === 'csv' || ext === 'tsv' || ext === 'txt') {
+                updateProgress(0, 1, "CSV 처리 중...");
+                
+                // CSV 형식 - 필드 자동 감지
+                GLOBAL_DATA = parseCSV(e.target.result);
+                const originalCount = rawData ? rawData.length : GLOBAL_DATA.length;
+                document.getElementById('fileInfo').textContent = `📂 ${file.name} (${GLOBAL_DATA.length}건)`;
+            } else {
+                // 기본값: JSONL로 시도
+                rawData = e.target.result.split('\n').filter(l=>l.trim()).map(JSON.parse);
+                GLOBAL_DATA = deduplicateRecords(rawData);
+                document.getElementById('fileInfo').textContent = `📂 ${file.name} (${GLOBAL_DATA.length}건)`;
+            }
+            
+            updateProgress(1, 1, "처리 완료!");
+            renderAll();
+        } catch(err) { 
+            alert('파일 읽기 오류: '+err.message); 
+            updateProgress(0, 1, "오류 발생");
+        }
+    };
+    reader.readAsText(file);
+}
+
+// ---- 중복 데이터 제거 ----
+function deduplicateRecords(records) {
+    const seen = new Set();
+    const unique = [];
+    let duplicateCount = 0;
+    
+    for (const record of records) {
+        // 중복 키: title + passage_raw
+        const title = (record.title || '').toString().trim().toLowerCase();
+        const passage = (record.passage_raw || record.passage || '').toString().trim().toLowerCase();
+        const key = `${title}|||${passage}`;
+        
+        if (!seen.has(key)) {
+            seen.add(key);
+            unique.push(record);
+        } else {
+            duplicateCount++;
+        }
+    }
+    
+    if (duplicateCount > 0) {
+        console.log(`중복 데이터 제거: ${duplicateCount}건`);
+    }
+    
+    return unique;
+}
+
+// ---- 필드 매핑 정의 ----
+const FIELD_MAPPINGS = {
+    bible_book: ["bible_book", "bibleBook", "BibleBook", "book", "book_name", "bookName", "성경책", "성경", "책"],
+    chapter: ["chapter_start", "chapterStart", "ChapterStart", "chapter", "Chapter", "장", "chap_start"],
+    title: ["title", "sermon_title", "sermonTitle", "SermonTitle", "설교제목", "제목", "subject", "topic"],
+    passage_raw: ["passage_raw", "passageRaw", "PassageRaw", "passage", "Passage", "본문", "scripture", "text"],
+    preacher: ["preacher", "preacher_name", "preacherName", "PreacherName", "설교자", "목사", "speaker", "pastor"],
+    date: ["published_date", "publishedDate", "PublishedDate", "date", "Date", "pub_date", "pubDate", "설교일", "날짜"],
+    church: ["church", "church_name", "churchName", "ChurchName", "교회"]
+};
+
+// ---- 진행률 상태 ----
+let PROGRESS_STATE = {
+    current: 0,
+    total: 0,
+    message: "",
+    percentage: 0
+};
+
+function updateProgress(current, total, message) {
+    PROGRESS_STATE.current = current;
+    PROGRESS_STATE.total = total;
+    PROGRESS_STATE.message = message;
+    PROGRESS_STATE.percentage = total > 0 ? (current / total) * 100 : 0;
+    
+    const progressEl = document.getElementById('progress-bar');
+    if (progressEl) {
+        progressEl.value = PROGRESS_STATE.percentage;
+        progressEl.nextElementSibling.textContent = message || `처리 중: ${current}/${total}`;
+    }
+}
+
+// ---- CSV Parser (simple) ----
+function parseCSV(text) {
+    const lines = text.split('\n').filter(l => l.trim());
+    if (lines.length < 2) return [];
+    
+    // 구분자 감지 (탭 또는 콤마)
+    const sep = lines[0].includes('\t') ? '\t' : ',';
+    
+    // 헤더 파싱
+    const headers = lines[0].split(sep).map(h => h.trim().replace(/^"|"$/g, ''));
+    const headersLower = headers.map(h => h.toLowerCase().trim());
+    
+    // 필드 매핑 감지
+    const fieldMapping = detectFieldMapping(headers, headersLower);
+    
+    const records = [];
+    for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVLine(lines[i], sep);
+        if (values.length === headers.length) {
+            // 표준 형식으로 변환
+            const normalized = normalizeRecord(values, headers, fieldMapping);
+            records.push(normalized);
+        }
+    }
+    return records;
+}
+
+// 필드 매핑 자동 감지
+function detectFieldMapping(headers, headersLower) {
+    const mapping = {};
+    
+    for (const [standardName, patterns] of Object.entries(FIELD_MAPPINGS)) {
+        for (let j = 0; j < headers.length; j++) {
+            const header = headers[j];
+            for (const pattern of patterns) {
+                if (header.toLowerCase().includes(pattern.toLowerCase()) || 
+                    pattern.toLowerCase().includes(header.toLowerCase())) {
+                    mapping[standardName] = j;
+                    break;
+                }
+            }
+            if (mapping[standardName] !== undefined) break;
+        }
+    }
+    
+    return mapping;
+}
+
+// 레코드 표준 형식으로 변환
+function normalizeRecord(values, headers, mapping) {
+    const obj = {};
+    
+    // bible_book
+    const bbIdx = mapping.bible_book;
+    obj.bible_book = bbIdx !== undefined ? cleanValue(values[bbIdx]) : "";
+    
+    // chapter
+    const chIdx = mapping.chapter;
+    obj.chapter_start = chIdx !== undefined ? (parseInt(cleanValue(values[chIdx])) || 1) : 1;
+    obj.chapter_end = obj.chapter_start;
+    
+    // title
+    const tlIdx = mapping.title;
+    obj.title = tlIdx !== undefined ? cleanValue(values[tlIdx]) : "";
+    
+    // passage_raw
+    const psIdx = mapping.passage_raw;
+    obj.passage_raw = psIdx !== undefined && values[psIdx] ? cleanValue(values[psIdx]) : 
+                      obj.title || `${obj.bible_book} ${obj.chapter_start}장`;
+    
+    // preacher
+    const prIdx = mapping.preacher;
+    obj.preacher = prIdx !== undefined ? cleanValue(values[prIdx]) : "";
+    
+    // date
+    const dtIdx = mapping.date;
+    obj.published_date = dtIdx !== undefined ? cleanValue(values[dtIdx]) : "";
+    
+    // church
+    const chIdx2 = mapping.church;
+    obj.church = chIdx2 !== undefined ? cleanValue(values[chIdx2]) : "";
+    
+    // 연도/연대 계산
+    const yearDecade = computeYearDecade(obj.published_date);
+    obj.year = yearDecade[0];
+    obj.decade = yearDecade[1];
+    
+    return obj;
+}
+
+function cleanValue(val) {
+    if (val === undefined || val === null) return "";
+    return String(val).trim().replace(/^"|"$/g, '');
+}
+
+function computeYearDecade(dateStr) {
+    if (!dateStr) return [null, null];
+    const yearMatch = String(dateStr).match(/(\d{4})/);
+    if (yearMatch) {
+        const year = parseInt(yearMatch[1]);
+        return [year, Math.floor(year / 10) * 10];
+    }
+    return [null, null];
+}
+
+function parseCSVLine(line, sep) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') {
+            inQuotes = !inQuotes;
+        } else if (ch === sep && !inQuotes) {
+            result.push(current);
+            current = '';
+        } else {
+            current += ch;
+        }
+    }
+    result.push(current);
+    return result;
+}
+
+// ---- Analysis functions ----
+function analyze(data) {
+    const bookFreq = {};
+    const testamentFreq = {"OT":0,"NT":0};
+    const chapterFreq = {};
+    const keywordCounts = {};
+    const categoryCounts = {};
+    const passageThemes = {};
+    
+    // Timeline analysis (NEW!)
+    const yearFreq = {};
+    const decadeDist = {};
+    const decadeKeywords = {};
+    const bookYearData = {};
+    
+    data.forEach(d => {
+        const book = d.bible_book || "Unknown";
+        const ch = d.chapter_start || 0;
+        const title = d.title || "";
+        
+        // Book frequency
+        bookFreq[book] = (bookFreq[book]||0)+1;
+        
+        // Testament
+        const bt = BIBLE_BOOKS.find(b=>b.name===book);
+        const t = bt ? bt.testament : "OT";
+        testamentFreq[t] = (testamentFreq[t]||0)+1;
+        
+        // Chapter frequency (UI에 영어 책명이 나오지 않도록 한글로 표시)
+        const chKey = toKoreanBook(book)+" "+ch+"장";
+        chapterFreq[chKey] = (chapterFreq[chKey]||0)+1;
+        
+        // Keyword extraction from title
+        for (const [kr, en] of Object.entries(KOREAN_KEYWORD_MAP)) {
+            if (titleMatchesKeyword(title, kr)) {
+                keywordCounts[kr] = (keywordCounts[kr]||0)+1;
+                const cat = THEME_CATEGORIES[en];
+                if (cat) categoryCounts[cat.kr] = (categoryCounts[cat.kr]||0)+1;
+            }
+        }
+        
+        // Passage themes
+        if (!passageThemes[book]) passageThemes[book] = {};
+        for (const [kr, en] of Object.entries(KOREAN_KEYWORD_MAP)) {
+            if (titleMatchesKeyword(title, kr)) {
+                const cat = THEME_CATEGORIES[en];
+                if (cat) passageThemes[book][cat.kr] = (passageThemes[book][cat.kr]||0)+1;
+            }
+        }
+        
+        // Timeline analysis (NEW!)
+        const year = d.published_date ? d.published_date.substring(0, 4) : "Unknown";
+        if (year !== "Unknown") {
+            yearFreq[year] = (yearFreq[year]||0)+1;
+            
+            const decade = Math.floor(parseInt(year)/10)*10 + "년대";
+            decadeDist[decade] = (decadeDist[decade]||0)+1;
+            
+            // Decade keywords
+            if (!decadeKeywords[decade]) decadeKeywords[decade] = {};
+            for (const [kr, en] of Object.entries(KOREAN_KEYWORD_MAP)) {
+                if (titleMatchesKeyword(title, kr)) {
+                    decadeKeywords[decade][kr] = (decadeKeywords[decade][kr]||0)+1;
+                }
+            }
+        }
+        
+        // Book × Year data for heatmap
+        if (year !== "Unknown") {
+            if (!bookYearData[book]) bookYearData[book] = {};
+            bookYearData[book][year] = (bookYearData[book][year]||0)+1;
+        }
+    });
+    
+    // Key themes per book — 설교 제목 키워드 다수결이 아니라 고정
+    // 상수(BOOK_KEY_THEMES)에서 그대로 가져온다. 데이터에 실제
+    // 등장하는 책만 표시.
+    const keyThemes = {};
+    for (const book of Object.keys(bookFreq)) {
+        if (BOOK_KEY_THEMES[book]) {
+            keyThemes[book] = [BOOK_KEY_THEMES[book]];
+        }
+    }
+    
+    // Correlation matrix
+    const allCategories = Object.keys(categoryCounts).sort((a,b)=>categoryCounts[b]-categoryCounts[a]);
+    const correlationMatrix = {};
+    for (const book of Object.keys(bookFreq)) {
+        correlationMatrix[book] = {};
+        for (const cat of allCategories) {
+            correlationMatrix[book][cat] = (passageThemes[book] && passageThemes[book][cat]) ? passageThemes[book][cat] : 0;
+        }
+    }
+    
+    const uniqueBooks = new Set(data.map(d=>d.bible_book));
+    const uniqueChapters = new Set(data.map(d=>d.chapter_start+"_"+d.bible_book));
+    
+    return { bookFreq, testamentFreq, chapterFreq, keywordCounts, categoryCounts, passageThemes, keyThemes, correlationMatrix,
+        total: data.length, books: uniqueBooks.size, chapters: uniqueChapters.size, keywords: Object.keys(keywordCounts).length,
+        yearFreq, decadeDist, decadeKeywords, bookYearData };
+}
+
+// ---- Rendering ----
+function renderAll() {
+    if (!GLOBAL_DATA || GLOBAL_DATA.length === 0) {
+        document.getElementById('stat-total').textContent = '0';
+        document.getElementById('stat-books').textContent = '0';
+        document.getElementById('stat-chapters').textContent = '0';
+        document.getElementById('stat-keywords').textContent = '0';
+        return;
+    }
+    
+    const s = analyze(GLOBAL_DATA);
+    
+    // Stats
+    document.getElementById('stat-total').textContent = s.total.toLocaleString();
+    document.getElementById('stat-books').textContent = s.books;
+    document.getElementById('stat-chapters').textContent = s.chapters.toLocaleString();
+    document.getElementById('stat-keywords').textContent = s.keywords;
+    
+    renderTestamentPie(s.testamentFreq);
+    renderBibleStructure();
+    renderBookFrequency(s.bookFreq);
+    renderChapterFrequency(s.chapterFreq);
+    renderOTNTCompare(s);
+    renderKeywords(s.keywordCounts);
+    renderCategories(s.categoryCounts);
+    renderKeyThemes(s.keyThemes);
+    renderCorrelationMatrix(s.correlationMatrix, s.categoryCounts);
+    
+    // Timeline charts (NEW!)
+    renderYearFrequency(s.yearFreq);
+    renderDecadePie(s.decadeDist);
+    renderDecadeKeywords(s.decadeKeywords);
+    
+    // Find top books for heatmap
+    const topBooks = Object.entries(s.bookFreq).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(b => ({name: b[0]}));
+    renderYearBookHeatmap(s.bookYearData, topBooks);
+    
+    renderPreview();
+}
+
+function renderTestamentPie(freq) {
+    Plotly.newPlot('chart-testament', [{
+        labels: ['구약(OT)','신약(NT)'],
+        values: [freq['OT']||0, freq['NT']||0],
+        type: 'pie', hole: .4,
+        marker: {colors:['#2e7d32','#6a1b9a']},
+        textinfo: 'label+percent',
+        textposition: 'center',
+        textfont: {size:14,color:'#fff'}
+    }], {...DARK_LAYOUT, margin:{l:10,r:10,t:10,b:10}});
+}
+
+function renderBibleStructure() {
+    const ot = BIBLE_BOOKS.filter(b=>b.testament==='OT');
+    const nt = BIBLE_BOOKS.filter(b=>b.testament==='NT');
+    
+    const trace1 = {
+        x: ot.map(b=>b.short), y: ot.map(b=>b.chapters),
+        type: 'bar', marker: {color:'#2e7d32'}, name: '구약',
+        hovertemplate: '%{x}: %{y}장<extra></extra>'
+    };
+    const trace2 = {
+        x: nt.map(b=>b.short), y: nt.map(b=>b.chapters),
+        type: 'bar', marker: {color:'#6a1b9a'}, name: '신약',
+        hovertemplate: '%{x}: %{y}장<extra></extra>'
+    };
+    
+    Plotly.newPlot('chart-bible-structure', [trace1, trace2], {
+        ...DARK_LAYOUT, margin:{l:40,r:10,t:10,b:80},
+        xaxis: {...DARK_LAYOUT.xaxis, tickangle:-45},
+        barmode: 'group',
+        yaxis: {...DARK_LAYOUT.yaxis, title: '장 수'},
+    }, {responsive:true});
+}
+
+function renderBookFrequency(freq) {
+    const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,30);
+    const colors = sorted.map(([name]) => {
+        const bt = BIBLE_BOOKS.find(b=>b.name===name);
+        return bt && bt.testament==='NT' ? '#6a1b9a' : '#2e7d32';
+    });
+    
+    Plotly.newPlot('chart-book-freq', [{
+        x: sorted.map(s=>toKoreanBook(s[0])), y: sorted.map(s=>s[1]),
+        type: 'bar', marker: {color: colors},
+        hovertemplate: '%{x}: %{y}설교<extra></extra>'
+    }], {...DARK_LAYOUT, margin:{l:60,r:20,t:20,b:100}, xaxis:{...DARK_LAYOUT.xaxis,tickangle:-45}});
+}
+
+function renderChapterFrequency(freq) {
+    const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,25);
+    Plotly.newPlot('chart-chapter-freq', [{
+        x: sorted.map(s=>s[0]), y: sorted.map(s=>s[1]),
+        type: 'bar', marker: {color:'#5c6bc0'},
+        hovertemplate: '%{x}: %{y}설교<extra></extra>'
+    }], {...DARK_LAYOUT, margin:{l:80,r:20,t:20,b:100}, xaxis:{...DARK_LAYOUT.xaxis,tickangle:-30}});
+}
+
+function renderOTNTCompare(s) {
+    const otBooks = BIBLE_BOOKS.filter(b=>b.testament==='OT').map(b=>b.name);
+    const ntBooks = BIBLE_BOOKS.filter(b=>b.testament==='NT').map(b=>b.name);
+    
+    const otFreq = otBooks.map(b => s.bookFreq[b]||0);
+    const ntFreq = ntBooks.map(b => s.bookFreq[b]||0);
+    
+    Plotly.newPlot('chart-ot-nt-compare', [
+        {x: otBooks, y: otFreq, type:'bar', name:'구약', marker:{color:'#2e7d32'}},
+        {x: ntBooks, y: ntFreq, type:'bar', name:'신약', marker:{color:'#6a1b9a'}}
+    ], {...DARK_LAYOUT, barmode:'group', margin:{l:40,r:20,t:20,b:80}, xaxis:{...DARK_LAYOUT.xaxis,tickangle:-45}});
+}
+
+function renderKeywords(freq) {
+    const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,40);
+    // Ensure minimum value of 1 to avoid zero-width issues
+    const values = sorted.map(s => Math.max(s[1], 1));
+    Plotly.newPlot('chart-keywords', [{
+        type: 'treemap',
+        labels: sorted.map(s=>s[0]),
+        values: values,
+        textfont: {size:12,color:'#fff'},
+        marker: {
+            colors: sorted.map((_,i) => {
+                const hue = (i/40)*280;
+                return `hsl(${hue},70%,50%)`
+            })
+        },
+        leaf: {textfont: {size:10}},
+    }], {...DARK_LAYOUT, margin:{l:0,r:0,t:0,b:0}});
+}
+
+function renderCategories(freq) {
+    const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    Plotly.newPlot('chart-categories', [{
+        labels: sorted.map(s=>s[0]),
+        values: sorted.map(s=>s[1]),
+        type: 'pie', hole: .3,
+        marker: {
+            colors: sorted.map((_,i) => {
+                const hue = (i/20)*280;
+                return `hsl(${hue},70%,55%)`
+            })
+        },
+        textinfo: 'label+percent',
+        textfont: {size:12,color:'#fff'},
+    }], {...DARK_LAYOUT, margin:{l:10,r:10,t:10,b:10}});
+}
+
+function renderKeyThemes(keyThemes) {
+    // [설계 변경] 책마다 값이 정확히 1개(고정 신학 주제)라 카테고리
+    // 존재 여부를 나타내는 grouped bar chart는 더 이상 맞지 않는다 —
+    // Streamlit 쪽과 동일하게 "책명: 주제" 텍스트 목록으로 표시.
+    const books = Object.keys(keyThemes).sort();
+    const container = document.getElementById('chart-key-themes');
+    container.innerHTML = '';
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(220px, 1fr))';
+    container.style.gap = '8px';
+    container.style.overflowY = 'auto';
+
+    books.forEach(book => {
+        const theme = keyThemes[book][0];
+        const item = document.createElement('div');
+        item.style.padding = '6px 0';
+        const bookEl = document.createElement('strong');
+        bookEl.textContent = toKoreanBook(book);
+        const themeEl = document.createElement('div');
+        themeEl.style.color = '#90a4ae';
+        themeEl.style.fontSize = '13px';
+        themeEl.textContent = theme;
+        item.appendChild(bookEl);
+        item.appendChild(themeEl);
+        container.appendChild(item);
+    });
+}
+
+function renderCorrelationMatrix(matrix, catFreq) {
+    const books = Object.keys(matrix).slice(0,15);
+    const cats = Object.entries(catFreq).sort((a,b)=>b[1]-a[1]).slice(0,12).map(c=>c[0]);
+    
+    const values = [];
+    const colors = [];
+    books.forEach(b => {
+        cats.forEach(c => {
+            const v = matrix[b] && matrix[b][c] ? matrix[b][c] : 0;
+            values.push(v);
+            colors.push(v > 0 ? `hsla(${(cats.indexOf(c)/cats.length)*280},70%,55%,${Math.min(1, v/5)})` : 'rgba(38,53,64,0.3)');
+        });
+    });
+    
+    const trace = {
+        z: values, x: cats, y: books.map(toKoreanBook),
+        type: 'heatmap', colorscale: [[0,'#263540'],[1,'#5c6bc0']],
+        hovertemplate: '%{y} - %{x}: %{z}<extra></extra>',
+        showscale: false
+    };
+    
+    Plotly.newPlot('chart-correlation-matrix', [trace], {...DARK_LAYOUT, margin:{l:80,r:100,t:10,b:80}});
+}
+
+// ---- Timeline Rendering (NEW!) ----
+function renderYearFrequency(yearFreq) {
+    const years = Object.keys(yearFreq).sort();
+    if (years.length === 0) return;
+    
+    Plotly.newPlot('chart-year-freq', [{
+        x: years, y: years.map(y => yearFreq[y]),
+        type: 'scatter', mode: 'lines+markers',
+        line: {color: '#5c6bc0', width: 2},
+        marker: {size: 6, color: '#5c6bc0'},
+        hovertemplate: '%{x}년: %{y}설교<extra></extra>'
+    }], {...DARK_LAYOUT, margin:{l:60,r:20,t:20,b:60}, yaxis:{...DARK_LAYOUT.yaxis,title:'설교 수'}});
+}
+
+function renderDecadePie(decadeDist) {
+    const sorted = Object.entries(decadeDist).sort((a,b)=>b[1]-a[1]);
+    if (sorted.length === 0) return;
+    
+    Plotly.newPlot('chart-decade-pie', [{
+        labels: sorted.map(s=>s[0]),
+        values: sorted.map(s=>s[1]),
+        type: 'pie', hole: .4,
+        marker: {
+            colors: sorted.map((_,i) => `hsl(${(i/sorted.length)*280},70%,55%)`)
+        },
+        textinfo: 'label+percent',
+        textfont: {size:13,color:'#fff'}
+    }], {...DARK_LAYOUT, margin:{l:10,r:10,t:10,b:10}});
+}
+
+function renderDecadeKeywords(decadeKeywords) {
+    const container = document.getElementById('chart-decade-keywords');
+    if (!container) return;
+    
+    let html = '<table><thead><tr><th>연대</th><th>핵심 키워드</th></tr></thead><tbody>';
+    const sortedDecades = Object.keys(decadeKeywords).sort();
+    sortedDecades.forEach(decade => {
+        const kws = Object.entries(decadeKeywords[decade]).sort((a,b)=>b[1]-a[1]).slice(0,8);
+        html += `<tr><td style="font-weight:600;color:#5c6bc0">${decade}</td><td>${kws.map(k=>`<span class="badge" style="background:#263540;margin:2px">${k[0]}(${k[1]})</span>`).join(' ')}</td></tr>`;
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+function renderYearBookHeatmap(bookYearData, topBooks) {
+    const books = topBooks.map(b => b.name);
+    const years = Object.keys(bookYearData[books[0]] || {}).sort();
+    
+    // If topBooks has fewer entries, use all available books
+    const actualBooks = bookYearData ? Object.keys(bookYearData).slice(0, 10) : [];
+    if (actualBooks.length === 0) return;
+    
+    // Collect all years
+    const allYears = new Set();
+    actualBooks.forEach(b => {
+        Object.keys(bookYearData[b]).forEach(y => allYears.add(y));
+    });
+    const sortedYears = [...allYears].sort();
+    
+    const values = [];
+    actualBooks.forEach(b => {
+        sortedYears.forEach(y => {
+            values.push(bookYearData[b][y] || 0);
+        });
+    });
+    
+    const trace = {
+        z: values, x: sortedYears, y: actualBooks.map(toKoreanBook),
+        type: 'heatmap', colorscale: [[0,'#1a237e'],[0.5,'#5c6bc0'],[1,'#ff7043']],
+        hovertemplate: '%{y} - %{x}년: %{z}<extra></extra>',
+        showscale: true, colorbar: {title:'설교 수'}
+    };
+    
+    Plotly.newPlot('chart-year-book-heatmap', [trace], {...DARK_LAYOUT, margin:{l:100,r:60,t:20,b:60}});
+}
+
+function renderPreview() {
+    if (!GLOBAL_DATA) return;
+    const sorted = [...GLOBAL_DATA].sort((a,b)=>(b.title||'').localeCompare(a.title||''));
+    const top50 = sorted.slice(0, 50);
+    
+    let html = `<table><thead><tr><th>#</th><th>본문</th><th>제목</th><th>설교자</th><th>날짜</th></tr></thead><tbody>`;
+    top50.forEach((d,i) => {
+        const bt = BIBLE_BOOKS.find(b=>b.name===d.bible_book);
+        const badgeClass = bt && bt.testament==='NT' ? 'badge badge-nt' : 'badge badge-ot';
+        const badgeText = bt ? (bt.testament==='OT' ? '구약' : '신약') : '';
+        html += `<tr><td>${i+1}</td><td><span class="${badgeClass}">${badgeText}</span> ${escapeHtml(d.passage_raw||'-')}</td><td>${escapeHtml(d.title||'-')}</td><td>${escapeHtml(d.preacher||'-')}</td><td>${escapeHtml(d.published_date||'-')}</td></tr>`;
+    });
+    html += '</tbody></table>';
+    document.getElementById('table-preview').innerHTML = html;
+}
+
+// ---- Init ----
+renderAll();
+</script>
+</body>
+</html>

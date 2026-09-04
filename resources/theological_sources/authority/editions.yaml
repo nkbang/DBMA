@@ -1,0 +1,54 @@
+# NAE Authority Registry — Editions (PRODUCTION)
+# NAE-AUTHORITY-REGISTRY-BUILD-001: Pilot-001/002 승격.
+#
+# 스키마 정본: docs/NAE_AUTHORITY_REGISTRY_DESIGN_v1.md §2.3
+# 필드명 변경(Pilot 대비): place→publication_place.
+schema_version: "1.0"
+
+editions:
+  - edition_id: WORK-DAGG-CHURCH-ORDER-001-1871
+    canonical_id: dagg_john_l_church_order_1871
+    legacy_id: ["WORK-DAGG-CHURCH-ORDER-001-1871"]
+    work_id: WORK-DAGG-CHURCH-ORDER-001
+    publication_year: 1871
+    publisher: "Bible and Publication Society"
+    publication_place: "Philadelphia"
+    edition_notes: >
+      RAW ocr.txt 실측: "Entered according to Act of Congress, in the
+      year 1871" + "PHILADELPHIA: BIBLE AND PUBLICATION SOCIETY, 530
+      ARCH STREET." (Pilot-001 승격분)
+
+  - edition_id: WORK-HISCOX-STANDARD-MANUAL-001-1890
+    canonical_id: hiscox_edward_t_standard_manual_1890
+    legacy_id: ["WORK-HISCOX-STANDARD-MANUAL-001-1890"]
+    work_id: WORK-HISCOX-STANDARD-MANUAL-001
+    publication_year: 1890
+    publisher: "American Baptist Publication Society"
+    publication_place: "Philadelphia"
+    edition_notes: >
+      RAW ocr.txt 실측: "Entered...in the year 1890...American Baptist
+      Publication Society" + "1420 Chestnut Street." (Pilot-001 승격분)
+
+  - edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    canonical_id: fuller_andrew_complete_works_1820_charlestown
+    legacy_id: ["FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820"]
+    work_id: FULLER-COMPLETE-WORKS-001
+    publication_year: 1820
+    publisher: "Anderson & Meehan, for William Collins"
+    publication_place: "Charlestown, Massachusetts"
+    edition_notes: >
+      Vol01 title page 실측(OCR 노이즈 있음, 신뢰도 중간) — Vol02-08과
+      발행처/도시/연도 전부 다름, 별도 인쇄본으로 판단(Pilot-002 승격분).
+
+  - edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    canonical_id: fuller_andrew_complete_works_1824_newhaven
+    legacy_id: ["FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE"]
+    work_id: FULLER-COMPLETE-WORKS-001
+    publication_year: "1824-1825"
+    publisher: "S. Converse"
+    publication_place: "New Haven, Connecticut"
+    edition_notes: >
+      Vol02-08 title page 전부 "NEW-HAVEN: PRINTED AND PUBLISHED BY S.
+      CONVERSE"로 일관 확인(신뢰도 높음). 연도는 volume별 1824/1825로
+      소폭 다름 — 순차 출판으로 해석, volumes.yaml에 개별 연도 기록
+      (Pilot-002 승격분).

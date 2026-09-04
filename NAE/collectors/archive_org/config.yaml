@@ -1,0 +1,87 @@
+# NAE Corpus Builder - Internet Archive Collector settings.
+# Common settings shared across future collectors (gutenberg, hathitrust, google, loc, ...).
+
+collector_version: "1.1.0"
+
+search_api_url: "https://archive.org/advancedsearch.php"
+metadata_api_url: "https://archive.org/metadata/{identifier}"
+download_url_template: "https://archive.org/download/{identifier}/{filename}"
+
+max_results: 200
+max_download: 100
+threads: 4
+retry: 3
+timeout: 30
+backoff_base: 2.0
+
+allowed_languages:
+  - english
+  - eng
+  - en
+  - latin
+  - lat
+  - german
+  - ger
+  - deu
+  - dutch
+  - dut
+  - nld
+  - french
+  - fre
+  - fra
+
+excluded_mediatypes:
+  - movies
+  - audio
+  - software
+  - collection
+  - web
+
+excluded_title_keywords:
+  - newspaper
+  - microfilm
+  - magazine scan only
+
+# Public-domain determination (see filters.is_public_domain):
+# checked in order against licenseurl / rights / possible-copyright-status / year.
+allowed_license_keywords:
+  - publicdomain
+  - public domain
+  - cc0
+  - creativecommons.org/publicdomain
+  - cc-by
+  - creativecommons.org/licenses/by/
+
+disallowed_license_keywords:
+  - in-copyright
+  - in copyright
+  - borrow
+  - restricted
+
+public_domain_rights_keywords:
+  - public domain
+  - no known copyright
+  - not in copyright
+
+# US works published before this year are treated as public domain regardless
+# of a missing/ambiguous licenseurl (US copyright term: life+70 / pre-1929 rule).
+public_domain_year_cutoff: 1929
+
+download_format_priority:
+  - pdf
+  - epub
+  - djvu
+  - txt
+
+category_keywords:
+  tracts:
+    - tract
+  journals:
+    - journal
+    - quarterly
+    - review
+    - magazine
+    - record
+  pamphlets:
+    - pamphlet
+default_category: books

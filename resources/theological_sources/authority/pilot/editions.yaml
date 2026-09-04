@@ -1,0 +1,25 @@
+# Pilot Authority Registry — Editions
+# NAE-METADATA-PILOT-001. Pilot 검증용, 전체 Corpus 미적용.
+schema_version: "1.0-pilot"
+
+editions:
+  - edition_id: WORK-DAGG-CHURCH-ORDER-001-1871
+    work_id: WORK-DAGG-CHURCH-ORDER-001
+    publication_year: 1871
+    publisher: "Bible and Publication Society (Philadelphia)"
+    edition_notes: >
+      RAW ocr.txt 실측 근거: "Entered according to Act of Congress, in the
+      year 1871" + 발행처 "PHILADELPHIA: BIBLE AND PUBLICATION SOCIETY,
+      530 ARCH STREET." 현재 RAW에는 이 1개 판본만 확인됨 — 타 판본
+      존재 여부 미확인(Edition Authority가 실제로 여러 판본을 다루는
+      사례는 이번 pilot 대상에 없음, church_order 카테고리 특성상 단일
+      판본만 확보된 것으로 보임).
+
+  - edition_id: WORK-HISCOX-STANDARD-MANUAL-001-1890
+    work_id: WORK-HISCOX-STANDARD-MANUAL-001
+    publication_year: 1890
+    publisher: "American Baptist Publication Society (Philadelphia)"
+    edition_notes: >
+      RAW ocr.txt 실측 근거: "Entered, according to Act of Congress, in
+      the year 1890, by the American Baptist Publication Society" +
+      "1420 Chestnut Street". 현재 RAW에는 이 1개 판본만 확인됨.

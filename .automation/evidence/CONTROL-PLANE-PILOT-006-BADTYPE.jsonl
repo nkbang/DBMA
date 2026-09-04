@@ -1,0 +1,1 @@
+{"transition_id":"CONTROL-PLANE-PILOT-006-BADTYPE#11574","task_id":"CONTROL-PLANE-PILOT-006-BADTYPE","from":"RECEIVED","to":"FAILED","failure_code":"VALIDATION_FAILED","actor":"automation","payload_signature":"{\"task_id\":\"CONTROL-PLANE-PILOT-006-BADTYPE\"}","execution_id":"11574","timestamp":"2026-08-17T05:05:00.007Z","reason":"task_type not authorized: production_run"}

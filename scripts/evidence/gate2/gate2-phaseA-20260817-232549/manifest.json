@@ -1,0 +1,52 @@
+{
+  "run_id": "gate2-phaseA-20260817-232549",
+  "timestamp": "2026-08-18T04:25:49Z",
+  "phase": "A",
+  "overall_status": "HOLD",
+  "total_scripts": 8,
+  "passed": 0,
+  "failed": 0,
+  "skipped": 8,
+  "steps": [
+    {
+      "script": "00_baseline.sh",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/00_baseline.sh"
+    },
+    {
+      "script": "10_packaging_audit.py",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/10_packaging_audit.py"
+    },
+    {
+      "script": "30_package_integrity.py",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/30_package_integrity.py"
+    },
+    {
+      "script": "50_runtime_smoke.py",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/50_runtime_smoke.py"
+    },
+    {
+      "script": "60_ui_pages.py",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/60_ui_pages.py"
+    },
+    {
+      "script": "61_citation_ui.py",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/61_citation_ui.py"
+    },
+    {
+      "script": "70_production_isolation.py",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/70_production_isolation.py"
+    },
+    {
+      "script": "95_evidence_verify.py",
+      "status": "SKIP",
+      "reason": "Script not found: /Users/David/DBMA/scripts/scripts/gate2/95_evidence_verify.py"
+    }
+  ]
+}

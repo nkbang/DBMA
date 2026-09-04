@@ -1,0 +1,34 @@
+{
+  "source_id": "PBC1765",
+  "legacy_source_id": "PBC1742",
+  "work": {
+    "canonical_title": "The Baptist Confession of Faith",
+    "historical_adoption_year": 1742,
+    "digital_manifestation_year": 1765,
+    "language": "en"
+  },
+  "repository": {
+    "name": "Internet Archive",
+    "queried_identifier": "plainbookofconfe00phil",
+    "returned_identifier": "NONE — item does not exist",
+    "item_url": "https://archive.org/details/plainbookofconfe00phil",
+    "metadata_url": "https://archive.org/metadata/plainbookofconfe00phil",
+    "rights_basis": "UNVERIFIED — no item found"
+  },
+  "artifacts": [],
+  "transport_validation": {
+    "preflight_status": "FAILED",
+    "error_page_detected": true,
+    "error_evidence": "HTTP 404 on item page; empty JSON {} on metadata API"
+  },
+  "content_identity": {
+    "title_marker": "UNVERIFIED",
+    "philadelphia_marker": "UNVERIFIED",
+    "imprint_1765_marker": "UNVERIFIED",
+    "status": "NOT ASSESSED — Stage B not executed"
+  },
+  "canonical_admission": "NOT_AUTHORIZED",
+  "preflight_decision": "FAILED",
+  "preflight_reason": "Expected Internet Archive identifier plainbookofconfe00phil does not resolve to any existing item. HTTP 404 on item page; empty JSON {} on metadata API.",
+  "hq_decision_requested": "C or D — Reject candidate and correct registry identifier / Escalate bibliographic ambiguity"
+}

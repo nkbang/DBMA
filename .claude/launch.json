@@ -4,8 +4,20 @@
     {
       "name": "dbma-ui",
       "runtimeExecutable": "/Users/David/envs/dbma311/bin/streamlit",
-      "runtimeArgs": ["run", "dbma_ui.py", "--server.headless", "true", "--server.port", "8520"],
-      "port": 8520
+      "runtimeArgs": ["run", "dbma_ui.py", "--server.headless", "true"],
+      "port": 8520,
+      "autoPort": true
+    },
+    {
+      "name": "nae-dashboard",
+      "url": "http://127.0.0.1:8799"
+    },
+    {
+      "name": "dbma-ui-admin",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": ["scripts/run_admin_ui.sh"],
+      "port": 8521,
+      "autoPort": true
     }
   ]
 }

@@ -1,0 +1,32 @@
+{
+  "phase": "C",
+  "c1_failed_path": {
+    "test_candidate": "cand-c1-fail-test-001",
+    "initial_state": "READY",
+    "final_state": "FAILED",
+    "result_state": "FAILED",
+    "error_type": "LLM_ERROR",
+    "error_message": "Simulated LLM connection timeout",
+    "has_error_in_metadata": true,
+    "invariant_holds": true
+  },
+  "c2_no_stuck": {
+    "queue_after_test": {
+      "FAILED": 1
+    },
+    "has_stuck_processing": false
+  },
+  "c3_retry_failed": {
+    "retry_success": true,
+    "retry_msg": "",
+    "state_after_retry": "READY",
+    "error_fields_remain": true,
+    "queue_after_retry": {
+      "READY": 1,
+      "PROCESSING": 0,
+      "EXTRACTED": 0,
+      "CONFIDENCE_CLASSIFIED": 0,
+      "FAILED": 0
+    }
+  }
+}

@@ -1,0 +1,14 @@
+=== PRE-CLEANUP INVENTORY ===
+/Users/David/DBMA/.automation/test-fixtures/phase-e/task-normal.json
+/Users/David/DBMA/.automation/test-fixtures/phase-e/check-webhook.py
+/Users/David/DBMA/.automation/tasks/TEST-CONFLICT-001.json
+/Users/David/DBMA/.automation/tasks/TEST-ILLEGAL-001.json
+/Users/David/DBMA/.automation/tasks/TEST-NORMAL-001.json
+/Users/David/DBMA/.automation/tasks/TEST-NORMAL-002.json
+/Users/David/DBMA/.automation/tasks/TEST-RACE-001.json
+/Users/David/DBMA/.automation/tasks/TEST-VALID-FAIL-001.json
+/Users/David/DBMA/.automation/evidence/TEST-NORMAL-001.jsonl
+/Users/David/DBMA/.automation/evidence/TEST-NORMAL-002.jsonl
+/Users/David/DBMA/.automation/evidence/TEST-RACE-001.jsonl
+/Users/David/DBMA/.automation/evidence/TEST-VALID-FAIL-001.jsonl
+{"status":"validation_passed","task_id":"TEST-RACE-001","state":"VALIDATION_PASSED","transition_id":"TEST-RACE-001#0065","production_mutation":false}{"status":"validation_passed","task_id":"TEST-RACE-001","state":"VALIDATION_PASSED","transition_id":"TEST-RACE-001#0062","production_mutation":false}{"status":"validation_passed","task_id":"TEST-RACE-001","state":"VALIDATION_PASSED","transition_id":"TEST-RACE-001#0063","production_mutation":false}{"status":"validation_passed","task_id":"TEST-RACE-001","state":"VALIDATION_PASSED","transition_id":"TEST-RACE-001#0066","production_mutation":false}{"status":"validation_passed","task_id":"TEST-RACE-001","state":"VALIDATION_PASSED","transition_id":"TEST-RACE-001#0064","production_mutation":false}=== END ===

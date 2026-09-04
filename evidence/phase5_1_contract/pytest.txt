@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- /Users/David/envs/dbma311/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/David/DBMA
+configfile: pyproject.toml
+plugins: anyio-4.14.0, cov-7.1.0, Faker-40.23.0, langsmith-0.9.1
+collecting ... collected 16 items
+
+tests/test_nae_benchmark_contract.py::TestLoaderValidation::test_loader_rejects_missing_benchmark_id PASSED [  6%]
+tests/test_nae_benchmark_contract.py::TestLoaderValidation::test_loader_rejects_invalid_question_type PASSED [ 12%]
+tests/test_nae_benchmark_contract.py::TestLoaderMigration::test_migration_gold_tsu_ids_top_level PASSED [ 18%]
+tests/test_nae_benchmark_contract.py::TestLoaderMigration::test_migration_gold_tsu_ids_in_expected PASSED [ 25%]
+tests/test_nae_benchmark_contract.py::TestLoaderMigration::test_migration_gold_tsu_ids_both_levels_conflict PASSED [ 31%]
+tests/test_nae_benchmark_contract.py::TestEvaluatorContract::test_evaluator_accepts_gold_tsu_ids_only PASSED [ 37%]
+tests/test_nae_benchmark_contract.py::TestEvaluatorContract::test_evaluator_rejects_removed_fields PASSED [ 43%]
+tests/test_nae_benchmark_contract.py::TestRunnerProtocol::test_runner_rejects_none_retrieval PASSED [ 50%]
+tests/test_nae_benchmark_contract.py::TestSchemaBackwardCompat::test_schema_backward_compatible PASSED [ 56%]
+tests/test_nae_benchmark_contract.py::TestSchemaBackwardCompat::test_schema_expected_dataclass_preserves_deprecated PASSED [ 62%]
+tests/test_nae_benchmark_contract.py::TestRequiredContractAssertions::test_expected_fields_do_not_affect_retrieval_metrics PASSED [ 68%]
+tests/test_nae_benchmark_contract.py::TestRequiredContractAssertions::test_empty_valid_retrieval_returns_zero_metrics PASSED [ 75%]
+tests/test_nae_benchmark_contract.py::TestRequiredContractAssertions::test_zero_gold_item_returns_zero_metrics_and_is_counted PASSED [ 81%]
+tests/test_nae_benchmark_contract.py::TestRequiredContractAssertions::test_duplicate_retrieved_ids_do_not_inflate_metrics PASSED [ 87%]
+tests/test_nae_benchmark_contract.py::TestRequiredContractAssertions::test_runner_passes_retriever_ids_to_evaluator_unchanged PASSED [ 93%]
+tests/test_nae_benchmark_contract.py::TestRequiredContractAssertions::test_no_dummy_retrieval_runtime_path PASSED [100%]
+
+============================== 16 passed in 0.04s ==============================

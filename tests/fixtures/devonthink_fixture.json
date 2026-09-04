@@ -1,0 +1,41 @@
+[
+    {
+        "item_uuid": "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+        "title": "Commentary on Romans",
+        "author": "John Calvin",
+        "path": "x-devonthink-item://A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+        "file_hash": "sha256:a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+        "ocr_applied": false,
+        "ocr_quality_score": null,
+        "page": 101,
+        "text": "The apostle Paul now turns to a critical discussion of the law and its relationship to grace. This passage has been interpreted in vastly different ways throughout church history.",
+        "tags": ["theology", "grace", "law"],
+        "doc_type": "commentary"
+    },
+    {
+        "item_uuid": "B2C3D4E5-F6A7-8901-BCDE-F12345678901",
+        "title": "OCR Scanned Manuscript",
+        "author": "Unknown Author",
+        "path": "x-devonthink-item://B2C3D4E5-F6A7-8901-BCDE-F12345678901",
+        "file_hash": "sha256:b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+        "ocr_applied": true,
+        "ocr_quality_score": 0.5,
+        "page": 42,
+        "text": "This manuscript contains fragmented text with poor OCR quality. The content is difficult to read and requires careful review.",
+        "tags": ["manuscript", "ocr"],
+        "doc_type": "manuscript"
+    },
+    {
+        "item_uuid": "C3D4E5F6-A7B8-9012-CDEF-123456789012",
+        "title": "High Quality OCR Document",
+        "author": "Test Author",
+        "path": "x-devonthink-item://C3D4E5F6-A7B8-9012-CDEF-123456789012",
+        "file_hash": "sha256:c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+        "ocr_applied": true,
+        "ocr_quality_score": 0.95,
+        "page": 200,
+        "text": "This document has excellent OCR quality. The text is clear and legible, suitable for direct use in research.",
+        "tags": ["research", "high-quality"],
+        "doc_type": "article"
+    }
+]

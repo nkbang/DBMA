@@ -1,0 +1,85 @@
+# Pilot Periodical Registry — Source Files
+# NAE-PERIODICAL-AUTHORITY-PILOT-001. Source ID 형식: "{issue_id}_s01"
+# RAW 파일 이동 없음 — file_path는 실제 RAW 위치를 참조만 한다.
+schema_version: "1.0-pilot"
+
+sources:
+  - source_id: massachusetts_baptist_missionary_magazine_v001_i001_s01
+    issue_id: massachusetts_baptist_missionary_magazine_v001_i001
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1803_v1i1/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v001_i001_s01
+    issue_id: american_baptist_missionary_magazine_v001_i001
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1817_v1i1/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v017_i007_s01
+    issue_id: american_baptist_missionary_magazine_v017_i007
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1837_v17i7/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v022_i001_s01
+    issue_id: american_baptist_missionary_magazine_v022_i001
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1842_v22i1/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v037_i010_s01
+    issue_id: american_baptist_missionary_magazine_v037_i010
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1857_v37i10/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v047_i011_s01
+    issue_id: american_baptist_missionary_magazine_v047_i011
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1867_v47i11/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v057_i009_s01
+    issue_id: american_baptist_missionary_magazine_v057_i009
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1877_v57i9/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v061_i006_s01
+    issue_id: american_baptist_missionary_magazine_v061_i006
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1881_v61i6/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v077_i009_s01
+    issue_id: american_baptist_missionary_magazine_v077_i009
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1897_v77i9/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: american_baptist_missionary_magazine_v087_i003_s01
+    issue_id: american_baptist_missionary_magazine_v087_i003
+    file_path: "NAE/corpus/raw/archive_org/missions/Baptist_Missionary_Magazine_1907_v87i3/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public

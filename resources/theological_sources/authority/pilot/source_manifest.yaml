@@ -1,0 +1,46 @@
+# NAE Metadata Manifest Pilot (Schema v2.1.0) — NAE-METADATA-PILOT-001
+# Pilot 검증용 — 기존 resources/theological_sources/baptist/source_manifest.yaml을
+# 덮어쓰지 않음. 이 파일은 별도 pilot 트리(authority/pilot/)에만 존재하며
+# 실제 검색/파이프라인에서 참조되지 않는다(운영 Manifest와 구분 —
+# NAE_PILOT_MANIFEST_FIX_REPORT_001.md §3 Filename Policy 참고).
+#
+# 2026-08-02 개정(NAE-PILOT-MANIFEST-FIX-001):
+#   - 파일명을 manifest_pilot.yaml → source_manifest.yaml로 변경 —
+#     scripts/source_validator.py가 MANIFEST_FILENAME="source_manifest.yaml"만
+#     rglob으로 탐색하므로, 이전 파일명은 validator 대상에서 아예 누락되어
+#     있었다(검증 자체가 실행되지 않음). 디렉토리 경로(authority/pilot/)가
+#     이미 운영 데이터와의 구분 역할을 하므로 파일명은 표준을 따른다.
+#   - access_control 필드 추가(v2.1.0 필수 필드 중 누락되어 있었음)
+#   - schema_version을 2.0.0 → 2.1.0으로 갱신(ADR-016 반영 스키마와 일치)
+schema_version: "2.1.0"
+
+sources:
+  - source_id: BAP-CHURCH-DAGG-001
+    author_id: dagg_john_l
+    work_id: WORK-DAGG-CHURCH-ORDER-001
+    edition_id: WORK-DAGG-CHURCH-ORDER-001-1871
+    title: "Church Order"
+    category: church_order
+    publication_year: 1871
+    source_type: reference   # §Issues Found F-P1 참고 — 4개 enum 중 PD 아카이브 자료에 정확히 맞는 값 없음, 잠정
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public   # 2026-08-02 추가 — PD 자료, 노출 제한 없음(RAW 원문 저작권 만료 확인됨)
+    citation_policy: "Dagg, John L. Church Order. Philadelphia: Bible and Publication Society, 1871."
+    tsu_access: full
+    status: ACQUIRED   # 기존 NAE_SOURCE_MANIFEST_v1.csv 값 계승
+
+  - source_id: BAP-CHURCH-HISCOX
+    author_id: hiscox_edward_t
+    work_id: WORK-HISCOX-STANDARD-MANUAL-001
+    edition_id: WORK-HISCOX-STANDARD-MANUAL-001-1890
+    title: "The Standard Manual for Baptist Churches"
+    category: church_order
+    publication_year: 1890
+    source_type: reference   # §Issues Found F-P1 참고, 동일 사유
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public   # 2026-08-02 추가, 동일 사유
+    citation_policy: "Hiscox, Edward T. The Standard Manual for Baptist Churches. Philadelphia: American Baptist Publication Society, 1890."
+    tsu_access: full
+    status: ACQUIRED

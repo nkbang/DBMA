@@ -1,0 +1,112 @@
+# DERIVED from NAE/pipeline/registration/state/source_manifest.yaml (M2).
+# Non-authoritative mirror. Do NOT hand-edit. See ADR-030 §8.3.
+schema_version: '1.2'
+sources:
+- source_id: BAP-CHURCH-DAGG-001
+  title: Church Order
+  author: John L. Dagg
+  author_id: dagg_john_l
+  work_id: dagg_john_l-church_order
+  edition_id: dagg_john_l-church_order-1871
+  year: 1871
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b
+- source_id: BAP-CHURCH-HISCOX
+  title: The Standard Manual for Baptist Churches
+  author: Edward T. Hiscox
+  author_id: hiscox_edward_t
+  work_id: hiscox_edward_t-the_standard_manual_for_baptist_churches
+  edition_id: hiscox_edward_t-the_standard_manual_for_baptist_churches-1890
+  year: 1890
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 83ee409602520d60559edd74ecb935835b2d82722e2c02a2d5052f8a12ad1471
+- source_id: BAP-MISS-FULLER-VOL01
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 1: The Gospel
+    Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_1_the_gospel_worthy_of_all_acceptation_the_duty_of_sinners_to_believe_in_jesus_christ-1820_charlestown
+  year: 1820
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 74416a8f10e1ff21b40876ea018d4a88afbbe55fd2c36ef7cc74af57ca40cb9f
+- source_id: BAP-MISS-FULLER-VOL02
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 2: The Calvinistic
+    and Socinian Systems Examined and Compared'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_2_the_calvinistic_and_socinian_systems_examined_and_compared-1824_1825_new_haven
+  year: 1824
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 352d7edff567a4f979579847d56dc2586df17ec432362685394556d1051be408
+- source_id: BAP-MISS-FULLER-VOL03
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 3: The Gospel
+    Its Own Witness'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_3_the_gospel_its_own_witness-1824_1825_new_haven
+  year: 1824
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 787e185cf4c25f1ce45ec2a9177b8e58f42de42b9ff1bc7eab0b2c8b7e2b18a1
+- source_id: BAP-MISS-FULLER-VOL04
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 4: Dialogues,
+    Letters, and Essays, on Various Subjects'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_4_dialogues_letters_and_essays_on_various_subjects-1824_1825_new_haven
+  year: 1824
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 8f4ba47eb6db7f8ee6cccce97b2e4bd8c4e45493f0a7f3b901df0ce9dd4079af
+- source_id: BAP-MISS-FULLER-VOL05
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 5: Expository
+    Discourses on the Book of Genesis'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_5_expository_discourses_on_the_book_of_genesis-1824_1825_new_haven
+  year: 1824
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 20da331a39a2f288f5782196fb7590f837178622cf98e606a70fe1558740e074
+- source_id: BAP-MISS-FULLER-VOL06
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 6: Expository
+    Discourses on the Apocalypse'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_6_expository_discourses_on_the_apocalypse-1824_1825_new_haven
+  year: 1824
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 95b2fe115f2098f37472d7a563de01ab9ca60eb30b6b0867c5a71eb6b318cef6
+- source_id: BAP-MISS-FULLER-VOL07
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 7: Sermons
+    on Various Subjects'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_7_sermons_on_various_subjects-1824_1825_new_haven
+  year: 1824
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 78cd86c9d99f71a4e5ac80690dda4cc06ed63facf0ae11eec76f0da9b83a8fa0
+- source_id: BAP-MISS-FULLER-VOL08
+  title: 'The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 8: Miscellanies:
+    Magazine Papers, Sketches of Sermons, Association Letters, Tracts'
+  author: Andrew Fuller
+  author_id: fuller_andrew
+  work_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts
+  edition_id: fuller_andrew-the_works_of_the_rev_andrew_fuller_in_eight_volumes_vol_8_miscellanies_magazine_papers_sketches_of_sermons_association_letters_tracts-1824_1825_new_haven
+  year: 1824
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: bc66c8216ee8a6fa647b1699e033faa1dab398a08d2f7c17136fbe3e17726c8c

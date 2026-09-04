@@ -1,0 +1,182 @@
+# DBMA Sermon Corpus - 수집원 설정
+# 각 출처별 수집 정책, rate limiting, 재시도 규칙
+
+default_policy:
+  user_agent: "DBMA-SermonCorpus/0.1 (academic research; contact: dbma-research@example.org)"
+  min_delay_seconds: 3.0
+  max_delay_seconds: 8.0
+  max_concurrency: 1
+  daily_request_budget: 500
+  retry:
+    max_attempts: 2
+    retryable_statuses: [408, 429, 500, 502, 503, 504]
+    stop_statuses: [401, 403, 451]
+  storage:
+    raw_jsonl: true
+    retain_days: 30
+
+sources:
+  # 설교은행 (SermonBank)
+  sermonbank:
+    enabled: true
+    source_id: sermonbank
+    mode: public_html
+    base_url: "https://sermonbank.net"
+
+    # 수집 대상 URL 패턴 (2026-07-22 실측 확인 — 그누보드 게시판,
+    # bo_table=sermon. 이전 값(/sermons, /search)은 404였음)
+    urls:
+      - "https://sermonbank.net/bbs/board.php?bo_table=sermon"
+
+    # 파서 설정 (2026-07-22 실측 — 실제 HTML에는 항목을 감싸는
+    # div/li 컨테이너가 없어 앵커(wr_id 링크) 기준 상대 탐색을
+    # sermon_corpus/collector/sermonbank.py::parse_sermon_from_html()에서
+    # 직접 구현. 아래 selectors는 문서화 목적, 실제 파싱 로직의 소스는
+    # 코드 쪽이 기준.
+    parser:
+      type: html_selector
+      selectors:
+        title: "span.f_s_list > a[href*='wr_id=']"
+        passage: "span.f_d2_6 (제목 span의 다음 형제)"
+        preacher: "tr td.f_d1_6 span.member"
+        date: "table[style*='margin:0 0 15px 0'] td.bd_sermon_L02 (텍스트 끝 YYYY-MM-DD)"
+        url: "span.f_s_list > a[href*='wr_id='] @href"
+
+    limits:
+      min_delay_seconds: 5.0
+      max_delay_seconds: 12.0
+      daily_request_budget: 300
+      # 목록 페이지가 한 페이지당 15건만 보여줘서(실측 확인) 여러 페이지를
+      # 이어서 수집한다 — 출처 URL 하나당 최대 페이지 수.
+      max_pages: 10
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/sermonbank.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_sermonbank.jsonl"
+
+  # 대형교회 유튜브 (YouTube API)
+  youtube:
+    enabled: true  # YOUTUBE_API_KEY 환경변수 설정 후 활성화
+    source_id: youtube
+    mode: api_public_metadata
+    api_endpoint: "https://www.googleapis.com/youtube/v3"
+    api_key_env: "YOUTUBE_API_KEY"
+
+    # 수집 대상 채널 목록
+    channels:
+      - "Yoido Full Gospel Church"
+      - "National Cathedral"
+      - "Elevation Church"
+      - "Hillsong Church"
+
+    search_keywords:
+      - "설교"
+      - "sermon"
+      - "word of god"
+
+    limits:
+      requests_per_minute: 60
+      min_delay_seconds: 1.0
+      max_delay_seconds: 3.0
+      daily_budget: 1000
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/youtube.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_youtube.jsonl"
+
+  # 교회 웹사이트 - 우리들교회 (2026-07-23 실측 확인)
+  # robots.txt에서 /board/G00068/(주일설교요약)는 차단 목록에 없음.
+  # 목록에는 "관리자"만 나오고 실제 설교자는 상세 본문(.cont_row)에만
+  # 있어 항목마다 상세 페이지도 함께 요청한다.
+  woori_church:
+    enabled: true
+    source_id: woori_church
+    mode: church_website
+    base_url: "https://woori.cc"
+
+    limits:
+      min_delay_seconds: 3.0
+      max_delay_seconds: 8.0
+      max_pages: 10
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/woori_church.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_woori_church.jsonl"
+
+  # 새삶교회 (saesamm.com) - 2026-07-23 실측 확인
+  # robots.txt 없음(전면 허용). 그누보드 갤러리형 스킨이며 상세 페이지
+  # table#sermon-info에 설교자/설교본문/설교날짜가 명시적으로 라벨링돼
+  # 있어 필드 구분이 명확하다.
+  saesamm:
+    enabled: true
+    source_id: saesamm
+    mode: saesamm_website
+    base_url: "https://www.saesamm.com"
+
+    limits:
+      min_delay_seconds: 3.0
+      max_delay_seconds: 8.0
+      max_pages: 10
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/saesamm.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_saesamm.jsonl"
+
+  # 만나교회 (manna.or.kr) - 2026-07-23 실측 확인
+  # WordPress "jt-" 테마. robots.txt는 GPTBot/CCBot과 wp-json/wp-admin만
+  # 차단, 일반 UA는 허용. 상세 페이지 .jt-content-header__title/__author/
+  # __time/__meta 로 제목/설교자/날짜/본문 참조가 명확히 구분된다.
+  manna:
+    enabled: true
+    source_id: manna
+    mode: manna_website
+    base_url: "https://manna.or.kr"
+
+    limits:
+      min_delay_seconds: 3.0
+      max_delay_seconds: 8.0
+      max_pages: 10
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/manna.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_manna.jsonl"
+
+  # 교회 웹사이트 (Church Websites) - 100개 교회
+  # 2026-07-23 100개 도메인 전수 재검증 결과: 40개는 DNS 자체가
+  # 없고, 나머지도 대부분 다른 기관이 점유했거나(수산물 업체, 문화원 등)
+  # JS 렌더링 사이트라 실제 존재 여부조차 확인 불가능했다 — "제목/본문
+  # 성경구절/설교자/날짜"가 실측으로 확인된 항목이 0개였다. 검증된
+  # 것만 남기기로 하여 비활성화. 실제 크롤 대상은 woori_church/
+  # saesamm/manna 처럼 하나씩 실측 검증해 개별 등록한다.
+  church:
+    enabled: false
+    source_id: church
+    mode: html_crawl
+    parser:
+      type: gnuboard
+      default_bo_table: "sermon"
+
+    limits:
+      min_delay_seconds: 5.0
+      max_delay_seconds: 12.0
+      max_items_per_church: 50
+      scrape_individual_pages: false
+
+    storage:
+      raw_path: "data/sermon_corpus/church/all_church_sermons.jsonl"
+      per_church_dir: "data/sermon_corpus/church/"
+
+  # 출판 설교집 (Publication)
+  publication:
+    enabled: false  # 추가 데이터 소스 연결 시 true로 변경
+    source_id: publication
+    mode: file_based
+    input_directory: "data/publications/"
+
+    limits:
+      batch_size: 50
+      processing_delay_seconds: 1.0
+
+    storage:
+      raw_path: "data/sermon_corpus/raw/publication.jsonl"
+      normalized_path: "data/sermon_corpus/normalized/corpus_publication.jsonl"

@@ -1,0 +1,3 @@
+tests/test_nae_benchmark_contract.py::TestLoaderMigration::test_migration_gold_tsu_ids_top_level PASSED [ 18%]
+tests/test_nae_benchmark_contract.py::TestLoaderMigration::test_migration_gold_tsu_ids_in_expected PASSED [ 25%]
+tests/test_nae_benchmark_contract.py::TestLoaderMigration::test_migration_gold_tsu_ids_both_levels_conflict PASSED [ 31%]

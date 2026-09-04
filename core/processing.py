@@ -37,6 +37,7 @@ from core.document_identity import (
     generate_chunk_id,
     build_document_metadata,
     generate_processing_timestamp,
+    guess_doc_type,
 )
 
 # [SPRINT17-Phase1-B-2] DocumentContext — additive only, not yet wired into
@@ -48,6 +49,7 @@ from core.identity_registry import (
     load_identity_registry,
     register_document,
     save_identity_registry,
+    registry_lock,
     find_by_document_id,
     find_by_file_hash,
     find_by_source_file,
@@ -291,7 +293,7 @@ DEPRECATED_FORMATS_TXT = "chunks_txt"      # DEPRECATED: will be removed in Spri
 DEPRECATED_FORMATS_META = "chunks_meta"    # DEPRECATED: will be removed in Sprint 2+
 
 
-def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap):
+def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap, quality=None):
     """[DEPRECATED for Sprint 1] — kept for backward compatibility.
 
     SPRINT 1 CANONICAL OUTPUT: {stem}.md (produced by save_md_with_language())
@@ -306,6 +308,11 @@ def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap
         chunks: List of chunk strings
         chunk_size: Chunk size parameter
         chunk_overlap: Chunk overlap parameter
+        quality: Optional core.chunking_optimizer.ChunkQuality — persisted
+            additively as meta["quality"] when provided. [2026-07-21] Added
+            so a future re-chunk (force_rechunk) has something on disk to
+            compare against before overwriting; this change only persists
+            the metric, it does not yet compare or block anything.
 
     Returns:
         tuple: (txt_path, meta_path) — None paths if SPRINT1_ONLY_MD_OUTPUT is True
@@ -328,6 +335,14 @@ def save_chunks(output_dir, stem, source_name, chunks, chunk_size, chunk_overlap
         "chunk_size": chunk_size,
         "chunk_overlap": chunk_overlap,
     }
+    if quality is not None:
+        meta["quality"] = {
+            "avg_noise": quality.avg_noise,
+            "max_noise": quality.max_noise,
+            "avg_dup": quality.avg_dup,
+            "short_ratio": quality.short_ratio,
+            "passed": quality.passed,
+        }
     validation = validate_chunks(chunks, meta)
 
     if not validation.valid:
@@ -394,8 +409,18 @@ def mark_processed(output_dir: str, filename: str):
 
 # ── 핵심 처리 함수 ─────────────────────────────────────
 
-def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None):
-    """단일 파일 처리 (업그레이드 v2 — 검증 + 리트라이 + 배치 상태)"""
+def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_rechunk=False):
+    """단일 파일 처리 (업그레이드 v2 — 검증 + 리트라이 + 배치 상태)
+
+    force_rechunk: True면 classify_ingest_decision()이 SKIP(콘텐츠 해시
+    동일)을 반환해도 무시하고 청킹까지 전부 다시 실행한다. 청킹
+    알고리즘 자체가 바뀌어 기존 문서를 새 로직으로 재청킹해야 할 때만
+    쓴다 — "강제 재처리"(force_reingest, process_batch()의 파일명 게이트
+    우회)와는 별개다. 둘은 절대 혼동하면 안 된다
+    (tests/test_process_batch_force_reingest.py 참고): force_reingest는
+    "이 파일명을 다시 시도하라"는 뜻이고, force_rechunk는 "내용이
+    같아도 청킹 로직을 다시 돌려라"는 뜻이다.
+    """
     logs = []
     metrics = {}
     artifacts = {}
@@ -544,6 +569,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         if decision == "PROCESS" and existing_record is None:
             _prior_version = find_by_source_file(_registry, source_name)
 
+        if decision == "SKIP" and force_rechunk:
+            # 콘텐츠는 동일하지만 청킹 로직을 강제로 다시 돌린다 — REPROCESS와
+            # 동일한 하위 경로(전체 저장+청킹)로 흘려보내되, 로그 문구만
+            # 구분한다. document_id/file_hash가 기존 레코드와 같으므로
+            # register_document()가 새 레코드를 만들지 않고 같은 레코드를
+            # 갱신한다(orphan 없음).
+            emit("force_rechunk", f"FORCE RECHUNK (content unchanged): {source_name}", 1.0, level="warn")
+            decision = "REPROCESS"
+
         if decision == "SKIP":
             _prev_src = existing_record.get("source_file", "") if existing_record else ""
             emit("skip", f"UNCHANGED: {_prev_src or source_name}", 1.0, level="ok")
@@ -567,6 +601,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                 _document_context.ingest_status = existing_record.get("ingest_status", _document_context.ingest_status)
                 _document_context.retry_count = existing_record.get("retry_count", _document_context.retry_count)
                 _document_context.last_failure_reason = existing_record.get("last_failure_reason")
+                _document_context.doc_type = existing_record.get("doc_type")
                 if "pipeline_flags" in existing_record:
                     _document_context.pipeline_flags = dict(existing_record["pipeline_flags"])
                 # [SPRINT21-B Phase1] SKIP means content unchanged — carry the
@@ -603,6 +638,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                 ])
                 _md_path.write_text("\n".join(_fm), encoding="utf-8")
             artifacts = {**artifacts, "md_path": str(_md_path)}
+            # [2026-07-21 fix] SKIP means "this exact content is already
+            # represented in the TSU dataset under a prior filename" — it
+            # is still a resolved outcome for *this* filename, not an
+            # unfinished one. Without this, a duplicate/re-scanned file
+            # (same content hash, different name) never entered
+            # .batch_state.json's processed set and stayed in
+            # ui/pages/processing.py's queue forever, even though nothing
+            # further needs to happen for it.
+            mark_processed(output_dir, source_name)
             return {"success": True, "skipped": True, "ingest_decision": "SKIP", "logs": logs, "metrics": metrics, "artifacts": artifacts}
 
         if decision == "RETRY":
@@ -636,6 +680,14 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # [SPRINT15-DEBUG] save_md_with_language 호출 전
         logger.info("[SPRINT15-DEBUG] BEFORE save_md_with_language | file=%s output_dir=%s stem=%s", source_name, output_dir, stem)
 
+        # [2026-07-24] 유형 구분 — 유형마다 이후 처리(청킹 방식 등)가
+        # 달라져야 하므로, 정제 직후·청킹 이전에 별도 단계로 확정한다.
+        # 순서: 추출 → 정제 → **유형 구분** → 청킹. 매칭되는 키워드가
+        # 없으면 "기타"로 떨어뜨려 "미분류" 상태로 방치하지 않는다.
+        emit("classify", f"유형 구분 시작: {source_name}", 0.43)
+        doc_type = guess_doc_type(final_text, source_name, extracted_title)
+        emit("classify_done", f"유형 구분 완료: {doc_type}", 0.44)
+
         # [PT-PROCESSING-008] Complete Document Metadata (Point C) - define before use
         document_meta = build_document_metadata(
             content=final_text, source_file=source_name,
@@ -643,6 +695,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             noise_mode=noise.get("mode", "-"), source_type=ext,
             is_ocr=is_ocr, chunk_count=0,  # Will be updated after chunking
             title=extracted_title, author=extracted_author,
+            doc_type=doc_type,
         )
 
         md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language, document_meta)
@@ -714,7 +767,10 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         validation = validate_chunks(chunks, meta)
         emit("validate_done", f"청크 검증 결과: {validation.summary()}", 0.80)
 
-        txt_path, meta_path = save_chunks(output_dir, stem, source_name, chunks, chunk_size_used, chunk_overlap_used)
+        txt_path, meta_path = save_chunks(
+            output_dir, stem, source_name, chunks, chunk_size_used, chunk_overlap_used,
+            quality=chunk_result.quality if chunk_result is not None else None,
+        )
         if SPRINT1_ONLY_MD_OUTPUT:
             emit("save_chunks_done", f"[SPRINT1-DEPRECATED] Deprecated outputs skipped (canonical: {stem}.md)", 0.85)
         else:
@@ -741,6 +797,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         _document_context.source_type = ext
         _document_context.is_ocr = is_ocr
         _document_context.chunk_count = len(chunks)
+        _document_context.doc_type = doc_type
         # [SPRINT21-B Phase1] extraction + chunking complete.
         set_pipeline_state(_document_context, "EXTRACTED")
         # [SPRINT17-Phase2-B] registered_at is a distinct concept from
@@ -759,37 +816,51 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # at this point (still used at Point C-1 for save_md_with_language()).
         document_meta = _document_context.to_metadata_dict()
 
-        # ── [PT-PROCESSING-012] Update content hash on success ──────
-        _hash_updated = update_content_hash(_registry, document_id, file_hash)
+        # ── [PT-PROCESSING-012/RACE-FIX] Persist identity registry ──
+        # _registry was loaded at the top of this function (for the
+        # PROCESS/SKIP/REPROCESS decision) and may now be stale relative
+        # to concurrent writers (the background reconciler thread saves
+        # to the same file on its own timer — see registry_lock()'s
+        # docstring). Re-load fresh under the lock immediately before
+        # mutating, so this save can never clobber a concurrent one.
+        # existing_record/_prior_version were only used above to decide
+        # *what* to do (PROCESS vs REPROCESS) and are referenced below
+        # only by document_id (a stable content hash), so reloading here
+        # does not invalidate them.
+        with registry_lock(registry_path):
+            _registry = load_identity_registry(registry_path)
 
-        # ── [PT-PROCESSING-010-C/012] Persist identity registry ────
-        record, is_new = register_document(_registry, document_meta, output_dir)
+            # ── [PT-PROCESSING-012] Update content hash on success ──
+            _hash_updated = update_content_hash(_registry, document_id, file_hash)
 
-        # [SPRINT21-G-2 Option C] Link the edited document to the prior
-        # version found above, now that the new record actually exists in
-        # the registry. document_id/content of either record is untouched.
-        if _prior_version is not None and is_new:
-            mark_superseded(_registry, _prior_version["document_id"], document_id)
-            emit(
-                "supersede",
-                f"이전 버전 대체: {_prior_version['document_id'][:16]}... → {document_id[:16]}...",
-                0.99, level="warn",
-            )
+            record, is_new = register_document(_registry, document_meta, output_dir)
 
-        persisted_ok = save_identity_registry(_registry, registry_path)
+            # [SPRINT21-G-2 Option C] Link the edited document to the prior
+            # version found above, now that the new record actually exists
+            # in the registry. document_id/content of either record is
+            # untouched.
+            if _prior_version is not None and is_new:
+                mark_superseded(_registry, _prior_version["document_id"], document_id)
+                emit(
+                    "supersede",
+                    f"이전 버전 대체: {_prior_version['document_id'][:16]}... → {document_id[:16]}...",
+                    0.99, level="warn",
+                )
 
-        # ── [SPRINT2] Set pipeline completion flags on successful persist ──
-        _pipeline_flags_set = False
-        if persisted_ok and record:
-            updated = update_pipeline_flags(
-                _registry, document_id,
-                {"ingested": True, "copied": True, "extracted": True,
-                 "cleaned": True, "chunked": True, "output_generated": True,
-                 "verified": True},
-            )
-            if updated:
-                save_identity_registry(_registry, registry_path)
-                _pipeline_flags_set = True
+            persisted_ok = save_identity_registry(_registry, registry_path)
+
+            # ── [SPRINT2] Set pipeline completion flags on successful persist ──
+            _pipeline_flags_set = False
+            if persisted_ok and record:
+                updated = update_pipeline_flags(
+                    _registry, document_id,
+                    {"ingested": True, "copied": True, "extracted": True,
+                     "cleaned": True, "chunked": True, "output_generated": True,
+                     "verified": True},
+                )
+                if updated:
+                    save_identity_registry(_registry, registry_path)
+                    _pipeline_flags_set = True
 
         if persisted_ok:
             emit("identity_persist", f"Identity registered: {document_id[:16]}..." if is_new else "Identity synced to registry", 0.98)
@@ -864,7 +935,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage or "unexpected", "reason": _failure_reason}
 
 
-def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_reingest=False):
+def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_reingest=False, force_rechunk=False):
     """배치 처리 (업그레이드 v2 — 중복 파일 제외 + 배치 상태 추적)
 
     [SPRINT21-G-3-B Gap#3 fix] force_reingest=True면 .batch_state.json
@@ -873,6 +944,11 @@ def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_
     _build_file_list()의 1차 필터만 우회하고 이 함수의 독립적인 2차
     필터(get_processed_files())에 다시 걸려 무조건 스킵되는 구조적
     결함이 있었다(실측 확정: force_reingest 의도와 무관하게 skipped=True).
+
+    force_rechunk=True면 process_one_file()의 콘텐츠 해시 SKIP까지 우회한다
+    (청킹 알고리즘 변경 후 전체 재청킹용, 2026-07-21 도입). force_reingest와
+    별개 파라미터 — 이 함수 자신은 두 값을 그대로 각자의 역할로 전달할 뿐,
+    서로 대신하지 않는다.
     """
     logger.info("[SPRINT1] ingestion start: %d files", len(file_list))
     processed_set = set() if force_reingest else get_processed_files(output_dir)
@@ -885,7 +961,7 @@ def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_
             results.append({"success": True, "logs": logs, "metrics": {}, "artifacts": {}, "skipped": True})
             continue
 
-        result = process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report)
+        result = process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report, force_rechunk=force_rechunk)
         results.append(result)
 
     logger.info("[SPRINT1] ingestion end: %d files processed", len(results))

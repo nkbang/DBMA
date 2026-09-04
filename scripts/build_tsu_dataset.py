@@ -16,6 +16,12 @@ re-export한다. 기존에 `from scripts.build_tsu_dataset import ...` 또는
 Usage:
     python -m scripts.build_tsu_dataset --output-dir output
     python -m scripts.build_tsu_dataset --output-dir output --dry-run
+
+    # [docs/NAE_DATA_ARCHITECTURE.md §3] --dataset-path lets a caller point
+    # at a non-default registry (e.g. a NAE-scoped output-dir) without
+    # overwriting the shared production TSU dataset at DEFAULT_TSU_DATASET_PATH
+    # — omitting the flag preserves the exact prior behavior.
+    python -m scripts.build_tsu_dataset --output-dir data/nae/processed --dataset-path output/nae/bench/tsu_dataset.jsonl
 """
 
 from __future__ import annotations
@@ -50,12 +56,22 @@ from core.tsu_builder import (  # noqa: F401
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build TSU v1 dataset from the identity registry.")
     parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR, help=f"Processing output directory (default: {DEFAULT_OUTPUT_DIR})")
+    parser.add_argument(
+        "--dataset-path",
+        default=DEFAULT_TSU_DATASET_PATH,
+        help=(
+            f"TSU dataset output path (default: {DEFAULT_TSU_DATASET_PATH}). "
+            "Override this when --output-dir points at a non-default registry "
+            "(e.g. a NAE-scoped output-dir) so the write does not collide with "
+            "the shared production TSU dataset — see docs/NAE_DATA_ARCHITECTURE.md §3."
+        ),
+    )
     parser.add_argument("--dry-run", action="store_true", help="Build in memory only; do not write files")
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
     registry_path = Path(registry_path_for(args.output_dir))
-    dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
+    dataset_path = Path(args.dataset_path)
     manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
 
     registry = load_identity_registry(str(registry_path))

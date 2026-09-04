@@ -27,8 +27,10 @@ import streamlit as st
 
 from core.config import DEFAULT_TSU_MANIFEST_PATH
 from core.retrieval import QueryProcessor
+from core.hybrid_candidate_pipeline import HybridQueryProcessor, is_enabled
 
 _SESSION_KEY = "shared_query_processor"
+_ENGINE_KIND_KEY = "shared_query_processor_engine_kind"
 _FINGERPRINT_KEY = "shared_query_processor_dataset_sha256"
 _LATENCY_KEY = "query_latencies_ms"
 _LATENCY_HISTORY_CAP = 200
@@ -45,9 +47,22 @@ def _current_dataset_fingerprint() -> Optional[str]:
         return None
 
 
-def get_shared_query_processor() -> QueryProcessor:
-    """One RetrievalEngine instance per session, recreated whenever the
+def get_shared_query_processor():
+    """One retrieval engine instance per session, recreated whenever the
     TSU dataset on disk has changed since it was created.
+
+    [DBMA-SEARCH-INFRA-001 Phase 2-6] Also returns `HybridQueryProcessor`
+    instead of `core.retrieval.QueryProcessor` when the `USE_INVERTED_INDEX`
+    env var is set — the single call site both ui/pages/chat.py and
+    ui/pages/research.py already go through, so neither file needed a
+    change. Both classes expose the same `.process(query, query_id, k,
+    file_scope)` -> `ResponsePackage` interface. Falls back to the existing
+    `QueryProcessor` path unchanged when the flag is off (default).
+
+    [P4-1] Toggle priority: session-state engine_kind > env var (is_enabled).
+    When the user has explicitly selected an engine via the Monitor toggle,
+    that selection becomes the authoritative source. The env var is only used
+    as the initial default when no session-state value exists yet.
 
     Manifest missing/unreadable does not force a recreate on every call
     (fingerprint stays None across calls, comparing equal) — avoids
@@ -56,11 +71,20 @@ def get_shared_query_processor() -> QueryProcessor:
     fingerprint = _current_dataset_fingerprint()
     cached_fingerprint = st.session_state.get(_FINGERPRINT_KEY)
 
-    if _SESSION_KEY not in st.session_state or (
-        fingerprint is not None and fingerprint != cached_fingerprint
+    # P4-1: session-state가 우선 (authoritative), 없으면 env var(is_enabled)
+    cached_engine_kind = st.session_state.get(_ENGINE_KIND_KEY)
+    if cached_engine_kind is not None:
+        engine_kind = cached_engine_kind  # toggle 선택이 authoritative
+    else:
+        engine_kind = "hybrid" if is_enabled() else "legacy"  # 초기값
+
+    if (
+        _SESSION_KEY not in st.session_state
+        or (fingerprint is not None and fingerprint != cached_fingerprint)
     ):
-        st.session_state[_SESSION_KEY] = QueryProcessor()
+        st.session_state[_SESSION_KEY] = HybridQueryProcessor() if engine_kind == "hybrid" else QueryProcessor()
         st.session_state[_FINGERPRINT_KEY] = fingerprint
+        st.session_state[_ENGINE_KIND_KEY] = engine_kind
 
     return st.session_state[_SESSION_KEY]
 

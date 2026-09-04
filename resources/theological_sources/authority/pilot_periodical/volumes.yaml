@@ -1,0 +1,56 @@
+# Pilot Periodical Registry — Volumes
+# NAE-PERIODICAL-AUTHORITY-PILOT-001. Volume ID 형식: "{periodical_id}_v{NNN}"
+# (3자리 — 정기간행물은 수십~수백 volume까지 갈 수 있어 ADR-017의 monograph
+# 2자리(v{NN})보다 넓은 폭 채택. ID Governance 검토 §3 참고.)
+schema_version: "1.0-pilot"
+
+volumes:
+  - volume_id: massachusetts_baptist_missionary_magazine_v001
+    periodical_id: massachusetts_baptist_missionary_magazine
+    volume_number: 1
+    notes: "RAW 디렉토리명(v1i1) 기준, 1803."
+
+  - volume_id: american_baptist_missionary_magazine_v001
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 1
+    notes: "New Series Vol I, 1817."
+
+  - volume_id: american_baptist_missionary_magazine_v017
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 17
+    notes: "1837."
+
+  - volume_id: american_baptist_missionary_magazine_v022
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 22
+    notes: "1842."
+
+  - volume_id: american_baptist_missionary_magazine_v037
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 37
+    notes: "1857."
+
+  - volume_id: american_baptist_missionary_magazine_v047
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 47
+    notes: "1867."
+
+  - volume_id: american_baptist_missionary_magazine_v057
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 57
+    notes: "1877."
+
+  - volume_id: american_baptist_missionary_magazine_v061
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 61
+    notes: "1881."
+
+  - volume_id: american_baptist_missionary_magazine_v077
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 77
+    notes: "1897."
+
+  - volume_id: american_baptist_missionary_magazine_v087
+    periodical_id: american_baptist_missionary_magazine
+    volume_number: 87
+    notes: "1907."

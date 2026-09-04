@@ -1,0 +1,41 @@
+{
+  "task_id": "AUTONOMOUS-NIGHT-SHIFT-001-CUE-PARALLEL-PILOT",
+  "parent_task_id": "CONTROL-PLANE-GENERALIZATION-001",
+  "decision": "CONDITIONAL PASS",
+  "scope": "CUE's independent, isolated parallel pilot of the 12-item autonomous night-shift control plane Rev. Bang specified (2026-08-17), covering the same ground C1 was separately tasked with via C1-TASK-ORDER-AUTONOMOUS-NIGHT-SHIFT-001.md. Distinct namespace/artifacts from C1's track -- no interference. Still fully isolated: task_id prefix CONTROL-PLANE-PILOT-, namespace control-plane-pilot, zero production contact.",
+  "gate_matrix": {
+    "G1_task_contract": "PASS",
+    "G2_queue": "PASS",
+    "G3_authorization": "PASS",
+    "G4_executor_isolation": "PASS",
+    "G5_signature": "PASS",
+    "G6_duplicate_conflict": "PASS",
+    "G7_dependency": "PASS",
+    "G8_heartbeat": "PASS",
+    "G9_crash_recovery": "PASS",
+    "G10_evidence_integrity": "PASS",
+    "G11_production_isolation": "PASS",
+    "G12_end_to_end_night_simulation": "PASS",
+    "overall": "CONDITIONAL PASS",
+    "human_retry_verification": "DEFERRED (same open item as CONTROL-PLANE-GENERALIZATION-001 -- unchanged this round)",
+    "production_integration": "NOT AUTHORIZED",
+    "corpus_factory_integration": "NOT AUTHORIZED"
+  },
+  "reason": "Each gate verified by direct execution and file inspection:\n\nG1 Task Contract: PASS. task-contract.schema.json (additive, not touching Approved schema.json) extended with depends_on. field_contract entry documents fail-closed semantics.\n\nG2 Queue: PASS. Task-file-as-queue-item pattern reused from the prior pilot (glob over CONTROL-PLANE-PILOT-*.json, filtered by automation.state). No new queue directory was introduced beyond what already existed and was already proven -- kept minimal rather than adding an unused second queue mechanism.\n\nG3 Authorization: PASS. authorized_by enforced at the gateway (extended Schema Validation Code node from the prior task, unchanged this round, re-verified still present).\n\nG4 Executor Isolation: PASS. check_isolation_contract() unchanged and still independently enforced (carried over from CONTROL-PLANE-GENERALIZATION-001).\n\nG5 Signature: PASS. read_canonical_payload_signature() propagation unchanged and reused for every new evidence entry this round, including the hand-crafted crash-simulation fixture's continuation entry (both share one payload_signature, verified in evidence file).\n\nG6 Duplicate/Conflict: PASS by continuity -- no change to this logic this round; not independently re-executed as a fresh test since G5 evidence already exercises the identical code path.\n\nG7 Dependency (NEW): PASS. dependencies_satisfied() implemented and proven live: CONTROL-PLANE-PILOT-011-DEPENDENT (depends_on=[010-BASE]) was submitted to the gateway BEFORE 010-BASE existed at all -- executor run #1 logged 'skip ... waiting on dependencies [CONTROL-PLANE-PILOT-010-BASE]' (task file untouched, still VALIDATION_PASSED, no false progress). After 010-BASE was submitted and executor run #2 processed both in one pass (010 first alphabetically, then 011's dependency check re-read the just-updated state and found it satisfied) -- both ended COMPLETED.\n\nG8 Heartbeat (NEW): PASS. write_heartbeat() called at PROCESSING entry, file written to .automation/night-shift/heartbeats/<task_id>.json with task_id/exec_id/last_beat.\n\nG9 Crash Recovery (NEW): PASS. CONTROL-PLANE-PILOT-012-CRASH-SIM was hand-crafted with automation.state=PROCESSING and a heartbeat backdated 60s (fixture explicitly labeled actor=SIMULATED-CRASH-FIXTURE in its evidence entry, never to be mistaken for real executor output) to simulate a worker that died mid-run. detect_and_recover_stale_workers(), called at the start of the next --once invocation, measured heartbeat age=73.2s > STALE_THRESHOLD_S=10s, wrote a PROCESSING->FAILED evidence entry with failure_code=STALE_WORKER_TIMEOUT, and updated the task file -- all BEFORE the main task-processing loop ran, so the stale task was never picked up and actually executed (confirmed: no stdout/stderr/exit_code files exist for 012-CRASH-SIM in the executor's evidence directory, proving run_pilot_command() was never called for it). Critically, nothing promoted it onward to RETRY_PENDING -- it stopped at FAILED, terminal, human-retry-only per ADR-022 Section 8.\n\nG10 Evidence Integrity: PASS. All new evidence entries (010, 011, 012's recovery entry) carry unique transition_ids via the same next_exec_id() sequence-counter fix already validated last round; spot-checked, no collisions.\n\nG11 Production Isolation: PASS, reconfirmed after all G7-G9 additions: pilot_executor.py's only imports are argparse/json/subprocess/time/datetime/pathlib (grep-verified, zero NAE.*/core.* references). NAE/pipeline/registration/state/registration_state.json SHA256 unchanged (f2b907cb...c297d9, identical across this entire task). 'Phase E State Machine' (Approved, id 9qIO3nFeWRia28Rb) re-exported and reconfirmed still 23 nodes -- untouched. git status outside .automation/ unchanged from the pre-existing ADR-025 baseline (same 41-line diff count as every prior check this session).\n\nG12 End-to-End Night Simulation: PASS. Full synthetic batch executed for real: happy path (multiple tasks from the prior round, still COMPLETED), a genuine dependency-blocked-then-unblocked chain (010->011), a genuine crash-and-recovery case (012), and a generated morning summary (.automation/night-shift/logs/morning-summary-2026-08-17T052146000Z.md) correctly tallying 6 COMPLETED / 4 FAILED across all 10 pilot tasks accumulated so far in this namespace, each with its correct failure_code where applicable.\n\nOne grep hit for the literal string 'RETRY_PENDING' exists in pilot_executor.py -- it is a docstring/comment explaining why no such transition is implemented, not executable logic; confirmed by reading the surrounding code, not just the grep count.\n\nAbsolute prohibitions re-checked against Rev. Bang's C1 order (same prohibitions apply to CUE's parallel track): core/retrieval.py untouched, data/제련완성본/ not accessed, production Qdrant not touched, production registration_state.json unchanged (hash), Fuller Vol.02-08 not referenced, no Approved workflow modified, ADR-025 not touched, no auto-retry implemented.",
+  "evidence_paths": [
+    ".automation/control-plane/task-contract.schema.json",
+    ".automation/night-shift/pilot_executor.py",
+    ".automation/tasks/CONTROL-PLANE-PILOT-010-BASE.json",
+    ".automation/tasks/CONTROL-PLANE-PILOT-011-DEPENDENT.json",
+    ".automation/tasks/CONTROL-PLANE-PILOT-012-CRASH-SIM.json",
+    ".automation/evidence/CONTROL-PLANE-PILOT-010-BASE.jsonl",
+    ".automation/evidence/CONTROL-PLANE-PILOT-011-DEPENDENT.jsonl",
+    ".automation/evidence/CONTROL-PLANE-PILOT-012-CRASH-SIM.jsonl",
+    ".automation/night-shift/heartbeats/CONTROL-PLANE-PILOT-012-CRASH-SIM.json",
+    ".automation/night-shift/logs/pilot-executor.log",
+    ".automation/night-shift/logs/morning-summary-2026-08-17T052146000Z.md"
+  ],
+  "timestamp": "2026-08-17T05:25:00Z",
+  "reviewer": "CUE",
+  "next_action": "CUE's own parallel pilot of the 12 gates is complete (CONDITIONAL PASS, same G7/G9-adjacent human-retry item deferred as in the prior round -- no live human-triggered retry was performed here either). This does NOT constitute review of C1's separately-tasked submission (C1-TASK-ORDER-AUTONOMOUS-NIGHT-SHIFT-001.md) -- C1 has not yet reported back. When C1 submits its evidence, CUE will independently re-audit it against this same 12-gate framework, using this pilot's experience (especially the transition_id-uniqueness and payload_signature-propagation defects found and fixed across the last two rounds) as known failure modes to check for. Production integration and Corpus Factory integration remain NOT AUTHORIZED regardless of C1's or CUE's pilot results, pending Rev. Bang's separate authorization."
+}

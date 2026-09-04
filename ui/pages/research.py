@@ -1,193 +1,266 @@
-"""DBMA Design System — Research Workspace Page.
+"""DBMA Design System — Research Workspace Page (Stitch Style).
 
 Search, retrieval, and document analysis interface for research workflow.
 Connects UI to production Retrieval Engine (core/retrieval.py).
+
+Stitch-style redesign:
+- Rounded search bar with AI-powered suggestions
+- Insight cards for query analysis
+- Card-based result display with score badges
+- Session management with expandable history
 """
 
-from typing import Optional
+import logging
+import os
+import html
+from dataclasses import dataclass
+from typing import Any, Optional
 
 import streamlit as st
 from pathlib import Path
 
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
-from ui.components.tables import search_results_table
 from ui.state.store import StateStore
 from core.config import DEFAULT_OUTPUT_DIR
 
+logger = logging.getLogger(__name__)
+
 # Production retrieval imports (LOOP 3 — binding)
-from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate
+from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate, Citation
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
+from ui.components.citation_card import render_citation_card
+from ui.pages.chat import generate_answer, _is_low_confidence, _render_low_confidence_warning
 
+# [DBMA-SEARCH-INFRA-001 HQ 제안 ⑨] Top1/Top5 click tracking — only
+# meaningful when USE_INVERTED_INDEX routes through HybridQueryProcessor
+# (core.retrieval.QueryProcessor's ResponsePackage has no telemetry_query_id,
+# so _record_result_click() below no-ops for the legacy path).
+from core.search_telemetry import open_telemetry
+
+
+def _record_result_click(tsu_id: str, rank: int) -> None:
+    response_obj = st.session_state.get("research_response")
+    query_record_id = getattr(response_obj, "telemetry_query_id", None)
+    if query_record_id is None:
+        return
+    try:
+        telemetry = open_telemetry()
+        telemetry.record_click(query_record_id, tsu_id=tsu_id, rank=rank)
+        telemetry.close()
+    except Exception:
+        pass  # telemetry is best-effort — never block the click itself
+
+
+# ── Data Classes ────────────────────────────────────────────────
+
+@dataclass
+class SearchResultCard:
+    """Search result card configuration."""
+    rank: int
+    title: str
+    score: float
+    doc_type: str
+    snippet: str
+    source: str
+    source_file: str = ""
+    document_id: str = ""
+    tsu_id: str = ""
+    verse_mapping: str = ""
+    explanation: str = ""
+    bm25_score: float = 0.0
+    vector_score: float = 0.0
+    theological_score: float = 0.0
+
+
+@dataclass
+class QueryInsight:
+    """Query analysis insight card."""
+    title: str
+    icon: str
+    content: str
+    color: str = THEME.TEXT_LINK
+
+
+# ── Style Functions ─────────────────────────────────────────────
+
+def _apply_research_styles() -> None:
+    """연구하기 워크스페이스 Stitch 화면 스타일 — 둥근 검색창, AI 인사이트 카드.
+
+    UX-006 Deliverable 3 — Spacing/Accessibility 보완 (2026-08-20):
+    - padding 16px → 24px (SPACING_XL 통일)
+    - margin-bottom 12px → 16px (SPACING_LG 통일)
+    - 포커스 표시 box-shadow 2px → 4px 확대 (WCAG 2.1 AA 대비)
+    """
+    st.markdown(
+        f"""
+        <style>
+        /* Rounded search textarea */
+        div[data-testid="stTextArea"] textarea {{
+            border-radius: 16px !important;
+            border-color: {THEME.BORDER_MEDIUM} !important;
+            font-family: 'Source Serif 4', serif;
+            font-size: 15px;
+            padding: 24px 24px;
+        }}
+        div[data-testid="stTextArea"] textarea:focus {{
+            border-color: {THEME.BRAND_PRIMARY} !important;
+            box-shadow: 0 0 0 4px {THEME.BRAND_PRIMARY}33 !important;
+            outline: 2px solid {THEME.BRAND_PRIMARY} !important;
+        }}
+
+        /* Insight cards — spacing 통일 (UX-006 Deliverable 3) */
+        .research-insight-card {{
+            background: {THEME.TEXT_LINK}14;
+            border: 1px solid {THEME.TEXT_LINK}33;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }}
+
+        /* Session cards — spacing 통일 */
+        .research-session-card {{
+            background: {THEME.BG_SURFACE};
+            border: 1px solid {THEME.BORDER_LIGHT};
+            border-radius: 8px;
+            padding: 16px 24px;
+            margin-bottom: 12px;
+        }}
+
+        /* Expander styling */
+        div[data-testid="stExpander"] {{
+            border: 1px solid {THEME.BORDER_LIGHT} !important;
+            border-radius: 12px !important;
+        }}
+
+        /* Metric cards */
+        [data-testid="stMetric"] {{
+            background-color: {THEME.BG_SURFACE};
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid {THEME.BORDER_LIGHT};
+        }}
+
+        /* Divider styling */
+        hr {{
+            margin: 1.5rem 0 !important;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# ── Main Render Function ───────────────────────────────────────
 
 def render_research_page() -> None:
-    """Render the DBMA Research Workspace page."""
-    # [SPRINT27-E] One research session per browser visit (ADR-005 §1) —
-    # created once and reused across saves within this session_state; a
-    # page reload clears session_state and starts a new research session.
+    """Render the DBMA Research Workspace page (Stitch style)."""
+    _apply_research_styles()
+    
+    # [SPRINT27-E] One research session per browser visit (ADR-005 §1)
     if "research_session_id" not in st.session_state:
         st.session_state["research_session_id"] = create_session()
 
-    page = BasePage(title="Research Workspace", icon="🔬")
-    page.render_header()
-
-    # ── Search Interface ───────────────────────────────────────
-    page.render_section("검색", icon="🔍")
-    _render_search_interface()
-
-    # ── Search Results ─────────────────────────────────────────
-    page.render_section("검색 결과", icon="📊")
-    _render_search_results()
-
-    # ── Query Analysis ─────────────────────────────────────────
-    page.render_section("쿼리 분석", icon="📈")
-    _render_query_analysis()
-
-    page.render_footer()
-
-
-def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object | None, str]:
-    """
-    Execute a research query through the production Retrieval Engine.
-
-    This is the primary binding function connecting Research UI to core/retrieval.py.
-
-    Args:
-        query: User's research query string.
-        top_k: Number of results to return.
-
-    Returns:
-        (results_list, response_object, status_message) tuple.
-        On success: ([formatted_results], ResponsePackage, "검색 완료")
-        On error/empty: ([], None, "에러: {message}" or "쿼리를 입력하세요")
-    """
-    # Validate query
-    if not query or not query.strip():
-        return [], None, "쿼리를 입력하세요"
-
-    query = query.strip()
-
-    try:
-        # [SPRINT17-Phase5-M1b-2.1] Shared across all pages that need a
-        # QueryProcessor (Research, Chat) — one RetrievalEngine instance
-        # per session instead of one per page. [SPRINT21-G Gap#1] recreated
-        # automatically when the TSU dataset on disk changes — see
-        # ui/state/query_processor.py.
-        processor: QueryProcessor = get_shared_query_processor()
-
-        # Execute retrieval pipeline
-        response = processor.process(query, query_id="research-ui", k=top_k)
-        record_query_latency(response.performance_metrics.total_ms)
-
-        # Check for results
-        if not response.top_k_results:
-            return [], None, f"결과 없음 (쿼리: {query})"
-
-        # Format candidates for UI display
-        results = []
-        for candidate in response.top_k_results:
-            formatted = _format_candidate(candidate, response.parsed_query)
-            results.append(formatted)
-
-        return results, response, f"검색 완료 ({len(results)}개 결과)"
-
-    except FileNotFoundError as e:
-        return [], None, f"에러: TSU 데이터셋을 찾을 수 없습니다 — {str(e)}"
-    except Exception as e:
-        return [], None, f"에러: 검색 실행 중 오류 발생 — {str(e)}"
-
-
-def _format_candidate(candidate: RankedCandidate, parsed_query) -> dict:
-    """
-    Map a production RankedCandidate to UI display format.
-
-    Transforms core/retrieval.py data models into the dictionary format
-    expected by search_results_table() component.
-    """
-    # Build verse reference string from metadata
-    vm = candidate.metadata.get("verse_mapping", {})
-    if vm and vm.get("book_id"):
-        book_id = vm["book_id"]
-        chapter = vm.get("chapter", "?")
-        v_start = vm.get("verse_start", "?")
-        v_end = vm.get("verse_end", v_start)
-        verse_ref = f"{book_id} {chapter}:{v_start}"
-        if v_end and v_end != v_start:
-            verse_ref += f"-{v_end}"
+    detail_selection = st.session_state.get("research_detail_selection")
+    if detail_selection is not None:
+        _render_research_page_with_detail()
     else:
-        verse_ref = "Unmapped passage"
+        page = BasePage(title="연구 공간", icon="science")
+        page.render_header()
 
-    # Build title from reference + content preview
-    content_preview = candidate.content[:120].replace("\n", " ")
-    title = f"{verse_ref} — {content_preview}..."
+        # ── Search Interface ───────────────────────────────────
+        page.render_section("검색", icon="search")
+        _render_search_interface()
 
-    # Get source file from metadata
-    source_file = candidate.metadata.get("source_file", "Unknown source")
+        # ── AI Answer (always alongside search results) ────────
+        page.render_section("AI 답변", icon="lightbulb")
+        _render_ai_answer()
 
-    return {
-        "title": title,
-        "score": candidate.final_score,
-        "type": "tsu",
-        "snippet": candidate.content[:300].replace("\n", " "),
-        "source": source_file,
-        # Extended metadata for detailed display
-        "tsu_id": candidate.tsu_id,
-        "bm25_score": candidate.bm25_score,
-        "vector_score": candidate.vector_score,
-        "theological_score": candidate.theological_score,
-        "verse_mapping": verse_ref,
-        "explanation": candidate.explanation,
-    }
+        # ── Search Results ─────────────────────────────────────
+        page.render_section("참고한 자료", icon="bar_chart")
+        _render_search_results()
 
+        # ── NAE Public Theology (ADR-024 Bridge) ───────────────
+        # nae_pd module이 enabled일 때만 표시 — §F module gating 준수
+        _render_nae_section()
+
+        # ── Query Analysis ─────────────────────────────────────
+        page.render_section("검색 분석", icon="trending_up")
+        _render_query_analysis()
+
+        page.render_footer()
+
+
+# ── Search Interface ───────────────────────────────────────────
 
 def _render_search_interface() -> None:
-    """Render the search input interface."""
+    """Render the search input interface (Stitch style)."""
     store = StateStore()
 
-    # Primary search input
+    # Primary search input — rounded search bar
     query = st.text_area(
-        "검색 쿼리 입력",
-        placeholder="연구 주제, 키워드 또는 질문을 입력하세요...",
-        height=80,
+        "검색어",
+        value=st.session_state.get("research_query", ""),
+        placeholder="성경 구절, 주제, 질문을 입력하세요…",
+        height=100,
         key="research_query",
+        label_visibility="collapsed",
     )
 
     if query:
         store.set("research_query", query)
 
-    # Search options
-    c1, c2, c3 = st.columns(3)
+    # [DBMA-UX-004] "검색 방법"(Hybrid/BM25/Vector/RRF)과 "최소 점수"는
+    # 검색 엔진 내부 알고리즘/relevance-score 파라미터라 일반 사용자에게
+    # 노출하지 않는다(Design Brief §8, "Vector" 등은 금지 용어 목록에
+    # 직접 해당). ui/app.py Monitor·ui/pages/library.py 청킹 미리보기와
+    # 동일한 패턴으로 NAE_ADMIN_MODE=1일 때만 노출하고, 일반 사용자는
+    # 안전한 기본값(Hybrid, 0.0)을 그대로 쓴다. "결과 수"만 남긴다 —
+    # "몇 건 보여줄지"는 목회자도 이해할 수 있는 개념이라 유지.
+    is_admin = os.environ.get("NAE_ADMIN_MODE") == "1"
+    if is_admin:
+        c1, c2, c3 = st.columns([2, 1, 1])
+    else:
+        c1, = st.columns([2])
+        c2 = c3 = None
     with c1:
         top_k = st.slider(
-            "결과 수 (K)",
+            "결과 수",
             min_value=1,
             max_value=50,
-            value=10,
+            value=st.session_state.get("research_top_k", 10),
             step=1,
             key="research_top_k",
         )
-    with c2:
-        method = st.selectbox(
-            "검색 방법",
-            options=["Hybrid", "BM25", "Vector", "RRF"],
-            key="search_method",
-        )
-    with c3:
-        min_score = st.slider(
-            "최소 점수",
-            min_value=0.0,
-            max_value=1.0,
-            value=0.0,
-            step=0.05,
-            key="min_score",
-        )
+    if is_admin:
+        with c2:
+            method = st.selectbox(
+                "검색 방법",
+                options=["Hybrid", "BM25", "Vector", "RRF"],
+                index=["Hybrid", "BM25", "Vector", "RRF"].index(
+                    st.session_state.get("search_method", "Hybrid")
+                ),
+                key="search_method",
+            )
+        with c3:
+            min_score = st.slider(
+                "최소 점수",
+                min_value=0.0,
+                max_value=1.0,
+                value=st.session_state.get("min_score", 0.0),
+                step=0.05,
+                key="min_score",
+            )
+    else:
+        st.session_state.setdefault("search_method", "Hybrid")
+        st.session_state.setdefault("min_score", 0.0)
 
-    # Execute search button — connected to production retrieval (LOOP 3)
+    # Execute search button
     st.divider()
     col1, col2 = st.columns([1, 4])
     with col1:
-        if st.button("🔍 검색 실행", type="primary", use_container_width=True):
+        if st.button("검색 실행", type="primary", icon=":material/search:", use_container_width=True):
             user_query = st.session_state.get("research_query", "")
             user_top_k = st.session_state.get("research_top_k", 10)
 
@@ -199,6 +272,18 @@ def _render_search_interface() -> None:
             st.session_state["search_status"] = status_msg
             st.session_state["research_response"] = response_obj  # For query analysis
 
+            # Always run AI answer path alongside search (UX-007 §4.1)
+            try:
+                answer_text, ai_sources = generate_answer(
+                    user_query, conversation_history="", k=user_top_k
+                )
+                st.session_state["research_ai_answer"] = answer_text if answer_text else ""
+                st.session_state["research_ai_low_confidence"] = _is_low_confidence(ai_sources)
+            except Exception as e:
+                logger.warning("AI answer generation failed in research page: %s", e)
+                st.session_state["research_ai_answer"] = ""
+                st.session_state["research_ai_low_confidence"] = False
+
             # Show visual feedback
             if "에러" in status_msg:
                 st.error(status_msg)
@@ -208,17 +293,35 @@ def _render_search_interface() -> None:
                 st.success(status_msg)
 
 
+# ── AI Answer ────────────────────────────────────────────────
+
+
+def _render_ai_answer() -> None:
+    """Render the AI-generated answer block.
+
+    Always called (UX-007 §4.1) — shows nothing when no answer is available,
+    never blocks search results from rendering.
+    """
+    answer = st.session_state.get("research_ai_answer", "")
+    if not answer:
+        st.caption("검색어를 입력하고 '검색 실행'을 클릭하세요.")
+        return
+    st.markdown(answer)
+    if st.session_state.get("research_ai_low_confidence"):
+        _render_low_confidence_warning()
+
+
+# ── Search Results ───────────────────────────────────────────────
+
 def _render_search_results() -> None:
-    """Render the search results display from production retrieval."""
-    # Read results from session state (set by search button click)
+    """Render the search results display (Stitch style cards)."""
     results = st.session_state.get("research_results", [])
 
     if not results:
         status = st.session_state.get("search_status", "")
         if status:
-            # Status already displayed in search interface
             pass
-        st.info("검색 결과를 확인하세요.")
+        st.info("검색어를 입력하고 '검색 실행'을 클릭하세요.")
         return
 
     # Display result count and sort option
@@ -228,33 +331,24 @@ def _render_search_results() -> None:
     with c2:
         sort_option = st.selectbox(
             "정렬",
-            options=["relevance", "date", "title"],
+            options=["관련도순", "날짜순", "제목순"],
             label_visibility="collapsed",
             key="result_sort",
         )
 
-    # Render search results table
-    search_results_table(
-        results=results,
-        score_column="score",
-        highlight_query=st.session_state.get("research_query", ""),
-    )
+    # Render search results as Stitch-style cards
+    _render_search_results_as_cards(results)
     
-    # Add session save functionality
+    # Session save
     st.divider()
     st.subheader("세션 저장")
-    if st.button("🔍 세션에 저장", type="secondary", use_container_width=True):
+    if st.button("세션에 저장", type="secondary", icon=":material/push_pin:", use_container_width=True):
         query = st.session_state.get("research_query", "")
         response_obj = st.session_state.get("research_response")
         
         if query and response_obj:
             try:
-                # [SPRINT27-E] Reuse this browser session's research session_id
-                # (set once in render_research_page()) instead of minting a
-                # new session per save — see ADR-005 §1.
                 session_id = st.session_state["research_session_id"]
-
-                # Save to session workspace
                 success = add_query_result(session_id, query, response_obj.to_dict())
                 
                 if success:
@@ -262,21 +356,95 @@ def _render_search_results() -> None:
                 else:
                     st.error("세션 저장에 실패했습니다.")
             except Exception as e:
-                st.error(f"세션 저장 중 오류 발생: {str(e)}")
+                logger.exception("Session save failed")
+                st.error("검색 세션 저장 중 문제가 있었습니다. 다시 시도해주세요.")
         else:
             st.warning("저장할 검색 결과가 없습니다.")
 
     _render_saved_sessions()
 
 
-def _render_saved_sessions() -> None:
-    """Render a read-only list of saved research sessions with a load action.
+def _render_search_results_as_cards(results: list[dict]) -> None:
+    """Render search results as Stitch-style cards with score badges."""
+    for i, result in enumerate(results):
+        score = result.get("score", 0)
+        title = result.get("title", "제목 없음")
+        snippet = result.get("snippet", "")
+        source_file = result.get("source_file", "")
+        document_id = result.get("document_id", "")
 
-    [SPRINT27-C] Uses only the existing list_sessions()/load_session() core
-    API — no new retrieval calls, no TSU content fetch (references only,
-    per ADR-004 §2). Loading a session fills the query input; the user still
-    has to press "검색 실행" themselves to re-run it.
-    """
+        # 제목/순번 헤더 — 카드 밖에 별도 표시 (render_citation_card에 title 파라미터 없음)
+        st.markdown(f"**{i + 1}. {title}**")
+
+        # Citation card — 별점 배지 + 저자/출처/근거신뢰도 메타 줄을 위임
+        render_citation_card(
+            source_file=source_file,
+            text_location=None,  # research.py 결과엔 heading_path 없음
+            doc_type=None,        # doc_type이 "tsu" 고정이라 표시 가치 없음
+            author=result.get("author") or None,
+            citation_title=result.get("source_title") or None,
+            relevance_score=score,
+            on_view_original=False,  # 내비게이션은 아래 "📄" 버튼이 담당 — 중복 버튼 금지
+            on_copy_citation=False,
+        )
+
+        # 발췌문 — 카드 밖에 별도 표시 (render_citation_card에 snippet 파라미터 없음)
+        if snippet:
+            st.markdown(
+                f'<div style="font-family: Source Serif 4, serif; font-style: italic; '
+                f'font-size: 14px; color: {THEME.TEXT_SECONDARY}; line-height: 1.6;">{snippet}</div>',
+                unsafe_allow_html=True,
+            )
+
+        # Clickable source button (무변경 — tests/test_sermon_research_hub.py 의존)
+        if source_file or document_id:
+            btn_key = f"nav_res_{i}_{abs(hash(result.get('tsu_id', ''))) & 0xFFFFFFFF:x}"
+            research_query = st.session_state.get("research_query", "")
+            query_terms = research_query.split() if research_query else []
+
+            if st.button(
+                f"{source_file}",
+                icon=":material/description:",
+                key=btn_key,
+                type="primary",
+                use_container_width=True,
+            ):
+                _record_result_click(result.get("tsu_id", ""), rank=i + 1)
+                st.session_state["research_detail_selection"] = {
+                    "source_file": source_file,
+                    "document_id": document_id,
+                    "query_terms": query_terms,
+                }
+                st.rerun()
+
+        _render_send_to_sermon_research_button(result, i)
+
+
+def _render_send_to_sermon_research_button(result: dict, index: int) -> None:
+    """UX-007 §13 설계(Tier B) — 검색 결과를 설교 연구 허브로 보낸다.
+    §4.5: 클릭 시 화면은 그대로 유지(이동하지 않음). 전환 버퍼는
+    sermon_research_selection(신규 session_state 키) — 허브 화면이
+    열릴 때 흡수한다. 참고: docs/DBMA-UX-007-SessionState-Design.md §2.1"""
+    tsu_id = result.get("tsu_id", "")
+    btn_key = f"send_sermon_{index}_{abs(hash(tsu_id)) & 0xFFFFFFFF:x}"
+    if st.button("설교 연구에 추가", key=btn_key, use_container_width=True):
+        import datetime
+
+        st.session_state.setdefault("sermon_research_selection", [])
+        st.session_state["sermon_research_selection"].append({
+            "tsu_id": tsu_id,
+            "document_id": result.get("document_id", ""),
+            "excerpt": result.get("snippet", ""),
+            "source_label": result.get("source", ""),
+            "added_at": datetime.datetime.now().isoformat(timespec="seconds"),
+        })
+        st.toast("설교 연구에 추가되었습니다")
+
+
+# ── Saved Sessions ─────────────────────────────────────────────
+
+def _render_saved_sessions() -> None:
+    """Render a read-only list of saved research sessions."""
     st.divider()
     st.subheader("저장된 세션")
 
@@ -287,7 +455,7 @@ def _render_saved_sessions() -> None:
 
     sessions_sorted = sorted(sessions, key=lambda s: s.get("created_at", ""), reverse=True)
     options = {
-        f"{s.get('created_at', s.get('session_id', '?'))} · 쿼리 {len(s.get('queries', []))}개": s.get("session_id")
+        f"{s.get('created_at', s.get('session_id', '?'))} · 검색 {len(s.get('queries', []))}건": s.get("session_id")
         for s in sessions_sorted
     }
     selected_label = st.selectbox(
@@ -311,17 +479,114 @@ def _render_saved_sessions() -> None:
             else:
                 st.caption("저장된 참조 없음")
 
-            if st.button("이 쿼리 불러오기", key=f"load_query_{session_id}_{i}"):
+            if st.button("이 검색어 불러오기", key=f"load_query_{session_id}_{i}"):
                 st.session_state["research_query"] = q.get("query", "")
-                st.success("쿼리를 검색창에 불러왔습니다. '검색 실행'을 눌러 재검색하세요.")
+                st.success("검색어를 검색창에 불러왔습니다. '검색 실행'을 눌러 재검색하세요.")
 
+
+# ── 내서재 공개 자료 (Beta) ────────────────────────
+
+def _render_nae_section() -> None:
+    """내서재 공개 자료 검색 섹션 — module gating 준수 (§F).
+
+    nae_pd가 disabled면 이 함수가 아무것도 렌더링하지 않는다.
+    enabled일 때만 "내서재 공개 자료 (Beta)" 섹션을 표시하고,
+    DBMA 결과와 별도 영역으로 보여준다 (§B 병합 금지).
+    """
+    from core import module_registry
+
+    if not module_registry.is_enabled("nae_pd"):
+        return  # §F: disabled면 렌더링하지 않음
+
+    st.divider()
+    st.markdown(
+        '<h3><span class="material-symbols-outlined" style="font-size:22px; vertical-align:-4px;">menu_book</span> 내서재 공개 자료 (Beta)</h3>',
+        unsafe_allow_html=True,
+    )
+    st.caption("공개 신학 자료 — 내서재 자료와 별도 검색")
+
+    # 내서재 전용 검색어 입력 (DBMA 검색어와 분리)
+    nae_query = st.text_input(
+        "공개 자료 검색어",
+        placeholder="공개 신학 자료에서 검색할 질문을 입력하세요...",
+        key="nae_research_query",
+    )
+
+    if not nae_query:
+        st.info("검색어를 입력하고 '검색'을 클릭하세요.")
+        return
+
+    # 내서재 검색 실행 버튼
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        if st.button("검색", type="primary", icon=":material/search:", use_container_width=True):
+            nae_results = _execute_nae_retrieval(nae_query)
+            st.session_state["nae_research_results"] = nae_results
+            st.session_state["nae_search_status"] = (
+                f"결과 {len(nae_results)}건" if nae_results else "결과 없음"
+            )
+
+    # 내서재 결과 표시
+    nae_results = st.session_state.get("nae_research_results")
+    nae_status = st.session_state.get("nae_search_status", "")
+
+    if not nae_results and not nae_status:
+        return
+
+    if nae_status:
+        st.caption(nae_status)
+
+    if not nae_results:
+        st.info("공개 자료에서 일치하는 결과가 없습니다.")
+        return
+
+    # 내서재 결과 카드 표시
+    for i, citation in enumerate(nae_results, 1):
+        score = getattr(citation, "retrieval_score", 0)
+        author = getattr(citation, "source_author", "") or "Unknown"
+        excerpt = getattr(citation, "content_excerpt", "") or ""
+        scripture = getattr(citation, "scripture_reference", "Unmapped")
+        source_title = getattr(citation, "source_title", "") or "Unknown Work"
+
+        with st.container():
+            st.markdown(f"**{i}. {source_title}**")
+            st.caption(f"Score: {score:.4f} | {scripture}")
+            st.caption(f"Author: {author}")
+            st.caption(excerpt[:300])
+            if getattr(citation, "tsu_id", None):
+                st.caption(f"출처 ID: {citation.tsu_id}")
+
+
+def _execute_nae_retrieval(query: str) -> list[Any]:
+    """NAE Qdrant 검색 실행 — bridge_query() 호출.
+
+    §G fail-closed: 모든 예외를 캐치하고 [] 반환.
+    """
+    try:
+        from NAE.retrieval_adapter import bridge_query, NaePdModuleDisabledError
+
+        # module gate는 bridge_query 내부에서 처리 — limit_check=True (기본값)
+        citations = bridge_query(query, top_k=10, limit_check=True)
+        return citations or []
+
+    except NaePdModuleDisabledError:
+        # 설정 오류 — UI가 구분해서 보여줘야 함
+        st.error("공개 자료 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")
+        return []
+
+    except Exception:  # noqa: BLE001 — §G fail-closed
+        st.warning("공개 자료 검색 중 오류가 발생했습니다. (fail-closed: 빈 결과)")
+        return []
+
+
+# ── Query Analysis ─────────────────────────────────────────────
 
 def _render_query_analysis() -> None:
-    """Render the query analysis panel."""
+    """Render the query analysis panel (Stitch insight cards)."""
     query = st.session_state.get("research_query", "")
 
     if not query:
-        st.info("쿼리를 입력하여 분석 결과를 확인하세요.")
+        st.info("검색어를 입력하면 분석 결과를 볼 수 있습니다.")
         return
 
     # Query statistics
@@ -333,7 +598,7 @@ def _render_query_analysis() -> None:
     with c3:
         st.metric("검색어 분리", len([w for w in query.split() if len(w) > 1]))
 
-    # Intent detection from production pipeline (if available)
+    # Intent detection from production pipeline
     intent = "unknown"
     detected_books = []
     if "research_response" in st.session_state:
@@ -342,24 +607,487 @@ def _render_query_analysis() -> None:
             intent = getattr(resp.parsed_query, "intent", "unknown")
             detected_books = getattr(resp.parsed_query, "detected_books", [])
 
+    # [DBMA-UX-004] ParsedQuery.intent is an internal classification code
+    # (core/retrieval.py) — translate to plain Korean instead of showing
+    # the raw enum string (was rendering e.g. "EXEGESIS", "CROSS-REFERENCE").
+    _INTENT_LABELS = {
+        "exegesis": "본문 해석",
+        "comparison": "비교",
+        "devotional": "묵상",
+        "theological": "신학적 고찰",
+        "cross-reference": "관련 구절",
+    }
     with c4:
-        intent_display = intent.upper() if intent != "unknown" else "—"
-        st.metric("인식된 의도", intent_display)
+        intent_display = _INTENT_LABELS.get(intent, "—")
+        st.metric("찾으시는 내용", intent_display)
 
-    # Query expansion suggestions
-    st.markdown("### 💡 검색어 확장 제안")
+    # Query expansion suggestions — AI Insight card (Stitch style)
     first_word = query.split()[0] if query.split() else ""
     suggestions = [
         f"{query} 관련 문헌",
         f"{first_word} 논평",
         f"{query} 신학적 분석",
     ]
-    for s in suggestions:
-        st.caption(f"• {s}")
+    suggestions_html = "".join(f"<div>• {s}</div>" for s in suggestions)
+    
+    _render_insight_card(
+        title="검색어 확장 제안",
+        content=suggestions_html,
+        icon="science",
+    )
 
-    # Display scripture references if detected (LOOP 3 enhancement)
+    # Display scripture references if detected
     if detected_books:
-        st.markdown("### 📖 감지된 성서 도서")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.caption(f"감지된 도서: {', '.join(detected_books)}")
+        # [DBMA-UX-004] detected_books는 원시 book_id 코드(예: "ROM")라
+        # 그대로 노출하지 않고 한글 성경 이름으로 변환한다.
+        from core.sermon.bible_books import BIBLE_BOOKS
+        _BOOK_ID_TO_NAME = {book_id: name for name, book_id in BIBLE_BOOKS}
+        book_names = [_BOOK_ID_TO_NAME.get(b, b) for b in detected_books]
+        books_html = f"{', '.join(book_names)}"
+        _render_insight_card(
+            title="감지된 성서 도서",
+            content=books_html,
+            color=THEME.BRAND_SECONDARY,
+            icon="menu_book",
+        )
+
+
+def _render_insight_card(title: str, content: str, color: str = THEME.TEXT_LINK, icon: str = "") -> None:
+    """Render an AI insight card (Stitch style). icon은 Material Symbols
+    아이콘 이름 — 빈 문자열이면 아이콘 없이 제목만 렌더링한다."""
+    icon_html = (
+        f'<span class="material-symbols-outlined" style="font-size: 18px; vertical-align: -3px;">{icon}</span> '
+        if icon else ""
+    )
+    st.markdown(
+        f"""
+        <div class="research-insight-card" style="border-left: 4px solid {color};">
+            <div style="font-weight: 600; color: {THEME.TEXT_PRIMARY}; margin-bottom: 8px;">
+                {icon_html}{title}
+            </div>
+            <div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.8;">
+                {content}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# ── Production Retrieval Binding ───────────────────────────────
+
+def _execute_research_query(query: str, top_k: int) -> tuple[list[dict], object | None, str]:
+    """
+    Execute a research query through the production Retrieval Engine.
+
+    This is the primary binding function connecting Research UI to core/retrieval.py.
+
+    Args:
+        query: User's research query string.
+        top_k: Number of results to return.
+
+    Returns:
+        (results_list, response_object, status_message) tuple.
+        On success: ([formatted_results], ResponsePackage, "검색 완료")
+        On error/empty: ([], None, "에러: {message}" or "쿼리를 입력하세요")
+    """
+    # Validate query
+    if not query or not query.strip():
+        return [], None, "검색어를 입력하세요"
+
+    query = query.strip()
+
+    try:
+        # [SPRINT17-Phase5-M1b-2.1] Shared across all pages that need a
+        # QueryProcessor (Research, Chat) — one RetrievalEngine instance
+        # per session instead of one per page. [SPRINT21-G Gap#1] recreated
+        # automatically when the TSU dataset on disk changes.
+        processor: QueryProcessor = get_shared_query_processor()
+
+        # Execute retrieval pipeline
+        response = processor.process(query, query_id="research-ui", k=top_k)
+        record_query_latency(response.performance_metrics.total_ms)
+
+        # Check for results
+        if not response.top_k_results:
+            return [], None, f"결과 없음 (검색어: {query})"
+
+        # Format candidates for UI display
+        results = []
+        citations = getattr(response, "citations", None)
+        for i, candidate in enumerate(response.top_k_results):
+            citation = citations[i] if citations else None
+            formatted = _format_candidate(candidate, response.parsed_query, citation=citation)
+            results.append(formatted)
+
+        return results, response, f"검색 완료 ({len(results)}개 결과)"
+
+    except FileNotFoundError as e:
+        logger.exception("Search: source file not found")
+        return [], None, "자료를 찾을 수 없습니다. 파일 경로가 올바른지 확인하고 다시 시도해주세요."
+
+    except Exception as e:
+        logger.exception("Search execution failed")
+        return [], None, "검색 실행 중 문제가 있었습니다. 다시 시도해주세요."
+
+
+def _format_candidate(candidate: RankedCandidate, parsed_query, *, citation: Optional[Citation] = None) -> dict:
+    """
+    Map a production RankedCandidate to UI display format.
+
+    Transforms core/retrieval.py data models into the dictionary format
+    expected by search_results_table() component.
+
+    When citation is provided and has values, adds author/source_title/
+    evidence_confidence keys (additive only — never overwrites existing keys).
+    Missing values are omitted entirely (never filled with '' or '-').
+    """
+    # Build verse reference string from metadata
+    # [DBMA-UX-004] book_id는 원시 코드(예: "ROM")라 한글 성경 이름으로
+    # 변환해 표시한다 — 그대로 노출하면 사용자에게 의미가 없다.
+    vm = candidate.metadata.get("verse_mapping", {})
+    if vm and vm.get("book_id"):
+        from core.sermon.bible_books import BIBLE_BOOKS
+        _book_name = {book_id: name for name, book_id in BIBLE_BOOKS}.get(
+            vm["book_id"], vm["book_id"]
+        )
+        chapter = vm.get("chapter", "?")
+        v_start = vm.get("verse_start", "?")
+        v_end = vm.get("verse_end", v_start)
+        verse_ref = f"{_book_name} {chapter}:{v_start}"
+        if v_end and v_end != v_start:
+            verse_ref += f"-{v_end}"
+    else:
+        verse_ref = "본문 참조 없음"
+
+    # Build title from reference + content preview
+    content_preview = candidate.content[:120].replace("\n", " ")
+    title = f"{verse_ref} — {content_preview}..."
+
+    # Get source file from metadata
+    source_file = candidate.metadata.get("source_file", "Unknown source")
+
+    result: dict[str, Any] = {
+        "title": title,
+        "score": candidate.final_score,
+        "type": "설교 자료",
+        "snippet": candidate.content[:300].replace("\n", " "),
+        "source": source_file,
+        # DBMA-UI-NAV-001: Source navigation metadata
+        "source_file": source_file,
+        "document_id": candidate.metadata.get("document_id", ""),
+        # Extended metadata for detailed display
+        "tsu_id": candidate.tsu_id,
+        "bm25_score": candidate.bm25_score,
+        "vector_score": candidate.vector_score,
+        "theological_score": candidate.theological_score,
+        "verse_mapping": verse_ref,
+        "explanation": candidate.explanation,
+    }
+
+    # Add citation fields additively — only when present and non-None
+    if citation is not None:
+        if citation.source_author:
+            result["author"] = citation.source_author
+        if citation.source_title:
+            result["source_title"] = citation.source_title
+        if citation.evidence_confidence is not None:
+            result["evidence_confidence"] = citation.evidence_confidence
+
+    return result
+
+
+# ── Detail Panel Layout ────────────────────────────────────────
+
+def _render_research_page_with_detail() -> None:
+    """검색 결과 목록과 선택 문서의 상세 패널을 함께 렌더링한다."""
+    import datetime
+    from core.document_detail import get_document_detail
+    from ui.components.detail_panel import render_detail_panel
+
+    detail_selection = st.session_state.get("research_detail_selection")
+    if detail_selection is None:
+        return
+
+    source_file = detail_selection["source_file"]
+    document_id = detail_selection["document_id"]
+    query_terms = detail_selection.get("query_terms", [])
+    results = st.session_state.get("research_results", [])
+
+    page = BasePage(title="연구 공간", icon="science")
+    page.render_header()
+
+    # 상단 탭 바는 현재 화면의 작업 맥락을 유지한다.
+    st.markdown(
+        f"""
+        <div class="research-tab-bar">
+            <div class="research-tab research-tab-active">
+                <span class="material-symbols-outlined">chat_bubble</span> Chat
+            </div>
+            <div class="research-tab-divider"></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    if not results:
+        st.info("검색 결과가 없습니다. 검색어를 입력하고 다시 실행하세요.")
+        return
+
+    # ── Typography and split-panel styles ─────────────────────────
+    st.markdown(
+        f"""
+        <style>
+        .research-tab-bar {{ display:flex; align-items:center; gap:18px; border-bottom:1px solid {THEME.BORDER_LIGHT}; margin-bottom:20px; }}
+        .research-tab {{ display:flex; align-items:center; gap:7px; padding:0 4px 11px; color:{THEME.TEXT_TERTIARY}; font-size:14px; }}
+        .research-tab-active {{ color:{THEME.BRAND_PRIMARY}; font-weight:700; border-bottom:2px solid {THEME.BRAND_PRIMARY}; }}
+        .research-tab .material-symbols-outlined {{ font-size:18px; }}
+        .research-tab-divider {{ flex:1; }}
+        .research-detail-shell {{ background:{THEME.BG_SURFACE}; border:1px solid {THEME.BORDER_LIGHT}; border-radius:12px; padding:22px 24px; }}
+        .research-detail-title {{ color:{THEME.TEXT_PRIMARY}; font-family:'Source Serif 4', serif; font-size:24px; line-height:1.3; margin-bottom:12px; }}
+        .research-detail-meta {{ color:{THEME.TEXT_TERTIARY}; font-size:12px; line-height:1.7; margin-bottom:16px; }}
+        .research-source-path {{ color:{THEME.TEXT_SECONDARY}; font-family:'Source Code Pro', monospace; font-size:12px; word-break:break-all; padding:10px 12px; background:{THEME.BG_PAGE}; border:1px solid {THEME.BORDER_LIGHT}; border-radius:6px; margin-bottom:18px; }}
+        .research-body {{ font-family:'Source Serif 4', serif; font-size:16px; color:{THEME.TEXT_PRIMARY}; line-height:1.85; white-space:pre-wrap; }}
+        mark {{ background:{THEME.CITE_BG}; color:{THEME.TEXT_PRIMARY}; border-bottom:2px solid {THEME.CITE_STAR_FILLED}; padding:0 2px; }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # 결과 목록 40%, 상세 패널 60%.
+    list_col, detail_col = st.columns([2, 3], gap="large")
+
+    with list_col:
+        st.caption(f"검색 결과 {len(results)}건")
+        with st.container(height=650, border=False):
+            for index, result in enumerate(results):
+                result_source = result.get("source_file", "")
+                result_document_id = result.get("document_id", "")
+                score = float(result.get("score", 0) or 0)
+                title = result.get("title", "제목 없음")
+                snippet = result.get("snippet", "").replace("\n", " ")
+                is_selected = result_source == source_file and result_document_id == document_id
+                score_color = THEME.STATUS_SUCCESS if score >= 0.8 else THEME.STATUS_WARNING if score >= 0.5 else THEME.STATUS_ERROR
+                st.markdown(
+                    f"""
+                    <div class="research-result-card" style="border-color:{THEME.BORDER_FOCUS if is_selected else THEME.BORDER_LIGHT}; background:{THEME.CITE_BG if is_selected else THEME.BG_SURFACE};">
+                        <div style="display:flex;justify-content:space-between;gap:10px;align-items:start;">
+                            <strong style="color:{THEME.TEXT_PRIMARY};font-size:14px;line-height:1.4;">{index + 1}. {html.escape(title)}</strong>
+                            <span style="color:{score_color};font-size:12px;font-weight:700;white-space:nowrap;">{score:.0%}</span>
+                        </div>
+                        <div style="color:{THEME.TEXT_SECONDARY};font-family:'Source Serif 4', serif;font-size:13px;line-height:1.55;margin-top:8px;">{html.escape(snippet[:220])}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                if st.button("결과 선택", key=f"detail_result_{index}_{abs(hash(result_source + result_document_id)) & 0xFFFFFFFF:x}", use_container_width=True, type="primary" if is_selected else "secondary"):
+                    st.session_state["research_detail_selection"] = {
+                        "source_file": result_source,
+                        "document_id": result_document_id,
+                        "query_terms": st.session_state.get("research_query", "").split(),
+                    }
+                    st.rerun()
+
+    with detail_col:
+        if st.button("검색 결과로 돌아가기", key="research_detail_close_btn", icon=":material/arrow_back:"):
+            st.session_state["research_detail_selection"] = None
+            st.rerun()
+
+        detail = get_document_detail(source_file=source_file, document_id=document_id, query_terms=query_terms)
+        st.markdown('<div class="research-detail-shell">', unsafe_allow_html=True)
+        # render_detail_panel은 제목, 메타데이터, 원문 하이라이트, 경로를 담당한다.
+        with st.container(height=650, border=False):
+            render_detail_panel(detail, query_terms)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        if not detail.error:
+            from core.reading_session import save_last_read
+            save_last_read(document_id, detail.title or "", source_file)
+
+    # ── Research area: related docs + follow-up question ─────────
+    st.divider()
+    with st.expander("관련 자료 · 이어서 질문", expanded=False):
+        research_col, followup_col = st.columns(2, gap="large")
+
+        with research_col:
+            st.markdown("**관련 자료**")
+            related_results = _fetch_related_docs(query_terms, document_id)
+            for i, rd in enumerate(related_results):
+                render_citation_card(
+                    source_file=rd.get("source_file", ""),
+                    text_location=None,
+                    doc_type=None,
+                    author=rd.get("author") or None,
+                    citation_title=rd.get("source_title") or None,
+                    relevance_score=rd.get("score", 0.0),
+                    on_view_original=True,
+                    key_suffix=f"related_{i}",
+                )
+                src = rd.get("source_file", "")
+                did = rd.get("document_id", "")
+                if src or did:
+                    rkey = f"rel_nav_{i}_{abs(hash(src + did)) & 0xFFFFFFFF:x}"
+                    if st.button(f"{src}", icon=":material/description:", key=rkey, use_container_width=True):
+                        st.session_state["research_detail_selection"] = {
+                            "source_file": src,
+                            "document_id": did,
+                            "query_terms": query_terms,
+                        }
+                        st.rerun()
+
+        with followup_col:
+            st.markdown("**이어서 질문**")
+            q_key = f"followup_q_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+            a_key = f"followup_a_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+            fa_key = f"{a_key}_low_confidence"
+            if st.text_input("질문 입력", key=q_key, placeholder="현재 문맥에서 질문하세요"):
+                user_question = st.session_state[q_key]
+                try:
+                    answer_text, fu_sources = generate_answer(
+                        user_question,
+                        conversation_history="",
+                        file_scope=[source_file],
+                    )
+                    st.session_state[a_key] = answer_text if answer_text else "답변을 생성하지 못했습니다."
+                    st.session_state[fa_key] = _is_low_confidence(fu_sources)
+                except Exception as e:
+                    logger.warning("Follow-up question failed: %s", e)
+                    st.session_state[a_key] = "답변 생성 중 오류가 발생했습니다."
+                    st.session_state[fa_key] = False
+            if a_key in st.session_state and st.session_state[a_key]:
+                st.markdown(st.session_state[a_key])
+                if st.session_state.get(fa_key):
+                    _render_low_confidence_warning()
+
+    # ── Bottom row: 3 action buttons ─────────────────────────────
+    st.divider()
+    _render_detail_action_buttons(detail, source_file, document_id)
+
+
+def _fetch_related_docs(query_terms: list[str], exclude_document_id: str) -> list[dict]:
+    """query_terms로 검색하되 exclude_document_id와 일치하는 문서는 제외."""
+    if not query_terms:
+        return []
+    query = " ".join(query_terms)
+    results, _, _ = _execute_research_query(query, top_k=10)
+    return [r for r in results if r.get("document_id", "") != exclude_document_id]
+
+
+def _render_detail_action_buttons(
+    detail: Any, source_file: str, document_id: str
+) -> None:
+    """하단 행동 영역: 인용하기 / 연구에 추가 / 설교 연구로 보내기."""
+    btn_cols = st.columns(3)
+
+    # 1. 인용하기 (풋노트 형식, Zotero 벤치마킹)
+    with btn_cols[0]:
+        cite_key = f"cite_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        cite_text_key = f"{cite_key}_text"
+        if st.button("인용하기", key=cite_key, use_container_width=True):
+            citation_text = _build_footnote_citation(detail, source_file, document_id)
+            st.session_state[cite_text_key] = citation_text
+        if st.session_state.get(cite_text_key):
+            st.code(st.session_state[cite_text_key], language=None)
+
+    # 2. 연구에 추가
+    with btn_cols[1]:
+        add_key = f"add_to_res_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        if st.button("연구에 추가", key=add_key, use_container_width=True):
+            _add_to_research_session(detail, source_file, document_id)
+            st.toast("연구 세션에 추가되었습니다")
+
+    # 3. 설교 연구로 보내기
+    with btn_cols[2]:
+        sermon_key = f"send_sermon_{abs(hash(document_id)) & 0xFFFFFFFF:x}"
+        if st.button("설교 연구로 보내기", key=sermon_key, use_container_width=True):
+            _send_to_sermon_research(source_file, document_id, detail)
+            st.toast("설교 연구에 추가되었습니다")
+
+
+def _build_citation_text(detail: Any, source_file: str, document_id: str) -> str:
+    """문서의 출처/저자/위치 정보를 텍스트로 구성 (기존 평문 형식, 하위 호환 유지)."""
+    parts = []
+    if detail and detail.title:
+        parts.append(f"제목: {detail.title}")
+    if detail and detail.author:
+        parts.append(f"저자: {detail.author}")
+    if source_file:
+        parts.append(f"출처: {source_file}")
+    if document_id:
+        parts.append(f"문서 ID: {document_id}")
+    if detail and detail.document_type:
+        parts.append(f"유형: {detail.document_type}")
+    if detail and detail.created_at:
+        parts.append(f"생성일: {detail.created_at}")
+    return "\n".join(parts)
+
+
+def _extract_citation_year(created_at: str | None) -> str | None:
+    """ISO 날짜 문자열(YYYY-...)에서 연도만 추출."""
+    if not created_at or len(created_at) < 4 or not created_at[:4].isdigit():
+        return None
+    return created_at[:4]
+
+
+def _build_footnote_citation(detail: Any, source_file: str, document_id: str) -> str:
+    """Zotero 풋노트 인용 스타일을 벤치마킹한 각주 텍스트를 만든다.
+
+    각주 번호는 세션 내 인용 삽입마다 새로 증가한다(워드프로세서 각주와 동일).
+    같은 자료를 연속으로 재인용하면 "Ibid.", 비연속 재인용이면 약식 서지를 쓴다.
+    """
+    footnotes: list[str] = st.session_state.setdefault("research_footnotes", [])
+    previously_cited = document_id in footnotes
+    is_consecutive = bool(footnotes) and footnotes[-1] == document_id
+    footnotes.append(document_id)
+    number = len(footnotes)
+
+    author = (detail.author if detail else None) or ""
+    title = (detail.title if detail else None) or source_file or "제목 미상"
+    doc_type = detail.document_type if detail else None
+    year = _extract_citation_year(detail.created_at if detail else None)
+
+    if is_consecutive:
+        body = "Ibid."
+    elif previously_cited:
+        short_title = title if len(title) <= 20 else f"{title[:20]}…"
+        body = f"{author}, *{short_title}*." if author else f"*{short_title}*."
+    else:
+        meta = ", ".join(x for x in (doc_type, year) if x)
+        head = f"{author}, *{title}*" if author else f"*{title}*"
+        body = f"{head} ({meta})." if meta else f"{head}."
+
+    return f"{number}. {body}"
+
+
+def _add_to_research_session(detail: Any, source_file: str, document_id: str) -> None:
+    """현재 문서를 현재 연구 세션에 참조로 추가."""
+    session_id = st.session_state.get("research_session_id", "")
+    if not session_id:
+        return
+    resp_pkg = {
+        "top_k_results": [
+            {
+                "document_id": document_id,
+                "source_file": source_file,
+                "title": detail.title if detail else "",
+                "author": detail.author if detail else "",
+                "score": 1.0,
+            }
+        ],
+        "citations": [],
+    }
+    add_query_result(session_id, "", resp_pkg)
+
+
+def _send_to_sermon_research(
+    source_file: str, document_id: str, detail: Any
+) -> None:
+    """sermon_research_selection 버퍼에 현재 문서 추가 (Task Order 042 패턴)."""
+    st.session_state.setdefault("sermon_research_selection", [])
+    st.session_state["sermon_research_selection"].append({
+        "tsu_id": document_id,
+        "document_id": document_id,
+        "excerpt": (detail.full_text[:300] if (detail and detail.full_text) else ""),
+        "source_label": source_file,
+        "added_at": datetime.datetime.now().isoformat(timespec="seconds"),
+    })

@@ -1,0 +1,119 @@
+# NAE Authority Registry — Source Files (PRODUCTION)
+# NAE-AUTHORITY-REGISTRY-BUILD-001: Pilot-001/002 승격.
+#
+# 스키마 정본: docs/NAE_AUTHORITY_REGISTRY_DESIGN_v1.md §2.5
+# 필드명 변경(Pilot 대비): path→file_path. citation_policy/tsu_access/
+# archive_source 등은 이 Registry의 책임이 아니라 corpus manifest
+# (source_manifest.yaml)의 책임 — 의도적으로 포함하지 않음(§Phase6).
+schema_version: "1.0"
+
+sources:
+  - source_id: BAP-CHURCH-DAGG-001
+    canonical_id: dagg_john_l_church_order_1871_s01
+    legacy_id: ["BAP-CHURCH-DAGG-001"]
+    volume_id: null
+    edition_id: WORK-DAGG-CHURCH-ORDER-001-1871
+    file_path: "NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-CHURCH-HISCOX
+    canonical_id: hiscox_edward_t_standard_manual_1890_s01
+    legacy_id: ["BAP-CHURCH-HISCOX"]
+    volume_id: null
+    edition_id: WORK-HISCOX-STANDARD-MANUAL-001-1890
+    file_path: "NAE/corpus/raw/archive_org/church_order/Hiscox_Standard_Manual/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL01
+    canonical_id: fuller_andrew_complete_works_1820_charlestown_v01_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL01"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL01
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol01/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL02
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v02_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL02"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL02
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol02/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL03
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v03_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL03"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL03
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol03/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL04
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v04_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL04"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL04
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol04/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL05
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v05_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL05"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL05
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol05/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL06
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v06_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL06"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL06
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol06/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL07
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v07_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL07"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL07
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol07/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+
+  - source_id: BAP-MISS-FULLER-VOL08
+    canonical_id: fuller_andrew_complete_works_1824_newhaven_v08_s01
+    legacy_id: ["BAP-MISS-FULLER-VOL08"]
+    volume_id: FULLER-COMPLETE-WORKS-VOL08
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    file_path: "NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol08/"
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>내서재 · NAE — 설교 연구</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#434848", "surface-bright": "#fbf9f4", "background": "#fbf9f4",
+                    "on-secondary-fixed": "#241a0d", "tertiary-fixed": "#c2e8fe", "outline": "#737878",
+                    "surface-container-lowest": "#ffffff", "surface-dim": "#dbdad5", "outline-variant": "#c3c7c7",
+                    "inverse-surface": "#30312e", "on-surface": "#1b1c19", "on-primary-fixed-variant": "#414848",
+                    "inverse-primary": "#c1c8c7", "secondary": "#6a5c4c", "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#a7cce1",
+                    "inverse-on-surface": "#f2f1ec", "primary-fixed": "#dde4e3", "primary": "#171e1e",
+                    "on-secondary-fixed-variant": "#514535", "surface-container-highest": "#e4e2dd",
+                    "surface": "#fbf9f4", "secondary-fixed": "#f3dfcb", "on-error-container": "#93000a",
+                    "on-secondary-container": "#6f6050", "surface-container-low": "#f5f3ee", "on-error": "#ffffff",
+                    "error-container": "#ffdad6", "on-tertiary-fixed": "#001e2b", "tertiary-container": "#0c3647",
+                    "secondary-container": "#f0dcc8", "surface-tint": "#596060",
+                    "on-tertiary-fixed-variant": "#264b5d", "error": "#ba1a1a", "on-primary-container": "#949b9b",
+                    "surface-variant": "#e4e2dd", "on-tertiary-container": "#7b9fb3", "on-primary-fixed": "#161d1d",
+                    "primary-container": "#2c3333"
+            },
+            "borderRadius": {"sm":"0.125rem","DEFAULT":"0.25rem","md":"0.375rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
+            "spacing": "8px",
+            "fontFamily": {"hanken":["'Hanken Grotesk'","sans-serif"],"serif":["'Source Serif 4'","Georgia","serif"]}
+          }
+        }
+      }
+</script>
+<style>
+      html { font-family: 'Hanken Grotesk', sans-serif; }
+      .reading-text { font-family: 'Source Serif 4', serif; line-height: 1.8; }
+      .sidebar { width: 280px; min-width: 280px; background-color: #fbf9f4; border-right: 1px solid #e4e2dd; }
+      .ai-surface { background-color: #F0F4F8; }
+      .doc-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+      .badge-bible { background: #2c3333; color: #dde4e3; }
+      .badge-book { background: #dde4e3; color: #161d1d; }
+      .badge-theology { background: #f0dcc8; color: #6f6050; }
+      .badge-sermon { background: #0c3647; color: #7b9fb3; }
+    </style>
+</head>
+<body class="bg-[#fbf9f4] text-[#1b1c19]">
+<div class="flex h-screen overflow-hidden">
+  <aside class="sidebar flex flex-col">
+    <div class="p-6 pb-2">
+      <h1 class="font-serif text-[28px] font-bold text-[#171e1e]">내서재<span class="text-[#737878] font-hanken text-[14px] font-medium"> · NAE</span></h1>
+      <p class="text-[11px] text-[#737878] mt-1">나의 자료 · 나의 연구 · 나의 목회</p>
+    </div>
+    <nav class="flex-1 px-4 py-2">
+      <p class="text-[12px] font-medium text-[#737878] uppercase tracking-wider px-3 mb-2">네비게이션</p>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">home</span>홈</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">search</span>자료 찾기</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">library_books</span>내 자료</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">science</span>연구하기</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-semibold text-[#264b5d] bg-[#c2e8fe]" href="#"><span class="material-symbols-outlined text-[20px] fill-1">menu_book</span>설교 준비</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">help</span>도움말</a>
+    </nav>
+    <div class="p-4 border-t border-[#e4e2dd]">
+      <p class="text-[12px] font-medium text-[#737878] uppercase tracking-wider mb-2">시스템 상태</p>
+      <p class="text-[11px] text-[#434848] flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#2d7d5b] inline-block"></span>자료 검색: 정상</p>
+      <p class="text-[11px] text-[#434848] flex items-center gap-1.5 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-[#2d7d5b] inline-block"></span>AI 분석: 정상</p>
+      <p class="text-[11px] text-[#434848] flex items-center gap-1.5 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-[#2d7d5b] inline-block"></span>저장 공간: 정상</p>
+    </div>
+    <div class="p-4 text-center"><p class="text-[10px] text-[#737878]">내서재 · NAE v1.3.0</p></div>
+  </aside>
+
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <header class="h-16 border-b border-[#e4e2dd] flex items-center justify-between px-8 bg-[#fbf9f4]">
+      <div><h2 class="font-hanken text-[20px] font-semibold text-[#1b1c19]">설교 연구</h2><p class="text-[12px] text-[#737878] mt-0.5">검색한 자료를 모아 설교 준비로 이어갑니다</p></div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto px-8 py-6">
+      <!-- Section header -->
+      <div class="mb-6">
+        <h3 class="font-hanken text-[16px] font-semibold text-[#1b1c19] mb-1">선택한 자료 (3건)</h3>
+        <p class="text-[12px] text-[#737878]">검색·연구 화면에서 "설교 연구에 추가"로 모은 자료입니다</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6">
+        <!-- Left: Materials -->
+        <div>
+          <h4 class="font-hanken text-[15px] font-semibold text-[#1b1c19] mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-[#6a5c4c]">library_books</span>선택한 자료</h4>
+
+          <!-- Material card 1 -->
+          <div class="bg-white border border-[#e5e1d8] rounded-lg px-4 py-3.5 mb-3 hover:border-[#c3c7c7] transition">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="doc-badge badge-theology">신학자료</span>
+                  <span class="text-[11px] text-[#737878]">기독교 강요 3.21</span>
+                </div>
+                <p class="font-serif text-[14px] font-semibold text-[#1b1c19] truncate">요한 칼빈, <em>기독교 강요</em> 제3권 — 예정론 장</p>
+                <p class="text-[12px] text-[#434848] mt-1.5 leading-relaxed line-clamp-2">"하나님의 영감 없는 인간의 이성은 신비로운 예정의 흑암 속에 빠지기 쉽다."</p>
+              </div>
+              <button class="text-[#ba1a1a] hover:bg-[#ffdad6] p-1 rounded transition"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+          </div>
+
+          <!-- Material card 2 -->
+          <div class="bg-white border border-[#e5e1d8] rounded-lg px-4 py-3.5 mb-3 hover:border-[#c3c7c7] transition">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="doc-badge badge-sermon">설교</span>
+                  <span class="text-[11px] text-[#737878]">2024.03.10</span>
+                </div>
+                <p class="font-serif text-[14px] font-semibold text-[#1b1c19] truncate">로이드존스, <em>로마서 강해설교</em> — 로마서 8:28-30</p>
+                <p class="text-[12px] text-[#434848] mt-1.5 leading-relaxed line-clamp-2">"예정론은 추상적 교리가 아니라, 성도의 삶에서 가장 강력한 안보의 근거이다."</p>
+              </div>
+              <button class="text-[#ba1a1a] hover:bg-[#ffdad6] p-1 rounded transition"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+          </div>
+
+          <!-- Material card 3 -->
+          <div class="bg-white border border-[#e5e1d8] rounded-lg px-4 py-3.5 mb-3 hover:border-[#c3c7c7] transition">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="doc-badge badge-book">책</span>
+                  <span class="text-[11px] text-[#737878]">조직신학</span>
+                </div>
+                <p class="font-serif text-[14px] font-semibold text-[#1b1c19] truncate">홍성심, <em>기독교 교리사</em> — 개혁파 교리 장</p>
+                <p class="text-[12px] text-[#434848] mt-1.5 leading-relaxed line-clamp-2">"한국 교회에 있어서 예정론은 종종 공포의 대상이 되어 왔다."</p>
+              </div>
+              <button class="text-[#ba1a1a] hover:bg-[#ffdad6] p-1 rounded transition"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+          </div>
+
+          <!-- Add more -->
+          <button class="w-full border-2 border-dashed border-[#c3c7c7] rounded-lg px-4 py-3 text-[13px] font-medium text-[#737878] hover:border-[#6a5c4c] hover:text-[#6a5c4c] transition flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">add</span>더 추가하기</button>
+
+          <!-- Notes -->
+          <div class="mt-6">
+            <h4 class="font-hanken text-[15px] font-semibold text-[#1b1c19] mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-[#6a5c4c]">edit_note</span>메모</h4>
+            <textarea class="w-full rounded-lg border border-[#c3c7c7] px-4 py-3 text-[14px] leading-relaxed bg-white resize-none focus:border-[#264b5d] focus:outline-none" placeholder="연구 메모를 작성하세요..." rows="5">예정론의 한국적 수용 과정에서 중요한 쟁점:
+- 선택과 책임의 관계
+- 설교 적용 시 주의점
+- 한국 교회의 오해 사례</textarea>
+          </div>
+        </div>
+
+        <!-- Right: Outline draft -->
+        <div>
+          <h4 class="font-hanken text-[15px] font-semibold text-[#1b1c19] mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-[#6a5c4c]">format_list_bulleted</span>개요 초안</h4>
+
+          <!-- AI-generated outline -->
+          <div class="ai-surface rounded-lg px-4 py-4 border border-[#c3c7c7] mb-4">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="material-symbols-outlined text-[16px] text-[#264b5d] fill-1">psychology</span>
+              <span class="text-[11px] font-semibold text-[#264b5d] uppercase tracking-wider">AI 생성 개요 초안</span>
+            </div>
+            <div class="reading-text text-[15px] leading-relaxed text-[#1b1c19] space-y-3">
+              <p class="font-semibold text-[#171e1e]">제목: 주권적 은혜와 성도의 안보</p>
+              <p class="text-[#434848]">본문: 로마서 8:28-30</p>
+              <div class="border-t border-[#c3c7c7] pt-3 mt-3 space-y-2">
+                <p><strong>I. 서론: 예정론에 대한 두 가지 시각</strong></p>
+                <p class="pl-4 text-[14px]">A. 칼빈의 주권적 은혜 이해</p>
+                <p class="pl-4 text-[14px]">B. 한국 교회의 단순화된 이해</p>
+                <p><strong>II. 본론: 로마서 8장의 예정론</strong></p>
+                <p class="pl-4 text-[14px]">A. 사전 아심 (v.29)</p>
+                <p class="pl-4 text-[14px]">B. 부르심과 의롭다 하심 (v.30)</p>
+                <p><strong>III. 결론: 안보의 근거</strong></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="space-y-2">
+            <button class="w-full bg-[#171e1e] text-white rounded-lg px-4 py-3 text-[14px] font-semibold hover:bg-[#2c3333] transition flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">edit_note</span>개요 수정하기</button>
+            <button class="w-full border border-[#c3c7c7] text-[#434848] rounded-lg px-4 py-3 text-[14px] font-medium hover:bg-[#e4e2dd] transition flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">refresh</span>다시 생성하기</button>
+          </div>
+
+          <!-- Info -->
+          <div class="mt-6 p-3 bg-[#f3dfcb] rounded-lg border border-[#f0dcc8]">
+            <p class="text-[12px] text-[#6f6050] leading-relaxed">
+              <strong>"이어가기"</strong>를 누르면 선택한 자료·메모·개요가 <strong>설교 준비</strong> 화면의 입력란에 초안으로 채워집니다.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Continue button -->
+      <div class="mt-8 pt-6 border-t border-[#e4e2dd] text-center">
+        <button class="bg-[#264b5d] text-white rounded-xl px-8 py-3.5 text-[15px] font-semibold hover:bg-[#1a3a47] transition flex items-center gap-2 mx-auto">
+          <span class="material-symbols-outlined text-[20px]">arrow_forward</span>설교 작성으로 이어가기</button>
+      </div>
+    </div>
+
+    <footer class="h-10 bg-[#0c3647] flex items-center justify-between px-6">
+      <p class="text-[11px] text-[#7b9fb3]">현재: 설교 연구 · 3건 수집</p>
+      <button class="text-[11px] text-[#a7cce1] hover:text-white transition flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">psychology</span>내서재에게 물어보세요</button>
+    </footer>
+  </main>
+</div>
+</body></html>

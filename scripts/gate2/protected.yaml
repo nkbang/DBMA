@@ -1,0 +1,56 @@
+# protected.yaml — Production isolation tripwire targets
+# Source: docs/END_USER_PACKAGE_GATE2_AUTOMATION_PROTOCOL.md §3
+# This file is the authoritative list of production paths that must NOT be modified.
+
+tripwire_targets:
+  - path: output/bench/tsu_dataset.jsonl
+    type: file
+    description: "TSU dataset — gold standard retrieval input"
+  - path: output/bench/tsu_manifest.json
+    type: file
+    description: "TSU manifest — metadata for gold standard"
+  - path: NAE/corpus/tsu/tsu_id_state.json
+    type: file
+    description: "TSU ID state — production screening state"
+  - path: data/제련완성본/registry/documents.json
+    type: file
+    description: "Document registry — production document metadata"
+
+qdrant_targets:
+  - collection: nae_tsu_v1
+    host: localhost
+    port: 7333
+    mode: read_only
+    description: "Production Qdrant collection — point count check only"
+  - collection: dbma_qdrant
+    host: localhost
+    port: 6333
+    mode: watch_only
+    description: "Development Qdrant — monitored but not queried per ADR-003"
+
+# Files that must NEVER be modified by any Gate 2 script
+absolute_no_touch:
+  - core/retrieval.py
+  - pyproject.toml
+  - NAE/corpus/tsu/*.jsonl
+  - output/bench/*.jsonl
+  - data/제련완성본/**/*.json
+  - qdrant data directories
+
+# Expected UI pages (exactly 9)
+expected_pages:
+  - ui.pages.dashboard
+  - ui.pages.library
+  - ui.pages.processing
+  - ui.pages.research
+  - ui.pages.monitor
+  - ui.pages.chat
+  - ui.pages.sermon_draft
+  - ui.pages.sermon_review
+  - ui.pages.help
+
+# Explicitly excluded from expected_pages
+excluded_modules:
+  - ui.pages.onboarding
+  - ui.tabs
+  - ui.sidebar

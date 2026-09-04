@@ -1,0 +1,51 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- /Users/David/envs/dbma311/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/David/DBMA
+configfile: pyproject.toml
+plugins: anyio-4.14.0, cov-7.1.0, Faker-40.23.0, langsmith-0.9.1
+collecting ... collected 41 items
+
+NAE/pipeline/tsu/worker/test_worker.py::TestNormalPath::test_full_normal_path PASSED [  2%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNormalPath::test_process_candidate_normal_path PASSED [  4%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNormalPath::test_process_candidate_not_a_claim_reaches_confidence_classified PASSED [  7%]
+NAE/pipeline/tsu/worker/test_worker.py::TestFailurePath::test_failure_path PASSED [  9%]
+NAE/pipeline/tsu/worker/test_worker.py::TestFailurePath::test_process_candidate_failure_via_set_state PASSED [ 12%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNoAutoRetry::test_FAILED_cannot_transition_to_READY_without_retry_failed PASSED [ 14%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNoAutoRetry::test_process_batch_does_not_auto_retry_FAILED PASSED [ 17%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNoAutoRetry::test_process_batch_multiple_FAILED_candidates_stay_FAILED PASSED [ 19%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNoAutoRetry::test_retry_failed_explicitly_resets_FAILED_to_READY PASSED [ 21%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNoAutoRetry::test_retry_failed_on_non_FAILED_fails PASSED [ 24%]
+NAE/pipeline/tsu/worker/test_worker.py::TestNoAutoRetry::test_terminal_state_cannot_be_reset PASSED [ 26%]
+NAE/pipeline/tsu/worker/test_worker.py::TestValidateTransition::test_CONFIDENCE_CLASSIFIED_to_READY_rejected PASSED [ 29%]
+NAE/pipeline/tsu/worker/test_worker.py::TestValidateTransition::test_READY_to_EXTRACTED_rejected PASSED [ 31%]
+NAE/pipeline/tsu/worker/test_worker.py::TestValidateTransition::test_READY_to_FAILED_rejected PASSED [ 34%]
+NAE/pipeline/tsu/worker/test_worker.py::TestValidateTransition::test_EXTRACTED_to_PROCESSING_rejected PASSED [ 36%]
+NAE/pipeline/tsu/worker/test_worker.py::TestValidateTransition::test_all_valid_transitions_accepted PASSED [ 39%]
+NAE/pipeline/tsu/worker/test_worker.py::TestValidateTransition::test_idempotent_transitions_accepted PASSED [ 41%]
+NAE/pipeline/tsu/worker/test_worker.py::TestIdempotentTransitions::test_same_state_is_noop PASSED [ 43%]
+NAE/pipeline/tsu/worker/test_worker.py::TestIdempotentTransitions::test_process_batch_idempotent_on_READY PASSED [ 46%]
+NAE/pipeline/tsu/worker/test_worker.py::TestExceptionQueueIsolation::test_exception_queue_writes_to_worker_path PASSED [ 48%]
+NAE/pipeline/tsu/worker/test_worker.py::TestExceptionQueueIsolation::test_exception_queue_path_is_worker_specific PASSED [ 51%]
+NAE/pipeline/tsu/worker/test_worker.py::TestExceptionQueueIsolation::test_state_store_path_is_worker_specific PASSED [ 53%]
+NAE/pipeline/tsu/worker/test_worker.py::TestClassifyConfidence::test_high_confidence PASSED [ 56%]
+NAE/pipeline/tsu/worker/test_worker.py::TestClassifyConfidence::test_medium_confidence PASSED [ 58%]
+NAE/pipeline/tsu/worker/test_worker.py::TestClassifyConfidence::test_low_confidence PASSED [ 60%]
+NAE/pipeline/tsu/worker/test_worker.py::TestClassifyConfidence::test_string_confidence PASSED [ 63%]
+NAE/pipeline/tsu/worker/test_worker.py::TestClassifyConfidence::test_missing_confidence PASSED [ 65%]
+NAE/pipeline/tsu/worker/test_worker.py::TestGetQueueDepth::test_empty_queue PASSED [ 68%]
+NAE/pipeline/tsu/worker/test_worker.py::TestGetQueueDepth::test_non_empty_queue PASSED [ 70%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBatchResult::test_success_rate PASSED [ 73%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBatchResult::test_empty_batch PASSED [ 75%]
+NAE/pipeline/tsu/worker/test_worker.py::TestWorkerResult::test_worker_result_creation PASSED [ 78%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix1_SetStateFromStateOmission::test_from_state_none_rejects_invalid_transition PASSED [ 80%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix1_SetStateFromStateOmission::test_from_state_none_allows_valid_transition PASSED [ 82%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix1_SetStateFromStateOmission::test_from_state_none_allows_new_candidate_creation PASSED [ 85%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix1_SetStateFromStateOmission::test_from_state_none_rejects_PROCESSING_to_READY PASSED [ 87%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix2_StaleErrorFieldsOnRetry::test_clear_metadata_fields_removes_only_specified_keys PASSED [ 90%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix2_StaleErrorFieldsOnRetry::test_clear_metadata_fields_noop_for_missing_candidate PASSED [ 92%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix2_StaleErrorFieldsOnRetry::test_clear_metadata_fields_noop_for_missing_keys PASSED [ 95%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix2_StaleErrorFieldsOnRetry::test_retry_then_process_clears_stale_error PASSED [ 97%]
+NAE/pipeline/tsu/worker/test_worker.py::TestBugfix2_StaleErrorFieldsOnRetry::test_failed_candidate_preserves_error_fields PASSED [100%]
+
+============================== 41 passed in 0.11s ==============================

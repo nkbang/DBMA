@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-08-15T00:41:07",
+  "execution_ms": 0.006198883056640625,
+  "citation_count": 3,
+  "citations": [
+    {
+      "citation_id": "1",
+      "tsu_id": "TSU-0002742",
+      "scripture_reference": "Church Order 1298:2",
+      "source_title": "Church Order by John L. Dagg",
+      "source_author": "John L. Dagg",
+      "document_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "content_excerpt": "바울은 자신의 고난이 그리스도의 몸인 교회를 위한 것이라고 말한다.",
+      "evidence_confidence": 0.8,
+      "retrieval_score": 0.5782851,
+      "source_file": "BAP-CHURCH-DAGG-001",
+      "language": "ko",
+      "source_type": "Ecclesiology"
+    },
+    {
+      "citation_id": "2",
+      "tsu_id": "TSU-0002258",
+      "scripture_reference": "Church Order 1096:7",
+      "source_title": "Church Order by John L. Dagg",
+      "source_author": "John L. Dagg",
+      "document_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "content_excerpt": "바울은 주의 만찬과 관련하여 사람들로 하여금 스스로를 살피고 먹게 하라고 말한다.",
+      "evidence_confidence": 0.8,
+      "retrieval_score": 0.5207913,
+      "source_file": "BAP-CHURCH-DAGG-001",
+      "language": "ko",
+      "source_type": "Lord's Supper"
+    },
+    {
+      "citation_id": "3",
+      "tsu_id": "TSU-0001166",
+      "scripture_reference": "Church Order 652:0",
+      "source_title": "Church Order by John L. Dagg",
+      "source_author": "John L. Dagg",
+      "document_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "content_excerpt": "그리스도의 고난을 내가 몸으로 채워야 한다.",
+      "evidence_confidence": 0.8,
+      "retrieval_score": 0.5194073,
+      "source_file": "BAP-CHURCH-DAGG-001",
+      "language": "ko",
+      "source_type": "Soteriology"
+    }
+  ],
+  "exit_code": 0
+}

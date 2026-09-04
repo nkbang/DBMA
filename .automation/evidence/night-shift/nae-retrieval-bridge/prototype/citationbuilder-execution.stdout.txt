@@ -1,0 +1,100 @@
+======================================================================
+CitationBuilder Execution Evidence
+Timestamp: 2026-08-15T00:37:29
+======================================================================
+
+--- A. Real Input (from NAE probe evidence) ---
+Loaded 5 real NAE hits from: /Users/David/DBMA/.automation/evidence/night-shift/nae-retrieval-bridge/nae_bridge_probe_evidence.json
+  [1] tsu_id=TSU-0002742, score=0.5783
+      content=바울은 자신의 고난이 그리스도의 몸인 교회를 위한 것이라고 말한다....
+  [2] tsu_id=TSU-0002258, score=0.5208
+      content=바울은 주의 만찬과 관련하여 사람들로 하여금 스스로를 살피고 먹게 하라고 말한다....
+  [3] tsu_id=TSU-0001166, score=0.5194
+      content=그리스도의 고난을 내가 몸으로 채워야 한다....
+
+--- B. Mapping to RankedCandidate ---
+  [1] tsu_id=TSU-0002742, final_score=0.5783
+      metadata keys: ['tsu_id', 'title', 'author', 'document_id', 'content', 'provenance', 'source_file', 'language', 'source_type', 'verse_mapping']
+  [2] tsu_id=TSU-0002258, final_score=0.5208
+      metadata keys: ['tsu_id', 'title', 'author', 'document_id', 'content', 'provenance', 'source_file', 'language', 'source_type', 'verse_mapping']
+  [3] tsu_id=TSU-0001166, final_score=0.5194
+      metadata keys: ['tsu_id', 'title', 'author', 'document_id', 'content', 'provenance', 'source_file', 'language', 'source_type', 'verse_mapping']
+
+--- C. Mapping Output (first candidate metadata) ---
+  tsu_id: TSU-0002742
+  title: Church Order by John L. Dagg
+  author: John L. Dagg
+  document_id: WORK-DAGG-CHURCH-ORDER-001
+  content: 바울은 자신의 고난이 그리스도의 몸인 교회를 위한 것이라고 말한다.
+  provenance: {'confidence': 0.8}
+  source_file: BAP-CHURCH-DAGG-001
+  language: ko
+  source_type: Ecclesiology
+  verse_mapping: {'book_id': 'Church Order', 'chapter': 1298, 'verse_start': 2}
+
+--- D. CitationBuilder().build_citations() execution ---
+  Execution time: 0.01ms
+  Returned 3 Citation object(s)
+
+--- E. Actual Citation Objects (structured output) ---
+
+  === Citation[1] ===
+    citation_id: 1
+    tsu_id: TSU-0002742
+    scripture_reference: Church Order 1298:2
+    source_title: Church Order by John L. Dagg
+    source_author: John L. Dagg
+    document_id: WORK-DAGG-CHURCH-ORDER-001
+    content_excerpt: 바울은 자신의 고난이 그리스도의 몸인 교회를 위한 것이라고 말한다.
+    evidence_confidence: 0.8
+    retrieval_score: 0.5782851
+    source_file: BAP-CHURCH-DAGG-001
+    language: ko
+    source_type: Ecclesiology
+
+  === Citation[2] ===
+    citation_id: 2
+    tsu_id: TSU-0002258
+    scripture_reference: Church Order 1096:7
+    source_title: Church Order by John L. Dagg
+    source_author: John L. Dagg
+    document_id: WORK-DAGG-CHURCH-ORDER-001
+    content_excerpt: 바울은 주의 만찬과 관련하여 사람들로 하여금 스스로를 살피고 먹게 하라고 말한다.
+    evidence_confidence: 0.8
+    retrieval_score: 0.5207913
+    source_file: BAP-CHURCH-DAGG-001
+    language: ko
+    source_type: Lord's Supper
+
+  === Citation[3] ===
+    citation_id: 3
+    tsu_id: TSU-0001166
+    scripture_reference: Church Order 652:0
+    source_title: Church Order by John L. Dagg
+    source_author: John L. Dagg
+    document_id: WORK-DAGG-CHURCH-ORDER-001
+    content_excerpt: 그리스도의 고난을 내가 몸으로 채워야 한다.
+    evidence_confidence: 0.8
+    retrieval_score: 0.5194073
+    source_file: BAP-CHURCH-DAGG-001
+    language: ko
+    source_type: Soteriology
+
+--- F. Exit code: 0 (success) ---
+--- G. Execution timestamp: 2026-08-15T00:37:29 ---
+
+--- H. Source/TSU Identity ---
+  [1] tsu_id=TSU-0002742, scripture_reference=Church Order 1298:2
+      source_title=Church Order by John L. Dagg
+      source_author=John L. Dagg
+      document_id=WORK-DAGG-CHURCH-ORDER-001
+  [2] tsu_id=TSU-0002258, scripture_reference=Church Order 1096:7
+      source_title=Church Order by John L. Dagg
+      source_author=John L. Dagg
+      document_id=WORK-DAGG-CHURCH-ORDER-001
+  [3] tsu_id=TSU-0001166, scripture_reference=Church Order 652:0
+      source_title=Church Order by John L. Dagg
+      source_author=John L. Dagg
+      document_id=WORK-DAGG-CHURCH-ORDER-001
+
+--- Structured output saved to: /Users/David/DBMA/.automation/evidence/night-shift/nae-retrieval-bridge/prototype/citationbuilder-execution.json ---

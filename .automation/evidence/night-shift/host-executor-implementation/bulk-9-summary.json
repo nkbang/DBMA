@@ -1,0 +1,33 @@
+{
+  "mission": "ADR-023 Amendment A: Host Executor (Option A)",
+  "pilot": {
+    "task": "NAE-REG-BAP-CHURCH-DAGG-001",
+    "result": "PASS"
+  },
+  "bulk_9": {
+    "tasks": [
+      "NAE-REG-BAP-CHURCH-HISCOX",
+      "NAE-REG-BAP-MISS-FULLER-VOL01",
+      "NAE-REG-BAP-MISS-FULLER-VOL02",
+      "NAE-REG-BAP-MISS-FULLER-VOL03",
+      "NAE-REG-BAP-MISS-FULLER-VOL04",
+      "NAE-REG-BAP-MISS-FULLER-VOL05",
+      "NAE-REG-BAP-MISS-FULLER-VOL06",
+      "NAE-REG-BAP-MISS-FULLER-VOL07",
+      "NAE-REG-BAP-MISS-FULLER-VOL08"
+    ],
+    "all_passed": true,
+    "all_final_state": "QUALITY_PASSED",
+    "all_terminal_state": "COMPLETED"
+  },
+  "total": 10,
+  "pass": 10,
+  "fail": 0,
+  "governance": {
+    "core_retrieval_py_unchanged": true,
+    "pipeline_py_unchanged": true,
+    "no_tsu_ingest_embed_index_qdrant_imports": true,
+    "no_new_adr": true,
+    "n8n_workflow_unchanged": true
+  }
+}

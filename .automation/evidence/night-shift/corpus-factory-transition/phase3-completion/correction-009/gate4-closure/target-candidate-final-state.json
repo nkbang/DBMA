@@ -1,0 +1,21 @@
+{
+  "state": "CONFIDENCE_CLASSIFIED",
+  "updated_at": "2026-08-17T03:57:10.928359+00:00",
+  "metadata": {
+    "source_identifier": "Fuller_Complete_Works_Vol01",
+    "source_book": "The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 1: The Gospel Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ",
+    "source_author": "Andrew Fuller",
+    "page": 1,
+    "paragraph_index": 24,
+    "sentence_index": 0,
+    "text": "The corrections and additions, which form a considerable part of this edition, are such as, after a lapse of fifteen years, the writer thought it proper to make.",
+    "collector_version": "",
+    "canonical_version": "2.0.0",
+    "error_type": "LLM_ERROR",
+    "error_message": "CUE simulated failure for Gate 4 closure test",
+    "model": "my-theology-bot-v2:latest",
+    "text_length": 161,
+    "is_claim": false,
+    "reason": "not_a_claim"
+  }
+}

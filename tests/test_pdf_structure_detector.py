@@ -23,6 +23,11 @@ from core.pdf_structure_detector import (
 )
 
 
+def _wrapped_line(text, size, top=False):
+    """A wrapped body-text continuation line — never a block start."""
+    return _Line(text=text, size=size, bold=False, page=0, is_block_top=top)
+
+
 def _line(text, size, bold=False, page=0, top=True):
     return _Line(text=text, size=size, bold=bold, page=page, is_block_top=top)
 
@@ -87,6 +92,51 @@ class TestSignalSelection:
         assert p.selected_signal is None
 
 
+class TestSecondaryBodyBand:
+    """[Root cause fix, SPRINT33-D Preflight 2026-07-23] A document with two
+    comparably-sized body text bands (e.g. quoted Scripture vs. commentary
+    prose) must not have the whole second band misclassified as headings —
+    real data: "2 Kings, Anchor Bible Commentary" measured 2170 false-
+    positive size_hits (mostly wrapped continuation lines from a ~16.1pt
+    secondary band) before this fix, 203 after (86 of which are the real
+    "Notes"/"Comment" section headings)."""
+
+    def test_secondary_wrapped_text_band_is_not_classified_as_headings(self):
+        lines = [_line("primary body prose line here", 14.2) for _ in range(60)]
+        # A large, mostly-non-block-top secondary band (wrapped Scripture
+        # quote continuation lines) — must be folded into "body", not
+        # treated as heading candidates. 17.0 > body(14.2) * 1.15 = 16.33,
+        # so this band would trip SIZE_HEADING_FACTOR without the fix.
+        lines += [_wrapped_line("quoted scripture continuation line", 17.0) for _ in range(40)]
+        p = profile_document(lines)
+        assert p.size_ceiling > p.body_size  # ceiling raised above raw body
+        assert _is_candidate(_wrapped_line("quoted scripture continuation line", 17.0), p) is False
+
+    def test_genuinely_numerous_block_top_headings_are_not_suppressed(self):
+        # A document with MANY real headings (all block starts, like
+        # "Notes"/"Comment" repeating every entry) must still detect them —
+        # the block-top ratio, not the count, is what distinguishes this
+        # from a false-positive secondary body band (root cause data:
+        # 86/86 = 100% block-top for real headings vs. 15.6% for the
+        # false-positive band).
+        lines = [_line("primary body prose line here", 14.2) for _ in range(60)]
+        lines += [_line("Notes", 18.0, top=True) for _ in range(20)]
+        p = profile_document(lines)
+        assert p.size_ceiling == p.body_size  # not folded into body
+        assert _is_candidate(_line("Notes", 18.0, top=True), p) is True
+
+    def test_small_secondary_band_below_line_floor_is_unaffected(self):
+        # Too few lines to safely judge a block-top ratio (root-cause fix
+        # must not regress the "sparse-but-real headings" case the original
+        # design protects — MIN_SIGNAL_HITS's absolute-floor rationale).
+        lines = [_line("body", 10.0) for _ in range(30)]
+        lines += [_line("Real Heading", 13.0), _line("Second Head", 13.0),
+                  _line("Third Head", 13.0)]
+        p = profile_document(lines)
+        assert p.size_ceiling == p.body_size
+        assert _is_candidate(_line("Real Heading", 13.0), p) is True
+
+
 class TestCandidateGating:
     def test_size_candidate_requires_larger_font_and_letters(self):
         lines = [_line("body", 10.0) for _ in range(30)]
@@ -106,6 +156,22 @@ class TestCandidateGating:
         p = profile_document(lines)
         assert _is_candidate(_line("Heading", 15.0, bold=True), p) is True
         assert _is_candidate(_line("body prose here", 15.0), p) is False  # not bold
+
+    def test_bold_candidate_requires_block_top(self):
+        # [Root cause fix, SPRINT33-D Preflight 2026-07-23] Bolded
+        # mid-paragraph text (e.g. bolded original-language citations) must
+        # not count as a heading — real data: "2 Kings, Volume 13" had
+        # 6768 bold-at-body-size lines, only 841 were block starts; the
+        # rest were bolded Hebrew words inside body prose.
+        lines = [_line("body prose here", 15.0) for _ in range(30)]
+        lines += [_line("Heading", 15.0, bold=True, top=True) for _ in range(3)]
+        lines += [_wrapped_line("bolded mid-paragraph term", 15.0) for _ in range(20)]
+        for ln in lines[-20:]:
+            ln.bold = True
+        p = profile_document(lines)
+        assert p.selected_signal == "bold"
+        assert _is_candidate(_line("Heading", 15.0, bold=True, top=True), p) is True
+        assert _is_candidate(_wrapped_line("bolded mid-paragraph term", 15.0), p) is False
 
 
 class TestConfidence:

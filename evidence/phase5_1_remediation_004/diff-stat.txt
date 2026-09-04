@@ -1,0 +1,9 @@
+# diff --stat for Remediation-004 changed files
+# Command: git diff --stat NAE/benchmark/metrics.py NAE/benchmark/schema.py NAE/benchmark/loader.py tests/test_nae_benchmark_metrics.py
+# Generated: 2026-07-31
+
+NAE/benchmark/loader.py             | 198 ++++++++++++++++++++++++++++++++++--
+ NAE/benchmark/metrics.py            |  30 ++++--
+ NAE/benchmark/schema.py             | 139 +++++++++++++++++++++++--
+ tests/test_nae_benchmark_metrics.py |  14 +--
+ 4 files changed, 348 insertions(+), 33 deletions(-)

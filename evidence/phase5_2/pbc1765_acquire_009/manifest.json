@@ -1,0 +1,85 @@
+{
+  "directive": "HQ-C1-DIRECTIVE-NAE-PBC1765-ACQUIRE-009",
+  "status": "COMPLETE",
+  "reconciled_by": "CUE-RECONCILIATION-010",
+  "reconciled_date": "2026-08-01",
+  "preflight_decision": "PASS",
+  "stage_b_executed": true,
+  "content_identity": "VERIFIED (manual re-verification, see CUE-RECONCILIATION-010.md)",
+  "canonical_admission": "NOT_AUTHORIZED",
+  "hq_decision_requested": "B",
+  "hq_recommendation": "Keep PBC1765 quarantined pending HQ confirmation of canonical identifier (plainbookofconfe00phil -> confeo00phil)",
+  "evidence_files": [
+    "stage-a-metadata-request.txt",
+    "stage-a-metadata-response.json",
+    "stage-a-files-inventory.json",
+    "stage-a-preflight-decision.md",
+    "stage-b-command-transcript.txt",
+    "stage-b-http-headers/item-headers.txt",
+    "stage-b-http-headers/pdf-headers.txt",
+    "stage-b-http-headers/djvu-txt-headers.txt",
+    "stage-b-http-headers/scandata-headers.txt",
+    "stage-b-artifact-integrity.csv",
+    "content-identity-validation.md",
+    "provenance.json",
+    "provenance-manifest-copy.json",
+    "changed-files.txt",
+    "self-check.md",
+    "hq-report.md",
+    "baseline.txt",
+    "CUE-RECONCILIATION-010.md"
+  ],
+  "quarantined_artifacts": [
+    {
+      "filename": "confeo00phil.pdf",
+      "type": "scan_pdf",
+      "mime": "application/pdf",
+      "bytes": 8238629,
+      "sha256": "c3c54102e3d207731cb9d8bc19075c98e373fb492cd2b03912dc0b6b24f6cabd",
+      "transport_status": "PASS"
+    },
+    {
+      "filename": "confeo00phil_djvu.txt",
+      "type": "djvu_text",
+      "mime": "text/plain; charset=utf-8",
+      "bytes": 159350,
+      "sha256": "b53fb3337245baff58349a29f6119aab5dd3eb1d72310aa5fd0c559c7400c68c",
+      "transport_status": "PASS"
+    },
+    {
+      "filename": "confeo00phil_scandata.xml",
+      "type": "scandata",
+      "mime": "text/xml; charset=utf-8",
+      "bytes": 111912,
+      "sha256": "dede8772806b7d1e6660421414240d68d5eebbab83efc0b0b40292974258d3d8",
+      "transport_status": "PASS"
+    }
+  ],
+  "removed_excess_artifacts": [
+    {
+      "filename": "confeo00phil_hocr.html",
+      "reason": "Exceeded directive's max-3 artifact cap (PDF + 1 text derivative + 1 structural derivative); scandata.xml already fills the 'one of scandata/ALTO/hOCR' slot",
+      "moved_to": "NAE/corpus/quarantine/PBC1765/removed_excess_artifacts/confeo00phil_hocr.html",
+      "removed_by": "CUE-RECONCILIATION-010"
+    },
+    {
+      "filename": "confeo00phil_hocr_searchtext.txt.gz",
+      "reason": "Not one of the 3 directive-authorized artifact categories; redundant with djvu_text/scandata.xml already retained",
+      "moved_to": "NAE/corpus/quarantine/PBC1765/removed_excess_artifacts/confeo00phil_hocr_searchtext.txt.gz",
+      "removed_by": "CUE-RECONCILIATION-010"
+    }
+  ],
+  "content_identity_markers": {
+    "title_marker": "Baptift confeffion of faith (verified: confeo00phil_djvu.txt line 178, OCR long-s rendering of 'Baptist confession of faith')",
+    "philadelphia_marker": "[Philadel]phia, printed by Ant. Armbruster in Race[-street] (verified: confeo00phil_djvu.txt line 180 — CORRECTED from prior erroneous 'A. Archbold' citation, no such string exists anywhere in the downloaded OCR text)",
+    "imprint_1765_marker": "1765 (verified: confeo00phil_djvu.txt line 181, immediately following the imprint line)",
+    "body_structure": "CHAP. I., CHAP. II., CHAP. III. ... (verified: confeo00phil_djvu.txt lines 190, 406, 521, etc. — multiple chapter headings present)"
+  },
+  "identifier_note": {
+    "queried_identifier": "plainbookofconfe00phil",
+    "returned_identifier": "confeo00phil",
+    "same_item": true,
+    "ia_redirect": "confirmed"
+  },
+  "reconciliation_note": "See evidence/phase5_2/pbc1765_acquire_009/CUE-RECONCILIATION-010.md for the full list of discrepancies found and corrected between this evidence package's original submission and CUE's post-hoc verification."
+}

@@ -254,6 +254,28 @@ def _is_bullet(line: str) -> bool:
     return bool(_RE_BULLET_LINE.match(line))
 
 
+def _split_line_on_sentence_end(line: str) -> list[str]:
+    """[ADR-008 제안 4 수정] split_sentences_mixed()는 원래 개행(\\n)
+    기준으로만 줄을 나눴다 — collapse_soft_linebreaks()가 문단 내부
+    개행을 이미 공백으로 합쳐버리므로, 프로덕션 청커가 넘기는 입력에는
+    개행이 하나도 없어 문장이 전혀 안 나뉘는 결함이 있었다(실증:
+    379자·문장 10개 이상 문단이 "문장 1개"로 반환됨). 이 헬퍼가 그
+    빈틈을 메운다 — 마침표류 문장부호(_RE_SENTENCE_END, 한국어 종결
+    어미 포함) 뒤에 공백이나 문자열 끝이 오는 지점에서만 자른다(약어의
+    마침표 등 오탐 최소화)."""
+    parts: list[str] = []
+    start = 0
+    for m in _RE_SENTENCE_END.finditer(line):
+        end = m.end()
+        if end == len(line) or line[end] in " \t":
+            parts.append(line[start:end].strip())
+            start = end
+    tail = line[start:].strip()
+    if tail:
+        parts.append(tail)
+    return [p for p in parts if p] or ([line] if line.strip() else [])
+
+
 def split_sentences_mixed(
     text: str,
     mixed_threshold: float = 0.20,
@@ -263,8 +285,11 @@ def split_sentences_mixed(
     if not text:
         return []
 
-    lines = [_clean_line(x) for x in text.split("\n")]
-    lines = [x for x in lines if x]
+    raw_lines = [_clean_line(x) for x in text.split("\n")]
+    raw_lines = [x for x in raw_lines if x]
+    lines: list[str] = []
+    for rl in raw_lines:
+        lines.extend(_split_line_on_sentence_end(rl))
     if not lines:
         return []
 
@@ -376,35 +401,6 @@ def _sentence_overlap_tail(units: list[str], overlap_chars: int) -> list[str]:
     return tail
 
 
-def _word_safe_hard_slice(s: str, max_chars: int) -> list[str]:
-    """Split a single oversized unit into <= max_chars pieces without cutting
-    inside a word. Mirrors core.chunking_optimizer._slice_preserving_words
-    (kept as a separate copy to avoid a text_normalizer -> chunking_optimizer
-    import cycle, since chunking_optimizer already imports from this module).
-
-    Falls back to a hard slice only if one token (no spaces at all) itself
-    exceeds max_chars.
-    """
-    tokens = re.split(r"(\s+|׃)", s)
-    pieces: list[str] = []
-    buf = ""
-    for tok in tokens:
-        if len(buf) + len(tok) <= max_chars:
-            buf += tok
-        else:
-            if buf.strip():
-                pieces.append(buf.strip())
-            if len(tok) > max_chars:
-                for i in range(0, len(tok), max_chars):
-                    pieces.append(tok[i:i + max_chars].strip())
-                buf = ""
-            else:
-                buf = tok
-    if buf.strip():
-        pieces.append(buf.strip())
-    return [p for p in pieces if p]
-
-
 def _merge_sentence_fragments(sentences: list[str], max_chars: int, overlap_chars: int = 0) -> list[str]:
     if not sentences:
         return []
@@ -431,8 +427,31 @@ def _merge_sentence_fragments(sentences: list[str], max_chars: int, overlap_char
         if not sent:
             continue
         if len(sent) > max_chars:
+            # Word-safe hard slice: split on whitespace boundaries only.
+            # Never cuts inside a word (unless a single token exceeds max_chars).
             flush(carry_overlap=False)
-            chunks.extend(_word_safe_hard_slice(sent, max_chars))
+            tokens = sent.split()
+            overflow_buf: list[str] = []
+            overflow_len = 0
+            for tok in tokens:
+                tok_len = len(tok) + (1 if overflow_buf else 0)
+                if overflow_len + tok_len <= max_chars:
+                    overflow_buf.append(tok)
+                    overflow_len += tok_len
+                else:
+                    if overflow_buf:
+                        chunks.append(" ".join(overflow_buf))
+                    if len(tok) > max_chars:
+                        # Single token longer than max_chars — hard slice as last resort
+                        for i in range(0, len(tok), max_chars):
+                            chunks.append(tok[i:i + max_chars])
+                        overflow_buf = []
+                        overflow_len = 0
+                    else:
+                        overflow_buf = [tok]
+                        overflow_len = tok_len
+            if overflow_buf:
+                chunks.append(" ".join(overflow_buf))
             continue
         if total + len(sent) + 1 <= max_chars:
             buf.append(sent)

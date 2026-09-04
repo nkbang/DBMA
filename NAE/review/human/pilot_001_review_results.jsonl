@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "pilot_id": "PILOT-001",
+  "created_by": "NAE-PILOT-HUMAN-REVIEW-001",
+  "created_at": "2026-08-08T00:00:00Z",
+  "status": "PENDING_HUMAN_REVIEW",
+  "description": "Human Review results for Pilot TSU #001. Each line is a JSON object representing one TSU review result.",
+  "allowed_decisions": ["VERIFY", "REVISE", "REJECT", "HOLD"],
+  "pilot_tsu_ids": [
+    "TSU-0000713",
+    "TSU-0000199",
+    "TSU-0000330",
+    "TSU-0000033",
+    "TSU-0000025",
+    "TSU-0003524",
+    "TSU-0003661",
+    "TSU-0003525",
+    "TSU-0003893",
+    "TSU-0003647"
+  ]
+}

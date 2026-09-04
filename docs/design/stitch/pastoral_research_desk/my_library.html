@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>내서재 - 내 자료</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;vertical-align:middle;}
+    .reading-container{max-width:720px;}
+    ::-webkit-scrollbar{width:6px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:#E5E1D8;border-radius:3px;}
+    ::-webkit-scrollbar-thumb:hover{background:#c3c7c7;}
+</style>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "on-surface-variant": "#434848","surface-bright": "#fbf9f4","background": "#fbf9f4",
+                    "on-secondary-fixed": "#241a0d","tertiary-fixed": "#c2e8fe","outline": "#737878",
+                    "surface-container-lowest": "#ffffff","surface-dim": "#dbdad5","outline-variant": "#c3c7c7",
+                    "inverse-surface": "#30312e","on-surface": "#1b1c19","on-primary-fixed-variant": "#414848",
+                    "inverse-primary": "#c1c8c7","secondary": "#6a5c4c","on-primary": "#ffffff","tertiary": "#00202d",
+                    "surface-container-high": "#eae8e3","surface-container": "#f0eee9","secondary-fixed-dim": "#d6c3b0",
+                    "on-background": "#1b1c19","primary-fixed-dim": "#c1c8c7","on-secondary": "#ffffff","on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#a7cce1","inverse-on-surface": "#f2f1ec","primary-fixed": "#dde4e3",
+                    "primary": "#171e1e","on-secondary-fixed-variant": "#514535","surface-container-highest": "#e4e2dd",
+                    "surface": "#fbf9f4","secondary-fixed": "#f3dfcb","on-error-container": "#93000a",
+                    "on-secondary-container": "#6f6050","surface-container-low": "#f5f3ee","on-error": "#ffffff",
+                    "error-container": "#ffdad6","on-tertiary-fixed": "#001e2b","tertiary-container": "#0c3647",
+                    "secondary-container": "#f0dcc8","surface-tint": "#596060","on-tertiary-fixed-variant": "#264b5d",
+                    "error": "#ba1a1a","on-primary-container": "#949b9b","surface-variant": "#e4e2dd",
+                    "on-tertiary-container": "#7b9fb3","on-primary-fixed": "#161d1d","primary-container": "#2c3333"
+                },
+                "borderRadius": {"DEFAULT": "0.125rem","lg": "0.25rem","xl": "0.5rem","full": "0.75rem"},
+                "spacing": {"unit": "8px","sidebar-width": "280px","reading-column": "720px","container-max": "1280px","gutter": "32px","margin-page": "48px"},
+                "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],"body-reading-md": ["\"Source Serif 4\""],"display-lg": ["Hanken Grotesk"],
+                    "title-lg": ["Hanken Grotesk"],"caption": ["Hanken Grotesk"],"body-reading-lg": ["\"Source Serif 4\""],"label-ui": ["Hanken Grotesk"]
+                },
+                "fontSize": {
+                    "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                    "body-reading-md": ["17px", { "lineHeight": "28px", "fontWeight": "400" }],
+                    "display-lg": ["40px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                    "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                    "body-reading-lg": ["19px", { "lineHeight": "32px", "fontWeight": "400" }],
+                    "label-ui": ["14px", { "lineHeight": "20px", "fontWeight": "500" }]
+                }
+            }
+        }
+    }
+</script>
+</head>
+<body class="bg-background text-on-surface font-label-ui overflow-hidden flex h-screen">
+
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-surface border-r border-outline-variant flex flex-col py-margin-page px-4 gap-4 z-50">
+  <div class="mb-8 px-2">
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">내서재</h1>
+    <p class="font-title-lg text-title-lg text-on-surface-variant opacity-70">NAE</p>
+  </div>
+  <nav class="flex flex-col gap-1">
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#"><span class="material-symbols-outlined">home</span><span class="font-label-ui text-label-ui">홈</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#"><span class="material-symbols-outlined">search</span><span class="font-label-ui text-label-ui">자료 찾기</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-primary font-bold border-r-2 border-primary bg-surface-container transition-colors duration-200" href="#"><span class="material-symbols-outlined">library_books</span><span class="font-label-ui text-label-ui">내 자료</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#"><span class="material-symbols-outlined">science</span><span class="font-label-ui text-label-ui">연구하기</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#"><span class="material-symbols-outlined">menu_book</span><span class="font-label-ui text-label-ui">설교 준비</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#"><span class="material-symbols-outlined">help</span><span class="font-label-ui text-label-ui">도움말</span></a>
+  </nav>
+</aside>
+
+<main class="ml-sidebar-width flex-1 flex flex-col h-full bg-surface-bright overflow-hidden">
+  <header class="sticky top-0 z-40 bg-surface-bright h-16 border-b border-outline-variant flex items-center px-gutter">
+    <span class="font-title-lg text-title-lg font-semibold text-on-surface">내서재</span>
+  </header>
+
+  <div class="flex-1 overflow-y-auto px-gutter py-8 pb-16">
+    <div class="reading-container mx-auto">
+      <div class="mb-10">
+        <h2 class="font-display-lg text-display-lg text-primary mb-2">내 자료</h2>
+        <p class="font-label-ui text-on-surface-variant">기본 자료는 항상 원본이 보존되며, 복사 후 자유롭게 수정할 수 있습니다.</p>
+      </div>
+
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-4 pb-2 border-b border-outline-variant">
+          <h3 class="font-title-lg text-title-lg text-on-surface-variant">성경 연구 예제</h3>
+          <span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">기본 자료 · 읽기 전용</span>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between gap-6 p-5 bg-surface-container-low border border-outline-variant rounded-lg">
+            <div>
+              <h4 class="font-title-lg text-title-lg text-primary mb-1">로마서 8장 — 성령의 자유</h4>
+              <p class="font-body-reading-md text-body-reading-md text-on-surface-variant">완성된 연구 workflow</p>
+            </div>
+            <div class="flex gap-2 shrink-0">
+              <button class="px-4 py-1.5 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">보기</button>
+              <button class="px-4 py-1.5 rounded-full text-label-ui font-bold bg-primary text-white hover:opacity-90 transition-all">복사하여 내 자료로</button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-6 p-5 bg-surface-container-low border border-outline-variant rounded-lg">
+            <div>
+              <h4 class="font-title-lg text-title-lg text-primary mb-1">빌립보서 2:13 — 하나님이 역사하시는 것</h4>
+              <p class="font-body-reading-md text-body-reading-md text-on-surface-variant">완성된 연구 workflow</p>
+            </div>
+            <div class="flex gap-2 shrink-0">
+              <button class="px-4 py-1.5 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">보기</button>
+              <button class="px-4 py-1.5 rounded-full text-label-ui font-bold bg-primary text-white hover:opacity-90 transition-all">복사하여 내 자료로</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-4 pb-2 border-b border-outline-variant">
+          <h3 class="font-title-lg text-title-lg text-on-surface-variant">설교 준비 예제</h3>
+          <span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">기본 자료 · 읽기 전용</span>
+        </div>
+        <div class="flex items-center justify-between gap-6 p-5 bg-surface-container-low border border-outline-variant rounded-lg">
+          <div>
+            <h4 class="font-title-lg text-title-lg text-primary mb-1">주일 설교 — 성령의 열매</h4>
+            <p class="font-body-reading-md text-body-reading-md text-on-surface-variant">연구 → 설교 완성 사례</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button class="px-4 py-1.5 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">보기</button>
+            <button class="px-4 py-1.5 rounded-full text-label-ui font-bold bg-primary text-white hover:opacity-90 transition-all">복사하여 내 자료로</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-title-lg text-title-lg text-on-surface-variant mb-4 pb-2 border-b border-outline-variant">내가 만든 자료</h3>
+        <div class="flex items-center justify-between gap-6 p-5 bg-surface-container-lowest border border-outline-variant rounded-lg hover:border-primary-container transition-all">
+          <div>
+            <h4 class="font-title-lg text-title-lg text-primary mb-1">주일 설교 초안 — 성령의 열매</h4>
+            <p class="font-body-reading-md text-body-reading-md text-on-surface-variant">어제 저장 · 수정 가능</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button class="px-4 py-1.5 border border-outline-variant rounded-full text-label-ui hover:bg-primary hover:text-white transition-all">열기</button>
+            <button class="px-4 py-1.5 border border-outline-variant rounded-full text-label-ui text-on-surface-variant hover:border-[#ba1a1a] hover:text-[#ba1a1a] transition-all">삭제</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] bg-tertiary-container text-on-tertiary-container h-10 border-t border-outline-variant px-gutter py-2 flex items-center justify-between z-40">
+    <span class="font-caption text-caption text-on-tertiary-container/80">현재 보고 있는 화면: 내 자료</span>
+    <a class="font-label-ui text-label-ui font-bold text-tertiary-fixed hover:opacity-80" href="#">내서재에게 물어보세요</a>
+  </footer>
+</main>
+</body></html>

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "CONTROL-PLANE-PILOT-007-BYPASS",
+  "parent_task_id": "CONTROL-PLANE-GENERALIZATION-001",
+  "title": "G10 end-to-end pilot — gateway bypassed, executor must independently refuse (defense in depth)",
+  "owner": "CUE",
+  "state": "IDLE",
+  "phase": "PILOT",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "task_type": "production_run",
+  "scope": {
+    "namespace": "control-plane-pilot",
+    "allowed_paths": []
+  },
+  "authorized_by": "Rev. Bang",
+  "required_evidence": [
+    "executor_transition"
+  ],
+  "constraints": {
+    "max_runtime_s": 30,
+    "allow_production_paths": false
+  },
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "notes": [
+    "G10 negative case, deliberately crafted to simulate a gateway bypass: automation.state is set directly to VALIDATION_PASSED (never actually validated by n8n) with a disallowed task_type, to prove the executor's own check_isolation_contract() refuses independently rather than trusting the gateway."
+  ],
+  "automation": {
+    "state": "FAILED",
+    "failure_code": "TASK_TYPE_NOT_AUTHORIZED",
+    "last_transition_id": "CONTROL-PLANE-PILOT-007-BYPASS#1786943115940",
+    "processing_input": {
+      "action": "echo",
+      "message": "should never run"
+    }
+  },
+  "failure_codes": [
+    "VALIDATION_FAILED",
+    "FILE_ERROR",
+    "PARSE_ERROR",
+    "TASK_ID_PAYLOAD_CONFLICT",
+    "TASK_TYPE_NOT_AUTHORIZED",
+    "NAMESPACE_VIOLATION",
+    "PRODUCTION_MUTATION_NOT_ALLOWED",
+    "PILOT_EXEC_FAILED",
+    "INTERNAL_STATE_MAPPING_ERROR"
+  ]
+}

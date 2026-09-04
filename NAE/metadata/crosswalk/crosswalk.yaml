@@ -1,0 +1,35 @@
+# NAE Identifier Crosswalk Store (NAE-CROSSWALK-STORAGE-ADAPTER-IMPLEMENTATION-001)
+#
+# Authoritative storage for Crosswalk Records (Manifest/Registry
+# source_id <-> Corpus/TSU identifier translation). See:
+#   docs/NAE_IDENTIFIER_CROSSWALK_SCHEMA_001.md (record schema, C1 Approved)
+#   docs/NAE_CROSSWALK_STORAGE_DECISION_001.md (Option B — this location)
+#
+# This file is authoritative; NAE/metadata/crosswalk/index.json is a
+# rebuildable lookup cache derived from this file, never the other way
+# around. Do not hand-edit index.json independently.
+#
+# No production mappings exist yet — records stays empty until a
+# separately approved mapping-creation task populates it (manual review
+# only, per Mapping Policy Rule 3 — no automated/guessed entries).
+records:
+  - crosswalk_id: f914f6c442983e59
+    source_identifier: BAP-CHURCH-DAGG-001
+    source_type: registry_source_id
+    target_identifier: Dagg_Church_Order
+    target_type: corpus_canonical_id
+    mapping_status: manual-confirmed
+    confidence: high
+    evidence: 'Source Evidence: Registry sources.yaml source_id=BAP-CHURCH-DAGG-001 -> edition_id=WORK-DAGG-CHURCH-ORDER-001-1871 (work_id=WORK-DAGG-CHURCH-ORDER-001, canonical_title="Church Order", author_id=dagg_john_l, canonical_name="John L. Dagg", publication_year=1871, publisher="Bible and Publication Society", publication_place="Philadelphia"). File Evidence: NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order/original.pdf (sha256=2c553042226e748deb8bb67ff9cf075847c930b2b43eab34b1c8ec0f2cf2d42b, recovered from ~/NAE_CORPUS_RAW/raw/, checksum-verified against pre-cleanup backup). ocr.txt title page reads: "CHURCH ORDER. ... BY J. L. DAGG, D.D. ... PHILADELPHIA: BIBLE AND[PUBLICATION SOCIETY]" -- publisher/place/author match Registry Edition exactly. canonical.json regenerated via NAE/pipeline/canonical/pipeline.py (source=hocr, page_count=314, status=ok). metadata.json (title/creator/publisher/publication_place/edition/year/source_id) cross-validated against Registry programmatically with 0 mismatches (NAE-CORPUS-RECOVERY-EXECUTION-001). Reviewer: Human. Decision Reason: Source Evidence (Registry Edition/Author/Publisher/Year) and File Evidence (original.pdf checksum, OCR title page text, canonical regeneration) independently corroborate the same work/edition -- no naming-similarity guess involved (Mapping Policy Rule 3).'
+    created_at: '2026-08-07T00:20:43-05:00'
+    verified_at: '2026-08-07T00:20:43-05:00'
+  - crosswalk_id: 260d31b2331a3f8b
+    source_identifier: BAP-CHURCH-HISCOX
+    source_type: registry_source_id
+    target_identifier: Hiscox_Standard_Manual
+    target_type: corpus_canonical_id
+    mapping_status: manual-confirmed
+    confidence: high
+    evidence: 'Source Evidence: Registry sources.yaml source_id=BAP-CHURCH-HISCOX -> edition_id=WORK-HISCOX-STANDARD-MANUAL-001-1890 (work_id=WORK-HISCOX-STANDARD-MANUAL-001, canonical_title="The Standard Manual for Baptist Churches", author_id=hiscox_edward_t, canonical_name="Edward T. Hiscox", publication_year=1890, publisher="American Baptist Publication Society", publication_place="Philadelphia"). File Evidence: NAE/corpus/raw/archive_org/church_order/Hiscox_Standard_Manual/original.pdf (sha256=14f4554f43777112f55bb8485e82d91f70f7b75ff6add46943baa2d3b0f16174, recovered from ~/NAE_CORPUS_RAW/raw/, checksum-verified against pre-cleanup backup). ocr.txt title page reads: "THE Standard Manual FOR Baptist Churches BY EDWARD T. HISCOX, D.D... PHILADELPHIA: AMERICAN BAPTIST PUBLICATION SOCIETY, 1420 Chestnut Street" -- publisher/place/author match Registry Edition exactly. canonical.json regenerated via NAE/pipeline/canonical/pipeline.py (source=hocr, page_count=192, status=ok). metadata.json cross-validated against Registry programmatically with 0 mismatches (NAE-CORPUS-RECOVERY-EXECUTION-001). Reviewer: Human. Decision Reason: Source Evidence (Registry Edition/Author/Publisher/Year) and File Evidence (original.pdf checksum, OCR title page text, canonical regeneration) independently corroborate the same work/edition -- no naming-similarity guess involved (Mapping Policy Rule 3).'
+    created_at: '2026-08-07T00:22:03-05:00'
+    verified_at: '2026-08-07T00:22:03-05:00'

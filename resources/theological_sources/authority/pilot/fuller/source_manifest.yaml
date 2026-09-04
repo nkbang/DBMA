@@ -1,0 +1,151 @@
+# NAE Metadata Manifest Pilot 002 (Schema v2.1.0) — NAE-METADATA-PILOT-002
+# 기존 manifest 변경 없음, pilot 전용(authority/pilot/fuller/ 트리 안에서만
+# 존재, 실제 검색/파이프라인에서 참조되지 않음).
+#
+# 2026-08-02 개정(NAE-PILOT-MANIFEST-FIX-001):
+#   - 파일명을 manifest_pilot.yaml → source_manifest.yaml로 변경(사유는
+#     ../source_manifest.yaml 헤더 주석과 동일 — validator 탐색 대상 누락 해결)
+#   - schema_version을 "2.0.0-pilot-volume-ext"(잠정 확장 표기) →
+#     "2.1.0"으로 갱신 — volume_id/volume_number는 이제 ADR-016으로 정식
+#     채택된 v2.1.0 필드이므로 더 이상 "확장 제안" 딱지가 필요 없음
+#   - 8개 entry 전부에 title(volumes.yaml의 volume_title 재사용, RAW title
+#     page 실측 근거), status, access_control, volume_number 필드 추가
+#     (title/status는 v2.1.0 필수 필드 중 누락되어 있었음)
+schema_version: "2.1.0"
+
+sources:
+  - source_id: BAP-MISS-FULLER-VOL01
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-CHARLESTOWN-1820
+    volume_id: FULLER-COMPLETE-WORKS-VOL01
+    volume_number: 1
+    title: "The Gospel Worthy of All Acceptation: The Duty of Sinners to Believe in Jesus Christ"
+    category: missions
+    publication_year: 1820
+    source_type: reference   # Pilot-001 F-P1과 동일 gap, 잠정치
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public   # 2026-08-02 추가 — PD 자료
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. I. Charlestown, MA: Anderson & Meehan for William Collins, 1820."
+    tsu_access: full
+    status: ACQUIRED   # 기존 NAE_SOURCE_MANIFEST_v1.csv(BAP-MISS-FULLER) 값 계승
+
+  - source_id: BAP-MISS-FULLER-VOL02
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL02
+    volume_number: 2
+    title: "The Calvinistic and Socinian Systems Examined and Compared"
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. II. New Haven: S. Converse, 1824."
+    tsu_access: full
+    status: ACQUIRED
+
+  - source_id: BAP-MISS-FULLER-VOL03
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL03
+    volume_number: 3
+    title: "The Gospel Its Own Witness"
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. III. New Haven: S. Converse, 1824."
+    tsu_access: full
+    status: ACQUIRED
+
+  - source_id: BAP-MISS-FULLER-VOL04
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL04
+    volume_number: 4
+    title: "Dialogues, Letters, and Essays, on Various Subjects"
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. IV. New Haven: S. Converse, 1824."
+    tsu_access: full
+    status: ACQUIRED
+
+  - source_id: BAP-MISS-FULLER-VOL05
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL05
+    volume_number: 5
+    title: "Expository Discourses on the Book of Genesis"
+    category: missions
+    publication_year: 1825
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. V. New Haven: S. Converse, 1825."
+    tsu_access: full
+    status: ACQUIRED
+
+  - source_id: BAP-MISS-FULLER-VOL06
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL06
+    volume_number: 6
+    title: "Expository Discourses on the Apocalypse"
+    category: missions
+    publication_year: 1825
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. VI. New Haven: S. Converse, 1825."
+    tsu_access: full
+    status: ACQUIRED
+
+  - source_id: BAP-MISS-FULLER-VOL07
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL07
+    volume_number: 7
+    title: "Sermons on Various Subjects"
+    category: missions
+    publication_year: 1824
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. VII. New Haven: S. Converse, 1824."
+    tsu_access: full
+    status: ACQUIRED
+
+  - source_id: BAP-MISS-FULLER-VOL08
+    author_id: FULLER-ANDREW-001
+    work_id: FULLER-COMPLETE-WORKS-001
+    edition_id: FULLER-COMPLETE-WORKS-001-ED-NEWHAVEN-CONVERSE
+    volume_id: FULLER-COMPLETE-WORKS-VOL08
+    volume_number: 8
+    title: "Miscellanies: Magazine Papers, Sketches of Sermons, Association Letters, Tracts"
+    category: missions
+    publication_year: 1825
+    source_type: reference
+    copyright_status: public_domain
+    usage_permission: research
+    access_control: public
+    citation_policy: "Fuller, Andrew. The Works of the Rev. Andrew Fuller, in Eight Volumes, Vol. VIII. New Haven: S. Converse, 1825."
+    tsu_access: full
+    status: ACQUIRED

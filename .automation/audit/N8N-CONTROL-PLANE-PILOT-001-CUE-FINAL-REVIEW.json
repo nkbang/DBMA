@@ -1,0 +1,23 @@
+{
+  "task_id": "N8N-CONTROL-PLANE-PILOT-001",
+  "parent_task_id": "N8N-CONTROL-PLANE-PILOT-001-CUE-HOLD",
+  "decision": "PASS",
+  "scope": "Isolated end-to-end control-plane pilot, including payload_signature contract fix and re-verification per Rev. Bang's CONDITIONAL PASS instruction.",
+  "reason": "History: (1) initial pilot run PASSED the core loop (happy path, deliberate-fail path, gateway-layer duplicate prevention) but a FINDING was surfaced -- once pilot_executor.py appended PROCESSING/COMPLETED evidence entries using its own sha256(processing_input) payload_signature scheme, a genuine duplicate request on the same task_id was misclassified as TASK_ID_PAYLOAD_CONFLICT by the n8n gateway's duplicate-vs-conflict classifier, because the gateway always compares against the LAST evidence line and that line no longer used the gateway's own signature scheme. Rev. Bang graded this CONDITIONAL PASS and ordered a signature-contract fix + re-verification before any generalization. (2) Canonical definition confirmed directly from the live 'Code — Decide Transition' node (not just ADR-022 prose, which describes a SHA256 'payload_hash' that the deployed code does not actually compute): payload_signature = JSON.stringify(raw webhook request body), field name payload_signature (ADR-022 text vs deployed code naming/algorithm mismatch is a separate, out-of-scope documentation issue, noted but not corrected here). (3) Fix: pilot_executor.py no longer derives its own signature. read_canonical_payload_signature() reads the LAST existing evidence entry for the task_id and propagates that exact value into its own PROCESSING/COMPLETED entries -- this eliminates cross-runtime (JS vs Python) reimplementation drift structurally rather than keeping two algorithms in sync by convention, which satisfies Rev. Bang's step 3 ('단일 구현으로 공유') in the strongest available form given n8n Code nodes are JS and the executor is Python. (4) Re-verification on a FRESH task_id (CONTROL-PLANE-PILOT-004-SIGFIX, not reusing 001/002/003 whose evidence logs still contain the pre-fix mismatch as a historical record) reproduced by direct execution: first request -> VALIDATION_PASSED (1 evidence line) -> pilot_executor --once -> PROCESSING -> COMPLETED (3 evidence lines, all three payload_signature values byte-identical) -> identical request resent -> response status='duplicate' (not conflict), evidence line count stayed at 3, task automation state/last_transition_id unchanged, a second pilot_executor --once run logged 'skip ... not VALIDATION_PASSED' (no new execution), production_mutation remained false throughout. All 5 invariants from Rev. Bang's step 5 checklist were verified this way, not asserted. (5) git status and NAE/pipeline/registration/state/registration_state.json SHA256 reconfirmed unchanged after the fix cycle (hash identical to the pre-fix check); the only outstanding repo diffs are the pre-existing ADR-025 Phase 3 files present before this session started.",
+  "evidence_paths": [
+    ".automation/tasks/CONTROL-PLANE-PILOT-001.json",
+    ".automation/tasks/CONTROL-PLANE-PILOT-002-FAIL.json",
+    ".automation/tasks/CONTROL-PLANE-PILOT-003-DUP.json",
+    ".automation/tasks/CONTROL-PLANE-PILOT-004-SIGFIX.json",
+    ".automation/evidence/CONTROL-PLANE-PILOT-001.jsonl",
+    ".automation/evidence/CONTROL-PLANE-PILOT-002-FAIL.jsonl",
+    ".automation/evidence/CONTROL-PLANE-PILOT-003-DUP.jsonl",
+    ".automation/evidence/CONTROL-PLANE-PILOT-004-SIGFIX.jsonl",
+    ".automation/evidence/night-shift/control-plane-pilot/",
+    ".automation/night-shift/pilot_executor.py",
+    ".automation/night-shift/logs/pilot-executor.log"
+  ],
+  "timestamp": "2026-08-17T04:45:00Z",
+  "reviewer": "CUE",
+  "next_action": "Signature contract PASS confirmed. Per Rev. Bang's step 8, 'Control Plane Generalization' design may now be opened as a SEPARATE task -- not started as part of this pilot. Until that separate task is explicitly authorized: no production task, no Corpus Factory connection, no Fuller Vol02-08, no new Phase, no ADR-025 promotion via this control-plane mechanism."
+}

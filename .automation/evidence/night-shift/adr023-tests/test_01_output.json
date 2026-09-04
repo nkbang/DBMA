@@ -1,0 +1,2 @@
+{"source_id": "adr023-t1-$(date +%s)", "final_state": "REGISTRATION_FAILED", "page_count": 0, "notes": ["source_id already in use: adr023-t1-$(date +%s)"]}
+EXIT_CODE=0

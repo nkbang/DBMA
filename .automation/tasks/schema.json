@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "ADR-021-PILOT-001",
+  "title": "ADR-021 Pilot Specification",
+  "owner": "C1",
+  "state": "IDLE",
+  "phase": "PILOT_SPECIFICATION",
+  "requires_human_approval": false,
+  "created_at": null,
+  "started_at": null,
+  "evidence_at": null,
+  "audit_at": null,
+  "approved_at": null,
+  "attempt": 0,
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "production_mutation": false,
+  "notes": [],
+  "automation": {
+    "state": null,
+    "failure_code": null,
+    "last_transition_id": null,
+    "processing_input": {
+      "raw_item_dir": "",
+      "surname": "",
+      "given_name": "",
+      "title": "",
+      "edition_slug": "",
+      "publication_year": null,
+      "copyright_status": "",
+      "archive_source": "",
+      "source_id": ""
+    }
+  },
+  "failure_codes": [
+    "VALIDATION_FAILED",
+    "FILE_ERROR",
+    "PARSE_ERROR",
+    "TASK_ID_PAYLOAD_CONFLICT",
+    "REGISTRATION_FAILED",
+    "RAW_CHECKSUM_MISMATCH",
+    "EXTRACTION_FAILED",
+    "QUALITY_GATE_FAILED",
+    "INTERNAL_STATE_MAPPING_ERROR"
+  ]
+}

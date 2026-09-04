@@ -35,21 +35,16 @@ is reproduced here from core.heading_provider's exported matching
 functions — no new detection logic, same pattern already duplicated once
 in scripts/shadow_boundary_analysis.py.
 
-Level 3 (Hard Fallback Split, ADR-007 Amendment A / ADR-008 제안 2): when a
-single candidate is already longer than the safety cap on its own (the
-"Unsplittable Outlier" case Axis 3 measures — content with no semantic
-boundary AND no sentence boundary inside it, e.g. a long run-on paragraph
-or an original-language quotation), Level 2's per-buffer cap cannot help
-because the candidate alone already exceeds it before any merging. Level 3
-recovers this by word-safe hard-slicing that one candidate into bounded
-pieces — no semantic or heading signal is consulted for this decision
-(Amendment A: "word-safe 강제 절단만 수행, semantic 정보 미참조"), it is a
-pure last-resort length cut. Per Amendment A's explicit anti-coupling
-principle, this does NOT import core.chunking_optimizer's private
-_slice_preserving_words (nor core.text_normalizer's independent copy of
-the same logic, _word_safe_hard_slice) — it is a third, deliberately
-independent implementation local to this module. All three must be kept
-in sync by hand if the word-safe slicing algorithm itself ever changes.
+Level 3 (Hard Fallback, ADR-008 제안 2, 2026-07-22 구현): Level 1/2가
+flush한 청크가 그래도 safety_cap을 넘는 경우(Axis 3 "unsplittable
+outlier" — 문장/공백 경계가 거의 없는 색인·용어집류 콘텐츠에서 발생)
+word-safe hard slice로 추가 분할한다. `_slice_preserving_words()`는
+`core/chunking_optimizer.py::_slice_preserving_words()`와 동일한 알고리즘을
+**독립적으로 재구현**한 것 — Amendment A 원칙(production의 private
+함수를 직접 import하지 않음)을 지킨다. 이 계층에서 쪼개진 조각들은
+모두 그 청크의 원래 buf_start를 그대로 공유한다(shadow 측정 목적상
+정확한 조각별 오프셋 재계산은 하지 않음 — 이 프로토타입은 아직 실제
+인용/오프셋을 생성하지 않는다).
 
 Known limitations inherited from Pre-SPRINT33-D Preflight
 (docs/SPRINT33-D-preflight-issues.md), NOT addressed here:
@@ -67,6 +62,7 @@ this is ever promoted toward production.
 from __future__ import annotations
 
 import re
+import statistics
 from typing import List, Tuple
 
 from core.heading_provider import (
@@ -89,6 +85,60 @@ _LOOKAHEAD_WINDOW = 5
 
 _heading_feature = HeadingBoundaryFeature()
 
+# [ADR-008 §4, 2026-07-23] Signal-Profile threshold (ADR-007 Amendment A) —
+# replaces the earlier provisional rule ("any single candidate exceeds
+# chunk_size * SAFETY_CAP_RATIO"), which classified a whole document off one
+# outlier candidate and had a documented boundary-case risk (Amendment-A.md
+# §리스크). Median candidate length was validated against the full Beta
+# corpus (12 documents, 2026-07-23 measurement) and cleanly separates the two
+# profiles with no overlap: Profile A (Low Back-matter Density) 132~184
+# chars, Profile B (High Back-matter Density, academic commentary) 269~856
+# chars. 220 sits in the gap. (Two alternative signals — citation-parenthetical
+# ratio and BIBLIOGRAPHY-classification ratio via core.noise_classifier —
+# separated just as cleanly in the same measurement but were not chosen,
+# since median length needs no additional per-candidate classification pass.)
+MEDIAN_CANDIDATE_LENGTH_THRESHOLD = 220
+
+
+def classify_document_profile(candidates: List[Tuple[str, int]]) -> str:
+    """[ADR-008 §4] Returns "A" (Low Back-matter Density) or "B" (High Back-
+    matter Density) per ADR-007 Amendment A's Signal-Profile calibration.
+    Empty candidates -> "A" (no signal; a conservative default rather than
+    raising, matching how build_chunks() itself never raises on empty
+    input)."""
+    if not candidates:
+        return "A"
+    median_length = statistics.median(len(text) for text, _ in candidates)
+    return "B" if median_length > MEDIAN_CANDIDATE_LENGTH_THRESHOLD else "A"
+
+
+def _slice_preserving_words(s: str, max_len: int) -> List[str]:
+    """Level 3 Hard Fallback (ADR-008 제안 2) — word-safe hard slice.
+    Independent reimplementation of core/chunking_optimizer.py's
+    `_slice_preserving_words()` (same algorithm) — Amendment A forbids
+    importing production's private functions, so this is duplicated
+    rather than shared. Falls back to a true hard slice only if a single
+    "word" (no whitespace at all — e.g. an unbroken Hebrew/Greek run)
+    itself exceeds max_len."""
+    tokens = re.split(r"(\s+)", s)
+    pieces: List[str] = []
+    buf = ""
+    for tok in tokens:
+        if len(buf) + len(tok) <= max_len:
+            buf += tok
+        else:
+            if buf.strip():
+                pieces.append(buf.strip())
+            if len(tok) > max_len:
+                for i in range(0, len(tok), max_len):
+                    pieces.append(tok[i : i + max_len].strip())
+                buf = ""
+            else:
+                buf = tok
+    if buf.strip():
+        pieces.append(buf.strip())
+    return [p for p in pieces if p]
+
 
 def _advance_heading_cursor(cursor: int, headings: List[ProviderHeading], key: str) -> int:
     """Mirrors HeadingAssembler.assign()'s cursor-advance step and
@@ -102,49 +152,6 @@ def _advance_heading_cursor(cursor: int, headings: List[ProviderHeading], key: s
     if offset is None:
         return cursor
     return cursor + offset + 1
-
-
-def _word_safe_hard_slice(s: str, max_chars: int) -> List[str]:
-    """Level 3 primitive: split one oversized unit into <= max_chars pieces
-    without cutting inside a word. Falls back to a hard slice only if a
-    single token (no spaces at all) itself exceeds max_chars.
-
-    Deliberately independent implementation — see module docstring's
-    "Level 3" section for why this is not imported from elsewhere.
-    """
-    tokens = re.split(r"(\s+)", s)
-    pieces: List[str] = []
-    buf = ""
-    for tok in tokens:
-        if len(buf) + len(tok) <= max_chars:
-            buf += tok
-        else:
-            if buf.strip():
-                pieces.append(buf.strip())
-            if len(tok) > max_chars:
-                for i in range(0, len(tok), max_chars):
-                    pieces.append(tok[i:i + max_chars].strip())
-                buf = ""
-            else:
-                buf = tok
-    if buf.strip():
-        pieces.append(buf.strip())
-    return [p for p in pieces if p]
-
-
-def _hard_fallback_split(text: str, offset: int, max_chars: int) -> List[Tuple[str, int]]:
-    """Level 3: word-safe hard-slice one oversized candidate, pairing each
-    piece with its real start offset within the original candidate text
-    (found positionally, since _word_safe_hard_slice only trims
-    surrounding whitespace and never alters interior characters)."""
-    pieces = _word_safe_hard_slice(text, max_chars)
-    out: List[Tuple[str, int]] = []
-    cursor = 0
-    for piece in pieces:
-        idx = text.index(piece, cursor)
-        out.append((piece, offset + idx))
-        cursor = idx + len(piece)
-    return out
 
 
 def build_chunks(
@@ -171,7 +178,17 @@ def build_chunks(
     def flush() -> None:
         nonlocal buf, buf_len
         if buf:
-            chunks.append(("\n\n".join(buf).strip(), buf_start))
+            joined = "\n\n".join(buf).strip()
+            if len(joined) > safety_cap:
+                # Level 3 Hard Fallback — Level 1(semantic)/Level 2(safety
+                # cap) still produced an oversized chunk (Axis 3
+                # unsplittable outlier: no sentence/whitespace boundary
+                # inside the run to flush on earlier). Slice word-safe
+                # rather than emit an unbounded chunk.
+                for piece in _slice_preserving_words(joined, safety_cap):
+                    chunks.append((piece, buf_start))
+            else:
+                chunks.append((joined, buf_start))
         buf = []
         buf_len = 0
 
@@ -184,6 +201,10 @@ def build_chunks(
             accumulated_length=buf_len,
             chunk_size=chunk_size,
             min_chunk_size=min_chunk_size,
+            # [ADR-008 제안 3] EmbeddingSimilarityBoundaryFeature용 — 현재
+            # 버퍼의 마지막 후보. 버퍼가 비어 있으면(문서/청크 시작
+            # 직후) 빈 문자열, feature는 0.0으로 폴백한다.
+            previous_candidate_text=buf[-1] if buf else "",
         )
         event = score_boundary(ctx, registry=registry)
 
@@ -193,19 +214,6 @@ def build_chunks(
 
         if buf and event.is_boundary and buf_len >= min_chunk_size:
             flush()
-
-        # Level 3 — Hard Fallback: this candidate is already longer than
-        # the safety cap by itself (an "Unsplittable Outlier", Axis 3).
-        # Level 2's cap check below only fires *after* merging, so it
-        # cannot bound a single already-oversized candidate. Flush
-        # whatever is already buffered first so this abnormal candidate
-        # is never merged with normal neighbors, then emit it as its own
-        # bounded chunk(s) and move on — no semantic/heading signal is
-        # consulted for this decision.
-        if len(text) > safety_cap:
-            flush()
-            chunks.extend(_hard_fallback_split(text, offset, chunk_size))
-            continue
 
         if not buf:
             buf_start = offset

@@ -6,10 +6,9 @@ Production Candidate). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
 
 ```
-Release State:  v1.3.0 released, post-release 개발 재개(ACTIVE)
-Development:    SPRINT33-D 계열 진행 중 — chunk overflow 하위결함 B 안전망 적용 완료,
-                나머지(대안 1/빈도 실측/ADR-008/Legacy 정리)는 로컬 환경 필요
-Next:           로컬(Mac) 환경에서 Beta corpus 발생 빈도 실측 → 대안 1 구현 여부 결정
+Release State:  v1.3.0 RC READY
+Development:    FROZEN
+Next:           GA validation / tag preparation
 ```
 
 ## 현재 상태
@@ -22,19 +21,58 @@ Builder/Retrieval/Embedding Authority를 확정하고 TSU Builder를 core로
 이동했으며, Legacy(`dbma.py` + Chroma/Qdrant island + md_manager)를
 `archive/legacy/`로 분리 완료했다. v1.3.0으로 태그·검증되었다.
 
-v1.3.0 이후 SPRINT27(Research Workspace — 6번째 Authority/Memory Layer),
-SPRINT31~32(PdfHeadingProvider 정식 배선, HeadingAssembler 안정화),
-SPRINT33-A~D(Dormant Semantic Boundary Detector → Shadow scoring →
-Hierarchical Chunk Builder 프로토타입 → D-5 Metrics 공식 평가)로 개발이
-이어졌다. SPRINT33-D Phase 3-A에서 Beta corpus 12개 문서에 대한 D-5 metric
-(ADR-007 Amendment A의 recovery/semantic flush/unsplittable outlier 3축)을
-공식 산출하는 과정에서 `core/text_normalizer.py::split_sentences_mixed()`의
-개행(`\n`) 의존성으로 인한 **chunk overflow 결함**을 발견했다 — 특히 순수
-단일 언어 장문단에서 `chunk_size`/`chunk_overlap` 설정이 사실상 무시되고
-청크 상한 자체가 깨지는 심각한 하위결함(B)이 포함되어 있다. 원인 규명과
-재현은 완료(Preflight 문서, 코드 미수정)했고, 수정 여부·방향은 HQ 승인
-대기 중이다. 같은 흐름에서 Dashboard/Monitor 탭 책임 분리, Monitor 가짜
-지표의 실측화, `.gitignore` 오버매칭 버그 수정도 함께 진행됐다.
+**[2026-07-22 갱신] 이 문서는 SPRINT27-D 이후 장기간 갱신이 밀려 실제
+코드 상태와 어긋나 있었다 — 실제로는 SPRINT33-D까지 진행되었다.**
+아래 "SPRINT28~33-D 진행 내역"과 "SPRINT 외 병행 작업"을 반드시 함께
+읽을 것.
+
+**[2026-07-30 갱신] SPRINT33-D 이후 이 문서가 다시 갱신되지 않은 채
+DBMA-SEARCH-INFRA-001(Logos식 Hybrid Retrieval 인프라, Phase 0~2)이
+진행·완료되었다 — 아래 "DBMA-SEARCH-INFRA-001 진행 내역" 섹션을 반드시
+함께 읽을 것. SPRINT 번호 체계 밖의 별도 프로젝트 트랙이다.**
+
+**[2026-07-31 갱신] DBMA-UX-001~003 트랙(Stitch 프로토타입 → 브랜드/UI
+정정 → Sample Library) 완료. `docs/DBMA-UX-001-EXECUTION-PLAN.md`(진행률
+100%), `docs/DBMA-UX-002-IMPLEMENTATION-PLAN.md`,
+`docs/DBMA-UX-003-SAMPLE-LIBRARY-PLAN.md` 참고. 라이브 `ui/` 코드의 기술
+용어 노출(RAG/벡터DB/임베딩/청킹 등) 9건을 발견·수정했고, Library에
+"기본 자료(읽기 전용)" Sample Library를 실제 파이프라인으로 구현했다
+(`core/config.py::DEFAULT_SAMPLE_LIBRARY_PATH`,
+`scripts/seed_sample_library.py`). Core 스키마(`identity_registry.py`)는
+변경하지 않았다 — side-file 방식. "보기"/"복사하여 내 자료로" 두 버튼
+모두 실 브라우저 클릭으로 최종 검증함(문서 수 112→113 증가 확인, 이후
+테스트 산출물 정리). C1 Task Order 035 Architecture Review: GO with
+caveats.**
+
+**[2026-07-31 갱신 #2] DBMA-UX-004(P1 화면 점검) 완료,
+`docs/DBMA-UX-004-P1-SCREENS-PLAN.md` 참고. 연구하기(`research.py`)
+화면을 실 데이터로 브라우저 검색까지 돌려보고서야 발견된 위반 다수
+수정 — `RRF {score}`/`Hybrid·BM25·Vector·RRF` 알고리즘 노출(관리자
+게이트 처리), `TSU` 라벨, `ROM` 등 원시 성경책 코드, `EXEGESIS` 등
+영어 intent enum, "쿼리" 차용어 전반. **1차 grep 감사(리터럴 문자열만
+검색)로는 f-string 동적 조합 문자열을 못 잡는다는 것이 이번 교훈** —
+향후 UX 감사는 grep 이후 반드시 실 데이터로 브라우저 검증 필요.
+"자료 읽기"(문서 본문 전체를 읽는 화면) 자체가 라이브 앱에 없다는
+진짜 기능 공백도 발견 — `docs/DBMA-UX-005-DOCUMENT-READING-PLAN.md`로
+분리 발행, 착수 전 HQ 결정(옵션 A/B) 대기 중.**
+
+**[2026-07-31 갱신 #3] HQ 지시로 DBMA-UX-006(독립 재감사) →
+DBMA-UX-007(Implementation Specification) 발행. Gate 체계 도입:
+Gate 1~5(Audit/Product Identity/IA/Visual Direction/Architecture Safety)
+PASS, **Gate 6(Implementation Specification) PASS**(`docs/DBMA-UX-007-IMPLEMENTATION-SPEC.md`),
+**HQ 승인 대기 → C1 Implementation BLOCKED**. 읽기 화면은 "document
+viewer"가 아니라 "research workspace"로 확정(본문+연구+행동 3영역).
+"기술적 leakage 금지"를 UX invariant로 명문화 — `chat.py`의
+`신뢰도(final_score)`/`근거 신뢰도(citation)` 원시 노출이 미해결 위반으로
+공식 기록됨, §11 용어집으로 향후 위반 판정 기준 고정. mockup.html은
+"시각 참조"로만 쓰고 구현 권한은 스펙 문서에 있음을 명시.**
+
+**[2026-07-31 갱신 #4] HQ가 DBMA-UX-007 승인. §12 CUE/C1 경계 원칙에
+따라 구현을 한 번에 넘기지 않고 스펙 §15 순서대로 단계 발급 시작 —
+[C1 Task Order 039](agents/c1/C1-TASK-ORDER-039.md)(Phase 1: 기술적
+leakage 제거 + 인용·출처 공용 컴포넌트) 발급. `chat.py`의
+`신뢰도(final_score)`/`근거 신뢰도(citation)` 원시 노출이 이번 Phase의
+1순위 수정 대상. Phase 2(홈 화면)는 Phase 1 완료·CUE 검토 후 발급 예정.**
 
 ---
 
@@ -45,28 +83,128 @@ Hierarchical Chunk Builder 프로토타입 → D-5 Metrics 공식 평가)로 개
   Engine Authority. `dbma.py`의 인라인 RAG(`query_rag` 등)는 폐기 대상.
 - 공식 실행 진입점: `dbma_ui.py` → `ui/app.py` (SPRINT20-G2에서 README/
   `.github/instructions/*` 문서 정렬 완료).
-- `docs/architecture/ADR-004-Research-Workspace-Layer.md` (accepted):
-  `core/research_workspace.py`를 5개 기존 Authority와 나란한 독립 6번째
-  Layer(Memory)로 신설.
-- `docs/architecture/ADR-007-*.md` + Amendment A (accepted): D-5 semantic
-  boundary rebuild gate — Hierarchical Chunk Builder 정식 채택 여부를
-  판단할 3축 metric(Axis1 recovery / Axis2 semantic flush ratio / Axis3
-  unsplittable outlier ratio) 정의.
+- `docs/architecture/ADR-006-Heading-Provider-Registry.md` (accepted):
+  헤딩 감지를 소스 타입별 Provider로 분리(`core/heading_provider.py`).
+- `docs/architecture/ADR-007-Semantic-Boundary-Detector.md` +
+  Amendment A (accepted): Boundary Score 모델과 D5(recovery/semantic/
+  outlier) 3축 품질 지표, Hierarchical Chunk Builder 설계 근거.
 - `docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md`
-  (제안만, 미확정): threshold 재산정, Level 3 Hard Fallback 구현, 임베딩
-  기반 6번째 feature, `split_sentences_mixed` 버그 후속 티켓 분리를 제안.
-  코드 변경 없음 — 착수 여부 HQ 결정 대기.
+  (accepted, 프로덕션 전환 경로는 미실행): 현재 `chunking_optimizer.py`
+  대신 Hierarchical Chunk Builder로 전환하는 조건과 절차.
+- `docs/architecture/ADR-009-SIL-Theology-Engine.md` (**완료**, commit
+  `0324dca`, 2026-07-22 — 이전 "구조만 확정" 기재는 stale, 이후 갱신
+  누락돼 있었음): 사용자가 신학 전통(개혁파 침례교, 1689 런던신앙고백
+  계열)과 `doctrine_category`(7개)/`baptist_theme`(10개) 최종 어휘를
+  직접 확정. `core/sermon/doctrine_vocabulary.py`(승인 어휘 상수),
+  `core/sermon/doctrine_filter.py`(`check()` — 사후 실행, 생성 차단
+  없음, 점수화 금지, 저신뢰도는 "(확실하지 않음)" 노출, 승인 어휘 밖
+  범주는 필터링, Ollama 실패해도 raise 안 함)로 구현되고
+  `ui/pages/sermon_draft.py`에 개요 생성 직후 자동 실행·경고 배너로
+  연결됨. 테스트 10건 신규(`tests/test_doctrine_filter.py`), 당시
+  회귀 612 passed.
+- `docs/architecture/ADR-010-DBMA-REQ-RAG-Evaluation-Quality.md`
+  (구조 확정 — 미확정 항목 2건 중 1건 해결(2026-07-29, 골든셋 3→7건
+  확대), 나머지 1건(`question_answering_quality` reference-free
+  재정의)은 **David 결정으로 Phase 4 착수 시점까지 명시적 보류**,
+  2026-07-29): LLM-as-judge pointwise 평가 인프라(`core/evaluation/`).
+- `docs/architecture/ADR-011-Header-Footer-Repetition-Detector.md`
+  (완료/보류 확정, 2026-07-23): 한글 PDF 주석서(Profile B)의 반복
+  러닝헤더 문제 — `RepetitionTracker`(`core/repetition_detector.py`)
+  구현 + 단위테스트 6건 통과, `noise_classifier.py`/
+  `semantic_boundary_detector.py` 연결 후 Beta corpus 실측까지 완료.
+  결과: 효과 0(delta=0) 확인 — 이 corpus엔 candidate 스트림에 살아남는
+  running header가 없어 프로덕션 반영은 보류(추가 조치 불필요, 코드는
+  향후 재평가용으로 유지). 상세: 문서 본문 Next Steps(160~208행) 참고.
+- `docs/architecture/ADR-028-NAE-Smith-Reference-Layer.md` (**DRAFT**):
+  Smith Bible Dictionary Vol.1~4 reference layer — conditional heuristic
+  activation, authority hierarchy (Scripture > TSU > Smith), UI non-exposure.
+  Raw registration 완료(`NAE_SMITH_BIBLE_DICTIONARY_REGISTRATION_001.md`),
+  TSU/임베딩 경로 설계 보류.
+- `docs/architecture/ADR-029-NAE-Research-Corpus-Expansion-Pipeline-Lock.md`
+  (**DRAFT**): Smith 이후 corpus expansion pipeline 고정 — Phase 0~7,
+  Terminology Corpus 분리, NAC pilot 우선, cross-lingual gate,
+  Library Source Control 시기. governance document.
+
+---
+
+## SPRINT28~33-D 진행 내역 (2026-07-22, 뒤늦게 기록)
+
+STATE.md가 SPRINT27-D에서 멈춰 있는 동안 실제로는 아래까지 진행되어
+있었다 — 전부 완료 상태이며, 코드 변경은 각 스프린트 주석([SPRINT28-B]
+등)과 `docs/SPRINT33-*.md`에서 확인 가능하다.
+
+- **SPRINT28** — 청크 단위 noise 분류기, front-matter 감지 버그 수정,
+  PDF PAGE_BREAK_MARKER 보존, RetrievalEngine TF-IDF fallback 지연 빌드.
+- **SPRINT29** — 청킹 파라미터를 `core/config.py` 단일 소스로 정리(SSOT),
+  경계 기반 chunk overlap 적용, 헤딩 골격(`heading_extractor.py`, "honest
+  empty" 원칙).
+- **SPRINT30** — 적응형 PDF 헤딩 감지기(`core/pdf_structure_detector.py`)
+  실측·설계·구현.
+- **SPRINT31** — Heading Provider Registry 아키텍처 확정(ADR-006),
+  HeadingAssembler 커서 매칭(정확 일치 → bounded-lookahead 복구),
+  PDF span geometry 수집/연결, 과도기 어댑터 제거.
+- **SPRINT32** — PdfHeadingProvider를 `tsu_builder.py`에 실제 연결(PDF
+  한정, ADR-006 Option 1), HeadingAssembler word-boundary 매칭 버그 수정.
+- **SPRINT33-A** — SPRINT31~32 경계/청킹 파이프라인 감사(코드 변경 없음).
+- **SPRINT33-B** — `core/semantic_boundary_detector.py`(Boundary Score
+  모델, dormant/shadow) 설계·구현. ADR-007.
+- **SPRINT33-C** — Boundary Score 모델 shadow 검증·보정(휴리스틱 피처
+  4종 추가: Paragraph/TinyFragmentPenalty/SentenceBoundaryConfidence/
+  ScriptureReferenceBoundary, 가중치 보정, shadow-vs-production delta 측정).
+- **SPRINT33-D** — Hierarchical Chunk Builder 프로토타입
+  (`core/hierarchical_chunk_builder.py`, ADR-007 Amendment A) 구현 및
+  D5 3축 정식 평가 완료. ADR-008의 제안 2(Level 3 Hard Fallback,
+  2026-07-22 완료)/3(임베딩 6번째 feature)/4(버그 수정)까지 모두
+  완료(commit `08d542a`). **상태: 프로토타입 완결 — 프로덕션(`chunking_
+  optimizer.py`) 전환은 데이터 갖춰졌으나 HQ 결정 대기로 보류(2026-07-22).**
+  - 이 과정에서 `split_sentences_mixed()`의 줄바꿈 의존 버그를 발견 →
+    `docs/PREFLIGHT-split-sentences-mixed-chunk-overflow.md`로 분리 추적.
+    하위 결함 B는 `_merge_sentence_fragments()` word-safe hard slice로
+    수정 완료(over-cap 비율 4.6%→0.5%, commit `c513bad`). **근본 수정
+    (a)도 완료됨**(`_split_line_on_sentence_end()` 신설로 문장부호 기준
+    분할 추가, commit `d45caed`, 2026-07-21 — 애초 제안한 "`split_
+    sentences()`로 위임" 방식은 아니었지만 동일 목적 달성. 잔여
+    over-cap은 0.2%(40건)로, 이는 Axis 3 unsplittable outlier — 별개
+    문제로 Hierarchical Chunk Builder 쪽에서 계속 추적). **[2026-07-22
+    정정] 이 항목은 한때 "미착수"로 잘못 기재됐었다 — Preflight 문서의
+    갱신 지연분을 그대로 옮겨적은 것이 원인, git 로그 재대조로 확인.**
+
+---
+
+## SPRINT 외 병행 작업 (2026-07-21~22)
+
+번호가 매겨진 스프린트 트랙과 별개로, 별도 설계 문서
+(`docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md`) 하에 진행된 작업.
+commit `08e5704`/`8f40ea0`/`3dde0fd`/`21f80a1` (dev/dbma-engine push 완료).
+
+- 설교문 생성 파이프라인: Logos Print/Export 자료 인제스트 스크립트
+  (`scripts/ingest_logos_export.py`), TSU `source_provenance` additive
+  필드, 하이브리드 검색에 PassageMatch·SourceTierBonus 항목 추가
+  (`core/retrieval.py`).
+- 한국어 출력 순도: 로컬 생성 모델(`my-theology-bot:latest`,
+  llama3.3:70b Q4_K_M)에서 실측된 CJK 이웃 언어/태국어 혼입 현상 —
+  temperature와 무관하게 재현되는 모델 자체 결함으로 확인, 재시도 2회
+  + 최종 sanitize 백스톱으로 대응(`core/generation.py`).
+- 대시보드: "정리된 자료"/"유형별 문서" 카운트 불일치(74 vs 124) 수정 —
+  `_get_effective_documents()`로 두 카드가 같은 모집단(chunk_count>0·
+  ingest_status=PROCESSED·superseded_by 없음)을 공유하도록 통일, registry의
+  superseded 이력 48건 정리, 유형별 수량사(권/건) 적용.
+- Streamlit dev server가 harness 할당 포트로 바인딩되지 않던 문제 수정
+  (`.claude/launch.json`, autoPort).
+
+**다음 조치**: 없음(각 항목 실측 검증 완료) — Logos 인제스트는 실제
+Logos 자료·manifest 준비가 있어야 다음 단계로 진행 가능.
 
 ---
 
 ## 프로젝트 진행률
 
-전체 진행률: v1.3.0 Architecture Consolidation은 100% 완료. 이후
-SPRINT27/31~33 계열도 각 Phase 목표(D-5 metric 공식 평가까지)는 100%
-완료됐으나, 그 과정에서 드러난 chunk overflow 결함 수정과 ADR-008 후속
-항목은 착수 여부 결정 대기 상태로 **미완**이다.
+전체 진행률(SPRINT20-I Architecture Consolidation 기준): 100% —
+단, 이는 v1.3.0 태그 시점 스코프일 뿐이며 이후 SPRINT28~33-D(청킹
+품질 고도화, 위 §SPRINT28~33-D 참고)가 별도로 진행 중/완료되었다.
+"100%"는 v1.3.0 스코프 완료를 뜻하지 프로젝트 전체 종료를 뜻하지 않는다.
 
-### 세부 진행 (SPRINT20-I, v1.3.0 — 완료)
+### 세부 진행 (SPRINT20-I 완료, v1.3.0 스코프)
 - Retrieval Engine 단일화 (ADR-001): 100%
 - Citation Layer / Metadata Propagation: 100%
 - Configuration / Execution Env / Logging Authority: 100%
@@ -77,27 +215,34 @@ SPRINT27/31~33 계열도 각 Phase 목표(D-5 metric 공식 평가까지)는 100
 - Legacy Vector Store 정책 (ADR-003 Finalization): 100%
 - Release: v1.3.0 태그 + chapter-level benchmark PASS + beta validation: 100%
 
-### 세부 진행 (SPRINT27, SPRINT31~33 — Phase 목표 완료, 후속 결정 대기)
-- Research Workspace Layer (ADR-004, 6번째 Authority): 100%
-- PdfHeadingProvider 배선 / HeadingAssembler 안정화 (SPRINT31~32): 100%
-- Dormant Semantic Boundary Detector + Shadow scoring feature군 (SPRINT33-A~C): 100%
-- ADR-007/Amendment A D-5 게이트 정의 + Hierarchical Chunk Builder 프로토타입 (SPRINT33-D Phase1~2): 100%
-- D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건): 100%
-- chunk overflow 결함 원인 규명 (Preflight, 코드 미수정): 100%
-- chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현: 100%
-- ADR-008 제안 2 — Level 3 Hard Fallback 구현 (dormant 모듈): 100%
-- ADR-009 대안 1(무개행 위임) / ADR-008 제안 1·3 착수 / Level 3 Axis 3 효과 재측정 / Beta corpus 실측 / Legacy artifact 정리: 0% (원격 세션에 `output/` 데이터 없어 로컬 환경 필요)
-
 ---
 
 ## v1.3.0 릴리스 상태
 
 ```
-Version:   v1.3.0 (tag 07ec084) + post-release stabilization
-HEAD:      7a51a31 (origin/dev/dbma-engine 동기화)
-Tests:     237 passed
-Runtime:   APP_VERSION 1.3.0 / embed bge-m3:latest / gen my-theology-bot:latest / cap 2
-Status:    STABLE — GA 검토 단계
+Version:   v1.3.0 (tag 07ec084) + post-release stabilization (SPRINT28~33-D 반영)
+HEAD:      afbb1be (origin/dev/dbma-engine 동기화, 2026-07-29 — Task Order
+           016(Hierarchical Chunk Builder Axis 2, Option A/B/C-1 전부
+           실측 기각·종료)·골든셋 gold-4~7 확장·Task Order 017
+           (DocumentContext Registry Schema Parity 구현)·Task Order 018
+           (doc_type을 core/processing.py PROCESS/SKIP 경로에 실제 배선)·
+           Task Order 019(기존 등록 문서 doc_type 백필 스크립트)·
+           STATE.md/ADR-009/ADR-010 stale 항목 정정·ADR-010 잔여
+           결정 항목 Phase 4까지 보류 확정, 전부 push 완료)
+Tests:     1,151개 수집 확인(tests/ 스코프, 2026-07-30 재확인 — 이전 기재
+           "852개"/"1,114개"는 같은 날 세션 중간 시점 값으로 이미 stale,
+           DBMA-SEARCH-INFRA-001 Phase 2 + Query Planner에서 추가된 테스트
+           반영 안 돼 있었음). 전체 1,151개 일괄 실행은 비용 커서 보류 —
+           DBMA-SEARCH-INFRA-001 관련 범위(candidate_generator/bible_index/
+           hybrid_candidate_pipeline/query_planner/index_orchestrator/
+           retrieval 일부)는 이번 세션에서 개별 확인 시마다 통과 확인됨
+           (111개). output/SPRINT5_ENGINEERING_VALIDATION/
+           stress_test.py에서 무관한 collection error 1건 있음(사전부터
+           존재, 이번 세션 원인 아님, 미조사). 전체 스위트 공식 재실행은
+           GA 검토 전 별도로 권장.
+Runtime:   APP_VERSION 1.3.0 / embed bge-m3:latest / gen my-theology-bot:latest
+           (llama3.3:70b Q4_K_M) / cap 2
+Status:    STABLE — GA 검토 단계 (변동 없음)
 ```
 
 완료된 post-release 안정화:
@@ -106,14 +251,119 @@ Status:    STABLE — GA 검토 단계
 - Orphan cleanup: data/rag_index, 빈 backup 폴더, md_manager archive
 - Benchmark evidence: output/bench/chapter_level_result_v1.3.0_cap2.json
 
+## DBMA-SEARCH-INFRA-001 진행 내역 (2026-07-30)
+
+HQ 작업지시서("Logos식 초고속 하이브리드 검색 엔진 도입") 기반, `docs/architecture/`
+아래 계획 문서 3건 참고:
+- `DBMA-SEARCH-INFRA-001-PHASE0-BASELINE.md` — 현황 진단
+- `DBMA-SEARCH-INFRA-001-PHASE2-PLAN.md` — Phase 2 착수 계획 (진행률 100%)
+- `C1-TASK-ORDER-033-REPORT.md`(`docs/agents/c1/`) — 엔진 벤치마크 v5(CUE 직접 실행·검증)
+
+**Phase 0 (현황 진단)**: 기존 `RetrievalEngine.retrieve()`가 metadata filter 실패 시
+BM25가 역색인 없이 전체 코퍼스(53,231 TSU)를 스캔 → 7~8초. Qdrant는 실제로
+연결된 적이 없었음(파라미터만 받고 미사용, 전량 인메모리 BM25/TF-IDF)도 확인.
+
+**Phase 1 (긴급 패치)**: BM25 완전 미스 시 폴백이 `candidate_k` 캡을 무시하고
+전체 후보 풀을 theological scoring에 넘기던 버그 수정(`core/retrieval.py`) —
+p50 385ms→149ms, p95 14.7s→9.0s, p99 54.6s→17.3s. `core/retrieval.py`는 이
+한 건의 최소 패치 외에는 이후 전부 무변경 유지.
+
+**Phase 2 (역색인 인프라 도입, 완료)**:
+- 2-1: Tantivy/Meilisearch/Typesense 벤치마크 → **Tantivy 채택**(임베디드,
+  평균 지연 최저). C1이 Task Order 033을 4차례(v2~v4) 데이터 무결성 결함으로
+  반려당한 뒤 CUE가 직접 인수해 실행·검증(v5) — 상세는
+  `feedback_c1_stale_status_reports.md` 메모리 #9/#10 참고.
+- 2-2: `core/candidate_generator.py` — Tantivy 기반 `CandidateGenerator`
+  (BM25 + 메타데이터 사전필터, id+score만 반환·full_text 미포함)
+- 2-3: `core/bible_index.py` — SQLite 기반 `Bible.{Book}.{Chapter}.{Verse}`
+  posting list, Vector 인덱스와 독립. 기존 `QueryParser`/`ScriptureReference`
+  정규화 재사용(신규 파서 없음)
+- 2-4: `core/index_orchestrator.py`의 4개 함수(rebuild_tsu_index/
+  reindex_document/reconcile_pending/exclude_document_from_index) 전부에
+  candidate index + Bible index 배선 — 문서 1건 수정 시 전체 재색인 없음
+- 2-5: 스니펫 — 별도 preview 필드 저장 대신 Tantivy 내장 `SnippetGenerator`
+  활용(UTF-8 바이트/문자 오프셋 버그 발견·수정 포함)
+- 2-6: `core/hybrid_candidate_pipeline.py`(`HybridRetriever`) — Stage1
+  CandidateGenerator + Stage2는 `core/retrieval.py`의 기존 스코어링 함수
+  그대로 재사용(재구현 없음). 통합 검증 중 회귀 버그 2건 발견·수정
+  (메타데이터 폴백 누락으로 12/96 쿼리 dead-end, Stage2 후보 100개 스코어링
+  시 특정 청크로 인한 비선형 지연) 후 최종 실측:
+
+| 지표 | 기존 RetrievalEngine | HybridRetriever |
+|---|---:|---:|
+| precision@1 (96쿼리) | 1.0 | 1.0 |
+| p50 | 149ms | 8.2ms |
+| p95 | 9,020ms | 10.5ms |
+
+  10만 합성 코퍼스 별도 측정: p95 9.8ms(완료기준 1초 이내 충족).
+
+**[2026-07-30 추가 진행] USE_INVERTED_INDEX 실배포 + Query Planner 구현 완료**:
+- `ui/state/query_processor.py::get_shared_query_processor()`에 배선 완료 —
+  `chat.py`/`research.py`는 무변경(이 함수 하나만 통과). 플래그 true면
+  `HybridQueryProcessor` 반환.
+- `core/query_planner.py`(신규) — 규칙 기반 5-way 라우팅(bible/greek/exact/
+  metadata/hybrid), LLM 미사용. `HybridRetriever.retrieve()`가 Stage 0으로
+  호출해 Bible Index 직접조회/PhraseQuery/title-author 한정 검색으로 분기.
+- 진행 중 실제 프로덕션 `output/bench/bible_index.sqlite3`가 테스트 픽스처로
+  오염된 걸 발견·수정(테스트가 경로 인자 하나를 안 넘겨서 발생 — 재발 방지로
+  테스트 수정 + 실제 인덱스 재구축 56,857 postings).
+- `core/retrieval.py`는 시종 무변경 유지.
+
+**RRF (HQ 제안 ⑦) 구현**: `core/rrf.py`(신규, 범용 유틸) — `HybridRetriever`의
+고정 가중합(0.4*bm25+0.4*theological+0.2*passage)을 3-신호 순위 기반 RRF로
+교체. book-level gold standard 재실행으로 precision@1 1.0 유지 확인(회귀 없음).
+
+**Search Telemetry (HQ 제안 ⑨) 구현 — 백엔드만, UI 클릭 배선 보류**:
+`core/search_telemetry.py`(신규, SQLite) — 성공률/Zero-hit/Top1·5 Click/
+Average Candidate/Merge Time/Cache Hit/Embedding·ANN Time 전부 구현(캐시·
+임베딩·ANN은 아직 그 단계 자체가 없어 정직하게 항상 0). `HybridQueryProcessor`가
+매 쿼리 자동 기록. **UI(`ui/pages/research.py`) 클릭 배선은 보류** —
+연결 시도 중 이 파일이 C1이 동시에 진행 중인 대규모 Stitch 리디자인
+(uncommitted, 계속 변경 중)으로 실제로 한 번 편집이 덮어써진 것을 발견,
+사용자 확인 후 C1 작업 완료 후로 미룸.
+
+**Background Index Builder (HQ 제안 ⑧) 구현 (2026-07-31)**: `core/background_index_builder.py`
+(신규, 데몬 스레드) — 새 파이프라인이 아니라 이미 있던 `pipeline_state=PROCESSED`
+큐 + `reconcile_pending()`(멱등적 pull 재조정자)을 블로킹 호출 대신 백그라운드
+스레드로 옮긴 것. `ui/pages/processing.py`의 블로킹 호출 1곳을
+`trigger_now()`(논블로킹)로 교체 — 수정 전 매번 git diff로 C1이 안 건드린
+파일인지 확인함(research.py 사고 이후 습관화).
+
+**캐시 계층 분리 (HQ 제안 ⑥) 구현 (2026-07-31)**: `core/search_cache.py`
+(신규) — `SearchResultCache`(L1 메모리 + L2 SQLite). L3(Disk)는 별도로
+안 만듦(L2가 이미 디스크라 중복), Query Embedding Cache도 안 만듦
+(HybridRetriever엔 임베딩 단계 자체가 없음) — 둘 다 이유를 문서에 명시.
+캐시 키에 TSU manifest fingerprint 포함 → 재색인하면 자동 무효화.
+실측: 캐시 히트 시 67.92ms→0.61ms(약 110배). 이번에도 테스트가 실제
+경로를 오염시킨 사고 발생(네 번째, 같은 패턴) — 수정 완료.
+
+**범위 경계 (의도적으로 안 한 것)**: HQ 제안 ①~⑨ 전부 착수 완료(⑨는 백엔드만,
+UI 클릭 배선은 C1 리디자인 완료 후 보류). 남은 것은 그 UI 배선 하나뿐.
+
+**테스트**: 이 트랙에서 신규 파일 5개(`test_candidate_generator.py`,
+`test_bible_index.py`, `test_hybrid_candidate_pipeline.py`, `test_query_planner.py`
++ `test_index_orchestrator.py`/`test_shared_query_processor.py` 확장) 약 100여 건
+추가. 전체 스위트는 1,114개+ 수집(2026-07-30 재확인, 아래
+"Tests:" 줄도 함께 갱신).
+
 ## 잔여 (비blocker, 향후)
+- monitor.py 정적 하드코딩 값(메모리 72% 등) → 실시간화 (P3)
 - GA 선언 여부 판단 (안정화 기간 후)
-- ADR-009 대안 1(`split_sentences_mixed` 무개행 위임) 구현 여부 — 로컬 환경에서 Beta corpus 재검증 후 결정
-- Level 3 Hard Fallback(ADR-008 제안 2) 구현이 Beta corpus Profile B Axis 3(unsplittable outlier)를 실제로 개선하는지 재측정 — 로컬 환경 필요
-- Beta corpus 대상 하위결함 B 발생 빈도 실측 (미실측 — 원격 세션에 `output/` 없어 로컬 필요)
-- ADR-008 후속 항목(threshold 재산정 / Level 3 Hard Fallback 구현 / 임베딩 기반 6번째 feature) 착수 여부 결정 — threshold 재산정은 Beta corpus 실측 선행 필요
-- Legacy Artifact(`output/registry/`, `output/baseline/`, `output_sav/` 등) 정리 여부 — 원격 세션에 `output/` 자체가 없어 점검 불가, 로컬 환경 필요
-- SPRINT27-D — Research Workspace를 MIE(Ministry Intelligence Engine) Memory Layer로 확장하는 Architecture Preflight (조사만, 구현 없음)
+- [x] **[2026-07-27, 완전 해결]** TSU `verse_mapping`의 book_id/chapter
+  조합 불일치 — Fix A 구현(`core/tsu_builder.py`) + 전체 재빌드 완료,
+  재측정 결과 불일치 8,391건(64.88%) → 0건(0.00%). 상세:
+  `docs/PREFLIGHT-tsu-verse-mapping-book-chapter-mismatch.md`
+- **[2026-07-27 신규]** DBMA-SEQ(ADR-012) `sermon_judge.py`
+  groundedness 첫 실측 — `scripts/run_sermon_eval.py` 신설, 실제
+  경로로 3건 실행 결과 평균 5.00/5(전부 만점, 판별력 확인 필요).
+  상세: `docs/DBMA-SEQ-Phase1-Groundedness-Baseline-2026-07-27.md`
+- **[2026-07-27 결정 → 2026-07-29 완료]** 골든셋 라벨링 담당/일정 확정
+  — 담당: David 본인 직접 채점. ADR-010(RAG)/ADR-012(설교) 골든셋을
+  3건→7건으로 **동시 확장 완료**(gold-4~7/SEQ004~007). RAG 축은
+  judge·사람 4건 전부 완전 일치, 설교 축은 judge가 사람보다 최대 1점
+  관대한 경향 확인 — "전부 만점" 판별력 우려 해소. 반영: `tests/
+  fixtures/rag_eval_golden_set.json`(RAG), `docs/DBMA-SEQ-Phase1-
+  Groundedness-Baseline-2026-07-27.md`(설교, "확장" 절).
 
 ---
 
@@ -143,131 +393,6 @@ Status:    STABLE — GA 검토 단계
 ---
 
 ## 최근 상태
-
-### ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18)
-- 상태: 완료
-- 설명: `core/hierarchical_chunk_builder.py`(dormant 프로토타입, SPRINT33-D)에
-  ADR-007 Amendment A가 "설계만 완료, 미구현"으로 남겨둔 Level 3(Hard
-  Fallback Split)를 구현했다. Level 1(semantic)/Level 2(safety-cap)는
-  이미 존재했으나, 단일 candidate가 그 자체로 이미 safety cap을
-  초과하는 "Unsplittable Outlier"(Axis 3 측정 대상) 케이스는 Level 2로도
-  bound되지 않는 결함이 있었다. 신규 `_word_safe_hard_slice()`/
-  `_hard_fallback_split()`을 추가해, 이런 candidate를 만나면 먼저 기존
-  버퍼를 flush하고 이 candidate만 word-safe hard slice로 여러 bounded
-  chunk로 분리 — semantic/heading 신호는 참조하지 않는 순수 길이 기반
-  최후 수단(Amendment A 원칙 그대로).
-  Amendment A의 "production private 함수 직접 import 금지" 원칙에 따라
-  `core/chunking_optimizer.py::_slice_preserving_words()`도,
-  `core/text_normalizer.py::_word_safe_hard_slice()`(오늘 하위결함 B
-  수정에서 추가)도 import하지 않고 이 모듈에 세 번째 독립 사본으로
-  구현 — 세 사본의 알고리즘 drift 방지는 수동 관리 필요(모듈 docstring에
-  명시).
-  기존 테스트 1건(`test_force_flushes_at_safety_cap_without_any_semantic_signal`)이
-  의도치 않게 이 신규 경로를 타고 있어(각 candidate가 이미 safety cap
-  초과) Level 2를 순수하게 테스트하도록 fixture를 정상 크기 candidate로
-  교정. 신규 `TestHardFallbackSplit` 5건 추가(bound 보장/word-safety/
-  공백 없는 토큰 처리/인접 정상 candidate와 미병합/offset 정확성).
-  `tests/test_hierarchical_chunk_builder.py` 12건 전부 통과. 여전히
-  dormant 모듈이라 production(`chunking_optimizer.py`/`processing.py`)
-  경로는 무접촉.
-- 다음 조치: Profile B(학술 주석서, Axis 3 최악 18.6%) 대상 실제 개선
-  효과를 Beta corpus로 재측정 — 이 원격 세션에 corpus 데이터가 없어
-  로컬(Mac) 환경 필요.
-
-### chunk overflow 하위결함 B 안전망(대안 2) 구현 (2026-08-18)
-- 상태: 완료(대안 2), 대안 1은 보류
-- 설명: `docs/architecture/ADR-009-Chunk-Overflow-Fix-Design.md`(대안 1
-  무개행 위임 + 대안 2 word-safe hard slice 병행 권고)를 근거로, HQ
-  지시에 따라 대안 2를 구현했다. `core/text_normalizer.py::
-  _merge_sentence_fragments()`의 `if len(sent) > max_chars` 분기가
-  자르지 않고 그대로 chunk에 추가하던 것을, 신규 헬퍼
-  `_word_safe_hard_slice()`(`core/chunking_optimizer.py::
-  _slice_preserving_words()`와 동일 로직의 독립 사본 — import 순환
-  회피)로 교체해 word-safe hard slice로 상한을 강제한다.
-  `chunking_optimizer.py`가 이미 `_merge_sentence_fragments`를 이 모듈에서
-  import하므로 배선 변경 없이 production 경로에 즉시 적용됨.
-  회귀 테스트 3건 추가(`tests/test_text_normalizer.py::
-  TestMergeSentenceFragmentsOversizedUnit`) — 이 세션에서 실행 가능한
-  `tests/test_text_normalizer.py`(14건) + `tests/test_chunking_optimizer.py`
-  (19건) 전부 통과.
-  대안 1(무개행 위임)은 `grep`으로 확인한 결과 `core/utils.py::
-  detect_broken_line_ratio()`와 `scripts/shadow_d5_metrics.py`의 Axis 3
-  정의가 현재 동작에 의존하고 있어, Beta corpus 재검증 없이 진행하면
-  회귀 위험이 있다고 판단해 이번에는 보류했다(이 원격 세션에는
-  `output/beta_validation_v5/` 데이터 자체가 없어 검증 불가).
-- 다음 조치: 로컬(Mac) 환경에서 Beta corpus 발생 빈도 실측 → 대안 1
-  구현 여부 결정 → `core/utils.py`/`scripts/shadow_d5_metrics.py` 영향
-  확인 → D-5 metric 재측정.
-- 함께 확인된 환경 제약: 이 원격 세션(claude.ai/code 클라우드 컨테이너)에는
-  `output/`, `data/`, `chroma_db/`, `cache/`, `backups/` 등 로컬 전용
-  산출물이 전혀 없다 — ADR-008 제안 1(threshold 재산정), Beta corpus
-  발생 빈도 실측, Legacy Artifact(`output/registry/` 등) 정리는 모두
-  이 세션에서 착수 불가하며 로컬(Mac) 환경 작업이 필요하다.
-
-### .gitignore 오버매칭 수정 + C1 거버넌스 문서 커밋 (2026-07-20)
-- 상태: 완료
-- 설명: `.gitignore` 패턴 불일치로 `backups/`(381M), `cache/`(1.7G,
-  embeddings_backup_* 포함), `backup_chroma.log`가 새고 있었음(`backup/`
-  단수만 지정돼 `backups/` 복수 미매칭 등). `reports/`(무슬래시)가 루트
-  뿐 아니라 `docs/agent_governance/reports/`, `docs/reports/`까지 잡아먹어
-  `OPS-001`/`OPS-002`/`ARCHITECTURE_AUDIT_2026-07-16.md`가 한 번도
-  커밋되지 못한 상태였음을 발견 — `/reports/`로 스코프 축소해 정정.
-  `.claude/worktrees/` 패턴도 추가(leftover worktree 재발 방지).
-  `docs/agents/c1/*.md`(8개), `docs/agent_governance/*.md`를 함께 커밋.
-- 커밋: `14ed5ed`.
-- 다음 조치: 없음.
-
-### DBMA_CURRENT_STATE_SNAPSHOT.md Legacy 경로 보강 (2026-07-20)
-- 상태: 완료
-- 설명: Legacy: dbma.py 항목의 분류는 정확했으나 실제 이동 경로
-  (`archive/legacy/dbma.py`, commit `ce6b05a`)가 누락되어 있었음. C1(Cline
-  창#1)에게 OLD/NEW find/replace 스키마로 위임하고 CUE 검증(형식/OLD 값
-  일치/범위 준수) 통과 후 적용 — shadow 실사용 사례 #1로 기록
-  (`docs/agents/c1/C1-TASK-ORDER-001.md`).
-- 커밋: `10e72c9`.
-- 다음 조치: 없음.
-
-### `split_sentences_mixed()` 개행 의존성 chunk overflow 확정 (2026-07-20)
-- 상태: 완료(Preflight 고정, 코드 미수정)
-- 설명: SPRINT33-D Phase 3-A가 관찰만 하고 넘어간 "원어/혼합 언어
-  문단에서 문장 분할이 거의 안 될 가능성"을 코드 추적 + 실제 재현으로
-  확정. `collapse_soft_linebreaks()`가 문단 내부 줄바꿈을 전부 병합하고
-  `split_sentences_mixed()`는 오직 `\n` 기준으로만 분할하므로, 어떤 문단이든
-  `split_paragraphs()`를 거치면 내부에 `\n`이 남지 않아 항상 1개 원소로
-  반환됨을 확인. 이는 두 하위결함으로 갈린다:
-  - 하위결함 A(경미): mixed/원어 문단 — `_slice_preserving_words()`로
-    떨어져 chunk_size 상한은 지켜지나 문장 경계 무시.
-  - 하위결함 B(심각): 순수 단일 언어 장문단 — `_merge_sentence_fragments()`가
-    "이미 초과한 문장 1개"를 자르지 않고 그대로 추가, **chunk_size/overlap
-    설정이 사실상 무시됨**(실측: 한국어 2999자, 영어 2429자 청크 1개
-    그대로 생성, target 1200의 2~2.5배).
-  `chunking_optimizer.py:305`가 `split_sentences_mixed`를 무조건 우선
-  호출해 정규식 기반 `split_sentences()`(동일 입력에서 정상 동작 확인됨)는
-  production에서 도달 불가능한 dead fallback임도 확인.
-- 커밋: `ae78866`.
-- 다음 조치(HQ 승인 대기, 이 문서 범위 밖): Beta corpus 12개 문서 대상
-  하위결함 B 발생 빈도 실측, 수정 방향 후보(무개행 자동 위임 폴백 /
-  word-safe hard slice) 검토용 ADR.
-
-### Dashboard/Monitor 탭 분리 + Monitor 가짜 지표 실측화 + ADR-008 제안 (2026-07-20)
-- 상태: 완료
-- 설명: Dashboard가 콘텐츠 소유자 요약(문서 수/코퍼스 크기/마지막 처리)과
-  개발자·운영 내부 지표(단계별 파이프라인 %, 벡터DB/임베딩/파일시스템/
-  메모리 상태)를 뒤섞고 있었고, Monitor는 이미 같은 역할의 헬스 개요
-  섹션을 갖고 있었으나 실제 아무것도 연결되지 않은 mock 데이터("healthy",
-  "72%" 등 하드코딩)였음 — Dashboard의 실제 ExecutionContext 기반 수치와
-  중복·모순. Dashboard는 파이프라인 상태/시스템 헬스 섹션을 "전체 상태"
-  카드 하나로 축소하고, Monitor가 단계별 파이프라인 섹션을 흡수하며
-  `_render_health_overview()`의 하드코딩을 실측값으로 교체했다. 이어서
-  Monitor의 `_render_performance_metrics()`가 갖고 있던 4개 하드코딩
-  리터럴(142ms/8.3건/sec/0.8923 "RRF"/156MB)도 실측값으로 교체(응답
-  시간은 `record_query_latency`, 처리 속도는
-  `runtime_state.get_processing_throughput()` 등). 같은 흐름에서
-  Hierarchical Chunk Builder의 SPRINT33-D Phase 3-A 공식 측정 완료를
-  계기로 ADR-008(semantic chunking production 전환 경로, 제안만·미확정)도
-  작성됨.
-- 커밋: `70a9d4d`, `a3c28cd`, `be1ceef`, `27f0ff3`, `dbb36c3`.
-- 다음 조치: ADR-008 제안 항목 착수 여부는 HQ 결정 대기.
 
 ### 문서 정합성 점검 및 정정 (2026-07-20)
 - 상태: 완료
@@ -370,26 +495,235 @@ Status:    STABLE — GA 검토 단계
 - [x] `dbma.py` Legacy Archive 완료 (SPRINT20-I-D, archive/legacy/)
 - [x] Retrieval Document Diversity (RETRIEVAL_DOCUMENT_CAP)
 - [x] Legacy Vector Store 정책 확정 (ADR-003 Finalization)
-- [x] v1.3.0 Release 태그 (07ec084) + Release validation (chapter-level
-      benchmark 1500q — PASS, 회귀 없음)
+- [ ] v1.3.0 Release Candidate 선언 (본 항목 진행 중)
+- [x] Release validation (chapter-level benchmark 1500q — PASS, 회귀 없음)
 - [x] Ollama HTTP 500 수정 (P2, char/token 4→2, commit f5f2753)
 - [x] 잔여 cleanup (data/rag_index, 빈 backup 폴더, md_manager archive)
 - [x] Research Workspace Layer — 첫 번째 Memory Layer (SPRINT27-B/C, ADR-004,
       `core/research_workspace.py`, commit `519d719`)
-- [ ] SPRINT27-D — Memory Layer 확장 Architecture Preflight (미착수)
-- [x] PdfHeadingProvider 배선 + HeadingAssembler 안정화 (SPRINT31~32)
-- [x] Dormant Semantic Boundary Detector + Shadow scoring feature군 (SPRINT33-A~C)
-- [x] ADR-007/Amendment A D-5 게이트 정의 + Hierarchical Chunk Builder 프로토타입 (SPRINT33-D Phase1~2)
-- [x] D-5 Metrics 공식 평가 (SPRINT33-D Phase3-A, Beta corpus 12건, commit `71ef068`)
-- [x] `split_sentences_mixed()` chunk overflow 원인 규명 (Preflight, commit `ae78866`)
-- [x] Dashboard/Monitor 탭 분리 + Monitor 실측 지표화 (commit `70a9d4d`/`dbb36c3`)
-- [x] ADR-008 semantic chunking production 전환 경로 제안 (commit `27f0ff3`, 미확정)
-- [x] `.gitignore` 오버매칭 버그 수정 (commit `14ed5ed`)
-- [x] chunk overflow 하위결함 B 안전망(ADR-009 대안 2) 구현 (2026-08-18)
-- [ ] ADR-009 대안 1(무개행 위임) 구현 — 보류, 로컬 환경 Beta corpus 재검증 필요
-- [x] ADR-008 제안 2 — Level 3 Hard Fallback 구현 (2026-08-18, dormant 모듈)
-- [ ] ADR-008 제안 1/3(threshold 재산정 / 6번째 feature) 착수 여부 결정, Level 3 Axis 3 효과 재측정 — Beta corpus 실측 선행 필요
-- [ ] Legacy artifact 정리 — 원격 세션에 `output/` 없어 점검 불가
+- [x] SPRINT27-D — Memory Layer 확장 Architecture Preflight (조사만, 구현 없음)
+- [x] SPRINT28 — Chunk noise 분류기, front-matter/PAGE_BREAK 수정, TF-IDF fallback 지연 빌드
+- [x] SPRINT29 — 청킹 파라미터 SSOT화(config.py), 경계 기반 overlap, heading 골격
+- [x] SPRINT30 — 적응형 PDF 헤딩 감지기
+- [x] SPRINT31 — Heading Provider Registry (ADR-006), HeadingAssembler 커서 매칭
+- [x] SPRINT32 — PdfHeadingProvider production 연결(PDF), word-boundary 매칭 버그 수정
+- [x] SPRINT33-A/B/C — Boundary Score 모델(ADR-007) 설계·shadow 검증·보정
+- [x] SPRINT33-D — Hierarchical Chunk Builder 프로토타입 + D5 정식 평가 (프로덕션 전환은 미실행)
+- [x] 근본 수정 (a) — `split_sentences_mixed()` 문장부호 기준 분할 추가
+      (commit `d45caed`, 2026-07-21 — 2026-07-22에 "미착수" 오기재를
+      정정, 잔여 0.2%는 별개의 Axis 3 unsplittable outlier 문제)
+- [x] Hierarchical Chunk Builder Level 3(Hard Fallback) 구현 (ADR-008
+      제안 2, commit `08d542a`, 2026-07-22) — 청크 길이 상한 보장을 Profile
+      B 4개 문서(6176청크)에서 실측 확인, over_cap 0건(0.0%). ADR-008
+      제안 2/3/4 모두 완료.
+- [x] Hierarchical Chunk Builder **프로덕션 전환 보류 확정**
+      (2026-07-27) — canary 실측(Profile A 2건/B 3건,
+      `docs/PREFLIGHT-hierarchical-chunk-builder-canary-2026-07-27.md`)
+      결과 Profile B의 Axis 2(Semantic Flush Ratio) 평균 23.9%로
+      §5 롤백 트리거(<25%) 발동. `core/hierarchical_chunk_builder.py`는
+      계속 dormant 유지, `core/processing.py`는 기존
+      `core/chunking_optimizer.py` 그대로 사용. 재평가 트리거: Axis 2
+      불안정 원인이 해소되거나 corpus 전체 재측정에서 다른 결과가
+      나오면 재검토.
+- [x] Logos 소스 인제스트 + PassageMatch/SourceTierBonus 스코어링 (SPRINT 외 병행, commit `08e5704`)
+- [x] 한국어 출력 순도 검증 — 재시도 + sanitize 백스톱 (SPRINT 외 병행, commit `08e5704`)
+- [x] 대시보드 문서 카운트 통일 + 수량사 적용 (SPRINT 외 병행, commit `8f40ea0`)
+- [x] Legacy artifact 정리(output/registry, output/baseline, output_sav →
+      backups/) + classify_documents_from_frontmatter.py 경로 버그 수정
+      (C1-TASK-ORDER-007, commit `bccd3f4`)
+- [ ] Logos manifest 템플릿 준비 완료, 실제 Logos 자료 인제스트는 사용자
+      액션 대기 (C1-TASK-ORDER-007 항목6)
+- [x] DocumentContext Registry Schema Parity 구현 완료 (C1-TASK-ORDER-017,
+      commit `ed82921`, 2026-07-29) — `DocumentContext`에 registry 스키마
+      갭 필드 6개(`doc_type`/`superseded_by`/`supersedes`/
+      `last_content_hash`/`max_retries`/`source_provenance`) 추가,
+      `to_metadata_dict()`에 신규 5개 + 기존 직렬화 누락 5개 키 추가,
+      `source_provenance_from_registry_record()` 읽기 전용 accessor 신설.
+      신규 테스트 17개, 관련 테스트 범위(document_context/processing/
+      index_orchestrator) 48/48 통과, 다른 파일 무변경 확인. 스키마
+      왕복(직렬화/역직렬화)만 다루며, `core/processing.py`가 실제
+      `doc_type` 값을 채우는 배선은 범위 밖으로 남겨둠 — 대시보드 "?"
+      doc_type 표시 문제는 별도 후속 과제. 설계 문서:
+      `docs/architecture/DBMA-DocumentContext-Registry-Parity-Design-v1.md`.
+- [x] doc_type을 DocumentContext에 실제 배선 완료 (C1-TASK-ORDER-018,
+      commit `e1fe996`, 2026-07-29) — `core/processing.py`의 PROCESS
+      경로(796행)에 `_document_context.doc_type = doc_type`(이미 계산된
+      `guess_doc_type()` 결과), SKIP 경로(600행)에
+      `_document_context.doc_type = existing_record.get("doc_type")`
+      추가. `TestProcessOneFileDocType` 테스트 2개 신규
+      (`tests/test_processing_pipeline.py`), 관련 테스트 범위
+      (test_processing_pipeline.py + test_document_context.py) 29/29
+      통과. **1차 제출 시 테스트 누락이 있었음** — CUE가 diff 대조로
+      발견해 §3.1 테스트 스켈레톤을 Task Order 문서에 추가한 뒤 재제출
+      받아 확인 완료. 앞으로 (재)처리되는 문서부터 registry에 실제
+      `doc_type`이 채워짐 — 이미 등록된 기존 문서의 `doc_type=None`
+      백필은 범위 밖(별도 과제로 남김).
+- [x] 기존 등록 문서 doc_type 백필 완료 (C1-TASK-ORDER-019,
+      commit `bd0bb34`, 2026-07-29) — 착수 전 실측 결과 프로덕션
+      registry(`data/제련완성본/`)는 78건 전부 이미 `doc_type` 있어
+      백필 대상 0건(적용 후 재확인도 0건, 불변) — 실제 대상은 진단용
+      registry 6개(`output/beta_validation`~`v5`, `SPRINT2_MD_DEBUG`,
+      총 61건 `None`)뿐이었음. `scripts/backfill_doc_type.py` 신규
+      (dry-run 기본/`--apply` 게이팅/이미 값 있으면 무시/md 파일 없으면
+      skip). 41/61건 적용, 20건은 md 파일 없어 skip(그대로 `None` —
+      "never invent" 원칙대로 정상 동작). 신규 테스트 6개 통과, `--apply`
+      전 registry `.bak` 백업 생성. **1차 보고서에 "적용 후 0건"이라는
+      오기재가 있었음** — CUE가 registry 직접 재확인으로 발견(실제로는
+      20건 잔존), 정정 후 재제출 받아 확인 완료. 상세:
+      `docs/agents/c1/C1-TASK-ORDER-019-REPORT.md`.
+
+---
+
+## n8n Loop Operating Model — Activation 상태 (2026-08-19, CUE 기록)
+
+**TASK-039**: PASS (conditional closure) — 2026-08-18 CUE 최종 판단 유지.
+2026-08-19 00:10 재실측으로 재확인(§1-B): Research=0건, Chat=0건,
+`output/bench/tsu_dataset.jsonl` 여전히 0바이트. §1-A는 정직하게
+NOT VERIFIED로 유지(물리 브라우저 검증 미수행을 PASS로 위장하지 않음).
+근거: `docs/agents/c1/C1-TASK-ORDER-039-REPORT.md`.
+
+**n8n Loop**: ACTIVATED / READY — 역할 고정.
+n8n = Execution Engine / C1 = Implementation Worker /
+CUE = Architecture·Governance·Verification Authority.
+
+**State Discovery**: COMPLETE.
+- n8n: `dbma_n8n` 컨테이너 가동 중(재기동 안 함), workflow 4개
+  (`dbma`, `DBMA Automation TEST (Phase B~D)`, `Phase E State Machine`,
+  `Control Plane Pilot (Isolated)`) 모두 active, 최근 48h 실질 실행 없음.
+- 마지막 loop 상태: HOLD (2026-08-17,
+  `.automation/audit/CORPUS-FACTORY-SINGLE-TASK-PILOT-CUE-HOLD.json`) —
+  신규 미등록 raw corpus 없음(`AF1815`/`PBC1742`/`TH1612` 0 files,
+  나머지 10개 소스 전부 QUALITY_PASSED 등록 완료). 2026-08-19 재확인
+  결과 변동 없음.
+- Production mutation: NONE (HOLD 이후 `registration_state.json` 불변).
+
+**Iteration #1**: NOT DEFINED. 사유: NO VALID NEW INPUT
+(신규 raw source 없음 / 이미 QUALITY_PASSED 소스 재등록은 무의미한
+iteration / production mutation 정당화할 input 없음).
+No Input → No Iteration → No Execution 원칙 적용.
+
+**현재 금지 사항** (다음 유효 input 전까지):
+이미 등록된 source 재등록, 동일 source 재처리, synthetic iteration 생성,
+production state mutation, n8n restart, `.automation/` audit 착수,
+night-shift/control-plane script 수정, ADR-026을 Approved처럼 사용,
+신규 workflow architecture 구현.
+
+**ADR Authority**: ADR-022(N8N State Machine) Approved,
+ADR-023(Full Processing/Executor) Approved,
+ADR-026(Control Plane Corpus Factory Integration) **Proposed —
+implementation authority 아님**. ADR-026이 필요한 architecture 변경
+발견 시 HOLD → ADR Review로 처리, 우회 구현 금지.
+
+**Re-entry 조건**: 새로운 유효 raw source가 존재하고, 해당 source가
+현재 governance/ADR 범위 안에서 처리 가능한 상태일 것. 확인 전
+절차: ① input provenance 확인 → ② 중복 여부 확인 → ③ production
+mutation 가능성 확인 → ④ 관련 ADR 확인 → ⑤ iteration 정의 →
+⑥ C1 전달 → ⑦ C1 execution → ⑧ CUE 독립 검증.
+
+## UI Night Shift 최종 요약 — UX-007 Gate 6 + 후속 과제 (2026-08-19, CUE 기록)
+
+**결과**: UX-007 §1/§2/§3/§4/§5/§6/§7/§9/§11/§13 **전부 완료(PASS)**.
+P0(TSU dataset 복원+재빌드)/P1(BM25 한국어 형태소 분석기)도 완료.
+남은 건 §5 스크롤 위치 복원뿐(스펙이 이미 "안 되면 문서 상단 진입
+폴백" 허용, 급하지 않아 보류) — 오늘 밤 세션 종료.
+
+**진행 방식**: 직전 세션이 작업을 외부 Perplexity Claude로 이관하려
+했으나 사용자 확인 후 이 세션 기준으로 진행. 초반(Task Order 041)은
+CUE가 C1 build+audit을 겸행, 이후(045~049)는 C1(Cline)에게 정식
+이관해 CUE는 발주·독립검증 역할로 복귀.
+
+### 완료된 Task Order
+
+| # | 범위 | 실행 | 1차 결과 | 비고 |
+|---|---|---|---|---|
+| 041 | §1 Global Nav 부분 적용 | CUE 직접 | PASS | 사이드바 emoji 제거, 라벨 정렬, Processing 관리자 게이트 |
+| 042 | §13 Tier A/B(최근 검색 카드+설교 연구 허브) | CUE 직접 | PASS | 신규 `sermon_research.py`, `sermon_research_selection` 버퍼 |
+| 043 | §7 어댑터(연구→설교 준비 프리필) | CUE 직접 | PASS | 진행 중인 초안 보호 로직 포함 |
+| 044 | §13 Tier C(이어서 읽기 영속화) | CUE 직접 | PASS | 신규 `core/reading_session.py`(C1 Review 생략, 사용자 지시) |
+| 045 | §11 용어집 전역 적용 | C1 | **FAIL→PASS** | 1차: "N/A" 하드코딩 2곳(정보 손실 버그) → 정정 |
+| 046 | §6 인용 카드 research.py 마이그레이션 | C1 | PASS | 원시 소수점 신뢰도 노출도 함께 제거 |
+| 047 | §4 검색·연구 통합(단일 입력, 검색+AI답변 항상 병렬) | C1 | **FAIL→PASS** | 1차: AI 답변이 `GenerationStream` 미순회로 항상 빈 문자열(핵심 기능 무력화) → 정정 |
+| 048 | §5 읽기(연구 워크스페이스 3영역) | C1 | **FAIL→PASS** | 1차: "인용하기" 버튼 자기 key 덮어쓰기 + 관련 자료 카드 key 중복(둘 다 실제 크래시) → 정정 |
+| 049 | §9 Empty/Loading/Error States 전역 원칙 | C1 | PASS | 원시 예외 노출 9곳 제거, library.py 관리자 조건부 버튼 추가 |
+| — | §11 "RAW 폴더" 번역 통일 | CUE 직접 | PASS | "자료실"/"보관함" 혼용 → "보관함"으로 일원화 |
+
+**세 건(045/047/048)**이 C1의 1차 "PASS" 자체보고와 달리 CUE 독립
+검증(diff 재대조 + 실제 함수 호출 + `AppTest` 실사용 흐름 재현 + 전체
+`pytest tests/`)에서 실제 버그로 드러나 반려됐다 — grep/부분 테스트
+만으로는 못 잡았을 버그들. C1이 "전체 pytest 실행" 지시를 **네 차례**
+(047 1차/재제출, 049) 어기고 부분 배치만 돌린 이력 — CUE가 매번 직접
+전체 스위트로 재확인. 다음 Task Order 발급 시에도 재차 확인 필요.
+
+### 별도 처리한 운영/Core 작업 (모두 명령 확인 후 진행 — 보호 영역)
+
+| 작업 | 근거 | 결과 |
+|---|---|---|
+| **P0** TSU dataset 복원 | 0바이트 → 검색 전부 0건, 사용자 승인 | 백업 스냅샷 복원(53,231건/78문서) |
+| **P0 후속** TSU dataset 재빌드 | 78/82 문서 커버리지 갭, 사용자 승인 | dry-run 안전확인 → 백업 → 재빌드(53,963건/82문서, 전체 커버) |
+| **P1** BM25 한국어 형태소 분석기 | `core/retrieval.py` 보호 영역, 사용자가 "형태소 분석기 방식" 확정 | 신규 `core/tli/korean_tokenizer.py`(TLI 패턴, kiwipiepy) — "성령의"/"성령께서"가 이제 "성령"으로 매칭 |
+
+기타: §4 착수 전 "검색/질문 분류가 백엔드에 있다"는 스펙 전제가
+거짓임을 사전 확인 → 새 분류기 없이 "항상 둘 다 실행"으로 사용자와
+확정.
+
+### 오늘 밤 손대지 않은 것
+
+- n8n Loop: ACTIVATED/READY, 신규 raw source 없어 Iteration #1 NOT
+  DEFINED — 위 "n8n Loop Operating Model" 절 그대로 유효.
+- `.automation/`(night-shift/control-plane): DEFERRED 그대로.
+- 기존 ADR, Production Registry: 전부 무접촉.
+- §5 스크롤 위치 복원: 보류(스펙이 이미 폴백 허용).
+
+전체 diff·검증 근거는 `docs/agents/c1/C1-TASK-ORDER-04{1..9}-REPORT.md`
+및 해당 `C1-CORRECTION-ORDER-*.md`, `tests/test_korean_tokenizer.py`에
+남아있다(이 요약은 그 문서들의 축약본).
+
+---
+
+## C1 역할 점검 + DBMA-ECP 잔여 Hook 제거 (2026-08-24, CUE 기록)
+
+**결과**: C1(Cline)이 `.clinerules/`를 통해 자기 역할을 정확히 인지하고
+있음을 확인. 그 과정에서 발견한 무관 저장소(DBMA-ECP)의 잔여
+post-commit hook 오작동을 원인까지 추적해 완전 제거.
+
+### C1 역할 인지 검증
+
+- `.clinerules/*.md`(DBMA_CORE_RULES.md, dbma-engineering.md,
+  NAE_C1_FORENSIC_AUDITOR_RULES.md, DBMA_BRAND_RULES.md,
+  DBMA_VERIFICATION_RULES.md) 전체를 실제 C1 공식 모델
+  (`qwen3.6:35b-DBMAcode`)에 그대로 주입해 역할 질의 → 기본
+  역할(DBMA Core Software Engineer)과 NAE Forensic Audit 역할
+  전환 조건·금지사항을 정확히 재현함을 확인.
+- `NAE_C1_FORENSIC_AUDITOR_RULES.md` ↔ 원본
+  `docs/NAE_C1_FORENSIC_AUDITOR_SPEC_v1.md` 대조 → 드리프트 없음.
+  단, spec 문서의 존재하지 않는 "§12 참고" 오류 참조를 발견해
+  실제 검증 결과로 대체 수정(커밋 `1d54237`).
+
+### DBMA-ECP 잔여 Hook 오작동 발견·제거
+
+- 위 검증 중 `.git/hooks/post-commit`(실행권한 없음 상태)을 발견,
+  권한을 켜고 실제 트리거해본 결과 **DBMA 커밋이 아니라 별개
+  저장소 `~/DBMA-ECP`의 정지된 2026-07-13 스냅샷을 잘못된
+  파이썬(`/opt/homebrew` python3.14, pytest 미설치)으로 검사**해
+  매 커밋마다 가짜 `repair_task`를 `Cline1`에게 생성함을 확인.
+- `docs/CHANGELOG.md:95-98`(2026-07-14)에 DBMA-ECP는 이미
+  **"향후 개발에서 제외"** 결정이 기록돼 있었음(DBMA-ECP 자동화가
+  `SPRINT2_FEATURES`를 무단 재활성화하는 충돌 사고 때문) — 즉 이
+  hook은 그 제외 결정 이후에도 한 달 넘게 정리되지 않고 남아있던
+  잔재였다.
+- 조치: DBMA `.git/hooks/post-commit` 완전 삭제. DBMA-ECP 쪽은
+  staged된 미커밋 작업(controller.py 등 50개 파일, 7711줄, 6주간
+  방치)을 사용자 지시로 baseline 커밋(`ad54fd6`)까지
+  `git reset --hard`로 폐기, pycache 잔재 정리. DBMA-ECP는 hook
+  없이 baseline 상태로만 유지(재개 계획 없으면 재손대지 않음).
+- 상세 경위는 memory `project_dbma_ecp_hook_removed`에 기록.
+
+### 손대지 않은 것
+
+- `docs/CHANGELOG.md`, `docs/architecture/DBMA-dbma-Operational-Status-v1.md`의
+  DBMA-ECP 이력 언급 — 정식 기록이라 보존.
+- `.git_corrupted_20260711/`, `.git_initial_corrupt/`(DBMA-ECP 내
+  과거 git 손상 복구 백업으로 추정) — 범위 밖, 무접촉.
 
 ---
 

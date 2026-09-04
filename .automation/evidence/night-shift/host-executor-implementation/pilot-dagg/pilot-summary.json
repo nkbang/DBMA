@@ -1,0 +1,18 @@
+{
+  "task_id": "NAE-REG-BAP-CHURCH-DAGG-001",
+  "result": "PASS",
+  "cli_driver_exit_code": 0,
+  "final_state": "QUALITY_PASSED",
+  "terminal_state": "COMPLETED",
+  "failure_code": null,
+  "page_count": 305,
+  "identity": {
+    "author_id": "dagg_john_l",
+    "work_id": "dagg_john_l-church_order",
+    "edition_id": "dagg_john_l-church_order-1871",
+    "source_id": "BAP-CHURCH-DAGG-001"
+  },
+  "preservation_checksum": "f515bb48e57425b95bdd83969e18844666e05ebc5c45389a8986966781c3493b",
+  "registration_state_json": "NOT WRITTEN (cli_driver uses temp path for state_store)",
+  "evidence_entries": 5
+}

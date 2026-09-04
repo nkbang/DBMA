@@ -1,0 +1,15 @@
+{
+  "worker_mode": true,
+  "total": 25,
+  "extracted": 9,
+  "failed": 0,
+  "success_rate": 0.36,
+  "elapsed_seconds": 191.568,
+  "queue_depth_after": {
+    "READY": 0,
+    "PROCESSING": 0,
+    "EXTRACTED": 0,
+    "CONFIDENCE_CLASSIFIED": 50,
+    "FAILED": 0
+  }
+}
