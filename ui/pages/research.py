@@ -23,6 +23,7 @@ from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from ui.state.store import StateStore
 from core.config import DEFAULT_OUTPUT_DIR
+from core.citation_format import extract_citation_year as _extract_citation_year, format_footnote_line
 
 logger = logging.getLogger(__name__)
 
@@ -1022,18 +1023,14 @@ def _build_citation_text(detail: Any, source_file: str, document_id: str) -> str
     return "\n".join(parts)
 
 
-def _extract_citation_year(created_at: str | None) -> str | None:
-    """ISO 날짜 문자열(YYYY-...)에서 연도만 추출."""
-    if not created_at or len(created_at) < 4 or not created_at[:4].isdigit():
-        return None
-    return created_at[:4]
-
-
 def _build_footnote_citation(detail: Any, source_file: str, document_id: str) -> str:
     """Zotero 풋노트 인용 스타일을 벤치마킹한 각주 텍스트를 만든다.
 
     각주 번호는 세션 내 인용 삽입마다 새로 증가한다(워드프로세서 각주와 동일).
     같은 자료를 연속으로 재인용하면 "Ibid.", 비연속 재인용이면 약식 서지를 쓴다.
+
+    최초(전체) 인용 본문 조립은 core.citation_format.format_footnote_line()으로
+    공용화했다 — "연구하기 > 본문 해설" 각주와 같은 형식을 쓴다(출력 문자열 동일).
     """
     footnotes: list[str] = st.session_state.setdefault("research_footnotes", [])
     previously_cited = document_id in footnotes
@@ -1052,9 +1049,7 @@ def _build_footnote_citation(detail: Any, source_file: str, document_id: str) ->
         short_title = title if len(title) <= 20 else f"{title[:20]}…"
         body = f"{author}, *{short_title}*." if author else f"*{short_title}*."
     else:
-        meta = ", ".join(x for x in (doc_type, year) if x)
-        head = f"{author}, *{title}*" if author else f"*{title}*"
-        body = f"{head} ({meta})." if meta else f"{head}."
+        body = format_footnote_line(author, title, doc_type, year)
 
     return f"{number}. {body}"
 

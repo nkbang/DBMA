@@ -26,6 +26,10 @@ directories:
   output_dir: "data/제련완성본"
   logs_dir: "logs"
   chroma_db_path: "chroma_db"
+  # [ADR-031] 사용자 제공 성경 본문 JSON (개역개정 등). "연구하기 > 본문 해설"
+  # 뷰어 전용 읽기 데이터 — TSU/검색 코퍼스와 무관. 파일이 없거나 형식이
+  # 어긋나면 core/bible_text.py가 fail-closed 처리(뷰어가 안내만 표시).
+  bible_text_path: "data/bible/reference.json"
   # bench_dir: TSU dataset / benchmark 산출물 위치 (SPRINT17-Phase5-M1b-0.1)
   # 기존 호환성: output/bench (RetrievalEngine/build_tsu_dataset.py 기존 하드코딩과 동일 값)
   bench_dir: "output/bench"

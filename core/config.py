@@ -56,6 +56,17 @@ if not os.path.exists(_yaml_raw_dir):
     _yaml_raw_dir = os.path.join(DATA_DIR, "RAW")
 DEFAULT_RAW_DIR = _yaml_raw_dir  # type: ignore[assignment]  # resolved after condition check
 
+# [ADR-031] User-supplied Bible verse-text JSON (개역개정 등). Read-only
+# data layer for the "본문 해설" viewer — NOT part of the TSU/retrieval
+# corpus. Missing/invalid file is fail-closed by core/bible_text.py (the
+# viewer shows guidance, never crashes), so no existence check here.
+_yaml_bible_text_path = _yaml_dirs.get("bible_text_path", "data/bible/reference.json")
+BIBLE_TEXT_PATH = (
+    _yaml_bible_text_path
+    if os.path.isabs(_yaml_bible_text_path)
+    else os.path.join(BASE_DIR, _yaml_bible_text_path)
+)
+
 # [SPRINT17-Phase5-M1b-0.1] TSU/bench path configuration authority — additive
 # only, not yet referenced by core/retrieval.py or scripts/ (see M1b-0.2+).
 DEFAULT_BENCH_DIR = _yaml_dirs.get("bench_dir", "output/bench")

@@ -727,6 +727,30 @@ post-commit hook 오작동을 원인까지 추적해 완전 제거.
 
 ---
 
+## 본문 해설 뷰어 (ADR-031, 2026-09-04, CUE 기록)
+
+"연구하기(설교 연구)" 화면에 **"본문 해설"** 탭 추가. 성경뷰어에서 책/장/절을
+지정하면 그 본문과 정합하는 내서재 주석 자료를 근거로 한국어 해설을 생성하고,
+본문에 각주 번호(①②③) + 하단 참고 자료 서지 목록 + "원문 보기" 상세 패널을
+붙인다. 내서재에 정합 자료가 없으면 안내만 표시하고 생성하지 않는다.
+
+- 신규 계층: 사용자 제공 성경 본문 JSON(`core/bible_text.py`, fail-closed).
+  경로 `config.yaml::directories.bible_text_path`(기본 `data/bible/reference.json`,
+  `.gitignore` 대상). 규격 `docs/NAE_BIBLE_TEXT_JSON_SPEC.md`.
+- Retrieval Engine / Embedding / TSU Pipeline / 기존 ADR **무접촉**.
+  `core/retrieval.py`·`core/generation.py` 시그니처 무변경(ADR-028 답습).
+  검색 = 기존 `QueryProcessor.process()`, 정합 = 기존
+  `compute_passage_match_score()` 재사용.
+- 신규: `core/passage_commentary.py`, `core/citation_format.py`,
+  `ui/components/passage_viewer.py`, `ui/pages/_passage_commentary_tab.py`.
+  `ui/pages/research.py` 각주 포맷 공용화(출력 동일, parity 테스트).
+- 테스트 39 PASS(신규) / 관련 회귀 290 PASS. `test_p41_toggle_and_telemetry.py`
+  의 `-k` 교차수트 순서 의존 실패 1건은 **사전 존재 결함**(자연 순서 13/13 PASS).
+- **ADR-031 Proposed** — C1 독립 리뷰 + 사용자 승인 후 Approved 승격 예정.
+  빌드 리포트: `docs/NAE_PASSAGE_COMMENTARY_VIEWER_BUILD_REPORT_001.md`.
+
+---
+
 ## 비고
 
 이 문서는 작업 상태를 빠르게 확인하기 위한 기준 문서다.

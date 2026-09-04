@@ -14,6 +14,7 @@
 import streamlit as st
 
 from ui.pages._base import BasePage
+from ui.pages._passage_commentary_tab import render_passage_commentary_tab
 from core.generation import SERMON_FORMATS
 
 
@@ -25,6 +26,19 @@ def render_sermon_research_hub_page() -> None:
     page = BasePage(title="설교 연구", icon="")
     page.render_header()
 
+    # [ADR-031] "본문 해설" 탭 추가 — 성경뷰어로 지정한 본문에 대해 내서재
+    # 근거 해설(각주 포함)을 생성한다. 기존 허브(담긴 자료 없으면 조기
+    # 종료)는 "설교 연구" 탭 안으로 그대로 옮긴다.
+    tab_hub, tab_passage = st.tabs(["설교 연구", "본문 해설"])
+    with tab_hub:
+        _render_hub_tab()
+    with tab_passage:
+        render_passage_commentary_tab()
+
+    page.render_footer()
+
+
+def _render_hub_tab() -> None:
     state = st.session_state["sermon_research_state"]
 
     if not state["materials"]:
@@ -32,7 +46,6 @@ def render_sermon_research_hub_page() -> None:
             "아직 담긴 자료가 없습니다. \"검색·연구\" 화면에서 결과 카드의 "
             "\"설교 연구에 추가\"를 눌러 자료를 모아보세요."
         )
-        page.render_footer()
         return
 
     col_left, col_right = st.columns(2)
@@ -56,8 +69,6 @@ def render_sermon_research_hub_page() -> None:
         type="primary",
         on_click=_go_to_sermon_draft,
     )
-
-    page.render_footer()
 
 
 def _go_to_sermon_draft() -> None:
