@@ -51,16 +51,17 @@ vector_db:
     collection_name: "dbmar_docs"
     persist_directory: "chroma_db"
   qdrant:
-    # [2026-09-03] 실제 컨테이너(nae_qdrant)는 호스트 포트 7333에 매핑됨
-    # (0.0.0.0:7333->6333/tcp) — 6333은 컨테이너 내부 포트, 호스트에서는
-    # 열려있지 않음. core.config.QDRANT_URL이 이 값을 그대로 읽으므로
-    # 여기서 반드시 실제 호스트 포트를 써야 함.
-    url: "http://localhost:7333"
+    # ADR-013: nae_qdrant(호스트 포트 7333)는 NAE 전용 Independent Qdrant
+    # Instance — DBMA 자체 Qdrant(docker-compose.yml의 `qdrant` 서비스,
+    # container dbma_qdrant, 호스트 포트 6333)와는 별개 컨테이너·볼륨이다.
+    # [2026-09-03] 한때 이 값을 7333(nae_qdrant)으로 돌려놓은 적이 있었으나,
+    # 그건 "dbma_qdrant 컨테이너가 현재 안 떠 있어서 6333이 안 열려있다"는
+    # 사실과 "그러니 DBMA를 NAE 인스턴스에 붙인다"는 결론을 혼동한 것 —
+    # ADR-013의 격리를 깨뜨린다. DBMA용 dbma_qdrant를 띄우면 6333이 열린다.
+    url: "http://localhost:6333"
     collections:
       sermon: "dbma_sermon"
       chunks: "dbma_chunks"
-      tsu: "nae_tsu_v1"
-      ref: "nae_ref_v1"
 
 # ── Embedding Model ────────────────────────────────────
 # LangChain 기반 임베딩 — legacy/폴백 전용 (기본 백엔드 아님)
