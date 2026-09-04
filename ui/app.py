@@ -242,39 +242,6 @@ def _apply_global_styles() -> None:
     """, unsafe_allow_html=True)
 
 
-def _render_app_header() -> None:
-    """Render the application header."""
-    col1, col2, col3 = st.columns([1, 4, 1])
-
-    with col1:
-        logo_path = Path("DBMA_core.svg")
-        if logo_path.exists():
-            st.logo(str(logo_path), icon_image=str(logo_path))
-
-    with col2:
-        # 사용자-facing 브랜드는 내서재/NAE — DBMA는 내부 식별자로만 유지
-        # (docs/governance/DBMA-BRAND-GOV-001.md 참고)
-        st.markdown(f"""
-        <div style="padding: 0.5rem 0;">
-            <h1 style="font-family: 'Hanken Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 0; letter-spacing: -0.01em;">
-                내서재 <span style="font-weight: 500; color: {THEME.TEXT_TERTIARY};">· NAE</span>
-            </h1>
-            <p style="font-family: 'Hanken Grotesk', sans-serif; font-size: 12px; color: {THEME.TEXT_SECONDARY}; margin: 0;">
-                나의 자료 · 나의 연구 · 나의 목회
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col3:
-        st.markdown(f"""
-        <div style="text-align: right; padding: 0.5rem 0;">
-                <span style="font-size: 11px; color: {THEME.TEXT_TERTIARY};">
-                v{APP_VERSION}
-            </span>
-        </div>
-        """, unsafe_allow_html=True)
-
-
 def _render_sidebar() -> str:
     """Render the sidebar navigation.
 
