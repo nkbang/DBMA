@@ -63,7 +63,9 @@ def run_benchmark(
     if not queries:
         return {"error": "No queries in gold standard file"}
 
+    t_index_start = time.perf_counter()
     engine = RetrievalEngine(tsu_dataset_path=tsu_path)
+    print(f"[index] RetrievalEngine ready in {time.perf_counter() - t_index_start:.1f}s", flush=True)
     processor = QueryProcessor(engine)
 
     hit_at_1 = 0
@@ -78,7 +80,7 @@ def run_benchmark(
     per_intent: dict[str, dict[str, int]] = {}
     failed_queries: list[dict[str, Any]] = []
 
-    for query in queries:
+    for i, query in enumerate(queries, 1):
         qid = query.get("id", "")
         question = query.get("question", "")
         expected_book_id = query.get("expected_book_id", "")
@@ -91,6 +93,7 @@ def run_benchmark(
         response = processor.process(question, query_id=qid, k=k_output)
         elapsed_ms = (time.perf_counter() - t_start) * 1000
         latencies_ms.append(elapsed_ms)
+        print(f"[{i}/{len(queries)}] {qid} elapsed={elapsed_ms:.1f}ms", flush=True)
 
         ranked = response.top_k_results
         if not ranked:
