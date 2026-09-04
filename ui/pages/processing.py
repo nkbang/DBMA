@@ -440,7 +440,7 @@ def _render_processing_queue() -> None:
     supported = [f for f in files if f.suffix.lower() in SUPPORTED_EXTS and f.is_file() and not f.name.startswith(".")]
 
     if not supported:
-        st.info("지원되지 않는 파일 유형입니다. (PDF, TXT, MD, DOCX, EPUB, HTML, RTF)")
+        st.info("지원되지 않는 파일 유형입니다. (처리가능 파일 형식: PDF, TXT, MD, DOCX, EPUB, HTML, RTF)")
         return
 
     # 이미 처리된 파일(.batch_state.json)은 실제 처리 대상이 아니므로 대기열에서 제외 —

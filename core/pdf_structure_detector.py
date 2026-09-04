@@ -30,7 +30,7 @@ from dataclasses import dataclass
 from typing import List, Literal, Optional
 
 try:
-    import fitz  # PyMuPDF
+    import pymupdf as fitz  # PyMuPDF (fitz is deprecated since 1.24+)
     _HAS_FITZ = True
 except ImportError:  # pragma: no cover - environment guard
     fitz = None  # type: ignore
