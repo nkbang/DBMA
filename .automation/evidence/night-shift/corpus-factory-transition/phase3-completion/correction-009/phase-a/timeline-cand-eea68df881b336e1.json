@@ -1,0 +1,34 @@
+{
+  "candidate_id": "cand-eea68df881b336e1",
+  "source": "Fuller_Complete_Works_Vol02",
+  "page": 1,
+  "paragraph_index": 9,
+  "sentence_index": 0,
+  "text": "A«TOR, l£NOX and TILDeN FOUNDATIONS.",
+  "observed_state": "PROCESSING",
+  "observed_updated_at": "2026-08-16T21:07:52.215232+00:00",
+  "metadata_fields": {
+    "execution_result": {
+      "is_claim": true,
+      "confidence_score": 0.95,
+      "confidence_label": "HIGH",
+      "model": "my-theology-bot-v2:latest",
+      "text_length": 36
+    },
+    "error_fields": {
+      "error_type": "TEST_FAILURE",
+      "error_message": "Intentional test failure"
+    },
+    "source_fields": {
+      "source_identifier": "Fuller_Complete_Works_Vol02",
+      "page": 1,
+      "paragraph_index": 9
+    }
+  },
+  "analysis": {
+    "merge_evidence": "metadata contains BOTH execution results (is_claim, confidence_score) AND error fields (error_type, error_message) — confirms merge behavior",
+    "stuck_state": "PROCESSING — should be CONFIDENCE_CLASSIFIED or FAILED",
+    "elapsed_seconds_in_log": 4.493,
+    "interpretation": "LLM call completed (~4.5s) but final state transition failed"
+  }
+}

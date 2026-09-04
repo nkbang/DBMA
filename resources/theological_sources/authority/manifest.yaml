@@ -1,0 +1,18 @@
+# NAE Authority Registry — Index (PRODUCTION)
+#
+# 주의: 이 파일은 corpus manifest(source_manifest.yaml, 개별 저작
+# 데이터)와 다르다 — 이름이 비슷해 혼동될 수 있어 명시: 이 파일은
+# Registry 자체의 색인/메타데이터만 담는다(개별 저작 데이터 없음).
+#
+# 스키마 정본: docs/NAE_AUTHORITY_REGISTRY_DESIGN_v1.md §2.6
+registry_version: "1.0"
+last_updated: "2026-08-02"
+promoted_from:
+  - resources/theological_sources/authority/pilot/
+  - resources/theological_sources/authority/pilot/fuller/
+entity_counts:
+  authors: 3
+  works: 3
+  editions: 4
+  volumes: 8
+  sources: 10

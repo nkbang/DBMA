@@ -20,8 +20,9 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, Optional
 
+from core.repetition_detector import RepetitionSignal
 from core.text_normalizer import detect_paragraph_language
 from core.utils import calculate_noise_score
 
@@ -125,13 +126,20 @@ class NoiseClassification:
     section_type: str
 
 
-def classify(text: str) -> NoiseClassification:
+def classify(text: str, repetition_signal: Optional[RepetitionSignal] = None) -> NoiseClassification:
     """Classify a chunk of text into a NoiseType with its policy label.
 
     Read-only: never modifies `text`. Order matters — checks run from the
     most specific/protective signal (original-language protection, must
     never be shadowed by a noisier-looking classification) to the most
     generic fallback (NORMAL_CONTENT).
+
+    repetition_signal (ADR-011 제안 2, additive): optional cross-page
+    repetition signal from a document-scoped core.repetition_detector.
+    RepetitionTracker, produced by the caller (this function stays
+    stateless). When omitted (existing call sites), behavior is 100%
+    unchanged — only the single-chunk _looks_like_byline_block heuristic
+    below applies.
     """
     content = text or ""
     stripped = content.strip()
@@ -165,7 +173,14 @@ def classify(text: str) -> NoiseClassification:
     if noise.get("score", 0.0) >= 60.0:
         return _result("OCR_FRAGMENT")
 
-    # 6. Best-effort single-chunk header/footer shape (see docstring above
+    # 6. Cross-page repetition signal (ADR-011 제안 2) — stronger evidence
+    #    than the single-chunk shape heuristic below, since it directly
+    #    observes the repeated-across-pages pattern the byline heuristic
+    #    can only guess at.
+    if repetition_signal is not None and repetition_signal.is_repeat:
+        return _result("HEADER_FOOTER")
+
+    # 7. Best-effort single-chunk header/footer shape (see docstring above
     #    _looks_like_byline_block — full detection deferred to SPRINT28-C).
     if _looks_like_byline_block(stripped):
         return _result("HEADER_FOOTER")

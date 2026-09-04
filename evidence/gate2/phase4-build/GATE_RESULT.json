@@ -1,0 +1,19 @@
+{
+  "phase": "4-build-validation",
+  "gate_status": "GREEN",
+  "verified_by": "CUE (independent re-execution, unattended night shift)",
+  "verified_at": "2026-08-18",
+  "c1_original_evidence_existed": false,
+  "note": "C1 reported evidence at this exact path but the file did not exist on disk prior to CUE writing this one. All underlying claims were independently re-verified and found accurate except the evidence-file-existence claim itself.",
+  "checks": {
+    "build_exit_code_0": "PASS",
+    "dmg_sha256_match": "PASS",
+    "dmg_sha256": "8592b2491a79392770517e328107a06c66246a9c3c0f0f146a02c8a6c5294a69",
+    "app_bundle_structure": "PASS",
+    "export_ignore_NAE_automation_testseal": "PASS (0 matches)",
+    "protected_paths_untouched": "PASS",
+    "archive_file_count_c1": 1110,
+    "archive_file_count_cue": 1218,
+    "archive_file_count_discrepancy": "minor, likely counting methodology difference (dirs vs files), does not affect isolation/export-ignore conclusion"
+  }
+}

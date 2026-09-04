@@ -1,0 +1,275 @@
+# source_manifest.yaml schema — NAE-MODERN (schema_version 2.1.0)
+#
+# resources/theological_sources/modern/{category}/ 하위 각 카테고리 디렉토리에
+# source_manifest.yaml 1개씩을 두고, 그 안에 sources: 배열로 문서를 나열한다.
+# 이 파일 자체는 스키마 정의이며 실제 manifest 데이터가 아니다.
+#
+# v1.2(../source_manifest.schema.yaml, NAE-PD 전용)와는 별도 스키마다 —
+# 재작성/통합하지 않는다(NAE_METADATA_GOVERNANCE_v1.md §1 Philosophy #2).
+# 값 체계(enum)의 유일한 정본은 NAE_METADATA_GOVERNANCE_v1.md이며, 이 파일은
+# 그 값을 YAML 스키마 형태로 옮긴 것이다 — 값이 바뀌면 GOVERNANCE 문서를
+# 먼저 개정하고 이 파일을 그에 맞춰 갱신한다(역방향 아님).
+#
+# 근거: ADR-016(NAE Metadata Authority Model Revision),
+#       NAE_MODERN_CORPUS_ARCHITECTURE_v1.md Task 3,
+#       NAE_METADATA_GOVERNANCE_v1.md §4/§5/§6
+#
+# 검증: scripts/source_validator.py는 이 스키마를 아직 검증 대상으로 삼지
+# 않는다(docs/NAE_SOURCE_VALIDATOR_REQUIREMENTS_v1.md 요구사항 명세만 존재,
+# 코드 미구현 — NAE-SCHEMA-MIGRATION-001 금지 사항).
+
+schema_version: "2.1.0"
+
+# 이전 버전 이력
+version_history:
+  - version: "2.0.0"
+    date: "2026-08-02"
+    change: "최초 제정(ADR-014) — Modern Corpus 전용 필드 도입"
+  - version: "2.1.0"
+    date: "2026-08-02"
+    change: "ADR-016 — edition_id/volume_id/volume_number 추가, source_type에 public_archive 값 추가, edition_id를 TSU 필수로 승격(TSU 단계 전제조건, 이 스키마 자체의 required는 아래 fields 참고)"
+
+# 각 항목(entry)이 가져야 할 필드 정의
+fields:
+  source_id:
+    type: string
+    required: true
+    description: >
+      고유 식별자. v1.2와 동일 원칙 — 전체 resources/theological_sources/
+      트리에서 유일해야 함(source_id 네임스페이스는 v1.2/v2.1.0 공유,
+      scripts/source_validator.py가 전체 트리 기준으로 중복 검사).
+
+  author_id:
+    type: string
+    required: true
+    description: >
+      저자 canonical ID. authority/authors.yaml의 author_id를 참조(FK,
+      단방향 참조 — 이 필드가 존재한다고 authority 파일에 자동 등록되지
+      않음). 생성 규칙: NAE_CORPUS_INGESTION_STANDARD_v1.md "ID 생성 규칙".
+
+  author_name:
+    type: string
+    required: true
+    description: 등록 시점의 저자 표기(자유 텍스트) — author_id 결정의 입력값.
+
+  work_id:
+    type: string
+    required: true
+    description: >
+      저작 단위 ID. authority/works.yaml의 work_id를 참조. 동일 저작의
+      여러 Edition이 같은 work_id를 공유(Work:Edition = 1:N, ADR-016).
+
+  edition_id:
+    type: string
+    required: true
+    description: >
+      [ADR-016 신규] 판본 단위 ID. authority/editions.yaml의 edition_id를
+      참조. NAE_METADATA_GOVERNANCE_v1.md §6 기준 TSU 생성 전 필수 필드.
+
+  volume_id:
+    type: string
+    required: false
+    description: >
+      [ADR-016 신규] 다권본에서만 사용하는 권(volume) 단위 ID. 단권 자료는
+      비워둔다. 해당 Work가 다권본(Edition 산하 volume ≥ 2)인 경우 TSU
+      생성 전 필수(조건부 필수 — 이 스키마 레벨의 required와는 별개 게이트,
+      NAE_METADATA_GOVERNANCE_v1.md §6 참고).
+
+  volume_number:
+    type: integer
+    required: false
+    description: >
+      [ADR-016 신규] 권 번호. RAW 디렉토리명을 canonical 출처로 삼는다 —
+      OCR 텍스트의 로마숫자 표기는 오인식 위험이 있어 참고용으로만 사용
+      (Pilot-002 §6 실증).
+
+  title:
+    type: string
+    required: true
+    description: 원문 제목. RAW title page 실측 표기를 canonical로 채택.
+
+  title_variants:
+    type: array[string]
+    required: false
+    description: >
+      제목 표기가 RAW/등록자/기존 기록 간 다를 때 canonical 외 표기를
+      보존(Pilot-001 F-P2 대응, 삭제하지 않음).
+
+  edition:
+    type: string
+    required: false
+    description: >
+      사람이 읽는 판본 라벨(자유 텍스트, 예: "1810년판"). edition_id(구조화
+      키)와는 별도 — edition_id가 canonical, 이 필드는 표시용.
+
+  publication_year:
+    type: integer
+    required: true
+    description: 출판 연도. v1.2의 `year`에 대응.
+
+  publisher:
+    type: string
+    required: false
+    description: 발행처.
+
+  language:
+    type: string
+    required: false
+    description: "원문 언어(예: en, ko, grc, heb)."
+
+  category:
+    type: string
+    required: true
+    description: >
+      modern/ 하위 7개 카테고리 중 1 (theology/commentary/sermons/missions/
+      ministry/apologetics/reference). v1.2의 `content_genre`와는 필드명이
+      다르다 — docs/NAE_SOURCE_VALIDATOR_REQUIREMENTS_v1.md 참고.
+
+  subcategory:
+    type: array[string]
+    required: false
+    description: NAE_MODERN_CORPUS_ARCHITECTURE_v1.md Task 4/5/6 taxonomy 값.
+
+  theological_position:
+    type: string
+    required: false
+    description: 예 — Reformed, Dispensational, Baptist Evangelical.
+
+  denomination:
+    type: string
+    required: false
+    description: 교단.
+
+  source_type:
+    type: enum
+    required: true
+    values: [licensed, purchased, personal, reference, public_archive]
+    description: >
+      [ADR-016: public_archive 값 추가] 정본은
+      NAE_METADATA_GOVERNANCE_v1.md §4.4.
+
+  copyright_status:
+    type: enum
+    required: true
+    values: [public_domain, copyrighted, licensed, unknown]
+    description: >
+      정본은 NAE_METADATA_GOVERNANCE_v1.md §4.1. `unknown`인 자료는 Full
+      TSU 진입 불가(GOVERNANCE §1 Philosophy #4).
+
+  usage_permission:
+    type: enum
+    required: true
+    values: [research, citation_only, internal_use, no_redistribution]
+    description: 정본은 NAE_METADATA_GOVERNANCE_v1.md §4.2.
+
+  access_control:
+    type: enum
+    required: true
+    values: [public, restricted, private]
+    description: 정본은 NAE_METADATA_GOVERNANCE_v1.md §4.3.
+
+  license:
+    type: object
+    required: false
+    fields:
+      source_value: {type: string, description: "원본 출처 표기 그대로"}
+      normalized_value: {type: string, description: "copyright_status로 정규화된 값"}
+    description: >
+      NAE_METADATA_GOVERNANCE_v1.md §3 License Rule. NAE-PD(v1.2)의 단일
+      문자열 `license` 필드와 달리 v2.1.0은 source_value/normalized_value
+      2단 구조 — 필수는 아니나(copyright_status가 이미 필수) 출처 추적성을
+      위해 채우는 것을 권장.
+
+  citation_policy:
+    type: string
+    required: true
+    description: 인용 표기 형식(저자/제목/출판사/연도/페이지). TSU 필수 필드.
+
+  tsu_access:
+    type: enum
+    required: false
+    values: [full, restricted, citation_only]
+    description: >
+      TSU 생성 전 필수(NAE_METADATA_GOVERNANCE_v1.md §6) — 등록 시점에는
+      선택으로 두되, TSU 파이프라인 진입 게이트에서 필수로 검사한다(이
+      스키마 필드 자체의 required와 TSU 게이트의 required는 별개 — Phase 3
+      Validator Specification에서 이 구분을 명확히 한다).
+
+  archive_source:
+    type: string
+    required: false
+    description: >
+      [Pilot-001 F-P4 대응] 원본 아카이브 식별자/URL. RAW에 사이드카
+      메타데이터가 없는 경우가 많아 선택 필드로 확정(2026-08-02, ADR-016).
+      값이 없으면 Quality Gate WARNING(FAIL 아님).
+
+  topics:
+    type: array[string]
+    required: false
+    description: 주제 태그.
+
+  scripture_reference:
+    type: array[string]
+    required: false
+    description: 예 — ["Rom.8", "Eph.2:8-10"].
+
+  doctrine_tags:
+    type: array[string]
+    required: false
+    description: v1.2 `theological_category`와 값 체계 공유.
+
+  status:
+    type: enum
+    required: true
+    values: [PREPARED, ACQUIRED, VERIFIED, INGESTED, approved_for_acquisition, permission_required, verification_pending]
+    description: v1.2와 동일 enum 재사용(NAE_CORPUS_INGESTION_STANDARD_v1.md Phase 2 Lifecycle과 대응).
+
+  local_path:
+    type: string
+    required: false
+    description: 저장소 내 상대 경로.
+
+  aliases:
+    type: array[string]
+    required: false
+    description: 과거 source_id 이력 보존(v1.2와 동일 원칙, docs/SOURCE_ID_POLICY.md 참고).
+
+# manifest.yaml 파일 자체의 최상위 구조 예시 — 예시일 뿐, 실제 데이터 아님
+# (NAE-SCHEMA-MIGRATION-001: Registry 실제 데이터 입력 금지, 이 example은
+# 스키마 문서 관례를 따른 것으로 실제 sources: 목록에 포함되지 않는다)
+example: |
+  schema_version: "2.1.0"
+  sources:
+    - source_id: EXAMPLE-MODERN-001
+      author_id: example_author
+      author_name: "Example Author"
+      work_id: example_author-example_work
+      edition_id: example_author-example_work-ed1
+      volume_id: null
+      volume_number: null
+      title: "Example Work Title"
+      title_variants: []
+      edition: "1st ed."
+      publication_year: 2020
+      publisher: "Example Publisher"
+      language: en
+      category: theology
+      subcategory: [systematic_theology]
+      theological_position: "Reformed"
+      denomination: "Baptist"
+      source_type: licensed
+      copyright_status: licensed
+      usage_permission: research
+      access_control: restricted
+      license:
+        source_value: "Publisher License Agreement #1234"
+        normalized_value: licensed
+      citation_policy: "Author, Example Work Title (Publisher, 2020)."
+      tsu_access: restricted
+      archive_source: null
+      topics: [example_topic]
+      scripture_reference: []
+      doctrine_tags: [example_doctrine]
+      status: approved_for_acquisition
+      local_path: null
+      aliases: []

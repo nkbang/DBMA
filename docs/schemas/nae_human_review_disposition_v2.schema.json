@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dbma.local/schemas/nae_human_review_disposition_v2.schema.json",
+  "title": "NAE Human Review Disposition Record v2 (776 Independent)",
+  "description": "776 Human Review disposition 을 위한 별도 schema. 기존 v1 schema 와 coexistence 목적. migration 없음.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "tsu_id",
+    "source_id",
+    "work_id",
+    "edition_id",
+    "author_id",
+    "disposition",
+    "reason_codes",
+    "state",
+    "evidence_refs",
+    "reviewer_id",
+    "reviewed_at",
+    "schema_version",
+    "created_at"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "pattern": "^REVIEW-.+-[0-9]+$",
+      "description": "Immutable. Newly issued, format REVIEW-{tsu_id}-{seq}."
+    },
+    "tsu_id": {
+      "type": "string",
+      "pattern": "^TSU-[0-9]{7}$",
+      "description": "Immutable. Must reference an existing Production TSU record."
+    },
+    "source_id": {
+      "type": "string",
+      "description": "Immutable. Derived from the referenced TSU record."
+    },
+    "work_id": {
+      "type": "string",
+      "description": "Immutable. Derived from the referenced TSU record."
+    },
+    "edition_id": {
+      "type": "string",
+      "description": "Immutable. Derived from the referenced TSU record."
+    },
+    "author_id": {
+      "type": "string",
+      "description": "Immutable. Derived from the referenced TSU record."
+    },
+    "disposition": {
+      "type": "string",
+      "enum": ["accept", "reject", "accept_with_correction", "needs_review", "duplicate_merge"],
+      "description": "Human reviewer's decision. Required once state reaches DISPOSITIONED."
+    },
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "content_validity", "metadata", "extraction", "chunk_boundary",
+          "duplication", "source_authority", "copyright", "other"
+        ]
+      },
+      "description": "Required once disposition is set. Independent axis from disposition."
+    },
+    "state": {
+      "type": "string",
+      "enum": ["unreviewed", "in_review", "dispositioned", "adjudication_required", "finalized"],
+      "description": "Mutable ONLY via the state machine. Every transition must be recorded in a separate append-only provenance log."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Required once disposition is set. References only — no original artifact bodies are duplicated.",
+      "items": { "$ref": "#/$defs/evidence_ref" }
+    },
+    "correction_payloads": {
+      "type": "array",
+      "description": "Required if disposition == accept_with_correction.",
+      "items": { "$ref": "#/$defs/correction_payload" }
+    },
+    "adjudication": {
+      "type": "object",
+      "description": "Set only when state reaches adjudication_required.",
+      "additionalProperties": false,
+      "required": ["adjudicator_id", "outcome", "final_disposition", "reasoning", "adjudicated_at"],
+      "properties": {
+        "adjudicator_id": { "type": "string" },
+        "outcome": { "type": "string", "enum": ["upheld", "overturned", "modified"] },
+        "final_disposition": { "type": "string", "enum": ["accept", "reject", "accept_with_correction", "needs_review", "duplicate_merge"] },
+        "reasoning": { "type": "string" },
+        "adjudicated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "reviewer_id": {
+      "type": "string",
+      "description": "Required once state reaches in_review."
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Required once state reaches dispositioned or later."
+    },
+    "change_request_id": {
+      "type": "string",
+      "description": "Optional. Traceability metadata linking this disposition to a governance change request. Not a classification code."
+    },
+    "supersedes_record_id": {
+      "type": "string",
+      "description": "record_id of the record this one replaces. The superseded record is never deleted or edited."
+    },
+    "review_note": {
+      "type": ["string", "null"],
+      "description": "Free-text note (required if reason_code includes OTHER) (RC-03)"
+    },
+    "previous_disposition": {
+      "type": ["string", "null"],
+      "description": "Disposition value from the superseded record (RC-02)"
+    },
+    "schema_version": { "type": "string", "const": "2.0.0" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "evidence_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_type", "evidence_ref"],
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "source_page", "tsu_text", "metadata", "ocr_evidence",
+            "source_identifier", "external_authority", "reviewer_note"
+          ]
+        },
+        "evidence_ref": {
+          "type": "string",
+          "description": "Reference string (e.g. 'source_id:BAP-CHURCH-DAGG-001#page=42', 'tsu_id:TSU-0000123', a URL, or free-text citation)."
+        },
+        "page": { "type": ["integer", "null"] },
+        "location": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"] }
+      }
+    },
+    "correction_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["correction_type", "field", "original_value", "corrected_value", "correction_reason"],
+      "properties": {
+        "correction_type": { "type": "string" },
+        "field": { "type": "string" },
+        "original_value": { "type": "string" },
+        "corrected_value": { "type": "string" },
+        "correction_reason": { "type": "string" },
+        "evidence_ref": { "$ref": "#/$defs/evidence_ref" }
+      }
+    }
+  }
+}

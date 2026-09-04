@@ -1,6 +1,7 @@
 streamlit==1.58.0
 chromadb
 ollama
+qdrant-client
 langchain-text-splitters
 beautifulsoup4
 python-docx
@@ -13,10 +14,32 @@ numpy<2
 watchdog
 pandas
 requests
+fastapi
+uvicorn
+psutil
 PyYAML
+ruamel.yaml
 docling
 PyMuPDF
 pypdf
 easyocr
 sentence-transformers
-pytest
+
+# core/candidate_generator.py — Tantivy 기반 BM25 candidate generator
+# (DBMA-SEARCH-INFRA-001 Phase 2-2). ui/pages/__init__.py -> ui.pages.library
+# -> core.index_orchestrator -> core.candidate_generator로 무조건 import되어,
+# 이게 없으면 ui.pages 서브모듈 import 자체가 전부 깨진다(Gate 2 Clean
+# Install Test, 2026-08-18에 격리 venv에서 실측 확인 — 개발 환경엔 이미
+# 별도로 설치돼 있어 그동안 발견되지 못했다).
+tantivy==0.26.0
+
+# core/tli/hunspell_adapter.py — 한국어 맞춤법 검사(설교 에디터 전용).
+# Apple Silicon에서 plain `pip install hunspell`이 실패한다(패키지
+# setup.py가 Intel Homebrew 경로를 하드코딩) — 설치 절차는
+# core/tli/hunspell_adapter.py 모듈 docstring 참고.
+hunspell
+
+# core/tli/korean_tokenizer.py — BM25 한국어 형태소 분석(P1, docs/TODO.md).
+# 순수 wheel 배포(Cython 컴파일, 시스템 mecab/JVM 불필요) — Apple Silicon
+# 포함 어디서나 pip install만으로 설치된다.
+kiwipiepy

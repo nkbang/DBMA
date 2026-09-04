@@ -67,6 +67,14 @@ class DocumentContext:
     chunk_ids: list[str] = field(default_factory=list)
     chunk_count: int = 0
 
+    # [Task Order 017] Registry schema parity fields (§3 of Design v1)
+    doc_type: Optional[str] = None
+    superseded_by: Optional[str] = None
+    supersedes: Optional[str] = None
+    last_content_hash: Optional[str] = None
+    max_retries: int = 3
+    source_provenance: Optional[dict] = None
+
     # TSU references (ADR-002 매핑 테이블 방식 — future integration point)
     tsu_refs: list[str] = field(default_factory=list)
 
@@ -168,4 +176,122 @@ class DocumentContext:
 
             # [SPRINT21-B Phase1] additive — see pipeline_state field comment.
             "pipeline_state": self.pipeline_state,
+
+            # [Task Order 017 §4] Already existed but was missing from serialization
+            "ingest_status": self.ingest_status,
+            "retry_count": self.retry_count,
+            "last_failure_reason": self.last_failure_reason,
+            "last_processed_at": self.last_processed_at,
+            "pipeline_flags": dict(self.pipeline_flags),
+
+            # [Task Order 017 §4] New fields from §3 schema parity
+            "doc_type": self.doc_type,
+            "superseded_by": self.superseded_by,
+            "supersedes": self.supersedes,
+            "last_content_hash": self.last_content_hash,
+            "max_retries": self.max_retries,
         }
+
+    @classmethod
+    def from_metadata_dict(cls, meta: dict) -> "DocumentContext":
+        """Rehydrate a DocumentContext from a metadata dict.
+
+        Inverse of to_metadata_dict(), but not a lossless round trip — see
+        the note on created_at below. Accepts both the dict shape produced
+        by to_metadata_dict()/build_document_metadata() and a persisted
+        core.identity_registry record (a superset of those fields; unknown
+        extra keys such as "status" or "superseded_by" are ignored rather
+        than rejected, since registry records evolve additively — see
+        migrate_registry_schema()).
+
+        created_at: to_metadata_dict() does not serialize the dataclass's
+        own (immutable, Point-A) created_at field — it writes registered_at
+        under the "created_at" key instead (see that method's docstring).
+        This means the original creation timestamp cannot be recovered from
+        a metadata dict; __post_init__ stamps a fresh created_at on the
+        rehydrated instance, exactly as it would for a newly-constructed
+        DocumentContext. Only "created_at" (or "registered_at", checked
+        first for forward-compatibility with a future direct dict dump of
+        this dataclass) is used to restore registered_at.
+
+        Args:
+            meta: Metadata dict with at least "document_id" and "file_hash".
+
+        Returns:
+            A new DocumentContext instance.
+
+        Raises:
+            ValueError: if document_id or file_hash is missing/empty —
+                mirrors to_metadata_dict()'s validation, since both are
+                required for identity_registry lookups downstream.
+        """
+        document_id = meta.get("document_id", "")
+        file_hash = meta.get("file_hash", "")
+        if not document_id:
+            raise ValueError("DocumentContext.from_metadata_dict(): document_id is required")
+        if not file_hash:
+            raise ValueError("DocumentContext.from_metadata_dict(): file_hash is required")
+
+        ctx = cls(
+            document_id=document_id,
+            file_hash=file_hash,
+            source_file=meta.get("source_file", ""),
+            source_type=meta.get("source_type", ""),
+            is_ocr=meta.get("is_ocr", False),
+            title=meta.get("title"),
+            author=meta.get("author"),
+            book=meta.get("book"),
+            chapter=meta.get("chapter"),
+            page=meta.get("page"),
+            batch_id=meta.get("batch_id"),
+            language=meta.get("language", "en"),
+            noise_score=meta.get("noise_score", 0.0),
+            noise_mode=meta.get("noise_mode", "-"),
+            processing_version=meta.get("processing_version", PROCESSING_VERSION),
+            chunk_count=meta.get("chunk_count", 0),
+            # [Task Order 017 §3] 신규 필드 — dataclass 생성자 인자로 전달
+            doc_type=meta.get("doc_type"),
+            superseded_by=meta.get("superseded_by"),
+            supersedes=meta.get("supersedes"),
+            last_content_hash=meta.get("last_content_hash"),
+            max_retries=meta.get("max_retries", 3),
+            pipeline_state=meta.get("pipeline_state", "NEW"),
+            ingest_status=meta.get("ingest_status", "PROCESSED"),
+            retry_count=meta.get("retry_count", 0),
+            last_failure_reason=meta.get("last_failure_reason"),
+            registered_at=meta.get("registered_at", meta.get("created_at", "")),
+            last_processed_at=meta.get("last_processed_at", ""),
+            md_path=meta.get("md_path"),
+            copied_source_path=meta.get("copied_source_path"),
+        )
+        if isinstance(meta.get("pipeline_flags"), dict):
+            ctx.pipeline_flags = dict(meta["pipeline_flags"])
+        if isinstance(meta.get("chunk_ids"), list):
+            ctx.chunk_ids = list(meta["chunk_ids"])
+        if isinstance(meta.get("tsu_refs"), list):
+            ctx.tsu_refs = list(meta["tsu_refs"])
+
+        # [Task Order 017 §5] source_provenance — registry 레코드 전용 경로
+        # (scripts/ingest_logos_export.py가 직접 씀). register_document()는
+        # 이 필드를 모르므로 to_metadata_dict()에 포함하지 않는다(§4 참조).
+        ctx.source_provenance = cls.source_provenance_from_registry_record(meta)
+        return ctx
+
+    @classmethod
+    def source_provenance_from_registry_record(cls, record: dict) -> Optional[dict]:
+        """registry 레코드에서 source_provenance 6개 필드만 골라 dict로 묶어
+        반환한다. 6개 필드가 전부 없으면 None(문서가 Logos 출처가 아님).
+
+        register_document()가 이 값을 쓰지 않으므로 to_metadata_dict()의
+        출력과는 독립적이다 — Logos provenance는 여전히
+        scripts/ingest_logos_export.py가 쓰는 경로로만 registry에 반영된다.
+        """
+        # 6개 필드: source_tier, logos_location, rights, export_method,
+        # content_hash, review_status (scripts/ingest_logos_export.py 참조)
+        FIELDS = ("source_tier", "logos_location", "rights",
+                  "export_method", "content_hash", "review_status")
+        parts = {k: record.get(k) for k in FIELDS}
+        # 전부 None이면 문서가 Logos 출처가 아님
+        if all(v is None for v in parts.values()):
+            return None
+        return parts

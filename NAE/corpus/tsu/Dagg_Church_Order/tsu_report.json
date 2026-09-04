@@ -1,0 +1,30 @@
+{
+  "identifier": "Dagg_Church_Order",
+  "builder_version": "3.0.0",
+  "generated_at": "2026-08-08T02:37:38.955060+00:00",
+  "model": "my-theology-bot-v2:latest",
+  "candidates_evaluated": 4569,
+  "candidates_total": 4569,
+  "claims_extracted": 3377,
+  "llm_errors": 1,
+  "doctrine_breakdown": {
+    "Ecclesiology": 1759,
+    "Scripture / Authority": 102,
+    "Lord's Supper": 206,
+    "Soteriology": 153,
+    "Baptism": 719,
+    "Church Discipline": 33,
+    "Sanctification": 119,
+    "Trinity": 13,
+    "Eschatology": 35,
+    "Providence": 22,
+    "Other": 27,
+    "Confession": 4,
+    "Justification": 24,
+    "Election": 54,
+    "Church Covenant": 5
+  },
+  "elapsed_seconds": 44918.17,
+  "partial": false,
+  "note": "confidence is model self-reported and uncalibrated; review_status=generated until a human review promotes it to verified (see NAE/pipeline/tsu/review_promotion.py)"
+}

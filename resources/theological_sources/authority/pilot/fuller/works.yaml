@@ -1,0 +1,19 @@
+# Pilot Authority Registry — Fuller Work — NAE-METADATA-PILOT-002
+schema_version: "1.0-pilot"
+
+works:
+  - work_id: FULLER-COMPLETE-WORKS-001
+    author_id: FULLER-ANDREW-001
+    title: "The Works of the Rev. Andrew Fuller, in Eight Volumes"
+    title_variants:
+      - "Complete Works of Andrew Fuller"   # 기존 NAE_SOURCE_MANIFEST_v1.csv(BAP-MISS-FULLER) 표기
+    category: missions
+    subcategory: [mission_theology, systematic_theology, sermons]
+    topics: [missions, soteriology, apologetics, expository_sermons]
+    notes: >
+      RAW 8개 volume 전부 title page에 "THE WORKS OF THE REV. ANDREW
+      FULLER, IN EIGHT VOLUMES"로 동일 표기 — 하나의 Work로 묶는 것이
+      타당함을 실측 확인. 단, §5 Duplicate Analysis에서 확인되듯 이
+      단일 Work 아래 실제로는 서로 다른 두 개의 인쇄본(Edition)이
+      섞여 있음 — Work 통합 자체는 문제 없으나 Edition을 Work 레벨
+      단일값으로 가정하면 안 됨(Phase 2 모델 평가 핵심 근거).

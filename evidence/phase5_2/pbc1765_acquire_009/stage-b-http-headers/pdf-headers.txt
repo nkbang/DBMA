@@ -1,0 +1,25 @@
+HTTP/2 302 
+server: nginx/1.31.3
+date: Sat, 01 Aug 2026 15:03:43 GMT
+content-type: text/html; charset=UTF-8
+location: https://ia802908.us.archive.org/0/items/confeo00phil/confeo00phil.pdf
+accept-ranges: bytes
+strict-transport-security: max-age=15724800
+onion-location: https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/confeo00phil/confeo00phil.pdf
+content-security-policy: report-uri https://archive.org/services/csp-report; default-src *; img-src * data: blob:; object-src 'none'; media-src * blob:; connect-src * data:; style-src 'unsafe-inline' https://archive.org/ https://archive.org https://esm.archive.org/ https://esm.ext.archive.org/ https://offshoot.prod.archive.org/ https://av.archive.org/css/ https://av.dev.archive.org/css/ https://accounts.google.com/gsi/ https://synerg.adp.com/; script-src 'nonce-0d89d62ae7873a02f9c1d5e33b9d70c2' https://archive.org/includes/ https://archive.org/includes/ https://archive.org/components/ https://archive.org/components/ https://archive.org/v/ https://archive.org/v/ https://archive.org/upload/app/ https://archive.org/offshoot_assets/ https://archive.org/offshoot_assets/ https://esm.archive.org/ https://esm.ext.archive.org/ https://polyfill.archive.org/v3/polyfill.min.js https://offshoot.prod.archive.org/ https://av.archive.org/ https://av.dev.archive.org/ https://openlibrary.org/query.json https://emularity-engine.ux-b.archive.org/ https://emularity-config.ux-b.archive.org/ https://emularity-bios.ux-b.archive.org/ https://archive.org/services/emularity/ https://archive.org/services/emularity/ 'wasm-unsafe-eval' 'sha256-CoX53XgCdkM1zegYEEpMUeYIZnv663inNm8bQv2VRbM=' https://accounts.google.com/gsi/ https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://workforcenow.adp.com/ https://synerg.adp.com/ https://apollo.archive.org
+x-fastcgi-cache: MISS
+
+HTTP/2 200 
+server: nginx/1.31.1
+date: Sat, 01 Aug 2026 15:03:43 GMT
+content-type: application/pdf
+content-length: 8238629
+last-modified: Wed, 08 Nov 2023 02:59:09 GMT
+etag: "654af97d-7db625"
+strict-transport-security: max-age=15724800
+content-security-policy-report-only: report-uri https://archive.org/services/csp-report; default-src *; img-src * data: blob:; object-src 'none'; media-src * blob:; connect-src * data:; style-src 'unsafe-inline' https://archive.org/ https://ia802908.us.archive.org https://esm.archive.org/ https://esm.ext.archive.org/ https://offshoot.prod.archive.org/ https://av.archive.org/css/ https://av.dev.archive.org/css/ https://accounts.google.com/gsi/ https://synerg.adp.com/; script-src 'nonce-78d8dde6559eabb0ada96a03c9ba665d' https://archive.org/includes/ https://ia802908.us.archive.org/includes/ https://archive.org/components/ https://ia802908.us.archive.org/components/ https://archive.org/v/ https://ia802908.us.archive.org/v/ https://ia802908.us.archive.org/upload/app/ https://archive.org/offshoot_assets/ https://ia802908.us.archive.org/offshoot_assets/ https://esm.archive.org/ https://esm.ext.archive.org/ https://polyfill.archive.org/v3/polyfill.min.js https://offshoot.prod.archive.org/ https://av.archive.org/ https://av.dev.archive.org/ https://openlibrary.org/query.json https://emularity-engine.ux-b.archive.org/ https://emularity-config.ux-b.archive.org/ https://emularity-bios.ux-b.archive.org/ https://archive.org/services/emularity/ https://ia802908.us.archive.org/services/emularity/ 'wasm-unsafe-eval' 'sha256-CoX53XgCdkM1zegYEEpMUeYIZnv663inNm8bQv2VRbM=' https://accounts.google.com/gsi/ https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://workforcenow.adp.com/ https://synerg.adp.com/ https://apollo.archive.org
+expires: Sat, 01 Aug 2026 21:03:43 GMT
+cache-control: max-age=21600
+referrer-policy: no-referrer-when-downgrade
+accept-ranges: bytes
+

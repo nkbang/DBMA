@@ -1,0 +1,18 @@
+{
+  "task_id": "N8N-CONTROL-PLANE-PILOT-001",
+  "parent_task_id": null,
+  "decision": "HOLD",
+  "scope": "CUE Autonomous Governance Order — n8n을 유일한 orchestration/control plane으로 사용해 C1/CUE 간 직접 지시를 제거하는 control loop 구축 (pilot 단계)",
+  "reason": "기존 Approved ADR-022 §17(CUE/C1 역할 분담)과 .automation/PRODUCTION_RULES.md의 Agent Authority 모델은 C1(Cline)을 'implementation/testing/debugging/prototyping' 담당으로 정의하고, 런타임 task executor로 정의하지 않는다. 이미 Approved된 ADR-023(Full Processing)도 이를 반영해 host_executor.py가 C1을 거치지 않고 cli_driver.py를 직접 subprocess 호출하는 방식으로 구현되어 있다. 이번 지시문이 요구하는 'n8n이 C1에게 task를 dispatch하고 C1이 실행'하는 구조는 이 기존 Approved 설계를 재정의하는 것이며, Cline(C1)은 프로그램적으로 호출 가능한 API/webhook이 없어(사람이 Task Order 파일을 작성해 Cline 채팅창에 수동으로 relay하는 방식만 존재) 기술적으로도 즉시 구현 불가능하다. CLAUDE.md Architecture Freeze Rule에 따라 Approved ADR과 충돌하는 작업 명령은 사용자 확인 전까지 구현하지 않는다.",
+  "evidence_paths": [
+    "docs/architecture/ADR-022-DBMA-N8N-Automation-State-Machine.md",
+    "docs/architecture/ADR-023-DBMA-N8N-Automation-Full-Processing.md",
+    ".automation/PRODUCTION_RULES.md",
+    ".automation/night-shift/host_executor.py",
+    ".automation/requests/C1-RELAY-SNIPPET.md",
+    ".automation/evidence/incidents/2026-08-16-dbma-core-nae-isolation-violation/00-INCIDENT-RECORD.md"
+  ],
+  "timestamp": "2026-08-16T00:00:00Z",
+  "reviewer": "CUE",
+  "next_action": "사용자에게 C1(Cline) 런타임 dispatch 불가 blocker와 3가지 대안(A/B/C)을 제시하고 방향 결정을 받은 후에만 최소 isolated pilot 설계를 진행한다. 그 전까지 새 n8n workflow/webhook 생성, Corpus Factory 신규 Phase 착수 금지."
+}

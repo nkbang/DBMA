@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0019",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0003425",
+      "tsu_id": "TSU-0003425",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The election should be by ballot, and at least three-quarters of the votes cast should be necessary for the election of a pastor, and two-thirds for the election of a deacon.",
+      "claim": "목사와 장로의 선거는 투표를 통해 진행되어야 하며, 목사의 경우 최소 3/4의 찬성투표가 필요하고, 장로의 경우 최소 2/3의 찬성투표가 필요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003426",
+      "tsu_id": "TSU-0003426",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Such election should be preceded by prayer for divine direction, and conducted without partisan devices or personal strife.",
+      "claim": "교회에서 목사나 장로의 선거는 기도와 하나님의 인도를 구하는 것으로 시작해야 하며, 당파적인 수단이나 개인 간의 갈등 없이 진행되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003427",
+      "tsu_id": "TSU-0003427",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 3. — Both pastors and deacons are properly elected for unlimited terms of service, the relation to continue so long as there shall be mutual satisfaction.",
+      "claim": "장로와 집사들은 일반적으로 무기한 기간 동안 선출되어서 상호 만족이 있는 한 그 관계가 지속된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003428",
+      "tsu_id": "TSU-0003428",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Such a course tends less to depreciate and make servile the officers and their duties in the estimation of the people, and of those who bear them, than a limited and specified time, though deacons are sometimes, and perhaps properly, chosen for a limited term of service, subject to re-election, at the option of the",
+      "claim": "무기한 임기 동안 목사와 집사의 직분을 선택하는 것이 그들의 직무를 평가하는 데 있어 한계된 기간보다 더 적절하다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003429",
+      "tsu_id": "TSU-0003429",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 4. — The church is to fix on the amount of salary necessary to a generous support of the pastor, and hold itself obligated by every consideration of Christian honor for the prompt and regular payment of the same.",
+      "claim": "교회는 목사의 적절한 지원을 위해 필요한 급여 금액을 결정하고, 그 지불을 위한 모든 기독교적 명예에 대한 고려에 따라 의무를 느끼어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003430",
+      "tsu_id": "TSU-0003430",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "To fail in this is as dishonorable to the church as it is unjust and vexatious to the pastor.",
+      "claim": "교회가 목사의 적절한 지원을 위해 필요한 급여 금액을 결정하고 정기적으로 지급하는 것은 기독교적 명예의 모든 고려에 따라 의무이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003431",
+      "tsu_id": "TSU-0003431",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 5. — The call to a pastor issues from the church as a body, which also designates the amount of salary to be paid.",
+      "claim": "목사의 부름은 교회 전체에서 나오며, 또한 급여의 금액을 지정한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003432",
+      "tsu_id": "TSU-0003432",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is in some sections usual, though not essential, to have subsequently a meeting of the entire congregation or society to approve or confirm the call.",
+      "claim": "목사에게 대한 부름은 교회 전체에서 나오며, 이는 또한 목사의 급여를 결정하는 것과 관련이 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003433",
+      "tsu_id": "TSU-0003433",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 6. — The number of deacons is optional with the church.",
+      "claim": "교회에서 집사들의 수는 선택사항이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003434",
+      "tsu_id": "TSU-0003434",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is usually from three to seven.",
+      "claim": "교회에서 다이어콘의 수는 보통 3명부터 7명까지이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003435",
+      "tsu_id": "TSU-0003435",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Let it be so many as the church needs and can find suitable candidates for the supply.",
+      "claim": "교회에서 필요한 수만큼 적합한 후보자를 찾을 수 있는 만큼의 장로를 두어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003436",
+      "tsu_id": "TSU-0003436",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But they should never be elected simply to fill the office, and never unless there be persons whose fitness for the office is generally conceded.",
+      "claim": "교회 직분을 채우기 위해 단순히 사람들을 선출해서는 안 되며, 일반적으로 그 직분에 적합한 사람들이 있는 경우에만 선출해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003437",
+      "tsu_id": "TSU-0003437",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Between the deacons and the church, the relations may be dissolved at the option of either without previous notice.",
+      "claim": "장로와 교회 사이의 관계는 어느 한 쪽이 선택에 따라 이전 통보 없이 해소될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003438",
+      "tsu_id": "TSU-0003438",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is an office of convenience, for keeping the minutes and preserving the records of the body.",
+      "claim": "교회 서기 직은 편의를 위한 직책으로, 회의록을 기록하고 교회 기록을 보존하는 역할을 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003439",
+      "tsu_id": "TSU-0003439",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Also trustees are elected by the church, or if the law so requires, by a society.",
+      "claim": "교회에서 신임을 받은 신탁人は 법이 요구하는 경우에는 사회에서 선출될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003440",
+      "tsu_id": "TSU-0003440",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Their duties are the care of the property and the management of finances.",
+      "claim": "트러스트의 직무는 재산 관리와 재정 관리이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003441",
+      "tsu_id": "TSU-0003441",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But these are not considered Scriptural church officers ; deacons might properly discharge all the functions of these offices, i",
+      "claim": "교회의 성경적 직분은 다کن(deacon)들이 수행할 수 있는 역할을 포함한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003442",
+      "tsu_id": "TSU-0003442",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "* In some States the laws do not recognize the church, that being a spiritual body, but incorporate a society, as it is called, consisting of all persons of full age who attend and support the worship.",
+      "claim": "일부 주에서 교회는 영적인 신체이기 때문에 법률로 인정받지 못하지만, 예배에 참석하고 지원하는 만 18세 이상의 모든 사람으로 구성된 사회를 통합한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003443",
+      "tsu_id": "TSU-0003443",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This society has charge of the financial affairs of the church, hold and keep in repair its property, and conduct its secular concerns.",
+      "claim": "교회와 관련된 세속적인 문제는 교회 내의 특정 사회가 책임지고 처리한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003444",
+      "tsu_id": "TSU-0003444",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The members of the society, and the trustees elected, may or may not be members of the church.",
+      "claim": "교회 회원과 선출된 이사들은 교회 구성원일 수도 있고 아닐 수도 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003445",
+      "tsu_id": "TSU-0003445",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This whole society arrangement is a relict of the old New England parish system of the standing order, and is inconsistent with the freedom of church action, and antagonistic to Baptist Church independence.",
+      "claim": "교회 사회의 전체적 구성은 옛 뉴잉글랜드 교구 체계의 잔재로서 교회의 자유로운 행동과 침례교회의 독립에 부합하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003446",
+      "tsu_id": "TSU-0003446",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is anti-Baptistic and anti- Scriptural.",
+      "claim": "이 사회적 제도는 침례교회의 독립과 성경에 반대된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003447",
+      "tsu_id": "TSU-0003447",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "A church should be allowed to manage its own affairs, both temporal and spiritual : and should be protected by law in doing so.",
+      "claim": "교회는 世俗적인 것과 영적인 것 모두를 자기의 일들을 관리할 수 있어야 하며, 법으로 보호되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003448",
+      "tsu_id": "TSU-0003448",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "church should be as widely distributed among the members as possible, consistently with the welfare of the body.",
+      "claim": "교회에서 책임과 권한은 회원들 사이에 가능한 넓게 분배되어야 하며, 동시에 교회의 복지를 고려해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003449",
+      "tsu_id": "TSU-0003449",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This rule should seldom be disregarded.",
+      "claim": "교회에서 권한을 분배할 때는 가능한 한 회원들에게 널리 분산되어야 하며, 이 규칙은 거의 무시되어서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003450",
+      "tsu_id": "TSU-0003450",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "No one man should hold more than one office at the same time, unless the interests of the body absolutely demand it.",
+      "claim": "한 사람이 동시에 두 개 이상의 직위를 맡는 것은 절대적으로 필요하지 않는 한 피해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003451",
+      "tsu_id": "TSU-0003451",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "If offices are honors, they should be widely dispensed; if they are burdens, they certainly should be.",
+      "claim": "교회 직분은 명예라면 널리 분배되어야 하며, 부담이라면 분명히 그렇게 해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003452",
+      "tsu_id": "TSU-0003452",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "For the same man to hold two or three offices is as unjust to him as it is to his brethren.",
+      "claim": "한 사람이 두세 개의 직분을 동시에 맡는 것은 그에게도 부정공평하지만 그의 형제들에게도 마찬가지로 부정공평하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003453",
+      "tsu_id": "TSU-0003453",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 10. — A church cannot unite in any corporate capacity with other organizations for religious, benevolent, moral reform, or other purposes ; but it may cooperate with these for any good object, and give to such societies its moral support, sympatic, and pecuniary aid.",
+      "claim": "교회는 다른 조직과 종교, 자선, 도덕 개혁 또는 기타 목적을 위해法人으로 합체할 수 없지만, 좋은 목적을 위해 협력하고 이러한 사회에 대한 도덕적 지지, 동정, 재정 지원을 제공할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003454",
+      "tsu_id": "TSU-0003454",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 11. — But members of churches can, as individuals, unite with outside organizations, for any purpose, not inconsistent with their profession as Christians, and not injurious to their church relations and duties.",
+      "claim": "교회의 구성원은 개인적으로 교회와의 관계나 의무에 반하지 않는다면 어떤 목적을 위해 외부 조직과 연합할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003455",
+      "tsu_id": "TSU-0003455",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 12. — Churches cannot alienate their responsibilities, nor delegate their authority to any man, or to any body of men, to act officially for them.",
+      "claim": "교회는 그들의 책임을 다른 사람이나 단체에게 위탁하거나 대신 공식적으로 행동할 수 있는 권한을 위임할 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003456",
+      "tsu_id": "TSU-0003456",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But they can appoint persons to bear messages, and to perform services for them, under instruction, and to report their action to the body. 18 STANDARD MANUAL",
+      "claim": "교회는 특정 개인이나 단체에게 공식적으로 대신 hành động할 수 있는 권한을 위임할 수 없지만, 지시 아래 메시지를 전달하고 서비스를 수행하며 그 행동에 대해 보고하는 사람들을 임명할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003457",
+      "tsu_id": "TSU-0003457",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Christian ordinances, in the largest sense, are any institutions, or regulations of divine appointment, established as means of grace for the good of men. or as acts of worship for the honor of God.",
+      "claim": "기독교의 규례는 하나님의 명령에 따라 세워진 제도나 규정으로, 은혜를 받기 위한 수단이나 하나님을 경배하기 위한 행위이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003458",
+      "tsu_id": "TSU-0003458",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "In that sense, not only are baptism and the Lord's Supper ordinances, but preaching, prayer, hearing the word, fasting, and thanksgiving are also ordinances, since all are of divine appointment.",
+      "claim": "세례와 성찬 외에도 설교, 기도, 말씀을 듣는 것, 금식, 감사를 드리는 것이 하나님의 명령에 따라 세워진 규칙들로 간주될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003459",
+      "tsu_id": "TSU-0003459",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But, in a narrower sense, it is common to say that baptism and the Lord's Supper are the only ordinances appointed by Christ to be observed by his churches.",
+      "claim": "세례와 주의 만찬은 예수 그리스도가 그의 교회에서 지키라고 명한 유일한 규례이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003460",
+      "tsu_id": "TSU-0003460",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "These are the only emblematic and commemorative rites enjoined upon his disciples, by which they are to be distinguished, and he is to be honored.",
+      "claim": "세례와 주의 만찬은 그리스도의 교회에서 지키도록 명한 유일한 상징적이고 기념적인 의식이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003461",
+      "tsu_id": "TSU-0003461",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They are the two symbols and witnesses of the New Covenant, the two monuments of the New Dispensation.",
+      "claim": "세례와 성찬은 새 언약과 새 복음의 두 가지 상징이자 증거이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003462",
+      "tsu_id": "TSU-0003462",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Baptism is the immersion, or dipping, of a candidate in water, on a profession of his faith in Christ and on evidence of regeneration ; the baptism to be ministered in, or into the name of the Father, the Son, and Holy Spirit.",
+      "claim": "세례는 그리스도에 대한 믿음을 고백하고 새 생명이 나타남을 증거로 물에 침례하는 것으로, 아버지와 아들과 성령의 이름으로 집행되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003463",
+      "tsu_id": "TSU-0003463",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "It represents the burial and resurrection of Christ, and in a figure declares the candidate's death to sin and the world, and his rising to a new life.",
+      "claim": "세례는 그리스도의 매장과 부활을 상징하며, 죄와 세상을 향한 죽음과 새로운 삶으로의 부활을 선언한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003464",
+      "tsu_id": "TSU-0003464",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "It also proclaims the washing of regeneration, and professes the candidate's hope of a resurrection from the dead, through him into the likeness of whose death he is buried in baptism.",
+      "claim": "세례는 재생의 씻음과 죽은 자 가운데서 부터의 부활에 대한 후보자의 소망을 선언하며, 이를 통해 그리스도의 죽음과 같은 형태로 매장되어 새로운 삶으로 부활하는 것을 나타낸다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003465",
+      "tsu_id": "TSU-0003465",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "The Lord's Supper is a provision of bread and wine, used to represent the body and the blood of Christ, partaken of by members of the church assembled for that purpose; in which service they commemorate the love of Christ exhibited in his death for them, and profess their faith and participation in the merits of his sacrifice as the only ground of their hope of eternal life.",
+      "claim": "주님의 만찬은 교회 회원들이 그 목적을 위해 모인 채로 참여하는 빵과 포도주의 제공으로서, 그들은 이 служ에서 그들의 대신 죽으심으로 나타난 그리스도의 사랑을 기념하며, 그의 희생의 공로에 대한 믿음과 참여를 영원한 생명의 소망의 유일한 근거로서 고백한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003466",
+      "tsu_id": "TSU-0003466",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Note 1. — No person can rightfully or properly become a church member except he be first baptized, as the distinguishing mark and profession of his discipleship.",
+      "claim": "교회 회원이 되기 위해서는 먼저 세례를 받은 후에 가능하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003467",
+      "tsu_id": "TSU-0003467",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Note 2. — The Supper is a church ordinance, and therefore is the privilege of church members only. 20 STANDARD MANUAL",
+      "claim": "성만찬은 교회 규례이므로 교회 회원에게만 특권이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003468",
+      "tsu_id": "TSU-0003468",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Therefore, also, since baptism precedes church membership, it must precede and be pre-requisite to the Lord's Supper.",
+      "claim": "세례는 성만찬에 앞서며 선행 조건이다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003469",
+      "tsu_id": "TSU-0003469",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Note 3. — Since the Supper is distinctively a church ordinance, it is to be observed by churches only, and not by individuals ; neither in private places, nor in sick rooms, nor on social occasions, and not by companies of disciples other than churches.",
+      "claim": "성만찬은 교회에서만 지켜야 하며 개인이나 다른 모임에서는 지켜서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003470",
+      "tsu_id": "TSU-0003470",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "But a church may by appointment, and in its official capacity, meet in a private house, a sick room, or wherever it may elect, and there observe the Supper.",
+      "claim": "교회는 공식적인 자격으로 사적 장소나 병실 등에서 성찬을 관찰할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003471",
+      "tsu_id": "TSU-0003471",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 4. — Both ordinances are ordinarily and properly administered by ordained and accredited ministers ; but both would be equally valid if administered by unordained persons, should occasion require and the church so direct.",
+      "claim": "세례와 성찬은 일반적으로 서품받은 목사에 의해서도 행해질 수 있지만, 교회가 그렇게 지시하고 상황이 요구할 때는 비서품자에 의해서도 유효하게 시행될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003472",
+      "tsu_id": "TSU-0003472",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "As to the qualifications of the administrator, the New Testament is silent, except that he should be a disciple.",
+      "claim": "새로운 약속에서 성례의 집행자는 반드시 제자여야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003473",
+      "tsu_id": "TSU-0003473",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 5. — As to the time, place, and frequency of the ordinances, no Scriptural directions are given.",
+      "claim": "성경은 교회의 예식에 관한 시간, 장소, 빈도에 대해 지시하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003474",
+      "tsu_id": "TSU-0003474",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "These are left optional with the churches.",
+      "claim": "교회에서 성례와 예배의 시간, 장소, 빈도는 선택사항이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003475",
+      "tsu_id": "TSU-0003475",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They are usually observed on Sundays, but not necessarily.",
+      "claim": "주일에는 주로 관찰되지만 반드시 그러한 것은 아님",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003476",
+      "tsu_id": "TSU-0003476",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "As to the Supper, our churches have very generally come to observe it on the first Sunday of each month.",
+      "claim": "교회들은 일반적으로 매월 첫 번째 주일에 성찬을 지킨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003477",
+      "tsu_id": "TSU-0003477",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "Note 6. — The participation of the elements in the Supper should be done according to the special direction of Christ, the Head of the body.",
+      "claim": "성찬식에서 요소들의 참여는 그 몸의 머리인 그리스도의 특별한 지시에 따라야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003478",
+      "tsu_id": "TSU-0003478",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "\" This do in remembrance of me.\" It is not, therefore, a test or token of Christian fellowship, except incidentally.",
+      "claim": "주님의 만찬에서 그리스도를 기억하는 것이 중요하며, 이는 기독교 교제의 증표가 아님을 강조한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003479",
+      "tsu_id": "TSU-0003479",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Lord's Supper",
+      "original_text": "All thought and sympathy in the service should be centered on him who is \" the living bread,\" and not fixed on others.",
+      "claim": "주님의 만찬 예배에서 모든 생각과 감정은 살아있는 빵이신 그리스도에 집중되어야 하며 다른 사람에게 집중되어서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003480",
+      "tsu_id": "TSU-0003480",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 7. — The ordinances are not sacraments, as taught by some, conveying effectual grace to the soul and imparting spiritual life.",
+      "claim": "성례는 영혼에게 효과적인 은혜를 주거나 영적 생명을 부여하는 성사와 다르다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003481",
+      "tsu_id": "TSU-0003481",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But as divinely appointed means of grace, their importance must not be undervalued.",
+      "claim": "하나님의 은혜를 받는 수단으로서 성례전의 중요성을 과소평가해서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003482",
+      "tsu_id": "TSU-0003482",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They cannot be neglected without suffering serious harm and incurring the gravest responsibility.",
+      "claim": "은혜의 신적 수단으로서 그 중요성을 과소평가해서는 안되며, 이를 무시하면 심각한 피해를 입고 가장 중대한 책임을 지게 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003483",
+      "tsu_id": "TSU-0003483",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "Note 8. — Baptism is not essential to salvation, for our churches utterly repudiate the dogma of ''baptismal regeneration \" ; but it is essential to obedience, since Christ has commanded it.",
+      "claim": "세례는 구원에 필수적이지 않지만, 복종과 그리스도에 대한 공개적인 고백 및 교회 회원資格에는 필수적이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003484",
+      "tsu_id": "TSU-0003484",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is also essential to a public confession of Christ before the world, and to membership in the church which is his body.",
+      "claim": "세례는 구원에 필수적이지 않지만, 그리스도 앞에서 세상에게 공개적으로 고백하고, 교회 즉 그의 몸의 구성원으로서의 신자들의 삶에 필수적이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003485",
+      "tsu_id": "TSU-0003485",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And no true lover of his Lord will refuse these acts of obedience and tokens of affection. 22 STANDARD MANUAL",
+      "claim": "주님의 진정한 사랑하는 자는 주님께 대한 순종과 애정을 나타내는 이러한 행동을 거부하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003486",
+      "tsu_id": "TSU-0003486",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is most likely that in the Apostolic age when there was but \"one Lord, one faith, and one baptism,\" and no differing denominations existed, the baptism of a convert by that very act, constituted him a member of the church, and at once endowed him with all the rights and privileges of full membership.",
+      "claim": "초기 기독교 교회에서 세례는 교회 회원으로 구성되며 모든 권리와 특권을 부여하는 것으로 간주되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003487",
+      "tsu_id": "TSU-0003487",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "In that sense, \" baptism was the door into the church.\" Now, it is different ; and while the churches are desirous of receiving members, they are wary and cautious that they do not receive unworthy persons.",
+      "claim": "초기 기독교 교회에서 세례는 교회에 들어가는 문이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003488",
+      "tsu_id": "TSU-0003488",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "The churches therefore have candidates come before them, make their statement, give their \" experience,\" and then their reception is decided by a vote of the members.",
+      "claim": "교회는 세례를 받은 후에 회원으로 받아들이기 전에 후보자들의 경험을 듣고 투표를 통해 결정한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003489",
+      "tsu_id": "TSU-0003489",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "And while they cannot become members without baptism, yet it is the vote of the body which admits them to its fellowship on receiving baptism.",
+      "claim": "세례는 받았지만, 교회 회원이 되기 위해서는 교회의 투표가 필요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003490",
+      "tsu_id": "TSU-0003490",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "There are three classes of candidates, and modes of reception to membership.",
+      "claim": "교회 회원으로 가입하는 후보자는 세 가지 종류가 있으며, 각각의 수용 방식이 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003491",
+      "tsu_id": "TSU-0003491",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "By baptism. — The church having listened to the religious experience of the candidate, and being satisfied with the same, and with his Christian deportment, votes to receive him to its fellowship, \"on being baptized.\"",
+      "claim": "교회는 세례를 받은 후에 교제의 일원으로 받아들인다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003492",
+      "tsu_id": "TSU-0003492",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "By experience. — Persons having been baptized, but for some reason being without membership in any church, wish to be received.",
+      "claim": "세례를 받았지만 어떤 이유로든 교회 회원이 아닌 사람들은 교회에 가입하고 싶어한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003493",
+      "tsu_id": "TSU-0003493",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "They, giving satisfactory evidence of Christian character, and substantial agreement in matters of faith and practice, are received by vote, as in other cases.",
+      "claim": "세례를 받았지만 어떤 이유로든 교회 회원이 아닌 사람들은 교회에 가입하고 싶어하며, 그들은 기독교적 성품과 신앙 및 실천의 중요한 일치에 대해 만족할 만한 증거를 제공하여 다른 경우와 같이 투표로 받아들여진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003494",
+      "tsu_id": "TSU-0003494",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 1. — Persons cannot be received to membership on the credit of letters from other denominations.",
+      "claim": "他の宗派からの手紙による信用では会員権を得ることはできない",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003495",
+      "tsu_id": "TSU-0003495",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Such letters are, however, accepted, as certificates of Christian character, and of church standing.",
+      "claim": "다른 교단에서 온 추천서를 회원 자격으로 받지 않지만, 그들은 기독교적 성품과 교회 지위에 대한 증명서로 받아들여진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003496",
+      "tsu_id": "TSU-0003496",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 2. — While the churches do not require candidates to sign any creed, confession, or articles of faith, yet they do expect a substantial agreement in 24 STANDARD MANUAL",
+      "claim": "교회는 후보자에게 신조나 신앙고백서에 서명할 것을 요구하지 않지만, 실질적인 신앙 일치에 대한 기대를 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003497",
+      "tsu_id": "TSU-0003497",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "matters of faith and practice on their part as essential both to the comfort of the individual, and the harmony of the body.",
+      "claim": "믿음과 실천에 관한 문제는 개인의 위안과 교회 공동체의 조화에 모두 필수적이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003498",
+      "tsu_id": "TSU-0003498",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Objections judged groundless or unreasonable should not prevent the reception of a suitable candidate ; yet no one should be received except by a unanimous or nearly unanimous vote.",
+      "claim": "합당한 후보자의 수용은 근거가 없거나 불합리한 반대에도 불구하고 허용되어야 하며, 대다수의 동의 또는 만장일치로 결정되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003499",
+      "tsu_id": "TSU-0003499",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 5. — Any member in good standing, is entitled, at any time, to a letter of dismission, in the usual form, with which to unite with another church of the same faith and order.",
+      "claim": "어느 교회 회원이라도 정회원으로 있는 동안에 언제든지 같은 신앙과 질서를 가진 다른 교회와 합류하기 위한 해임장의 편지를 받을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003500",
+      "tsu_id": "TSU-0003500",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But if held longer, they may be reuewed by the church, if satisfactory reasons are given for their non-use.",
+      "claim": "교회에서 만족할 만한 이유가 주어지면, 유효 기간이 지난 편지는 재검토될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003501",
+      "tsu_id": "TSU-0003501",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 7. — Each one receiving a letter is still a member of the church, and under its watchcare and discipline, until his letter is actually received by another",
+      "claim": "각자는 교회에서 받은 편지를 다른 곳에서 실제로 받을 때까지는 여전히 교회의 회원으로서 그들의 감독과 규율 아래에 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003502",
+      "tsu_id": "TSU-0003502",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 8. — Letters cannot be given to members for the purpose of uniting with churches with which we are not in fellowship.",
+      "claim": "교회와의 교제가 없는 교회에 합류하기 위한 목적으로 회원에게 편지는 발급되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003503",
+      "tsu_id": "TSU-0003503",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "But any member is entitled, at any time, to receive a certificate of standing, and Christian character.",
+      "claim": "모든 교회 회원은 언제든지 자신의 신앙적 지위와 성품에 대한 증명서를 받을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003504",
+      "tsu_id": "TSU-0003504",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "Note 9. — No member can withdraw from the church, or have his name dropped, or at his own request be excluded from the fellowship of the body without due process of discipline.",
+      "claim": "교회에서 회원이 탈퇴하거나 이름을 삭제하거나 교회 공동체에서 제외되기 위해서는 적절한 교회의 징계 절차를 따라야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003505",
+      "tsu_id": "TSU-0003505",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Such would be a virtual expulsion from the body.",
+      "claim": "교회에서 강제로 추방되는 것은 사실상의 교회 밖으로 내쫓기는 것과 같다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003506",
+      "tsu_id": "TSU-0003506",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "If worthy to receive a letter, he cannot be forced out of the church against his will.",
+      "claim": "교회에서 강제로 추방당하는 것을 원하지 않는 사람의 의지는 존중되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003507",
+      "tsu_id": "TSU-0003507",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 11.— Members living remote from the church are expected to unite with some Baptist church near their residence ; or give satisfactory reasons for not doing so.",
+      "claim": "교회에서 멀리 떨어져 사는 교회 회원들은 가능한 경우 근처의 침례교회의 일부가 되거나 그렇게 하지 못하는 만족할 만한 이유를 제공해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003508",
+      "tsu_id": "TSU-0003508",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "When they cannot so unite, they are expected to report themselves to the church at least once each year, and contribute to its support, till they cease to be members.",
+      "claim": "교회에서 멀리 떨어져 있는 교인들은 매년 적어도 한 번은 교회에 보고하고 지원을 해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003509",
+      "tsu_id": "TSU-0003509",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "Note 12. — Letters of dismission may be revoked, at any time before being used, if, in the judgment of the church, there be sufficient cause for such action.",
+      "claim": "교회는 교회 내에서 충분한 이유가 있는 경우에 언제든지 탈퇴서를 철회할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003510",
+      "tsu_id": "TSU-0003510",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 13. — Church fellowship will be withdrawn from members who unite with other denominations ; because, however excellent their character, or sincere their intentions, they have broken covenant with the church, and by such act have placed themselves beyond the limits of its fellowship.",
+      "claim": "교회는 다른 교단과 연합하는 회원들에게 교회 공동체를 철회할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003511",
+      "tsu_id": "TSU-0003511",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "Note 14. — Persons excluded from other churches are not to be received to membership, except after the most careful investigation of all the facts in the case, and not unless it be manifest that the exclusion was unjustifiable, and that the church excluding persistently refuses to do justice to the excluded member.",
+      "claim": "다른 교회에서 배제된 개인은 매우慎重한 조사 후에만 회원으로 받아들여야 하며, 배제가 정당하지 않으며 배제한 교회가 배제된 회원에게 정의를 제공하기를 거부하는 경우에만 받아들여야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003512",
+      "tsu_id": "TSU-0003512",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 15. — A letter is usually asked for and addressed to a particular church.",
+      "claim": "서신은 일반적으로 특정 교회에 요청되고 주소가 지정됩니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003513",
+      "tsu_id": "TSU-0003513",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This is proper, but not always necessary.",
+      "claim": "교회에 대한 서신은 항상 특정 교회에 주소가 붙어 있지 않을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003514",
+      "tsu_id": "TSU-0003514",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "It may in certain cases be asked for, and given \" to any church of the same faith and order.\" Or if directed to one, it may be presented to, and received by another.",
+      "claim": "같은 신앙과 질서를 가진 교회 간에 특정 경우에 요청하고 받을 수 있는 것",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003515",
+      "tsu_id": "TSU-0003515",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 16. — It is expected that all pecuniary liability to the church will be canceled, and all personal difficulties in the church will be settled by a member, should such exist, before he shall receive a letter of dismission.",
+      "claim": "교회에서 회원이 탈퇴서를 받기 전에 모든 금전적 책임과 개인적인 어려움을 해결해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003516",
+      "tsu_id": "TSU-0003516",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 17. — Each member, without exception, is expected to fill his place in the church, by attendance on its appointments, as Providence may allow, and also to contribute of his means for the pecuniary support of the body, according to his ability.",
+      "claim": "교회 구성원은 예배 출석과 교회 재정 지원에 책임을 지고 참여해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003517",
+      "tsu_id": "TSU-0003517",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "If in either of these respects he fails, and refuses, he becomes a covenant-breaker, and is subject to the discipline of the body.",
+      "claim": "교회 구성원은 교회의 모임에 참석하고 교회를 재정적으로 지원할 의무가 있으며, 이를 거부하면 언약을 깨는 것이며 교회의 징계를 받게 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003518",
+      "tsu_id": "TSU-0003518",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "Note 18. — Persons excluded from the church may be again received to its fellowship on satisfactory evidence of fitness.",
+      "claim": "교회에서 배제된 사람들은 적절한 자격을 증명하면 다시 교회 공동체에 받아들여질 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003519",
+      "tsu_id": "TSU-0003519",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "This is called reception by restoration, and is usually so entered on the records, and in associational reports.",
+      "claim": "교회에서 배제된 사람들은 충분한 자격을 증명하면 교회 공동체에 다시 받아들여질 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003520",
+      "tsu_id": "TSU-0003520",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "Note 19. — It is neither a Christian nor an honorable course for a church to grant an unworthy member a valid letter, and send him to another church as one in good and regular standing, in order to be rid of a disturber of the peace, or to avoid the trouble of a course of discipline.",
+      "claim": "교회는 교회 안의 평화를 방해하는 사람이나 징계를 받을 사람을 다른 교회로 보내기 위해 그에게 유효한 증명서를 주어서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003521",
+      "tsu_id": "TSU-0003521",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Note 20. — No church is obliged to receive a person to membership, simply because he brings a valid letter from another church.",
+      "claim": "어떤 교회도 다른 교회에서 온 유효한 소개장을 가지고 있는 사람을 단순히 회원으로 받아야 하는 의무는 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003522",
+      "tsu_id": "TSU-0003522",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Each church is to be sole judge of the qualifications of persons to be received to its fellowship.",
+      "claim": "각 교회는 자신의 교제에 받아들여질 개인의 자격을 단독으로 판단해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003523",
+      "tsu_id": "TSU-0003523",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "Church members are supposed to be regenerate persons bearing the image and cherishing the spirit of Christ, in whom the peace of God rules, and who walk and work in u the unity of the Spirit, and the bond of peace.\" But unhappily, even the saints are sanctified only in part, and troubles sometimes arise among brethren.",
+      "claim": "교회 회원들은 그리스도의 형상을 가지고 그의 영을 소중히 여기며 하나님의 평화가 지배하고 성령의 단결과 평화의 결속 안에서 행하고 일하는 재생한 사람들이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003526",
+      "tsu_id": "TSU-0003526",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Church Discipline",
+      "original_text": "Corrective discipline seeks to heal offenses ; but it is better to prevent them, than to heal them.",
+      "claim": "교정적 교리는 범죄를 치료하려는 것이지만, 그것을 예방하는 것이 치료하는 것보다 낫다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

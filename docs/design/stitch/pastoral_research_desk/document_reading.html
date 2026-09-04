@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>내서재 - 자료 읽기</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#434848",
+                    "surface-bright": "#fbf9f4",
+                    "background": "#fbf9f4",
+                    "on-secondary-fixed": "#241a0d",
+                    "tertiary-fixed": "#c2e8fe",
+                    "outline": "#737878",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-dim": "#dbdad5",
+                    "outline-variant": "#c3c7c7",
+                    "inverse-surface": "#30312e",
+                    "on-surface": "#1b1c19",
+                    "on-primary-fixed-variant": "#414848",
+                    "inverse-primary": "#c1c8c7",
+                    "secondary": "#6a5c4c",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#00202d",
+                    "surface-container-high": "#eae8e3",
+                    "surface-container": "#f0eee9",
+                    "secondary-fixed-dim": "#d6c3b0",
+                    "on-background": "#1b1c19",
+                    "primary-fixed-dim": "#c1c8c7",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#a7cce1",
+                    "inverse-on-surface": "#f2f1ec",
+                    "primary-fixed": "#dde4e3",
+                    "primary": "#171e1e",
+                    "on-secondary-fixed-variant": "#514535",
+                    "surface-container-highest": "#e4e2dd",
+                    "surface": "#fbf9f4",
+                    "secondary-fixed": "#f3dfcb",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#6f6050",
+                    "surface-container-low": "#f5f3ee",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#001e2b",
+                    "tertiary-container": "#0c3647",
+                    "secondary-container": "#f0dcc8",
+                    "surface-tint": "#596060",
+                    "on-tertiary-fixed-variant": "#264b5d",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#949b9b",
+                    "surface-variant": "#e4e2dd",
+                    "on-tertiary-container": "#7b9fb3",
+                    "on-primary-fixed": "#161d1d",
+                    "primary-container": "#2c3333"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "sidebar-width": "280px",
+                    "reading-column": "720px",
+                    "container-max": "1280px",
+                    "gutter": "32px",
+                    "margin-page": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-reading-md": ["\"Source Serif 4\""],
+                    "display-lg": ["Hanken Grotesk"],
+                    "title-lg": ["Hanken Grotesk"],
+                    "caption": ["Hanken Grotesk"],
+                    "body-reading-lg": ["\"Source Serif 4\""],
+                    "label-ui": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-reading-md": ["17px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-reading-lg": ["19px", {"lineHeight": "32px", "fontWeight": "400"}],
+                    "label-ui": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .scholar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scholar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .scholar-scroll::-webkit-scrollbar-thumb {
+            background: #c3c7c7;
+            border-radius: 2px;
+        }
+        .active-nav-border {
+            position: relative;
+        }
+        .active-nav-border::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: currentColor;
+        }
+        .paper-sheet {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="bg-surface font-label-ui text-on-surface scholar-scroll">
+<!-- SideNavBar (Predicted Component Implementation) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-surface border-r border-outline-variant flex flex-col py-margin-page px-4 gap-4 z-50">
+<div class="mb-8 px-2">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">내서재</h1>
+<p class="font-title-lg text-sm text-outline opacity-70">NAE</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-ui text-label-ui">홈</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-ui text-label-ui">자료 찾기</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-primary font-bold border-r-2 border-primary bg-surface-container-low transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-label-ui text-label-ui">내 자료</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-label-ui text-label-ui">연구하기</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-ui text-label-ui">설교 준비</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-ui text-label-ui">도움말</span>
+</a>
+</nav>
+</aside>
+<!-- TopNavBar (Predicted Component Implementation) -->
+<header class="fixed top-0 right-0 left-sidebar-width bg-surface-bright border-b border-outline-variant flex justify-between items-center h-16 px-gutter z-40">
+<div class="flex items-center gap-6">
+<span class="font-title-lg text-title-lg font-semibold text-on-surface">내서재 (NAE)</span>
+<nav class="flex items-center gap-6 h-full">
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">열기</a>
+<a class="font-label-ui text-label-ui text-primary border-b-2 border-primary pb-1" href="#">읽기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">연구하기</a>
+<a class="font-label-ui text-label-ui text-on-surface-variant hover:text-primary transition-all" href="#">설교 준비</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption text-outline">자동 저장됨</span>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="open_in_new">open_in_new</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="history">history</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Research Canvas -->
+<main class="ml-sidebar-width mt-16 pb-24 flex justify-center">
+<!-- Content Column -->
+<article class="w-full max-w-reading-column px-gutter py-margin-page">
+<!-- Document Header -->
+<header class="mb-12">
+<div class="mb-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container font-label-ui text-xs rounded uppercase tracking-wider">Research Archive</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4 leading-tight">신학적 인간학 연구 (2024)</h1>
+<div class="flex items-center gap-4 text-outline font-label-ui">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="person">person</span> 내서재 연구위원회</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span> 2024년 3월 발행</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="local_library">local_library</span> 조직신학 총론 제4권</span>
+</div>
+<hr class="mt-8 border-outline-variant opacity-30"/>
+</header>
+<!-- Reading Body -->
+<section class="font-body-reading-lg text-body-reading-lg text-on-surface space-y-8 leading-relaxed">
+<p>
+                    현대 신학에서 인간학적 논의는 더 이상 형이상학적 전제에만 머무를 수 없다. 인공지능과 생명공학의 비약적인 발전은 '하나님의 형상(Imago Dei)'에 대한 고전적 정의에 새로운 질문을 던지고 있다. 본 연구는 21세기 기술 환경 속에서 인간의 고유성을 어떻게 정의할 것인가에 대한 신학적 응답이다.
+                </p>
+<div class="my-10 p-8 bg-surface-container-low border border-outline-variant rounded-lg italic text-secondary">
+                    "인간은 단순히 생물학적 존재나 정보의 집합체가 아니라, 하나님의 부르심에 응답하는 관계적 존재(Homo Respondens)로서 완성된다."
+                </div>
+<h2 class="font-headline-md text-headline-md text-primary mt-12 mb-4">1. 관계적 존재로서의 인간</h2>
+<p>
+                    신학적 인간학의 핵심은 인간이 스스로 존재하는 독립적인 자아가 아니라는 점에 있다. 칼 바르트(Karl Barth)는 인간을 '하나님과의 관계 속에서만 비로소 인간인 존재'로 정의하였다. 이는 실존주의적 고독과는 대조되는 개념으로, 타자와의 마주침을 통해 자아가 형성되는 과정을 포함한다.
+                </p>
+<div class="relative w-full aspect-video my-12 rounded-xl overflow-hidden paper-sheet border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A serene and scholarly atmosphere featuring an old wooden desk illuminated by soft, warm morning sunlight streaming through a tall library window. Dust motes dance in the light beams. The desk holds a heavy, open leather-bound book with ancient-looking typography, a classic fountain pen, and a small, minimalist candle. The surrounding walls are lined with floor-to-ceiling bookshelves filled with books in muted colors. The visual style is high-end, tactile, and peaceful, reflecting a deep theological study environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyvY4VlpPfr9GGBUdIfbRBv_X3G6ZQrxSG44aoq7EULS-JsNA3f1cNYcunINPDaJvCpR3OJdj7axMY_0ZOZdEH9FCGGQA78OTSOZDUsCu52XQbqX9BeBdqpXCSE5GburjWtIfASiDqRUTKsIPvlv5Ia5jGcHpdBhZCHH_y1F1BZ6O2EnrwrW_pzFiXY9m3My6vbM-6ClpNozis4PFgl7DqBAAQoT9_Zel0ouS7oHpLXxP9P4gxE4akbg"/>
+<div class="absolute bottom-4 right-4 bg-surface/90 backdrop-blur px-3 py-1 text-xs font-label-ui text-on-surface-variant border border-outline-variant rounded">
+                        도판 1: 중세 수도원의 서재와 침묵의 공간
+                    </div>
+</div>
+<p>
+                    이러한 관계성은 현대 뇌과학이 밝혀내고 있는 '공감'의 기제와도 흥미로운 접점을 가진다. 인간의 뇌는 타자의 고통을 자신의 것으로 인식하도록 설계되어 있으며, 이는 신학적으로는 '고통당하는 타자 속에서 그리스도를 발견하는' 윤리적 명령과 일치한다.
+                </p>
+<p>
+                    따라서 2024년의 신학적 인간학은 디지털 가상 현실 속에서의 존재론적 붕괴를 경계해야 한다. 육체성을 상실한 관계는 기독교가 고백하는 '육신의 부활'과 '성육신'의 신비와 대치될 위험이 있기 때문이다.
+                </p>
+</section>
+<!-- Citation Section -->
+<footer class="mt-20 pt-8 border-t border-outline-variant opacity-60">
+<h3 class="font-label-ui font-bold text-on-surface-variant mb-4">참고 문헌</h3>
+<ul class="font-caption text-caption space-y-2 list-disc pl-4 text-outline">
+<li>Barth, K. (1948). Church Dogmatics Vol. III/2: The Doctrine of Creation.</li>
+<li>Moltmann, J. (1985). God in Creation: A New Theology of Creation and the Spirit of God.</li>
+<li>Pannenberg, W. (1985). Anthropology in Theological Perspective.</li>
+</ul>
+</footer>
+</article>
+<!-- Contextual AI Sidebar (Floating Style) -->
+<div class="fixed right-8 top-32 w-80 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-lg z-30 transition-all duration-300 transform translate-x-0" id="ai-assistant">
+<div class="p-4 border-b border-outline-variant bg-tertiary-container text-on-tertiary-container rounded-t-xl flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="bolt">bolt</span>
+<span class="font-label-ui font-bold">내서재 AI 어시스턴트</span>
+</div>
+<button class="hover:bg-tertiary/20 rounded p-1" onclick="document.getElementById('ai-assistant').classList.toggle('translate-x-[calc(100%+32px)]')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<div class="p-4 scholar-scroll overflow-y-auto max-h-[614px] space-y-4">
+<div class="bg-surface-container-high p-3 rounded-lg">
+<p class="font-label-ui text-xs text-secondary mb-1">방금 읽은 부분 요약:</p>
+<p class="font-label-ui text-sm text-on-surface">인간은 신적 부르심에 응답하는 관계적 존재이며, 현대 기술 문명 속에서 '육체성'의 중요성을 재고해야 한다는 점을 강조하고 있습니다.</p>
+</div>
+<div class="space-y-3">
+<p class="font-label-ui text-xs text-outline px-1">내서재에게 물어보세요:</p>
+<button class="w-full text-left p-3 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors font-label-ui text-sm text-on-surface-variant">
+                        "Imago Dei의 역사적 변천사는?"
+                    </button>
+<button class="w-full text-left p-3 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors font-label-ui text-sm text-on-surface-variant">
+                        "칼 바르트의 인간학 핵심 요약"
+                    </button>
+<button class="w-full text-left p-3 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors font-label-ui text-sm text-on-surface-variant">
+                        "설교 예화 추천해줘"
+                    </button>
+</div>
+<div class="pt-2">
+<div class="relative">
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg py-3 px-4 pr-10 font-label-ui text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="질문을 입력하세요..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline cursor-pointer" data-icon="send">send</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Bar (Central Bottom) -->
+<div class="fixed bottom-12 left-1/2 -translate-x-1/2 ml-[140px] flex items-center gap-1 bg-primary text-on-primary px-2 py-2 rounded-full shadow-2xl z-50">
+<button class="flex items-center gap-2 px-4 py-2 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all duration-200">
+<span class="material-symbols-outlined text-lg" data-icon="science">science</span>
+<span class="font-label-ui text-sm font-medium">연구하기</span>
+</button>
+<div class="w-[1px] h-4 bg-on-primary/20 mx-1"></div>
+<button class="flex items-center gap-2 px-4 py-2 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all duration-200">
+<span class="material-symbols-outlined text-lg" data-icon="manage_search">manage_search</span>
+<span class="font-label-ui text-sm font-medium">관련 자료 찾기</span>
+</button>
+<div class="w-[1px] h-4 bg-on-primary/20 mx-1"></div>
+<button class="flex items-center gap-2 px-4 py-2 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all duration-200">
+<span class="material-symbols-outlined text-lg" data-icon="bookmark">bookmark</span>
+<span class="font-label-ui text-sm font-medium">저장</span>
+</button>
+<div class="w-[1px] h-4 bg-on-primary/20 mx-1"></div>
+<button class="flex items-center gap-2 px-4 py-2 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all duration-200">
+<span class="material-symbols-outlined text-lg" data-icon="menu_book">menu_book</span>
+<span class="font-label-ui text-sm font-medium">설교 준비</span>
+</button>
+<div class="w-[1px] h-4 bg-on-primary/20 mx-1"></div>
+<button class="p-2 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all duration-200" title="새 창으로 열기">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</div>
+<!-- Footer (Predicted Component Implementation) -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] bg-tertiary-container text-on-tertiary-container h-10 px-gutter flex items-center justify-between z-40 border-t border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-caption text-caption">현재 보고 있는 자료: 신학적 인간학 연구 (2024)</span>
+</div>
+<div class="flex items-center gap-6">
+<a class="font-label-ui text-label-ui font-bold text-tertiary-fixed hover:opacity-80 transition-all" href="#">내서재에게 물어보세요</a>
+<span class="font-caption text-caption opacity-60">© 2024 내서재 (NAE)</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the AI assistant visibility
+        window.addEventListener('scroll', () => {
+            const footer = document.querySelector('footer');
+            const aiBar = document.getElementById('ai-assistant');
+            const rect = footer.getBoundingClientRect();
+            
+            if (rect.top < window.innerHeight) {
+                aiBar.style.bottom = (window.innerHeight - rect.top + 32) + 'px';
+            } else {
+                aiBar.style.bottom = '32px';
+            }
+        });
+
+        // Hover effect for reading text
+        const content = document.querySelector('article section');
+        content.addEventListener('mouseup', function() {
+            let selection = window.getSelection().toString();
+            if (selection.length > 5) {
+                // Potential for popover "Explain this" or "Save clip"
+                console.log("Selected text for analysis: " + selection);
+            }
+        });
+    </script>
+</body></html>

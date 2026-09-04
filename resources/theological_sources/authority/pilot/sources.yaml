@@ -1,0 +1,35 @@
+# Pilot Authority Registry — Source Files
+# NAE-METADATA-PILOT-001. Pilot 검증용, 전체 Corpus 미적용.
+# Phase 2 Source Entity 정의(authors/works/editions.yaml과 별도 파일로 분리
+# — 파일 레벨 정보는 Edition/Work보다 변경 빈도가 높아 분리, §Registry Design
+# Review Phase 3 원칙과 동일한 이유).
+schema_version: "1.0-pilot"
+
+sources:
+  - source_id: BAP-CHURCH-DAGG-001
+    edition_id: WORK-DAGG-CHURCH-ORDER-001-1871
+    path: "NAE/corpus/raw/archive_org/church_order/Dagg_Church_Order/"
+    file_type: [pdf, txt, hocr]
+    archive_source: "archive.org (추정 — 명시적 archive.org 메타데이터 JSON 파일은 RAW 디렉토리에 없음, 원본 출처 URL 미확인)"
+    ocr_available: true
+    quality_status: WARNING
+    notes: >
+      hocr.html 존재(Audit-002 보고서는 "hOCR 미검출"로 기록했으나 실측
+      결과 존재함 — Issues Found에서 정정). ocr.txt 텍스트 인식 오류
+      다수 확인(예: "Tee ae H", "rk", "Fee Seay ee vd" 등 스캔 초반부
+      노이즈) — quality_status를 PASS가 아닌 WARNING으로 판정.
+      기존 CSV에 BAP-CHURCH-DAGG-002(Treatise on Church Discipline)가
+      "ACQUIRED_CONSOLIDATED_WITH_DAGG-001"로 표시되어 있음 — 동일
+      source_id 아래 통합된 것으로 보이나 원본 근거 파일은 RAW에서
+      1개(Dagg_Church_Order/)만 확인됨. 통합 경위는 미확인.
+
+  - source_id: BAP-CHURCH-HISCOX
+    edition_id: WORK-HISCOX-STANDARD-MANUAL-001-1890
+    path: "NAE/corpus/raw/archive_org/church_order/Hiscox_Standard_Manual/"
+    file_type: [pdf, txt, hocr]
+    archive_source: "archive.org (추정 — 명시적 archive.org 메타데이터 JSON 파일은 RAW 디렉토리에 없음, 원본 출처 URL 미확인)"
+    ocr_available: true
+    quality_status: PASS
+    notes: >
+      hocr.html 존재. ocr.txt 텍스트 인식 품질이 Dagg본보다 양호(제목
+      페이지/목차 정상 인식) — quality_status PASS.

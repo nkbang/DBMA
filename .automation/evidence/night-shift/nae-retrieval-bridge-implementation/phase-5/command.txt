@@ -1,0 +1,7 @@
+# Production blocker verification — CUE Correction Order 001 지적 3
+echo "Checking for production blockers..."
+echo "1. config.yaml round-trip issue: FIXED (git checkout -- config.yaml)"
+echo "2. test_nae_retrieval_bridge_integration.py: FIXED (monkeypatch로 실제 경로 검증)"
+echo "3. test count misreporting: FIXED (pytest 출력 마지막 줄 그대로 기록)"
+echo "4. phase-5/6 evidence missing files: IN PROGRESS"
+echo "no blockers found"

@@ -28,12 +28,44 @@ Usage:
 
 from __future__ import annotations
 
+import fcntl
 import json
 import os
 import datetime
+import unicodedata
+from contextlib import contextmanager
 from typing import Optional, Dict, Tuple, Literal
 from core.document_identity import PROCESSING_VERSION
 from core.document_context import set_pipeline_state
+
+
+@contextmanager
+def registry_lock(registry_path: str):
+    """Serialize registry read-modify-write across threads/processes.
+
+    core/processing.py's process_one_file() (foreground, per-file during
+    batch processing) and core/index_orchestrator.py's reconcile_pending()
+    (background daemon thread, core/background_index_builder.py) each
+    independently load_identity_registry() -> mutate -> save_identity_
+    registry() the same file with no coordination. A batch run of any real
+    size takes long enough for the 5-second background tick to fire mid-
+    batch: it can load a snapshot that predates the foreground's latest
+    addition, then save its own (older) snapshot back, silently discarding
+    that addition — no exception, no log line, since neither save call
+    itself fails (confirmed 2026-08-23: 49 freshly-chunked documents
+    vanished from the registry this way in one batch run). This advisory
+    OS file lock (flock on a sibling .lock file, not the registry file
+    itself, so save_identity_registry()'s atomic os.replace() is
+    undisturbed) makes each side's load+mutate+save critical section
+    mutually exclusive."""
+    lock_path = registry_path + ".lock"
+    os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
+    with open(lock_path, "w") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(f, fcntl.LOCK_UN)
 
 
 def load_identity_registry(registry_path: str) -> dict:
@@ -130,6 +162,7 @@ def register_document(
         "page": metadata.get("page"),
         "title": metadata.get("title"),
         "author": metadata.get("author"),
+        "doc_type": metadata.get("doc_type"),
         # [SPRINT21-B Phase1] additive — default PROCESSED for callers that
         # don't supply it (e.g. scripts not yet updated), matching the
         # migration default above.
@@ -181,9 +214,19 @@ def find_by_source_file(registry: dict, source_file: str) -> Optional[dict]:
     Returns the record if found, None otherwise. If more than one
     non-superseded record shares source_file (should not happen under
     normal operation), returns the first match.
+
+    [버그 수정 2026-08-23] NFC 정규화 후 비교 — 한글 파일명이 호출자마다
+    (파일시스템 rglob vs 등록 시점 추출 경로) 서로 다른 유니코드 정규화
+    형태(NFC/NFD)를 가질 수 있어, 정규화 없이 비교하면 이미 등록된
+    문서도 못 찾는다(2026-08-23 확정, ui/pages/dashboard.py의
+    _get_raw_processing_breakdown()과 동일 근본원인).
     """
+    target = unicodedata.normalize("NFC", source_file)
     for doc in registry["documents"].values():
-        if doc.get("source_file") == source_file and doc.get("superseded_by") is None:
+        if (
+            unicodedata.normalize("NFC", doc.get("source_file", "")) == target
+            and doc.get("superseded_by") is None
+        ):
             return doc
     return None
 
@@ -199,6 +242,42 @@ def mark_superseded(registry: dict, old_document_id: str, new_document_id: str) 
         old_record["superseded_by"] = new_document_id
     if new_record is not None:
         new_record["supersedes"] = old_document_id
+
+
+def exclude_document(registry: dict, document_id: str, reason: str = "") -> Optional[dict]:
+    """문서를 처리 대상에서 제외 처리한다(원본 RAW 파일은 건드리지 않음).
+
+    ingest_status를 "EXCLUDED"로 바꾸고 excluded_at/exclude_reason을 기록한다.
+    파생 데이터(TSU 레코드/chunk 파일) 정리는 별도로
+    core/index_orchestrator.py::exclude_document_from_index()가 담당한다 —
+    이 함수는 registry 상태 변경만 하고 파일시스템은 건드리지 않는다.
+
+    Returns the updated record, or None if document_id not in registry.
+    """
+    record = registry["documents"].get(document_id)
+    if record is None:
+        return None
+    record["ingest_status"] = "EXCLUDED"
+    record["excluded_at"] = datetime.datetime.now().isoformat(timespec="seconds")
+    record["exclude_reason"] = reason
+    return record
+
+
+def unexclude_document(registry: dict, document_id: str) -> Optional[dict]:
+    """exclude_document()를 되돌린다 — ingest_status를 PROCESSED로 복원.
+
+    파생 데이터(TSU/chunk 파일)는 exclude 시 이미 backups/로 이동됐으므로
+    복원하지 않는다 — 재검색되게 하려면 재처리(reindex_document())가 필요하다.
+
+    Returns the updated record, or None if document_id not in registry.
+    """
+    record = registry["documents"].get(document_id)
+    if record is None:
+        return None
+    record["ingest_status"] = "PROCESSED"
+    record["excluded_at"] = None
+    record["exclude_reason"] = None
+    return record
 
 
 def get_supersession_chain(registry: dict, document_id: str) -> list[dict]:
@@ -341,6 +420,7 @@ def classify_ingest_decision(
 
         B1  No match by doc_id or hash → PROCESS (new document)
         B2  Status = ABANDONED → SKIP (manual intervention required)
+        B2'  Status = EXCLUDED → SKIP (manual intervention required)
         B3  Status = FAILED, retries < max → RETRY
         B4  Status = FAILED, retries >= max → REPROCESS
         B5  last_content_hash == current_hash → SKIP (unchanged)
@@ -373,6 +453,12 @@ def classify_ingest_decision(
 
     # B2: Abandoned → skip (do not auto-retry forever)
     if status == "ABANDONED":
+        return ("SKIP", record)
+
+    # Excluded (user-flagged, exclude_document()) → skip until explicitly
+    # unexcluded, same manual-intervention precedent as ABANDONED — a
+    # content-hash change on an excluded file must not silently reprocess it.
+    if status == "EXCLUDED":
         return ("SKIP", record)
 
     # B3/B4: Failed status — check retry count

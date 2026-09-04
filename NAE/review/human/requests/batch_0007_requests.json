@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0007",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0001161",
+      "tsu_id": "TSU-0001161",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Nor was it his design to perfect the instituted churches, and present them to himself as a glorious family of churches.",
+      "claim": "그리스도의 설계는 교회를 완전하게 하거나 교회를 영광의 가족으로 자신에게献上하는 것이 아니었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001162",
+      "tsu_id": "TSU-0001162",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The object to be presented is a church.",
+      "claim": "하나님의 목적은 교회를 드러내는 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001163",
+      "tsu_id": "TSU-0001163",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The bride, the Lamb’s wife, is but one.",
+      "claim": "교회는 하나임",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001164",
+      "tsu_id": "TSU-0001164",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Eschatology",
+      "original_text": "The presentation of Christ’s bride to him is reserved for the future world, when the marriage supper of the Lamb will be celebrated.",
+      "claim": "그리스도의 신부는 미래 세계에서 어린 양의 결혼 잔치가 축하될 때 그에게 제시된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001165",
+      "tsu_id": "TSU-0001165",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But then, according to Mr. C.’s interpretation, Christ will have no bride; for local churches, as individuals and as a genus, will not then exist.",
+      "claim": "그리스도의 신부는 미래 세계에서 그리스도의 혼인 잔치가 열릴 때 그에게 제시될 것인데, 그때에 지역 교회들은 개인과 종류로서 존재하지 않을 것이라는 해석에 따르면 그리스도는 신부를 가지지 못할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001166",
+      "tsu_id": "TSU-0001166",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "« And fill up that which is behind of the afflictions of Christ in my flesh for his body’s sake, which is the church.” ?",
+      "claim": "그리스도의 고난을 내가 몸으로 채워야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001167",
+      "tsu_id": "TSU-0001167",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "church and the body of Christ are identical.",
+      "claim": "교회와 그리스도의 몸은 동일하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001168",
+      "tsu_id": "TSU-0001168",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "“ I will declare thy name unto my brethren, in the midst of the church will I sing praise unto thee.” !",
+      "claim": "그리스도는 교회 안에서 하나님의 이름을 선포하고 찬양할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001169",
+      "tsu_id": "TSU-0001169",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "“ But ye are come unto mount Sion, and unto the city of the living God, the heavenly Jerusalem, and to an innumerable company of angels, to the general assembly and church of the firstborn, which are written in heaven, and to God the Judge of all, and to the spirits of just men made perfect, and to Jesus the mediator of the new covenant.’’? í",
+      "claim": "성도들은 시온 산과 하늘의 예루살렘, 그리고 천사와 첫째 난 자들의 총회, 하나님과 의인들의 영들, 그리고 새 언약의 중보자이신 예수 그리스도께 나아간다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001170",
+      "tsu_id": "TSU-0001170",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The first of them contains two parallel clauses, in which “my brethren” and “the church” are corresponding phrases, and signify the same persons.",
+      "claim": "그리스도의 형제는 교회와 동일한 사람들을 의미한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001171",
+      "tsu_id": "TSU-0001171",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The brethren of Christ are the “many sons” whom he, as the captain of their salvation, is conducting to glory.",
+      "claim": "그리스도의 형제들은 그분이 그들의 구원의 대장으로 영광에 이끌어 가는 많은 아들们입니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001172",
+      "tsu_id": "TSU-0001172",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "He declares God’s name to the brethren, and in the midst of the church, the assembly of these brethren, he celebrates the praise of God.",
+      "claim": "그리스도는 형제들에게 하나님의 이름을 선포하며 교회 안에서 하나님을 찬양한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001173",
+      "tsu_id": "TSU-0001173",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "This is the church universal; for he says, concerning them, in presenting them to the Father, “ Behold, I and the children which God hath given me.” This cannot be consistently interpreted of a local church, either single or generic.",
+      "claim": "교회는 지역적인 것이 아니라 보편적이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001174",
+      "tsu_id": "TSU-0001174",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Eschatology",
+      "original_text": "The other text describes the same company, not on their way to glory, but already arrived in the heavenly city.",
+      "claim": "어느 한 텍스트는 영광으로 향하는 길에 있는 것이 아니라 이미 하늘의 도시에 도착한 같은 공동체를 묘사한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001175",
+      "tsu_id": "TSU-0001175",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "To them all, as the brethren of Christ, and sharers of the glory which the Father had given him, and joint heirs with him of the inheritance, belong all the dignity and rights of first-born sons.",
+      "claim": "그리스도의 형제들로서 아버지가 그에게 주신 영광을 공유하고 함께 유업의 공동 상속인으로서 첫째로 난 자들의 모든 위상과 권리가 속한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001176",
+      "tsu_id": "TSU-0001176",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Their names are enrolled as citizens of the New Jerusalem.",
+      "claim": "그들의 이름은 새 예루살렘의 시민으로 등재되어 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001177",
+      "tsu_id": "TSU-0001177",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Believers on earth are citizens of the same city: “ The Jerusalem which is above is free, which is the mother of us all.”’> Our citizenship is above.",
+      "claim": "믿는 자들은 하늘에 있는 예루살렘의 시민이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001178",
+      "tsu_id": "TSU-0001178",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "We are made “‘ fellow-citizens with the saints, and of the household of God.” Paul says, concerning the saints yet on earth: “ Ye are come to the church of the first-born.” All make one household, one church.",
+      "claim": "믿는 자들은 하나님의 성과 같은 곳의 시민이며, 성도들과 함께 하나님의 가정으로 구성된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001179",
+      "tsu_id": "TSU-0001179",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "side; but they constituted one nation, and they united as one, in their festal assemblies, in the earthly Jerusalem.",
+      "claim": "지상 예루살렘의 절기 모임에서 하나로 연합한 이스라엘 민족은 하나의 국가를 구성하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001180",
+      "tsu_id": "TSU-0001180",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "So death separates the saints below from the saints above ; but they are one—one company, one church; and the heavenly Jerusalem is the place of their joyful meeting in one glorious and happy assembly.",
+      "claim": "성도들은 죽음으로 인해 아래와 위에서 분리되지만 하나의 공동체와 교회로 단결하며, 하늘의 예루살렘에서 기쁨과 영광의 모임을 갖는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001181",
+      "tsu_id": "TSU-0001181",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "This is the church in which there will be glory to God by Jesus Christ, throughout all ages, world without end.",
+      "claim": "교회는 영광스러운 모임에서 하나님께 영광을 돌リ며, 예수 그리스도를 통해 모든 세대와 끝없는 세계에 걸쳐 그렇게 할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001182",
+      "tsu_id": "TSU-0001182",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The text last considered shows clearly the propriety of applying the term ecclesia to the entire body of the saints.",
+      "claim": "성도들의 전체 공동체에 'ecclesia'라는 용어를 적용하는 것이 적절하다는 것",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001183",
+      "tsu_id": "TSU-0001183",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Though they do not meet in one assembly on earth, they belong to the assembly above, and are on their way to join it.",
+      "claim": "성도들은 지상에서 하나의 회중으로 모이지는 않지만, 위에 있는 회중에 속하며 그곳에 합류하기 위해 가고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001184",
+      "tsu_id": "TSU-0001184",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "They have been called out of the world, with the heavenly calling which is the summons to meet in the assembly.",
+      "claim": "그리스도인들은 세상의 것에서 부름을 받아 천국에 있는 교회 모임에 참여하도록 소환된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001185",
+      "tsu_id": "TSU-0001185",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In obedience to this summons, they quit the world, count themselves no more of it, and are on their march. to the city of which they claim to be citizens, and to the company with which they are to be eternally united.",
+      "claim": "믿는 자들은 하나님의 부르심에 순종하여 세상을 떠나 하나님 나라의 시민으로서 영원한 연합을 향해 나아간다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001186",
+      "tsu_id": "TSU-0001186",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "As the church at Corinth were an ecclesia, considered as bound to assemble in one place, though not actually assembled; so believers in Christ, considered as bound for heaven and on their way thither, are one ecclesia with the saints who have already arrived at the place of final meeting.",
+      "claim": "그리스도인들은 천국을 향해 가는 과정에서 이미 도착한 성도들과 하나의 교회 공동체를 이루고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001187",
+      "tsu_id": "TSU-0001187",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Some have thought that the extended sense of the word is metaphorical; like body, flock, fold, house, temple, applied to the same subject.",
+      "claim": "어떤 사람들은 확장된 의미의 단어가 은유적이라고 생각한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001188",
+      "tsu_id": "TSU-0001188",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "They suppose it to mean the whole body of Christ’s disciples, not literally assembled, but bearing a relation to each other, similar to that which the members of a local church bear to each other.",
+      "claim": "그리스도의 모든 제자들의 전체를 의미하며, 이는 지역 교회 내의 구성원들이 서로 맺고 있는 관계와 유사한 관계를 말한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001189",
+      "tsu_id": "TSU-0001189",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Scripture / Authority",
+      "original_text": "But, on the general principle of interpretation, the literal meaning is to be preferred whenever the subject admits it.",
+      "claim": "해석의 일반 원칙에 따라 주제가 허용하는 경우에는 문자적인 의미를 선호해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001190",
+      "tsu_id": "TSU-0001190",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The other terms cannot be taken literally; but a literal assembly of Christ’s disciples is not only possible, but is expected by all of them, and is in part the hope of their calling.",
+      "claim": "그리스도의 제자들의 문자적인 모임은 가능하며, 모든 사람들이 기대하고 있으며, 그들의 소명의 희망의 일부이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001191",
+      "tsu_id": "TSU-0001191",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Besides, if we have not mistaken the sense of the passage last considered, this literal assembly is presented to view in it, and the relation which the saints on earth bear to the church above.",
+      "claim": "성도들의 실제 모임은 성경에서 예상되며, 이 지상에서의 교회와 하늘上的 교회 사이의 관계가 설명된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001192",
+      "tsu_id": "TSU-0001192",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "To this may be added, that the term church is used as explanatory of the metaphorical phrase the body of Christ, a use to which it would be less adapted if the terms are alike figurative.",
+      "claim": "교회라는 용어는 그리스도의 몸이라는 비유적 표현을 설명하는 데 사용되며, 두 용어가 같은 비유적 의미를 가질 경우에는 덜 적합한 용법이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001193",
+      "tsu_id": "TSU-0001193",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "of applying the term to denote the universal church, is wholly distinct from the question whether a universal church exists.",
+      "claim": "보편적인 교회를 나타내는 용어의 적용은 보편적인 교회가 존재하는지 여부와는 별개이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001194",
+      "tsu_id": "TSU-0001194",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The first question may remain undecided, without affecting in the least the doctrine concerning the existence and nature of the universal] church.",
+      "claim": "보편적인 교회의 존재와 본질에 대한 교리는 보편적인 교회라는 용어가 적용되는 문제와 별개로 결정될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001195",
+      "tsu_id": "TSU-0001195",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In the first use of the term ecclesia that occurs in the New Testament,! it denotes the church universal.",
+      "claim": "신약성경에서 'ecclesia'라는 용어가 처음 사용될 때에는 보편적인 교회를 의미한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001196",
+      "tsu_id": "TSU-0001196",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "No Jocal church at that time existed; and it is, therefore, improbable that the application of the term to the universal church, should be a metaphor derived from its local signification.",
+      "claim": "초기 기독교 교회에서 'ecclesia'라는 용어가 지역교회를 의미하기 전에 보편적인 교회를 나타내는 것으로 사용되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001197",
+      "tsu_id": "TSU-0001197",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "When the first church at Jerusalem was formed, it included, for a considerable time, all the disciples of Christ, and was the universal church, as far as it was practicable for that body to be assembled on earth.",
+      "claim": "초기 예루살렘 교회는 모든 그리스도인의 제자들을 포함하여 지구상에서 모일 수 있는 범위 내에서 보편적인 교회였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001198",
+      "tsu_id": "TSU-0001198",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The distinction of local churches never existed until the church at Jerusalem was scattered: it is, therefore, improbable that the name of the universal body was derived from that of the particular associations subsequently formed.",
+      "claim": "지방 교회라는 개념은 예루살렘의 첫 교회가 흩어질 때까지 존재하지 않았으며, 따라서 보편적인 교회의 이름이 이후에 형성된 특정한 교회 단체에서 유래했다는 것은 мал가능하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001199",
+      "tsu_id": "TSU-0001199",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Even the term, as contained in Christ’s directions,” was first applicable to the one church at Jerusalem, and was not applicable to the separate local churches until the first church had become dispersed.",
+      "claim": "교회 이름이 지역 교회에서 유니버설한 교회로 파생된 것은 불가능하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001200",
+      "tsu_id": "TSU-0001200",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The most remarkable use of ecclesia as a classical word, is its application to the democratic assemblies of the Grecian cities.",
+      "claim": "그리스도교회의 어원은 고대 그리스 도시들의 민주적 집회에서 유래되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001201",
+      "tsu_id": "TSU-0001201",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is not to be supposed that the name given to those assemblies, implied in itself the powers of the assemblies or the qualifications to membership in them.",
+      "claim": "그리스도인 회중의 이름은 그 자체로 회중의 권한이나 회원 자격을 함축하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001202",
+      "tsu_id": "TSU-0001202",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "It would be useless, therefore, to look to the mere word for information respecting the qualifications of church members, or the nature and design of ecclesiastical organizations.",
+      "claim": "교회 구성원의 자격이나 교회 조직의 본질과 목적에 대한 정보를 얻기 위해서는 단순히 '교회'라는 용어만으로는 충분하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001203",
+      "tsu_id": "TSU-0001203",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "It denoted, in the political use of it, the assembly of all those who had the full rights of citizenship; and the place of assembling was in the city to which they belonged, These particulars agree well with the application of the term to the church universal, which includes all the citizens of the heavenly Jerusalem, whose place of meeting is in the glorious city.",
+      "claim": "교회라는 용어는 정치적인 의미에서 시민권을 가진 모든 사람들의 집회를 나타내며, 이는 천국 예루살렘의 시민들인 교회에 적용될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001204",
+      "tsu_id": "TSU-0001204",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In the Septuagint, the word is applied to the body called in the Hebrew Scriptures the Congregation of the Lord.",
+      "claim": "세프투아긴트에서 이 단어는 히브리어 성경에서 주님의 집회로 불리는 신체에 적용된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001205",
+      "tsu_id": "TSU-0001205",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "This use of it corresponds better with the Christian use in application to. the universal church, than to local churches.",
+      "claim": "그리스도인의 보편적 교회에 대한 적용에서, Septuagint의 용례는 지역교회보다는 보편교회에 더 잘 부합한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001206",
+      "tsu_id": "TSU-0001206",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "was the assembly of all in the whole nation, who could lawfully unite in the worship of Jehovah according to the forms prescribed in the ceremonial law.",
+      "claim": "전국에서 유행하는 예배의 형식에 따라 여호와를 경배하기 위해 합법적으로 모인 모든 사람들의 집회이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001207",
+      "tsu_id": "TSU-0001207",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The place of this general meeting was in the city Jerusalem.",
+      "claim": "공동 예배의 장소는 예루살렘 시였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001208",
+      "tsu_id": "TSU-0001208",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In this city the first Christian ecclesia assembled.",
+      "claim": "첫 번째 기독교 교회가 예루살렘에서 모였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001209",
+      "tsu_id": "TSU-0001209",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "It consisted of Jews, who were attached to their holy city, their temple, and the forms of worship to which they had been accustomed.",
+      "claim": "첫 번째 기독교 교회는 유대인들로 구성되어 있었으며, 그들은 성도와 성전 및 익숙한 예배 형식에 매여 있었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001210",
+      "tsu_id": "TSU-0001210",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "At first they had no conception that gentiles were to be admitted to equal privileges in the Christian dispensation ; and they probably expected that Jerusalem was to be the great centre of Christian worship, as it had been for the people of Israel ; but persecution soon taught them their mistake.",
+      "claim": "초기 기독교인들은 처음에 이방人が 기독교 계시에 동등한 특권을 가질 것이라는 개념이 없었고, 예루살렘이 여전히 기독교 예배의 중심지가 될 것으로 생각했지만, 곧 박해로 인해 그들의 오류를 깨달았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001211",
+      "tsu_id": "TSU-0001211",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Eschatology",
+      "original_text": "Driven from the city of their affections, and scattered abroad through the earth, they learned to look to another city in which they were to unite in the worship of God, beyond the reach of persecution.",
+      "claim": "기독교인들은 박해를 통해 지상에 있는 예루살렘보다는 하늘에 있는 도시에서 하나님을 예배하는 것을 배우게 되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001212",
+      "tsu_id": "TSU-0001212",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Eschatology",
+      "original_text": "They regarded themselves as strangers and pilgrims in the earth, trayelling to the city prepared for them by God.",
+      "claim": "그들은 자신들을 이 땅에서 나그네와 행인으로 여겼으며, 하나님이 준비하신 도시로 여행한다고 생각했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001213",
+      "tsu_id": "TSU-0001213",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "As the Israelites, members of the Congregation of the Lord, had been accustomed to travel from all parts of the land which they inhabited, to appear before the Lord in Jerusalem, and to keep their sacred feasts in his presence; so the spiritual Israel are on their pilgrimage to the heavenly Jerusalem, to unite in the great congregation, and enjoy the bliss which God has prepared for them.",
+      "claim": "영적 이스라엘은 천국 예루살렘으로의 순례를 통해 하나님께서 준비하신 축복을享受하기 위해 큰 회중에서 합류한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001214",
+      "tsu_id": "TSU-0001214",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The pious Hebrews, when journeying to their holy city, longed to appear before God in the great congregation; and often directed their prayers towards his holy temple.",
+      "claim": "경건한 히브리인들은 성도들의 모임에서 하나님 앞에 나타나기를 원했고, 종종 그들의 기도를 그의 성전으로 향하게 했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001215",
+      "tsu_id": "TSU-0001215",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In this distant worship, little companies of them would naturally unite in the exercise of like affections, and for mutual encouragement and benefit.",
+      "claim": "유대인들이 성전에서 하나님께 예배하는 동안에 작은 단체로 모여서 같은 감정과 서로의 격려를 위해 활동했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001216",
+      "tsu_id": "TSU-0001216",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "So the Christian pilgrims to the heavenly Jerusalem unite in temporary associations, for the worship of God and their spiritual good.",
+      "claim": "그리스도인 순례자들은 하나님께 예배를 드리고 영적 유익을 위해暂時적인 집회에 참여한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001217",
+      "tsu_id": "TSU-0001217",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Such are the local churches in which they unite on earth.",
+      "claim": "지상에서 기독교 순례자들이 하나님께 예배하고 영적益을 위해 일시적으로 연합하는 곳은 지역교회이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001218",
+      "tsu_id": "TSU-0001218",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Although the term church occurs much more frequently in the New Testament in its application to local churches, than to the church universal; yet it is apparent on the face of the sacred pages, that membership in this was far more important than in those.",
+      "claim": "지구上的 지역 교회에서의 회원資格보다 보편적인 교회의 회원資格이 훨씬 더 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001219",
+      "tsu_id": "TSU-0001219",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Little is anywhere said of membership in a local church; but the common recognition of Christians is as members of the church universal, the great brotherhood: “Of this way,’’?",
+      "claim": "지방 교회보다 보편적인 교회의 회원資格이 더 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001220",
+      "tsu_id": "TSU-0001220",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Thus far we have had no occasion for the distinction which theologians have made between the church visible and the church invisible.",
+      "claim": "신학자들은 가시적 교회와 무형의 교회 사이에 구별을 두었지만, 지금까지는 이러한 구별이 필요하지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001221",
+      "tsu_id": "TSU-0001221",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "We have supposed all who profess Christ to be true believers.",
+      "claim": "우리는 모든 그리스도인으로 고백하는 사람들을 진정한 신자라고 가정했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001222",
+      "tsu_id": "TSU-0001222",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In apostolic times, the exceptions were comparatively few ; and, moreover, in those days, true believers did not delay to receive baptism, the appointed ordinance of profession.",
+      "claim": "초기 기독교 교회에서 참 신자들은 세례를 받는 것을 지연하지 않았으며, 사도 시대에는 거짓 신자들이 비교적 적었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001223",
+      "tsu_id": "TSU-0001223",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In this state of things, there was no practical necessity for the distinction referred to; and the apostle addressed the professors of religion who composed the churches, as true saints, members of the universal ecclesia, citizens of the heavenly Jerusalem, heirs of the incorruptible inheritance.",
+      "claim": "초기 기독교 교회에서는 신자와 비신자를 구별할 필요가 없었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001224",
+      "tsu_id": "TSU-0001224",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In this state of things which we have contemplated, the church universal includes all the local churches; but yet it does not include them as organizations.",
+      "claim": "보편교회는 모든 지역교회를 포함하지만, 그것들을 조직으로서 포함하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001225",
+      "tsu_id": "TSU-0001225",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "We have before noticed, that the members of the universal church are individual Christians, and not local churches.",
+      "claim": "보편교회는 개별 기독교인들로 구성되어 있으며, 지역 교회 자체가 아니라 그 구성원들을 포함한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001226",
+      "tsu_id": "TSU-0001226",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Moreover, all the local churches taken together do not make up the church universal; for it includes the saints in heaven as well as those on earth.",
+      "claim": "지구上的 모든 지역교회를 합쳐도 보편적인 교회는 구성되지 않는다. 왜냐하면 그것은 지상에 있는 성도뿐만 아니라 하늘에 있는 성도들도 포함하기 때문이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001227",
+      "tsu_id": "TSU-0001227",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Besides, there may be saints on earth, as the Ethiopian eunuch, who belong to the family of saints, and have not yet been received into any local church.",
+      "claim": "지구上的 성도 중에는 아직 어떤 지역 교회에도 받아들여지지 않은 경우가 있을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001228",
+      "tsu_id": "TSU-0001228",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "THE MEMBERS OF THE UNIVERSAL CHURCH ARE KNOWN BY THEIR PROFESSION OF CHRIST AND THEIR OBEDIENCE TO HIS COMMANDS.",
+      "claim": "보편적인 교회의 구성원은 그리스도를 고백하고 그의 계명에 순종하는 것으로 알려진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001229",
+      "tsu_id": "TSU-0001229",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The religion of Christ was not designed for concealment.",
+      "claim": "그리스도의 종교는 숨김으로 설계되지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001230",
+      "tsu_id": "TSU-0001230",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "From its very nature, it cannot be hid.",
+      "claim": "그리스도교는 본질적으로 숨길 수 없는 종교이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001231",
+      "tsu_id": "TSU-0001231",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Sanctification",
+      "original_text": "It inclines every one who possesses it, to do good to all mankind, and to make known the gospel by which all mankind are to be blessed.",
+      "claim": "그리스도인의 은혜는 모든 사람에게 선을 행하고 복음을 전파하도록 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001232",
+      "tsu_id": "TSU-0001232",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "At every point of contact with human society, Christian benevolence will exhibit itself.",
+      "claim": "기독교적 인도주의는 인간 사회와의 모든 접촉 지점에서 나타날 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001233",
+      "tsu_id": "TSU-0001233",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Christ’s followers are described as lights in the world.!",
+      "claim": "그리스도의 추종자들은 세상의 빛으로 묘사된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001234",
+      "tsu_id": "TSU-0001234",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "They are a candle which is lighted, not to be put under a bushel, but that it may give light to all who are in the house.?",
+      "claim": "그리스도의 추종자들은 세상을 비추는 빛으로서 그들의 삶이 모든 사람에게 드러나게 해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001235",
+      "tsu_id": "TSU-0001235",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "They are a city ona hill, which cannot be hid.",
+      "claim": "그리스도인들은 빛을 발하는 도시와 같은 존재로 숨길 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001236",
+      "tsu_id": "TSU-0001236",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "They are commanded, ‘ Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.”* Their obedience to this command has distinguished them in all ages, and made them visible to the world.",
+      "claim": "그리스도인들은 세상에서 빛을 발하여 하나님께 영광을 돌リ도록 명령받았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001237",
+      "tsu_id": "TSU-0001237",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Confession",
+      "original_text": "The disciples of Christ are bound to profess their attachment to him before the world.",
+      "claim": "그리스도님의 제자는 세상 앞에서 그에게 대한 헌신을 고백해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001238",
+      "tsu_id": "TSU-0001238",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Confession",
+      "original_text": "This obligation is taught in such passages as the following: “If thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thine heart that God hath raised him from the dead, thou shalt be saved.” 5 “ Whosoever shall confess me before men, him will I confess also before my Father which is in heaven.” ê",
+      "claim": "그리스도인의 제자는 세상 앞에서 그리스도에 대한 헌신을 고백해야 할 의무가 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001239",
+      "tsu_id": "TSU-0001239",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "But something more than mere profession is necessary to distinguish the true followers of Christ.",
+      "claim": "그리스도의 진정한 추종자를 구별하기 위해서는 단순한 신앙 고백 이상의 것이 필요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001240",
+      "tsu_id": "TSU-0001240",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Sanctification",
+      "original_text": "Many say Lord, Lord, who do not the things which he has commanded.",
+      "claim": "주님을 진정으로 따르는 것은 단순한 신앙 고백 이상의 것을 필요로 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001241",
+      "tsu_id": "TSU-0001241",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Sanctification",
+      "original_text": "To such persons, however loudly they may profess his name, he will say, “ Depart from me, ye that work iniquity.”” He recognises those only as his followers who are obedient to his precepts; and he has taught us to recognise them in the same manner: “ By their fruits ye shall know them.’ “Ye are my friends, if ye do whatsoever I command you.”® A life of holy obedience to Christ is readily distinguishable from the common course of this world; and where it is exhibited, men cannot fail to see it.",
+      "claim": "그리스도께서는 오직 그의 계명을 순종하는 자만을 자신의 추종자로 인정하신다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001242",
+      "tsu_id": "TSU-0001242",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The visibility of the church consists in the visibility of its members.",
+      "claim": "교회가 보이는 것은 그 구성원들이 보이는 것에 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001243",
+      "tsu_id": "TSU-0001243",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Our Divine Master came, “a light into the world;” and all his followers are lights; some of them burning and shining lights, and others stars of less magnitude.",
+      "claim": "교회는 그 구성원들의 빛을 통해 드러난다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001244",
+      "tsu_id": "TSU-0001244",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But, as the constellations of heaven have no other light to render them visible than that which the several stars emit, so it is with the church.",
+      "claim": "교회는 구성원들의 빛으로 인해 비추어지며, 그들의 광채에 따라 가시성이 결정된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001245",
+      "tsu_id": "TSU-0001245",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "All its light is the light of its members, and all its visibility depends on their lustre.",
+      "claim": "교회는 그 구성원들의 빛으로만 비추어지며, 그들의 영적 광채에 따라서만 보인다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001246",
+      "tsu_id": "TSU-0001246",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Writers on theology have distinguished between the church visible, and the church invisible ; but a church in this world to be",
+      "claim": "신학을 다루는 작가들은 가시적인 교회와 보이지 않는 교회를 구별해왔다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001247",
+      "tsu_id": "TSU-0001247",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "invisible must consist, not of children of light, but of those whose light is darkness.",
+      "claim": "어두움의 자녀들만이 보이지 않는 교회를 구성한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001248",
+      "tsu_id": "TSU-0001248",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Were we to use these designations according to their proper import, we might call the saints in heaven the invisible church, because they are removed beyond the reach of human sight; and the saints on earth, the visible church, because they still remain on earth to enlighten this dark world.",
+      "claim": "VISIBLE와 INVISIBLE 교회는 각각 지상과 천上的 성도들을 나타내며, 이들은 하나의 공동체를 이루는 교회이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001249",
+      "tsu_id": "TSU-0001249",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But the saints above and the saints below, make only one communion, one church; and theologians, when they mean to distinguish these two parts of the one whole from each other, are accustomed to call them the church militant and the church triumphant.",
+      "claim": "성도들은 지상과 하늘에서 하나의 교회를 이루며, 신학자들은 이를 군사교회와 승리교회로 구분한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001250",
+      "tsu_id": "TSU-0001250",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "By the church invisible, they mean all true Christians; and by the church visible, all those who profess the true religion.",
+      "claim": "교회는 보이는 교회와 보이지 않는 교회로 구분할 수 있으며, 보이지 않는 교회는 모든 참된 기독교인으로 구성되고, 보이는 교회는 진정한 종교를 고백하는 모든 사람을 포함한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001251",
+      "tsu_id": "TSU-0001251",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The invisible consists wholly of those who are sons of light; and the visible includes sons of light and sons of darkness in one community.",
+      "claim": "교회는 보이는 교회와 보이지 않는 교회로 나뉘며, 보이지 않는 교회는 오직 빛의 아들들만으로 구성되고, 보이는 교회는 빛의 아들들과 어둠의 아들들이 함께 있는 공동체이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001252",
+      "tsu_id": "TSU-0001252",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "We have seen that Christ does not recognise mere professors as his disciples, and that he has taught us not so to recognise them.",
+      "claim": "그리스도는 단순한 신자로 속하는 사람들을 그의 제자로 인정하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001253",
+      "tsu_id": "TSU-0001253",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "A universal church, therefore, which consists of all who profess the true religion, is a body which Christ does not own.",
+      "claim": "그리스도는 모든 사람들이 참된 종교를 신앙한다고 고백하는 것을 기준으로 한 보편적인 교회를 인정하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001254",
+      "tsu_id": "TSU-0001254",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "To be visible saints, a holy life must be superadded to a profession of the true religion; and they who do not exhibit the light of a holy life, whatever their professions may be, have no scriptural claim to be considered members of Christ’s church.",
+      "claim": "-visible한 성도들은 진정한 종교를 고백하는 것에 거듭 거룩한 삶을 살아야 하며, 그들의 고백과 상관없이 거룩한 삶의 빛을 나타내지 않는 사람들은 성경적으로는 그리스도의 교회 회원으로 간주될 자격이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001255",
+      "tsu_id": "TSU-0001255",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Membership in a local church, is not always coincident with membership in the church universal.",
+      "claim": "지방 교회에 속한 것은 항상 보편적인 교회에 속한 것과 일치하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001256",
+      "tsu_id": "TSU-0001256",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "This appears on the one hand, in the fact that the pure light of a holy life may sometimes be so successfully counterfeited, as to deceive mankind.",
+      "claim": "성도들의 삶의 순수함을 위조하여 사람들을 속일 수 있다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001257",
+      "tsu_id": "TSU-0001257",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "Paul has taught us, that Satan may transform himself into an angel of light ; and that it is no marvel, if his ministers do the same.!",
+      "claim": "사탄은 빛의 천사로 변장할 수 있고, 그의 사자들도 같은 일을 할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001258",
+      "tsu_id": "TSU-0001258",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "John says, “ They went out, that they might be made manifest that they were not all of us;’’* and we hence infer, that they were not manifest before.",
+      "claim": "요한은 그들이 우리 중에서 분리되어 나타나기 위해 나간다고 말하며, 이는 이전에 그들이 그렇지 않은 것처럼 보였다는 것을 의미한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001259",
+      "tsu_id": "TSU-0001259",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But this passage teaches us, that their profession of religion, and their successful imitation of the Christian life, were not enough.",
+      "claim": "그들의 종교에 대한 신앙 고백과 그리스도인 삶의 성공적인 모방만으로는 충분하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001260",
+      "tsu_id": "TSU-0001260",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "It was still true, “ they were not of us.” Simon, the sorcerer, was thought for a time to be a convert; but when his true character was disclosed, Peter decided, ‘Thou hast neither part nor lot in this matter, for thy heart is not right in the sight of God.”* If mere profession rendered him a member of the uni-",
+      "claim": "외적인 종교적 행위나 성공적인 기독교 생활 모방만으로는 충분하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

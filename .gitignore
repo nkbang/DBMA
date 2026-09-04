@@ -1,6 +1,9 @@
 # Data directories (runtime/generated)
 data/
-storage/
+# root-anchored: the runtime data dir is ./storage/, but a bare "storage/"
+# also swallowed the source package scripts/crosswalk/storage/ (same
+# overmatch class as the reports/ -> /reports/ fix in 14ed5ed).
+/storage/
 rag_index/
 
 # Python cache
@@ -29,6 +32,10 @@ ENV/
 .venv_311/
 .venv311/
 .tsu_venv/
+.venv_beta/
+
+# Mac package build output (scripts/build_mac_package.sh)
+dist/
 
 # Backup directory (legacy launchers)
 archive/
@@ -85,3 +92,53 @@ output_sav/
 # Backup snapshots
 *.bak_*
 dbma_env/
+
+# Secrets
+.webui_secret_key
+
+# NAE raw/canonical source corpus (large acquired source material,
+# not meant to be version-controlled — see docs/NAE_SOURCE_PIPELINE.md)
+NAE/corpus/raw/
+NAE/corpus/canonical/
+
+# NAE one-off acquisition working artifacts (logs/intermediate jsonl)
+scripts/_bulk_download_early_baptist.log
+scripts/_bulk_download_early_baptist.done
+scripts/_classify_early_baptist.log
+scripts/_classify_early_baptist_meta.jsonl
+
+# Scratch/working tmp directory
+tmp/
+
+# NAE Live Dashboard frontend (Node build artifacts — regenerate with
+# `npm install && npm run build` in .automation/night-shift/dashboard/frontend/)
+node_modules/
+.automation/night-shift/dashboard/logs/
+
+# Local agent/IDE tool configs — not DBMA project source (per-machine,
+# per-tool skill/rule installs: Claude Code, Continue, Cursor, Roo, etc.)
+.agents/
+.claude/
+.continue/
+.cursor/
+.roo/
+.idea/
+
+# docker-compose ad-hoc backups (n8n/file-access config edits, 2026-08-13) —
+# not version-controlled, just save with a new name if you need to keep one
+docker-compose.yml.bak*
+docker-compose.yml.backup-*
+
+# Runtime logs
+beta_app.log
+*.log
+
+# Local Qdrant runtime DB (legacy path, ADR-003 — not the production store)
+qdrant_db/
+
+# TSU Extraction Queue Worker runtime state (mutates on every run, not
+# source — see NAE/pipeline/tsu/worker/config.py DEFAULT_STATE_PATH /
+# DEFAULT_EXCEPTION_QUEUE_PATH)
+NAE/corpus/tsu/worker_state*.json
+NAE/corpus/tsu/worker_exception_queue.json
+.env

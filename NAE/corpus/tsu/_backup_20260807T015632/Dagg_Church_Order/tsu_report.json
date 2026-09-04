@@ -1,0 +1,14 @@
+{
+  "identifier": "Dagg_Church_Order",
+  "builder_version": "3.0.0",
+  "generated_at": "2026-08-07T06:43:02.486812+00:00",
+  "model": "my-theology-bot-v2:latest",
+  "candidates_evaluated": 1,
+  "claims_extracted": 1,
+  "llm_errors": 0,
+  "doctrine_breakdown": {
+    "Ecclesiology": 1
+  },
+  "elapsed_seconds": 20.28,
+  "note": "confidence is model self-reported and uncalibrated; review_status=unverified until a human/benchmark pass validates it"
+}

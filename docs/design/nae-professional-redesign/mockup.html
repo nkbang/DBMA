@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>내서재 — Professional Redesign (DBMA-UX-006)</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#F7F5F0; --card:#FFFFFF; --card-tint:#F1EFE8;
+    --ink:#1F2421; --ink-soft:#5B6560; --ink-faint:#8B9490;
+    --line:#E3DFD6;
+    --accent:#2F5D50; --accent-soft:#E1EAE5;
+    --cite:#A8763E; --cite-soft:#F3E8D8;
+    --success:#3F7D5C; --warning:#B8863B; --error:#A64B3F;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;font-size:14px;line-height:1.6;}
+  .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+  .sidebar{border-right:1px solid var(--line);padding:28px 16px;display:flex;flex-direction:column;gap:8px;}
+  .wordmark{font-size:19px;font-weight:700;letter-spacing:-0.01em;padding:0 8px 24px;}
+  .wordmark span{font-weight:500;color:var(--ink-faint);}
+  .nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:6px;color:var(--ink-soft);text-decoration:none;font-size:13.5px;}
+  .nav a:hover{background:var(--card-tint);}
+  .nav a.active{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  .nav .icon{width:18px;text-align:center;font-size:14px;}
+  .sidebar-foot{margin-top:auto;padding:12px 10px 0;border-top:1px solid var(--line);font-size:11px;color:var(--ink-faint);}
+
+  main{padding:0;}
+  .topbar{display:flex;gap:6px;padding:12px 32px;border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:10;}
+  .topbar button{all:unset;padding:6px 14px;border-radius:16px;font-size:12.5px;color:var(--ink-soft);cursor:pointer;}
+  .topbar button[aria-selected="true"]{background:var(--ink);color:#fff;}
+
+  .screen{display:none;padding:40px 48px 80px;max-width:980px;margin:0 auto;}
+  .screen[data-active="true"]{display:block;}
+
+  h1{font-size:26px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;text-wrap:balance;}
+  .lede{color:var(--ink-soft);margin:0 0 32px;font-size:14.5px;}
+  h2.section{font-size:13px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+
+  .btn{all:unset;display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:6px;font-size:13.5px;font-weight:600;cursor:pointer;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-ghost{background:var(--card);border:1px solid var(--line);color:var(--ink);}
+  .btn-sm{padding:6px 12px;font-size:12.5px;font-weight:500;}
+
+  /* ---- 홈 ---- */
+  .continue-card{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin-bottom:28px;}
+  .continue-card .kicker{font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;}
+  .continue-card .title{font-family:"Source Serif 4",serif;font-size:19px;margin-bottom:4px;}
+  .continue-card .meta{font-size:12.5px;color:var(--ink-soft);}
+  .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px;}
+  .home-item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+  .home-item .label{font-size:12px;color:var(--ink-faint);margin-bottom:4px;}
+  .home-item .val{font-family:"Source Serif 4",serif;font-size:15px;}
+  .quiet-stat{font-size:11.5px;color:var(--ink-faint);margin-top:36px;padding-top:14px;border-top:1px solid var(--line);}
+
+  /* ---- 검색 결과 카드 ---- */
+  .search-bar{display:flex;gap:10px;padding:14px 18px;background:var(--card);border:1px solid var(--line);border-radius:24px;margin-bottom:24px;}
+  .search-bar input{flex:1;border:none;background:transparent;font-size:14.5px;font-family:"Source Serif 4",serif;font-style:italic;color:var(--ink);}
+  .result{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:12px;}
+  .result-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .result-title{font-family:"Source Serif 4",serif;font-size:16px;color:var(--ink);}
+  .stars{color:var(--cite);font-size:12px;letter-spacing:1px;}
+  .result-snippet{font-family:"Source Serif 4",serif;font-style:italic;color:var(--ink-soft);font-size:13.5px;line-height:1.65;margin-bottom:10px;}
+  .result-src{font-size:11.5px;color:var(--ink-faint);margin-bottom:10px;}
+  .action-row{display:flex;gap:8px;}
+  .insight{background:var(--accent-soft);border-radius:var(--radius);padding:18px 20px;margin-top:20px;}
+  .insight .h{font-weight:700;color:var(--accent);margin-bottom:8px;font-size:13.5px;}
+
+  /* ---- 읽기 ---- */
+  .reader-head{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:28px;}
+  .reader-head .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--cite);font-weight:700;margin-bottom:6px;}
+  .reader-actions{display:flex;gap:8px;margin-top:14px;}
+  .reader-body{font-family:"Source Serif 4",serif;font-size:17px;line-height:1.85;max-width:640px;color:var(--ink);}
+  .reader-body p{margin:0 0 20px;}
+
+  /* ---- 인용/출처 ---- */
+  .cite-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cite);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;}
+  .cite-quote{font-family:"Source Serif 4",serif;font-style:italic;font-size:15px;color:var(--ink);margin-bottom:14px;line-height:1.7;}
+  .cite-meta{display:grid;grid-template-columns:80px 1fr;gap:6px 12px;font-size:12.5px;margin-bottom:14px;}
+  .cite-meta dt{color:var(--ink-faint);}
+  .cite-meta dd{margin:0;color:var(--ink);}
+  .cite-trust{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--cite);margin-bottom:14px;}
+
+  /* ---- 설교 연구 ---- */
+  .sr-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .sr-source{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin-bottom:8px;font-size:13px;}
+  .sr-note{background:var(--card-tint);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;font-family:"Source Serif 4",serif;font-size:13.5px;line-height:1.6;}
+  .outline-step{display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .outline-step .n{color:var(--ink-faint);font-size:11px;}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="wordmark">내서재 <span>· NAE</span></div>
+    <nav class="nav">
+      <a class="nav-link active" data-screen="home" href="#">🏠 홈</a>
+      <a class="nav-link" data-screen="library" href="#">📚 내 자료</a>
+      <a class="nav-link" data-screen="research" href="#">🔎 검색·연구</a>
+      <a class="nav-link" data-screen="sermon" href="#">✍️ 설교 연구</a>
+      <a href="#">💡 도움말</a>
+    </nav>
+    <div class="sidebar-foot">
+      관리자 도구(자료 등록·시스템 상태)는 별도 경로로 이동 — 일반 화면에는 노출하지 않음
+    </div>
+  </aside>
+
+  <div>
+    <div class="topbar" role="tablist">
+      <button class="tab-btn" data-tab="home" aria-selected="true">홈</button>
+      <button class="tab-btn" data-tab="library" aria-selected="false">내 자료</button>
+      <button class="tab-btn" data-tab="research" aria-selected="false">검색·연구</button>
+      <button class="tab-btn" data-tab="reader" aria-selected="false">읽기</button>
+      <button class="tab-btn" data-tab="citation" aria-selected="false">인용·출처</button>
+      <button class="tab-btn" data-tab="sermon" aria-selected="false">설교 연구</button>
+    </div>
+
+    <main>
+      <!-- ============ 홈 ============ -->
+      <section class="screen" data-name="home" data-active="true">
+        <h1>다시 오셨네요</h1>
+        <p class="lede">지난 연구를 이어가시거나, 새로운 본문을 찾아보세요.</p>
+
+        <div class="continue-card">
+          <div>
+            <div class="kicker">이어서 읽기</div>
+            <div class="title">로마서 8장 — 성령의 자유</div>
+            <div class="meta">어제 이어서 · 3번째 문단까지 읽으셨습니다</div>
+          </div>
+          <button class="btn btn-primary">계속 읽기 →</button>
+        </div>
+
+        <h2 class="section">최근 연구</h2>
+        <div class="home-grid">
+          <div class="home-item">
+            <div class="label">검색</div>
+            <div class="val">로마서 8장 성령</div>
+          </div>
+          <div class="home-item">
+            <div class="label">설교 연구</div>
+            <div class="val">주일 설교 — 성령의 열매</div>
+          </div>
+        </div>
+
+        <h2 class="section">빠른 시작</h2>
+        <div class="action-row">
+          <button class="btn btn-ghost">🔎 새로 검색하기</button>
+          <button class="btn btn-ghost">📚 내 자료 열기</button>
+          <button class="btn btn-ghost">✍️ 설교 연구 계속하기</button>
+        </div>
+
+        <div class="quiet-stat">내 서재 · 자료 81건 정리됨 — 자세히 보기</div>
+      </section>
+
+      <!-- ============ 내 자료 ============ -->
+      <section class="screen" data-name="library">
+        <h1>내 자료</h1>
+        <p class="lede">기본 자료는 항상 원본이 보존되며, 복사 후 자유롭게 수정할 수 있습니다.</p>
+
+        <h2 class="section">기본 자료 · 읽기 전용</h2>
+        <div class="result">
+          <div class="result-top"><span class="result-title">로마서 8장 — 성령의 자유</span></div>
+          <div class="result-src">완성된 연구 예제</div>
+          <div class="action-row">
+            <button class="btn btn-ghost btn-sm">읽기</button>
+            <button class="btn btn-ghost btn-sm">복사하여 내 자료로</button>
+          </div>
+        </div>
+
+        <h2 class="section" style="margin-top:28px;">내가 만든 자료</h2>
+        <div class="result">
+          <div class="result-top"><span class="result-title">주일 설교 초안 — 성령의 열매</span></div>
+          <div class="result-src">어제 저장 · 수정 가능</div>
+          <div class="action-row">
+            <button class="btn btn-ghost btn-sm">열기</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 검색·연구 ============ -->
+      <section class="screen" data-name="research">
+        <h1>검색·연구</h1>
+        <p class="lede">찾은 자료를 바로 읽고, 궁금한 점을 이어서 물어볼 수 있습니다.</p>
+
+        <div class="search-bar">
+          <span>🔎</span>
+          <input type="text" value="로마서 8장 성령"/>
+          <button class="btn btn-primary btn-sm">검색</button>
+        </div>
+
+        <div class="result">
+          <div class="result-top">
+            <span class="result-title">로마서 8:1-4 — 메시아와 성령 안에서 하신 하나님의 행동</span>
+            <span class="stars">★★★☆☆</span>
+          </div>
+          <div class="result-snippet">"그러므로 이제 메시아 예수 안에 있는 사람에게는 결코 정죄함이 없습니다…"</div>
+          <div class="result-src">9. 로마서1.pdf</div>
+          <div class="action-row">
+            <button class="btn btn-ghost btn-sm">읽기</button>
+            <button class="btn btn-ghost btn-sm">인용·출처 보기</button>
+            <button class="btn btn-ghost btn-sm">설교 연구로 보내기</button>
+          </div>
+        </div>
+
+        <div class="result">
+          <div class="result-top">
+            <span class="result-title">로마서 8:26-30 — 성령의 탄식과 중보</span>
+            <span class="stars">★★★☆☆</span>
+          </div>
+          <div class="result-snippet">"성령도 우리 연약함을 도우시나니… 말할 수 없는 탄식으로 우리를 위하여 친히 간구하시느니라."</div>
+          <div class="result-src">9. 로마서1.pdf</div>
+          <div class="action-row">
+            <button class="btn btn-ghost btn-sm">읽기</button>
+            <button class="btn btn-ghost btn-sm">인용·출처 보기</button>
+            <button class="btn btn-ghost btn-sm">설교 연구로 보내기</button>
+          </div>
+        </div>
+
+        <div class="insight">
+          <div class="h">💬 이어서 물어보기</div>
+          <div style="font-size:13px;color:var(--ink-soft);">"양자의 영이란 표현은 구약의 어떤 배경과 연결되나요?" 같은 후속 질문을 바로 이어서 할 수 있습니다.</div>
+        </div>
+      </section>
+
+      <!-- ============ 읽기 ============ -->
+      <section class="screen" data-name="reader">
+        <div class="reader-head">
+          <div class="eyebrow">9. 로마서1.pdf</div>
+          <h1>로마서 8:1-4 — 메시아와 성령 안에서 하신 하나님의 행동</h1>
+          <div class="reader-actions">
+            <button class="btn btn-primary btn-sm">🔖 인용하기</button>
+            <button class="btn btn-ghost btn-sm">✍️ 설교 연구로 보내기</button>
+            <button class="btn btn-ghost btn-sm">인용·출처 보기</button>
+          </div>
+        </div>
+        <div class="reader-body">
+          <p>그러므로 메시아 예수 안에 있는 사람에게는 결코 정죄함이 없습니다. 이는 메시아 예수 안에 있는 생명을 주시는 성령의 법이 죄와 죽음의 법에서 당신을 해방시켰기 때문입니다.</p>
+          <p>하나님은 율법이 사람의 육신 때문에 연약하여 할 수 없는 일을 하셨습니다. 하나님은 자기 아들을 죄 있는 육신의 모양으로, 또 속죄제물로 보내셨습니다. 그리고 바로 그 육신에다 죄를 정하셨습니다.</p>
+          <p>이는 우리가 육신을 따르지 않고 성령을 따라 행하는 자들에게 율법의 요구가 이루어지게 하려 하심이니라.</p>
+        </div>
+      </section>
+
+      <!-- ============ 인용·출처 ============ -->
+      <section class="screen" data-name="citation">
+        <h1>인용·출처</h1>
+        <p class="lede">무엇을 인용하는지, 어디서 왔는지, 원문을 어떻게 다시 확인할 수 있는지 보여줍니다.</p>
+
+        <div class="cite-card">
+          <div class="cite-quote">"그러므로 메시아 예수 안에 있는 사람에게는 결코 정죄함이 없습니다…"</div>
+          <dl class="cite-meta">
+            <dt>출처</dt><dd>9. 로마서1.pdf</dd>
+            <dt>본문 위치</dt><dd>로마서 8:1-4</dd>
+            <dt>자료 유형</dt><dd>성경 주석</dd>
+          </dl>
+          <div class="cite-trust">★★★☆☆ 신뢰도 — 검색어와의 연관성 기준</div>
+          <div class="action-row">
+            <button class="btn btn-ghost btn-sm">원문 다시 보기</button>
+            <button class="btn btn-ghost btn-sm">설교 연구에 저장</button>
+          </div>
+        </div>
+
+        <p style="font-size:12px;color:var(--ink-faint);">참고: 현재 Chat 화면(`ui/pages/chat.py`)의 출처 표시는 이 카드형 대신
+        "신뢰도(final_score): 0.xxxx" 같은 원시 수치를 그대로 보여주고 있습니다 — DBMA-UX-006 감사에서 확인된 미정정 항목입니다.</p>
+      </section>
+
+      <!-- ============ 설교 연구 ============ -->
+      <section class="screen" data-name="sermon">
+        <h1>설교 연구</h1>
+        <p class="lede">검색·연구에서 모은 자료가 설교 준비로 자연스럽게 이어집니다.</p>
+
+        <div class="sr-col">
+          <div>
+            <h2 class="section">선택한 자료</h2>
+            <div class="sr-source">
+              <span>로마서 8:1-4 — 정죄함이 없음</span>
+              <button class="btn btn-ghost btn-sm">보기</button>
+            </div>
+            <div class="sr-source">
+              <span>로마서 8:26-30 — 성령의 탄식</span>
+              <button class="btn btn-ghost btn-sm">보기</button>
+            </div>
+            <h2 class="section" style="margin-top:24px;">메모</h2>
+            <div class="sr-note">포도나무 비유(요 15장)와 연결 — "내가 맺는 것"이 아니라 "그리스도 안에 거함으로 맺히는 것"</div>
+          </div>
+          <div>
+            <h2 class="section">개요 (초안)</h2>
+            <div class="outline-step"><span class="n">01</span> 서론 — 성령의 열매에 대한 오해</div>
+            <div class="outline-step"><span class="n">02</span> 본론 — 사랑의 열매, 구체적 삶의 사례</div>
+            <div class="outline-step"><span class="n">03</span> 본론 — 기쁨과 평화, 성경적 근거</div>
+            <div class="outline-step"><span class="n">04</span> 결론 — 오늘 나의 자리에서 적용</div>
+            <button class="btn btn-primary" style="margin-top:20px;">✍️ 설교 작성으로 이어가기</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+  function activate(name){
+    document.querySelectorAll('.screen').forEach(s => s.setAttribute('data-active', s.dataset.name === name ? 'true':'false'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name ? 'true':'false'));
+    document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.screen === name));
+  }
+  document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => activate(b.dataset.tab)));
+  document.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', e => { e.preventDefault(); if(a.dataset.screen) activate(a.dataset.screen); }));
+</script>
+</body></html>

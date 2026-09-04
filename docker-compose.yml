@@ -24,15 +24,31 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_FIRST_RUN_DISABLED=true
       - N8N_HOST=localhost
+      - N8N_BASIC_AUTH_USERNAME=admin
+      - N8N_BASIC_AUTH_PASSWORD=nae-automation-phase-e
+      - N8N_API_KEY=nae-phase-e-api-key-2026
       - N8N_PORT=5678
       - N8N_PROTOCOL=http
       - NODE_ENV=production
+      - N8N_RESTRICT_FILE_ACCESS_TO=/automation;/home/node/.n8n-files
+      # n8n 2.x disables ExecuteCommand/LocalFileTrigger by default
+      # (breaking-changes rule `disabled-nodes-v2`). ADR-023 Full Processing
+      # REQUIRES the ExecuteCommand node to invoke
+      # `NAE.pipeline.registration.cli_driver`; without this the Phase E
+      # workflow fails activation with
+      # "Unrecognized node type: n8n-nodes-base.executeCommand".
+      - NODES_EXCLUDE=[]
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./.automation:/automation:ro
+      - ./.automation/tasks:/automation/tasks:rw
+      - ./.automation/evidence:/automation/evidence:rw
     restart: unless-stopped
 
 volumes:
   qdrant_storage:
   n8n_data:
+    name: dbma_n8n_data

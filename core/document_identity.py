@@ -104,6 +104,38 @@ def generate_processing_timestamp() -> str:
     return datetime.datetime.now().isoformat(timespec="seconds")
 
 
+_DOC_TYPE_ORDER = ["주석", "설교", "사전", "논문", "조직신학", "기타"]
+
+# 파일명/본문에서 유형을 유추하는 키워드 — 우선순위 순서(위에서부터 먼저
+# 매칭되는 유형을 채택). "기타"는 키워드 목록이 없다 — 아무것도 매칭
+# 안 되면 자동으로 떨어지는 fallback.
+_DOC_TYPE_KEYWORDS: dict[str, list[str]] = {
+    "주석": ["주석", "commentary", "註釋"],
+    "설교": ["설교", "말씀", "제목:", "본문:", "본문 말씀:"],
+    "사전": ["사전", "辭典", "辞典", "dictionary", "encyclopedia"],
+    "논문": ["논문", "초록", "abstract", "참고문헌", "학위논문"],
+    "조직신학": ["조직신학", "systematic theology"],
+}
+
+
+def guess_doc_type(content: str, source_file: str = "", title: Optional[str] = None) -> str:
+    """[2026-07-24, 사용자 요청] 신규 투입 문서의 유형을 자동으로
+    확인한다 — 확인이 미비하면(키워드 매칭 없음) "기타"로 분류한다
+    (None으로 남겨 "미분류" 상태로 두지 않음).
+
+    파일명 → 제목 → 본문 앞부분 순으로 키워드를 확인한다(신호가 강한
+    순서). 여러 유형이 매칭되면 _DOC_TYPE_KEYWORDS 정의 순서(주석 →
+    설교 → 사전 → 논문 → 조직신학)를 우선한다."""
+    haystacks = [source_file or "", title or "", content[:2000]]
+    combined = " ".join(haystacks).lower()
+
+    for doc_type, keywords in _DOC_TYPE_KEYWORDS.items():
+        if any(kw.lower() in combined for kw in keywords):
+            return doc_type
+
+    return "기타"
+
+
 def build_document_metadata(
     content: str,
     source_file: str,
@@ -119,6 +151,7 @@ def build_document_metadata(
     page: Optional[int] = None,
     title: Optional[str] = None,
     author: Optional[str] = None,
+    doc_type: Optional[str] = None,
 ) -> dict:
     """Build complete document metadata object per METADATA_CONTRACT_v1.
     
@@ -139,6 +172,7 @@ def build_document_metadata(
         page: Page reference (None if unknown)
         title: Document title (None if unknown)
         author: Author name (None if unknown)
+        doc_type: Document type (주석/설교/시전/논문/기타, None if unknown)
     
     Returns:
         Metadata dictionary with all required fields present
@@ -171,6 +205,9 @@ def build_document_metadata(
         "is_ocr": is_ocr,
         "chunk_count": chunk_count,
         "chunk_id_prefix": doc_id,
+        
+        # Document type (unknown = None — never invent)
+        "doc_type": doc_type,
     }
     
     return metadata

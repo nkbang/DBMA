@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0002_remediation",
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0000247",
+      "tsu_id": "TSU-0000247",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "그리스인들은 자신들의 단어인 Barro가 의미하는 바를 이해하고 있었다.",
+      "review_timestamp": "2026-08-10",
+      "comment": "Q3: CONTEXT_SUPPORTED — 직전 문맥의 word Barro로 자기완결형은 아니나 문맥은 충분함. 기존 claim의 word->언어 범위 확대를 제거함."
+    }
+  ]
+}

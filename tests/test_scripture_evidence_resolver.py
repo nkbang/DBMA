@@ -159,6 +159,29 @@ class TestBuildTsuRecordsProvenance:
         if "chapter" in vm:
             assert "verse_start" not in vm or vm["verse_start"] > 0
 
+    def test_cross_book_reference_does_not_contaminate_chapter(self):
+        """[2026-07-27 Preflight tsu-verse-mapping-book-chapter-mismatch]
+        문서 자신의 책(2CO)과 무관한 다른 책(요한복음)의 참조만 청크에
+        등장하면, 그 참조의 chapter/verse를 문서의 book_id에 덧씌우지
+        않는다 — 실제 코퍼스에서 발견된 패턴 재현("12 Miracles of
+        Spiritual Growth" 문서의 한 청크가 book_id=ROM으로 등록돼
+        있었는데, 본문에는 요한복음 8:58/10:30 인용만 있어 재파싱하면
+        JHN만 나오고 저장된 ROM/8/58과는 전혀 매칭 안 됐던 실제 사례).
+        수정 전에는 이 청크가 {"book_id": "2CO", "chapter": 8,
+        "verse_start": 58}처럼 무관한 chapter/verse를 얻었다 — 수정
+        후에는 book_id만 남고 chapter/verse는 비어야 한다."""
+        content = (
+            "예수님은 \"아브라함이 나기 전부터 내가 있느니라\" (요한복음 8:58)"
+            "라고 말씀하셨고, \"나와 아버지는 하나이다\" (요한복음 10:30)라고도"
+            " 하셨다. 이는 그의 신성을 보여주는 구절이다."
+        )
+        records = _build_with_content(content, book="2CO")
+        vm = records[0]["verse_mapping"]
+        assert vm == {"book_id": "2CO"}, (
+            f"무관한 책(JHN)의 chapter/verse가 문서의 book_id(2CO)에 "
+            f"덧씌워지면 안 된다 — 실제 결과: {vm}"
+        )
+
 
 if __name__ == "__main__":
     import pytest

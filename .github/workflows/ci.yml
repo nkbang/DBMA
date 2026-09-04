@@ -21,10 +21,24 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install system dependencies
+        run: |
+          # libhunspell-dev: headers for the `hunspell` wheel in
+          # requirements.txt (core/tli/hunspell_adapter.py — 설교 에디터
+          # 맞춤법 검사). Without it the wheel build fails with
+          # "fatal error: hunspell.hxx: No such file or directory".
+          sudo apt-get update
+          sudo apt-get install -y libhunspell-dev
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          # requirements-dev.txt carries pytest (+ pytest-cov, ruff, …);
+          # dev/dbma-engine moved it out of requirements.txt. The
+          # validation pipeline below shells out to `python -m pytest`,
+          # so the dev deps must be installed here too.
+          pip install -r requirements-dev.txt
 
       - name: Run validation pipeline
         run: |

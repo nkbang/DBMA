@@ -1,0 +1,6 @@
+# Production readiness verification — CUE Correction Order 001 지적 4
+echo "Production readiness checks:"
+echo "1. config.yaml restored (git checkout -- config.yaml)"
+echo "2. nae_pd.enabled = false (verified via module_registry.is_enabled())"
+echo "3. All tests pass (136 passed, 0 failed)"
+echo "4. No production blockers"

@@ -1,0 +1,30 @@
+{
+  "identifier": "Hiscox_Standard_Manual",
+  "builder_version": "3.0.0",
+  "generated_at": "2026-08-08T06:05:11.702001+00:00",
+  "model": "my-theology-bot-v2:latest",
+  "candidates_evaluated": 1149,
+  "candidates_total": 1149,
+  "claims_extracted": 740,
+  "llm_errors": 0,
+  "doctrine_breakdown": {
+    "Ecclesiology": 306,
+    "Baptism": 180,
+    "Lord's Supper": 53,
+    "Church Discipline": 55,
+    "Providence": 7,
+    "Scripture / Authority": 17,
+    "Confession": 5,
+    "Election": 9,
+    "Soteriology": 45,
+    "Eschatology": 14,
+    "Trinity": 6,
+    "Sanctification": 21,
+    "Justification": 12,
+    "Church Covenant": 2,
+    "Other": 1
+  },
+  "elapsed_seconds": 12452.47,
+  "partial": false,
+  "note": "confidence is model self-reported and uncalibrated; review_status=generated until a human review promotes it to verified (see NAE/pipeline/tsu/review_promotion.py)"
+}

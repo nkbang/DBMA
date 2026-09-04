@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0014",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0002477",
+      "tsu_id": "TSU-0002477",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Church Discipline",
+      "original_text": "If each were left wholly to himself, the discipline of the church would be nothing, and the power to exercise it would be attended with no responsibility.",
+      "claim": "교회가 각 개인을 완전히 자기에게 맡겨두면 교회의 규율은 아무 것도 아니게 되고, 그 규율을 행사하는 권한도 책임과 함께 사라진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002478",
+      "tsu_id": "TSU-0002478",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But the church is under an obligation, which cannot be transferred, to regulate its organization and discipline according to the word of God, which enjoins, on the one hand, to be tolerant and forbearing towards weak and erring brethren; and on the other hand, to keep the ordinances of God as they were delivered.",
+      "claim": "교회는 하나님의 말씀에 따라 교회의 조직과 규율을 정해야 하며, 약하고 잘못된 형제들에 대한 관용과 인내와 함께 하나님의 계명을 지키라는 책임이 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002479",
+      "tsu_id": "TSU-0002479",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The argument for toleration is founded on the words, “ Him that is weak in the faith, receive ye. * * * For God hath received him.” It is a full reply to this argument, that God’s receiving of the weak in faith furnishes the rule, as well as the reason, for our receiving of them.",
+      "claim": "하나님의 약한 신자에 대한 수용은 우리가 그들을 받아들이는 규칙과 이유를 제공한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002480",
+      "tsu_id": "TSU-0002480",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "That God receives a man in one sense, can be no reason that we should receive him in a sense widely different.",
+      "claim": "하나님이 어떤 의미에서 약한 신앙을 가진 사람을 받으실 수 있더라도, 우리가 그와 전혀 다른 의미로 그를 받아야 한다는 이유가 되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002481",
+      "tsu_id": "TSU-0002481",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "God receives an unbaptized weak believer as a member of his spiritual church, and we ought to receive him in like manner.",
+      "claim": "하나님은 세례를 받지 않은 약한 신자를 영적 교회의 회원으로 받아들이시므로, 우리는 그와 같은 방식으로 그를 받아들여야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002482",
+      "tsu_id": "TSU-0002482",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "We ought to regard him as a brother in Christ, and a fellow heir of the same inheritance.",
+      "claim": "세례를 받지 않은 약한 신자도 하나님의 영적 교회에서 회원으로 받아들여야 하며, 우리는 그와 같은 방식으로 그를 받아들이는 것이 옳다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002483",
+      "tsu_id": "TSU-0002483",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "His interests should be near to our hearts, and we should welcome him to all that spiritual communion which belongs to the members of Christ’s body.",
+      "claim": "그리스도 안에서 형제로 여겨지고 공동 유업의 상속인으로서 그의 이익이 우리的心에 가까워야 하며, 그리스도 몸의 구성원들에게 속하는 모든 영적 교제를 환영해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002484",
+      "tsu_id": "TSU-0002484",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Church Discipline",
+      "original_text": "So, when God has received a baptized weak believer to local church-membership, we are bound to receive him in like manner, and allow him to sit with us at the table of the Lord; a privilege which, through the imperfection of church discipline, the vilest hypocrite may obtain.",
+      "claim": "세례받은 약한 신자도 교회 회원으로 받아들여지고 주의 만찬에 참여할 수 있어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002485",
+      "tsu_id": "TSU-0002485",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Church Discipline",
+      "original_text": "Unless we keep in view this important distinction, in applying this rule for toleration, it will indeed admit the unbaptized weak believer to ceremonial communion, but it will, with equal certainty, admit the hypocrite to that communion which is spiritual.",
+      "claim": "교회의 규율을 적용할 때 중요한 구별을 고려하지 않으면 세례받지 않은 약한 신자뿐만 아니라 위선자도 영적인 교제에 참여할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002486",
+      "tsu_id": "TSU-0002486",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "Argument 9.—The advocates of close communion are accustomed to invite Pedobaptist ministers to preach in their pulpits.",
+      "claim": "Strict communion의 지지자들은 일반적으로 유아세례파 목사들을 자신의講壇에서 설교하도록 초대한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002487",
+      "tsu_id": "TSU-0002487",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "To hold this pulpit communion with them, and at the same time to deny them a place at the Lord’s table, is a manifest inconsistency.",
+      "claim": "세례 교인들만이 성찬에 참여할 수 있다는 주장을 주장하는 사람들이 페도세례파 목사들을 자신의講壇에서 설교하도록 초청하면서 동시에 그들에게 主의 만찬에 참여하는 것을 거부하는 것은 명백한 모순이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002488",
+      "tsu_id": "TSU-0002488",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "If we admit the conclusion of this argument, it does not prove close communion to be wrong.",
+      "claim": "특정 논증의 결론을 받아들이더라도, 폐쇄적 성만찬이 잘못된 것은 아님",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002489",
+      "tsu_id": "TSU-0002489",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Some Baptists admit the validity of the argument; and avoid the charge of inconsistency by refusing to invite Pedobaptist ministers into their pulpits.",
+      "claim": "일부 침례교도들은 논증의 유효성을 인정하며, 유아세례 목사들을 자신의講壇에 초대하지 않음으로써 일관성 없는 비난을 피한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002490",
+      "tsu_id": "TSU-0002490",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "munion, may be vindicated in perfect consistency with the principles on which strict communion at the Lord’s table is maintained.",
+      "claim": "성찬식에서 엄격한 교제를 유지하는 원칙과 일치하면서도 완전한 일치를 옹호할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002491",
+      "tsu_id": "TSU-0002491",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "Argument 10.—The communion table is the Lord’s; and to exclude from it any of the Lord’s people, the children of his family, is an offence against the whole Christian community.",
+      "claim": "주님의 식탁에서 주님의 가족인 그리스도인의 어떤 사람이라도 배제하는 것은 전체 기독교 공동체에 대한 범죄이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002492",
+      "tsu_id": "TSU-0002492",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "There is a table which the Lord has spread, and to which every child of his family has an unquestionable right.",
+      "claim": "주님의 가족의 모든 자녀는 주님께서 베푸신 식탁에 참석할 수 있는 의심할 여지 없는 권리를 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002493",
+      "tsu_id": "TSU-0002493",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "It is a table richly furnished with spiritual food, a feast of fat things, full of marrow, of wine on the lees well refined.",
+      "claim": "주님의 식탁은 영적 음식으로 풍성하게 차려져 있으며, 모든 자녀들이 접근할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002494",
+      "tsu_id": "TSU-0002494",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "This table the Lord has spread for all his children, and he invites them all to come: “ Eat, O friends; drink, yea drink abundantly, O beloved.” Any one who should forbid their approach would offend against the community of God’s children.",
+      "claim": "주님은 모든 자녀들을 위해 식탁을 차려주셨고, 모두에게 다가와 먹고 마시라고 초대하십니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002495",
+      "tsu_id": "TSU-0002495",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The guests at this table have spiritual. communion with one another; a species of communion which belongs of right to every member of the church universal.",
+      "claim": "교회 공동체의 모든 구성원은 영적 교제를 나눌 권리가 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002496",
+      "tsu_id": "TSU-0002496",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "There is another table which the Lord has commanded his people to spread in each local church.",
+      "claim": "주님은 각 지역 교회에서 하나의 식탁을 펼치라고 그의 백성에게 명하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002497",
+      "tsu_id": "TSU-0002497",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "It is not, like the other, covered with spiritual good things, but with simple bread and wine.",
+      "claim": "주님의 만찬은 영적 선물이 아닌 단순한 빵과 포도주로 덮여진 표입니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002498",
+      "tsu_id": "TSU-0002498",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "It is not, like the other, designed for the whole family of the Lord, but for the particular body, the local church, by whom, in obedience to divine command, it has been spread.",
+      "claim": "주님의 만찬은 지역 교회를 위해 설계되었으며, 주님의 명령에 따라 준비되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002499",
+      "tsu_id": "TSU-0002499",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "Though human hands have set out the food, yet the table is the Lord’s, because it is designed for his service, and prepared at his command; and the will of the Lord must determine who ought to partake.",
+      "claim": "주님의 만찬에 참여하는 자는 주님의 뜻에 따라 결정되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002500",
+      "tsu_id": "TSU-0002500",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "He knows best the purpose for which he commanded it; and, whatever may be the feelings of the guests, they have no right to invite to his table any whom the Lord has not invited.",
+      "claim": "주님은 자신의 식탁에 누구를 초대할지 결정하는 권한을 가지시며, 손님들은 주님이 초대하지 않은 사람들을 초대할 권리가 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002501",
+      "tsu_id": "TSU-0002501",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "We are aware that the practice of strict communion is considered offensive by a large part of the Christian community.",
+      "claim": "严格的圣餐实践被基督教社区的大部分视为冒犯行为",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002502",
+      "tsu_id": "TSU-0002502",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "We lament this fact ; and if the arguments which have been adduced in defence of our practice, have failed to produce a conviction of its propriety, we would still crave from our brethren the forbearance and toleration for which they plead in behalf of the weak in faith.",
+      "claim": "교회는 엄격한 교제의 관행을 지키기 위해 형제들의 인내와 용납을 간청한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002503",
+      "tsu_id": "TSU-0002503",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "We conscientiously believe that we are doing the Lord’s will; and we would gladly invite every child of God to unite in our simple ceremonial observance, if we had the divine approbation.",
+      "claim": "저희는 주님의 뜻을 따르고 있으며, 하나님의 승인을 받았다면 모든 신자들이 저희의 간단한 예식 관행에 참여할 수 있도록 초대하고 싶습니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002504",
+      "tsu_id": "TSU-0002504",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But we believe that the purpose for which the observance was instituted, and the divine will by which it ought to be regulated, require the restrictions under which we act.",
+      "claim": "우리는 우리의 단순한 의식적 관행을 규정하는 하나님의 뜻과 그 의식이 제정된 목적에 따라 우리가 행동하는 제한이 필요하다고 믿는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002505",
+      "tsu_id": "TSU-0002505",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "Does not the offence taken at our course indicate that the offended party estimate ceremonial communion too highly?",
+      "claim": "예배의식에 대한 불쾌감은 그들이 예배의식을 지나치게 중요하게 여긴다는 것을 나타낸다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002506",
+      "tsu_id": "TSU-0002506",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "To the rich feast of spiritual good which the Lord has spread, we rejoice to welcome every child of God; and we gladly accept an humble seat with them at the bountiful board.",
+      "claim": "주님께서 베푸신 영적 축복의 풍성한 잔치에 모든 하나님의 자녀들을 환영하며, 그들과 함께 겸손한 자리를 받아들이는 것에 기뻐한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002507",
+      "tsu_id": "TSU-0002507",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "When with open hearts and hands we give this welcome, why will they be offended, if we do not also give them a crumb of our ceremonial bread, and a drop of our ceremonial wine?",
+      "claim": "교회의 예배에서 형제들을 환영할 때 우리의 예식적인 빵과 포도주를 나누어 주는 것은 중요하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002508",
+      "tsu_id": "TSU-0002508",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "If the elements possessed some sacramental efficacy, there would be an apparent reason for their complaint; but regarding them as a token of union in a church organization to which our brethren object, and into which they are unwilling to enter, the ground and consistency of their complaint do not appear.",
+      "claim": "성례물은 교회 조직의 단결을 상징하는 것일 뿐이므로, 그 자체로는 구원이나 성화에 대한 효력을 가지지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002509",
+      "tsu_id": "TSU-0002509",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "When Pedobaptists complain of our strict communion, we would remind them that they hold the principle in common with us, and practise on it in their own way.",
+      "claim": "침례교도와 유아세례교도는 엄격한 교제에 대한 원칙을 공유하지만, 실제 적용 방식은 다르다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002510",
+      "tsu_id": "TSU-0002510",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "If they have aught to object, let it be at that in which we differ from them, and not at that in which we agree.",
+      "claim": "비독실교파는 우리와 공통의 원칙을 가지고 있지만 그들의 방식으로 실천한다는 점에서 우리의 엄격한 교제에 대해 불평할 때, 그들은 우리가 다른 점에서異議를 제기해야지 동의하는 점에서이 아니라.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002511",
+      "tsu_id": "TSU-0002511",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The contrary course is not likely to produce unity of opinion, or to promote that harmony of Christian feeling which ought to subsist among the followers of our Lord.",
+      "claim": "다른 의견을 존중하는 태도는 기독교 공동체 내에서 일치와 조화를 촉진한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002512",
+      "tsu_id": "TSU-0002512",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "When Baptists object to strict communion, we would propose the inquiry, Whether they do not attach undue importance to the eucharist, in comparison with baptism.",
+      "claim": "침례교도들이 엄격한 성만찬에 반대할 때, 그들은 성만찬보다 세례에 과도한 중요성을 부여하는 것이 아닌지 질문받아야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002513",
+      "tsu_id": "TSU-0002513",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "Mr. Hall calls the eucharist a principal spiritual function.’ In this view of it, he complains that the privilege of partaking in it should be denied to any.",
+      "claim": "홀씨는 성만찬을 주요 영적 기능이라고 부른다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002514",
+      "tsu_id": "TSU-0002514",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "Is it more spiritual than baptism?",
+      "claim": "성찬례는 세례보다 더 영적인가?",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002515",
+      "tsu_id": "TSU-0002515",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "If not, why should baptism be trodden under foot, to open the way of access to the eucharist?",
+      "claim": "세례는 성찬에 대한 접근을 열기 위해 무시되어서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002516",
+      "tsu_id": "TSU-0002516",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "When both ceremonies were supposed to possess a saving efficacy, the proper order of their observance was still maintained ; much more should it be maintained, if both are mere ceremonies.",
+      "claim": "세례와 성찬의 순서를 지키는 것이 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002517",
+      "tsu_id": "TSU-0002517",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "If baptism were a mere ceremony, and the eucharist a principal spiritual function, the arguments for open communion would have a ` force which they do not now possess: but our brethren will not defend this position.",
+      "claim": "세례와 성찬이 모두 단순한 의식일 때, 세례의 순서를 지키는 것이 더 중요하며, 만약 성찬이 주요 영적 기능이라면 공개 성찬에 대한 논증은 지금보다 더 강력해질 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002518",
+      "tsu_id": "TSU-0002518",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "WHEN JESUS REQUIRED HIS DISCIPLES TO WASH ONE ANOTHER’S FEET, HE DESIGNED, NOT TO INSTITUTE A RELIGIOUS CEREMONY, BUT TO ENFORCE A WHOLE CLASS OF MORAL DUTIES.",
+      "claim": "예수님은 제자들에게 서로의 발을 씻기라고 명령하셨을 때, 종교적인 의식을 제정하려는 것이 아니라 도덕적 의무를 강조하려는 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002519",
+      "tsu_id": "TSU-0002519",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The requirement on the subject is contained in the following words: “ If I then, your Lord and Master, have washed your feet, ye also ought to wash one another’s feet.” 1",
+      "claim": "주님과 주의가 된 예수님이 제자들의 발을 씻겨주셨듯이, 제자들은 서로의 발을 씻겨주는 것을 실천해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002520",
+      "tsu_id": "TSU-0002520",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Scripture / Authority",
+      "original_text": "Every word of Jesus Christ is important, and every command which he has left as a rule of our conduct ought to be punctiliously obeyed.",
+      "claim": "예수 그리스도의 모든 말씀은 중요하며, 우리의 행위 규칙으로 남긴 모든 명령은 철저하게 순종되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002521",
+      "tsu_id": "TSU-0002521",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "No one deserves the name of his disciple, who could knowingly neglect a duty recommended by such unparalleled love and condescension.",
+      "claim": "누군가가 예수님의 사랑과 겸손으로 권장하는 의무를 고의로 무시할 수 있다면, 그는 진정한 제자가 아니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002522",
+      "tsu_id": "TSU-0002522",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Sanctification",
+      "original_text": "“If ye know these things,” says he,” “ happy are ye if ye do them.” We must know, in order to do; and if we mistake his design, how honest soever our intention may be, we shall not have fulfilled his command.",
+      "claim": "주님의 계명을 지키기 위해서는 먼저 그 계명을 알아야 하며, 알지 못하면 의도와 상관없이 계명을 지킬 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002523",
+      "tsu_id": "TSU-0002523",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "If, on this memorable night, when he partook of the last passover with his disciples, and when he instituted the breaking of bread as the memorial of “Christ, our Passover, sacrificed for us,” he designed to institute the washing of feet as another religious rite, till his second coming, together with baptism and the breaking of bread; then, this institution should be observed with punctilious carefulness ; and no plea should be admitted from the neglect of it, to justify",
+      "claim": "예수님이 제자들과 함께 마지막 유월절을 지내고 빵을 떼는 것을 기억의 표징으로 정한 그 유명한 밤에, 발을 씻기는 것도 예배의 의식으로서 부활까지 지키라고 명했다면, 이 규례를 매우谨慎하게 지켜야 하며, 이를 소홀히 하는데 대한 변명을 받아들이지 말아야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002524",
+      "tsu_id": "TSU-0002524",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "But, if it was the Saviour’s design, not to institute a religious ceremony for the observance of his disciples, but to enjoin on them a whole class of moral duties of the very highest importance, it would be a lamentable mistake, if we should substitute for these duties a mere external rite which he never meant to institute.",
+      "claim": "주님의 설계가 제자들에게 종교 의식이나 외적인 예식을 명령하는 것이 아니라 도덕적 의무를 지시하는 것이라면, 우리가 이러한 의무들을 주님께서 명령하지 않은 단순한 외적인 예식으로 대체한다면 그것은 유감스러운 오류이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002525",
+      "tsu_id": "TSU-0002525",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The particular duty enjoined is moral, as distinguished from those which are positive.",
+      "claim": "특정한 의무는 도덕적인 것으로서, 양립적인 것과 구별된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002526",
+      "tsu_id": "TSU-0002526",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Baptism and the Lord’s supper are positive institutes, because the obligation to observe them could not be inferred from any utility or apparent fitness in the things themselves.",
+      "claim": "세례와 주의 만찬은 그 자체에서 추론할 수 있는 어떤 유용성이나 적합성에도 불구하고 관찰해야 할 의무가 있기 때문에 긍정적인 제도이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002527",
+      "tsu_id": "TSU-0002527",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "On the contrary, the washing of feet was not a mere ceremony, but a necessary act of hospitality which had been in use since the days of Abraham ;} and it is accordingly reckoned by the Apostle Paul, in connexion with other moral duties of like kind, as the proper foundation of a reputation for good works.",
+      "claim": "洗足례는 단순한 의식이 아니라 아브라함 시대부터 행해진 필수적인 환대 행위로서, 사도 바울은 이와 같은 도덕적 의무를 다른 것들과 함께 좋은 작품에 대한 명성의 적절한 기초로 간주한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002528",
+      "tsu_id": "TSU-0002528",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "It is the utility of the act which gives it a place among the “ good” works here enumerated.",
+      "claim": "행동의 유용성이 여기 열거된 \"좋은\" 행동들 중 하나로 자리 잡게 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002529",
+      "tsu_id": "TSU-0002529",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "In those days, when travelling was so generally performed on foot, and when the feet were shod with mere sandals; to wash the feet of the wayworn stranger was not a mere ceremony, but one of those “ good works which are profitable unto men,” and to be maintained “ for necessary uses.” 3",
+      "claim": "여행者の 발을 씻기는 것은 단순한 의식이 아니라 필요한 용도에 의해 유지되어야 하는 유익한 선행이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002530",
+      "tsu_id": "TSU-0002530",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "The example of the Saviour recommends the act on the ground of its utility.",
+      "claim": "구원者の 예는 그 행위의 유용성에 근거하여 이를 권장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002531",
+      "tsu_id": "TSU-0002531",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The two words here rendered wash, are different in the original: the former, denoting a washing of the whole body; and the latter, which is the word used elsewhere throughout the narrative, a partial washing, as of the hands or feet.",
+      "claim": "예수님은 베드로에게 이미 온몸을洗한 사람은 발만 씻으면 된다고 말씀하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002532",
+      "tsu_id": "TSU-0002532",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The sense is—he shat has been bathed, needs only to wash his feet, which may have",
+      "claim": "세례를 받은 사람은 온몸을 씻는 것보다 발만 씻으면 충분하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002533",
+      "tsu_id": "TSU-0002533",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "The apostles had bathed themselves before sitting down to the paschal supper, and therefore did not need any washing except of the feet.",
+      "claim": "사도들은 유월절 저녁 식사에 앉기 전에 이미 목욕을 했으므로 발만 씻어야 했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002534",
+      "tsu_id": "TSU-0002534",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "On this need, small as it may appear, the Saviour placed the fitness and propriety of the act which he performed.",
+      "claim": "주님은 작은 필요에도 불구하고 그 행동의 적절함과 합당성을 강조하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002535",
+      "tsu_id": "TSU-0002535",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "He was willing to set an example of performing the least possible act of real kindness ; but he would not extend that act a whit beyond the line of necessity and utility.",
+      "claim": "주님은 작은 행실에서도 실제적인 친절을 보여주는 본을 세우려 하셨지만, 그 친절이 필요와 유용성의 경계를 넘어서는 것은避하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002536",
+      "tsu_id": "TSU-0002536",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "Beyond this line, it was no longer an act of kindness.",
+      "claim": "-kindness는 필요와 효용의 경계를 넘어서면 더 이상 친절한 행동이 아니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002537",
+      "tsu_id": "TSU-0002537",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But Jesus performed it as a good work for a necessary use; and since he therein gave to his apostles an example that they should do to each other as he had done to them,? it is manifest that he designed to enforce on them mutual service of practical utility.",
+      "claim": "예수님은 필요한 용도에 대한 선행으로 행하셨으며, 사도들에게 서로에게 하듯이 자신이 한 대로 行하시도록 예를 보이셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002538",
+      "tsu_id": "TSU-0002538",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "This is apparent from verse 17: “If ye know these things, happy are ye if ye do them.” Duties were manifestly intended beyond the single act of washing of feet.",
+      "claim": "주님의 제자들은 발을 씻는 행위를 포함하여 여러 의무를 수행해야 하며, 이러한 의무들을 알고 실천하는 것이 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002539",
+      "tsu_id": "TSU-0002539",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Of these duties this act was a mere specimen by which they might know the rest; and knowing, practise them.",
+      "claim": "세발의 씻음 행위는 다른 의무들을 알리고 실천할 수 있는 표본적인 행동이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002540",
+      "tsu_id": "TSU-0002540",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "A proof that the washing performed by our Saviour was a part and specimen of a whole class of duties, may also be derived from _verse 8: “ Peter saith unto him, Thou shalt never wash my feet.",
+      "claim": "주님께서 행하신 발 씻기기는 하나님의 구원 계획의 일부분을 보여주는 예시이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002541",
+      "tsu_id": "TSU-0002541",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "Jesus answered him, If I wash thee not, thou hast no part with me.” The true import of this answer seems to be this: “Jf I may not wash thy feet, (so the word here used implies), J may not, on the same ground, render to thee any of the great benefits resulting from my humiliation, in which I came not to be ministered unto, but to minister, and to give my life a ransom for many.",
+      "claim": "예수님의 발 씻기시는 행위는 그의 겸손과 섬김의 본질을 보여주며, 이를 통해 그의 구원 계획에 참여할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002542",
+      "tsu_id": "TSU-0002542",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "If I may not perform to thee acts of condescending kindness, thou hast no part with me.",
+      "claim": "예수님의 겸손한 자비의 행위를 받지 않으면 예수님과 함께하는 부분이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002543",
+      "tsu_id": "TSU-0002543",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "‘“ He who washeth his face and hands is considered sufficiently clean, and needs no other washing unless this mark of civility, that his feet be washed by a servant.",
+      "claim": "손과 얼굴을 씻은 사람은 충분히 깨끗한 것으로 간주되며, 하인에 의해 발이 씻어지는 예의 표시가 아닌 이상 다른 세탁이 필요하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002544",
+      "tsu_id": "TSU-0002544",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "was made by the Saviour a specimen and representative of all his acts of condescending kindness; so the washing of feet, enjoined upon Peter and his fellow-apostles, was intended to include all the acts of condescending kindness which they could perform towards their brethren.",
+      "claim": "주님은 사도들에게 하신 발 씻기심을 통해 모든 종교적인 친절의 본보기로 삼으셨고, 그들의 형제들을 향한 모든 친절한 행동을 포함하도록 의도했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002545",
+      "tsu_id": "TSU-0002545",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "“A new commandment I give unto you, That ye love one another: as I have loved you, that ye also love one another: by this shall all men know that ye are my disciples, if ye have love one to another.” 1",
+      "claim": "주님은 제자들에게 서로 사랑하라고 명령하시며, 이 사랑을 통해 모든 사람이 그들이 주님의 제자라는 것을 알게 될 것이라고 말씀하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002546",
+      "tsu_id": "TSU-0002546",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "It is an argument of weight against regarding the washing of feet as a religious ceremony instituted in the church, that it does not, like baptism and the Lord’s supper, typify Christ.",
+      "claim": "교회에서 종교 의식으로서의 발 씻기기는 침례와 주님의 만찬처럼 그리스도를 상징하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002547",
+      "tsu_id": "TSU-0002547",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "The Lord’s supper, in a lively figure, shows forth the death of Christ; and baptism, his burial and resurrection.",
+      "claim": "성만찬과 세례는 각각 그리스도의 죽음과 매장 및 부활을 상징한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002548",
+      "tsu_id": "TSU-0002548",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "These standing ordinances of the Christian church lead the mind directly to the great Author of our salvation, and to the atoning sacrifice by which that salvation had been effected.",
+      "claim": "기독교 교회의 지속적인 성례는 우리의 구원의伟大한 저자와 그 구원을 이루어낸 속죄 제사로 마음을 직접 dẫn합니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002549",
+      "tsu_id": "TSU-0002549",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "These ordinances teach us the grand doctrine of redemption, in a language which infinite wisdom has invented for the purpose.",
+      "claim": "기독교 교회의 규례는 우리의 구원에 대한伟大한 교리를 가르친다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002550",
+      "tsu_id": "TSU-0002550",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "To this great doctrine these witnesses bear their testimony, in a voice, long and loud, through all the revolutions of centuries, and above all the tumults of heresy.",
+      "claim": "구원에 관한伟大한 교리는 세기들의 변천과 이단의 소동을 넘어서 오랜 시간 동안 큰 소리로 증거된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002551",
+      "tsu_id": "TSU-0002551",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Justification",
+      "original_text": "Does it lead the believer away from himself, and all his own works of righteousness, to the atoning sacrifice or the justifying righteousness on which he must rely for salvation ?",
+      "claim": "구원은 믿는 자가 자기의 의로 된 행실이 아닌 그리스도의 속죄 제사와 의롭다 함을 받는 의에 의존해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002552",
+      "tsu_id": "TSU-0002552",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Justification",
+      "original_text": "It might serve, as a religious rite, to remind those of a duty to be performed, whose faith rests upon such duty for righteousness ; but of him who is the end of the law for righteousness to every one that believeth, of his suffering and death as the means of our salvation, it tells nothing.",
+      "claim": "구원은 의식이나 의무를 통한 자체의 공로가 아니라 믿음으로 의지하는 것에 달려있다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002553",
+      "tsu_id": "TSU-0002553",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The washing of feet was not practised as a religious rite by the primitive Christians.",
+      "claim": "초기 기독교인들은 종교 의식으로서 발을 씻는 관행을 하지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002554",
+      "tsu_id": "TSU-0002554",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "That baptism and the Lord’s Supper were so practised we have the clearest evidence, both from the Scriptures and the writings of the Christian fathers; but not so with regard to the washing of feet.",
+      "claim": "세례와 주의 만찬은 성경과 기독교 교부들의 글에서 명백한 증거가 있지만, 발 씻기의 경우는 그렇지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002555",
+      "tsu_id": "TSU-0002555",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Scripture / Authority",
+      "original_text": "this less satisfactory source of evidence affords, though entirely consistent with the testimony of Scripture, is not needed, either for elucidation or confirmation.",
+      "claim": "성경의 증언과 일치하지만 성경의 설명이나 확증을 위해 추가적인 증거가 필요하지 않다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002556",
+      "tsu_id": "TSU-0002556",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "On opening the inspired history of the church, we read, at the very beginning, “ They that gladly received his word were baptized: and they continued steadfastly in the apostles’ doctrine, and fellowship, and in breaking of bread, and in prayers.” Baptism is frequently mentioned in the subsequent history, and in the 20th chap.",
+      "claim": "초기 교회에서 세례는 중요한儀式로 수행되었지만 발 씻기는 언급되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002557",
+      "tsu_id": "TSU-0002557",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Tth verse express mention is made that ‘the disciples came together to break bread.” But not a chapter, not a verse, in all the Acts of the Apostles, contains an intimation that any church, or any company of disciples, ever assembled to celebrate the washing of feet.",
+      "claim": "성경의 행전에서 교회나 제자의 집단이 발을 씻는 예식을 위해 모인 적이 없다는 사실이 언급된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002558",
+      "tsu_id": "TSU-0002558",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "In the Epistle to the Romans,‘ a reference is made to baptism, and an explanation given of its import.",
+      "claim": "로마서에서 세례에 대한 언급과 그 의미에 대한 설명이 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002559",
+      "tsu_id": "TSU-0002559",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But in these epistles, and in all those which follow, no allusion whatever is found to the washing of feet, as a rite observed by the churches.",
+      "claim": "신약성서의 후속 서신들에서 교회가 준수하는 의식으로서 발 씻기의 언급은 발견되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002560",
+      "tsu_id": "TSU-0002560",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "There is, indeed, one passage, and only one, in which the washing of feet is mentioned; and this passage, 1 Tim. v. 10, furnishes decisive proof that it was not practised as a church ordinance, as were baptism and the Lord’s supper.",
+      "claim": "1 Tim. v. 10은 세족례가 교회의 성례로서 침례와 주의 만찬과 같이 관행화되지 않았음을 확증한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002561",
+      "tsu_id": "TSU-0002561",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "To demonstrate this, we have but to substitute, in the passage, the mention of these acknowledged ordinances, and the incongruity of such a connexion will immediately appear: “ Well reported of for good works; if she have brought up children, if she have lodged strangers, if she have been baptized, or received the Lord’s supper, if she have relieved the afflicted, if she have diligently followed every good work.” As it must be supposed of every widow in the church that she had been baptized, and had received the Lord’s supper ; no “if,” with respect to these ordinances, could be admitted, and no one widow could, on account of her having observed them, be more entitled to honor than any other.",
+      "claim": "세례와 주의 만찬과 같은 교회 예배에서 발을 씻는 것이 관행으로 시행되지 않았음",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002562",
+      "tsu_id": "TSU-0002562",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The same would have been true concerning the washing of feet, if this also had been a religious rite in common use in the churches; and it would have been a manifest absurdity to state the fact of any church member hay-",
+      "claim": "洗足례가 일반적인 종교 의식이었다면 교회에서 이를 언급하는 것은 모호함을 초래할 것이다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002563",
+      "tsu_id": "TSU-0002563",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "ing performed the rite, as a reason for regarding him or her as specially entitled to reputation for good works, or to honor from the church.",
+      "claim": "특정 의식의 수행은 개인이 좋은 행위를 위해 특별한 명성을 얻거나 교회에서 명예를 받을 자격이 있다고 간주하는 이유가 될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002564",
+      "tsu_id": "TSU-0002564",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "There is, therefore, not only a total want of proof that such a religious rite was anciently observed, but there is (what few cases in controversy furnish) a proof of the negative, which is as clear and satisfactory as any such proof can be expected to be.",
+      "claim": "어떤 종교 의식이 옛날에 관행으로 시행되었다는 증거가 전혀 없으며, 오히려 그러한 관행이 없었다는 것을 명확하게 보여주는 증거가 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002565",
+      "tsu_id": "TSU-0002565",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "These considerations show clearly that it was the Saviour’s design to enforce a whole class of moral duties,.and not to institute a religious ceremony; and that he was so understood by his apostles.",
+      "claim": "주님은 도덕적 의무를 강조하기 위하여 특정 행동을 명하셨으며, 그것이 종교적인儀式가 아님을 보여주고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002566",
+      "tsu_id": "TSU-0002566",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "He who washes the feet of a saint, when those feet do not need washing, is as if he gave a cup of cold water toa disciple who is not thirsty.",
+      "claim": "성도에게 불필요한 봉사를 하는 것은 실제로 필요하지 않는 사람에게 물을 주는 것과 같다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002567",
+      "tsu_id": "TSU-0002567",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Sanctification",
+      "original_text": "He may indeed make a show of voluntary humility, but he does not fulfil the command of Christ, nor imitate his example.",
+      "claim": "자발적인 겸손의 모습을 보이더라도 실제로는 그리스도의 명령이나 본을 따르지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002568",
+      "tsu_id": "TSU-0002568",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "He ought to remember that Christ declined to wash the hands and head of Peter; not because there would have been less show of humility in so doing, but because those parts did not need washing.",
+      "claim": "그리스도는 베드로의 발과 머리를 씻지 않으셨는데, 이는 겸손의 표시가 적을 것이라는 이유가 아니라, 그 부분이 씻을 필요가 없기 때문이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002569",
+      "tsu_id": "TSU-0002569",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "He, therefore, who washes the feet of a saint when these feet do not need washing, instead of obeying or imitating Christ, does that which Christ refused to do.",
+      "claim": "그리스도의 본을 따르는 것은 실제로 필요한 경우에만 성도를 섬기는데 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002570",
+      "tsu_id": "TSU-0002570",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "And he who washes the feet of a saint merely as a religious rite, without considering or caring whether the act which he performs is necessary and useful, is just as far as the other from obeying or imitating the Redeemer.",
+      "claim": "성도들의 발을 씻는 행위는 필요하고 유용한 경우에만 그리스도를 따르는 것이라고 주장한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002571",
+      "tsu_id": "TSU-0002571",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "If, after a careful consideration of the subject, we have satisfactorily ascertained that our Saviour designed his disciples should perform towards each other every needful act of condescending kindness, even the smallest and the most servile, let us be ready with promptness and pleasure to fulfil his will.",
+      "claim": "주님은 제자들이 서로에게 필요한 모든 친절한 행동을 하도록 의도했다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002572",
+      "tsu_id": "TSU-0002572",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Sanctification",
+      "original_text": "If we know these things, happy are we if we do them.",
+      "claim": "주님의 뜻을 행하는 것이 행복의 조건이다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002573",
+      "tsu_id": "TSU-0002573",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "If we have the spirit of Christ, we shall be ready, when need requires, to lay down our lives for our brethren, or give them a cup of cold water, or wash their feet, or render them any other comfort.",
+      "claim": "그리스도의 영이 우리에게 있으면 필요할 때 형제를 위해 목숨을 바치거나 차가운 물 한 컵을 주거나 발을 씻겨주거나 다른 어떤 위안도 제공할 준비가 되어 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002574",
+      "tsu_id": "TSU-0002574",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Eschatology",
+      "original_text": "In so far as by any of these means we seek to promote the happiness of a disciple of Christ, our good deeds will be remembered; and the great Judge, in the last day, omitting all mention of our most labored religious ceremonies, will bring that act of kindness to mind, and will say, “ Inasmuch as ye did it to one of the least of these my brethren, ye did it unto me.” CHAPTER VII.",
+      "claim": "그리스도의 영을 가진 사람들은 필요할 때 형제를 위해 자신의 삶을 바치거나 작은 행운을 제공하거나 다른 위안을 줄 수 있어야 하며, 이러한 선행은 마지막 날에 큰 심판자 앞에서 기억될 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002575",
+      "tsu_id": "TSU-0002575",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "THE FIRST DAY OF THE WEEK IS THE CHRISTIAN SABBATH, AND IS SPECIALLY APPROPRIATE FOR THE PUBLIC WORSHIP OF Gop.",
+      "claim": "주일은 기독교의 안식일로서 하나님께 대한 공적 예배에 특히 적절하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002576",
+      "tsu_id": "TSU-0002576",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Providence",
+      "original_text": "The hebdomadal division of time existed very early in the gentile world; and no account of its origin is so probable, as that it was received from Noah, the father of the new world.",
+      "claim": "노아를 통해 일주일 단위의 시간 구분이 초기 이방계 세계에 전파되었다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+Phase 1: Current Implementation State Verification
+1. Read NAE/retrieval_adapter.py (bridge_query, search, _map_nae_to_citation_metadata)
+2. Read ui/pages/research.py (DBMA retrieval only, no NAE bridge integration)
+3. Read config.yaml (modules.nae_pd.enabled: false)
+4. Read core/module_registry.py (is_enabled, set_enabled)
+5. Read ADR-024
+6. Check NAE Qdrant connection and collection status
+7. Check git diff status of modified files

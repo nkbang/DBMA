@@ -1,0 +1,76 @@
+{
+  "run_id": "20260820-065445",
+  "timestamp": "2026-08-20T06:54:57Z",
+  "phase": "A",
+  "overall_status": "GREEN",
+  "total_scripts": 8,
+  "passed": 8,
+  "failed": 0,
+  "skipped": 0,
+  "steps": [
+    {
+      "script": "00_baseline.sh",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "=== 00_baseline.sh: Gate 1 Baseline Verification ===\n[1] Current HEAD: 722b5c1\n[2] Working tree clean: false\n[3] Baseline commit 598fbdc: 598fbdc\n    Message: 598fbdc docs(end-user-package): Gate1 G1-G3/DoD#7 완료 — 버전 SSOT, README/INSTALL 갱신, 브랜드 정정\n[4] Commits between baseline and HEAD: 112\nEvidence written to: /Users/David/DBMA/scripts/gate2/../../evidence/gate2/20260820-015445/00_baseline.json\n=== Done ===\n",
+      "stderr": "",
+      "stdout_sha256": "c2b4152676edd78400a73d48f34d39ba457f007b89c10fc5e128b835cfdfc05c"
+    },
+    {
+      "script": "10_packaging_audit.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Result: PASS\nEvidence written to: /Users/David/DBMA/evidence/gate2/10_packaging_audit.json\n",
+      "stderr": "",
+      "stdout_sha256": "5e0644e6f963eca068e4b0606c7a0fe9c11a44837b072986efc88516d81eb2ef"
+    },
+    {
+      "script": "30_package_integrity.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Result: PASS\nArchive members: 1292\nEvidence written to: /Users/David/DBMA/evidence/gate2/30_package_integrity.json\n",
+      "stderr": "",
+      "stdout_sha256": "6d8e0243ca8ee1f017b2e4ac25e9bc94f1dbfb323f656ba2ee931d92a4553e8e"
+    },
+    {
+      "script": "50_runtime_smoke.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Result: PASS\nEvidence written to: /Users/David/DBMA/evidence/gate2/50_runtime_smoke.json\n",
+      "stderr": "",
+      "stdout_sha256": "3f89d0231c460de41a17bf7223a2af737c3a962d213035454ced8674c52fd8cb"
+    },
+    {
+      "script": "60_ui_pages.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Result: PASS\nExpected pages (9): ['ui.pages.dashboard', 'ui.pages.library', 'ui.pages.processing', 'ui.pages.research', 'ui.pages.monitor', 'ui.pages.chat', 'ui.pages.sermon_draft', 'ui.pages.sermon_review', 'ui.pages.help']\nImport errors: none\nEvidence written to: /Users/David/DBMA/evidence/gate2/60_ui_pages.json\n",
+      "stderr": "",
+      "stdout_sha256": "050a41ea8fd9cfd843b9eac5f194565baa59d304d3f4b9c7b4cf2ffd67b20578"
+    },
+    {
+      "script": "61_citation_ui.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Result: PASS\nEvidence written to: /Users/David/DBMA/evidence/gate2/61_citation_ui.json\n",
+      "stderr": "",
+      "stdout_sha256": "6582c18273abefd4012ddb30794e9c6040ac4982a8b9aeabf6484570cbaba4fb"
+    },
+    {
+      "script": "70_production_isolation.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Result: PASS\nEvidence written to: /Users/David/DBMA/evidence/gate2/70_production_isolation.json\n",
+      "stderr": "",
+      "stdout_sha256": "e71ac455bf926a2f4d9a8e58be7e9c6653bf5725e7192b51db1e5504990f51b2"
+    },
+    {
+      "script": "95_evidence_verify.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Result: PASS\nEvidence written to: /Users/David/DBMA/evidence/gate2/95_evidence_verify.json\n",
+      "stderr": "",
+      "stdout_sha256": "44c04eaa5ca4f3ddc44a94968e750cf43b573f530d75002bbd361e35f77461c2"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "CONTROL-PLANE-PILOT-040-REGRESSION",
+  "parent_task_id": "CORPUS-FACTORY-INTEGRATION-PILOT-001",
+  "depends_on": [],
+  "title": "CFI-Pilot-001 scenario 4 — existing control-plane-pilot/pilot_echo combo still works post-change",
+  "owner": "CUE",
+  "state": "IDLE",
+  "phase": "PILOT",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "task_type": "pilot_echo",
+  "scope": {
+    "namespace": "control-plane-pilot",
+    "allowed_paths": []
+  },
+  "authorized_by": "CUE",
+  "authorized_by_task_order": "CORPUS-FACTORY-INTEGRATION-PILOT-001",
+  "required_evidence": [
+    "gateway_transition",
+    "executor_transition",
+    "stdout",
+    "stderr",
+    "exit_code"
+  ],
+  "constraints": {
+    "max_runtime_s": 30,
+    "allow_production_paths": false
+  },
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "notes": [
+    "Scenario 4: regression check for the original control-plane-pilot/pilot_echo combination after tonight's gateway/executor changes."
+  ],
+  "automation": {
+    "state": "COMPLETED",
+    "failure_code": null,
+    "last_transition_id": "CONTROL-PLANE-PILOT-040-REGRESSION#1786971575181"
+  },
+  "failure_codes": [
+    "VALIDATION_FAILED",
+    "FILE_ERROR",
+    "PARSE_ERROR",
+    "TASK_ID_PAYLOAD_CONFLICT",
+    "TASK_TYPE_NOT_AUTHORIZED",
+    "NAMESPACE_VIOLATION",
+    "PRODUCTION_MUTATION_NOT_ALLOWED",
+    "PILOT_EXEC_FAILED",
+    "STALE_WORKER_TIMEOUT",
+    "INTERNAL_STATE_MAPPING_ERROR"
+  ]
+}

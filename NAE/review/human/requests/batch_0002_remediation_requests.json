@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0002_remediation",
+  "requests": [
+    {
+      "tsu_id": "TSU-0000247",
+      "original_claim": "그리스인들은 자기들의 언어를 이해하고 있었다.",
+      "issue_summary": "\"their own word\"(문맥상 특정 단어 Barro)가 \"자기들의 언어\"(그리스어 전반)로 범위 확대됨.",
+      "proposed_claim": "그리스인들은 자신들의 단어인 Barro가 의미하는 바를 이해하고 있었다.",
+      "decision_status": "APPROVED"
+    }
+  ]
+}

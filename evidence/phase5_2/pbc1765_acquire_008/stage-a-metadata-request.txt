@@ -1,0 +1,36 @@
+# Stage A — Metadata Preflight Request Log
+# Date: 2026-08-01
+# Source ID: PBC1765 (legacy: PBC1742)
+# Expected identifier: plainbookofconfe00phil
+
+## Request 1: Internet Archive item page
+Command: curl -sS -w "\n%{http_code}\n%{url_effective}" -o /tmp/ia_item_page.html "https://archive.org/details/plainbookofconfe00phil"
+Result: HTTP 404
+Final URL: https://archive.org/details/plainbookofconfe00phil
+
+## Request 2: Internet Archive metadata API
+Command: curl -sS -w "\n%{http_code}" "https://archive.org/metadata/plainbookofconfe00phil"
+Result: HTTP 200, body = {} (empty JSON object — item does not exist)
+
+## Request 3: Internet Archive advancedsearch API
+Command: curl -sS "https://archive.org/advancedsearch?q=Baptist+Confession+Philadelphia&fl=identifier,title,creator,pubdate,publisher,mediatype,collection&sort=downloads+desc&rows=10&output=json"
+Result: HTTP 404 (Page not found — endpoint not available)
+
+## Request 4: Internet Archive web search
+Command: curl -sS -w "\n%{http_code}\n%{url_effective}" -o /tmp/ia_search_results.html "https://archive.org/search?query=Baptist+Confession+Philadelphia+1765&and%5Bmediatype%5D%5B%5D=texts"
+Result: HTTP 200 (page rendered, but requires JavaScript for results)
+
+## Request 5: Internet Archive POST search
+Command: curl -sS "https://archive.org/search" --data-urlencode "q=Baptist Confession Philadelphia 1765" ...
+Result: HTTP 405 Not Allowed
+
+## Request 6: Open Library search
+Command: curl -sS "https://openlibrary.org/search.json?q=Baptist+Confession+Philadelphia&limit=5"
+Result: HTTP 200, found related works but NO 1765 manifestation match
+Closest matches:
+- /works/OL997746W: "A confession of faith" (1743) by Philadelphia Baptist Association
+- /works/OL27760574W: "The Philadelphia confession of faith" (1900) by Philadelphia Baptist Association
+
+## Request 7: Source registry check
+Command: cat resources/theological_sources/baptist/source_candidates.csv | grep -i "PBC1765\|PBC1742"
+Result: PBC1742 found (legacy ID), NO PBC1765 entry in registry

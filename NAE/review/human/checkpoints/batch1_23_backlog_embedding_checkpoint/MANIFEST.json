@@ -1,0 +1,63 @@
+{
+  "checkpoint_id": "NAE-BATCH1-23-BACKLOG-EMBEDDING-CHECKPOINT-001",
+  "created_at": "2026-08-12T01:51:48.639583+00:00",
+  "description": "Batch 1-23(2,038건) BGE-M3 embedding/indexing backlog 완료 이후의 immutable Production snapshot. nae-batch24-36-green-checkpoint 이후의 두 번째 체크포인트 — 전체 verified TSU(3,319건)가 최초로 100% embedding된 시점을 고정한다.",
+  "sequence": "nae-batch24-36-green-checkpoint(1,271건 Promotion) -> ADR-020 Incremental Ingestion Architecture(GREEN) -> Batch 1-23 backlog(2,038건) embedding/indexing -> 이 checkpoint",
+  "git_commit_at_checkpoint": null,
+  "production_counts": {
+    "dagg_verified": 2958,
+    "dagg_generated": 397,
+    "dagg_rejected": 22,
+    "hiscox_verified": 361,
+    "hiscox_generated": 379,
+    "total_verified": 3319
+  },
+  "embedding_backlog_processed": {
+    "scope": "Batch 1-23 (이전에 verified였으나 embedding되지 않았던 TSU)",
+    "dagg_embedded": 1682,
+    "hiscox_embedded": 356,
+    "total_embedded": 2038,
+    "embedding_errors": 0
+  },
+  "qdrant_state": {
+    "collection": "nae_tsu_v1",
+    "points_count": 3319,
+    "vector_size": 1024,
+    "distance": "Cosine",
+    "before_this_backlog": 1281,
+    "after_this_backlog": 3319
+  },
+  "file_hashes": {
+    "Dagg_Church_Order_tsu.json": "10fc58ef2f80902c967a6cf24409be78a04e993303ffcb7228853a1698516ea5",
+    "Hiscox_Standard_Manual_tsu.json": "1da2d7dd75d5235f645d5d2b22c19f865723134754e08028c93fc7d3943ceb2a",
+    "exception_queue.json": "1e940d4ae63ec7858e4bbca8ef43d1f2293ea610c7e2c526f0ae420a67d4b277"
+  },
+  "production_manifest_generation": 2,
+  "verification_chain": [
+    {
+      "step": "ADR-020 Incremental Ingestion Architecture",
+      "commit": "413eb43",
+      "result": "C1 independent audit GATE=GREEN (after 2 correction rounds)"
+    },
+    {
+      "step": "Full regression (uncapped timeout)",
+      "result": "2118 passed / 0 failed"
+    },
+    {
+      "step": "NAE Optional Module Packaging v1",
+      "commit": "7083c58",
+      "result": "PASS, 19 new tests"
+    },
+    {
+      "step": "Batch 1-23 backlog embedding (scripts/nae_incremental_ingest.py --apply)",
+      "commit": "cc78781",
+      "result": "2038/2038 embedded+indexed, 0 errors; 2 bugs found+fixed during execution (Qdrant payload limit batching, SKIP-vector loss on retry)"
+    },
+    {
+      "step": "Full regression post-backlog",
+      "result": "2120 passed / 0 failed"
+    }
+  ],
+  "final_gate": "GREEN",
+  "immutability_note": "이 디렉터리(NAE/review/human/checkpoints/batch1_23_backlog_embedding_checkpoint/)는 이후 어떤 Promotion/embedding/indexing 작업으로도 수정하지 않는다. NAE/corpus/tsu/ 바깥에 위치시켜 indexer.index_all()이 corpus identifier로 오인하지 않도록 했다(Batch 24 스냅샷 오염 사고 재발 방지 원칙 재적용)."
+}

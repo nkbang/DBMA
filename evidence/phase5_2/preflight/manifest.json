@@ -1,0 +1,41 @@
+{
+  "task_id": "NAE-CORPUS-002",
+  "task_name": "NAE Corpus Preflight — Qdrant + Source Inventory + Pipeline Readiness",
+  "agent": "C1 (Local Implementation Engineer)",
+  "date": "2026-08-01",
+  "status": "BLOCKED",
+  "blocker": "NAE/corpus/raw/ is EMPTY — no source documents collected",
+  "evidence_files": [
+    "qdrant_preflight.md",
+    "source_inventory.csv",
+    "corpus_state.md",
+    "pipeline_readiness.md",
+    "commands_and_outputs.md"
+  ],
+  "qdrant": {
+    "endpoint": "http://localhost:7333",
+    "version": "1.18.2",
+    "collection": "nae_tsu_v1",
+    "points_count": 0,
+    "vector_size": 1024,
+    "distance": "Cosine",
+    "health": "OK"
+  },
+  "corpus_state": {
+    "raw_files": 0,
+    "clean_text_files": 0,
+    "tsu_files": 0,
+    "metadata_files": 0,
+    "embedding_files": 0,
+    "canonical_files": 0,
+    "manifest_files": 0,
+    "report_files": 0
+  },
+  "pipeline_status": {
+    "canonical": "BLOCKED",
+    "tsu": "BLOCKED",
+    "embed": "BLOCKED",
+    "index": "BLOCKED"
+  },
+  "next_action": "Collect source documents into NAE/corpus/raw/archive_org/ before any corpus build can proceed"
+}

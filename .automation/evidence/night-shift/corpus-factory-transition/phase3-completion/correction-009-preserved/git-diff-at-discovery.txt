@@ -1,0 +1,2971 @@
+diff --git a/NAE/corpus/tsu/tsu_id_state.json b/NAE/corpus/tsu/tsu_id_state.json
+index 3e3f70e..19cee63 100644
+--- a/NAE/corpus/tsu/tsu_id_state.json
++++ b/NAE/corpus/tsu/tsu_id_state.json
+@@ -1 +1 @@
+-{"next_id": 4123}
+\ No newline at end of file
++{"next_id": 7766}
+\ No newline at end of file
+diff --git a/NAE/pipeline/tsu/runner.py b/NAE/pipeline/tsu/runner.py
+index 5536722..77953d9 100644
+--- a/NAE/pipeline/tsu/runner.py
++++ b/NAE/pipeline/tsu/runner.py
+@@ -9,6 +9,11 @@ mapping_status=manual-confirmed` reach `builder.build_tsu_for_identifier`.
+ `build_tsu_for_all` both untouched) — `--legacy-scan` still exposes the
+ old direct-scan behavior (`build_tsu_for_all`) for debugging/fallback,
+ so that function stays reachable and is not dead code.
++
++Phase 3 worker wiring:
++- `--enqueue <identifier>`: enqueue candidates from canonical.json as READY
++- `--worker-mode`: process READY candidates through the TSU Extraction Queue Worker
++- `--retry-failed <id>`: manually retry a FAILED candidate (explicit human trigger only)
+ """
+ from __future__ import annotations
+ 
+@@ -16,17 +21,33 @@ import argparse
+ import json
+ 
+ from . import builder, config, gate_adapter
++from .worker import worker as tsu_worker
++from .worker import loader as tsu_loader
+ 
+ 
+ def build_arg_parser() -> argparse.ArgumentParser:
+     parser = argparse.ArgumentParser(description="NAE TSU Builder")
++
++    # Existing options (unchanged — backward compatible)
+     parser.add_argument("--identifier", help="Process a single identifier only (bypasses the Gate — explicit override)")
+     parser.add_argument("--model", default=config.DEFAULT_CLAIM_MODEL)
+     parser.add_argument("--max-candidates", type=int, default=None,
+-                         help="Limit claim-extraction LLM calls per item (cost/time control)")
++                        help="Limit claim-extraction LLM calls per item (cost/time control)")
+     parser.add_argument("--legacy-scan", action="store_true",
+-                         help="Bypass the Crosswalk Gate and scan NAE/corpus/canonical/ directly "
+-                              "(pre-wiring behavior, build_tsu_for_all) — for debugging/fallback only")
++                        help="Bypass the Crosswalk Gate and scan NAE/corpus/canonical/ directly "
++                             "(pre-wiring behavior, build_tsu_for_all) — for debugging/fallback only")
++
++    # Phase 3 worker options (separate steps — no auto-chaining)
++    parser.add_argument("--enqueue", type=str, metavar="IDENTIFIER",
++                        help="Enqueue candidates from canonical.json as READY state. "
++                             "Does NOT process them — use --worker-mode separately.")
++    parser.add_argument("--worker-mode", action="store_true",
++                        help="Process READY candidates through the TSU Extraction Queue Worker "
++                             "(process_batch with READY candidates)")
++    parser.add_argument("--retry-failed", type=str, metavar="ID",
++                        help="Manually retry a FAILED candidate by candidate_id. "
++                             "Requires explicit human trigger — no batch auto-retry.")
++
+     return parser
+ 
+ 
+@@ -53,9 +74,123 @@ def _run_gate_wired(model: str, max_candidates: int | None) -> dict:
+     }
+ 
+ 
++def _run_enqueue(identifier: str, max_candidates: int | None) -> dict:
++    """Enqueue candidates from canonical.json as READY state."""
++    state_store = tsu_worker.TSUExtractionStateStore()
++    before_summary = state_store.summary()
++
++    new_count = tsu_loader.enqueue_from_canonical(
++        identifier=identifier,
++        state_store=state_store,
++        max_candidates=max_candidates,
++    )
++
++    after_summary = state_store.summary()
++
++    return {
++        "enqueue": True,
++        "identifier": identifier,
++        "new_ready": new_count,
++        "before_summary": before_summary,
++        "after_summary": after_summary,
++    }
++
++
++def _run_worker_mode(model: str) -> dict:
++    """Worker mode: process READY candidates through the TSU Extraction Queue."""
++    state_store = tsu_worker.TSUExtractionStateStore()
++    exception_queue = tsu_worker.TSUExtractionExceptionQueue()
++
++    # Get READY candidates from state store
++    ready_ids = state_store.entries_by_state(tsu_worker.TSUExtractionState.READY)
++
++    if not ready_ids:
++        return {
++            "worker_mode": True,
++            "ready_candidates": 0,
++            "processed": 0,
++            "message": "No READY candidates in queue.",
++        }
++
++    # Build candidate list from state store entries (use real text from metadata)
++    candidates = []
++    for cid in ready_ids:
++        entry = state_store.get_entry(cid)
++        if entry and entry.state == tsu_worker.TSUExtractionState.READY:
++            meta = entry.metadata or {}
++            candidates.append({
++                "candidate_id": cid,
++                "text": meta.get("text", f"candidate_text_for_{cid}"),
++                "context_before": meta.get("context_before", ""),
++                "context_after": meta.get("context_after", ""),
++                "candidate_scriptures": meta.get("candidate_scriptures", []),
++                "candidate_citations": meta.get("candidate_citations", []),
++            })
++
++    result = tsu_worker.process_batch(
++        candidates=candidates,
++        model=model,
++        state_store=state_store,
++        exception_queue=exception_queue,
++    )
++
++    return {
++        "worker_mode": True,
++        "total": result.total,
++        "extracted": result.extracted,
++        "failed": result.failed,
++        "success_rate": result.success_rate,
++        "elapsed_seconds": round(result.elapsed_seconds, 3),
++        "queue_depth_after": tsu_worker.get_queue_depth(state_store),
++    }
++
++
++def _run_retry_failed(candidate_id: str) -> dict:
++    """Manually retry a FAILED candidate (explicit human trigger only)."""
++    state_store = tsu_worker.TSUExtractionStateStore()
++    exception_queue = tsu_worker.TSUExtractionExceptionQueue()
++
++    current_state = state_store.get_state(candidate_id)
++    if current_state is None:
++        return {
++            "retry_failed": True,
++            "candidate_id": candidate_id,
++            "success": False,
++            "message": f"candidate_id '{candidate_id}' not found in state store.",
++        }
++
++    ok, msg = tsu_worker.retry_failed(
++        candidate_id=candidate_id,
++        state_store=state_store,
++        exception_queue=exception_queue,
++    )
++
++    new_state = state_store.get_state(candidate_id)
++
++    return {
++        "retry_failed": True,
++        "candidate_id": candidate_id,
++        "previous_state": current_state.value,
++        "new_state": new_state.value if new_state else None,
++        "success": ok,
++        "message": msg if not ok else f"Retried {candidate_id}: FAILED -> READY",
++    }
++
++
+ def main(argv: list[str] | None = None) -> int:
+     args = build_arg_parser().parse_args(argv)
+-    if args.identifier:
++
++    # Priority: --retry-failed > --enqueue > --worker-mode > existing paths
++    if args.retry_failed:
++        result = _run_retry_failed(args.retry_failed)
++        print(json.dumps(result, ensure_ascii=False, indent=2))
++    elif args.enqueue:
++        result = _run_enqueue(args.enqueue, args.max_candidates)
++        print(json.dumps(result, ensure_ascii=False, indent=2))
++    elif args.worker_mode:
++        result = _run_worker_mode(args.model)
++        print(json.dumps(result, ensure_ascii=False, indent=2))
++    elif args.identifier:
+         # 명시적 단건 지정 — Gate를 의도적으로 우회하는 override 경로
+         # (기존 동작 그대로, 이번 Wiring 대상이 아님).
+         result = builder.build_tsu_for_identifier(
+diff --git a/test_seal_0ofubaky/seal_test_pkg/data.json b/test_seal_0ofubaky/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_0ofubaky/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_0ofubaky/seal_test_pkg/manifest.json b/test_seal_0ofubaky/seal_test_pkg/manifest.json
+deleted file mode 100644
+index afe7c51..0000000
+--- a/test_seal_0ofubaky/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T12:45:25Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_0ofubaky/seal_test_pkg/report.md b/test_seal_0ofubaky/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_0ofubaky/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_1vov_dtn/seal_test_pkg/data.json b/test_seal_1vov_dtn/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_1vov_dtn/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_1vov_dtn/seal_test_pkg/manifest.json b/test_seal_1vov_dtn/seal_test_pkg/manifest.json
+deleted file mode 100644
+index cbf7cb8..0000000
+--- a/test_seal_1vov_dtn/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T20:28:40Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_1vov_dtn/seal_test_pkg/report.md b/test_seal_1vov_dtn/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_1vov_dtn/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_29chbzta/seal_test_pkg/data.json b/test_seal_29chbzta/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_29chbzta/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_29chbzta/seal_test_pkg/manifest.json b/test_seal_29chbzta/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 9ce4411..0000000
+--- a/test_seal_29chbzta/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:57:03Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_29chbzta/seal_test_pkg/report.md b/test_seal_29chbzta/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_29chbzta/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_2evlbrgp/seal_test_pkg/data.json b/test_seal_2evlbrgp/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_2evlbrgp/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_2evlbrgp/seal_test_pkg/manifest.json b/test_seal_2evlbrgp/seal_test_pkg/manifest.json
+deleted file mode 100644
+index ca726db..0000000
+--- a/test_seal_2evlbrgp/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T19:25:08Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_2evlbrgp/seal_test_pkg/report.md b/test_seal_2evlbrgp/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_2evlbrgp/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_3wis4z81/seal_test_pkg/data.json b/test_seal_3wis4z81/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_3wis4z81/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_3wis4z81/seal_test_pkg/manifest.json b/test_seal_3wis4z81/seal_test_pkg/manifest.json
+deleted file mode 100644
+index cca841e..0000000
+--- a/test_seal_3wis4z81/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T21:18:34Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_3wis4z81/seal_test_pkg/report.md b/test_seal_3wis4z81/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_3wis4z81/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_51l1zxqe/seal_test_pkg/data.json b/test_seal_51l1zxqe/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_51l1zxqe/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_51l1zxqe/seal_test_pkg/manifest.json b/test_seal_51l1zxqe/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 9aaacb9..0000000
+--- a/test_seal_51l1zxqe/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T19:42:44Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_51l1zxqe/seal_test_pkg/report.md b/test_seal_51l1zxqe/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_51l1zxqe/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_5agnu8j5/seal_test_pkg/data.json b/test_seal_5agnu8j5/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_5agnu8j5/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_5agnu8j5/seal_test_pkg/manifest.json b/test_seal_5agnu8j5/seal_test_pkg/manifest.json
+deleted file mode 100644
+index a4dfcec..0000000
+--- a/test_seal_5agnu8j5/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:00:56Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_5agnu8j5/seal_test_pkg/report.md b/test_seal_5agnu8j5/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_5agnu8j5/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_65nolbrj/seal_test_pkg/data.json b/test_seal_65nolbrj/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_65nolbrj/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_65nolbrj/seal_test_pkg/manifest.json b/test_seal_65nolbrj/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 222aab0..0000000
+--- a/test_seal_65nolbrj/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T06:17:12Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_65nolbrj/seal_test_pkg/report.md b/test_seal_65nolbrj/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_65nolbrj/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_6lou_lgb/seal_test_pkg/data.json b/test_seal_6lou_lgb/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_6lou_lgb/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_6lou_lgb/seal_test_pkg/manifest.json b/test_seal_6lou_lgb/seal_test_pkg/manifest.json
+deleted file mode 100644
+index e43d977..0000000
+--- a/test_seal_6lou_lgb/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T03:04:43Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_6lou_lgb/seal_test_pkg/report.md b/test_seal_6lou_lgb/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_6lou_lgb/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_7im6yigm/seal_test_pkg/data.json b/test_seal_7im6yigm/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_7im6yigm/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_7im6yigm/seal_test_pkg/manifest.json b/test_seal_7im6yigm/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 05073c1..0000000
+--- a/test_seal_7im6yigm/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T20:48:30Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_7im6yigm/seal_test_pkg/report.md b/test_seal_7im6yigm/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_7im6yigm/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_8afxnqby/seal_test_pkg/data.json b/test_seal_8afxnqby/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_8afxnqby/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_8afxnqby/seal_test_pkg/manifest.json b/test_seal_8afxnqby/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 25ad0d6..0000000
+--- a/test_seal_8afxnqby/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T04:12:54Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_8afxnqby/seal_test_pkg/report.md b/test_seal_8afxnqby/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_8afxnqby/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_9b3_vt27/seal_test_pkg/data.json b/test_seal_9b3_vt27/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_9b3_vt27/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_9b3_vt27/seal_test_pkg/manifest.json b/test_seal_9b3_vt27/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 3a42c43..0000000
+--- a/test_seal_9b3_vt27/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T18:37:21Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_9b3_vt27/seal_test_pkg/report.md b/test_seal_9b3_vt27/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_9b3_vt27/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_9fh6qgba/seal_test_pkg/data.json b/test_seal_9fh6qgba/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_9fh6qgba/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_9fh6qgba/seal_test_pkg/manifest.json b/test_seal_9fh6qgba/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 825489a..0000000
+--- a/test_seal_9fh6qgba/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T23:23:15Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_9fh6qgba/seal_test_pkg/report.md b/test_seal_9fh6qgba/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_9fh6qgba/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_9n4649al/seal_test_pkg/data.json b/test_seal_9n4649al/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_9n4649al/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_9n4649al/seal_test_pkg/manifest.json b/test_seal_9n4649al/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 8551ab2..0000000
+--- a/test_seal_9n4649al/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T01:18:08Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_9n4649al/seal_test_pkg/report.md b/test_seal_9n4649al/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_9n4649al/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal__htp_0f1/seal_test_pkg/data.json b/test_seal__htp_0f1/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal__htp_0f1/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal__htp_0f1/seal_test_pkg/manifest.json b/test_seal__htp_0f1/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 9f8bb67..0000000
+--- a/test_seal__htp_0f1/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T03:49:01Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal__htp_0f1/seal_test_pkg/report.md b/test_seal__htp_0f1/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal__htp_0f1/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_aukcs678/seal_test_pkg/data.json b/test_seal_aukcs678/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_aukcs678/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_aukcs678/seal_test_pkg/manifest.json b/test_seal_aukcs678/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 1495f22..0000000
+--- a/test_seal_aukcs678/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T05:54:53Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_aukcs678/seal_test_pkg/report.md b/test_seal_aukcs678/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_aukcs678/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_csuxn8el/seal_test_pkg/data.json b/test_seal_csuxn8el/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_csuxn8el/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_csuxn8el/seal_test_pkg/manifest.json b/test_seal_csuxn8el/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 1083e58..0000000
+--- a/test_seal_csuxn8el/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T00:15:14Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_csuxn8el/seal_test_pkg/report.md b/test_seal_csuxn8el/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_csuxn8el/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_ct5936wv/seal_test_pkg/data.json b/test_seal_ct5936wv/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_ct5936wv/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_ct5936wv/seal_test_pkg/manifest.json b/test_seal_ct5936wv/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 91c9bd9..0000000
+--- a/test_seal_ct5936wv/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T07:58:19Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_ct5936wv/seal_test_pkg/report.md b/test_seal_ct5936wv/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_ct5936wv/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_dysm4858/seal_test_pkg/data.json b/test_seal_dysm4858/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_dysm4858/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_dysm4858/seal_test_pkg/manifest.json b/test_seal_dysm4858/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 4dc6c9a..0000000
+--- a/test_seal_dysm4858/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T13:15:29Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_dysm4858/seal_test_pkg/report.md b/test_seal_dysm4858/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_dysm4858/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_f7sa_6uw/seal_test_pkg/data.json b/test_seal_f7sa_6uw/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_f7sa_6uw/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_f7sa_6uw/seal_test_pkg/manifest.json b/test_seal_f7sa_6uw/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 26235f4..0000000
+--- a/test_seal_f7sa_6uw/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T05:58:52Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_f7sa_6uw/seal_test_pkg/report.md b/test_seal_f7sa_6uw/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_f7sa_6uw/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_f906sl18/seal_test_pkg/data.json b/test_seal_f906sl18/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_f906sl18/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_f906sl18/seal_test_pkg/manifest.json b/test_seal_f906sl18/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 541ed80..0000000
+--- a/test_seal_f906sl18/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T06:48:20Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_f906sl18/seal_test_pkg/report.md b/test_seal_f906sl18/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_f906sl18/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_gutaujxe/seal_test_pkg/data.json b/test_seal_gutaujxe/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_gutaujxe/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_gutaujxe/seal_test_pkg/manifest.json b/test_seal_gutaujxe/seal_test_pkg/manifest.json
+deleted file mode 100644
+index b37bfdd..0000000
+--- a/test_seal_gutaujxe/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T07:00:21Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_gutaujxe/seal_test_pkg/report.md b/test_seal_gutaujxe/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_gutaujxe/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_h0wr2p4k/seal_test_pkg/data.json b/test_seal_h0wr2p4k/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_h0wr2p4k/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_h0wr2p4k/seal_test_pkg/manifest.json b/test_seal_h0wr2p4k/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 9dd1f01..0000000
+--- a/test_seal_h0wr2p4k/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T03:45:36Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_h0wr2p4k/seal_test_pkg/report.md b/test_seal_h0wr2p4k/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_h0wr2p4k/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_hf7xocp7/seal_test_pkg/data.json b/test_seal_hf7xocp7/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_hf7xocp7/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_hf7xocp7/seal_test_pkg/manifest.json b/test_seal_hf7xocp7/seal_test_pkg/manifest.json
+deleted file mode 100644
+index cf63c55..0000000
+--- a/test_seal_hf7xocp7/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T07:32:47Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_hf7xocp7/seal_test_pkg/report.md b/test_seal_hf7xocp7/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_hf7xocp7/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_hfsi8m8j/seal_test_pkg/data.json b/test_seal_hfsi8m8j/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_hfsi8m8j/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_hfsi8m8j/seal_test_pkg/manifest.json b/test_seal_hfsi8m8j/seal_test_pkg/manifest.json
+deleted file mode 100644
+index bd6c749..0000000
+--- a/test_seal_hfsi8m8j/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:05:39Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_hfsi8m8j/seal_test_pkg/report.md b/test_seal_hfsi8m8j/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_hfsi8m8j/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_hvux41yv/seal_test_pkg/data.json b/test_seal_hvux41yv/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_hvux41yv/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_hvux41yv/seal_test_pkg/manifest.json b/test_seal_hvux41yv/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 4ca0aef..0000000
+--- a/test_seal_hvux41yv/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T20:12:41Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_hvux41yv/seal_test_pkg/report.md b/test_seal_hvux41yv/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_hvux41yv/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_imyjcc6e/seal_test_pkg/data.json b/test_seal_imyjcc6e/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_imyjcc6e/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_imyjcc6e/seal_test_pkg/manifest.json b/test_seal_imyjcc6e/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 928c27f..0000000
+--- a/test_seal_imyjcc6e/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T00:18:13Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_imyjcc6e/seal_test_pkg/report.md b/test_seal_imyjcc6e/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_imyjcc6e/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_jnx8t29e/seal_test_pkg/data.json b/test_seal_jnx8t29e/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_jnx8t29e/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_jnx8t29e/seal_test_pkg/manifest.json b/test_seal_jnx8t29e/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 183a8e8..0000000
+--- a/test_seal_jnx8t29e/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T07:28:35Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_jnx8t29e/seal_test_pkg/report.md b/test_seal_jnx8t29e/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_jnx8t29e/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_jrbcbozo/seal_test_pkg/data.json b/test_seal_jrbcbozo/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_jrbcbozo/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_jrbcbozo/seal_test_pkg/manifest.json b/test_seal_jrbcbozo/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 6fd791a..0000000
+--- a/test_seal_jrbcbozo/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T19:34:50Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_jrbcbozo/seal_test_pkg/report.md b/test_seal_jrbcbozo/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_jrbcbozo/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_ktn_g414/seal_test_pkg/data.json b/test_seal_ktn_g414/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_ktn_g414/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_ktn_g414/seal_test_pkg/manifest.json b/test_seal_ktn_g414/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 27a55a6..0000000
+--- a/test_seal_ktn_g414/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T16:42:48Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_ktn_g414/seal_test_pkg/report.md b/test_seal_ktn_g414/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_ktn_g414/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_lelqv7v2/seal_test_pkg/data.json b/test_seal_lelqv7v2/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_lelqv7v2/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_lelqv7v2/seal_test_pkg/manifest.json b/test_seal_lelqv7v2/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 82aff05..0000000
+--- a/test_seal_lelqv7v2/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T00:09:42Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_lelqv7v2/seal_test_pkg/report.md b/test_seal_lelqv7v2/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_lelqv7v2/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_m2pqf25n/seal_test_pkg/data.json b/test_seal_m2pqf25n/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_m2pqf25n/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_m2pqf25n/seal_test_pkg/manifest.json b/test_seal_m2pqf25n/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 5339cb3..0000000
+--- a/test_seal_m2pqf25n/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T07:08:53Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_m2pqf25n/seal_test_pkg/report.md b/test_seal_m2pqf25n/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_m2pqf25n/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_m5x2t4mo/seal_test_pkg/data.json b/test_seal_m5x2t4mo/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_m5x2t4mo/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_m5x2t4mo/seal_test_pkg/manifest.json b/test_seal_m5x2t4mo/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 33700bf..0000000
+--- a/test_seal_m5x2t4mo/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T22:37:50Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_m5x2t4mo/seal_test_pkg/report.md b/test_seal_m5x2t4mo/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_m5x2t4mo/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_mb2p0sb5/seal_test_pkg/data.json b/test_seal_mb2p0sb5/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_mb2p0sb5/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_mb2p0sb5/seal_test_pkg/manifest.json b/test_seal_mb2p0sb5/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 1eac309..0000000
+--- a/test_seal_mb2p0sb5/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T00:47:33Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_mb2p0sb5/seal_test_pkg/report.md b/test_seal_mb2p0sb5/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_mb2p0sb5/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_mvxj5dzd/seal_test_pkg/data.json b/test_seal_mvxj5dzd/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_mvxj5dzd/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_mvxj5dzd/seal_test_pkg/manifest.json b/test_seal_mvxj5dzd/seal_test_pkg/manifest.json
+deleted file mode 100644
+index fca4377..0000000
+--- a/test_seal_mvxj5dzd/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:52:22Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_mvxj5dzd/seal_test_pkg/report.md b/test_seal_mvxj5dzd/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_mvxj5dzd/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_n2vcxqlk/seal_test_pkg/data.json b/test_seal_n2vcxqlk/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_n2vcxqlk/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_n2vcxqlk/seal_test_pkg/manifest.json b/test_seal_n2vcxqlk/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 2e5d070..0000000
+--- a/test_seal_n2vcxqlk/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T07:46:54Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_n2vcxqlk/seal_test_pkg/report.md b/test_seal_n2vcxqlk/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_n2vcxqlk/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_pnsw2c96/seal_test_pkg/data.json b/test_seal_pnsw2c96/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_pnsw2c96/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_pnsw2c96/seal_test_pkg/manifest.json b/test_seal_pnsw2c96/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 1e9443c..0000000
+--- a/test_seal_pnsw2c96/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T08:05:11Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_pnsw2c96/seal_test_pkg/report.md b/test_seal_pnsw2c96/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_pnsw2c96/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_q3a0s3jp/seal_test_pkg/data.json b/test_seal_q3a0s3jp/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_q3a0s3jp/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_q3a0s3jp/seal_test_pkg/manifest.json b/test_seal_q3a0s3jp/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 5a134ea..0000000
+--- a/test_seal_q3a0s3jp/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T01:32:44Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_q3a0s3jp/seal_test_pkg/report.md b/test_seal_q3a0s3jp/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_q3a0s3jp/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_qgfec9iy/seal_test_pkg/data.json b/test_seal_qgfec9iy/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_qgfec9iy/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_qgfec9iy/seal_test_pkg/manifest.json b/test_seal_qgfec9iy/seal_test_pkg/manifest.json
+deleted file mode 100644
+index c92bc3d..0000000
+--- a/test_seal_qgfec9iy/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:47:22Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_qgfec9iy/seal_test_pkg/report.md b/test_seal_qgfec9iy/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_qgfec9iy/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_qu1l2lbc/seal_test_pkg/data.json b/test_seal_qu1l2lbc/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_qu1l2lbc/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_qu1l2lbc/seal_test_pkg/manifest.json b/test_seal_qu1l2lbc/seal_test_pkg/manifest.json
+deleted file mode 100644
+index aff5a85..0000000
+--- a/test_seal_qu1l2lbc/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T15:37:01Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_qu1l2lbc/seal_test_pkg/report.md b/test_seal_qu1l2lbc/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_qu1l2lbc/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_qyywk36f/seal_test_pkg/data.json b/test_seal_qyywk36f/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_qyywk36f/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_qyywk36f/seal_test_pkg/manifest.json b/test_seal_qyywk36f/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 45576a8..0000000
+--- a/test_seal_qyywk36f/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T19:36:01Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_qyywk36f/seal_test_pkg/report.md b/test_seal_qyywk36f/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_qyywk36f/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_r2gl62hc/seal_test_pkg/data.json b/test_seal_r2gl62hc/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_r2gl62hc/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_r2gl62hc/seal_test_pkg/manifest.json b/test_seal_r2gl62hc/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 49a0f97..0000000
+--- a/test_seal_r2gl62hc/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T06:30:59Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_r2gl62hc/seal_test_pkg/report.md b/test_seal_r2gl62hc/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_r2gl62hc/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_r4p2tiuz/seal_test_pkg/data.json b/test_seal_r4p2tiuz/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_r4p2tiuz/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_r4p2tiuz/seal_test_pkg/manifest.json b/test_seal_r4p2tiuz/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 64c27c5..0000000
+--- a/test_seal_r4p2tiuz/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T06:41:29Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_r4p2tiuz/seal_test_pkg/report.md b/test_seal_r4p2tiuz/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_r4p2tiuz/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_rttpbnqw/seal_test_pkg/data.json b/test_seal_rttpbnqw/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_rttpbnqw/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_rttpbnqw/seal_test_pkg/manifest.json b/test_seal_rttpbnqw/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 26e4917..0000000
+--- a/test_seal_rttpbnqw/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T00:39:00Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_rttpbnqw/seal_test_pkg/report.md b/test_seal_rttpbnqw/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_rttpbnqw/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_tm3xsx06/seal_test_pkg/data.json b/test_seal_tm3xsx06/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_tm3xsx06/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_tm3xsx06/seal_test_pkg/manifest.json b/test_seal_tm3xsx06/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 5d0b4d7..0000000
+--- a/test_seal_tm3xsx06/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T00:32:17Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_tm3xsx06/seal_test_pkg/report.md b/test_seal_tm3xsx06/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_tm3xsx06/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_u5ey1bp9/seal_test_pkg/data.json b/test_seal_u5ey1bp9/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_u5ey1bp9/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_u5ey1bp9/seal_test_pkg/manifest.json b/test_seal_u5ey1bp9/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 15377c6..0000000
+--- a/test_seal_u5ey1bp9/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T01:07:16Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_u5ey1bp9/seal_test_pkg/report.md b/test_seal_u5ey1bp9/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_u5ey1bp9/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_u_kkc0sc/seal_test_pkg/data.json b/test_seal_u_kkc0sc/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_u_kkc0sc/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_u_kkc0sc/seal_test_pkg/manifest.json b/test_seal_u_kkc0sc/seal_test_pkg/manifest.json
+deleted file mode 100644
+index bf45fa9..0000000
+--- a/test_seal_u_kkc0sc/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T13:10:12Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_u_kkc0sc/seal_test_pkg/report.md b/test_seal_u_kkc0sc/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_u_kkc0sc/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_ue73fxm8/seal_test_pkg/data.json b/test_seal_ue73fxm8/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_ue73fxm8/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_ue73fxm8/seal_test_pkg/manifest.json b/test_seal_ue73fxm8/seal_test_pkg/manifest.json
+deleted file mode 100644
+index ce4ab89..0000000
+--- a/test_seal_ue73fxm8/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T05:51:32Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_ue73fxm8/seal_test_pkg/report.md b/test_seal_ue73fxm8/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_ue73fxm8/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_v4y0nl1o/seal_test_pkg/data.json b/test_seal_v4y0nl1o/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_v4y0nl1o/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_v4y0nl1o/seal_test_pkg/manifest.json b/test_seal_v4y0nl1o/seal_test_pkg/manifest.json
+deleted file mode 100644
+index f2e101f..0000000
+--- a/test_seal_v4y0nl1o/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T07:21:06Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_v4y0nl1o/seal_test_pkg/report.md b/test_seal_v4y0nl1o/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_v4y0nl1o/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_v5zabv3y/seal_test_pkg/data.json b/test_seal_v5zabv3y/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_v5zabv3y/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_v5zabv3y/seal_test_pkg/manifest.json b/test_seal_v5zabv3y/seal_test_pkg/manifest.json
+deleted file mode 100644
+index c720ec2..0000000
+--- a/test_seal_v5zabv3y/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:15:32Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_v5zabv3y/seal_test_pkg/report.md b/test_seal_v5zabv3y/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_v5zabv3y/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_vyzgp7ow/seal_test_pkg/data.json b/test_seal_vyzgp7ow/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_vyzgp7ow/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_vyzgp7ow/seal_test_pkg/manifest.json b/test_seal_vyzgp7ow/seal_test_pkg/manifest.json
+deleted file mode 100644
+index 3e1d5eb..0000000
+--- a/test_seal_vyzgp7ow/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T20:21:16Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_vyzgp7ow/seal_test_pkg/report.md b/test_seal_vyzgp7ow/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_vyzgp7ow/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_wpl231g1/seal_test_pkg/data.json b/test_seal_wpl231g1/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_wpl231g1/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_wpl231g1/seal_test_pkg/manifest.json b/test_seal_wpl231g1/seal_test_pkg/manifest.json
+deleted file mode 100644
+index b03fb48..0000000
+--- a/test_seal_wpl231g1/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T05:24:44Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_wpl231g1/seal_test_pkg/report.md b/test_seal_wpl231g1/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_wpl231g1/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_x1x7pi6i/seal_test_pkg/data.json b/test_seal_x1x7pi6i/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_x1x7pi6i/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_x1x7pi6i/seal_test_pkg/manifest.json b/test_seal_x1x7pi6i/seal_test_pkg/manifest.json
+deleted file mode 100644
+index e437bb2..0000000
+--- a/test_seal_x1x7pi6i/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T03:55:45Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_x1x7pi6i/seal_test_pkg/report.md b/test_seal_x1x7pi6i/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_x1x7pi6i/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_xeel1x4_/seal_test_pkg/data.json b/test_seal_xeel1x4_/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_xeel1x4_/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_xeel1x4_/seal_test_pkg/manifest.json b/test_seal_xeel1x4_/seal_test_pkg/manifest.json
+deleted file mode 100644
+index f283268..0000000
+--- a/test_seal_xeel1x4_/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T14:42:26Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_xeel1x4_/seal_test_pkg/report.md b/test_seal_xeel1x4_/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_xeel1x4_/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_xywy6len/seal_test_pkg/data.json b/test_seal_xywy6len/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_xywy6len/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_xywy6len/seal_test_pkg/manifest.json b/test_seal_xywy6len/seal_test_pkg/manifest.json
+deleted file mode 100644
+index a30578d..0000000
+--- a/test_seal_xywy6len/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:19:02Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_xywy6len/seal_test_pkg/report.md b/test_seal_xywy6len/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_xywy6len/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_y7zdop82/seal_test_pkg/data.json b/test_seal_y7zdop82/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_y7zdop82/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_y7zdop82/seal_test_pkg/manifest.json b/test_seal_y7zdop82/seal_test_pkg/manifest.json
+deleted file mode 100644
+index bbaafa1..0000000
+--- a/test_seal_y7zdop82/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-11T06:02:48Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_y7zdop82/seal_test_pkg/report.md b/test_seal_y7zdop82/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_y7zdop82/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_zocp82af/seal_test_pkg/data.json b/test_seal_zocp82af/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_zocp82af/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_zocp82af/seal_test_pkg/manifest.json b/test_seal_zocp82af/seal_test_pkg/manifest.json
+deleted file mode 100644
+index e777207..0000000
+--- a/test_seal_zocp82af/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T05:08:00Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_zocp82af/seal_test_pkg/report.md b/test_seal_zocp82af/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_zocp82af/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file
+diff --git a/test_seal_zp1cix1f/seal_test_pkg/data.json b/test_seal_zp1cix1f/seal_test_pkg/data.json
+deleted file mode 100644
+index fb25aa1..0000000
+--- a/test_seal_zp1cix1f/seal_test_pkg/data.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"test": true}
+\ No newline at end of file
+diff --git a/test_seal_zp1cix1f/seal_test_pkg/manifest.json b/test_seal_zp1cix1f/seal_test_pkg/manifest.json
+deleted file mode 100644
+index d9798bb..0000000
+--- a/test_seal_zp1cix1f/seal_test_pkg/manifest.json
++++ /dev/null
+@@ -1,24 +0,0 @@
+-{
+-  "schema_version": "1.1",
+-  "package_id": "seal_test_pkg",
+-  "generated_at_utc": "2026-08-10T04:24:16Z",
+-  "hash_algorithm": "sha256",
+-  "files": [
+-    {
+-      "path": "data.json",
+-      "sha256": "80f65706d935d3b928d95207937dd81bad43ab56cd4d3b7ed41772318e734168",
+-      "size": 14,
+-      "media_type": "application/json"
+-    },
+-    {
+-      "path": "report.md",
+-      "sha256": "7eccb7db83600b3089d9164d746b7feb730f2ecc7aa941ef25d2c3cf7ccb6e42",
+-      "size": 21,
+-      "media_type": "text/markdown"
+-    }
+-  ],
+-  "excluded_paths": [
+-    "manifest.json",
+-    "seal.json"
+-  ]
+-}
+diff --git a/test_seal_zp1cix1f/seal_test_pkg/report.md b/test_seal_zp1cix1f/seal_test_pkg/report.md
+deleted file mode 100644
+index cfb6321..0000000
+--- a/test_seal_zp1cix1f/seal_test_pkg/report.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Seal Test
+-
+-Content.
+\ No newline at end of file

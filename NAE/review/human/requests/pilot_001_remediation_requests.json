@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "pilot_id": "PILOT-001",
+  "remediation_id": "PILOT-001-REMEDIATION-001",
+  "generated_by": "CUE (claim revision proposals verbatim from human reviewer comments — no new interpretation added)",
+  "source_decisions_file": "NAE/review/human/decisions/pilot_001_decisions.json",
+  "description": "CONDITIONAL 5건에 대한 remediation 재검토 요청. proposed_claim은 원 검토자(David)가 comment에 직접 제시한 권장 수정안을 그대로 옮긴 것이며, AI가 새로 해석하거나 승인하지 않았다. Production TSU의 claim 필드는 이 단계에서 변경되지 않는다 — 재검토 후 사람이 최종 승인해야 반영된다.",
+  "items": [
+    {
+      "gate_id": "GATE-TSU-0000713-REMEDIATION-001",
+      "tsu_id": "TSU-0000713",
+      "original_claim": "초기 교회들은 서로 다른 교회들과 비교되었으며, 각 교회는 독립된 단체로서 서로 인사와 연락을 주고받았다.",
+      "issue_summary": "'서로 다른 교회들과 비교되었으며'는 발췌문 자체에 없고 바로 앞 문맥(비교 문장)에 의존함(CONTEXT_LOSS). '독립된 단체'라는 표현도 이 두 문장만으로 확증하기에는 강한 교회정치적 함의를 가질 수 있어 주의 필요.",
+      "proposed_claim": "초기 교회들은 서로 구별되는 지역 교회들로 언급되었으며, 각 교회는 인사를 주고받고 사절을 통해 상호 교제하였다.",
+      "proposed_by": "David",
+      "proposed_at": "2026-08-08",
+      "decision_status": "APPROVED"
+    },
+    {
+      "gate_id": "GATE-TSU-0000330-REMEDIATION-001",
+      "tsu_id": "TSU-0000330",
+      "original_claim": "성례의 목적을 고려할 때, 성찬에서 빵을 먹음으로써 그리스도의 죽음을 기억하는 것이 더 적절하다.",
+      "issue_summary": "'더 적절하다'의 비교 대상이 빠져 있음 — 원문은 성찬 일반이 아니라 십자가상(crucifix)을 보는 방식과의 비교를 논함. '성례'는 넓은 말인 반면 원문은 성찬의 빵 먹는 행위에 관한 구체적 논증.",
+      "proposed_claim": "성찬의 여러 목적을 고려할 때, 그리스도의 죽음을 기억하는 방식으로는 십자가상을 바라보는 것보다 성찬에서 빵을 먹는 방식이 하나님께서 정하신 더 적합한 수단이다.",
+      "proposed_claim_note": "'더 적합한'은 빵이 그리스도의 몸을 더 닮았기 때문이 아니라 성찬이 수행하는 모든 목적을 함께 충족하기 때문이라는 뜻으로 제한해야 함.",
+      "proposed_by": "David",
+      "proposed_at": "2026-08-08",
+      "decision_status": "APPROVED"
+    },
+    {
+      "gate_id": "GATE-TSU-0000033-REMEDIATION-001",
+      "tsu_id": "TSU-0000033",
+      "original_claim": "그리스도의 사랑과 복종의 강력한 동기는 우리를 위해 죽으신 그분의 사랑에서 비롯됩니다.",
+      "issue_summary": "'그리스도의 사랑과 복종'은 누구의 사랑·복종인지 문법적으로 모호함 — '그리스도께 드리는 사랑과 복종'(원문의 뜻)과 '그리스도 자신의 사랑과 복종'으로 모두 읽힐 수 있음.",
+      "proposed_claim": "우리가 그리스도를 사랑하고 그분께 순종하는 강력한 동기는, 우리를 위해 죽으심으로 나타내신 그리스도의 사랑에서 비롯됩니다.",
+      "proposed_claim_note": "사랑과 순종의 주체를 우리로, 동기의 근거를 그리스도의 자기희생적 사랑으로 명확히 함.",
+      "proposed_by": "David",
+      "proposed_at": "2026-08-08",
+      "decision_status": "APPROVED"
+    },
+    {
+      "gate_id": "GATE-TSU-0003661-REMEDIATION-001",
+      "tsu_id": "TSU-0003661",
+      "original_claim": "예수 그리스도의 이름으로 죄의 사함을 받기 위해 각자가 회개하고 세례를 받아야 한다.",
+      "issue_summary": "원문 성경 표기가 'Acts 11:38'로 잘못됨(실제로는 Acts 2:38). '세례를 통해/수단으로 죄 사함을 받는다'는 세례중생론으로 확장되면 Hiscox의 침례교 신학(세례는 상징적 의식, 세례중생론 명시적 거부)과 충돌 위험.",
+      "proposed_claim": "사도행전 2:38은 각 사람이 회개하고 예수 그리스도의 이름으로 세례를 받으며 죄 사함을 받으라는 베드로의 권면을 기록한다.",
+      "proposed_claim_note": "본문을 정확히 보고하되 세례가 죄 사함의 독립적 수단이라는 교리 해석을 불필요하게 확정하지 않음. 성경 표기 'Acts 11:38' -> 'Acts 2:38' 정정 필수(별도 metadata 정정 항목).",
+      "proposed_by": "David",
+      "proposed_at": "2026-08-08",
+      "decision_status": "APPROVED"
+    },
+    {
+      "gate_id": "GATE-TSU-0003893-REMEDIATION-001",
+      "tsu_id": "TSU-0003893",
+      "original_claim": "일부 사람들은 주님의 만찬에서 죽으신 주님을 기념하는 것을 모든 사람들이 함께 할 수 있도록 초청하는 것이 친절하고 형제적인 행동이라고 생각한다.",
+      "issue_summary": "그것이 Hiscox 자신의 결론이 아니라 그가 뒤이어 반박하는 개방 성찬 옹호자들의 논거라는 결정적 문맥이 빠져 있음 — 독자가 저자의 성찬론으로 오해할 위험.",
+      "proposed_claim": "개방 성찬을 옹호하는 일부 사람들은, 공통의 주님과 구주를 사랑한다고 고백하는 모든 이를 주님의 만찬에서 그리스도의 죽음을 기념하도록 초청하는 것이 친절하고 형제적인 행동이라고 생각한다.",
+      "proposed_claim_note": "메타문 권고: 이 진술은 Hiscox 자신의 결론이 아니라, 그가 세례를 성찬 참여의 선행 조건으로 보며 뒤이어 비판하는 개방 성찬 옹호 논거의 소개이다.",
+      "proposed_by": "David",
+      "proposed_at": "2026-08-08",
+      "decision_status": "APPROVED"
+    }
+  ]
+}

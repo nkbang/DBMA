@@ -1,0 +1,34 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/David/DBMA
+configfile: pyproject.toml
+plugins: anyio-4.14.0, cov-7.1.0, Faker-40.23.0, langsmith-0.9.1
+collected 16 items
+
+<Package DBMA>
+  <Dir tests>
+    <Module test_nae_benchmark_contract.py>
+      <Class TestLoaderValidation>
+        <Function test_loader_rejects_missing_benchmark_id>
+        <Function test_loader_rejects_invalid_question_type>
+      <Class TestLoaderMigration>
+        <Function test_migration_gold_tsu_ids_top_level>
+        <Function test_migration_gold_tsu_ids_in_expected>
+        <Function test_migration_gold_tsu_ids_both_levels_conflict>
+      <Class TestEvaluatorContract>
+        <Function test_evaluator_accepts_gold_tsu_ids_only>
+        <Function test_evaluator_rejects_removed_fields>
+      <Class TestRunnerProtocol>
+        <Function test_runner_rejects_none_retrieval>
+      <Class TestSchemaBackwardCompat>
+        <Function test_schema_backward_compatible>
+        <Function test_schema_expected_dataclass_preserves_deprecated>
+      <Class TestRequiredContractAssertions>
+        <Function test_expected_fields_do_not_affect_retrieval_metrics>
+        <Function test_empty_valid_retrieval_returns_zero_metrics>
+        <Function test_zero_gold_item_returns_zero_metrics_and_is_counted>
+        <Function test_duplicate_retrieved_ids_do_not_inflate_metrics>
+        <Function test_runner_passes_retriever_ids_to_evaluator_unchanged>
+        <Function test_no_dummy_retrieval_runtime_path>
+
+========================= 16 tests collected in 0.01s ==========================

@@ -1,0 +1,10 @@
+# Release archive export exclusions — dev-only paths not needed by the
+# End-User Package. GitHub tag tarball downloads (scripts/install_nae_beta.command)
+# and `git archive` respect export-ignore. See
+# docs/END_USER_PACKAGE_GATE2A_PACKAGING_SURFACE_AUDIT.md for the audit that
+# identified these paths (NAE/ alone is ~93.5% of git-tracked repo size and is
+# only needed by the opt-in nae_pd module, disabled by default for end users).
+
+NAE/ export-ignore
+.automation/ export-ignore
+test_seal_*/ export-ignore

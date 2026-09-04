@@ -1,0 +1,57 @@
+=== COMMITTED (git diff HEAD^ HEAD --stat) ===
+ NAE/benchmark/__init__.py                          |  33 +++
+ NAE/benchmark/datasets/.gitkeep                    |   0
+ NAE/benchmark/datasets/benchmark_v1.jsonl          |   5 +
+ NAE/benchmark/evaluator.py                         | 196 +++++++++++++++
+ NAE/benchmark/loader.py                            | 151 +++++++++++
+ NAE/benchmark/metrics.py                           | 148 +++++++++++
+ NAE/benchmark/reports/.gitkeep                     |   0
+ NAE/benchmark/runner.py                            | 214 ++++++++++++++++
+ NAE/benchmark/schema.py                            | 192 ++++++++++++++
+ .../C1-TASK-NAE-PHASE5-BENCHMARK-INFRASTRUCTURE.md | 188 ++++++++++++++
+ tests/test_nae_benchmark_evaluator.py              |  98 ++++++++
+ tests/test_nae_benchmark_loader.py                 | 228 +++++++++++++++++
+ tests/test_nae_benchmark_metrics.py                | 263 ++++++++++++++++++++
+ tests/test_nae_benchmark_runner.py                 |  89 +++++++
+ tests/test_nae_benchmark_schema.py                 | 275 +++++++++++++++++++++
+ 15 files changed, 2080 insertions(+)
+
+=== UNCOMMITTED WORKING TREE CHANGES (not part of any commit) ===
+ M NAE/benchmark/__init__.py
+ M NAE/benchmark/datasets/benchmark_v1.jsonl
+ M NAE/benchmark/loader.py
+ M NAE/benchmark/schema.py
+ M scripts/build_tsu_dataset.py
+ M tests/test_nae_benchmark_loader.py
+ M tests/test_nae_benchmark_schema.py
+?? NAE/benchmark/GOLD_BENCHMARK_AUTHORING_GUIDE.md
+?? docs/NAE_DATA_ARCHITECTURE.md
+?? docs/NAE_SOURCE_PIPELINE.md
+?? docs/NAE_SOURCE_REGISTRY_REPORT.md
+?? docs/SOURCE_ID_POLICY.md
+?? docs/agents/c1/C1-TASK-NAE-CORPUS-001-REPORT.md
+?? docs/agents/c1/C1-TASK-NAE-PHASE5-COMPLETE.md
+?? docs/agents/c1/C1-TASK-ORDER-036.md
+?? docs/agents/c1/C1-TASK-ORDER-037.md
+?? docs/agents/cue/
+?? docs/audit/
+?? docs/tasks/reports/STEP5C_REPORT.md
+?? docs/tasks/reports/STEP5_HUMAN_ACQUISITION_GUIDE.md
+?? docs/tasks/reports/STEP5_IMPORT_FORMAT_DECISION.md
+?? docs/tasks/reports/STEP5_PILOT_CHECKLIST.md
+?? docs/tasks/reports/STEP5_READINESS_REPORT.md
+?? docs/tasks/reports/STEP5_REGISTRY_TRANSITION.md
+?? docs/tasks/reports/STEP5_SOURCE_ACQUISITION_RECORD.md
+?? docs/tasks/reports/STEP5_SOURCE_COMPARISON.md
+?? docs/tasks/reports/STEP5_SOURCE_MANUAL_VERIFY.md
+?? docs/tasks/reports/STEP5_SOURCE_REGISTRY_ENTRY.md
+?? docs/tasks/reports/STEP5_SOURCE_VALIDATION_SCRIPT.md
+?? scripts/source_validator.py
+?? tests/test_build_tsu_dataset_output_path.py
+
+=== uncommitted diff --stat (NAE/benchmark only) ===
+ NAE/benchmark/__init__.py                 |  33 +++++++-
+ NAE/benchmark/datasets/benchmark_v1.jsonl |  10 +--
+ NAE/benchmark/loader.py                   |  94 +++++++++++++++++++++--
+ NAE/benchmark/schema.py                   | 123 ++++++++++++++++++++++++++++--
+ 4 files changed, 238 insertions(+), 22 deletions(-)

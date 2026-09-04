@@ -252,3 +252,10 @@ def process_document(file_path: str, chunk_size: int = 1200) -> list:
 - 설명보다 실행 가능한 결과 우선
 - 한 번에 하나씩, 차근차근
 - 실패는 기록하고 다음에 반영
+
+<!-- mermaid-ai-skills:start -->
+## Mermaid Diagrams
+
+When the user asks to create, edit, or visualize a diagram, follow the
+instructions in `.github/instructions/mermaid.instructions.md`.
+<!-- mermaid-ai-skills:end -->

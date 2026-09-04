@@ -60,16 +60,62 @@ from typing import Callable, Dict, List, Optional, Protocol, runtime_checkable
 
 from core.config import (
     DEFAULT_MIN_CHUNK_SIZE,
+    DYNAMIC_THRESHOLD_CEILING_RATIO,
+    DYNAMIC_THRESHOLD_SLOPE,
+    EMBEDDING_NGRAM_ALPHA,
+    EMBEDDING_NGRAM_SIZE,
+    EMBEDDING_SIMILARITY_DROP_THRESHOLD,
+    EMBEDDING_SIMILARITY_WEIGHT,
+    PAGE_HEADER_ARTIFACT_WEIGHT,
     SCRIPTURE_REFERENCE_HEAD_WINDOW,
     SCRIPTURE_REFERENCE_WEIGHT,
 )
+from core.embedder import get_embedder as _get_embedder
 from core.heading_provider import (
     ProviderHeading,
     _first_contained,
     _normalize_for_matching,
 )
+from core.repetition_detector import RepetitionSignal
 from core.retrieval import QueryParser
 from core.text_normalizer import _ends_like_sentence
+
+# [ADR-008 제안 3 수정, 2026-07-21] core.embedder.embed()는 문서에는
+# "폴백"으로 적혀 있지만 실제로는 legacy MiniLM(768차원)만 로드하는
+# 함수다 — core.config.EMBEDDING_DIMENSION(1024, bge-m3 기준)과 맞지
+# 않아 항상 DimensionMismatchError를 던진다. 실측(Axis 2 재측정)에서
+# 이 예외가 EmbeddingSimilarityBoundaryFeature의 안전 폴백(except
+# Exception: return 0.0)에 조용히 삼켜져, feature가 "유사도가 높아
+# 안 켜짐"이 아니라 "매 호출이 실패해 전혀 작동하지 않음" 상태였음이
+# 드러났다. core.retrieval.py가 실제로 쓰는 진입점인
+# get_embedder()(Ollama bge-m3 우선, 실패 시 MiniLM 폴백)로 교체.
+_embedder = _get_embedder()
+
+
+def _cosine_similarity(a, b) -> float:
+    import numpy as np
+
+    a = np.asarray(a, dtype=float)
+    b = np.asarray(b, dtype=float)
+    norm_a = np.linalg.norm(a)
+    norm_b = np.linalg.norm(b)
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return float(np.dot(a, b) / (norm_a * norm_b))
+
+
+def _ngram_overlap(s1: str, s2: str, n: int = EMBEDDING_NGRAM_SIZE) -> float:
+    """[SPRINT34 Option A-2] 문자 n-gram 중복률(Jaccard 유사, min-length로
+    정규화) — 임베딩이 저신호인 긴 문단에서도 표층 반복/유사 문구를 보완
+    신호로 잡는다. 둘 중 하나가 n자 미만이면 n-gram이 없어 0.0(신호
+    없음)으로 폴백."""
+    def _ngrams(s: str) -> set:
+        return {s[i : i + n] for i in range(len(s) - n + 1)}
+
+    ng1, ng2 = _ngrams(s1), _ngrams(s2)
+    if not ng1 or not ng2:
+        return 0.0
+    return len(ng1 & ng2) / min(len(ng1), len(ng2))
 
 # Same QueryParser instance role as core.tsu_builder._reference_parser —
 # a stateless parser, safe to share across scoring calls.
@@ -98,6 +144,17 @@ class BoundaryContext:
     accumulated_length: int = 0
     chunk_size: int = 0
     min_chunk_size: int = 0
+    # [ADR-008 제안 3] EmbeddingSimilarityBoundaryFeature 전용 — 현재
+    # 버퍼의 마지막 후보 텍스트(hierarchical_chunk_builder.build_chunks()
+    # 의 buf[-1]). 버퍼가 비어 있으면(문서/청크 시작 직후) 빈 문자열 —
+    # 이 경우 feature는 신호 없음(0.0)으로 안전하게 폴백한다.
+    previous_candidate_text: str = ""
+    # [ADR-011 제안 3] PageHeaderArtifactFeature 전용 — 호출자(문서 단위로
+    # 생성된 core.repetition_detector.RepetitionTracker)가 이 candidate에
+    # 대해 이미 observe()를 호출해 얻은 신호. None이면(기존 호출부) 이
+    # feature는 신호 없음(0.0)으로 안전하게 폴백한다 — 다른 feature와
+    # 동일한 계약.
+    repetition_signal: Optional[RepetitionSignal] = None
 
 
 @dataclass(frozen=True)
@@ -251,6 +308,100 @@ class ScriptureReferenceBoundaryFeature:
         return 1.0 if refs else 0.0
 
 
+class EmbeddingSimilarityBoundaryFeature:
+    """[ADR-008 제안 3, 2026-07-21] 인접 후보(현재 candidate_text vs
+    BoundaryContext.previous_candidate_text) 임베딩(bge-m3,
+    core/embedder.py 재사용 — 신규 임베딩 인프라 도입 없음)의 코사인
+    유사도가 core.config.EMBEDDING_SIMILARITY_DROP_THRESHOLD 미만이면
+    주제 전환으로 보고 1.0을 낸다. 업계 표준(LlamaIndex
+    SemanticSplitterNodeParser 계열)인 "인접 문장 임베딩 유사도 급락"
+    방식.
+
+    ADR-008 §1 판정 배경: Profile B(학력 밀도 낮은 학술 주석서)의 Axis 2
+    (semantic flush ratio) 실측 16.4%는 다른 구조·규칙 기반 5개
+    feature(heading/paragraph/tiny_fragment/sentence_boundary/
+    scripture_reference)가 heading이 드문 주석 문서에서 신호를 거의 못
+    낸다는 뜻 — 이 feature는 구조와 무관하게 내용 자체의 주제 전환을
+    잡아 그 공백을 메우기 위한 것이다.
+
+    previous_candidate_text가 없거나(문서/버퍼 시작) 임베딩 호출이
+    실패하면 신호 없음(0.0)으로 안전하게 폴백한다 — Ollama 장애 한 번이
+    전체 Boundary Score 계산을 막지 않도록(다른 feature와 동일한 "raw
+    signal 0.0=없음" 계약 유지).
+
+    [SPRINT34 Option A, hierarchical-chunk-builder-improvement-design.md
+    §3 Option A] Profile B(heading 드문 학술 주석서)의 긴 문단에서는 인접
+    candidate 임베딩 유사도가 자연히 높아 정적 drop_threshold로는 신호가
+    거의 안 남는다. 두 가지를 추가:
+      - 동적 임계값: score()는 similarity < threshold일 때 boundary(1.0)를
+        내므로, threshold가 높을수록 더 많은 candidate가 boundary로
+        잡힌다. 버퍼(accumulated_length)가 safety_cap(chunk_size *
+        _SAFETY_CAP_RATIO)에 가까워질수록 drop_threshold를 최대
+        DYNAMIC_THRESHOLD_SLOPE 비율만큼 "올려" Profile B에서 boundary가
+        더 잡히게 한다(설계 문서 초안의 하향 공식은 반대 효과를 내는
+        오류였음 — 구현 시 방향 수정, 2026-07-28).
+        DYNAMIC_THRESHOLD_CEILING_RATIO 상한으로 과도한 상향을 막는다.
+        chunk_size가 0이면(테스트 등 미설정) buffer_ratio=0 — 기존 정적
+        동작과 동일.
+      - n-gram 결합: 임베딩 유사도와 문자 n-gram 중복률을
+        EMBEDDING_NGRAM_ALPHA 비율로 섞어 임베딩 단독보다 표층 반복에도
+        반응하게 한다.
+    계수(slope/alpha)는 미검증 — Phase 1.4 canary로 확정 전까지 잠정값
+    (design doc §8)."""
+
+    # hierarchical_chunk_builder.SAFETY_CAP_RATIO와 동일한 값 — 그 모듈이
+    # 이 모듈을 import하므로(순환 import 회피) 값만 미러링, import는 안 함.
+    _SAFETY_CAP_RATIO = 1.5
+
+    def __init__(self, embed_fn=None, drop_threshold: float = EMBEDDING_SIMILARITY_DROP_THRESHOLD):
+        self._embed_fn = embed_fn or _embedder.embed
+        self._drop_threshold = drop_threshold
+
+    def score(self, context: BoundaryContext) -> float:
+        prev = context.previous_candidate_text.strip()
+        curr = context.candidate_text.strip()
+        if not prev or not curr:
+            return 0.0
+        try:
+            v_prev = self._embed_fn(prev)
+            v_curr = self._embed_fn(curr)
+        except Exception:
+            return 0.0
+        similarity = _cosine_similarity(v_prev, v_curr)
+        combined = (
+            EMBEDDING_NGRAM_ALPHA * similarity
+            + (1.0 - EMBEDDING_NGRAM_ALPHA) * _ngram_overlap(prev, curr)
+        )
+
+        safety_cap = context.chunk_size * self._SAFETY_CAP_RATIO
+        buffer_ratio = context.accumulated_length / safety_cap if safety_cap > 0 else 0.0
+        buffer_ratio = min(1.0, buffer_ratio)
+        dynamic_threshold = self._drop_threshold * (1.0 + buffer_ratio * DYNAMIC_THRESHOLD_SLOPE)
+        dynamic_threshold = min(
+            self._drop_threshold * DYNAMIC_THRESHOLD_CEILING_RATIO, dynamic_threshold
+        )
+
+        return 1.0 if combined < dynamic_threshold else 0.0
+
+
+class PageHeaderArtifactFeature:
+    """[ADR-011 제안 3, 2026-07-23] context.repetition_signal(호출자가
+    문서 단위 core.repetition_detector.RepetitionTracker로 이미 관측한
+    신호)이 반복으로 판정됐으면 1.0을 낸다 — registry에는 음의 weight
+    (PAGE_HEADER_ARTIFACT_WEIGHT)로 등록해 "반복 감지됨 = boundary
+    아님"을 표현한다(tiny_fragment와 동일 계열).
+
+    repetition_signal이 없으면(호출자가 tracker를 제공하지 않음, 기존
+    _default_registry() 사용부 포함) 신호 없음(0.0)으로 안전하게
+    폴백한다 — 다른 feature와 동일한 계약."""
+
+    def score(self, context: BoundaryContext) -> float:
+        signal = context.repetition_signal
+        if signal is None:
+            return 0.0
+        return 1.0 if signal.is_repeat else 0.0
+
+
 # ── Registry (resolution + weighting, mirrors ProviderRegistry's shape) ────
 
 class FeatureRegistry:
@@ -283,6 +434,29 @@ def _default_registry() -> FeatureRegistry:
         "scripture_reference",
         ScriptureReferenceBoundaryFeature(),
         weight=SCRIPTURE_REFERENCE_WEIGHT,
+    )
+    r.register(
+        "embedding_similarity",
+        EmbeddingSimilarityBoundaryFeature(),
+        weight=EMBEDDING_SIMILARITY_WEIGHT,
+    )
+    return r
+
+
+def registry_with_page_header_artifact() -> FeatureRegistry:
+    """[ADR-011 제안 3] Opt-in registry for measurement only — adds the
+    7th feature on top of _default_registry()'s 6. NOT used by
+    get_registry()/score_boundary()'s default path; callers that want
+    PageHeaderArtifactFeature must request this explicitly and also pass
+    a populated BoundaryContext.repetition_signal (see
+    core.repetition_detector.RepetitionTracker). Kept separate from
+    _default_registry() so production behavior stays unchanged until a
+    separate HQ approval promotes this feature (ADR-011 Consequences)."""
+    r = _default_registry()
+    r.register(
+        "page_header_artifact",
+        PageHeaderArtifactFeature(),
+        weight=PAGE_HEADER_ARTIFACT_WEIGHT,
     )
     return r
 

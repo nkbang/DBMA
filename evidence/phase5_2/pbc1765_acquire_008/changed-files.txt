@@ -1,0 +1,27 @@
+# Changed Files — PBC1765 Acquire-008
+
+## New Files Created
+
+1. evidence/phase5_2/pbc1765_acquire_008/stage-a-metadata-request.txt
+2. evidence/phase5_2/pbc1765_acquire_008/stage-a-metadata-response.json
+3. evidence/phase5_2/pbc1765_acquire_008/stage-a-preflight-decision.md
+4. evidence/phase5_2/pbc1765_acquire_008/stage-b-not-executed.md
+5. evidence/phase5_2/pbc1765_acquire_008/provenance-manifest-template.json
+6. evidence/phase5_2/pbc1765_acquire_008/content-identity-validation.md
+7. evidence/phase5_2/pbc1765_acquire_008/self-check.md
+8. evidence/phase5_2/pbc1765_acquire_008/manifest.json
+9. evidence/phase5_2/pbc1765_acquire_008/hq-report.md
+
+## New Directories Created
+
+1. evidence/phase5_2/pbc1765_acquire_008/
+2. NAE/corpus/quarantine/PBC1765/
+
+## No Changes Made To
+
+- Production code (core/)
+- TSU dataset
+- Benchmark dataset
+- Qdrant index
+- Corpus directory
+- Git working tree (no git add/commit)

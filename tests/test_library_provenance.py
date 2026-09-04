@@ -57,7 +57,7 @@ def test_failure_history_shown_without_registry(tmp_path, monkeypatch):
 
     mod._render_provenance_section("broken.pdf")
 
-    assert rec.expander_calls == ["🕓 이력 (버전 / 실패 기록)"]
+    assert rec.expander_calls == ["이력 (버전 / 실패 기록)"]
     assert any("실패 기록 1건" in c for c in rec.caption_calls)
     assert any("추출 텍스트 없음" in m for m in rec.markdown_calls)
 

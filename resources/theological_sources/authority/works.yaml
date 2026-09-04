@@ -1,0 +1,44 @@
+# NAE Authority Registry — Works (PRODUCTION)
+# NAE-AUTHORITY-REGISTRY-BUILD-001: Pilot-001/002 승격. 원본은
+# authority/pilot/(fuller/)에 보존.
+#
+# 스키마 정본: docs/NAE_AUTHORITY_REGISTRY_DESIGN_v1.md §2.2
+# 필드명 변경(Pilot 대비): title→canonical_title, title_variants→aliases
+# (§Phase3 매핑표), work_type/original_language 신규 추가.
+schema_version: "1.0"
+
+works:
+  - work_id: WORK-DAGG-CHURCH-ORDER-001
+    canonical_id: dagg_john_l_church_order
+    legacy_id: ["WORK-DAGG-CHURCH-ORDER-001"]
+    author_id: dagg_john_l
+    canonical_title: "Church Order"
+    aliases: ["A Treatise on Church Order", "Manual of Church Order"]
+    work_type: monograph
+    original_language: en
+    notes: >
+      canonical_title은 RAW title page 실측("CHURCH ORDER.") 채택.
+      3원 불일치(명령서 표기/기존 CSV 표기)는 aliases로 보존
+      (Pilot-001 승격분).
+
+  - work_id: WORK-HISCOX-STANDARD-MANUAL-001
+    canonical_id: hiscox_edward_t_standard_manual
+    legacy_id: ["WORK-HISCOX-STANDARD-MANUAL-001"]
+    author_id: hiscox_edward_t
+    canonical_title: "The Standard Manual for Baptist Churches"
+    aliases: []
+    work_type: monograph
+    original_language: en
+
+  - work_id: FULLER-COMPLETE-WORKS-001
+    canonical_id: fuller_andrew_complete_works
+    legacy_id: ["FULLER-COMPLETE-WORKS-001"]
+    author_id: FULLER-ANDREW-001
+    canonical_title: "The Works of the Rev. Andrew Fuller, in Eight Volumes"
+    aliases: ["Complete Works of Andrew Fuller"]
+    work_type: multi_volume
+    original_language: en
+    notes: >
+      Pilot-002 승격분. 이 Work 하나가 Edition 2개(1820 Charlestown /
+      1824-1825 New Haven)를 가짐 — Work:Edition = 1:N 실증 사례
+      (ADR-016, editions.yaml 참고).

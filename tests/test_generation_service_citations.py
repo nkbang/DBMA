@@ -12,13 +12,19 @@ import os
 import types
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-# The `ollama` package is not installed in this dev environment (same gap as
-# bs4/chromadb/docling elsewhere in this repo). core.generation only needs
-# `ollama.generate` to exist as an attribute so it can be patched below.
-if "ollama" not in sys.modules:
-    _ollama_stub = types.ModuleType("ollama")
-    _ollama_stub.generate = lambda *args, **kwargs: {"response": ""}
-    sys.modules["ollama"] = _ollama_stub
+# Fall back to a stub only if the real `ollama` package is unavailable in
+# this dev environment (same gap as bs4/chromadb/docling elsewhere in this
+# repo). Preferring the real import avoids permanently overwriting
+# sys.modules["ollama"] with an attribute-incomplete stub for every other
+# test module that imports `ollama` afterward in the same pytest session.
+try:
+    import ollama  # noqa: F401
+except ImportError:
+    if "ollama" not in sys.modules:
+        _ollama_stub = types.ModuleType("ollama")
+        _ollama_stub.generate = lambda *args, **kwargs: {"response": ""}
+        _ollama_stub.embeddings = lambda *args, **kwargs: {"embedding": []}
+        sys.modules["ollama"] = _ollama_stub
 
 from unittest.mock import patch
 

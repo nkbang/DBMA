@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "task_id": "NS-REPEAT-1786780390",
+  "title": "Night Shift Repeat Test",
+  "owner": "C1-AUDIT",
+  "state": "INITIATED",
+  "phase": "VALIDATION",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "evidence": [],
+  "audit": {
+    "status": "pending"
+  },
+  "document_type": "sermon",
+  "source": {
+    "type": "youtube",
+    "url": "https://www.youtube.com/watch?v=nightshift1"
+  },
+  "automation": {
+    "state": "VALIDATION_PASSED",
+    "failure_code": null,
+    "last_transition_id": "NS-REPEAT-1786780390#11545"
+  }
+}

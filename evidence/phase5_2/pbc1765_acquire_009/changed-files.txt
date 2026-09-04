@@ -1,0 +1,38 @@
+# Changed files — PBC1765 Acquire-008
+
+## New files created by this acquisition
+
+evidence/phase5_2/pbc1765_acquire_009/stage-a-metadata-request.txt
+evidence/phase5_2/pbc1765_acquire_009/stage-a-metadata-response.json
+evidence/phase5_2/pbc1765_acquire_009/stage-a-files-inventory.json
+evidence/phase5_2/pbc1765_acquire_009/stage-a-preflight-decision.md
+evidence/phase5_2/pbc1765_acquire_009/stage-b-command-transcript.txt
+evidence/phase5_2/pbc1765_acquire_009/stage-b-http-headers/confeo00phil.pdf.headers
+evidence/phase5_2/pbc1765_acquire_009/stage-b-http-headers/confeo00phil_djvu.txt.headers
+evidence/phase5_2/pbc1765_acquire_009/stage-b-http-headers/confeo00phil_scandata.xml.headers
+evidence/phase5_2/pbc1765_acquire_009/stage-b-http-headers/confeo00phil_hocr_searchtext.txt.gz.headers
+evidence/phase5_2/pbc1765_acquire_009/stage-b-artifact-integrity.csv
+evidence/phase5_2/pbc1765_acquire_009/content-identity-validation.md
+evidence/phase5_2/pbc1765_acquire_009/provenance.json
+evidence/phase5_2/pbc1765_acquire_009/provenance-manifest-copy.json
+evidence/phase5_2/pbc1765_acquire_009/hq-report.md
+evidence/phase5_2/pbc1765_acquire_009/self-check.md
+evidence/phase5_2/pbc1765_acquire_009/changed-files.txt
+evidence/phase5_2/pbc1765_acquire_009/baseline.txt
+evidence/phase5_2/pbc1765_acquire_009/manifest.json
+evidence/phase5_2/pbc1765_acquire_009/hocr-searchtext-first-100lines.txt
+
+## Quarantined artifacts
+
+NAE/corpus/quarantine/PBC1765/original/confeo00phil.pdf
+NAE/corpus/quarantine/PBC1765/original/confeo00phil_djvu.txt
+NAE/corpus/quarantine/PBC1765/original/confeo00phil_scandata.xml
+NAE/corpus/quarantine/PBC1765/original/confeo00phil_hocr_searchtext.txt.gz
+
+## No changes to production code
+
+- No pipeline code modified
+- No corpus directory modified (quarantine only)
+- No TSU generation performed
+- No embeddings / Qdrant indexing
+- No benchmark / Gold authoring

@@ -1,0 +1,84 @@
+{
+  "mission": "C1-NIGHT-SHIFT-ORDER-002",
+  "status": "COMPLETE",
+  "completed_phases": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "pending_phases": [],
+  "phase_details": {
+    "phase_0": {
+      "description": "Correction Order 002 fix (processing_input merge)",
+      "status": "ALREADY_APPLIED",
+      "notes": "host_executor.py line 300 already uses original queue item data"
+    },
+    "phase_1": {
+      "description": "Dagg pilot re-run with production mode",
+      "status": "PASS",
+      "cli_driver_exit": 0,
+      "final_state": "QUALITY_PASSED",
+      "registration_state_written": true,
+      "source_manifest_written": true
+    },
+    "phase_3": {
+      "description": "Single source E2E (Registration only)",
+      "status": "PASS",
+      "pipeline_path": "RAW -> register -> identity -> raw preservation -> extraction -> validation/quality gate -> QUALITY_PASSED",
+      "tsu_embedding_qdrant": "NOT ATTEMPTED (out of scope per task order)"
+    },
+    "phase_4": {
+      "description": "10 Source Production Batch",
+      "status": "PASS",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "sources": [
+        "BAP-CHURCH-DAGG-001",
+        "BAP-CHURCH-HISCOX",
+        "BAP-MISS-FULLER-VOL01",
+        "BAP-MISS-FULLER-VOL02",
+        "BAP-MISS-FULLER-VOL03",
+        "BAP-MISS-FULLER-VOL04",
+        "BAP-MISS-FULLER-VOL05",
+        "BAP-MISS-FULLER-VOL06",
+        "BAP-MISS-FULLER-VOL07",
+        "BAP-MISS-FULLER-VOL08"
+      ]
+    },
+    "phase_5": {
+      "description": "Regression",
+      "status": "PASS",
+      "adr022_cycle": 132,
+      "adr022_result": "9/9 PASS",
+      "registration_tests": "152 passed, 0 failed",
+      "protected_files_unchanged": true,
+      "qdrant_unchanged": true,
+      "tsu_corpus_unchanged": true
+    },
+    "phase_6": {
+      "description": "Overnight continuation check",
+      "status": "COMPLETE",
+      "remaining_queue": 0,
+      "all_raw_processed": true,
+      "mission_complete": true
+    }
+  },
+  "production_mutation": {
+    "registration_state_json": "10 entries (all QUALITY_PASSED)",
+    "source_manifest_yaml": "10 entries",
+    "checksum_ledger": 46,
+    "core_retrieval_py": "UNMODIFIED",
+    "pipeline_py": "UNMODIFIED",
+    "qdrant_points": "UNCHANGED (not accessed)",
+    "tsu_corpus": "UNCHANGED"
+  },
+  "code_changes": [
+    "NAE/pipeline/registration/cli_driver.py: Added --production flag, state_store.save() call",
+    ".automation/night-shift/host_executor.py: Added --production to cli_driver subprocess cmd"
+  ],
+  "evidence_location": ".automation/evidence/night-shift/host-executor-implementation/C1-NIGHT-SHIFT-ORDER-002"
+}

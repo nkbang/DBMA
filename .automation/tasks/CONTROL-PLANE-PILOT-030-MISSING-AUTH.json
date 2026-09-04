@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "CONTROL-PLANE-PILOT-030-MISSING-AUTH",
+  "title": "D matrix — missing authorized_by",
+  "owner": "CUE",
+  "state": "IDLE",
+  "phase": "PILOT",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "task_type": "pilot_echo",
+  "scope": {
+    "namespace": "control-plane-pilot",
+    "allowed_paths": []
+  },
+  "required_evidence": [
+    "gateway_transition"
+  ],
+  "constraints": {
+    "max_runtime_s": 30,
+    "allow_production_paths": false
+  },
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "notes": [
+    "D matrix: authorized_by field deliberately omitted."
+  ],
+  "automation": {
+    "state": "FAILED",
+    "failure_code": "VALIDATION_FAILED",
+    "last_transition_id": "CONTROL-PLANE-PILOT-030-MISSING-AUTH#11613"
+  },
+  "failure_codes": [
+    "VALIDATION_FAILED",
+    "FILE_ERROR",
+    "PARSE_ERROR",
+    "TASK_ID_PAYLOAD_CONFLICT",
+    "TASK_TYPE_NOT_AUTHORIZED",
+    "NAMESPACE_VIOLATION",
+    "PRODUCTION_MUTATION_NOT_ALLOWED",
+    "PILOT_EXEC_FAILED",
+    "STALE_WORKER_TIMEOUT",
+    "INTERNAL_STATE_MAPPING_ERROR"
+  ]
+}

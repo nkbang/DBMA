@@ -37,7 +37,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
-from core.config import DEFAULT_TSU_DATASET_PATH, RETRIEVAL_DOCUMENT_CAP
+from core.config import DEFAULT_REGISTRY_PATH, DEFAULT_TSU_DATASET_PATH, RETRIEVAL_DOCUMENT_CAP
 
 # [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
 logger = logging.getLogger(__name__)
@@ -105,6 +105,7 @@ class RankedCandidate:
     vector_score: float = 0.0
     bm25_score: float = 0.0
     theological_score: float = 0.0
+    passage_score: float = 0.0
     final_score: float = 0.0
     explanation: str = ""
 
@@ -116,6 +117,7 @@ class RankedCandidate:
             "vector_score": round(self.vector_score, 4),
             "bm25_score": round(self.bm25_score, 4),
             "theological_score": round(self.theological_score, 4),
+            "passage_score": round(self.passage_score, 4),
             "final_score": round(self.final_score, 4),
             "explanation": self.explanation,
         }
@@ -139,6 +141,7 @@ class PerformanceMetrics:
     embedding_cache_hits: int = 0
     embedding_cache_misses: int = 0
     bm25_scoring_ms: float = 0.0
+    passage_match_ms: float = 0.0
     memory_peak_mb: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
@@ -155,6 +158,8 @@ class PerformanceMetrics:
             "deduplication_ms": round(self.deduplication_ms, 2),
             "context_assembly_ms": round(self.context_assembly_ms, 2),
             "citation_builder_ms": round(self.citation_builder_ms, 2),
+            "bm25_scoring_ms": round(self.bm25_scoring_ms, 2),
+            "passage_match_ms": round(self.passage_match_ms, 2),
             "embedding_cache_hits": self.embedding_cache_hits,
             "embedding_cache_misses": self.embedding_cache_misses,
             "memory_peak_mb": round(self.memory_peak_mb, 2),
@@ -723,13 +728,31 @@ class EmbeddingCache:
 # SECTION 5: BM25 KEYWORD SCORING — TASK 5
 # ============================================================
 
+_korean_tokenizer = None  # lazily built once per process — see _tokenize()
+
+
 def _tokenize(text: str) -> list[str]:
-    """Simple tokenizer: lowercase, strip punctuation, split."""
-    text = text.lower()
-    import string as _string
-    translator = str.maketrans("", "", _string.punctuation)
-    text = text.translate(translator)
-    return [t for t in text.split() if len(t) > 0]
+    """Tokenize text for BM25 scoring.
+
+    [P1 fix, docs/TODO.md] Korean 어절 carry agglutinated particles/endings
+    (조사/어미) — a prior whitespace-split tokenizer meant "성령의"/
+    "성령께서"/"성령을" never matched each other as the same BM25 term.
+    Delegates to core/tli/korean_tokenizer.py's morphological analyzer
+    (kiwipiepy), which strips particles/endings and keeps only content
+    morphemes (nouns/verbs/adjectives/numbers) — the TLI factory falls
+    back to the original whitespace behavior if kiwipiepy isn't installed,
+    so this never hard-fails the retrieval path.
+
+    The tokenizer instance is built once per process (Kiwi's model load
+    is the expensive part) and reused — this function is called per
+    candidate document on every query via bm25_score(), so re-building
+    Kiwi() per call would be a real cost.
+    """
+    global _korean_tokenizer
+    if _korean_tokenizer is None:
+        from core.tli.korean_tokenizer import create_korean_tokenizer
+        _korean_tokenizer = create_korean_tokenizer()
+    return _korean_tokenizer.tokenize(text)
 
 
 def bm25_score(query_tokens: list[str], doc_text: str, k1: float = 1.2, b: float = 0.75) -> float:
@@ -847,6 +870,102 @@ class TfidfVectorizer:
 
 
 # ============================================================
+# SECTION 6b: PASSAGE MATCH — docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.3
+# ============================================================
+#
+# Cross-checks the query's detected scripture reference(s) against a TSU's
+# own verse_mapping (populated by core/tsu_builder.py's Scripture Evidence
+# Resolver) so that e.g. a Romans 12 query ranks a Romans 12 commentary
+# chunk above a chunk that only scores well on generic semantic/theological
+# similarity (Romans 8, same themes, different chapter). Deliberately
+# reuses ScriptureReference/verse_mapping — no new parsing or storage
+# introduced, same principle as _resolve_scripture_ref() in tsu_builder.py.
+
+def compute_passage_match_score(
+    scripture_refs: list["ScriptureReference"],
+    verse_mapping: dict[str, Any],
+) -> float:
+    """Score how well a TSU's verse_mapping matches the query's detected
+    scripture reference(s). Returns 0.0 when the query carries no scripture
+    reference (nothing to match against) or the TSU carries no verse_mapping
+    (never guessed) — never a placeholder positive value in either case.
+
+    Score components per matching ref (best-matching ref wins, capped 1.0):
+      book_id match       +0.5
+      chapter exact match  +0.3  (else +0.15 if within 1 chapter — commentary
+                                   chunks commonly span a chapter boundary)
+      verse range overlap +0.2  (only checked when both sides specify verses)
+    """
+    if not scripture_refs or not verse_mapping:
+        return 0.0
+
+    tsu_book = verse_mapping.get("book_id")
+    if not tsu_book:
+        return 0.0
+
+    tsu_chapter = verse_mapping.get("chapter")
+    tsu_verse_start = verse_mapping.get("verse_start")
+    tsu_verse_end = verse_mapping.get("verse_end", tsu_verse_start)
+
+    best = 0.0
+    for ref in scripture_refs:
+        if ref.book_id != tsu_book:
+            continue
+        score = 0.5
+
+        if tsu_chapter is not None:
+            if tsu_chapter == ref.chapter:
+                score += 0.3
+            elif abs(tsu_chapter - ref.chapter) == 1:
+                score += 0.15
+
+        if (
+            ref.verse_start
+            and tsu_verse_start is not None
+            and tsu_chapter == ref.chapter
+        ):
+            ref_end = ref.verse_end if ref.verse_end is not None else ref.verse_start
+            if ref.verse_start <= tsu_verse_end and ref_end >= tsu_verse_start:
+                score += 0.2
+
+        best = max(best, min(score, 1.0))
+
+    return best
+
+
+def compute_source_tier_bonus(tsu: dict[str, Any]) -> float:
+    """Small reviewed-source bonus (design doc §9.3 `SourceTierBonus`, weight
+    0.05) — rewards externally-sourced (e.g. Logos-export) TSUs that have
+    passed human review, without letting an unreviewed external source
+    outrank a reviewed one on this component. Returns 0.0 for the entire
+    pre-existing corpus (no source_provenance field), so this is a no-op
+    everywhere except newly-tagged external sources."""
+    provenance = tsu.get("source_provenance")
+    if not provenance:
+        return 0.0
+    return 1.0 if provenance.get("review_status") in ("reviewed", "approved") else 0.0
+
+
+def compute_content_quality_factor(tsu: dict[str, Any]) -> float:
+    """[신규, 2026-07-23] core.noise_classifier가 core/tsu_builder.py에서
+    이미 계산해 저장한 content_quality.quality_score(0.0~1.0)를 좁은 폭
+    (0.7~1.0)의 곱셈형 순위 보정 계수로 변환한다 — REMOVE 판정 chunk
+    (quality_score=0.0)는 factor 0.7(최대 -30% 페널티), NORMAL/PRESERVE
+    (1.0)는 factor 1.0(페널티 없음). noise_classifier의 설계 원칙
+    ("Classifier, not a deleter")을 존중해 하드 필터링이 아니라 순위
+    페널티로만 반영 — false positive가 콘텐츠를 검색에서 완전히
+    지우지 않는다.
+
+    quality_score 필드가 없는 레코드(과거 ingest)는 중립값 1.0 —
+    새 필드 부재를 벌하지 않는 evidence_confidence(아래 retrieve())와
+    동일 원칙."""
+    quality_score = tsu.get("content_quality", {}).get("quality_score")
+    if quality_score is None:
+        return 1.0
+    return 0.7 + 0.3 * quality_score
+
+
+# ============================================================
 # SECTION 7: THEOLOGICAL SCORER — integration with sprint7
 # ============================================================
 
@@ -854,6 +973,7 @@ def compute_theological_score(
     query: str,
     tsu: dict[str, Any],
     weights: Optional[dict[str, float]] = None,
+    content_refs_cache: Optional[dict[int, list["ScriptureReference"]]] = None,
 ) -> tuple[float, dict[str, Any]]:
     """
     Compute theological relevance score (SSA + TRS + SUS).
@@ -864,6 +984,10 @@ def compute_theological_score(
         query: The user query string.
         tsu: TSU dict with 'content', 'verse_mapping', 'themes'.
         weights: Optional score component weights.
+        content_refs_cache: Optional per-engine cache (keyed by id(tsu))
+            for _scripture_alignment_score()'s TSU-content scripture-ref
+            parse — see that function's docstring. None (default) keeps
+            the original always-reparse behavior for standalone callers.
 
     Returns:
         (total_score, breakdown) tuple.
@@ -872,7 +996,7 @@ def compute_theological_score(
         weights = {"ssa": 0.45, "trs": 0.35, "sus": 0.20}
 
     # Scripture Alignment Score (SSA)
-    ssa = _scripture_alignment_score(query, tsu)
+    ssa = _scripture_alignment_score(query, tsu, content_refs_cache)
 
     # Thematic Relevance Score (TRS)
     trs = _thematic_relevance_score(query, tsu)
@@ -891,15 +1015,45 @@ def compute_theological_score(
     return round(total, 4), breakdown
 
 
-def _scripture_alignment_score(query: str, tsu: dict[str, Any]) -> float:
-    """Compute scripture alignment score (0-1)."""
+def _scripture_alignment_score(
+    query: str,
+    tsu: dict[str, Any],
+    content_refs_cache: Optional[dict[int, list["ScriptureReference"]]] = None,
+) -> float:
+    """Compute scripture alignment score (0-1).
+
+    [성능 수정, 2026-07-22] 실측: 메타데이터 필터가 좁혀지지 않는 쿼리
+    (예: 영문 책명이 없는 한국어 쿼리라 query_refs가 항상 빈 경우)에서
+    _parse_refs_from_text(tsu.content)가 후보마다(52,064건 기준 쿼리당
+    최대 ~4.1초) 매번 다시 실행되고 있었다 — TSU content는 코퍼스
+    로드 후 절대 안 바뀌는데 캐싱이 없었다. content_refs_cache가
+    주어지면 id(tsu) 기준으로 한 번만 파싱해 재사용한다(캐시가 없으면
+    이전과 동일하게 매번 새로 계산 — 이 함수를 단독 호출하는 기존
+    코드/테스트는 영향 없음).
+
+    또한 query_refs가 이미 비어있지 않으면 all_refs가 어차피 non-empty로
+    확정되므로(아래 "if not all_refs" 분기 무관), 그 경우엔 tsu_content_refs
+    파싱 자체를 생략한다 — 캐시 유무와 무관한 별도의 안전한 단축 경로."""
     verse_map = tsu.get("verse_mapping", {})
     if not verse_map or not verse_map.get("book_id"):
         return 0.0
 
     # Parse refs from query and TSU content
     query_refs = _parse_refs_from_text(query)
-    tsu_content_refs = _parse_refs_from_text(tsu.get("content", ""))
+    if query_refs:
+        # all_refs is guaranteed non-empty via query_refs alone — the
+        # "if not all_refs" branch below can't fire either way, so skip
+        # parsing tsu content entirely.
+        tsu_content_refs: list["ScriptureReference"] = []
+    elif content_refs_cache is not None:
+        key = id(tsu)
+        cached = content_refs_cache.get(key)
+        if cached is None:
+            cached = _parse_refs_from_text(tsu.get("content", ""))
+            content_refs_cache[key] = cached
+        tsu_content_refs = cached
+    else:
+        tsu_content_refs = _parse_refs_from_text(tsu.get("content", ""))
     all_refs = query_refs + tsu_content_refs
 
     if not all_refs:
@@ -1070,6 +1224,14 @@ class RetrievalEngine:
         self.vectors: list[dict[str, float]] = []
         self._tfidf_index_built = False
 
+        # [성능 수정, 2026-07-22] compute_theological_score()의
+        # _scripture_alignment_score()가 TSU content의 scripture-ref
+        # 파싱을 매 쿼리마다 재계산하던 것을 막는 캐시 — id(tsu) 기준,
+        # 엔진 인스턴스 수명 전체에 걸쳐 유지(코퍼스 로드 후 TSU content는
+        # 안 바뀌므로 무효화 불필요). 실측: 52,064건 코퍼스에서 쿼리당
+        # 최대 ~4.1초 걸리던 구간을 제거.
+        self._content_refs_cache: dict[int, list["ScriptureReference"]] = {}
+
     def _ensure_tfidf_index(self) -> None:
         """Build the in-memory TF-IDF fallback index on first actual need
         (idempotent — safe to call before every fallback attempt)."""
@@ -1079,9 +1241,22 @@ class RetrievalEngine:
         self._tfidf_index_built = True
 
     def _load_corpus(self) -> None:
-        """Load TSU dataset from JSONL file."""
+        """Load TSU dataset from JSONL file.
+
+        A missing file is a legitimate state — first launch, or right after
+        scripts/reset_for_beta.py — before any document has been processed
+        into a TSU dataset yet (core/index_orchestrator.py writes it on
+        first rebuild_tsu_index()/reindex_document() call). Treated as an
+        empty corpus rather than a hard crash, so the UI can show its own
+        "아직 처리된 문서가 없습니다" empty state instead of a raw traceback.
+        """
         if not self.tsu_dataset_path.exists():
-            raise FileNotFoundError(f"TSU dataset not found: {self.tsu_dataset_path}")
+            logger.warning(
+                "[RetrievalEngine] TSU dataset not found at %s — starting with an empty corpus "
+                "(expected before the first document is processed)",
+                self.tsu_dataset_path,
+            )
+            return
 
         with open(self.tsu_dataset_path, "r", encoding="utf-8") as f:
             for line in f:
@@ -1098,10 +1273,142 @@ class RetrievalEngine:
         self.tfidf_vectorizer.fit(token_docs)
         self.vectors = [self.tfidf_vectorizer.transform(tokens) for tokens in token_docs]
 
-    def list_source_files(self) -> list[str]:
-        """Unique tsu["source_file"] values in the loaded corpus, sorted.
-        Used by UI file-scope pickers (see retrieve()'s file_scope arg)."""
-        return sorted({sf for t in self.tsus if (sf := t.get("source_file"))})
+    def list_source_files(self, registry_path: str = DEFAULT_REGISTRY_PATH) -> list[str]:
+        """Unique source_file values in the loaded corpus that are still valid
+        in the identity registry (ingest_status == "PROCESSED" and no
+        superseded_by), sorted. Used by UI file-scope pickers.
+
+        Args:
+            registry_path: Path to documents.json. Defaults to
+                DEFAULT_REGISTRY_PATH from core.config. If the registry file
+                does not exist, returns all TSU source_files (backward
+                compatibility for installations without a registry).
+        """
+        valid_sources: set[str] = set()
+        if os.path.exists(registry_path):
+            from core.identity_registry import load_identity_registry
+            registry = load_identity_registry(registry_path)
+            for doc in registry.get("documents", {}).values():
+                if (doc.get("ingest_status") == "PROCESSED"
+                        and doc.get("superseded_by") is None):
+                    sf = doc.get("source_file")
+                    if sf:
+                        valid_sources.add(sf)
+
+        result = {sf for t in self.tsus if (sf := t.get("source_file"))}
+        if os.path.exists(registry_path):
+            result &= valid_sources
+
+        return sorted(result)
+
+    def book_coverage(self) -> dict[str, int]:
+        """[2026-07-21] Distinct source_file count per Bible book_id,
+        aggregated read-only over the already-loaded self.tsus — no new
+        corpus-access path, same pattern as list_source_files(). Used by
+        Sermon Draft's book-coverage picker (ui/pages/sermon_draft.py) to
+        label each of the 66 book buttons with how many source documents
+        cover it (e.g. "창세기 2"). Books with zero coverage are simply
+        absent from the returned dict — callers should treat a missing
+        key as 0, not raise."""
+        coverage: dict[str, set[str]] = {}
+        for t in self.tsus:
+            book_id = (t.get("verse_mapping") or {}).get("book_id")
+            source_file = t.get("source_file")
+            if not book_id or not source_file:
+                continue
+            coverage.setdefault(book_id, set()).add(source_file)
+        return {book_id: len(files) for book_id, files in coverage.items()}
+
+    def book_embedding_coverage(
+        self,
+        cache: EmbeddingCache,
+        threshold: float = 1.0,
+    ) -> dict[str, dict]:
+        """[2026-07-24] Return per-book embedding coverage stats for books
+        whose coverage_ratio is strictly below *threshold*.
+
+        Uses the same read-only pattern as book_coverage():
+        - Iterates self.tsus without modifying any state
+        - Does NOT call cache.lookup() — on a cache miss that method calls
+          embed_fn and writes a new cache file (cache.insert()), which
+          would turn this "read-only coverage report" into a mass
+          embedding job across every uncached chunk. EmbeddingCache has
+          no LRU eviction to worry about; the risk is purely the write
+          side effect on miss.
+        - Computes SHA256 hash directly via cache._hash_text()
+        - Reads cache file only to verify vector field existence
+
+        Returns:
+            {
+                "GEN": {
+                    "total": 42,
+                    "embedded": 40,
+                    "dimension_ok": 39,
+                    "coverage_ratio": 0.9523809523809523,
+                },
+                ...
+            }
+
+        Args:
+            cache: EmbeddingCache instance (read-only access).
+            threshold: Coverage ratio threshold. Books with
+                coverage_ratio < threshold are included in the result.
+                Default 1.0 means only books with incomplete coverage.
+                Set to 0.0 to include all books regardless of coverage.
+        """
+        from core.config import EMBEDDING_DIMENSION
+
+        coverage: dict[str, dict] = {}
+        for t in self.tsus:
+            book_id = (t.get("verse_mapping") or {}).get("book_id")
+            if not book_id:
+                continue
+            content = t.get("content", "")
+            if not content:
+                continue
+
+            coverage.setdefault(book_id, {
+                "total": 0,
+                "embedded": 0,
+                "dimension_ok": 0,
+            })
+            coverage[book_id]["total"] += 1
+
+            # 캐시 파일 존재 확인 — cache.lookup() 호출 금지 (LRU order 변경).
+            # EmbeddingCache.validate()가 하는 방식 그대로: 경로 직접 구성 후
+            # JSON 열어서 vector 필드 확인.
+            hash_key = cache._hash_text(content)
+            cache_path = Path(cache.cache_dir) / f"{hash_key}.json"
+            if not cache_path.exists():
+                continue
+
+            coverage[book_id]["embedded"] += 1
+
+            try:
+                with open(cache_path, "r", encoding="utf-8") as fh:
+                    data = json.load(fh)
+                vector = data.get("vector")
+                if vector is not None and len(vector) == EMBEDDING_DIMENSION:
+                    coverage[book_id]["dimension_ok"] += 1
+            except (json.JSONDecodeError, IOError):
+                pass
+
+        # coverage_ratio 계산 및 threshold 미만인 책만 필터
+        result: dict[str, dict] = {}
+        for book_id, stats in coverage.items():
+            total = stats["total"]
+            if total == 0:
+                continue
+            embedded = stats["embedded"]
+            coverage_ratio = embedded / total
+            if coverage_ratio < threshold:
+                result[book_id] = {
+                    "total": total,
+                    "embedded": embedded,
+                    "dimension_ok": stats["dimension_ok"],
+                    "coverage_ratio": coverage_ratio,
+                }
+        return result
 
     def retrieve(
         self,
@@ -1184,10 +1491,32 @@ class RetrievalEngine:
         bm25_top_k_indices = sorted(bm25_scores.items(), key=lambda x: x[1], reverse=True)[:self.candidate_k]
 
         # P0 FIX: If BM25 produced no hits within the metadata-filtered pool,
-        # fall back to ALL metadata-filtered candidates. This prevents pipeline
-        # collapse when Korean TSU content lacks English book-name keywords.
+        # fall back to candidates. This prevents pipeline collapse when
+        # Korean TSU content lacks English book-name keywords.
+        #
+        # [SEARCH-INFRA-001 Phase0/1] The fallback used to pass the ENTIRE
+        # candidate_pool (up to the full corpus) through unchanged, which
+        # left self.candidate_k's cap unenforced on exactly the path that
+        # needs it most: downstream theological/passage scoring (STEP 4/4b)
+        # is O(N) per candidate, and Phase 0 baseline measured this fallback
+        # costing 45-55s end-to-end on a 53k-TSU corpus (82% in theological
+        # scoring alone) vs <1s when the cap held.
+        #
+        # A first attempt ranked the pool by TF-IDF cosine similarity before
+        # capping, but that scoring pass is itself O(N) per candidate and
+        # simply moved the multi-second cost elsewhere (measured 8-16s on
+        # degenerate Korean/English queries where metadata filtering also
+        # fails to narrow the pool) — the same mistake the HQ directive
+        # explicitly rules out ("검색 시 문서 전체를 순회하지 않는다"). A plain
+        # slice is O(candidate_k): no per-query signal exists in this branch
+        # anyway (BM25 found zero matches), so an unranked cap is not a
+        # quality regression relative to a same-cost heuristic — downstream
+        # vector/theological scoring (STEP 3/4) still discriminates among
+        # whichever candidate_k survive. True ranked candidate generation
+        # for this branch is the Phase 2 inverted-index work, not a Phase 1
+        # patch.
         if not bm25_top_k_indices:
-            bm25_top_k_indices = [(idx, 0.0) for idx in candidate_pool]
+            bm25_top_k_indices = [(idx, 0.0) for idx in candidate_pool[:self.candidate_k]]
 
         # --- STEP 3: Vector search ---
         # Semantic (BGE-M3 via core.embedder) when an EmbeddingCache is
@@ -1243,45 +1572,65 @@ class RetrievalEngine:
                 vector_similarities[idx] = sim
         metrics.vector_search_ms = (time.perf_counter() - t0) * 1000
 
+        # [SEARCH-INFRA-001 Phase1] Downstream scoring (STEP 4/4b/5) must
+        # never exceed candidate_k candidates — bm25_top_k_indices already
+        # enforces that cap on both the normal-hit and fallback paths (see
+        # STEP 2/2-fallback above), so it is the authoritative pool here
+        # instead of the raw candidate_pool, which can still be the entire
+        # corpus.
+        capped_pool = [idx for idx, _ in bm25_top_k_indices]
+
         # --- STEP 4: Theological scoring ---
         t0 = time.perf_counter()
-        
+
         # P0 FIX: Score ALL ranking candidates, not just vector_similarities.
         # When BM25 produces no hits (Korean content), fallback pool needs
         # full theological coverage to prevent empty scores.
-        score_targets = set(vector_similarities.keys()) if vector_similarities else candidate_pool
+        score_targets = set(vector_similarities.keys()) if vector_similarities else set(capped_pool)
         score_targets = set(score_targets)  # deduplicate
-        
+
         theological_scores: dict[int, float] = {}
         theological_breakdowns: dict[int, dict[str, Any]] = {}
         for idx in score_targets:
             tsu = self.tsus[idx]
             score, breakdown = compute_theological_score(
-                parsed_query.original_query, tsu
+                parsed_query.original_query, tsu,
+                content_refs_cache=self._content_refs_cache,
             )
             theological_scores[idx] = score
             theological_breakdowns[idx] = breakdown
-        
-        # Ensure all ranking_indices have theological scores (may be missing if 
+
+        # Ensure all ranking_indices have theological scores (may be missing if
         # fallback pool differs from score_targets)
-        for idx in set(candidate_pool):
+        for idx in set(capped_pool):
             if idx not in theological_scores:
                 tsu = self.tsus[idx]
                 score, breakdown = compute_theological_score(
-                    parsed_query.original_query, tsu
+                    parsed_query.original_query, tsu,
+                    content_refs_cache=self._content_refs_cache,
                 )
                 theological_scores[idx] = score
                 theological_breakdowns[idx] = breakdown
-        
+
         metrics.theological_scoring_ms = (time.perf_counter() - t0) * 1000
+
+        # --- STEP 4b: Passage match scoring ---
+        t0 = time.perf_counter()
+        passage_scores: dict[int, float] = {}
+        for idx in set(capped_pool):
+            tsu = self.tsus[idx]
+            passage_scores[idx] = compute_passage_match_score(
+                parsed_query.scripture_refs, tsu.get("verse_mapping", {})
+            )
+        metrics.passage_match_ms = (time.perf_counter() - t0) * 1000
 
         # --- STEP 5: Hybrid ranking ---
         t0 = time.perf_counter()
-        
+
         # P0 FIX: Build the candidate index set from the actual pool used,
         # not just bm25_scores. This prevents zero-candidate output when
         # BM25 produces no hits (e.g., Korean TSU content with English query).
-        ranking_indices = set(bm25_scores.keys()) if bm25_scores else candidate_pool
+        ranking_indices = set(bm25_scores.keys()) if bm25_scores else set(capped_pool)
         ranking_indices = set(ranking_indices)  # deduplicate
         
         max_bm25 = max(bm25_scores.values()) if bm25_scores else 0.0
@@ -1297,9 +1646,23 @@ class RetrievalEngine:
             norm_bm25 = bm25_scores.get(idx, 0.0) / max_bm25 if max_bm25 > 0 else 0.5
             norm_vector = vector_similarities.get(idx, 0.0) / max_vector if max_vector > 0 else 0.0
             norm_theo = theological_scores.get(idx, 0.0)
+            # [docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9.3] Already
+            # bounded to [0, 1] by compute_passage_match_score() itself — no
+            # min-max normalization against a batch max, unlike bm25/vector/
+            # theological above, since 0.0 means "no reference detected /
+            # no match", not "worst-scoring candidate in this batch".
+            norm_passage = passage_scores.get(idx, 0.0)
+            source_tier_bonus = compute_source_tier_bonus(tsu)
 
-            # Hybrid score: 0.30 * BM25 + 0.25 * vector + 0.45 * theological
-            base_score = (0.30 * norm_bm25 + 0.25 * norm_vector + 0.45 * norm_theo)
+            # Hybrid score: 0.25*BM25 + 0.20*vector + 0.30*theological +
+            # 0.20*PassageMatch + 0.05*SourceTierBonus
+            base_score = (
+                0.25 * norm_bm25
+                + 0.20 * norm_vector
+                + 0.30 * norm_theo
+                + 0.20 * norm_passage
+                + 0.05 * source_tier_bonus
+            )
 
             # [SPRINT19-C] Evidence Reliability Adjustment — a narrow (+/-10%)
             # multiplicative correction, never a primary ranking signal. This
@@ -1314,15 +1677,27 @@ class RetrievalEngine:
             # midpoint 0.5 rather than being penalized for lacking chapter
             # metadata they were never going to have.
             evidence_confidence = tsu.get("provenance", {}).get("confidence", 0.5)
-            final_score = base_score * (0.9 + 0.1 * evidence_confidence)
+
+            # [2026-07-23] Content Quality Adjustment — same narrow,
+            # non-dominant multiplicative-correction philosophy as Evidence
+            # Reliability Adjustment above, applied to
+            # content_quality.quality_score (core.noise_classifier, computed
+            # at ingest by core/tsu_builder.py but never consumed until now).
+            # See compute_content_quality_factor() docstring for the 0.7~1.0
+            # range rationale.
+            content_quality_factor = compute_content_quality_factor(tsu)
+            final_score = base_score * (0.9 + 0.1 * evidence_confidence) * content_quality_factor
 
             breakdown = theological_breakdowns.get(idx, {})
 
             explanation = (
-                f"bm25={norm_bm25:.3f}×0.30={0.30*norm_bm25:.3f} | "
-                f"vector={norm_vector:.3f}×0.25={0.25*norm_vector:.3f} | "
-                f"theological={norm_theo:.3f}×0.45={0.45*norm_theo:.3f} | "
-                f"base={base_score:.3f} × evidence_adj={0.9 + 0.1*evidence_confidence:.3f} | "
+                f"bm25={norm_bm25:.3f}×0.25={0.25*norm_bm25:.3f} | "
+                f"vector={norm_vector:.3f}×0.20={0.20*norm_vector:.3f} | "
+                f"theological={norm_theo:.3f}×0.30={0.30*norm_theo:.3f} | "
+                f"passage={norm_passage:.3f}×0.20={0.20*norm_passage:.3f} | "
+                f"source_tier={source_tier_bonus:.3f}×0.05={0.05*source_tier_bonus:.3f} | "
+                f"base={base_score:.3f} × evidence_adj={0.9 + 0.1*evidence_confidence:.3f} "
+                f"× content_quality={content_quality_factor:.3f} | "
                 f"total={final_score:.3f}"
             )
 
@@ -1333,6 +1708,7 @@ class RetrievalEngine:
                 vector_score=round(norm_vector, 4),
                 bm25_score=round(norm_bm25, 4),
                 theological_score=round(norm_theo, 4),
+                passage_score=round(norm_passage, 4),
                 final_score=round(final_score, 4),
                 explanation=explanation,
             ))

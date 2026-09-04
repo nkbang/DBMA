@@ -1,0 +1,87 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b0f0d;
+  --panel: #101613;
+  --panel-border: #1f2c26;
+  --text: #d7e4dd;
+  --text-dim: #7c9186;
+  --accent: #33ff99;
+  --accent-dim: #1f9e63;
+  --amber: #ffb347;
+  --red: #ff5c5c;
+  --gray: #4a5750;
+  --font-mono: "SF Mono", "JetBrains Mono", "Menlo", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 48px;
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  padding: 20px 24px;
+}
+
+.panel + .panel {
+  border-top: none;
+}
+
+.panel-title {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin: 0 0 16px;
+  text-transform: uppercase;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.dot--on {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.dot--off {
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red);
+}
+
+.dot--unknown {
+  background: var(--gray);
+}
+
+.mono-num {
+  font-variant-numeric: tabular-nums;
+}

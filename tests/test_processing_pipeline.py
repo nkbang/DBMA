@@ -6,6 +6,9 @@ processing.py 통합 테스트
 import pytest
 from pathlib import Path
 from core.processing import build_converter, build_splitter, process_one_file
+from core.config import registry_path_for
+from core.identity_registry import load_identity_registry, save_identity_registry
+from core.document_identity import guess_doc_type
 
 
 @pytest.fixture(scope="module")
@@ -123,3 +126,42 @@ class TestProcessOneFileDefensive:
         result = _run(file_info, converter, splitter, str(tmp_path))
         messages = [item.get("msg", "") for item in result["logs"] if isinstance(item, dict)]
         assert any("처리 실패" in msg or "추출" in msg or len(msg) > 0 for msg in messages)
+
+
+# ─── doc_type 배선 검증 (Task Order 018) ─────────────────────────────────────
+
+class TestProcessOneFileDocType:
+
+    def test_process_path_sets_doc_type_in_registry(self, tmp_path, converter, splitter):
+        """PROCESS 경로: 처리 후 registry record의 doc_type이 guess_doc_type() 결과와 일치해야 함."""
+        sample = tmp_path / "sample.txt"
+        content = "This is a test sentence for DBMA. " * 50
+        sample.write_text(content, encoding="utf-8")
+        file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
+        _run(file_info, converter, splitter, str(tmp_path))
+
+        registry = load_identity_registry(registry_path_for(str(tmp_path)))
+        record = next(iter(registry["documents"].values()))
+        expected = guess_doc_type(content, sample.name, None)
+        assert record["doc_type"] == expected
+
+    def test_skip_path_preserves_existing_doc_type(self, tmp_path, converter, splitter):
+        """SKIP 경로: 1차 처리 후 doc_type을 임의 세팅하고, 2차 처리(SKIP)했을 때 값이 유지되어야 함."""
+        sample = tmp_path / "sample.txt"
+        content = "This is a test sentence for DBMA. " * 50
+        sample.write_text(content, encoding="utf-8")
+        file_info = {"path": str(sample), "name": sample.name, "ext": ".txt"}
+
+        # 1차 처리 — 레코드 생성
+        _run(file_info, converter, splitter, str(tmp_path))
+        registry_path = registry_path_for(str(tmp_path))
+        registry = load_identity_registry(registry_path)
+        doc_id = next(iter(registry["documents"]))
+        registry["documents"][doc_id]["doc_type"] = "sermon"  # 임의 값으로 고정
+        save_identity_registry(registry, registry_path)
+
+        # 2차 처리 — 파일 안 바뀌었으므로 SKIP 경로
+        result = _run(file_info, converter, splitter, str(tmp_path))
+
+        registry = load_identity_registry(registry_path)
+        assert registry["documents"][doc_id]["doc_type"] == "sermon"

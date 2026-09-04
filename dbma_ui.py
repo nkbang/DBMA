@@ -1,4 +1,4 @@
-"""DBMA v1.1.0 — Production Streamlit Entry Point.
+"""DBMA — Production Streamlit Entry Point.
 
 Resolves nested module import path instability when running
 `streamlit run ui/app.py` directly from the project root.

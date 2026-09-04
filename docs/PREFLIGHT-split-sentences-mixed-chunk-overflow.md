@@ -1,33 +1,18 @@
 # Preflight — `split_sentences_mixed()` 줄바꿈 의존성으로 인한 Chunk Overflow
 
-상태: 고정(fixed) + 하위결함 B 수정 완료(2026-08-18). ADR-008 제안 4의
-후속 조사로 시작해, 조사·재현 완료 후 §4 "다음 조치" 후보 (b)를
-채택·적용함. 하위결함 A는 이 Preflight의 범위 밖(기존에도 chunk_size
-상한은 지켜지고 있었음)이라 미변경.
+상태: **하위 결함 B 수정 완료(2026-07-20) + 근본 수정 (a) 완료(2026-07-21)**.
+ADR-008 제안 4의 후속 조사로 시작해, 조사(코드 미수정) → 발생 빈도 실측
+→ 실제 수정까지 완료됨. 아래 §"수정 완료"와 §"근본 수정 (a) 완료" 참고.
+(하위 결함 A는 애초에 chunk_size 상한 자체는 지켜지는 경미한 결함이라
+"수정 필요" 대상이 아니었음 — §"하위 결함 A" 참고. 근본 수정 (a)가
+결함 A의 "문장 경계 손실" 증상에 부수적으로 도움이 되는지는 이번
+재검증에서 별도 확인하지 않았다.)
 
-## 수정 내역 (하위결함 B — chunk_size 상한 붕괴)
-
-`core/text_normalizer.py::_merge_sentence_fragments()`의 "단일 oversized
-항목" 분기(`if len(sent) > max_chars`)가 그 문장을 자르지 않고 그대로
-추가하던 것을, `core/chunking_optimizer.py::_slice_preserving_words()`와
-동일한 word-safe hard slice(신규 헬퍼 `_word_safe_hard_slice()`)로 교체.
-`chunking_optimizer.py`가 이미 `_merge_sentence_fragments`를
-`text_normalizer.py`에서 import하므로 별도 배선 변경 없이 production
-경로에 즉시 적용됨. import 순환을 피하기 위해
-`_slice_preserving_words`를 이동하지 않고 `text_normalizer.py`에
-독립된 사본으로 추가(두 함수는 동일 로직을 유지해야 함 — 향후 한쪽만
-고치는 drift에 주의).
-
-회귀 테스트: `tests/test_text_normalizer.py::TestMergeSentenceFragmentsOversizedUnit`
-(3건 — hard slice가 max_chars를 지키는지, word-safe한지, 이 문서의
-재현 사례가 더 이상 상한을 넘지 않는지). `tests/test_text_normalizer.py`
-14건, `tests/test_chunking_optimizer.py` 19건 전부 통과, 회귀 없음.
-
-하위결함 B 실제 발생 빈도(Beta corpus 12개 문서 기준)는 이 세션
-환경에 `output/beta_validation_v5/`(생성된 corpus 산출물)가 없어
-측정하지 못했다 — 로컬(Mac) 환경에서 `scripts/shadow_d5_metrics.py`
-패턴을 따라 별도 스크립트로 사후 측정 권장(§4 "다음 조치" 1번, 여전히
-미완).
+**[2026-07-22 갱신] 이 문서는 하위 결함 B 수정(2026-07-20) 시점에서
+멈춰 있었고, 그 다음날 완료된 근본 수정 (a)(commit `d45caed`)를
+반영하지 못한 채 "미착수"로 남아 있었다 — `docs/STATE.md`/`docs/TODO.md`도
+같은 이유로 잘못 기재됐다가 함께 정정됨. 원인: 이 문서의 서술을
+그대로 믿고 최신 git 로그를 재대조하지 않은 것.**
 
 ## 배경
 
@@ -138,13 +123,51 @@ if len(sent) > max_chars:
 
 ---
 
-## 발생 빈도 추정 (미실측, 후속 과제)
+## 발생 빈도 실측 (2026-07-20, `scripts/shadow_chunk_overflow_audit.py`)
 
-이 Preflight는 buggy 경로의 **존재와 메커니즘**을 코드 추적 + 합성
-재현으로 확정했을 뿐, **실제 Beta corpus 12개 문서에서 하위 결함 B가
-몇 건 발생하는지는 측정하지 않았다**(§4 "다음 조치" 참고). 학술
-주석서(WBC 등, Profile B)처럼 문단이 길고 blank-line 구분이 느슨한
-장르에서 더 자주 발생할 것으로 추정되나 정량 근거는 없다.
+Beta corpus 12개 문서 전체에 `core.chunking_optimizer.chunk_once()`
+(production이 실제로 호출하는 함수 그 자체, 재구현 아님)를 그대로
+실행해 결과 청크 길이 분포를 측정했다. 로직 재현이 아니라 production
+함수를 직접 호출한 결과이므로 이 수치는 추정이 아니라 실측이다.
+
+```text
+chunk_size=1200  overflow_cap(1.5x)=1800
+
+document                                                              chunks  >target  >1.5x cap  max_len
+11. 고린도전서                                                           293        0          0     1200
+12. 고린도후서                                                           213        1          0     1219
+2 Chronicles, Volume 15 (Word Biblical Commentary)                     1109      177         55     2514
+2 Kings, The Anchor Bible Commentary (Cogan/Tadmor)                     763      343        194     4616
+2 Kings, The Power and the Fury (Dale Ralph Davis)                      723      122         40     2455
+2 Kings, Volume 13 (Hubbard/Barker et al.)                             2984      122         63     6511
+3. 마가복음                                                              315        0          0     1200
+5. 요한복음1                                                             231        0          0     1200
+6. 요한복음2                                                             234        0          0     1199
+7. 사도행전1                                                             276        0          0     1199
+8. 사도행전2                                                             352        0          0     1200
+9. 로마서1                                                              243        0          0     1200
+
+documents: 12
+documents with >=1 chunk over 1.5x cap: 4
+total chunks: 7736
+chunks over target (1200): 765 (9.9%)
+chunks over 1.5x cap (1800, likely 하위 결함 B): 352 (4.6%)
+largest chunk observed: 6511 chars (5.4x target)
+```
+
+**해석**:
+- 한국어 성경 8개 문서: 결함 B 발생 **0건**(완전히 경계 안에 있음).
+- 영문 WBC류 학술 주석서 4개 문서: 전체 코퍼스 청크의 4.6%(352/7736)가
+  1.5x 상한(1800자)을 초과 — **이 4개 문서에만 100% 집중**되어 있다.
+  ADR-007 Amendment A의 Profile 분류(문단 중 1800자 초과 candidate
+  존재 여부)와 정확히 겹치는 문서군이다.
+- 최악 사례 **"2 Kings, Volume 13"**(6511자, target의 5.4배)는
+  ADR-007 Amendment A가 Axis 3(Unsplittable Outlier)에서도 최악
+  (18.6%)으로 지목했던 바로 그 문서 — 두 개의 서로 다른 측정 방법론이
+  같은 문서를 최악으로 재확인, 교차 검증 성격.
+- 결론: 하위 결함 B는 "드문 예외"가 아니라 **Profile B 문서군 전체에
+  구조적으로 발생**하며, 심각도(5.4배)도 처음 합성 재현(2~2.5배)보다
+  실제로 더 큼.
 
 ---
 
@@ -157,23 +180,89 @@ if len(sent) > max_chars:
 ✅ split_sentences()(정규식 기반)가 동일 입력에서 정상 동작함을 대조 확인
 ✅ chunking_optimizer.py:305의 split_sentences_mixed 우선 호출로 인해
    split_sentences()가 현재 production에서 도달 불가능한 dead fallback임을 확인
-코드 변경: 없음 (core/chunking_optimizer.py, core/text_normalizer.py 무접촉)
+✅ 발생 빈도 실측 완료 (scripts/shadow_chunk_overflow_audit.py, Beta
+   corpus 12개 문서, production chunk_once() 직접 호출) — 4.6%(352/7736)
+   청크가 1.5x 상한 초과, Profile B 4개 문서에 100% 집중, 최악 5.4배
+코드 변경(조사 단계): 진단 스크립트 2개 신규 추가만
+   (scripts/shadow_chunk_overflow_audit.py, tests/test_shadow_chunk_
+   overflow_audit.py — 유닛테스트 6건 + 전체 회귀 534 passed). 이
+   단계까지는 core/chunking_optimizer.py, core/text_normalizer.py 등
+   production 코드 무접촉.
+✅ 하위 결함 B 수정 완료 (아래 §"수정 완료" 참고)
 ```
 
-## 다음 조치 (HQ 승인 대기, 이 문서 범위 밖)
+## 수정 완료 (2026-07-20)
 
-1. **발생 빈도 실측** — Beta corpus 12개 문서에 대해 하위 결함 B
-   (`len(chunk) > chunk_size * 1.5`인 production 청크 비율)를 진단
-   스크립트(`scripts/shadow_*.py` 패턴, 코드 미수정)로 측정.
-2. **수정 방향 후보(구현 없음, 검토용만)**:
-   - (a) `split_sentences_mixed()`가 입력에 `\n`이 없으면 `split_sentences()`
-     (정규식 기반)로 자동 위임하는 내부 폴백 추가.
+`core/text_normalizer.py::_merge_sentence_fragments()`의 oversized
+단일 항목 미분할 버그를 word-safe hard slice로 수정. TDD 게이팅
+방식으로 진행 — CUE가 먼저 실패하는 테스트 5개
+(`tests/test_merge_sentence_fragments_overflow.py`)를 작성하고,
+C1(Cline, `qwen3.6:35b-DBMAcode` 모델)이 그 테스트를 통과시키는 최소
+diff만 작성, CUE가 자체 보고를 신뢰하지 않고 직접 재검증.
+
+**검증 결과**:
+- 신규 테스트 5개 전부 PASSED, 전체 회귀 539 passed(기존 534+5),
+  0 failed.
+- `core/chunking_optimizer.py` diff 없음(스코프 준수), diff가
+  `_merge_sentence_fragments()` 함수 내부로 정확히 국한.
+- `scripts/shadow_chunk_overflow_audit.py` 재실행: over-cap 비율
+  **4.6%→0.5%**(352/7736 → 40/8161), 최악 사례 **5.4배→1.6배**
+  (6511자 → 1966자, "2 Kings, Volume 13").
+
+**잔여 이슈(이번 작업 범위 밖, 후속 과제)**: 완전히 0%가 되지는
+않음(잔여 0.5%, 최악 1.6배) — 이번에 고친 "통째 무제한 append" 버그와는
+규모가 다른 별도 원인(overlap 프리픽스 상호작용 추정)으로 보임. 근본
+수정 (a)는 아래 §"근본 수정 (a) 완료"에서 별도로 완료됨.
+```
+
+## 근본 수정 (a) 완료 (2026-07-21, commit `d45caed`)
+
+위 §"수정 방향 후보"의 (a)("`split_sentences_mixed()`가 `\n` 없으면
+`split_sentences()`로 위임")는 실제로는 그대로 채택되지 않고, **같은
+목적(문단 내부에 개행이 없어도 문장 단위로 쪼개기)을 다른 메커니즘으로
+달성**했다 — `_split_line_on_sentence_end()` 헬퍼를 추가해, 각 줄을
+마침표류 문장부호(한국어 종결어미 포함) 뒤에서 자르도록 했다. 단순
+위임 대신 이 방식을 택한 이유는 커밋 메시지에 명시: 기존
+`split_sentences_mixed()`의 언어별(한/영) 버퍼링·병합 로직(짧은 문장
+재결합 등, 279~340행)을 그대로 보존하면서 문장 경계 검출 단계만
+보강하기 위함으로 보인다.
+
+**검증(2026-07-22, CUE 재실행)**:
+```
+재현 케이스("문장3이고... 만들어봅니다. 계속 이어써봅니다." 단일 문단):
+  수정 전: split_sentences_mixed() → 1개(분할 안 됨)
+  수정 후: split_sentences_mixed() → 2개(정상 분할)
+
+scripts/shadow_chunk_overflow_audit.py 재실행 (Beta 12문서):
+  총 청크: 18,715개(문장부호 분할로 청크 수 자체가 늘어남, 이전 8,161개)
+  1.5x cap 초과(하위 결함 A/B 잔여): 40개(0.2%) — 절대 건수는 이전과
+    동일(40건), 전체 청크 수가 늘어 비율만 0.5%→0.2%로 하락. 즉 이번
+    수정이 잔여 40건 자체를 줄이지는 못했다 — 이 잔여분은 문장부호가
+    아예 없는 콘텐츠(색인/용어집 등, Axis 3 "unsplittable outlier")로
+    추정되며 별도 문제(Hierarchical Chunk Builder Level 3 Hard
+    Fallback, 아래 §3 참고)다.
+  최악 사례: 여전히 1,966자(1.6배) — 동일 문서("2 Kings, Volume 13").
+회귀: tests/ 599 passed (신규 tests/test_split_sentences_mixed_punctuation.py
+  63줄 포함, tests/test_shadow_d5_metrics.py도 새 동작에 맞춰 갱신됨).
+```
+
+**결론**: 근본 수정 (a)는 완료. 잔여 0.2%(40건)는 (a)가 원래 노렸던
+문제(개행 의존성)가 아니라 별개의 Axis 3 unsplittable outlier
+문제이므로, 이 Preflight의 범위를 벗어난다 — SPRINT33-D/ADR-007
+Amendment A가 이미 추적 중인 항목으로 이관.
+
+## 다음 조치 (완료분 반영, 2026-07-22)
+
+1. **발생 빈도 실측 — 완료**(위 §"발생 빈도 실측" 참고).
+2. **수정 방향 후보**:
+   - (a) — **완료** (commit `d45caed`, 위 §"근본 수정 (a) 완료" 참고).
+     당초 제시한 "`split_sentences()`로 위임" 그대로는 아니고 동일 목적을
+     `_split_line_on_sentence_end()` 신설로 달성.
    - (b) `_merge_sentence_fragments()`의 "단일 oversized 항목" 케이스에
      `_slice_preserving_words()`와 동일한 word-safe hard slice를
-     적용해 하위 결함 A와 동일한 안전망을 B에도 적용.
-   - 두 후보 모두 `core/chunking_optimizer.py`의 private 함수 재사용
-     여부를 포함해 별도 설계 검토(ADR) 필요 — 이 Preflight는 방향만
-     제시하고 결정하지 않음.
+     적용해 하위 결함 A와 동일한 안전망을 B에도 적용 — **미착수, 다만
+     잔여 영향은 이제 40건/0.2%로 작음.** 착수 여부는 여전히 HQ 결정
+     사항이나, 시급성은 낮아진 상태.
 3. **Hierarchical Chunk Builder와의 관계 확인 완료(이 Preflight에서
    바로 확인)**: `core/hierarchical_chunk_builder.py`는
    `split_sentences_mixed()`를 호출하지 않는다 — candidate 생성은

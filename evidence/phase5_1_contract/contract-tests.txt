@@ -1,0 +1,5 @@
+tests/test_nae_benchmark_contract.py::TestLoaderValidation::test_loader_rejects_missing_benchmark_id PASSED [  6%]
+tests/test_nae_benchmark_contract.py::TestLoaderValidation::test_loader_rejects_invalid_question_type PASSED [ 12%]
+tests/test_nae_benchmark_contract.py::TestEvaluatorContract::test_evaluator_accepts_gold_tsu_ids_only PASSED [ 37%]
+tests/test_nae_benchmark_contract.py::TestEvaluatorContract::test_evaluator_rejects_removed_fields PASSED [ 43%]
+tests/test_nae_benchmark_contract.py::TestRunnerProtocol::test_runner_rejects_none_retrieval PASSED [ 50%]

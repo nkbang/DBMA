@@ -1,0 +1,1 @@
+pytest --tb=short -v tests/test_book_alias_resolution.py tests/test_query_enhancements_full_regression.py tests/test_nae_qdrant_payload_contract.py tests/test_nae_benchmark_metrics.py tests/test_nae_benchmark_schema.py tests/test_nae_retrieval_bridge_integration.py

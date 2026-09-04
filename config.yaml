@@ -43,16 +43,24 @@ chunking:
   max_chunk_size: 5000
 
 # ── Vector Database (Primary) ──────────────────────────
+# [NAE-2026-09-02] Qdrant가 실제 primary 벡터DB입니다. ChromaDB는 legacy
+# corpus history로만 보존되며, 현재 검색 경로에서 쿼리되지 않습니다.
 vector_db:
-  primary: "chroma"
+  primary: "qdrant"
   chroma:
     collection_name: "dbmar_docs"
     persist_directory: "chroma_db"
   qdrant:
-    url: "http://localhost:6333"
+    # [2026-09-03] 실제 컨테이너(nae_qdrant)는 호스트 포트 7333에 매핑됨
+    # (0.0.0.0:7333->6333/tcp) — 6333은 컨테이너 내부 포트, 호스트에서는
+    # 열려있지 않음. core.config.QDRANT_URL이 이 값을 그대로 읽으므로
+    # 여기서 반드시 실제 호스트 포트를 써야 함.
+    url: "http://localhost:7333"
     collections:
       sermon: "dbma_sermon"
       chunks: "dbma_chunks"
+      tsu: "nae_tsu_v1"
+      ref: "nae_ref_v1"
 
 # ── Embedding Model ────────────────────────────────────
 # LangChain 기반 임베딩 — legacy/폴백 전용 (기본 백엔드 아님)
@@ -62,16 +70,26 @@ embedding:
   dimension: 384
 
 # ── Ollama Models (dbma.py UI용) ─────────────────────
+# [2026-08-25] 기본 생성 모델을 my-theology-bot-v2로 복원 — 2026-07-28에
+# 베타 16GB 호환성 때문에 llama3.1:8b로 낮췄었으나(git blame 참고),
+# 신학 시스템 프롬프트가 없는 llama3.1:8b가 근거 문서 없이도 공허하고
+# 반복적인 답변을 생성하는 문제가 human-runtime-debugging 세션에서
+# 확인됨(fresh-install 상태, "하나님의 공의" 질의). 8b 유지 시 답변
+# 품질 저하가 베타 배포 자체의 신뢰도를 해친다고 판단해 품질을
+# 우선하기로 결정 — 16GB급 기기 호환성은 이번 결정으로 포기함.
+# 재도입하려면 GEN_MODEL_OPTIONS 기반 UI 모델 선택 또는 기기 메모리
+# 감지 분기가 필요(core/config.py:240 GEN_MODEL_OPTIONS 참고).
 ollama:
   default_embed_model: "bge-m3:latest"
-  default_gen_model: "my-theology-bot:latest"
+  default_gen_model: "my-theology-bot-v2:latest"
   embed_model_options:
     - "bge-m3:latest"
     - "nomic-embed-text"
     - "mxbai-embed-large"
   gen_model_options:
-    - "my-theology-bot:latest"
     - "llama3.1:8b"
+    - "llama3.2:3b"
+    - "my-theology-bot-v2:latest"
     - "llama3:latest"
 
 # ── Progress Tracking Defaults ─────────────────────────
@@ -115,3 +133,21 @@ ui:
   chunk_size: 1200
   chunk_overlap: 120
   use_ocr: false
+
+# ── Maintenance (2026-08-24, 휴지통 자동 비우기) ────────
+maintenance:
+  trash_retention_days: 30
+
+# ── Optional Modules (NAE-OPTIONAL-MODULE-PACKAGING-001) ─────
+# DBMA Core는 이 섹션이 없거나 전부 disabled여도 완전히 정상 동작한다.
+# 내부 코드 식별자는 "nae_pd"(NAE Public Theology Domain — Dagg/Hiscox 등
+# 공개신학 TSU corpus)로, 제품 브랜드 "내서재"(scripts/install_nae_beta.command
+# 가 설치하는 DBMA 앱 전체)와는 다른 대상이다 — 이름 혼동 방지를 위해
+# 브랜드명이 아닌 내부 식별자만 여기 사용한다.
+modules:
+  nae_pd:
+    enabled: false
+    display_name: "NAE Public Theology Module"
+    corpus_root: "NAE/corpus/tsu"
+    manifest_dir: "NAE/pipeline/ingest/manifests"
+    index_collection: "nae_tsu_v1"

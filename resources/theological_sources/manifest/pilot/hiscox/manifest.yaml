@@ -1,0 +1,21 @@
+# NAE Manifest Pilot — Hiscox (monograph) — NAE-MANIFEST-PILOT-IMPLEMENTATION-001
+# 구조/원칙은 ../dagg/manifest.yaml 헤더 주석과 동일.
+schema_version: "1.0.0"
+
+manifests:
+  - manifest_id: BAP-CHURCH-HISCOX
+    source_id: BAP-CHURCH-HISCOX
+    author_id: hiscox_edward_t
+    work_id: WORK-HISCOX-STANDARD-MANUAL-001
+    edition_id: WORK-HISCOX-STANDARD-MANUAL-001-1890
+    volume_id: null
+    issue_id: null
+    acquisition_status: acquired
+    ocr_status: complete
+    metadata_status: verified
+    tsu_status: not_ready
+    embedding_status: not_started
+    processing_status: metadata_complete
+    created_at: "2026-08-03T00:00:00Z"
+    updated_at: "2026-08-05T17:02:24+09:00"
+    verified_by: cue

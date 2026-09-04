@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0023",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0000108",
+      "tsu_id": "TSU-0000108",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "This was administered by his disciples, and doubtless with his sanction.",
+      "claim": "예수님의 제자들이 그의 허락 아래 물로 세례를 집행했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000109",
+      "tsu_id": "TSU-0000109",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The careful mention by the evangelist that Jesus did not himself baptize, shows that baptism with the Holy Spirit is not in this case intended.",
+      "claim": "예수님의 경우에 성령의 세례는 예수님 자신이 직접 행한 것이 아님을 나타낸다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000110",
+      "tsu_id": "TSU-0000110",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "John’s words, “ He shall baptize you with the Holy Ghost,” describe spiritual baptism as Christ’s peculiar personal work, and we do not Pet) oe i ee",
+      "claim": "예수 그리스도의 특유한 개인적인 작품은 성령의 세례를 받는 영적 세례이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000111",
+      "tsu_id": "TSU-0000111",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "find any passage of Scripture which speaks of the apostles, or any other ministers of Christ, baptizing with the Holy Spirit.",
+      "claim": "성경에는 사도나 그리스도의 다른 사역자가 성령으로 세례를 베푸는 내용을 말하는 구절이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000112",
+      "tsu_id": "TSU-0000112",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Such baptism as they had been accustomed to administer, in the presence, and by the authority of Christ, the commission required them to administer.",
+      "claim": "사도들이 그리스도의 현현과 권한 아래에서 행하던 세례를 그리스도의 명령에 따라 계속 hành해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000113",
+      "tsu_id": "TSU-0000113",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "It is true that Paul was sent to the Gentiles, to open their eyes, and to turn them from darkness to light, and from the power of Satan unto God; but these things are mentioned as the effects of his mission, and not as things directly commanded.",
+      "claim": "바울의 사명은 이방인들의 눈을 열어 주고, 그들을 어둠에서 빛으로, 그리고 사탄의 권세에서 하나님께로 돌이키는 것이었지만, 이것들은 그의 사명의 결과로서 언급되었으며, 직접 명령된 것은 복음을 전하는 것であった.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000114",
+      "tsu_id": "TSU-0000114",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "The duty commanded, was to preach the gospel.",
+      "claim": "바울의 사명은 복음을 전하는 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000115",
+      "tsu_id": "TSU-0000115",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "The blessing of God on his ministry rendered his mission effectual to open the eyes of the Gentiles, and to confer the spiritual benefits mentioned in the special commission which he received.",
+      "claim": "하나님의 축복이 사도들의 사역을 효과적으로 하여 이방인들의 눈을 열어주고 영적 혜택을 주는 데 기여한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000116",
+      "tsu_id": "TSU-0000116",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "But the baptizing mentioned in the commission given to the other apostles, is a commanded duty, and the command must be understood according to the literal import of the words.",
+      "claim": "세례는 다른 사도들에게 주어진 위임에서 언급된 바와 같이 명령된 의무이며, 이 명령은 말의 문자적인 의미에 따라 이해되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000117",
+      "tsu_id": "TSU-0000117",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Objection 3.—Paul teaches that there is one baptism.",
+      "claim": "바울은 하나의 세례만 존재한다고 가르친다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000118",
+      "tsu_id": "TSU-0000118",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Now, there is a baptism of the Spirit; and if water baptism is a perpetual ordinance of Christianity, there are two baptisms, instead of one.",
+      "claim": "바울이 하나의 세례만 존재한다고 가르쳤기 때문에 물의 세례가 영속적인 기독교 계명이라면 두 가지의 세례가 존재하게 되어矛盾이 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000119",
+      "tsu_id": "TSU-0000119",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Paul says, “One Lord, one faith, and one baptism.” As he uses the words Lord and faith in their literal senses, so he uses the word baptism in its literal sense.",
+      "claim": "바울은 세례에 대해 문자적인 의미로 사용하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000120",
+      "tsu_id": "TSU-0000120",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "In this sense there is but one baptism.",
+      "claim": "세례는 하나뿐이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000121",
+      "tsu_id": "TSU-0000121",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "John the Baptist foretold that Christ would baptize with the Holy Spirit : and Jesus said to his disciples, “ Ye shall be baptized with the baptism that I am baptized with.” Both these baptisms were known to Paul.",
+      "claim": "세례 요한은 그리스도가 성령으로 세례를 주실 것이라고 예언하였고, 예수님은 제자들에게 자신이 받으신 세례와 같은 세례를 받을 것이라고 말씀하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000122",
+      "tsu_id": "TSU-0000122",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "These figurative baptisms were two in number; while the literal baptism was but one.",
+      "claim": "그림적인 세례는 두 가지였지만 실제적인 세례는 하나뿐이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000123",
+      "tsu_id": "TSU-0000123",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "He must, therefore, have intended the latter.",
+      "claim": "그는 문자적인 세례를 의미했을 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000124",
+      "tsu_id": "TSU-0000124",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Objection 4.—Peter has defined the true Christian baptism, both negatively and positively.",
+      "claim": "베드로는 참된 기독교 세례를 부정적이고 긍정적으로 정의하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000125",
+      "tsu_id": "TSU-0000125",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The first clause denies that it is water baptism; and the second affirms that it is spiritual baptism.",
+      "claim": "물세례가 아니라 영적 세례이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000126",
+      "tsu_id": "TSU-0000126",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "‘This is confirmed by the fact that it is said to save, which water baptism cannot do.",
+      "claim": "물세례는 구원할 수 없지만 영적 세례는 구원한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000127",
+      "tsu_id": "TSU-0000127",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "When spiritual things are compared to literal, the literal are the type, and the spiritual the antitype.",
+      "claim": "영적인 것과 물질적인 것을 비교할 때, 물질적인 것이 유형이고 영적인 것이 반형이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000128",
+      "tsu_id": "TSU-0000128",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Hence, as baptism is called the antitype, spiritual baptism",
+      "claim": "세례는 영적 세례로서 상형의 대응물이다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000129",
+      "tsu_id": "TSU-0000129",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Water baptism, as a Christian rite, is not administered to cleanse the flesh, either literally or ceremonially.",
+      "claim": "기독교의 세례는 육체를 정화하기 위해 행해지지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000130",
+      "tsu_id": "TSU-0000130",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "It figuratively represents the burial and resurrection of Christ, on which the believer relies for salvation.",
+      "claim": "세례는 믿는 이가 구원에 의지하는 그리스도의 매장과 부활을 상징적으로 표현한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000131",
+      "tsu_id": "TSU-0000131",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The answer of a good conscience is obtained by faith in the finished work of Christ, represented in the rite.",
+      "claim": "세례의 의식은 믿음으로 말미암아 그리스도의 완성된 일을 대표하여 양심의 선한 응답을 얻는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000132",
+      "tsu_id": "TSU-0000132",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "In the language of Scripture, a thing is said to be that which it represents: thus, “ The field zs the world.” “ This ¿s my body.” “This cup ts the new testament.” So Paul was said to wash away his sins in baptism, because it represented their being washed away: and so in this passage, baptism is said to save, because it represents our salvation, which is effected by the burial and resurrection of Christ; not by the removing of any corporeal defilement.",
+      "claim": "세례는 그리스도의 죽음과 부활을 통해 이루어진 우리의 구원을 대표한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000133",
+      "tsu_id": "TSU-0000133",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Other",
+      "original_text": "The criticism on the word antitype is inaccurate.",
+      "claim": "반형(antitype)에 대한 비판은 부정확하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000134",
+      "tsu_id": "TSU-0000134",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The antitype is that which corresponds to the type; but it is not necessarily spiritual.",
+      "claim": "antitype는 type에 해당하는 것으로 정신적이지 않을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000135",
+      "tsu_id": "TSU-0000135",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The earthly sanctuary is, in one place, called the antitype of the heavenly, ‘‘ which are the figures [antitypes] of the true.’’* In this passage “ the holy places made with hands” are the antitype ; and heaven is the type to which the antitype corresponds.",
+      "claim": "지상 성소는 하늘에 대한 상응물(antitype)로 불려진다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000136",
+      "tsu_id": "TSU-0000136",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "‘This relation between the type and antitype, reverses the order which the objection assumes to be universal.",
+      "claim": "형과 반형의 관계는 일반적인 것으로 가정되는 순서를 뒤집는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000137",
+      "tsu_id": "TSU-0000137",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "An ordinance is not rendered carnal by the time when it is observed; but by its own nature.",
+      "claim": "하나의 규례는 그것이 지켜지는 시기에 의해 육적인 것으로 여겨지지 않지만, 그 본질에 의해 결정된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000138",
+      "tsu_id": "TSU-0000138",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The Jewish baptisms were commanded by God, and were significant of spiritual things.",
+      "claim": "유대인의 세례는 하나님의 명령에 따라 영적 의미를 지니고 있었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000139",
+      "tsu_id": "TSU-0000139",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Water baptism cannot have higher authority, or be more significant; and is, therefore, a carnal ordinance in its own nature, and not suited to Christ’s spiritual dispensation.",
+      "claim": "물세례는 그 자체의 본질에서 영적인 규범이 아니며, 그 권위나 중요성이 유대인의 세례보다 높을 수 없기 때문에 물세례는 그리스도의 영적 규범에 적합하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000140",
+      "tsu_id": "TSU-0000140",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "It belonged properly to John’s dispensation, and was designed to be superseded by Christ’s spiritual baptism, according to the words of John, “ He must increase, but I must decrease.’ i",
+      "claim": "세례는 요한의 시대에 속하며 그리스도의 영적 세례로 대체될 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000141",
+      "tsu_id": "TSU-0000141",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "In speaking of the Jewish ceremonies, Paul says, ‘* Which stood in meats and drinks, and divers baptisms, and carnal ordinances.” This passage does not confound baptisms, with carnal ordinances, but seems rather to distinguish between them.",
+      "claim": "바울은 유대인 의식에 대해 말할 때 '음식과 음료, 그리고 다양한 세례와 육적인 규례'라고 하며, 세례와 육적인 규례를 혼동하지 않고 구별하는 것으로 보인다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000142",
+      "tsu_id": "TSU-0000142",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Nevertheless, as the Jewish baptisms sanctified to the purifying of the flesh, there may be a propriety in denominating them carnal.",
+      "claim": "유대인 세례는 육체의 정화에 대한 성결을 위해 시행되었으므로 그것들을 육적인 것으로 부르는 것이 적절할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000143",
+      "tsu_id": "TSU-0000143",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But, whatever it may be called, if Christ instituted it for the observance of his followers, we dare not account it unsuitable to his dispensation.",
+      "claim": "그리스도께서 그의 추종자들이 지키기 위해 그것을 제정했다면, 우리는 그것이 그의 섭리에 부적합하다고 간주하지 않을 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000144",
+      "tsu_id": "TSU-0000144",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The Jewish dispensation abounded with ceremonies; but amidst them all, a spiritual service was required ; for even then the sacrifices of God were a broken spirit.!",
+      "claim": "유대인의 섭리는 많은 의식으로 풍부했지만 그 모든 가운데서도 영적 예배가 요구되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000145",
+      "tsu_id": "TSU-0000145",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The ceremonies were wisely adapted to promote spirituality, rather than to hinder it.",
+      "claim": "유대인의 제도는 여러 의식으로 가득 차 있었지만, 그 모든 것 속에서 영적인 섬김은 요구되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000146",
+      "tsu_id": "TSU-0000146",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Our more spiritual dispensation needs fewer helps of this kind: but we are yet in the body, and God has judged it fit to assist our faith by visible representations.",
+      "claim": "VISIBLE REPRESENTATIONS ARE HELPFUL FOR OUR FAITH",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000147",
+      "tsu_id": "TSU-0000147",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "To reject their use, is to be wiser than God.",
+      "claim": "VISIBLE REPRESENTATIONS의 사용을 거부하는 것은 하나님의 지혜보다 더 현명하다고 주장하는 것과 같다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000148",
+      "tsu_id": "TSU-0000148",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Water baptism was not superseded by the baptism of the Spirit.",
+      "claim": "물세례는 성령의 세례로 대체되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000149",
+      "tsu_id": "TSU-0000149",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "While Peter was preaching to Cornelius, and those who were in his house, the Holy Ghost fell on them.",
+      "claim": "성령의 세례를 받은 사람들도 물세례를 받아야 한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000150",
+      "tsu_id": "TSU-0000150",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "‘The apostle did not consider this a reason for omitting water baptism; but, on the contrary, argued the propriety of administering it, from this very fact: “ Can any man forbid water, that these should not be baptized which have received the Holy Ghost, as well as we?”?",
+      "claim": "사도 베드로는 성령의 받음을 이유로 물세례를 생략할 수 없는 것으로 여겼다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000151",
+      "tsu_id": "TSU-0000151",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Contrary to all his previous views, the Holy Spirit had guided the apostle to preach the gospel to these uncircumcised gentiles, and to admit them to Christian baptism.",
+      "claim": "성령님의 인도하심으로 사도 페트로는 예수 그리스도의 복음을 유신자에게 전파하고 그들을 기독교 세례에 참여시켰다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000152",
+      "tsu_id": "TSU-0000152",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "If this rite had been designed for Jews only, or to be superseded by the baptism of the Spirit, Peter committed a mistake in commanding these first Gentile converts to be baptized with water.",
+      "claim": "세례는 유대인에게만 국한된 것이 아니며, 성령의 세례로 대체되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000153",
+      "tsu_id": "TSU-0000153",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "It is true that he had been mistaken before, in confining his ministry to the circumcised; and it may be argued, that he may have been again mistaken in commanding water baptism to the uncircumcised.",
+      "claim": "베드로가 첫 번째 이방인 개종자들에게 물세례를 명령한 것은 성령님의 교정 아래에서 옳은 결정이었다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000154",
+      "tsu_id": "TSU-0000154",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "But the Holy Ghost was now correcting the first error, and it is wholly improbable that in doing this, he should have led him into a second, The propriety of admitting gentile converts had not been determined, as it afterwards was, by a council of the apostles; but Peter followed the teaching of the Holy Spirit, and the subsequent council justified his act.",
+      "claim": "성령은 베드로의 첫 번째 오류를 교정하였으며, 두 번째 오류로 인도하지는 않을 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000155",
+      "tsu_id": "TSU-0000155",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Now, if he had again mistaken the mind of the Spirit in commanding the use of water baptism, it is unaccountable, and inconsistent with the perfection of the Scriptures, that neither he nor the council, in reviewing the transaction under the influence of the Holy Spirit, discovered the mistake ; and that no",
+      "claim": "성령의 인도 아래서 베드로가 물세례를 명한 것은 성경의 완전성을 고려할 때 오류가 아님을 주장한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000156",
+      "tsu_id": "TSU-0000156",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The baptism which they reported must have been water baptism, and so far as John’s words applied to it, they must denote that water baptism, instead of ceasing under Christ's dispensation, would be greatly extended.",
+      "claim": "요한이 말한 그 말씀은 기독교 시대에 물세례가 더 널리 확장될 것임을 나타낸다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000157",
+      "tsu_id": "TSU-0000157",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Objection 6.—Paul states in Ist. epistle to the Corinthians, “ Christ sent me not to baptize, but to preach the gospel ;” and he thanked God that he had baptized so few of them.",
+      "claim": "바울은 고린도전서에서 세례를 주는 것이 아니라 복음을 전하는 것을 그리스도가 자신에게 맡긴 일이라고 말하며, 아주 少數의 사람들을만 세례를 주어서 감사한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000158",
+      "tsu_id": "TSU-0000158",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Now, as he was not a whit behind the chief of the apostles, water baptism would not have been omitted in his commission, if it had been designed to be a perpetual ordinance; and if it was as much his duty to baptize as to preach, he would not have thanked God that he had baptized so few.",
+      "claim": "바울이 침례를 영속적인 계명으로 받았다면 그는 사도들 중 가장 뒤처지지 않았을 것이므로 침례는 그의 사명에서 빠뜨려져서는 안 되었으며, 또한 그가 침례를 적게 한 것에 대해 하나님께 감사했다는 것은 침례와 복음 전파의 의무가 동일하지 않음을 시사한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000159",
+      "tsu_id": "TSU-0000159",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "He would as soon have thanked God that he had preached so little.",
+      "claim": "바울은 세례를 지속적인 계명으로 여겨서가 아니라 약한 사람들을 위하여 필요한 경우에만 시행하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000160",
+      "tsu_id": "TSU-0000160",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "He baptized some, as he circumcised Timothy, accommodating himself to the weakness of men; but he was thankful that such acts of accommodation had been seldom needed.",
+      "claim": "바울은 약한 사람들을 위해 예외적으로 세례를 주거나 할례를 행했지만 이러한 경우가 드물었던 것을 감사했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000161",
+      "tsu_id": "TSU-0000161",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "As he was the chief opponent of the prevailing judaizing tendency, he was thankful that, in the matter of baptizing, he had yielded to it in so few instances.",
+      "claim": "바울은 유대화하는 경향에 대하여 주요한 반대자로서 세례에 있어서도 그 경향에 거의屈服하지 않았음을 감사하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000162",
+      "tsu_id": "TSU-0000162",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "In this quotation from Paul, the word baptize stands alone, without the mention of water.",
+      "claim": "바울의 인용문에서 'baptize'라는 단어는 물을 언급하지 않고 독립적으로 사용된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000163",
+      "tsu_id": "TSU-0000163",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The objection very properly assumes that water baptism is meant; but, in so doing, it confirms our rule, that the word baptize, when alone, implies the use of water.",
+      "claim": "성경에서 'baptize'라는 단어가 독립적으로 사용될 때는 물의 세례를 의미한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000164",
+      "tsu_id": "TSU-0000164",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "If the word, when standing alone in such a sentence, could mean the baptism of the Spirit, and if Paul and the other apostles had been commissioned to administer this baptism, he could not haye declared with truth, “ Christ sent me not to baptize.”",
+      "claim": "바울이 성령의 세례를 주기 위하여 보내지지 않았다는 것은 물로 된 세례가 성경에서 말하는 세례라는 것을 의미한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000165",
+      "tsu_id": "TSU-0000165",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Paul claimed to be an apostle, not of men, neither by man, but by Jesus Christ.",
+      "claim": "바울은 인간이 아닌 예수 그리스도에 의한 사도임을 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000166",
+      "tsu_id": "TSU-0000166",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "An apostle is one sent, and Paul was sent by Jesus, who said “to whom I now send thee.” He claimed to be an apostle in the highest sense, because he had received his commission directly from Christ: “Am I not an apostle? have I not seen Jesus Christ ?’’?",
+      "claim": "바울은 자신이 인간에 의해 보내진 것이 아니라 예수 그리스도에 의해 보내진 사도라고 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000167",
+      "tsu_id": "TSU-0000167",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Now, in the commission which he received directly from Christ, he was not commanded, either to be baptized himself or to baptize others.",
+      "claim": "바울은 예수님으로부터 직접 받은 사도 직책에서 세례받거나 다른 사람에게 세례를 베푸는 명령을 받지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000168",
+      "tsu_id": "TSU-0000168",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "preached without human instrumentality; but he did not so receive baptism.",
+      "claim": "세례는 인간의 도구 없이 선포될 수 있지만 예수님은 세례를 받으실 때에는 인간의 도구를 통해 받으셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000169",
+      "tsu_id": "TSU-0000169",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "He submitted to it, at the command of Ananias, who was not himself one of these originally commissioned to administer it.",
+      "claim": "바울은 아나니아의 명령에 따라 세례를 받음으로써 다른 사도들의 권한을 통해 아나니아가 이를 집행할 수 있는 권리를 인정하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000170",
+      "tsu_id": "TSU-0000170",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "In this act, Paul acknowledged the obligation to perpetuate the ordinance, and the right of Ananias to administer it by authority derived from the other apostles.",
+      "claim": "바울은 안니아스의 권위에 의해 성례를 받음으로써 교회의 규칙을 인정하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000171",
+      "tsu_id": "TSU-0000171",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "At Antioch he was set apart with fasting, prayer, and imposition of hands, for ministerial labor; and, whether this was done with reference to the missionary service on which he immediately entered, or whether it was his first ceremonial investiture with the ministerial office, we learn; from what was done, that his direct commission from Christ, was not designed to set aside the Church order which had been previously established by the other apostles.",
+      "claim": "바울의 직접적인 그리스도로부터의 위임은 이전에 다른 사도들에 의해 확립된 교회 질서를 폐지하기 위한 것이 아니었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000172",
+      "tsu_id": "TSU-0000172",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Both in receiving his own baptism, and in being set apart to the work to which the Holy Ghost had called him, Paul acted as an ordinary Christian.",
+      "claim": "바울은 자신의 세례와 성령의 소명에 대한 직무를 받는 것에서 일반적인 기독교인처럼 행동했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000173",
+      "tsu_id": "TSU-0000173",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "His apostleship for preaching the gospel was directly from Christ, and not by man; but his baptism, and his authority to baptize, were received by man, and in a way which respected and honored the established order of things among the disciples of Christ.",
+      "claim": "바울의 사도직은 예수 그리스도로부터 직접 주어졌지만, 그의 세례와 세례를 집전하는 권한은 사람으로부터 받았으며, 이미 정해진 교회의 질서를 존중하고 존경하는 방식으로 받았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000174",
+      "tsu_id": "TSU-0000174",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "While he said with truth, “ Christ sent me not to baptize,” it was nevertheless true, that the baptisms which he did administer were not unauthorized.",
+      "claim": "바울이 침례를 집전한 것은 허가되지 않은 것이 아니었다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000175",
+      "tsu_id": "TSU-0000175",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "He considered the administration of the ordinance not his proper apostolic work; and since the Corinthians had divided themselves into parties, claiming Paul, Apollos, and Cephas, for their leaders, he was thankful that so few of them could claim him as their leader on the ground of having received baptism from him. ` l",
+      "claim": "바울은 세례를 그의 적절한 사도적 업무로 간주하지 않았고, 코린토인들이 파벌을 이루어 바울, 아波羅, 및 케파스를 지도자로 주장했기 때문에 그가 세례를 집전한 사람들이 그를 지도자로 주장할 수 있는 사람이 적은 것을 감사했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000176",
+      "tsu_id": "TSU-0000176",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Paul did not baptize out of mere accommodation to the weakness of others.",
+      "claim": "바울은 타인의 약점에 대한 단순한 양보로 세례를 집행하지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000177",
+      "tsu_id": "TSU-0000177",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Because of the Jews who were in that quarter, he circumcised Timothy, whose mother was a Jewess; but when the judaizers desired to have Titus also circumcised, who was a Greek, he steadfastly and successfully opposed them.",
+      "claim": "바울은 유대인들의 약점에 순응하기 위해 세례를 베풀지 않았으며, 그의 행동은 율법주의자들과의 갈등을 보여준다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000178",
+      "tsu_id": "TSU-0000178",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "As a minister of the uncircumcision, he watchfully and zealously defended the gentile converts in the enjoyment of liberty from the Jewish yoke of bondage.",
+      "claim": "바울은 율법의 구속에서 자유로운 이방인 신자들의 지위를 열렬히 옹호하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000179",
+      "tsu_id": "TSU-0000179",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "But not a word can be found in all that he said or wrote, claiming for them freedom from the obligation of Christian baptism.",
+      "claim": "바울은 기독교 세례의 의무에서 자유로워진다는 주장을 하지 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000180",
+      "tsu_id": "TSU-0000180",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "On the contrary, he uses considerations derived from their baptism, to urge them to walk in newness of life.",
+      "claim": "그는 기독교 세례의 의무에서 자유로울 것을 주장하지 않았으며, 오히려 그들의 세례로부터 새로운 삶을 살기 위한 고려를 사용한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000181",
+      "tsu_id": "TSU-0000181",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "considering, requires us to understand literal baptism to be meant, when it is said, “ So many of us as were baptized into Jesus Christ, were baptized into his death;’’ and again, when it is said, “ As many of you as have been baptized into Christ, have put on Christ.”?",
+      "claim": "세례는 그리스도 안에 세례를 받은 것을 의미하며, 이는 그리스도의 죽음과 새로운 삶을 위한 의무를 포함한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000182",
+      "tsu_id": "TSU-0000182",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "A public profession of Christ was, in the view of Paul, the design of this ceremony, involving an acknowledged obligation to be his, and to walk in newness of life.",
+      "claim": "바울의 관점에서 볼 때 세례 의식은 그리스도를 공개적으로 고백하는 것이며, 새 생명의 삶을 살기 위한 의무를 인정하는 것을 포함한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000183",
+      "tsu_id": "TSU-0000183",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "All that Paul taught, like his own example, tends to establish the perpetuity of Christian baptism.",
+      "claim": "바울이 가르친 모든 것은 그 자신의 예와 같이 기독교 세례의 영속성을 확립하는 데 기여한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000184",
+      "tsu_id": "TSU-0000184",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "To BAPTIZE IS TO IMMERSE.",
+      "claim": "세례는 물에 잠그는 것을 의미한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000185",
+      "tsu_id": "TSU-0000185",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "We have seen that the commission which Christ gave to his apostles, instituted baptism as an ordinance to be observed by his disciples to the end of the world.",
+      "claim": "그리스도께서 사도들에게 주신 위임은 세례를 세계의 끝까지 그의 제자들이 지켜야 할 규례로 정립하였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000186",
+      "tsu_id": "TSU-0000186",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Scripture / Authority",
+      "original_text": "The laws of interpretation require us to take the primary signification of words, unless there be something in the context, or nature of the subject, inconsistent with this signification.",
+      "claim": "해석의 법칙은 문맥이나 주제의 특성에 모호함이 없다면 단어의 기본적인 의미를 따라야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000187",
+      "tsu_id": "TSU-0000187",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "is no such difficulty in the present instance, our first decision, if we follow the lexicons, must be in favor of the sense to immerse.",
+      "claim": "현 상황에서 용어의 의미를 사전을 따라면 침례의 의미로 해석하는 것이 첫 번째 결정이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000188",
+      "tsu_id": "TSU-0000188",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "When, from any cause, the decision of lexicons is unsatisfactory, the ultimate recourse is to Greek authors who have used the word in question.",
+      "claim": "어떤 이유로든 사전의 결정이 만족스럽지 않을 때, 그 단어를 사용한 그리스어 저자들에게 최종적으로 의존한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000189",
+      "tsu_id": "TSU-0000189",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "Since use is the law of language, the sense in which Greek authors used a word is its true meaning.",
+      "claim": "어떤 단어가 사용된 의미는 그 언어의 법칙에 따라 결정된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000190",
+      "tsu_id": "TSU-0000190",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "A different rendering would correspond more exactly with the idea of immersion; but it has been my wish to give immersion no advantage to which it is not clearly entitled.",
+      "claim": "침례에 대한 번역은 침례의 아이디어와 더 정확하게 일치하는 다른 방식으로 표현될 수 있지만, 명확하게 정당화되지 않는 경우에는 침례를 유리하게 나타내지 않도록 하는 것이 바람칙이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000191",
+      "tsu_id": "TSU-0000191",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "It shall be dipped into water: so shall it be cleansed. 88.",
+      "claim": "물에 담그면 깨끗해진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000192",
+      "tsu_id": "TSU-0000192",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "For the soul is colored by the thought : color it then by accustoming yourself to such thoughts.”",
+      "claim": "마음가짐이 영혼을 변화시킨다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000193",
+      "tsu_id": "TSU-0000193",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Providence",
+      "original_text": "He may save one in the voyage that had better be immersed in the sea.” 17.",
+      "claim": "하나님은 바다에서一个人을 구원하실 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000194",
+      "tsu_id": "TSU-0000194",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Except they immerse, they eat not.” 27.",
+      "claim": "세례를 받지 않으면 먹을 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000195",
+      "tsu_id": "TSU-0000195",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "And were all immersed [surrounded on all sides as if they had been immersed] unto Moses in the cloud and in the sea.”",
+      "claim": "모세와 함께 구름과 바다에서 모든人が 둘러싸여 침례를 받았다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000196",
+      "tsu_id": "TSU-0000196",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "He shall immerse you in the Holy Spirit.2 77, In one spirit have we been immersed into one body.’",
+      "claim": "성령으로의 침례는 하나의 영으로 하나의 몸으로 들어감을 의미한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000197",
+      "tsu_id": "TSU-0000197",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "To color.—Some learned men have maintained that the verb never signifies to color, without regard to mode.",
+      "claim": "일부 학자들은 동사(to color)는 모드와 상관없이 색을 나타내는 것을 의미하지 않는다고 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000198",
+      "tsu_id": "TSU-0000198",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "But when we consider how many words from the root BAP were used for things pertaining to the dyer’s art; and how frequently the verb pazre was used to denote to color s it seems most probable, that when employed for this purpose, it suggested to the minds of the Greeks in their familiar use of it, the idea of color directly, without that process of thought which was necessary to deduce this meaning from its primary sense to dip.",
+      "claim": "그리스어에서 색을 나타내는 단어가 사용될 때, 그 의미는 직 接적으로 색을 가리키는 것으로 이해되었을 가능성이 크다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000200",
+      "tsu_id": "TSU-0000200",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "It may signify the effect of it, but never the process itself.",
+      "claim": "동사 자체는 절차를 의미하지 않지만 그 효과는 의미할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000201",
+      "tsu_id": "TSU-0000201",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Robinson says it “is frequentative in form, but not in fact.” Professor Stuart has examined this question at length, and decides “that the opposite opinion, which makes Baxrfo a frequentative (if by this it is de signed to imply that it is necessarily so by the laws of formation, or even by actual usage), is destitute of a solid foundation, I feel constrained, on the whole, to believe.",
+      "claim": "Baxrfo는 형식적으로는 반복적인 의미를 가지지만 실제로는 그렇지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000202",
+      "tsu_id": "TSU-0000202",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "The lexicographers who have assigned this meaning to it, appear to have done it on the ground of theoretical principles as to the mode of formation.",
+      "claim": "어떤 사전 편찬자들은 이 단어에 이러한 의미를 할당한 것이理论적인 원칙에 근거한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000203",
+      "tsu_id": "TSU-0000203",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "And until these are produced, I must abide by the position that a frequentative sense is not necessarily attached to Barto; and that, if it ever have this sense, it is by a specialty of usage of which I have been able to find no example.” The termination fo, is, with greater probability, supposed by others to add to the primitive word the signification of to cause, or to make, like the termination ize in legalize, to make legal; fertilize, to make fertile.",
+      "claim": "Barto의 의미는 반드시 빈번한 의미를 내포하지 않으며, fo라는 접미사는 원래 단어에 '원인' 또는 '만들다'의 의미를 더할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000204",
+      "tsu_id": "TSU-0000204",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "According to this hypothesis, if azra signifies to immerse, Banrifw signifies to cause to be immersed.",
+      "claim": "azra가 침례를 의미한다면, Banrifw는 침례를 받게 하다를 의미한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000205",
+      "tsu_id": "TSU-0000205",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "This makes the two words nearly or quite synonymous.",
+      "claim": "azra와 Banrifw는 거의 동의어이다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000206",
+      "tsu_id": "TSU-0000206",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "We must, therefore, examine the usus loquendi, to ascertain the peculiar shades of meaning which they acquire.",
+      "claim": "어떤 두 단어가 원래 의미에서 얼마나 일치하더라도 실제 사용에서는 거의 같은 곳에 사용될 수 있는 경우는 드물기 때문에 그들이 얻은 특별한 의미의 оттен기를 알기 위해 언어 사용 방식(usus loquendi)을 조사해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000207",
+      "tsu_id": "TSU-0000207",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "1. banro more frequently denotes slight or temporary immersion, than Bazza.",
+      "claim": "banro는 약간의 잠수나 일시적인 잠수를 의미하는 경우가 많다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000208",
+      "tsu_id": "TSU-0000208",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "Hence, the English word dip, which properly denotes slight or temporary immersion, is more frequently its appropriate rendering.",
+      "claim": "영어 단어 'dip'은 약간의 잠수나 일시적인 침수를 의미하므로 banro를 번역할 때 적절한 용어이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

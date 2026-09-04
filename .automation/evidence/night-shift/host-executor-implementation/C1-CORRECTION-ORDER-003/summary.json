@@ -1,0 +1,27 @@
+{
+  "correction_order": "C1-CORRECTION-ORDER-003",
+  "status": "COMPLETE",
+  "bug_description": "cli_driver.py가 매 호출마다 tempfile.mkdtemp()로 새 임시 디렉터리를 만들어 state_store와 manifest_path를 둔다 — 프로세스 종료와 함께 전부 사라진다.",
+  "fixes_applied": [
+    "config.py: DEFAULT_SOURCE_MANIFEST_PATH = STATE_DIR / \"source_manifest.yaml\" 추가",
+    "cli_driver.py: manifest_path를 config.DEFAULT_SOURCE_MANIFEST_PATH로 변경 (기존 if/else temp path 제거)"
+  ],
+  "reexecution_result": {
+    "total_tasks": 10,
+    "passed": 10,
+    "failed": 0,
+    "all_QUALITY_PASSED": true
+  },
+  "production_mutation_verified": {
+    "registration_state_json_entries": 10,
+    "registration_state_all_QUALITY_PASSED": true,
+    "source_manifest_yaml_entries": 10,
+    "checksum_ledger_entries": 66
+  },
+  "regression": {
+    "adr022_cycle": 133,
+    "adr022_result": "7/7 PASS",
+    "registration_tests": "152 passed, 0 failed"
+  },
+  "evidence_location": ".automation/evidence/night-shift/host-executor-implementation/C1-CORRECTION-ORDER-003"
+}

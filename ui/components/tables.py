@@ -30,7 +30,7 @@ def document_table(documents: list[dict],
 
     search_col, *_ = st.columns([1, 19]) if searchable else [None]
     if searchable and search_col:
-        query = st.text_input("🔍 문서 검색", placeholder="문서 이름 또는 메타데이터...", key="doc_search_input")
+        query = st.text_input("문서 검색", icon=":material/search:", placeholder="문서 이름 또는 메타데이터...", key="doc_search_input")
     else:
         query = None
 
@@ -112,13 +112,17 @@ def search_results_table(results: list[dict],
         else:
             score_color = THEME.STATUS_ERROR
 
+        # [DBMA-UX-007 §11] RRF 알고리즘명 + 원시 소수점은 금지 — 별점으로 단순화
+        filled = min(5, max(0, round(score * 5)))
+        stars = "\u2b50" * filled + "\u2606" * (5 - filled)
+
         html = f"""
         <div style="
             background: {THEME.BG_SURFACE};
             border: 1px solid {THEME.BORDER_LIGHT};
-            border-radius: 6px;
-            padding: {12}px {16}px;
-            margin-bottom: {8}px;
+            border-radius: 8px;
+            padding: {14}px {18}px;
+            margin-bottom: {10}px;
         ">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
                 <span style="font-size: 14px; font-weight: 600; color: {THEME.BRAND_PRIMARY};">
@@ -128,14 +132,14 @@ def search_results_table(results: list[dict],
                     font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px;
                     background: {score_color}18; color: {score_color};
                 ">
-                    RRF {score:.4f}
+                    {stars}
                 </span>
             </div>
-            <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 4px;">
+            <div style="font-size: 11px; color: {THEME.TEXT_TERTIARY}; margin-bottom: 6px;">
                 {doc_type}
                 {f' • {source}' if source else ''}
             </div>
-            {f'<div style="font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.5;">{snippet}</div>' if snippet else ''}
+            {f'<div style="font-family: Source Serif 4, serif; font-style: italic; font-size: 13px; color: {THEME.TEXT_SECONDARY}; line-height: 1.6;">{snippet}</div>' if snippet else ''}
         </div>
         """
         st.markdown(html, unsafe_allow_html=True)

@@ -1,0 +1,135 @@
+{
+  "total_questions": 10,
+  "passed": 10,
+  "failed": 0,
+  "skipped": 0,
+  "zero_gold_count": 0,
+  "metrics": {
+    "recall@5": 1.0,
+    "precision@5": 0.21999999999999997,
+    "mrr": 1.0,
+    "hit_rate@5": 1.0
+  },
+  "status_distribution": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "zero_gold": 0
+  },
+  "per_question": [
+    {
+      "benchmark_id": "PILOT001-Q01",
+      "question": "하나님을 온 마음으로 사랑하는 것이 왜 모든 의무의 총합인가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q02",
+      "question": "그리스도를 사랑하고 순종하는 동기는 어디서 비롯되는가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q03",
+      "question": "세례를 뜻하는 헬라어 동사 banro(bapto)는 침수의 과정을 의미하는가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q04",
+      "question": "성찬에서 빵을 먹는 방식이 십자가상을 보는 것보다 왜 더 적합한가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q05",
+      "question": "초기 지역 교회들은 서로 어떤 관계를 유지했는가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q06",
+      "question": "교회 안에서 선한 사람들도 당파적 분쟁을 일으킬 위험이 있는가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.4,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q07",
+      "question": "교회에서 악한 정서와 분쟁을 예방하는 것이 왜 치유보다 나은가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q08",
+      "question": "사도행전 17:30에서 하나님은 회개에 대해 무엇을 명령하시는가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q09",
+      "question": "사도행전 2:38에서 베드로는 세례에 대해 무엇을 권면하는가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    },
+    {
+      "benchmark_id": "PILOT001-Q10",
+      "question": "개방 성찬을 옹호하는 사람들은 어떤 근거를 제시하는가?",
+      "metrics": {
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "mrr": 1.0,
+        "hit_rate@5": 1.0
+      },
+      "status": "passed"
+    }
+  ],
+  "timestamp": "2026-08-10T03:34:21.880925+00:00",
+  "dataset_path": "NAE/benchmark/datasets/pilot_001_gold_v1.jsonl",
+  "top_k": 5,
+  "retrieval_errors": 0
+}

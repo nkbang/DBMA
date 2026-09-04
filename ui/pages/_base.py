@@ -14,19 +14,42 @@ from ui.theme.colors import THEME
 class BasePage:
     """Base class for DBMA pages with common rendering utilities."""
 
-    def __init__(self, title: str, icon: str = "📄"):
+    def __init__(self, title: str, icon: str = "description"):
         self.title = title
         self.icon = icon
 
     def render_header(self) -> None:
-        """Render the standard page header."""
-        st.markdown(f"## {self.icon} {self.title}")
-        st.caption(f"DBMA v{APP_VERSION} — Personal Knowledge Operating System")
+        """Render the standard page header.
 
-    def render_section(self, title: str, icon: str = "📋") -> None:
-        """Render a section heading with divider."""
-        st.divider()
-        st.markdown(f"### {icon} {title}")
+        icon은 Material Symbols 아이콘 이름(예: "search")이다 — 빈 문자열이면
+        아이콘 없이 제목만 렌더링한다. 사용자-facing 캡션은 내서재/NAE —
+        DBMA는 내부 식별자로만 유지(docs/governance/DBMA-BRAND-GOV-001.md).
+        """
+        icon_html = (
+            f'<span class="material-symbols-outlined" style="font-size: 26px; vertical-align: -4px;">{self.icon}</span> '
+            if self.icon else ""
+        )
+        st.markdown(
+            f"""
+            <header class="nae-page-header">
+                <div class="nae-page-title">{icon_html}{self.title}</div>
+                <div class="nae-page-meta">내서재 · NAE · v{APP_VERSION}</div>
+            </header>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    def render_section(self, title: str, icon: str = "list_alt") -> None:
+        """Render a section heading with divider. icon은 Material Symbols
+        아이콘 이름 — 빈 문자열이면 아이콘 없이 제목만 렌더링한다."""
+        icon_html = (
+            f'<span class="material-symbols-outlined" style="font-size: 20px; vertical-align: -3px;">{icon}</span> '
+            if icon else ""
+        )
+        st.markdown(
+            f'<div class="nae-section-heading">{icon_html}{title}</div>',
+            unsafe_allow_html=True,
+        )
 
     def render_error_box(self, message: str) -> None:
         """Render an error message box."""
@@ -122,5 +145,12 @@ class BasePage:
 
     def render_footer(self) -> None:
         """Render the standard page footer."""
-        st.divider()
-        st.caption(f"DBMA v{APP_VERSION} — David Bang Ministry Archive | Personal Knowledge Operating System")
+        st.markdown(
+            f"""
+            <footer class="nae-fixed-footer">
+                <span>현재 보고 있는 화면: {self.title}</span>
+                <span class="nae-footer-link">내서재에게 물어보세요</span>
+            </footer>
+            """,
+            unsafe_allow_html=True,
+        )

@@ -1,0 +1,26 @@
+{
+  "directive_id": "HQ-C1-DIRECTIVE-NAE-PBC1765-ACQUIRE-008",
+  "status": "PREFLIGHT FAILED — Stage B not executed",
+  "date": "2026-08-01",
+  "source_id": "PBC1765",
+  "legacy_source_id": "PBC1742",
+  "expected_identifier": "plainbookofconfe00phil",
+  "evidence_files": [
+    "stage-a-metadata-request.txt",
+    "stage-a-metadata-response.json",
+    "stage-a-preflight-decision.md",
+    "stage-b-not-executed.md",
+    "provenance-manifest-template.json",
+    "content-identity-validation.md",
+    "changed-files.txt",
+    "self-check.md"
+  ],
+  "preflight_conditions": {
+    "total": 7,
+    "passed": 0,
+    "failed": 5,
+    "unverified": 2
+  },
+  "stage_b_executed": false,
+  "hq_decision_requested": ["C", "D"]
+}

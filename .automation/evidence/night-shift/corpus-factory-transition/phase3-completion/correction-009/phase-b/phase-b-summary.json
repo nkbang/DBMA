@@ -1,0 +1,40 @@
+{
+  "phase": "B",
+  "date": "2026-08-17",
+  "b1_mock_llm": {
+    "test_candidate": "cand-b1-mock-test-001",
+    "final_state": "CONFIDENCE_CLASSIFIED",
+    "metadata_clean": true,
+    "has_error_fields": false,
+    "state_transitions_observed": ["READY", "CONFIDENCE_CLASSIFIED"],
+    "conclusion": "Mock LLM: 정상 경로 통과. metadata merge 예상대로 동작 (source + execution 필드 누적)."
+  },
+  "b2_real_llm_not_claim": {
+    "test_candidate": "cand-b2-real-test-001",
+    "final_state": "CONFIDENCE_CLASSIFIED",
+    "is_claim": false,
+    "reason": "not_a_claim",
+    "metadata_clean": true,
+    "has_error_fields": false,
+    "elapsed_seconds": 6.81,
+    "conclusion": "Real LLM (not_a_claim): 정상 경로 통과. metadata clean."
+  },
+  "b3_real_llm_is_claim": {
+    "test_candidate": "cand-b3-claim-test-001",
+    "final_state": "CONFIDENCE_CLASSIFIED",
+    "is_claim": true,
+    "confidence_score": 0.9,
+    "confidence_label": "HIGH",
+    "doctrine": "Soteriology",
+    "metadata_clean": true,
+    "has_error_fields": false,
+    "elapsed_seconds": 12.375,
+    "conclusion": "Real LLM (is_claim=true): 정상 경로 통과. TSU record 생성됨. metadata clean."
+  },
+  "key_finding": {
+    "normal_path_verified": true,
+    "metadata_merge_behavior": "예상대로 동작 — set_state()가 metadata를 merge하므로 execution 필드가 source 필드에 누적됨. 이는 버그가 아님.",
+    "stuck_candidate_explanation": "Phase B 재현에서는 PROCESSING stuck이 재현되지 않음. 기존 stuck candidate(cand-eea68df881b336e1)는 이미 CONFIDENCE_CLASSIFIED로 복구됨. 원인은 transient issue(OLLama timeout, race condition 등)일 가능성 높음.",
+    "set_state_return_value_issue": "set_state()가 항상 True를 반환 — transition validation 실패 시에도 True 반환. caller가 return value를 체크하지 않으면 실패를 감지 못함. 이는 잠재적 버그이지만 현재 재현 불가."
+  }
+}

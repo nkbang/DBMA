@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>내서재 · NAE — 설교 리뷰</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#434848", "surface-bright": "#fbf9f4", "background": "#fbf9f4",
+                    "on-secondary-fixed": "#241a0d", "tertiary-fixed": "#c2e8fe", "outline": "#737878",
+                    "surface-container-lowest": "#ffffff", "surface-dim": "#dbdad5", "outline-variant": "#c3c7c7",
+                    "inverse-surface": "#30312e", "on-surface": "#1b1c19", "on-primary-fixed-variant": "#414848",
+                    "inverse-primary": "#c1c8c7", "secondary": "#6a5c4c", "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#a7cce1",
+                    "inverse-on-surface": "#f2f1ec", "primary-fixed": "#dde4e3", "primary": "#171e1e",
+                    "on-secondary-fixed-variant": "#514535", "surface-container-highest": "#e4e2dd",
+                    "surface": "#fbf9f4", "secondary-fixed": "#f3dfcb", "on-error-container": "#93000a",
+                    "on-secondary-container": "#6f6050", "surface-container-low": "#f5f3ee", "on-error": "#ffffff",
+                    "error-container": "#ffdad6", "on-tertiary-fixed": "#001e2b", "tertiary-container": "#0c3647",
+                    "secondary-container": "#f0dcc8", "surface-tint": "#596060",
+                    "on-tertiary-fixed-variant": "#264b5d", "error": "#ba1a1a", "on-primary-container": "#949b9b",
+                    "surface-variant": "#e4e2dd", "on-tertiary-container": "#7b9fb3", "on-primary-fixed": "#161d1d",
+                    "primary-container": "#2c3333"
+            },
+            "borderRadius": {"sm":"0.125rem","DEFAULT":"0.25rem","md":"0.375rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
+            "spacing": "8px",
+            "fontFamily": {"hanken":["'Hanken Grotesk'","sans-serif"],"serif":["'Source Serif 4'","Georgia","serif"]}
+          }
+        }
+      }
+</script>
+<style>
+      html { font-family: 'Hanken Grotesk', sans-serif; }
+      .reading-text { font-family: 'Source Serif 4', serif; line-height: 1.8; }
+      .sidebar { width: 280px; min-width: 280px; background-color: #fbf9f4; border-right: 1px solid #e4e2dd; }
+      .doc-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+      .badge-bible { background: #2c3333; color: #dde4e3; }
+      .badge-book { background: #dde4e3; color: #161d1d; }
+      .badge-theology { background: #f0dcc8; color: #6f6050; }
+      .badge-sermon { background: #0c3647; color: #7b9fb3; }
+    </style>
+</head>
+<body class="bg-[#fbf9f4] text-[#1b1c19]">
+<div class="flex h-screen overflow-hidden">
+  <aside class="sidebar flex flex-col">
+    <div class="p-6 pb-2">
+      <h1 class="font-serif text-[28px] font-bold text-[#171e1e]">내서재<span class="text-[#737878] font-hanken text-[14px] font-medium"> · NAE</span></h1>
+      <p class="text-[11px] text-[#737878] mt-1">나의 자료 · 나의 연구 · 나의 목회</p>
+    </div>
+    <nav class="flex-1 px-4 py-2">
+      <p class="text-[12px] font-medium text-[#737878] uppercase tracking-wider px-3 mb-2">네비게이션</p>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">home</span>홈</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">search</span>자료 찾기</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">library_books</span>내 자료</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">science</span>연구하기</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-semibold text-[#264b5d] bg-[#c2e8fe]" href="#"><span class="material-symbols-outlined text-[20px] fill-1">menu_book</span>설교 준비</a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition" href="#"><span class="material-symbols-outlined text-[20px]">help</span>도움말</a>
+    </nav>
+    <div class="p-4 border-t border-[#e4e2dd]">
+      <p class="text-[12px] font-medium text-[#737878] uppercase tracking-wider mb-2">시스템 상태</p>
+      <p class="text-[11px] text-[#434848] flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#2d7d5b] inline-block"></span>자료 검색: 정상</p>
+      <p class="text-[11px] text-[#434848] flex items-center gap-1.5 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-[#2d7d5b] inline-block"></span>AI 분석: 정상</p>
+      <p class="text-[11px] text-[#434848] flex items-center gap-1.5 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-[#2d7d5b] inline-block"></span>저장 공간: 정상</p>
+    </div>
+    <div class="p-4 text-center"><p class="text-[10px] text-[#737878]">내서재 · NAE v1.3.0</p></div>
+  </aside>
+
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <header class="h-16 border-b border-[#e4e2dd] flex items-center justify-between px-8 bg-[#fbf9f4]">
+      <div><h2 class="font-hanken text-[20px] font-semibold text-[#1b1c19]">설교 리뷰</h2><p class="text-[12px] text-[#737878] mt-0.5">설교 모음 파일을 분리하여 검수합니다</p></div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto px-8 py-6">
+      <!-- File selector -->
+      <div class="mb-6 p-4 bg-white border border-[#e5e1d8] rounded-lg">
+        <label class="text-[13px] font-semibold text-[#1b1c19] mb-2 block">파일 선택</label>
+        <select class="w-full rounded-lg border border-[#c3c7c7] px-4 py-2.5 text-[14px] bg-white focus:border-[#264b5d] focus:outline-none">
+          <option>2024_설교모음.pdf</option>
+          <option>2023_설교모음.pdf</option>
+          <option>2022_설교모음.pdf</option>
+        </select>
+        <p class="text-[11px] text-[#737878] mt-2">RAW 폴더에서 설교 모음 파일 (*.pdf, *.docx)을 자동으로 감지합니다</p>
+      </div>
+
+      <!-- Split results -->
+      <div class="mb-6">
+        <h3 class="font-hanken text-[16px] font-semibold text-[#1b1c19] mb-1">분리된 설교 (12편)</h3>
+        <p class="text-[12px] text-[#737878] mb-4">파일을 12개의 설교로 분리했습니다. 각 설교를 검수하고 등록하세요.</p>
+      </div>
+
+      <!-- Navigator + Viewer -->
+      <div class="grid grid-cols-3 gap-6">
+        <!-- Left: Navigator -->
+        <div class="col-span-1">
+          <h4 class="font-hanken text-[14px] font-semibold text-[#1b1c19] mb-3">설교 목록</h4>
+          <div class="space-y-1 max-h-[600px] overflow-y-auto pr-2">
+            <button class="w-full text-left px-3 py-2.5 rounded-lg bg-[#c2e8fe] border-l-4 border-[#264b5d]">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.08.18 주일예배</p>
+              <p class="text-[11px] text-[#434848]">로마서 8:28-39 · 은혜의 확신</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.08.11 주일예배</p>
+              <p class="text-[11px] text-[#434848]">고린도후서 4:1-7 · 복된 사명</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.08.04 주일예배</p>
+              <p class="text-[11px] text-[#434848]">요한복음 6:35-40 · 생명의 떡</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.07.28 주일예배</p>
+              <p class="text-[11px] text-[#434848]">마태복음 5:1-12 · 산상수훈</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.07.21 주일예배</p>
+              <p class="text-[11px] text-[#434848]">갈라디아서 2:15-21 · 은혜의 복음</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.07.14 주일예배</p>
+              <p class="text-[11px] text-[#434848]">에베소서 2:1-10 · 새 창조</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.07.07 주일예배</p>
+              <p class="text-[11px] text-[#434848]">베드로전서 2:4-10 · 살아난 돌</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.06.30 주일예배</p>
+              <p class="text-[11px] text-[#434848]">디모데후서 3:14-17 · 하나님의 말씀</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.06.23 주일예배</p>
+              <p class="text-[11px] text-[#434848]">빌립보서 1:20-30 · 그리스도께 사는 것</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.06.16 주일예배</p>
+              <p class="text-[11px] text-[#434848]">누가복음 15:1-7 · 잃은 자 찾는 목자</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.06.09 주일예배</p>
+              <p class="text-[11px] text-[#434848]">요한복음 10:1-18 · 선한 목자</p>
+            </button>
+            <button class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#e4e2dd] transition">
+              <p class="text-[13px] font-semibold text-[#1b1c19]">2024.06.02 주일예배</p>
+              <p class="text-[11px] text-[#434848]">로마서 3:21-31 · 율법 밖의 하나님의 의</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Viewer -->
+        <div class="col-span-2">
+          <div class="bg-white border border-[#e5e1d8] rounded-lg overflow-hidden">
+            <!-- Viewer header -->
+            <div class="px-5 py-3 border-b border-[#e4e2dd] flex items-center justify-between bg-[#fbf9f4]">
+              <div>
+                <span class="doc-badge badge-sermon">설교</span>
+                <span class="text-[11px] text-[#737878] ml-2">2024.08.18 주일예배</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="px-3 py-1.5 rounded-lg border border-[#c3c7c7] text-[12px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">chevron_left</span>이전</button>
+                <button class="px-3 py-1.5 rounded-lg border border-[#c3c7c7] text-[12px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition flex items-center gap-1">다음<span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+              </div>
+            </div>
+
+            <!-- Viewer body -->
+            <div class="p-8 reading-text text-[17px] leading-relaxed text-[#1b1c19] max-h-[500px] overflow-y-auto">
+              <h3 class="font-serif text-[22px] font-bold text-[#171e1e] mb-2">은혜의 확신</h3>
+              <p class="text-[#434848] text-[15px] mb-6">로마서 8:28-39 · 2024년 8월 18일</p>
+
+              <div class="space-y-4">
+                <p>[서론]</p>
+                <p>오늘 본문은 바울이 로마서에서 펼치는 은혜의 정점에 해당하는 구절들입니다. "우리가 알거니와 하나님을 사랑하는 자 곧 그의 뜻대로 부르심을 입은 자들에게는 모든 것이 합력하여 선을 이루느니라" — 이 한 문장 안에 복음의 전체가 담겨 있습니다.</p>
+
+                <p>[본문 1: 사전 아심]</p>
+                <p>바울은 "하나님께서 미리 아신 자들을 또한 그의 아들의 형상을 본받게 하기 위하여 미리 정하셨으니"라고 말합니다. 여기서 '미리 아심'은 단순한 예지가 아닙니다. 히브리어 <em>ידע</em>(야다)처럼, 관계적·계약적인 지식입니다.</p>
+
+                <p>[본문 2: 부르심과 의롭다 하심]</p>
+                <p>"미리 정하신 자들을 또한 부르시고 부르신 자들을 또한 의롭다 하시고 의롭다 하신 자들을 또한 영화롭게 하셨느니라"(v.30). 이 다섯 동사는 시간적 연속이 아니라 논리적 필연성을 보여줍니다.</p>
+
+                <p>[결론]</p>
+                <p>"그러니 우리가 어찌 이 일에 대하여 더 말하리요 만일 하나님이 우리를 위하시면 누가 우리를 대적하리요..." (v.31). 바울의 결론은 논증이 아니라 찬양입니다.</p>
+              </div>
+            </div>
+
+            <!-- Viewer footer -->
+            <div class="px-5 py-3 border-t border-[#e4e2dd] bg-[#fbf9f4] flex items-center justify-between">
+              <span class="text-[12px] text-[#737878]">1 / 12 · 검수 필요</span>
+              <div class="flex items-center gap-2">
+                <button class="px-4 py-2 rounded-lg border border-[#c3c7c7] text-[13px] font-medium text-[#434848] hover:bg-[#e4e2dd] transition">수정</button>
+                <button class="px-4 py-2 rounded-lg bg-[#2d7d5b] text-white text-[13px] font-semibold hover:bg-[#246a4c] transition flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">check</span>검수 완료·등록</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Manual split -->
+          <div class="mt-4 p-3 bg-[#f3dfcb] rounded-lg border border-[#f0dcc8]">
+            <p class="text-[12px] text-[#6f6050] leading-relaxed">
+              <strong>자동 분리가 정확하지 않다면</strong> "수정" 버튼으로 수동 분리를 할 수 있습니다. 제목 기준선이 명확하지 않은 경우에도 개별 설교로 분리할 수 있습니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="h-10 bg-[#0c3647] flex items-center justify-between px-6">
+      <p class="text-[11px] text-[#7b9fb3]">현재: 설교 리뷰 · 2024_설교모음.pdf (12편 중 1검수)</p>
+      <button class="text-[11px] text-[#a7cce1] hover:text-white transition flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">psychology</span>내서재에게 물어보세요</button>
+    </footer>
+  </main>
+</div>
+</body></html>

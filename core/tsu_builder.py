@@ -193,6 +193,26 @@ def _resolve_book_id(source_file: str) -> Optional[str]:
     positive: "마가복음" (Mark) contains "마" and was silently
     misresolved to MAT (Matthew) before this guard was added.
 
+    [CUE-RECONCILIATION-010] The len>=2 guard above stops single-character
+    aliases but not short (2-4 char) ones — the 3-char alias "sol" (Song of
+    Solomon) matched as a raw substring of "SOLAS시리즈" (a Reformation
+    systematic theology series, unrelated to Scripture) in filenames like
+    "5 SOLAS시리즈01 [...] 오직 믿음.pdf", silently mistagging 10 registry
+    documents as book_id=SOL. Confirmed via scripts/author_gold_set.py
+    reproducing the exact same gold_benchmark_v1.jsonl output deterministically
+    from the current registry — not a data-entry error, a resolver bug.
+
+    Matching now requires the alias not be flanked by another *letter*
+    (any script) immediately before/after — but a flanking *digit* is
+    allowed, since this corpus's naming convention routinely appends a
+    volume/chapter number directly after the book name with no separator
+    (e.g. "사도행전1.pdf", "사도행전2.pdf" — book name immediately
+    followed by a digit). A plain regex \\b word boundary rejects this
+    case too (Python's \\w treats digits and letters alike, so there is no
+    boundary between "전" and "1"), which is why a custom letter-only
+    lookaround is used instead of \\b here. This still blocks the "sol"
+    substring match inside "solas" (a following letter "a", not a digit).
+
     source_file is normalized to NFC before matching — macOS stores
     Korean filenames in NFD (decomposed) form in the registry, while
     NAME_TO_BOOK_ID's keys are NFC (composed); without this, byte-level
@@ -202,8 +222,10 @@ def _resolve_book_id(source_file: str) -> Optional[str]:
     """
     text = unicodedata.normalize("NFC", source_file).lower()
     candidates = [name for name in NAME_TO_BOOK_ID if len(name) >= 2]
+    _LETTER = r"[^\W\d_]"  # any Unicode letter, excludes digits/underscore/punctuation
     for name in sorted(candidates, key=len, reverse=True):
-        if name in text:
+        pattern = r"(?<!" + _LETTER + r")" + re.escape(name) + r"(?!" + _LETTER + r")"
+        if re.search(pattern, text):
             return NAME_TO_BOOK_ID[name]
     return None
 
@@ -306,8 +328,17 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                 # verse_start==0 is the parser's "chapter-only, no verse
                 # specified" sentinel (Preflight §4) — never stored as a
                 # real verse.
+                # [2026-07-27 Preflight tsu-verse-mapping-book-chapter-mismatch]
+                # ref.book_id == book_id 게이트 추가: _resolve_evidence()가
+                # 청크 안에서 점수가 가장 높은 참조를 고르지만, 그 청크에
+                # 문서 자신의 책(book_id)과 일치하는 참조가 하나도 없으면
+                # 무관한 책의 chapter/verse가 채택될 수 있었다(전수 실측
+                # 64.88% 불일치, 전부 이 패턴). "모르면 비워둔다" 원칙
+                # (_resolve_book_id()의 unknown=None과 동일)을 적용해,
+                # 참조의 book_id가 문서의 book_id와 실제로 일치할 때만
+                # chapter/verse를 채운다.
                 ref, provenance = _resolve_evidence(content, book_id)
-                if ref is not None:
+                if ref is not None and ref.book_id == book_id:
                     verse_mapping["chapter"] = ref.chapter
                     if ref.verse_start and ref.verse_start > 0:
                         verse_mapping["verse_start"] = ref.verse_start
@@ -393,6 +424,57 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                     "heading_confidence": 1.0 if chunk_heading.heading_path else 0.0,
                     "heading_source": "atx" if chunk_heading.heading_path else "",
                 }
+
+            # [ADR-009] Additive-only SIL sermon-theology fields — same
+            # additive contract as content_quality/structure above (no
+            # existing field changed or removed, including the pre-existing
+            # unused "themes" field, which this intentionally does not
+            # reinterpret). Structure only: no tagging logic populates these
+            # yet, because the doctrine vocabulary is a separate, not-yet-
+            # approved decision (ADR-009 §Decision "확정되지 않는 것").
+            record["theological_claim"] = None
+            record["doctrine_category"] = []
+            record["baptist_theme"] = []
+
+            # [docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9] Additive-only
+            # external-source provenance — same contract as content_quality/
+            # structure above (no existing field changed, RetrievalEngine does
+            # not read this yet). Populated only for documents whose registry
+            # entry actually carries these keys (e.g. a future Logos-export
+            # ingestion path writing to registry.documents[document_id]);
+            # every field defaults to None/[] rather than being invented, so
+            # non-Logos documents are unaffected and the block is a no-op for
+            # the entire existing corpus.
+            source_tier = doc.get("source_tier")
+            if source_tier is not None:
+                record["source_provenance"] = {
+                    "source_tier": source_tier,
+                    "logos_location": doc.get("logos_location"),
+                    "rights": doc.get("rights"),
+                    "export_method": doc.get("export_method"),
+                    "content_hash": doc.get("content_hash"),
+                    "review_status": doc.get("review_status"),
+                }
+            else:
+                record["source_provenance"] = None
+
+            # [STEP4-D, docs/tasks/reports/NAE_METADATA_ADAPTER_ARCHITECTURE_v1.md]
+            # Additive-only — same contract as content_quality/structure/
+            # source_provenance above. Populated only for documents whose
+            # registry entry carries nae_theological_position (i.e. ingested
+            # via scripts/ingest_nae_source.py); every field defaults to
+            # None/[] rather than being invented, so non-NAE documents are
+            # unaffected and this block is a no-op for the existing corpus.
+            nae_theological_position = doc.get("nae_theological_position")
+            if nae_theological_position is not None:
+                record["nae_metadata"] = {
+                    "theological_position": nae_theological_position,
+                    "denomination_context": doc.get("nae_denomination_context"),
+                    "content_genre": doc.get("nae_content_genre", []),
+                    "copyright_status": doc.get("nae_copyright_status"),
+                }
+            else:
+                record["nae_metadata"] = None
 
             records.append(record)
 

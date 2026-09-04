@@ -1,0 +1,30 @@
+{"id": "cg-001", "query": "성경에서 가장 먼저 나온 기도는 무엇인가요?", "expected_risk_terms": ["가장 먼저"], "category": "absolute_first"}
+{"id": "cg-002", "query": "성경에서 유일하게 나오는 지명은 어디인가요?", "expected_risk_terms": ["유일하게"], "category": "absolute_only"}
+{"id": "cg-003", "query": "창세기에서 가장 처음 나온 사람은 누구인가요?", "expected_risk_terms": ["가장 처음"], "category": "absolute_first"}
+{"id": "cg-004", "query": "성경 전체에서 가장 오래된 책은 무엇인가요?", "expected_risk_terms": ["가장 오래된"], "category": "absolute_first"}
+{"id": "cg-005", "query": "구약성경에서 최초로 기록된 예언은 무엇인가요?", "expected_risk_terms": ["최초로"], "category": "absolute_first"}
+{"id": "cg-006", "query": "성경에 등장하는 가장 나이가 많은 인물은 누구인가요?", "expected_risk_terms": ["가장"], "category": "absolute_first"}
+{"id": "cg-007", "query": "성경에서 유일하게 불타 올라간 사람은 누구인가요?", "expected_risk_terms": ["유일하게"], "category": "absolute_only"}
+{"id": "cg-008", "query": "성경 전체에서 가장 작은 숫자는 무엇인가요?", "expected_risk_terms": ["가장 작은"], "category": "absolute_first"}
+{"id": "cg-009", "query": "창세기 24장의 배경은 무엇인가요?", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-010", "query": "로마서 5장 3절에서 말하는 내용은 무엇인가요?", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-011", "query": "요한복음에서 예수님의 첫 기적이 일어난 곳은 어디인가요?", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-012", "query": "사도행전 2장에 나오는 오순절 사건을 설명해주세요.", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-013", "query": "마태복음 5장에 있는 산상수훈의 주요 내용을 알려주세요.", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-014", "query": "시편 23편의 내용은 무엇인가요?", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-015", "query": "고린도전서 13장에서 사랑하는 것에 대해 어떻게 말하는지 알려주세요.", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-016", "query": "갈라디아서에서 말하는 믿음의 열매는 무엇인가요?", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-017", "query": "히브리서 11장의 믿음의 용사들은 누구인가요?", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-018", "query": "요한일서에서 사랑의 증표는 무엇이라고 하나요?", "expected_risk_terms": [], "category": "neutral"}
+{"id": "cg-019", "query": "예수님이 최초로 사도로 선택한 사람들은 누구인가요?", "expected_risk_terms": ["최초로"], "category": "absolute_first"}
+{"id": "cg-020", "query": "성경에서 반드시 지켜야 할 계명은 몇 개인가요?", "expected_risk_terms": ["반드시"], "category": "absolute_universal"}
+{"id": "cg-021", "query": "모든 사람이 죄인이 되는 이유는 무엇인가요?", "expected_risk_terms": ["모든"], "category": "absolute_universal"}
+{"id": "cg-022", "query": "성경 전체에서 절대적인 진리는 무엇인가요?", "expected_risk_terms": ["절대적인", "성경 전체에서"], "category": "absolute_universal"}
+{"id": "cg-023", "query": "예수님이 다시 오실 때 모든 사람이 어떻게 변화되나요?", "expected_risk_terms": ["모든"], "category": "absolute_universal"}
+{"id": "cg-024", "query": "성경이 가르치는 구원은 항상 확실한 것인가요?", "expected_risk_terms": ["항상"], "category": "absolute_universal"}
+{"id": "cg-025", "query": "창세기에서 최초로 죽음이 일어난 경우는 무엇인가요?", "expected_risk_terms": ["최초로"], "category": "absolute_first"}
+{"id": "cg-026", "query": "성경에서 유일하게 하나님과 직접 대화한 사람은 누구인가요?", "expected_risk_terms": ["유일하게"], "category": "absolute_only"}
+{"id": "cg-027", "query": "예레미야서에서 하나님이 이스라엘에게 주신 모든 약속은 무엇인가요?", "expected_risk_terms": ["모든"], "category": "absolute_universal"}
+{"id": "cg-028", "query": "아모스서에서 최초로 기록된 예언자는 누구인가요?", "expected_risk_terms": ["최초로"], "category": "absolute_first"}
+{"id": "cg-029", "query": "베드로전서에서 반드시 지켜야 할 것은 무엇이라고 하나요?", "expected_risk_terms": ["반드시"], "category": "absolute_universal"}
+{"id": "cg-030", "query": "요한계시록에서 가장 먼저 나타난 환상은 무엇인가요?", "expected_risk_terms": ["가장 먼저"], "category": "absolute_first"}

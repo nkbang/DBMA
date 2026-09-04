@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.2.0",
+  "task_id": "CORPUS-FACTORY-PILOT-003-MISSING-TASKORDER",
+  "parent_task_id": "CORPUS-FACTORY-INTEGRATION-PILOT-001",
+  "depends_on": [],
+  "title": "CFI-Pilot-001 scenario 3 — authorized_by_task_order omitted",
+  "owner": "CUE",
+  "state": "IDLE",
+  "phase": "PILOT",
+  "requires_human_approval": false,
+  "production_mutation": false,
+  "task_type": "corpus_pilot_echo",
+  "scope": {
+    "namespace": "corpus-factory-pilot",
+    "allowed_paths": []
+  },
+  "authorized_by": "CUE",
+  "required_evidence": [
+    "gateway_transition"
+  ],
+  "constraints": {
+    "max_runtime_s": 30,
+    "allow_production_paths": false
+  },
+  "evidence": [],
+  "audit": {
+    "status": null,
+    "verdict": null,
+    "reviewer": null,
+    "report": null
+  },
+  "notes": [
+    "Scenario 3: authorized_by_task_order deliberately omitted."
+  ],
+  "automation": {
+    "state": "FAILED",
+    "failure_code": "VALIDATION_FAILED",
+    "last_transition_id": "CORPUS-FACTORY-PILOT-003-MISSING-TASKORDER#11628"
+  },
+  "failure_codes": [
+    "VALIDATION_FAILED",
+    "FILE_ERROR",
+    "PARSE_ERROR",
+    "TASK_ID_PAYLOAD_CONFLICT",
+    "TASK_TYPE_NOT_AUTHORIZED",
+    "NAMESPACE_VIOLATION",
+    "PRODUCTION_MUTATION_NOT_ALLOWED",
+    "PILOT_EXEC_FAILED",
+    "STALE_WORKER_TIMEOUT",
+    "INTERNAL_STATE_MAPPING_ERROR"
+  ]
+}

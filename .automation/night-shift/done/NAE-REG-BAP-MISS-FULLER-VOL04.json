@@ -1,0 +1,31 @@
+{
+ "schema_version": "1.2.0",
+ "task_id": "NAE-REG-BAP-MISS-FULLER-VOL04",
+ "title": "NAE Source Registration — The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 4: Dialogues, Letters, and Essays, on Various Subjects",
+ "owner": "CUE",
+ "state": "INITIATED",
+ "phase": "REGISTRATION",
+ "requires_human_approval": false,
+ "production_mutation": false,
+ "evidence": [],
+ "audit": {
+  "status": "pending"
+ },
+ "document_type": "book",
+ "automation": {
+  "state": null,
+  "failure_code": null,
+  "last_transition_id": null,
+  "processing_input": {
+   "raw_item_dir": "/Users/David/DBMA/NAE/corpus/raw/archive_org/missions/Fuller_Complete_Works_Vol04",
+   "surname": "Fuller",
+   "given_name": "Andrew",
+   "title": "The Works of the Rev. Andrew Fuller, in Eight Volumes — Vol. 4: Dialogues, Letters, and Essays, on Various Subjects",
+   "edition_slug": "1824-1825-new-haven",
+   "publication_year": 1824,
+   "copyright_status": "public_domain",
+   "archive_source": "archive_org",
+   "source_id": "BAP-MISS-FULLER-VOL04"
+  }
+ }
+}

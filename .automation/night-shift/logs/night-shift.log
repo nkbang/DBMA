@@ -1,0 +1,27 @@
+[2026-08-15T06:40:27.000Z] night shift start (once=True watch=None dry_run=False)
+[2026-08-15T06:40:27.000Z] queue depth: 1
+[2026-08-15T06:40:27.000Z] TASK NSQ-SMOKE-1786776027 (source_id=-)
+[2026-08-15T06:40:27.000Z]   http=200 elapsed=0.1s response={"status": "validation_passed", "task_id": "NSQ-SMOKE-1786776027", "state": "VALIDATION_PASSED", "transition_id": "NSQ-SMOKE-1786776027#11253", "production_mutation": false}
+[2026-08-15T06:40:27.000Z]   verify: task_file.automation.state='VALIDATION_PASSED'
+[2026-08-15T06:40:27.000Z]   verify: evidence_lines=1 last_to='VALIDATION_PASSED'
+[2026-08-15T06:40:27.000Z]   verify: response.status='validation_passed' is not a PASS status
+[2026-08-15T06:40:27.000Z]   -> VALIDATION_PASSED only (no processing_input) — no production mutation
+[2026-08-15T06:40:27.000Z] done: {'VALIDATED': 1}
+[2026-08-15T06:40:39.000Z] night shift start (once=True watch=None dry_run=False)
+[2026-08-15T06:40:39.000Z] queue depth: 1
+[2026-08-15T06:40:39.000Z] TASK NSQ-FAILROUTE-1786776039 (source_id=nsq-failroute-1786776039)
+[2026-08-15T06:40:39.000Z]   http=200 elapsed=0.1s response={"status": "validation_passed", "task_id": "NSQ-FAILROUTE-1786776039", "state": "VALIDATION_PASSED", "transition_id": "NSQ-FAILROUTE-1786776039#11254", "production_mutation": false}
+[2026-08-15T06:40:39.000Z]   verify: task_file.automation.state='VALIDATION_PASSED'
+[2026-08-15T06:40:39.000Z]   verify: evidence_lines=1 last_to='VALIDATION_PASSED'
+[2026-08-15T06:40:39.000Z]   verify: response.status='validation_passed' is not a PASS status
+[2026-08-15T06:40:39.000Z]   -> VALIDATION_PASSED only (no processing_input) — no production mutation
+[2026-08-15T06:40:39.000Z] done: {'VALIDATED': 1}
+[2026-08-15T06:46:26.000Z] night shift start (once=True watch=None dry_run=False)
+[2026-08-15T06:46:26.000Z] queue depth: 1
+[2026-08-15T06:46:26.000Z] TASK NSQ-FAILROUTE-1786776386 (source_id=nsq-failroute-1786776386)
+[2026-08-15T06:46:26.000Z]   http=404 elapsed=0.0s response={"code": 404, "message": "The requested webhook \"POST dbma-automation-phase-e\" is not registered.", "hint": "The workflow must be active for a production URL to run successfully. You can activate the workflow using the toggle in the top-right of the editor. Note that unlike test URL calls, product
+[2026-08-15T06:46:26.000Z]   verify: task_file.automation.state=None
+[2026-08-15T06:46:26.000Z]   verify: evidence_lines=0 last_to=None
+[2026-08-15T06:46:26.000Z]   verify: response.status=None is not a PASS status
+[2026-08-15T06:46:26.000Z]   -> ROUTED TO CUE REVIEW QUEUE: .automation/review-queue/NSQ-FAILROUTE-1786776386.json
+[2026-08-15T06:46:26.000Z] done: {'FAIL': 1}

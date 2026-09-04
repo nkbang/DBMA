@@ -1,0 +1,304 @@
+{
+  "generated_at": "2026-08-11T14:43:22.392494+00:00",
+  "generated_by": "CUE (independent — no C1 findings referenced)",
+  "scope": "Batch 24-36, 1,271 candidates",
+  "batch_accounting": [
+    {
+      "batch_id": "batch_0024",
+      "tsu_range": [
+        "TSU-0000309",
+        "TSU-0000521"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 1687,
+      "generated_before": 1668,
+      "verified_after": 1787,
+      "generated_after": 1568
+    },
+    {
+      "batch_id": "batch_0025",
+      "tsu_range": [
+        "TSU-0000522",
+        "TSU-0000747"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 1787,
+      "generated_before": 1568,
+      "verified_after": 1887,
+      "generated_after": 1468
+    },
+    {
+      "batch_id": "batch_0026",
+      "tsu_range": [
+        "TSU-0000748",
+        "TSU-0001071"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 1887,
+      "generated_before": 1468,
+      "verified_after": 1987,
+      "generated_after": 1368
+    },
+    {
+      "batch_id": "batch_0027",
+      "tsu_range": [
+        "TSU-0001072",
+        "TSU-0001291"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 1987,
+      "generated_before": 1368,
+      "verified_after": 2087,
+      "generated_after": 1268
+    },
+    {
+      "batch_id": "batch_0028",
+      "tsu_range": [
+        "TSU-0001292",
+        "TSU-0001510"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2087,
+      "generated_before": 1268,
+      "verified_after": 2187,
+      "generated_after": 1168
+    },
+    {
+      "batch_id": "batch_0029",
+      "tsu_range": [
+        "TSU-0001511",
+        "TSU-0001821"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2187,
+      "generated_before": 1168,
+      "verified_after": 2287,
+      "generated_after": 1068
+    },
+    {
+      "batch_id": "batch_0030",
+      "tsu_range": [
+        "TSU-0001822",
+        "TSU-0002034"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2287,
+      "generated_before": 1068,
+      "verified_after": 2387,
+      "generated_after": 968
+    },
+    {
+      "batch_id": "batch_0031",
+      "tsu_range": [
+        "TSU-0002035",
+        "TSU-0002243"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2387,
+      "generated_before": 968,
+      "verified_after": 2487,
+      "generated_after": 868
+    },
+    {
+      "batch_id": "batch_0032",
+      "tsu_range": [
+        "TSU-0002244",
+        "TSU-0002458"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2487,
+      "generated_before": 868,
+      "verified_after": 2587,
+      "generated_after": 768
+    },
+    {
+      "batch_id": "batch_0033",
+      "tsu_range": [
+        "TSU-0002459",
+        "TSU-0002780"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2587,
+      "generated_before": 768,
+      "verified_after": 2687,
+      "generated_after": 668
+    },
+    {
+      "batch_id": "batch_0034",
+      "tsu_range": [
+        "TSU-0002781",
+        "TSU-0002989"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2687,
+      "generated_before": 668,
+      "verified_after": 2787,
+      "generated_after": 568
+    },
+    {
+      "batch_id": "batch_0035",
+      "tsu_range": [
+        "TSU-0002992",
+        "TSU-0003204"
+      ],
+      "attempted": 100,
+      "succeeded": 100,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 100,
+      "verified_before": 2787,
+      "generated_before": 568,
+      "verified_after": 2887,
+      "generated_after": 468
+    },
+    {
+      "batch_id": "batch_0036",
+      "tsu_range": [
+        "TSU-0003205",
+        "TSU-0003382"
+      ],
+      "attempted": 71,
+      "succeeded": 71,
+      "failed": 0,
+      "skipped": 0,
+      "promoted_tsu_count": 71,
+      "verified_before": 2887,
+      "generated_before": 468,
+      "verified_after": 2958,
+      "generated_after": 397
+    }
+  ],
+  "production_accounting": {
+    "dagg_verified": 2958,
+    "dagg_generated": 397,
+    "dagg_rejected": 22,
+    "hiscox_verified": 361,
+    "hiscox_generated": 379,
+    "expected": {
+      "dagg_verified": 2958,
+      "dagg_generated": 397,
+      "dagg_rejected": 22,
+      "hiscox_verified": 361,
+      "hiscox_generated": 379
+    },
+    "matches_expected": true
+  },
+  "promotion_set_integrity": {
+    "approved_count": 1271,
+    "promoted_count": 1271,
+    "approved_and_promoted": 1271,
+    "approved_minus_promoted": [],
+    "promoted_minus_approved": [],
+    "promoted_and_human_review_required": [],
+    "promoted_and_hiscox_284": [],
+    "promoted_and_unresolved_blocking_exception": [],
+    "PASS": true
+  },
+  "protected_field_integrity": {
+    "checked_records": 3377,
+    "violations": [],
+    "violation_count": 0,
+    "PASS": true
+  },
+  "boundary_leakage_integrity": {
+    "hiscox_hash_before_batch24": "1da2d7dd75d5235f645d5d2b22c19f865723134754e08028c93fc7d3943ceb2a",
+    "hiscox_hash_now": "1da2d7dd75d5235f645d5d2b22c19f865723134754e08028c93fc7d3943ceb2a",
+    "hiscox_mutation": false,
+    "dagg_hiscox_boundary_violation": false,
+    "PASS": true
+  },
+  "indexing_evidence": {
+    "final_indexed": 3319,
+    "identifiers_nonzero": [
+      {
+        "identifier": "Hiscox_Standard_Manual",
+        "indexed": 361
+      },
+      {
+        "identifier": "Dagg_Church_Order",
+        "indexed": 2958
+      }
+    ],
+    "only_dagg_hiscox_nonzero": true,
+    "backup_snapshot_dirs_scanned_but_zero": 56,
+    "PASS": true
+  },
+  "validation": {
+    "targeted_tests": {
+      "PASS": true,
+      "summary": "98 passed in 0.63s"
+    },
+    "final_regression": {
+      "PASS": true,
+      "summary": "2076 passed, 13 warnings in 163.63s (0:02:43)"
+    },
+    "source_validator": {
+      "PASS": true,
+      "summary": [
+        "=== 결과 요약: PASS=89 WARNING=0 FAIL=0 ==="
+      ]
+    },
+    "authority_validator": {
+      "PASS": true,
+      "summary": [
+        "=== 결과 요약: PASS=128 WARNING=26 FAIL=0 ==="
+      ]
+    },
+    "DRIFT": 0
+  },
+  "git_evidence": {
+    "branch": "dev/dbma-engine",
+    "head_commit": "b8e9009356786a36b552a4bae7066fe55cb28f02",
+    "head_commit_short": "b8e9009",
+    "commit_subject": "test payload seal_test",
+    "local_vs_remote": "b8e9009 test payload seal_test",
+    "uncommitted_production_diff": "",
+    "push_status": "AHEAD_OF_REMOTE",
+    "uncommitted_production_changes": false
+  },
+  "overall_gate": "READ_ONLY_EVIDENCE_COMPLETE_PASS"
+}

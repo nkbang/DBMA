@@ -1,0 +1,114 @@
+{
+  "directive": "HQ-C1-DIRECTIVE-NAE-DOWNLOAD-SPEC-007",
+  "mode": "Read-only bibliographic investigation and acquisition specification",
+  "date": "2026-08-01",
+  "status": "Awaiting HQ Download Loop Approval",
+  "evidence_package": {
+    "root": "evidence/phase5_2/download_spec_007/",
+    "files": [
+      {
+        "filename": "PBC1765-spec.md",
+        "purpose": "Detailed specification for Candidate A — PBC1765 (Orthodox Baptist Confession)",
+        "status": "completed"
+      },
+      {
+        "filename": "TH1612-spec.md",
+        "purpose": "Detailed specification for Candidate B — TH1612 (Thomas Helwys, Short Declaration)",
+        "status": "completed"
+      },
+      {
+        "filename": "AF1785-spec.md",
+        "purpose": "Detailed specification for Candidate C — AF1785 (Andrew Fuller, Gospel Worthy)",
+        "status": "completed"
+      },
+      {
+        "filename": "derivative-inventory.csv",
+        "purpose": "All candidate derivatives across repositories",
+        "status": "completed"
+      },
+      {
+        "filename": "error-page-rejection-rules.md",
+        "purpose": "Universal and source-specific rejection rules",
+        "status": "completed"
+      },
+      {
+        "filename": "command-templates.md",
+        "purpose": "Download, validation, and inspection command templates",
+        "status": "completed"
+      },
+      {
+        "filename": "provenance-manifest-template.json",
+        "purpose": "JSON template for provenance tracking per downloaded artifact",
+        "status": "completed"
+      },
+      {
+        "filename": "source-acquisition-spec.md",
+        "purpose": "Integration document (this evidence package)",
+        "status": "completed"
+      },
+      {
+        "filename": "manifest.json",
+        "purpose": "This file — evidence package manifest",
+        "status": "completed"
+      },
+      {
+        "filename": "baseline.txt",
+        "purpose": "Git baseline snapshot",
+        "status": "completed"
+      },
+      {
+        "filename": "self-check.md",
+        "purpose": "Self-check against directive requirements",
+        "status": "pending"
+      },
+      {
+        "filename": "changed-files.txt",
+        "purpose": "List of files created in this task",
+        "status": "pending"
+      },
+      {
+        "filename": "hq-report.md",
+        "purpose": "Final HQ report with recommended acquisition plan",
+        "status": "pending"
+      }
+    ]
+  },
+  "candidates": [
+    {
+      "source_id": "PBC1765",
+      "legacy_source_id": "PBC1742",
+      "author": "Philadelphia Baptist Association / corporate body",
+      "title": "A Plain and Short Account of the Orthodox Baptist Confession of Faith",
+      "bibliographic_status": "VERIFIED",
+      "stable_id_status": "VERIFIED (plainbookofconfe00phil in IA catalog)",
+      "derivative_status": "VERIFIED (PDF available in IA)",
+      "rights_status": "VERIFIED (Public Domain)",
+      "download_status": "NOT AUTHORIZED",
+      "hq_decision_required": "NO"
+    },
+    {
+      "source_id": "TH1612",
+      "legacy_source_id": "TH1612",
+      "author": "Thomas Helwys",
+      "title": "A Short Declaration of the Mystery of Iniquity",
+      "bibliographic_status": "VERIFIED",
+      "stable_id_status": "PARTIAL (IA item ID UNVERIFIED; EEBO2 A02915.0001.001 PARTIAL)",
+      "derivative_status": "UNVERIFIED (depends on repository access)",
+      "rights_status": "VERIFIED (PD original); repository terms TBD",
+      "download_status": "NOT AUTHORIZED",
+      "hq_decision_required": "YES"
+    },
+    {
+      "source_id": "AF1785",
+      "legacy_source_id": "AF1815",
+      "author": "Andrew Fuller",
+      "title": "The Gospel Worthy of All Acceptation",
+      "bibliographic_status": "VERIFIED",
+      "stable_id_status": "UNVERIFIED (IA item ID and Google Books ID need catalog search)",
+      "derivative_status": "UNVERIFIED (depends on repository access)",
+      "rights_status": "VERIFIED (Public Domain)",
+      "download_status": "NOT AUTHORIZED",
+      "hq_decision_required": "YES"
+    }
+  ]
+}

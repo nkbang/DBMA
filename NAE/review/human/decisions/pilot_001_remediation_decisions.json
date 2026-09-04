@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0.0",
+  "pilot_id": "PILOT-001",
+  "remediation_id": "PILOT-001-REMEDIATION-001",
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0000713-REMEDIATION-001",
+      "tsu_id": "TSU-0000713",
+      "reviewer_id": "David",
+      "review_timestamp": "2026-08-09",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "초기 교회들은 서로 구별되는 지역 교회들로 언급되었으며, 각 교회는 인사를 주고받고 사절을 통해 상호 교제하였다.",
+      "comment": "수정안은 Dagg의 원문과 선행 문맥을 정확히 반영하며, 이전의 비교 문장 누락과 '독립'의 과도한 교회정치적 함의를 모두 제거함. 지역 교회들이 서로 구별된 공동체로 존재하면서도 인사·사절을 통해 상호 교제했다는 진술은 신약의 교회 관계에 관한 Dagg의 논증과 일치하며, 각 교회의 절대적 자치나 비감독 관계까지 주장하지 않아 인용 범위를 넘지 않음. CONTEXT_LOSS 문제 해소됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000330-REMEDIATION-001",
+      "tsu_id": "TSU-0000330",
+      "reviewer_id": "David",
+      "review_timestamp": "2026-08-09",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "성찬의 여러 목적을 고려할 때, 그리스도의 죽음을 기억하는 방식으로는 십자가상을 바라보는 것보다 성찬에서 빵을 먹는 방식이 하나님께서 정하신 더 적합한 수단이다.",
+      "confirmed_claim_note": "'더 적합한'은 빵이 그리스도의 몸을 더 닮았다는 뜻이 아니라, 하나님께서 성찬에 부여하신 모든 목적에 더 적합하다는 뜻으로 제한.",
+      "comment": "수정안은 Dagg의 논증 구조를 정확히 보존함 — 십자가상이 외형적으로 그리스도의 몸에 더 닮아 보일 수 있어도, 성찬이 수행해야 할 모든 목적을 고려할 때 하나님께서 빵을 먹는 방식으로 그리스도의 죽음을 기념하도록 정하셨다는 주장. '십자가상을 바라보는 것보다'를 명시해 비교 대상이 완전히 특정되어 AMBIGUOUS 문제 해소됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000033-REMEDIATION-001",
+      "tsu_id": "TSU-0000033",
+      "reviewer_id": "David",
+      "review_timestamp": "2026-08-09",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "우리가 그리스도를 사랑하고 그분께 순종하는 강력한 동기는, 우리를 위해 죽으심으로 나타내신 그리스도의 사랑에서 비롯됩니다.",
+      "comment": "사랑과 순종의 주체를 '우리'로, 동기의 근거를 '그리스도의 자기희생적 사랑'으로 명확히 하여 주체 모호성(AMBIGUOUS) 문제 해소됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0003661-REMEDIATION-001",
+      "tsu_id": "TSU-0003661",
+      "reviewer_id": "David",
+      "review_timestamp": "2026-08-09",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "사도행전 2:38은 각 사람이 회개하고 예수 그리스도의 이름으로 세례를 받으며 죄 사함을 받으라는 베드로의 권면을 기록한다.",
+      "confirmed_claim_note": "필수 메타데이터 정정: 성경 표기 'Acts 11:38' -> 'Acts 2:38'.",
+      "comment": "본문을 정확히 보고하는 서술로 바뀌어 세례가 죄 사함의 독립적 수단이라는 세례중생론적 해석을 확정하지 않음 — Hiscox의 침례교 신학(세례는 상징적 의식)과 충돌 위험 해소됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0003893-REMEDIATION-001",
+      "tsu_id": "TSU-0003893",
+      "reviewer_id": "David",
+      "review_timestamp": "2026-08-09",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "confirmed_claim": "개방 성찬을 옹호하는 일부 사람들은, 공통의 주님과 구주를 사랑한다고 고백하는 모든 이를 주님의 만찬에서 그리스도의 죽음을 기념하도록 초청하는 것이 친절하고 형제적인 행동이라고 생각한다.",
+      "confirmed_metanote": "이 진술은 Hiscox 자신의 결론이 아니라, 그가 세례를 성찬 참여의 선행 조건으로 보며 뒤이어 비판하는 개방 성찬 옹호 논거의 소개이다.",
+      "comment": "견해의 보유자를 '개방 성찬을 옹호하는 일부 사람들'로 명시해 독자가 Hiscox 자신의 성찬론으로 오독할 위험이 실질적으로 해소됨. 메타문도 함께 채택 — RAG 검색·인용 환경에서 저자 입장과 반대 견해의 혼동을 더 효과적으로 방지."
+    }
+  ]
+}

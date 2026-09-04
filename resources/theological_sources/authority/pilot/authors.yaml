@@ -1,0 +1,26 @@
+# Pilot Authority Registry — Authors
+# NAE-METADATA-PILOT-001. 실제 authority/authors.yaml이 아니라 pilot 검증용.
+# 전체 Corpus에는 적용하지 않음 — 대상은 church_order/{Dagg,Hiscox} 2건뿐.
+schema_version: "1.0-pilot"
+
+authors:
+  - author_id: dagg_john_l
+    canonical_name: "John L. Dagg"
+    aliases: ["John Dagg", "J. L. Dagg, D.D.", "J.L. Dagg"]
+    birth_year: 1794
+    death_year: 1884
+    tradition: "Particular Baptist (American, Southern)"
+    notes: >
+      birth_year/death_year는 RAW 파일(OCR/hOCR)에 없음 — 일반적으로 알려진
+      전기 정보로 채움(외부 소스, 이번 pilot에서 원문 검증 안 됨). Phase 6
+      Quality Assessment에서 "정보 부족" 항목으로 별도 표기.
+
+  - author_id: hiscox_edward_t
+    canonical_name: "Edward T. Hiscox"
+    aliases: ["Edward Hiscox", "Edward T. Hiscox, D.D."]
+    birth_year: 1814
+    death_year: 1901
+    tradition: "Baptist (American)"
+    notes: >
+      birth_year/death_year는 RAW 파일에 없음 — 일반 전기 정보로 채움,
+      이번 pilot에서 원문 검증 안 됨.

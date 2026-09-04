@@ -1,0 +1,34 @@
+{
+  "task": "Phase 3 Completion — Integration Test Evidence",
+  "date": "2026-08-16",
+  "tests": [
+    {
+      "name": "Test 1: --worker-mode (3 READY + 1 FAILED)",
+      "status": "PASSED",
+      "details": {
+        "ready_candidates_processed": 3,
+        "ready_to_state": "CONFIDENCE_CLASSIFIED",
+        "failed_candidate_stayed": "FAILED",
+        "success_rate": 1.0
+      }
+    },
+    {
+      "name": "Test 2: --retry-failed test-cand-failed-0",
+      "status": "PASSED",
+      "details": {
+        "previous_state": "FAILED",
+        "new_state": "READY",
+        "success": true
+      }
+    },
+    {
+      "name": "Test 3: --retry-failed on non-existent candidate",
+      "status": "PASSED",
+      "details": {
+        "success": false,
+        "message": "candidate_id not found"
+      }
+    }
+  ],
+  "summary": "All integration tests PASSED. Worker wiring verified."
+}
