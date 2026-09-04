@@ -34,6 +34,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          # requirements-dev.txt carries pytest (+ pytest-cov, ruff, …);
+          # dev/dbma-engine moved it out of requirements.txt. The
+          # validation pipeline below shells out to `python -m pytest`,
+          # so the dev deps must be installed here too.
+          pip install -r requirements-dev.txt
 
       - name: Run validation pipeline
         run: |
