@@ -751,6 +751,42 @@ post-commit hook 오작동을 원인까지 추적해 완전 제거.
 
 ---
 
+## 본문 해설 라이브 시연 후 생성 경로 결함 3건 수정 (2026-09-04, CUE 기록)
+
+ADR-031 "본문 해설" 탭을 실제 앱(`streamlit run dbma_ui.py`)에서 시연하던 중
+발견한 `core/generation.py` 결함 3건. 전부 이 탭 전용이 아니라 **채팅·자료
+찾기·본문 해설이 공유하는 `GenerationService` 경로**에 영향을 준다.
+
+1. **커밋 `3900f07`** — 본문 해설 탭이 사이드바 "답변 생성 모델/답변 창의성"
+   설정을 무시하고 있었음. `ui/pages/chat.py::_settings_overrides()` 재사용해
+   채팅 화면과 동일하게 반영.
+
+2. **커밋 `6d3b707`** — `my-theology-bot-v2:latest` 가 저장소에 Modelfile이
+   없고(별도 blob에서 `ollama create`로 생성됨) `repeat_penalty`/`num_predict`
+   를 지정하지 않아 Ollama 기본값(≈1.1 / 무제한)으로 돌다가, 저온(0.3)
+   결정론 디코딩과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됨
+   (요한복음 1:10 해설). **주의**: 저장소 루트 `Modelfile` 은 이 모델이 아니라
+   C1 코드 어시스턴트(`qwen3.6:35b-DBMAcode`)용이라 애초에 무관 — 사용자
+   확인 후 `core/generation.py::_gen_options()` 헬퍼로 대체.
+   `config.yaml::rag.repeat_penalty=1.3`/`num_predict=1024` (조정 가능),
+   `GenerationService.generate()`/`generate_stream()` 두 경로에 적용.
+   `SermonDraftService` 는 긴 출력이 정상이라 미적용.
+
+3. **커밋 `b4401c5`** — 블로킹 `generate()` 에만 있던 CJK/가나/태국어 오염
+   제거(재시도+sanitize)가 `generate_stream()` 에는 없어 채팅·본문해설
+   스트리밍 답변에 오염 문자가 그대로 노출됨(실측: "世상의", "理解").
+   스트리밍은 mid-stream 재시도가 불가능해 "재시도 소진 → 강제 제거"에
+   해당하는 sanitize만 청크 단위로 적용(`GenerationStream.__iter__`) +
+   청크 경계 대비 `to_result()` 최종 sanitize 1회.
+
+**검증**: 3건 모두 같은 모델(`my-theology-bot-v2:latest`)로 요한복음 1:1/1:10
+해설을 실제 재생성해 확인 — 반복 루프 사라짐(8문단 완결), 스트리밍 로그에
+`한국어 출력 오염 감지 → 제거: ['理', '解']` 기록 후 렌더된 답변 본문
+오염 문자 0개(DOM 정규식 재스캔). 신규 테스트
+`tests/test_generation_stream_contamination.py`(5) 포함 관련 회귀 202 PASS.
+
+---
+
 ## 비고
 
 이 문서는 작업 상태를 빠르게 확인하기 위한 기준 문서다.
