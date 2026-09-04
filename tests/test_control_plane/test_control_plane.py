@@ -1,12 +1,26 @@
 """Comprehensive tests for all control plane modules."""
 from __future__ import annotations
 
-import copy, json, os, sys, tempfile, time
+import copy, json, os, socket, sys, tempfile, time, unittest
 from pathlib import Path
 from unittest import TestCase, main as unittest_main
 
 CP_PATH = Path(__file__).parent.parent.parent / ".automation" / "control-plane"
 sys.path.insert(0, str(CP_PATH.resolve()))
+
+
+def _n8n_reachable(host: str = "127.0.0.1", port: int = 5678) -> bool:
+    """The two live TestN8NGateway tests POST to a real n8n webhook
+    (localhost:5678). Skip them when no n8n is running (fresh checkout / CI)
+    instead of failing on ConnectionRefused."""
+    try:
+        with socket.create_connection((host, port), timeout=0.5):
+            return True
+    except OSError:
+        return False
+
+
+_N8N_REACHABLE = _n8n_reachable()
 
 from fixtures.synthetic_tasks import (
     SYNTHETIC_HAPPY_PATH, SYNTHETIC_MISSING_FIELDS,
@@ -235,6 +249,7 @@ class TestDependencyGraph(TestCase):
 
 
 class TestN8NGateway(TestCase):
+    @unittest.skipUnless(_N8N_REACHABLE, "requires a running n8n instance on localhost:5678")
     def test_post_task_returns_http_code(self):
         gw = N8NGateway()
         task = {"task_id": "GW-001", "state": "IDLE"}
@@ -242,6 +257,7 @@ class TestN8NGateway(TestCase):
         self.assertIsInstance(code, int)
         self.assertIsInstance(resp, dict)
 
+    @unittest.skipUnless(_N8N_REACHABLE, "requires a running n8n instance on localhost:5678")
     def test_verify_response_valid(self):
         gw = N8NGateway()
         task = {"task_id": "GW-002", "state": "IDLE"}

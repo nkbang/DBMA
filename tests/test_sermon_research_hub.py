@@ -217,6 +217,11 @@ def test_adapter_matches_style_files_when_processor_already_loaded():
         def list_source_files(self):
             return ["로마서 주석.md", "다른 자료.md"]
 
+        def book_coverage(self):
+            # sermon_draft.py._render_book_coverage_buttons() calls this on
+            # navigation into 설교 준비; empty = no per-book coverage labels.
+            return {}
+
     class _FakeProcessor:
         engine = _FakeEngine()
 

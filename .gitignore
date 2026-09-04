@@ -110,6 +110,11 @@ scripts/_classify_early_baptist_meta.jsonl
 # Scratch/working tmp directory
 tmp/
 
+# Evidence-tool seal test scratch dirs — tests/test_evidence_tools.py used to
+# create test_seal_<rand>/ in the repo root (now isolated to a system tmpdir);
+# keep ignored so a stray run never gets committed again.
+test_seal_*/
+
 # NAE Live Dashboard frontend (Node build artifacts — regenerate with
 # `npm install && npm run build` in .automation/night-shift/dashboard/frontend/)
 node_modules/

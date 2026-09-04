@@ -2,7 +2,7 @@
 
 Tests:
   (1) build_manifest + verify_manifest round-trip on a temp directory
-  (2) build_seal + verify_package round-trip on a real git repo
+  (2) build_seal + verify_package round-trip on an isolated git repo
   (3) verify_manifest fails on tampered file
   (4) verify_manifest fails on missing file
   (5) verify_manifest fails on extra undeclared file
@@ -233,23 +233,26 @@ class TestVerifyManifestExtraFile(unittest.TestCase):
 
 
 class TestBuildSeal(unittest.TestCase):
-    """Test seal generation in a real git repo."""
+    """Test seal generation in an isolated git repo."""
 
     def setUp(self):
-        # Use the actual repo as test ground
-        self.repo_root = Path(__file__).parent.parent
-        self.tmpdir = tempfile.mkdtemp(prefix="test_seal_", dir=str(self.repo_root))
-        self.pkg_dir = Path(self.tmpdir) / "seal_test_pkg"
+        # Isolated throwaway repo — never touch the real DBMA repo (matches the
+        # sibling Verify* classes). This class previously used the actual working
+        # tree as test ground and ran `git commit` on every run, littering the
+        # branch with "test payload seal_test" commits and stray test_seal_*/ dirs.
+        self.tmpdir = tempfile.mkdtemp(prefix="verify_seal_build_")
+        self.repo_root = Path(self.tmpdir) / "repo"
+        self.repo_root.mkdir()
+        _git_init(self.repo_root)
+
+        self.pkg_dir = self.repo_root / "seal_test_pkg"
         self.pkg_dir.mkdir()
 
         (self.pkg_dir / "report.md").write_text("# Seal Test\n\nContent.", encoding="utf-8")
         (self.pkg_dir / "data.json").write_text('{"test": true}', encoding="utf-8")
 
     def tearDown(self):
-        # Clean up the temp directory
-        if self.tmpdir.startswith(str(self.repo_root)):
-            rel = self.tmpdir[len(str(self.repo_root)):].lstrip("/")
-            shutil.rmtree(Path(rel), ignore_errors=True)
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_seal_created(self):
         """seal.json should be created with correct fields."""
@@ -260,9 +263,9 @@ class TestBuildSeal(unittest.TestCase):
             capture_output=True, text=True, cwd=Path(__file__).parent.parent
         )
 
-        # Then create a commit for the payload
+        # Then create a commit for the payload (in the isolated repo)
         subprocess.run(
-            ["git", "add", str(self.pkg_dir)],
+            ["git", "add", "."],
             capture_output=True, text=True, cwd=self.repo_root
         )
         subprocess.run(

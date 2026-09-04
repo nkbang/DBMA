@@ -42,9 +42,18 @@ jobs:
 
       - name: Run validation pipeline
         run: |
-          python3 scripts/validate_pipeline.py --pytest-args "-v --tb=short" --benchmark-limit 2
+          # No sample corpus PDFs are committed under data/ (real theological
+          # source files aren't checked in) — scripts/benchmark_pipeline.py's
+          # data/**/*.pdf glob always matches 0 files on a fresh checkout, so
+          # the benchmark stage can never run here. --skip-benchmark is the
+          # tool's own documented flag for exactly this case (see
+          # validate_pipeline.py's usage docstring); this has never actually
+          # been runnable in CI (every run on main has failed since
+          # 2026-07-21, well before this dev/dbma-engine merge).
+          python3 scripts/validate_pipeline.py --pytest-args "-v --tb=short" --skip-benchmark
 
       - name: Upload benchmark artifacts
+        if: false # benchmark stage is skipped in CI (see above) — no sample data to benchmark
         uses: actions/upload-artifact@v4
         with:
           name: dbma-benchmark-results

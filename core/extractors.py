@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 
 # ─── 선택 의존성 안전 임포트 ─────────────────────────────
 try:
-    import fitz as _fitz
+    import pymupdf as _fitz  # PyMuPDF (fitz is deprecated since 1.24+)
     _HAS_PYMUPDF = True
 except ImportError:
     _fitz = None
