@@ -178,6 +178,11 @@ class GenerationStream:
         self._context_used = context_used
         self._answer_parts: list[str] = []
         self._error: Optional[str] = None
+        # 스트리밍 경로는 mid-stream 재시도가 불가능하다(이미 UI에 토큰이
+        # 나갔으므로). 그래서 generate()의 "재시도 소진 → 강제 제거"에
+        # 해당하는 sanitize만 적용한다 — 청크가 도착할 때마다 비한글 오염
+        # 문자를 제거해서 라이브 출력·저장 answer 양쪽을 깨끗하게 유지한다.
+        self._contamination_seen: list[str] = []
 
     def __iter__(self):
         try:
@@ -188,7 +193,15 @@ class GenerationStream:
                 stream=True,
             ):
                 piece = chunk["response"]
-                if piece:
+                if not piece:
+                    continue
+                bad = _detect_script_contamination(piece)
+                if bad:
+                    self._contamination_seen.extend(
+                        c for c in bad if c not in self._contamination_seen
+                    )
+                    piece = _sanitize_script_contamination(piece)
+                if piece:  # sanitize가 오염만 있던 청크를 비울 수 있다
                     self._answer_parts.append(piece)
                     yield piece
         except Exception as e:
@@ -204,6 +217,15 @@ class GenerationStream:
     def to_result(self) -> "GenerationResult":
         """Build the final GenerationResult. Call only after full iteration."""
         answer = "".join(self._answer_parts)
+        # 청크별로 이미 걸렀지만, 청크 경계에 걸친 문자를 대비해 한 번 더
+        # (clean이면 no-op). 스트리밍은 재시도 불가라 sanitize만 남긴다.
+        if self._contamination_seen:
+            logger.warning(
+                "[GenerationStream] 한국어 출력 오염 감지 → 제거"
+                " (스트리밍은 재시도 불가): %s",
+                self._contamination_seen,
+            )
+            answer = _sanitize_script_contamination(answer)
         claim_guard_result = _run_claim_guard(answer, self._response)
         return GenerationResult(
             question=self._response.question,
