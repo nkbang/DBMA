@@ -39,10 +39,31 @@ from typing import Optional
 import ollama
 
 from core.retrieval import Citation, RankedCandidate, ResponsePackage
-from core.config import DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE
+from core.config import (
+    DEFAULT_GEN_MODEL,
+    DEFAULT_NUM_PREDICT,
+    DEFAULT_REPEAT_PENALTY,
+    DEFAULT_TEMPERATURE,
+)
 from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
 
 logger = logging.getLogger(__name__)
+
+
+def _gen_options(temperature: float) -> dict:
+    """GenerationService(Q&A·본문해설) 전용 Ollama 옵션.
+
+    my-theology-bot-v2 는 Modelfile 에 repeat_penalty/num_predict 를 지정하지
+    않아 Ollama 기본값(repeat_penalty≈1.1, num_predict 무제한)으로 돌고, 저온
+    결정론 설정과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됐다
+    (요한복음 1:10 해설). 두 값을 config.yaml::rag 에서 읽어 강제한다.
+    SermonDraftService 는 긴 출력이 정상이라 이 헬퍼를 쓰지 않는다.
+    """
+    return {
+        "temperature": temperature,
+        "repeat_penalty": DEFAULT_REPEAT_PENALTY,
+        "num_predict": DEFAULT_NUM_PREDICT,
+    }
 
 
 # ============================================================
@@ -163,7 +184,7 @@ class GenerationStream:
             for chunk in ollama.generate(
                 model=self._gen_model,
                 prompt=self._prompt,
-                options={"temperature": self._temperature},
+                options=_gen_options(self._temperature),
                 stream=True,
             ):
                 piece = chunk["response"]
@@ -277,7 +298,7 @@ class GenerationService:
                 result = ollama.generate(
                     model=gen_model,
                     prompt=prompt,
-                    options={"temperature": temperature},
+                    options=_gen_options(temperature),
                 )
                 answer = result["response"]
                 contamination = _detect_script_contamination(answer)
