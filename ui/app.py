@@ -37,6 +37,29 @@ from ui.pages.onboarding import render_onboarding_page
 from ui.pages.help import render_help_page
 
 
+# 사이드바 브랜드 워드마크 "내서재"가 여는 로컬 랜딩 페이지 (Stitch 목업).
+_LANDING_PAGE = (
+    _PROJECT_ROOT / "docs" / "design" / "stitch" / "pastoral_research_desk" / "landing.html"
+)
+
+
+def _open_landing_page() -> None:
+    """사이드바 "내서재" 클릭 시 로컬 랜딩 페이지를 기본 브라우저에서 연다.
+
+    DBMA는 단일 사용자 로컬 앱이라 Streamlit 서버 프로세스와 사용자
+    브라우저가 같은 기기에서 돈다 — 그래서 서버 쪽 webbrowser.open()으로
+    로컬 HTML 파일을 열 수 있다. 반드시 절대경로 file:// URI로 넘겨야
+    macOS URL 핸들러가 인식한다(스킴 없는 상대경로 문자열은 조용히
+    무시된다 — 이전 구현이 실패한 원인).
+    """
+    import webbrowser
+
+    if not _LANDING_PAGE.is_file():
+        st.toast(f"랜딩 페이지를 찾을 수 없습니다: {_LANDING_PAGE}", icon="⚠️")
+        return
+    webbrowser.open(_LANDING_PAGE.as_uri())
+
+
 def main() -> None:
     """Main application entry point."""
 
@@ -261,12 +284,50 @@ def _render_sidebar() -> str:
         The selected page name.
     """
     with st.sidebar:
+        # 브랜드 워드마크 "내서재 / NAE" — 클릭하면 로컬 랜딩 페이지를 연다.
+        # st.button에 key를 주면 Streamlit이 감싸는 컨테이너에
+        # `st-key-<key>` CSS 클래스를 붙여준다(1.58 button.py docstring에
+        # 문서화된 안정 선택자). 그걸로 버튼 크롬을 걷어내 원래
+        # .nae-sidebar-name 워드마크(28px/600)처럼 보이게 한다.
+        if st.button("내서재", key="sidebar_brand_link", help="랜딩 페이지 열기"):
+            _open_landing_page()
+
         st.markdown(
-            """
-            <div class="nae-sidebar-brand">
-                <div class="nae-sidebar-name">내서재</div>
+            f"""
+            <div class="nae-sidebar-brand nae-sidebar-brand--compact">
                 <div class="nae-sidebar-subtitle">NAE</div>
             </div>
+            <style>
+            [data-testid="stSidebar"] .st-key-sidebar_brand_link {{
+                margin: 0 0 4px;
+            }}
+            [data-testid="stSidebar"] .st-key-sidebar_brand_link button {{
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                min-height: 0 !important;
+                padding: 0 16px !important;
+                width: auto !important;
+            }}
+            [data-testid="stSidebar"] .st-key-sidebar_brand_link button p {{
+                color: {THEME.TEXT_PRIMARY} !important;
+                font-family: 'Hanken Grotesk', sans-serif !important;
+                font-size: 28px !important;
+                font-weight: 600 !important;
+                line-height: 1.1 !important;
+            }}
+            [data-testid="stSidebar"] .st-key-sidebar_brand_link button:hover p {{
+                color: {THEME.BRAND_PRIMARY} !important;
+                text-decoration: underline;
+                text-underline-offset: 4px;
+            }}
+            .nae-sidebar-brand--compact {{
+                margin-top: 0;
+            }}
+            .nae-sidebar-brand--compact .nae-sidebar-subtitle {{
+                margin-top: 0;
+            }}
+            </style>
             """,
             unsafe_allow_html=True,
         )
