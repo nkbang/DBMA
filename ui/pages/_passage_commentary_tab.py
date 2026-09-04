@@ -30,6 +30,7 @@ from core.passage_commentary import (
 )
 from ui.components.detail_panel import render_detail_panel
 from ui.components.passage_viewer import render_passage_viewer
+from ui.pages.chat import _settings_overrides
 from ui.state.query_processor import get_shared_query_processor
 
 logger = logging.getLogger(__name__)
@@ -114,7 +115,8 @@ def _run(ref, ref_key, label) -> dict:
     parts: list[str] = []
     gen_error = None
     try:
-        stream = generator.generate_stream(pkg)
+        # 사이드바 "답변 생성 모델"/"답변 창의성" 설정을 채팅 화면과 동일하게 반영한다.
+        stream = generator.generate_stream(pkg, **_settings_overrides())
         for piece in stream:
             parts.append(piece)
             placeholder.markdown("".join(parts))
