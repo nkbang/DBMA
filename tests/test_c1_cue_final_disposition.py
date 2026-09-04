@@ -8,12 +8,20 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SPEC = importlib.util.spec_from_file_location(
     "c1_cue_final_disposition", REPO_ROOT / "scripts" / "c1_cue_final_disposition.py"
 )
 mod = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(mod)
+
+# TestNoProductionMutation reads generated disposition artifacts under
+# output/ (and NAE/corpus, NAE/review state) that a fresh checkout / CI
+# does not have. Skip rather than fail on an environment gap unrelated to
+# the code under test.
+_DISPOSITION_ARTIFACT = REPO_ROOT / "output" / "final_human_review_candidate.json"
 
 
 class TestPartitionIntegrity:
@@ -28,6 +36,10 @@ class TestPartitionIntegrity:
         assert clear_ids.isdisjoint(qa_only_ids)
 
 
+@pytest.mark.skipif(
+    not _DISPOSITION_ARTIFACT.exists(),
+    reason="requires generated output/*.json disposition artifacts (not in repo / CI)",
+)
 class TestNoProductionMutation:
     def test_run_main_does_not_touch_production_or_review_state(self):
         dagg_path = REPO_ROOT / "NAE/corpus/tsu/Dagg_Church_Order/tsu.json"

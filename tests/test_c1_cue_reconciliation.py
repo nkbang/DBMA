@@ -8,12 +8,22 @@ from pathlib import Path
 
 import pytest
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
 SPEC = importlib.util.spec_from_file_location(
-    "c1_cue_reconciliation", Path(__file__).resolve().parent.parent / "scripts" / "c1_cue_reconciliation.py"
+    "c1_cue_reconciliation", REPO_ROOT / "scripts" / "c1_cue_reconciliation.py"
 )
 mod = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(mod)
 classify = mod.classify
+
+# build_c1_evidence() / run() read generated C1 evidence JSON under output/
+# and NAE/corpus + NAE/review state that a fresh checkout / CI lacks. The
+# pure classify() tests above stay active; only the file-backed ones skip.
+_C1_EVIDENCE_INPUT = REPO_ROOT / "output" / "c1_cjk_contamination.json"
+_needs_c1_evidence = pytest.mark.skipif(
+    not _C1_EVIDENCE_INPUT.exists(),
+    reason="requires generated output/c1_*.json evidence inputs (not in repo / CI)",
+)
 
 
 class TestClassify:
@@ -63,6 +73,7 @@ class TestClassify:
         assert not r["c1_has_blocking_evidence"]
 
 
+@_needs_c1_evidence
 class TestBuildC1Evidence:
     def test_loads_without_error_and_covers_expected_categories(self):
         ev = mod.build_c1_evidence()
@@ -82,6 +93,7 @@ class TestBuildC1Evidence:
         assert "THEOLOGICAL_WEAKENING" in ev["TSU-0001756"]
 
 
+@_needs_c1_evidence
 class TestRunProducesNoProductionMutation:
     def test_run_does_not_touch_production_files(self, tmp_path):
         import json

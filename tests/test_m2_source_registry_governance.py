@@ -63,6 +63,14 @@ M1_PATH = PROJECT_ROOT / "NAE" / "authority" / "source_manifest.yaml"
 M3_PATH = PROJECT_ROOT / "NAE" / "manifest" / "NAE_SOURCE_MANIFEST_v1.csv"
 FORBIDDEN_REGISTRY_DIR = PROJECT_ROOT / "NAE" / "corpus" / "governance"
 
+# raw_path/checksum_target existence and the validator subprocess both need
+# the NAE corpus + registration state on disk, which a fresh checkout / CI
+# does not carry. Skip those two rather than fail on the environment gap.
+_needs_nae_corpus = pytest.mark.skipif(
+    not (PROJECT_ROOT / "NAE" / "corpus" / "raw").is_dir(),
+    reason="requires the NAE/corpus raw tree + registration state (not in repo / CI)",
+)
+
 
 def _load_yaml(path: Path) -> dict:
     with open(path) as f:
@@ -230,6 +238,7 @@ class TestM2KeyGovernance:
             f"reference expected 4, got {counts.get('reference', 0)}"
         assert len(counts) == 2, f"expected exactly 2 authority_class values, got {list(counts.keys())}"
 
+    @_needs_nae_corpus
     def test_raw_path_checksum_target_files_exist(self):
         """raw_path / checksum_target 가 모든 M2 레코드에서 실제 파일 존재."""
         m2_data = _load_yaml(M2_PATH)
@@ -265,6 +274,7 @@ class TestPathIsolation:
 class TestValidatorIntegration:
     """validator script 통합 테스트."""
 
+    @_needs_nae_corpus
     def test_int_01_validator_passes(self):
         """validator script가 exit 0으로 통과해야 함."""
         import subprocess
