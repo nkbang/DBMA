@@ -239,6 +239,8 @@ def test_default_values_point_to_config_constants(monkeypatch: pytest.MonkeyPatc
     DEFAULT_REGISTRY_PATH 상수를 실제로 쓰는지(mock으로 load_identity_registry가
     어떤 경로로 호출됐는지 확인) 검증한다.
     """
+    import os
+
     from core.config import DEFAULT_REGISTRY_PATH, DEFAULT_TSU_DATASET_PATH
     from core.retrieval import RetrievalEngine
 
@@ -247,6 +249,16 @@ def test_default_values_point_to_config_constants(monkeypatch: pytest.MonkeyPatc
     tsu_file.write_text(
         json.dumps({"source_file": "doc.pdf", "content": "X"}, ensure_ascii=False) + "\n",
         encoding="utf-8",
+    )
+
+    # list_source_files()는 os.path.exists(registry_path)가 True일 때만
+    # load_identity_registry를 부른다. DEFAULT_REGISTRY_PATH는 fresh
+    # checkout / CI에는 없으므로, 이 테스트의 목적(기본 인자가 상수를
+    # 가리키는지)만 검증하도록 그 경로가 존재하는 것처럼 만든다.
+    _real_exists = os.path.exists
+    monkeypatch.setattr(
+        "os.path.exists",
+        lambda p: True if p == DEFAULT_REGISTRY_PATH else _real_exists(p),
     )
 
     # load_identity_registry가 DEFAULT_REGISTRY_PATH로 호출되었는지 확인

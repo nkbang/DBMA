@@ -1,6 +1,9 @@
 # Data directories (runtime/generated)
 data/
-storage/
+# root-anchored: the runtime data dir is ./storage/, but a bare "storage/"
+# also swallowed the source package scripts/crosswalk/storage/ (same
+# overmatch class as the reports/ -> /reports/ fix in 14ed5ed).
+/storage/
 rag_index/
 
 # Python cache
