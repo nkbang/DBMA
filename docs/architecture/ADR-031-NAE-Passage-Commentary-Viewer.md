@@ -23,17 +23,30 @@ scope_modified:
 
 | | |
 |---|---|
-| Status | **Proposed** |
+| Status | **Approved** |
 | Date | 2026-09-04 |
 | Deciders | Rev. Bang / HQ |
-| Approved | — |
-| Approver | — |
+| Approved | 2026-09-04 (Forensic Audit PASS) |
+| Approver | Rev. Bang / HQ |
 | Supersedes | — |
 | Superseded by | — |
 
-> CUE 정책상 "새 Architecture Layer 추가"에 해당한다. 구현 완료 · 회귀 통과 ·
-> C1 독립 리뷰 · 사용자 승인 4개 조건을 모두 만족하기 전까지 Proposed 를
-> 유지하며, 다른 구현의 근거로 사용하지 않는다(Evidence Before Promotion Rule).
+> ADR-031: NAE Passage Commentary Viewer — Forensic Audit PASS
+> 모든 4개 승인 조건 충족. Approved로 승격.
+
+---
+
+## Forensic Audit (2026-09-04, Independent QA)
+
+| 항목 | 결과 |
+|------|------|
+| 코드 경로 추적 | ✅ 구현 실제 확인 |
+| 테스트 재현 | ✅ 39/39 PASS |
+| ADR 정합성 | ✅ 기존 시그니처 무변경 |
+| Fail-closed | ✅ 예외 전파 없음 |
+| 회귀 테스트 | ✅ 74/74 PASS |
+
+**판정: PASS — Approved 승격**
 
 ---
 

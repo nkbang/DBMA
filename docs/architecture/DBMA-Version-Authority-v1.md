@@ -15,7 +15,7 @@ created: 2026-07-17
 - **Subtitle:** Personal Knowledge Operating System
 - **Version:** v1.3.0
 - **Release Name:** Architecture Consolidation Release
-- **Status:** Research Grade / Production Candidate
+- **Status:** GA (General Availability)
 
 > 버전 번호: 로컬 태그 이력상 `v1.0.0`, `v1.1.0`, `v1.2.0-query-intelligence`가
 > 이미 이 브랜치의 과거 커밋에 부여되어 있어(전부 선형 조상), 이번 Architecture
