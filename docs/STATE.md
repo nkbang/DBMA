@@ -20,6 +20,16 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
 착수 시 CUE가 TLI Style Engine 슬롯 · `sermon_corpus/analyzer` · ADR-002/009/012/030
 통합 관계 재검토 후 ADR-032 P0부터 진행.
 
+**[2026-09-05 갱신] SESAME C1 Task Order 초안 작성 + C1 리뷰 요청 발행.**
+- 초안: `docs/architecture/notes/SESAME-C1-Task-Order-DRAFT.md` (commit `b644dbf`) —
+  ADR-032 §11 P0~P10에 C1 검토 라운드 C1-R0~R8 대응, 비승격 계획 메모.
+- 리뷰 요청: `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_REQUEST_001.md` (commit `5527df2`),
+  C1 세션에 메시지 전달(큐 적재, C1 미실행). 기대 산출물
+  `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md`.
+- 성격: ADR-032 §11 P1 정식 리뷰 아님 — 검토 절차 설계 정합성 + §15 동결 위반 여부
+  판정 요청. HQ 동결(§0) 유효, SESAME 착수 아님.
+- 상태: **C1 리뷰 대기 중.**
+
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,
