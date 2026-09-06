@@ -1,15 +1,24 @@
 # DBMA State
 
 ## 버전 상태
-**DBMA v1.3.0 — Architecture Consolidation Release** (Research Grade /
-Production Candidate). 버전·Authority 정의는
+**DBMA v1.3.0 — Architecture Consolidation Release** (GA). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
 
 ```
-Release State:  v1.3.0 RC READY
-Development:    FROZEN
-Next:           GA validation / tag preparation
+Release State:  v1.3.0 GA RELEASED
+Development:    ACTIVE
+Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
+
+**[2026-09-04 갱신] ADR-031(NAE Passage Commentary Viewer) Forensic Audit PASS → Approved.**
+v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC READY → GA.
+
+**[2026-09-05 갱신] SESAME(Sermon Style Extraction & Modeling Engine) — HQ 지시로
+현재 Release 범위 제외, Post-Release Upgrade Item으로 동결 보존.**
+골격: `docs/architecture/ADR-032-SESAME-Sermon-Style-Engine.md` (§0 HQ Decision).
+현재 production mutation 및 SESAME 선행 구현(스텁·스키마·데이터 포함) 금지.
+착수 시 CUE가 TLI Style Engine 슬롯 · `sermon_corpus/analyzer` · ADR-002/009/012/030
+통합 관계 재검토 후 ADR-032 P0부터 진행.
 
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
