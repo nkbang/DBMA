@@ -30,6 +30,16 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
   판정 요청. HQ 동결(§0) 유효, SESAME 착수 아님.
 - 상태: **C1 리뷰 대기 중.**
 
+**[2026-09-06 갱신] SESAME C1 리뷰 미도착 — 모니터링 중단.**
+- C1 세션(`Fuller C1 Token-Regulated Execution`)이 재개되지 않아 리뷰 산출물
+  `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md` 미생성. `origin/dev/dbma-engine`
+  변화 없음(`4ca6bb4` 고정), C1 브랜치 미생성, 세션 회신 없음.
+- 30분 폴링 루프(cron `63f995b0`) 가동 후 사용자 지시로 중단.
+- C1 세션 앞 정정 지시 2건 큐 적재 상태 유지: (1) `git init` 금지·실제 저장소
+  이동, (2) 실제 초안(`b644dbf`, 217줄) 기준 재리뷰(존재하지 않는 커밋
+  `a4e4066`/`bb2541d` 기반 1차 리뷰는 REJECTED — 대상 문서 불일치).
+- 재개 조건: 사용자가 C1 세션을 열어 재개 → 큐 지시 처리 → 리뷰 push 시 갱신.
+
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,
