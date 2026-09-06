@@ -9,17 +9,29 @@ Fail-closed 원칙: 파일이 없거나(사용자가 아직 등록 안 함) JSON
 돌려주고, 뷰어는 안내 문구만 표시한다(앱 크래시 없음).
 
 JSON 스키마 (`config.yaml::directories.bible_text_path`, 기본
-`data/bible/reference.json`):
+`data/bible/knrv.json`):
 
-    {
-      "version": "개역개정",
-      "books": {
-        "PRO": {"name": "잠언", "chapters": [["1:1 본문", "1:2 본문", ...], ...]},
+  형식 A — flat key-value (개역개정 knrv.json):
+
+      {
+        "창1:1": " 태초에 하나님이 천지를 창조하시니라",
+        "창1:2": "땅이 혼돈하고 공허하며 ...",
         ...
       }
-    }
 
-- `books` 키는 book_id — `core.retrieval.BOOK_ID_TO_NAMES` 공간(아가 = "SOL").
+  형식 B — books/chapters 구조 (레거시 호환):
+
+      {
+        "version": "개역개정",
+        "books": {
+          "PRO": {"name": "잠언", "chapters": [["1:1 본문", "1:2 본문", ...], ...]},
+          ...
+        }
+      }
+
+- 형식 A (knrv.json): key 패턴 `(한글책명)(장):(절)` — `core.retrieval.NAME_TO_BOOK_ID`
+  매핑으로 book_id 변환. 장/절 인덱스는 1-based.
+- 형식 B: `books` 키는 book_id — `core.retrieval.BOOK_ID_TO_NAMES` 공간(아가 = "SOL").
   소문자/영문 약어/한글 별칭도 허용하며 로더가 정규 book_id로 변환한다.
 - `chapters`: 장 배열(인덱스 = 장 − 1), 각 장은 절 문자열 배열(인덱스 = 절 − 1).
 - 66권 전체가 아니어도 된다 — 존재하는 책만 뷰어에 노출된다.
@@ -140,10 +152,19 @@ _cache: dict[str, tuple[float, BibleText]] = {}
 def _parse(raw: object, path: str) -> BibleText:
     if not isinstance(raw, dict):
         return BibleText.unavailable(f"성경 JSON 최상위가 객체가 아닙니다: {path}")
+
+    # ── 형식 A: knrv.json (flat key-value "창1:1": "본문") ──────────────
     books_raw = raw.get("books")
     if not isinstance(books_raw, dict) or not books_raw:
-        return BibleText.unavailable(f"성경 JSON에 'books' 항목이 없습니다: {path}")
+        # knrv.json 형식 시도 — key 패턴 "(한글책명)(장):(절)" 매칭
+        verse_pattern = __import__("re").compile(r"^([가-힣]+)(\d+):(\d+)$")
+        flat_items = {k: v for k, v in raw.items() if isinstance(v, str) and verse_pattern.match(k)}
+        if flat_items:
+            return _parse_flat_knrv(flat_items, path)
 
+        return BibleText.unavailable(f"성경 JSON에 'books' 항목이 없거나 형식이 맞지 않습니다: {path}")
+
+    # ── 형식 B: books/chapters 구조 (레거시 호환) ────────────────────────
     version = str(raw.get("version") or "").strip() or "성경"
     books: dict[str, _Book] = {}
     skipped = 0
@@ -171,6 +192,57 @@ def _parse(raw: object, path: str) -> BibleText:
         logger.warning("[bible_text] %d개 책 항목을 건너뜀 (형식 불일치): %s", skipped, path)
 
     return BibleText(available=True, version_label=version, _books=books)
+
+
+def _parse_flat_knrv(flat_items: dict[str, str], path: str) -> BibleText:
+    """knrv.json 형식 ("창1:1": "본문") 을 파싱하여 _Book 구조로 변환."""
+    import re
+
+    verse_pattern = re.compile(r"^([가-힣]+)(\d+):(\d+)$")
+    # 책 → 장 → 절 구조로 임시 저장
+    temp: dict[str, dict[int, list[tuple[int, str]]]] = {}  # book_id -> {chapter -> [(verse, text), ...]}
+
+    for key, text in flat_items.items():
+        m = verse_pattern.match(key)
+        if not m:
+            continue
+        book_name_ko = m.group(1)
+        chapter = int(m.group(2))
+        verse = int(m.group(3))
+        body = text.strip() if text else ""
+
+        # NAME_TO_BOOK_ID 로 book_id 변환 (정확 매칭 → 부분 매칭)
+        book_id = NAME_TO_BOOK_ID.get(book_name_ko)
+        if not book_id:
+            # 부분 매칭: "창" → "창세기" 등
+            for ko_name, bid in NAME_TO_BOOK_ID.items():
+                if ko_name.startswith(book_name_ko):
+                    book_id = bid
+                    break
+        if not book_id:
+            continue
+
+        if book_id not in temp:
+            temp[book_id] = {}
+        if chapter not in temp[book_id]:
+            temp[book_id][chapter] = []
+        temp[book_id][chapter].append((verse, body))
+
+    if not temp:
+        return BibleText.unavailable(f"성경 JSON에서 유효한 절을 찾지 못했습니다: {path}")
+
+    books: dict[str, _Book] = {}
+    for book_id, chapters_dict in temp.items():
+        # 장 번호 정렬
+        sorted_chapters = sorted(chapters_dict.keys())
+        chapter_lists: list[list[str]] = []
+        for ch_num in sorted_chapters:
+            verses = sorted(chapters_dict[ch_num], key=lambda x: x[0])
+            chapter_lists.append([v[1] for v in verses])
+        name = korean_book_name(book_id)
+        books[book_id] = _Book(book_id=book_id, name=name, chapters=chapter_lists)
+
+    return BibleText(available=True, version_label="개역개정", _books=books)
 
 
 def load_bible_text(path: Optional[str] = None) -> BibleText:
