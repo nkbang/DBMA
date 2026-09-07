@@ -42,6 +42,18 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
 P1에서 C1 독립 리뷰. 그때 C1은 Cline 워크스페이스를 `/Users/David/DBMA`로
 재설정하거나 Claude Code 세션으로 라우팅해야 한다.
 
+C1 워크스페이스 재설정 방법(다음 P1 대비, 동결과 무관하게 선행 가능):
+- 방법 A (Cline): C1 Cline이 떠 있는 VS Code 창에서 File → Open Workspace from
+  File → `/Users/David/DBMA/DBMA.code-workspace` (또는 Open Folder →
+  `/Users/David/DBMA`, 또는 터미널 `code /Users/David/DBMA`). 창 리로드되며
+  `/Users/David/DBMA/.clinerules/`가 자동 적용됨.
+- 방법 B (Claude Code 세션): 해당 세션에서 `cd /Users/David/DBMA` +
+  change_directory 승인, 또는 `~/DBMA`에서 새 세션 시작.
+- 재설정 후 필수 검증(C1에게 실행): `git rev-parse --show-toplevel`
+  (=/Users/David/DBMA) · `git remote -v` (=origin nkbang/DBMA + nas) ·
+  `git branch --show-current` · `git log --oneline -3`. 4개 다 맞아야 C1 보고 신뢰.
+- 금지: 격리한 `.git.disabled_20260907_131155`를 되돌리거나 그 경로에서 git 작업.
+
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,
