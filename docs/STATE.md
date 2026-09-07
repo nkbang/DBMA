@@ -54,8 +54,11 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
   모두 유령 repo 기준이라 **무효**. 실제 DBMA repo·커밋·STATE.md는 무결.
 - C1의 3차 보고(위치 검증 실행)는 정확: `toplevel=/Users/David/.cline/...`,
   `remote=없음`, `branch=master` → **BLOCKER(검토 재개 조건 불충족)** 정당.
-- 조치: (1) 유령 `.git` 처리 — Cline checkpoint 혼재로 `rm -rf` 대신 격리
-  방식 확정 후 진행. (2) C1 리뷰는 Cline 워크스페이스를 `/Users/David/DBMA`로
+- 조치: (1) 유령 `.git` 격리 완료(2026-09-07) — `rm -rf` 대신
+  `/Users/David/.cline/data/workspaces/chat/.git` →
+  `.git.disabled_20260907_131155` 로 rename(Cline checkpoint 이력 보존, 되돌리기
+  가능). 이제 해당 경로는 git repo 아님 → C1 오인 차단. 워킹 파일 무손실.
+  (2) C1 리뷰는 Cline 워크스페이스를 `/Users/David/DBMA`로
   재설정하거나 Claude Code 세션으로 라우팅해야 가능. (3) ADR-032 §15상
   C1 정식 리뷰는 HQ 착수 지시 후 §11 P1 단계이므로 현 시점 필수 아님 — 보류 가능.
 
