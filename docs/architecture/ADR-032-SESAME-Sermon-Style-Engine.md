@@ -388,6 +388,19 @@ CUE Operating Policy의 4조건 전부 충족 시에만 승격:
 - ADR-002 (내용/스타일 분리 패턴) · ADR-009 (SIL 통합 지점) ·
   ADR-012 (DBMA-SEQ 평가) · ADR-030 (Sermon Corpus Governance)
 
+### 참고 — C1 Task Order 초안 및 리뷰 보류 (2026-09-07, 문서 포인터)
+
+이 항목은 §0·§15의 처분을 **변경하지 않는다.** 진행 이력만 기록한다.
+
+- §11 P0~P10에 C1 검토 라운드(C1-R0~R8)를 대응시킨 **비승격 계획 메모**가 작성됨:
+  `docs/architecture/notes/SESAME-C1-Task-Order-DRAFT.md`,
+  요청서 `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_REQUEST_001.md`.
+- **C1 정식 독립 리뷰는 보류 상태를 유지한다.** §15 "C1: 착수 후 본안이 나오면
+  §13 트리거로 독립 리뷰. 그 전에는 대기"에 따라, HQ 착수 지시 + §11 P0 본안
+  이후 P1 단계에서 수행한다. 현 시점에는 순서상 이르며 필수가 아니다.
+- 경위: C1 세션이 DBMA 저장소가 아닌 별도 워크스페이스를 감사해 리뷰 3회가 무효
+  처리됨. 상세·후속 조치는 `docs/STATE.md`(2026-09-07 종결 항목) 참조.
+
 ---
 
 *본 문서는 골격(SKELETON)이며 `docs/architecture/`만 대상으로 작성되었다. 어떤 코드·데이터·
