@@ -40,6 +40,25 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
   `a4e4066`/`bb2541d` 기반 1차 리뷰는 REJECTED — 대상 문서 불일치).
 - 재개 조건: 사용자가 C1 세션을 열어 재개 → 큐 지시 처리 → 리뷰 push 시 갱신.
 
+**[2026-09-07 갱신] SESAME C1 리뷰 반복 실패 — 근본 원인 = 저장소 오인.**
+- C1(Cline 세션 `Fuller C1 Token-Regulated Execution`)의 워크스페이스 루트가
+  `/Users/David/.cline/data/workspaces/chat`(Cline chat 워크스페이스)이며,
+  `/Users/David/DBMA`가 아니다. 이 폴더에는 원래 Cline의
+  `SESAME/INTEGRATION_ANALYSIS.md`, `C1-TASK-ORDER-051-REPORT.md`가 있었고,
+  그 위에 별도 `.git`(`git init`)이 생성되어 C1이 자체 유령 파일을 커밋함:
+  `84a590c`(init) → `a4e4066`(SESAME-C1-Task-Order-DRAFT.md, 361줄) →
+  `bb2541d`(REVIEW_REQUEST). 이 `.git`에는 Cline checkpoint 커밋도 혼재.
+- C1은 매 리뷰 때 이 유령 repo를 감사 → 실제 `/Users/David/DBMA`의
+  `b644dbf`(초안 217줄)·`5527df2`·`4ca6bb4`·`f59a2de`를 "존재하지 않음"으로 오판.
+  1차 "499줄/8-TASK/77 테스트" 리뷰, 2차 "STATE.md 없음/origin 없음" 교차점검
+  모두 유령 repo 기준이라 **무효**. 실제 DBMA repo·커밋·STATE.md는 무결.
+- C1의 3차 보고(위치 검증 실행)는 정확: `toplevel=/Users/David/.cline/...`,
+  `remote=없음`, `branch=master` → **BLOCKER(검토 재개 조건 불충족)** 정당.
+- 조치: (1) 유령 `.git` 처리 — Cline checkpoint 혼재로 `rm -rf` 대신 격리
+  방식 확정 후 진행. (2) C1 리뷰는 Cline 워크스페이스를 `/Users/David/DBMA`로
+  재설정하거나 Claude Code 세션으로 라우팅해야 가능. (3) ADR-032 §15상
+  C1 정식 리뷰는 HQ 착수 지시 후 §11 P1 단계이므로 현 시점 필수 아님 — 보류 가능.
+
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,
