@@ -35,7 +35,11 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
 `/Users/David/.cline/data/workspaces/chat`의 별도 `.git`(유령 repo:
 `84a590c`→`a4e4066`→`bb2541d`, Cline checkpoint 혼재)을 감사하며 실제 DBMA repo
 커밋을 "없음"으로 오판 → 리뷰 3회 모두 무효. 실제 DBMA repo·커밋·STATE.md는 무결.
-유령 `.git`은 `.git.disabled_20260907_131155`로 rename 격리(되돌리기 가능, 워킹 파일 무손실).
+유령 `.git`은 먼저 `.git.disabled_20260907_131155`로 rename 격리했다가
+**2026-09-07 완전 삭제**(사용자 지시, `rm -rf` — 유령 커밋 3개 + Cline checkpoint
+스냅샷 제거). 함께 C1이 그 워크스페이스에 만든 **유령 사본도 삭제**:
+`chat/docs/`(SESAME-C1-Task-Order-DRAFT.md 499줄 버전 + REVIEW_REQUEST 사본).
+`chat/SESAME/INTEGRATION_ANALYSIS.md`(원본 분석)는 보존. 실제 DBMA repo 무영향.
 30분 폴링 루프(cron `63f995b0`) 중단됨.
 
 재개 조건: HQ가 SESAME 착수를 지시하면 → CUE가 ADR-032 §11 P0(본안 확장) →
@@ -52,7 +56,7 @@ C1 워크스페이스 재설정 방법(다음 P1 대비, 동결과 무관하게 
 - 재설정 후 필수 검증(C1에게 실행): `git rev-parse --show-toplevel`
   (=/Users/David/DBMA) · `git remote -v` (=origin nkbang/DBMA + nas) ·
   `git branch --show-current` · `git log --oneline -3`. 4개 다 맞아야 C1 보고 신뢰.
-- 금지: 격리한 `.git.disabled_20260907_131155`를 되돌리거나 그 경로에서 git 작업.
+- `chat` 워크스페이스는 이제 git repo 아님(유령 `.git` 삭제됨) → C1 오인 소지 제거.
 
 **[2026-09-07 관찰] `core/` 미커밋 변경 = 별도 Cline(C1) 세션 작업 (SESAME 무관).**
 - `dev/dbma-engine` 워킹트리에 미커밋 변경 발견: `core/files.py`·`core/init.py`·
