@@ -91,6 +91,47 @@ def test_no_pending_documents_is_noop(tmp_path, monkeypatch):
     assert result == {"pending": 0, "reconciled": 0, "failed": [], "purged": 0}
 
 
+def test_excluded_documents_are_not_reconciled(tmp_path, monkeypatch):
+    """[버그 수정 2026-09-07] exclude_document()로 제외됐지만 pipeline_state가
+    아직 PROCESSED로 남아 있는 문서를 reconcile_pending()이 계속 재색인해
+    TSU 데이터셋에 되살리던 문제. ingest_status == "EXCLUDED"면 pending에서
+    빠져야 한다 (파이프라인 출력 폴더 오처리로 등록된 유령 문서 98건을
+    일괄 제외하는 동안 재발한 오염의 근본 원인)."""
+    reg_dir = tmp_path / "registry"
+    reg_dir.mkdir(parents=True, exist_ok=True)
+    documents = {
+        "keep": {
+            "source_file": "keep.md", "chunk_count": 2, "book": None,
+            "title": None, "author": None, "chapter": None, "page": None,
+            "language": "ko", "source_type": "md",
+            "pipeline_state": "PROCESSED", "ingest_status": "PROCESSED",
+        },
+        "ghost": {
+            "source_file": "ghost_md.md", "chunk_count": 2, "book": None,
+            "title": None, "author": None, "chapter": None, "page": None,
+            "language": "ko", "source_type": "md",
+            "pipeline_state": "PROCESSED", "ingest_status": "EXCLUDED",
+        },
+    }
+    (tmp_path / "keep.md").write_text("real content", encoding="utf-8")
+    (tmp_path / "ghost_md.md").write_text("ghost content", encoding="utf-8")
+    (reg_dir / "documents.json").write_text(json.dumps({"documents": documents}), encoding="utf-8")
+    _patch_paths(tmp_path, monkeypatch)
+
+    result = reconcile_pending(output_dir=str(tmp_path))
+
+    assert result["pending"] == 1  # only "keep", not "ghost"
+    assert result["reconciled"] == 1
+
+    registry = json.loads((reg_dir / "documents.json").read_text())
+    assert registry["documents"]["ghost"]["pipeline_state"] == "PROCESSED"  # untouched
+    assert registry["documents"]["ghost"]["ingest_status"] == "EXCLUDED"
+
+    dataset = tmp_path / "tsu.jsonl"
+    records = [json.loads(l) for l in dataset.read_text().splitlines() if l.strip()]
+    assert {r["document_id"] for r in records} == {"keep"}  # no "ghost" records
+
+
 def test_tsu_dataset_actually_contains_reconciled_document(tmp_path, monkeypatch):
     _make_registry(tmp_path, {"A": ("a.md", 2, "PROCESSED")})
     _patch_paths(tmp_path, monkeypatch)

@@ -94,9 +94,28 @@ HQ가 SESAME 착수를 지시하면 → CUE가 §11 P0(본안 확장) → P1에�
   크래시 방지. `processing.py` 폴더 후보에서 출력 폴더 차단.
 - 회귀: dashboard/processing/library/hygiene 171 pass/0 fail.
   빌드 리포트: `docs/DBMA_LIBRARY_SUMMARY_COUNT_FIX_BUILD_REPORT_001.md`.
-- 미결(별도 승인 필요): 레지스트리 유령 항목 98건은 Library 페이지
-  "원본이 사라진 문서" 알림에서 정리 가능(Production Registry 대량
-  변경이라 사용자 승인 후). `output/bench/tsu_dataset.jsonl` 재생성 권장.
+
+**[2026-09-07 종결] 유령 문서 98건 데이터 정리 (Phase 2, 사용자 승인).**
+- 추가 근본원인: `core/index_orchestrator.py::reconcile_pending()`이
+  `pipeline_state==PROCESSED`만 보고 `ingest_status==EXCLUDED`를 무시 →
+  5초 주기 리컨사일러가 제외된 유령 문서(69건이 PROCESSED 상태)를 계속
+  재색인. 1차 정리 시도가 실행 중이던 Streamlit 서버 3개(1개는 launchd
+  `com.dbma.nae.dashboard`)의 리컨사일러와 쓰기 경쟁 → 데이터셋 오염,
+  `backups/phantom_registry_cleanup_20260907_152046/`에서 복원.
+- 수정: `reconcile_pending()` pending 스캔에 `ingest_status != "EXCLUDED"`
+  조건 추가(회귀 `tests/test_reconcile_pending.py`). 정리 스크립트 2개
+  신규 — `scripts/cleanup_phantom_registry_entries.py`(유령 98건
+  EXCLUDED + 데이터셋/색인 재빌드, `registry_lock` 보유로 리컨사일러와
+  직렬화), `scripts/sync_tsu_dataset_to_registry.py`(EXCLUDED 문서 전체
+  레코드를 데이터셋에서 제거 — 이전 EXCLUDED 13건의 5,086건 포함).
+- 실측: registry EXCLUDED 13→111, TSU 89,738줄→45,927(EXCLUDED 소속·손상
+  0), 후보 색인 재빌드 45,927 / 성경 색인 86,042, `reconcile_pending()`
+  재실행 시 `pending:0`·데이터셋 불변. 대시보드 정리된 자료 200→103.
+- 회귀: reconcile/orchestrator/dashboard/candidate/bible/registry_lock 등
+  353 pass/0 fail.
+- 미결: `.md` 원고 41건이 registry PROCESSED인데 TSU 레코드 없음(오늘
+  이전부터 — 원본 데이터셋도 76문서만). "정리된 자료 103" vs "처리완료
+  65/미처리 42" 기준차의 원인. 재색인은 별도 승인 필요.
 
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.

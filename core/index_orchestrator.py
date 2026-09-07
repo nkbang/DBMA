@@ -209,9 +209,17 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
     with registry_lock(str(registry_path)):
         registry = load_identity_registry(str(registry_path))
 
+        # [버그 수정 2026-09-07] ingest_status == "EXCLUDED" 문서는 pending에서
+        # 뺀다. 이전엔 pipeline_state == "PROCESSED"만 봐서, exclude_document()로
+        # 제외 처리됐지만 pipeline_state가 아직 PROCESSED로 남아 있던 문서를
+        # 5초마다 reindex_document()로 되살려 TSU 데이터셋에 재삽입했다
+        # (2026-09-07 파이프라인 출력 폴더 오처리로 등록된 유령 문서 98건을
+        # 일괄 EXCLUDED 처리하는 동안, 그 중 pipeline_state=PROCESSED 상태였던
+        # 69건이 정리 직후 계속 재등록돼 데이터셋이 오염됨).
         pending = [
             doc_id for doc_id, doc in registry.get("documents", {}).items()
             if doc.get("pipeline_state") == "PROCESSED"
+            and doc.get("ingest_status") != "EXCLUDED"
         ]
 
         reconciled: list[str] = []

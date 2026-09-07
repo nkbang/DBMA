@@ -2,8 +2,10 @@
 
 **Project:** DBMA-LIBRARY-SUMMARY-COUNT-FIX-001
 **Date:** 2026-09-07
-**Nature:** UI 집계 로직 버그 수정 — **Production Registry 데이터 변경 아님** (읽기 전용 필터만 수정)
-**Git Commit:** 자동 수행 (CUE Operating Policy v1.0, 사소한 버그 수정 → C1 Review 불요)
+**Nature:** Phase 1 = UI 집계 로직 버그 수정(읽기 전용 필터). Phase 2 = 유령
+문서 98건 데이터 정리 — `ingest_status` 전이(EXCLUDED) + TSU 데이터셋/색인
+재빌드. **Corpus/Retrieval/Embedding 파이프라인 로직 미변경.** 사용자 명시 승인.
+**Git Commit:** 자동 수행 (CUE Operating Policy v1.0, 버그 수정 + 승인된 데이터 정리 → C1 Review 불요)
 
 ---
 
@@ -105,16 +107,78 @@ tests/test_processing_pending_count.py         4 passed
 
 ---
 
-## 4. 다음 조치 (데이터 정리 — 별도 승인 필요, 본 커밋 범위 밖)
+## 4. Phase 2 — 레지스트리 유령 항목 98건 실제 정리 (2026-09-07, 사용자 승인)
 
-1. **레지스트리 유령 항목 98건**은 그대로 남아 있음 — 대시보드 요약에는
-   더 이상 노출되지 않으나, 검색·파일 스코프 선택기·벡터 인덱스에는
-   여전히 존재. Library 페이지 상단 "원본이 사라진 문서" 알림
-   (`find_orphaned_processed_documents` → 98건 전부 해당)에서 정리
-   가능하며, 일괄 정리 스크립트가 필요하면 별도 요청 시 작성. Production
-   Registry 대량 변경이므로 사용자 승인 후 수행.
-2. `output/bench/tsu_dataset.jsonl`에 비-UTF8 바이트가 있어 재생성 권장.
-3. `.md` 설교 원고 ~38건이 레지스트리에는 PROCESSED이나 TSU 데이터셋에
-   없어 "처리 완료 66 / 미처리 41"이 "정리된 자료 103"과 다른 기준으로
-   집계됨. 신고된 불일치(정리 > 보유)는 아니나, 두 지표를 완전 일치
-   시키려면 해당 원고들의 실제 색인 여부 확인 후 별도 결정 필요.
+사용자 지시("레지스트리 유령 항목 98건도 정리해줘")로 데이터 정리 수행.
+
+### 4.1 추가 근본 원인 — reconcile_pending()의 EXCLUDED 미처리
+
+`core/background_index_builder.py`가 5초마다 `reconcile_pending()`을 호출하는데,
+그 pending 스캔이 `pipeline_state == "PROCESSED"`만 보고
+`ingest_status == "EXCLUDED"`를 무시했다. 유령 98건 중 69건이
+`pipeline_state == "PROCESSED"`였기에, EXCLUDED로 표시해도 리컨사일러가 5초마다
+`reindex_document()`로 되살려 TSU 데이터셋에 재삽입했다. 1차 정리 시도에서
+실행 중이던 Streamlit 서버 3개(그 중 하나는 launchd `com.dbma.nae.dashboard`,
+KeepAlive)의 리컨사일러와 데이터셋 쓰기 경쟁이 발생 → 데이터셋 오염(정상
+레코드 ~3,060건 유실, 유령 재출현). `backups/phantom_registry_cleanup_
+20260907_152046/`에서 전량 복원 후 아래 구조로 재수행.
+
+### 4.2 코드 수정
+
+**`core/index_orchestrator.py::reconcile_pending()`** — pending 스캔에
+`and doc.get("ingest_status") != "EXCLUDED"` 추가. 제외된 문서를 리컨사일러가
+다시 색인하지 않는다. 회귀 테스트
+`tests/test_reconcile_pending.py::test_excluded_documents_are_not_reconciled`.
+
+### 4.3 데이터 정리 스크립트 (dry-run 기본, 백업 필수)
+
+- **`scripts/cleanup_phantom_registry_entries.py`** — RAW에 없고 산출물 이름
+  규칙에 맞는 registry 문서를 찾아 `registry_lock()` 보유 상태에서 ①98건
+  `ingest_status=EXCLUDED`+`pipeline_state=INDEXED`, ②TSU 데이터셋 레코드 제거,
+  ③매니페스트 재작성, ④후보/성경 색인 전체 재빌드. `reconcile_pending()`도
+  같은 lock을 쓰므로 앱이 떠 있어도 뒤에서 직렬화된다.
+- **`scripts/sync_tsu_dataset_to_registry.py`** — `ingest_status=="EXCLUDED"`인
+  모든 문서(오늘 98 + 이전부터의 13)의 레코드를 데이터셋에서 제거하고
+  매니페스트/색인 재빌드. 이전 EXCLUDED 13건의 레코드 5,086건이 위 리컨사일러
+  버그로 계속 남아 있었다.
+
+### 4.4 실측 결과
+
+| 항목 | 정리 전 | 정리 후 |
+|---|---|---|
+| registry EXCLUDED | 13 | 111 (13 + 유령 98) |
+| TSU 데이터셋 | 89,738줄 (손상 1, 유령 38,724) | 45,927 (EXCLUDED 소속·손상 0) |
+| 후보 색인 | 손상(열기 실패) | 재빌드 45,927 |
+| 성경 색인 | stale | 재빌드 86,042 |
+| `reconcile_pending()` 재실행 | 유령 재삽입 | `pending:0`, 데이터셋 불변 |
+| 대시보드 정리된 자료 | 200 | **103** (보유 107 이하) |
+
+### 4.5 회귀
+
+```
+tests/test_reconcile_pending.py                     6 passed
+-k "reconcile|orchestrator|dashboard|raw_hygiene|candidate|bible_index|registry_lock|background_index|reindex"
+                                                 353 passed, 0 failed
+```
+
+### 4.6 Architecture / ADR
+
+- **Retrieval·Embedding Engine 미변경.** TSU 데이터셋/색인 조작은
+  `reconcile_pending()`·`exclude_document_from_index()`가 이미 수행하는 연산
+  (EXCLUDED 문서 레코드 purge + 색인 재빌드)을 배치로 실행한 것이며 파이프라인
+  로직·스코어링·스키마는 불변.
+- Production Registry 변경은 `ingest_status` 전이(`unexclude_document()`로
+  복원 가능)에 한정, 사용자 명시 승인 있음.
+- `reconcile_pending()` 수정은 명백한 버그 수정 → C1 Review 대상 아님.
+
+### 4.7 남은 항목 (별도 작업, 이번 범위 밖)
+
+1. `.md` 설교·연구 원고 41건이 registry는 `PROCESSED`(chunk>0)인데 TSU
+   데이터셋에 레코드 없음(원본 데이터셋도 76문서만 — **오늘 이전부터의 상태**).
+   이 때문에 "정리된 자료 103" vs "처리완료 65 / 미처리 42"가 다른 기준으로
+   잡힘. 신고된 불일치(정리 > 보유)는 해소. 완전 일치엔 이 41건 재색인 필요.
+2. `data/제련완성본/`에 유령/중복 산출물 파일 ~290개 잔존(실제 문서의 정상
+   청크 출력과 섞여 있어 일괄 삭제 위험). `scripts/cleanup_duplicate_outputs.py`
+   로 별도 정리.
+3. 손상 1줄이 있던 `output/bench/tsu_dataset.jsonl`은 정리 과정에서 재작성되어
+   해소됨.
