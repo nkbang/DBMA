@@ -67,6 +67,8 @@ HQ가 SESAME 착수를 지시하면 → CUE가 §11 P0(본안 확장) → P1에�
   신규 생성, `/Users/David/DBMA`를 루트로), `core/*.py` mtime 13:41~13:43 +
   `.pyc` 재생성(코드 실행됨). CCD 세션 목록엔 없음(Cline은 비-CCD).
   이 세션(SESAME/CUE)은 `docs/`만 수정 — 무관.
+- `Fuller C1 Token-Regulated Execution` 세션 아님(2026-09-07 본인 확인:
+  worktree `smith-gate-cross-validation-4b511c`, 미결 작업 0). 미상의 다른 세션.
 - 조치: CUE는 손대지 않음(커밋·되돌리기 금지 — 동시 편집 충돌 방지).
   해당 Cline/C1 세션이 마무리·커밋. 의도 확인은 그 세션 담당.
 
