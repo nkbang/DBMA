@@ -1,5 +1,9 @@
 """core/tsu_builder.py — TSU v1 builder (Index Authority, library layer).
 
+NOTE: This module contains **functions only** (build_tsu_records, write_tsu_dataset,
+write_manifest, etc.). There is no `TSUBuilder` class. If you see code importing
+`from core.tsu_builder import TSUBuilder`, it is stale — use the functions directly.
+
 SPRINT20-I-C-2-B: scripts/build_tsu_dataset.py에서 TSU 생성 라이브러리
 로직을 core로 승격한 모듈. Index Authority(docs/architecture/
 DBMA-Index-Authority-Design-v1.md)의 "Registry → TSU JSONL" 책임을 담당한다.
