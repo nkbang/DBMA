@@ -71,6 +71,13 @@ HQ가 SESAME 착수를 지시하면 → CUE가 §11 P0(본안 확장) → P1에�
   worktree `smith-gate-cross-validation-4b511c`, 미결 작업 0). 미상의 다른 세션.
 - 조치: CUE는 손대지 않음(커밋·되돌리기 금지 — 동시 편집 충돌 방지).
   해당 Cline/C1 세션이 마무리·커밋. 의도 확인은 그 세션 담당.
+- **[2026-09-07 종결] C1 독립 검증 후 CUE가 인수 커밋 완료 → `5c2ac97`
+  (`chore: remove dead core modules, add package + TSUBuilder-absence docstrings`),
+  `origin/dev/dbma-engine`에 push 완료.** 검증: 삭제 3개 모듈 잔존 import 0건,
+  버전 정합성 4종(config.yaml 1.3.0 / tag v1.3.0 / tsu_manifest 51390 / benchmark
+  v1.0.0), 회귀 `dbma_env pytest tests --ignore=tests/nae` 2609 pass / 0 fail.
+  브러시업 보고서 정정: "배포 준비 완료"는 미커밋 상태였음(본 커밋으로 해소),
+  `.gitignore` 미변경, `core/files.py`는 이동이 아닌 삭제. 워킹트리 clean.
 
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
