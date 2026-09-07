@@ -20,47 +20,27 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
 착수 시 CUE가 TLI Style Engine 슬롯 · `sermon_corpus/analyzer` · ADR-002/009/012/030
 통합 관계 재검토 후 ADR-032 P0부터 진행.
 
-**[2026-09-05 갱신] SESAME C1 Task Order 초안 작성 + C1 리뷰 요청 발행.**
-- 초안: `docs/architecture/notes/SESAME-C1-Task-Order-DRAFT.md` (commit `b644dbf`) —
-  ADR-032 §11 P0~P10에 C1 검토 라운드 C1-R0~R8 대응, 비승격 계획 메모.
-- 리뷰 요청: `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_REQUEST_001.md` (commit `5527df2`),
-  C1 세션에 메시지 전달(큐 적재, C1 미실행). 기대 산출물
-  `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md`.
-- 성격: ADR-032 §11 P1 정식 리뷰 아님 — 검토 절차 설계 정합성 + §15 동결 위반 여부
-  판정 요청. HQ 동결(§0) 유효, SESAME 착수 아님.
-- 상태: **C1 리뷰 대기 중.**
+**[2026-09-07 종결] SESAME C1 Task Order 초안 — 작성 완료, C1 리뷰는 ADR-032 §15 기준 보류.**
 
-**[2026-09-06 갱신] SESAME C1 리뷰 미도착 — 모니터링 중단.**
-- C1 세션(`Fuller C1 Token-Regulated Execution`)이 재개되지 않아 리뷰 산출물
-  `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md` 미생성. `origin/dev/dbma-engine`
-  변화 없음(`4ca6bb4` 고정), C1 브랜치 미생성, 세션 회신 없음.
-- 30분 폴링 루프(cron `63f995b0`) 가동 후 사용자 지시로 중단.
-- C1 세션 앞 정정 지시 2건 큐 적재 상태 유지: (1) `git init` 금지·실제 저장소
-  이동, (2) 실제 초안(`b644dbf`, 217줄) 기준 재리뷰(존재하지 않는 커밋
-  `a4e4066`/`bb2541d` 기반 1차 리뷰는 REJECTED — 대상 문서 불일치).
-- 재개 조건: 사용자가 C1 세션을 열어 재개 → 큐 지시 처리 → 리뷰 push 시 갱신.
+산출물(비승격 계획 메모, `dev/dbma-engine`):
+- `docs/architecture/notes/SESAME-C1-Task-Order-DRAFT.md` (`b644dbf`, 217줄) —
+  ADR-032 §11 P0~P10에 C1 검토 라운드 C1-R0~R8 대응.
+- `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_REQUEST_001.md` (`5527df2`) — 리뷰 요청서(§2 체크리스트).
 
-**[2026-09-07 갱신] SESAME C1 리뷰 반복 실패 — 근본 원인 = 저장소 오인.**
-- C1(Cline 세션 `Fuller C1 Token-Regulated Execution`)의 워크스페이스 루트가
-  `/Users/David/.cline/data/workspaces/chat`(Cline chat 워크스페이스)이며,
-  `/Users/David/DBMA`가 아니다. 이 폴더에는 원래 Cline의
-  `SESAME/INTEGRATION_ANALYSIS.md`, `C1-TASK-ORDER-051-REPORT.md`가 있었고,
-  그 위에 별도 `.git`(`git init`)이 생성되어 C1이 자체 유령 파일을 커밋함:
-  `84a590c`(init) → `a4e4066`(SESAME-C1-Task-Order-DRAFT.md, 361줄) →
-  `bb2541d`(REVIEW_REQUEST). 이 `.git`에는 Cline checkpoint 커밋도 혼재.
-- C1은 매 리뷰 때 이 유령 repo를 감사 → 실제 `/Users/David/DBMA`의
-  `b644dbf`(초안 217줄)·`5527df2`·`4ca6bb4`·`f59a2de`를 "존재하지 않음"으로 오판.
-  1차 "499줄/8-TASK/77 테스트" 리뷰, 2차 "STATE.md 없음/origin 없음" 교차점검
-  모두 유령 repo 기준이라 **무효**. 실제 DBMA repo·커밋·STATE.md는 무결.
-- C1의 3차 보고(위치 검증 실행)는 정확: `toplevel=/Users/David/.cline/...`,
-  `remote=없음`, `branch=master` → **BLOCKER(검토 재개 조건 불충족)** 정당.
-- 조치: (1) 유령 `.git` 격리 완료(2026-09-07) — `rm -rf` 대신
-  `/Users/David/.cline/data/workspaces/chat/.git` →
-  `.git.disabled_20260907_131155` 로 rename(Cline checkpoint 이력 보존, 되돌리기
-  가능). 이제 해당 경로는 git repo 아님 → C1 오인 차단. 워킹 파일 무손실.
-  (2) C1 리뷰는 Cline 워크스페이스를 `/Users/David/DBMA`로
-  재설정하거나 Claude Code 세션으로 라우팅해야 가능. (3) ADR-032 §15상
-  C1 정식 리뷰는 HQ 착수 지시 후 §11 P1 단계이므로 현 시점 필수 아님 — 보류 가능.
+결정: **C1 정식 리뷰 보류.** ADR-032 §15상 C1 독립 리뷰는 HQ 착수 지시 + 본안(§11 P0)
+이후 §11 P1 단계에서 수행한다. 현 동결 상태에서는 순서상 이르며 필수가 아니다.
+`docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md`는 생성하지 않음.
+
+경위(추적용): C1 세션(`Fuller C1`)이 워크스페이스 루트
+`/Users/David/.cline/data/workspaces/chat`의 별도 `.git`(유령 repo:
+`84a590c`→`a4e4066`→`bb2541d`, Cline checkpoint 혼재)을 감사하며 실제 DBMA repo
+커밋을 "없음"으로 오판 → 리뷰 3회 모두 무효. 실제 DBMA repo·커밋·STATE.md는 무결.
+유령 `.git`은 `.git.disabled_20260907_131155`로 rename 격리(되돌리기 가능, 워킹 파일 무손실).
+30분 폴링 루프(cron `63f995b0`) 중단됨.
+
+재개 조건: HQ가 SESAME 착수를 지시하면 → CUE가 ADR-032 §11 P0(본안 확장) →
+P1에서 C1 독립 리뷰. 그때 C1은 Cline 워크스페이스를 `/Users/David/DBMA`로
+재설정하거나 Claude Code 세션으로 라우팅해야 한다.
 
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
