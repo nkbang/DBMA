@@ -234,15 +234,38 @@ def _render_ingestion_form() -> None:
     store = StateStore()
 
     # Available folders for processing
+    #
+    # [버그 수정 2026-09-07] 이 목록은 data/ 아래 "지원 파일이 든 모든
+    # 하위 폴더"를 무차별로 골라 넣었다 — 파이프라인 출력 폴더
+    # (DEFAULT_OUTPUT_DIR = data/제련완성본)에는 변환 .md·청크 덤프가
+    # 잔뜩 쌓여 있어, 그 폴더를 대상으로 처리를 돌리면 산출물이 새
+    # "문서"로 registry에 등록된다(사용자 보고: "정리된 자료 200 > 보유
+    # 문서 107" — 2026-09-07 14:20 실행에서 ~98개 유령 항목 발생).
+    # 원본 라이브러리가 아닌 시스템/출력 폴더는 후보에서 제외한다.
+    _blocked_dirs = {
+        os.path.normpath(DEFAULT_OUTPUT_DIR),
+        os.path.normpath(os.path.join(str(Path(DEFAULT_RAW_DIR).parent), "제련완성본")),
+    }
     _available_dirs: List[str] = []
     _dir_labels: Dict[str, str] = {}
     try:
         _base = Path(DEFAULT_RAW_DIR).parent
         if _base.exists():
             for d in sorted(_base.iterdir()):
-                if d.is_dir() and any(f.suffix.lower() in SUPPORTED_EXTS for f in d.iterdir() if f.is_file()):
+                if not d.is_dir():
+                    continue
+                if os.path.normpath(str(d)) in _blocked_dirs:
+                    continue
+                # 출력 폴더의 서명 산출물이 보이면 원본 폴더가 아니다.
+                _entries = [f for f in d.iterdir() if f.is_file()]
+                if any(
+                    f.name.endswith(("_chunks.txt", "_chunks_meta.json"))
+                    for f in _entries
+                ):
+                    continue
+                if any(f.suffix.lower() in SUPPORTED_EXTS for f in _entries):
                     _available_dirs.append(str(d))
-                    _dir_labels[str(d)] = f"{d.name} ({len([f for f in d.iterdir() if f.is_file()])} files)"
+                    _dir_labels[str(d)] = f"{d.name} ({len(_entries)} files)"
     except OSError:
         pass
 
@@ -281,6 +304,16 @@ def _render_ingestion_form() -> None:
             key="processing_target_manual",
         )
         target_dir = (manual_dir or "").strip() or selected
+        # [버그 수정 2026-09-07] 직접 경로 입력으로도 출력 폴더를 지정하지
+        # 못하게 막는다 — 여기로 처리를 돌리면 파이프라인 산출물이 원본
+        # 문서로 registry에 등록된다(위 _available_dirs 주석 참고).
+        if target_dir and os.path.normpath(target_dir) in _blocked_dirs:
+            st.error(
+                f"'{target_dir}'는 파이프라인 출력 폴더입니다 — 원본 문서 "
+                f"폴더가 아니므로 처리 대상으로 쓸 수 없습니다. "
+                f"기본 보관함({DEFAULT_RAW_DIR})을 사용하세요."
+            )
+            target_dir = DEFAULT_RAW_DIR
         store.set("processing_target", target_dir)
 
     with c2:

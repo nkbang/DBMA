@@ -81,6 +81,23 @@ HQ가 SESAME 착수를 지시하면 → CUE가 §11 P0(본안 확장) → P1에�
   검증 보고서: `docs/CORE_DEADFILE_CLEANUP_C1_VERIFICATION_REPORT_001.md`
   (커밋 `0097542`).
 
+**[2026-09-07 종결] 대시보드 "내 서재 요약" 카운트 불일치 수정 (보유 107 < 정리 200).**
+- 원인: `ui/pages/processing.py::_render_ingestion_form()`의 폴더 후보가
+  `data/제련완성본`(`DEFAULT_OUTPUT_DIR`, 파이프라인 출력)까지 포함 →
+  2026-09-07 14:20 실행이 그 폴더 대상으로 돌아 `<원본>_pdf.md`/
+  `_pdf_chunks.txt` 등 산출물 98건이 신규 문서로 레지스트리에 등록,
+  `_get_effective_documents()` 필터 전부 통과.
+- 수정(UI 읽기 전용, 레지스트리·RAW·TSU·Retrieval 미변경):
+  `dashboard.py`에 `_is_pipeline_artifact_name()` 추가해 `_chunks.txt`/
+  `_chunks_meta.json`/`_<ext>.md` 산출물을 effective 집합에서 제외
+  (→ 정리된 자료 200→103), TSU 읽기 `errors="replace"`로 UnicodeDecodeError
+  크래시 방지. `processing.py` 폴더 후보에서 출력 폴더 차단.
+- 회귀: dashboard/processing/library/hygiene 171 pass/0 fail.
+  빌드 리포트: `docs/DBMA_LIBRARY_SUMMARY_COUNT_FIX_BUILD_REPORT_001.md`.
+- 미결(별도 승인 필요): 레지스트리 유령 항목 98건은 Library 페이지
+  "원본이 사라진 문서" 알림에서 정리 가능(Production Registry 대량
+  변경이라 사용자 승인 후). `output/bench/tsu_dataset.jsonl` 재생성 권장.
+
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,

@@ -428,6 +428,34 @@ def _get_last_processed() -> str:
     return max(stamps)[:16].replace("T", " ")
 
 
+def _is_pipeline_artifact_name(source_file: str) -> bool:
+    """source_file이 사용자가 올린 원본이 아니라 파이프라인이 만들어낸
+    중간 산출물(변환 .md, 청크 덤프)인지 판별한다.
+
+    [버그 수정 2026-09-07] "정리된 자료"가 보유 문서(107)보다 큰 200개로
+    표시되는 사용자 보고. 원인: 2026-09-07 14:20 처리 실행이 RAW가 아니라
+    출력 폴더(DEFAULT_OUTPUT_DIR = data/제련완성본)를 대상으로 돌아,
+    그 폴더에 쌓여 있던 파이프라인 산출물 ~98개(`<원본>_pdf.md`,
+    `<원본>_pdf_chunks.txt`, `<원본>_md.md`, `<원본>_md_chunks.txt` …)가
+    전부 새 "문서"로 registry에 등록됐다. 이 항목들은 chunk_count>0,
+    ingest_status=PROCESSED, superseded_by=None이라 기존 필터를 모두
+    통과한다. 파일명 규칙으로 걸러낸다:
+      - `_chunks.txt` / `_chunks_meta.json`로 끝남 → 청크 덤프
+      - `_<지원확장자>.md`로 끝남 → 추출·변환 단계의 마크다운 출력
+        (사용자가 직접 올린 마크다운은 `이름.md`이지 `이름_pdf.md`가 아님)
+    ingestion 폼이 애초에 출력 폴더를 대상으로 못 고르게 하는 수정은
+    ui/pages/processing.py의 _render_ingestion_form() 참고.
+    """
+    if not source_file:
+        return False
+    from core.config import SUPPORTED_EXTENSIONS
+
+    name = source_file.strip().lower()
+    if name.endswith("_chunks.txt") or name.endswith("_chunks_meta.json"):
+        return True
+    return any(name.endswith(f"_{ext.lstrip('.')}.md") for ext in SUPPORTED_EXTENSIONS)
+
+
 def _get_effective_documents() -> dict:
     """registry의 전체 문서 중 "실질적으로 유효한" 것만 걸러 반환한다.
 
@@ -450,6 +478,10 @@ def _get_effective_documents() -> dict:
     ui/pages/library.py의 읽기 전용 예제 3건)는 사용자 본인이 올린
     자료가 아니므로 제외한다(사용자 요청) — source_file 문자열이
     아닌 document_id로 걸러 NFC/NFD 정규화 문제를 애초에 피한다.
+
+    [버그 수정 2026-09-07] 파이프라인 중간 산출물이 원본으로 잘못 등록된
+    항목(_is_pipeline_artifact_name)을 제외한다 — "정리된 자료 200 >
+    보유 문서 107" 불일치의 원인. 상세는 _is_pipeline_artifact_name 참고.
     """
     import json
     from core.config import DEFAULT_REGISTRY_PATH, DEFAULT_SAMPLE_LIBRARY_PATH
@@ -473,6 +505,7 @@ def _get_effective_documents() -> dict:
         and doc.get("ingest_status", "PROCESSED") == "PROCESSED"
         and doc.get("superseded_by") is None
         and doc_id not in sample_ids
+        and not _is_pipeline_artifact_name(doc.get("source_file", ""))
     }
 
 
@@ -598,7 +631,12 @@ def _get_unprocessed_raw_files() -> list[str]:
     tsu_sources: set[str] = set()
     tsu_path = Path(DEFAULT_TSU_DATASET_PATH)
     if tsu_path.exists():
-        with open(tsu_path, "r", encoding="utf-8") as fh:
+        # [버그 수정 2026-09-07] errors="replace" — TSU 데이터셋에 UTF-8이
+        # 아닌 바이트가 한 줄이라도 섞이면(2026-09-07 출력 폴더 오처리로
+        # 유입) 여기서 UnicodeDecodeError가 나 대시보드 "내 서재 요약"의
+        # 처리 완료/미처리 표시 전체가 죽었다. 깨진 줄은 json.loads 실패로
+        # 건너뛰므로 집계에는 영향이 없다.
+        with open(tsu_path, "r", encoding="utf-8", errors="replace") as fh:
             for line in fh:
                 line = line.strip()
                 if not line or line.startswith("$"):
