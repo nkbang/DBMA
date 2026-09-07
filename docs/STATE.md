@@ -814,7 +814,9 @@ post-commit hook 오작동을 원인까지 추적해 완전 제거.
   `ui/pages/research.py` 각주 포맷 공용화(출력 동일, parity 테스트).
 - 테스트 39 PASS(신규) / 관련 회귀 290 PASS. `test_p41_toggle_and_telemetry.py`
   의 `-k` 교차수트 순서 의존 실패 1건은 **사전 존재 결함**(자연 순서 13/13 PASS).
-- **ADR-031 Proposed** — C1 독립 리뷰 + 사용자 승인 후 Approved 승격 예정.
+- **[2026-09-04] ADR-031 Approved** — C1 Forensic Audit PASS(39/39, 회귀 74/74,
+  기존 시그니처 무변경, fail-closed) → 4개 승격 조건 충족, Proposed→Approved 승격
+  (커밋 `ee7a1f6`). 이후 Architecture Freeze Rule 보호 대상. v1.3.0 GA에 포함.
   빌드 리포트: `docs/NAE_PASSAGE_COMMENTARY_VIEWER_BUILD_REPORT_001.md`.
 
 ---
