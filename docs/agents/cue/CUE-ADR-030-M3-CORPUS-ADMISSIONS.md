@@ -24,7 +24,7 @@
 - **새 state / enum 아님.** `RegistrationState` / `ProcessingState` 에 값 추가 없음.
 - **재처리 아님.** 기존 3,319 verified TSU 재검수·재승인·재임베딩 없음. Smith `nae_ref_v1` 34,948 chunk
   재chunk·재인덱싱 없음. corpus / Qdrant / state store 무접촉 (ADR §11.4, §13).
-- Fuller Vol01–08 항목 — **넣지 않는다** (§3.3).
+- Fuller Vol01–08 항목 — M-3 시점에는 넣지 않았으나 **M-3-EXT(2026-09-02, RATIFIED)에서 `processing_status="HOLD"` 로 8건 추가** (§3.3, `docs/agents/cue/CUE-ADR-030-M3-EXT-FULLER-ADMISSION-HOLD.md`).
 
 ---
 
@@ -43,6 +43,7 @@ JSONL 한 줄 = 아래 객체. 키 순서는 아래 순서 권장.
 | `theological_category` | string[] | ✖ | M2 에 있으면 동일. 없으면 **키 생략** (OPEN-M3-4) |
 | `tradition` | string | ✖ | M2 에 있으면 동일. 없으면 **키 생략** |
 | `reference_quality_confirmed` | bool | reference track만 | `true` (indexed·운영 중). tsu track 은 **키 생략** |
+| `processing_status` | string | ✖ | `"HOLD"` \| `"RELEASED"`. **키 생략 = RELEASED (레거시 기본값).** `"HOLD"` = admission 기록됨, §5 게이트 미개방. HOLD→RELEASED = 별도 HQ 결정 (M-3-EXT, 2026-09-02 RATIFIED). |
 | `rationale` | string | ✔ | 이 admission 이 성립하는 근거 (한 문장) |
 | `evidence_refs` | string[] | ✔ | 근거 파일/경로 (실존해야 함 — 추측 금지) |
 
@@ -81,6 +82,10 @@ admission 기록의 값은 그 시점 결정의 스냅샷으로서 M2 와 **일�
 - Fuller 의 admission 은 **Fuller 처리 재개 시 HQ 가 그때 결정**한다. M-3 에서 항목을 만들지 않는다.
 - 결과: admission 기록 없는 source(Fuller ×8)는 §5 수기 게이트에 의해 TSU review→embedding 으로 진행 불가 —
   이것이 게이트가 의도대로 동작한다는 증거.
+- **UPDATE (M-3-EXT, 2026-09-02 RATIFIED)**: HQ가 Fuller Vol01–08 admission-in-principle 을 비준
+  (`docs/agents/cue/CUE-ADR-030-M3-EXT-FULLER-ADMISSION-HOLD.md`). 8건이 `corpus_admissions.jsonl` 에
+  `processing_status="HOLD"`, `date="2026-09-02"` 로 기록됨. §5 확장 규칙상 HOLD = 게이트 미개방이므로
+  TSU 생성/검수·human review·embedding·ingestion 은 계속 차단. HOLD→RELEASED = 별도 HQ 결정.
 
 ---
 
@@ -104,8 +109,11 @@ admission 기록의 값은 그 시점 결정의 스냅샷으로서 M2 와 **일�
 
 ## 5. 게이트 메커니즘 (수기 — 코드 게이트는 S-4)
 
-- **규칙**: `corpus_admissions.jsonl` 에 `source_id` 항목이 없는 source 는 TSU 생성(TSU Builder) 또는
-  reference chunking 을 **시작하지 않는다.** 현재는 작업 착수 시 **수기 확인** (담당자가 이 파일을 대조).
+- **규칙**: `corpus_admissions.jsonl` 에 `source_id` 항목이 **없거나**, 항목의 `processing_status == "HOLD"` 인
+  source 는 TSU 생성(TSU Builder) / TSU 검수 / human review / reference chunking / embedding /
+  production ingestion 을 **시작하지 않는다.** `processing_status` 키가 없거나(레거시 = RELEASED) 또는
+  `== "RELEASED"` 인 경우에만 다음 단계로 진행한다. HOLD→RELEASED 는 HQ 결정.
+  현재는 작업 착수 시 **수기 확인** (담당자가 이 파일을 대조).
 - **코드 강제 = 별도 S-4**: ADR-019 `processing_status=TSU_ELIGIBLE` 게이트를 `ProcessingState` /
   TSU Builder 에 배선하는 작업. M-3 범위 아님. 구현 시 이 파일이 그 게이트의 입력이 된다.
 - **현 상태 검증** (M-3 test): admission 기록 있는 source(Dagg, Hiscox, Smith×4) 는 이미 처리 완료 상태와

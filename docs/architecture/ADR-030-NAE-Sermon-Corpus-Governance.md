@@ -150,7 +150,7 @@ v1/v2의 "ELIGIBLE"이라는 단일 단어를 **폐기**한다. 그 단어가 �
 |---|---|
 | 정의 | "이 source를 NAE corpus로 받아들일 것인가, 어느 track으로 보낼 것인가, authority_class와 classification은 무엇인가"에 대한 **사람의 결정** |
 | 시점 | `QUALITY_PASSED` 이후, TSU 생성 / reference chunking **이전** |
-| 기록 위치 | `NAE/governance/corpus_admissions.jsonl` (append-only, 신규 — §12 MUST M-3). 항목: `{source_id, decided_by, date, track: "tsu"\|"reference", authority_class, content_genre[], theological_category[], tradition, reference_quality_confirmed?, rationale, evidence_refs[]}` |
+| 기록 위치 | `NAE/governance/corpus_admissions.jsonl` (append-only, 신규 — §12 MUST M-3). 항목: `{source_id, decided_by, date, track: "tsu"\|"reference", authority_class, content_genre[], theological_category[], tradition, reference_quality_confirmed?, processing_status?: "HOLD"\|"RELEASED", rationale, evidence_refs[]}`. M-3-EXT(2026-09-02, RATIFIED): `processing_status?` 추가 — 키 생략 = RELEASED(레거시 기본값), `"HOLD"` = admission 기록됨·§5 게이트 미개방. HOLD→RELEASED = 별도 HQ 결정. |
 | state와의 관계 | **state가 아니다.** `RegistrationState` / `ProcessingState` 어느 enum에도 값을 추가하지 않는다. ADR-019 §6이 설계한 `processing_status=TSU_ELIGIBLE` 게이트의 governance 대체물이며, 그 게이트가 코드로 구현되면 이 기록이 그 입력이 된다 |
 | 대응 코드 | 현재 없음 (수기 governance 기록). ADR-019 `TSU_ELIGIBLE` = 미구현 |
 
@@ -452,7 +452,7 @@ source acquisition (collector / 수동)
 | N-6 | automatic corpus classification / automatic embedding approval | Admission Decision은 사람 몫 (§11) |
 | N-7 | ADR-027 v2 776 pilot | 별도 HQ 승인 |
 | N-8 | SLBC1689 / PBC1742 provenance 재구성 | BROKEN, HQ decision 대기 |
-| N-9 | Fuller Vol01–08 TSU/embedding, M3 CLAIM-ONLY 19건 acquisition | admission-in-principle 승인 (HQ, 2026-09-02) — TSU generation / TSU verification / human review / embedding / production ingestion 전부 HOLD 유지. corpus_admissions.jsonl ledger 기입 + 수기 게이트 활성화는 M3 모델 확장(별도 CUE 단계) 후. provenance: `docs/NAE_FULLER_ADMISSION_PROVENANCE_DISCLOSURE_001.md`. backlog, ADR-029 PHASE 순서 |
+| N-9 | Fuller Vol01–08 TSU/embedding, M3 CLAIM-ONLY 19건 acquisition | admission 기록 완료 (HQ RATIFIED 2026-09-02) — `corpus_admissions.jsonl` 8건, `processing_status="HOLD"`, `date="2026-09-02"`. §5 확장 게이트상 HOLD = 미개방 → TSU generation / TSU verification / human review / embedding / production ingestion 전부 차단 유지. HOLD→RELEASED = 별도 HQ 결정. design: `docs/agents/cue/CUE-ADR-030-M3-EXT-FULLER-ADMISSION-HOLD.md`. provenance: `docs/NAE_FULLER_ADMISSION_PROVENANCE_DISCLOSURE_001.md`. backlog(처리): ADR-029 PHASE 순서 |
 | N-10 | corpus-wide reprocessing / Qdrant migration | Production Freeze (§14) |
 
 ---
@@ -465,6 +465,7 @@ source acquisition (collector / 수동)
   `source_id` 키, `required: false`.
 - **M1 / M3: 재작성 없음** — 헤더 주석만. M1 archival은 별도 task(§8.3-4).
 - **`corpus_admissions.jsonl`**: 신규 파일. 기존 3,319 + Smith는 back-fill **기록**만(재처리 아님, §11.4).
+- **`corpus_admissions.jsonl` M-3-EXT (2026-09-02, RATIFIED)**: Fuller Vol01–08 admission 8줄 append, `processing_status="HOLD"`. 기존 6줄·3,319 TSU 무변경. 재처리·embedding·Qdrant·state store 접촉 없음. TSU 생성/검수·human review·ingestion 은 HOLD 게이트로 차단.
 - **Qdrant / `incremental_state.json` / `registration_state.json` / embedding cache: 무접촉.**
 - **`config.yaml` / `nae_pd` gate: 무변경.**
 - Migration Required = **NO** (C1 verdict와 일치).
