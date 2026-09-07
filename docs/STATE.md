@@ -54,6 +54,18 @@ C1 워크스페이스 재설정 방법(다음 P1 대비, 동결과 무관하게 
   `git branch --show-current` · `git log --oneline -3`. 4개 다 맞아야 C1 보고 신뢰.
 - 금지: 격리한 `.git.disabled_20260907_131155`를 되돌리거나 그 경로에서 git 작업.
 
+**[2026-09-07 관찰] `core/` 미커밋 변경 = 별도 Cline(C1) 세션 작업 (SESAME 무관).**
+- `dev/dbma-engine` 워킹트리에 미커밋 변경 발견: `core/files.py`·`core/init.py`·
+  `core/text_splitter.py` 삭제(전부 미사용/빈 파일, 참조 0), `core/__init__.py`
+  패키지 docstring 1줄, `core/tsu_builder.py` "`TSUBuilder` 클래스 없음" 경고
+  docstring 4줄.
+- 출처: Cline 워크스페이스 `~/.cline/data/workspaces/7d2959dd` (2026-09-07 13:08
+  신규 생성, `/Users/David/DBMA`를 루트로), `core/*.py` mtime 13:41~13:43 +
+  `.pyc` 재생성(코드 실행됨). CCD 세션 목록엔 없음(Cline은 비-CCD).
+  이 세션(SESAME/CUE)은 `docs/`만 수정 — 무관.
+- 조치: CUE는 손대지 않음(커밋·되돌리기 금지 — 동시 편집 충돌 방지).
+  해당 Cline/C1 세션이 마무리·커밋. 의도 확인은 그 세션 담당.
+
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
 SPRINT17~19에서 Retrieval/Evidence/Citation 계층이 구조적으로 완성되었고,
