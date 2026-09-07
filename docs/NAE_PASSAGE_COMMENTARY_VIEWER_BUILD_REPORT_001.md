@@ -6,6 +6,8 @@
 Engine / Embedding / TSU Pipeline / 기존 ADR **무접촉**.
 **ADR:** ADR-031 **Proposed** (승격 전 — C1 리뷰 + 사용자 승인 대기)
 
+> **[2026-09-04 후속]** ADR-031 은 C1 Forensic Audit PASS(39/39·회귀 74/74·기존 시그니처 무변경·fail-closed)로 4개 승격 조건을 충족하여 **Proposed → Approved** 로 승격됨(커밋 `ee7a1f6`). 아래 본문의 "Proposed" 표기는 빌드 시점 기록이며 갱신하지 않는다.
+
 ---
 
 ## 1. STATUS: 구현 완료 · 테스트 PASS · 회귀 PASS
