@@ -20,43 +20,43 @@ v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC RE
 착수 시 CUE가 TLI Style Engine 슬롯 · `sermon_corpus/analyzer` · ADR-002/009/012/030
 통합 관계 재검토 후 ADR-032 P0부터 진행.
 
-**[2026-09-07 종결] SESAME C1 Task Order 초안 — 작성 완료, C1 리뷰는 ADR-032 §15 기준 보류.**
+**[2026-09-07 종결] SESAME C1 Task Order 초안 작성 완료 — C1 정식 리뷰는 ADR-032 §15 기준 보류. SESAME 본체는 동결 유지.**
 
-산출물(비승격 계획 메모, `dev/dbma-engine`):
+■ 결정
+- **C1 독립 리뷰 보류.** ADR-032 §15상 C1 리뷰는 HQ 착수 지시 + 본안(§11 P0) 이후
+  §11 P1에서 수행. 현 동결 상태에선 순서상 이르며 필수 아님.
+  `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md`(리뷰 결과물) 미생성.
+- SESAME 본체(§11 P0~P10) 전량 미착수 — HQ 착수 지시 게이트, §0 동결 유지.
+
+■ 산출물 (비승격 계획 메모, `dev/dbma-engine`, origin+nas 동기)
 - `docs/architecture/notes/SESAME-C1-Task-Order-DRAFT.md` (`b644dbf`, 217줄) —
-  ADR-032 §11 P0~P10에 C1 검토 라운드 C1-R0~R8 대응.
-- `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_REQUEST_001.md` (`5527df2`) — 리뷰 요청서(§2 체크리스트).
+  §11 P0~P10에 C1 검토 라운드 C1-R0~R8 대응.
+- `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_REQUEST_001.md` (`5527df2`) — 리뷰 요청서.
+- `ADR-032` §15에 리뷰 보류 포인터 노트 추가 (`1863168`, 결정 계약 불변).
 
-결정: **C1 정식 리뷰 보류.** ADR-032 §15상 C1 독립 리뷰는 HQ 착수 지시 + 본안(§11 P0)
-이후 §11 P1 단계에서 수행한다. 현 동결 상태에서는 순서상 이르며 필수가 아니다.
-`docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md`는 생성하지 않음.
+■ 경위 (추적용, 이번 세션)
+- 원 `INTEGRATION_ANALYSIS.md` 교차점검: 코드 정찰은 정확하나 ADR-032 미인지 →
+  "ADR-010 작성"·"P0 구현 시작" 권고는 무효(ADR-010 점유·§0 동결 위반).
+- C1 리뷰 3회 전부 무효: C1(Cline)이 실제 repo가 아니라 자기 워크스페이스
+  `~/.cline/data/workspaces/chat`의 별도 `.git`(유령 커밋 `84a590c`→`a4e4066`→
+  `bb2541d`)을 감사 → CUE의 실제 push된 커밋·STATE.md를 "없음/날조"로 오판.
+  근본 원인 = C1 저장소 오인. 실제 DBMA repo·커밋·STATE.md는 전부 무결.
 
-경위(추적용): C1 세션(`Fuller C1`)이 워크스페이스 루트
-`/Users/David/.cline/data/workspaces/chat`의 별도 `.git`(유령 repo:
-`84a590c`→`a4e4066`→`bb2541d`, Cline checkpoint 혼재)을 감사하며 실제 DBMA repo
-커밋을 "없음"으로 오판 → 리뷰 3회 모두 무효. 실제 DBMA repo·커밋·STATE.md는 무결.
-유령 `.git`은 먼저 `.git.disabled_20260907_131155`로 rename 격리했다가
-**2026-09-07 완전 삭제**(사용자 지시, `rm -rf` — 유령 커밋 3개 + Cline checkpoint
-스냅샷 제거). 함께 C1이 그 워크스페이스에 만든 **유령 사본도 삭제**:
-`chat/docs/`(SESAME-C1-Task-Order-DRAFT.md 499줄 버전 + REVIEW_REQUEST 사본).
-`chat/SESAME/INTEGRATION_ANALYSIS.md`(원본 분석)는 보존. 실제 DBMA repo 무영향.
-30분 폴링 루프(cron `63f995b0`) 중단됨.
+■ 정리 완료
+- 유령 `.git` → 격리(rename) 후 **`rm -rf` 완전 삭제** (유령 커밋 + Cline checkpoint).
+- C1 유령 사본 삭제: `chat/docs/` (499줄 초안 버전 + REVIEW_REQUEST 사본).
+- `chat/SESAME/INTEGRATION_ANALYSIS.md`(원본) 보존. `chat`는 이제 git repo 아님.
+- 폴링 cron `63f995b0` 중단. C1 세션에 정리 메시지 큐 적재(위치 확인·리뷰 보류·대기).
+- 메모리 `feedback_c1_stale_status_reports.md` 갱신(사례 #12 + step 0: C1
+  `git toplevel/remote` 먼저 확인).
 
-재개 조건: HQ가 SESAME 착수를 지시하면 → CUE가 ADR-032 §11 P0(본안 확장) →
-P1에서 C1 독립 리뷰. 그때 C1은 Cline 워크스페이스를 `/Users/David/DBMA`로
-재설정하거나 Claude Code 세션으로 라우팅해야 한다.
-
-C1 워크스페이스 재설정 방법(다음 P1 대비, 동결과 무관하게 선행 가능):
-- 방법 A (Cline): C1 Cline이 떠 있는 VS Code 창에서 File → Open Workspace from
-  File → `/Users/David/DBMA/DBMA.code-workspace` (또는 Open Folder →
-  `/Users/David/DBMA`, 또는 터미널 `code /Users/David/DBMA`). 창 리로드되며
-  `/Users/David/DBMA/.clinerules/`가 자동 적용됨.
-- 방법 B (Claude Code 세션): 해당 세션에서 `cd /Users/David/DBMA` +
-  change_directory 승인, 또는 `~/DBMA`에서 새 세션 시작.
-- 재설정 후 필수 검증(C1에게 실행): `git rev-parse --show-toplevel`
-  (=/Users/David/DBMA) · `git remote -v` (=origin nkbang/DBMA + nas) ·
-  `git branch --show-current` · `git log --oneline -3`. 4개 다 맞아야 C1 보고 신뢰.
-- `chat` 워크스페이스는 이제 git repo 아님(유령 `.git` 삭제됨) → C1 오인 소지 제거.
+■ 재개 조건
+HQ가 SESAME 착수를 지시하면 → CUE가 §11 P0(본안 확장) → P1에서 C1 독립 리뷰.
+그때 C1은 워크스페이스를 `/Users/David/DBMA`로 재설정해야 한다:
+- Cline: VS Code에서 `DBMA.code-workspace` 열기 (`.clinerules/` 자동 적용).
+- CC 세션: `cd /Users/David/DBMA` + change_directory, 또는 `~/DBMA`에서 새 세션.
+- 재설정 후 `git rev-parse --show-toplevel`(=/Users/David/DBMA)·`git remote -v`
+  (=origin+nas)·`git branch`·`git log -3` 4종 검증 통과해야 C1 보고 신뢰.
 
 **[2026-09-07 관찰] `core/` 미커밋 변경 = 별도 Cline(C1) 세션 작업 (SESAME 무관).**
 - `dev/dbma-engine` 워킹트리에 미커밋 변경 발견: `core/files.py`·`core/init.py`·
