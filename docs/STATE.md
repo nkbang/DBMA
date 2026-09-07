@@ -78,6 +78,8 @@ HQ가 SESAME 착수를 지시하면 → CUE가 §11 P0(본안 확장) → P1에�
   v1.0.0), 회귀 `dbma_env pytest tests --ignore=tests/nae` 2609 pass / 0 fail.
   브러시업 보고서 정정: "배포 준비 완료"는 미커밋 상태였음(본 커밋으로 해소),
   `.gitignore` 미변경, `core/files.py`는 이동이 아닌 삭제. 워킹트리 clean.
+  검증 보고서: `docs/CORE_DEADFILE_CLEANUP_C1_VERIFICATION_REPORT_001.md`
+  (커밋 `0097542`).
 
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
