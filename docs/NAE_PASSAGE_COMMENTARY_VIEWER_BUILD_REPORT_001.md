@@ -131,3 +131,37 @@ dbma_env/bin/python -m pytest <관련 27개 파일: bible*/chat*/citation*/footn
 3. 사용자 승인 시 ADR-031 Proposed → Approved 승격, STATE.md 갱신.
 4. (v2) 본문 선택 후 자유 추가 질문(follow-up), "AI에게 질문"/"설교 준비" 연동.
 5. `_ALIGN_FLOOR`(0.5) 임계값 실사용 튜닝.
+
+---
+
+## 8. 후속 001-A — "설교 준비" 화면 연동 (A안, 2026-09-07)
+
+ADR-031 §9 "설교 준비 화면 연동" 착수. **A안**: "설교문 작성" ①본문·주제 단계에
+**참고용 접이식 «본문 해설» 패널** 추가. 개요·확장 생성 경로 무변경(순수 UI 부가) →
+C1 리뷰 불요, ADR-031 §4 경계 유지.
+
+**동작**: `_render_input_step()`(st.form 밖)에서 입력한 "본문 성경 구절과 설교 주제"
+텍스트를 `QueryParser().parse().scripture_refs` 로 파싱 → 구절이 있으면
+`📖 «<본문>» 본문 해설 (내서재 근거)` 익스팬더 노출. 성경뷰어 탭과 달리 **자동 생성
+없음** — «해설 생성» 버튼으로만 Ollama 호출. 결과는 배지(①②③)+각주, 세션 캐시.
+구절 없으면 패널 자체를 숨김.
+
+**Changed Files**:
+- 신규 `ui/components/passage_commentary_panel.py` — 경량 참고 패널(성경 텍스트·상세
+  패널·자동 생성 없음). `core/passage_commentary.py` 전량 재사용.
+- 신규 `tests/test_passage_commentary_panel.py` (10 PASS) — `_extract_first_ref` 6종 +
+  AppTest 스모크 4종(패널 숨김/노출/배지·각주/ no_material).
+- 수정 `ui/pages/sermon_draft.py` — import 1줄 + `_render_input_step()` 에 패널 호출
+  10줄(순수 추가).
+- `_settings_overrides()` 는 `ui.pages.chat` import 시 순환(chat→ui.pages 패키지
+  init→sermon_draft→panel)이라 동일 로직을 `_gen_overrides()` 로 인라인.
+
+**Tests**: 신규 10 PASS. **Regression**: 관련 198 PASS. 사전 존재 실패(무관):
+`test_sermon_research_hub.py`·`test_chat_settings_overrides.py::TestSettingsWidgetRenders`
+= 로컬 `output/bench/tsu_dataset.jsonl` 의 non-UTF8 라인으로 `core/retrieval.py::_load_corpus`
+가 full-app AppTest 에서 `UnicodeDecodeError`(내 변경 제거 후에도 동일 재현).
+`test_generate_stream_accepts_conversation_history` 는 격리 실행 시 PASS(테스트 순서 의존).
+
+**주의**: 커밋 시점 작업 트리에 타 세션의 미커밋 편집 다수 존재
+(`NAE/pipeline/tsu/*`, `ui/pages/dashboard.py`, `ui/pages/processing.py` 등) — 본
+커밋은 위 3개 파일 + 본 리포트만 스테이징.
