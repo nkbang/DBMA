@@ -1,5 +1,5 @@
 ---
-title: "ADR-031: Workspace Reset Utility (Pre-Deployment Tuning Reset)"
+title: "ADR-033: Workspace Reset Utility (Pre-Deployment Tuning Reset)"
 category: governance + tooling
 based_on:
   - docs/architecture/ADR-013-NAE-Vector-Store.md
@@ -11,7 +11,7 @@ created: 2026-09-07
 scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 선언 추가), ui/ 유지보수 액션 (신규)
 ---
 
-# ADR-031: Workspace Reset Utility (Pre-Deployment Tuning Reset)
+# ADR-033: Workspace Reset Utility (Pre-Deployment Tuning Reset)
 
 | | |
 |---|---|
@@ -59,7 +59,7 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 - dry-run 기본, `--execute` 시 `backups/pre_beta_reset_<YYYYMMDD>/`로 전체 복사 후 삭제
 - registry는 삭제 대신 빈 스키마로 재생성
 
-**한계** (ADR-031이 보완하는 지점):
+**한계** (ADR-033이 보완하는 지점):
 
 | 없는 것 | 결과 |
 |---|---|
@@ -69,7 +69,7 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 | Qdrant 컬렉션 처리 | Qdrant(현 primary) 미대응 — chroma만 |
 | 휴지통 이동 후 완전삭제 옵션 | `backups/`가 무한 증가 |
 
-ADR-031은 `reset_for_beta.py`를 **T3의 특수 사례**로 흡수한다. 구현 시
+ADR-033은 `reset_for_beta.py`를 **T3의 특수 사례**로 흡수한다. 구현 시
 `reset_for_beta.py`는 `reset_workspace.py --tier T3 --include-raw`의 얇은
 wrapper로 남기거나 deprecate 표시한다 (§7에서 결정).
 
@@ -181,7 +181,7 @@ T3에서 RAW를 지우더라도(미구현), 위 목록에 걸리는 파일은 �
 reset:
   protected_prefixes:
     # --- RAW/소스 (gitignore — git ls-files 로 안 잡힘. 제거 시 유틸리티가
-    #     하드코딩 fallback 으로 강제 복원. ADR-031 Amendment 없이 삭제 금지) ---
+    #     하드코딩 fallback 으로 강제 복원. ADR-033 Amendment 없이 삭제 금지) ---
     - data/RAW/
     - NAE/corpus/raw/
     - data/bible/
@@ -342,5 +342,5 @@ Qdrant drop)와 T3는 CLI 전용. UI에서 삭제 대상 목록과 용량, 이�
 - [ ] 재검토 APPROVE 후 T1+T2 구현 → `tests/test_reset_workspace.py` → 회귀 → Build Report
 - [ ] **HQ 승인 대기 항목**: `scripts/reset_for_beta.py` 처리 방향 — (a) `reset_workspace.py --tier T3` wrapper로 축소,
       또는 (b) 즉시 deprecate. T3 미구현 기간 동안은 파일 상단에
-      `# DEPRECATED (ADR-031): T3 미구현. 신규 리셋은 scripts/reset_workspace.py 사용.` 주석만 추가하고 동작은 보존.
+      `# DEPRECATED (ADR-033): T3 미구현. 신규 리셋은 scripts/reset_workspace.py 사용.` 주석만 추가하고 동작은 보존.
 - [ ] 승인 시 Status `PROPOSED` → `ACCEPTED`, STATE.md 기록
