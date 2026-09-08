@@ -3,7 +3,7 @@
 - 발급: CUE → C1
 - 일자: 2026-09-08
 - 근거: `NAE_FULLER_PROCESSING_RESUMPTION_PLAN_v1.md` §10 B-2; B-1 완료 (`e9cb72c`)
-- 작업 위치: `/Users/David/DBMA` @ `dev/dbma-engine` `e9cb72c`, venv `~/envs/dbma311`
+- 작업 위치: `/Users/David/DBMA` @ `dev/dbma-engine` (annotate.py = B-1 `e9cb72c`), venv `~/envs/dbma311`
 
 ---
 
@@ -66,7 +66,7 @@ for id in Fuller_Complete_Works_Vol01 .. Vol08:
 - ❌ `annotate.py` 추가 수정 (B-1 확정)
 - STOP: 어느 볼륨이든 `paragraph_count` / `sentence_count` 변동 /
   `status != ok` / `scripture_references_found` 가 예상 대비 자릿수 불일치(<40 또는 >600/vol) 또는 before와 동일 /
-  HEAD ≠ `e9cb72c`
+  `annotate.py` 가 `e9cb72c` 의 B-1 버전이 아님(git log 로 확인)
 
 ---
 
