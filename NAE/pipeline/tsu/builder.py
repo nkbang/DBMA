@@ -54,12 +54,18 @@ def build_tsu_for_identifier(identifier: str, *, model: str = config.DEFAULT_CLA
                               raw_root: Path = config.RAW_ROOT,
                               tsu_root: Path = config.TSU_ROOT,
                               checkpoint_every: int = 100,
-                              progress_log=print) -> dict[str, Any]:
+                              progress_log=print,
+                              max_workers: int = 1) -> dict[str, Any]:
     """`checkpoint_every`마다 지금까지의 결과를 tsu.json/tsu_report.json에
     즉시 기록한다 — 장시간 실행(수천 candidate) 도중 프로세스가 예기치
     않게 종료되더라도 마지막 checkpoint까지는 보존되도록 하기 위함
     (NAE-TSU-BUILDER-EXECUTION-RECOVERY-001 Phase 2/3). 추출 로직
-    자체(claim/doctrine 판정)는 변경하지 않는다."""
+    자체(claim/doctrine 판정)는 변경하지 않는다.
+
+    `max_workers` (SPRINT34): 병렬 claim 추출 스레드 수. 기본값 1 = 현행
+    순차 동작 완전 보존. 서버 `-np >= 2` 환경에서 >=2 설정 시 이득 발생
+    예상 (측정 게이트: >=1.5x speedup). 현재 `-np=1`이므로 병렬 효과 없음.
+    """
     start = time.monotonic()
     candidates = parser.build_candidates(identifier, canonical_root=canonical_root, raw_root=raw_root)
     if max_candidates is not None:
@@ -154,7 +160,10 @@ def build_tsu_for_all(*, model: str = config.DEFAULT_CLAIM_MODEL,
                        max_candidates_per_item: int | None = None,
                        canonical_root: Path = config.CANONICAL_ROOT,
                        raw_root: Path = config.RAW_ROOT,
-                       tsu_root: Path = config.TSU_ROOT) -> dict[str, Any]:
+                       tsu_root: Path = config.TSU_ROOT,
+                       max_workers: int = 1) -> dict[str, Any]:
+    """All-identifier TSU build. `max_workers` passed through to each
+    `build_tsu_for_identifier` call (default=1 = sequential, preserved)."""
     if not canonical_root.exists():
         return {"processed": 0, "claims_extracted": 0, "identifiers": []}
 
@@ -164,6 +173,7 @@ def build_tsu_for_all(*, model: str = config.DEFAULT_CLAIM_MODEL,
         result = build_tsu_for_identifier(
             identifier, model=model, max_candidates=max_candidates_per_item,
             canonical_root=canonical_root, raw_root=raw_root, tsu_root=tsu_root,
+            max_workers=max_workers,
         )
         summary["processed"] += 1
         summary["claims_extracted"] += len(result["records"])

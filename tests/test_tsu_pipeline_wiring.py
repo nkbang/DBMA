@@ -163,7 +163,7 @@ class TestBuilderNeverCalledForBlockedOrErrored:
         monkeypatch.setattr(gate_adapter, "load_manifest_entries", fake_load_manifest_entries)
         monkeypatch.setattr(gate_adapter, "build_default_orchestrator", lambda: orchestrator)
 
-        result = runner._run_gate_wired(model="test-model", max_candidates=None)
+        result = runner._run_gate_wired(model="test-model", max_candidates=None, max_workers=1)
 
         assert calls == ["TARGET-A"]  # BLOCKED-SOURCE는 Builder에 전달되지 않음
         assert result["tsu_generated"] == 1
@@ -181,7 +181,7 @@ class TestBuilderNeverCalledForBlockedOrErrored:
         monkeypatch.setattr(gate_adapter, "load_manifest_entries", lambda: [ManifestEntryInput("X", True)])
         monkeypatch.setattr(gate_adapter, "build_default_orchestrator", lambda: orchestrator)
 
-        result = runner._run_gate_wired(model="test-model", max_candidates=None)
+        result = runner._run_gate_wired(model="test-model", max_candidates=None, max_workers=1)
         assert calls == []
         assert result["tsu_generated"] == 0
 
@@ -189,7 +189,7 @@ class TestBuilderNeverCalledForBlockedOrErrored:
 class TestRunnerCliDefaultsToGateWiring:
     def test_main_no_args_uses_gate_wired_path(self, monkeypatch, capsys):
         monkeypatch.setattr(
-            runner, "_run_gate_wired", lambda model, max_candidates: {"gate_pass": 0, "tsu_generated": 0}
+            runner, "_run_gate_wired", lambda *a, **kw: {"gate_pass": 0, "tsu_generated": 0}
         )
         exit_code = runner.main([])
         assert exit_code == 0
@@ -253,7 +253,7 @@ class TestNoTsuFilesWritten:
         monkeypatch.setattr(gate_adapter, "load_manifest_entries", lambda: [ManifestEntryInput("X", True)])
         monkeypatch.setattr(gate_adapter, "build_default_orchestrator", lambda: orchestrator)
 
-        result = runner._run_gate_wired(model="unused-model", max_candidates=None)
+        result = runner._run_gate_wired(model="unused-model", max_candidates=None, max_workers=1)
         assert result["tsu_generated"] == 0
         assert calls == []
 

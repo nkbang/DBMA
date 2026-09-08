@@ -234,7 +234,7 @@ _yaml_vdb = CFG.get("vector_db", {})
 VECTOR_DB_PRIMARY = _yaml_vdb.get("primary", "chroma")
 CHROMA_COLLECTION = _yaml_vdb.get("chroma", {}).get("collection_name", "dbmar_docs")
 CHROMA_PERSIST_DIR = _yaml_vdb.get("chroma", {}).get("persist_directory", "chroma_db")
-QDRANT_URL = _yaml_vdb.get("qdrant", {}).get("url", "http://localhost:6333")
+QDRANT_URL = _yaml_vdb.get("qdrant", {}).get("url", "http://localhost:7333")
 
 # ── 임베딩 모델 ──────────────────────────────────────────
 _yaml_emb = CFG.get("embedding", {})
