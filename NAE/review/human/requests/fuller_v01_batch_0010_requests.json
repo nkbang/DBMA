@@ -1,0 +1,3007 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "fuller_v01_batch_0010",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0004861",
+      "tsu_id": "TSU-0004861",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "The fexriptures teach the one, no less than the other.",
+      "claim": "성경은 하나님의 주권이 현재 상태와 미래 상태 모두에 적용된다는 것을 가르친다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004862",
+      "tsu_id": "TSU-0004862",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "God hath determined the times before appointed, and the bounds of our habitation* Our cup is measured, and our lot assigned us.f There is also an appointed time for man upon earth : his days are as the days of an hireling.",
+      "claim": "하나님은 우리의 삶과 거주지를 미리 정해 놓으셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004863",
+      "tsu_id": "TSU-0004863",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "Hisi days are determirtpd^ the num- ber of his months arc -with God: he \\\\^^ appointed his bounds that he cannot pass,\\ Yet those who reason as above, with regard to things of another life, are as attentive to the affairs of this life as other people.",
+      "claim": "인간의 일생은 하나님에 의해 결정되어 있으며, 그 경계를 넘어서는 것이 불가능하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004864",
+      "tsu_id": "TSU-0004864",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "They are no less concerned than their neighbours, for their present accommodation ; nor less employed in devising means for the lengthening out of their lives, and of their tranquillity.",
+      "claim": "신자들은 현재의 삶과 미래의 삶에 대해 같은 관심을 가지고 있으며, 하나님의 계획과 인간의 행동은 조화할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004865",
+      "tsu_id": "TSU-0004865",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "But, if the purpose of God may consist with the agency of man in present concerns, it may in those which are future, whether we can perceive the link that unites them, or not : and it our duty, in the one case, be the same as if no such purpose existed, it is so in the other.",
+      "claim": "하나님의 목적과 인간의 행동은 현재와 미래에 모두 일치할 수 있다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004866",
+      "tsu_id": "TSU-0004866",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "Secret things belong unto the Lord our God ; but those things which are revealed belong unto us, and to our children for ever.",
+      "claim": "신비한 일은 하나님께 속하지만 계시된 것은 우리와 우리 자손에게 영원히 속한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004867",
+      "tsu_id": "TSU-0004867",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "It was the duty of Pharaoh to have followed the counsel of Moses, and to have let the people go ; and his sin to pursue them into the sea : yet it was the purpose of God by this means to destroy him.§ Moses sent rnessengers to Sihon king of Heshbon, with words of peace, saying, Let me pass through thy land ; and it was, doubtless, the duty of Sihon to have",
+      "claim": "파라오와 시혼은 모세의 조언과 평화로운 메시지에 순종해야 했지만, 하나님의 목적은 그들을 멸망시키는 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004868",
+      "tsu_id": "TSU-0004868",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "complied with the request : yet it appears, by the issue, that the Lord had determined to give his country to Israel for a possession, and, therefore, gave liim up to hardness of heartj by which it was accomplished.*",
+      "claim": "하나님은 이스라엘에게 그 땅을 소유로 주시기로 이미 결정하셨고, 그래서 그것이 이루어지도록 그 사람의 마음을 강퍅하게 하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004869",
+      "tsu_id": "TSU-0004869",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "If the days of man are determined, and his bounds appoint- ed that he cannot pass them, it must have been determined, that that generation of the Israelites which went out of Egypt should die in the wilderness: yet it was their duty to have believed God, and to have gone up to possess the land ; and their sin to disbelieve him, and turn back in their hearts to Egypt. .",
+      "claim": "인간의 일생과 경계는 이미 정해져 있으며, 하나님의 결정에 따라 이스라엘 민족이 광야에서 죽게 된 것은 예정된 것이었지만, 그들은 믿음으로 땅을 차지할 의무가 있었고, 하나님을 믿지 않고 이집트로 돌아간 것은 죄였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004870",
+      "tsu_id": "TSU-0004870",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "And it deserves particular notice, that this their sin is held up, both by David and Paul, as an example for others to shun, and that in spiritual concerns.f It was the determi- nation of God, that Ahab should fall in his expedition against Ramoth-gilead, as was plainly intimated to him by Micaiah : yet it was his duty to have hearkened to the counsel that was given him, and to have desisted from his purpose. | The de- struction of Jerusalem by the Chaldeans was determined of God, and frequently foretold by the prophets : yet the inhabi- tants were as frequently counselled to return from their evil ways, that they might avoid it.",
+      "claim": "하나님의 주권적인 결정과 인간의 책임은 상호 배타적이지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004871",
+      "tsu_id": "TSU-0004871",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "Jeremiah particularly en- treated Zedekiah to follow his counsel, that he might save the city and himself from ruin.§",
+      "claim": "예레미야는 세데키야에게 그의 조언을 따르라고 간청하여 도시와 자신을 파멸에서 구할 수 있도록 했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004872",
+      "tsu_id": "TSU-0004872",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "However such things may grate upon the minds of some, yet there are cases in which we ourselves are in the habit of using similar language, and that wiihout any idea of attribu- ting to God any thing inconsistent with the greatest perfec- tion of moral character.",
+      "claim": "우리는 때때로 하나님의 결정이 인간의 이해를 넘어서는 경우에도 그 결정이 정의에 반하지 않는다고 믿는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004873",
+      "tsu_id": "TSU-0004873",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "If a wicked man be set on mischiev- ous pursuits, and all the advices and warnings of his friends be lost upon him, we do not scruple to say, ' It seems as if God had determined to destroy him, and, therefore, has given him up to infatuation.* In the use of such language, we have no idea of the determination of God being unjust, or capri- cious.",
+      "claim": "우리는 때때로 하나님의 결정이 불의하거나 변덕스럽지 않다고 생각하면서도 하나님이 어떤 사람을 파멸에 내버려두신 것처럼 보일 때 '하나님께서 그를 파괴하기로 작정하신 듯하다'라고 말할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004874",
+      "tsu_id": "TSU-0004874",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "On the contrary, we suppose he may have ivise and just reasons for doing as he does ; and, as such, notwithstand- ing our compassion towards the party, we acquiesce in it.",
+      "claim": "하나님은 악한 자를 파괴하기 위해 그들을 미혹에 빠지게 할 수 있는 지혜롭고 정당한 이유가 있을 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004875",
+      "tsu_id": "TSU-0004875",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "Even an in- spired Apostle, when discoursing of God's rejection of the Jewish nation, though he glances at the merciful aspect which this awful event wore towards the Gentiles, and traces some great and wise designs that should be answered by it ; yet feels himself lost in his subject.",
+      "claim": "하나님의 지혜와 계획은 인간의 이해를 넘어서는 것이라고 느낄 수 있다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004876",
+      "tsu_id": "TSU-0004876",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "Standing as on the brink of an unfathomable abyss, he exclaims, O the depth of the riches both of the wisdom and knowledge of God !",
+      "claim": "신학자들은 하나님의 지혜와 지식의 깊이를 이해하는 데 어려움을 느낀다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004877",
+      "tsu_id": "TSU-0004877",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "How unsearch^ able are his judgm&nta^ and his ways fiast fnding nut !* He believed the doctrine of divine decrees, or, that God worktth all things after the cmmsel of his own will : but he had no idea of making these things any part of the rule of duty; either so as to excuse his countiymen from the sin of unbe* lief, or himself from using every possible mean that might accomplish their salvation.",
+      "claim": "하나님의 심판과 길은 탐구할 수 없으며, 하나님은 자신의 뜻에 따라 모든 것을 행하신다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004878",
+      "tsu_id": "TSU-0004878",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "On the other, he declares, / speak to yow^ Qen- tiles-^ifby ant means / may provoke to emulation them which are my flesh, and might save some of them.f",
+      "claim": "바울은 이방인들을 통해 유대인들의 시기와 질투를 일으켜 그들 중 일부를 구원하고자 했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004879",
+      "tsu_id": "TSU-0004879",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Election",
+      "original_text": "There were those in that day, as well as in this, who ob- jected, If things be as God hath purposed^ JVhy doth he yet find fault ; for who hath resisted his will ?",
+      "claim": "하나님의 예정에 대한 교리는 죄인의 법을 무시하는 결과를 초래한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004880",
+      "tsu_id": "TSU-0004880",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "This was no other than suggesting, that the doctrine of decrees must needs operate to the setting aside of the/aw/^ of sinners; and this is the substance of what has been alleged from that day to this.",
+      "claim": "하나님의 섭里的 교리는 죄인의 법을 무시하는 결과를 초래한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004881",
+      "tsu_id": "TSU-0004881",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Election",
+      "original_text": "Some, because they' cannot conceive of the doctrine but as drawing after it the consequence assigned to it by this replyer against God, reject it : others appear to have no objection to the consequence itself, stamped as it is with infamy by the manner in which the Apostle repelled it, and, therefore, ad- mit the doctrine as connected with it !",
+      "claim": "일부 사람들은 하나님의 주권적인 결정에 대한 교리가 죄인들의 법을 무시하는 결과를 초래한다고 생각하여 이를 거부하지만, 다른 사람들은 이러한 결과 자체에 반대가 없으며, 그 결과와 관련된 교리를 받아들인다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004882",
+      "tsu_id": "TSU-0004882",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Election",
+      "original_text": "But so did not Paul, He held fast the doctrine of decrees, and held it as comport- ing with the/cM/^ of sinners.",
+      "claim": "바울은 하나님의 주권적 선택과 인간의 죄에 대한 책임이 양립할 수 있다고 믿었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004883",
+      "tsu_id": "TSU-0004883",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Election",
+      "original_text": "After all that he had written upon God's electing some, and rejecting others, he, in the same chapter, assigns the failure of those that failed to their",
+      "claim": "바울은 하나님의 선택과 거절이 있는 도덕에 동의했다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004884",
+      "tsu_id": "TSU-0004884",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Justification",
+      "original_text": "not seeking justijication by faith in Christ ; but as it were btf the works of the law ^ stumbling at that stumbling-stone*",
+      "claim": "그리스도 안에서 믿음으로 의롭다함을 얻으려는 것이 아니라 율법의 행위로 의롭다함을 얻으려고 함",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004885",
+      "tsu_id": "TSU-0004885",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "\" God's word,'* says Mr. Brine, \" and not his secret pur- pose, is the rule of our conduct.\"t \" We must exactly dis- tinguish,\" says Dr. Owen, \" between man's duty and God's purpose ; there being no connexion between them.",
+      "claim": "하나님의 말씀은 우리의 행동의 규칙이지만, 하나님의 비밀한 목적은 아님",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004886",
+      "tsu_id": "TSU-0004886",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "The pur- pose and decree of GnH U r.ot the. rule of our duty ; neither is the performance of our duty, in doing what we are commanded, any declaration of what is God's purpose to do, or his decree that it should be done.",
+      "claim": "하나님의 목적과 정하신 일은 우리의 의무를 규정하는 것이 아니며, 우리가 명령받은 대로 행동하는 것은 하나님의 목적이나 정하신 일을 선언하는 것이 아님",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004888",
+      "tsu_id": "TSU-0004888",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Election",
+      "original_text": "A minister is not to make inquiry after, nor to trouble himself about, those secrets of the eternal mind of God, viz. whom he purposeth to save, and whom he hath sent Christ to die for in }>articular : it is enough for them to search his revealed will, and thence take their directions^ from ■whence they have their commissions.",
+      "claim": "목회자는 하나님의 비밀스러운 마음, 즉 누가 구원받을 것인지와 예수님이 죽으신 특정 대상에 대해 물어보거나 고민할 필요는 없으며, 공개된 의지를 탐구하고 그곳에서 지시를 받아야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004889",
+      "tsu_id": "TSU-0004889",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Election",
+      "original_text": "Wherefore, there is no conclusion from the universal precepts of the word, concern- ing the things, unto God's purpose in himself concerning per- sons ; they command and invite all to refient and believe ; but they know not in particular on whom God will bestow repent- ance unto salvation, nor in whom he will effect the work of faith with power.\"^",
+      "claim": "하나님의 보편적인 계명은 모든 사람에게 회개와 믿음을 명령하고 초청하지만, 하나님께서 구원으로 향한 회개를 누구에게 주시고,誰에게는 믿음의 일을 능력으로 이루어주실지는 알 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004890",
+      "tsu_id": "TSU-0004890",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Election",
+      "original_text": "Objections to the foregoing principles, from the doctrine of election, are generally united with those from particular re- demption ; and, indeed, they are so connected, that the validity of the one stands or falls with that of the other.",
+      "claim": "선출 교리의 원칙에 대한 반대는 일반적으로 특수한 구원과 관련이 있으며, 실제로 하나의 유효성은 다른 하나와 함께 서거나 쓰러진다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004891",
+      "tsu_id": "TSU-0004891",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Wherein the peculiarity of redemption consists ?",
+      "claim": "구속의 독특성이 무엇인지 알아야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004892",
+      "tsu_id": "TSU-0004892",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "of a debt ; if the measure of his sufferings were according to the number of those for whom he died, and to the degree ot their guilt, in such a manner as that, if more had been saved^ or if those who are saved had been more guilty, his sorrows must have been proportionably increased ; it might, for aught I know, be inconsistent with indefinite invitations.",
+      "claim": "그리스도의 고난의 정도는 구원받은 사람들의 수와 그들의 죄의 정도에 비례한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004893",
+      "tsu_id": "TSU-0004893",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "But it would be equally inconsistent with the free forgiveness of sin, and with sinners being directed to apply for mercy as sufifilicants^ rather than as claimants.",
+      "claim": "자유로운 죄 사함과 죄인들이 청원자로서 자격을 주장하는 것보다 은혜를 구하는 것에 대한 지침은 상호 모순될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004894",
+      "tsu_id": "TSU-0004894",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Scripture / Authority",
+      "original_text": "I conclude, therefore, that an hypothesis which in so many important points is mani- festly inconsistent with the scriptures, cannot be true.",
+      "claim": "성경과 모순되는 가설은 진실할 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004895",
+      "tsu_id": "TSU-0004895",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "On the other hand, if the atonement of Christ proceed nof. on the principle of commercial, but of moral justice, or jus- tice as it relates to crime ; if its grand object were to express the divine displeasure against sin,* and so to render the exer \" cise of mercy, in all the ways wherein sovereign wisdom should determine to apply it, consistent with righteousness ;t if it be in itself equal to the salvation of the whole world, were the whole world to embrace it ; and if the peculiarity which attends it, consist not in its insufficiency to save more than are saved, but in the sovereignty of its application, no such inconsistency can justly be ascribed to it.",
+      "claim": "그리스도의 속죄는 상업적 정의가 아니라 도덕적 정의에 따라 진행되며, 그 목적은 죄에 대한 신의 불쾌를 표현하고, 주권적인 지혜에 따라 자비를 실천하는 것을 가능하게 하는 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004896",
+      "tsu_id": "TSU-0004896",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "If the atonement of Christ excluded a part of mankind in the sairit sense as it excludes fallen angels, why is the gospel addressed to the one, any more than to the other ?",
+      "claim": "그리스도의 속죄가 영적 의미에서 일부 사람들을 제외한다면, 왜 복음은 그들에게도 전해지는가?",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004897",
+      "tsu_id": "TSU-0004897",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "The mes- sage of wisdom is addressed to men., and not to devils.",
+      "claim": "구원의 정보는 사람들에게 전달되며, 악마들에게는 전달되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004898",
+      "tsu_id": "TSU-0004898",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "The former are invited to the gospel-supper, but the latter are not.",
+      "claim": "복음의 초대는 인간에게 주어지며, 악마에게는 주어지지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004899",
+      "tsu_id": "TSU-0004899",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "These facts afford proof, that Christ, by his death, opened a door of hope to sinners of the human race as sinners ; afford- ing^ a ground for their being invited^ nvithout distinction^ to hpUeve and be saved.",
+      "claim": "그리스도의 죽음은 모든 죄인에게 구원의 희망을 주는 문을 열어주었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004900",
+      "tsu_id": "TSU-0004900",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "But, as God might send his Son into the world to save men, ■^ather than angels ; so he may afifily his sacrifice to the sal- vation of some men, and not of others.",
+      "claim": "하나님은 세계에 그의 아들을 보내서 사람들을 구원하기보다는 천사들을 구원할 수 있었지만, 그는 그의 희생을 어떤 사람들의 구원에 적용하고 다른 사람들의 것은 아니도록 선택할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004901",
+      "tsu_id": "TSU-0004901",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It is a fact, that a great part of the world have never heard the gospel ; that the greater part of those who have heard it disregard it ; and that those who believe are taught to ascribe not only their",
+      "claim": "세계의 많은 사람들이 복음을 듣지 못했으며, 들은 사람들 중에도 무시하는 사람이 많고, 믿는 사람들은 구원을 받은 것을 하나님께 돌リ야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004902",
+      "tsu_id": "TSU-0004902",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "salvation, but faith itself, through which it is obtamed, to the free gift of God.",
+      "claim": "구원은 믿음 자체를 통해 얻어지는 하나님의 자유로운 선물이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004903",
+      "tsu_id": "TSU-0004903",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "And, as the application of redemption is solely directed by sovereign wisdom ; so, like every other event, it is the result of previous design.",
+      "claim": "구원은 주권적인 지혜에 따라 설계된 계획의 결과이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004904",
+      "tsu_id": "TSU-0004904",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Providence",
+      "original_text": "That which is ac- tually done was intended to be done.",
+      "claim": "실제로 행해지는 것은 미리 의도된 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004905",
+      "tsu_id": "TSU-0004905",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Hence the salvation of those that are saved is described as the e7id which the Saviour had in view : He gave himself for us, that he might redeem us from all iniquity, and purify U7ito himself a peculiar people^ ■zealous of good works * Herein, it i& apprehended, consists the peculiarity of redemption.",
+      "claim": "구원받은 자들의 구원은 그리스도께서 예정하신 목적을 이루는 것",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004906",
+      "tsu_id": "TSU-0004906",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "There is no contradiction between this peculiarity of design- in the death of Christ, and a universal obligation on those who hear the gospel to believe in him, or a universal invitation being addressed to them.",
+      "claim": "그리스도의 죽음의 특이한 설계와 복음을 듣는 사람들에게 그를 믿어야 하는 보편적인 의무 또는 그들에게 주어진 보편적인 초대 사이에 모순은 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004907",
+      "tsu_id": "TSU-0004907",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "If God, through the death of his Son, have promised salvation to all who comply with the gos- pel ; and if there be no natural impossibility as to a compli- ance, nor any obstruction but that which arises from aversion of heart ; exhortations and invitations to believe and be saved are consistent : and our duty, aa preachers of the gospel, is to administer them, without any more regard to particular re- demption than to election ; both being secret things, which belong to the Lord our God, and which, however they be a rule to him, are none to us.",
+      "claim": "하나님의 아들로 말미암아 모든 사람이 복음을 순종하면 구원을 약속하셨고, 자연적인 불가능성이나 장애가 없다면 믿음과 구원에 대한 권면과 초청은 일치하며, 복음의 설교자로서 이러한 권면을 행하는 것이 우리의 의무이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004908",
+      "tsu_id": "TSU-0004908",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "If that which sinners arc Called Upon to believe respected the particular design of Christ to save them, it would then be inconsistent : but they are neither exhorted nor invited to believe any thing but what is revealed, and what will prove true, whether they believe it, or not.",
+      "claim": "그리스도께서 구원받을 자들을 위한 특정한 계획에 관하여 믿음을 요구하는 것이 아니라, 계시된 진리와 그 진리가 믿는 자나 믿지 않는 자에게 모두 동일하게 적용되는 것에 대한 믿음을 요구한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004909",
+      "tsu_id": "TSU-0004909",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "He that believeth in Jesus Christ, must believe in him as he is revealed in the gospel : and that is as the Saviour of sinners.",
+      "claim": "예수 그리스도를 믿는 자는 복음서에 계시된 대로 죄人的 구원자로서 믿어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004910",
+      "tsu_id": "TSU-0004910",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It is only as a sinner, exposed to the righteous displeasure of God, that he must approach him.",
+      "claim": "죄인으로서 하나님의 의로운 불쾌에 노출된 상태에서만 예수 그리스도께 다가갈 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004911",
+      "tsu_id": "TSU-0004911",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "If he think of coming to him as a favourite of heaven, or as possessed of any good qualities which may recommend him before other sinners, he deceives his soul : such notions are the bar to believing.",
+      "claim": "구원에 대한 믿음을 가질 때는 자신이 죄인이라는 사실을 인정하고, 하나님의 의로우신 불쾌감 앞에서 나아가야 하며, 천국에서의 특권이나 다른 죄인보다 더 좋은 자질을 생각해서는 안된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004912",
+      "tsu_id": "TSU-0004912",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "\" He that will know his own particular redemption, before he will believe,'* says a well-known writer, \" begins at the wrong end of hrs work, and is very unlikely to come that way to the \"knowledge of it.-^-Any man that owns himself a sinncry hath",
+      "claim": "구원받은 자의 개인적인 구원을 알기 전에 믿음에 이를 수 없다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004913",
+      "tsu_id": "TSU-0004913",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "as fair a ground for his faitli, as any one in the world thc-t hath not yet believed ; nor may any person, on any account, exclude himself from redemption, unless by his obstinate and j-esolved continuance in unbelief, he hath marked out himself.\"*",
+      "claim": "누구든지 믿음으로 구원에 이를 수 있는 기회를 가지고 있으며, 오직頑固한 불신만이 이를 방해한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004914",
+      "tsu_id": "TSU-0004914",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "\" The preachers of the s^ospel, in their particular congre^ gations,\" says another, \" being utterly unacquainted with the purpose and secret counsel of God, being also forbidden to pry or search into it, (Deut. xxix. 29.) may justifiably call upon every man to believe, with assurance of salvation to every one in particular, upon his so doing ; knowing, and be- ing fully persuaded of this, that there is enough in the death of Christ to save every one that shall do so : leaving the pur- pose and counsel of God, on whom he will bestow faith, and for whom in particular Christ died., (even as they are com- manded,) to himself.\" — \" When God calleth upon men tobe= lieve, he doth not, in the first place, call upon them to believe that Christ died for them ; but that there is none other name under heaven given among men^ whereby %ue must be saved, but only of Jesus Christ, through y/hom salyation is prcachr ed.\"t",
+      "claim": "복음의 설교자들은 각자의 교회에서 하나님의 비밀한 계획을 알지 못하고, 그것을 탐구하지도 말아야 하며, 그럼에도 불구하고 모든 사람에게 믿음을 촉구할 수 있고, 그들이 그렇게 할 때 구원에 대한 확신을 가질 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004916",
+      "tsu_id": "TSU-0004916",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "If I understand Mr. Brine, he supposes, First, That all duty is required by the law, either as a rule of life, or as a covenant.",
+      "claim": "모든 의무는 법으로서의 삶의 규칙이나 계약으로 요구된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004917",
+      "tsu_id": "TSU-0004917",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Secondly : That all unconverted sinners being under the law as a cove- nant, whatever the revealed will of God now requires of them., it is to be considered as the requirement of that covenant.",
+      "claim": "모든 회심하지 않은 죄인들은 율법 아래 있기 때문에 하나님의 계시된 뜻이 그들에게 요구하는 것은 모두 그 계약의 요구로 간주되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004918",
+      "tsu_id": "TSU-0004918",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Thirdly : That the terms of the covenant of works being Do, and live : it cannot, for this reason, be Believe, and be saved.",
+      "claim": "구원 언약의 조건은 행위에 의한 구원과는 다르므로, 믿음으로 말미암은 구원은 행위로 인한 생명과는 다른 개념이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004919",
+      "tsu_id": "TSU-0004919",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "unbelievers are under a covenant of works ; and whether, in some respects, it be not their sin to continue so ?",
+      "claim": "불신자들은 일의 언약 아래에 있으며, 이 상태를 계속하는 것이 그들의 죄라는 점에서 일부 측면에서는 그렇다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004920",
+      "tsu_id": "TSU-0004920",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Justification",
+      "original_text": "That they are under the curse, for having broken it, is true ; and that they are still labouring to substitute something in the place of perfect obedience, by which they may regain the divine fa- vour, is true also : but this latter ought not to be* A self- righteous attachment to a covenant of works, or, as the scrip- ture expresses it, a being of the ivorks of the laiv, is no other than the working of unbelief, and rebellion against the truth.",
+      "claim": "불신자들은 율법의 계약 아래에 있으며, 그 계약을 깨뜨린 결과로 저주 아래에 있지만, 여전히 완전한 순종으로 하나님의 은혜를 회복하기 위해 무언가를 대체하려고 노력하고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004921",
+      "tsu_id": "TSU-0004921",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Strictly speaking, men are not now under the covenant of works, but under the cu7'se for having broken it.",
+      "claim": "인간은 엄밀히 말하면 더 이상 행위 언약 아래 있지 않지만, 이를 깨뜨린 결과로 저주 아래에 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004922",
+      "tsu_id": "TSU-0004922",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Other",
+      "original_text": "God is not in covenant with them, nor they with him.",
+      "claim": "하나님은 인간과 언약 관계에 있지 않으며, 그 반대도 마찬가지이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004923",
+      "tsu_id": "TSU-0004923",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Other",
+      "original_text": "Tlie law, as a cove- nant, was recorded, and a new and enlarged edition of it giv- en to Israel at mount Sinai ; not, however, for the purpose of givmg Ufe to those who had broken it ; but, rather, as a pre- parative to a better covenant.",
+      "claim": "율법은 언약의 형태로 기록되었으며 시내산에서 이스라엘에게 새로운 확대판이 주어졌지만, 이미 이를 깨뜨린 자들에게 생명을 주기 위한 목적이 아니라 더 나은 언약을 준비하기 위한 것이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004924",
+      "tsu_id": "TSU-0004924",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Its precefits still stand as the immutable will of God towards his creatures ; its promises, as memorials of what might have been expected from his good- ness, in case of obedience ; and its curses^ as a flaming sword that guards the tree of life.",
+      "claim": "율법은 하나님의 불변하는 의지와 약속 및 저주의 기록으로 남아있다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004925",
+      "tsu_id": "TSU-0004925",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It is stationed in the oracles of God as a faithful watchman, to repel the vain hopes of the self-righteous, and convince them of the necessity of a Sa- viour.f Hence, it was given to Israel by the hand of Moses, as a mediator.",
+      "claim": "율법은 자아義的人들의 헛된 소망을 물리치고 구원者の 필요성을 확신시키기 위해 하나님의 말씀 안에 충성스러운 감시자로서 위치하고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004926",
+      "tsu_id": "TSU-0004926",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "But, if unbelievers be no otherwise under the covenant of works than as they are exposed to its curse, it is improper to say, that whatever is required of them in the scriptures is re- quired by that covenant, and as a term of life.",
+      "claim": "불신자들은 율법 언약의 저주에 노출되는 것 외에는 그 언약 아래 있지 않으며, 성경에서 요구하는 것은 모두 그 언약의 생명 조건으로 요구되는 것이 아님",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004927",
+      "tsu_id": "TSU-0004927",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "God requires nothing of fallen creatures as a term of life.",
+      "claim": "하나님은 타락한 창조물에게 생명의 조건으로는 아무것도 요구하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004928",
+      "tsu_id": "TSU-0004928",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "He requires them to love him with all their hearts, the same as if they had never apostatized ; but not with a view to regain his lost favour : for, were they, henceforward, perfectly to comply with the divine precepts, unless they could atone for past of- fences, (which is impossible,) they could have no ground to expect the bestowment of everlasting life.",
+      "claim": "하나님은 타락한 창조물에게 생명의 조건으로 아무것도 요구하지 않지만, 그들에게는 하나님을 전심으로 사랑하도록 요구한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004929",
+      "tsu_id": "TSU-0004929",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Justification",
+      "original_text": "• The sinner's hope, that lie can be justified by the law he has broken, is an illegal hope ; and a just view of the extent, strictness, spiritualitys i.nd equity of the Law, v/ould cut it up by the roots.",
+      "claim": "죄人が 깨달은 법에 의해서 정당화될 수 있다는 희망은 불법적인 희망이며, 법의 범위와 엄격성, 영적 본질 및 공정성을 올바르게 이해하면 이러한 희망을 뿌리부터 끊어버릴 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004930",
+      "tsu_id": "TSU-0004930",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "us, that the revealed will of God to sinners says, Believe s while the gospel graciously adds the promise of salvation.",
+      "claim": "하나님의 계시된 의지는 죄인들에게 믿으라고 말하며, 복음은 구원의 약속을 덧붙인다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004931",
+      "tsu_id": "TSU-0004931",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "This objection is seldom made in form, unless it be by persons who deny it to be the duty of a sinner to love God with all hi3 heart, and his neighbour as himself.",
+      "claim": "어떤 사람들은 죄인이 하나님을 전심으로 사랑하고 이웃을 자기 자신처럼 사랑하는 것이 의무가 아니라고 주장한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004932",
+      "tsu_id": "TSU-0004932",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Intimations are often given, however, that it is absurd and cruel to require of any man what is beyond his power to comply with ; and, as the scriptures declare that, J\\^o man can come to Christy except the Father draw him ; and that the natural man receiveth not the things of the S/iirit of God^ neither can he know them^ because they arc stiiritually discerned ; it is concluded, that these are things to which the sinner, while unregencrate, is under no obligation.",
+      "claim": "구원받기 전에는 죄인이 그리스도께 나아오거나 성령의 일을 이해할 수 없으므로, 구원받지 못한 죄인은 이러한 일들에 대해 책임을 지지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004933",
+      "tsu_id": "TSU-0004933",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "The answer that has frequently been made to this reasoning is, in effect, as follows : ^ Men are no more unable to do things spiritually good, than they are to be subject to the law of God, which the carnal mind is not^ nor can be.",
+      "claim": "인간은 영적으로 좋은 일을 할 수 없을 뿐만 아니라, 하나님의 법에 복종하는 것에도 불구하고 육신의 마음은 그렇게 할 수 없으며 할 수도 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004934",
+      "tsu_id": "TSU-0004934",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "And the reason why we Jiave no power to comply with these things is, we have lost it by the fall : but, though we have lost our abili- ty to obey, God has not lost his authority to comm.and.' There is some truth in this answer ; but it is apprehended to be insufficient.",
+      "claim": "인간은 타락으로 인해 하나님의 명령에 복종하는 능력을 상실하였지만, 하나님은 여전히 그들에게 명령할 수 있는 권위를 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004935",
+      "tsu_id": "TSU-0004935",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It is true, that sinners are no more and no otherwise unable to do any thing spiritually good, than they are to yield a perfect submission to God's holy law ; and that the inability of both arises from the same source — the origi- nal apostacy of human nature.",
+      "claim": "인간은 원래의 타락으로 인해 영적으로 좋은 일을 할 수 없으며, 이러한 무능력은 하나님의 거룩한 법에 완전하게 복종할 수 없는 것과 같은 근원에서 비롯된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004936",
+      "tsu_id": "TSU-0004936",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Yet, if the nature of this in- ability were direct, or such as consisted in the want oi ration- al faculties ^ bodily jiowersy or external advantages ; its be- ing the consequence of the fall would not set aside the objec- tion.",
+      "claim": "인간의 본성에서 기인하는 영적 무능력은 타락의 결과이며, 이는 합리적 능력이나 물리적 힘, 외부적인 이점의 부족과 관련이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004937",
+      "tsu_id": "TSU-0004937",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Some men pass through life totally insane.",
+      "claim": "일부 사람들은 전적으로 미치광이로 삶을 살 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004938",
+      "tsu_id": "TSU-0004938",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Eschatology",
+      "original_text": "This may be one of the effects of sin ; yet the scriptures never convey any idea of such persons being dealt with, at the last judg- ment, on the same ground as if they had been sane.",
+      "claim": "죄의 결과 중 하나는 일부 사람들의 삶에 완전히 미치게 할 수 있지만 성경은 이러한 사람들을 마지막 심판에서 정상인과 동일한 기준으로 판단하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004939",
+      "tsu_id": "TSU-0004939",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "On the contrary, they teach, that to whom mxich is given, of him much shall be required.* Another is deprived of the sight of ins eyes, and so rendered unable to read the scriptures.",
+      "claim": "하나님은 각자에게 주신 것에 따라 책임을 요구하신다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004940",
+      "tsu_id": "TSU-0004940",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Sanctification",
+      "original_text": "also may be the ej^ecf of sin ; and, in some cases, of his own personal misconduct : but,- whatever punishment may be in- flicted on him for such misconduct, he is not blameworthy for not reading the scriptures, after he had lost his ability to do so.",
+      "claim": "죄의 결과와 개인의 잘못된 행동은 어떤 형태의 처벌을 받을 수 있지만, 성경을 읽을 수 있는 능력을 잃은 후에는 그에 대한 비난은 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004941",
+      "tsu_id": "TSU-0004941",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "A third possesses the use of reason, and of all his senses, and members ; but has no other opportunity of knowing the will of God than what is afforded him by the light of nature.",
+      "claim": "하나님의 뜻을 알 수 있는 기회는 자연의 빛만으로 제한될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004942",
+      "tsu_id": "TSU-0004942",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It would be equally repugnant to scripture and reason, to suppose that this man will be judged by the same rule as others who have lived under the light of revelation, ^s many as have sinned ivithout laiv^ shall also perish ivithout laiv ; and as many as have sinned in the law^ shall be judged by the laiv.*",
+      "claim": "성경과 이성에 반하는 것은 계시의 빛 아래 살았던 사람들과 같은 기준으로 그들이 심판받을 것이라고 생각하는 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004943",
+      "tsu_id": "TSU-0004943",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "The inability, in each of these cases, is natural ; and, to whatever degree it exists, let it arise from what cause it may^ it excuses its subject of blame, in the account of both God and man.",
+      "claim": "인간의 부족은 자연스러운 것이며, 그 정도와 원인이 무엇이든 간에, 그것은 하나님과 사람의 관점에서 책임을 면제한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004944",
+      "tsu_id": "TSU-0004944",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "The law of God itself requires no creature to love him, or obey him, beyond his strength, or with more than all the powers which he possesses.",
+      "claim": "하나님의 법은 어떤 창조물도 그의 힘을 넘어서거나 그가 소유한 모든 능력 이상으로 그를 사랑하거나 복종하기를 요구하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004945",
+      "tsu_id": "TSU-0004945",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "If the inability of sinners to believe in Christ, or to do things spiritually good, were of this nature, it would undoubtedly form an excuse in their fa- vour ; and it must be as absurd to exhort them to such duties, as to exhort the blind to look, the deaf to hear, or the dead to walk.",
+      "claim": "죄人の 믿음이나 영적인善行의 무능력은 그들을 위한 변명이 되지 않으며, 그러한 의무를 권면하는 것은盲人에게 보라 고 듣지 못하는 사람에게 들으라고 말하는 것과 마찬가지로 부조리적이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004946",
+      "tsu_id": "TSU-0004946",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "But the inability of sinners is not such as to induce the Judge of all the earth (who cannot do other than right) to abate in his demands.",
+      "claim": "죄人の 무능은 하나님의 요구를 감면시키지 않는다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004947",
+      "tsu_id": "TSU-0004947",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It is a fact that he does require them, (and that, without paying any regard to their inability,) to love him, and to fear him, and to do all his commandments <ilways.",
+      "claim": "하나님은 죄인들에게 그들의 무능력에 관계없이 하나님을 사랑하고 두려워하며 모든 계명을 지키라고 요구한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004948",
+      "tsu_id": "TSU-0004948",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "The blind are admonished to look, the deaf to hear, and the dead to arise.-\\ If there were no other proof than what is afforded by this single fact, it ought to satisfy us that the blindness, deafness, and death of sinners, to that which is spiritually good, is of a different nature from that which fur- nishes an excuse.",
+      "claim": "죄인들의 영적 선에 대한 맹목, 귀먹음, 그리고 죽음은 변명의 여지가 없는 다른 본질의 것임",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004949",
+      "tsu_id": "TSU-0004949",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "There is an essential difference between an inability wliich is independent of the inclination, and 6ne that is owing to nothing else.",
+      "claim": "인간의 행동에 영향을 미치는 무능은 본인의 의지와 독립적인 경우와 의지에만 따른 경우가 근본적으로 다르다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004950",
+      "tsu_id": "TSU-0004950",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Those who were under the dominion of envy and malignity, could not sfieak fieaceably ; and those who have eyes full of adultery^ cannot cease from sin.",
+      "claim": "인간의 본성은 악한 생각과 행동에서 벗어나기 어렵다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004951",
+      "tsu_id": "TSU-0004951",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Hence, also, the following language : Hoiv can yc, be- in^ evily sfieak good things ? — The natural ma?i receiveth not Che things of the SpArit of God, neither can he knoiv them. — The carnal mind in enmity against God ; and is not subject to the laiv of Gody neither indeed CA^ be. — They that are in the flesh CASSOT filease God. — JSfo inan can come to me^ excefit the Father ivhich hath sent me, draw him.",
+      "claim": "인간의 본성은 하나님의 영적인 것들을 받지 못하고, 그 것을 알 수도 없으며, 하나님께 순종하지도 않기 때문에 선한 말을 할 수 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004952",
+      "tsu_id": "TSU-0004952",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It is also true, that many have affected to treat the distinction between natu- ral and moral inability as more curious than solid. < If we be unable,* say they, ' we are unable.",
+      "claim": "자연적 무능력과 도덕적 무능력의 구별은 중요하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004953",
+      "tsu_id": "TSU-0004953",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "As to the nature of the inability, it is a matter of no account.",
+      "claim": "인간의 무능력의 본질은 중요하지 않다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004954",
+      "tsu_id": "TSU-0004954",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Such distinctions ^re perplexing to plain Christians, and beyond their capacity.* But, surely, the plainest and weakest Christian, in reading his Bible, if he pay any regard to what he reads, must perceive a manifest difference between the blindness of Bartimeus, who was ardently desirous that he might receive his sight, and that of the unbelieving Jews, who closed their eyes, lest they should see, and, be converted, and be healed i* and between the want of the natural sense of hearing, and the state of those who have ears, but hear not.",
+      "claim": "성경을 읽는 평범한 기독교인이라도 바디메오의 맹목과 믿지 않는 유대인의 맹목 사이에 뚜렷한 차이를 인식할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004955",
+      "tsu_id": "TSU-0004955",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "He does not say, ' IT I be unable, I am unable ; it is of no accouin whether my inability be of this kind or that :' but he labours -with all his might to establish the difference.",
+      "claim": "인간은 자신의 무능력을 이유로宗教적인 문제에 대해 책임을 회피하려고 하지만, 실제로는 다른 상황에서는 그런 변명을 하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004956",
+      "tsu_id": "TSU-0004956",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "Now, if the subject be so clearly understood and acted upon, where inter- est is concerned, and never appears difficult but in religion, it is but too manifest where the difficulty lies.",
+      "claim": "종교적인 문제에서는 인간의 무능력함이 종종 관심과 이해의 부족에서 비롯된다는 것을 알 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004957",
+      "tsu_id": "TSU-0004957",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "If, by fixing the guilt of our conduct upon our father Adam, we can sit comfortably in our nest ; we shall be very averse from a sen- timent that tends to disturb our repose, by planting a thorn in it.",
+      "claim": "인간은 자신의 죄책을 아담에게 전가함으로써 편안하게 있을 수 있으므로, 이 안식을 방해하는 생각에 저항한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004958",
+      "tsu_id": "TSU-0004958",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "It is sometimes objected, that the inability of sinners to be- lieve in Christ, is not the effect of their depravity ; for that Adam himself, in his purest state, was only a natural ma??, and had no power to perform spiritual duties.",
+      "claim": "죄인들의 그리스도에 대한 믿음의 무능력은 그들의 타락의 결과가 아님을 주장하는 반론이 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004959",
+      "tsu_id": "TSU-0004959",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "To this, however, it may be added, The natural man vjho receivet/i not the things of the Spirit of Gody (1 Cor. ii. 14.) is not a man possessed of the holy image of God, as was Adam, but of mere natural accomplishments ; as were the wise men of the ivorld, the philosophers of Greece and Rome, to whom the things of God wgtq foolishness.",
+      "claim": "성령의 일을 받지 못하는 자연인은 하나님의 거룩한 형상을 소유하지 않고 오직 자연적인 능력만을 가지고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004960",
+      "tsu_id": "TSU-0004960",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "More- over, if the inability of sinners to perform spiritual duties were of the kind alleged in the objection, they must be equal- ly unable to commit the opposite sins.",
+      "claim": "죄人の 영적 의무 수행 불능은 반대되는 죄를 범하는 데도 마찬가지로 불가능해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004961",
+      "tsu_id": "TSU-0004961",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "He that, from the constitution of his nature, is absolutely unable to understand, or believe, or love a certain kind of truth, must, of necessity - be alike unable to shnt hl^ eyes against it, to disbelieve, to re- ject, or to hate it.",
+      "claim": "인간의 본성으로 인해 특정 진리를 이해하거나 믿거나 사랑할 수 없는 사람은 반드시 그 진리를 거부하거나 미워하는 것에도 불가능해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004962",
+      "tsu_id": "TSU-0004962",
+      "source_id": "",
+      "work_id": "",
+      "edition_id": "",
+      "doctrine": "Soteriology",
+      "original_text": "But it is manifest that all men are capa- ble of the latter ; it must, therefore, follow, that nothing but the depravity of th-eir heart renders them incapable of the former.",
+      "claim": "인간의 본성은 진리를 이해하거나 믿거나 사랑하는 능력이 있지만, 그들의 마음의 부패로 인해 이러한 능력을 실현하지 못한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}
