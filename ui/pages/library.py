@@ -639,6 +639,35 @@ def _render_delete_section(source_filename: str) -> None:
                 st.rerun()
 
 
+def _run_orphan_cleanup_batch(pairs, cleanup_fn=None) -> dict:
+    """Run cleanup_orphaned_document() for each (document_id, source_file) in
+    `pairs` and aggregate the results.
+
+    Never raises — a per-document failure is recorded in the returned
+    "errors" list and the batch continues, so one bad document does not lose
+    the rest of the user's selection. Pure and injectable (cleanup_fn, which
+    defaults to the module-level cleanup_orphaned_document resolved at call
+    time) so the aggregation/error handling is unit-testable without
+    Streamlit or the real registry.
+
+    Returns {"count", "purged", "moved", "errors": [(source_file, msg), ...]}.
+    """
+    if cleanup_fn is None:
+        cleanup_fn = cleanup_orphaned_document
+    purged = moved = done = 0
+    errors: list[tuple[str, str]] = []
+    for document_id, source_file in pairs:
+        try:
+            res = cleanup_fn(document_id)
+        except Exception as exc:  # surfaced to the user below, not swallowed
+            errors.append((source_file, str(exc)))
+            continue
+        purged += res.get("purged_tsu_records", 0)
+        moved += len(res.get("moved_files", []))
+        done += 1
+    return {"count": done, "purged": purged, "moved": moved, "errors": errors}
+
+
 def _render_orphaned_documents_notice() -> None:
     """[2026-08-24 사용자 요청] "원본 파일이 웹 밖에서 지워지면 사용자에게
     노티스 하고 관련 파일을 다 삭제하도록 하라".
@@ -652,9 +681,44 @@ def _render_orphaned_documents_notice() -> None:
     자동으로 지우지는 않는다 — 오늘 세션에서 "원본이 사라진 문서"
     상당수가 실은 사용자가 되찾고 싶어한 것으로 드러난 적이 있어(37건
     복원, 13건만 실제 정리 대상이었음), 조용히 자동 삭제하면 사용자가
-    되찾고 싶은 걸 놓칠 위험이 있다. 눈에 띄게 알리고, 정리는 사용자가
-    버튼으로 결정한다.
+    되찾고 싶은 걸 놓칠 위험이 있다.
+
+    [2026-09-07 UX 수정] 예전엔 행마다 "정리" 버튼이 있고 클릭 즉시
+    cleanup_orphaned_document() + st.rerun() 이었다 — success 메시지가
+    rerun에 즉시 지워져 확인이 안 되고, 목록이 계속 다시 떠서 "70건을
+    하나씩 연타"하게 됐다(실측: 70개 문서가 그렇게 정리됨). 지금은
+    체크박스로 여러 건 선택 → 확인 체크 → "선택 정리" 한 번 → 결과
+    패널이 사용자가 "확인"을 누를 때까지 남는다. 실제 정리는 위젯이
+    만들어지기 전(함수 진입 직후)에 실행해 Streamlit 위젯 상태 규칙과
+    충돌하지 않는다.
     """
+    # ── 지연 실행: 위젯 생성 전에 처리해야 선택 체크박스 key를 안전하게 비운다 ──
+    pending = st.session_state.pop("_orphan_do_cleanup", None)
+    if pending:
+        summary = _run_orphan_cleanup_batch(pending)
+        for key in [k for k in st.session_state if k.startswith("orphan_sel_")]:
+            del st.session_state[key]
+        st.session_state.pop("orphan_batch_confirm", None)
+        st.session_state["_orphan_cleanup_done"] = summary
+        st.rerun()
+
+    # ── 결과 패널: "확인"을 누를 때까지 유지 (예전처럼 즉시 사라지지 않음) ──
+    done = st.session_state.get("_orphan_cleanup_done")
+    if done:
+        if done["errors"]:
+            st.error(
+                f"{len(done['errors'])}건은 정리하지 못했습니다: "
+                + "; ".join(f"{name} ({msg})" for name, msg in done["errors"])
+            )
+        if done["count"]:
+            st.success(
+                f"{done['count']}건 정리 완료 — 색인 레코드 {done['purged']}건 삭제, "
+                f"파일 {done['moved']}개를 backups/excluded_documents_.../로 이동."
+            )
+        if st.button("확인", key="orphan_done_ack"):
+            st.session_state.pop("_orphan_cleanup_done", None)
+            st.rerun()
+
     orphans = find_orphaned_processed_documents()
     if not orphans:
         return
@@ -663,22 +727,47 @@ def _render_orphaned_documents_notice() -> None:
         f"⚠️ RAW 원본이 사라진 처리 완료 문서가 {len(orphans)}건 있습니다 — "
         "앱이 아니라 Finder나 다른 곳에서 직접 지워진 것으로 보입니다. "
         "원본이 다시 필요하면 먼저 RAW 폴더에 복사해 두고, 필요 없으면 "
-        "아래에서 처리 데이터를 정리하세요."
+        "아래에서 정리할 항목을 골라 한 번에 처리하세요."
     )
     with st.expander(f"원본이 사라진 문서 {len(orphans)}건", expanded=True):
+        sel_all, clr_all = st.columns(2)
+        if sel_all.button("전체 선택", key="orphan_sel_all_on", use_container_width=True):
+            for orphan in orphans:
+                st.session_state[f"orphan_sel_{orphan['document_id']}"] = True
+            st.rerun()
+        if clr_all.button("전체 해제", key="orphan_sel_all_off", use_container_width=True):
+            for orphan in orphans:
+                st.session_state[f"orphan_sel_{orphan['document_id']}"] = False
+            st.rerun()
+
         for orphan in orphans:
-            c1, c2 = st.columns([4, 1])
-            with c1:
-                st.markdown(f"**{orphan['source_file']}**")
-                st.caption(f"청크 {orphan['chunk_count']}개 — RAW에 원본 없음")
-            with c2:
-                if st.button("정리", key=f"orphan_cleanup_{orphan['document_id']}", use_container_width=True):
-                    result = cleanup_orphaned_document(orphan["document_id"])
-                    st.success(
-                        f"'{orphan['source_file']}' 처리 데이터를 정리했습니다 "
-                        f"(색인 {result['purged_tsu_records']}건, 파일 {len(result['moved_files'])}개 → {result['backup_dir']})."
-                    )
-                    st.rerun()
+            st.checkbox(
+                f"**{orphan['source_file']}** · 청크 {orphan['chunk_count']}개",
+                key=f"orphan_sel_{orphan['document_id']}",
+            )
+
+        selected = [
+            (orphan["document_id"], orphan["source_file"])
+            for orphan in orphans
+            if st.session_state.get(f"orphan_sel_{orphan['document_id']}")
+        ]
+
+        st.divider()
+        confirm = st.checkbox(
+            f"선택한 {len(selected)}건의 처리 데이터를 정리합니다 — 청크·색인을 삭제하고 "
+            "파일은 backups/excluded_documents_.../로 이동합니다(RAW 원본은 이미 없음).",
+            key="orphan_batch_confirm",
+            disabled=not selected,
+        )
+        if st.button(
+            f"선택 정리 ({len(selected)}건)",
+            key="orphan_batch_cleanup",
+            type="primary",
+            disabled=not (selected and confirm),
+            use_container_width=True,
+        ):
+            st.session_state["_orphan_do_cleanup"] = selected
+            st.rerun()
 
 
 def _render_duplicate_check_section() -> None:
