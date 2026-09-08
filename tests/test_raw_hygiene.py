@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from core.raw_hygiene import (
     find_exact_duplicate_raw_files,
     purge_expired_trash,
+    empty_trash_now,
     maybe_purge_expired_trash,
     find_orphaned_processed_documents,
     cleanup_orphaned_document,
@@ -149,6 +150,45 @@ class TestPurgeExpiredTrash:
         result = purge_expired_trash(retention_days=30, now=datetime(2026, 8, 24))
         assert result == {"purged_dirs": [], "purged_file_count": 0}
         assert weird_dir.exists()
+
+
+class TestEmptyTrashNow:
+    """[사용자 요청: "앱에 휴지통 비우기 기능을 넣어라"] — 보관기간과
+    무관하게 지금 전부 삭제하는 수동 비우기."""
+
+    def test_no_backup_root_returns_zero(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", tmp_path / "backups")
+        assert empty_trash_now() == {"purged_dirs": [], "purged_file_count": 0}
+
+    def test_purges_all_deleted_raw_dirs_regardless_of_age(self, tmp_path, monkeypatch):
+        backup_root = tmp_path / "backups"
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", backup_root)
+
+        old_dir = backup_root / "deleted_raw_20260101"
+        old_dir.mkdir(parents=True)
+        (old_dir / "a.pdf").write_bytes(b"x")
+        recent_dir = backup_root / "deleted_raw_20260907"
+        recent_dir.mkdir(parents=True)
+        (recent_dir / "b.pdf").write_bytes(b"y")
+        (recent_dir / "c.pdf").write_bytes(b"z")
+
+        result = empty_trash_now()
+
+        assert set(result["purged_dirs"]) == {str(old_dir), str(recent_dir)}
+        assert result["purged_file_count"] == 3
+        assert not old_dir.exists()
+        assert not recent_dir.exists()
+
+    def test_excluded_documents_dirs_are_never_touched(self, tmp_path, monkeypatch):
+        backup_root = tmp_path / "backups"
+        monkeypatch.setattr("core.raw_hygiene.BACKUP_ROOT", backup_root)
+
+        excluded = backup_root / "excluded_documents_20260101"
+        excluded.mkdir(parents=True)
+        (excluded / "a.md").write_bytes(b"x")
+
+        empty_trash_now()
+        assert excluded.exists()
 
 
 class TestMaybePurgeExpiredTrash:
