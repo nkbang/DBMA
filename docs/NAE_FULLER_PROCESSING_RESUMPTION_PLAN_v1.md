@@ -236,3 +236,40 @@ F6  Retrieval 활성화 + 벤치 + reconciliation
 - `docs/architecture/ADR-024` — Retrieval Segment Gate (`modules.nae_pd.enabled`)
 - `docs/architecture/ADR-013` — Qdrant isolation
 - `NAE/pipeline/tsu/review_gate.py` — `EMBEDDING_ELIGIBLE_STATUSES = {verified}`
+
+---
+
+## 9. 정합 갱신 — Vol.01 파일럿 편입 (2026-09-08, HQ 승인)
+
+본 문서는 **우산(umbrella) 계획**으로 채택됨. 별도로 진행된 **Vol.01
+파일럿 트랙**(`dev/dbma-engine` `177e981`)을 그 하위 인스턴스로 편입한다.
+근거: `docs/NAE_FULLER_PLAN_RECONCILIATION_001.md` (HQ 승인 2026-09-08).
+
+### 9.1 §2·§3 상태 재기술 (Vol.01 한정)
+
+| 항목 | 본문 §2/§3 기재 | Vol.01 파일럿 실제 |
+|---|---|---|
+| P-1 HOLD 해제 | "미승인" | **HQ 결정 B (2026-09-08)** — Vol.01 한정 처리 승인, Vol.02–08 HOLD 유지 (`NAE_FULLER_HOLD_RELEASE_HQ_DECISION_REQUEST_001.md` §7) |
+| P-4 C1 Review | "미요청" | **요청 예정** — `NAE_FULLER_TSU_PIPELINE_C1_REVIEW_REQUEST_001.md` (2026-09-08 발행) |
+| F3 검수 방식 | `batch_manager.py` + 균일 | **전용 드라이버 + tiered(P1/P2)** — `scripts/nae_fuller_vol01_review_batches.py`, `batch_manager.py::TSU_IDENTIFIERS` 하드코딩 회피. 설계: `NAE_FULLER_VOL01_TIERED_REVIEW_DESIGN_v1.md` (APPROVED) |
+| Vol.01 배치 | 미생성 전제 | **생성·커밋됨** — `NAE/review/human/requests/fuller_v01_batch_0001..0037_requests.json` + `fuller_v01_MANIFEST.json` (3,643 claims, Q1–Q3, P1 176 / P2 3,467) |
+| 검수 질문 | — | **Q1–Q3 표준** + flag 시 Q4 + citations 26건 CIT 확인 (HQ 승인) |
+
+### 9.2 Phase 매핑
+
+| 우산 Phase | Vol.01 파일럿 대응 | 상태 |
+|---|---|---|
+| F0 | Preflight + HQ 결정 B + tiered 설계 승인 | ✅ 완료 (C1 Review P-4는 미이행) |
+| F1 | — (파일럿이 건너뜀) | ⏳ **선행 실행 중** (본 갱신으로 지시) |
+| F2 (Vol.01) | 이미 생성된 3,643 claims | ✅ (재생성 안 함) |
+| F2 (Vol.02–08) | 범위 밖 (HOLD) | ⛔ |
+| F3 (Vol.01) | tiered 검수 배치 준비 완료, David 착수 대기 | 🔜 F1 완료 후 |
+| F4–F6 | 파일럿 Phase 3 | ⛔ |
+
+### 9.3 확정된 선행 순서 (HQ 2026-09-08)
+
+1. `05e6871` → `dev/dbma-engine` 병합 ✅ (`21a6f29`)
+2. **F1** (canonical 8권 재검증 + provenance 한계 + citation locator + disclosure) — David 검수 착수 **전**
+3. **C1 Review (P-4)** 요청 — TSU pipeline 진입 트리거
+4. (미결) ADR-030 Amendment (P-2) 범위 — HQ 추후 결정
+5. F1 GREEN + C1 Review GREEN → David 검수(F3 Vol.01) 착수 (일정 = HQ 신호)
