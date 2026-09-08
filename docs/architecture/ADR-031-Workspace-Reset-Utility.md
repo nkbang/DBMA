@@ -15,7 +15,7 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 
 | | |
 |---|---|
-| **Status** | **PROPOSED (v1 — Open Questions resolved 2026-09-07)** |
+| **Status** | **PROPOSED (v1.1 — C1 CHANGES REQUESTED 반영, 재검토 대기 2026-09-07)** |
 | **Date** | 2026-09-07 |
 | **Approved** | — |
 | **Approver** | Rev. Bang / HQ (예정) |
@@ -81,16 +81,16 @@ wrapper로 남기거나 deprecate 표시한다 (§7에서 결정).
 | RAW/소스 | `NAE/corpus/raw/` | 894M | 아니오 (gitignore) | 재취득 필요, 일부 불가 |
 | RAW/소스 | `NAE/corpus/canonical/` | 108M | **일부 예** | 재취득+재정규화 |
 | RAW/소스 | `NAE/corpus/quarantine/` | 12M | **예** (원본 PDF) | 재취득 필요 |
-| RAW/소스 | `data/bible/` | 4.9M | 확인 필요 | 재취득 필요 |
-| RAW/소스 | `sermon_corpus/`, `data/sermon_corpus/`, `data/beta_corpus/` | ~170M | 확인 필요 | 재취득 필요 |
+| RAW/소스 | `data/bible/` | 4.9M | **아니오** (gitignore `data/`) — 실측 `git ls-files data/bible/` = 0 | 재취득 필요 |
+| RAW/소스 | `sermon_corpus/` (27 추적), `data/sermon_corpus/` (0), `data/beta_corpus/` (0) | ~170M | `sermon_corpus/`만 추적, `data/*` 하위는 gitignore | 재취득 필요 |
 | **파생물** | `output/` | 7.7G | 아니오 | 파이프라인 재실행 |
 | 파생물 | `NAE/corpus/embeddings/` | 1.1G | `.gitkeep`만 | 임베딩 재실행 |
-| 파생물 | `NAE/corpus/tsu/` | 326M | **일부 예** (Dagg 등) | TSU 재추출 |
-| 파생물 | `data/제련완성본/` | 201M | 확인 필요 | 추출·청킹 재실행 (단, 소스 PDF 사본 포함 — §4.3) |
+| 파생물 | `NAE/corpus/tsu/` | 326M | **94개 추적** (실측): `Dagg_Church_Order/`, `Hiscox_Standard_Manual/`, `Fuller_Complete_Works_Vol01/` 의 `tsu.json`/`*_report.json`, 모든 `_batch*_promotion_backup*/`, `_migration_backup*/`, `tsu_id_state.json` → **전부 Protected(§2.2-2)** | TSU 재추출 |
+| 파생물 | `data/제련완성본/` | 201M | **아니오** (gitignore `data/`) | 추출·청킹 재실행 (단, 소스 PDF 사본 포함 — §4.3) |
 | 파생물 | `chroma_db/` | 69M | 아니오 | 재인덱싱 |
 | 파생물 | `cache/` | 555M | 아니오 | 자동 재생성 |
 | 파생물 | `NAE/corpus/quarantine/` 제외 `reports/`, `manifests/`, `evidence/`, `NAE/benchmark/` | 소량 | 일부 `.gitkeep` | 재실행 |
-| 파생물 | `data/normalized/`, `data/processed/`, `data/nae/`, `data/inbox/` | ~0B | 확인 필요 | 재실행 |
+| 파생물 | `data/normalized/`, `data/processed/`, `data/nae/`, `data/inbox/` | ~0B | **아니오** (gitignore `data/`) | 재실행 |
 | **외부** | Qdrant 컬렉션 (`nae_bible_v1`, `nae_ref_v1`, ADR-013) | — | — | 재임베딩 |
 | **백업** | `backups/` | 15G | 아니오 (gitignore) | 불가 |
 
@@ -108,8 +108,17 @@ wrapper로 남기거나 deprecate 표시한다 (§7에서 결정).
 | Tier | 이름 | 삭제 대상 | 구현 | 기본값 |
 |---|---|---|---|---|
 | **T1** | Derived Artifacts | `output/` (단 `output/SPRINT*` 감사 산출물 제외 옵션), `chroma_db/`, `cache/`, `NAE/corpus/embeddings/` 내용물, `data/제련완성본/`의 `*_pdf.md`·`*_chunks.txt`·`*_chunks_meta.json`, `data/normalized`·`processed`·`nae`·`inbox` 내용물, `reports/`, `evidence/` (비추적분) | **이번 범위** | 활성 |
-| **T2** | + Intermediate Corpus | T1 + `NAE/corpus/tsu/` (비추적분), `NAE/corpus/manifests/` (비추적분), `NAE/corpus/quarantine/` (비추적분), `NAE/benchmark/` 산출물, **Qdrant 컬렉션 drop** (`--drop-qdrant` 명시 시) | **이번 범위** | 비활성 (명시 플래그) |
+| **T2** | + Intermediate Corpus | T1 + `NAE/corpus/tsu/` **(비추적분만)**, `NAE/corpus/manifests/` (비추적분), `NAE/corpus/quarantine/` (비추적분), `NAE/benchmark/` 산출물, **Qdrant 컬렉션 drop** (`--drop-qdrant` 명시 시) | **이번 범위** | 비활성 (명시 플래그) |
 | **T3** | + RAW / Source | T2 + `data/RAW/`, `NAE/corpus/raw/`, `data/bible/`, `sermon_corpus/`, `data/*_corpus/` | **설계만 — 구현하지 않음 (HQ 결정 2026-09-07)** | — |
+
+**T2 / ADR-030 FROZEN 보호 (C1 리뷰 반영)**: `NAE/corpus/tsu/` 하위에는 git 추적
+파일이 **94개** 존재한다 (실측 §1.2: `Dagg_Church_Order`, `Hiscox_Standard_Manual`,
+`Fuller_Complete_Works_Vol01` 의 `tsu.json`/보고서, 모든 `_batch*_promotion_backup*/`,
+`_migration_backup*/`, `tsu_id_state.json`). T2는 이 디렉터리를 **통삭제하지 않고**,
+삭제 후보를 나열한 뒤 `git ls-files NAE/corpus/tsu/` 결과와 교차 검증하여 추적
+파일을 제외한다(§2.2-2). 추적 파일이 삭제 후보에 하나라도 포함되면 유틸리티는
+중단하고 매니페스트에 `ABORT: tracked file in delete set` 을 기록한다. 이로써
+ADR-030 FROZEN baseline은 T2에서도 변경되지 않는다.
 
 **T3 결정 근거**: 배포 전 튜닝은 RAW 재취득 없이 파생물 재생성만으로 충분하다.
 RAW 삭제 능력을 코드로 노출하면 사고 표면만 넓어진다. T3는 이 문서에 설계로만
@@ -119,27 +128,47 @@ RAW 삭제 능력을 코드로 노출하면 사고 표면만 넓어진다. T3는
 
 다음은 리셋 유틸리티가 **무조건 거부**한다 (T3 포함):
 
+보호는 **두 층위**로 구성된다:
+
+- **층위 A — git 추적 파일** (`git ls-files` 로 동적 판정): 추적되는 모든 파일.
+  삭제하려면 별도 커밋이 필요하며 이는 리셋 유틸리티의 범위가 아니다.
+- **층위 B — 명시적 경로 목록** (`config.yaml` `reset.protected_prefixes`,
+  하드코딩 fallback 포함): **gitignore 대상 경로는 층위 A가 잡지 못하므로
+  반드시 층위 B에 명시해야 한다.** RAW/소스가 여기 해당한다.
+
 ```text
-1. .git/, .git 워크트리 메타데이터
-2. git 추적 중인 모든 파일 (git ls-files 로 판정) — 삭제하려면 별도 커밋이
-   필요하며 이는 리셋 유틸리티의 범위가 아니다
-3. 소스 코드 디렉터리: core/, ui/, scripts/, tests/, NAE/pipeline/, NAE/authority/,
-   NAE/governance/, docs/
-4. 설정/환경: config.yaml, .env, requirements*.txt, Modelfile, .venv*/, dbma_env/
-5. ADR-021 raw preservation 대상 중 git 추적분
-6. ADR-030 FROZEN baseline: NAE/corpus/canonical/{SLBC1689,PBC1765,PBC1765,...}
-   중 git 추적 파일, NAE/corpus/tsu/*/tsu.json 중 git 추적 파일
-7. NAE/pipeline/tsu/worker/ 의 state 파일이 아닌 소스 (ADR-025)
+[층위 A] .git/, .git 워크트리 메타데이터 + git ls-files 결과 전체
+
+[층위 B — 명시적 (gitignore 소스 보호 필수)]
+1. data/RAW/            ← gitignore. 층위 A 미포착. T3 미구현이어도 명시 포함.
+2. NAE/corpus/raw/      ← gitignore. 층위 A 미포착. T3 미구현이어도 명시 포함.
+3. data/bible/          ← gitignore(data/). 실측 추적 0. 명시 포함.
+4. sermon_corpus/, data/sermon_corpus/, data/beta_corpus/
+5. 소스 코드 디렉터리: core/, ui/, scripts/, tests/, NAE/pipeline/,
+   NAE/authority/, NAE/governance/, docs/
+6. 설정/환경: config.yaml, .env, requirements*.txt, Modelfile, .venv*/, dbma_env/
+7. NAE/pipeline/tsu/worker/ 의 소스 (ADR-025) — worker state 파일은 예외(T2 삭제 가능)
+
+[층위 A + B 공통 결과로 보호되는 것]
+- ADR-021 raw preservation 대상 (raw 경로 = 층위 B, 추적분 = 층위 A)
+- ADR-030 FROZEN baseline: NAE/corpus/canonical/{SLBC1689,PBC1765,...} 및
+  NAE/corpus/tsu/ 하위 git 추적 94개 (= 층위 A). §2.1 T2 설명 참조.
 ```
 
-T3에서 RAW를 지우더라도, 위 목록에 걸리는 파일은 건너뛰고 매니페스트에 `SKIPPED (protected)`로 기록한다.
+**규칙**: config.yaml `reset.protected_prefixes` 에서 층위 B 항목 1–4(RAW/소스)를
+제거하는 수정은 이 ADR의 Amendment 없이 허용하지 않는다. 유틸리티는 기동 시
+하드코딩 fallback 목록과 config 목록을 비교해, RAW/소스 4항목이 빠져 있으면
+경고 후 하드코딩 값으로 강제 복원한다.
+
+T3에서 RAW를 지우더라도(미구현), 위 목록에 걸리는 파일은 건너뛰고 매니페스트에
+`SKIPPED (protected)`로 기록한다.
 
 ### 2.3 안전 장치 (모든 티어 공통)
 
 | # | 장치 | 동작 |
 |---|---|---|
 | 1 | **Dry-run 기본** | 인자 없이 실행하면 삭제 목록 + 경로별 용량 + 합계만 출력. 실제 삭제는 `--apply` 필요 |
-| 2 | **확인 문구** | `--apply` 시 정확한 문구 입력 요구 (T1/T2: `RESET <tier>`, T3: `RESET T3` + `DELETE RAW SOURCES` 2단계) |
+| 2 | **확인 문구** (코드 하드코딩 — config 재정의 불가) | `--apply` 시 stdin으로 정확히 일치하는 문구 입력 요구. **T1** = `RESET T1` · **T2** = `RESET T2 INCLUDING CORPUS` · (설계) **T3** = 1단계 `RESET T3` 입력 후 2단계 `DELETE RAW SOURCES` 재입력. 공백·대소문자까지 정확히 일치해야 하며, 불일치 시 즉시 중단(재시도 3회 제한). 비대화형 실행은 `--yes-i-mean-it` + 위 문구를 `--confirm "<문구>"` 로 함께 줘야 통과. |
 | 3 | **휴지통 이동 우선** | hard `rm` 대신 `backups/reset_<UTC-timestamp>/<원경로>` 로 이동. `--hard` 명시 시에만 완전 삭제 |
 | 4 | **삭제 매니페스트** | `backups/reset_<ts>/manifest.json` — {tier, timestamp, git_branch, git_head, moved:[{src,dest,bytes}], skipped_protected:[...], qdrant_dropped:[...]} |
 | 5 | **브랜치/클린 트리 가드** | 추적 파일에 uncommitted 변경이 있으면 중단 (`--force` 로만 우회). 예상 브랜치 목록 밖이면 경고 |
@@ -151,13 +180,26 @@ T3에서 RAW를 지우더라도, 위 목록에 걸리는 파일은 건너뛰고 
 ```yaml
 reset:
   protected_prefixes:
+    # --- RAW/소스 (gitignore — git ls-files 로 안 잡힘. 제거 시 유틸리티가
+    #     하드코딩 fallback 으로 강제 복원. ADR-031 Amendment 없이 삭제 금지) ---
+    - data/RAW/
+    - NAE/corpus/raw/
+    - data/bible/
+    - sermon_corpus/
+    - data/sermon_corpus/
+    - data/beta_corpus/
+    # --- 소스/설정 ---
     - .git
     - core/
     - ui/
     - scripts/
     - tests/
     - docs/
+    - NAE/pipeline/
+    - NAE/authority/
+    - NAE/governance/
     - config.yaml
+    - .env
   tiers:
     T1:
       - output/
@@ -170,18 +212,20 @@ reset:
       - data/normalized/*
       - data/processed/*
     T2:
+      # 통삭제 아님 — 후보 나열 후 `git ls-files NAE/corpus/tsu/` (추적 94개)
+      # 교차 검증해 추적 파일 제외. 추적 파일이 후보에 있으면 ABORT.
       - NAE/corpus/tsu/*
       - NAE/corpus/manifests/*
       - NAE/corpus/quarantine/*
       - NAE/benchmark/*
-    T3:
+    T3:              # 설계만 — 구현하지 않음 (HQ 결정 2026-09-07)
       - data/RAW/*
       - NAE/corpus/raw/*
       - data/bible/*
       - sermon_corpus/*
-  qdrant_collection_whitelist:
-    - nae_bible_v1
-    - nae_ref_v1
+  # 기본 빈 목록 — HQ가 명시적으로 채우고 --drop-qdrant 를 줘야 drop.
+  # 운영 인덱스(nae_tsu_v1/nae_bible_v1/nae_ref_v1)는 예외 케이스(§4.4).
+  qdrant_collection_whitelist: []
 ```
 
 ---
@@ -199,7 +243,8 @@ reset:
 
 - 신규 모듈 + config 스키마 확장 + UI 액션 추가.
 - `backups/` 증가 (리셋마다 스냅샷). → `--hard` 옵션 및 오래된 `reset_*` 정리 명령 제공.
-- `data/제련완성본/` 이 소스 PDF 사본과 파생물을 한 디렉터리에 혼재 → §4.3 확인 필요.
+- `data/제련완성본/` 이 소스 PDF 사본과 파생물을 한 디렉터리에 혼재 → T1은 파생 확장자
+  glob만 삭제하고 `.pdf` 보존 (§4.3 확정).
 
 ### 3.3 Neutral
 
@@ -237,6 +282,13 @@ T1은 이 디렉터리에서 `*_pdf.md`, `*_chunks.txt`, `*_chunks_meta.json`,
   drop한 컬렉션은 매니페스트 `qdrant_dropped` 에 기록.
 - ADR-013 격리: `url` 은 config 값(`http://localhost:6333`)만 사용, NAE 인스턴스
   (7333)에는 접속하지 않는다.
+
+**운영 인덱스 drop은 예외 케이스 (C1 리뷰 반영)**: 본 ADR은 "pre-deployment
+tuning"용이다. `nae_tsu_v1`·`nae_bible_v1`·`nae_ref_v1` 같은 운영 인덱스를 drop하는
+시나리오가 튜닝 루프에 실제 필요한지는 HQ가 별도로 판단한다. 구현 기본값은
+**빈 화이트리스트**이므로, HQ가 명시적으로 컬렉션명을 config에 추가하기 전까지
+어떤 Qdrant 컬렉션도 drop되지 않는다. 튜닝 초기에는 재인덱싱 비용이 낮은
+개발용 컬렉션만 화이트리스트에 넣기를 권장한다.
 
 ### 4.5 UI 노출 범위 — **T1만 노출**
 
@@ -283,6 +335,12 @@ Qdrant drop)와 T3는 CLI 전용. UI에서 삭제 대상 목록과 용량, 이�
 - [x] HQ가 Open Questions 답변 (2026-09-07: T1/T2 구현, T3 설계만, 나머지 CUE 판단)
 - [x] 이 ADR을 v1로 확정
 - [ ] **C1 Review 요청** ← 다음 게이트
-- [ ] C1 리뷰 반영 후 T1+T2 구현 → `tests/test_reset_workspace.py` → 회귀 → Build Report
-- [ ] `scripts/reset_for_beta.py` 처리 결정: T3 wrapper로 축소 vs deprecate 주석 (구현 시)
+- [x] C1 Review 1차 완료 (2026-09-07: CHANGES REQUESTED — 5개 초점 중 §2.2 MEDIUM 1건 + 보강 3건)
+- [x] C1 지적 반영 (v1.1, 2026-09-07): §1.2 git 추적 실측, §2.1 tsu 94개 추적 명시,
+      §2.2 2-층위 보호 + RAW gitignore 명시 보호 + config 강제 복원, §2.3 확인 문구 확정, §4.4 운영 인덱스 예외
+- [ ] **C1 재검토 요청** ← 다음 게이트 (MEDIUM 해소 확인)
+- [ ] 재검토 APPROVE 후 T1+T2 구현 → `tests/test_reset_workspace.py` → 회귀 → Build Report
+- [ ] **HQ 승인 대기 항목**: `scripts/reset_for_beta.py` 처리 방향 — (a) `reset_workspace.py --tier T3` wrapper로 축소,
+      또는 (b) 즉시 deprecate. T3 미구현 기간 동안은 파일 상단에
+      `# DEPRECATED (ADR-031): T3 미구현. 신규 리셋은 scripts/reset_workspace.py 사용.` 주석만 추가하고 동작은 보존.
 - [ ] 승인 시 Status `PROPOSED` → `ACCEPTED`, STATE.md 기록
