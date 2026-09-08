@@ -77,3 +77,32 @@
 ## 5. 커밋 보류
 
 `annotate.py`·테스트는 회귀 포함 상태 → **커밋하지 않음**. C1 정정 후 CUE 재검증 → 단일 커밋.
+
+---
+
+## 6. 2차 검증 (C1 정정본, uncommitted, HEAD `70eb286`) — 🟢 CONDITIONAL
+
+### GREEN (CUE 재실측)
+- 회귀 스위트 §2 10개 파일 **144 passed**
+- **아라비아 번호책 복원**: `1 Cor 3:16`→`1 Corinthians 3:16`, `1 John 5:7`,
+  `2 Cor. v. 17`→`2 Corinthians 5:17` ✅ (Fuller 내 ~300건 = 번호책 대부분)
+- 오탐 전부 차단: `page 3:16` / `Vol. iii. 5` / `1 year 3:16` / `2 page 5:1` /
+  `Christ III. 1` → `[]` ✅
+- F-1/F-2/F-4 불변: `Ps. xl. 6`→`Psalms 40:6`, `Ps. cxviii. 22`→`Psalms 118:22`,
+  `ROM 8:1`, `요 3:16`→`John 3:16`, `Rom.. ii. 3`→`Romans 2:3` ✅
+- 8권 before/after (수정본 whole-text): Vol01 2→311 · 02 3→194 · 03 0→86 ·
+  04 3→62 · 05 1→106 · 06 1→63 · 07 0→34 · 08 1→177. 매그니튜드 정상, 폭증 없음
+
+### 미결
+1. **[MINOR] 로마 접두 번호책 미지원**: `I Cor. xiii. 4` / `II Pet. i. 4` → `[]`.
+   `(?:[1-3]\s?)?` 는 아라비아만. Fuller 내 `I Cor`/`II Pet` 형태 ~13건(전체
+   번호책의 ~4%, 전체 refs의 <0.1%). §4.2 테스트 목록에 포함돼 있었음.
+   → 소량 추가 수정 권장(불가 시 리포트에 known gap 명시).
+2. **[BLOCKER-for-close] 리포트 파일 미작성**: `NAE_FULLER_B1_SCRIPTURE_EXTRACTOR_REPORT_C1_001.md`
+   여전히 없음(2회 요청). §5 필수 — git HEAD줄 / F-1~4 요약 / F-3 결정 / pytest / 8권 표.
+3. C1 채팅 주장 "I Cor. xiii. 4 통과"는 CUE 재실측과 불일치 — 해당 테스트가
+   그 문자열을 실제로 assert하는지 확인 필요.
+
+### 조치
+C1: (1) `I Cor`/`II Pet` 로마 접두 추가 or known-gap 명시, (2) 리포트 파일 작성.
+그 후 CUE가 `annotate.py`+테스트 단일 커밋.
