@@ -30,13 +30,16 @@ Design decisions (per SPRINT17-RG-5, 유지):
 from __future__ import annotations
 
 import datetime
+import fcntl
 import hashlib
 import json
 import os
 import re
 import subprocess
 import tempfile
+import threading
 import unicodedata
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Optional
 
@@ -484,6 +487,65 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
             records.append(record)
 
     return records
+
+
+# --- TSU dataset lock ------------------------------------------------------
+# [2026-09-07 incident] tsu_dataset.jsonl had no lock. registry_lock()
+# (core/identity_registry.py) only guards documents.json. The Streamlit
+# foreground (exclude_document_from_index, via the Library "정리" button) and
+# the 5-second BackgroundIndexBuilder daemon (reconcile_pending ->
+# reindex_document) both read-modify-write tsu_dataset.jsonl with zero
+# coordination — their non-atomic writes interleaved into a NUL-holed file.
+# _atomic_write_text() stops the corruption; this lock stops the remaining
+# lost-update race (two full reads, two filtered rewrites, last writer wins).
+#
+# Shape mirrors registry_lock(): an advisory flock on a sibling ".lock" file
+# (never the dataset itself, so os.replace() stays undisturbed). Added on top
+# of registry_lock's design: an in-process reentrant guard, so the
+# reconcile_pending() -> reindex_document() nesting on the daemon thread does
+# not self-deadlock trying to flock the same file twice.
+_tsu_lock_rlocks: dict[str, threading.RLock] = {}
+_tsu_lock_rlocks_guard = threading.Lock()
+_tsu_lock_local = threading.local()
+
+
+@contextmanager
+def tsu_dataset_lock(dataset_path: "os.PathLike[str] | str"):
+    """Serialize read-modify-write of a TSU JSONL dataset across threads and
+    processes. Reentrant within a single thread (safe to nest)."""
+    key = str(Path(dataset_path).resolve())
+
+    with _tsu_lock_rlocks_guard:
+        rlock = _tsu_lock_rlocks.get(key)
+        if rlock is None:
+            rlock = _tsu_lock_rlocks[key] = threading.RLock()
+
+    held: dict[str, int] = getattr(_tsu_lock_local, "held", None)
+    if held is None:
+        held = _tsu_lock_local.held = {}
+
+    rlock.acquire()
+    try:
+        if held.get(key, 0) == 0:
+            lock_path = key + ".lock"
+            os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
+            lock_file = open(lock_path, "w")
+            fcntl.flock(lock_file, fcntl.LOCK_EX)
+            held[key] = 1
+            try:
+                yield
+            finally:
+                del held[key]
+                fcntl.flock(lock_file, fcntl.LOCK_UN)
+                lock_file.close()
+        else:
+            held[key] += 1
+            try:
+                yield
+            finally:
+                held[key] -= 1
+    finally:
+        rlock.release()
 
 
 def _atomic_write_text(path: Path, write_body) -> None:

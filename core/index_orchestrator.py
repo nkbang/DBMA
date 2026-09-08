@@ -37,7 +37,12 @@ from core.identity_registry import (
     find_by_source_file,
 )
 from core.document_context import set_pipeline_state
-from core.tsu_builder import build_tsu_records, write_tsu_dataset, write_manifest
+from core.tsu_builder import (
+    build_tsu_records,
+    write_tsu_dataset,
+    write_manifest,
+    tsu_dataset_lock,
+)
 from core.utils import make_safe_stem
 from core.candidate_generator import build_index, open_or_build_index
 from core.bible_index import BibleIndex
@@ -63,24 +68,28 @@ def rebuild_tsu_index(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
 
     registry = load_identity_registry(str(registry_path))
     records = build_tsu_records(registry, out_dir)
-    write_tsu_dataset(records, dataset_path)
-    write_manifest(
-        records, registry, manifest_path,
-        registry_path=registry_path,
-        dataset_path=dataset_path,
-        config_path=config_path,
-    )
 
-    # [DBMA-SEARCH-INFRA-001 Phase2-4] Rebuild the Tantivy candidate index
-    # from the dataset file we just wrote, so it never drifts out of sync
-    # with the TSU dataset it mirrors.
-    candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
-    indexed_count = build_index(dataset_path, candidate_index_dir)
+    # [2026-09-07] Serialize the whole dataset rewrite + mirror-index rebuild
+    # against exclude_document_from_index()/reindex_document()/reconcile_pending().
+    with tsu_dataset_lock(dataset_path):
+        write_tsu_dataset(records, dataset_path)
+        write_manifest(
+            records, registry, manifest_path,
+            registry_path=registry_path,
+            dataset_path=dataset_path,
+            config_path=config_path,
+        )
 
-    # [DBMA-SEARCH-INFRA-001 Phase2-3] Same for the Bible reference posting
-    # index — independent storage, rebuilt from the same dataset file.
-    bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
-    bible_postings = build_bible_index(dataset_path, bible_index_path)
+        # [DBMA-SEARCH-INFRA-001 Phase2-4] Rebuild the Tantivy candidate index
+        # from the dataset file we just wrote, so it never drifts out of sync
+        # with the TSU dataset it mirrors.
+        candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+        indexed_count = build_index(dataset_path, candidate_index_dir)
+
+        # [DBMA-SEARCH-INFRA-001 Phase2-3] Same for the Bible reference posting
+        # index — independent storage, rebuilt from the same dataset file.
+        bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+        bible_postings = build_bible_index(dataset_path, bible_index_path)
 
     source_document_count = len({
         doc_id for doc_id, doc in registry.get("documents", {}).items()
@@ -123,41 +132,46 @@ def reindex_document(document_id: str, output_dir: str = DEFAULT_OUTPUT_DIR) -> 
     subset = {"documents": {document_id: registry["documents"][document_id]}}
     new_records = build_tsu_records(subset, out_dir)
 
-    # 기존 데이터셋에서 대상 문서 레코드만 제거, 나머지는 원형 유지
-    existing: list[dict[str, Any]] = []
-    if dataset_path.exists():
-        with open(dataset_path, "r", encoding="utf-8") as f:
-            existing = [json.loads(line) for line in f if line.strip()]
-    kept = [r for r in existing if r.get("document_id") != document_id]
-    replaced = len(existing) - len(kept)
+    # [2026-09-07] Serialize the dataset read-modify-write + mirror updates
+    # against the foreground exclude path and other reindex/rebuild calls.
+    # tsu_dataset_lock() is reentrant within a thread, so a caller that
+    # already holds it (e.g. a future batch wrapper) does not deadlock here.
+    with tsu_dataset_lock(dataset_path):
+        # 기존 데이터셋에서 대상 문서 레코드만 제거, 나머지는 원형 유지
+        existing: list[dict[str, Any]] = []
+        if dataset_path.exists():
+            with open(dataset_path, "r", encoding="utf-8") as f:
+                existing = [json.loads(line) for line in f if line.strip()]
+        kept = [r for r in existing if r.get("document_id") != document_id]
+        replaced = len(existing) - len(kept)
 
-    all_records = kept + new_records
-    write_tsu_dataset(all_records, dataset_path)
-    write_manifest(
-        all_records, registry, manifest_path,
-        registry_path=registry_path,
-        dataset_path=dataset_path,
-        config_path=config_path,
-    )
+        all_records = kept + new_records
+        write_tsu_dataset(all_records, dataset_path)
+        write_manifest(
+            all_records, registry, manifest_path,
+            registry_path=registry_path,
+            dataset_path=dataset_path,
+            config_path=config_path,
+        )
 
-    # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the same delete-by-document_id +
-    # re-add the candidate index just did to the TSU dataset above — this is
-    # the actual "no full re-index on document add" requirement (HQ Phase 2
-    # 완료기준): only this one document's rows are touched in the index.
-    candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
-    generator = open_or_build_index(dataset_path, candidate_index_dir)
-    generator.replace_document(document_id, new_records)
+        # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the same delete-by-document_id +
+        # re-add the candidate index just did to the TSU dataset above — this is
+        # the actual "no full re-index on document add" requirement (HQ Phase 2
+        # 완료기준): only this one document's rows are touched in the index.
+        candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+        generator = open_or_build_index(dataset_path, candidate_index_dir)
+        generator.replace_document(document_id, new_records)
 
-    # [DBMA-SEARCH-INFRA-001 Phase2-3] Same replace semantics for the Bible
-    # index — a bootstrap build from the just-written dataset if it doesn't
-    # exist yet, otherwise an in-place delete-by-document_id + re-add.
-    bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
-    if not bible_index_path.exists():
-        build_bible_index(dataset_path, bible_index_path)
-    else:
-        bible_index = BibleIndex(bible_index_path)
-        bible_index.replace_document(document_id, new_records)
-        bible_index.close()
+        # [DBMA-SEARCH-INFRA-001 Phase2-3] Same replace semantics for the Bible
+        # index — a bootstrap build from the just-written dataset if it doesn't
+        # exist yet, otherwise an in-place delete-by-document_id + re-add.
+        bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+        if not bible_index_path.exists():
+            build_bible_index(dataset_path, bible_index_path)
+        else:
+            bible_index = BibleIndex(bible_index_path)
+            bible_index.replace_document(document_id, new_records)
+            bible_index.close()
 
     return {
         "document_id": document_id,
@@ -247,37 +261,44 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
         purged = 0
         if superseded_ids:
             dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
-            if dataset_path.exists():
-                with open(dataset_path, "r", encoding="utf-8") as f:
-                    existing = [json.loads(line) for line in f if line.strip()]
-                kept = [r for r in existing if r.get("document_id") not in superseded_ids]
-                purged = len(existing) - len(kept)
-                if purged > 0:
-                    write_tsu_dataset(kept, dataset_path)
-                    manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
-                    config_path = Path(__file__).resolve().parent.parent / "config.yaml"
-                    write_manifest(
-                        kept, registry, manifest_path,
-                        registry_path=registry_path,
-                        dataset_path=dataset_path,
-                        config_path=config_path,
-                    )
-                    # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the purge to the
-                    # candidate index — otherwise superseded content stays
-                    # searchable there even though the TSU dataset dropped it.
-                    candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
-                    if (candidate_index_dir / "meta.json").exists():
-                        generator = open_or_build_index(dataset_path, candidate_index_dir)
-                        for doc_id in superseded_ids:
-                            generator.delete_document(doc_id)
-                    # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to
-                    # the Bible index.
-                    bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
-                    if bible_index_path.exists():
-                        bible_index = BibleIndex(bible_index_path)
-                        for doc_id in superseded_ids:
-                            bible_index.delete_document(doc_id)
-                        bible_index.close()
+            # [2026-09-07] Serialize this read-modify-write against the
+            # foreground exclude path. The per-document reindex_document()
+            # calls above already take tsu_dataset_lock() individually;
+            # reconcile_pending() is idempotent (re-runs every 5s), so
+            # locking just this purge — rather than the whole pending loop —
+            # is enough and keeps the critical section short.
+            with tsu_dataset_lock(dataset_path):
+                if dataset_path.exists():
+                    with open(dataset_path, "r", encoding="utf-8") as f:
+                        existing = [json.loads(line) for line in f if line.strip()]
+                    kept = [r for r in existing if r.get("document_id") not in superseded_ids]
+                    purged = len(existing) - len(kept)
+                    if purged > 0:
+                        write_tsu_dataset(kept, dataset_path)
+                        manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
+                        config_path = Path(__file__).resolve().parent.parent / "config.yaml"
+                        write_manifest(
+                            kept, registry, manifest_path,
+                            registry_path=registry_path,
+                            dataset_path=dataset_path,
+                            config_path=config_path,
+                        )
+                        # [DBMA-SEARCH-INFRA-001 Phase2-4] Mirror the purge to the
+                        # candidate index — otherwise superseded content stays
+                        # searchable there even though the TSU dataset dropped it.
+                        candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+                        if (candidate_index_dir / "meta.json").exists():
+                            generator = open_or_build_index(dataset_path, candidate_index_dir)
+                            for doc_id in superseded_ids:
+                                generator.delete_document(doc_id)
+                        # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to
+                        # the Bible index.
+                        bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+                        if bible_index_path.exists():
+                            bible_index = BibleIndex(bible_index_path)
+                            for doc_id in superseded_ids:
+                                bible_index.delete_document(doc_id)
+                            bible_index.close()
 
         if reconciled:
             save_identity_registry(registry, str(registry_path))
@@ -321,35 +342,41 @@ def exclude_document_from_index(
 
     dataset_path = Path(DEFAULT_TSU_DATASET_PATH)
     purged = 0
-    if dataset_path.exists():
-        with open(dataset_path, "r", encoding="utf-8") as f:
-            existing = [json.loads(line) for line in f if line.strip()]
-        kept = [r for r in existing if r.get("document_id") != document_id]
-        purged = len(existing) - len(kept)
-        if purged > 0 and execute:
-            write_tsu_dataset(kept, dataset_path)
-            manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
-            config_path = Path(__file__).resolve().parent.parent / "config.yaml"
-            write_manifest(
-                kept, registry, manifest_path,
-                registry_path=registry_path,
-                dataset_path=dataset_path,
-                config_path=config_path,
-            )
-            # [DBMA-SEARCH-INFRA-001 Phase2-4] Same purge, mirrored to the
-            # candidate index so an excluded document stops being searchable
-            # there too.
-            candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
-            if (candidate_index_dir / "meta.json").exists():
-                generator = open_or_build_index(dataset_path, candidate_index_dir)
-                generator.delete_document(document_id)
-            # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to the
-            # Bible index.
-            bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
-            if bible_index_path.exists():
-                bible_index = BibleIndex(bible_index_path)
-                bible_index.delete_document(document_id)
-                bible_index.close()
+    # [2026-09-07] Serialize this read-modify-write against reconcile_pending()
+    # / reindex_document() / rebuild_tsu_index() running on the background
+    # daemon thread (or another process). Without this lock the two sides'
+    # non-atomic rewrites of tsu_dataset.jsonl interleaved into a NUL-holed
+    # file — the JSONDecodeError this whole change set fixes.
+    with tsu_dataset_lock(dataset_path):
+        if dataset_path.exists():
+            with open(dataset_path, "r", encoding="utf-8") as f:
+                existing = [json.loads(line) for line in f if line.strip()]
+            kept = [r for r in existing if r.get("document_id") != document_id]
+            purged = len(existing) - len(kept)
+            if purged > 0 and execute:
+                write_tsu_dataset(kept, dataset_path)
+                manifest_path = Path(DEFAULT_TSU_MANIFEST_PATH)
+                config_path = Path(__file__).resolve().parent.parent / "config.yaml"
+                write_manifest(
+                    kept, registry, manifest_path,
+                    registry_path=registry_path,
+                    dataset_path=dataset_path,
+                    config_path=config_path,
+                )
+                # [DBMA-SEARCH-INFRA-001 Phase2-4] Same purge, mirrored to the
+                # candidate index so an excluded document stops being searchable
+                # there too.
+                candidate_index_dir = Path(DEFAULT_CANDIDATE_INDEX_DIR)
+                if (candidate_index_dir / "meta.json").exists():
+                    generator = open_or_build_index(dataset_path, candidate_index_dir)
+                    generator.delete_document(document_id)
+                # [DBMA-SEARCH-INFRA-001 Phase2-3] Same purge, mirrored to the
+                # Bible index.
+                bible_index_path = Path(DEFAULT_BIBLE_INDEX_PATH)
+                if bible_index_path.exists():
+                    bible_index = BibleIndex(bible_index_path)
+                    bible_index.delete_document(document_id)
+                    bible_index.close()
 
     stem = make_safe_stem(record.get("source_file", ""))
     out_dir = Path(output_dir)
