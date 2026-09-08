@@ -110,3 +110,25 @@ C1은 Phase 2 배치를 **직접 생성한 실행자**이면서 이번 파이프
 - `NAE_FULLER_CANONICAL_VERIFICATION_001.md` — 검증 GREEN, 커밋 대상
 - `NAE_FULLER_TSU_PIPELINE_C1_REVIEW_RESULT_001.md` — 검증 CONDITIONAL, 커밋 대상 (본 문서가 Q5 하향·독립성 한계 첨부)
 - 본 문서 — 커밋 대상
+
+---
+
+## 6. HQ 결정 (2026-09-08)
+
+- **§4-2 = 옵션 (b)**: Vol.01 파일럿은 현 canonical 그대로 F3–F5 진행.
+  scripture 메타데이터 불완전을 **강한 disclosure**로 명시(문구: RESUMPTION_PLAN §10).
+- **추출기 수정 = F0 백로그 B-1** 등록 (`NAE_FULLER_PROCESSING_RESUMPTION_PLAN_v1.md` §10).
+  Vol.02–08 확장(F2) 착수 전 완료 필수. B-2(re-normalize)는 B-1 BLOCKED.
+- **§4-1 (ADR-030 Amendment P-2)**: HQ "(b)로 진행" 을 Vol.01 파일럿 F3–F5
+  진행 승인으로 간주(C1 Review Q1 GREEN 근거). P-2 Amendment 정식 문서는
+  **Vol.02–08 확장 전** 작성 — 그때까지 formally OPEN.
+
+### 게이트 갱신
+
+| Phase | 상태 |
+|---|---|
+| F1 | 🟢 완료 (B-1 백로그 등록) |
+| C1 Review P-4 | 🟢 조건부 GREEN (Q3/Q5 YELLOW, 향후 해소) |
+| F3 David 검수 | **착수 가능** (일정 = HQ 신호) |
+| F4 임베딩 / F5 색인 | Vol.01 한정 진행 승인 (F3 완료 후) — strong disclosure 조건 |
+| F2 Vol.02–08 | B-1 완료 + P-2 Amendment 전까지 BLOCKED |

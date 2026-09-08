@@ -273,3 +273,24 @@ F6  Retrieval 활성화 + 벤치 + reconciliation
 3. **C1 Review (P-4)** 요청 — TSU pipeline 진입 트리거
 4. (미결) ADR-030 Amendment (P-2) 범위 — HQ 추후 결정
 5. F1 GREEN + C1 Review GREEN → David 검수(F3 Vol.01) 착수 (일정 = HQ 신호)
+
+---
+
+## 10. F0 백로그 (2026-09-08 등록)
+
+| # | 항목 | 근거 | 상태 | 조건 |
+|---|---|---|---|---|
+| B-1 | **Scripture 추출기 수정** — `NAE/pipeline/canonical/annotate.py`: `_ROMAN_MAP` 확장(≥ clxxx), 한글 성서명 지원, OCR 노이즈 내성 (`_LEGACY_REF`/`_ARABIC_REF`) | F1 T3 (`NAE_FULLER_CANONICAL_VERIFICATION_001.md`) — 전 8권 체계적 추출 실패 (Vol.01 리포트 2 vs 실제 수백) | OPEN | **Vol.02–08 확장(F2) 착수 전 완료 필수.** Vol.01 파일럿은 옵션 (b)로 선진행 |
+| B-2 | B-1 완료 후 Fuller canonical **재-정제(re-normalize)** — 8권, `pipeline_version` 최신 | B-1 | BLOCKED (B-1) | 재-정제 시 canonical mutation 지시서 명시 범위 |
+
+### 결정 기록 (HQ 2026-09-08)
+
+- Vol.01 파일럿 = **옵션 (b)** 진행: 현 canonical 그대로 F3–F5, scripture
+  메타데이터 불완전을 **강한 disclosure**로 명시, 추출기 수정(B-1)은 별도 트랙.
+- **강한 disclosure 문구** (F1 T5 갱신, F6 UI 반영):
+  > 자동 성구 추출의 한계로 **이 저작의 성구 참조 대부분이 색인에서 누락**되어
+  > 있습니다. 성구 기반 검색·교차참조는 Fuller 자료에 대해 불완전합니다.
+  > (EN) Due to automated scripture-extraction limits, **most scripture
+  > references in this work are missing from the index**; scripture-based
+  > search and cross-referencing are incomplete for Fuller material.
+- Vol.02–08 확장은 B-1 완료를 조건으로 한다.
