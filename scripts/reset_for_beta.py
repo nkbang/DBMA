@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+# DEPRECATED (ADR-033): 신규 리셋은 scripts/reset_workspace.py 를 사용한다
+# (티어드 T1/T2, 2-층위 Protected Paths, 매니페스트). 이 스크립트는 RAW 포함
+# 전체 wipe(= ADR-033 T3 범위, 현재 미구현)를 담당하며, 처리 방향
+# (reset_workspace.py --tier T3 wrapper 로 축소 vs 완전 폐기)은 HQ 승인 대기.
+# 그때까지 동작은 그대로 보존한다.
 """scripts/reset_for_beta.py — 베타 배포 전 전체 데이터 초기화.
 
 테스터마다 자신의 파일로 새로 테스트하는 것을 전제로, RAW 원본을 포함한

@@ -15,7 +15,7 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 
 | | |
 |---|---|
-| **Status** | **PROPOSED (v1.1 — C1 CHANGES REQUESTED 반영, 재검토 대기 2026-09-07)** |
+| **Status** | **PROPOSED (v1.1 — C1 APPROVE 2026-09-07, 구현 진행 중. 승격은 구현·회귀·HQ 승인 후)** |
 | **Date** | 2026-09-07 |
 | **Approved** | — |
 | **Approver** | Rev. Bang / HQ (예정) |
@@ -338,8 +338,14 @@ Qdrant drop)와 T3는 CLI 전용. UI에서 삭제 대상 목록과 용량, 이�
 - [x] C1 Review 1차 완료 (2026-09-07: CHANGES REQUESTED — 5개 초점 중 §2.2 MEDIUM 1건 + 보강 3건)
 - [x] C1 지적 반영 (v1.1, 2026-09-07): §1.2 git 추적 실측, §2.1 tsu 94개 추적 명시,
       §2.2 2-층위 보호 + RAW gitignore 명시 보호 + config 강제 복원, §2.3 확인 문구 확정, §4.4 운영 인덱스 예외
-- [ ] **C1 재검토 요청** ← 다음 게이트 (MEDIUM 해소 확인)
-- [ ] 재검토 APPROVE 후 T1+T2 구현 → `tests/test_reset_workspace.py` → 회귀 → Build Report
+- [x] C1 재검토 완료 (2026-09-07: **APPROVE** — 6개 항목 전량 통과, MEDIUM 해소 확인)
+- [x] T1+T2 구현 완료 (2026-09-07): `scripts/reset_workspace.py`, `config.yaml` `reset:` 섹션,
+      `scripts/reset_for_beta.py` DEPRECATED 주석
+- [x] `tests/test_reset_workspace.py` 21개 PASS
+- [x] 전체 회귀 PASS: 2784 passed, 15 skipped (72s)
+- [x] Build Report: `output/ADR-033-T1T2-EXEC-REPORT.md`
+- [ ] **HQ 승인** ← 다음 게이트. 승인 시 Status `PROPOSED` → `ACCEPTED`, STATE.md 기록
+- [ ] (후속) UI 유지보수 탭 T1 버튼 — 별도 작업으로 분리 (ADR §4.5, 이번 범위 밖)
 - [ ] **HQ 승인 대기 항목**: `scripts/reset_for_beta.py` 처리 방향 — (a) `reset_workspace.py --tier T3` wrapper로 축소,
       또는 (b) 즉시 deprecate. T3 미구현 기간 동안은 파일 상단에
       `# DEPRECATED (ADR-033): T3 미구현. 신규 리셋은 scripts/reset_workspace.py 사용.` 주석만 추가하고 동작은 보존.

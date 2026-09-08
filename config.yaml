@@ -162,3 +162,53 @@ modules:
     corpus_root: "NAE/corpus/tsu"
     manifest_dir: "NAE/pipeline/ingest/manifests"
     index_collection: "nae_tsu_v1"
+
+# ── Workspace Reset (ADR-033) ──────────────────────────────
+# 배포 전 튜닝용 티어드 리셋. scripts/reset_workspace.py 가 읽는다.
+# 층위 B(protected_prefixes)에서 RAW/소스 6항목(data/RAW/, NAE/corpus/raw/,
+# data/bible/, sermon_corpus/, data/sermon_corpus/, data/beta_corpus/)을
+# 제거하는 수정은 ADR-033 Amendment 없이 금지 — 유틸리티가 기동 시 강제 복원한다.
+reset:
+  protected_prefixes:
+    - data/RAW/
+    - NAE/corpus/raw/
+    - data/bible/
+    - sermon_corpus/
+    - data/sermon_corpus/
+    - data/beta_corpus/
+    - .git
+    - core/
+    - ui/
+    - scripts/
+    - tests/
+    - docs/
+    - NAE/pipeline/
+    - NAE/authority/
+    - NAE/governance/
+    - config.yaml
+    - .env
+  tiers:
+    T1:
+      - "output/*"
+      - "chroma_db/*"
+      - "cache/*"
+      - "NAE/corpus/embeddings/*"
+      - "data/제련완성본/*_pdf.md"
+      - "data/제련완성본/*_chunks.txt"
+      - "data/제련완성본/*_chunks_meta.json"
+      - "data/제련완성본/*_pdf_chunks*.json"
+      - "data/normalized/*"
+      - "data/processed/*"
+      - "data/nae/*"
+      - "data/inbox/*"
+      - "reports/*"
+      - "evidence/*"
+    T2:
+      - "NAE/corpus/tsu/*"
+      - "NAE/corpus/manifests/*"
+      - "NAE/corpus/quarantine/*"
+      - "NAE/benchmark/*"
+    # T3: 설계만 — 구현하지 않음 (HQ 결정 2026-09-07). scripts/reset_workspace.py 는 T3 거부.
+  # 기본 빈 목록. HQ가 명시적으로 채우고 --drop-qdrant 를 줘야 drop.
+  # 운영 인덱스(nae_tsu_v1/nae_bible_v1/nae_ref_v1)는 예외 케이스 (ADR-033 §4.4).
+  qdrant_collection_whitelist: []
