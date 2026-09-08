@@ -486,39 +486,39 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
     return records
 
 
-def write_tsu_dataset(records: list[dict[str, Any]], dataset_path: Path) -> None:
-    """Write the TSU JSONL dataset atomically.
+def _atomic_write_text(path: Path, write_body) -> None:
+    """Write `path` atomically.
 
-    [2026-09-07 incident] The previous implementation opened dataset_path
-    directly with mode "w" (truncate in place) and never fsync'd. When the
-    process was interrupted mid-write — a Streamlit rerun killing the
-    running script is the confirmed trigger — the on-disk file was left
-    with the newly written head, an unflushed middle region that reads back
+    [2026-09-07 incident] write_tsu_dataset()/write_manifest() used to open
+    the target directly with mode "w" (truncate in place) and never
+    fsync'd. When the process was interrupted mid-write — a Streamlit rerun
+    killing the running script is the confirmed trigger — the on-disk file
+    was left with the new head, an unflushed middle region that reads back
     as NUL bytes, and the old file's tail beyond it. Every reader then hit
     `json.loads()` on a line of "\\x00…" and raised
     JSONDecodeError("Expecting value: line 1 column 1 (char 0)").
 
-    Fix: build the full file in a sibling temp file, flush + fsync it, then
-    os.replace() onto the target (atomic on the same filesystem) and fsync
-    the directory so the rename is durable. A crash at any point leaves
-    either the complete old file or the complete new one — never a
-    half-written blend.
+    `write_body(file_obj)` fills a sibling temp file, which is flushed +
+    fsync'd, then os.replace()'d onto `path` (atomic on the same
+    filesystem); the directory is fsync'd so the rename is durable. A crash
+    at any point leaves either the complete old file or the complete new
+    one — never a half-written blend. On any error the temp file is
+    removed and `path` is left untouched.
     """
-    dataset_path = Path(dataset_path)
-    dataset_path.parent.mkdir(parents=True, exist_ok=True)
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
 
     fd, tmp_name = tempfile.mkstemp(
-        dir=str(dataset_path.parent),
-        prefix=f".{dataset_path.name}.",
+        dir=str(path.parent),
+        prefix=f".{path.name}.",
         suffix=".tmp",
     )
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
-            for rec in records:
-                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            write_body(f)
             f.flush()
             os.fsync(f.fileno())
-        os.replace(tmp_name, dataset_path)
+        os.replace(tmp_name, path)
     except BaseException:
         try:
             os.unlink(tmp_name)
@@ -526,13 +526,22 @@ def write_tsu_dataset(records: list[dict[str, Any]], dataset_path: Path) -> None
             pass
         raise
 
-    dir_fd = os.open(str(dataset_path.parent), os.O_RDONLY)
+    dir_fd = os.open(str(path.parent), os.O_RDONLY)
     try:
         os.fsync(dir_fd)
     except OSError:
         pass
     finally:
         os.close(dir_fd)
+
+
+def write_tsu_dataset(records: list[dict[str, Any]], dataset_path: Path) -> None:
+    """Write the TSU JSONL dataset atomically (see _atomic_write_text)."""
+    def _body(f):
+        for rec in records:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    _atomic_write_text(Path(dataset_path), _body)
 
 
 def _git_commit_hash() -> Optional[str]:
@@ -589,7 +598,8 @@ def write_manifest(
         "config_file": "config.yaml",
         "config_sha256": _sha256_of_file(config_path) if config_path is not None else None,
     }
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, ensure_ascii=False, indent=2)
+    _atomic_write_text(
+        Path(manifest_path),
+        lambda f: json.dump(manifest, f, ensure_ascii=False, indent=2),
+    )
     return manifest
