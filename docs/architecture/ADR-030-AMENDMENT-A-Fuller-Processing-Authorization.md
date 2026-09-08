@@ -118,6 +118,12 @@ admission record rationale (lines 7–14) 의 기존 disclosure 문구와 정합
 - M2 SSOT (`NAE/pipeline/registration/state/source_manifest.yaml`),
   기존 admission records — 무변경.
 - Retrieval Engine / Embedding Engine 코드 — 무변경.
+- **ADR-029 Pipeline Lock** — Fuller 는 ADR-029 Research Corpus Expansion
+  roadmap(Smith → Korean Terminology → NAC …) 밖의 ADR-030 TSU-track corpus
+  이다. CUE 확인(2026-09-08): `NAE/pipeline/tsu/` 는 terminology/korean/ADR-029
+  pipeline 을 import 하지 않으며 해당 pipeline 은 아직 미구현 → 코드·리소스
+  충돌 없음. ADR-029 PHASE 0(Smith)=CLOSED 이므로 priority-lock 위반도 아님.
+  잔여는 로컬 compute 스케줄(F2 다일 작업 vs ADR-029 PHASE 1 착수 시점) — HQ 운영 판단.
 
 ---
 
