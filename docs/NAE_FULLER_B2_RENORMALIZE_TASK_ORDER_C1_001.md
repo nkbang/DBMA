@@ -39,7 +39,7 @@ for id in Fuller_Complete_Works_Vol01 .. Vol08:
 
 | 필드 | 기대 |
 |---|---|
-| `scripture_references_found` | **증가** — B-1 측정치와 일치해야: Vol01 315 / Vol02 194 / Vol03 87 / Vol04 62 / Vol05 106 / Vol06 65 / Vol07 35 / Vol08 178 (합계 1042). ±소량 편차는 허용, 자릿수 다르면 STOP |
+| `scripture_references_found` | **증가** — B-1 per-paragraph 예상: Vol01 ~374 / Vol02 ~218 / Vol03 ~94 / Vol04 ~63 / Vol05 ~105 / Vol06 ~69 / Vol07 ~47 / Vol08 ~176 (합계 **~1146**, before 11). 볼륨당 ±30% 편차 허용. 자릿수가 다르거나(예: <40 또는 >600) before와 같으면 STOP |
 | `paragraph_count` | **불변** (B-1은 구조 로직 미변경) |
 | `sentence_count` | **불변** |
 | `heading_count` | **불변** |
@@ -65,7 +65,7 @@ for id in Fuller_Complete_Works_Vol01 .. Vol08:
 - ❌ Vol.02–08 TSU 생성 (별도, P-2 이후)
 - ❌ `annotate.py` 추가 수정 (B-1 확정)
 - STOP: 어느 볼륨이든 `paragraph_count` / `sentence_count` 변동 /
-  `status != ok` / `scripture_references_found` 가 B-1 측정과 자릿수 불일치 /
+  `status != ok` / `scripture_references_found` 가 예상 대비 자릿수 불일치(<40 또는 >600/vol) 또는 before와 동일 /
   HEAD ≠ `e9cb72c`
 
 ---

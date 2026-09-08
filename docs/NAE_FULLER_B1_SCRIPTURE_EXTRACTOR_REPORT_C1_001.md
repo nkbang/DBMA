@@ -42,20 +42,24 @@ canonical / normalize_report / tsu.json 무변경. 출력 스키마(`[{original,
 - 광역(canonical/scripture/citation/annotate/verse/alias): **277 passed**
 - 기존 기대값 변경: 없음 (전부 순증)
 
-## 8권 before/after (수정본 whole-text 적용, canonical 파일 무수정)
+## 8권 before/after (수정본 적용, canonical 파일 무수정)
 
-| Vol | before (normalize_report) | after |
-|---|---|---|
-| 01 | 2 | 315 |
-| 02 | 3 | 194 |
-| 03 | 0 | 87 |
-| 04 | 3 | 62 |
-| 05 | 1 | 106 |
-| 06 | 1 | 65 |
-| 07 | 0 | 35 |
-| 08 | 1 | 178 |
-| **합계** | **13** | **1042** |
+측정 2가지: **whole-text** (canonical.txt 전체 1회) / **per-paragraph**
+(canonical.json 문단별 — B-2 re-normalize가 실제로 쓰는 경로).
 
+| Vol | before | whole-text | per-paragraph |
+|---|---:|---:|---:|
+| 01 | 2 | 315 | 374 |
+| 02 | 3 | 194 | 218 |
+| 03 | 0 | 87 | 94 |
+| 04 | 3 | 62 | 63 |
+| 05 | 1 | 106 | 105 |
+| 06 | 1 | 65 | 69 |
+| 07 | 0 | 35 | 47 |
+| 08 | 1 | 178 | 176 |
+| **합계** | **11** | **1042** | **1146** |
+
+→ **B-2 예상 `scripture_references_found` = per-paragraph 열** (합계 ~1146).
 Vol.01 상위 책: John / Romans / Acts / Luke / Isaiah / Matthew — 진짜 인용. 잡음 폭증 없음.
 
 ## Known gap
