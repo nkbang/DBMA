@@ -41,6 +41,7 @@ from core.index_orchestrator import (
 )
 from core.raw_hygiene import (
     find_exact_duplicate_raw_files,
+    empty_trash_now,
     maybe_purge_expired_trash,
     find_orphaned_processed_documents,
     cleanup_orphaned_document,
@@ -764,6 +765,20 @@ def _render_trash_section() -> None:
             return
 
         st.caption(f"삭제된 자료를 여기서 복구할 수 있습니다. (보관기간 {TRASH_RETENTION_DAYS}일 후 자동 삭제)")
+
+        # ── 휴지통 비우기 (사용자 요청: "앱에 휴지통 비우기 기능을 넣어라") ──
+        # 보관기간을 기다리지 않고 지금 전부 영구 삭제한다. 되돌릴 수
+        # 없으므로 _render_delete_section()과 같은 확인 체크박스를 둔다.
+        empty_ok = st.checkbox(
+            "휴지통을 지금 완전히 비웁니다 (복구 불가).", key="empty_trash_confirm"
+        )
+        if st.button("휴지통 비우기", disabled=not empty_ok):
+            purged = empty_trash_now()
+            st.success(
+                f"휴지통을 비웠습니다. 항목 {purged['purged_file_count']}개를 영구 삭제했습니다."
+            )
+            st.rerun()
+
         for item in trashed:
             c1, c2 = st.columns([4, 1])
             with c1:
