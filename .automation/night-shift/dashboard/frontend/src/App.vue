@@ -13,7 +13,9 @@ import QueueList from './components/QueueList.vue'
 import EventLog from './components/EventLog.vue'
 import HelpModal from './components/HelpModal.vue'
 import { formatClockTime } from './format.js'
+import pkg from '../package.json'
 
+const APP_VERSION = pkg.version
 const REFRESH_OPTIONS = [5, 10, 30, 60]
 
 const status = ref(null)
@@ -83,7 +85,7 @@ onUnmounted(() => {
         <div class="brand">
           <div class="brand-line">
             <span class="brand-title">내서재 작업현황모니터</span>
-            <span class="brand-version">v1.0.0</span>
+            <span class="brand-version">v{{ APP_VERSION }}</span>
           </div>
           <div class="brand-line">
             <span class="brand-subtitle">NAE Observatory</span>
