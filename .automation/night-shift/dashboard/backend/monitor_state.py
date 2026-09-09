@@ -218,6 +218,14 @@ class MonitorState:
                         elapsed_seconds=report.get("elapsed_seconds", 0.0),
                     ))
                     self._prune_by_age(hist, now)
+                elif active and report is None:
+                    # The active run has no readable tsu_report.json yet — a fresh
+                    # start before its first checkpoint, or a re-run whose report
+                    # file was removed. Do NOT keep serving the previous run's
+                    # numbers; drop the cached report/history so snapshot() shows
+                    # 0/starting instead of stale progress.
+                    self._reports.pop(active, None)
+                    self._throughput_history.pop(active, None)
 
                 self._system_history.append(SystemSample(
                     ts=now,
