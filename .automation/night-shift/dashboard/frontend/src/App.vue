@@ -127,6 +127,7 @@ onUnmounted(() => {
       :processed="status?.processed ?? 0"
       :total="status?.total ?? 0"
       :percentage="status?.percentage ?? 0"
+      :awaiting-first-checkpoint="status?.awaiting_first_checkpoint ?? false"
     />
 
     <StatGrid

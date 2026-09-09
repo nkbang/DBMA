@@ -120,6 +120,10 @@ class MonitorState:
         self._lock = threading.Lock()
         self._state = _PolledState()
         self._reports: dict[str, dict] = {}
+        # candidates_total is stable per identifier across re-runs; remember the
+        # last value we saw so a run that has not written its first checkpoint
+        # yet still shows a real progress scale (0 / N) instead of 0 / 0.
+        self._known_totals: dict[str, int] = {}
         self._throughput_history: dict[str, deque[ThroughputSample]] = {}
         self._system_history: deque[SystemSample] = deque()
         self._event_log = events_mod.EventLog()
@@ -211,6 +215,9 @@ class MonitorState:
 
                 if active and report is not None:
                     self._reports[active] = report
+                    tot = report.get("candidates_total")
+                    if isinstance(tot, int) and tot > 0:
+                        self._known_totals[active] = tot
                     hist = self._throughput_history.setdefault(active, deque())
                     hist.append(ThroughputSample(
                         ts=now,
@@ -222,8 +229,10 @@ class MonitorState:
                     # The active run has no readable tsu_report.json yet — a fresh
                     # start before its first checkpoint, or a re-run whose report
                     # file was removed. Do NOT keep serving the previous run's
-                    # numbers; drop the cached report/history so snapshot() shows
-                    # 0/starting instead of stale progress.
+                    # progress numbers; drop the cached report/history so
+                    # snapshot() reports 0 processed / 0 elapsed. The stable
+                    # candidates_total is kept in _known_totals so the scale is
+                    # still 0 / N, not 0 / 0.
                     self._reports.pop(active, None)
                     self._throughput_history.pop(active, None)
 
@@ -339,14 +348,18 @@ class MonitorState:
             bottleneck_verdict = dict(self._state.bottleneck) if self._state.bottleneck else None
             gpu_health_verdict = dict(self._state.gpu_health) if self._state.gpu_health else None
             report = dict(self._reports.get(active, {})) if active else None
+            known_total = self._known_totals.get(active, 0) if active else 0
             throughput_hist = list(self._throughput_history.get(active, [])) if active else []
             system_hist = list(self._system_history)
             recent_events = self._event_log.recent()
 
         processed = report.get("candidates_evaluated", 0) if report else 0
-        total = report.get("candidates_total", 0) if report else 0
+        # Fall back to the last-known candidates_total for this identifier so a
+        # run that has not checkpointed yet still shows 0 / N, not 0 / 0.
+        total = (report.get("candidates_total", 0) if report else 0) or known_total
         errors = report.get("llm_errors", 0) if report else 0
         elapsed = report.get("elapsed_seconds", 0.0) if report else 0.0
+        awaiting_first_checkpoint = bool(active) and not report
         percentage = round(100 * processed / total, 2) if total else 0.0
 
         avg_rate_per_sec = (processed / elapsed) if elapsed > 0 else 0.0
@@ -386,6 +399,7 @@ class MonitorState:
             "errors": errors,
             "elapsed_seconds": elapsed,
             "process_alive": process_alive,
+            "awaiting_first_checkpoint": awaiting_first_checkpoint,
             "ollama_online": ollama_online,
             "n8n_online": n8n_online,
             "system": {
