@@ -44,7 +44,7 @@ HAN = re.compile(r"[㐀-䶿一-鿿豈-﫿]")
 # contention. Both share the GPU with the running F2 job.
 GEN_MODELS = ["my-theology-bot-v2:latest", "llama3.1:8b", "qwen3.8:27b"]
 
-_ANSWER_PROMPT = """너는 Andrew Fuller의 『The Gospel Worthy of All Acceptation』(전집 제1권)에서
+_ANSWER_PROMPT = """너는 Andrew Fuller 전집(제1–2권)에서
 검색된 신학적 주장(근거)들을 바탕으로 질문에 답하는 조수다.
 
 질문: {query}
@@ -143,7 +143,7 @@ def main() -> None:
         st.divider()
         answer_mode = st.checkbox("답변 생성 (RAG)", value=False)
         gen_model = st.selectbox("생성 모델", GEN_MODELS, disabled=not answer_mode)
-        st.caption("Fuller Vol.01 상위 결과만 근거로 답을 생성합니다. "
+        st.caption("Fuller Vol.01+02 상위 결과만 근거로 답을 생성합니다. "
                    "F2와 GPU 공유 — 응답 10~40초, F2 소폭 지연 가능.")
 
     examples = [
@@ -158,7 +158,7 @@ def main() -> None:
     query = st.text_input("신학 질의", value=default_q, placeholder="예: 회심하지 못한 죄인도 믿으라는 명령을 받는가")
 
     if not query.strip():
-        st.info("질의를 입력하면 Fuller Vol.01 TSU에서 의미 검색합니다.")
+        st.info("질의를 입력하면 Fuller Vol.01+02 TSU에서 의미 검색합니다.")
         return
 
     with st.spinner("bge-m3 임베딩 + 검색..."):
@@ -181,14 +181,14 @@ def main() -> None:
             if HAN.search(ans):
                 st.caption("⚠️ 생성 답변에 한자 잔존 (모델 코드스위칭)")
             st.info(ans)
-        st.caption("※ 위 답변은 아래 Fuller Vol.01 상위 결과만을 근거로 한 생성물입니다. "
+        st.caption("※ 위 답변은 아래 Fuller Vol.01+02 상위 결과만을 근거로 한 생성물입니다. "
                    "SANDBOX — 검증되지 않음.")
         st.divider()
 
     if show_baseline:
         c1, c2 = st.columns(2)
         with c1:
-            st.subheader("Fuller Vol.01")
+            st.subheader("Fuller Vol.01+02")
             for i, h in enumerate(fuller_hits, 1):
                 _render_hit(h, i)
         with c2:
@@ -199,7 +199,7 @@ def main() -> None:
             except Exception as e:  # noqa: BLE001
                 st.caption(f"baseline 조회 불가: {e}")
     else:
-        st.subheader("Fuller Vol.01")
+        st.subheader("Fuller Vol.01+02")
         for i, h in enumerate(fuller_hits, 1):
             _render_hit(h, i)
 
