@@ -40,11 +40,11 @@ const sub = computed(() => {
 .activity {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11px;
+  gap: 10px;
+  font-size: 12px;
   letter-spacing: 0.12em;
-  font-weight: 600;
-  padding: 6px 2px 0;
+  font-weight: 700;
+  padding: 6px 2px 2px;
   justify-content: center;
 }
 .txt { color: var(--text); }
@@ -55,31 +55,53 @@ const sub = computed(() => {
 .tone-bad .txt { color: #e5484d; }
 .tone-dim .txt { color: var(--text-dim); }
 
-.glyph { width: 12px; height: 12px; display: inline-block; flex: none; }
+.glyph {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  will-change: transform;
+}
 
 /* spinning ring — working / starting */
 .glyph.spin {
-  border: 2px solid var(--accent-dim);
+  border: 3px solid rgba(255, 255, 255, 0.14);
   border-top-color: var(--accent);
+  border-right-color: var(--accent);
   border-radius: 50%;
-  animation: spin 0.9s linear infinite;
+  animation: ai-spin 0.7s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes ai-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
 /* pulsing filled circle — stalled */
 .glyph.pulse {
   background: #e0a83a;
   border-radius: 50%;
-  animation: pulse 1s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(224, 168, 58, 0.6);
+  animation: ai-pulse 1s ease-in-out infinite;
 }
-@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.7); } }
+@keyframes ai-pulse {
+  0% { transform: scale(0.75); box-shadow: 0 0 0 0 rgba(224, 168, 58, 0.55); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(224, 168, 58, 0); }
+  100% { transform: scale(0.75); box-shadow: 0 0 0 0 rgba(224, 168, 58, 0); }
+}
 
-/* solid red circle — error */
-.glyph.solid { background: #e5484d; border-radius: 50%; }
+/* solid red circle — error (also blinks) */
+.glyph.solid {
+  background: #e5484d;
+  border-radius: 50%;
+  animation: ai-blink 0.9s steps(2, jump-none) infinite;
+}
+@keyframes ai-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 /* red square — stopped */
-.glyph.square { background: #e5484d; }
+.glyph.square { background: #e5484d; border-radius: 2px; }
 
 /* dim dot — idle */
-.glyph.dot { background: var(--text-dim); border-radius: 50%; transform: scale(0.6); }
+.glyph.dot { background: var(--text-dim); border-radius: 50%; transform: scale(0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph.spin, .glyph.pulse, .glyph.solid { animation-duration: 2s; }
+}
 </style>
