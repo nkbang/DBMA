@@ -7,6 +7,7 @@ PATCH = 버그 수정·시각 조정. 버전 문자열 단일 출처 = `frontend
 
 | 버전 | 커밋 | 날짜 | 내용 |
 |---|---|---|---|
+| **0.6.0** | `(this)` | 2026-09-08 | 체크포인트 사이 진행률 보간 — `tsu_report.json` 이 100건마다(~16분) 갱신돼 숫자가 멈춰 보이던 문제. `working` 상태에서 마지막 체크포인트 이후 경과·관측 rate로 다음 체크포인트 직전까지 추정. `processed_is_estimate` + `checkpoint_evaluated` 노출, 프런트에 `≈` 표기·해치 바·"estimated between checkpoints" |
 | **0.5.1** | `2afb183` | 2026-09-08 | 활동 스피너 가시성 수정 — 16px·3px·고대비 아크·0.7s 회전, stalled 앰버 리플, error 깜빡임 |
 | **0.5.0** | `fd82201` | 2026-09-08 | 활동 인디케이터 추가 — 백엔드 `activity`(idle/starting/working/stalled/error/stopped) + `report_age_seconds`, 프런트 `ActivityIndicator.vue` 스피너 |
 | **0.4.0** | `ba60f0c` | 2026-09-08 | 진행률 스케일 안정화 — `_known_totals`(재-run 사이 total 유지, `0 / N`), `awaiting_first_checkpoint`, 첫 checkpoint 대기 시 인디터미네이트 바 |

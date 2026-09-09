@@ -133,6 +133,9 @@ class MonitorState:
         # candidates). If it is older than this while the run is alive, a
         # checkpoint is overdue -> the run is stalled.
         self._stall_after_seconds = 1500.0
+        # builder.build_tsu_for_identifier(checkpoint_every=100) default — used
+        # only to cap the between-checkpoint progress estimate.
+        self.CHECKPOINT_EVERY = 100
         # candidates_total is stable per identifier across re-runs; remember the
         # last value we saw so a run that has not written its first checkpoint
         # yet still shows a real progress scale (0 / N) instead of 0 / 0.
@@ -412,18 +415,43 @@ class MonitorState:
             system_hist = list(self._system_history)
             recent_events = self._event_log.recent()
 
-        processed = report.get("candidates_evaluated", 0) if report else 0
+        checkpoint_evaluated = report.get("candidates_evaluated", 0) if report else 0
+        processed = checkpoint_evaluated
         # Fall back to the last-known candidates_total for this identifier so a
         # run that has not checkpointed yet still shows 0 / N, not 0 / 0.
         total = (report.get("candidates_total", 0) if report else 0) or known_total
         errors = report.get("llm_errors", 0) if report else 0
         elapsed = report.get("elapsed_seconds", 0.0) if report else 0.0
         awaiting_first_checkpoint = bool(active) and not report
+
+        # tsu_report.json is only rewritten every CHECKPOINT_EVERY candidates
+        # (~16 min at this model's rate), so the raw number sits flat between
+        # checkpoints and looks frozen. While the run is genuinely working,
+        # extrapolate from time-since-checkpoint and the observed rate — never
+        # past the next checkpoint (we can't confirm it yet).
+        processed_is_estimate = False
+        if (
+            self._state.activity == "working"
+            and report is not None
+            and checkpoint_evaluated > 0
+            and elapsed > 0
+            and report_age_seconds
+        ):
+            rate = elapsed / checkpoint_evaluated  # sec per candidate so far
+            if rate > 0:
+                est_extra = int(report_age_seconds / rate)
+                est_extra = max(0, min(est_extra, self.CHECKPOINT_EVERY - 1))
+                if est_extra > 0:
+                    processed = checkpoint_evaluated + est_extra
+                    processed_is_estimate = True
+
         percentage = round(100 * processed / total, 2) if total else 0.0
 
-        avg_rate_per_sec = (processed / elapsed) if elapsed > 0 else 0.0
+        # Rate stats stay anchored to the confirmed checkpoint count, not the
+        # extrapolated display value, so sec/item and throughput don't drift.
+        avg_rate_per_sec = (checkpoint_evaluated / elapsed) if elapsed > 0 else 0.0
         throughput_per_hour = round(avg_rate_per_sec * 3600, 1)
-        sec_per_item = round(elapsed / processed, 2) if processed > 0 else None
+        sec_per_item = round(elapsed / checkpoint_evaluated, 2) if checkpoint_evaluated > 0 else None
         remaining = max(total - processed, 0)
         eta_seconds = round(remaining / avg_rate_per_sec, 0) if avg_rate_per_sec > 0 else None
 
@@ -461,6 +489,8 @@ class MonitorState:
             "awaiting_first_checkpoint": awaiting_first_checkpoint,
             "activity": activity,
             "report_age_seconds": report_age_seconds,
+            "processed_is_estimate": processed_is_estimate,
+            "checkpoint_evaluated": checkpoint_evaluated,
             "ollama_online": ollama_online,
             "n8n_online": n8n_online,
             "system": {

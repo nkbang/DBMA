@@ -131,6 +131,7 @@ onUnmounted(() => {
       :total="status?.total ?? 0"
       :percentage="status?.percentage ?? 0"
       :awaiting-first-checkpoint="status?.awaiting_first_checkpoint ?? false"
+      :is-estimate="status?.processed_is_estimate ?? false"
     >
       <ActivityIndicator
         :activity="!monitoringEnabled ? 'idle' : (monitorOnline === false ? 'stalled' : (status?.activity ?? 'idle'))"
