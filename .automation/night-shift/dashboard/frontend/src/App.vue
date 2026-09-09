@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import ProgressPanel from './components/ProgressPanel.vue'
+import ActivityIndicator from './components/ActivityIndicator.vue'
 import StatGrid from './components/StatGrid.vue'
 import HealthBar from './components/HealthBar.vue'
 import PipelineFlow from './components/PipelineFlow.vue'
@@ -128,7 +129,12 @@ onUnmounted(() => {
       :total="status?.total ?? 0"
       :percentage="status?.percentage ?? 0"
       :awaiting-first-checkpoint="status?.awaiting_first_checkpoint ?? false"
-    />
+    >
+      <ActivityIndicator
+        :activity="!monitoringEnabled ? 'idle' : (monitorOnline === false ? 'stalled' : (status?.activity ?? 'idle'))"
+        :report-age-seconds="status?.report_age_seconds ?? null"
+      />
+    </ProgressPanel>
 
     <StatGrid
       :throughput-per-hour="status?.throughput_per_hour ?? null"

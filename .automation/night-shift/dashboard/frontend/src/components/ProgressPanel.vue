@@ -20,6 +20,8 @@ const barWidth = computed(() => `${Math.min(100, Math.max(0, props.percentage))}
   <section class="panel progress-panel">
     <h2 class="volume-title">{{ title || 'WAITING FOR ACTIVE VOLUME…' }}</h2>
 
+    <slot />
+
     <div class="bar-track">
       <div v-if="starting" class="bar-indeterminate"></div>
       <div v-else class="bar-fill" :style="{ width: barWidth }"></div>
@@ -42,7 +44,7 @@ const barWidth = computed(() => `${Math.min(100, Math.max(0, props.percentage))}
 .volume-title {
   font-size: 15px;
   letter-spacing: 0.08em;
-  margin: 0 0 20px;
+  margin: 0 0 10px;
   color: var(--text);
 }
 
