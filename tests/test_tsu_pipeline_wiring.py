@@ -189,30 +189,12 @@ class TestBuilderNeverCalledForBlockedOrErrored:
 class TestRunnerCliDefaultsToGateWiring:
     def test_main_no_args_uses_gate_wired_path(self, monkeypatch, capsys):
         monkeypatch.setattr(
-            runner, "_run_gate_wired", lambda *a, **kw: {"gate_pass": 0, "tsu_generated": 0}
+            runner, "_run_gate_wired", lambda model, max_candidates: {"gate_pass": 0, "tsu_generated": 0}
         )
         exit_code = runner.main([])
         assert exit_code == 0
         output = capsys.readouterr().out
         assert '"tsu_generated": 0' in output
-
-    def test_max_workers_flag_passed_through(self, monkeypatch):
-        seen = {}
-        monkeypatch.setattr(
-            runner.builder, "build_tsu_for_identifier",
-            lambda identifier, **kw: seen.update(kw) or {"report": {}},
-        )
-        runner.main(["--identifier", "PBC1742", "--max-workers", "3"])
-        assert seen.get("max_workers") == 3
-
-    def test_max_workers_defaults_to_1(self, monkeypatch):
-        seen = {}
-        monkeypatch.setattr(
-            runner.builder, "build_tsu_for_identifier",
-            lambda identifier, **kw: seen.update(kw) or {"report": {}},
-        )
-        runner.main(["--identifier", "PBC1742"])
-        assert seen.get("max_workers") == 1
 
     def test_legacy_scan_flag_bypasses_gate(self, monkeypatch):
         called = {"legacy": False, "gate": False}

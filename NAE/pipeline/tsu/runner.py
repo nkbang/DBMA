@@ -36,10 +36,6 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--legacy-scan", action="store_true",
                         help="Bypass the Crosswalk Gate and scan NAE/corpus/canonical/ directly "
                              "(pre-wiring behavior, build_tsu_for_all) — for debugging/fallback only")
-    parser.add_argument("--max-workers", type=int, default=1,
-                        help="Parallel claim-extraction threads per checkpoint chunk "
-                             "(default 1 = sequential, byte-identical output). "
-                             ">=2 needs Ollama server -np >= 2 to help.")
 
     # Phase 3 worker options (separate steps — no auto-chaining)
     parser.add_argument("--enqueue", type=str, metavar="IDENTIFIER",
@@ -55,7 +51,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _run_gate_wired(model: str, max_candidates: int | None, max_workers: int = 1) -> dict:
+def _run_gate_wired(model: str, max_candidates: int | None) -> dict:
     """Manifest -> Crosswalk Resolver -> TSU Gate -> Builder.
     PASS 판정된 identifier만 build_tsu_for_identifier()로 전달한다."""
     manifest_entries = gate_adapter.load_manifest_entries()
@@ -64,9 +60,7 @@ def _run_gate_wired(model: str, max_candidates: int | None, max_workers: int = 1
 
     generated_reports = []
     for target_identifier in gate_summary.pass_identifiers:
-        result = builder.build_tsu_for_identifier(
-            target_identifier, model=model, max_candidates=max_candidates, max_workers=max_workers
-        )
+        result = builder.build_tsu_for_identifier(target_identifier, model=model, max_candidates=max_candidates)
         generated_reports.append(result["report"])
 
     return {
@@ -201,17 +195,13 @@ def main(argv: list[str] | None = None) -> int:
         # (기존 동작 그대로, 이번 Wiring 대상이 아님).
         result = builder.build_tsu_for_identifier(
             args.identifier, model=args.model, max_candidates=args.max_candidates,
-            max_workers=args.max_workers,
         )
         print(json.dumps(result["report"], ensure_ascii=False, indent=2))
     elif args.legacy_scan:
-        summary = builder.build_tsu_for_all(
-            model=args.model, max_candidates_per_item=args.max_candidates,
-            max_workers=args.max_workers,
-        )
+        summary = builder.build_tsu_for_all(model=args.model, max_candidates_per_item=args.max_candidates)
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     else:
-        summary = _run_gate_wired(args.model, args.max_candidates, args.max_workers)
+        summary = _run_gate_wired(args.model, args.max_candidates)
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
