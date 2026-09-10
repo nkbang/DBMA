@@ -40,6 +40,17 @@ active_report() {  # newest tsu_report.json with partial==true
   echo "$best"
 }
 
+etimes_of() {  # elapsed seconds for a PID — BSD ps has no `etimes` (GNU-only),
+                # so parse `etime` ([[dd-]hh:]mm:ss) ourselves.
+  local e d=0 h=0 m s
+  e=$(ps -o etime= -p "$1" 2>/dev/null | tr -d ' ')
+  [ -z "$e" ] && { echo 0; return; }
+  case "$e" in *-*) d="${e%%-*}"; e="${e#*-}";; esac
+  case "$e" in *:*:*) h="${e%%:*}"; e="${e#*:}";; esac
+  m="${e%%:*}"; s="${e##*:}"
+  echo $(( 10#$d * 86400 + 10#$h * 3600 + 10#$m * 60 + 10#$s ))
+}
+
 probe_ollama() {  # 0 = responsive, non-zero = timed out / failed
   timeout "$PROBE_TIMEOUT" curl -s http://localhost:11434/api/generate \
     -d "{\"model\":\"$MODEL\",\"prompt\":\"ok\",\"stream\":false,\"options\":{\"num_predict\":2}}" \
@@ -75,7 +86,7 @@ while true; do
   [ -z "$driver" ] && { log "driver not running — watchdog idle (F2 done or stopped)"; consec=0; continue; }
   runner=$(pgrep -f "NAE.pipeline.tsu.runner --identifier Fuller_Complete_Works" | head -1)
   [ -z "$runner" ] && { consec=0; continue; }   # between volumes
-  et=$(ps -o etimes= -p "$runner" 2>/dev/null | tr -d ' '); et="${et:-0}"
+  et=$(etimes_of "$runner")
   rpt=$(active_report); [ -z "$rpt" ] && { consec=0; continue; }
   age=$(( $(date +%s) - $(stat -f %m "$rpt") ))
   # suspect only once the runner has had time to reach a checkpoint
