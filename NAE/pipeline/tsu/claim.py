@@ -1,7 +1,7 @@
 """LLM-backed theological claim extraction (Phase 3 core).
 
 Follows the same convention already used in core/evaluation/sermon_judge.py:
-ollama.generate() with temperature=0.0, a prompt that ends in a literal JSON
+an Ollama generate() with temperature=0.0, a prompt that ends in a literal JSON
 schema example, brace-extraction + json.loads (local LLMs often prepend/append
 chatter), and a try/except that fails soft (batch runs must survive one bad
 sentence) rather than raising.
@@ -21,11 +21,17 @@ import json
 import logging
 from dataclasses import dataclass, field
 
-import ollama
+from ollama import Client
 
 from . import config, doctrine
 
 logger = logging.getLogger("nae.tsu.claim")
+
+# Module-level client with a bounded HTTP read timeout (config.CLAIM_HTTP_TIMEOUT_S).
+# The bare `ollama.generate()` helper has no effective read timeout, so a wedged
+# Ollama daemon blocks the call forever with no error/log. Reused across the
+# thousands of calls in one batch run.
+_CLIENT = Client(timeout=config.CLAIM_HTTP_TIMEOUT_S)
 
 _CLAIM_PROMPT = """다음은 신학 문헌에서 발췌한 한 문장이다. 이 문장이 독립적으로 이해 가능한
 신학적 주장(claim)을 담고 있는지 판단하라.
@@ -118,9 +124,11 @@ def extract_claim(
     )
 
     try:
-        result = ollama.generate(model=model, prompt=prompt, options={"temperature": config.CLAIM_TEMPERATURE})
+        result = _CLIENT.generate(model=model, prompt=prompt, options={"temperature": config.CLAIM_TEMPERATURE})
         data = _parse_claim_json(result["response"])
     except Exception as e:  # noqa: BLE001
+        # Includes httpx timeout exceptions once CLAIM_HTTP_TIMEOUT_S elapses —
+        # a wedged daemon now surfaces as a per-call error instead of hanging.
         logger.error("[extract_claim] 실패 (model=%s): %s", model, e)
         return ClaimResult(model=model, error=str(e))
 

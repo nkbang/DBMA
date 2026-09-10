@@ -40,13 +40,18 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-import ollama
+from ollama import Client
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 import sys
 sys.path.insert(0, str(REPO_ROOT))
 
 from NAE.pipeline.tsu import config as tsu_config  # noqa: E402
+
+# Bounded HTTP read timeout — same wedge protection as claim.py (a hung Ollama
+# daemon must fail the call, not block this script forever). This runs
+# unattended right after F2.
+_CLIENT = Client(timeout=tsu_config.CLAIM_HTTP_TIMEOUT_S)
 
 TSU_ROOT = REPO_ROOT / "NAE" / "corpus" / "tsu"
 REEXTRACT_VERSION = "1.0.0"
@@ -68,7 +73,7 @@ _REPAIR_PROMPT = """다음 한국어 문장에는 한자 또는 중국어·일�
 def _repair_claim(source_text: str, claim: str, model: str) -> str | None:
     prompt = _REPAIR_PROMPT.format(claim=claim)
     try:
-        r = ollama.generate(model=model, prompt=prompt, options={"temperature": 0.0})
+        r = _CLIENT.generate(model=model, prompt=prompt, options={"temperature": 0.0})
         out = (r.get("response") or "").strip()
     except Exception as e:  # noqa: BLE001
         print(f"    [repair] LLM error: {e}")

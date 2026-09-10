@@ -314,12 +314,52 @@ skip 동작은 그대로. gate·commit·push 로직 무변경.
 
 ---
 
+## 8.5 Gap 2 동반 변경 — `claim.py` HTTP timeout (같은 커밋 세트·같은 C1 Review)
+
+**근거:** resume는 "재시작 손실"을 줄이지만 "hang이 무음·무한"인 문제(2026-09-10
+Vol.03가 4,400/5,812에서 Ollama wedge로 ~146분 무음 정지)는 안 푼다. baptist-theology-
+research 세션의 `docs/NAE_FULLER_F2_HANG_RESILIENCE_SPEC_v1.md` Gap 2. HQ 승인으로
+본 작업 제약("claim.py 무접촉")을 이 건에 한해 해제(2026-09-10).
+
+**문제:** `NAE/pipeline/tsu/claim.py`의 모듈 레벨 `ollama.generate()`는 HTTP read
+timeout이 사실상 무한. Ollama 데몬 wedge 시 이 호출이 영원히 블록 → runner 0% CPU,
+소켓 ESTABLISHED, 에러·로그 전무.
+
+**변경:**
+- `config.CLAIM_HTTP_TIMEOUT_S = 180` 신설 (정상 추론 ~10s의 넉넉한 상한).
+- `claim.py`: `import ollama` → `from ollama import Client`; 모듈 레벨
+  `_CLIENT = Client(timeout=config.CLAIM_HTTP_TIMEOUT_S)` (배치 전체에서 재사용);
+  `ollama.generate(...)` → `_CLIENT.generate(...)`.
+- timeout 시 예외 → **기존 `except Exception` (claim.py)이 그대로** 잡아
+  `ClaimResult(model=model, error=str(e))` 반환. builder는 `errors += 1` 후 다음
+  candidate. **추출 프롬프트·모델·doctrine 분류·출력 결정성 전부 불변** — 실패
+  처리 경로만 bounded.
+- 파급: Ollama가 진짜 wedge면 연속 candidate가 전부 timeout → `errors` 급증 →
+  `run_fuller_f2.sh::gate_ok`의 `llm_errors/candidates_total >= 2%` 실패 → runner
+  비정상 종료 → 드라이버 STOP. **무음 146분 hang → 수 분 내 가시적 실패.**
+- `scripts/nae_fuller_cjk_reextract.py`(직접 `ollama.generate`, F2 완료 직후
+  무인 실행)도 같은 `_CLIENT = Client(timeout=tsu_config.CLAIM_HTTP_TIMEOUT_S)`
+  패턴 적용 — 동일 취약점, 스크립트라 C1 불필요하나 같은 커밋에 포함.
+
+**`builder_version` 영향:** 없음. `3.0.0` 유지 (출력 결정성·스키마 불변, timeout은
+실패 처리만 추가). Amendment A F2 게이트 무영향 — Gap 1과 동일 논리(§6).
+
+**회귀:** `tests/test_nae_tsu_claim.py`의 `extract_claim` monkeypatch 대상을
+`ollama.generate` → `_CLIENT.generate`로 갱신(7건). 신규 2건: timeout 예외 fail-soft,
+`_CLIENT`가 `CLAIM_HTTP_TIMEOUT_S`를 실제로 물고 있는지(config 배선 lock).
+
+**Gap 3 (본 작업 범위 밖):** `scripts/nae_f2_watchdog.sh` — checkpoint mtime +
+Ollama probe로 hang 감지 → kill + `launchctl kickstart` + 드라이버 재기동. resume
+반영 후 재기동이 `--resume`을 타서 손실 ≈ 1 checkpoint. baptist 세션에서 별도 처리.
+
+---
+
 ## 9. C1 Independent Review 요청
 
-**검토 범위:**
+**검토 범위 (Gap 1 — resume):**
 1. §3.4 candidate 정합성 로직 — `(page, paragraph, sentence)` 3-튜플 키의 유일성
-   가정이 실제 `canonical.json`에서 성립하는가(Fuller Vol.01–08 `paragraphs[].index`
-   / `sentences[].sentence_index` 중복 여부 실측).
+   가정이 실제 `canonical.json`에서 성립하는가(Fuller Vol.01–03 실측 dup=0 확인,
+   Vol.04–08 재확인 요청).
 2. §3.5 `next_id` 파생 규칙 — `tsu.json` 마지막 id 기준 vs `tsu_id_state.json` 기준
    충돌 시 선택이 F2 순차 워크플로에서 안전한지.
 3. §3.6 원자적 기록 — `os.replace` 순서(`tsu.json` → report)와 §3.4 보정이 torn
@@ -328,18 +368,27 @@ skip 동작은 그대로. gate·commit·push 로직 무변경.
 5. 회귀 4건이 불변식·skip·drift-abort를 충분히 덮는지.
 6. `builder_version` `3.0.0` 유지 판단(§6) 동의 여부.
 
-**비대상:** `claim.py`/doctrine(무접촉), F2 실행 자체, Amendment A 승격.
+**검토 범위 (Gap 2 — §8.5 claim.py timeout):**
+7. `Client(timeout=180)` 전환이 추출 결정성/출력에 영향 없음을 확인 (실패 경로만).
+8. timeout 예외가 기존 `except Exception` fail-soft로 흡수되고, 연속 timeout →
+   `run_fuller_f2.sh` `llm_errors ≥ 2%` 게이트 → 드라이버 STOP 흐름이 맞는지.
+9. `CLAIM_HTTP_TIMEOUT_S = 180` 값 적정성.
+10. `builder_version` `3.0.0` 유지 동의(Gap 2도).
+
+**비대상:** doctrine 분류기(무접촉), F2 실행 자체, Amendment A 승격, Gap 3 watchdog.
 
 ---
 
 ## 10. 산출물 체크리스트
 
-- [x] 설계 문서(본 문서)
-- [x] `builder.py` 구현 (`resume` param + `_load_resume_state` + `_reconcile_resume_point` + `_resume_next_id` + `_atomic_write_json`)
-- [x] `runner.py` `--resume` 노출 + pass-through (`--identifier` / `--legacy-scan` / gate-wired 전부)
-- [x] `scripts/run_fuller_f2.sh` resume 루프 (partial → `--resume`, 완료본 → skip 유지)
-- [x] `tests/test_nae_tsu_builder.py` resume 4건 (byte-identical / skip-noop / no-prior / drift-abort)
-- [x] 회귀: `tests/test_nae_tsu_builder.py` 8 passed, NAE 서브셋(`-k "nae or tsu or crosswalk or corpus or fuller"`) 1234 passed / 2 skipped
+- [x] 설계 문서(본 문서, Gap 1 + Gap 2 §8.5)
+- [x] **Gap 1** `builder.py` (`resume` param + `_load_resume_state` + `_reconcile_resume_point` + `_resume_next_id` + `_atomic_write_json`)
+- [x] **Gap 1** `runner.py` `--resume` 노출 + pass-through (`--identifier` / `--legacy-scan` / gate-wired 전부)
+- [x] **Gap 1** `scripts/run_fuller_f2.sh` resume 루프 (partial → `--resume`, 완료본 → skip 유지)
+- [x] **Gap 1** `tests/test_nae_tsu_builder.py` resume 4건 (byte-identical / skip-noop / no-prior / drift-abort)
+- [x] **Gap 2** `config.CLAIM_HTTP_TIMEOUT_S = 180` + `claim.py` `Client(timeout=...)` + `scripts/nae_fuller_cjk_reextract.py` 동일 패턴
+- [x] **Gap 2** `tests/test_nae_tsu_claim.py` patch 대상 갱신(7) + 신규 2건 (timeout fail-soft / config 배선 lock)
+- [x] 회귀: 대상 스위트 61 passed, NAE 서브셋(`-k "nae or tsu or crosswalk or corpus or fuller or claim or sermon"`) 1397 passed / 2 skipped
 - [x] Build Report → `docs/NAE_FULLER_TSU_BUILDER_RESUME_BUILD_REPORT_001.md`
-- [ ] C1 Review 요청 (§9) — HQ 통보 대기
+- [ ] C1 Independent Review (§9, Gap 1 + Gap 2)
 - [ ] HQ 승인
