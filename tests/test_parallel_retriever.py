@@ -412,25 +412,54 @@ class TestSprintABRegression:
         assert t2_tag_names == set(tag_names)
 
 
-class TestCoreRetrievalUnmodified:
-    """core/retrieval.py가 수정되지 않았음을 검증.
+class TestCoreRetrievalReusedNotRedefined:
+    """ParallelRetriever가 core/retrieval.py의 자료형을 재정의하지 않고
+    import해서 재사용한다는 규약을 검증한다.
 
-    이 테스트는 git diff core/retrieval.py가 빈 diff임을 확인한다.
-    ParallelRetriever는 core/retrieval.py를 import해서 재사용할 뿐,
-    절대 수정하지 않는다.
+    [2026-09-10 변경] 이 클래스는 원래 `git diff core/retrieval.py`가 빈
+    diff인지 검사했다(`TestCoreRetrievalUnmodified`). 의도는 옳았으나
+    — Sprint C의 ParallelRetriever 작업이 core/retrieval.py를 건드리지
+    않고 끝나야 한다 — 구현이 의도와 어긋나 있었다:
+
+      1. **누가 고쳤는지 구분하지 못한다.** ParallelRetriever와 무관한
+         작업이라도 core/retrieval.py에 미커밋 변경이 있으면 실패한다.
+         2026-09-10 한국어 QueryParser 작업(사용자 지시)에서 실제로
+         걸렸다.
+      2. **커밋하면 통과한다.** `git diff`는 작업 트리와 인덱스를
+         비교하므로, 같은 변경도 커밋 뒤에는 빈 diff가 된다. 즉 이
+         테스트가 실제로 강제하던 것은 "core/retrieval.py를 수정하지
+         마라"가 아니라 "커밋하지 않은 채로 두지 마라"였다.
+
+    그래서 대리 지표(파일이 안 바뀌었나) 대신 규약 자체(재정의하지 않고
+    재사용하나)를 검사하도록 바꾼다. core/retrieval.py를 **누구도**
+    수정하면 안 된다는 규칙은 이 테스트가 아니라 ADR-001(Retrieval
+    Engine Authority)과 CLAUDE.md의 승인 절차가 관장한다.
     """
 
-    def test_core_retrieval_py_not_modified(self) -> None:
-        """git diff core/retrieval.py가 빈 diff여야 한다."""
-        import subprocess
-        result = subprocess.run(
-            ["git", "diff", "core/retrieval.py"],
-            capture_output=True, text=True, cwd=str(Path(__file__).parent.parent),
-        )
-        assert result.stdout == "", (
-            f"core/retrieval.py가 수정되었습니다. git diff core/retrieval.py:\n{result.stdout}\n"
-            "ParallelRetriever는 core/retrieval.py를 수정하지 않습니다."
-        )
+    def test_parallel_retriever_imports_core_types(self) -> None:
+        """ParsedQuery/RankedCandidate를 자체 정의하지 않고 core에서 가져온다."""
+        import core.parallel_retriever as pr
+        import core.retrieval as core_retrieval
+
+        assert pr.ParsedQuery is core_retrieval.ParsedQuery
+        assert pr.RankedCandidate is core_retrieval.RankedCandidate
+
+    def test_parallel_retriever_does_not_shadow_core_symbols(self) -> None:
+        """core.retrieval의 공개 심볼을 같은 이름의 다른 객체로 덮어쓰지 않는다.
+
+        재정의가 일어나면 두 모듈이 같은 이름으로 서로 다른 자료형을 쓰게
+        되어, 후보가 경로를 건널 때 조용히 어긋난다.
+        """
+        import core.parallel_retriever as pr
+        import core.retrieval as core_retrieval
+
+        shared = set(vars(pr)) & set(vars(core_retrieval))
+        mismatched = [
+            name for name in shared
+            if not name.startswith("_")
+            and getattr(pr, name) is not getattr(core_retrieval, name)
+        ]
+        assert not mismatched, f"core.retrieval 심볼을 덮어썼습니다: {mismatched}"
 
 
 if __name__ == "__main__":

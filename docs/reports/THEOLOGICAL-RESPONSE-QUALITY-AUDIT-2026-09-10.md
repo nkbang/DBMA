@@ -1,7 +1,7 @@
 ---
 title: 신학·목회 답변 품질 감사 (배포 기준 적합성)
 created: 2026-09-10
-status: 감사 완료 — 우선순위 1·2 수정됨(커밋 `ae05415`), 3·4·5 미착수
+status: 감사 완료 — 우선순위 1·2(`ae05415`)·3(한국어 QueryParser) 수정됨, 4·5 미착수
 scope: core/generation.py, core/retrieval.py, NAE/retrieval_adapter.py, core/chunking_optimizer.py, NAE/corpus/tsu/
 baseline: `32f59c9` (감사 시점) → `ae05415` (수정 후)
 venv: `~/envs/dbma311`
@@ -31,7 +31,7 @@ venv: `~/envs/dbma311`
 | 2 | 교단·개인 신학 반영 | 미구현 | 미구현 |
 | 3 | 완결 문단 청크 | 미달 (문장 단위 + 200자 절단) | **부분 개선** — 절단 제거, 단위는 그대로 |
 | 4 | 한국어 완결 문장 | 방어만 존재 | 부분 개선 — 근본 원인 잔존 |
-| 5 | 정확한 자료 기반 | 부분 | 부분 |
+| 5 | 정확한 자료 기반 | 부분 | **개선** — 한국어 질의 랭킹 복구(결함 A 해소), 결함 B·C 잔존 |
 
 ---
 
@@ -209,8 +209,18 @@ print(len(d), statistics.mean(L), statistics.median(L), sum(1 for x in L if x<20
 | 장절 파서 | `_extract_scripture_refs()` | 영문 책명 패턴 |
 | 책명 사전 | `BOOK_ID_TO_NAMES` (`:202`) | 한글 일부 등록됨 |
 
-→ 한국어 질의는 `intent="unknown"`, `themes=[]`로 떨어져 **가중치가 가장 큰
-theological_score(0.30)가 제대로 붙지 않는다.**
+→ 한국어 질의는 `intent="unknown"`, `themes=[]`, `keywords=[]`로 떨어져
+**BM25(0.25)가 항상 0이고 theological_score(0.30)도 제대로 붙지 않았다.**
+
+> **[2026-09-10 해소]** 결함 A는 수정됐다. 근본 원인은 "한국어 미지원"이
+> 아니라 **비대칭**이었다 — 문서 쪽 `_tokenize()`는 이미 kiwipiepy 형태소
+> 분석기를 쓰고 있었고 질의 쪽만 영어 정규식이었다. `_extract_keywords()`가
+> 같은 `_tokenize()`를 재사용하도록 바꾸고, `THEME_KEYWORDS` 14종·
+> `INTENT_PATTERNS` 5종·폴백 용어에 한국어를 병기했다. `시편 N편` 참조
+> 형식도 함께 지원(`core/query_enhancements.py`).
+> 실측: 한국어×한국어 TRS 0.00→0.83 / BM25 0.0→1.0, 한국어×영어 TRS
+> 0.30→0.60, **영어×영어 불변**. 상세:
+> [Build Report](./DBMA-KOREAN-QUERY-PARSER-BUILD-REPORT-001.md)
 
 ### 결함 B — 문맥 블록에 서지 정보 없음
 
@@ -271,10 +281,12 @@ SYSTEM에 **근거 제한 지시가 없다**(§1). 교단 지정은 "복음주�
 
 | # | 항목 | 선행 조건 | 규모 |
 |---|---|---|---|
-| 3 | 한국어 QueryParser | 없음 — 즉시 착수 가능 | 중 |
+| ~~3~~ | ~~한국어 QueryParser~~ | **완료 (2026-09-10)** — §5 결함 A 참고 | — |
 | 4 | 청크 단위 정책 확정 | **ADR-007/008이 Proposed** — 새 ADR/Amendment 선행 필수 | 대 |
 | 5 | 교단 프로파일 계층 | ADR-009 되살리기 + 교단 확정(침례교?) | 대 |
 | — | 문맥 블록에 서지 정보 추가 (§5 결함 B) | ADR-024 §C 영향 확인 필요 | 소 |
+| — | `_sermon_usability_score()` `academic_terms` 한국어 (SUS, 가중치 0.20) | 없음 | 소 |
+| — | THEME_KEYWORDS 테마 확장 (칭의/성화 등 조직신학 주제 미포함) | 테마 목록 자체가 판단 대상 | 중 |
 | — | groundedness 판정을 chat 경로에 연결 | ADR-010 Phase 2 | 소~중 |
 
 ### 세션 운용 메모
