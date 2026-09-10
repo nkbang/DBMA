@@ -285,22 +285,84 @@ for book_id, names in BOOK_ID_TO_NAMES.items():
         NAME_TO_BOOK_ID[name] = book_id
 
 # Thematic keywords (from theological_scorer.py)
+#
+# [2026-09-10] 각 테마에 한국어 어휘를 병기했다. 단순한 번역 추가가 아니라
+# **교차언어 다리**를 놓는 것이 목적이다 — `_thematic_relevance_score()`는
+# 질의 쪽(`hits_query`)과 본문 쪽(`hits_content`)을 각각 검사해 둘 다
+# 걸리면 1.0, 한쪽만 걸리면 0.5를 준다. 어휘가 영어뿐이던 동안에는
+# 한국어 질의가 `hits_query`를 절대 만족시키지 못해, 19세기 영어 코퍼스를
+# 상대로 한국어로 묻는 이 앱의 기본 사용 형태에서 TRS가 사실상 죽어
+# 있었다. 이제 "은혜"로 물으면 질의 쪽이 mercy 테마에 걸리고 영어 본문의
+# "grace"가 본문 쪽에 걸려 두 언어가 같은 테마로 만난다.
+#
+# 매칭은 `kw in text_lower` 부분 문자열 방식이라 한국어 교착어미가 자연히
+# 흡수된다("은혜" ⊂ "은혜로우신"). 그래서 여기에는 어간 형태만 적는다.
+# 조사/어미를 붙인 변형을 나열할 필요가 없다.
+#
+# 한 음절 어휘는 넣지 않았다 — "영"(spirit)은 "영어/영국/영원"에,
+# "법"(law)은 "방법"에 걸린다. 두 음절 이상으로만 적는다.
 THEME_KEYWORDS: dict[str, list[str]] = {
-    "creation": ["create", "creation", "created", "beginning", "form", "make", "maker"],
-    "covenant": ["covenant", "promise", "oath", "sign", "everlasting", "perpetual"],
-    "redemption": ["redeem", "deliver", "save", "salvation", "ransom", "rescue"],
-    "judgment": ["judge", "judgment", "condemn", "punish", "wrath", "justice"],
-    "mercy": ["mercy", "grace", "compassion", "forgive", "forgiveness", "pity"],
-    "faith": ["faith", "believe", "trust", "belief", "faithful", "faithfulness"],
-    "worship": ["worship", "praise", "adoration", "holy", "glory", "worshipped"],
-    "law": ["law", "commandment", "statute", "ordinance", "torah", "decree"],
-    "kingdom": ["kingdom", "king", "reign", "sovereign", "throne", "rule"],
-    "spirit": ["spirit", "soul", "breath", "heart", "inner", "spiritual"],
-    "love": ["love", "loved", "charity", "dear", "beloved"],
-    "wisdom": ["wisdom", "wise", "understanding", "knowledge", "discern"],
-    "prophecy": ["prophesy", "prophecy", "vision", "reveal", "revelation", "seer"],
-    "resurrection": ["rise", "raised", "resurrect", "life", "death", "alive", "living"],
+    "creation": ["create", "creation", "created", "beginning", "form", "make", "maker",
+                 "창조", "창세", "태초", "피조", "지으신", "만드신"],
+    "covenant": ["covenant", "promise", "oath", "sign", "everlasting", "perpetual",
+                 "언약", "약속", "맹세", "서약", "계약"],
+    "redemption": ["redeem", "deliver", "save", "salvation", "ransom", "rescue",
+                   "구원", "구속", "대속", "속량", "구주", "건지", "구출"],
+    "judgment": ["judge", "judgment", "condemn", "punish", "wrath", "justice",
+                 "심판", "정죄", "형벌", "진노", "공의", "징계"],
+    "mercy": ["mercy", "grace", "compassion", "forgive", "forgiveness", "pity",
+              "은혜", "자비", "긍휼", "용서", "사죄", "불쌍"],
+    "faith": ["faith", "believe", "trust", "belief", "faithful", "faithfulness",
+              "믿음", "신앙", "신뢰", "신실", "충성"],
+    "worship": ["worship", "praise", "adoration", "holy", "glory", "worshipped",
+                "예배", "찬양", "경배", "찬미", "거룩", "영광"],
+    "law": ["law", "commandment", "statute", "ordinance", "torah", "decree",
+            "율법", "계명", "법도", "규례", "토라"],
+    "kingdom": ["kingdom", "king", "reign", "sovereign", "throne", "rule",
+                "왕국", "천국", "통치", "보좌", "주권", "다스리"],
+    "spirit": ["spirit", "soul", "breath", "heart", "inner", "spiritual",
+               "성령", "영혼", "심령", "영적", "마음"],
+    "love": ["love", "loved", "charity", "dear", "beloved",
+             "사랑", "애정", "자애"],
+    "wisdom": ["wisdom", "wise", "understanding", "knowledge", "discern",
+               "지혜", "명철", "분별", "총명", "슬기"],
+    "prophecy": ["prophesy", "prophecy", "vision", "reveal", "revelation", "seer",
+                 "예언", "선지", "계시", "환상", "묵시"],
+    "resurrection": ["rise", "raised", "resurrect", "life", "death", "alive", "living",
+                     "부활", "생명", "죽음", "살리", "다시 사"],
 }
+
+
+# [2026-09-10] 한국어 불용어 — `QueryParser._extract_keywords()` 전용.
+#
+# `_tokenize()`(kiwipiepy 형태소 분석)가 조사/어미를 떼고 내용 형태소만
+# 남기지만, 그 결과에는 여전히 검색 신호가 없는 기능적 어간이 섞인다
+# ("하", "있", "되", "것", "수"). 이들을 BM25 질의어로 넘기면 실제로
+# 점수를 **떨어뜨린다** — `bm25_score()`의 idf가 `log(2/(freq+1))+1`이라
+# 문서마다 흔한 어간일수록 항 점수가 낮아지고(음수까지 간다), 점수는
+# 매칭된 항들의 **평균**이라 이런 항이 평균을 끌어내리기 때문이다.
+#
+# 성경 장절 마커("장", "절")도 뺀다 — 장절은 `_extract_scripture_refs()`가
+# 전담하는 별도 경로이고, 여기 남으면 거의 모든 주석 문서에 걸리는
+# 잡음 항이 된다.
+KOREAN_STOP_WORDS: frozenset[str] = frozenset({
+    # 의존명사·대명사 잔여
+    "것", "수", "때", "등", "및", "이", "그", "저", "나", "너", "우리", "중",
+    "때문", "경우", "정도", "자체", "가지", "동안",
+    # 기능적 용언 어간 잔여
+    "하", "있", "되", "없", "같", "보", "가", "오", "알", "모르", "지나",
+    "드리", "사", "삼", "지", "들", "받",
+    # 의문사
+    "무엇", "어떻", "어찌", "왜", "어디", "누구", "언제", "얼마", "무슨",
+    # 문법적 연결 어간
+    "대하", "위하", "통하", "관하", "따르", "인하", "의하",
+    # 성경 장절 마커 (_extract_scripture_refs 전담)
+    "장", "절", "편", "권",
+})
+
+# 토큰에 한글이 하나라도 있는지 — 한국어/영어 토큰에 서로 다른 최소 길이
+# 규칙을 적용하기 위한 판별용(아래 _extract_keywords 참고).
+_HANGUL_RE = re.compile(r"[가-힣]")
 
 
 # ============================================================
@@ -318,12 +380,25 @@ class QueryParser:
     """
 
     # Intent detection patterns
+    # [2026-09-10] 각 intent에 한국어 표현을 병기했다. 이전까지 전부 영문
+    # 정규식이라 한국어 질의는 예외 없이 아래 폴백으로 떨어졌고, 폴백의
+    # 성경 용어 목록마저 영문이어서 결국 intent="unknown"으로 끝났다.
+    #
+    # dict 순서가 곧 우선순위다(_detect_intent가 첫 매칭에서 멈춘다).
+    # 한국어를 추가할 때도 이 순서를 존중해야 한다 — 예컨대 "설명"(exegesis)이
+    # "어떻게"(devotional)보다 먼저 걸려야 "이 본문을 설명해 주십시오"가
+    # 주해 질의로 잡힌다. 영어 목록도 같은 순서 전제로 짜여 있다.
     INTENT_PATTERNS: dict[str, str] = {
-        "exegesis": r"(?:explain|what does|meaning of|interpret|study|analysis|deep dive)",
-        "comparison": r"(?:compare|versus|vs\.?|difference between|similarities|unlike|while\s+\w+|but\s+\w+)",
-        "devotional": r"(?:how|why|what can we|personal|application|practical|spiritual growth|encourage)",
-        "theological": r"(?:doctrine|theology|belief|doctrinal|systematic|nature of|attribute of|God's nature)",
-        "cross-reference": r"(?:cross.?ref|other place|where else|parallel|same theme|similar passage|related)",
+        "exegesis": r"(?:explain|what does|meaning of|interpret|study|analysis|deep dive"
+                    r"|주해|주석|강해|해석|풀이|설명|무슨 뜻|뜻이 무엇|의미)",
+        "comparison": r"(?:compare|versus|vs\.?|difference between|similarities|unlike|while\s+\w+|but\s+\w+"
+                      r"|비교|차이|대조|다른 점|반면|어느 쪽)",
+        "devotional": r"(?:how|why|what can we|personal|application|practical|spiritual growth|encourage"
+                      r"|어떻게|어찌|왜|적용|실천|묵상|권면|위로|삶에|성도에게)",
+        "theological": r"(?:doctrine|theology|belief|doctrinal|systematic|nature of|attribute of|God's nature"
+                       r"|교리|교의|신학|조직신학|신조|신앙고백|속성|본질|정통)",
+        "cross-reference": r"(?:cross.?ref|other place|where else|parallel|same theme|similar passage|related"
+                           r"|상호\s?참조|관련\s?구절|다른 곳|평행|병행|비슷한 구절|연관)",
     }
 
     def __init__(self) -> None:
@@ -365,7 +440,15 @@ class QueryParser:
             if pattern.search(query):
                 return intent
         # Default to theological if it contains biblical terms
-        if re.search(r'(?:God|Jesus|Christ|Holy Spirit|law|grace|faith|covenant|kingdom|sin)', query, re.IGNORECASE):
+        # [2026-09-10] 한국어 신학 용어 추가 — 이 목록이 영문뿐이라
+        # "하나님의 은혜에 대하여" 같은 명백한 신학 질의도 "unknown"으로
+        # 떨어졌다. intent는 후속 랭킹에 쓰이므로 unknown은 손실이다.
+        if re.search(
+            r'(?:God|Jesus|Christ|Holy Spirit|law|grace|faith|covenant|kingdom|sin'
+            r'|하나님|하느님|예수|그리스도|성령|주님|성경|말씀|복음'
+            r'|은혜|믿음|구원|언약|율법|천국|교회|기도)',
+            query, re.IGNORECASE,
+        ):
             return "theological"
         return "unknown"
 
@@ -455,7 +538,26 @@ class QueryParser:
         return themes_found
 
     def _extract_keywords(self, query: str) -> list[str]:
-        """Extract meaningful keywords from query."""
+        """Extract meaningful keywords from query.
+
+        [2026-09-10] 이 함수의 결과는 `RetrievalEngine.retrieve()` STEP 2에서
+        `bm25_score(parsed_query.keywords, content)`로 그대로 들어간다
+        (하이브리드 가중치 0.25). 그런데 여태 토큰 추출이
+        `\b[a-zA-Z]{3,}\b`뿐이어서 **한국어 질의는 예외 없이 빈 리스트를
+        반환했고, 따라서 모든 한국어 질의의 BM25 점수가 0이었다.**
+
+        더 나쁜 것은 그 0이 비대칭이었다는 점이다 — 문서 쪽 토큰화를 맡는
+        `_tokenize()`는 이미 kiwipiepy 형태소 분석기를 써서 한국어를 제대로
+        처리하고 있었다(P1 fix, docs/TODO.md). 즉 색인 쪽은 한국어를 알고
+        질의 쪽만 몰랐다. 여기서 `_tokenize()`를 그대로 재사용해 양쪽
+        토큰화를 일치시키는 것이 이 수정의 핵심이다. 별도 한국어 토크나이저를
+        새로 만들지 않는다 — 같은 텍스트가 질의로 오느냐 본문으로 오느냐에
+        따라 다르게 쪼개지면 BM25는 애초에 성립하지 않는다.
+
+        영어 동작은 보존된다: kiwi는 영문을 공백/구두점 기준으로 그대로
+        내주고 소문자화하므로, 기존 정규식이 뽑던 것과 같은 낱말이 나온다.
+        3자 미만 영단어를 버리던 규칙도 아래에서 그대로 유지한다.
+        """
         stop_words = {
             "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
             "in", "on", "at", "to", "for", "of", "with", "by", "from", "and", "or",
@@ -467,8 +569,22 @@ class QueryParser:
             "why", "if", "then", "than", "so", "no", "yes", "about",
         }
 
-        words = re.findall(r'\b[a-zA-Z]{3,}\b', query.lower())
-        keywords = [w for w in words if w not in stop_words and len(w) > 2]
+        keywords: list[str] = []
+        for token in _tokenize(query):
+            if token in stop_words or token in KOREAN_STOP_WORDS:
+                continue
+            if _HANGUL_RE.search(token):
+                # 한국어: kiwi가 이미 조사/어미를 떼어 어간만 남겼으므로
+                # 길이 제한을 두지 않는다. 두 음절 규칙을 세우면 "죄",
+                # "주"(주님), "영"(영/성령) 같은 실질 어휘가 통째로 사라진다
+                # — 무의미한 한 음절 어간은 길이가 아니라
+                # KOREAN_STOP_WORDS로 걸러낸다.
+                keywords.append(token)
+            elif len(token) > 2 and token.isalpha():
+                # 영어: 기존 규칙 그대로(3자 이상, 순수 알파벳).
+                # isalpha()가 숫자를 배제하는데, 이것도 기존
+                # `[a-zA-Z]{3,}` 정규식과 같은 동작이다.
+                keywords.append(token)
 
         # Deduplicate while preserving order
         seen: set[str] = set()
@@ -1113,9 +1229,31 @@ def _parse_refs_from_text(text: str) -> list[ScriptureReference]:
     return refs
 
 
+def _lexical_tokens(text: str) -> set[str]:
+    """어휘 겹침(자카드) 계산용 토큰 집합.
+
+    [2026-09-10] `_thematic_relevance_score()`가 질의와 본문 양쪽을
+    `\b[a-zA-Z]{3,}\b`로만 토큰화해, 한국어 질의로 한국어 문서를 찾을 때
+    자카드가 **항상 0**이었다(사용자 개인 서재가 정확히 이 경우다).
+
+    한글이 있을 때만 형태소 분석기를 태우는 이유는 성능이다. 이 함수는
+    쿼리당 후보 문서마다 호출되고, theological scoring은 이미 측정된
+    병목이다(53k TSU 코퍼스에서 end-to-end의 82%). NAE 연구 코퍼스는
+    19세기 영어라 한글이 없으므로 그 경로는 기존 정규식 그대로 돌아
+    추가 비용이 0이다.
+
+    한국어 질의 × 영어 본문은 여전히 교집합이 비어 자카드 0이 된다 —
+    이건 결함이 아니라 정직한 값이다. 교차언어 연결은 자카드가 아니라
+    THEME_KEYWORDS(양쪽 언어 병기)가 담당한다.
+    """
+    if _HANGUL_RE.search(text):
+        return set(_tokenize(text))
+    return set(t.lower() for t in re.findall(r'\b[a-zA-Z]{3,}\b', text))
+
+
 def _thematic_relevance_score(query: str, tsu: dict[str, Any]) -> float:
     """Compute thematic relevance score (0-1)."""
-    query_tokens = set(t.lower() for t in re.findall(r'\b[a-zA-Z]{3,}\b', query))
+    query_tokens = _lexical_tokens(query)
     tsu_content = tsu.get("content", "")
     query_lower = query.lower()
     content_lower = tsu_content.lower()
@@ -1132,7 +1270,7 @@ def _thematic_relevance_score(query: str, tsu: dict[str, Any]) -> float:
 
     theme_score = max(theme_scores) if theme_scores else 0.0
 
-    tsu_words = set(t.lower() for t in re.findall(r'\b[a-zA-Z]{3,}\b', tsu_content[:1000]))
+    tsu_words = _lexical_tokens(tsu_content[:1000])
     if query_tokens and tsu_words:
         intersection = query_tokens & tsu_words
         union = query_tokens | tsu_words

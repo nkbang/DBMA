@@ -489,8 +489,15 @@ class EnhancedReferenceParser:
         "계시록": "REV", "묵시": "REV",
     }
 
+    # [2026-09-10] 장 구분자에 "편"을 허용한다 — 한국어에서 시편은 관례적으로
+    # "시편 23편"으로 인용하며 "시편 23장"이라고 쓰지 않는다. 목회자 사용자의
+    # 질의에서 시편이 차지하는 비중을 생각하면 이 한 글자가 빠진 탓에 가장
+    # 자주 설교되는 책의 장 참조가 통째로 인식되지 않았다.
+    # "편"을 시편으로만 제한하지 않은 이유: 패턴이 이미 책 별칭 매칭을
+    # 요구하므로 오탐 위험이 낮고("로마서 5편"이라고 쓰는 사람은 없다),
+    # 설령 그렇게 써도 5장으로 읽는 것이 옳은 해석이다.
     KO_PATTERN = re.compile(
-        r'(' + '|'.join(re.escape(k) for k in KO_ABBR_TO_BOOK.keys()) + r')\s*(\d{1,3})\s*장\s*(절|[:：])?\s*(\d{1,3})?',
+        r'(' + '|'.join(re.escape(k) for k in KO_ABBR_TO_BOOK.keys()) + r')\s*(\d{1,3})\s*[장편]\s*(절|[:：])?\s*(\d{1,3})?',
         re.IGNORECASE
     )
 
@@ -556,7 +563,7 @@ class EnhancedReferenceParser:
         # Pattern A: BOOK CHAPTER장 VERSE절 (e.g., "로마서 8장", "로마서 8장 28절")
         # Key: Use \s+ (one or more) after book name to ensure at least one space boundary
         korean_full_pattern = re.compile(
-            r'(' + '|'.join(re.escape(k) for k in sorted(_KOREAN_FULL_NAMES.keys(), key=len, reverse=True)) + r')\s+(\d{1,3})\s*장\s*(절|[:：])?\s*(\d{1,3})?',
+            r'(' + '|'.join(re.escape(k) for k in sorted(_KOREAN_FULL_NAMES.keys(), key=len, reverse=True)) + r')\s+(\d{1,3})\s*[장편]\s*(절|[:：])?\s*(\d{1,3})?',
             re.IGNORECASE
         )
         
