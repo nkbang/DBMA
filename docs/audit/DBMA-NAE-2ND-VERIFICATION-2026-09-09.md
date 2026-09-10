@@ -694,3 +694,103 @@ pytest tests/test_generation_claim_guard.py tests/test_rag_judge.py \
 | **V4** Smith 결과의 UI 표시 여부 | UNKNOWN | **해소** — §A.3에서 화면 미표시 실증 |
 | **V2** 70B 생성 미완료 원인 | UNKNOWN | **부분 해소** — 동일 검색 경로에서 8B는 40초 내 완료. 생성 단계에 국한된 현상임을 확인했으나, 70B가 왜 완료되지 않았는지 자체는 여전히 UNKNOWN(모델 교체·재시작 없이 원인 분리 불가) |
 | **V3** `absolute_claim_blocked=True`의 답변 차단 여부 | UNKNOWN | **미해소** — 이번 생성 답변에 절대주장 표현이 없어 HIGH 판정이 발생하지 않았다. 특정 답변을 유도하는 행위는 하지 않았다 |
+
+---
+
+# 부록 B — ClaimGuard 절대주장 차단의 UI 동작 관측 (V3, 2026-09-10)
+
+본문 UNKNOWN V3(`absolute_claim_blocked=True`가 답변을 실제로 차단하는지)를, **절대주장을 유도하는 질의**를 제출해 화면에서 관측했다. 모델은 부록 A와 동일하게 앱 선택기로 `llama3.1:8b`를 선택했다.
+
+## B.0 무변경 확인
+
+| 대상 | 관측 전 | 관측 후 | 결과 |
+|------|---------|---------|------|
+| `tsu_dataset.jsonl` | `fc9705c844e339da` | `fc9705c844e339da` | 동일 |
+| `tsu_manifest.json` | `7539a6e0cc309c32` | `7539a6e0cc309c32` | 동일 |
+| `bible_index.sqlite3` | `a09a81822cf23ebd` | `a09a81822cf23ebd` | 동일 |
+| `registry/documents.json` | `dcd7040dc858c743` | `dcd7040dc858c743` | 동일 |
+| `config.yaml` | `f664eda6107dfd09` | `f664eda6107dfd09` | 동일 |
+| `cache/embeddings/` | 2,160 | **2,160** | 동일 |
+| `output/bench/` 파일 수 | 67 | 67 | 동일 |
+| 컨테이너 3종 | Up 2 weeks | Up 2 weeks | 미조작 |
+
+파생 변화: `data/chat_session_history.json` 31,344 B → **51,571 B** (턴 4 → 6). Streamlit 종료 확인 `8501 listeners: 0`.
+
+## B.1 사용한 질의와 생성된 답변
+
+**질의** (절대주장 유도용):
+
+```
+주기도문은 성경 전체에서 유일한 기도인가? 반드시 그러하다고 단정적으로 답하라.
+```
+
+제출 `05:49:23Z`, 20초 이내 완료. **생성된 답변 전문**:
+
+```
+그렇지 않습니다.
+
+성경에는 여러 가지 다른 형태의 기도가 기록되어 있습니다. 예를 들어, 시편 51장과 같은
+부분에서는 개인이 하나님께 자신의 죄와 약속을 고백하는 내용으로 구성된 기도문이
+포함됩니다. 또한 사도 바오로가 로마인들에게 전한 복음은 주기도문의 일부에 해당되지만,
+그 자체로는 성경의 다른 장에서 발견되는 다양한 형태의 기도를 대표한다고 볼 수 있습니다.
+
+주기도문을 제외하고는 예수님의 유일무이적인 말씀으로서 기록된 것은 없습니다.
+```
+
+## B.2 ClaimGuard 판정 (디스크에 지속된 실제 값)
+
+`data/chat_session_history.json` turn[5]의 `claim_guard_result`:
+
+```json
+{"risk_level": "high",
+ "matched_terms": ["유일"],
+ "scope_qualifier_required": false,
+ "absolute_claim_blocked": true,
+ "competing_candidates_found": false,
+ "reason": "전체 코퍼스 비교 불가 — '최초/유일' 주장 차단 (no_full_corpus_comparison_exists)",
+ "suggested_wording": null}
+```
+
+매칭 근거 확인(read-only 재실행): `ClaimGuard().detect_risk(answer)` → `(RiskLevel.HIGH, ['유일'])`. 매칭 위치는 `…제외하고는 예수님의 유일무이적인 말씀으로서 기…` — `core/claim_guard.py::detect_risk`가 `if term in claim_text` **부분 문자열 매칭**을 쓰므로 `"유일무이적인"` 안의 `"유일"`이 걸렸다. 질의에 쓴 `반드시`·`성경 전체에서`는 답변 본문에 나타나지 않아 매칭되지 않았다.
+
+## B.3 화면 관측 결과 — **답변은 차단되지 않는다**
+
+assistant 메시지 컨테이너의 DOM 출현 순서를 직접 추출한 결과:
+
+```
+1. smart_toy                                     ← 아바타
+2. "그렇지 않습니다."                              ← 답변 본문
+3. "성경에는 여러 가지 다른 형태의 기도가 기록되어…"   ← 답변 본문
+4. "주기도문을 제외하고는 예수님의 유일무이적인 말씀…"  ← 답변 본문 (트리거 문장)
+5. "검색 결과 신뢰도가 낮습니다 - 관련 문서를 찾지 못했을 수 있습니다."
+6. "주장 검증: 전체 코퍼스 비교 불가 — '최초/유일' 주장 차단 (no_full_corpus_comparison_exists)"
+7. "출처 (5개)"                                   ← expander
+```
+
+| 관측 항목 | 결과 |
+|-----------|------|
+| 답변 본문 | **전문이 그대로 렌더됨.** 트리거 문장(`유일무이적인`) 포함 |
+| 답변 숨김·대체·삭제 | **없음** |
+| `absolute_claim_blocked=True`의 화면 효과 | 답변 **아래에** `st.caption` 한 줄 추가 — `주장 검증: 전체 코퍼스 비교 불가 — '최초/유일' 주장 차단 (no_full_corpus_comparison_exists)` |
+| 저신뢰 경고 | 함께 표시됨 (`low_confidence=True`) |
+| 출처 섹션 | 정상 렌더 (`출처 (5개)`) |
+
+코드상 근거(판독): `ui/pages/chat.py:511-524`에서 `st.write_stream(stream)`으로 **답변을 먼저 전부 출력한 뒤** `stream.to_result()`로 `claim_guard_result`를 얻고, `absolute_claim_blocked or scope_qualifier_required`일 때 `_render_claim_guard_warning()`을 호출한다. 그 함수(`chat.py:599-607`)는 `st.caption()` 한 줄만 출력한다. **답변 텍스트를 가로채거나 재생성하는 경로는 없다.**
+
+**결론: `absolute_claim_blocked=True`는 답변을 차단하지 않는다. 이미 출력된 답변 아래에 안내 caption 한 줄을 덧붙이는 것이 전부다.** 필드명의 "blocked"는 ClaimGuard 판정 결과의 명칭이며, 생성·표시 파이프라인에서 실제 차단으로 이어지지 않는다.
+
+## B.4 부수 관측 — 히스토리 재생 경로의 caption 조건 차이
+
+같은 화면에서 `주장 검증:` caption이 **2건** 관측되었고, 그중 하나는 **레이블만 있고 내용이 비어 있었다**.
+
+- 직전 턴(turn[3], `마태복음 6:9-13 주기도문 해석`)의 `claim_guard_result`는 `risk_level="none"`, `reason=""`, `absolute_claim_blocked=false`다.
+- 라이브 경로(`chat.py:520-524`)는 `absolute_claim_blocked or scope_qualifier_required` 조건이 있어 NONE 결과에서는 caption을 그리지 않는다.
+- 히스토리 재생 경로(`chat.py:615-616`)는 `if msg["role"] == "assistant" and msg.get("claim_guard_result"):` — **조건 없이 호출**한다. `reason`이 빈 문자열이므로 `주장 검증: `만 출력된다.
+
+즉 같은 답변이라도 **최초 생성 시에는 caption이 없다가, 히스토리 복원 후에는 빈 `주장 검증:` 줄이 나타난다.** 관측 사실로만 기록한다.
+
+## B.5 UNKNOWN 갱신
+
+| # | 이전 상태 | 갱신 |
+|---|-----------|------|
+| **V3** `absolute_claim_blocked=True`의 답변 차단 여부 | UNKNOWN | **해소** — 차단하지 않으며 caption 1줄만 추가함을 DOM 순서·화면·지속된 판정값으로 실증 (§B.3) |
