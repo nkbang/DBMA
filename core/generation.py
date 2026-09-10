@@ -96,6 +96,39 @@ def _sanitize_script_contamination(text: str) -> str:
     return _SCRIPT_CONTAMINATION_RE.sub("", text)
 
 
+# ============================================================
+# 근거 강제 지시문 (Grounding Directive)
+# ============================================================
+#
+# [2026-09-10] 이전까지 답변 생성 프롬프트는 "문맥:\n{context}\n\n질문:\n{q}"가
+# 전부였고, 모델 SYSTEM 프롬프트(my-theology-bot-v2, resources/models/
+# Modelfile.theology-bot-v2에 사본 보관)에도 근거 제한 지시가 없었다. 그
+# 결과 검색된 근거와 모델 내장 지식(출처 불명 학습 데이터)이 아무 구분
+# 없이 섞였다 — 이 프로젝트가 로컬 전용 스택(Ollama/Qdrant)으로 외부
+# 호출을 물리적으로 차단해 놓고도 실제로는 막지 못하던 지점이다.
+#
+# 지시문은 문맥 "앞"이 아니라 "뒤"(질문 직전)에 놓는다: 긴 문맥 블록이
+# 앞에 오면 지시가 lost-in-the-middle로 희석되는 것이 일반적으로 알려진
+# 실패 양상이며, 여기서는 문맥 길이가 top_k에 따라 크게 변하므로 지시를
+# 항상 프롬프트 끝쪽 고정 위치에 두는 편이 안정적이다.
+#
+# 문맥이 없을 때(context_used=False)는 §3만 남긴 축약본을 쓴다 — 근거가
+# 아예 없는데 "아래 자료" 운운하면 모델이 없는 자료를 상상하게 된다.
+_GROUNDING_DIRECTIVE = """지시:
+1. 위 자료에 실제로 적힌 내용만 근거로 삼아 답하라. 자료에 없는 사실·
+   인명·연도·장절을 추가하지 마라.
+2. 자료가 질문에 답하기 부족하면, 부족하다고 밝히고 자료가 실제로
+   말하는 데까지만 답하라. 모르는 것을 지어내지 마라.
+3. 자료가 영어 등 외국어면 그 뜻을 한국어로 옮겨 답하라. 원문을 그대로
+   붙여넣지 말고, 주어와 서술어가 갖춰진 완결된 한국어 문장으로 쓰라.
+4. 한국어(한글) 경어체로만 쓰라."""
+
+_GROUNDING_DIRECTIVE_NO_CONTEXT = """지시:
+1. 참고할 자료가 검색되지 않았다. 자료가 없다는 사실을 먼저 밝혀라.
+2. 확인되지 않은 사실·인명·연도·장절을 지어내지 마라.
+3. 한국어(한글) 경어체의 완결된 문장으로 쓰라."""
+
+
 def _run_claim_guard(
     answer: str,
     response: ResponsePackage,
@@ -225,12 +258,23 @@ class GenerationService:
         gains this — the retrieval query itself (response.question) is
         unchanged, so this does NOT rewrite/condense the search query
         (that would be "Plan A", a separate, larger change). Callers that
-        don't pass it (Research/SermonDraft) see byte-identical prompts."""
+        don't pass it (Research/SermonDraft) see byte-identical prompts.
+
+        [2026-09-10] 근거 강제 지시문 추가 — _GROUNDING_DIRECTIVE 주석 참고.
+        "문맥:"을 "자료:"로 바꾼 것도 같은 변경의 일부다(지시문 §1이
+        "위 자료"를 가리키므로 라벨이 일치해야 한다)."""
         context = response.llm_context_block or ""
         history_block = f"이전 대화:\n{conversation_history}\n\n" if conversation_history.strip() else ""
         if context.strip():
-            return f"{history_block}문맥:\n{context}\n\n질문:\n{response.question}", True
-        return f"{history_block}질문:\n{response.question}", False
+            return (
+                f"{history_block}자료:\n{context}\n\n"
+                f"{_GROUNDING_DIRECTIVE}\n\n"
+                f"질문:\n{response.question}"
+            ), True
+        return (
+            f"{history_block}{_GROUNDING_DIRECTIVE_NO_CONTEXT}\n\n"
+            f"질문:\n{response.question}"
+        ), False
 
     def generate_stream(
         self,
