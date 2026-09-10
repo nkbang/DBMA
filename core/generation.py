@@ -143,7 +143,10 @@ _GROUNDING_DIRECTIVE = """지시:
    말하는 데까지만 답하라. 모르는 것을 지어내지 마라.
 3. 자료가 영어 등 외국어면 그 뜻을 한국어로 옮겨 답하라. 원문을 그대로
    붙여넣지 말고, 주어와 서술어가 갖춰진 완결된 한국어 문장으로 쓰라.
-4. 한국어(한글) 경어체로만 쓰라."""
+4. 한국어(한글) 경어체로만 쓰라.
+5. 자료를 근거로 진술할 때는 그 자료에 붙은 "출처:" 표시(저자·문헌·위치)를
+   답변 안에서 함께 밝혀라. 출처 표시가 없으면 위치를 지어내지 말고 내용만
+   인용하라."""
 
 # ============================================================
 # 교단 신학 관점 지시문 (ADR-009 Amendment A, 2026-09-10)
@@ -510,11 +513,12 @@ def _external_source_directive(candidates: list[RankedCandidate]) -> str:
 
 
 def _format_sermon_context(candidates: list[RankedCandidate], max_items: int = 15) -> str:
-    """설교문 워크플로 전용 컨텍스트 포맷 — core/retrieval.py::
-    ContextAssembler.assemble()의 <context id="tsu_id">는 사람이 읽을 수
-    있는 출처가 아니라(Chat/Research 공용 포맷이라 변경하지 않는다), 모델이
-    "[자료1]을 인용하라"처럼 구체적으로 지목할 수 있도록 제목·저자 라벨을
-    붙인 별도 포맷을 여기서 만든다."""
+    """설교문 워크플로 전용 컨텍스트 포맷 — 모델이 "[자료1]을 인용하라"처럼
+    번호로 지목할 수 있도록 제목·저자 라벨을 붙인 별도 포맷이다.
+
+    [2026-09-10] core/retrieval.py::ContextAssembler.assemble()의 <context>
+    블록도 이제 "출처:" 줄로 저자·문헌·위치를 담는다(PM 정렬 감사 R3). 다만
+    설교 경로는 번호 지목("[자료1]")이 필요해 이 전용 포맷을 계속 쓴다."""
     parts: list[str] = []
     for i, c in enumerate(candidates[:max_items], 1):
         title = c.metadata.get("title") or c.metadata.get("source_file") or "출처 미상"

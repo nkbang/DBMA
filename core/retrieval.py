@@ -1944,6 +1944,56 @@ class RetrievalEngine:
 # SECTION 9: CONTEXT ASSEMBLER & CITATION BUILDER — TASK 1
 # ============================================================
 
+def _format_context_source_label(metadata: dict, scripture_ref: str = "") -> str:
+    """검색 후보의 서지 정보를 사람이 읽는 한 줄로 만든다.
+
+    [2026-09-10, PM 정렬 감사 R3 / 선결 #3] 이전에는 assemble()이 만드는
+    LLM 문맥 블록이 `<context id="TSU-..." score="...">`뿐이라 저자·문헌·
+    위치가 전혀 없었다 — Citation 객체엔 있지만 모델에는 가지 않았고,
+    그래서 모델이 답변 본문에서 "풀러는 …라고 말한다"처럼 출처를 밝힐 수
+    없었다. 값이 없는 필드는 생략한다(지어내지 않는다). 라벨 규칙은
+    core/generation.py::_format_sermon_context(설교 경로)와 같은 소스
+    필드를 쓰되 페이지·문단·장절 위치를 더한다.
+    """
+    md = metadata or {}
+    author = str(md.get("author") or "").strip()
+    title = str(md.get("title") or "").strip()
+    book = str(md.get("book") or "").strip()
+    source_file = str(md.get("source_file") or "").strip()
+
+    parts: list[str] = []
+
+    # 저작물 라벨: title(가장 풍부) → book → source_file
+    work = title or book or source_file
+    if work:
+        # title이 이미 "{book} by {author}" 형태로 저자를 포함하면 중복 표기하지 않는다
+        if author and author not in work:
+            parts.append(f"{work} — {author}")
+        else:
+            parts.append(work)
+    elif author:
+        parts.append(author)
+
+    # 위치: 장절 → 페이지 → 문단
+    ref = str(scripture_ref or "").strip()
+    if ref and ref not in ("Unknown reference", "Unmapped passage"):
+        parts.append(ref)
+    page = md.get("page")
+    if page not in (None, "", "?"):
+        parts.append(f"p.{page}")
+    paragraph = md.get("paragraph")
+    if paragraph not in (None, "", "?"):
+        parts.append(f"문단 {paragraph}")
+
+    # 외부 소스(Logos 등) 원저작물 위치 — 설교 경로와 동일 규칙
+    prov = md.get("source_provenance")
+    loc = prov.get("logos_location") if isinstance(prov, dict) else None
+    if loc:
+        parts.append(str(loc))
+
+    return ", ".join(p for p in parts if p)
+
+
 class ContextAssembler:
     """Assembles final context block for LLM consumption."""
 
@@ -1977,9 +2027,15 @@ class ContextAssembler:
 
             scripture_contexts.append(f"[{ref_str}] Score={score:.3f}: {content[:300]}")
 
+            # [PM 정렬 감사 R3 / 선결 #3] 서지 정보를 블록 안에 함께 넣어
+            # 모델이 답변에서 출처를 밝힐 수 있게 한다. 정보가 없으면 줄을
+            # 넣지 않는다("출처: 미상" 같은 잡음 방지).
+            source_label = _format_context_source_label(candidate.metadata, ref_str)
+            source_line = f"출처: {source_label}\n" if source_label else ""
+
             context_parts.append(
                 f"<context id=\"{tsu_id}\" score=\"{score:.4f}\">\n"
-                f"{content}\n</context>\n"
+                f"{source_line}{content}\n</context>\n"
             )
 
         llm_context_block = "\n".join(context_parts)
