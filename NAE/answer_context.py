@@ -72,6 +72,29 @@ def _attr(value) -> str:
     return str(value).replace('"', "'").replace("<", "").replace(">", "").strip()
 
 
+def _source_label(bib: dict) -> str:
+    """[#16 재개 체크리스트 §3-1] 서지 라벨은 PR #14가 이미 만든
+    core/retrieval.py::_format_context_source_label 하나로 통일한다 —
+    브리지가 별도 work=/author=/page= 속성 어휘를 만들지 않는다. DBMA
+    개인서재 경로(`출처:` 라인)와 같은 포맷을 쓴다.
+    """
+    from core.retrieval import _format_context_source_label
+
+    ps, pe = bib.get("page_start"), bib.get("page_end")
+    if ps and pe and ps != pe:
+        page = f"{ps}-{pe}"
+    elif ps:
+        page = ps
+    else:
+        page = None
+    return _format_context_source_label({
+        "author": bib.get("author"),
+        "title": bib.get("work"),
+        "page": page,
+        "paragraph": bib.get("paragraph_index"),
+    })
+
+
 # num_ctx(기본 32768 토큰) 대비 컨텍스트 문자 예산의 보수적 상한. 한국어
 # 기준 대략 토큰당 1.5~2자로 잡아도 여유가 크지만, 프롬프트의 나머지
 # (지시문·질문·이전 대화)와 top_k개 문단을 함께 담아야 하므로 보수적으로
@@ -122,30 +145,17 @@ def format_nae_context_block(hits: list[dict]) -> str:
         anchor = (h.get("anchor_sentence") or "").strip()
         para, truncated = _shrink_around_anchor(para, anchor)
 
-        page_start = bib.get("page_start")
-        page_end = bib.get("page_end")
-        if page_start and page_end and page_start != page_end:
-            page_attr = f"p.{page_start}-{page_end}"
-        elif page_start:
-            page_attr = f"p.{page_start}"
-        else:
-            page_attr = ""
-
         attrs = [f'id="{_attr(h.get("tsu_id"))}"']
-        if bib.get("work"):
-            attrs.append(f'work="{_attr(bib.get("work"))}"')
-        if bib.get("author"):
-            attrs.append(f'author="{_attr(bib.get("author"))}"')
-        if page_attr:
-            attrs.append(f'page="{page_attr}"')
-        if bib.get("paragraph_index") is not None:
-            attrs.append(f'para="§{_attr(bib.get("paragraph_index"))}"')
         if truncated:
             attrs.append('truncated="true"')
         if not h.get("paragraph_resolved", True):
             attrs.append('resolved="false"')
 
-        block = f"<자료 {' '.join(attrs)}>\n{para}\n"
+        # 서지는 DBMA 경로와 같은 "출처:" 한 줄로 통일 (#16 §3-1).
+        label = _source_label(bib)
+        source_line = f"출처: {label}\n" if label else ""
+
+        block = f"<자료 {' '.join(attrs)}>\n{source_line}{para}\n"
         if anchor and anchor in para:
             block += f"  <일치문장>{anchor}</일치문장>\n"
         block += "</자료>\n"
@@ -154,15 +164,16 @@ def format_nae_context_block(hits: list[dict]) -> str:
     return "\n".join(parts)
 
 
-# `_GROUNDING_DIRECTIVE`(core/generation.py, ae05415 정본)에 **추가로** 붙는
-# 브리지 전용 조항. 재구성·인용·앵커 해석을 지시한다. sandbox의 "3~6문장
-# 간결" 상한은 프로덕션 목회 답변 경로에 이식하지 않는다(TO §3-2).
+# `_GROUNDING_DIRECTIVE`(core/generation.py, ae05415 정본, 현재 §1~5)에
+# **추가로** 붙는 브리지 전용 조항. §6부터 이어진다. 저자·저작 표기는
+# 이미 `_GROUNDING_DIRECTIVE` §5("출처: 표시를 답변 안에서 밝혀라")가
+# 다루므로 여기서 중복하지 않는다(#16 재개 체크리스트 §3-2). sandbox의
+# "3~6문장 간결" 상한은 프로덕션 목회 답변 경로에 이식하지 않는다.
 NAE_PARAGRAPH_PROMPT_CLAUSE = """추가 지시(공개 신학 자료):
 6. 각 <자료>는 완결된 원문 문단이다. 조각을 그대로 붙여넣지 말고, 문단의
-   논지를 2~4개의 완결된 한국어 문단으로 재구성하라.
-7. 각 문단에서 최소 1개 <자료>를 근거로 명시하고, 본문에서 저자·저작
-   (work / author 속성)을 밝혀라 — 예: "풀러는 …라고 말한다".
-8. <일치문장>은 검색이 걸린 지점 표시일 뿐이다. 그 문장만이 아니라 문단
+   논지를 2~4개의 완결된 한국어 문단으로 재구성하라. 각 문단에서 최소
+   1개 <자료>를 근거로 삼아라.
+7. <일치문장>은 검색이 걸린 지점 표시일 뿐이다. 그 문장만이 아니라 문단
    전체를 근거로 삼아라."""
 
 

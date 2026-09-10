@@ -37,13 +37,15 @@ def _hit(**over):
     return base
 
 
-def test_context_block_carries_bibliography_attributes():
+def test_context_block_carries_bibliography_as_source_line():
+    # [#16 §3-1] 서지는 DBMA 경로와 같은 "출처:" 한 줄로 통일 —
+    # 별도 work=/author= 속성 어휘를 만들지 않는다.
     block = format_nae_context_block([_hit()])
-    assert 'work="The Gospel Worthy of All Acceptation"' in block
-    assert 'author="Andrew Fuller"' in block
-    assert 'page="p.132-133"' in block
-    assert 'para="§418"' in block
-    assert "<자료" in block and "</자료>" in block
+    assert "<자료 id=" in block and "</자료>" in block
+    assert "출처: The Gospel Worthy of All Acceptation — Andrew Fuller" in block
+    assert "p.132-133" in block
+    assert "문단 418" in block
+    assert 'work="' not in block and 'author="' not in block
 
 
 def test_context_block_includes_anchor_sentence_when_present():
@@ -72,11 +74,13 @@ def test_context_block_marks_unresolved():
     assert 'resolved="false"' in block
 
 
-def test_prompt_clause_has_paragraph_and_attribution_rules():
+def test_prompt_clause_has_paragraph_rules_without_duplicating_directive_5():
     assert "완결된 원문 문단" in NAE_PARAGRAPH_PROMPT_CLAUSE
     assert "2~4개의 완결된 한국어 문단" in NAE_PARAGRAPH_PROMPT_CLAUSE
-    assert "저자·저작" in NAE_PARAGRAPH_PROMPT_CLAUSE
     assert "일치문장" in NAE_PARAGRAPH_PROMPT_CLAUSE
+    # 저자·저작 표기는 _GROUNDING_DIRECTIVE §5가 담당 — 여기서 중복 안 함 (#16 §3-2)
+    assert "work / author 속성" not in NAE_PARAGRAPH_PROMPT_CLAUSE
+    assert NAE_PARAGRAPH_PROMPT_CLAUSE.startswith("추가 지시")
 
 
 def test_build_prompt_orders_grounding_before_paragraph_before_denomination():
