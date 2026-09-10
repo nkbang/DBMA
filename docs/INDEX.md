@@ -167,6 +167,7 @@ Located in: [output/PT_SEARCH_*.md](../output/)
 | Document | Location | Phase |
 |----------|----------|-------|
 | Documentation Audit Report | [docs/reports/documentation-audit-report.md](./reports/documentation-audit-report.md) | Phase 1 |
+| 신학·목회 답변 품질 감사 | [docs/reports/THEOLOGICAL-RESPONSE-QUALITY-AUDIT-2026-09-10.md](./reports/THEOLOGICAL-RESPONSE-QUALITY-AUDIT-2026-09-10.md) | 2026-09-10 |
 
 ### Documentation Rules
 

@@ -46,6 +46,7 @@ from core.config import (
     DEFAULT_TEMPERATURE,
 )
 from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
+from core.sermon.doctrine_vocabulary import DENOMINATION_PROFILE
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +116,74 @@ def _sanitize_script_contamination(text: str) -> str:
     동일하게, 무엇으로 바꿔야 할지 모르는 문자는 만들어내지 않고 삭제만
     한다)."""
     return _SCRIPT_CONTAMINATION_RE.sub("", text)
+
+
+# ============================================================
+# 근거 강제 지시문 (Grounding Directive)
+# ============================================================
+#
+# [2026-09-10] 이전까지 답변 생성 프롬프트는 "문맥:\n{context}\n\n질문:\n{q}"가
+# 전부였고, 모델 SYSTEM 프롬프트(my-theology-bot-v2, resources/models/
+# Modelfile.theology-bot-v2에 사본 보관)에도 근거 제한 지시가 없었다. 그
+# 결과 검색된 근거와 모델 내장 지식(출처 불명 학습 데이터)이 아무 구분
+# 없이 섞였다 — 이 프로젝트가 로컬 전용 스택(Ollama/Qdrant)으로 외부
+# 호출을 물리적으로 차단해 놓고도 실제로는 막지 못하던 지점이다.
+#
+# 지시문은 문맥 "앞"이 아니라 "뒤"(질문 직전)에 놓는다: 긴 문맥 블록이
+# 앞에 오면 지시가 lost-in-the-middle로 희석되는 것이 일반적으로 알려진
+# 실패 양상이며, 여기서는 문맥 길이가 top_k에 따라 크게 변하므로 지시를
+# 항상 프롬프트 끝쪽 고정 위치에 두는 편이 안정적이다.
+#
+# 문맥이 없을 때(context_used=False)는 §3만 남긴 축약본을 쓴다 — 근거가
+# 아예 없는데 "아래 자료" 운운하면 모델이 없는 자료를 상상하게 된다.
+_GROUNDING_DIRECTIVE = """지시:
+1. 위 자료에 실제로 적힌 내용만 근거로 삼아 답하라. 자료에 없는 사실·
+   인명·연도·장절을 추가하지 마라.
+2. 자료가 질문에 답하기 부족하면, 부족하다고 밝히고 자료가 실제로
+   말하는 데까지만 답하라. 모르는 것을 지어내지 마라.
+3. 자료가 영어 등 외국어면 그 뜻을 한국어로 옮겨 답하라. 원문을 그대로
+   붙여넣지 말고, 주어와 서술어가 갖춰진 완결된 한국어 문장으로 쓰라.
+4. 한국어(한글) 경어체로만 쓰라."""
+
+# ============================================================
+# 교단 신학 관점 지시문 (ADR-009 Amendment A, 2026-09-10)
+# ============================================================
+#
+# ADR-009(Accepted, 2026-07-22)는 사용자의 신학적 전통을 개혁파 침례교로
+# 확정하고 doctrine_filter를 **설교 초안 경로**에 연결했다. 그러나 질의응답
+# 경로(Chat/Research)에는 교단 신호가 전혀 없었다 — 모델 SYSTEM 프롬프트가
+# 말하는 "복음주의 및 개혁주의"는 개혁파 침례교와 모순되지는 않지만,
+# 신자세례·회중교회론·1689 언약신학을 특정하지 못한다. 목회자가 실제로
+# 답을 얻는 주 경로가 정작 자기 교단을 모르는 상태였다.
+#
+# 전통 표현은 지어내지 않고 core.sermon.doctrine_vocabulary의
+# DENOMINATION_PROFILE(=ADR-009 §Decision 원문)을 그대로 인용한다 —
+# 신학적 내용은 승인된 ADR이 단일 출처다.
+#
+# 설계상 가장 조심한 지점은 이 지시문이 근거 강제(_GROUNDING_DIRECTIVE)를
+# 무너뜨리지 않게 하는 것이다. "교단에 맞는 답"을 요구하면 모델은 자료에
+# 없는 교리를 보충해 전통에 맞추려는 유혹을 받는다 — 그건 이 앱이 막으려는
+# 바로 그 행동이다. 그래서 §3에 근거 지시가 우선한다고 명시하고, 지시문
+# 자체를 "자료를 어느 자리에서 읽을 것인가"(관점)로 한정했다. 자료가
+# 전통과 다르면 감추지 말고 드러내라는 §2도 같은 이유다.
+#
+# §4는 ADR-009 §Decision-4의 원칙("자동 차단 없음, 최종 신학적 판단
+# 권한은 목회자에게")을 프롬프트 수준에서 반복한 것이다 — 앱이 다른
+# 교단을 정죄하는 도구가 되어서는 안 된다.
+_DENOMINATION_DIRECTIVE = f"""신학 관점:
+1. 묻는 사람은 다음 전통에 서 있는 목회자다: {DENOMINATION_PROFILE}.
+   자료를 이 전통 안에서 읽고 정리하라.
+2. 자료가 이 전통과 다른 견해를 담고 있으면 감추지 마라. 누구의 견해인지
+   밝히고, 전통과 어떻게 다른지 함께 적어라.
+3. 전통에 맞추려고 자료에 없는 내용을 보태지 마라 — 위 "지시"가 이보다
+   우선한다.
+4. 다른 교단을 정죄하지 마라. 최종 판단은 묻는 목회자에게 있다."""
+
+
+_GROUNDING_DIRECTIVE_NO_CONTEXT = """지시:
+1. 참고할 자료가 검색되지 않았다. 자료가 없다는 사실을 먼저 밝혀라.
+2. 확인되지 않은 사실·인명·연도·장절을 지어내지 마라.
+3. 한국어(한글) 경어체의 완결된 문장으로 쓰라."""
 
 
 def _run_claim_guard(
@@ -268,12 +337,25 @@ class GenerationService:
         gains this — the retrieval query itself (response.question) is
         unchanged, so this does NOT rewrite/condense the search query
         (that would be "Plan A", a separate, larger change). Callers that
-        don't pass it (Research/SermonDraft) see byte-identical prompts."""
+        don't pass it (Research/SermonDraft) see byte-identical prompts.
+
+        [2026-09-10] 근거 강제 지시문 추가 — _GROUNDING_DIRECTIVE 주석 참고.
+        "문맥:"을 "자료:"로 바꾼 것도 같은 변경의 일부다(지시문 §1이
+        "위 자료"를 가리키므로 라벨이 일치해야 한다)."""
         context = response.llm_context_block or ""
         history_block = f"이전 대화:\n{conversation_history}\n\n" if conversation_history.strip() else ""
         if context.strip():
-            return f"{history_block}문맥:\n{context}\n\n질문:\n{response.question}", True
-        return f"{history_block}질문:\n{response.question}", False
+            return (
+                f"{history_block}자료:\n{context}\n\n"
+                f"{_GROUNDING_DIRECTIVE}\n\n"
+                f"{_DENOMINATION_DIRECTIVE}\n\n"
+                f"질문:\n{response.question}"
+            ), True
+        return (
+            f"{history_block}{_GROUNDING_DIRECTIVE_NO_CONTEXT}\n\n"
+            f"{_DENOMINATION_DIRECTIVE}\n\n"
+            f"질문:\n{response.question}"
+        ), False
 
     def generate_stream(
         self,
