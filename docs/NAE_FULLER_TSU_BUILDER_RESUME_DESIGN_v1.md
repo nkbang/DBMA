@@ -390,5 +390,6 @@ Ollama probe로 hang 감지 → kill + `launchctl kickstart` + 드라이버 재�
 - [x] **Gap 2** `tests/test_nae_tsu_claim.py` patch 대상 갱신(7) + 신규 2건 (timeout fail-soft / config 배선 lock)
 - [x] 회귀: 대상 스위트 61 passed, NAE 서브셋(`-k "nae or tsu or crosswalk or corpus or fuller or claim or sermon"`) 1397 passed / 2 skipped
 - [x] Build Report → `docs/NAE_FULLER_TSU_BUILDER_RESUME_BUILD_REPORT_001.md`
-- [ ] C1 Independent Review (§9, Gap 1 + Gap 2)
+- [x] C1 Review 요청서 → `docs/NAE_FULLER_TSU_BUILDER_RESUME_C1_REVIEW_REQUEST_001.md` (질문 12개 + relay)
+- [ ] C1 Independent Review 수행 → `docs/NAE_FULLER_TSU_BUILDER_RESUME_C1_REVIEW_RESULT_001.md`
 - [ ] HQ 승인
