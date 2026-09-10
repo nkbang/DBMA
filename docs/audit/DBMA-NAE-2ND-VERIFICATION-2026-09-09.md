@@ -592,3 +592,105 @@ pytest tests/test_generation_claim_guard.py tests/test_rag_judge.py \
 26. `research.py:277` 주석대로 Research도 항상 `generate_answer()`를 호출한다.
 27. `_record_result_click()`은 `telemetry_query_id` 부재로 legacy 경로에서 즉시 반환한다.
 28. 온보딩 화면은 `session_state`만 변경하고 디스크에 쓰지 않는다.
+
+---
+
+# 부록 A — Citation Card 실제 렌더 재관측 (llama3.1:8b, 2026-09-10)
+
+본문 UNKNOWN V1은 `my-theology-bot-v2`(70.6B) 생성 미완료 때문이었다. 사용자 지시에 따라 **앱 자체의 사이드바 "답변 생성 모델" 선택기로 `llama3.1:8b`를 선택**해 동일 질의를 재실행하고, citation card의 **화면 렌더를 실제로 관측**했다.
+
+## A.0 무변경 확인 (재관측 전후)
+
+| 대상 | 재관측 전 | 재관측 후 | 결과 |
+|------|-----------|-----------|------|
+| `tsu_dataset.jsonl` | `fc9705c844e339da` | `fc9705c844e339da` | 동일 |
+| `tsu_manifest.json` | `7539a6e0cc309c32` | `7539a6e0cc309c32` | 동일 |
+| `bible_index.sqlite3` | `a09a81822cf23ebd` | `a09a81822cf23ebd` | 동일 |
+| `registry/documents.json` | `dcd7040dc858c743` | `dcd7040dc858c743` | 동일 |
+| `config.yaml` | `f664eda6107dfd09` | `f664eda6107dfd09` | **동일 — 모델 변경이 설정 파일에 기록되지 않음** |
+| `cache/embeddings/` | 2,160 | **2,160** | 동일 (전건 캐시 히트) |
+| `output/bench/` 파일 수 | 67 | 67 | 동일 |
+| 컨테이너 3종 | Up 2 weeks | Up 2 weeks | 미조작 |
+
+**모델 전환 방식**: `ui/app.py:351,377-386`의 selectbox는 `st.session_state["settings_gen_model"]`에만 기록하고, `ui/pages/chat.py:282-284`가 이를 `overrides["gen_model"]`로 읽는다. 설정 파일 쓰기 경로가 없음을 코드 판독으로 확인했고, `config.yaml` 해시 불변으로 실증했다. 전환 후 사이드바 표시: `Selected llama3.1:8b. 답변 생성 모델`, 온도 `0.20`.
+
+파생 상태 변화: `data/chat_session_history.json` 144 B → **31,344 B** (assistant 턴 1건 + 직렬화된 candidates 추가). Ollama에 `llama3.1:8b`(23.0 GB VRAM)가 추가 상주.
+
+## A.1 생성 완료 (실행 확인)
+
+| 항목 | `my-theology-bot-v2:latest` (본문) | `llama3.1:8b` (재관측) |
+|------|-----------------------------------|------------------------|
+| 파라미터 / VRAM | 70.6B Q4_K_M / 53.7 GB | 8.0B / 23.0 GB |
+| 질의 | `마태복음 6:9-13 주기도문 해석` | 동일 |
+| 결과 | **약 23분 미완료** | **완료** |
+| 완료까지 관측 상한 | — | 제출 `05:41:05Z` → 40초 이내 `stStatusWidget` 소멸 |
+| `chat_session_history.json` | 144 B, assistant 턴 0 | 31,344 B, assistant 턴 1 |
+
+`llama3.1:8b`로 전환하자 동일 질의·동일 검색 경로에서 답변과 출처 섹션이 모두 렌더되었다. 두 모델 간 차이는 생성 단계에서만 발생하며, 검색 경로(`QueryProcessor` → `RetrievalEngine`)는 동일하다.
+
+## A.2 화면에 실제로 렌더된 citation card
+
+출처 섹션 헤더: **`출처 (5개)`** (expander, 기본 접힘)
+
+각 카드의 구조 — DOM `<dl>` 5개를 직접 추출한 결과:
+
+```json
+{"cardCount": 5,
+ "cards": [
+  {"rows": [["문서", "매튜 풀 청교도 성경주석 14 마태복음 (매튜 풀).epub"]], "stars": "★★★☆☆"},
+  {"rows": [["문서", "매튜 풀 청교도 성경주석 14 마태복음 (매튜 풀).epub"]], "stars": "★★★☆☆"},
+  {"rows": [["문서", "매튜 풀 청교도 성경주석 14 마태복음 (매튜 풀).epub"]], "stars": "★★☆☆☆"},
+  {"rows": [["문서", "매튜 풀 청교도 성경주석 14 마태복음 (매튜 풀).epub"]], "stars": "★★☆☆☆"},
+  {"rows": [["문서", "매튜 풀 청교도 성경주석 14 마태복음 (매튜 풀).epub"]], "stars": "★★☆☆☆"}
+ ]}
+```
+
+렌더된 텍스트(카드 1개 분):
+
+```
+📄 매튜 풀 청교도 성경주석 14 마태복음 (매튜 풀).epub      ← headline 버튼
+
+문서    매튜 풀 청교도 성경주석 14 마태복음 (매튜 풀).epub   ← meta 행 (유일)
+★★★☆☆ 관련성 — 검색어와의 연관성 기준
+
+원문 다시 보기                                            ← 버튼
+```
+
+| 관측 항목 | 결과 |
+|-----------|------|
+| 렌더된 meta 행 | **`문서` 1개뿐** (5개 카드 전부, `<dt>/<dd>` 쌍 1개) |
+| 렌더되지 않은 행 | **`저자`, `출처`, `본문 위치`, `자료 유형`** — DOM에 요소 자체가 없음 |
+| headline 라벨 | 5개 모두 파일명 (`heading_path`가 비어 `display_label`이 `source_file`로 폴백) |
+| 별점 | ★★★☆☆ ×2, ★★☆☆☆ ×3 |
+| 버튼 | `원문 다시 보기` ×5. **`인용하기` 버튼은 렌더되지 않음** (`chat.py:778` `on_copy_citation=False`) |
+| 검수 상태 / 인용 가능 여부 표시 | **없음** |
+
+**본문 §"Citation Card 및 ResponsePackage 관측"에서 코드 경로 실행으로 예측한 값(`실제 렌더되는 meta 행: ['문서']`, `미표시: ['저자','출처','본문 위치','자료 유형']`)이 화면 렌더와 정확히 일치했다.**
+
+## A.3 Smith / ClaimGuard / 저신뢰 경고의 화면 표시 여부
+
+동일 페이지 전체 텍스트 검사 결과:
+
+| 검사 | 결과 |
+|------|------|
+| `"Smith"` 문자열 | **없음** |
+| `"참고 자료"` / `"reference"` | **없음** |
+| ClaimGuard 관련 표시 | 없음 (생성된 답변에 절대주장 표현 없음) |
+| 저신뢰 경고 | 없음 |
+
+`should_activate_smith("마태복음 6:9-13 주기도문 해석")`는 **True**이고, 본문 §"NAE Reference Qdrant 경로 관측"에서 이 질의에 대해 `<reference>` 블록이 `llm_context_block`에 **+1,720자 삽입**되는 것을 실행으로 확인했다. 그럼에도 **화면에는 Smith 출처가 전혀 표시되지 않았다.** 즉 Smith 근거는 LLM 프롬프트에는 들어가지만 사용자 화면에는 노출되지 않는다(코드 판독 §"Smith 항목을 `render_citation_card`로 전달하는 호출부가 없다"와 일치, 이번에 화면으로 실증).
+
+## A.4 부수 관측
+
+- 세션 히스토리 복원으로 사용자 턴이 3건 표시되었다(이전 세션의 2건 + 이번 1건). assistant 턴은 1건.
+- 생성된 답변은 동일 문장("우리가 구하라고 명령하신다는 것은 하나님께서 기도를 들으시겠다고 약속하시는 것이다." / "구하는 자마다 받을 것이요")을 4개 단락에 걸쳐 반복했다. 관측 사실로만 기록한다.
+- Streamlit 종료 확인: `8501 listeners: 0`.
+
+## A.5 UNKNOWN 갱신
+
+| # | 이전 상태 | 갱신 |
+|---|-----------|------|
+| **V1** citation card 실제 화면 렌더 | UNKNOWN | **해소** — §A.2에서 DOM·텍스트·스크린샷으로 관측 |
+| **V4** Smith 결과의 UI 표시 여부 | UNKNOWN | **해소** — §A.3에서 화면 미표시 실증 |
+| **V2** 70B 생성 미완료 원인 | UNKNOWN | **부분 해소** — 동일 검색 경로에서 8B는 40초 내 완료. 생성 단계에 국한된 현상임을 확인했으나, 70B가 왜 완료되지 않았는지 자체는 여전히 UNKNOWN(모델 교체·재시작 없이 원인 분리 불가) |
+| **V3** `absolute_claim_blocked=True`의 답변 차단 여부 | UNKNOWN | **미해소** — 이번 생성 답변에 절대주장 표현이 없어 HIGH 판정이 발생하지 않았다. 특정 답변을 유도하는 행위는 하지 않았다 |
