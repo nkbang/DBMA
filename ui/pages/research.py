@@ -32,7 +32,12 @@ from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate, Cit
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 from ui.components.citation_card import render_citation_card
-from ui.pages.chat import generate_answer, _is_low_confidence, _render_low_confidence_warning
+from ui.pages.chat import (
+    generate_answer,
+    _is_low_confidence,
+    _render_low_confidence_warning,
+    _NO_EVIDENCE_HOLD_TEXT,
+)
 
 # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑨] Top1/Top5 click tracking — only
 # meaningful when USE_INVERTED_INDEX routes through HybridQueryProcessor
@@ -308,7 +313,9 @@ def _render_ai_answer() -> None:
         st.caption("검색어를 입력하고 '검색 실행'을 클릭하세요.")
         return
     st.markdown(answer)
-    if st.session_state.get("research_ai_low_confidence"):
+    # 유보 문구 자체가 "근거 없음"을 이미 설명하므로 저신뢰 캡션을 중복
+    # 표시하지 않는다.
+    if answer != _NO_EVIDENCE_HOLD_TEXT and st.session_state.get("research_ai_low_confidence"):
         _render_low_confidence_warning()
 
 
@@ -957,7 +964,10 @@ def _render_research_page_with_detail() -> None:
                     st.session_state[fa_key] = False
             if a_key in st.session_state and st.session_state[a_key]:
                 st.markdown(st.session_state[a_key])
-                if st.session_state.get(fa_key):
+                if (
+                    st.session_state[a_key] != _NO_EVIDENCE_HOLD_TEXT
+                    and st.session_state.get(fa_key)
+                ):
                     _render_low_confidence_warning()
 
     # ── Bottom row: 3 action buttons ─────────────────────────────
