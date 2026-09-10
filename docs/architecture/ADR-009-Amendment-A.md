@@ -3,7 +3,7 @@ title: "ADR-009 Amendment A: 교단 프로파일의 답변 생성 경로 확장"
 category: architecture
 amends: docs/architecture/ADR-009-SIL-Theology-Engine.md
 created: 2026-09-10
-scope_modified: core/generation.py, core/sermon/doctrine_vocabulary.py (상수 1개 추가), tests/
+scope_modified: core/generation.py, core/sermon/doctrine_vocabulary.py (상수 1개 추가), tests/, resources/models/Modelfile.theology-bot-v2 (§5 개정, 2026-09-10)
 ---
 
 # ADR-009 Amendment A: 교단 프로파일의 답변 생성 경로 확장
@@ -79,11 +79,15 @@ ADR-009가 이 경로를 다루지 않았기 때문에 생긴 공백이며, ADR-
 - **질의응답 경로에 `doctrine_filter.check()`를 연결하지 않는다.** 답변마다
   LLM 호출이 한 번 더 붙고, ADR-009 §Decision-4가 규정한 것은 `SermonOutline`
   검토다. 새 아키텍처 계층에 해당하므로 별도 ADR과 실사용 근거가 먼저다.
-- **모델 SYSTEM 프롬프트를 고쳐 재빌드하지 않는다.** `ollama create`가 필요해
-  즉시 되돌릴 수 없고, 설교 경로를 포함한 모든 경로의 동작이 한꺼번에 바뀐다.
-  앱 쪽 지시문은 버전관리·테스트 대상이라는 이점도 있다. SYSTEM 문구와 확정
-  전통의 불일치는 `resources/models/Modelfile.theology-bot-v2` 주석에 기록만
-  해 둔다.
+- ~~**모델 SYSTEM 프롬프트를 고쳐 재빌드하지 않는다.**~~ **[2026-09-10 개정]**
+  이 결정을 사용자 승인으로 뒤집었다(PM 정렬 감사 선결 #6). 앱 쪽 지시문만으로는
+  종전 SYSTEM 문구("복음주의 및 개혁주의")가 매 답변의 바탕에 남아 확정 전통과
+  어긋난 채 작동했다. `resources/models/Modelfile.theology-bot-v2`의 SYSTEM 1행을
+  `DENOMINATION_PROFILE`과 같은 표현("개혁파 침례교 — 1689 런던신앙고백 계열,
+  신자세례·회중교회론")으로 교체했다. 저장소 파일 변경이며, 실제 반영은 사용자가
+  `ollama create`를 실행해야 한다 — 그 전까지 실행 중인 모델은 종전 SYSTEM을
+  쓰고 `_DENOMINATION_DIRECTIVE`가 매 질의마다 전통을 명시한다. 앱 쪽 지시문은
+  재빌드 후에도 유지한다(버전관리·테스트 대상이며, SYSTEM 한 줄보다 구체적이다).
 - ADR-009 §Decision-1(Retrieval Engine 무변경) 유지 — `core/retrieval.py`
   무수정.
 
@@ -106,3 +110,12 @@ pytest tests/ (전체)                    → 2,758 passed, 15 skipped, 0 failed
 
 13건 중 4건(`TestGroundingStillWins`)은 근거 강제가 교단 관점에 밀리지
 않는지만 검사한다 — 이 Amendment의 가장 큰 위험이 그것이기 때문이다.
+
+## 개정 이력
+
+- **2026-09-10**: §5 두 번째 항목("모델 SYSTEM 재빌드 안 함")을 사용자
+  승인으로 뒤집었다. `Modelfile.theology-bot-v2`의 SYSTEM 1행을
+  `DENOMINATION_PROFILE`과 같은 전통 표현으로 교체(저장소 파일 변경, 실제
+  반영은 `ollama create` 필요). 근거·경위는 §5 개정 항목 참고. Amendment
+  전체는 여전히 **Proposed** — C1 리뷰·사용자 승인 전까지 다른 구현의
+  근거로 쓰지 않는다.

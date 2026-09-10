@@ -1049,17 +1049,64 @@ def compute_passage_match_score(
     return best
 
 
+# [2026-09-10, PM 정렬 감사 선결 #5] source_tier 문자열 → 등급 값 매핑.
+# 종전 compute_source_tier_bonus()는 이름과 달리 source_tier를 전혀 보지
+# 않고 review_status만 봤다("SourceTierBonus"라면서 review_status bonus였다).
+# 아래 표는 scripts/ingest_logos_export.py가 쓰는 값("scholarly_commentary")과
+# docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9가 언급하는 값
+# ("logos_primary"/"personal_research")을 반영한다. 표에 없는 비어있지 않은
+# tier 문자열은 provenance를 갖췄다는 사실만으로 중간값(0.5)을 준다.
+_SOURCE_TIER_RANK: dict[str, float] = {
+    # 1차 자료 — 성경 본문/신조/신앙고백/Logos 원문
+    "logos_primary": 1.0,
+    "scripture": 1.0,
+    "confession": 1.0,
+    "creed": 1.0,
+    # 학술 2차 자료 — 주석/조직신학/학술 논문
+    "scholarly_commentary": 0.7,
+    "logos_secondary": 0.7,
+    "systematic_theology": 0.7,
+    "academic": 0.7,
+    # 개인 연구·설교 노트
+    "personal_research": 0.3,
+    "logos_personal": 0.3,
+    "sermon": 0.3,
+}
+
+
 def compute_source_tier_bonus(tsu: dict[str, Any]) -> float:
-    """Small reviewed-source bonus (design doc §9.3 `SourceTierBonus`, weight
-    0.05) — rewards externally-sourced (e.g. Logos-export) TSUs that have
-    passed human review, without letting an unreviewed external source
-    outrank a reviewed one on this component. Returns 0.0 for the entire
-    pre-existing corpus (no source_provenance field), so this is a no-op
-    everywhere except newly-tagged external sources."""
+    """Graded source-tier bonus (design doc §9.3 `SourceTierBonus`, weight
+    0.05) — rewards externally-sourced (e.g. Logos-export) TSUs by the tier
+    of their origin, gated by human review.
+
+    Returns 0.0 for the entire pre-existing corpus (no `source_provenance`
+    field), so this stays a no-op there. It only becomes active for TSUs
+    ingested with provenance (e.g. scripts/ingest_logos_export.py). Unlike
+    the previous implementation it now honours `source_tier` — the field
+    this function is named for — instead of collapsing everything to a
+    binary `review_status` flag.
+
+    Scoring:
+      - `source_tier` in _SOURCE_TIER_RANK → that value; unknown non-empty
+        tier → 0.5; no tier → fall back to 1.0-if-reviewed / 0.0 otherwise.
+      - review gate: `review_status in (reviewed, approved)` → full value;
+        otherwise ×0.6 (a tiered-but-unreviewed source still outranks a
+        source with no provenance at all, but not a reviewed one).
+    Result is clamped to [0.0, 1.0].
+    """
     provenance = tsu.get("source_provenance")
     if not provenance:
         return 0.0
-    return 1.0 if provenance.get("review_status") in ("reviewed", "approved") else 0.0
+
+    reviewed = provenance.get("review_status") in ("reviewed", "approved")
+    tier = (provenance.get("source_tier") or "").strip().lower()
+
+    if not tier:
+        return 1.0 if reviewed else 0.0
+
+    base = _SOURCE_TIER_RANK.get(tier, 0.5)
+    value = base if reviewed else base * 0.6
+    return max(0.0, min(1.0, value))
 
 
 def compute_content_quality_factor(tsu: dict[str, Any]) -> float:
