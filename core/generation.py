@@ -46,6 +46,7 @@ from core.config import (
     DEFAULT_TEMPERATURE,
 )
 from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
+from core.sermon.doctrine_vocabulary import DENOMINATION_PROFILE
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +144,41 @@ _GROUNDING_DIRECTIVE = """지시:
 3. 자료가 영어 등 외국어면 그 뜻을 한국어로 옮겨 답하라. 원문을 그대로
    붙여넣지 말고, 주어와 서술어가 갖춰진 완결된 한국어 문장으로 쓰라.
 4. 한국어(한글) 경어체로만 쓰라."""
+
+# ============================================================
+# 교단 신학 관점 지시문 (ADR-009 Amendment A, 2026-09-10)
+# ============================================================
+#
+# ADR-009(Accepted, 2026-07-22)는 사용자의 신학적 전통을 개혁파 침례교로
+# 확정하고 doctrine_filter를 **설교 초안 경로**에 연결했다. 그러나 질의응답
+# 경로(Chat/Research)에는 교단 신호가 전혀 없었다 — 모델 SYSTEM 프롬프트가
+# 말하는 "복음주의 및 개혁주의"는 개혁파 침례교와 모순되지는 않지만,
+# 신자세례·회중교회론·1689 언약신학을 특정하지 못한다. 목회자가 실제로
+# 답을 얻는 주 경로가 정작 자기 교단을 모르는 상태였다.
+#
+# 전통 표현은 지어내지 않고 core.sermon.doctrine_vocabulary의
+# DENOMINATION_PROFILE(=ADR-009 §Decision 원문)을 그대로 인용한다 —
+# 신학적 내용은 승인된 ADR이 단일 출처다.
+#
+# 설계상 가장 조심한 지점은 이 지시문이 근거 강제(_GROUNDING_DIRECTIVE)를
+# 무너뜨리지 않게 하는 것이다. "교단에 맞는 답"을 요구하면 모델은 자료에
+# 없는 교리를 보충해 전통에 맞추려는 유혹을 받는다 — 그건 이 앱이 막으려는
+# 바로 그 행동이다. 그래서 §3에 근거 지시가 우선한다고 명시하고, 지시문
+# 자체를 "자료를 어느 자리에서 읽을 것인가"(관점)로 한정했다. 자료가
+# 전통과 다르면 감추지 말고 드러내라는 §2도 같은 이유다.
+#
+# §4는 ADR-009 §Decision-4의 원칙("자동 차단 없음, 최종 신학적 판단
+# 권한은 목회자에게")을 프롬프트 수준에서 반복한 것이다 — 앱이 다른
+# 교단을 정죄하는 도구가 되어서는 안 된다.
+_DENOMINATION_DIRECTIVE = f"""신학 관점:
+1. 묻는 사람은 다음 전통에 서 있는 목회자다: {DENOMINATION_PROFILE}.
+   자료를 이 전통 안에서 읽고 정리하라.
+2. 자료가 이 전통과 다른 견해를 담고 있으면 감추지 마라. 누구의 견해인지
+   밝히고, 전통과 어떻게 다른지 함께 적어라.
+3. 전통에 맞추려고 자료에 없는 내용을 보태지 마라 — 위 "지시"가 이보다
+   우선한다.
+4. 다른 교단을 정죄하지 마라. 최종 판단은 묻는 목회자에게 있다."""
+
 
 _GROUNDING_DIRECTIVE_NO_CONTEXT = """지시:
 1. 참고할 자료가 검색되지 않았다. 자료가 없다는 사실을 먼저 밝혀라.
@@ -312,10 +348,12 @@ class GenerationService:
             return (
                 f"{history_block}자료:\n{context}\n\n"
                 f"{_GROUNDING_DIRECTIVE}\n\n"
+                f"{_DENOMINATION_DIRECTIVE}\n\n"
                 f"질문:\n{response.question}"
             ), True
         return (
             f"{history_block}{_GROUNDING_DIRECTIVE_NO_CONTEXT}\n\n"
+            f"{_DENOMINATION_DIRECTIVE}\n\n"
             f"질문:\n{response.question}"
         ), False
 

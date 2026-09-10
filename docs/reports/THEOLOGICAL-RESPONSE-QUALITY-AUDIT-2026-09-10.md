@@ -1,7 +1,7 @@
 ---
 title: 신학·목회 답변 품질 감사 (배포 기준 적합성)
 created: 2026-09-10
-status: 감사 완료 — 우선순위 1·2(`ae05415`)·3(한국어 QueryParser) 수정됨, 4·5 미착수
+status: 감사 완료 — 우선순위 1·2·3·5 수정됨, 4(청크 단위 정책) 미착수
 scope: core/generation.py, core/retrieval.py, NAE/retrieval_adapter.py, core/chunking_optimizer.py, NAE/corpus/tsu/
 baseline: `32f59c9` (감사 시점) → `ae05415` (수정 후)
 venv: `~/envs/dbma311`
@@ -28,7 +28,7 @@ venv: `~/envs/dbma311`
 | # | 요구 | 감사 시점 | 현재 (2026-09-10 수정 후) |
 |---|---|---|---|
 | 1 | 근거 기반 / 외부 혼입 차단 | 물리 O · 논리 X | **개선** — 지시문 강제 |
-| 2 | 교단·개인 신학 반영 | 미구현 | 미구현 |
+| 2 | 교단·개인 신학 반영 | **감사 오류** — 설교 경로는 이미 구현됨 | **개선** — 답변 경로로 확장(Amendment A) |
 | 3 | 완결 문단 청크 | 미달 (문장 단위 + 200자 절단) | **부분 개선** — 절단 제거, 단위는 그대로 |
 | 4 | 한국어 완결 문장 | 방어만 존재 | 부분 개선 — 근본 원인 잔존 |
 | 5 | 정확한 자료 기반 | 부분 | **개선** — 한국어 질의 랭킹 복구(결함 A 해소), 결함 B·C 잔존 |
@@ -98,8 +98,25 @@ grep -rn "교단\|denomination\|tradition\|confession" core/ ui/
 3. **코퍼스와 불일치** — 실제 수집물은 Fuller/Dagg/Hiscox/1689 런던 침례교
    신앙고백 등 **침례교** 계열인데 SYSTEM은 "개혁주의" 일반
 
-ADR-009(SIL Theology Engine)가 이 자리를 위한 설계지만 Status "Accepted(구조만)",
-어휘 미확정, 미구현.
+> **[2026-09-10 정정 — 이 감사의 오류]** 위 문단은 ADR-009를 "Accepted(구조만),
+> 어휘 미확정, 미구현"으로 기록했으나 **사실이 아니다.** ADR 본문 §Decision에
+> 2026-07-22 사용자 직접 승인으로 (a) 신학적 전통 = 개혁파 침례교(1689
+> 런던신앙고백 계열), (b) `DOCTRINE_CATEGORY`/`BAPTIST_THEME` 어휘,
+> (c) `core/sermon/doctrine_vocabulary.py`·`doctrine_filter.py` 구현,
+> (d) `ui/pages/sermon_draft.py` 연결까지 **완료**로 기재돼 있다. 최초 감사가
+> 헤더의 Status 줄과 §Context의 "별도 승인 대상으로 미확정" 문장만 읽고
+> 2026-07-22 개정분을 놓친 오독이다.
+>
+> **실제 공백은 적용 범위였다** — doctrine 계층이 **설교 초안 경로에만**
+> 연결돼 있고, 목회자가 실제로 답을 얻는 질의응답(Chat/Research) 경로에는
+> 교단 신호가 전혀 없었다.
+>
+> **[2026-09-10 해소]** ADR-009 Amendment A(Proposed)로 답변 생성 경로에
+> 교단 관점 지시문을 추가했다. 전통 표현은 ADR-009 §Decision 원문을 단일
+> 출처로 인용한다(`DENOMINATION_PROFILE`). 근거 강제가 교단 관점보다
+> 우선하도록 배치·명시했다 — 상세:
+> [Amendment A](../architecture/ADR-009-Amendment-A.md),
+> [Build Report](./DBMA-DENOMINATION-PROFILE-BUILD-REPORT-001.md)
 
 ---
 
