@@ -85,7 +85,8 @@ def _map_nae_to_citation_metadata(hit: dict[str, Any]) -> dict[str, Any]:
       source_author   → author            (직접)
       retrieval_score → hit.score         (직접)
       source_type     → source_type       (직접)
-      content_excerpt → source_text[:200] (직접)
+      content_excerpt → source_text[:200] (직접, ADR-024 §C 계약)
+      source_text     → source_text       (전문 — LLM 문맥용, 계약 밖 추가)
       scripture_ref   → paragraph/sentence (CitationBuilder가 verse_mapping
                                       으로 처리 — 여기선 verse_mapping
                                       에 book_id/chapter/verse_start 채움)
@@ -136,6 +137,13 @@ def _map_nae_to_citation_metadata(hit: dict[str, Any]) -> dict[str, Any]:
         "language": language,
         "source_type": payload.get("source_type"),
         "content_excerpt": (payload.get("source_text") or "")[:200],
+        # [2026-09-10] 전문(truncate 없음). content_excerpt와 별도 필드인
+        # 이유는 둘의 용도가 다르기 때문이다 — content_excerpt는 ADR-024
+        # §C 표가 정의하는 "인용 카드에 보여줄 발췌"(200자 상한이 곧
+        # 계약이므로 건드리지 않는다), source_text는 LLM에 실제로 넘길
+        # 근거 본문이다. bridge_query()가 여태 전자를 후자로 재사용해
+        # 모델이 문장 중간에서 잘린 조각을 근거로 받고 있었다.
+        "source_text": payload.get("source_text") or "",
         # Canonical IDs (ADR-017 준수)
         "source_id": payload.get("source_id"),
         "work_id": payload.get("work_id"),
@@ -219,7 +227,15 @@ def bridge_query(
             meta = _map_nae_to_citation_metadata(h)
             candidate = RankedCandidate(
                 tsu_id=h["tsu_id"],
-                content=meta.get("content_excerpt", ""),
+                # [2026-09-10] content_excerpt(200자 발췌)가 아니라 전문을
+                # 넘긴다. RankedCandidate.content는 ContextAssembler를 거쳐
+                # 그대로 llm_context_block이 되는, 모델이 읽는 근거 본문이다
+                # — 여기에 발췌를 넣으면 모델은 잘린 문장을 근거로 답한다.
+                # ADR-024 §C가 계약으로 정한 것은 Citation.content_excerpt
+                # 이며(그 200자는 아래 CitationBuilder 경로에서 metadata의
+                # content_excerpt로 그대로 유지된다), RankedCandidate.content
+                # 는 그 표에 없다 — 계약 위반이 아니라 계약 밖 편법의 수정.
+                content=meta.get("source_text") or meta.get("content_excerpt", ""),
                 metadata=meta,
                 vector_score=h["score"],
                 bm25_score=0.0,
