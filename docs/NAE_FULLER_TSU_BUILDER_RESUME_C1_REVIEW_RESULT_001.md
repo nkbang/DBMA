@@ -62,7 +62,7 @@ C1 판정을 뒷받침하는 CUE 측 독립 확인:
 
 ## 4. 권고사항 (비필수 — 차단 아님)
 
-1. **torn-write 명시 테스트**: `tests/test_nae_tsu_builder.py`에 "tsu.json이 tsu_report.json보다 많은 record를 가진 경우(report 기록 직전 crash)" 케이스 추가 권장. → F0 백로그.
+1. **torn-write 명시 테스트**: `tests/test_nae_tsu_builder.py`에 "tsu.json이 tsu_report.json보다 많은 record를 가진 경우(report 기록 직전 crash)" 케이스 추가 권장. → ✅ **해소** — `test_build_tsu_resume_tolerates_torn_write_tsu_ahead_of_report` 추가 (tsu.json 6 records / report evaluated=4 / id_state next_id=5(stale) → resume: 후보 5·6 재평가 안 함(no dup), 5·6 record 유지(no loss), 후보 7·8만 평가, 결과 byte-identical to from-scratch). 커밋 `be96c8e` (브랜치 `claude/tsu-resume-tornwrite-test`, base `origin/dev/dbma-engine`).
 2. **Vol.04–08 키 유일성 재확인**: → **§3에서 CUE가 확인 완료 (dup=0).** 해소됨.
 
 ---

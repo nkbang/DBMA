@@ -292,3 +292,64 @@ def test_build_tsu_resume_aborts_on_canonical_drift(tmp_path: Path):
             )
     # aborted before any write
     assert (tr / ident / "tsu.json").read_bytes() == partial_bytes
+
+
+def test_build_tsu_resume_tolerates_torn_write_tsu_ahead_of_report(tmp_path: Path):
+    """C1 recommendation #1: tsu.json holds MORE records than tsu_report.json
+    accounts for — a crash after _write_tsu_output replaced tsu.json but before
+    it replaced tsu_report.json. Resume must keep the extra records (no loss),
+    not re-evaluate their candidates (no dup), and still land byte-identical to
+    a from-scratch run.
+    """
+    ident = "dagg_church_order"
+
+    # (a) from-scratch reference
+    cr_a, rr_a, tr_a = _setup_multi(tmp_path / "a", ident, n=8)
+    with patch("NAE.pipeline.tsu.builder.claim_mod.extract_claim", side_effect=_claim_for):
+        builder.build_tsu_for_identifier(
+            ident, canonical_root=cr_a, raw_root=rr_a, tsu_root=tr_a, checkpoint_every=2,
+        )
+    full_bytes = (tr_a / ident / "tsu.json").read_bytes()
+    full_records = json.loads(full_bytes)
+    assert len(full_records) == 8
+
+    # (b) build the same thing, then hand-roll a torn checkpoint:
+    #   tsu.json  -> first 6 records (a later checkpoint landed on disk)
+    #   report    -> candidates_evaluated=4 (an earlier checkpoint; the write
+    #                that would have advanced it to 6 never happened)
+    #   id_state  -> next_id=5 (also stale, matches the evaluated=4 checkpoint)
+    cr_b, rr_b, tr_b = _setup_multi(tmp_path / "b", ident, n=8)
+    with patch("NAE.pipeline.tsu.builder.claim_mod.extract_claim", side_effect=_claim_for):
+        builder.build_tsu_for_identifier(
+            ident, canonical_root=cr_b, raw_root=rr_b, tsu_root=tr_b, checkpoint_every=2,
+        )
+    out_b = tr_b / ident
+    builder._atomic_write_json(out_b / "tsu.json", full_records[:6])
+    builder._atomic_write_json(out_b / "tsu_report.json", {
+        "identifier": ident, "builder_version": config.BUILDER_VERSION,
+        "candidates_evaluated": 4, "candidates_total": 8, "claims_extracted": 4,
+        "llm_errors": 0, "doctrine_breakdown": {"Ecclesiology": 4},
+        "elapsed_seconds": 1.0, "partial": True,
+    })
+    builder._atomic_write_json(tr_b / "tsu_id_state.json", {"next_id": 5})
+
+    calls = {"n": 0}
+
+    def counted(cand_text, **kw):
+        calls["n"] += 1
+        return _claim_for(cand_text, **kw)
+
+    with patch("NAE.pipeline.tsu.builder.claim_mod.extract_claim", side_effect=counted):
+        result = builder.build_tsu_for_identifier(
+            ident, canonical_root=cr_b, raw_root=rr_b, tsu_root=tr_b, checkpoint_every=2,
+            resume=True,
+        )
+
+    # candidates 5 and 6 are already on disk (records[:6]) -> not re-run.
+    assert calls["n"] == 2                       # only candidates 7, 8
+    assert (out_b / "tsu.json").read_bytes() == full_bytes
+    assert [r["id"] for r in result["records"]] == [f"TSU-{i:07d}" for i in range(1, 9)]
+    report = json.loads((out_b / "tsu_report.json").read_text(encoding="utf-8"))
+    assert report["partial"] is False
+    assert report["candidates_evaluated"] == 8
+    assert report["claims_extracted"] == 8
