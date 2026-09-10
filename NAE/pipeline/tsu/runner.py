@@ -5,15 +5,19 @@ NAE-TSU-PIPELINE-WIRING-IMPLEMENTATION-001: the default (no
 (`gate_adapter.py`) instead of scanning `NAE/corpus/canonical/`
 directly — only Manifest entries that pass `TSU_ELIGIBLE=READY AND
 mapping_status=manual-confirmed` reach `builder.build_tsu_for_identifier`.
-`builder.py` itself is unmodified (`build_tsu_for_identifier`/
-`build_tsu_for_all` both untouched) — `--legacy-scan` still exposes the
-old direct-scan behavior (`build_tsu_for_all`) for debugging/fallback,
+the WIRING change did not touch `builder.py` — `--legacy-scan` still exposes
+the old direct-scan behavior (`build_tsu_for_all`) for debugging/fallback,
 so that function stays reachable and is not dead code.
 
 Phase 3 worker wiring:
 - `--enqueue <identifier>`: enqueue candidates from canonical.json as READY
 - `--worker-mode`: process READY candidates through the TSU Extraction Queue Worker
 - `--retry-failed <id>`: manually retry a FAILED candidate (explicit human trigger only)
+
+NAE-TSU-BUILDER-RESUME-001: `--resume` continues a partial `--identifier` run
+from its last checkpoint (`build_tsu_for_identifier(..., resume=True)`); it is a
+no-op for an identifier already at `partial=false`. See
+`docs/NAE_FULLER_TSU_BUILDER_RESUME_DESIGN_v1.md`.
 """
 from __future__ import annotations
 
@@ -36,6 +40,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--legacy-scan", action="store_true",
                         help="Bypass the Crosswalk Gate and scan NAE/corpus/canonical/ directly "
                              "(pre-wiring behavior, build_tsu_for_all) — for debugging/fallback only")
+    parser.add_argument("--resume", action="store_true",
+                        help="Resume a partial run from its last checkpoint "
+                             "(reads tsu_report.json candidates_evaluated, re-loads tsu.json). "
+                             "No-op (skip) for an identifier whose report already shows partial=false. "
+                             "Output tsu.json is byte-identical to a from-scratch run.")
 
     # Phase 3 worker options (separate steps — no auto-chaining)
     parser.add_argument("--enqueue", type=str, metavar="IDENTIFIER",
@@ -51,7 +60,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _run_gate_wired(model: str, max_candidates: int | None) -> dict:
+def _run_gate_wired(model: str, max_candidates: int | None, resume: bool = False) -> dict:
     """Manifest -> Crosswalk Resolver -> TSU Gate -> Builder.
     PASS 판정된 identifier만 build_tsu_for_identifier()로 전달한다."""
     manifest_entries = gate_adapter.load_manifest_entries()
@@ -60,7 +69,9 @@ def _run_gate_wired(model: str, max_candidates: int | None) -> dict:
 
     generated_reports = []
     for target_identifier in gate_summary.pass_identifiers:
-        result = builder.build_tsu_for_identifier(target_identifier, model=model, max_candidates=max_candidates)
+        result = builder.build_tsu_for_identifier(
+            target_identifier, model=model, max_candidates=max_candidates, resume=resume,
+        )
         generated_reports.append(result["report"])
 
     return {
@@ -195,13 +206,16 @@ def main(argv: list[str] | None = None) -> int:
         # (기존 동작 그대로, 이번 Wiring 대상이 아님).
         result = builder.build_tsu_for_identifier(
             args.identifier, model=args.model, max_candidates=args.max_candidates,
+            resume=args.resume,
         )
         print(json.dumps(result["report"], ensure_ascii=False, indent=2))
     elif args.legacy_scan:
-        summary = builder.build_tsu_for_all(model=args.model, max_candidates_per_item=args.max_candidates)
+        summary = builder.build_tsu_for_all(
+            model=args.model, max_candidates_per_item=args.max_candidates, resume=args.resume,
+        )
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     else:
-        summary = _run_gate_wired(args.model, args.max_candidates)
+        summary = _run_gate_wired(args.model, args.max_candidates, resume=args.resume)
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
