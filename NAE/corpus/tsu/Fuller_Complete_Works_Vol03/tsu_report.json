@@ -1,0 +1,30 @@
+{
+  "identifier": "Fuller_Complete_Works_Vol03",
+  "builder_version": "3.0.0",
+  "generated_at": "2026-09-10T22:12:45.636549+00:00",
+  "model": "my-theology-bot-v2:latest",
+  "candidates_evaluated": 5812,
+  "candidates_total": 5812,
+  "claims_extracted": 3277,
+  "llm_errors": 1,
+  "doctrine_breakdown": {
+    "Other": 37,
+    "Soteriology": 1117,
+    "Scripture / Authority": 195,
+    "Eschatology": 170,
+    "Ecclesiology": 693,
+    "Providence": 149,
+    "Trinity": 30,
+    "Sanctification": 271,
+    "Election": 17,
+    "Lord's Supper": 29,
+    "Justification": 237,
+    "Confession": 2,
+    "Church Discipline": 14,
+    "Baptism": 7,
+    "Church Covenant": 1
+  },
+  "elapsed_seconds": 56540.46,
+  "partial": false,
+  "note": "confidence is model self-reported and uncalibrated; review_status=generated until a human review promotes it to verified (see NAE/pipeline/tsu/review_promotion.py)"
+}
