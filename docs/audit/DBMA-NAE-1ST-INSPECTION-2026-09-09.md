@@ -17,13 +17,24 @@
 > 관측 이후 `dev/dbma-engine`에 들어온 수정으로 **아래 서술은 현재 코드와 다르다.**
 > 나머지 서술은 `5146fa7` 기준으로 재확인했을 때 유효하다.
 >
-> | 무효화된 서술 | 대체한 상류 커밋 |
-> |---------------|------------------|
-> | 한국어 질의 `keywords=[]` → BM25 0 → fallback 슬라이스 | `31ef590` feat(retrieval): 한국어 QueryParser — 질의/문서 토큰화 비대칭 해소 |
-> | `ContextAssembler`가 `<context id=…>`만 조립 | `bb688c4` feat(retrieval): LLM 문맥 블록에 서지정보(출처:) 주입 |
-> | `wrap_ranked_candidates`가 `trust_tier=T1` 고정 (부록 B §B.2) | `5f1ccaa` fix(claim_guard): 검색 결과 TrustTier T1 위장 제거 + 규칙 2a 활성화 |
-> | `compute_source_tier_bonus`가 전 코퍼스에 0.0 반환 | `4007926` feat(retrieval): SourceTierBonus를 source_tier 반영형으로 실효화 |
-> | NAE on-disk TSU 합계 **7,760** (저작 3개) | Fuller Vol02·03·04 생성 → 현재 **14,453** (저작 6개). `nae_tsu_v1`은 여전히 3,319, Fuller 전권 `indexed=0` |
+> **2026-09-10 재관측 완료** — 아래는 추정이 아니라 `dev/dbma-engine` tip에서 다시 실행해
+> 확정한 결과다. 상세는 본 보고서 **부록 C**(2차 검증 보고서) 참조.
+>
+> | 서술 | 재관측 결과 | 근거 |
+> |------|-------------|------|
+> | 한국어 질의 `keywords=[]` → BM25 0 → fallback 슬라이스 | **무효** — 형태소 키워드 생성, BM25 non-zero 640/791/11건 | `31ef590` / 부록 C.1·C.2 |
+> | A1/A2/A3 top-5 목록 | **무효** — 이전 대비 교집합 0~2/5 | 부록 C.3 |
+> | `ContextAssembler`가 `<context id=…>`만 조립 | **무효** — `출처: <파일명>, <성경참조>` 줄 추가 | `bb688c4` / 부록 C.5 |
+> | `wrap_ranked_candidates`가 `trust_tier=T1` 고정 (부록 B §B.2) | **무효** — `T3`. ClaimGuard `reason`이 "T1(본문) 근거 없이 절대·최상급 주장 불가"로, `scope_qualifier_required`가 True로 바뀜 | `5f1ccaa` / 부록 C.6 |
+> | `compute_source_tier_bonus`가 전 코퍼스에 0.0 반환 | **유효** — 구현은 바뀌었으나 이 코퍼스는 `source_provenance`가 전건 null이라 반환값 분포가 `{0.0: 1363}`으로 동일. *종전 표에서 이 행을 "무효화됨"으로 적은 것은 과했으므로 정정한다.* | `4007926` / 부록 C.7 |
+> | NAE on-disk TSU 합계 **7,760** (저작 3개) | **무효** — 현재 **14,587** (저작 6개, Vol04는 생성 진행 중) | 부록 C.8 |
+> | `nae_tsu_v1` 3,319 · `nae_ref_v1` 34,948 · Fuller `indexed=0` | **유효** — 전부 불변 | 부록 C.8 |
+> | 부록 B: `absolute_claim_blocked`가 답변을 차단하지 않음 | **유효** — caption의 `reason` 문구만 바뀜 | 부록 C.6 |
+> | 부록 A: citation card meta 행이 `문서` 1개뿐 | **유효** — `citation_card.py`·호출부 무변경 | 부록 C.9 |
+>
+> **신규 관측 사실**: 한국어 BM25가 살아나면서 전체 pool 스코어링이 warm 기준
+> **질의당 8.9~9.3초**(A1 wall 109 ms → 10.4 s)를 차지한다. `_tokenize()`가 매 질의마다
+> 후보 문서를 1건씩 전부 형태소 분석하며 문서측 토큰 캐시가 없다. 부록 C.4 참조.
 >
 > ### 여전히 유효한 핵심 결론 (`5146fa7`에서 재확인)
 >
