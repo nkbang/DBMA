@@ -1,5 +1,52 @@
 # DBMA TODO
 
+## 관측 대기열 — GPU 점유로 보류 (2026-09-10 등록)
+
+로컬 GPU에 **2026-09-10부터 약 3일간(~2026-09-13) 풀로드**가 걸려 있다.
+등록 시점 실측: `Device Utilization % = 100`, GPU 할당 메모리 85.4 GB, 시스템 여유 메모리 23%.
+`llama-server` 2개가 `my-theology-bot-v2`(70.6B, 53.7 GB)와
+`qwen3.6:35b-DBMAcode`(36B, 25.7 GB, C1/Cline 백엔드)를 상주시키고 있었다.
+
+아래 2건은 **로컬 Ollama 호출이 필요해 착수 불가**다. 둘 다 관측 사실까지만 확정된
+상태이며 개선안은 작성하지 않았다.
+
+**해제 조건**: GPU 여유 확보. 착수 전 `ioreg -r -d 1 -c AGXAccelerator | grep 'Device Utilization'`
+과 `curl -s localhost:11434/api/ps`로 재확인할 것.
+
+### Q1 — UK-2: `my-theology-bot-v2` 생성 정체 원인
+
+- [ ] GPU 한가하고 다른 모델이 언로드된 상태에서 동일 질의 재실행
+- **현상**: 동일 질의·동일 검색 경로에서 70.6B는 Chat 약 23분간 미완료,
+  `llama3.1:8b`는 40초 내 완료. `/api/generate`(`num_predict=16`)도 120초 타임아웃.
+- **미지**: 경합 때문인지 모델·양자화 자체 문제인지 분리되지 않았다. 관측 당시에도
+  다른 `llama-server`가 떠 있었고, 진단용 `curl` 1회가 두 번째 인스턴스를 띄워
+  경합을 더했을 가능성이 있다.
+- **판정 기준**: 한가한 상태에서 완료되면 경합이 원인, 아니면 모델 쪽으로 좁혀진다.
+- **근거 문서**: `docs/DBMA_NAE_EVIDENCE_BASED_IMPROVEMENT_PROPOSAL_v1.md` UK-2 / PB-04,
+  `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` D-절 · V2.
+
+### Q2 — BM25 전체 pool 스코어링 지연
+
+- [ ] 대안 비교(문서측 토큰 캐시 / tantivy 경로 A/B)의 실측
+- **실측 (2026-09-10, warm, `cache hits=422 miss=0`)**:
+
+  | 질의 | wall | 그중 BM25 | 비고 |
+  |------|-----:|----------:|------|
+  | A1 | 10,417 ms | **9,321 ms (89%)** | pool 1,363 |
+  | A2 | 9,697 ms | **8,859 ms (91%)** | pool 1,363 |
+  | A3 | 429 ms | 209 ms | metadata filter가 pool을 16건으로 축소 |
+
+  `31ef590` 이전에는 `keywords=[]`라 BM25가 0.18~0.39 ms였다(A1 wall 109 ms).
+- **기전**: `core/retrieval.py::_tokenize()`가 kiwipiepy를 호출하며 `bm25_score()`를 통해
+  **매 질의마다 후보 문서를 1건씩 전부** 형태소 분석한다. 문서측 토큰 캐시가 없다
+  (해당 docstring도 "called per candidate document on every query"라고 명시).
+  비용은 pool 크기에 비례한다 — 현재 코퍼스 1,363 TSU 기준 수치다.
+- **제약**: 평가 없는 교체 금지 원칙상 **A/B 수치 없이 기본값을 바꾸지 않는다.**
+- **근거 문서**: `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 C.4
+  (커밋 `aa0e198`, PR #22). 도입 커밋 `31ef590`.
+
+---
+
 ## 즉시 확인 (2026-08-18~19, CUE 정리)
 
 ### 완료된 정리 (2026-08-18~19 세션)
