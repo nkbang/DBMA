@@ -1,5 +1,42 @@
 # DBMA/NAE 파이프라인 실사 감사 보고서
 
+> ## ⚠ 관측 기준점 (Provenance) — dev/dbma-engine 전달 시 추가
+>
+> 이 보고서는 `main` 계열 워크트리에서 **코드를 판독**하고, `/Users/David/DBMA`
+> 설치본에서 **런타임을 관측**해 작성됐다. 두 대상의 커밋이 다르다.
+>
+> | 항목 | 값 |
+> |------|-----|
+> | 런타임 관측 대상 | **`dev/dbma-engine` @ `daca402`** (2026-09-09 14:36:29 -0500) |
+> | 코드 판독 위치 | `main` @ `32f59c9` (2026-09-08) — 관측 대상과 **다름** |
+> | 관측 시각 | 2026-09-09 22:50 ~ 2026-09-10 00:49 (local) |
+> | 작성 시 `dev/dbma-engine` tip과의 거리 | 관측 이후 **29 커밋** 유입 |
+>
+> ### 이 문서 중 이미 무효화된 항목
+>
+> 관측 이후 `dev/dbma-engine`에 들어온 수정으로 **아래 서술은 현재 코드와 다르다.**
+> 나머지 서술은 `5146fa7` 기준으로 재확인했을 때 유효하다.
+>
+> | 무효화된 서술 | 대체한 상류 커밋 |
+> |---------------|------------------|
+> | 한국어 질의 `keywords=[]` → BM25 0 → fallback 슬라이스 | `31ef590` feat(retrieval): 한국어 QueryParser — 질의/문서 토큰화 비대칭 해소 |
+> | `ContextAssembler`가 `<context id=…>`만 조립 | `bb688c4` feat(retrieval): LLM 문맥 블록에 서지정보(출처:) 주입 |
+> | `wrap_ranked_candidates`가 `trust_tier=T1` 고정 (부록 B §B.2) | `5f1ccaa` fix(claim_guard): 검색 결과 TrustTier T1 위장 제거 + 규칙 2a 활성화 |
+> | `compute_source_tier_bonus`가 전 코퍼스에 0.0 반환 | `4007926` feat(retrieval): SourceTierBonus를 source_tier 반영형으로 실효화 |
+> | NAE on-disk TSU 합계 **7,760** (저작 3개) | Fuller Vol02·03·04 생성 → 현재 **14,453** (저작 6개). `nae_tsu_v1`은 여전히 3,319, Fuller 전권 `indexed=0` |
+>
+> ### 여전히 유효한 핵심 결론 (`5146fa7`에서 재확인)
+>
+> - `core/retrieval.py`의 `qdrant_url`은 보유만 하고 조회에 쓰이지 않음
+> - BM25 무히트 시 `candidate_pool[:candidate_k]` 무순위 슬라이스 경로 존재
+> - `Citation` 데이터클래스에 검수 상태·인용 가능 여부 필드 없음
+> - `core/extractors.py` 무변경 → EPUB 서지(title/author) 판독 부재
+> - `core/heading_provider.py` 무변경 → EPUB heading provider 미등록
+> - `ui/components/citation_card.py` 무변경 → 부록 A의 카드 렌더 관측 그대로 유효
+> - `ui/pages/chat.py:557-566` 구조 동일 → 부록 B의 "차단 아님, caption 1줄" 결론 유효
+> - `ui/pages/chat.py:657-658` 조건 없음 → 부록 B §B.4(히스토리 재생 시 빈 caption) 유효
+
+
 - 작성일: 2026-09-09
 - 감사 브랜치: `claude/dbma-nae-pipeline-audit-8e8224` (base `32f59c9`)
 - 감사 방식: repository / config.yaml / 실제 산출물 / 실행 중인 서비스 / 전체 테스트 스위트 직접 확인
