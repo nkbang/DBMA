@@ -17,13 +17,24 @@
 > 관측 이후 `dev/dbma-engine`에 들어온 수정으로 **아래 서술은 현재 코드와 다르다.**
 > 나머지 서술은 `5146fa7` 기준으로 재확인했을 때 유효하다.
 >
-> | 무효화된 서술 | 대체한 상류 커밋 |
-> |---------------|------------------|
-> | 한국어 질의 `keywords=[]` → BM25 0 → fallback 슬라이스 | `31ef590` feat(retrieval): 한국어 QueryParser — 질의/문서 토큰화 비대칭 해소 |
-> | `ContextAssembler`가 `<context id=…>`만 조립 | `bb688c4` feat(retrieval): LLM 문맥 블록에 서지정보(출처:) 주입 |
-> | `wrap_ranked_candidates`가 `trust_tier=T1` 고정 (부록 B §B.2) | `5f1ccaa` fix(claim_guard): 검색 결과 TrustTier T1 위장 제거 + 규칙 2a 활성화 |
-> | `compute_source_tier_bonus`가 전 코퍼스에 0.0 반환 | `4007926` feat(retrieval): SourceTierBonus를 source_tier 반영형으로 실효화 |
-> | NAE on-disk TSU 합계 **7,760** (저작 3개) | Fuller Vol02·03·04 생성 → 현재 **14,453** (저작 6개). `nae_tsu_v1`은 여전히 3,319, Fuller 전권 `indexed=0` |
+> **2026-09-10 재관측 완료** — 아래는 추정이 아니라 `dev/dbma-engine` tip에서 다시 실행해
+> 확정한 결과다. 상세는 본 보고서 **부록 C**(2차 검증 보고서) 참조.
+>
+> | 서술 | 재관측 결과 | 근거 |
+> |------|-------------|------|
+> | 한국어 질의 `keywords=[]` → BM25 0 → fallback 슬라이스 | **무효** — 형태소 키워드 생성, BM25 non-zero 640/791/11건 | `31ef590` / 부록 C.1·C.2 |
+> | A1/A2/A3 top-5 목록 | **무효** — 이전 대비 교집합 0~2/5 | 부록 C.3 |
+> | `ContextAssembler`가 `<context id=…>`만 조립 | **무효** — `출처: <파일명>, <성경참조>` 줄 추가 | `bb688c4` / 부록 C.5 |
+> | `wrap_ranked_candidates`가 `trust_tier=T1` 고정 (부록 B §B.2) | **무효** — `T3`. ClaimGuard `reason`이 "T1(본문) 근거 없이 절대·최상급 주장 불가"로, `scope_qualifier_required`가 True로 바뀜 | `5f1ccaa` / 부록 C.6 |
+> | `compute_source_tier_bonus`가 전 코퍼스에 0.0 반환 | **유효** — 구현은 바뀌었으나 이 코퍼스는 `source_provenance`가 전건 null이라 반환값 분포가 `{0.0: 1363}`으로 동일. *종전 표에서 이 행을 "무효화됨"으로 적은 것은 과했으므로 정정한다.* | `4007926` / 부록 C.7 |
+> | NAE on-disk TSU 합계 **7,760** (저작 3개) | **무효** — 현재 **14,587** (저작 6개, Vol04는 생성 진행 중) | 부록 C.8 |
+> | `nae_tsu_v1` 3,319 · `nae_ref_v1` 34,948 · Fuller `indexed=0` | **유효** — 전부 불변 | 부록 C.8 |
+> | 부록 B: `absolute_claim_blocked`가 답변을 차단하지 않음 | **유효** — caption의 `reason` 문구만 바뀜 | 부록 C.6 |
+> | 부록 A: citation card meta 행이 `문서` 1개뿐 | **유효** — `citation_card.py`·호출부 무변경 | 부록 C.9 |
+>
+> **신규 관측 사실**: 한국어 BM25가 살아나면서 전체 pool 스코어링이 warm 기준
+> **질의당 8.9~9.3초**(A1 wall 109 ms → 10.4 s)를 차지한다. `_tokenize()`가 매 질의마다
+> 후보 문서를 1건씩 전부 형태소 분석하며 문서측 토큰 캐시가 없다. 부록 C.4 참조.
 >
 > ### 여전히 유효한 핵심 결론 (`5146fa7`에서 재확인)
 >
@@ -834,3 +845,175 @@ assistant 메시지 컨테이너의 DOM 출현 순서를 직접 추출한 결과
 | # | 이전 상태 | 갱신 |
 |---|-----------|------|
 | **V3** `absolute_claim_blocked=True`의 답변 차단 여부 | UNKNOWN | **해소** — 차단하지 않으며 caption 1줄만 추가함을 DOM 순서·화면·지속된 판정값으로 실증 (§B.3) |
+
+---
+
+# 부록 C — stale 항목 재관측 (2026-09-10, `dev/dbma-engine` tip)
+
+본문과 부록 A·B는 `dev/dbma-engine` @ `daca402` 기준이다. 그 이후 유입된 커밋으로
+무효화된 항목을 **실제로 다시 실행해** 현재 값을 확정한다.
+
+## C.0 관측 조건과 무변경 확인
+
+| 항목 | 값 |
+|------|-----|
+| 관측 대상 | `/Users/David/DBMA` @ `2062588` (2026-09-10) |
+| retrieval 계열 코드 | `origin/dev/dbma-engine` @ `ee9464d`와 **동일** (차이는 `scripts/nae_f2_watchdog.sh` 1개뿐이며 설치본이 오히려 앞섬) |
+| 포함 확인된 수정 | `31ef590` · `bb688c4` · `5f1ccaa` · `4007926` · `8cfd321` · `f54103a` 전부 ancestor |
+| 검색 코퍼스 | `tsu_dataset.jsonl` **1,363건 / source_file 1개** — 본문 관측과 동일 |
+
+> registry에 4번째 문서 `original.pdf`(725 chunks, `PROCESSED`, 2026-09-10 12:11)가
+> 등록됐으나 TSU 데이터셋에 반영되지 않아 **검색 대상은 변하지 않았다.**
+> `documents.json` 해시는 그 등록 때문에 바뀌었다(본 관측이 만든 변화가 아님).
+
+| 대상 | 관측 전 | 관측 후 | 결과 |
+|------|---------|---------|------|
+| `tsu_dataset.jsonl` | `fc9705c844e339da` | `fc9705c844e339da` | 동일 |
+| `tsu_manifest.json` | `7539a6e0cc309c32` | `7539a6e0cc309c32` | 동일 |
+| `bible_index.sqlite3` | `a09a81822cf23ebd` | `a09a81822cf23ebd` | 동일 |
+| `config.yaml` | `f664eda6107dfd09` | `f664eda6107dfd09` | 동일 |
+| `output/bench/` 파일 수 | 67 | 67 | 동일 |
+| 컨테이너 3종 | Up 2 weeks | Up 2 weeks | 미조작 |
+
+파생 변화: `cache/embeddings/` **2,160 → 2,302 (+142)** — 후보 풀이 바뀌어 새 청크가 임베딩됨.
+
+---
+
+## C.1 한국어 키워드 추출 — **수정 확인** (`31ef590`)
+
+```
+'매튜 풀 주석에서 마태복음의 핵심 해석을 찾아라.'
+    keywords=['매튜','풀','주석','마태','복음','핵심','해석','찾']   intent=exegesis
+'구하라 그리하면 너희에게 주실 것이요 찾으라 그리하면 찾아낼 것이요'
+    keywords=['구하','그리','너희','주','찾','찾아내']                intent=unknown
+'마태복음 6:9-13 주기도문 해석'
+    keywords=['마태','복음','주','기도문','해석']  refs=['MAT 6:9-13'] intent=exegesis
+'grace and forgiveness in Matthew'
+    keywords=['grace','forgiveness','matthew']                       intent=theological
+```
+
+본문 관측에서는 한국어 3건 모두 `keywords=[]`였다. **영어 동작은 보존**됐다.
+부수 변화로 `intent`가 2건에서 `unknown` → `exegesis`로 바뀌었다.
+
+## C.2 BM25 후보 생성 — **fallback 슬라이스 해소**
+
+| 질의 | metadata_filter | pool | BM25 non-zero | fallback 사용 (이전→현재) |
+|------|----------------:|-----:|--------------:|---------------------------|
+| A1 | 1363 | 1363 | **640** | True → **False** |
+| A2 | 1363 | 1363 | **791** | True → **False** |
+| A3 | 16 | 16 | **11** | True → **False** |
+
+본문의 "코퍼스 인덱스 0~99 무순위 슬라이스" 경로는 이 세 질의에서 더 이상 타지 않는다.
+
+## C.3 top-k 결과 — 전면 변경
+
+| 질의 | 이전 top-5 | 현재 top-5 | 교집합 |
+|------|-----------|-----------|-------:|
+| A1 | `00017, 00016, 00018, 00006, 00005` | `00181, 00193, 00179, 00180, 00158` | **0/5** |
+| A2 | `00090, 00089, 00087, 00098, 00095` | `00402, 00380, 00282, 00200, 00087` | **1/5** |
+| A3 | `00280, 01027, 01028, 00261, 00849` | `01027, 01028, 00259, 00717, 00157` | **2/5** |
+
+A3에서 본문 관측 시 1위였던 `chunk_00280`(질의 문구를 그대로 포함한 청크)이 **top-5에서 이탈**했다.
+현재 1위는 `chunk_01027`(`MAT 6:1-34`, score 0.6828)이다. 판정은 하지 않고 사실만 기록한다.
+
+## C.4 지연시간 — **크게 증가** (신규 관측 사실)
+
+cold(1회차)와 warm(2회차, 임베딩 캐시 전건 히트) 모두 측정했다.
+
+| 질의 | 본문 관측 (이전) | 현재 cold | 현재 **warm** | warm 중 BM25 |
+|------|----------------:|----------:|--------------:|-------------:|
+| A1 | 109 ms | 20,238 ms | **10,417 ms** | **9,321 ms (89%)** |
+| A2 | 82 ms | 18,057 ms | **9,697 ms** | **8,859 ms (91%)** |
+| A3 | 1,708 ms | 494 ms | **429 ms** | 209 ms |
+
+warm 2회차의 `cache hits=422 miss=0` — 임베딩 캐시 냉기가 아니라 **BM25 스코어링 자체**가 지배적이다.
+
+기전(코드 판독): `core/retrieval.py::_tokenize()`가 kiwipiepy 형태소 분석기를 호출하며,
+`bm25_score()`를 통해 **매 질의마다 후보 문서 1건씩 전부** 토큰화한다. 해당 docstring도
+"this function is called per candidate document on every query via `bm25_score()`"라고 명시한다.
+문서측 토큰 캐시는 없다. A3가 빠른 이유는 metadata filter가 pool을 16건으로 좁히기 때문이며,
+**비용은 pool 크기에 비례**한다.
+
+본문 관측에서 BM25가 0.18~0.39 ms였던 것은 `keywords=[]`라 `bm25_score`가 즉시 0을 반환했기 때문이다.
+
+## C.5 ContextAssembler 서지정보 — **수정 확인** (`bb688c4`)
+
+```
+<context id="TSU-MAT-c6618c640f791aaf3e1ca453e0758e2f_chunk_01027" score="0.6828">
+출처: 매튜 풀 청교도 성경주석 14  마태복음 (매튜 풀).epub, MAT 6:1-34
+신앙이 좋고 훌륭한 사람들이라는 것을 “사람에게 보이고자” …
+```
+
+본문 관측의 `<context id=…>` 단독 형식과 달리 `출처:` 줄이 추가된다.
+다만 `title`/`author`가 전 코퍼스에서 null이므로 라벨은 **파일명 + 성경참조**로 구성된다.
+
+## C.6 `wrap_ranked_candidates` trust_tier — **수정 확인** (`5f1ccaa`)
+
+| 항목 | 이전 | 현재 |
+|------|------|------|
+| trust_tier | `T1` 고정 (전건) | **`T3`** (전건, `_infer_trust_tier(c)` 경유) |
+| evidence_axis | `t1_hybrid_search` | `t1_hybrid_search` (동일) |
+
+### 파급 — ClaimGuard 판정이 바뀐다
+
+부록 B와 **같은 답변 문장**으로 재실행한 결과:
+
+| 필드 | 부록 B (이전) | 현재 |
+|------|--------------|------|
+| `risk_level` | HIGH | HIGH (동일) |
+| `matched_terms` | `['유일']` | `['유일']` (동일) |
+| `absolute_claim_blocked` | **True** | **True** (동일) |
+| `scope_qualifier_required` | False | **True** (변경) |
+| `reason` | `전체 코퍼스 비교 불가 — '최초/유일' 주장 차단 (no_full_corpus_comparison_exists)` | **`T1(본문) 근거 없이 절대·최상급 주장 불가`** (변경) |
+
+규칙 2a가 실제로 발동한다 — 이전에는 검색 결과를 T1으로 위장했기 때문에 2a를 우회하고
+2c(경쟁후보 미확인)로 떨어졌었다.
+
+**부록 B의 UI 결론은 영향받지 않는다.** UI 조건은
+`absolute_claim_blocked or scope_qualifier_required`이고 현재 둘 다 True이므로 caption은 그대로 표시되며,
+`chat.py:557-566`의 "답변 전부 출력 후 판정 → caption 1줄" 구조도 tip에서 불변이다.
+**바뀌는 것은 caption에 찍히는 `reason` 문구뿐이다.**
+
+## C.7 `compute_source_tier_bonus` — **무효화 아님 (본문 서술 유효)**
+
+| 항목 | 결과 |
+|------|------|
+| 전 코퍼스 1,363건 반환값 분포 | **`{0.0: 1363}`** |
+
+`4007926`으로 구현은 `source_tier` 반영형으로 바뀌었으나, 이 코퍼스는 `source_provenance`가
+전건 null이라 **관측되는 반환값은 종전과 동일하게 전건 0.0**이다.
+
+> **자기 정정**: 본 문서 상단 Provenance 블록의 무효화 표에 이 항목을 "무효화됨"으로 올린 것은
+> 과했다. 무효화된 것은 **구현**이지 **이 코퍼스에서 관측되는 결과**가 아니다.
+
+## C.8 NAE 수치 — 재계수
+
+| 저작 | on-disk | `nae_tsu_v1` indexed |
+|------|--------:|---------------------:|
+| `Dagg_Church_Order` | 3,377 | 2,958 |
+| `Hiscox_Standard_Manual` | 740 | 361 |
+| `Fuller_Complete_Works_Vol01` | 3,643 | **0** |
+| `Fuller_Complete_Works_Vol02` | 2,674 | **0** |
+| `Fuller_Complete_Works_Vol03` | 3,277 | **0** |
+| `Fuller_Complete_Works_Vol04` | 876 | **0** |
+| **합계** | **14,587** (2차 본문: 7,760) | **3,319** (2차 본문: 3,319 — 불변) |
+
+`nae_ref_v1` = **34,948** (불변). Fuller는 4권 모두 on-disk에만 있고 색인은 0이다.
+Vol04는 동일 세션 내 1시간 간격 재계수에서 742 → 876으로 증가 — **생성이 진행 중**이다.
+
+## C.9 재관측 요약
+
+| # | 본문/부록의 서술 | 재관측 결과 |
+|---|------------------|-------------|
+| 1 | 한국어 질의 `keywords=[]` | **무효** — 형태소 기반 키워드 생성됨 |
+| 2 | BM25 무히트 → fallback 슬라이스 | **무효** — 3질의 모두 non-zero hit |
+| 3 | A1/A2/A3 top-5 목록 | **무효** — 교집합 0~2/5 |
+| 4 | `ContextAssembler`가 `<context id=…>`만 조립 | **무효** — `출처:` 줄 추가 |
+| 5 | `wrap_ranked_candidates` T1 고정 | **무효** — T3, ClaimGuard `reason`·`scope_qualifier_required` 변경 |
+| 6 | `compute_source_tier_bonus` 전 코퍼스 0.0 | **유효** (구현만 변경, 결과 동일) |
+| 7 | NAE on-disk 7,760 / 저작 3개 | **무효** — 14,587 / 저작 6개 |
+| 8 | `nae_tsu_v1` 3,319, `nae_ref_v1` 34,948, Fuller 0 | **유효** |
+| 9 | 부록 B: `absolute_claim_blocked`가 답변을 차단하지 않음 | **유효** (caption `reason` 문구만 변경) |
+| 10 | 부록 A: citation card meta 행이 `문서` 1개뿐 | **유효** — `citation_card.py`·`render_citation_card` 호출부 무변경 |
+| 11 | `qdrant_url` 미사용 / `Citation`에 검수·인용가능 필드 없음 / EPUB 서지·heading provider 부재 | **유효** |
+| — | *(신규)* 전체 pool BM25가 warm 기준 질의당 **8.9~9.3초** | 신규 관측 사실 |
