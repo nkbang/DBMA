@@ -5,6 +5,7 @@
 - 증거 기준: 본 세션에서 이미 작성된 **DBMA/NAE 1차 점검 보고서**(2026-09-09)와 **DBMA/NAE 2차 운영 검증 보고서(Notch 3)**(2026-09-09) 두 문서에서 실행·파일판독으로 확인된 사실만 사용한다. 두 보고서에서 UNKNOWN으로 표시된 항목은 개선 대상으로 확정하지 않는다.
 - 인용 표기: `[1차 §x.y]` = 1차 점검 보고서 절, `[2차 Qn]` / `[2차 §…]` = 2차 검증 보고서 항목.
 - **동반 문서**: `docs/DBMA_NAE_PROPOSAL_CONFLICT_REGISTER_v1.md` — 본 제안의 요구·가정이 현재 파이프라인/코드/ADR/테스트와 충돌하는 지점을 Conflict Record로 등록. 아래 P0/P1의 실제 착수 판정은 Conflict Register의 Decision status를 따른다.
+- **개정 (2026-09-10)**: 이 문서가 UNKNOWN으로 두었던 **UK-1 / CON-008 / P1-4 선행조건**(= `absolute_claim_blocked`·citation card·Smith 항목의 실제 화면 동작)이 관측으로 해소되어 해당 서술을 갱신했다. 근거는 `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` **부록 A·B** — 기본 모델(`my-theology-bot-v2`, 70.6B) 대신 앱 자체 선택기로 `llama3.1:8b`를 골라 생성을 완료시킨 뒤 DOM 수준에서 관측했다. 관측 시 코드·설정·데이터·인덱스는 변경하지 않았다(해시 5종 전후 동일). 갱신된 항목에는 취소선 또는 `RESOLVED` 표기를 남겨 원래 판단 이력을 지우지 않았다.
 
 ---
 
@@ -24,7 +25,7 @@
 | PB-04 | UI 답변 생성이 관측 구간(Chat ≈23분) 내 미완료. citation card 화면 렌더도 그 때문에 미관측. **원인 UNKNOWN** | 관측 CONFIRMED / 원인 UNKNOWN |
 | PB-05 | gold query 100건 중 현재 corpus와 완전일치 3건, `output/eval/*.jsonl` chunk ID 0/8 일치. 현재 corpus 기준 유효 품질 baseline 부재 | CONFIRMED |
 | PB-06 | `DEFAULT_BENCH_DIR`이 cwd 상대 경로. 실행 위치에 따라 dataset/index/telemetry 경로가 달라질 수 있음 (재현성 위험으로 확인, 운영 오류로는 미확인) | CONFIRMED (코드) / 영향은 PROBABLE |
-| PB-07 | ClaimGuard 예외 시 `RiskLevel.NONE` 반환하고 답변 계속 사용(fail-open). `absolute_claim_blocked=True`가 UI에서 실제 차단으로 이어지는지 UNKNOWN | fail-open CONFIRMED / UI 집행 UNKNOWN |
+| PB-07 | ClaimGuard 예외 시 `RiskLevel.NONE` 반환하고 답변 계속 사용(fail-open). `absolute_claim_blocked=True`는 **답변을 차단하지 않고** 답변 아래 `st.caption` 1줄만 추가 | fail-open CONFIRMED / **UI 집행 CONFIRMED** (2026-09-10, `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B §B.3) |
 | PB-08 | `should_activate_smith()`가 일반 주석·성경참조 질의에도 True. 주입 텍스트에 OCR 열화 형태. Smith 결과는 citation card로 전달 안 됨 | CONFIRMED |
 | PB-09 | `nae_ref_v1` 34,948건에 `review_status`/`usage_permission`/`copyright_status`/`citation_policy` 필드 자체가 없음. `nae_tsu_v1`은 `citation_policy` 전건 null | CONFIRMED |
 
@@ -108,7 +109,7 @@
 
 | # | 항목 | 근거 |
 |---|------|------|
-| UK-1 | citation card / Smith 항목 / `absolute_claim_blocked`의 **실제 화면 동작** | 생성 미완료로 렌더 미관측 [2차 V1, V3, V4] |
+| ~~UK-1~~ | ~~citation card / Smith 항목 / `absolute_claim_blocked`의 실제 화면 동작~~ | **RESOLVED (2026-09-10)** — `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B에서 `llama3.1:8b`로 생성을 완료시켜 DOM 수준 관측. V1·V3·V4 모두 해소. 결과는 아래 §PB-04/§PB-07 및 CON-008 참조 |
 | UK-2 | PB-04 지연의 원인 | 원인 분리 실험 미수행, 금지 범위 [2차 V2] |
 | UK-3 | `USE_INVERTED_INDEX=true` 경로 동작, `tantivy_index/` 최신성 | 환경변수 변경 금지 [2차 V5] |
 | UK-4 | `modules.nae_pd.enabled=true` 시 `bridge_query()` 결과·품질 | 플래그 변경 금지 [2차 V6] |
@@ -148,10 +149,10 @@
 | **PB-01** 한국어 질의 BM25=0 → 후보 풀 `pool[:100]` 퇴화 | `retrieval.py:470` 정규식; `_extract_keywords` 실행 4건 `[]`; A1 풀=0..99; A2 정확문구 청크 top-5 누락 [2차 Q3/A1/A2] | **직접.** 활성 경로에서 재현된 검색 실패 | 없음 (질의-시점) | **높음.** 근거 청크가 안 잡히면 인용도 불가 | 성경참조 없는 한국어 질의에서 무관 결과 상위 | 높음 | **P0** |
 | **PB-02** citation 서지·locator 필드 결측 | `tsu_dataset.jsonl` 전건 null [1차 §3.4]; citation card 인자 `source_file`/score만 [2차 Q6]; EPUB엔 메타 존재 [2차 Q7] | **직접.** 출처 추적 신뢰성 훼손 | 없음 (backfill은 additive) | **높음.** 저자·서명·페이지 없이는 학술 인용 불가 | 근거 카드가 "문서" 한 줄만 표시 | 높음 | **P0** (서지 backfill) / locator·rights·UI는 조건부 → Conflict Register |
 | **PB-03** 활성 경로 telemetry 지속 저장 부재 | `SearchTelemetry` hybrid 전용 [2차 Q16]; 6회 질의 후 telemetry/logs ABSENT | **직접.** 관측 부재로 오류 재현·판단 불가 | 없음 | 간접 | 장애 진단 불가(PB-04 포함) | 높음 | **P0** |
-| **PB-04** UI 답변 생성 관측구간 미완료 | Chat ≈23분·Research ≈4~5분 미완료; `/api/generate` 120s 무응답 [2차 D-절] | **직접.** 현재 UI 사용을 실질적으로 막음 | 없음 | citation card 렌더 미관측 [2차 V1] | 답변 미출력 | 높음 | **P0** (계측 한정) / 원인·해법 Deferred |
+| **PB-04** UI 답변 생성 관측구간 미완료 (기본 모델 한정) | `my-theology-bot-v2`(70.6B): Chat ≈23분·Research ≈4~5분 미완료, `/api/generate` 120s 무응답 [2차 D-절]. **동일 질의·동일 검색 경로에서 `llama3.1:8b`는 40초 내 완료** (`docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B §A.1) → 미완료는 **생성 단계에 국한** | **직접.** 기본 모델 사용 시 UI를 실질적으로 막음 | 없음 | ~~citation card 렌더 미관측~~ → **해소** (부록 A) | 답변 미출력 | 높음 | **P0** (계측 한정) / 70B 정체 원인은 여전히 UNKNOWN(UK-2) |
 | **PB-05** eval 자산 ↔ 현재 corpus 불일치 | gold FULL 3/100, eval chunk 0/8 [2차 Q13/Q14] | 없음 (eval 자산) | 없음 | **높음.** 품질 baseline 없음 | 개발/QA | 중 | **P1** (P0 측정의 선행) |
 | **PB-06** `DEFAULT_BENCH_DIR` cwd 상대 | `config.py:72`; `DATA_DIR`만 절대 [2차 §실행위치] | **위험.** 잘못된 위치 실행 시 다른 dataset/index/log | **잠재적.** wrong-path write | 간접 | 재현성 위험(운영오류 미확인) | 중 | **P1** |
-| **PB-07** ClaimGuard fail-open + UI 집행 UNKNOWN | 예외 시 `RiskLevel.NONE` 후 답변 사용 [2차 Q15]; UI 동작 미관측 [2차 V3] | **직접.** 가드 실패가 무경보 | 없음 | **중.** 절대화 주장 무검증 통과 가능 | 잠재 오정보 | 중 | **P1** / UI 집행 Deferred |
+| **PB-07** ClaimGuard fail-open (UI 집행 확인됨) | 예외 시 `RiskLevel.NONE` 후 답변 사용 [2차 Q15]. **UI 집행 CONFIRMED**: `absolute_claim_blocked=True`여도 답변 전문이 먼저 렌더되고 `st.caption` 1줄이 뒤에 붙을 뿐, 차단·대체·재작성 없음 (`docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B §B.3) | **직접.** 가드 실패가 무경보이고, 가드가 **작동해도** 차단되지 않음 | 없음 | **중.** 절대화 주장 무검증 통과 가능 | 잠재 오정보 | 중 | **P1** / 차단 정책 자체는 여전히 Deferred |
 | **PB-08** Smith 과활성 + OCR 주입 + 미인용 | `should_activate_smith` A1/A3 True; OCR 텍스트 주입; citation 미전달 [2차 Q8] | **직접.** 무관 질의에도 OCR 노이즈가 LLM 컨텍스트에 | 없음 (읽기 전용) | **중.** 출처 불명 텍스트가 답변 근거에 | 답변 품질·신뢰 저하 | 중 | **P1** |
 | **PB-09** NAE rights/citation_policy 필드 결측 | `nae_ref_v1` rights 필드 부재 100%; `nae_tsu_v1` `citation_policy` null 100% [2차 Q10] | 부분 (Smith 활성) | 없음 | **중.** 질의 시점 인용가능성·권리 판별 불가 | 간접 | 중 | **P1 / P2** (NAE governance 선행) |
 
@@ -211,7 +212,7 @@
 
 ## P0-4 — 생성·엔드투엔드 지연 계측 하니스 (측정 전용, 비파괴)
 
-1. **해결하려는 CONFIRMED 문제** — PB-04. UI 생성 관측구간 미완료 → citation 렌더 미관측. **원인 UNKNOWN** → P0는 "분리 측정 가능하게" 한정 [2차 D-절, V2].
+1. **해결하려는 CONFIRMED 문제** — PB-04. 기본 모델(70.6B)에서 UI 생성이 관측구간 내 미완료. ~~citation 렌더 미관측~~은 `llama3.1:8b`로 해소됐으나(부록 A), **70B가 정체하는 원인은 여전히 UNKNOWN**(UK-2) → P0는 "분리 측정 가능하게" 한정 [2차 D-절, V2].
 2. **Evidence** — Chat ≈23분·Research ≈4~5분; `/api/generate` 120s 무응답; llama-server 10~13% CPU; curl 경합 미배제; `research.py:277` "always run AI answer path" [2차 D-절].
 3. **최소 변경 설계** — 독립 스크립트 `scripts/measure_generation_latency.py`(활성 코드 아님) + 프로토콜. 분리 항목: cold/warm load, retrieval-only, context assembly, first-token, total generation, UI render. 단일 테넌트. 부수로 Chat/Research 스피너에 경과시간+"생성 중" 표시와 클라이언트 hard timeout을 플래그(`UI_GENERATION_TIMEOUT_S`) 뒤에. → 스피너/timeout은 CON-005 참조.
 4. **예상 변경 경로 / 파일** — 신규 `scripts/measure_generation_latency.py`; 선택 `ui/pages/chat.py`·`research.py` 스피너+timeout(~5행, 플래그).
@@ -241,7 +242,7 @@
 - **해결**: PB-08 [2차 Q8]. **설계**: (a) `should_activate_smith`를 인물/지명 사전형 질의로 좁히는 규칙을 플래그(`SMITH_ACTIVATION_STRICT`) 뒤에. (b) 주입 항목을 citation 목록에 **보조 출처**로 전달(`source_type="reference"`, 위계 하위 명시). (c) OCR 품질 경고 플래그. **OCR 재처리 안 함**. **PoC 선행**: strict 규칙을 질의 세트에 돌려 과활성/과소활성 측정. **flag/rollback**: `SMITH_ACTIVATION_STRICT` 기본 off. **acceptance**: strict on 시 `매튜 풀 주석에서…`·`마태복음 6:9-13…` → False, `모세는 누구인가` → True; citation에 Smith `reference` 타입 포함; `2710 passed`. **risk**: strict가 유효 질의 놓칠 수 있음(과소활성). citation에 넣으려면 위계 구분 필드가 없어 기존 필드 오버로드 필요(호환성). `nae_ref_v1`에 rights 필드 없음 → 채울 rights 없음. → CON-006. **out of scope**: Smith 일반 질의 확장(P2), OCR 재추출, `nae_ref_v1` 재색인.
 
 ## P1-4 — ClaimGuard fail-open 정책 옵션 비교 (결론 미도출)
-- **해결**: PB-07 [2차 Q15]. **설계(비교만)**: (A) 현행 fail-open (B) fail-open + 감사 로그(P0-3 채널에 `claimguard_error`) (C) fail-soft: 예외 시 "자동 검증 실패" 배지(차단 아님). trade-off 표. 결론 없음. **flag/rollback**: `CLAIMGUARD_FAIL_POLICY` = `open`(기본)/`open_logged`/`soft`. **acceptance(옵션별)**: (B) 예외 주입 시 로그 1건, 답변 정상; (C) 예외 시 배지, 답변 유지. **risk**: `absolute_claim_blocked`의 **UI 집행이 UNKNOWN** [2차 V3] → (C)가 현행과 어떻게 다른지 확정 불가. UI 집행 확인 선행. → CON-008. **out of scope**: 절대화 주장 차단 정책 확정(Deferred), 탐지 규칙 변경, 인용/근거성 검증 신설.
+- **해결**: PB-07 [2차 Q15]. **설계(비교만)**: (A) 현행 fail-open (B) fail-open + 감사 로그(P0-3 채널에 `claimguard_error`) (C) fail-soft: 예외 시 "자동 검증 실패" 배지(차단 아님). trade-off 표. 결론 없음. **flag/rollback**: `CLAIMGUARD_FAIL_POLICY` = `open`(기본)/`open_logged`/`soft`. **acceptance(옵션별)**: (B) 예외 주입 시 로그 1건, 답변 정상; (C) 예외 시 배지, 답변 유지. **risk**: ~~UI 집행 UNKNOWN~~ → **해소(2026-09-10)**. 현행은 `absolute_claim_blocked=True`에서도 답변을 차단하지 않고 `주장 검증: {reason}` caption 1줄만 덧붙인다(`docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B §B.3). 따라서 (C)의 "배지"는 **현행 caption과 기능적으로 중복**될 수 있으므로, 비교 설계는 "배지 신설"이 아니라 "기존 caption의 문구·시인성 변경"으로 다시 잡아야 한다. → CON-008. **out of scope**: 절대화 주장 차단 정책 확정(Deferred), 탐지 규칙 변경, 인용/근거성 검증 신설.
 
 ## P1-5 — `DEFAULT_BENCH_DIR` 경로 앵커링
 - **해결**: PB-06 [2차 §실행위치]. **설계**: 상대값이면 `BASE_DIR` 기준 해석(절대면 그대로). 안전을 위해 `BENCH_DIR_ANCHOR_BASE`(기본 off) 게이트, 한 스프린트 관찰 후 전환. **flag/rollback**: 플래그 unset = 현행 cwd 상대. **acceptance**: `os.chdir('/tmp')` 후 `DEFAULT_TSU_DATASET_PATH`가 `/Users/David/DBMA/output/bench/...`로 해석; `/Users/David/DBMA`에서 실행 시 불변; `2710 passed`. **risk**: cwd 상대에 의존하는 스크립트 존재 가능(미확인, [1차 U15]) → 플래그 점진 전환. 운영오류로 확인된 바 없음. → CON-011. **out of scope**: 다른 경로 상수 일괄 변경, 실행 래퍼.
@@ -260,7 +261,7 @@
 | LoRA / 파인튜닝 | 금지(#6) | 프롬프트·검색 개선 소진 후 잔여 정량 결함 |
 | 클라우드 Deep Audit / 대규모 클라우드 모델 자동 호출 | 금지(#6·#8). 저작권 자료 외부 전송 위험 | rights 분류 완료(PB-09) + 데이터 최소화 |
 | Smith 일반 질의 확장 | 이미 과활성 [2차 Q8] | P1-3 측정 후, 일반 질의에서 품질 상승 근거 |
-| ClaimGuard 최종 차단 정책 | `absolute_claim_blocked` UI 집행 UNKNOWN [2차 V3] | UI 집행 실동작 확인 + P1-4 비교 |
+| ClaimGuard 최종 차단 정책 | UI 집행은 확인됨(차단 아님, caption 1줄; `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B §B.3). **차단할 것인가**라는 정책 판단이 미결 | P1-4 비교 (UI 집행 확인 선행조건은 충족) |
 | 다중 문서 코퍼스 확장 | 현재 단일 MAT [1차 §5.5] | P0/P1 안정화 + 문서 추가 시 회귀 계약(P1-1) |
 | `_record_result_click`/CTR telemetry | `ResponsePackage`에 `telemetry_query_id` 없음 [2차 Q16] | P0-3 채널 안정화 후 |
 | n8n control-plane 개선 | 활성 상태 UNKNOWN [1차 U2] | 워크플로 활성 여부 + 실행 이력 |
@@ -314,10 +315,10 @@
 - **보류 조건**: cwd 상대에 의존하는 스크립트 발견 시 플래그 유지.
 
 ## 8. ClaimGuard ↔ generation output / UI behavior
-- **현재 계약**: `_run_claim_guard` → `ClaimGuardResult`. HIGH → `absolute_claim_blocked=True`. 예외 → `RiskLevel.NONE`, 답변 계속 [2차 Q15]. **UI 집행 UNKNOWN** [2차 V3].
+- **현재 계약**: `_run_claim_guard` → `ClaimGuardResult`. HIGH → `absolute_claim_blocked=True`. 예외 → `RiskLevel.NONE`, 답변 계속 [2차 Q15]. **UI 집행 CONFIRMED**: `ui/pages/chat.py`가 `st.write_stream()`으로 답변을 전부 출력한 뒤 판정을 읽어 `_render_claim_guard_warning()`으로 caption 1줄만 추가한다 — 차단 경로 없음 (`docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B §B.3).
 - **깨질 수 있는 조건**: fail-soft 배지가 현행 UI의 기존 `absolute_claim_blocked` 처리와 이중/모순.
-- **최소 검증**: 먼저 UI 집행 렌더 관측(생성 완료 조건), 그다음 P1-4 비교.
-- **보류 조건**: UI 집행 UNKNOWN 동안 fail 정책 변경 보류. 차단 정책 Deferred.
+- **최소 검증**: ~~UI 집행 렌더 관측~~ 완료(2026-09-10). 남은 것은 P1-4 비교뿐.
+- **보류 조건**: fail 정책 변경은 P0-3 관측 채널로 실패율을 확보한 뒤. 차단 정책은 여전히 Deferred(HQ 판단 사항).
 
 ---
 
@@ -368,7 +369,7 @@
 ## S5 — P1 항목별 PoC
 - P1-2: 매튜 풀 EPUB nav 추출 정확도 육안 검증.
 - P1-3: activate 매트릭스 측정.
-- P1-4: **먼저 UI 집행 여부 렌더 관측**(생성 완료 환경), 그다음 정책 비교.
+- P1-4: UI 집행 렌더 관측 완료(2026-09-10) → 정책 비교로 바로 진입 가능.
 - P1-5: `/tmp` 실행 테스트.
 - 각 PoC 실패 시 해당 항목만 보류.
 
@@ -414,7 +415,7 @@ S0(재현) → S4(sidecar fill, rights·locator 제외). S1~S3는 이 slice의 �
 | LoRA/파인튜닝 | 위 + 정량 잔여 결함 |
 | 클라우드 Deep Audit 자동화 | rights 분류 + 데이터 최소화·비전송 설계 |
 | Smith 일반 질의 확장 | P1-3 측정 + 정량 근거 |
-| ClaimGuard 절대화-주장 차단 정책 | UI 집행 확인 [2차 V3] + P1-4 비교 |
+| ClaimGuard 절대화-주장 차단 정책 | ~~UI 집행 확인~~ 완료 → P1-4 비교 |
 | `USE_INVERTED_INDEX=true` | tantivy 정합 증명 + P0-3 관측 + A/B |
 
 ---
@@ -440,7 +441,7 @@ S0(재현) → S4(sidecar fill, rights·locator 제외). S1~S3는 이 slice의 �
 
 ## 다음 개선 제안 전 반드시 확인해야 할 사실
 1. **S0 재현**: 2차 수치가 현재 환경에서 재현되는가 (worktree ↔ live 코드 동일성 포함 [1차 §5.3]).
-2. **PB-04 UI 집행**: 생성 완료 조건에서 citation card·Smith 항목·`absolute_claim_blocked`가 화면에서 실제로 어떻게 동작하는가 [2차 V1/V3/V4].
+2. ~~**PB-04 UI 집행**~~ — **해소(2026-09-10)**. citation card는 `문서` 행 1개만 렌더(저자/출처/본문 위치/자료 유형은 DOM에 요소 자체가 없음), Smith는 컨텍스트에만 주입되고 화면 미표시, `absolute_claim_blocked`는 차단 없이 caption 1줄. 근거: `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 A·B §A.2/§A.3/§B.3.
 3. **P1-1 subset 변별력**: MAT 단일 corpus 기준 subset이 P0-1 flag를 유의미하게 구분하는가.
 4. **NAE 미색인 4,441건**: 어느 파이프라인 단계가 필터했는지 [2차 V9].
 5. **`_tokenize` ↔ BM25 문서 통계 상호작용**: 2-gram keyword가 하이브리드 랭킹을 어떻게 이동시키는가.
