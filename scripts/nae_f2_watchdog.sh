@@ -18,6 +18,13 @@
 #   AUTO_RECOVER   1 = kill + launchctl kickstart + restart driver (default).
 #                  0 = alert only (print, no action).
 #   POLL_SECS      loop interval, seconds (default 120)
+#   HEARTBEAT_CYCLES  log an "alive" line every this many polls even when
+#                  nothing is suspicious (default 10 -> ~20min at POLL_SECS=120).
+#                  Without this, a healthy run (checkpoints always < STALL_SECS)
+#                  never logs anything, which from the log alone is
+#                  indistinguishable from a hung watchdog process (observed
+#                  2026-09-10: ~8h of silence during a perfectly healthy Vol04
+#                  run, flagged by a peer session as a possible watchdog hang).
 set -u
 
 REPO="/Users/David/DBMA"
@@ -26,6 +33,7 @@ STALL_SECS="${STALL_SECS:-1500}"
 PROBE_TIMEOUT="${PROBE_TIMEOUT:-45}"
 AUTO_RECOVER="${AUTO_RECOVER:-1}"
 POLL_SECS="${POLL_SECS:-120}"
+HEARTBEAT_CYCLES="${HEARTBEAT_CYCLES:-10}"
 cd "$REPO" || exit 1
 
 log() { printf '%s  %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*"; }
@@ -78,19 +86,27 @@ recover() {
   return 0
 }
 
-log "F2 watchdog start — STALL_SECS=$STALL_SECS AUTO_RECOVER=$AUTO_RECOVER POLL=$POLL_SECS"
+log "F2 watchdog start — STALL_SECS=$STALL_SECS AUTO_RECOVER=$AUTO_RECOVER POLL=$POLL_SECS HEARTBEAT_CYCLES=$HEARTBEAT_CYCLES"
 consec=0
+cycle=0
 while true; do
   sleep "$POLL_SECS"
+  cycle=$((cycle+1))
   driver=$(pgrep -f "bash scripts/run_fuller_f2.sh" | head -1)
-  [ -z "$driver" ] && { log "driver not running — watchdog idle (F2 done or stopped)"; consec=0; continue; }
+  if [ -z "$driver" ]; then log "driver not running — watchdog idle (F2 done or stopped)"; consec=0; continue; fi
   runner=$(pgrep -f "NAE.pipeline.tsu.runner --identifier Fuller_Complete_Works" | head -1)
-  [ -z "$runner" ] && { consec=0; continue; }   # between volumes
+  if [ -z "$runner" ]; then consec=0; continue; fi   # between volumes
   et=$(etimes_of "$runner")
-  rpt=$(active_report); [ -z "$rpt" ] && { consec=0; continue; }
+  rpt=$(active_report)
+  if [ -z "$rpt" ]; then consec=0; continue; fi
   age=$(( $(date +%s) - $(stat -f %m "$rpt") ))
   # suspect only once the runner has had time to reach a checkpoint
-  { [ "$age" -lt "$STALL_SECS" ] || [ "$et" -lt "$STALL_SECS" ]; } && { consec=0; continue; }
+  if [ "$age" -lt "$STALL_SECS" ] || [ "$et" -lt "$STALL_SECS" ]; then
+    if [ $((cycle % HEARTBEAT_CYCLES)) -eq 0 ]; then
+      log "heartbeat: alive, watching $(basename "$(dirname "$rpt")") ckpt age=${age}s runner et=${et}s (< ${STALL_SECS}s, healthy)"
+    fi
+    consec=0; continue
+  fi
   cpu=$(ps -o %cpu= -p "$runner" 2>/dev/null | tr -d ' ')
   log "SUSPECT stall: $(basename "$(dirname "$rpt")") ckpt age=${age}s runner et=${et}s cpu=${cpu}% — probing Ollama"
   if probe_ollama; then log "  Ollama responsive — runner slow, not wedged. No action."; consec=0; continue; fi
