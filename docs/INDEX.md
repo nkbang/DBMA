@@ -168,6 +168,9 @@ Located in: [output/PT_SEARCH_*.md](../output/)
 |----------|----------|-------|
 | Documentation Audit Report | [docs/reports/documentation-audit-report.md](./reports/documentation-audit-report.md) | Phase 1 |
 | 신학·목회 답변 품질 감사 | [docs/reports/THEOLOGICAL-RESPONSE-QUALITY-AUDIT-2026-09-10.md](./reports/THEOLOGICAL-RESPONSE-QUALITY-AUDIT-2026-09-10.md) | 2026-09-10 |
+| DBMA/NAE 파이프라인 감사 (Sprint 0) | [docs/audit/DBMA-NAE-PIPELINE-AUDIT-2026-09-09.md](./audit/DBMA-NAE-PIPELINE-AUDIT-2026-09-09.md) | 2026-09-09 |
+| DBMA/NAE 1차 점검 (인벤토리·데이터 흐름) | [docs/audit/DBMA-NAE-1ST-INSPECTION-2026-09-09.md](./audit/DBMA-NAE-1ST-INSPECTION-2026-09-09.md) | 2026-09-09 |
+| DBMA/NAE 2차 운영 검증 (+부록 A·B UI 렌더 관측, 부록 C stale 재관측) | [docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md](./audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md) | 2026-09-10 |
 
 ### Documentation Rules
 

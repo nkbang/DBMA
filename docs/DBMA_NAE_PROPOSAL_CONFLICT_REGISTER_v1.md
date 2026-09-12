@@ -5,6 +5,7 @@
 - 증거 기준: 본 세션의 **1차 점검 보고서**·**2차 운영 검증 보고서**에서 확인된 사실만.
 - 처리 원칙 (Conflict Protocol): 충돌 항목을 즉시 구현하지 않는다 / 기존 경로를 삭제·교체하지 않는다 / feature flag를 변경하지 않는다 / 전체 재색인·재청킹·DB migration을 실행하지 않는다 / 기존 데이터를 수정·삭제하지 않는다. 본 문서 작성 중 어떤 코드·설정·데이터·인덱스·서비스도 변경하지 않았다.
 - 대규모 교체·전면 재작성은 **D안으로만** 기록하며 현 시점 권고안으로 제시하지 않는다.
+- **개정 (2026-09-10)**: 이 문서가 UNKNOWN으로 두었던 **UK-1 / CON-008 / P1-4 선행조건**(= `absolute_claim_blocked`·citation card·Smith 항목의 실제 화면 동작)이 관측으로 해소되어 해당 서술을 갱신했다. 근거는 `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` **부록 A·B** — 기본 모델(`my-theology-bot-v2`, 70.6B) 대신 앱 자체 선택기로 `llama3.1:8b`를 골라 생성을 완료시킨 뒤 DOM 수준에서 관측했다. 관측 시 코드·설정·데이터·인덱스는 변경하지 않았다(해시 5종 전후 동일). 갱신된 항목에는 취소선 또는 `RESOLVED` 표기를 남겨 원래 판단 이력을 지우지 않았다.
 
 ---
 
@@ -19,7 +20,7 @@
 | CON-005 | P0-4: Chat/Research 스피너에 클라이언트 hard timeout + "재시도" (답변 폐기 아님) | `research.py:277` `# Always run AI answer path alongside search (UX-007 §4.1)`. 검색결과·citation 렌더가 생성 완료에 의존. 진행 중 생성에 재시도 → 동시 생성 위험 (2차에서 curl 1회 경합이 결과를 흐림) [2차 D-절, V2] | CONFIRMED_CONFLICT | MEDIUM | 직접 (generation↔UI 렌더) |
 | CON-006 | P1-3: Smith(`nae_ref_v1`) 결과를 citation 목록에 `source_type="reference"` 보조 출처로 전달 | Smith 항목을 `render_citation_card`로 전달하는 호출부 **없음** [2차 Q8]. `Citation` dataclass에 주/보조 구분 필드 없음 [1차 §3.2]. `nae_ref_v1`에 `review_status`/`usage_permission`/`copyright_status`/`citation_policy` 필드 자체가 없음 [2차 Q10] | CONFIRMED_CONFLICT | MEDIUM | 직접 (Smith 활성, citation 모델) |
 | CON-007 | P1-1: subset 판정축 "알려진 정답 청크가 top-k에 존재" | 청크/문서 ID 단위 정답을 제공하는 파일이 없음 — `gold_queries.json`은 `expected_books`만, `expected_documents`는 자연어; `output/eval/*` chunk ID 0/8 일치 [2차 Q13/Q14, V10] | COMPATIBILITY_CONSTRAINT | MEDIUM | 없음 (eval 자산) |
-| CON-008 | P1-4(C안): ClaimGuard 예외 시 "자동 검증 실패" 배지 (차단 아님) | `absolute_claim_blocked=True`가 실제 UI에서 차단/경고/재작성으로 이어지는지 **UNKNOWN** (생성 미완료로 렌더 미관측) [2차 V3] | UNVERIFIED_CONFLICT | MEDIUM | 직접 (generation 출력·UI) |
+| CON-008 | P1-4(C안): ClaimGuard 예외 시 "자동 검증 실패" 배지 (차단 아님) | ~~UNKNOWN~~ → **관측 완료(2026-09-10)**: `absolute_claim_blocked=True`여도 답변 전문이 먼저 렌더되고 `주장 검증: {reason}` caption 1줄이 뒤에 붙을 뿐, 차단·대체·재작성 없음 (`docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 B §B.3). 배지 신설은 **현행 caption과 중복** | **RESOLVED** (구 UNVERIFIED_CONFLICT) | MEDIUM | 직접 (generation 출력·UI) |
 | CON-009 | P0-1/P0-2/P0-3: 신규 feature flag를 프로세스 수준에서 토글하면 즉시 반영된다고 가정 | `get_shared_query_processor()`는 processor를 캐시하고 `dataset_sha256` 변경 시에만 재생성. `is_enabled()`는 `os.environ`을 호출 시점 조회 [2차 §"query→답변", §활성경로판정] | COMPATIBILITY_CONSTRAINT | MEDIUM | 직접 (롤아웃 메커니즘) |
 | CON-010 | P1-5: 상대 `bench_dir`을 `BASE_DIR` 기준으로 재해석 | `scripts/` 97개 중 cwd 상대 `bench_dir` 동작에 의존하는 것이 있는지 **미확인**; `.automation/` control-plane 동작도 UNKNOWN [1차 U3/U15] | UNVERIFIED_CONFLICT | LOW | 간접 (실행 위치) |
 | CON-011 | P0-2(초안): sidecar에 `rights: {copyright_status, usage_permission}` 포함 | 매튜 풀 EPUB DC `rights=[]` (빈 값). 상업 출판물(크리스챤다이제스트, ISBN 978-89-447-8472-9). 프로젝트 관례는 미확인 권리를 `AUTHORITATIVE_SOURCE_MISSING`으로 표시(`nae_tsu_v1` `citation_policy_status` 100%) [1차 §3.4, 2차 Q10] | CONFIRMED_CONFLICT | HIGH | 간접 (citation 표시·저작권 정확성). *제안서 slice에서 이미 제외* |
@@ -141,21 +142,27 @@
 - **Decision owner**: CUE (eval subset 저작) + HQ 승인(평가 계약).
 - **Decision status**: **HOLD** — ground-truth 파일 저작은 진행 가능(APPROVE FOR POC), P0-1 기본값 전환의 근거로 쓰는 것은 변별력 확인(S1) 후.
 
-## CON-008 — fail-soft 배지와 UNKNOWN한 UI 집행
+## CON-008 — fail-soft 배지와 UI 집행 — **RESOLVED (2026-09-10)**
 
 - **Proposal requirement**: P1-4(C안). ClaimGuard 예외 시 답변에 "자동 검증 실패" 배지(차단 아님).
-- **Current pipeline evidence**: `absolute_claim_blocked=True`가 실제로 UI에서 차단/경고/재작성을 유발하는지 **UNKNOWN** — 생성이 완료되지 않아 렌더를 관측하지 못함 [2차 V3]. `_run_claim_guard`의 판정 자체와 fail-open(예외 시 `RiskLevel.NONE`)은 CONFIRMED [2차 Q15].
-- **Conflict type**: UNVERIFIED_CONFLICT — 현행 UI가 `absolute_claim_blocked`/`risk_level`을 이미 어떻게 처리하는지 모르는 상태에서 배지를 추가하면 이중 처리·모순 가능.
-- **Reproduction status**: 판정·fail-open CONFIRMED; UI 집행 UNKNOWN.
+- **Current pipeline evidence**: **관측 완료(2026-09-10)** — 기본 모델 대신 `llama3.1:8b`로 생성을 완료시켜 DOM 수준에서 확인했다(`docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 B).
+  - 유도 질의로 `risk_level="high"`, `matched_terms=["유일"]`, `absolute_claim_blocked=true` 실제 발생.
+  - assistant 메시지 DOM 출현 순서: 아바타 → **답변 본문 3단락(트리거 문장 포함)** → 저신뢰 caption → `주장 검증: 전체 코퍼스 비교 불가 — '최초/유일' 주장 차단 (no_full_corpus_comparison_exists)` → 출처 expander.
+  - 즉 **차단하지 않는다.** `ui/pages/chat.py`가 `st.write_stream()`으로 답변을 전부 출력한 **뒤** `to_result()`로 판정을 읽고 `_render_claim_guard_warning()`이 `st.caption` 1줄을 덧붙이는 구조이며, 답변을 가로채거나 재생성하는 경로가 없다.
+  - `dev/dbma-engine` tip(`5146fa7`)의 `ui/pages/chat.py:557-566`에서 동일 구조를 재확인했다.
+  - **부수 관측**: 라이브 경로는 `absolute_claim_blocked or scope_qualifier_required` 조건을 걸지만 히스토리 재생 경로(`chat.py:657-658`)는 **조건 없이** caption을 그린다. `risk_level="none"`·`reason=""` 턴이 복원되면 내용 없는 `주장 검증:` 줄이 표시된다.
+  - `_run_claim_guard`의 판정 자체와 fail-open(예외 시 `RiskLevel.NONE`)은 종전대로 CONFIRMED [2차 Q15].
+- **Conflict type**: **RESOLVED** (구 UNVERIFIED_CONFLICT) — 현행 처리 방식이 확정됐다. 남는 것은 설계 판단이다: 현행이 이미 caption 1줄을 표시하므로 (C)의 "배지"는 **신설이 아니라 기존 caption의 문구·시인성 변경**으로 재정의해야 이중 표시를 피한다.
+- **Reproduction status**: 판정·fail-open CONFIRMED; **UI 집행 CONFIRMED** (2026-09-10 재현 절차와 DOM 덤프가 `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 B에 기록됨).
 - **Affected components**: `core/generation.py::_run_claim_guard`, `ui/pages/chat.py`(답변 렌더), `ClaimGuardResult` 소비부.
-- **Data and compatibility impact**: 데이터 불변. UX 영향은 현행 UI 동작을 알기 전엔 평가 불가.
+- **Data and compatibility impact**: 데이터 불변. UX 영향 평가 가능 — 현행은 답변 아래 caption 1줄이므로, 배지 추가 시 **동일 정보가 두 번** 표시될 수 있다.
 - **Existing ADR or policy relation**: ClaimGuard 정책 관련 ADR UNKNOWN → CON-012. [메모리: RAG Security Pre-Deploy].
 - **A: retain current behavior**: fail-open, 무배지(현행). 위험: 가드 실패가 사용자에게 안 보임(PB-07).
 - **B: minimal reinforcement**: 우선 **관측만** — P0-3 audit 채널에 `claimguard_error` 이벤트를 남겨 실패율을 측정(사용자 UI 무변경). 배지 여부는 그다음.
-- **C: isolated / feature-flag PoC**: `CLAIMGUARD_FAIL_POLICY` 3옵션을 플래그로 두되, **먼저 생성이 완료되는 환경에서 현행 UI가 `absolute_claim_blocked`를 어떻게 렌더하는지 관측**(S5 선행 과제).
-- **Required validation evidence**: 생성 완료 조건에서의 UI 렌더 관측(2차 V3 해소) + P0-3 채널의 `claimguard_error` 실패율.
+- **C: isolated / feature-flag PoC**: `CLAIMGUARD_FAIL_POLICY` 3옵션을 플래그로 둔다. ~~선행 과제였던 렌더 관측~~은 완료됐으므로 S5 선행조건이 해제된다. 단 설계는 "배지 신설" 대신 **기존 caption 경로 재사용**을 전제로 다시 작성해야 한다.
+- **Required validation evidence**: ~~UI 렌더 관측~~ 충족(2026-09-10). 남은 것은 P0-3 채널의 `claimguard_error` 실패율뿐.
 - **Decision owner**: HQ (안전 정책).
-- **Decision status**: **HOLD** — B(audit-only 관측)는 P0-3에 포함해 진행. 배지/차단 정책은 UI 집행 관측 전까지 HOLD.
+- **Decision status**: **UI 집행 관측 조건 해제됨.** B(audit-only 관측)는 P0-3에 포함해 진행. 배지 설계는 "기존 caption 재사용" 전제로 재작성 필요. **차단 정책 자체는 여전히 HOLD** — 기술적 미지가 아니라 HQ 안전 정책 판단 사항이다.
 
 ## CON-009 — feature flag 토글의 프로세스 반영 가정
 
@@ -245,7 +252,7 @@
 
 ## 요약
 
-- **등록된 충돌 12건**: CONFIRMED_CONFLICT 4 (CON-003, CON-005, CON-006, CON-011) / COMPATIBILITY_CONSTRAINT 4 (CON-001, CON-002, CON-004, CON-007, CON-009 — 5) / UNVERIFIED_CONFLICT 3 (CON-008, CON-010, CON-012).
+- **등록된 충돌 12건** (2026-09-10 갱신): CONFIRMED_CONFLICT 4 (CON-003, CON-005, CON-006, CON-011) / COMPATIBILITY_CONSTRAINT 5 (CON-001, CON-002, CON-004, CON-007, CON-009) / UNVERIFIED_CONFLICT 2 (CON-010, CON-012) / **RESOLVED 1 (CON-008)**. 종전 표기는 COMPATIBILITY_CONSTRAINT를 4로 적고 5건을 나열해 합이 맞지 않았으므로 함께 정정한다.
 - **즉시 구현 대상 없음.** 제안서의 "첫 vertical slice"(P0-2 축소판)조차 CON-002 검증(S4)과 CON-012(ADR 확인) 선결이 필요하다.
 - **차단(blocking) 항목**: CON-012 — 관련 Approved ADR을 확인하기 전에는 어떤 P0/P1도 착수 불가.
 - **제안서에서 이미 반영된 완화**: CON-003(verse_mapping locator)·CON-011(rights 필드)은 첫 slice에서 제외됨.
