@@ -28,6 +28,7 @@ class ReferenceChunk:
     page_start: int | None
     page_end: int | None
     heading_context: str  # most recent heading, or "" if none
+    scripture_reference: str | None = None  # e.g. "PS 23:1" — set by verse-anchored chunking only
 
 
 def load_canonical(canonical_path: Path) -> dict[str, Any]:
@@ -139,6 +140,119 @@ def chunk_canonical(
 
     logger.info(
         "Chunked %d paragraphs → %d chunks (size=%d, overlap=%d)",
+        len(paragraphs), len(chunks), chunk_size, chunk_overlap,
+    )
+    return chunks
+
+
+def chunk_canonical_verse_anchored(
+    canonical: dict[str, Any],
+    chunk_size: int = 1200,
+    chunk_overlap: int = 200,
+) -> list[ReferenceChunk]:
+    """Chunk a canonical.json's paragraphs for verse-by-verse commentary
+    (e.g. Spurgeon's Treasury of David — one Psalm verse per commentary
+    section), anchoring each chunk to a scripture reference instead of
+    a heading.
+
+    Reuses `paragraph["scripture_references"]` — already populated for
+    every document by `NAE.pipeline.canonical.annotate.annotate_paragraph()`
+    during canonicalization (same detector TSU relies on for `verse_mapping`).
+    No new scripture-reference regex is introduced here.
+
+    Strategy: identical buffering/flush logic to `chunk_canonical()`, except
+    the anchor that gets carried forward is the most recent paragraph's
+    first scripture reference (`canonical` string, e.g. "PS 23:1") instead
+    of the most recent heading. A heading paragraph still flushes the
+    buffer and resets the anchor's *display* prefix, but does not itself
+    become the anchor.
+    """
+    paragraphs: list[dict[str, Any]] = canonical.get("paragraphs", [])
+    if not paragraphs:
+        return []
+
+    chunks: list[ReferenceChunk] = []
+    current_heading: str = ""
+    current_ref: str | None = None
+    buf_text: list[str] = []
+    buf_len: int = 0
+    chunk_idx: int = 0
+    first_page: int | None = None
+    last_page: int | None = None
+
+    def _flush(carry_overlap: bool = False) -> None:
+        nonlocal buf_text, buf_len, first_page, last_page, chunk_idx
+
+        if not buf_text:
+            return
+
+        text = "\n\n".join(buf_text).strip()
+        if not text:
+            buf_text = []
+            buf_len = 0
+            return
+
+        display_text = f"[{current_heading}]\n\n{text}" if current_heading else text
+
+        chunks.append(ReferenceChunk(
+            chunk_index=chunk_idx,
+            text=display_text,
+            page_start=first_page,
+            page_end=last_page,
+            heading_context=current_heading,
+            scripture_reference=current_ref,
+        ))
+        chunk_idx += 1
+
+        if carry_overlap and len(buf_text) >= 2:
+            overlap_text = buf_text[-1]
+            if len(overlap_text) > chunk_overlap:
+                overlap_text = overlap_text[:chunk_overlap]
+            buf_text = [overlap_text]
+            buf_len = len(overlap_text)
+        else:
+            buf_text = []
+            buf_len = 0
+            first_page = None
+            last_page = None
+
+    for para in paragraphs:
+        ptype = para.get("type", "prose")
+        text = para.get("text", "")
+        if not text or not text.strip():
+            continue
+
+        pg = para.get("page_start")
+
+        if ptype == "heading":
+            _flush(carry_overlap=False)
+            current_heading = text.strip()
+            continue
+
+        refs = para.get("scripture_references") or []
+        if refs:
+            ref_canonical = refs[0].get("canonical")
+            if ref_canonical and ref_canonical != current_ref:
+                # New verse anchor — flush what belongs to the previous one.
+                _flush(carry_overlap=False)
+                current_ref = ref_canonical
+
+        para_len = len(text)
+        if first_page is None:
+            first_page = pg
+        last_page = pg
+
+        next_len = buf_len + (2 if buf_text else 0) + para_len
+        if buf_text and next_len > chunk_size:
+            _flush(carry_overlap=True)
+
+        buf_text.append(text)
+        buf_len = len("\n\n".join(buf_text))
+
+    _flush(carry_overlap=False)
+
+    logger.info(
+        "Verse-anchored chunking: %d paragraphs → %d chunks (size=%d, overlap=%d)",
         len(paragraphs), len(chunks), chunk_size, chunk_overlap,
     )
     return chunks
