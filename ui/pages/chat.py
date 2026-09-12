@@ -43,6 +43,7 @@ from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from ui.components.citation_card import render_citation_card
+from ui.components.nae_public_section import render_nae_public_section
 from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
 
 logger = logging.getLogger(__name__)
@@ -112,6 +113,13 @@ def render_chat_page() -> None:
     prompt = st.chat_input("질문을 입력하세요...")
     if prompt:
         _handle_user_message(prompt.strip())
+
+    # [F6 준비, NAE_F4_F5_F6_PREPARATION_DESIGN_v1.md, ADR-024 §B/§E 준수]
+    # 게이트는 modules.nae_pd.enabled 하나뿐(신규 플래그 없음) — disabled면
+    # render_nae_public_section() 자체가 아무것도 그리지 않는다. 위 채팅
+    # 답변/인용 흐름과 합쳐지지 않는 완전히 별도 섹션으로, DBMA 결과에
+    # 바이트 단위로 무영향이다.
+    render_nae_public_section(key_prefix="chat")
 
     page.render_footer()
 
