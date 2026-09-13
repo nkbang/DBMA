@@ -49,11 +49,13 @@ class QdrantConnectionError(ReferenceRetrievalError):
 def search_reference(
     query: str,
     top_k: int = 3,
+    collection_names: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     """Search the reference corpus for the given query.
 
-    Embeds `query` with bge-m3 and searches the `nae_ref_v1` Qdrant
-    collection.  Returns the top-k most similar chunks.
+    Embeds `query` with bge-m3 and searches one or more Qdrant reference
+    collections.  Returns the top-k most similar chunks overall (merged
+    across collections and re-sorted by score when more than one is given).
 
     Fault isolation guarantees:
         - Embedding timeout → returns [] (never hangs)
@@ -64,6 +66,11 @@ def search_reference(
     Args:
         query: The search query text.
         top_k: Number of results to return (default 3).
+        collection_names: Collections to search. Defaults to
+            `[ref_config.REFERENCE_COLLECTION_NAME]` (Smith Bible
+            Dictionary only) — existing callers see zero behavior change.
+            Pass e.g. `list(ref_config.KNOWN_REFERENCE_COLLECTIONS)` to also
+            search the Baptist commentary collection once it is populated.
 
     Returns:
         List of dicts with keys: text, source_id, volume, page_start,
@@ -72,6 +79,8 @@ def search_reference(
     """
     if not query or not query.strip():
         return []
+
+    names = collection_names or [ref_config.REFERENCE_COLLECTION_NAME]
 
     # Embed the query with timeout
     content_hash = hashlib.sha256(query.encode("utf-8")).hexdigest()
@@ -103,34 +112,42 @@ def search_reference(
             logger.error("[search_reference] embedding unexpected error: %s", e)
             return []
 
-    # Search Qdrant with timeout
+    # Search Qdrant with timeout — one or more collections, merged by score
     from qdrant_client import QdrantClient
     client = QdrantClient(url=ref_config.QDRANT_URL)
 
-    try:
-        t0 = time.monotonic()
-        results = client.query_points(
-            collection_name=ref_config.REFERENCE_COLLECTION_NAME,
-            query=query_vector,
-            limit=top_k,
-            timeout=max(1, int(_QDRANT_TIMEOUT_S)),
-        )
-        elapsed_ms = (time.monotonic() - t0) * 1_000
-        if elapsed_ms > _QDRANT_TIMEOUT_S * 800:
-            logger.warning("[search_reference] Qdrant search slow: %.0fms", elapsed_ms)
-    except TimeoutError as e:
-        logger.error("[search_reference] Qdrant timeout (%.1fs): %s", _QDRANT_TIMEOUT_S, e)
+    scored_points = []
+    for name in names:
+        try:
+            t0 = time.monotonic()
+            results = client.query_points(
+                collection_name=name,
+                query=query_vector,
+                limit=top_k,
+                timeout=max(1, int(_QDRANT_TIMEOUT_S)),
+            )
+            elapsed_ms = (time.monotonic() - t0) * 1_000
+            if elapsed_ms > _QDRANT_TIMEOUT_S * 800:
+                logger.warning("[search_reference] Qdrant search slow (%s): %.0fms", name, elapsed_ms)
+        except TimeoutError as e:
+            logger.error("[search_reference] Qdrant timeout (%s, %.1fs): %s", name, _QDRANT_TIMEOUT_S, e)
+            continue
+        except ConnectionError as e:
+            logger.error("[search_reference] Qdrant connection failed (%s): %s", name, e)
+            continue
+        except Exception as e:  # noqa: BLE001
+            logger.error("[search_reference] Qdrant unexpected error (%s): %s", name, e)
+            continue
+        scored_points.extend(results.points)
+
+    if not scored_points:
         return []
-    except ConnectionError as e:
-        logger.error("[search_reference] Qdrant connection failed: %s", e)
-        return []
-    except Exception as e:  # noqa: BLE001
-        logger.error("[search_reference] Qdrant unexpected error: %s", e)
-        return []
+
+    scored_points.sort(key=lambda p: p.score, reverse=True)
 
     # Format results — deterministic schema
     output = []
-    for point in results.points:
+    for point in scored_points[:top_k]:
         payload = point.payload or {}
         output.append({
             "text": payload.get("text", ""),
@@ -144,8 +161,8 @@ def search_reference(
         })
 
     logger.info(
-        "[search_reference] query=%r top_k=%d → %d results",
-        query[:50], top_k, len(output),
+        "[search_reference] query=%r collections=%s top_k=%d → %d results",
+        query[:50], names, top_k, len(output),
     )
     return output
 
