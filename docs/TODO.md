@@ -1,5 +1,39 @@
 # DBMA TODO
 
+## 완료 — Q2: BM25 전체 pool 스코어링 지연 (2026-09-13 CUE 해결)
+
+- [x] 문서측 토큰 캐시 도입 + 실측 A/B
+- **원인**: `core/retrieval.py::bm25_score()`가 매 질의마다 후보 문서를 1건씩 전부
+  `_tokenize()`(kiwipiepy 형태소 분석)로 재분석 — 문서 content는 코퍼스 로드 후
+  불변인데도 캐시가 없었다. 비용은 pool 크기에 비례(1,363 TSU 기준 쿼리당
+  8.9~9.3초, wall의 89~91%).
+- **수정**: [core/retrieval.py](../core/retrieval.py)
+  - BM25 산식을 `_bm25_score_from_tokens(query_tokens, doc_tokens, ...)`로 분리
+    (순수 리팩터, 계산 로직 무변경). `bm25_score(query_tokens, doc_text)`의
+    외부 시그니처·동작은 그대로 유지.
+  - `RetrievalEngine.__init__`에 `_bm25_token_cache: dict[int, list[str]]` 추가
+    — 기존 `_content_refs_cache`(성경 참조 캐시)와 동일한 패턴·근거(코퍼스
+    인덱스 기준, 엔진 인스턴스 수명 전체 유지).
+  - `retrieve()` STEP 2 루프가 `_get_bm25_tokens(idx, content)`로 캐시된 토큰을
+    재사용하도록 변경.
+- **실측 (실제 코퍼스 1,363 TSU, 동일 엔진 인스턴스 1st call → 2nd call)**:
+
+  | 질의 | 1st call (cold) | 2nd call (warm) | 배율 |
+  |------|-----:|-----:|-----:|
+  | `로마서 8장 해석` | 16,022 ms | 731 ms | **~22x** |
+  | `성령의 은사` | 505 ms | 491 ms | — |
+  | `마태복음 6:9-13 주기도문 해석` | 102 ms | 101 ms | — |
+
+  (2·3번째 질의는 1번째 질의 실행 시 코퍼스 전체가 이미 캐시되어 추가 이득이
+  거의 없음 — 캐시는 세션 전체가 아니라 "코퍼스당 1회" 비용임을 보여준다.)
+- **검증**: 관련 유닛테스트(`test_korean_tokenizer.py` 등 6개 파일 60건) +
+  전체 회귀 `dbma_env pytest tests --ignore=tests/nae` **2789 passed / 6 skipped
+  / 0 failed** (228.94s).
+- **근거 문서**: `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 C.4
+  (커밋 `aa0e198`, PR #22). 도입 커밋 `31ef590`.
+
+---
+
 ## 관측 대기열 — GPU 점유로 보류 (2026-09-10 등록)
 
 로컬 GPU에 **2026-09-10부터 약 3일간(~2026-09-13) 풀로드**가 걸려 있다.
@@ -7,11 +41,18 @@
 `llama-server` 2개가 `my-theology-bot-v2`(70.6B, 53.7 GB)와
 `qwen3.6:35b-DBMAcode`(36B, 25.7 GB, C1/Cline 백엔드)를 상주시키고 있었다.
 
-아래 2건은 **로컬 Ollama 호출이 필요해 착수 불가**다. 둘 다 관측 사실까지만 확정된
+아래 1건은 **로컬 Ollama 호출이 필요해 착수 불가**다. 관측 사실까지만 확정된
 상태이며 개선안은 작성하지 않았다.
 
-**해제 조건**: GPU 여유 확보. 착수 전 `ioreg -r -d 1 -c AGXAccelerator | grep 'Device Utilization'`
-과 `curl -s localhost:11434/api/ps`로 재확인할 것.
+**[2026-09-13 재확인] GPU는 여전히 점유 중** — `my-theology-bot-v2` + `qwen3.6:35b-DBMAcode`
+둘 다 재적재됨, `NAE/corpus/tsu/`에 Fuller Complete Works 볼륨 단위 TSU 생성 배치가
+진행 중인 것으로 관측(Vol08 신규, Vol03 `_hung_partial_backup` 존재, 최근 커밋 로그가
+Vol05~07 순차 생성). 다른 세션과의 충돌을 피하기 위해 GPU 모델 언로드나 corpus 재실행을
+시도하지 않고 대기 중.
+
+**해제 조건**: GPU 여유 확보(진행 중인 배치 작업 완료 확인). 착수 전
+`ioreg -r -d 1 -c AGXAccelerator | grep 'Device Utilization'`과
+`curl -s localhost:11434/api/ps`로 재확인할 것.
 
 ### Q1 — UK-2: `my-theology-bot-v2` 생성 정체 원인
 
@@ -24,26 +65,6 @@
 - **판정 기준**: 한가한 상태에서 완료되면 경합이 원인, 아니면 모델 쪽으로 좁혀진다.
 - **근거 문서**: `docs/DBMA_NAE_EVIDENCE_BASED_IMPROVEMENT_PROPOSAL_v1.md` UK-2 / PB-04,
   `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` D-절 · V2.
-
-### Q2 — BM25 전체 pool 스코어링 지연
-
-- [ ] 대안 비교(문서측 토큰 캐시 / tantivy 경로 A/B)의 실측
-- **실측 (2026-09-10, warm, `cache hits=422 miss=0`)**:
-
-  | 질의 | wall | 그중 BM25 | 비고 |
-  |------|-----:|----------:|------|
-  | A1 | 10,417 ms | **9,321 ms (89%)** | pool 1,363 |
-  | A2 | 9,697 ms | **8,859 ms (91%)** | pool 1,363 |
-  | A3 | 429 ms | 209 ms | metadata filter가 pool을 16건으로 축소 |
-
-  `31ef590` 이전에는 `keywords=[]`라 BM25가 0.18~0.39 ms였다(A1 wall 109 ms).
-- **기전**: `core/retrieval.py::_tokenize()`가 kiwipiepy를 호출하며 `bm25_score()`를 통해
-  **매 질의마다 후보 문서를 1건씩 전부** 형태소 분석한다. 문서측 토큰 캐시가 없다
-  (해당 docstring도 "called per candidate document on every query"라고 명시).
-  비용은 pool 크기에 비례한다 — 현재 코퍼스 1,363 TSU 기준 수치다.
-- **제약**: 평가 없는 교체 금지 원칙상 **A/B 수치 없이 기본값을 바꾸지 않는다.**
-- **근거 문서**: `docs/audit/DBMA-NAE-2ND-VERIFICATION-2026-09-09.md` 부록 C.4
-  (커밋 `aa0e198`, PR #22). 도입 커밋 `31ef590`.
 
 ---
 
