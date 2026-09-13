@@ -755,27 +755,17 @@ def _tokenize(text: str) -> list[str]:
     return _korean_tokenizer.tokenize(text)
 
 
-def bm25_score(query_tokens: list[str], doc_text: str, k1: float = 1.2, b: float = 0.75) -> float:
+def _bm25_score_from_tokens(
+    query_tokens: list[str], doc_tokens: list[str], k1: float = 1.2, b: float = 0.75
+) -> float:
+    """BM25 core math over already-tokenized text.
+
+    Factored out of bm25_score() so a caller that already has doc_tokens
+    cached (RetrievalEngine.retrieve(), which tokenizes the same corpus
+    documents on every query otherwise — docs/TODO.md Q2) can skip the
+    repeat _tokenize() call without duplicating the formula.
     """
-    Compute BM25 keyword relevance score.
-
-    Score = avg over query terms of:
-        IDF(qt) * (freq(qt) * (k1 + 1)) / (freq(qt) + k1 * (1 - b + b * doc_len / avg_doc_len))
-
-    Args:
-        query_tokens: Tokenized query.
-        doc_text: Document text string.
-        k1: Term frequency saturation parameter (default 1.2).
-        b: Length normalization parameter (default 0.75).
-
-    Returns:
-        BM25 score normalized to [0, 1].
-    """
-    if not query_tokens or not doc_text:
-        return 0.0
-
-    doc_tokens = _tokenize(doc_text)
-    if not doc_tokens:
+    if not query_tokens or not doc_tokens:
         return 0.0
 
     doc_len = len(doc_tokens)
@@ -804,6 +794,32 @@ def bm25_score(query_tokens: list[str], doc_text: str, k1: float = 1.2, b: float
         return min(normalized, 1.0)
 
     return 0.0
+
+
+def bm25_score(query_tokens: list[str], doc_text: str, k1: float = 1.2, b: float = 0.75) -> float:
+    """
+    Compute BM25 keyword relevance score.
+
+    Score = avg over query terms of:
+        IDF(qt) * (freq(qt) * (k1 + 1)) / (freq(qt) + k1 * (1 - b + b * doc_len / avg_doc_len))
+
+    Args:
+        query_tokens: Tokenized query.
+        doc_text: Document text string.
+        k1: Term frequency saturation parameter (default 1.2).
+        b: Length normalization parameter (default 0.75).
+
+    Returns:
+        BM25 score normalized to [0, 1].
+    """
+    if not query_tokens or not doc_text:
+        return 0.0
+
+    doc_tokens = _tokenize(doc_text)
+    if not doc_tokens:
+        return 0.0
+
+    return _bm25_score_from_tokens(query_tokens, doc_tokens, k1, b)
 
 
 # ============================================================
@@ -1232,6 +1248,22 @@ class RetrievalEngine:
         # 최대 ~4.1초 걸리던 구간을 제거.
         self._content_refs_cache: dict[int, list["ScriptureReference"]] = {}
 
+        # [Q2 fix, docs/TODO.md — 실측 docs/audit/DBMA-NAE-2ND-VERIFICATION-
+        # 2026-09-09.md 부록 C.4] bm25_score()가 _tokenize()를 통해 매
+        # 쿼리마다 후보 문서를 전부 형태소 분석하던 것(1,363-TSU pool 기준
+        # 8.9~9.3초/쿼리, wall의 89~91%)을 없애는 캐시 — corpus index 기준,
+        # 위 _content_refs_cache와 동일한 근거(로드 후 content 불변)로
+        # 엔진 인스턴스 수명 전체에 걸쳐 유지.
+        self._bm25_token_cache: dict[int, list[str]] = {}
+
+    def _get_bm25_tokens(self, idx: int, content: str) -> list[str]:
+        """Cached _tokenize(content) for a corpus document, keyed by index."""
+        cached = self._bm25_token_cache.get(idx)
+        if cached is None:
+            cached = _tokenize(content)
+            self._bm25_token_cache[idx] = cached
+        return cached
+
     def _ensure_tfidf_index(self) -> None:
         """Build the in-memory TF-IDF fallback index on first actual need
         (idempotent — safe to call before every fallback attempt)."""
@@ -1477,13 +1509,15 @@ class RetrievalEngine:
         # --- STEP 2: BM25 keyword scoring (candidate generation) ---
         t0 = time.perf_counter()
         bm25_scores: dict[int, float] = {}
-        for idx in candidate_pool:
-            content = self.tsus[idx].get("content", "")
-            if not content:
-                continue
-            score = bm25_score(parsed_query.keywords, content)
-            if score > 0:
-                bm25_scores[idx] = score
+        if parsed_query.keywords:
+            for idx in candidate_pool:
+                content = self.tsus[idx].get("content", "")
+                if not content:
+                    continue
+                doc_tokens = self._get_bm25_tokens(idx, content)
+                score = _bm25_score_from_tokens(parsed_query.keywords, doc_tokens)
+                if score > 0:
+                    bm25_scores[idx] = score
         if hasattr(metrics, 'bm25_scoring_ms'):
             metrics.bm25_scoring_ms = (time.perf_counter() - t0) * 1000
 
