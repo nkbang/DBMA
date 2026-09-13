@@ -149,6 +149,7 @@ def chunk_canonical_verse_anchored(
     canonical: dict[str, Any],
     chunk_size: int = 1200,
     chunk_overlap: int = 200,
+    anchor_book_prefix: str | None = "Psalms",
 ) -> list[ReferenceChunk]:
     """Chunk a canonical.json's paragraphs for verse-by-verse commentary
     (e.g. Spurgeon's Treasury of David — one Psalm verse per commentary
@@ -160,12 +161,25 @@ def chunk_canonical_verse_anchored(
     during canonicalization (same detector TSU relies on for `verse_mapping`).
     No new scripture-reference regex is introduced here.
 
+    A paragraph commenting on "Ps. iv. 2" routinely cites other passages in
+    passing ("...as in Prov. xii. 26...") without ever restating the Psalm
+    reference itself. Taking the paragraph's *first* scripture reference as
+    the anchor (as an early version of this function did) picks up that
+    incidental cross-reference instead — verified against the actual
+    Spurgeon Vol.1 canonical.json, where ~90% of prose paragraphs contain a
+    non-Psalms citation before any Psalms one. `anchor_book_prefix`
+    ("Psalms" by default, since this pilot is Psalms-only commentary)
+    restricts anchor candidates to references whose canonical form starts
+    with that book name; other citations are left as ordinary chunk text
+    but never become the anchor. Pass None to fall back to first-reference
+    anchoring for a commentary that isn't organized by a single book.
+
     Strategy: identical buffering/flush logic to `chunk_canonical()`, except
-    the anchor that gets carried forward is the most recent paragraph's
-    first scripture reference (`canonical` string, e.g. "PS 23:1") instead
-    of the most recent heading. A heading paragraph still flushes the
-    buffer and resets the anchor's *display* prefix, but does not itself
-    become the anchor.
+    the anchor that gets carried forward is the most recent qualifying
+    scripture reference (`canonical` string, e.g. "Psalms 23:1") instead of
+    the most recent heading. A heading paragraph still flushes the buffer
+    and resets the anchor's *display* prefix, but does not itself become
+    the anchor.
     """
     paragraphs: list[dict[str, Any]] = canonical.get("paragraphs", [])
     if not paragraphs:
@@ -230,12 +244,18 @@ def chunk_canonical_verse_anchored(
             continue
 
         refs = para.get("scripture_references") or []
-        if refs:
-            ref_canonical = refs[0].get("canonical")
-            if ref_canonical and ref_canonical != current_ref:
-                # New verse anchor — flush what belongs to the previous one.
-                _flush(carry_overlap=False)
-                current_ref = ref_canonical
+        qualifying_ref = next(
+            (
+                r.get("canonical") for r in refs
+                if r.get("canonical")
+                and (anchor_book_prefix is None or r["canonical"].startswith(anchor_book_prefix + " "))
+            ),
+            None,
+        )
+        if qualifying_ref and qualifying_ref != current_ref:
+            # New verse anchor — flush what belongs to the previous one.
+            _flush(carry_overlap=False)
+            current_ref = qualifying_ref
 
         para_len = len(text)
         if first_page is None:

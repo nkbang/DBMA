@@ -29,6 +29,9 @@ from NAE import smith_activation
 
 class TestVerseAnchoredChunker:
     def _fixture(self):
+        # canonical strings use the full English book name — matches the
+        # actual output of NAE.pipeline.canonical.annotate.canonicalize_scripture_ref
+        # (verified: canonicalize_scripture_ref("Ps. iv. 2") == "Psalms 4:2").
         return {
             "paragraphs": [
                 {"type": "heading", "text": "PSALM I."},
@@ -36,19 +39,19 @@ class TestVerseAnchoredChunker:
                     "type": "prose",
                     "text": "Blessed is the man that walketh not in the counsel of the ungodly. " * 3,
                     "page_start": 1,
-                    "scripture_references": [{"original": "Ps. i. 1", "canonical": "PS 1:1"}],
+                    "scripture_references": [{"original": "Ps. i. 1", "canonical": "Psalms 1:1"}],
                 },
                 {
                     "type": "prose",
                     "text": "This is a most instructive verse, and gives a very significant title. " * 3,
                     "page_start": 1,
-                    "scripture_references": [{"original": "Ps. i. 1", "canonical": "PS 1:1"}],
+                    "scripture_references": [{"original": "Ps. i. 1", "canonical": "Psalms 1:1"}],
                 },
                 {
                     "type": "prose",
                     "text": "His delight is in the law of the LORD, and in his law doth he meditate. " * 3,
                     "page_start": 2,
-                    "scripture_references": [{"original": "Ps. i. 2", "canonical": "PS 1:2"}],
+                    "scripture_references": [{"original": "Ps. i. 2", "canonical": "Psalms 1:2"}],
                 },
                 {
                     "type": "prose",
@@ -62,7 +65,51 @@ class TestVerseAnchoredChunker:
     def test_groups_paragraphs_by_scripture_reference(self):
         chunks = chunker.chunk_canonical_verse_anchored(self._fixture())
         refs = [c.scripture_reference for c in chunks]
-        assert refs == ["PS 1:1", "PS 1:2"]
+        assert refs == ["Psalms 1:1", "Psalms 1:2"]
+
+    def test_incidental_cross_reference_does_not_override_anchor(self):
+        """Regression: verified against the real Spurgeon Vol.1 canonical.json
+        that a paragraph commenting on one Psalm verse routinely cites another
+        book in passing (e.g. "...as in Prov. xii. 26...") without restating
+        the Psalms reference. An earlier version of this chunker took the
+        paragraph's *first* scripture reference as the anchor and would have
+        mis-tagged such a paragraph as "Proverbs 12:26" instead of the Psalm
+        actually being expounded."""
+        fixture = {
+            "paragraphs": [
+                {"type": "heading", "text": "PSALM IV."},
+                {
+                    "type": "prose",
+                    "text": "Verse 3.—What rare persons the godly are, as excellent as in Prov. xii. 26.",
+                    "page_start": 34,
+                    "scripture_references": [{"original": "Prov. xii. 26", "canonical": "Proverbs 12:26"}],
+                },
+                {
+                    "type": "prose",
+                    "text": "Continuing the same exposition of the fourth Psalm, verse three.",
+                    "page_start": 34,
+                    "scripture_references": [],
+                },
+            ]
+        }
+        chunks = chunker.chunk_canonical_verse_anchored(fixture)
+        assert len(chunks) == 1
+        assert chunks[0].scripture_reference is None  # no qualifying (Psalms) anchor found yet
+        assert "Prov. xii. 26" in chunks[0].text  # cross-reference stays in the text, just isn't the anchor
+
+    def test_anchor_book_prefix_none_falls_back_to_first_reference(self):
+        fixture = {
+            "paragraphs": [
+                {
+                    "type": "prose",
+                    "text": "Some multi-book commentary paragraph.",
+                    "page_start": 1,
+                    "scripture_references": [{"original": "Prov. xii. 26", "canonical": "Proverbs 12:26"}],
+                },
+            ]
+        }
+        chunks = chunker.chunk_canonical_verse_anchored(fixture, anchor_book_prefix=None)
+        assert chunks[0].scripture_reference == "Proverbs 12:26"
 
     def test_heading_context_is_preserved(self):
         chunks = chunker.chunk_canonical_verse_anchored(self._fixture())

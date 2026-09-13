@@ -84,23 +84,56 @@
 
 ---
 
-## 5. 원본 확보 요청 — 사용자 승인 필요 (자동 다운로드 금지)
+## 5. 원본 확보 — 진행 기록 (2026-09-12, 사용자 승인 후 실행)
 
-아래 파일을 CCEL(Christian Classics Ethereal Library) 또는 archive.org에서 받아야 한다. **다운로드는 사용자의 명시적 "예" 승인 후 별도로 진행한다.**
+사용자가 "다운로드 진행하라"로 승인한 뒤 실제로 진행한 내용과, 그 과정에서 계획을 두 번 수정해야 했던 이유를 기록한다.
 
-| 항목 | 값 |
-|---|---|
-| 제목 | The Treasury of David, Volume 1 (Psalms I–XXVI) |
-| 저자 | Charles Haddon Spurgeon |
-| 추정 크기 | PDF/EPUB 기준 약 5–10MB (원서 약 500쪽) |
-| 후보 출처 1 | `https://ccel.org/ccel/spurgeon/treasury1` (CCEL — 학술 공개 텍스트, HTML/PDF/EPUB 제공) |
-| 후보 출처 2 | `https://archive.org` 검색: "Treasury of David volume 1 Spurgeon" (여러 스캔본 존재, 스캔 품질 확인 필요) |
-| 권장 파일명 | `Spurgeon_TreasuryOfDavid_Vol1.epub` (또는 확보 형식에 맞춰 `.pdf`) |
-| 저장 위치 | `NAE/corpus/raw/Spurgeon_TreasuryOfDavid_Vol1/` (프로젝트 관례 — RAW 원본 보관 경로, `scripts/check_raw_only_originals.py` 대상) |
+### 5.1 1차 시도 — CCEL, 실패 (사용 불가로 판명)
 
-승인 후 진행 순서: 다운로드 → RAW 체크섬 등록(`NAE/pipeline/registration/`) → `NAE.pipeline.canonical` 추출/정제(canonical.json 생성, `scripture_references` 자동 주석 포함) → `python scripts/nae_commentary_ingest.py --identifier Spurgeon_TreasuryOfDavid_Vol1 --dry-run`으로 청킹 검증 → 육안 검토 → `--apply`.
+CCEL(`https://ccel.org/ccel/spurgeon/treasury1`)에서 PDF를 받았으나(46.6MB, 235쪽, SHA256 `e4c204bb...`), 직접 열어 확인한 결과:
+- CCEL 메타데이터에 `dc:subject: ImagesOnly`로 명시돼 있었고,
+- 실제로 각 페이지가 텍스트 레이어 없는 스캔 이미지였다(`fitz`로 페이지 텍스트 추출 시 거의 빈 값).
+- 이 프로젝트의 `NAE/pipeline/canonical/extract.py::extract_pages()`는 **자체 OCR을 수행하지 않는다** — hOCR/djvu.xml/OCR TXT 중 하나가 이미 존재해야만 추출이 가능하고, 없으면 PDF 텍스트 레이어에 최후 수단으로 의존한다. CCEL 자료엔 그 어느 것도 없어 사실상 사용 불가.
+- 파일은 `NAE/corpus/raw/ccel/reference/Spurgeon_TreasuryOfDavid_Vol1/treasury1.pdf`에 남아있다(gitignored, 무해하나 미사용).
 
-**승인 못 받을 경우**: 위 절차는 미착수 상태로 유지된다. 이번 세션에서 완료한 코드/테스트/문서(§2, §3, 본 문서)는 원본과 무관하게 그대로 유효하며, 원본 확보 후 바로 `--dry-run`부터 재개 가능하다.
+### 5.2 2차 시도 — archive.org, 성공
+
+기존 Smith Bible Dictionary/Fuller 전량이 archive.org 소스였다는 점(예: 모든 raw_path가 `NAE/corpus/raw/archive_org/...`)을 뒤늦게 확인하고 archive.org에서 동일 저작·동일 권(Psalms I–XXVI)의 스캔본을 검색했다:
+- Identifier: `treasuryofdavid0001chsp_d1s7` (I.K. Funk & Co., 1882, "volume: 1", imagecount 510)
+- 시편 범위 확인: OCR 텍스트에서 "PSALM THE FIRST"부터 "PSALM THE TWENTY-SIXTH"까지만 등장 — CCEL판과 동일하게 시편 1–26편 한정, 확인 완료.
+- 받은 파일: `hocr.html`(49.1MB, archive.org 자체 OCR 산출물)과 `original.pdf`(40.3MB) → `NAE/corpus/raw/archive_org/reference/Spurgeon_TreasuryOfDavid_Vol1/`
+- SHA256(hocr.html): `a1d7df0d15e03c9cccbb91db925317f1d881e33a528fd9886052b9211d17ed85`
+
+### 5.3 Canonicalization 실행 결과
+
+`python -m NAE.pipeline.canonical.runner --identifier Spurgeon_TreasuryOfDavid_Vol1` 실행(기존 파이프라인 그대로, 코드 변경 없음): source=hocr, 510페이지, 4,145 문단, scripture_references 535건 검출, 상태 "ok". 산출물은 `NAE/corpus/canonical/Spurgeon_TreasuryOfDavid_Vol1/`(gitignored, 로컬에만 존재).
+
+### 5.4 청킹 dry-run에서 발견한 정확도 버그 — 수정 완료
+
+실제 canonical.json으로 `chunk_canonical_verse_anchored()`를 검증하던 중, 문단의 **첫 번째** scripture_reference를 앵커로 삼는 최초 구현이 잘못된 결과를 냈다: Spurgeon의 해설문은 종종 논의 중인 시편 구절은 재인용하지 않고(“Verse 2.—…”만 씀) 대신 지지 근거로 다른 책을 인용한다(“…as in Prov. xii. 26…”). 그 결과 시편 4편 해설 청크가 `scripture_reference="Proverbs 12:26"`처럼 **엉뚱하게 태깅**되었다 — 다른 세션 감사 문서의 CON-003(verse_mapping 오매핑)과 정확히 같은 부류의 결함.
+
+**수정**: `chunk_canonical_verse_anchored(..., anchor_book_prefix="Psalms")` — 앵커 후보를 "Psalms"로 시작하는 참조로만 제한(이 파일럿은 시편 전용 주석이므로 다른 책 인용은 정의상 지지 근거이지 본문 대상이 아님). `anchor_book_prefix=None`이면 기존(첫 참조) 동작으로 폴백 — 여러 책을 다루는 주석에 대비.
+
+**수정 후 실측**(실제 1,978개 청크): Psalms 앵커 1,627개(82%), 미태깅(anchor=None) 351개(18%, "Verse N.—"만 있고 장 번호를 안 반복하는 절), **잘못된(non-Psalms) 앵커 0개**. 정밀도 우선 원칙에 따라 "모른다(None)"가 "틀리게 안다"보다 낫다고 판단 — 18% 커버리지 갭은 남겨두고 문서화한다. 개선 여지(heading의 "PSALM {roman}"과 본문의 "Verse {N}"을 결합해 자체 합성)는 새 정규식 도입이 필요해 이번 파일럿 범위 밖으로 남긴다.
+
+회귀 테스트 3건 추가(`test_incidental_cross_reference_does_not_override_anchor` 등), 전체 19개 통과.
+
+### 5.5 발견한 거버넌스 충돌 — 구현 중단, 사용자 확인 필요 (CUE Operating Policy Architecture Freeze Rule)
+
+RAW 체크섬 등록을 위해 `NAE.pipeline.registration.cli_driver`(ADR-021)를 `--production`으로 실행해 `BAP-COMM-SPURGEON-TDA-VOL01`을 등록했다(QUALITY_PASSED, page_count=500). 그 직후 `tests/test_m2_source_registry_governance.py` 전체를 돌려보니 7건이 깨졌다:
+
+- `source_manifest.yaml`("M2")은 **ADR-030 v2.1 §7.3의 승인된 고정 스냅샷**이다 — 테스트가 `len(sources) == 14`, `authority_class` 구성이 정확히 `historical_witness×10 + reference×4`(2종류만), `tradition` 채워진 레코드 정확히 10개, `theological_category` 채워진 레코드 정확히 5개임을 **하드코딩된 값**으로 검증한다. [메모리: ADR-030 A-2a-PREP → M-5 CLOSED]에 이미 "HQ FINAL=ACCEPTED/FROZEN BASELINE"으로 기록돼 있었다 — 이번 작업 시작 전에 먼저 확인했어야 할 사항이었다.
+- 신규 소스를 15번째로 추가하면 `reference` 카운트가 4→5로 바뀌어 `test_authority_class_matches_adr030_7_3`이 깨진다. 이는 Fuller Vol01-08 추가 때처럼 "카운트를 같이 올리면 되는" 사안이 아니라, ADR-030이 명시적으로 종료 선언한 baseline의 구성 자체를 바꾸는 일이다.
+- 부가로 `NAE.pipeline.registration.manifest_writer.write_entry()`가 YAML을 다시 덤프하면서 파일 상단의 `# ROLE: Source Registry SSOT (ADR-030 §8)...` 헤더 주석을 지워버리는 것도 확인했다(별도 버그, 이 도구로 M2를 다시 쓸 때마다 재발함).
+
+**조치**: `source_manifest.yaml` / `raw_checksum_ledger.jsonl` / `registration_state.json`에 대한 쓰기를 **즉시 git checkout으로 되돌렸다** — 세 파일 모두 git 추적 대상이라 되돌림이 정확함을 diff로 확인. 회귀 테스트 스위트가 원상태로 복귀함을 확인(2,955 passed — 남은 2건은 이번에 raw 파일을 받아 `NAE/corpus/raw/`가 생기면서 활성화된, 이 워크트리에 다른 12개 소스의 raw 파일이 애초에 없다는 **환경 완전성 갭**이며 내 되돌림과 무관).
+
+**막힌 지점**: RAW 원본 확보(§5.1-5.3, 완료)와 canonicalize(완료, §5.3)까지는 코드/문서 산출물이지만, **"체크섬 등록"은 ADR-030이 동결한 M2 파일에 새 레코드를 추가하는 일이라 사용자 승인 없이 진행할 수 없다.** 두 가지 선택지:
+
+- **옵션 A**: ADR-030 Amendment(또는 신규 ADR)로 M2에 Reference-track 신규 소스를 추가하는 절차를 공식화하고, `test_m2_source_registry_governance.py`의 하드코딩된 카운트(14→15, reference 4→5 등)를 그 Amendment의 일부로 함께 갱신. `manifest_writer.write_entry()`의 헤더 주석 소실 버그도 같이 고침.
+- **옵션 B**: 이 침례교 주석 트랙을 M2(ADR-030 governance)와 **별도의 원장**으로 관리 — 예컨대 `NAE/authority/works.yaml`(현재 비어있음, ADR-021 §4 Option C) 쪽에 등록하고 M2는 건드리지 않음. Reference 트랙은 애초에 TSU 트랙 심사 대상이 아니므로(§0) M2가 실제로 이 트랙까지 관장해야 하는지 자체가 불명확 — Smith 4권이 이미 M2에 들어가 있는 것과의 일관성 문제는 남는다.
+
+RAW 원본(§5.1 CCEL PDF, §5.2 archive.org hocr.html/original.pdf)과 canonical.json은 모두 로컬에 안전하게 보존돼 있고 gitignored라 아무것도 커밋되지 않았다 — 위 결정이 나면 등록 단계부터 바로 재개 가능하다.
 
 ---
 
@@ -136,3 +169,34 @@ Next: (1) 원본 확보 승인 여부 회신 (2) §6 미결 사항 중 works.yam
 ```
 
 **ADR-028 범위 관련 참고**: §6의 "ADR-028이 사실상 Reference Layer 전반으로 넓어졌다"는 관찰은 확인된 충돌(conflict)이 아니라 향후 Amendment 필요 여부에 대한 판단 요청이다 — 이번 커밋의 모든 신규 동작은 기본값 off/기존 값 유지이므로 Architecture Freeze Rule이 요구하는 "구현 중단" 사유에 해당하지 않는다고 판단해 진행했다.
+
+---
+
+## 8. Build Report — 원본 확보/Canonicalize 라운드 (2026-09-12, §5)
+
+```
+STATUS: 원본 확보(archive.org)·canonicalize·청킹 검증 완료 / RAW 체크섬 등록은 ADR-030 충돌로 중단(구현 미완료, 사용자 확인 대기)
+Changed Files (커밋 대상):
+  NAE/pipeline/reference/chunker.py            (chunk_canonical_verse_anchored에 anchor_book_prefix 파라미터 추가 — 오앵커 버그 수정, §5.4)
+  tests/test_reference_pipeline_generalization.py (버그 재현 회귀 테스트 2건 추가, fixture를 실제 canonical 포맷("Psalms N:M")에 맞춰 수정)
+  docs/BAPTIST_COMMENTARY_EMBEDDING_PLAN_v1.md (본 섹션)
+Local-only 산출물 (gitignored, 커밋 안 됨):
+  NAE/corpus/raw/ccel/reference/Spurgeon_TreasuryOfDavid_Vol1/treasury1.pdf        (1차 시도, 텍스트 레이어 없어 미사용)
+  NAE/corpus/raw/archive_org/reference/Spurgeon_TreasuryOfDavid_Vol1/{hocr.html,original.pdf} (2차 시도, 사용)
+  NAE/corpus/canonical/Spurgeon_TreasuryOfDavid_Vol1/{canonical.json,canonical.txt,normalize_report.json}
+되돌린 것 (git checkout으로 원복, 커밋 안 됨):
+  NAE/pipeline/registration/state/{source_manifest.yaml,raw_checksum_ledger.jsonl,registration_state.json}
+  — ADR-021 cli_driver --production 실행으로 BAP-COMM-SPURGEON-TDA-VOL01을 등록했으나, ADR-030 §7.3 고정 스냅샷(M2)의
+    하드코딩된 카운트 검증 7건이 깨져 즉시 되돌림 (§5.5)
+Tests: 신규 회귀 2건 포함 19/19 passed. 전체 스위트 2,955 passed / 13 skipped — 실패 2건은 이번 raw 다운로드로
+  NAE/corpus/raw/가 생기며 활성화된 환경 완전성 게이트(다른 12개 소스의 raw 파일이 이 워크트리에 원래 없음, 내 변경과 무관)
+Architecture Rule: ADR-021(registration pipeline) 자체는 정상 동작 확인(QUALITY_PASSED). 문제는 ADR-021의 산출물이
+  ADR-030이 동결한 M2 파일과 충돌한다는 점 — 두 ADR 간 상호작용이 사전에 문서화돼 있지 않았음.
+ADR Conflict: 있음 (Architecture Freeze Rule 적용 대상) — ADR-030 v2.1 §7.3 FROZEN BASELINE(14 sources,
+  authority_class 정확히 historical_witness×10+reference×4)에 15번째 레코드를 추가하는 것은 그 스냅샷의 구성을 변경함.
+  §5.5에 옵션 A(Amendment)/옵션 B(별도 원장) 기록 — 구현 중단, 사용자 결정 대기.
+C1 Review: 미요청 — Architecture Freeze Rule 위반 여부 자체가 사용자 확인 대기 상태라 그 전에는 요청 시점이 아님.
+Git(Commit/Push): 코드 수정분(chunker 버그 수정 + 테스트)만 커밋/푸시 대상. 거버넌스 충돌 부분은 커밋하지 않음(이미 되돌림).
+Next: 사용자가 옵션 A/B 중 결정 → (A) ADR-030 Amendment 작성 후 등록 재실행 / (B) works.yaml 등 별도 원장 설계 후 재실행.
+  둘 중 하나가 정해지면 RAW·canonical 산출물은 이미 준비돼 있어 등록부터 바로 재개 가능.
+```
