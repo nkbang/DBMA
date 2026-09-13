@@ -62,7 +62,21 @@ M2_PATH = PROJECT_ROOT / "NAE" / "pipeline" / "registration" / "state" / "source
 M1_PATH = PROJECT_ROOT / "NAE" / "authority" / "source_manifest.yaml"
 M3_PATH = PROJECT_ROOT / "NAE" / "manifest" / "NAE_SOURCE_MANIFEST_v1.csv"
 FORBIDDEN_REGISTRY_DIR = PROJECT_ROOT / "NAE" / "corpus" / "governance"
-BASELINE = {"nae_tsu_v1": 3319, "nae_ref_v1": 34948, "canonical_dirs": 17, "registration_quality_passed": 10}
+# registration_quality_passed: 10 (M-2 baseline) + 1 (BAP-COMM-SPURGEON-TDA-VOL01,
+# ADR-030 Amendment B, 2026-09-13) = 11. A drift guard, not an open range —
+# any further increase needs its own explicit bump + authorization record.
+BASELINE = {"nae_tsu_v1": 3319, "nae_ref_v1": 34948, "canonical_dirs": 17, "registration_quality_passed": 11}
+# ADR-030 v2.1 §12 M-2 backfilled exactly these 14 source_ids (2026-08-28).
+# ADR-030 Amendment B (2026-09-13) authorizes appending further M2 records —
+# V7/V8 below protect this frozen set's identity/count without capping M2's
+# total size going forward.
+M2_FROZEN_BASELINE_SOURCE_IDS = frozenset([
+    "BAP-CHURCH-DAGG-001", "BAP-CHURCH-HISCOX",
+    "BAP-MISS-FULLER-VOL01", "BAP-MISS-FULLER-VOL02", "BAP-MISS-FULLER-VOL03",
+    "BAP-MISS-FULLER-VOL04", "BAP-MISS-FULLER-VOL05", "BAP-MISS-FULLER-VOL06",
+    "BAP-MISS-FULLER-VOL07", "BAP-MISS-FULLER-VOL08",
+    "BAP-REF-SMITH-VOL01", "BAP-REF-SMITH-VOL02", "BAP-REF-SMITH-VOL03", "BAP-REF-SMITH-VOL04",
+])
 
 
 class ValidationResult:
@@ -269,10 +283,15 @@ def check_m2_identity() -> ValidationResult:
         return result
     m2_data = yaml.safe_load(M2_PATH.read_text(encoding="utf-8"))
     sources = m2_data.get("sources", [])
-    if len(sources) != 14:
-        result.add("FAIL", f"V7: expected 14 M2 records, got {len(sources)}")
+    ids = {s.get("source_id") for s in sources}
+    missing = M2_FROZEN_BASELINE_SOURCE_IDS - ids
+    if missing:
+        result.add("FAIL", f"V7: frozen baseline source_ids missing: {missing}")
         return result
-    result.add("PASS", "V7: M2 has exactly 14 records")
+    if len(sources) < len(M2_FROZEN_BASELINE_SOURCE_IDS):
+        result.add("FAIL", f"V7: expected >= {len(M2_FROZEN_BASELINE_SOURCE_IDS)} M2 records, got {len(sources)}")
+        return result
+    result.add("PASS", f"V7: M2 has {len(sources)} records, frozen 14 baseline present (Amendment B)")
     required_identity_fields = ("source_id", "work_id", "edition_id", "raw_checksum")
     known_keys = M2_BASE_KEYS | ADR030_ADDITIVE_FIELDS
     for source in sources:

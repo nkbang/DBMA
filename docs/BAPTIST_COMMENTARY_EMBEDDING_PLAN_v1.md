@@ -135,6 +135,18 @@ RAW 체크섬 등록을 위해 `NAE.pipeline.registration.cli_driver`(ADR-021)�
 
 RAW 원본(§5.1 CCEL PDF, §5.2 archive.org hocr.html/original.pdf)과 canonical.json은 모두 로컬에 안전하게 보존돼 있고 gitignored라 아무것도 커밋되지 않았다 — 위 결정이 나면 등록 단계부터 바로 재개 가능하다.
 
+### 5.6 해소 — 옵션 A 채택, 등록 완료 (2026-09-13)
+
+사용자가 옵션 A(ADR-030 Amendment)를 선택했다. `docs/architecture/ADR-030-AMENDMENT-B-Reference-Track-Post-Freeze-Registration.md`(PROPOSED) 작성 후:
+
+- `register_source()`/`RegistrationRequest`에 ADR-030 §8.4 additive 필드(content_genre 등) 통과 경로 추가.
+- `manifest_writer.write_entry()`를 **진짜 append-only**로 재작성 — 1차 수정(헤더만 보존 후 전체 재덤프)이 실제로는 기존 14개 레코드의 서식을 값 변경 없이 바이트 단위로 바꾸는 걸 diff로 발견하고 되돌린 뒤, 파일이 존재하면 새 엔트리 YAML 블록만 기존 텍스트 뒤에 붙이는 방식으로 재작업. 최종 diff = 신규 레코드 15줄 추가만, 원본 14개 0줄 변경 확인.
+- `tests/test_m2_source_registry_governance.py`/`scripts/m2_source_registry_validator.py`에 `M2_FROZEN_BASELINE_SOURCE_IDS`(원본 14개 source_id) 도입 — 정확한 카운트 검증을 이 집합으로 scope, 전체 개수는 "≥14 + 원본 14 포함"으로 완화.
+- `BAP-COMM-SPURGEON-TDA-VOL01` 등록 완료(QUALITY_PASSED, content_genre=[commentary], authority_class=reference). `tradition`/`theological_category`는 최소 범위 유지를 위해 이번엔 비움.
+- 전체 스위트 2,955 passed / 13 skipped — 실패 2건은 이 워크트리에 다른 13개 소스의 raw 파일이 원래 없는 환경 갭(Amendment 이전에도 동일하게 존재, 무관).
+
+**남은 것**: Amendment B는 아직 PROPOSED — Evidence Before Promotion Rule의 C1 독립 검토·HQ 최종 승인 두 조건이 열려 있다(§4). RAW 체크섬 등록까지는 완료됐으므로, 다음은 canonicalize(이미 §5.3에서 완료)를 거친 실제 임베딩(`scripts/nae_commentary_ingest.py --apply`)으로 넘어갈 수 있으나, 그 전에 C1 Review 요청 여부를 사용자에게 확인한다.
+
 ---
 
 ## 6. 확인이 더 필요한 사항 (결정하지 않고 기록만)
