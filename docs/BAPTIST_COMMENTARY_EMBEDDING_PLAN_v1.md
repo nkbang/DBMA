@@ -147,6 +147,18 @@ RAW 원본(§5.1 CCEL PDF, §5.2 archive.org hocr.html/original.pdf)과 canonica
 
 **남은 것**: Amendment B는 아직 PROPOSED — Evidence Before Promotion Rule의 C1 독립 검토·HQ 최종 승인 두 조건이 열려 있다(§4). RAW 체크섬 등록까지는 완료됐으므로, 다음은 canonicalize(이미 §5.3에서 완료)를 거친 실제 임베딩(`scripts/nae_commentary_ingest.py --apply`)으로 넘어갈 수 있으나, 그 전에 C1 Review 요청 여부를 사용자에게 확인한다.
 
+### 5.7 C1 Review §2-A 결과 (2026-09-14)
+
+`docs/NAE_BAPTIST_COMMENTARY_M2_AMENDMENT_B_C1_REVIEW_REQUEST_001.md` §2-A(Reference 파이프라인 일반화 + 청킹 버그 수정, 질문 1-4)에 대해 C1이 GREEN 3건(flag-off 무변경, ADR-028 §10 무접촉, ADR-013 컬렉션 격리) + YELLOW 1건(질문 4, 청킹 실측 수치를 `canonical.json`이 gitignored라 C1 환경에서 직접 재현 불가) 판정.
+
+YELLOW 해소: C1이 제안한 검증 스크립트를 CUE가 이 워크트리(파일 보유)에서 실행 —
+
+```
+총 1978 청크: Psalms 앵커=1627, 미태깅=351, 비-Psalms 오앵커=0
+```
+
+§5.4에서 CUE가 최초 보고한 수치(1,978 / 1,627 / 351 / 0)와 정확히 일치. §2-B(Amendment B 본체, 질문 5-11)는 아직 C1 검토 대기 중.
+
 ---
 
 ## 6. 확인이 더 필요한 사항 (결정하지 않고 기록만)
