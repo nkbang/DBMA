@@ -123862,7 +123862,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -123891,6 +123891,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0032 human review."
     }
   },
   {
@@ -131123,7 +131129,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -131147,7 +131153,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도의 사역자들은 普通의 기독교인들과 마찬가지로 세상을 분리되어 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0032 human review."
+    }
   },
   {
     "id": "TSU-0002673",
@@ -149463,7 +149475,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -149487,7 +149499,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 시대에는 박해와 성령의 더 뚜렷한 hoạt động으로 인해 잘못된 신앙 고백의 위험이 적었지만, 모든 사람들이 신앙을 고백했다고 해서 받아들여지지는 않았다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0032 human review."
+    }
   },
   {
     "id": "TSU-0003047",
@@ -153411,7 +153429,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -153440,6 +153458,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0032 human review."
     }
   },
   {
