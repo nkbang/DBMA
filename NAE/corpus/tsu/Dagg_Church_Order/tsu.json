@@ -75904,7 +75904,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -75929,7 +75929,12 @@
     },
     "claim_raw": "시온의 왕은 마태복음 19:14에서 아이들의 특권이 그의 나라에 속한다고 선언했으며, 이 특권에는 교회 회원 자격도 포함된다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -76386,7 +76391,7 @@
     "paragraph": 798,
     "sentence": 3,
     "source_text": "Hence the rendering, “ To such the kingdom belongs,” is recommended to our adoption, as the best interpretation of the Saviour’s words.",
-    "claim": "구원의 말씀에 대한 최선의 해석은 '이런 사람들에게 나라가 속한다'는 것입니다.",
+    "claim": "'이런 사람들에게 나라가 속한다'는 번역이 구주의 말씀에 대한 최선의 해석으로 받아들여진다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -76415,8 +76420,13 @@
       "resolved_at": "2026-08-08T18:04:32.156242+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "구원者の 말씀에 대한 최선의 해석은 '이런 사람들에게 왕국이 속한다'는 것입니다.",
-    "cjk_status": "repaired"
+    "claim_raw": "구원의 말씀에 대한 최선의 해석은 '이런 사람들에게 나라가 속한다'는 것입니다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001563",
@@ -77658,7 +77668,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -77682,7 +77692,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지구上的교회 특권에도 아이들은 분명히 적합하지 않다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0001589",
@@ -78688,7 +78704,7 @@
     "paragraph": 817,
     "sentence": 1,
     "source_text": "The whole transaction was symbolical.",
-    "claim": "전체 사건은 상징적인",
+    "claim": "그 전체 사건은 상징적이었다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
@@ -78717,8 +78733,14 @@
       "resolved_at": "2026-08-08T18:04:32.156405+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "整个事件是象征性的",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "전체 사건은 상징적인",
+    "cjk_status": "manual_repaired",
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001610",
@@ -81679,7 +81701,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -81704,7 +81726,12 @@
     },
     "claim_raw": "교회는 구약의 회중이 새로운 은혜 아래 계속된 것이며, 어린이들은 부모와 함께 포함되어 있었으므로 현재 회원 자격을 거부할 수 없다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -85293,7 +85320,7 @@
     "paragraph": 864,
     "sentence": 1,
     "source_text": "The experiment for which the Congregation of the Lord had been organized, was completely made, when the Redeemer appeared, in the end of the world, “to take away sin by the sacrifice of himself.” The first covenant, established upon conditional promises, was proved, upon due trial, to be faulty, weak, and.unprofitable ; and the necessity of a better covenant, whose better promises should be all yea and amen in Christ Jesus, was clearly demonstrated: “ He taketh away the first, that he may establish the second.” When “There was a disannulling of the commandment going before,” in which was contained the charter of the Congregation of the Lord, the",
-    "claim": "구원의 주님의 출현과 제사를 통해 첫 번째 약속이 불완전하여 새로운 약속의 필요성이 입증되었다.",
+    "claim": "구속주께서 세상 끝에 나타나 자기 자신을 제물로 드려 죄를 없애셨을 때, 조건적 약속 위에 세워진 첫 언약은 결함 있고 무익한 것으로 판명되었고, 그리스도 예수 안에서 참된 더 나은 약속을 지닌 더 나은 언약의 필요성이 분명히 증명되었다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -85322,8 +85349,13 @@
       "resolved_at": "2026-08-08T18:04:32.156905+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "구원者の 출현과 제사의 통해 첫 번째 언약이 불완전하여 새로운 언약의 필요성이 입증되었다.",
-    "cjk_status": "repaired"
+    "claim_raw": "구원의 주님의 출현과 제사를 통해 첫 번째 약속이 불완전하여 새로운 약속의 필요성이 입증되었다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001745",
@@ -85987,7 +86019,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -86012,7 +86044,12 @@
     },
     "claim_raw": "아이들은 부모와 함께 언약에 포함되어 왔으며, 그들의 특권에 대한 권리는 베드로가 오순절 날에 말한 이 말씀으로 인식되었다: \"약속은 너와 네 자녀에게로다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -91281,7 +91318,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -91305,7 +91342,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "유대인 기록은 순수한 유대인과 개종자들을 구분하기 위해 유지되었고, 이로 인해 바울은 자신을 '히브리人の 히브리인'이라고 불렀다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0001867",
@@ -95634,7 +95677,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -95659,7 +95702,12 @@
     },
     "claim_raw": "하나님의 백성은 자연적이고 영적인 가지들이 같은 올리브 나무에 연결되어 있으며, 이 구성은 현재까지 계속된다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -98678,7 +98726,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -98703,7 +98751,12 @@
     },
     "claim_raw": "그들을 제자로 간주하는 것은 적절하며, 이는 성경 구절 '왜 하나님을 시험하여 제자의 목에 우리 조상이나 우리가 능히 질 수 없는 멍에를 메게 하느냐?'에서 증명될 수 있다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -99419,7 +99472,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -99443,7 +99496,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그 단어가幼년을 의미한다면 추가적인 설명이 필요하지 않다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002033",
@@ -100295,7 +100354,7 @@
     "paragraph": 1011,
     "sentence": 1,
     "source_text": "It was their duty, in interpreting the commission, to fook more to the Saviour’s words, and less to their Jewish prejudices: and the same obligation rests on us, and deserves the attention of those who urge the argument which we are considering:",
-    "claim": "구원의 말씀에 더 주목하고 유대인들의 편견에 덜 주목해야 한다.",
+    "claim": "구주의 말씀에 더 주목하고 유대인들의 편견에는 덜 주목하는 것이 그들의 의무였으며, 우리에게도 동일한 의무가 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -100324,8 +100383,13 @@
       "resolved_at": "2026-08-08T18:04:32.158002+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "구원者の 말씀에 더 주목하고 유대인들의 편견에 덜 주목해야 한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "구원의 말씀에 더 주목하고 유대인들의 편견에 덜 주목해야 한다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002051",
@@ -100444,7 +100508,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -100469,7 +100533,12 @@
     },
     "claim_raw": "세례는 이전 계약하의 아이들의 할례의 자리를 대신하여 교회 회원권에 대한 입문 예식으로 영아들에게도 시행되어야 한다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -101328,7 +101397,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -101353,7 +101422,12 @@
     },
     "claim_raw": "아브라함의 계약을 지키고 그 약속된 축복을 기대하기 위해서는 하나님의 권위를 받은 계약의 표시, 즉 세례를 거부할 수 없다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -103235,7 +103309,7 @@
     "paragraph": 1032,
     "sentence": 4,
     "source_text": "Whatever agreement may be traced between the two ceremonies in other respects, their difference in this particular destroys the analogy, at the very point where alone it can be of use to the cause of infant baptism.",
-    "claim": "세례와 할례 사이의 유사성은 두 종교 의식에서 믿음의 중요성을 강조하는 점에서 차이가 나며, 이는 아기 세례에 대한 논증에 영향을 미친다.",
+    "claim": "할례는 아브라함의 혈통적 후손을 위해 제정되었지만, 믿음 없는 혈통적 후손이라는 사실만으로는 침례를 받을 자격이 주어지지 않는다 — 이 차이가 바로 유아침례 논증에 유일하게 도움이 될 수 있는 지점에서 두 의식 사이의 유비를 무너뜨린다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -103264,8 +103338,13 @@
       "resolved_at": "2026-08-08T18:04:32.158213+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "세례와 할례 사이의 유사성은 두儀禮에서 믿음의 중요성을 강조하는 점에서 차이가 나며, 이는 아기 세례에 대한 논증에 영향을 미친다.",
-    "cjk_status": "repaired"
+    "claim_raw": "세례와 할례 사이의 유사성은 두 종교 의식에서 믿음의 중요성을 강조하는 점에서 차이가 나며, 이는 아기 세례에 대한 논증에 영향을 미친다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002111",
@@ -109156,7 +109235,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -109181,7 +109260,12 @@
     },
     "claim_raw": "사도행전에서 기록된 것은 일반 식사였으며, 성만찬의 관습이 일반적인 것이 아니었다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -111412,7 +111496,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -111436,7 +111520,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "유대인의 파스카(파수카)节은 이집트에서 구원받은 것을 기념하는 것",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002278",
@@ -111555,7 +111645,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -111579,7 +111669,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "주님의 만찬은 예수님이 십자가에 못 박히기 위해 배신을 받은 밤에 제정되었으며, 그의 고난과 죽음의 기념으로 служ한다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002281",
@@ -111894,7 +111990,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -111918,7 +112014,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "주님의 만찬은 주님의 죽음을 나타내며同時적으로 믿는 자가 그로부터 얻는 영적 혜택을 대표한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002288",
@@ -112478,7 +112580,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -112500,6 +112602,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.158884+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
     }
   },
   {
@@ -113550,7 +113658,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -113574,7 +113682,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "외부적인儀式는 그 자체로 참여자에게 이익을 줄 수 없다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002322",
@@ -113742,7 +113856,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -113766,7 +113880,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "주님의 만찬은 그리스도의 제자들 간의 교제의 표징으로서孤獨에서 행해질 수 없다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002326",
@@ -116817,7 +116937,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -116841,7 +116961,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례와 성찬은 둘 다 우리의 믿음을 그리스도의 수락된 제사로 направляет지만, 그와의 관계를 동일한 방식으로 나타내지 않는다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002389",
@@ -117248,7 +117374,7 @@
     "paragraph": 1153,
     "sentence": 0,
     "source_text": "hold from them the token, in obedience to the same authority, and in the exercise of the same fraternal spirit.",
-    "claim": "strict communion의 관행을 유지하는 것은 형제애의 최고 발현이다.",
+    "claim": "만일 성찬에의 합당한 참여가 구원의 정해진 수단이고 침례가 그 합당한 참여에 필요하다면, 엄격한 성찬(strict communion)의 관행을 굳게 지키는 것이 형제애의 최고 발현이 될 것이라고 저자는 조건절로 제시한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -117277,8 +117403,13 @@
       "resolved_at": "2026-08-08T18:04:32.159248+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "strict communion의 관행을 유지하는 것은 형제애의 최고 прояв이다.",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "strict communion의 관행을 유지하는 것은 형제애의 최고 발현이다.",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002398",
@@ -117726,7 +117857,7 @@
     "paragraph": 1156,
     "sentence": 0,
     "source_text": "Argument 6.—A particular church differs from the church universal, only as a part differs from the whole; and, since Pedobaptist Christians are parts of the true church, they ought to be admitted to membership and communion in the particular churches.",
-    "claim": "특정 교회는 전체 교회와 부분과 전체의 관계로 다를 바 없으며, 유아세례파 기독교인들은 진정한 교회의 일부이므로 특정 교회에서 회원 자격과 성찬에 참여할 수 있어야 한다.",
+    "claim": "여섯 번째 논증에 따르면, 특정(지역) 교회는 전체 교회와 부분과 전체의 관계로 다를 바 없으며, 유아세례파 기독교인들도 참 교회의 일부이므로 지역교회의 회원 자격과 성찬에 받아들여져야 한다고 주장된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -117755,8 +117886,14 @@
       "resolved_at": "2026-08-08T18:04:32.159284+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "특정 교회는 전체 교회와 부분과 전체의 관계로 다를 바 없으며, 유아세례파 기독교인들은 진정한 교회의 일부이므로 특정 교회에서 회원资格과 성찬에 참여할 수 있어야 한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "특정 교회는 전체 교회와 부분과 전체의 관계로 다를 바 없으며, 유아세례파 기독교인들은 진정한 교회의 일부이므로 특정 교회에서 회원 자격과 성찬에 참여할 수 있어야 한다.",
+    "cjk_status": "repaired",
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002408",
@@ -118802,7 +118939,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -118826,7 +118963,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도인들은 세상을 떠나지 말고 세상의 사람들과 섞여서 복음을 따라 모든 은혜와 관용을 행해야 하며, 이때 자신의 순수성을保持하는 것이 어렵다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part1 (Dagg_Church_Order, 1-100/300) human review."
+    }
   },
   {
     "id": "TSU-0002430",
