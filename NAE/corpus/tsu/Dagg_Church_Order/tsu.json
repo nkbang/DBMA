@@ -78883,7 +78883,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -78908,7 +78908,12 @@
     },
     "claim_raw": "전체 사건은 상징적인",
     "cjk_status": "manual_repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -79865,7 +79870,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -79889,7 +79894,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "어린 자를 받는다는 말은 도덕적 品質보다는 연령을 가리킨다고 이해했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0001630",
@@ -80547,7 +80558,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -80572,7 +80583,12 @@
     },
     "claim_raw": "미구원받은 영혼의 아이들은 보이는 보편교회에 속한다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -81930,7 +81946,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -81955,7 +81971,12 @@
     },
     "claim_raw": "구약과 신약 아래의 교회는 동일하다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -82867,7 +82888,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -82891,7 +82912,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예수님이 '교회에 말하라'라고 말씀하셨을 때, 교회紀律이 행해질 기독교 교회들은 아직 조직되지 않았었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0001691",
@@ -85113,7 +85140,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85137,7 +85164,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "이스라엘은 주님의 특별한 회衆으로서 계속 존재했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0001737",
@@ -86830,7 +86863,7 @@
     "paragraph": 877,
     "sentence": 3,
     "source_text": "The same promise was afterwards repeated to Isaac,” and to Jacob.* This promise is frequently referred to in the Scriptures, and is called the covenant which God made with the fathers*—the word covenant being used according to its latitude of meaning, to denote a firm and stable promise; and it is once called, the gospel preached unto Abraham.",
-    "claim": "하나님의 약속이 아브라함에게서 그의 아들 이삭과 야곱에게로 전해졌으며 이 약속은 성경에서 자주 언급되며 아버지들과의 계약으로 불린다.",
+    "claim": "동일한 약속이 이후 이삭에게, 그리고 야곱에게도 반복되었다. 이 약속은 성경에서 자주 언급되며, 하나님이 조상들과 맺으신 언약이라고 불린다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -86859,8 +86892,13 @@
       "resolved_at": "2026-08-08T18:04:32.156999+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "하나님의 약속이 아브라함에게서 그의 아들 Isaac과 Jacob에게로 전해졌으며 이 약속은 성경에서 자주 언급되며 아버지们との 계약으로 불린다.",
-    "cjk_status": "repaired"
+    "claim_raw": "하나님의 약속이 아브라함에게서 그의 아들 이삭과 야곱에게로 전해졌으며 이 약속은 성경에서 자주 언급되며 아버지들과의 계약으로 불린다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "user-flagged: \"전해졌으며\"(transferred) should be \"반복되었다\"(repeated), matching source_text \"was afterwards repeated to Isaac...and to Jacob\"."
+    }
   },
   {
     "id": "TSU-0001772",
@@ -95458,7 +95496,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -95482,7 +95520,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "아브라함은 영적 축복의 근원으로서 올리브 나무의 뿌리로 나타나며, 이방인 신자들은 그 풍성한 축복을分享한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0001948",
@@ -100533,7 +100577,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -100562,6 +100606,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
     }
   },
   {
@@ -103488,7 +103538,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -103517,6 +103567,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
     }
   },
   {
@@ -103685,7 +103741,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -103709,7 +103765,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님은 종들을 거룩한 가정으로 데려옴으로써 종们을 회심시키는 중요한 관계를 사용하여 그의 교회를 확장해 왔다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002115",
@@ -107150,7 +107212,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -107174,7 +107236,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례의 형식은 원시적인 관행의 잔재를 보이며, 과거에 개인적 신앙과 직업이 엄격히 연결되어 있던 세례의 고대 형태가 현재는 형骸만 남아 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002186",
@@ -116677,7 +116745,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -116701,7 +116769,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 질서가 사도 시대와 다를 수 있으며, 이는 오류나 신앙의 약점에 대한妥協일 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002380",
@@ -117648,7 +117722,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -117672,7 +117746,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "형제의 영원한 이익을 위해 오류를 교정하는 것은 형제애의 최고 прояв이다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002400",
@@ -121765,7 +121845,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -121789,7 +121869,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도 안에서 형제로 여겨지고 공동 유업의 상속인으로서 그의 이익이 우리的心에 가까워야 하며, 그리스도 몸의 구성원들에게 속하는 모든 영적 교제를 환영해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002484",
@@ -129682,7 +129768,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -129706,7 +129792,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "사도들이 기도에 헌신할 수 있도록 하기 위해 집卓을 섬기는 일에서 해방된 것은 사도들의 개인적인 기도가 아니라 공적 기도를 위한 것임",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002647",
@@ -138727,7 +138819,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -138751,7 +138843,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 특별한 부름은 기적의 시대에 적합했지만, 현재는 하나님의 은혜와 섭리가 普通적인 수단을 통해 작용한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002832",
@@ -142098,7 +142196,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -142122,7 +142220,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성경에 가장 근접한 교회 순서를 따르는 교회들은 일반적으로 이 절차를採用했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0002901",
@@ -162092,7 +162196,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -162116,7 +162220,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "개혁된 교회 회원은健全한 교리의 보존을 위한 추가적인 보장이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part2 (50-147 remaining pool) human review."
+    }
   },
   {
     "id": "TSU-0003309",
