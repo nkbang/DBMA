@@ -145,6 +145,8 @@ onUnmounted(() => {
       :memory-total-bytes="status?.system?.memory?.total_bytes ?? null"
       :ollama-models="status?.ollama_models ?? []"
       :llama-parallelism="status?.llama_parallelism ?? []"
+      :active-identifier="status?.current_source?.identifier ?? null"
+      :active-title="status?.current_source?.title ?? null"
     />
 
     <BottleneckPanel :bottleneck="status?.bottleneck ?? null" :ollama-active="(status?.ollama_models ?? []).length > 0" />
