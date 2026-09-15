@@ -1,8 +1,13 @@
-"""회귀 — 오염 문자 탐지 범위 확장 (2026-09-11, P0-5 A3 실측).
+"""회귀 — 오염 문자 탐지 범위 확장 (2026-09-11, P0-5 A3 실측 +
+2026-09-15, S1-4 배포 사양 품질 실측).
 
 실제 답변에 키릴 문자("вопрос")가 섞여 나온 사례가 관측됐다.
 _SCRIPT_CONTAMINATION_RE가 CJK/태국어만 잡던 것을 그리스·키릴·히브리·
 아랍 문자까지 넓혔다. 한글·영문·숫자·구두점은 여전히 통과해야 한다.
+
+2026-09-15: llama3.2:3b로 SermonDraftService.expand_point() 실측 중
+데바나가리 문자("सफ란다")가 섞여 나온 사례가 추가로 관측되어 범위를
+더 넓혔다.
 """
 import os
 import sys
@@ -20,6 +25,11 @@ def test_greek_and_hebrew_and_arabic_detected():
     assert _detect_script_contamination("λόγος 관련 내용") != []
     assert _detect_script_contamination("שלום 관련 내용") != []
     assert _detect_script_contamination("مرحبا 관련 내용") != []
+
+
+def test_devanagari_detected():
+    """실측 사례("...ministry가 सफ란다고 말한다") 재현."""
+    assert _detect_script_contamination("우리의 ministry가 सफ란다고 말한다.") != []
 
 
 def test_korean_english_numbers_punctuation_pass_clean():

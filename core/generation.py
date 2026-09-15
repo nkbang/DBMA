@@ -43,6 +43,7 @@ from core.config import (
     DEFAULT_GEN_MODEL,
     DEFAULT_NUM_PREDICT,
     DEFAULT_REPEAT_PENALTY,
+    DEFAULT_SERMON_NUM_PREDICT,
     DEFAULT_TEMPERATURE,
 )
 from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
@@ -58,12 +59,33 @@ def _gen_options(temperature: float) -> dict:
     않아 Ollama 기본값(repeat_penalty≈1.1, num_predict 무제한)으로 돌고, 저온
     결정론 설정과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됐다
     (요한복음 1:10 해설). 두 값을 config.yaml::rag 에서 읽어 강제한다.
-    SermonDraftService 는 긴 출력이 정상이라 이 헬퍼를 쓰지 않는다.
+    SermonDraftService 는 `_sermon_gen_options()`(아래)를 쓴다 — num_predict만
+    다르고 repeat_penalty는 공유한다.
     """
     return {
         "temperature": temperature,
         "repeat_penalty": DEFAULT_REPEAT_PENALTY,
         "num_predict": DEFAULT_NUM_PREDICT,
+    }
+
+
+def _sermon_gen_options(temperature: float) -> dict:
+    """SermonDraftService(개요·대지 확장) 전용 Ollama 옵션.
+
+    [2026-09-15, S1-4 배포 사양 품질 실측] 이전에는 "설교문은 긴 출력이
+    정상"이라는 이유로 repeat_penalty/num_predict를 아예 적용하지 않았다.
+    실측 결과 이는 num_predict 상한과 무관하게 그 자체로 문제였다 —
+    llama3.2:3b로 대지를 확장하면 repeat_penalty 없이는 groundedness
+    0/5(퇴행 반복: "우리에게 사랑을 주는 하나님으로서"류 문구를 20회+
+    그대로 반복), repeat_penalty=1.3을 추가하면 3.0/5로 개선됐다(같은
+    프롬프트, 같은 모델). num_predict는 `_gen_options()`의 1024를 그대로
+    쓰지 않는다 — 그 값은 실측상 설교 문단을 문장 중간에서 잘랐다.
+    `DEFAULT_SERMON_NUM_PREDICT`(기본 2048)를 대신 쓴다.
+    """
+    return {
+        "temperature": temperature,
+        "repeat_penalty": DEFAULT_REPEAT_PENALTY,
+        "num_predict": DEFAULT_SERMON_NUM_PREDICT,
     }
 
 
@@ -91,12 +113,18 @@ def _gen_options(temperature: float) -> dict:
 # 키릴 문자("вопрос")가 섞여 나온 사례가 관측됐다. 같은 계열의 위험(한국어
 # 문장에 섞일 이유가 없는 완전히 다른 문자 체계)이므로 그리스·히브리·
 # 아랍 문자까지 함께 막는다.
+#
+# [2026-09-15, S1-4 배포 사양 품질 실측] llama3.2:3b로 SermonDraftService.
+# expand_point() 실측 중 데바나가리 문자("सफ란다")가 섞여 나오는 사례가
+# 추가로 관측됐다 — 위 5개 문자 체계에 없던 구멍. 데바나가리도 같은
+# 이유로 막는다.
 _SCRIPT_CONTAMINATION_RE = re.compile(
     r"[぀-ヿ一-鿿฀-๿"      # 히라가나/가타카나, CJK 통합 한자, 태국어 (기존)
     r"Ͱ-Ͽ"        # 그리스 문자
     r"Ѐ-ӿ"        # 키릴 문자
     r"֐-׿"        # 히브리 문자
-    r"؀-ۿ]"       # 아랍 문자
+    r"؀-ۿ"        # 아랍 문자
+    r"ऀ-ॿ]"       # 데바나가리 문자
 )
 _MAX_LANGUAGE_RETRIES = 2
 
@@ -688,7 +716,7 @@ class SermonDraftService:
             raw = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options={"temperature": temperature}
+                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
                 )
                 raw = result["response"]
                 contamination = _detect_script_contamination(raw)
@@ -758,7 +786,7 @@ class SermonDraftService:
             text = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options={"temperature": temperature}
+                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
                 )
                 text = result["response"]
                 contamination = _detect_script_contamination(text)
