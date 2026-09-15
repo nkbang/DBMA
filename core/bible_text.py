@@ -253,10 +253,15 @@ def load_bible_text(path: Optional[str] = None) -> BibleText:
     try:
         mtime = os.path.getmtime(target)
     except OSError:
+        # [S2-2, D1] 저작권 있는 번역본을 이 앱에 포함하지 않으므로(ADR-031)
+        # 본문 없음이 기본 상태다 — 목회자가 직접 추가해야 하는데, 기존
+        # 메시지는 config.yaml/JSON 스키마를 아는 사람만 따라갈 수 있었다.
+        # INSTALL.md에 단계별 안내를 두고 여기서는 그 문서로만 안내한다.
         return BibleText.unavailable(
-            f"성경 본문 파일이 없습니다: {target}\n"
-            "성경 본문 JSON을 이 경로에 두세요(경로는 config.yaml::directories.bible_text_path). "
-            "규격: docs/NAE_BIBLE_TEXT_JSON_SPEC.md"
+            "성경 본문이 아직 없습니다.\n\n"
+            "저작권 때문에 이 앱에는 성경 본문이 들어있지 않습니다 — "
+            "가지고 계신 성경 파일을 추가하면 이 화면에서 볼 수 있습니다. "
+            "INSTALL.md의 '성경 본문 추가하기' 안내를 따라주세요."
         )
 
     cached = _cache.get(target)
