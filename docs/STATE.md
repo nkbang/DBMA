@@ -10,6 +10,24 @@ Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
 
+**[2026-09-15 종결] Dagg + Hiscox TSU claim CJK/foreign-script 오염 정리 완료.**
+- 배경: `scripts/nae_fuller_cjk_reextract.py`(repair→reextract)가 Han 정규식
+  기준 오염 306+84건 중 대부분을 자동 정리했으나 42건에서 plateau(Dagg
+  candidates 17/residual 16/failed 1, Hiscox candidates 3/residual 3/failed 0).
+  원인은 `my-theology-bot-v2`가 GPU 고부하 상황에서 code-switching.
+- 스캔 범위를 CJK-only HAN 정규식 밖(Cyrillic/Vietnamese/Hindi/Arabic/Thai/
+  Japanese-kana)까지 넓혀 77건 추가 오염 확인 → 전량 source_text 대조 후
+  수동 교정: Dagg 68건, Hiscox 21건 (`cjk_status=manual_repaired`,
+  `needs_review` 해제, `claim_raw` 보존).
+- 그리스어 음역 OCR 아티팩트 8건은 소스 원문(18~19세기 스캔) 자체 문제로
+  source grounding 원칙상 의도적으로 미수정.
+- 검증: 양쪽 tsu.json claim 필드 전체 재스캔 → 오염 0건. 기존 review_
+  promotion/batch_manager/dashboard 테스트 54건 unmodified 통과. batch_0024
+  재생성해 human-review 대기열이 정리된 claim 반영.
+- 커밋 `84d8b635`(`fix(nae): complete CJK/foreign-script claim contamination
+  cleanup — Dagg + Hiscox`), `origin/dev/dbma-engine` push 완료(ahead/behind
+  없음 확인). 후속 조치 없음 — 세션 종료.
+
 **[2026-09-13 종결] Q2 — BM25 전체 pool 스코어링 지연 해결 (사용자 승인 후 CUE 실행, Retrieval Engine 변경).**
 `core/retrieval.py::bm25_score()`가 매 질의마다 후보 문서 전체를 재토큰화하던
 구조를 코퍼스 인덱스 기준 토큰 캐시(`RetrievalEngine._bm25_token_cache`)로
