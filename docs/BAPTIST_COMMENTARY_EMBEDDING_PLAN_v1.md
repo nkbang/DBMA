@@ -33,8 +33,8 @@
 |---|---|---|---|---|
 | **C.H. Spurgeon** | The Treasury of David (전 7권) | Particular Baptist | Yes (1885년경 완간) | **실행 완료 = Vol.1 (시편 1–26편)**, §5.1-5.10. 시편 전체 해설, 분량 방대(전권 ~3,500쪽) |
 | **John Gill** | An Exposition of the Old and New Testament | Particular Baptist | Yes (1746–1763) | **실행 완료 = 신약 Vol.1**(1746 초판 3권 중 1권, 마태복음), §5.11. 신구약 전체는 구약 9권+신약 3~5권으로 여전히 매우 방대 — Vol.1 외 나머지는 향후 후보 |
-| A.T. Robertson | Word Pictures in the New Testament | Southern Baptist | Yes (1930년, 저자 사후 저작권 만료국 확인 필요 — 미국은 1930 출간이라 최근까지 저작권 존재 가능성, 별도 확인 필요) | 헬라어 원어 해설 포함 — DBMA 헬라어 처리 요구사항과 정합 |
-| John A. Broadus | Commentary on Matthew (American Commentary) | Southern Baptist | Yes (1886) | 마태복음 단권 주석 |
+| A.T. Robertson | Word Pictures in the New Testament | Southern Baptist | **No — 보류(§5.12)**. Broadman Press 1932-33 등록·1960 갱신 확인(WebSearch), 상업 유료 판매 중(Laridian 등) | 헬라어 원어 해설 포함 — DBMA 헬라어 처리 요구사항과 정합하나 저작권 문제로 미착수 |
+| **John A. Broadus** | Commentary on Matthew (American Commentary) | Southern Baptist | Yes (1886) | **실행 완료**(단권), §5.13 |
 | B.H. Carroll | An Interpretation of the English Bible | Southern Baptist | Yes (1913, 저자 사후 출간 1916–1917) | 17권 시리즈, 설교체 주석 |
 
 **파일럿 선정 근거**: Spurgeon Vol.1은 (a) 확실한 public domain, (b) 시편 26편으로 분량이 관리 가능, (c) 절 단위 구조가 명확(시편 장:절별 해설)해 신규 청킹 규칙 검증에 적합, (d) 이미 §3에서 확인한 기존 scripture-reference 감지기(`NAE/pipeline/canonical/annotate.py::find_scripture_references_extended`)와의 정합성을 테스트하기 좋다.
@@ -203,6 +203,29 @@ C1이 §2-B(질문 5-11)까지 마쳐 최종 결과 문서(`docs/NAE_BAPTIST_COM
 - **최종 확인**: `nae_ref_commentary_v1` = 6,637(Spurgeon 1,978 + Gill 4,659), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 전 과정 무변동. 전체 스위트 2,956 passed(환경 갭 2건 외 이상 없음).
 
 **미해결로 남긴 것**: 거대 단일문단 청크(7 사례 중 3건 표본 확인, 나머지 8건 미조사) 강제 분할 로직은 이번 범위 밖 — `chunk_canonical`의 기존(Smith 때부터의) 동작 그대로이며, 발생 빈도(0.24%)가 낮아 별도 수정 없이 fail-soft로 수용.
+
+### 5.12 세 번째 후보 시도 — A.T. Robertson, 저작권 문제로 보류 (2026-09-15)
+
+사용자 지시 "Robertson 진행해" → §1에서 이미 "저작권 만료국 확인 필요"로 플래그해둔 항목이라 원본 확보 전에 먼저 확인 시도.
+
+- Stanford Copyright Renewal Database·HathiTrust 카탈로그 모두 봇 차단(Cloudflare/유사 방화벽)으로 브라우저 자동화로도 접근 불가 — 직접 검증 실패.
+- WebSearch로 우회 확인: Broadman Press가 1932-33년 저작권 등록, **1960년 갱신(renewal) 확인**. 갱신됐으므로 발행연도별 95년 보호기간이 온전히 적용된다(6권 세트, 1930-1933년 발행 — 권마다 만료 시점이 다름).
+- 정황 증거: Laridian·BibleAnalyzer 등 성경 소프트웨어 업체가 이 저작을 **유료 애드온으로 판매 중** — 확실한 PD 주석(Spurgeon·Gill·Calvin 등)은 이런 식으로 별도 유료 판매되지 않는 것과 대비.
+- **결론: 저작권 유효 가능성이 높다고 판단, 원본 확보 자체를 하지 않고 사용자에게 즉시 보고** — 사용자가 Broadus로 전환 결정.
+
+**향후 재검토 조건**: 실제 저작권 등록/갱신 기록을 권 단위로 직접 확인할 수 있는 경로(Stanford DB 접근 방법 변경, 또는 저작권 전문가 확인)가 생기면 재상정 가능. 그 전까지 Robertson은 후보에서 제외.
+
+### 5.13 네 번째 후보 실행 — John A. Broadus, Commentary on Matthew (2026-09-15)
+
+사용자 지시 "Broadus 진행해" → §1의 확실한 PD 후보(1886, 단권)로 전환.
+
+- **원본**: archive.org `commentaryongosp01broa` — hocr.html(80MB)+original.pdf(67MB), 사용자 승인 후 다운로드. 686쪽. OCR 품질 양호(Spurgeon·Gill보다 깨끗함, 1886년 근대 활자).
+- **Canonicalize**: 7,109문단, scripture_references 381건.
+- **verse-anchored 사전 확인**: `anchor_book_prefix="Matthew"`로 직접 테스트 — 다양성 비율 0.007(2,687개 태깅 청크 중 고유값 18개, 최다 "Matthew 11:6" 480개). Broadus도 해설 중인 마태복음 본문 자체는 장:절을 잘 재인용하지 않고(전체 참조 중 Matthew는 19건뿐, Luke 85건·Mark 71건이 더 많음 — 공관복음 비교 인용이 대부분), 동일한 실패 패턴 재현. 기본 `heading` 청커로 진행(3,025개 청크).
+  - (부수 발견: CLI `--chunker verse_anchored`가 `anchor_book_prefix`를 지정할 방법이 없어 함수 기본값 "Psalms"로만 테스트됨 — 이번엔 함수를 직접 호출해 정확한 책으로 재확인. CLI 파라미터화는 후속 과제로 남김.)
+- **M2 등록**: `BAP-COMM-BROADUS-MATT-VOL01`(Amendment B 근거) — 원본 17개 레코드 diff 0줄, 신규 15줄만 추가. validator baseline 12→13 갱신.
+- **임베딩 결과**: 3,025개 전부 성공, 에러 0.
+- **최종 확인**: `nae_ref_commentary_v1` = 9,662(Spurgeon 1,978 + Gill 4,659 + Broadus 3,025), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 전 과정 무변동. 전체 스위트 2,971 passed(환경 갭 2건 외 이상 없음).
 
 ---
 

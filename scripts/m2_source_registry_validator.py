@@ -64,9 +64,10 @@ M3_PATH = PROJECT_ROOT / "NAE" / "manifest" / "NAE_SOURCE_MANIFEST_v1.csv"
 FORBIDDEN_REGISTRY_DIR = PROJECT_ROOT / "NAE" / "corpus" / "governance"
 # registration_quality_passed: 10 (M-2 baseline) + 1 (BAP-COMM-SPURGEON-TDA-VOL01,
 # ADR-030 Amendment B, 2026-09-13) + 1 (BAP-COMM-GILL-ENT-VOL01, same Amendment B
-# authority, 2026-09-15) = 12. A drift guard, not an open range — any further
+# authority, 2026-09-15) + 1 (BAP-COMM-BROADUS-MATT-VOL01, same Amendment B
+# authority, 2026-09-15) = 13. A drift guard, not an open range — any further
 # increase needs its own explicit bump + authorization record.
-BASELINE = {"nae_tsu_v1": 3319, "nae_ref_v1": 34948, "canonical_dirs": 17, "registration_quality_passed": 12}
+BASELINE = {"nae_tsu_v1": 3319, "nae_ref_v1": 34948, "canonical_dirs": 17, "registration_quality_passed": 13}
 # ADR-030 v2.1 §12 M-2 backfilled exactly these 14 source_ids (2026-08-28).
 # ADR-030 Amendment B (2026-09-13) authorizes appending further M2 records —
 # V7/V8 below protect this frozen set's identity/count without capping M2's
