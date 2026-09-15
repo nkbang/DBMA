@@ -250,3 +250,18 @@ sources:
   authority_class: reference
   raw_path: NAE/corpus/raw/archive_org/reference/Gill_ExpositionNT_Vol1/hocr.html
   checksum_target: NAE/corpus/raw/archive_org/reference/Gill_ExpositionNT_Vol1/hocr.html
+- source_id: BAP-COMM-BROADUS-MATT-VOL01
+  title: Commentary on the Gospel of Matthew
+  author: John A. Broadus
+  author_id: broadus_john_a
+  work_id: broadus_john_a-commentary_on_the_gospel_of_matthew
+  edition_id: broadus_john_a-commentary_on_the_gospel_of_matthew-1886_american_commentary
+  year: 1886
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 4093dcbf7c06f2b7948cb052d731eac0f4951b2c91c1ef3c78321fca397b7b48
+  content_genre:
+  - commentary
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Broadus_CommentaryMatthew/hocr.html
+  checksum_target: NAE/corpus/raw/archive_org/reference/Broadus_CommentaryMatthew/hocr.html
