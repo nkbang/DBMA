@@ -134,10 +134,13 @@ rag:
   chunk_overlap: 120
   # [2026-09-04] Q&A·본문해설 생성(core/generation.py::GenerationService)의
   # Ollama 옵션. my-theology-bot-v2 가 저온 결정론 설정에서 같은 구절을
-  # 반복하는 퇴행 루프(요한복음 1:10 해설 실측) 방지. 설교문 생성은 별도
-  # 흐름이라 이 상한을 적용하지 않는다.
+  # 반복하는 퇴행 루프(요한복음 1:10 해설 실측) 방지.
   repeat_penalty: 1.3
   num_predict: 1024
+  # [2026-09-15, S1-4] 설교 대지 확장(SermonDraftService)은 repeat_penalty는
+  # 위 값을 공유하되, num_predict만 문단 길이에 맞춰 따로 둔다 — 1024는
+  # 실측상 문장 중간에서 출력을 잘랐다(llama3.2:3b 테스트).
+  sermon_num_predict: 2048
 
 # ── UI Defaults ────────────────────────────────────────
 ui:
