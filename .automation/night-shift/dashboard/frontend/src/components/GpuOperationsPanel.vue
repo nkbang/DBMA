@@ -9,6 +9,8 @@ const props = defineProps({
   memoryTotalBytes: { type: Number, default: null },
   ollamaModels: { type: Array, default: () => [] },
   llamaParallelism: { type: Array, default: () => [] },
+  activeIdentifier: { type: String, default: null },
+  activeTitle: { type: String, default: null },
 })
 
 const vramPct = computed(() => {
@@ -37,6 +39,7 @@ function healthBadge(status) {
     <p v-if="!gpu" class="empty">GPU telemetry unavailable this cycle</p>
 
     <div v-else class="grid">
+      <div class="row"><span>Active Job</span><span>{{ activeTitle || activeIdentifier || 'idle (no active job)' }}</span></div>
       <div class="row"><span>Model</span><span>{{ gpu.model || '—' }} ({{ gpu.core_count }}-core)</span></div>
       <div class="row"><span>Utilization</span><span>{{ formatPercent(gpu.device_utilization_pct) }}</span></div>
       <div class="row">
