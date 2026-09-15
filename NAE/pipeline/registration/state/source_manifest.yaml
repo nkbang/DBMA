@@ -235,3 +235,18 @@ sources:
   authority_class: reference
   raw_path: NAE/corpus/raw/archive_org/reference/Spurgeon_TreasuryOfDavid_Vol1/hocr.html
   checksum_target: NAE/corpus/raw/archive_org/reference/Spurgeon_TreasuryOfDavid_Vol1/hocr.html
+- source_id: BAP-COMM-GILL-ENT-VOL01
+  title: 'An Exposition of the New Testament: Volume I'
+  author: John Gill
+  author_id: gill_john
+  work_id: gill_john-an_exposition_of_the_new_testament_volume_i
+  edition_id: gill_john-an_exposition_of_the_new_testament_volume_i-1746_1st_ed
+  year: 1746
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: df054713d91588c2bb5ab209036836856c6868744cbc08662a2617f5f7a75c55
+  content_genre:
+  - commentary
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Gill_ExpositionNT_Vol1/hocr.html
+  checksum_target: NAE/corpus/raw/archive_org/reference/Gill_ExpositionNT_Vol1/hocr.html
