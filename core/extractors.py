@@ -134,6 +134,63 @@ def _extract_docx_title_author(path: str) -> "tuple[Optional[str], Optional[str]
         return None, None
 
 
+def _first_dc_value(book, field: str) -> "Optional[str]":
+    """EPUB Dublin Core 항목의 첫 값을 꺼낸다. 부재/형식 이상 시 None.
+
+    ebooklib의 get_metadata()는 [(값, 속성dict), ...] 형태를 돌려주며,
+    항목이 없으면 빈 리스트다.
+    """
+    try:
+        entries = book.get_metadata("DC", field)
+    except Exception:
+        return None
+    if not entries:
+        return None
+    value = entries[0][0] if isinstance(entries[0], (tuple, list)) else entries[0]
+    return (str(value) or "").strip() or None
+
+
+def _extract_epub_title_author(path: str) -> "tuple[Optional[str], Optional[str]]":
+    """EPUB 내장 메타데이터(dc:title/dc:creator)를 읽는다. 실패/부재 시 (None, None).
+
+    [2026-09-15] PDF(docinfo)/DOCX(core_properties)에는 구현돼 있던 추출이
+    EPUB에는 누락돼 있었다 — EPUB이 dc:title/dc:creator를 실제로 담고 있어도
+    title/author가 항상 None으로 등록됐다(registry·TSU의 인용 표기 공백 원인).
+    파일명이나 본문에서 추론하지 않는다 — 어디까지나 파일 자신의 내장
+    메타데이터만 읽는다(SPRINT17-Phase5-C2 M2-a 원칙 유지).
+    """
+    try:
+        book = epub.read_epub(path)
+    except Exception as e:
+        logger.warning(f"[EPUB] 메타데이터 읽기 실패 {path}: {e}")
+        return (None, None)
+    return (_first_dc_value(book, "title"), _first_dc_value(book, "creator"))
+
+
+def _extract_html_title_author(path: str) -> "tuple[Optional[str], Optional[str]]":
+    """HTML <title> / <meta name="author">를 읽는다. 실패/부재 시 (None, None).
+
+    [2026-09-15] EPUB과 같은 이유로 누락돼 있던 경로. 본문 heading(h1 등)은
+    보지 않는다 — 문서 자신이 선언한 메타데이터만 신뢰한다.
+    """
+    try:
+        soup = BeautifulSoup(read_text_file(path), "html.parser")
+    except Exception as e:
+        logger.warning(f"[HTML] 메타데이터 읽기 실패 {path}: {e}")
+        return (None, None)
+
+    title = None
+    if soup.title and soup.title.string:
+        title = soup.title.string.strip() or None
+
+    author = None
+    tag = soup.find("meta", attrs={"name": lambda v: v and v.lower() == "author"})
+    if tag:
+        author = (tag.get("content") or "").strip() or None
+
+    return (title, author)
+
+
 def extract_text_from_docx(path: str) -> str:
     """
     BUG-10 fix: doc.paragraphs 뿐 아니라 표(table) 셀 텍스트도 추출.
@@ -562,8 +619,10 @@ def extract_text_from_file(
         dict: {"text": str, "is_ocr": bool, "source_type": str,
                "title": Optional[str], "author": Optional[str]}
         title/author come from the source file's own embedded metadata
-        (PDF docinfo / DOCX core_properties) when present; None otherwise —
+        (PDF docinfo / DOCX core_properties / EPUB dc:title·dc:creator /
+        HTML <title>·<meta name="author">) when present; None otherwise —
         never inferred from filename or content (SPRINT17-Phase5-C2 M2-a).
+        txt/md/rtf는 내장 메타데이터 자체가 없어 항상 None이다(결함이 아님).
     """
     ext = os.path.splitext(path)[1].lower()
 
@@ -589,8 +648,10 @@ def extract_text_from_file(
         title, author = _extract_docx_title_author(path)
     elif ext == ".epub":
         text = extract_text_from_epub(path)
+        title, author = _extract_epub_title_author(path)
     elif ext in (".html", ".htm"):
         text = extract_text_from_html(path)
+        title, author = _extract_html_title_author(path)
     elif ext == ".rtf":
         text = extract_text_from_rtf(path)
     else:
