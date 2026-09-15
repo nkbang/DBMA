@@ -52,16 +52,26 @@ class TestF4EmbedDryRun:
             {"id": "TSU-0000002", "review_status": "verified", "claim": "c2", "book": "b1", "page": 2, "scriptures": []},
         ])
 
-        # First record already cached, second is a miss.
-        monkeypatch.setattr(f4.embed_client, "get_cached", lambda h, *a, **k: [0.1] if h.endswith("dummy") else None)
+        # C1 finding F2: cache hit/miss must be keyed off the script's *real*
+        # _content_hash() output, not an arbitrary string pattern — otherwise
+        # the mock could pass while the real hash function behaves
+        # differently than assumed.
+        first_hash = f4._content_hash(
+            {"claim": "c1", "book": "b1", "page": 1, "scriptures": []}
+        )
+        monkeypatch.setattr(
+            f4.embed_client, "get_cached",
+            lambda h, *a, **k: [0.1] if h == first_hash else None,
+        )
         embed_calls = MagicMock(return_value=[0.1] * 1024)
         monkeypatch.setattr(f4.embed_client, "embed_text", embed_calls)
 
         report = f4.run(apply=True, tsu_dir=tsu_dir, report_path=tmp_path / "report.json")
 
         assert report["verified_total"] == 2
-        assert embed_calls.call_count == 2  # both are cache misses in this monkeypatch
-        assert report["newly_embedded"] == 2
+        assert report["already_cached"] == 1  # record 1 — real hash matched
+        assert embed_calls.call_count == 1  # only record 2 is a real cache miss
+        assert report["newly_embedded"] == 1
 
     def test_missing_volume_dirs_are_skipped_not_errored(self, tmp_path):
         from scripts import nae_fuller_f4_embed as f4
@@ -73,6 +83,14 @@ class TestF4EmbedDryRun:
 
 
 class TestF5UpsertDryRun:
+    def test_expected_baseline_count_matches_dagg_plus_hiscox(self):
+        """C1 finding F1: EXPECTED_BASELINE_COUNT's derivation (Dagg 2,958 +
+        Hiscox 361, ADR-030 §14 / Amendment A header) should be an asserted
+        fact, not just a code comment that can silently drift from the sum."""
+        from scripts import nae_fuller_f5_upsert as f5
+
+        assert f5.EXPECTED_BASELINE_COUNT == 2958 + 361
+
     def test_default_dry_run_makes_zero_qdrant_writes(self, tmp_path, monkeypatch):
         from scripts import nae_fuller_f5_upsert as f5
 
