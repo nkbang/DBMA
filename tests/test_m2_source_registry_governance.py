@@ -58,6 +58,19 @@ ADR030_ADDITIVE_FIELDS = frozenset([
     "authority_class", "content_genre", "theological_category",
     "tradition", "raw_path", "checksum_target",
 ])
+# ADR-030 v2.1 §12 M-2 backfilled exactly these 14 source_ids (2026-08-28,
+# `CUE-ADR-030-A2B2-CLASSIFICATION-RULE.md` RATIFIED v1.1) — their specific
+# field values are the frozen baseline. ADR-030 Amendment B (2026-09-13)
+# authorizes appending further M2 records; the exact-count assertions below
+# are scoped to this set so the original 14 stay protected from drift while
+# new records are validated by the (unscoped) enum/shape checks only.
+M2_FROZEN_BASELINE_SOURCE_IDS = frozenset([
+    "BAP-CHURCH-DAGG-001", "BAP-CHURCH-HISCOX",
+    "BAP-MISS-FULLER-VOL01", "BAP-MISS-FULLER-VOL02", "BAP-MISS-FULLER-VOL03",
+    "BAP-MISS-FULLER-VOL04", "BAP-MISS-FULLER-VOL05", "BAP-MISS-FULLER-VOL06",
+    "BAP-MISS-FULLER-VOL07", "BAP-MISS-FULLER-VOL08",
+    "BAP-REF-SMITH-VOL01", "BAP-REF-SMITH-VOL02", "BAP-REF-SMITH-VOL03", "BAP-REF-SMITH-VOL04",
+])
 M2_PATH = PROJECT_ROOT / "NAE" / "pipeline" / "registration" / "state" / "source_manifest.yaml"
 M1_PATH = PROJECT_ROOT / "NAE" / "authority" / "source_manifest.yaml"
 M3_PATH = PROJECT_ROOT / "NAE" / "manifest" / "NAE_SOURCE_MANIFEST_v1.csv"
@@ -224,9 +237,14 @@ class TestM2KeyGovernance:
             assert keys.issubset(base | additive), f"{s.get('source_id')} unknown keys: {keys - (base | additive)}"
 
     def test_authority_class_matches_adr030_7_3(self):
-        """ADR-030 v2.1 §7.3 배정: historical_witness×10 / reference×4."""
+        """ADR-030 v2.1 §7.3 배정 (frozen 14 한정): historical_witness×10 / reference×4.
+
+        Scoped to M2_FROZEN_BASELINE_SOURCE_IDS (Amendment B) — a source
+        added after the M-2 backfill (e.g. a new reference-track commentary)
+        is expected to shift the *global* reference count and must not
+        break this frozen-baseline check."""
         m2_data = _load_yaml(M2_PATH)
-        sources = m2_data["sources"]
+        sources = [s for s in m2_data["sources"] if s.get("source_id") in M2_FROZEN_BASELINE_SOURCE_IDS]
         counts = {}
         for s in sources:
             ac = s.get("authority_class")
@@ -298,11 +316,15 @@ class TestValidatorIntegration:
         assert isinstance(schema["fields"], dict)
 
     def test_int_03_m2_yaml_valid(self):
-        """M2 YAML이 유효하게 파싱되어야 함."""
+        """M2 YAML이 유효하게 파싱되어야 하고, frozen 14 baseline을 포함해야 함
+        (Amendment B — 그 이상은 정당하게 추가될 수 있음, 삭제/축소는 불가)."""
         m2_data = _load_yaml(M2_PATH)
         assert isinstance(m2_data, dict)
         assert "sources" in m2_data
-        assert len(m2_data["sources"]) == 14
+        ids = {s.get("source_id") for s in m2_data["sources"]}
+        assert M2_FROZEN_BASELINE_SOURCE_IDS.issubset(ids), \
+            f"frozen baseline source_ids missing: {M2_FROZEN_BASELINE_SOURCE_IDS - ids}"
+        assert len(m2_data["sources"]) >= len(M2_FROZEN_BASELINE_SOURCE_IDS)
 
     def test_int_04_m1_yaml_valid(self):
         """M1 YAML이 유효하게 파싱되어야 함."""

@@ -14,13 +14,15 @@ import logging
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
 from NAE.pipeline.embed import client as embed_client
 from NAE.pipeline.reference import chunker, config
+
+ChunkerFn = Callable[[dict[str, Any], int, int], list[chunker.ReferenceChunk]]
 
 logger = logging.getLogger("nae.reference.ingest")
 
@@ -53,9 +55,10 @@ def _build_payload(
     identifier: str,
     source_id: str,
     volume: str,
+    content_type: str = "reference_dictionary",
 ) -> dict[str, Any]:
     """Build Qdrant payload for a reference chunk."""
-    return {
+    payload: dict[str, Any] = {
         "chunk_index": chunk.chunk_index,
         "text": chunk.text,
         "identifier": identifier,
@@ -64,28 +67,33 @@ def _build_payload(
         "page_start": chunk.page_start,
         "page_end": chunk.page_end,
         "heading_context": chunk.heading_context,
-        "content_type": "reference_dictionary",
+        "content_type": content_type,
     }
+    if chunk.scripture_reference:
+        payload["scripture_reference"] = chunk.scripture_reference
+    return payload
 
 
 def _build_point(chunk: chunker.ReferenceChunk, vector: list[float],
-                 identifier: str, source_id: str, volume: str) -> PointStruct:
+                 identifier: str, source_id: str, volume: str,
+                 content_type: str = "reference_dictionary") -> PointStruct:
     """Build a Qdrant PointStruct for a reference chunk."""
     return PointStruct(
         id=_make_point_id(identifier, chunk.chunk_index),
         vector=vector,
-        payload=_build_payload(chunk, identifier, source_id, volume),
+        payload=_build_payload(chunk, identifier, source_id, volume, content_type),
     )
 
 
-def _ensure_ref_collection(client: QdrantClient) -> None:
-    """Ensure the reference collection exists (separate from TSU)."""
+def _ensure_ref_collection(client: QdrantClient, collection_name: str) -> None:
+    """Ensure the given reference collection exists (separate from TSU and
+    from any other reference collection — ADR-013 isolation)."""
     existing = {c.name for c in client.get_collections().collections}
-    if config.REFERENCE_COLLECTION_NAME in existing:
+    if collection_name in existing:
         return
-    logger.info("Creating reference collection %s", config.REFERENCE_COLLECTION_NAME)
+    logger.info("Creating reference collection %s", collection_name)
     client.create_collection(
-        collection_name=config.REFERENCE_COLLECTION_NAME,
+        collection_name=collection_name,
         vectors_config=VectorParams(
             size=config.DEFAULT_EMBED_MODEL and 1024,  # bge-m3 output size
             distance=Distance.COSINE,
@@ -102,6 +110,9 @@ def ingest(
     chunk_size: int = config.CHUNK_SIZE,
     chunk_overlap: int = config.CHUNK_OVERLAP,
     apply: bool = False,
+    collection_name: str = config.REFERENCE_COLLECTION_NAME,
+    chunker_fn: ChunkerFn = chunker.chunk_canonical,
+    content_type: str = "reference_dictionary",
 ) -> IngestResult:
     """Ingest a single reference corpus volume.
 
@@ -113,6 +124,15 @@ def ingest(
         chunk_size: Maximum chunk size in characters.
         chunk_overlap: Overlap between chunks in characters.
         apply: If False, return dry-run stats without embedding/upserting.
+        collection_name: Target Qdrant collection. Defaults to the Smith
+            dictionary collection (`nae_ref_v1`) — pass
+            `config.COMMENTARY_COLLECTION_NAME` for verse-anchored commentary
+            corpora, per ADR-013 collection isolation.
+        chunker_fn: Chunking strategy. Defaults to the heading+prose
+            dictionary chunker (`chunker.chunk_canonical`) — pass
+            `chunker.chunk_canonical_verse_anchored` for commentary corpora.
+        content_type: Payload `content_type` tag for downstream retrieval
+            filtering (e.g. "reference_commentary").
 
     Returns:
         IngestResult with counts and any errors.
@@ -126,7 +146,7 @@ def ingest(
     logger.info("Canonical has %d paragraphs", len(paragraphs))
 
     # 2. Chunk
-    chunks = chunker.chunk_canonical(canonical, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    chunks = chunker_fn(canonical, chunk_size, chunk_overlap)
     result.chunks_total = len(chunks)
     logger.info("Generated %d chunks", len(chunks))
 
@@ -134,16 +154,17 @@ def ingest(
         # Dry-run: show first 3 chunk samples
         for i, chunk in enumerate(chunks[:3]):
             logger.info(
-                "Chunk %d [pages %s-%s] heading=%s text[:120]=%s",
+                "Chunk %d [pages %s-%s] heading=%s ref=%s text[:120]=%s",
                 chunk.chunk_index, chunk.page_start, chunk.page_end,
                 chunk.heading_context[:40] if chunk.heading_context else "(none)",
+                chunk.scripture_reference or "(none)",
                 chunk.text[:120],
             )
         return result
 
     # 3. Embed + upsert
     client = QdrantClient(url=config.QDRANT_URL)
-    _ensure_ref_collection(client)
+    _ensure_ref_collection(client, collection_name)
 
     for chunk in chunks:
         content_hash = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
@@ -156,9 +177,9 @@ def ingest(
             logger.warning("Embedding failed for chunk %d", chunk.chunk_index)
             continue
 
-        point = _build_point(chunk, vector, identifier, source_id, volume)
+        point = _build_point(chunk, vector, identifier, source_id, volume, content_type)
         client.upsert(
-            collection_name=config.REFERENCE_COLLECTION_NAME,
+            collection_name=collection_name,
             points=[point],
         )
         result.chunks_embedded += 1

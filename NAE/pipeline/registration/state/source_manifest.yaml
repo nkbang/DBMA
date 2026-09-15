@@ -220,3 +220,18 @@ sources:
   raw_path: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol4/djvu.xml
   checksum_target: NAE/corpus/raw/archive_org/reference/Smith_Bible_Dictionary_HackettAbbot_Vol4/original.pdf
   content_genre: [commentary]
+- source_id: BAP-COMM-SPURGEON-TDA-VOL01
+  title: 'The Treasury of David: Volume I'
+  author: Charles Spurgeon
+  author_id: spurgeon_charles
+  work_id: spurgeon_charles-the_treasury_of_david_volume_i
+  edition_id: spurgeon_charles-the_treasury_of_david_volume_i-funk_1882
+  year: 1882
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: a1d7df0d15e03c9cccbb91db925317f1d881e33a528fd9886052b9211d17ed85
+  content_genre:
+  - commentary
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Spurgeon_TreasuryOfDavid_Vol1/hocr.html
+  checksum_target: NAE/corpus/raw/archive_org/reference/Spurgeon_TreasuryOfDavid_Vol1/hocr.html

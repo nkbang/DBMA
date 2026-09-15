@@ -20,10 +20,28 @@ proceeds normally — zero regression risk.
 from __future__ import annotations
 
 import logging
+import os
 import re
 from typing import Optional
 
 logger = logging.getLogger("nae.smith_activation")
+
+# A standalone theological-concept-keyword match (no proper noun, no
+# definition-seeking pattern) fires on almost any discursive theological
+# query ("믿음으로 산다는 것은 무슨 뜻이며 실천은 어떻게..." etc.), not just
+# dictionary-style lookups — this is the over-activation observed in
+# practice (DBMA_NAE_PROPOSAL_CONFLICT_REGISTER_v1.md CON-006 / PB-08).
+# Narrowing is opt-in and reversible: default off leaves current behavior
+# byte-for-byte unchanged.
+_CONCEPT_ONLY_MAX_QUERY_LEN = 15
+
+
+def _narrow_activation_enabled() -> bool:
+    """NAE_SMITH_ACTIVATION_NARROW=true restricts standalone theological-
+    concept matches to short, lookup-shaped queries. Read at call time
+    (no caching) so a toggle takes effect on the next query. Default false
+    — existing behavior unchanged."""
+    return os.environ.get("NAE_SMITH_ACTIVATION_NARROW", "false").strip().lower() == "true"
 
 # ── Biblical proper noun patterns ────────────────────────────────────
 # Common biblical names/places that would appear in Smith entries
@@ -129,6 +147,12 @@ def should_activate_smith(query: str) -> bool:
     # Check theological concepts
     for pattern in _THEOLOGICAL_CONCEPTS:
         if re.search(pattern, lower):
+            if _narrow_activation_enabled() and len(query.strip()) > _CONCEPT_ONLY_MAX_QUERY_LEN:
+                # Narrowed: a long/discursive query merely mentioning a
+                # theological word (e.g. "은혜", "믿음") is not itself a
+                # dictionary-style lookup — skip unless it also matched a
+                # proper noun or definition pattern above.
+                continue
             logger.debug("[smith_activation] matched theological concept")
             return True
 
