@@ -27,12 +27,12 @@
 
 ---
 
-## 1. 후보 저작 5개 (기록용, 실행은 Spurgeon Vol.1만)
+## 1. 후보 저작 5개 (기록용 — 실행은 §5 참고)
 
 | 저자 | 저작 | 침례교 계열 | Public Domain | 비고 |
 |---|---|---|---|---|
-| **C.H. Spurgeon** | The Treasury of David (전 7권) | Particular Baptist | Yes (1885년경 완간) | **파일럿 = Vol.1 (시편 1–26편)**. 시편 전체 해설, 분량 방대(전권 ~3,500쪽) |
-| John Gill | An Exposition of the Old and New Testament | Particular Baptist | Yes (1746–1763) | 신구약 전체 주석, 분량 매우 방대(Spurgeon보다 큼). 향후 후보 |
+| **C.H. Spurgeon** | The Treasury of David (전 7권) | Particular Baptist | Yes (1885년경 완간) | **실행 완료 = Vol.1 (시편 1–26편)**, §5.1-5.10. 시편 전체 해설, 분량 방대(전권 ~3,500쪽) |
+| **John Gill** | An Exposition of the Old and New Testament | Particular Baptist | Yes (1746–1763) | **실행 완료 = 신약 Vol.1**(1746 초판 3권 중 1권, 마태복음), §5.11. 신구약 전체는 구약 9권+신약 3~5권으로 여전히 매우 방대 — Vol.1 외 나머지는 향후 후보 |
 | A.T. Robertson | Word Pictures in the New Testament | Southern Baptist | Yes (1930년, 저자 사후 저작권 만료국 확인 필요 — 미국은 1930 출간이라 최근까지 저작권 존재 가능성, 별도 확인 필요) | 헬라어 원어 해설 포함 — DBMA 헬라어 처리 요구사항과 정합 |
 | John A. Broadus | Commentary on Matthew (American Commentary) | Southern Baptist | Yes (1886) | 마태복음 단권 주석 |
 | B.H. Carroll | An Interpretation of the English Bible | Southern Baptist | Yes (1913, 저자 사후 출간 1916–1917) | 17권 시리즈, 설교체 주석 |
@@ -189,6 +189,20 @@ C1이 §2-B(질문 5-11)까지 마쳐 최종 결과 문서(`docs/NAE_BAPTIST_COM
 4. `chunk_canonical`로 재임베딩 — 1,978개 청크, 에러 0, `scripture_reference` 필드는 payload에서 완전히 제거(잘못된 값보다 없는 게 낫다는 원칙). 스팟체크로 확인. `nae_tsu_v1`/`nae_ref_v1` 카운트 재확인 — 무변동.
 
 **교훈**: 실측 검증은 집계 통계(개수)만으로는 불충분하다 — 값의 분포/다양성까지 확인해야 이런 종류의 "전부 같은 잘못된 값" 결함을 잡을 수 있다. 이 교훈을 코드(가드 함수)와 테스트에 모두 반영했다.
+
+### 5.11 두 번째 후보 실행 — John Gill, Exposition of the NT Vol.1 (2026-09-15)
+
+사용자 지시 "Gill 진행해" → 후보 5개 중 Gill 착수. §1의 원안("구약 9권+신약 3~5권, 전체 매우 방대")대로 전체를 한 번에 진행하지 않고, 신약 Vol.1(1746 초판 3권 중 1권, 마태복음)로 파일럿 범위를 사용자와 재확인 후 진행 — Spurgeon과 동일한 "먼저 최소 단위로 검증" 원칙.
+
+- **원본**: archive.org `bim_eighteenth-century_an-exposition-of-the-new_1746_1` — hocr.html(189MB)+original.pdf(2.58GB, 사용자 승인 후 다운로드). 802쪽.
+- **Canonicalize**: 19,729문단, scripture_references 1,281건.
+- **verse-anchored 재시도 → §5.10 가드가 즉시 작동**: `anchor_book_prefix="Matthew"`로 시도 시 다양성 비율 0.08(<0.5)로 경고 발동. Spurgeon과 원인은 다름 — Gill은 실제로 "Matt. xiii. 29" 식 장:절 재인용을 잘 하지만, **18세기 장 s(ſ) 활자 + 심한 OCR 손상**으로 로마숫자 장 번호 인식이 자주 실패해 앞선 앵커(예: "Matthew 1:1")가 최대 244개 청크(143~644쪽, 사실상 책 나머지 전체)에 걸쳐 잘못 이어짐 — 스팟체크로 확인(비유·산상변모 등 서로 다른 장 내용인데 전부 같은 태그). §5.10에서 만든 가드가 새 저작·새 원인에도 정확히 작동함을 실증.
+- **처리**: 기본 `heading` 청커로 진행(4,670개 청크, dry-run 에러 0).
+- **M2 등록**: `BAP-COMM-GILL-ENT-VOL01`(Amendment B 근거, `content_genre=[commentary]`, `authority_class=reference`) — 원본 15개 레코드 diff 0줄, 신규 15줄만 추가 확인. `scripts/m2_source_registry_validator.py`의 `registration_quality_passed` baseline 11→12 갱신(Amendment B가 명시한 "매 등록마다 재확인" 절차 그대로).
+- **임베딩 결과**: 4,670개 중 4,659개 성공(99.8%), **11개 실패** — 원인: 일부 청크가 7,000자 이상으로 부풀어(단일 문단이 chunk_size 1,200자를 훨씬 초과 — OCR 손상이 심한 구간에서 문단 재구성(`reflow.py`)이 문단 경계를 놓쳐 거대한 단일 "문단"이 됨) bge-m3 컨텍스트 한도 초과. `ingest()`의 fail-soft 설계대로 개별 스킵 후 나머지 계속 처리(전체 실패 아님) — Fuller 등 기존 OCR 자료의 "일부 누락 가능" 공개 관례와 동일 성격의 결함.
+- **최종 확인**: `nae_ref_commentary_v1` = 6,637(Spurgeon 1,978 + Gill 4,659), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 전 과정 무변동. 전체 스위트 2,956 passed(환경 갭 2건 외 이상 없음).
+
+**미해결로 남긴 것**: 거대 단일문단 청크(7 사례 중 3건 표본 확인, 나머지 8건 미조사) 강제 분할 로직은 이번 범위 밖 — `chunk_canonical`의 기존(Smith 때부터의) 동작 그대로이며, 발생 빈도(0.24%)가 낮아 별도 수정 없이 fail-soft로 수용.
 
 ---
 

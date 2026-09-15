@@ -82,9 +82,14 @@ class TestBridgeQueryCandidateContent:
         monkeypatch.setattr(adapter, "_is_nae_pd_enabled", lambda: True, raising=False)
         monkeypatch.setattr(adapter, "search", lambda *a, **k: [_hit(LONG_TEXT)])
 
+        # bridge_query() now builds its own `ollama.Client(timeout=...)` per
+        # call (client-level timeout, not the module-level
+        # ollama.embeddings() convenience function) — patch the Client
+        # constructor itself so that call returns the fake, instead of a
+        # since-removed module-level `ollama_client` name.
         fake_ollama = type("O", (), {})()
         fake_ollama.embeddings = lambda **kw: {"embedding": [0.0] * 1024}
-        monkeypatch.setattr(adapter, "ollama_client", fake_ollama, raising=False)
+        monkeypatch.setattr(adapter.ollama, "Client", lambda *a, **k: fake_ollama)
 
         captured = {}
         original_build = core_retrieval.CitationBuilder.build_citations
