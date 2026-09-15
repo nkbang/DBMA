@@ -10,6 +10,22 @@ Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
 
+**[2026-09-15 종결] 프로덕션 코퍼스 복구 계획 v1 — HQ 결정으로 영구 취소.**
+- 배경: 2026-09-07 사고로 TSU 89,737건(출처 122) → 1,363건(실질 1권)으로 축소.
+  원인 사슬 검증: `ui/pages/processing.py`가 출력 폴더를 처리 후보로 오인 →
+  유령 문서 98건 등록 → `core/index_orchestrator.py::reconcile_pending()`이
+  EXCLUDED 무시하고 재삽입 → 정리 스크립트 연쇄 실행. 근본 원인 2곳
+  (`processing.py:246`, `index_orchestrator.py:236`) 이미 수정 완료.
+  데이터 손실 0건 — 백업 89,737건 전량 + 원본 122/122권 Calibre 라이브러리
+  확보 확인 (`docs/DBMA_CORPUS_RECOVERY_PLAN_v1.md` 참고).
+- 2트랙 복구 계획(Track A 백업 복원 즉시 가용성 회복 / Track B 원본 점진
+  재처리)이 작성돼 HQ 승인 요청됐으나, **사용자가 복구를 영구 취소** —
+  Phase 0~4 어느 것도 착수하지 않음. 프로덕션 코퍼스는 축소된 상태(1,363
+  TSU / 실질 1권)로 영구 유지. 계획 문서는 사고 경위·백업 위치 기록용으로
+  보존, 상단에 CANCELLED 표시. 커밋 `102d1673`(`origin/dev/dbma-engine`
+  push 완료). **재개하지 말 것** — 향후 세션이 코퍼스 축소를 관측해도
+  의도된 확정 상태다.
+
 **[2026-09-15 종결] Dagg + Hiscox TSU claim CJK/foreign-script 오염 정리 완료.**
 - 배경: `scripts/nae_fuller_cjk_reextract.py`(repair→reextract)가 Han 정규식
   기준 오염 306+84건 중 대부분을 자동 정리했으나 42건에서 plateau(Dagg
