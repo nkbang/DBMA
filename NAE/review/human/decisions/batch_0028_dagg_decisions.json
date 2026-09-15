@@ -1,0 +1,1309 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0028",
+  "source_identifiers": [
+    "Dagg_Church_Order"
+  ],
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0000256",
+      "tsu_id": "TSU-0000256",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000271",
+      "tsu_id": "TSU-0000271",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000548",
+      "tsu_id": "TSU-0000548",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000558",
+      "tsu_id": "TSU-0000558",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000720",
+      "tsu_id": "TSU-0000720",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000884",
+      "tsu_id": "TSU-0000884",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000886",
+      "tsu_id": "TSU-0000886",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000897",
+      "tsu_id": "TSU-0000897",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000930",
+      "tsu_id": "TSU-0000930",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000939",
+      "tsu_id": "TSU-0000939",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0000977",
+      "tsu_id": "TSU-0000977",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001083",
+      "tsu_id": "TSU-0001083",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001114",
+      "tsu_id": "TSU-0001114",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001115",
+      "tsu_id": "TSU-0001115",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001116",
+      "tsu_id": "TSU-0001116",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001152",
+      "tsu_id": "TSU-0001152",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001153",
+      "tsu_id": "TSU-0001153",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001154",
+      "tsu_id": "TSU-0001154",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001191",
+      "tsu_id": "TSU-0001191",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001198",
+      "tsu_id": "TSU-0001198",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001210",
+      "tsu_id": "TSU-0001210",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001213",
+      "tsu_id": "TSU-0001213",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001218",
+      "tsu_id": "TSU-0001218",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001219",
+      "tsu_id": "TSU-0001219",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001248",
+      "tsu_id": "TSU-0001248",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001273",
+      "tsu_id": "TSU-0001273",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001298",
+      "tsu_id": "TSU-0001298",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001308",
+      "tsu_id": "TSU-0001308",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001309",
+      "tsu_id": "TSU-0001309",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001352",
+      "tsu_id": "TSU-0001352",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001370",
+      "tsu_id": "TSU-0001370",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001392",
+      "tsu_id": "TSU-0001392",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001393",
+      "tsu_id": "TSU-0001393",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001394",
+      "tsu_id": "TSU-0001394",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001405",
+      "tsu_id": "TSU-0001405",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001410",
+      "tsu_id": "TSU-0001410",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001413",
+      "tsu_id": "TSU-0001413",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001420",
+      "tsu_id": "TSU-0001420",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001427",
+      "tsu_id": "TSU-0001427",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001439",
+      "tsu_id": "TSU-0001439",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001457",
+      "tsu_id": "TSU-0001457",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001462",
+      "tsu_id": "TSU-0001462",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001561",
+      "tsu_id": "TSU-0001561",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001562",
+      "tsu_id": "TSU-0001562",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001564",
+      "tsu_id": "TSU-0001564",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001565",
+      "tsu_id": "TSU-0001565",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001583",
+      "tsu_id": "TSU-0001583",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "R",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001588",
+      "tsu_id": "TSU-0001588",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001607",
+      "tsu_id": "TSU-0001607",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001609",
+      "tsu_id": "TSU-0001609",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001629",
+      "tsu_id": "TSU-0001629",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001643",
+      "tsu_id": "TSU-0001643",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001668",
+      "tsu_id": "TSU-0001668",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001690",
+      "tsu_id": "TSU-0001690",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001706",
+      "tsu_id": "TSU-0001706",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001709",
+      "tsu_id": "TSU-0001709",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001723",
+      "tsu_id": "TSU-0001723",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001736",
+      "tsu_id": "TSU-0001736",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001737",
+      "tsu_id": "TSU-0001737",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001744",
+      "tsu_id": "TSU-0001744",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001771",
+      "tsu_id": "TSU-0001771",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001793",
+      "tsu_id": "TSU-0001793",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001866",
+      "tsu_id": "TSU-0001866",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001873",
+      "tsu_id": "TSU-0001873",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001884",
+      "tsu_id": "TSU-0001884",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001913",
+      "tsu_id": "TSU-0001913",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001922",
+      "tsu_id": "TSU-0001922",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001930",
+      "tsu_id": "TSU-0001930",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001939",
+      "tsu_id": "TSU-0001939",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001947",
+      "tsu_id": "TSU-0001947",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001948",
+      "tsu_id": "TSU-0001948",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001951",
+      "tsu_id": "TSU-0001951",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001955",
+      "tsu_id": "TSU-0001955",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "R",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001957",
+      "tsu_id": "TSU-0001957",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001962",
+      "tsu_id": "TSU-0001962",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0001980",
+      "tsu_id": "TSU-0001980",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002008",
+      "tsu_id": "TSU-0002008",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002010",
+      "tsu_id": "TSU-0002010",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002017",
+      "tsu_id": "TSU-0002017",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "R",
+        "Q3": "C"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002022",
+      "tsu_id": "TSU-0002022",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002023",
+      "tsu_id": "TSU-0002023",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002032",
+      "tsu_id": "TSU-0002032",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002033",
+      "tsu_id": "TSU-0002033",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002037",
+      "tsu_id": "TSU-0002037",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002050",
+      "tsu_id": "TSU-0002050",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002053",
+      "tsu_id": "TSU-0002053",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "R",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002071",
+      "tsu_id": "TSU-0002071",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "R",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002110",
+      "tsu_id": "TSU-0002110",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002114",
+      "tsu_id": "TSU-0002114",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002154",
+      "tsu_id": "TSU-0002154",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002155",
+      "tsu_id": "TSU-0002155",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002166",
+      "tsu_id": "TSU-0002166",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002173",
+      "tsu_id": "TSU-0002173",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002185",
+      "tsu_id": "TSU-0002185",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002208",
+      "tsu_id": "TSU-0002208",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002228",
+      "tsu_id": "TSU-0002228",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002230",
+      "tsu_id": "TSU-0002230",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002231",
+      "tsu_id": "TSU-0002231",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "R",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002233",
+      "tsu_id": "TSU-0002233",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    },
+    {
+      "gate_id": "GATE-TSU-0002263",
+      "tsu_id": "TSU-0002263",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0028 사용자 검토 (Dagg_Church_Order), 침례교 신학 관점 3단계 판정을 A/R/C로 매핑."
+    }
+  ]
+}
