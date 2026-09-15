@@ -76497,7 +76497,7 @@
     "paragraph": 798,
     "sentence": 2,
     "source_text": "We have Scripture analogy for saying, that the subjects receive the kingdom, enter into the kingdom, inherit the kingdom, and have part in the kingdom; but none for saying that they compose or constitute the kingdom.",
-    "claim": "왕국은 주로 그 국민으로 구성되지 않으며, 왕, 법률, 특권 및 즐거움도 포함한다.",
+    "claim": "성경적 유비로는 백성들이 나라를 받고, 나라에 들어가고, 나라를 상속받고, 나라에 참여한다고 말할 근거는 있지만, 그들이 나라를 구성하거나 이룬다고 말할 근거는 전혀 없다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -76526,8 +76526,13 @@
       "resolved_at": "2026-08-08T18:04:32.156239+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "왕국은 주로 그臣民으로 구성되지 않으며, 왕, 법률, 특권 및 즐거움도 포함한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "왕국은 주로 그 국민으로 구성되지 않으며, 왕, 법률, 특권 및 즐거움도 포함한다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001562",
@@ -86869,7 +86874,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -86898,6 +86903,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "user-flagged: \"전해졌으며\"(transferred) should be \"반복되었다\"(repeated), matching source_text \"was afterwards repeated to Isaac...and to Jacob\"."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
     }
   },
   {
@@ -105754,7 +105765,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -105778,7 +105789,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "개종자 세례가 행해졌을 때,それは 모든 가구에 적용되었다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002156",
@@ -111398,7 +111415,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -111422,7 +111439,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성찬례와 관련된 지시도洗足례의 경우처럼 문자적으로 이해할 필요는 없다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002271",
@@ -117139,7 +117162,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -117163,7 +117186,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례와 성만찬은 서로 다른 관점에서 동일한 기독교의伟大 사실들을 나타내므로, 이 두 가지 예식의 순서를 결정하는 데 있어서 그 객관적인 의미로부터 유효한 논증을 끌어올 수 없다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002388",
@@ -117627,7 +117656,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -117656,6 +117685,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
     }
   },
   {
@@ -117677,7 +117712,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -117701,7 +117736,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성찬의 올바른 참여가 구원의 수단이고, 세례가 이에 필요한 경우, 엄격한 성찬을坚持하는 것이 형제애의 최고 прояв이다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002399",
@@ -118956,7 +118997,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -118980,7 +119021,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "로마서 14장 1-3절의寬容의 법칙에 따라, 하나님께서 받아들이는 침례전례주의자 형제를 교제에서 배척하는 것은 잘못이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002425",
@@ -119834,7 +119881,7 @@
     "paragraph": 1168,
     "sentence": 1,
     "source_text": "But toleration implies wrong; and, if mixed communion be defended on the plea of toleration, the very defence admits that there is wrong somewhere.",
-    "claim": "용서는 잘못을 의미하며, 공동체를 위한 용서의 변호는 어딘가에 잘못이 있음을 인정한다",
+    "claim": "관용은 잘못이 있음을 함의하며, 혼합 성찬을 관용의 명분으로 옹호한다면 그 옹호 자체가 어딘가에 잘못이 있음을 인정하는 셈이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -119863,8 +119910,13 @@
       "resolved_at": "2026-08-08T18:04:32.159404+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "宽容은 잘못을 의미하며, 공동체를 위한宽容의 변호는 어딘가에 잘못이 있음을 인정한다",
-    "cjk_status": "repaired"
+    "claim_raw": "용서는 잘못을 의미하며, 공동체를 위한 용서의 변호는 어딘가에 잘못이 있음을 인정한다",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002443",
@@ -123166,7 +123218,7 @@
     "paragraph": 1187,
     "sentence": 1,
     "source_text": "If they have aught to object, let it be at that in which we differ from them, and not at that in which we agree.",
-    "claim": "비독실교파는 우리와 공통의 원칙을 가지고 있지만 그들의 방식으로 실천한다는 점에서 우리의 엄격한 교제에 대해 불평할 때, 그들은 우리가 다른 점에서 이의를 제기해야지 동의하는 점에서이 아니라.",
+    "claim": "유아세례파가 우리와 공통된 원칙을 가지고 있으면서도 그들의 방식대로 실천한다는 이유로 우리의 엄격한 성찬 교제에 대해 불평한다면, 그들은 우리가 동의하는 점이 아니라 서로 다른 점에 대해 이의를 제기해야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -123195,8 +123247,13 @@
       "resolved_at": "2026-08-08T18:04:32.159645+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "비독실교파는 우리와 공통의 원칙을 가지고 있지만 그들의 방식으로 실천한다는 점에서 우리의 엄격한 교제에 대해 불평할 때, 그들은 우리가 다른 점에서異議를 제기해야지 동의하는 점에서이 아니라.",
-    "cjk_status": "repaired"
+    "claim_raw": "비독실교파는 우리와 공통의 원칙을 가지고 있지만 그들의 방식으로 실천한다는 점에서 우리의 엄격한 교제에 대해 불평할 때, 그들은 우리가 다른 점에서 이의를 제기해야지 동의하는 점에서이 아니라.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002511",
@@ -123799,7 +123856,7 @@
     "paragraph": 1194,
     "sentence": 2,
     "source_text": "If, on this memorable night, when he partook of the last passover with his disciples, and when he instituted the breaking of bread as the memorial of “Christ, our Passover, sacrificed for us,” he designed to institute the washing of feet as another religious rite, till his second coming, together with baptism and the breaking of bread; then, this institution should be observed with punctilious carefulness ; and no plea should be admitted from the neglect of it, to justify",
-    "claim": "예수님이 제자들과 함께 마지막 유월절을 지내고 빵을 떼는 것을 기억의 표징으로 정한 그 유명한 밤에, 발을 씻기는 것도 예배의 의식으로서 부활까지 지키라고 명했다면, 이 규칙을 매우 조심스럽게 지켜야 하며, 이를 소홀히 하는데 대한 변명을 받아들이지 말아야 한다.",
+    "claim": "예수님이 제자들과 마지막 유월절을 나누시고 '우리를 위해 희생되신 유월절 되신 그리스도'를 기념하는 떡을 떼는 예식을 제정하신 그 기념할 만한 밤에, 만일 그가 침례 및 떡을 뗌과 더불어 발 씻기는 것도 그의 재림 때까지 지킬 또 하나의 종교적 의식으로 제정하고자 하셨다면, 이 제도는 세심한 주의로 지켜져야 하며 이를 소홀히 한 것에 대한 어떤 변명도 받아들여져서는 안 된다.",
     "doctrine": "Lord's Supper",
     "scriptures": [],
     "citations": [],
@@ -123828,8 +123885,13 @@
       "resolved_at": "2026-08-08T18:04:32.159689+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "예수님이 제자들과 함께 마지막 유월절을 지내고 빵을 떼는 것을 기억의 표징으로 정한 그 유명한 밤에, 발을 씻기는 것도 예배의 의식으로서 부활까지 지키라고 명했다면, 이 규례를 매우谨慎하게 지켜야 하며, 이를 소홀히 하는데 대한 변명을 받아들이지 말아야 한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "예수님이 제자들과 함께 마지막 유월절을 지내고 빵을 떼는 것을 기억의 표징으로 정한 그 유명한 밤에, 발을 씻기는 것도 예배의 의식으로서 부활까지 지키라고 명했다면, 이 규칙을 매우 조심스럽게 지켜야 하며, 이를 소홀히 하는데 대한 변명을 받아들이지 말아야 한다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002524",
@@ -124187,7 +124249,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -124211,7 +124273,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예수님은 베드로에게 이미 온몸을洗한 사람은 발만 씻으면 된다고 말씀하셨다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002532",
@@ -125116,7 +125184,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -125140,7 +125208,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "구원에 관한伟大한 교리는 세기들의 변천과 이단의 소동을 넘어서 오랜 시간 동안 큰 소리로 증거된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002551",
@@ -126953,7 +127027,7 @@
     "paragraph": 1236,
     "sentence": 1,
     "source_text": "The ceremonial law was given to them, as the Congregation of the Lord ; and the judicial law was given to them as the Nation of Israel.",
-    "claim": "이스라엘 백성에게 주어진 법은 예배와 판단에 관한 두 가지로 나뉘며, 각각 이스라엘의 모인 사람들과 국가로서의 관계에서 주어졌다.",
+    "claim": "의식법은 그들이 주의 회중으로서 주어졌고, 재판법은 이스라엘 국가로서 그들에게 주어졌다 — 반면 십계명은 그들이 사람으로서 하나님과 서로에 대해 갖는 관계에 맞게 주어졌다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -126982,8 +127056,13 @@
       "resolved_at": "2026-08-08T18:04:32.159915+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "이스라엘 백성에게 주어진 법은 예배와 심판에 관한 두 가지로 나뉘며, 각각 이스라엘의 회衆과 국가로서의 관계에서 주어졌다.",
-    "cjk_status": "repaired"
+    "claim_raw": "이스라엘 백성에게 주어진 법은 예배와 판단에 관한 두 가지로 나뉘며, 각각 이스라엘의 모인 사람들과 국가로서의 관계에서 주어졌다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002589",
@@ -132071,7 +132150,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -132100,6 +132179,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
     }
   },
   {
@@ -135457,7 +135542,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -135486,6 +135571,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
     }
   },
   {
@@ -139115,7 +139206,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -139139,7 +139230,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 은혜는 일반적인 수단을 통해 작용하며, 성령은 말씀을 통해 освещ과 성화를 이루어내므로, 목회를 위한 더 높은 영적 깨달음과 성화는 같은 수단이 더 효과적으로 또는 풍성하게祝福되어 일어난다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002838",
@@ -144208,7 +144305,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -144232,7 +144329,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "사도들이 任命한 집사들의 임명은 효율성을 위한 결정이었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002942",
@@ -144498,7 +144601,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -144522,7 +144625,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예수님의 사도나 70人の 제자들은 의식적으로 임직 받지 않았다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0002948",
@@ -147777,7 +147886,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -147802,7 +147911,12 @@
     },
     "claim_raw": "교회에서 장로를 선택하여 세속적인 일에 봉사하는 것이 적절하다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -151944,7 +152058,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -151973,6 +152087,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
     }
   },
   {
@@ -152584,7 +152704,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -152613,6 +152733,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
     }
   },
   {
@@ -154903,7 +155029,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -154927,7 +155053,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 말씀을 가르치고 본人的 삶으로 인도하는 목자는 성도들에게 신뢰와 사랑을 받으며, 그들의 영적 성장을 도울 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003160",
@@ -155048,7 +155180,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -155072,7 +155204,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "형제의 사랑은 새로워진 마음에서 tự發적으로流れ出て共通の主님께仕えることにおいて 그들을 결합시킵니다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003163",
@@ -156077,7 +156215,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -156101,7 +156239,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 교회에서는 성령 안에서 행해지며 신앙과 질서와紀律이 올바른 상태가 어느 정도 유지되었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003184",
@@ -156469,7 +156613,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -156493,7 +156637,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회가 의무를 다할 때, 한 교회에서 다른 교회로牧師나 회원을 소개하는 추천서는 아폴로에게 주어진 추천서와 같이 그들을 다른 교회들의 사랑과 신뢰 속으로 소개할 것이지만, 부적합한 사람에 대한 추천은 그의 진정한 성격을 아는 사람들의 양심을 결코 구속할 수 없다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003192",
@@ -157733,7 +157883,7 @@
     "paragraph": 1482,
     "sentence": 3,
     "source_text": "So understood, the injunction furnishes strongly corroborative proof, that imposition of hands was the proper ceremony for setting apart to the sacred office.",
-    "claim": "임직을 위한 수식의 사용에 대한 지침은 성직자 임직을 위한 손 놓음이 적절한 의식이었다는 것을 강력하게 증명하는 증거를 제공한다.",
+    "claim": "의미 있는 한 형식(의식)의 사용을 지시하는 것으로 이해할 때, 이 명령은 안수가 성직 임직을 위한 합당한 의식이었음을 강하게 뒷받침하는 증거를 제공한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -157762,8 +157912,13 @@
       "resolved_at": "2026-08-08T18:04:32.162600+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "임직을 위한 수식의 사용에 대한 지침은 성직자 임직을 위한 손 놓음이 적절한 의식이었다는 것을 강력하게裏付ける 증거를 제공한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "임직을 위한 수식의 사용에 대한 지침은 성직자 임직을 위한 손 놓음이 적절한 의식이었다는 것을 강력하게 증명하는 증거를 제공한다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0003218",
@@ -162443,7 +162598,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -162467,7 +162622,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "우리는 다른 종교의 교수들과 비교했을 때 우리의 믿음과 외적인宗教實踐에서 차이점이 있기 때문에 이러한 외적인 특징들에 너무 많은 중요성을 부여하는 유혹에 항상 시달린다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003314",
@@ -162686,7 +162847,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -162710,7 +162871,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "외형上的 경건함을 지닌 사람들은 도덕적 의무의 중요한 문제들을 무시할 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003319",
@@ -163919,7 +164086,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -163943,7 +164110,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "개인은 성경을 기준으로 하여 자신의 판단과 양심을 자유롭게 행사하여 立場를 취해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003344",
@@ -163964,7 +164137,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -163988,7 +164161,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성도들은 성경의 가르침에 따라 자신의 판단과 양심을 사용하여 立場를 정해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0031 human review."
+    }
   },
   {
     "id": "TSU-0003345",
@@ -165469,7 +165648,7 @@
     "paragraph": 1558,
     "sentence": 5,
     "source_text": "And in the first Common Prayer Book of King Edward VI., the priest’s general order is to dip it in water.” Here we see that it was not on account of climate any change grew up; the people in the extreme north were the last to surrender the original mode; and not even the Pope’s authority could compel them to strike out of their Missal the form received in the simplicity of their early reception of Christianity.",
-    "claim": "영국에서 세례의 방식이 침례에서 물 뿌리기(affusion)로 바뀐 것은 기후나 교황의 권위 때문이 아니라 부모들의 자녀를 보호하려는 소원으로 인해 발생했다.",
+    "claim": "영국에서 침수 방식이 바뀐 것은 기후 때문이 아니었다 — 극지방 사람들이 원래 방식을 가장 늦게 버렸고, 교황의 권위로도 그들이 초기 순전한 신앙 때 받아들인 관습을 미사경본에서 지우도록 강요할 수 없었다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -165498,8 +165677,13 @@
       "resolved_at": "2026-08-08T18:04:32.163186+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "영국에서 세례의 방식이 침례에서 물 뿌リ기(affusion)로 바뀐 것은 기후나 교황의 권위 때문이 아니라 부모들의 자녀를 보호하려는 жел로 인해 발생했다.",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "영국에서 세례의 방식이 침례에서 물 뿌리기(affusion)로 바뀐 것은 기후나 교황의 권위 때문이 아니라 부모들의 자녀를 보호하려는 소원으로 인해 발생했다.",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0003376",
