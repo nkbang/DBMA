@@ -66846,13 +66846,13 @@
     "paragraph": 731,
     "sentence": 2,
     "source_text": "Some of them may claim to be Tue CHURCH ; but most of them have more modest pretensions, and claim to be only branches of the church.",
-    "claim": "일부 교회는 진정한 교회라고 주장할 수 있지만, 대부분은 겸손한 주장을 가지고 있으며 오직 교회의 한 가지 지지로 될 뿐이라고 주장한다.",
+    "claim": "일부 교회는 자신이 참된 교회라고 주장할 수 있지만, 대부분은 더 겸손하게 자신을 교회의 한 지파(branch)에 불과하다고 주장한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -66875,13 +66875,13 @@
       "resolved_at": "2026-08-08T18:04:32.155556+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "일부 교회는 진정한 교회라고 주장할 수 있지만, 대부분은 겸손한 주장을 가지고 있으며 오직 교회의 한 가지 지支로 될 뿐이라고 주장한다.",
+    "claim_raw": "일부 교회는 진정한 교회라고 주장할 수 있지만, 대부분은 겸손한 주장을 가지고 있으며 오직 교회의 한 가지 지지로 될 뿐이라고 주장한다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0026 (Dagg_Church_Order) human review Q1/Q2/Q3, context-enriched."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0026 human review flagged Q1 fidelity failure (rejected); claim rewritten against source_text, requeued for fresh human review."
     }
   },
   {
@@ -68549,13 +68549,13 @@
     "paragraph": 736,
     "sentence": 8,
     "source_text": "The truth and spirit of Christianity are hateful to the world; and without external organization, have been sufficiently visible to awaken the opposition and rage of persecutors.",
-    "claim": "기독교의 진리와 영은 세상을 싫어하는 것으로 여겨지며, 외부 조직 없이도 박해자들의 반대와 분노를 일으키기에 충분하다.",
+    "claim": "기독교의 진리와 정신은 세상에게 미움을 받으며, 외적 조직이 없이도 박해자들의 반대와 분노를 불러일으킬 만큼 충분히 드러났다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -68578,13 +68578,13 @@
       "resolved_at": "2026-08-08T18:04:32.155681+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "기독교의 진리와 영은 세상을憎らしい 것으로 여겨지며, 외부 조직 없이도 박해자들의 반대와 분노를 일으키기에 충분하다.",
+    "claim_raw": "기독교의 진리와 영은 세상을 싫어하는 것으로 여겨지며, 외부 조직 없이도 박해자들의 반대와 분노를 일으키기에 충분하다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0026 (Dagg_Church_Order) human review Q1/Q2/Q3, context-enriched."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0026 human review flagged Q1 fidelity failure (rejected); claim rewritten against source_text, requeued for fresh human review."
     }
   },
   {
@@ -70193,13 +70193,13 @@
     "paragraph": 746,
     "sentence": 3,
     "source_text": "They are not the visible church catholic of theologians.",
-    "claim": "지구적 교회는 신학자들의 가시적인 세계적인 교회와 다르다.",
+    "claim": "각 지역교회에는 거짓 신자가 포함될 수 있으므로, 지역교회들의 총체는 신학자들이 말하는 가시적 보편교회가 아니다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -70222,13 +70222,13 @@
       "resolved_at": "2026-08-08T18:04:32.155796+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "지구적 교회는 신학자들의 가시적인 普世교회와 다르다.",
+    "claim_raw": "지구적 교회는 신학자들의 가시적인 세계적인 교회와 다르다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0026 (Dagg_Church_Order) human review Q1/Q2/Q3, context-enriched."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0026 human review flagged Q1 fidelity failure (rejected); claim rewritten against source_text, requeued for fresh human review."
     }
   },
   {
@@ -71318,13 +71318,13 @@
     "paragraph": 756,
     "sentence": 4,
     "source_text": "The Scriptures represent a gathering of all things under Christ, both in heaven and on earth,‘ at the time of his exaltation in human nature to supreme dominion.",
-    "claim": "성경은 모든 것이 인간 본질의 지상과 하늘에서 그리스도 아래로 모이는 것을 나타낸다.",
+    "claim": "성경은 그리스도께서 인간 본성으로 지극히 높은 통치권에 오르실 때, 하늘과 땅의 모든 것이 그리스도 아래로 모이는 것을 나타낸다고 말한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -71347,13 +71347,13 @@
       "resolved_at": "2026-08-08T18:04:32.155890+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "성경은 모든 것이 인간 본性的 지상과 하늘에서 그리스도 아래로 모이는 것을 나타낸다.",
+    "claim_raw": "성경은 모든 것이 인간 본질의 지상과 하늘에서 그리스도 아래로 모이는 것을 나타낸다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0026 (Dagg_Church_Order) human review Q1/Q2/Q3, context-enriched."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0026 human review flagged Q1 fidelity failure (rejected); claim rewritten against source_text, requeued for fresh human review."
     }
   },
   {
@@ -78399,13 +78399,13 @@
     "paragraph": 815,
     "sentence": 8,
     "source_text": "‘True criticism will regard the analogy of the cases rather than their number; and if the word has different meanings, will prefer that which is supported by an analogy so remarkable and complete..",
-    "claim": "진정한 비평은 사례의 유사성을 숫자보다 고려하며, 단어가 다른 의미를 가질 경우 그러한 유사성이 지원하는 의미를 선호한다.",
+    "claim": "이 견해에 따르면 진정한 비평은 사례의 수보다 유사성을 고려해야 하며 단어의 의미가 다를 경우 그 유사성이 뒷받침하는 의미를 선호해야 한다고 하지만, 저자는 그 단어의 의미가 모든 경우에 동일하다고 반박한다.",
     "doctrine": "Scripture / Authority",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -78428,13 +78428,13 @@
       "resolved_at": "2026-08-08T18:04:32.156399+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "真正한 비평은 사례의 유사성을 숫자보다 고려하며, 단어가 다른 의미를 가질 경우 그러한 유사성이 지원하는 의미를 선호한다.",
+    "claim_raw": "진정한 비평은 사례의 유사성을 숫자보다 고려하며, 단어가 다른 의미를 가질 경우 그러한 유사성이 지원하는 의미를 선호한다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0026 (Dagg_Church_Order) human review Q1/Q2/Q3, context-enriched."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0026 human review flagged Q1 fidelity failure (rejected); claim rewritten against source_text, requeued for fresh human review."
     }
   },
   {
@@ -80157,13 +80157,13 @@
     "paragraph": 825,
     "sentence": 3,
     "source_text": "If they are members of a universal church, it must be the visible church catholic.",
-    "claim": "미구원받은 영혼의 아이들은 보이는 보편교회에 속한다.",
+    "claim": "만일 그들이 보편교회의 회원이라면, 그것은 반드시 가시적 보편교회여야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -80186,13 +80186,13 @@
       "resolved_at": "2026-08-08T18:04:32.156550+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "미구원받은 영혼의 아이들은 보이는 普遍교회에 속한다.",
+    "claim_raw": "미구원받은 영혼의 아이들은 보이는 보편교회에 속한다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0026 (Dagg_Church_Order) human review Q1/Q2/Q3, context-enriched."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0026 human review flagged Q1 fidelity failure (rejected); claim rewritten against source_text, requeued for fresh human review."
     }
   },
   {
