@@ -9199,13 +9199,13 @@
     "paragraph": 185,
     "sentence": 3,
     "source_text": "He may save one in the voyage that had better be immersed in the sea.” 17.",
-    "claim": "하나님은 바다에서 한 사람을 구원하실 수 있다.",
+    "claim": "항해 중에, 차라리 바다에 잠기는 편이 나았을 사람을 구할 수도 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -9228,13 +9228,13 @@
       "resolved_at": "2026-08-08T18:04:32.151301+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "하나님은 바다에서一个人을 구원하실 수 있다.",
+    "claim_raw": "하나님은 바다에서 한 사람을 구원하실 수 있다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
@@ -50193,13 +50193,13 @@
     "paragraph": 597,
     "sentence": 1,
     "source_text": "On the supposition that church is here a generic term, the rule determines the sense to be, that each individual church is built on the rock, and each individual church has the promise that the gates of hell shall never prevail against it.",
-    "claim": "교회는 일반적인 용어로 가정할 때, 각 개별 교회는 바위 위에 세워지며, 지옥의 문이 그것들에게 결코 승리하지 못할 것이라는 약속을 갖는다.",
+    "claim": "'교회'가 여기서 일반명사라고 가정할 경우, 그 해석 규칙에 따르면 각 개별 교회가 반석 위에 세워지고 음부의 권세가 결코 이기지 못한다는 약속을 갖는다는 뜻이 된다 — 다만 저자는 이것이 본문의 실제 의미일 수 없다고 곧이어 밝힌다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -50222,13 +50222,13 @@
       "resolved_at": "2026-08-08T18:04:32.154343+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "교회는 일반적인 용어로 가정할 때, 각 개별 교회는 바위 위에 세워지며, 지옥의 문이 그것們에게 결코 승리하지 못할 것이라는 약속을 갖는다.",
+    "claim_raw": "교회는 일반적인 용어로 가정할 때, 각 개별 교회는 바위 위에 세워지며, 지옥의 문이 그것들에게 결코 승리하지 못할 것이라는 약속을 갖는다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
@@ -56739,13 +56739,13 @@
     "paragraph": 651,
     "sentence": 6,
     "source_text": "Nor was it his design to perfect the instituted churches, and present them to himself as a glorious family of churches.",
-    "claim": "그리스도의 설계는 교회를 완전하게 하거나 교회를 영광의 가족으로 자신에게 드리는 것이 아니었다.",
+    "claim": "그리스도께서 사랑과 고난을 쏟으신 목적은 교회 제도(여러 지역교회들의 집합)를 완성하시거나 그것을 '영광스러운 여러 교회의 가족'으로 자신에게 드리시려는 것이 아니었다 — 그가 드리고자 하신 대상은 하나의 교회이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -56768,13 +56768,13 @@
       "resolved_at": "2026-08-08T18:04:32.154808+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "그리스도의 설계는 교회를 완전하게 하거나 교회를 영광의 가족으로 자신에게献上하는 것이 아니었다.",
+    "claim_raw": "그리스도의 설계는 교회를 완전하게 하거나 교회를 영광의 가족으로 자신에게 드리는 것이 아니었다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
@@ -75888,13 +75888,13 @@
     "paragraph": 793,
     "sentence": 0,
     "source_text": "Argument 2.—The King of Zion has expressly declared, in Matt. xix. 14, that the privileges of his kingdom belong to infants; and, among these privileges, that of church-membership must be included.",
-    "claim": "시온의 왕은 마태복음 19:14에서 아이들의 특권이 그의 나라에 속한다고 선언했으며, 이 특권에는 교회 회원 자격도 포함된다.",
+    "claim": "(유아 교회 회원권을 옹호하는) 두 번째 논증에 따르면, 시온의 왕이 마태복음 19:14에서 그의 나라의 특권이 유아에게 속한다고 선언하셨으며, 그 특권에는 교회 회원 자격도 포함되어야 한다고 주장된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -75917,13 +75917,13 @@
       "resolved_at": "2026-08-08T18:04:32.156208+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "시온의 왕은 마태복음 19:14에서 아기들의 특권이 그의 나라에 속한다고 선언했으며, 이 특권에는 교회 회원資格도 포함된다.",
+    "claim_raw": "시온의 왕은 마태복음 19:14에서 아이들의 특권이 그의 나라에 속한다고 선언했으며, 이 특권에는 교회 회원 자격도 포함된다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
@@ -77877,13 +77877,13 @@
     "paragraph": 810,
     "sentence": 3,
     "source_text": "Hence, it is alleged that an interpretation which excludes the children present from the import of the word “such,” is inadmissible.",
-    "claim": "어린이를 제외하는 그런 해석은 받아들여질 수 없다.",
+    "claim": "따라서 '이런(such)'이라는 단어의 의미에서 현장에 있던 어린이들을 제외하는 해석은 받아들일 수 없다고 주장된다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -77906,13 +77906,13 @@
       "resolved_at": "2026-08-08T18:04:32.156350+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "어린이를 제외하는 '这样的' 해석은 받아들여질 수 없다.",
+    "claim_raw": "어린이를 제외하는 그런 해석은 받아들여질 수 없다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
@@ -81646,13 +81646,13 @@
     "paragraph": 832,
     "sentence": 4,
     "source_text": "It was the Hebrew congregation, continued under the new dispensation ; and, as children were included with their parents, in the former dispensation, the right of membership cannot now be denied to them.",
-    "claim": "교회는 구약의 회중이 새로운 은혜 아래 계속된 것이며, 어린이들은 부모와 함께 포함되어 있었으므로 현재 회원 자격을 거부할 수 없다.",
+    "claim": "네 번째 논증에 따르면, 교회는 구약의 히브리 회중이 새 언약 아래 계속된 것이므로 새로운 조직이 아니며, 구약에서 자녀가 부모와 함께 포함되었던 것처럼 지금도 그들의 회원 자격을 거부할 수 없다고 주장된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -81675,13 +81675,13 @@
       "resolved_at": "2026-08-08T18:04:32.156644+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "교회는 구약의 회중이 새로운 은혜 아래 계속된 것であり, 어린이들은 부모와 함께 포함되어 있었으므로 현재 회원 자격을 거부할 수 없다.",
+    "claim_raw": "교회는 구약의 회중이 새로운 은혜 아래 계속된 것이며, 어린이들은 부모와 함께 포함되어 있었으므로 현재 회원 자격을 거부할 수 없다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
@@ -81697,13 +81697,13 @@
     "paragraph": 832,
     "sentence": 5,
     "source_text": "The identity of the church under both dispensations is further apparent in the fact, that the names Zion and Jerusalem, derived from the places where the Old Testament worshippers assembled, are given to the church of the New Testament.",
-    "claim": "구약과 신약 아래의 교회는 동일하다.",
+    "claim": "네 번째 논증은 계속해서, 구약과 신약 시대 예배자들이 모였던 장소에서 유래한 '시온'과 '예루살렘'이라는 이름이 신약의 교회에도 사용된다는 점에서 두 시대 교회의 동일성이 더욱 분명하다고 주장한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -81726,13 +81726,13 @@
       "resolved_at": "2026-08-08T18:04:32.156647+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "구약과 신약下的 교회는 동일하다.",
+    "claim_raw": "구약과 신약 아래의 교회는 동일하다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
@@ -85948,13 +85948,13 @@
     "paragraph": 871,
     "sentence": 1,
     "source_text": "In this covenant, children have always been included With their parents; and their right to its privileges was recognised by Peter, on the day of Pentecost, in these words: “ The promise is to you and your children.” That believing gentiles were received into the same covenant which belonged to national Israel, is taught by these words of Christ: “ The kingdom of God shall be taken from you, and given to a nation bringing forth the fruits thereof.” 1 And still more clearly by Paul, under the figure of the good olive-tree, of which the people of Israel were the natural branches; but into which believing gentiles were grafted, so as to partake of the root and fatness of the olive-tree.",
-    "claim": "아이들은 부모와 함께 언약에 포함되어 왔으며, 그들의 특권에 대한 권리는 베드로가 오순절 날에 말한 이 말씀으로 인식되었다: \"약속은 너와 네 자녀에게로다.",
+    "claim": "다섯 번째 논증(아브라함 언약)은 이어서, 이 언약 안에 자녀들이 항상 부모와 함께 포함되어 왔으며 오순절에 베드로가 \"약속은 너와 네 자녀에게로다\"라고 말함으로써 그 특권에 대한 권리가 인정되었다고 주장하고, 믿는 이방인들도 감람나무 비유(롬 11장)를 통해 이스라엘에게 속했던 동일한 언약 안으로 접붙여졌다고 말한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85977,13 +85977,13 @@
       "resolved_at": "2026-08-08T18:04:32.156953+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "子供들은 부모와 함께 언약에 포함되어 왔으며, 그들의 특권에 대한 권리는 베드로가 오순절 날에 말한 이 말씀으로 인식되었다: \"약속은 너와 네 자녀에게로다.\"",
+    "claim_raw": "아이들은 부모와 함께 언약에 포함되어 왔으며, 그들의 특권에 대한 권리는 베드로가 오순절 날에 말한 이 말씀으로 인식되었다: \"약속은 너와 네 자녀에게로다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0027 human review flagged Q1/Q2 problem (rejected); claim rewritten against source_text and surrounding argument framing (Argument N / hypothesis markers), requeued for fresh human review."
     }
   },
   {
