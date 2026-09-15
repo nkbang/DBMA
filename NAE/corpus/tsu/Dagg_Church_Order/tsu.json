@@ -119142,7 +119142,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -119166,7 +119166,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "순수하고 더럽혀지지 않은 종교를 실천하는 사람들은 경계심과 기도를 통해 세상을 향한 영향을 받지 않도록 자신을 지켜야 하며,同時에 고아와 과부를 방문하고 모든 사람에게善을 행해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002434",
@@ -119432,7 +119438,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -119456,7 +119462,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 이름으로 말하는 자의 지위나 권威에 대한 믿음이 강할수록, 그 사람이 제안하는 행동이 옳은지 여부를 더 엄밀하게 조사해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002440",
@@ -120890,7 +120902,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -120914,7 +120926,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 구성원들이 영적 본능에 따라 작은 사회를 형성할 경우, 그들은 도덕적 우수성만으로誰가 받아들여져야 하는지 결정할 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002470",
@@ -121033,7 +121051,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -121057,7 +121075,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "개인으로서 각人は 완전한 순종의 모범을 보이기 위해 노력해야 하며, 개인의 책임에 따라 최선을 다해야 한다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002473",
@@ -121711,7 +121735,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -121735,7 +121759,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "Strict communion의 지지자들은 일반적으로 유아세례파 목사들을 자신의講壇에서 설교하도록 초대한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002487",
@@ -121756,7 +121786,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -121780,7 +121810,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례 교인들만이 성찬에 참여할 수 있다는 주장을 주장하는 사람들이 페도세례파 목사들을 자신의講壇에서 설교하도록 초청하면서 동시에 그들에게 主의 만찬에 참여하는 것을 거부하는 것은 명백한 모순이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002488",
@@ -122434,7 +122470,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -122458,7 +122494,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "严格的圣餐实践被基督教社区的大部分视为冒犯行为",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002502",
@@ -123790,7 +123832,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -123814,7 +123856,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "여행者の 발을 씻기는 것은 단순한 의식이 아니라 필요한 용도에 의해 유지되어야 하는 유익한 선행이다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002530",
@@ -124166,7 +124214,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -124190,7 +124238,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예수님은 필요한 용도에 대한 선행으로 행하셨으며, 사도들에게 서로에게 하듯이 자신이 한 대로 行하시도록 예를 보이셨다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0002538",
@@ -153328,7 +153382,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -153350,6 +153404,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.162313+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
     }
   },
   {
@@ -153957,7 +154017,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -153981,7 +154041,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "학식 있는 신학자는 잘못된 주장을 할 수 있으며, 또한 자신에게 정당하지 않은 존중을傲慢하게 요구할 수도 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003151",
@@ -154488,7 +154554,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -154512,7 +154578,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "이 관계의益은 당사자들을 결합하는 도덕적 유대에서 비롯된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003162",
@@ -154578,7 +154650,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -154600,6 +154672,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.162414+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
     }
   },
   {
@@ -154964,7 +155042,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -154988,7 +155066,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성도들이 진리를 잘 배우고 깨닫게 되면 유혹에 저항할 수 있고, 높은 교회 권위로 유惑자를 제한하는 것은 최고의 선을 보장하지 않는다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003172",
@@ -155401,7 +155485,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -155425,7 +155509,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "반대意见은 근거가 없다는 것",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003181",
@@ -155589,7 +155679,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -155613,7 +155703,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 공동체는 하나의 마음과 영을 가지고があった",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003185",
@@ -155879,7 +155975,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -155903,7 +155999,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 독립의 真正한 교리는 각 교회가 별개의 책임을 지니고 있음을 의미한다",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003191",
@@ -158023,7 +158125,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -158047,7 +158149,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "개별 교인이 재세례 없이 받았더라도 다른 교회로 이동하여 재세례를 요구하는 경우, 후者の 교회는 독립적인 신체로서 그 사람을 거부할 권한이 있다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003235",
@@ -159530,7 +159638,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -159554,7 +159662,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "기독교 신앙의 시작에서 기독교의 사회적 경향이 나타나며, 이는洗礼를 통해 다른 사람과 함께 행해지는 순종의 행위로 표현된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003266",
@@ -160457,7 +160571,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -160481,7 +160595,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 특별한 사역을 위해 선택된 사람들은 하나님의 뜻을 열심히 그리고 끊임없이寻求하고 순종해야 하며, 이는 다른 사람들의 비방이나 칭찬과 상관없이 이루어져야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003285",
@@ -160992,7 +161112,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -161016,7 +161136,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 뜻을 알게 되면 우리가 확신하는 바 하나님의 뜻을 선언할 수 있으며, 각人が 책임을 지고 판단받도록 해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part2 (confirmed 101-119,180-200) human review."
+    }
   },
   {
     "id": "TSU-0003296",
