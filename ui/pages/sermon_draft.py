@@ -36,6 +36,21 @@ _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크
 _STATUS_HAS_OUTLINE = {"outline_generated", "reviewing", "approved", "expanding", "draft_complete"}
 _STATUS_HAS_EXPANSION = {"approved", "expanding", "draft_complete"}
 
+# [B-1, 배포 차단 항목 — NAE_FREE_DISTRIBUTION_PLAN_v1.md §6] 자료 0건일 때
+# 설교 생성을 막는 안전장치. 근거 없이 LLM이 설교 원고를 지어내면 목회자가
+# 그것을 강단에서 그대로 쓸 수 있어 피해가 되돌릴 수 없다 — §5.1 예화 생성
+# 금지 원칙과 같은 계열의 제약이다. 기준은 ui/pages/chat.py의
+# _NO_EVIDENCE_HOLD_TEXT(P0-6 유보응답)와 동일하게 "검색 결과 0건"을 하드
+# 게이트로 쓴다 — 결과는 있으나 점수만 낮은 경우는 여기서 막지 않는다.
+_SERMON_NO_EVIDENCE_TEXT = (
+    "현재 등록된 자료에서 이 본문/주제와 관련된 근거를 찾지 못해 개요를 "
+    "생성하지 않았습니다.\n\n"
+    "이 앱은 등록·처리된 자료에 근거해서만 설교 개요를 작성하도록 설계되어 "
+    "있어, 관련 자료가 없을 때는 일반 지식만으로 원고를 지어내지 않습니다. "
+    "서재에 관련 자료를 추가하거나, 본문/주제를 다르게 표현해 다시 "
+    "시도해 주세요."
+)
+
 
 def _apply_sermon_draft_styles() -> None:
     """설교 준비 Stitch 화면 스타일 — 노트 카드, 원고 카드, 확장 대지 카드.
@@ -225,6 +240,18 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
             logger.exception("Sermon draft search failed")
             st.error("검색 중 문제가 있었습니다. 다시 시도해주세요.")
             return
+
+        # [B-1] 자료 0건이면 여기서 멈춘다 — service.generate_outline()을
+        # 아예 호출하지 않으므로 Ollama도 호출되지 않는다. 이것은 오류가
+        # 아니라 정상 종료 상태다(§5.1과 동일한 원칙).
+        if not response.top_k_results:
+            logger.info(
+                "[sermon_draft] no evidence for scripture_and_theme=%r → hold",
+                scripture_and_theme[:50],
+            )
+            st.warning(_SERMON_NO_EVIDENCE_TEXT)
+            return
+
         outline, error = service.generate_outline(
             scripture_and_theme, response.top_k_results, sermon_format=sermon_format
         )
@@ -392,6 +419,13 @@ def _render_expansion_step() -> None:
 
     if not outline.points:
         st.warning("승인된 대지가 없습니다 — 2단계에서 대지를 추가한 뒤 다시 승인하세요.")
+        return
+
+    # [B-1] 개요 단계에서 자료 0건이면 이미 차단되므로 정상 흐름에서는
+    # candidates가 비지 않는다. 그래도 2차 방어선으로 남긴다 — expand_point()
+    # 도 Ollama를 호출하는 지점이라 근거 없이 대지를 확장하면 안 된다.
+    if not state["candidates"]:
+        st.warning(_SERMON_NO_EVIDENCE_TEXT)
         return
 
     style_examples = _build_style_examples(state["style_files"])
