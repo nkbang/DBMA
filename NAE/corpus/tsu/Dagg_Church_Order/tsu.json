@@ -124755,7 +124755,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -124779,7 +124779,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "기독교 교회의 지속적인 성례는 우리의 구원의伟大한 저자와 그 구원을 이루어낸 속죄 제사로 마음을 직접 dẫn합니다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002549",
@@ -124800,7 +124806,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -124824,7 +124830,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "기독교 교회의 규례는 우리의 구원에 대한伟大한 교리를 가르친다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002550",
@@ -125419,7 +125431,7 @@
     "paragraph": 1220,
     "sentence": 2,
     "source_text": "The same would have been true concerning the washing of feet, if this also had been a religious rite in common use in the churches; and it would have been a manifest absurdity to state the fact of any church member hay-",
-    "claim": "발을 씻는 예식이 일반적인 종교 의식이었다면 교회에서 이를 언급하는 것은 모호함을 초래할 것이다",
+    "claim": "발을 씻는 예식이 만일 교회에서 일반적으로 시행되는 종교 의식이었다면, 어떤 교인이 그것을 행했다는 사실을 굳이 언급하는 것 자체가 명백한 부조리였을 것이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -125448,8 +125460,13 @@
       "resolved_at": "2026-08-08T18:04:32.159824+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "洗足례가 일반적인 종교 의식이었다면 교회에서 이를 언급하는 것은 모호함을 초래할 것이다",
-    "cjk_status": "repaired"
+    "claim_raw": "발을 씻는 예식이 일반적인 종교 의식이었다면 교회에서 이를 언급하는 것은 모호함을 초래할 것이다",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0002563",
@@ -128413,7 +128430,7 @@
     "paragraph": 1246,
     "sentence": 2,
     "source_text": "We see with pleasure, the beginning of our series, in the brief accounts of Scripture, where the day on which Christians met for worship, is specicified.",
-    "claim": "기독교인들이 예배를 드리는 날은 성서의 간략한 기록에서 첫 번째 주일의 시작을 볼 수 있다.",
+    "claim": "우리는 그리스도인들이 예배를 위해 모인 날이 명시된 성경의 간략한 기록에서 우리 계열(series)의 시작을 기쁘게 확인한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -128442,8 +128459,13 @@
       "resolved_at": "2026-08-08T18:04:32.160048+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "기독교인들이 예배를 드리는 날은 성경의 간략한 기록에서 첫 번째 주日の 시작을 볼 수 있다.",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "기독교인들이 예배를 드리는 날은 성서의 간략한 기록에서 첫 번째 주일의 시작을 볼 수 있다.",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0002625",
@@ -129289,7 +129311,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -129313,7 +129335,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "공개 예배에서 하나의 예배자는 소리 내어说话하며, 솔로몬이 성전 봉헌식에서 했던 것처럼 다른 사람들은 마음으로 합하여 예배와 간구에 참여한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002643",
@@ -129963,7 +129991,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -129987,7 +130015,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예배에서 시와 음악은 특별히赞美의 표현에 적합하다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002657",
@@ -130400,7 +130434,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -130424,7 +130458,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울이 디모데에게 읽기, 권면, 교리에 주의하라고 지시한 것은 공적 예배에서 다른 사람들의益을 위해 수행되는 부분으로서의 권면과 교리와 마찬가지로 읽기도 공적으로 행해지는 것을 포함한다",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002666",
@@ -131760,7 +131800,7 @@
     "paragraph": 1280,
     "sentence": 0,
     "source_text": "The special qualifications which the Holy Spirit bestows, bind him on whom they are bestowed to use them in the service of Christ.",
-    "claim": "성령은 특정 자격을 부여받은 사람에게 그들을 사용하여 그리스도의 봉사 시간에 헌신하도록 결속시킵니다.",
+    "claim": "성령께서 주시는 특별한 자격은 그것을 받은 사람으로 하여금 그리스도를 섬기는 일에 그것을 사용하도록 결속시킨다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -131789,8 +131829,13 @@
       "resolved_at": "2026-08-08T18:04:32.160729+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "성령은 특정 자격을 부여받은 사람에게 그들을 사용하여 그리스도의 служ間に 헌신하도록 결속시킵니다.",
-    "cjk_status": "repaired"
+    "claim_raw": "성령은 특정 자격을 부여받은 사람에게 그들을 사용하여 그리스도의 봉사 시간에 헌신하도록 결속시킵니다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0002694",
@@ -131811,7 +131856,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -131835,7 +131880,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성령은 특정 자격을 부여하여 그에게 그리스도의 служ시에 사용하도록 결합시킵니다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002695",
@@ -133277,7 +133328,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -133301,7 +133352,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 사역者的 지명은 하나님께로 돌려져야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002725",
@@ -134004,7 +134061,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -134028,7 +134085,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "목회자들의 사역은 지역 교회에 대한 책임을 지는 경우에도 전체 그리스도 몸의益을 위해 봉사한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002740",
@@ -134049,7 +134112,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -134073,7 +134136,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울은 에베소서 4:11에서 하나님께서 교회에 세운 직분들 중 일부로 사도, 선지자, 복음傳道자를 열거한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002741",
@@ -135117,7 +135186,7 @@
     "paragraph": 1305,
     "sentence": 4,
     "source_text": "An active, prudent employment of the gifts possessed by ordinary Christians, would promote incalculably the interests of religion; and the restriction of all labor for the spread of the gospel, and the promotion of piety, to a select few, is greatly detrimental to the cause of Christ.",
-    "claim": "일반 기독교인들이 소유한 은사들을 적극적으로 그리고 신중하게 사용하는 것은 계몽주의의 이익을 무한정으로 증진시킬 것이며, 복음의 전파와 경건의 촉진을 위한 모든 노력을 몇몇 선택된 사람에게 제한하는 것은 크리스도의 사역에 매우 유해하다.",
+    "claim": "평범한 그리스도인들이 소유한 은사를 적극적이고 신중하게 사용하는 것은 신앙의 유익을 헤아릴 수 없이 증진시킬 것이며, 복음 전파와 경건 증진을 위한 모든 수고를 소수의 선택된 사람에게 국한하는 것은 그리스도의 대의에 크게 해롭다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -135146,8 +135215,13 @@
       "resolved_at": "2026-08-08T18:04:32.160974+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "일반 기독교인들이 소유한 은사들을 적극적으로 그리고 신중하게 사용하는 것은 계몽주의의 이익을 vô hạn정으로 증진시킬 것이며, 복음의 전파와 경건의 촉진을 위한 모든 노력을 몇몇 선택된 사람에게 제한하는 것은 크리스도의 사역에 매우 유해하다.",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "일반 기독교인들이 소유한 은사들을 적극적으로 그리고 신중하게 사용하는 것은 계몽주의의 이익을 무한정으로 증진시킬 것이며, 복음의 전파와 경건의 촉진을 위한 모든 노력을 몇몇 선택된 사람에게 제한하는 것은 크리스도의 사역에 매우 유해하다.",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0002763",
@@ -136861,7 +136935,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -136885,7 +136959,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "모든人は 어떤 지역 교회에 속해야 하며 다른 회원들과 사랑과 기독교적 순종 안에서 걸어갈 의무가 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002799",
@@ -140569,7 +140649,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -140593,7 +140673,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "사도들에게 특별히任命된 일의 일부는 다른 사람들에 의해서 어느 정도 수행될 수 있지만, 이것은 그 사람들이 사도의 임무를 완전히 받았다는 것을 의미하지 않는다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002875",
@@ -142570,7 +142656,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -142592,6 +142678,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.161513+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
     }
   },
   {
@@ -142656,7 +142748,7 @@
     "paragraph": 1363,
     "sentence": 4,
     "source_text": "The middle of it he sees not; but he knows that the Head of the church has lived during all the intermediate time, and that he is the God of providence, and the giver of the Holy Spirit, by whose influence the chain of succession could be preserved, He feels assured, that, if an unbroken succession is necessary for any purpose which the Head of the church has in view, APOSTOLIC SUCCESSION. 259",
-    "claim": "교회 지도자는 교회의 연속성을 유지하기 위해 성령을 주시며, 교회는 이 성령의 영향력으로 연속성이 보장된다.",
+    "claim": "그리스도(교회의 머리)께서 모든 중간 시대에 걸쳐 살아 계셨고 섭리의 하나님이자 성령을 주시는 분이시므로, 그 성령의 영향력으로 계승의 사슬이 보존될 수 있었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -142685,8 +142777,13 @@
       "resolved_at": "2026-08-08T18:04:32.161520+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "교회 頭領은 교회의 연속성을 유지하기 위해 성령을 주시며, 교회는 이 성령의 영향력으로 연속성이 보장된다.",
-    "cjk_status": "repaired"
+    "claim_raw": "교회 지도자는 교회의 연속성을 유지하기 위해 성령을 주시며, 교회는 이 성령의 영향력으로 연속성이 보장된다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0002918",
@@ -144659,7 +144756,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -144683,7 +144780,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례와 성직授任의 의무는 다르다",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002959",
@@ -145725,7 +145828,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -145749,7 +145852,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "주교들은 그들에게 맡겨진 양떼의 목자 또는 牧師이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002981",
@@ -146211,7 +146320,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -146235,7 +146344,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도의 영적 지배는 세속적인 왕들의 지배와 달리 강제력이不存在한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002991",
@@ -146256,7 +146371,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -146280,7 +146395,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도下的 영적 지도자들은 그들의 권위 아래 있는 사람들의 신체나 재산에 대해 강제적인 권력을 가지고 있지 않다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0002992",
@@ -147373,7 +147494,7 @@
     "paragraph": 1398,
     "sentence": 0,
     "source_text": "DEACONS SHOULD BE CHOSEN BY THE CHURCHES, FROM AMONG THEIR MEMBERS, TO MINISTER IN SECULAR AFFAIRS.",
-    "claim": "교회에서 장로를 선택하여 세속적인 일에 봉사하는 것이 적절하다.",
+    "claim": "교회가 회원 중에서 집사를 선택하여 세속적인 일에 봉사하게 하는 것이 마땅하다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -147402,8 +147523,14 @@
       "resolved_at": "2026-08-08T18:04:32.161858+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "교회에서 장로를 선택하여 세속적인事務에仕える것이 적절하다.",
-    "cjk_status": "repaired"
+    "claim_raw": "교회에서 장로를 선택하여 세속적인 일에 봉사하는 것이 적절하다.",
+    "cjk_status": "repaired",
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0003015",
@@ -147424,7 +147551,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -147448,7 +147575,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예루살렘 교회는 사도들의 지시에 따라誠實하고 좋은 평판을 가진 일곱 명의 남자를 선택하여 식탁을 섬기도록 임명했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0003016",
@@ -151042,7 +151175,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -151066,7 +151199,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회는 성도들이 주변 사람에게益이 되도록뿐만 아니라자신들의 영적 성장에도 도움이 되도록 모든 좋은 일에 근면하게 노력하도록 권면해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0003090",
@@ -151522,7 +151661,7 @@
     "paragraph": 1435,
     "sentence": 2,
     "source_text": "It has been said that the prayer meeting of a church is the thermometer by which its spiritnal temperature may be known, When Christians love to meet, that they may pour forth their united supplications to the throne of grace, the Saviour, in fulfilment of his promise, meets with them, and bestows blessings which infinitely transcend all earthly good, and are a beginning of heavenly bliss.",
-    "claim": "교회 모임의 기도회는 교회의 영적 온도를 알 수 있는 열람계로, 그곳에서 하나님께 합심하여 기도하는 성도들을 통해 주님은 약속대로 만나시고 지상 모든 선한 것보다 더 큰 축복과 하늘의 기쁨의 시작을 주신다.",
+    "claim": "교회의 기도회는 그 교회의 영적 온도를 알 수 있는 온도계라고 일컬어져 왔다. 그리스도인들이 은혜의 보좌에 함께 기도를 올리기 위해 모이기를 사랑할 때, 주님은 그의 약속을 이루어 그들과 함께 만나시고 땅의 모든 선한 것을 무한히 초월하는 복, 곧 하늘의 지복의 시작이 되는 복을 주신다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -151551,8 +151690,13 @@
       "resolved_at": "2026-08-08T18:04:32.162181+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "교회 모임의 기도회는 교회의 영적 온도를 알 수 있는 열람계로, 그곳에서 하나님께 합심하여 기도하는 성도们을 통해 주님은 약속대로 만나시고 지상 모든 선한 것보다 더 큰 축복과 하늘의 бл리스의 시작을 주신다.",
-    "cjk_status": "repaired"
+    "claim_raw": "교회 모임의 기도회는 교회의 영적 온도를 알 수 있는 열람계로, 그곳에서 하나님께 합심하여 기도하는 성도들을 통해 주님은 약속대로 만나시고 지상 모든 선한 것보다 더 큰 축복과 하늘의 기쁨의 시작을 주신다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0003100",
@@ -152014,7 +152158,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -152038,7 +152182,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회纪律을 시행하는 것은 하나님의 영광과 죄人の 회복을 위함이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0003110",
@@ -152151,7 +152301,7 @@
     "paragraph": 1445,
     "sentence": 1,
     "source_text": "It does not follow, however, that they are without reason, but only that the reason for them is beyond the discovery of human wisdom.",
-    "claim": "성경의 계명은 인간의 지혜로 발견할 수 없는 이유에 의존하지만, 그것이 무리하지 않다",
+    "claim": "그렇다고 해서 그 계명들에 이유가 없다는 뜻은 아니며, 다만 그 이유가 인간의 지혜로는 발견할 수 없는 것일 뿐이다.",
     "doctrine": "Scripture / Authority",
     "scriptures": [],
     "citations": [],
@@ -152180,8 +152330,13 @@
       "resolved_at": "2026-08-08T18:04:32.162227+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "성경의 계명은 인간의 지혜로 발견할 수 없는 이유에 의존하지만, 그것이 무 理 نیست",
-    "cjk_status": "repaired"
+    "claim_raw": "성경의 계명은 인간의 지혜로 발견할 수 없는 이유에 의존하지만, 그것이 무리하지 않다",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0003113",
@@ -152349,7 +152504,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -152373,7 +152528,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "真正한 경건은 교회 회원권에 필요하다",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0029 part3 (120-179) human review."
+    }
   },
   {
     "id": "TSU-0003117",
@@ -152841,7 +153002,7 @@
     "paragraph": 1450,
     "sentence": 2,
     "source_text": "To counteract its influence, Christ commanded his disciples, “ Be ye not called Rabbi, for one is your Master, even Christ, and all ye are brethren.’”?",
-    "claim": "그리스도의 사도들은 그리스도를 제외하고는 모든 사람이 형제라는 평등의 교리를 주장해야 하며, 이는 로마 가톨릭교회의 계층적 구조와 상충된다.",
+    "claim": "그 영향력에 대항하기 위해 그리스도는 제자들에게 '너희는 랍비라 칭함을 받지 말라 너희 선생은 하나요 곧 그리스도시요 너희는 다 형제니라'고 명하셨다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -152870,8 +153031,13 @@
       "resolved_at": "2026-08-08T18:04:32.162276+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "그리스도의 사도들은 그리스도를 제외하고는 모든人が 형제라는 평등의 교리를 주장해야 하며, 이는 로마 가톨릭교회의 계층적 구조와 상충된다.",
-    "cjk_status": "repaired"
+    "claim_raw": "그리스도의 사도들은 그리스도를 제외하고는 모든 사람이 형제라는 평등의 교리를 주장해야 하며, 이는 로마 가톨릭교회의 계층적 구조와 상충된다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    }
   },
   {
     "id": "TSU-0003127",
