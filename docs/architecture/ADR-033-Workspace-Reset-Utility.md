@@ -15,16 +15,17 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 
 | | |
 |---|---|
-| **Status** | **PROPOSED (v1.1 — C1 APPROVE 2026-09-07, 구현 진행 중. 승격은 구현·회귀·HQ 승인 후)** |
+| **Status** | **ACCEPTED** (2026-09-07 — 승격 4조건 충족: T1/T2 구현·회귀 2784 PASS·C1 APPROVE·HQ 승인) |
 | **Date** | 2026-09-07 |
-| **Approved** | — |
-| **Approver** | Rev. Bang / HQ (예정) |
-| **Deciders** | 사용자 (HQ), CUE (초안), C1 (독립 리뷰 예정) |
+| **Approved** | 2026-09-07 |
+| **Approver** | Rev. Bang / HQ ("다음 작업 진행하라" 지시로 승인, 2026-09-07) |
+| **Deciders** | 사용자 (HQ), CUE (초안·구현), C1 (독립 리뷰 APPROVE) |
 | **Supersedes** | — |
 | **Does NOT supersede** | ADR-013, ADR-021, ADR-025, ADR-030 (본 ADR은 이들이 보호하는 자산을 삭제 대상에서 제외한다) |
 
-> **Evidence Before Promotion**: 이 문서는 Proposed 상태다. 구현 완료 · 회귀 테스트 통과 ·
-> C1 독립 리뷰 · 사용자 승인 4개 조건을 모두 충족하기 전까지 Approved ADR의 근거로 사용하지 않는다.
+> **Evidence Before Promotion**: 승격 4조건(구현 완료 · 회귀 통과 · C1 독립 리뷰 · 사용자 승인)을
+> 2026-09-07 모두 충족하여 ACCEPTED로 승격. 이제 Architecture Freeze Rule의 보호 대상이다 —
+> 이후 변경은 ADR Amendment/Revision 선행 필수.
 
 ---
 
@@ -316,17 +317,14 @@ Qdrant drop)와 T3는 CLI 전용. UI에서 삭제 대상 목록과 용량, 이�
 
 ## 6. Promotion Criteria (Proposed → Approved)
 
-아래 4개를 **모두** 충족해야 Approved로 승격한다:
+아래 4개를 **모두** 충족해야 Approved로 승격한다 — **2026-09-07 전량 충족**:
 
-1. [ ] `scripts/reset_workspace.py` **T1 + T2** 구현 완료 (dry-run 기본, 삭제 매니페스트 JSON,
+1. [x] `scripts/reset_workspace.py` **T1 + T2** 구현 완료 (dry-run 기본, 삭제 매니페스트 JSON,
        Protected Paths 강제, `backups/reset_<ts>/` 휴지통 이동, 클린 트리 가드, T2 `--drop-qdrant`
-       화이트리스트 검증). T3는 미구현 — 설계 문서로만 존재.
-2. [ ] 회귀 테스트 통과 — 신규 `tests/test_reset_workspace.py`:
-       Protected Paths(추적 파일·소스·config) 삭제 거부, dry-run 목록/용량 정확도, 매니페스트 스키마,
-       경로 오염 방지(tmp fixture 격리 — `feedback_test_fixture_path_overrides` 준수),
-       Qdrant 화이트리스트 부분일치 거부. + 기존 스위트 GREEN.
-3. [ ] C1 독립 리뷰 완료 (신규 유틸리티 + Migration 성격 → CLAUDE.md 기준 대상)
-4. [ ] 사용자(HQ) 승인
+       화이트리스트 검증). T3는 미구현 — 설계 문서로만 존재. (커밋 `bfc3df8`)
+2. [x] 회귀 테스트 통과 — `tests/test_reset_workspace.py` 21 PASS + 전체 2784 passed / 15 skipped.
+3. [x] C1 독립 리뷰 완료 — CHANGES REQUESTED → v1.1 반영 → 재검토 **APPROVE** (2026-09-07).
+4. [x] 사용자(HQ) 승인 — 2026-09-07.
 
 ---
 
@@ -344,7 +342,7 @@ Qdrant drop)와 T3는 CLI 전용. UI에서 삭제 대상 목록과 용량, 이�
 - [x] `tests/test_reset_workspace.py` 21개 PASS
 - [x] 전체 회귀 PASS: 2784 passed, 15 skipped (72s)
 - [x] Build Report: `output/ADR-033-T1T2-EXEC-REPORT.md`
-- [ ] **HQ 승인** ← 다음 게이트. 승인 시 Status `PROPOSED` → `ACCEPTED`, STATE.md 기록
+- [x] **HQ 승인** (2026-09-07) → Status `PROPOSED` → `ACCEPTED`, STATE.md 기록 완료
 - [ ] (후속) UI 유지보수 탭 T1 버튼 — 별도 작업으로 분리 (ADR §4.5, 이번 범위 밖)
 - [ ] **HQ 승인 대기 항목**: `scripts/reset_for_beta.py` 처리 방향 — (a) `reset_workspace.py --tier T3` wrapper로 축소,
       또는 (b) 즉시 deprecate. T3 미구현 기간 동안은 파일 상단에
