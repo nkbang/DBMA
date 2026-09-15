@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | **PROPOSED** (2026-09-13) — Evidence Before Promotion Rule 적용: 구현·회귀·C1 독립검토·HQ 승인 4조건 충족 전까지 Proposed |
+| **Status** | **PROPOSED** (2026-09-13) — 구현✅·회귀✅·C1 독립검토✅ GREEN(2026-09-14) 충족, **HQ 승인만 대기**. Evidence Before Promotion Rule 4조건 완전 충족 전까지 Proposed 유지 |
 | **Amends** | `ADR-030-NAE-Sermon-Corpus-Governance.md` (IMPLEMENTED, 2026-08-28) — §7 Metadata Authority, §8 M2 SSOT, §12 M-2 |
 | **Trigger** | 사용자 결정(2026-09-12, "옵션 A: ADR-030 Amendment") — `docs/BAPTIST_COMMENTARY_EMBEDDING_PLAN_v1.md` §5.5, Spurgeon *Treasury of David* Vol.1 Reference-track 파일럿 RAW 체크섬 등록 시도 중 발견된 충돌 |
 | **Deciders** | Rev. Bang / HQ = Final Authority · CUE = Architecture · C1 = Independent Review |
@@ -136,14 +136,18 @@ Amendment의 최소 범위를 벗어난다. 필요하면 별도 Amendment/후속
    `test_int_01_validator_passes`; Amendment 이전에도 존재하던 동일 패턴, git diff로 원본 14개
    무변화 확인). `tests/nae/registration/` 152개 무변경 통과. M2 원본 14개 레코드 git diff = 0줄
    (append-only 재작성으로 확인, §2.1 참고).
-3. **C1 독립 검토** — 대기 (본 Amendment는 M2 SSOT/Metadata Model 변경에 해당해 CUE Operating
-   Policy상 C1 Review 대상)
-4. **HQ 승인** — 대기 (사용자가 "옵션 A: ADR-030 Amendment"로 진행 방향은 확정, 본 문서 자체의
-   최종 승인은 별도)
+3. **C1 독립 검토** — ✅ **GREEN** (2026-09-14, `docs/NAE_BAPTIST_COMMENTARY_M2_AMENDMENT_B_C1_REVIEW_RESULT_001.md`).
+   질문 11개 중 9개 즉시 GREEN, 2개(Q4 청킹 실측·Q9 manifest_writer split edge case) YELLOW로
+   시작해 둘 다 해소·조건부 수용됨 — Q4는 CUE가 실측 스크립트를 canonical.json 보유 워크트리에서
+   재실행해 수치 일치 확인(1,978/1,627/351/0), Q9는 이론적 edge case이나 M2 실제 데이터에서 발생
+   가능성 극히 낮다고 판단해 조건부 GREEN. CUE가 사후 spot-check(커밋 해시 실존·`chat.py` diff
+   재현)로 보고 자체도 검증함.
+4. **HQ 승인** — 대기 (사용자가 "옵션 A: ADR-030 Amendment"로 진행 방향은 확정, C1 GREEN 확보 —
+   Amendment 본문 자체를 Approved로 승격하는 최종 승인만 남음)
 
-4조건 완전 충족 전이지만, 이번 Spurgeon 1건 등록은 사용자의 명시적 방향 결정(옵션 A)에 따라
-Amendment 채택과 동시에 실행했다 — 결과가 조건 2(회귀)를 충족함은 위에서 확인했고, 조건 3/4은
-아직 열려 있다. 이 Amendment를 근거로 **추가** 소스를 등록하는 것은 조건 3/4 충족 후로 제한한다.
+조건 1·2·3 충족. 조건 4(HQ 승인)만 남았다. 이 Amendment를 근거로 **추가** 소스를 등록하는 것은
+조건 4 충족 후로 제한한다 — 이번 Spurgeon 1건 등록은 이미 완료됐고(§1), 그 결과가 조건 2/3을
+충족함이 위에서 확인됐다.
 
 ---
 
