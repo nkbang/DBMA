@@ -9205,7 +9205,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -9230,7 +9230,12 @@
     },
     "claim_raw": "하나님은 바다에서 한 사람을 구원하실 수 있다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -12326,7 +12331,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -12348,6 +12353,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.151550+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -26684,7 +26695,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -26708,7 +26719,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "대眾들이 예루살렘에 모여서 절기들을 지내는 동안, 그들에게 사용할 수 있고 충분한 어떤 준비물이 존재했어야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0000549",
@@ -35134,7 +35151,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -35158,7 +35175,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "신약성경에서 교회를 나타내는 용어인 'ecclesia'는 한 도시 안에 있는 모든 기독교인을 가리키는데 사용되며, 그 숫자가 많아 한 곳에서 예배를 드릴 수 없을 때도如此이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0000721",
@@ -43204,7 +43227,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -43226,6 +43249,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.153817+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -43296,7 +43325,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -43320,7 +43349,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 계획은渐進的に 계시되며, 교회의 조직에서도 초기에 원리들이 내재되어 이후 기독교의 발전에 따라 발전되었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0000887",
@@ -43835,7 +43870,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -43859,7 +43894,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "위에서 오는 지혜가 이 진행을指导했다면, 우리는 그 전체적인 지도에 따라야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0000898",
@@ -45456,7 +45497,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -45478,6 +45519,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.153981+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -45891,7 +45938,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -45915,7 +45962,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 신앙에서 세례는 普遍적으로 관행되었다",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0000940",
@@ -50199,7 +50252,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -50224,7 +50277,12 @@
     },
     "claim_raw": "교회는 일반적인 용어로 가정할 때, 각 개별 교회는 바위 위에 세워지며, 지옥의 문이 그것들에게 결코 승리하지 못할 것이라는 약속을 갖는다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -54466,7 +54524,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -54488,6 +54546,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154649+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -54509,7 +54573,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -54531,6 +54595,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154652+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -54552,7 +54622,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -54576,7 +54646,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "추상적인 용어 'fulness'를 일반화하는 것은 추상概念의 일반화를 필요로 하며, 이는 상식에 어긋난다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001117",
@@ -56318,7 +56394,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -56340,6 +56416,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154779+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -56361,7 +56443,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -56383,6 +56465,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154782+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -56404,7 +56492,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -56428,7 +56516,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울의 말에 대한 해석에서 도입된 다자혼은 담론의 범위와 특히 '그 자신에게 영광스러운 교회를献上한다'는 절에 의해 완전히 배척된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001155",
@@ -56745,7 +56839,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -56770,7 +56864,12 @@
     },
     "claim_raw": "그리스도의 설계는 교회를 완전하게 하거나 교회를 영광의 가족으로 자신에게 드리는 것이 아니었다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -58221,7 +58320,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -58245,7 +58344,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성도들의 실제 모임은 성경에서 예상되며, 이 지상에서의 교회와 하늘上的 교회 사이의 관계가 설명된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001192",
@@ -59287,7 +59392,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59311,7 +59416,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "영적 이스라엘은 천국 예루살렘으로의 순례를 통해 하나님께서 준비하신 축복을享受하기 위해 큰 회중에서 합류한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001214",
@@ -61000,7 +61111,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -61024,7 +61135,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "VISIBLE와 INVISIBLE 교회는 각각 지상과 천上的 성도들을 나타내며, 이들은 하나의 공동체를 이루는 교회이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001249",
@@ -62221,7 +62338,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -62245,7 +62362,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도의 참된 교회에 대한 '보이지 않는'이라는 호칭은 불正確하며, 오해를 일으켰다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001274",
@@ -68680,7 +68803,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -68705,7 +68828,12 @@
     },
     "claim_raw": "기독교의 진리와 영은 세상을 싫어하는 것으로 여겨지며, 외부 조직 없이도 박해자들의 반대와 분노를 일으키기에 충분하다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -69074,7 +69202,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -69098,7 +69226,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "사도 시대에 비슷한 조직이 존재했다면, 거짓 사도와 다른 불경건한 직분자들도真正하게 교회의 구성원이었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001414",
@@ -69415,7 +69549,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -69439,7 +69573,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지방 교회는 그리스도의 마음에 따라 조직되어야 하며, 이는真正한 성도들로 구성되어야 함을 의미한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001421",
@@ -69756,7 +69896,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -69780,7 +69920,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례는 지역 교회에 대한 회원資格의 전제조건이지만, 세례를 받은 사람들은 지역 교회와 연결되지 않은 상태로 남아 있을 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001428",
@@ -70342,7 +70488,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -70367,7 +70513,12 @@
     },
     "claim_raw": "지구적 교회는 신학자들의 가시적인 세계적인 교회와 다르다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -76397,7 +76548,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -76426,6 +76577,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
     }
   },
   {
@@ -76541,7 +76698,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -76565,7 +76722,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "왕국에 속한 사람들 중 일부만을 의미하는 '这样的'라는 단어를 사용하더라도, 왕국은 그런 모든 사람에게 속한다는 선언을 고려해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    }
   },
   {
     "id": "TSU-0001566",
@@ -77421,7 +77584,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -77446,7 +77609,12 @@
     },
     "claim_raw": "어떤 사람들은 현재 논의하는 절이 어린 아이들에게 영광의 왕국이 속한다는 것을 의미하며, 그들이 하늘의 교회에 대한 권리가 있다면 땅 위의 교회에서 배제되어서는 안 된다고 주장한다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
@@ -77915,7 +78083,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -77940,7 +78108,12 @@
     },
     "claim_raw": "어린이를 제외하는 그런 해석은 받아들여질 수 없다.",
     "cjk_status": "repaired",
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0030 part1 (1-49/147) human review."
+    },
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
