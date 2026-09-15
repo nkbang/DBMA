@@ -215,50 +215,65 @@ def write_requests(requests: list[HumanReviewRequest], directory: Path = REQUEST
     return path
 
 
-# identifier -> {(page, paragraph_index, sentence_index): (context_before, context_after)}.
-# Built lazily, once per identifier per process, from the same
-# tsu_parser.build_candidates() this repo already uses for the same
-# lookup in scripts/nae_fuller_cjk_reextract.py's `_context_index()` —
-# same key shape (page/paragraph/sentence), reused rather than
-# reinvented. Never touches Production TSU files, only re-derives from
-# canonical.json (read-only).
-_CONTEXT_INDEX_CACHE: dict[str, dict[tuple, tuple[str, str]]] = {}
+# identifier -> (flat sentence list in document order, {(page,paragraph_index,
+# sentence_index): position in that list}). Built lazily from canonical.json
+# directly (tsu_parser.load_canonical(), read-only) rather than from
+# tsu_parser.build_candidates()'s per-paragraph before/after, because that
+# earlier approach never looks past its own paragraph's sentence list — a
+# sentence that is itself the tail of the *previous* page's paragraph (a
+# page-break split, confirmed in batch_0034: TSU-0003406/0003559) got no
+# context_before at all. Flattening every prose paragraph's sentences in
+# document order and indexing by position lets a window span paragraph/page
+# boundaries the same way a human reader would just keep reading.
+CONTEXT_WINDOW_SENTENCES = 2  # each side; user-directed widening after
+# batch_0024-0034 kept landing Q3 (Context Sufficiency) on C — one sentence
+# was too narrow, and truncated-at-a-boundary sentences needed the previous
+# paragraph's tail rather than nothing.
+_FLAT_SENTENCE_INDEX_CACHE: dict[str, tuple[list[tuple[tuple, str]], dict[tuple, int]]] = {}
 
 
-def _context_index(identifier: str) -> dict[tuple, tuple[str, str]]:
-    if identifier not in _CONTEXT_INDEX_CACHE:
-        index: dict[tuple, tuple[str, str]] = {}
-        for candidate in tsu_parser.build_candidates(identifier):
-            index[(candidate.page, candidate.paragraph_index, candidate.sentence_index)] = (
-                candidate.context_before,
-                candidate.context_after,
-            )
-        _CONTEXT_INDEX_CACHE[identifier] = index
-    return _CONTEXT_INDEX_CACHE[identifier]
+def _flat_sentence_index(identifier: str) -> tuple[list[tuple[tuple, str]], dict[tuple, int]]:
+    if identifier not in _FLAT_SENTENCE_INDEX_CACHE:
+        canonical_json = tsu_parser.load_canonical(identifier)
+        flat: list[tuple[tuple, str]] = []
+        if canonical_json:
+            for paragraph in canonical_json.get("paragraphs", []):
+                if paragraph.get("type") != "prose":
+                    continue
+                page = paragraph.get("page_start", 0)
+                para_idx = paragraph.get("index", 0)
+                for i, sent in enumerate(paragraph.get("sentences", [])):
+                    flat.append(((page, para_idx, i), sent.get("text", "")))
+        position = {key: idx for idx, (key, _) in enumerate(flat)}
+        _FLAT_SENTENCE_INDEX_CACHE[identifier] = (flat, position)
+    return _FLAT_SENTENCE_INDEX_CACHE[identifier]
 
 
-def _original_text_with_context(record: dict) -> str:
-    """`source_text`에 인접 문장(앞/뒤 각 1문장)을 덧붙인다 — Pilot 001의
-    `_PACKAGE_DETAIL`이 사람이 손으로 붙여준 "(앞).../(뒤)..." 형식과
-    동일한 표기를 대량 배치에도 기계적으로 재현한다. 이 배치의 review
-    기록(batch_0024~0026)에서 Q3(Context Sufficiency)가 반복적으로
-    C(문맥 필요)로 남는 근본 원인이 `original_text`에 원 문장 단 하나만
-    있었다는 점이었다 — 조회에 실패하면(정보 없음) 원래 동작대로
-    `source_text` 그대로를 반환한다(추측으로 문맥을 만들어내지 않음)."""
+def _original_text_with_context(record: dict, window: int = CONTEXT_WINDOW_SENTENCES) -> str:
+    """`source_text`에 앞/뒤 각 `window`문장(기본 2, 문단·페이지 경계를
+    넘어)을 덧붙인다 — Pilot 001의 `_PACKAGE_DETAIL`이 사람이 손으로
+    붙여준 "(앞).../(뒤)..." 형식과 동일한 표기를 대량 배치에도 기계적으로
+    재현한다. 조회 실패 시(정보 없음) 원래 동작대로 `source_text` 그대로를
+    반환한다(추측으로 문맥을 만들어내지 않음)."""
     source_text = record.get("source_text", "")
     identifier = record.get("identifier")
     if not identifier:
         return source_text
     key = (record.get("page"), record.get("paragraph"), record.get("sentence"))
-    before, after = _context_index(identifier).get(key, ("", ""))
-    if not before and not after:
+    flat, position = _flat_sentence_index(identifier)
+    idx = position.get(key)
+    if idx is None:
+        return source_text
+    before_texts = [t for _, t in flat[max(0, idx - window):idx]]
+    after_texts = [t for _, t in flat[idx + 1: idx + 1 + window]]
+    if not before_texts and not after_texts:
         return source_text
     parts = []
-    if before:
-        parts.append(f"(앞) {before}")
+    if before_texts:
+        parts.append("(앞) " + " ".join(before_texts))
     parts.append(source_text)
-    if after:
-        parts.append(f"(뒤) {after}")
+    if after_texts:
+        parts.append("(뒤) " + " ".join(after_texts))
     return " ".join(parts)
 
 
