@@ -78,6 +78,25 @@ def _candidate_title(source_file: str, docinfo_map: dict[str, str]) -> tuple[str
     return None, "후보 없음"
 
 
+def _classify_with_keywords(
+    keywords: dict, content: str, source_file: str, title: str | None
+) -> str:
+    """제안 키워드 표로 분류한다. 모듈 전역 표를 임시 교체 후 반드시 복원한다.
+
+    guess_doc_type()을 그대로 재사용해야 매칭 규칙(haystack 구성, 정의 순서
+    우선, 무매칭 시 "기타")이 프로덕션과 어긋나지 않는다 — 규칙을 복제하면
+    분석과 실제가 갈라진다.
+    """
+    import core.document_identity as di
+
+    original = di._DOC_TYPE_KEYWORDS
+    try:
+        di._DOC_TYPE_KEYWORDS = keywords
+        return di.guess_doc_type(content, source_file, title)
+    finally:
+        di._DOC_TYPE_KEYWORDS = original
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -86,12 +105,20 @@ def main() -> int:
         "--docinfo-map",
         help='{"source_file": "원본PDF경로"} 형태의 JSON — 사이드카가 아직 없을 때 후보 출처',
     )
+    ap.add_argument(
+        "--keywords-json",
+        help="제안 _DOC_TYPE_KEYWORDS 를 담은 JSON — 키워드 표 변경의 재분류 영향을 함께 계산한다",
+    )
     ap.add_argument("--json", help="결과를 이 경로에 JSON으로 저장")
     args = ap.parse_args()
 
     docinfo_map: dict[str, str] = {}
     if args.docinfo_map:
         docinfo_map = json.loads(Path(args.docinfo_map).read_text(encoding="utf-8"))
+
+    proposed_keywords: dict | None = None
+    if args.keywords_json:
+        proposed_keywords = json.loads(Path(args.keywords_json).read_text(encoding="utf-8"))
 
     output_dir = Path(DEFAULT_OUTPUT_DIR)
     registry = load_identity_registry(registry_path_for(DEFAULT_OUTPUT_DIR))
@@ -109,6 +136,14 @@ def main() -> int:
         cand_title, origin = _candidate_title(source_file, docinfo_map)
         after = guess_doc_type(content, source_file, cand_title)
 
+        # 키워드 표 변경 영향 — 제안 표를 적용해 같은 입력을 다시 분류한다.
+        # 원본 표는 복원하므로 프로세스 내 다른 호출에 영향을 주지 않는다.
+        after_kw = None
+        if proposed_keywords is not None:
+            after_kw = _classify_with_keywords(
+                proposed_keywords, content, source_file, cand_title
+            )
+
         rows.append(
             {
                 "source_file": source_file,
@@ -117,12 +152,15 @@ def main() -> int:
                 "candidate_title": cand_title,
                 "candidate_origin": origin,
                 "doc_type_after": after,
+                "doc_type_after_keywords": after_kw,
                 "will_change": after != current,
+                "will_change_keywords": (after_kw is not None and after_kw != current),
                 "registry_drift": recomputed != current,
             }
         )
 
     changed = [r for r in rows if r["will_change"]]
+    changed_kw = [r for r in rows if r.get("will_change_keywords")]
     drifted = [r for r in rows if r["registry_drift"]]
 
     print("=" * 78)
@@ -135,6 +173,9 @@ def main() -> int:
         print(f"[{mark}] {r['source_file']}")
         print(f"         doc_type  {r['current_doc_type']} → {r['doc_type_after']}")
         print(f"         후보 title ({r['candidate_origin']}): {str(r['candidate_title'])[:80]}")
+        if r.get("doc_type_after_keywords") is not None:
+            kwmark = "CHANGE" if r["will_change_keywords"] else "유지"
+            print(f"         제안 키워드표 적용: {r['current_doc_type']} → {r['doc_type_after_keywords']}  [{kwmark}]")
         if r["registry_drift"]:
             print(
                 f"         ※ registry 값과 재계산 불일치: "
@@ -142,8 +183,14 @@ def main() -> int:
             )
         print()
 
+    if proposed_keywords is not None:
+        print(f"[키워드 표 변경] 재분류 예상 {len(changed_kw)}건 / {len(rows)}건")
+        for r in changed_kw:
+            print(f"    {r['source_file']}: {r['current_doc_type']} → {r['doc_type_after_keywords']}")
+        print()
+
     if not changed:
-        print("→ 변경 대상 없음. 재처리해도 doc_type은 현행대로 유지된다.")
+        print("→ title 변경 영향: 없음. 재처리해도 doc_type은 현행대로 유지된다.")
     else:
         print(f"→ {len(changed)}건이 바뀐다. HQ 승인 전 재처리하지 말 것.")
 
