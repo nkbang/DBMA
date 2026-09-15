@@ -3,7 +3,11 @@
 **작성일:** 2026-09-15
 **대상:** `output/bench/tsu_dataset.jsonl` (ADR-001 Production Retrieval Authority)
 **성격:** 계획 문서 — 실행 전 HQ 승인 필요 (CLAUDE.md §예외: "Corpus 전체 Migration", "Production Registry 대량 변경")
-**진행률:** 0% (승인 대기)
+**진행률:** 0%
+
+> **상태: 영구 취소 (CANCELLED, 2026-09-15)** — HQ(사용자) 결정으로 본 복구 계획은
+> 영구 취소되었다. Phase 0~4 어느 것도 착수하지 않는다. 이 문서는 사고 경위·원인 사슬·
+> 백업 위치 기록용으로만 보존한다. 재개하려면 새 결정과 새 계획이 필요하다.
 
 ---
 
