@@ -254,6 +254,57 @@ class TestHumanDecisionImmutability:
             record.reviewer_id = "someone-else"
 
 
+class TestContextEnrichment:
+    """batch_0024~0026 실제 검토에서 Q3(Context Sufficiency)가 반복적으로
+    C로 남은 근본 원인 — original_text에 인접 문장이 전혀 없었던 문제의
+    회귀 방지 테스트."""
+
+    def _fake_candidate(self, *, page, paragraph_index, sentence_index, before, after):
+        from NAE.pipeline.tsu.parser import SentenceCandidate
+        return SentenceCandidate(
+            book="b", author="a", identifier="Some_Identifier",
+            page=page, paragraph_index=paragraph_index, sentence_index=sentence_index,
+            text="unused", context_before=before, context_after=after,
+        )
+
+    def test_original_text_gains_surrounding_sentences(self, monkeypatch):
+        monkeypatch.setattr(
+            dg.tsu_parser, "build_candidates",
+            lambda identifier: [self._fake_candidate(
+                page=1, paragraph_index=0, sentence_index=2,
+                before="앞 문장.", after="뒤 문장.",
+            )],
+        )
+        dg._CONTEXT_INDEX_CACHE.clear()
+        record = {
+            "id": "TSU-TEST-0001", "identifier": "Some_Identifier",
+            "page": 1, "paragraph": 0, "sentence": 2,
+            "source_text": "본문 문장.", "claim": "c", "doctrine": "d", "source_id": "s",
+        }
+        req = dg.build_requests_from_records([record])[0]
+        assert "앞 문장." in req.original_text
+        assert "본문 문장." in req.original_text
+        assert "뒤 문장." in req.original_text
+
+    def test_falls_back_to_source_text_when_context_lookup_misses(self, monkeypatch):
+        """조회 실패 시 문맥을 지어내지 않고 기존 동작(source_text 그대로)을 유지."""
+        monkeypatch.setattr(dg.tsu_parser, "build_candidates", lambda identifier: [])
+        dg._CONTEXT_INDEX_CACHE.clear()
+        record = {
+            "id": "TSU-TEST-0002", "identifier": "Some_Identifier",
+            "page": 9, "paragraph": 9, "sentence": 9,
+            "source_text": "고립된 문장.", "claim": "c", "doctrine": "d", "source_id": "s",
+        }
+        req = dg.build_requests_from_records([record])[0]
+        assert req.original_text == "고립된 문장."
+
+    def test_no_identifier_falls_back_to_source_text(self, monkeypatch):
+        dg._CONTEXT_INDEX_CACHE.clear()
+        record = {"id": "TSU-TEST-0003", "source_text": "출처 없음.", "claim": "c", "doctrine": "d", "source_id": "s"}
+        req = dg.build_requests_from_records([record])[0]
+        assert req.original_text == "출처 없음."
+
+
 class TestRegression:
     def test_pilot_reference_reused_not_duplicated(self):
         """decision_gate.py가 schema.PILOT_REFERENCE를 재사용하는지(별도

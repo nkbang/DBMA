@@ -30,6 +30,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from NAE.pipeline.tsu import parser as tsu_parser
+
 from .schema import PILOT_REFERENCE
 
 APPROVE = "A"
@@ -213,6 +215,53 @@ def write_requests(requests: list[HumanReviewRequest], directory: Path = REQUEST
     return path
 
 
+# identifier -> {(page, paragraph_index, sentence_index): (context_before, context_after)}.
+# Built lazily, once per identifier per process, from the same
+# tsu_parser.build_candidates() this repo already uses for the same
+# lookup in scripts/nae_fuller_cjk_reextract.py's `_context_index()` —
+# same key shape (page/paragraph/sentence), reused rather than
+# reinvented. Never touches Production TSU files, only re-derives from
+# canonical.json (read-only).
+_CONTEXT_INDEX_CACHE: dict[str, dict[tuple, tuple[str, str]]] = {}
+
+
+def _context_index(identifier: str) -> dict[tuple, tuple[str, str]]:
+    if identifier not in _CONTEXT_INDEX_CACHE:
+        index: dict[tuple, tuple[str, str]] = {}
+        for candidate in tsu_parser.build_candidates(identifier):
+            index[(candidate.page, candidate.paragraph_index, candidate.sentence_index)] = (
+                candidate.context_before,
+                candidate.context_after,
+            )
+        _CONTEXT_INDEX_CACHE[identifier] = index
+    return _CONTEXT_INDEX_CACHE[identifier]
+
+
+def _original_text_with_context(record: dict) -> str:
+    """`source_text`에 인접 문장(앞/뒤 각 1문장)을 덧붙인다 — Pilot 001의
+    `_PACKAGE_DETAIL`이 사람이 손으로 붙여준 "(앞).../(뒤)..." 형식과
+    동일한 표기를 대량 배치에도 기계적으로 재현한다. 이 배치의 review
+    기록(batch_0024~0026)에서 Q3(Context Sufficiency)가 반복적으로
+    C(문맥 필요)로 남는 근본 원인이 `original_text`에 원 문장 단 하나만
+    있었다는 점이었다 — 조회에 실패하면(정보 없음) 원래 동작대로
+    `source_text` 그대로를 반환한다(추측으로 문맥을 만들어내지 않음)."""
+    source_text = record.get("source_text", "")
+    identifier = record.get("identifier")
+    if not identifier:
+        return source_text
+    key = (record.get("page"), record.get("paragraph"), record.get("sentence"))
+    before, after = _context_index(identifier).get(key, ("", ""))
+    if not before and not after:
+        return source_text
+    parts = []
+    if before:
+        parts.append(f"(앞) {before}")
+    parts.append(source_text)
+    if after:
+        parts.append(f"(뒤) {after}")
+    return " ".join(parts)
+
+
 def build_requests_from_records(records: list[dict]) -> list[HumanReviewRequest]:
     """`schema.PILOT_REFERENCE`(고정 10건) 대신, 임의의 Production TSU
     레코드 리스트(예: 아직 verified로 승격되지 않은 4,107건 확장분)로
@@ -221,10 +270,11 @@ def build_requests_from_records(records: list[dict]) -> list[HumanReviewRequest]
     이미 걸러낸 레코드만 받는다.
 
     Pilot 001의 `_PACKAGE_DETAIL`처럼 사람이 미리 분석해 둔 evidence/
-    flags는 이 규모에서는 존재하지 않는다 — `original_text`는 TSU
-    레코드 자체의 `source_text` 필드를 그대로 사용하고, `evidence`/
-    `flags`는 채우지 않는다(빈 값 = Q4 없이 Q1-Q3만 생성, Pilot과 동일한
-    `_build_questions()` 조건부 로직 재사용). Human Decision은 절대
+    flags는 이 규모에서는 존재하지 않는다 — `evidence`/`flags`는 채우지
+    않는다(빈 값 = Q4 없이 Q1-Q3만 생성, Pilot과 동일한 `_build_questions()`
+    조건부 로직 재사용). `original_text`는 TSU 레코드의 `source_text`에
+    `_original_text_with_context()`로 앞/뒤 인접 문장을 붙인 것 — 조회
+    실패 시 `source_text` 그대로(기존 동작과 동일). Human Decision은 절대
     채우지 않는다 — `decision_status`는 항상 `PENDING`."""
     requests: list[HumanReviewRequest] = []
     for record in records:
@@ -238,7 +288,7 @@ def build_requests_from_records(records: list[dict]) -> list[HumanReviewRequest]
                 work_id=record.get("work_id", ""),
                 edition_id=record.get("edition_id", ""),
                 doctrine=record.get("doctrine") or "",
-                original_text=record.get("source_text", ""),
+                original_text=_original_text_with_context(record),
                 claim=record.get("claim", ""),
                 evidence="",
                 flags=flags,
