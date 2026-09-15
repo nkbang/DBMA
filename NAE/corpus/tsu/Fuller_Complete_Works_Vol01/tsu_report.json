@@ -23,5 +23,6 @@
   },
   "elapsed_seconds": 57726.76,
   "partial": false,
-  "note": "confidence is model self-reported and uncalibrated; review_status=generated until a human review promotes it to verified (see NAE/pipeline/tsu/review_promotion.py)"
+  "note": "confidence is model self-reported and uncalibrated; review_status=generated until a human review promotes it to verified (see NAE/pipeline/tsu/review_promotion.py)",
+  "cjk_reextract_version": "1.0.0"
 }

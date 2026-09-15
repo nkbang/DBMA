@@ -10,6 +10,18 @@ Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
 
+**[2026-09-13 종결] Q2 — BM25 전체 pool 스코어링 지연 해결 (사용자 승인 후 CUE 실행, Retrieval Engine 변경).**
+`core/retrieval.py::bm25_score()`가 매 질의마다 후보 문서 전체를 재토큰화하던
+구조를 코퍼스 인덱스 기준 토큰 캐시(`RetrievalEngine._bm25_token_cache`)로
+교체 — 기존 `_content_refs_cache`와 동일 패턴. `bm25_score()` 공개 시그니처·
+동작은 무변경(내부 산식만 `_bm25_score_from_tokens()`로 분리). 실측(코퍼스
+1,363 TSU): `로마서 8장 해석` 첫 호출 16,022ms → 캐시 워밍 후 731ms(약
+22배). 회귀 `dbma_env pytest tests --ignore=tests/nae` 2789 passed / 6
+skipped / 0 failed. 커밋 `dd56fab`, `origin`+`nas` push 완료. 상세는
+`docs/TODO.md` "완료 — Q2" 항목 참고. Q1(70.6B 생성 지연 원인)은 여전히
+GPU 점유(Fuller TSU 배치 진행 중으로 관측)로 보류 중 — corpus/GPU에는
+손대지 않음.
+
 **[2026-09-04 갱신] ADR-031(NAE Passage Commentary Viewer) Forensic Audit PASS → Approved.**
 v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC READY → GA.
 
