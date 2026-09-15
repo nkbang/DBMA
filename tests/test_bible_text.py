@@ -85,6 +85,14 @@ class TestFailClosed:
         # 미가용 인스턴스도 조회 API 가 안전해야 한다
         assert bible.list_books() == []
         assert bible.get_verses("PRO", 8, 10, 10) == []
+
+    def test_missing_file_reason_points_to_install_guide(self, tmp_path):
+        """[S2-2, D1] 기존 메시지는 config.yaml 키와 JSON 스키마 문서만
+        가리켜 비개발자 목회자가 따라가기 어려웠다 — INSTALL.md의
+        단계별 안내로 대체됐는지 회귀 방지."""
+        bible = load_bible_text(str(tmp_path / "does_not_exist.json"))
+        assert "INSTALL.md" in bible.reason
+        assert "config.yaml" not in bible.reason  # 더 이상 YAML 키를 노출하지 않는다
         assert bible.chapter_count("PRO") == 0
 
     def test_top_level_not_object(self, tmp_path):
