@@ -1,0 +1,2227 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0032",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0000271",
+      "tsu_id": "TSU-0000271",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Sanctification",
+      "original_text": "(앞) Objection 1.—There is an antithesis between the burial and resurrection which are here mentioned. The resurrection is moral, being to newness of life; and the same appears in the parallel passage in Colossians, where it is said to be “ by the faith of the",
+      "claim": "부활은 도덕적으로 새 생명으로 이해될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000558",
+      "tsu_id": "TSU-0000558",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) It has been further imagined, that there was not time for the immersion of so many; but this difficulty is not one which ought to impair the credibility of the narrative. Many, if not all of the seventy whom Christ had commissioned, were probably present on the occasion; and the apostles had undoubted authority to command their services in the administration of the rite. (뒤) With so many agents, the work required but little time.",
+      "claim": "예수님이 위임한 일흔 명의 대부분이, 혹은 모두가 그 자리에 있었을 것이며, 사도들은 의식의 집행에서 그들의 서비스를 명령할 권위를 가지고 있었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0000977",
+      "tsu_id": "TSU-0000977",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Since every church on earth has probably one or more false professors in it, and since Christ has not authorized the admission of false professors, it may be questioned whether, strictly speaking, there is a Christian ehurch on earth. (뒤) But it may be questioned, with equal propriety, whether any individual man should be called a Christian, since no man is fully conformed to the law of Christ.",
+      "claim": "지구상의 모든 교회는 아마도 하나 이상의 거짓 신자들을 가지고 있으며, 예수 그리스도께서는 거짓 신자들의 가입을 허락하지 않았으므로, 엄밀히 말해서 지구상의 기독교 교회가 존재하는지 의문이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001083",
+      "tsu_id": "TSU-0001083",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The sentence constructed as a parallel to the other text, is ag follows: “ Let the poetry of Shakspeare be honored in the theatre by managers and actors, even to the end of time.” We make no objection to this sentence, but its parallelism to the text fails in an important particular. Paul did not say, “ Be glory in the church to the end of time.” Local churches, like theatres, exist only in the present world; and when the end of time arrives, they will cease to exist. (뒤) It is therefore impossible that this text should refer to local churches, either as a genus, or as individuals; for it speaks of glory in the church, world without end.",
+      "claim": "교회는 현세에만 존재하며, 시간의 종말에 도달하면 소멸할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001198",
+      "tsu_id": "TSU-0001198",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) When the first church at Jerusalem was formed, it included, for a considerable time, all the disciples of Christ, and was the universal church, as far as it was practicable for that body to be assembled on earth. The distinction of local churches never existed until the church at Jerusalem was scattered: it is, therefore, improbable that the name of the universal body was derived from that of the particular associations subsequently formed. (뒤) Even the term, as contained in Christ’s directions,” was first applicable to the one church at Jerusalem, and was not applicable to the separate local churches until the first church had become dispersed.",
+      "claim": "지방 교회라는 개념은 예루살렘의 첫 교회가 흩어질 때까지 존재하지 않았으며, 따라서 보편적인 교회의 이름이 이후에 형성된 특정한 교회 단체에서 유래했다는 것은 가능성이 낮다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001210",
+      "tsu_id": "TSU-0001210",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) It consisted of Jews, who were attached to their holy city, their temple, and the forms of worship to which they had been accustomed. At first they had no conception that gentiles were to be admitted to equal privileges in the Christian dispensation ; and they probably expected that Jerusalem was to be the great centre of Christian worship, as it had been for the people of Israel ; but persecution soon taught them their mistake. (뒤) Driven from the city of their affections, and scattered abroad through the earth, they learned to look to another city in which they were to unite in the worship of God, beyond the reach of persecution.",
+      "claim": "초기 기독교인들은 처음에 이방인이 기독교 계시에 동등한 특권을 가질 것이라는 개념이 없었고, 예루살렘이 여전히 기독교 예배의 중심지가 될 것으로 생각했지만, 곧 박해로 인해 그들의 오류를 깨달았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001218",
+      "tsu_id": "TSU-0001218",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Such are the local churches in which they unite on earth. Although the term church occurs much more frequently in the New Testament in its application to local churches, than to the church universal; yet it is apparent on the face of the sacred pages, that membership in this was far more important than in those. (뒤) Little is anywhere said of membership in a local church; but the common recognition of Christians is as members of the church universal, the great brotherhood: “Of this way,’’?",
+      "claim": "지구의 지역 교회에서의 회원 자격보다 보편적인 교회의 회원 자격이 훨씬 더 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001219",
+      "tsu_id": "TSU-0001219",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Although the term church occurs much more frequently in the New Testament in its application to local churches, than to the church universal; yet it is apparent on the face of the sacred pages, that membership in this was far more important than in those. Little is anywhere said of membership in a local church; but the common recognition of Christians is as members of the church universal, the great brotherhood: “Of this way,’’? (뒤) “the reece ee ee",
+      "claim": "지방 교회보다 보편적인 교회의 회원 자격이 더 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001298",
+      "tsu_id": "TSU-0001298",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The bond of perfectness which unites the people of God on earth, makes them one with the church in heaven, who are made perfect",
+      "claim": "지상의 하나님의 백성들을 완전한 단결로 결합시키는 것은 그들을 하늘의 교회와 하나로 만들어 주며, 그들은 완전하게 됩니다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001308",
+      "tsu_id": "TSU-0001308",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The brotherly love which characterizes and unites the followers of Christ, has not for its object all who profess the true religion. (뒤) Christ did not enjoin such exercise of it; but instructed his disciples to beware of wolves in sheep’s clothing.",
+      "claim": "그리스도인의 형제 사랑은 모든 진정한 종교를 고백하는 사람을 대상으로 하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001309",
+      "tsu_id": "TSU-0001309",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The brotherly love which characterizes and unites the followers of Christ, has not for its object all who profess the true religion. Christ did not enjoin such exercise of it; but instructed his disciples to beware of wolves in sheep’s clothing. (뒤) These dangerous intruders into the fold were to appear as professors of the true religion ; otherwise, it could not be said that they wore the clothing of sheep.",
+      "claim": "그리스도의 추종자들이 지녀야 할 형제 사랑은 모든 진정한 종교를 신봉하는 사람을 대상으로 하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001352",
+      "tsu_id": "TSU-0001352",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) All who profess the true religion do not form one body by mere juxtaposition, as a number of men gathered together form one assembly ; but they are scattered abroad everywhere over the face of the earth. The simple fact that they are alike in professing the same religion is sufficient for the purpose of mental classification; but to constitute them really one body, some species of organization is necessary. (뒤) Do they compose an organized body ?",
+      "claim": "같은 종교를 믿는다는 단순한 사실은 영적인 분류의 목적에는 충분하지만, 정말로 하나의 몸을 구성하기 위해서는 어떤 종류의 조직이 필요합니다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001392",
+      "tsu_id": "TSU-0001392",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) His true church is a spiritually organized body, and spiritually joined to him its only head. The body claiming to be the church on the ground of external organization is a substitute, and its head is a substitute for Christ. (뒤) They first take the place of the true church and its true head, and afterwards oppose and persecute.",
+      "claim": "외부 조직을 근거로 교회를 주장하는 것은 대체이며, 그 머리는 그리스도의 대체이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001393",
+      "tsu_id": "TSU-0001393",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The body claiming to be the church on the ground of external organization is a substitute, and its head is a substitute for Christ. They first take the place of the true church and its true head, and afterwards oppose and persecute. (뒤) They who see and deplore the mischief which the papal usurpation has wrought, should learn the secret of its power.",
+      "claim": "거짓 교회와 그 지도자는 진정한 교회와 그 머리인 그리스도를 대신하여 먼저 자리잡고, 이후에 반대하고 박해한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001394",
+      "tsu_id": "TSU-0001394",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) They first take the place of the true church and its true head, and afterwards oppose and persecute. They who see and deplore the mischief which the papal usurpation has wrought, should learn the secret of its power. (뒤) The substitution of ecclesiastical organization for spiritual religion has wrought all the evil.",
+      "claim": "교황의 권력 남용이 가져온 폐해를 보고 탄식하는 사람들은 그 권력의 비밀을 배워야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001410",
+      "tsu_id": "TSU-0001410",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Even in the primitive times, there were, among those who professed the true religion, false apostles and false prophets; pastors who devoured the flock; teachers who brought in damnable heresies ; and governments that lorded it over God’s heritage, and loved to have the pre-eminence. Considering the church as an externally organized society, these men were as truly officers in it as the most self-denying of its ministers. (뒤) In the Roman church, the pontiff holds the supreme place, whatever may be his moral character.",
+      "claim": "교회를 외부적으로 조직화된 사회로 볼 때, 이들은 가장 헌신적인 목회자와 마찬가지로 진정한 직분자였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001457",
+      "tsu_id": "TSU-0001457",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Some difficulty exists in determining the date at which the church of Christ may be properly said to have commenced. (뒤) The",
+      "claim": "그리스도의 교회가 공식적으로 시작된 날짜를 결정하는 데 어려움이 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001561",
+      "tsu_id": "TSU-0001561",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The king- - dom does not consist wholly of its subjects; but it has also its king, its laws, its privileges, and its enjoyments. We have Scripture analogy for saying, that the subjects receive the kingdom, enter into the kingdom, inherit the kingdom, and have part in the kingdom; but none for saying that they compose or constitute the kingdom. (뒤) Hence the rendering, “ To such the kingdom belongs,” is recommended to our adoption, as the best interpretation of the Saviour’s words.",
+      "claim": "성경적 유비로는 백성들이 나라를 받고, 나라에 들어가고, 나라를 상속받고, 나라에 참여한다고 말할 근거는 있지만, 그들이 나라를 구성하거나 이룬다고 말할 근거는 전혀 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001564",
+      "tsu_id": "TSU-0001564",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) In the parallel passage, “ theirs is the kingdom of heaven,” the persons intended are “the poor in spirit;’ and these include all the loyal subjects of the kingdom. If the parallelism between the passages is complete, the word “such” must, in like manner, include all the loyal subjects of the Redeemer’s reign, and cannot therefore signify literal children. (뒤) But if we take the word “such,” to signify a part only of those to whom the kingdom belongs, we shall still be compelled to consider the declaration as importing that the kingdom belongs to all such.",
+      "claim": "성도들의 왕국에 속한 모든 사람을 가리키는 '그 같은'라는 단어가 문자 그대로 아이들만을 의미하지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001709",
+      "tsu_id": "TSU-0001709",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "(앞) Four thousand years of ignorance and crime, God winked at, or overlooked as unworthy of his regard, or unfit for his purpose; and fixed his eyes on that period denominated “the fulness of time,” when it would best display the divine perfections, for the Redeemer to atone for transgression; and repentance and remission of sins to be preached in his name, among all nations. As, in the exercises of an individual Christian, the discovery of salvation in Christ is withheld, until an anxiety is excited in his breast that makes the discovery welcome; so in the history of the world, the Messiah makes not his appearance, until mankind have felt the necessity of such a deliverer; then he comes, the desire of all nations. (뒤) It pleased God that a full experiment should be made of man’s power and skill to find a remedy for his moral disease, before God’s remedy for the healing of the nations should be revealed and applied.",
+      "claim": "구원의 필요성을 인식한 후에 메시야가 나타난다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001723",
+      "tsu_id": "TSU-0001723",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) That society of persons which was the subject of the last-mentioned experiment, is frequently denominated the Congregation of the Lord. It appears to have been the orly divinely instituted society, organized for religious worship, that ever existed before the coming of Christ. (뒤) That God designed by the Mosaic dispensation, of which this congregation was the subject, to give a clear demonstration of man’s depravity, may be inferred from the end which has actually been accomplished, and from such declarations of Scripture as the following: “ The law was added because of transgression until the seed should come.",
+      "claim": "그리스도 이전에 존재한 유일한 신적으로 정해진 종교적 예배를 위한 사회는 하나님의 회중이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001737",
+      "tsu_id": "TSU-0001737",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) They were constituted, and continued to be, the Lord’s peculiar cahal, his only worshipping congregation. But while the ordinances of. their worship were wisely contrived to be types and prophecies of Christ, at the same time that they afforded to the world that experiment, which appears to have been so important a part of their design; in like manner, an instructive intimation of the future exclusion of the Jews from gospel privileges, and of the admission of the gentiles, appears to have been given, in the character of the members who composed this sacred congregation. (뒤) The great body of its constituents were the descendants of Abraham; but provision was made in its charter, that Israelites in some cases should be excluded, and that gentiles might be admitted.?",
+      "claim": "구약의 예배 규례는 그리스도를 미리 보여주고 예언하는 것이었으며, 동시에 유대인들이 복음 특권에서 제외되고 이방인들이 받아들여지는 미래를 암시했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001744",
+      "tsu_id": "TSU-0001744",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "(앞) When the end for which any society was instituted has been accomplished, it is natural to expect its dissolution. The experiment for which the Congregation of the Lord had been organized, was completely made, when the Redeemer appeared, in the end of the world, “to take away sin by the sacrifice of himself.” The first covenant, established upon conditional promises, was proved, upon due trial, to be faulty, weak, and.unprofitable ; and the necessity of a better covenant, whose better promises should be all yea and amen in Christ Jesus, was clearly demonstrated: “ He taketh away the first, that he may establish the second.” When “There was a disannulling of the commandment going before,” in which was contained the charter of the Congregation of the Lord, the",
+      "claim": "구속주께서 세상 끝에 나타나 자기 자신을 제물로 드려 죄를 없애셨을 때, 조건적 약속 위에 세워진 첫 언약은 결함 있고 무익한 것으로 판명되었고, 그리스도 예수 안에서 참된 더 나은 약속을 지닌 더 나은 언약의 필요성이 분명히 증명되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001793",
+      "tsu_id": "TSU-0001793",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Eschatology",
+      "original_text": "(앞) A difficulty would attend the interpretation, if the term “ everlasting” always denoted unlimited duration; but this was not its only signification. The grant of the land of Canaan afterwards made in the covenant, could not extend beyond the duration of the present world; and, if the covenant was to continue in force to the end of time, or even till that state of things should cease, for which the covenant was designed to provide, the epithet “ everlasting” was properly applied to it. (뒤) In various passages of Scripture the word is used in this sense.",
+      "claim": "언약의 기간이 현재 세계의 지속 기간을 넘어서지 않는다는 것과 언약이 그 목적으로 설계된 상태가 끝날 때까지 또는 시간의 종말까지 계속 시행될 경우 '영원한'이라는 용어가 적절히 적용됨",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001884",
+      "tsu_id": "TSU-0001884",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Fora gentile to be circumcised, is an admission that the Congregation of the Lord is still in being, and the Mosaic law still in force; and for any one, whether Jew or gentile, to be circumcised as a means of salvation, is to set aside Christ and render him unprofitable. But can any one prove that it is inconsistent with the gospel for a Jew to retain circumcision, as a token of his connection with Abraham, and his interest in that remarkable people, through whom he still expects God to display the riches of his grace in the most wonderful manner ?",
+      "claim": "유대인들이 율법의 상징으로서 할례를 유지하는 것은 복음과 모순되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001922",
+      "tsu_id": "TSU-0001922",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Their rejection of his reign was made the occasion of its extension to the gentiles: “It was necessary that the word of God should first have been spoken to you: but seeing ye put it from you, and judge yourselves unworthy of everlasting life, lo, we turn to the gentiles.”\" The blessings of the Messiah’s reign were expected by the nation to be theirs, and the first offer and bestowment of them accorded with this expectation: but the peculiar privilege was taken from them when they rejected their king; and it is now enjoyed by those who obey him in every nation. These, and these only, bring forth the fruits of the kingdom; and, however the transfer to them may be understood, it cannot prove the churchmembership of infants.",
+      "claim": "유아들의 교회 회원 자격은 왕국을 위한 열매를 맺는 것과 관련이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0001930",
+      "tsu_id": "TSU-0001930",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Eschatology",
+      "original_text": "(앞) 3. Another important change is still expected when the natural branches which were broken off shall be “ graffed in again.” The condition on which it will be done is expressly stated : “ They also",
+      "claim": "자연의 가지들이 다시 이식될 때 또 다른 중요한 변화가 예상된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002008",
+      "tsu_id": "TSU-0002008",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The decalogue requires the observance of the seventh day, regularly returning after six days of labor ; and not the seventh day of the week. As thus interpreted, the Christian practice literally conforms to it. (뒤) If the seventh day in the commandment means the seventh day of the week, it is our duty to obey strictly ; and if we can learn, by legitimate inference, that the first day of the week ought to be observed, our course of duty is plain—we ought to observe both days: so, if infant baptista can be made out by legitimate inference, instead of permitting it to supersede believers’ baptism, we ought to observe both.",
+      "claim": "그리스도인의 관행은 계명의 요구에 따라 일주일을 지키는 것과 관련하여 문자적으로 일치한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002166",
+      "tsu_id": "TSU-0002166",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "(앞) No trace of infant baptism can be found, previous to the time of Justin Martyr. The passage of his writings, which is quoted on page 174, has been regarded as the first clear testimony on the subject; but we have shown that this, when properly interpreted, means nothing more than that some persons, then sixty or seventy years of age, had been made disciples of Christ before they were fully grown. (뒤) In another part of Justin’s writings, he purposely gives an account of the usages which existed among Christians, respecting baptism; and, in doing this, he describes the baptism of believers, without any intimation that infants were concerned in the rite.",
+      "claim": "유스틴 순교자의 글에서 언급된 구절은 어린 시절에 예수님의 제자가 된 사람들에 대한 것으로, 영세 미자 세례에 대한 명확한 증거는 아님",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002173",
+      "tsu_id": "TSU-0002173",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "(앞) A. D. 250, interpreted the cries of new-born babes to be an asking for the grace which baptism was supposed to confer. (뒤) The propriety of giving it to infants was now extensively admitted, but the practice was not universal.",
+      "claim": "250년경에 일부 사람들은 신생아의 울음소리를 세례의 은혜를 구하는 것으로 해석했다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002442",
+      "tsu_id": "TSU-0002442",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) If we ought to guard against being led into error by our intercourse with good men, when no wrong is suspected, much more ought we, when the existence of wrong is known. But toleration implies wrong; and, if mixed communion be defended on the plea of toleration, the very defence admits that there is wrong somewhere. (뒤) It becomes us, therefore, to take good heed, lest we be implicated in the wrong.",
+      "claim": "관용은 잘못이 있음을 함의하며, 혼합 성찬을 관용의 명분으로 옹호한다면 그 옹호 자체가 어딘가에 잘못이 있음을 인정하는 셈이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002462",
+      "tsu_id": "TSU-0002462",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The members of a church, who understand the law of Christ, are bound to observe it strictly, whatever may be the ignorance and errors of others. (뒤) For them to admit unbaptized persons to membership, is to subvert a known law of Christ.",
+      "claim": "교회 구성원은 그리스도의 법을 이해하고 있기 때문에 엄격히 지켜야 하며, 다른 사람들의 무지나 오류와는 상관없이 그렇게 해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002489",
+      "tsu_id": "TSU-0002489",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) If we admit the conclusion of this argument, it does not prove close communion to be wrong. Some Baptists admit the validity of the argument; and avoid the charge of inconsistency by refusing to invite Pedobaptist ministers into their pulpits. (뒤) Their views will be examined hereafter, Chapter X., section 5,1and we shall then attempt to show that what has been called pulpit com",
+      "claim": "일부 침례교도들은 논증의 유효성을 인정하며, 유아세례 목사들을 자신의 강단에 초대하지 않음으로써 일관성 없는 비난을 피한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002510",
+      "tsu_id": "TSU-0002510",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) When Pedobaptists complain of our strict communion, we would remind them that they hold the principle in common with us, and practise on it in their own way. If they have aught to object, let it be at that in which we differ from them, and not at that in which we agree. (뒤) The contrary course is not likely to produce unity of opinion, or to promote that harmony of Christian feeling which ought to subsist among the followers of our Lord.",
+      "claim": "유아세례파가 우리와 공통된 원칙을 가지고 있으면서도 그들의 방식대로 실천한다는 이유로 우리의 엄격한 성찬 교제에 대해 불평한다면, 그들은 우리가 동의하는 점이 아니라 서로 다른 점에 대해 이의를 제기해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002523",
+      "tsu_id": "TSU-0002523",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Lord's Supper",
+      "original_text": "(앞) “If ye know these things,” says he,” “ happy are ye if ye do them.” We must know, in order to do; and if we mistake his design, how honest soever our intention may be, we shall not have fulfilled his command. If, on this memorable night, when he partook of the last passover with his disciples, and when he instituted the breaking of bread as the memorial of “Christ, our Passover, sacrificed for us,” he designed to institute the washing of feet as another religious rite, till his second coming, together with baptism and the breaking of bread; then, this institution should be observed with punctilious carefulness ; and no plea should be admitted from the neglect of it, to justify",
+      "claim": "예수님이 제자들과 마지막 유월절을 나누시고 '우리를 위해 희생되신 유월절 되신 그리스도'를 기념하는 떡을 떼는 예식을 제정하신 그 기념할 만한 밤에, 만일 그가 침례 및 떡을 뗌과 더불어 발 씻기는 것도 그의 재림 때까지 지킬 또 하나의 종교적 의식으로 제정하고자 하셨다면, 이 제도는 세심한 주의로 지켜져야 하며 이를 소홀히 한 것에 대한 어떤 변명도 받아들여져서는 안 된다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002527",
+      "tsu_id": "TSU-0002527",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Baptism and the Lord’s supper are positive institutes, because the obligation to observe them could not be inferred from any utility or apparent fitness in the things themselves. On the contrary, the washing of feet was not a mere ceremony, but a necessary act of hospitality which had been in use since the days of Abraham ;} and it is accordingly reckoned by the Apostle Paul, in connexion with other moral duties of like kind, as the proper foundation of a reputation for good works. (뒤) “ Well reported of for good works, if she have lodged strangers, if she have washed the saints’ feet, if she have relieved the afflicted, if she have diligently followed every good work.”?",
+      "claim": "발을 씻는 예식은 단순한 의식이 아니라 아브라함 시대부터 행해진 필수적인 환대 행위로서, 사도 바울은 이와 같은 도덕적 의무를 다른 것들과 함께 좋은 작품에 대한 명성의 적절한 기초로 간주한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002530",
+      "tsu_id": "TSU-0002530",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "(앞) 2. The example of the Saviour recommends the act on the ground of its utility.",
+      "claim": "구원의 주님의 예는 그 행위의 유용성에 근거하여 이를 권장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002535",
+      "tsu_id": "TSU-0002535",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "",
+      "original_text": "(앞) On this need, small as it may appear, the Saviour placed the fitness and propriety of the act which he performed. He was willing to set an example of performing the least possible act of real kindness ; but he would not extend that act a whit beyond the line of necessity and utility. (뒤) Beyond this line, it was no longer an act of kindness.",
+      "claim": "주님은 작은 행실에서도 실제적인 친절을 보여주는 본을 세우려 하셨지만, 그 친절이 필요와 유용성의 경계를 넘어서는 것은 피하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002556",
+      "tsu_id": "TSU-0002556",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) this less satisfactory source of evidence affords, though entirely consistent with the testimony of Scripture, is not needed, either for elucidation or confirmation. On opening the inspired history of the church, we read, at the very beginning, “ They that gladly received his word were baptized: and they continued steadfastly in the apostles’ doctrine, and fellowship, and in breaking of bread, and in prayers.” Baptism is frequently mentioned in the subsequent history, and in the 20th chap. (뒤) Tth verse express mention is made that ‘the disciples came together to break bread.” But not a chapter, not a verse, in all the Acts of the Apostles, contains an intimation that any church, or any company of disciples, ever assembled to celebrate the washing of feet.",
+      "claim": "초기 교회에서 세례는 중요한 의식으로 수행되었지만 발 씻기는 언급되지 않는다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002562",
+      "tsu_id": "TSU-0002562",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) To demonstrate this, we have but to substitute, in the passage, the mention of these acknowledged ordinances, and the incongruity of such a connexion will immediately appear: “ Well reported of for good works; if she have brought up children, if she have lodged strangers, if she have been baptized, or received the Lord’s supper, if she have relieved the afflicted, if she have diligently followed every good work.” As it must be supposed of every widow in the church that she had been baptized, and had received the Lord’s supper ; no “if,” with respect to these ordinances, could be admitted, and no one widow could, on account of her having observed them, be more entitled to honor than any other. The same would have been true concerning the washing of feet, if this also had been a religious rite in common use in the churches; and it would have been a manifest absurdity to state the fact of any church member hay-",
+      "claim": "발을 씻는 예식이 만일 교회에서 일반적으로 시행되는 종교 의식이었다면, 어떤 교인이 그것을 행했다는 사실을 굳이 언급하는 것 자체가 명백한 부조리였을 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002565",
+      "tsu_id": "TSU-0002565",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "These considerations show clearly that it was the Saviour’s design to enforce a whole class of moral duties,.and not to institute a religious ceremony; and that he was so understood by his apostles. (뒤) He who washes the feet of a saint, when those feet do not need washing, is as if he gave a cup of cold water toa disciple who is not thirsty.",
+      "claim": "주님은 도덕적 의무를 강조하기 위하여 특정 행동을 명하셨으며, 그것이 종교적인 의식이 아님을 보여주고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002580",
+      "tsu_id": "TSU-0002580",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "(앞) When the decalogue was promulgated from Sinai, it did not speak of the sabbath as an institution before unknown. The command, ‘ Remember the sabbath day,” implies a knowledge of its existence ; and this is confirmed by the previous historical fact, that the fall of manna had ceased on the sabbath day.",
+      "claim": "안식일은 이미 알려진 제도였다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002584",
+      "tsu_id": "TSU-0002584",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) taken from God's rest on the seventh day, after six days’ work in _ creating the world; and not from anything that pertained specially to the nation of Israel. The institution is adapted to the nature of man, as a religious being, and the relation which he sustains to his Creator. —",
+      "claim": "인간의 본성과 창조주와의 관계에 따라 안식일 제도가 인간에게 적합하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002588",
+      "tsu_id": "TSU-0002588",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) given to the Israelites, it was given to them as men. The ceremonial law was given to them, as the Congregation of the Lord ; and the judicial law was given to them as the Nation of Israel. (뒤) But the decalogue was adapted to the relations which they bore to God and one another, as men.",
+      "claim": "의식법은 그들이 주의 회중으로서 주어졌고, 재판법은 이스라엘 국가로서 그들에게 주어졌다 — 반면 십계명은 그들이 사람으로서 하나님과 서로에 대해 갖는 관계에 맞게 주어졌다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002595",
+      "tsu_id": "TSU-0002595",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "Among the precepts of the decalogue, we find the command: “Remember the sabbath day.” As the whole decalogue binds us, so does this commandment. (뒤) No man has a right to separate it from the rest, and claim exemption from its obligation.",
+      "claim": "십계명의 계명 중 하나는 안식일을 기억하라는 명령이며, 이 계명은 계명 전체와 마찬가지로 우리를 구속한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002603",
+      "tsu_id": "TSU-0002603",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Other",
+      "original_text": "(앞) No one thinks of the seventh year otherwise than as the year which follows six years of regular toil in the cultivation of the earth, and as regularly returning at equal intervals. The precise similarity of the command enjoining the observance of the seventh day sabbath, proves that the same method of interpretation must be applied to it. (뒤) If an obligation exists to observe Saturday, or Sunday, rather than any other day of the week, it cannot be found in this precept of the decalogue, and must be made out in some other way.",
+      "claim": "안식일에 대한 계명의 해석은 칠년을 기준으로 하는 해석 방법과 동일하게 적용되어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002608",
+      "tsu_id": "TSU-0002608",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) A few years ago it was stated in some of our missionary intelligence, that a practical question of duty in the observance of the sabbath had arisen between some missionaries, who had met at their field of labor on the other side of the globe, having sailed to it by different routes, some by the eastern and others by the western. On comparing their computation, their sabbaths differed; and what was Saturday to one party was Sunday to the other. (뒤) If the seventh day of the week had been commanded, these missionaries could not have obeyed without becoming sabbath-breakers to each other; and if no higher wisdom than that of Moses, who was ignorant of the earth’s true form, had dictated the decalogue, its admirable adaptedness to the condition and circumstances of men, in every age and country, and under every meridian, would not have been secured.",
+      "claim": "일요일과 토요일을 기준으로 하는 휴일의 관행은 지구의 형태와 시간대에 따라 달라질 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002609",
+      "tsu_id": "TSU-0002609",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) On comparing their computation, their sabbaths differed; and what was Saturday to one party was Sunday to the other. If the seventh day of the week had been commanded, these missionaries could not have obeyed without becoming sabbath-breakers to each other; and if no higher wisdom than that of Moses, who was ignorant of the earth’s true form, had dictated the decalogue, its admirable adaptedness to the condition and circumstances of men, in every age and country, and under every meridian, would not have been secured.",
+      "claim": "안식일이 명령되었다면 선교사들은 서로에게 안식일을 어기는 사람이 될 수밖에 없었으며, 모세의 지혜만으로 십계명을 정했다면 모든 시대와 국가, 그리고 모든 지역에서 인간의 상태와 상황에 맞게 적용될 수 있는 계명의 훌륭한 적합성이 보장되지 않았을 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002610",
+      "tsu_id": "TSU-0002610",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Scripture / Authority",
+      "original_text": "Another objection to the interpretation which supposes the seventh day of the week to be prescribed, may be seen in the fact that it makes Scripture dependent on tradition. (뒤) Had the observance of the new moon, or of the full moon, been commanded, the means of ascertaining the time intended would have been within the reach of every one; but had the Scripture commanded to observe the seventh day of the week, who could know the day required?",
+      "claim": "성경이 주일 제7일의 관행을 명령한다면 전통에 의존해야 한다는 사실은 이러한 해석에 대한 반대 의견이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002622",
+      "tsu_id": "TSU-0002622",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "According to the view which we have taken of the fourth commandment, Christians obey it, as literally as the Jews. (뒤) The latter derive their series of weeks by tradition from the time of Moses; we derive ours by tradition from the time of Christ.",
+      "claim": "그리스도인들은 유대인과 마찬가지로 네 번째 계명을 문자적으로 지키고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002624",
+      "tsu_id": "TSU-0002624",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The latter derive their series of weeks by tradition from the time of Moses; we derive ours by tradition from the time of Christ. We see with pleasure, the beginning of our series, in the brief accounts of Scripture, where the day on which Christians met for worship, is specicified. (뒤) On the first day of the week our Lord rose from the dead.",
+      "claim": "우리는 그리스도인들이 예배를 위해 모인 날이 명시된 성경의 간략한 기록에서 우리 계열(series)의 시작을 기쁘게 확인한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002630",
+      "tsu_id": "TSU-0002630",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The disciples at Troas met together to break bread ;? and the inspired historian is careful to tell us, that it was on “the first day of the week.” In writing to the Corinthians, Paul directed them, in making their religious contribution for the poor saints at Jerusalem, “On the first day of the week, let every one of you lay by him in store, as God hath prospered him.”’* In describing the wonderful revelation which he received on the isle of Patmos, John says, ‘‘ I was in the Spirit on the Lord's day.” 4 By this phrase, he seems to designate the day on which our Lord arose, and which had been consecrated to his worship.",
+      "claim": "첫째 날에 예배와 헌금이 이루어지는 것이 중요하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002631",
+      "tsu_id": "TSU-0002631",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "As the Mosaic revelation displays divine wisdom, in its mode of exhibiting the fourth commandment; so does the Christian revelation, in its mode of recommending the first day of the week to our observance. (뒤) The old covenant, with its priesthood, and forms of worship, had passed away, and there was a fitness in instituting a new form of worship to be introduced, and it was fit that the resurrection of our Lord should begin the new computation, and be commemorated by it.",
+      "claim": "모세의 계시에 나타난 신적 지혜는 네 번째 계명에서 그 방식으로 나타나고, 기독교 계시도 주일 첫째 날을 우리에게 준수하도록 추천하는 방식으로 나타난다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002651",
+      "tsu_id": "TSU-0002651",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The intimation plainly made, is, that females are not expected to lead in public prayer. This accords with the words of Paul: “It is a shame for women to speak in the church,” or public assembly, But there is great propriety in the separate meeting of females for prayer, and much benefit results to themselves and the cause of God.",
+      "claim": "여성은 공개적인 예배에서 기도 인도를 맡는 것은 부적절하지만, 여성 전용 모임에서는 기도와 교회의 이익이 될 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002672",
+      "tsu_id": "TSU-0002672",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "The ministers of Christ are, like ordinary Christians, separate from the world. (뒤) They are partakers of the heavenly calling, by which men are brought out of the world, and made the servants of Christ.",
+      "claim": "그리스도의 사역자들은 보통의 기독교인들과 마찬가지로 세상을 분리되어 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002731",
+      "tsu_id": "TSU-0002731",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "(앞) Had Christ been an impostor, had there been a scheme to deceive the people, Judas must have known it. His testimony, confirmed by his return of the money with which he had been bribed, and by his suicide, banishes every suspicion dishonorable to the Saviour. (뒤) It was therefore wisely ordered that Judas should be among the apostles.",
+      "claim": "유다의 증언과 그의 행동은 예수의 진실성을 입증한다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002763",
+      "tsu_id": "TSU-0002763",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Soteriology",
+      "original_text": "But it is still true, that there are some whose gifts for public usefulness rise high above the rest ; and, in bestowing superior qualifications, the Holy Spirit, who divides to every man severally as",
+      "claim": "성령은 각 사람에게 riêng히 은사를 나누어 주시며, 일부 사람들에게는 다른 사람보다 더 높은 공공적인 유용성을 위한 자질을 부여하신다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002779",
+      "tsu_id": "TSU-0002779",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Tt was fit that Elisha should be anointed to the prophetical office by a prophet. Men whom the Spirit has filled with a burning desire to preach the gospel, and has qualified for the service, are the most suitable persons to look out aids in the service, and judge of their fitness. (뒤) Hence the obligation was laid on Timothy, already a minister.",
+      "claim": "성령이 복음 전파에 대한 열망을 불어넣고 그 일을 위해 자격을 주신 사람들은 사역을 돕는 사람들을 찾고 그들의 적합성을 판단하기에 가장 적절한 사람들이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002794",
+      "tsu_id": "TSU-0002794",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "therefore he says in another place, “ By the laying on of the hands of the presbytery.” The concurrence of a presbytery might not be possible in every city of Crete, where the churches had been recently planted; but where it was possible, even Paul with his apostolic authority chose not to act without it. (뒤) We have, therefore, apostolic example confirming our reasoning on the subject, that where a presbytery can be obtained, its concurrence ought to be procured.",
+      "claim": "장로회가 가능하다면 그들의 동의를 얻어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002795",
+      "tsu_id": "TSU-0002795",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) therefore he says in another place, “ By the laying on of the hands of the presbytery.” The concurrence of a presbytery might not be possible in every city of Crete, where the churches had been recently planted; but where it was possible, even Paul with his apostolic authority chose not to act without it. We have, therefore, apostolic example confirming our reasoning on the subject, that where a presbytery can be obtained, its concurrence ought to be procured. (뒤) The minister, who, from the direction given to Titus, takes it upon himself alone to ordain to the sacred office, assumes a power which Paul himself did not assume.",
+      "claim": "장로회가 가능하다면 그들의 동의를 얻어야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002855",
+      "tsu_id": "TSU-0002855",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) As every converted man ought to profess Christ by baptism, so every one who has been called of God to the ministry, ought to enter on the work by ordination. The proof of the obligation in the latter case, is not so clear from the Holy Scriptures, as in the former, but it is sufficiently clear to guide our practice.",
+      "claim": "성경에서 목사의 임무에 대한 의무의 증거는 세례의 경우보다 명확하지 않지만 우리의 실천을 이끄는 데에는 충분히 분명하다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002917",
+      "tsu_id": "TSU-0002917",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The beginning and the end of the succession appear. The middle of it he sees not; but he knows that the Head of the church has lived during all the intermediate time, and that he is the God of providence, and the giver of the Holy Spirit, by whose influence the chain of succession could be preserved, He feels assured, that, if an unbroken succession is necessary for any purpose which the Head of the church has in view, APOSTOLIC SUCCESSION. 259",
+      "claim": "그리스도(교회의 머리)께서 모든 중간 시대에 걸쳐 살아 계셨고 섭리의 하나님이자 성령을 주시는 분이시므로, 그 성령의 영향력으로 계승의 사슬이 보존될 수 있었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002959",
+      "tsu_id": "TSU-0002959",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) From this comparison, it clearly appears that ordination does not come to us enforced by like obligations to those of baptism. If our doctrine of strict communion be correct, baptism is a prerequisite to membership in the local churches ; and, since the administration of baptism properly belongs to the ministers of the word, the local churches are, in this particular, dependent for their existence on the ministry. (뒤) Local churches cannot originate the minis-",
+      "claim": "세례는 지역 교회 회원 자격의 전제조건이며, 세례의 집행은 말씀의 사역자들에게 속하므로 지역 교회들은 존재에 있어 사역에 의존한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0002974",
+      "tsu_id": "TSU-0002974",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) “The elders that rule well.”’? The term bishop signifies overseer, and implies authority to rule. (뒤) Among the qualifications necessary for a bishop, one was, that he ruleth well his own house; and the reason assigned is, “ If a man know not how to rule his own house, how shall he take care of the church of God?” It is clear, from this passage, that the bishops were invested with an authority bearing some analogy to the authority which the head of a family exercises over his household.",
+      "claim": "감독자의 직함은 감독을 의미하며, 권위를 통한 지배를 암시한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003046",
+      "tsu_id": "TSU-0003046",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) To receive any one on a mere profession of words, without any effort to ascertain whether he understands and feels what he professes, is unfaithfulness to his interests, and the interests of religion. In primitive times, when persecution deterred from profession, and when the Spirit operated in a more visible manner, the danger of mistake was less; but even then, all who professed were not received. (뒤) John the Baptist rejected some from baptism, who did not bring forth fruits meet for repentance.",
+      "claim": "초기 기독교 시대에는 박해와 성령의 더 뚜렷한 활동으로 인해 잘못된 신앙 고백의 위험이 적었지만, 모든 사람들이 신앙을 고백했다고 해서 받아들여지지는 않았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003126",
+      "tsu_id": "TSU-0003126",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) This raised the Roman pontiff to his high seat of power, and his adherents are actuated by the same spirit. To counteract its influence, Christ commanded his disciples, “ Be ye not called Rabbi, for one is your Master, even Christ, and all ye are brethren.’”? (뒤) The doctrine of equality among the ministers of Christ is at war with clerical ambition, and a steadfast maintenance of it would have effectually barred out the Man of Sin, and it would now demolish the Roman hierarchy, and teach haughty prelates the need of Christian humility.",
+      "claim": "그 영향력에 대항하기 위해 그리스도는 제자들에게 '너희는 랍비라 칭함을 받지 말라 너희 선생은 하나요 곧 그리스도시요 너희는 다 형제니라'고 명하셨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003139",
+      "tsu_id": "TSU-0003139",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The objection supposes some other than moral power to be needful for ministers. A man whose piety and call of God to the ministry are unquestionable ; who gives full proof to those among whom he ministers that he seeks their highest good, and who serves a people that esteem him highly for his work sake; has an influence over them which is almost unbounded. (뒤) He comes to them in the name of God, and they perceive that his instruction and precepts are drawn from the word of God.",
+      "claim": "하나님의 부르심과 사역에 대한 의문이 없는 사람으로서, 그가 섬기는 공동체의 최고의 이익을 추구하며, 그의 사역을 높이 평가하는 사람들에게는 거의 제한이 없는 영향력을 행사할 수 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003217",
+      "tsu_id": "TSU-0003217",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) As directing the use of a significant form, its most probable reference is to ministerial ordination. So understood, the injunction furnishes strongly corroborative proof, that imposition of hands was the proper ceremony for setting apart to the sacred office.",
+      "claim": "의미 있는 한 형식(의식)의 사용을 지시하는 것으로 이해할 때, 이 명령은 안수가 성직 임직을 위한 합당한 의식이었음을 강하게 뒷받침하는 증거를 제공한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003238",
+      "tsu_id": "TSU-0003238",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "The first case supposes that there was in the previous baptism a mistake respecting the qualifications of the candidate. 284. (뒤) MISCELLANEOUS TOPICS.",
+      "claim": "이전의 세례에서, 후보자의 자격에 관련된 실수가 있었다고 가정하는 경우",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003259",
+      "tsu_id": "TSU-0003259",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "(앞) The proper administrators are persons called of God to the ministerial office, and introduced into it according to the order established by the apostles. To such persons the candidate was bound to apply; and, if he received the ordinance from any other, it was as if he had selected the administrator at his own will, or had immersed himself.",
+      "claim": "세례를 받으려는 후보자는 하나님의 부르심을 받은 사역자에게 신청해야 하며, 그렇지 않으면 자의적으로 세례를 받거나 스스로 세례를 행하는 것과 같다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003341",
+      "tsu_id": "TSU-0003341",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) All these originate in the erroneous conception that the unity of the universal church must be found in external organization. To effect the union sought for, compromises are required of the several parties, and the individual conscience must yield to the judgment of the many. (뒤) All these schemes of amalgamation are inconsistent with the Baptist faith.",
+      "claim": "교회 통일을 이루기 위해 각 당사자는 양보해야 하며 개인의 양심은 다수의 판단에 굴복해야 한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003372",
+      "tsu_id": "TSU-0003372",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "(앞) In the middle of them was always a partition, the one part for men, the other for women; that so by being baptized asunder they might avoid giving offence and scandal.” The author here cites the orders of Edward, when the crowd was so great they could not be gathered around the church door; all of which shows that baptism was often administered to adults, that it was by immersion, and that a very large number could be baptized on one occasion in the ordinary font. Again the author says, “Except upon extraordinary occasions, baptism was seldom, or perhaps never, administered for the first four centuries but by immersion or dipping. (뒤) Nor is aspersion or sprinkling ordinarily used, to this day, in any country that was never subject to the Pope; and among those that submitted to his authority, England was the last place where it was received; though it has never obtained so far as to be enjoined, dipping having been always prescribed by the rubric.",
+      "claim": "첫 네 세기 동안 예외적인 경우를 제외하고는 침례가 대부분 물에 잠기거나 담그는 방식으로 시행되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003375",
+      "tsu_id": "TSU-0003375",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "(앞) The Salisbury Missal, printed in 1530 (the last that was in force before the Reformation), expressly requires and orders dipping. And in the first Common Prayer Book of King Edward VI., the priest’s general order is to dip it in water.” Here we see that it was not on account of climate any change grew up; the people in the extreme north were the last to surrender the original mode; and not even the Pope’s authority could compel them to strike out of their Missal the form received in the simplicity of their early reception of Christianity. (뒤) Farther, we read that from love for the primitive ordinance, “fonts were in times of popery unfitly and surreptitiously placed near the churches.” The author states the alleged, and then the real cause why affusion took the place of immersion, as follows :—‘‘ Many fond ladies at first, and then by degrees the common people, would persuade the minister that their children were too tender for dipping.",
+      "claim": "영국에서 침수 방식이 바뀐 것은 기후 때문이 아니었다 — 극지방 사람들이 원래 방식을 가장 늦게 버렸고, 교황의 권위로도 그들이 초기 순전한 신앙 때 받아들인 관습을 미사경본에서 지우도록 강요할 수 없었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003376",
+      "tsu_id": "TSU-0003376",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "(앞) And in the first Common Prayer Book of King Edward VI., the priest’s general order is to dip it in water.” Here we see that it was not on account of climate any change grew up; the people in the extreme north were the last to surrender the original mode; and not even the Pope’s authority could compel them to strike out of their Missal the form received in the simplicity of their early reception of Christianity. Farther, we read that from love for the primitive ordinance, “fonts were in times of popery unfitly and surreptitiously placed near the churches.” The author states the alleged, and then the real cause why affusion took the place of immersion, as follows :—‘‘ Many fond ladies at first, and then by degrees the common people, would persuade the minister that their children were too tender for dipping. (뒤) But what principally tended to confirm this practice, was that several of our English divines flying to Germany, Switzerland, &c., during the bloody 300 APPENDIX.",
+      "claim": "초기 기독교 관행에서 침례의 원래 방법인 물에 잠기기가 물을 뿌리는 방식으로 바뀐 것은 어린 아이들의 연약함을 이유로 한 부모들의 요청 때문이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}
