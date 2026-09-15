@@ -42190,7 +42190,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -42214,7 +42214,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울은 마케도니아 교회들의 기독교를 위한 헌신에 대한 щед러함을 칭찬했다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0000865",
@@ -43211,7 +43217,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -43233,6 +43239,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.153821+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -44553,7 +44565,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -44577,7 +44589,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도와 그의 전도자 및 사도들이 개혁된 교회 회원을 확립한 후, 비개혁된 회원의 가입은 하나님의渐進的な 발전에 대한 방향이 아니라 뒤로 가는 방향이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0000914",
@@ -44696,7 +44714,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -44720,7 +44738,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "인간은 하나님께 예배와 служ음을 드려야 하며, 이는 사회적 본성을 고려하여 개인적으로만이 아니라 공동체적으로도 이루어져야 한다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0000917",
@@ -51912,7 +51936,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -51936,7 +51960,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "사울의 박해는 교회作为 조직으로서가 아니라 개인들에 대한 것이었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0001065",
@@ -53556,7 +53586,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -53578,6 +53608,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154593+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -53599,7 +53635,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -53621,6 +53657,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154596+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -54737,7 +54779,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -54761,7 +54803,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "유대인과 이방人が 복음 아래 하나로 연합되어 하나의 양무리와 하나의 몸이 되며, 그리스도는 이들의 목자이자 머리이다.",
-    "cjk_status": "reextracted"
+    "cjk_status": "reextracted",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0001124",
@@ -55807,7 +55855,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -55829,6 +55877,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154754+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -55850,7 +55904,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -55872,6 +55926,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.154757+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -59271,7 +59331,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59295,7 +59355,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지상에서 기독교 순례자들이 하나님께 예배하고 영적益을 위해 일시적으로 연합하는 곳은 지역교회이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0001218",
@@ -60182,7 +60248,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -60206,7 +60272,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도인들은 세상에서 빛을 발하여 하나님께 영광을 돌リ도록 명령받았다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0001237",
@@ -62718,7 +62790,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -62742,7 +62814,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "형제 사랑은 새 마음에서 tự發적으로 흐른다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0001289",
@@ -62961,7 +63039,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -62983,6 +63061,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.155290+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -63004,7 +63088,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -63026,6 +63110,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.155293+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -63096,7 +63186,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -63118,6 +63208,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.155300+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -63423,7 +63519,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -63447,7 +63543,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교인들은 믿음으로 하나가 되어 함께 모여 예배를 드렸으며, 말씀의 사역을 통해 수가 증가했을 때도 모두 함께であった.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0001304",
@@ -63799,7 +63901,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -63821,6 +63923,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.155351+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -67640,7 +67748,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -67662,6 +67770,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.155629+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
     }
   },
   {
@@ -71688,7 +71802,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -71712,7 +71826,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도의 왕국은 중보자로서 그에게 주어진 왕권의 권위이며, 하나님의 영광과 교회의益을 위해 모든 것에 행사하는 것입니다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0025 (Dagg_Church_Order TSU-0000193~0001474) human review Q1/Q2/Q3."
+    }
   },
   {
     "id": "TSU-0001475",
