@@ -20083,7 +20083,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20107,7 +20107,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "고대에 세례를 받은 사람들은 죄에 대한 죽음을 상징하기 위해 물에 잠기고 매장되었으며, затем 새로운 삶을 시작한다는 것을 나타내기 위해 물 밖으로 올라왔습니다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003805",
@@ -20171,7 +20177,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20195,7 +20201,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "요한 웨슬리는 침례의 고대 방식인浸礼에 대한 언급으로 로마서 6장에서 예수님과 함께 매장되었다고 말합니다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003807",
@@ -20259,7 +20271,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20283,7 +20295,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "화이트필드는 로마서 6:4의 문구에서 침례의 방식인浸礼에 대한 암시가 있다고 말한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003809",
@@ -20347,7 +20365,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20369,6 +20387,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192722+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
     }
   },
   {
@@ -20476,7 +20500,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20498,6 +20522,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192733+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
     }
   },
   {
@@ -20752,7 +20782,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20776,7 +20806,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례는 침례 방식으로 시행되었으며, 세례받은人は 물 밑으로沒시고 다시 올라오면서 손임을 받았다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003820",
@@ -21528,7 +21564,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -21552,7 +21588,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례는 일반적으로 물에 완전히 잠기거나 몸을 물 아래에 담그는 것으로, 그리스도의 죽음, 매장, 부활을 상징하며, 개인의 죄에 대한 죽음, 그 권力的 파괴, 새로운 삶으로의 부활을 의미한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003836",
@@ -22014,7 +22056,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -22038,7 +22080,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례의 회생 교리는 유아 세례와 뿌림 대신에浸礼를 기반으로 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003846",
@@ -22545,7 +22593,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -22569,7 +22617,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "일부 교회와 목사들이極端한 자유주의적 관점으로 모든 사람을 성찬에 초대할 수 있지만, 이는 그들의 종파 표준과 일반적인 교회 관행에 반대된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003857",
@@ -22639,7 +22693,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -22663,7 +22717,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "침례교도와 유아세례교도는 침례의 구성 요소에 대해 의견이 다르며, 하나는 뿌림을 거부하고 다른 하나는 유효성을接受한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003859",
@@ -23513,7 +23573,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -23537,7 +23597,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 교회는 사도들의 가르침, 교제, 빵을 떼어 쓰고, 기도에坚持했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003877",
@@ -24594,7 +24660,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -24618,7 +24684,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "주님의 신실함보다 제자에 대한 애정이 우리를 더 많이左右해서는 안 된다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0033 part4 (301-400/449) human review."
+    }
   },
   {
     "id": "TSU-0003899",
