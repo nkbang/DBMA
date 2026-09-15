@@ -167,6 +167,29 @@ C1이 §2-B(질문 5-11)까지 마쳐 최종 결과 문서(`docs/NAE_BAPTIST_COM
 
 사용자(Rev. Bang / HQ)가 2026-09-14 "HQ 승인한다"로 최종 승인 — Evidence Before Promotion Rule 4조건(구현·회귀·C1 GREEN·HQ 승인)이 전부 충족돼 **`ADR-030-AMENDMENT-B-Reference-Track-Post-Freeze-Registration.md`가 PROPOSED에서 APPROVED로 승격**됐다. PR #28 병합 진행(§5.9).
 
+### 5.9 PR #28 병합 완료 (2026-09-15)
+
+승인 직후 `gh pr merge 28 --merge`로 `dev/dbma-engine`에 병합 — merge commit `9b99a2b4ca9bbd244a102ceb994283a26b4467b7`. 병합 전 확인: `mergeStateStatus: CLEAN`, 이 저장소는 CI 미구성, 전체 스위트 재실행 2,949 passed / 19 skipped(§5.5 이후와 동일한 환경 갭 2건만 실패, 신규 회귀 없음).
+
+### 5.10 실제 임베딩 실행 — 2차 발견: 오앵커 값 단일화 버그, 즉시 수정 (2026-09-15)
+
+병합 후 사용자가 "진행해"로 실제 임베딩(`--apply`) 승인. Qdrant 컨테이너가 내려가 있어 `cd NAE && docker compose up -d`로 기동(외부 볼륨 `nae_qdrant_storage` 보존 확인 — 기동 직후 `nae_tsu_v1`=3,319, `nae_ref_v1`=34,948 정확히 일치, 데이터 무손실 확인).
+
+`chunk_canonical_verse_anchored`로 1,978개 청크를 `nae_ref_commentary_v1`에 임베딩·업서트(에러 0). 그러나 **실제 저장된 payload를 열어본 결과 심각한 결함 발견**:
+
+- 전체 4,145개 문단 중 "Psalms "로 시작하는 성경참조는 **정확히 1개**(1087번 문단, `Psalms 109:17`) — Spurgeon은 해설 중인 시편 자체는 "Verse 2.—"처럼 장/절을 안 밝히고, **다른 책 인용**(로마서·잠언 등)이나 다른 시편과의 비교만 전체 표기로 쓴다.
+- `anchor_book_prefix="Psalms"` 필터는 §5.4의 교차인용 오앵커(다른 책)는 정확히 막았지만, 그 결과 앵커를 갱신할 기회가 이 책 전체에서 단 1번뿐이었다 — 1,627개 청크(82%) 전부가 **똑같이 `"Psalms 109:17"`** 로 태깅됨(시편 1편 해설이든 26편 해설이든 무관).
+- **이건 함수 버그가 아니다** — "새 앵커가 나올 때까지 이전 값을 이어간다"는 설계된 동작 그대로다. 문제는 이 원문이 애초에 verse-anchoring이 기대하는 신호(장:절 자기 재인용)를 거의 주지 않는다는 데이터 특성이었다.
+- **검증 방법론의 진짜 공백**: 커밋 시점과 C1 검토 대응 때 두 번 돌린 실측 스크립트는 "태깅됨/안됨/틀린책" **개수**만 셌지, 태깅된 **값이 서로 다른지**는 한 번도 확인하지 않았다 — 그래서 이 문제가 두 번의 검증을 그대로 통과했다.
+
+**조치**: 사용자에게 즉시 보고(3가지 치료 옵션 제시) → "전부 비우기" 선택.
+1. `nae_ref_commentary_v1` 컬렉션 삭제(DELETE, 기존 두 컬렉션 무영향 확인) 후 재생성.
+2. `scripts/nae_commentary_ingest.py`: 기본 청커를 `chunk_canonical_verse_anchored`→`chunk_canonical`(제목+본문 기본 청킹, Smith와 동일 방식)로 변경. `--chunker {heading,verse_anchored}` 플래그로 선택 가능하게 남겨둠(다른 저작이 실제로 장:절을 반복해서 밝히는 관례라면 유효할 수 있음).
+3. **재발 방지 가드 추가**: `--chunker verse_anchored` 사용 시 `_warn_if_anchor_values_lack_diversity()`가 태깅된 값의 고유 비율이 50% 미만이면 경고 출력 — 이번 실제 사례(1,627개 중 고유값 1개)로 재현·검증 완료. 회귀 테스트 3건 추가(`TestAnchorDiversityGuard`), 청커 재사용 테스트 포함 전체 22개 통과.
+4. `chunk_canonical`로 재임베딩 — 1,978개 청크, 에러 0, `scripture_reference` 필드는 payload에서 완전히 제거(잘못된 값보다 없는 게 낫다는 원칙). 스팟체크로 확인. `nae_tsu_v1`/`nae_ref_v1` 카운트 재확인 — 무변동.
+
+**교훈**: 실측 검증은 집계 통계(개수)만으로는 불충분하다 — 값의 분포/다양성까지 확인해야 이런 종류의 "전부 같은 잘못된 값" 결함을 잡을 수 있다. 이 교훈을 코드(가드 함수)와 테스트에 모두 반영했다.
+
 ---
 
 ## 6. 확인이 더 필요한 사항 (결정하지 않고 기록만)

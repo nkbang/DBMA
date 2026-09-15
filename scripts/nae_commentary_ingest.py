@@ -1,18 +1,38 @@
 """NAE Baptist Commentary Ingestion CLI.
 
-Ingests a verse-anchored Baptist commentary volume (e.g. Spurgeon's
-"The Treasury of David") into the isolated `nae_ref_commentary_v1` Qdrant
-collection — separate from Smith Bible Dictionary's `nae_ref_v1`
-(ADR-013 collection isolation).
+Ingests a Baptist commentary volume (e.g. Spurgeon's "The Treasury of
+David") into the isolated `nae_ref_commentary_v1` Qdrant collection —
+separate from Smith Bible Dictionary's `nae_ref_v1` (ADR-013 collection
+isolation).
 
 Reuses `NAE.pipeline.reference.ingest.ingest()` unmodified aside from
-passing `collection_name=config.COMMENTARY_COLLECTION_NAME` and
-`chunker_fn=chunker.chunk_canonical_verse_anchored` — no ingestion logic
-is duplicated here.
+passing `collection_name=config.COMMENTARY_COLLECTION_NAME` and a
+`chunker_fn` — no ingestion logic is duplicated here.
+
+Default chunker is `chunk_canonical` (plain heading+prose), NOT
+`chunk_canonical_verse_anchored`. Found the hard way on the real
+Spurgeon Vol.1 data (2026-09-15, first --apply run, deleted and
+re-ingested after discovering this): across all 4,145 canonicalized
+paragraphs, exactly ONE contains a fully-spelled-out "Psalms N:M"
+citation — Spurgeon writes "Verse 2.—..." for the psalm currently under
+discussion (no book/chapter restated) but spells out full citations
+when referencing *other* books or psalms in passing. The verse-anchored
+chunker's `anchor_book_prefix="Psalms"` filter correctly avoids
+mis-anchoring to those cross-references, but then has only that one
+citation to anchor to for the entire ~500-page volume — so 1,627 of
+1,978 chunks all got tagged with the same wrong value ("Psalms 109:17")
+instead of the actual psalm each one expounds. Two aggregate-count
+verification passes (at commit time and during C1 review) missed this
+because they checked "tagged vs. untagged vs. wrong-book" counts, never
+whether the tagged values were actually distinct.
+`chunk_canonical_verse_anchored` stays available (`--chunker verse_anchored`)
+for a future work whose citation convention actually restates chapter:verse
+per section — just isn't Spurgeon's.
 
 Usage:
     python scripts/nae_commentary_ingest.py --identifier Spurgeon_TreasuryOfDavid_Vol1 --dry-run
     python scripts/nae_commentary_ingest.py --identifier Spurgeon_TreasuryOfDavid_Vol1 --apply
+    python scripts/nae_commentary_ingest.py --identifier X --chunker verse_anchored --dry-run
 
 `--dry-run` is the default (safe).  `--apply` must be explicitly specified
 to actually embed and upsert.
@@ -49,6 +69,33 @@ _COMMENTARY_SOURCE_IDS: dict[str, str] = {
 }
 
 
+def _warn_if_anchor_values_lack_diversity(canonical_path: Path) -> None:
+    """--chunker verse_anchored footgun guard (2026-09-15): the anchor
+    carries forward whenever the source text doesn't restate chapter:verse,
+    so a source with too few qualifying citations produces many chunks all
+    tagged with the same (usually wrong) value — exactly what happened on
+    the first Spurgeon Vol.1 --apply run (1,627 of 1,978 chunks all tagged
+    "Psalms 109:17", the volume's only fully-spelled-out Psalms citation).
+    Aggregate tagged/untagged/wrong-book counts alone don't catch this —
+    only checking that the tagged values are actually diverse does."""
+    canonical = chunker.load_canonical(canonical_path)
+    chunks = chunker.chunk_canonical_verse_anchored(canonical)
+    tagged = [c.scripture_reference for c in chunks if c.scripture_reference]
+    unique = set(tagged)
+    if tagged and len(unique) / len(tagged) < 0.5:
+        print(
+            f"WARNING: {len(tagged)} chunks got a scripture_reference anchor, "
+            f"but only {len(unique)} distinct value(s) among them "
+            f"(most common: {max(unique, key=tagged.count)!r}, "
+            f"{tagged.count(max(unique, key=tagged.count))} chunks). "
+            f"This usually means the source rarely restates chapter:verse "
+            f"for its own subject and the anchor is stuck on one stray "
+            f"cross-reference — verse_anchored is probably the wrong "
+            f"chunker for this source. Use --chunker heading instead.",
+            file=sys.stderr,
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="NAE Baptist Commentary Ingestion")
     parser.add_argument(
@@ -61,7 +108,22 @@ def main() -> None:
         "--canonical-path", default=None,
         help="Override canonical.json path (for custom corpora)",
     )
+    parser.add_argument(
+        "--chunker", choices=["heading", "verse_anchored"], default="heading",
+        help="Chunking strategy. 'heading' (default, safe) groups by "
+             "heading+prose like the Smith dictionary chunker. "
+             "'verse_anchored' anchors chunks to Psalms scripture "
+             "references — only meaningful for a source that actually "
+             "restates chapter:verse per section (Spurgeon's Treasury of "
+             "David does not; see module docstring).",
+    )
     args = parser.parse_args()
+
+    chunker_fn = (
+        chunker.chunk_canonical_verse_anchored
+        if args.chunker == "verse_anchored"
+        else chunker.chunk_canonical
+    )
 
     if args.canonical_path:
         canonical_path = Path(args.canonical_path)
@@ -80,32 +142,24 @@ def main() -> None:
 
     source_id = _COMMENTARY_SOURCE_IDS.get(args.identifier, "")
 
-    if args.apply:
-        result = ref_ingest.ingest(
-            canonical_path=canonical_path,
-            identifier=args.identifier,
-            source_id=source_id,
-            volume="vol_1",
-            apply=True,
-            collection_name=ref_config.COMMENTARY_COLLECTION_NAME,
-            chunker_fn=chunker.chunk_canonical_verse_anchored,
-            content_type="reference_commentary",
-        )
-    else:
-        result = ref_ingest.ingest(
-            canonical_path=canonical_path,
-            identifier=args.identifier,
-            source_id=source_id,
-            volume="vol_1",
-            apply=False,
-            collection_name=ref_config.COMMENTARY_COLLECTION_NAME,
-            chunker_fn=chunker.chunk_canonical_verse_anchored,
-            content_type="reference_commentary",
-        )
+    if args.chunker == "verse_anchored":
+        _warn_if_anchor_values_lack_diversity(canonical_path)
+
+    result = ref_ingest.ingest(
+        canonical_path=canonical_path,
+        identifier=args.identifier,
+        source_id=source_id,
+        volume="vol_1",
+        apply=args.apply,
+        collection_name=ref_config.COMMENTARY_COLLECTION_NAME,
+        chunker_fn=chunker_fn,
+        content_type="reference_commentary",
+    )
 
     output = {
         "identifier": result.identifier,
         "collection": ref_config.COMMENTARY_COLLECTION_NAME,
+        "chunker": args.chunker,
         "chunks_total": result.chunks_total,
         "chunks_embedded": result.chunks_embedded,
         "chunks_skipped": result.chunks_skipped,

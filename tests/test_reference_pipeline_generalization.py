@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from NAE.pipeline.reference import chunker, config as ref_config
 from NAE.pipeline.reference import ingest as ref_ingest
 from NAE import smith_activation
+import scripts.nae_commentary_ingest as commentary_cli
 
 
 # ── chunker.chunk_canonical_verse_anchored ─────────────────────────────
@@ -134,6 +135,80 @@ class TestVerseAnchoredChunker:
         chunks = chunker.chunk_canonical(fixture)
         assert len(chunks) == 1
         assert chunks[0].scripture_reference is None
+
+
+# ── verse_anchored anchor-diversity footgun (2026-09-15 production finding) ──
+
+class TestAnchorDiversityGuard:
+    """The real Spurgeon Vol.1 --apply run shipped 1,627 of 1,978 chunks all
+    tagged with the same wrong anchor ("Psalms 109:17") because the source
+    text almost never restates chapter:verse for its own subject — only one
+    paragraph in the whole 4,145-paragraph document has a qualifying
+    citation, so the anchor carries that single (wrong, cross-referenced)
+    value forward for the rest of the book. chunk_canonical_verse_anchored
+    itself isn't buggy (carry-forward is its documented, correct behavior)
+    — the gap was that verification checked tagged/untagged/wrong-book
+    counts but never whether the tagged *values* were actually diverse.
+    `_warn_if_anchor_values_lack_diversity` closes that gap."""
+
+    def _sparse_citation_fixture(self, n_prose_paragraphs=20):
+        """One qualifying citation up front, then many paragraphs with no
+        further scripture_references at all — mirrors the real failure
+        shape (single stray cross-reference, rest of the book silent)."""
+        paragraphs = [
+            {
+                "type": "prose",
+                "text": "Opening remarks citing another passage in passing.",
+                "page_start": 1,
+                "scripture_references": [{"original": "Ps. cix. 17", "canonical": "Psalms 109:17"}],
+            },
+        ]
+        for i in range(n_prose_paragraphs):
+            paragraphs.append({
+                "type": "prose",
+                "text": f"Verse {i + 1}.—continuing exposition with no restated reference. " * 3,
+                "page_start": 2 + i,
+                "scripture_references": [],
+            })
+        return {"paragraphs": paragraphs}
+
+    def test_sparse_citations_produce_degenerate_single_value_anchor(self):
+        """Documents the actual (correct, by design) carry-forward behavior
+        that makes this a footgun on sparse-citation sources."""
+        chunks = chunker.chunk_canonical_verse_anchored(self._sparse_citation_fixture())
+        tagged = [c.scripture_reference for c in chunks if c.scripture_reference]
+        assert len(tagged) > 1
+        assert len(set(tagged)) == 1
+
+    def test_diversity_guard_warns_on_degenerate_fixture(self, tmp_path, capsys):
+        fixture = self._sparse_citation_fixture()
+        canonical_path = tmp_path / "canonical.json"
+        canonical_path.write_text(__import__("json").dumps(fixture), encoding="utf-8")
+
+        commentary_cli._warn_if_anchor_values_lack_diversity(canonical_path)
+
+        err = capsys.readouterr().err
+        assert "WARNING" in err
+        assert "Psalms 109:17" in err
+
+    def test_diversity_guard_silent_on_healthy_fixture(self, tmp_path, capsys):
+        """A source that actually restates chapter:verse per section (each
+        paragraph gets its own distinct anchor) should not warn."""
+        paragraphs = [
+            {
+                "type": "prose",
+                "text": f"Verse {i}.—exposition text here. " * 3,
+                "page_start": i,
+                "scripture_references": [{"original": f"Ps. i. {i}", "canonical": f"Psalms 1:{i}"}],
+            }
+            for i in range(1, 11)
+        ]
+        canonical_path = tmp_path / "canonical.json"
+        canonical_path.write_text(__import__("json").dumps({"paragraphs": paragraphs}), encoding="utf-8")
+
+        commentary_cli._warn_if_anchor_values_lack_diversity(canonical_path)
+
+        assert capsys.readouterr().err == ""
 
 
 # ── ingest.ingest() default-argument regression ────────────────────────
