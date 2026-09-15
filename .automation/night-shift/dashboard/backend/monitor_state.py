@@ -77,6 +77,7 @@ class _PolledState:
     pipeline_stages: list = field(default_factory=list)
     bottleneck: dict | None = None
     gpu_health: dict | None = None
+    cjk_repair: list = field(default_factory=list)
 
     # Live activity verdict for the progress indicator / spinner.
     # idle | starting | working | stalled | stopped | error
@@ -206,6 +207,7 @@ class MonitorState:
                 self._prev_net_io = {"ts": now, **net_io_raw}
 
             queue, queue_stopped, queue_stop_reason = self._compute_queue_snapshot(active, report)
+            cjk_repair = _safe(lambda: self._compute_cjk_repair_snapshot(ps_text), [])
 
             stages: list[dict] = []
             if active:
@@ -248,6 +250,7 @@ class MonitorState:
                 self._state.pipeline_stages = stages
                 self._state.bottleneck = bottleneck_verdict
                 self._state.gpu_health = gpu_health_verdict
+                self._state.cjk_repair = cjk_repair
                 self._state.activity = activity
                 self._state.report_age_seconds = report_age
                 self._state.last_poll_ts = now
@@ -384,6 +387,30 @@ class MonitorState:
 
         return entries, stopped, stop_reason
 
+    def _compute_cjk_repair_snapshot(self, ps_text: str) -> list[dict]:
+        """Read-only status for `scripts/nae_fuller_cjk_reextract.py` runs —
+        separate from the F2 extraction queue above. `running` comes from a
+        live ps grep (same technique as parse_active_identifier); `report`
+        is whatever `cjk_reextract_report.json` currently holds for that
+        identifier, written only when a run (dry or applied) finishes."""
+        running_ids = collector.parse_active_cjk_repair_identifiers(ps_text)
+        entries = []
+        for identifier in collector.CJK_REPAIR_WATCH_IDENTIFIERS:
+            report = collector.read_json_safe(self._tsu_root / identifier / "cjk_reextract_report.json")
+            running = identifier in running_ids
+            if running:
+                status = "running"
+            elif isinstance(report, dict):
+                status = "complete"
+            else:
+                status = "not_started"
+            entries.append({
+                "identifier": identifier,
+                "status": status,
+                "report": report if isinstance(report, dict) else None,
+            })
+        return entries
+
     def snapshot(self) -> dict:
         with self._lock:
             active = self._state.active
@@ -407,6 +434,7 @@ class MonitorState:
             stages = list(self._state.pipeline_stages)
             bottleneck_verdict = dict(self._state.bottleneck) if self._state.bottleneck else None
             gpu_health_verdict = dict(self._state.gpu_health) if self._state.gpu_health else None
+            cjk_repair = list(self._state.cjk_repair)
             activity = self._state.activity
             report_age_seconds = self._state.report_age_seconds
             report = dict(self._reports.get(active, {})) if active else None
@@ -520,6 +548,7 @@ class MonitorState:
             "queue": queue,
             "queue_stopped": queue_stopped,
             "queue_stop_reason": stop_reason,
+            "cjk_repair": cjk_repair,
             "throughput_history": throughput_sparkline,
             "latency_history": latency_sparkline,
             "gpu_history": gpu_history,
