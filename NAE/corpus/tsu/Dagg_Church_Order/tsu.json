@@ -9205,7 +9205,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -9229,7 +9229,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님은 바다에서一个人을 구원하실 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0000194",
@@ -9448,7 +9454,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -9472,7 +9478,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스어에서 색을 나타내는 단어가 사용될 때, 그 의미는 직 接적으로 색을 가리키는 것으로 이해되었을 가능성이 크다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0000199",
@@ -20909,7 +20921,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -20933,7 +20945,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성령은 계시를 유대인만을 위해 아니라 인류의益을 위해 행하셨고, 이를 위해 일반적으로 이해되는 언어를 선택하시며, 그 언어의 단어가 일반적인 의미로 사용될 때에 효과가 있었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0000432",
@@ -28969,7 +28987,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -28993,7 +29011,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "洗足례는 영속적인 의무의 의식으로 설계되지 않았다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0000596",
@@ -43662,7 +43686,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -43686,7 +43710,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 질서의渐進的な 변화는 인간의 노력에 의한 것이므로, 하나님의 은혜가 없으면 그 변화가 주님의 작품을 개선하는 것이 아니라 손상시키는 것일 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0000895",
@@ -44340,7 +44370,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -44364,7 +44394,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "노아의 방주를 통해 의인 노아가 구원받은 것은 하나님의 계획의 발전 과정 중的一步이었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0000909",
@@ -44385,7 +44421,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -44409,7 +44445,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "아브라함의 부르심과 그의 자손들이 별개의 민족으로 더 순수한 종교를 유지하는 땅으로 옮겨가는 것은 하나님의 구원 역사에서 중요한一步이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0000910",
@@ -45457,7 +45499,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -45479,6 +45521,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.153985+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
     }
   },
   {
@@ -49953,7 +50001,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -49977,7 +50025,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나의 교회는 박해로 인해 완전히 흩어질 수 있고, 다른 하나는渐進的な 쇠퇴로 약화될 수 있으며, 세 번째는 부패로 인해 사탄의 회당이 되어 더 이상 그리스도의 교회가 아님을 의미한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001024",
@@ -50145,7 +50199,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -50169,7 +50223,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회는 일반적인 용어로 가정할 때, 각 개별 교회는 바위 위에 세워지며, 지옥의 문이 그것們에게 결코 승리하지 못할 것이라는 약속을 갖는다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001028",
@@ -52399,7 +52459,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -52423,7 +52483,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울이 에페소서 3장을 작성할 때 그의 마음은 구원의伟大 계획과 그 안에서 나타나는 하나님의 지혜로 채워져 있었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001074",
@@ -54629,7 +54695,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -54653,7 +54719,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울의 확장된 마음은 그리스도에 의한 구원과 속죄의伟大 계획으로 채워져 있었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001120",
@@ -55754,7 +55826,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -55778,7 +55850,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회는 하나의 몸으로 모든 성도들이 포함되어 있으며, 그 목적은 모든人が 믿음의 통일성을 통해 완전한 사람, 즉 그리스도의 충만함의 분량에 이르러서 그리스도의 몸이 완전하고 온전해지도록 하는 것이라는 사실이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001143",
@@ -56667,7 +56745,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -56691,7 +56769,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도의 설계는 교회를 완전하게 하거나 교회를 영광의 가족으로 자신에게献上하는 것이 아니었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001162",
@@ -57645,7 +57729,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -57669,7 +57753,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회는 영광스러운 모임에서 하나님께 영광을 돌リ며, 예수 그리스도를 통해 모든 세대와 끝없는 세계에 걸쳐 그렇게 할 것이다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001182",
@@ -59826,7 +59916,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59850,7 +59940,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지구上的 모든 지역교회를 합쳐도 보편적인 교회는 구성되지 않는다. 왜냐하면 그것은 지상에 있는 성도뿐만 아니라 하늘에 있는 성도들도 포함하기 때문이다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001227",
@@ -59871,7 +59967,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59895,7 +59991,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지구上的 성도 중에는 아직 어떤 지역 교회에도 받아들여지지 않은 경우가 있을 수 있다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001228",
@@ -64604,7 +64706,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -64628,7 +64730,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "가정의 구성원들을 결합시키는 애정의 유대는 내적인 결합의紐이다. 그러나 이에 더하여 외적인 조직이 존재하며, 이는 애정의 유대가 단절되더라도 하나의 가정으로 만드는 것이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001325",
@@ -64796,7 +64904,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -64820,7 +64928,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "내적 경건은 연합의 결속력이지만, 경건과 형제 사랑이 다른 교회의 성도们에게 동일하게 결속력을 가짐에도 불구하고, 외부 조직은 그들을 특별한 관계로 연결시키고 하나의 교회를 구성한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001329",
@@ -67295,7 +67409,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -67319,7 +67433,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그는 주 예수 그리스도에게만 속하는 우두머リ를 주장한다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001380",
@@ -68753,7 +68873,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -68777,7 +68897,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 시대에도真正한 종교를 신봉하는 사람들 중에 거짓 사도와 거짓 선지자, 양떼를 삼키는 목자, 파국적인 이단을 가져오는 교사, 그리고 하나님의 유산을 주관하며 우위를 점하기 좋아하는 정부들이 존재했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001410",
@@ -69233,7 +69359,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -69257,7 +69383,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 부르심을 받은 목사나 교회 지도자는 참된 보편교회에 속한 회원이며, 그 신령한 능력으로 자격을 얻어 전체의益을 위하여 노력해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001420",
@@ -69762,7 +69894,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -69786,7 +69918,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "침례교는 신앙 고백에 따른浸礼만을 유효한 침례로 인정하기 때문에, 가시적인 보편교회 교리를 주장하는 일부 침례교도들은 이 교회를 실질적으로 침례교단과 동일하게 본다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001431",
@@ -71571,7 +71709,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -71595,7 +71733,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성령님은 선포를 성령강림절에 예루살렘으로 가져오셔서そこ에서 온 땅으로 퍼지게 하셨다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001468",
@@ -74566,7 +74710,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -74590,7 +74734,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도에 대한 믿음を持つ 사람들만이 기독교 교회에서의 회원資格을 성경적으로 가지고 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001529",
@@ -74611,7 +74761,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -74635,7 +74785,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울은 교회 회원들에게 보낸 서신에서 아이들을 주소로 지정하며 동시에 부모들에게 주님의 양육과 경고 안에서 그들을养育하도록 권면한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001530",
@@ -75738,7 +75894,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -75762,7 +75918,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "시온의 왕은 마태복음 19:14에서 아기들의 특권이 그의 나라에 속한다고 선언했으며, 이 특권에는 교회 회원資格도 포함된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001553",
@@ -77721,7 +77883,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -77745,7 +77907,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "어린이를 제외하는 '这样的' 해석은 받아들여질 수 없다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001594",
@@ -81484,7 +81652,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -81508,7 +81676,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회는 구약의 회중이 새로운 은혜 아래 계속된 것であり, 어린이들은 부모와 함께 포함되어 있었으므로 현재 회원 자격을 거부할 수 없다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001671",
@@ -81529,7 +81703,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -81553,7 +81727,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "구약과 신약下的 교회는 동일하다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001672",
@@ -82113,7 +82293,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -82137,7 +82317,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예수님은 새 계명의 교회를 이스라엘의 회衆(cchal)이나 교회(ecclesia)라고 부르지 않고,私の 교회(my ecclesia)라고 불렀다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001684",
@@ -82158,7 +82344,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -82182,7 +82368,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "예수님은 이스라엘의 회衆(cchal or ecclesia of Israel)이 아닌 자신의 교회(my ecclesia)를 말씀하셨다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001685",
@@ -83955,7 +84147,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -83979,7 +84171,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "인간은 전적으로 타락하여 神의 법을 기뻐하고 그 거룩한 요구에 순종하기 위해서는 인간의 마음에 대한 直接적인 特殊한 영향이 필요하다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001722",
@@ -85260,7 +85458,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85284,7 +85482,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "히브리 회중은 출생이나 할례와 같은 요건에 따라 구성원들이 가입되었으며, 도덕적 品格은 고려되지 않았다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001749",
@@ -85305,7 +85509,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85329,7 +85533,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "유대인 회중은 율법의 규례에 따라 순종과 제사 불결, 신체 결함 없이 할례를 받은 이들을 받아들이며, ngoại인들은 할례를 받고, 모압인이나 암몬인은 10세代까지 받아들여지지 않는다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001750",
@@ -85448,7 +85658,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85472,7 +85682,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "같은 제도가 유지된다면, 회원 구성의 이러한 급격한 변화는 어린아이들의 계속적인 회원資格과 잘 일치하지 않는다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001753",
@@ -85738,7 +85954,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "rejected",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85762,7 +85978,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "子供들은 부모와 함께 언약에 포함되어 왔으며, 그들의 특권에 대한 권리는 베드로가 오순절 날에 말한 이 말씀으로 인식되었다: \"약속은 너와 네 자녀에게로다.\"",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "rejected",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001759",
@@ -86808,7 +87030,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -86832,7 +87054,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님은 아브람과 언약을 맺고 그를极도로 번성하게 하시겠다고 약속하셨다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001781",
@@ -87245,7 +87473,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -87269,7 +87497,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님께서 아브라함을 果實豊かな 존재로 만든 것은 신비적인 의미가 아니라 실제로 그의 자손을 번성시킴으로써 이루어진 것이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001790",
@@ -87727,7 +87961,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -87751,7 +87985,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님의 섭리는 이스라엘民族에게 특별하게 나타났으며, 하나님은 그들과의 모든 상호작용에서 하나님의 관계를 유지했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001800",
@@ -90075,7 +90315,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -90097,6 +90337,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.157274+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
     }
   },
   {
@@ -90118,7 +90364,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -90140,6 +90386,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.157277+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
     }
   },
   {
@@ -90700,7 +90952,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -90724,7 +90976,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "아브라함은 믿음으로祝福을 받았으며, 그를 통해 祝福을 받고자 하는 모든 사람은 같은 방법으로 그것을 추구해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0027 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    }
   },
   {
     "id": "TSU-0001861",
