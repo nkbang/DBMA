@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import ProgressPanel from './components/ProgressPanel.vue'
+import ActivityIndicator from './components/ActivityIndicator.vue'
 import StatGrid from './components/StatGrid.vue'
 import HealthBar from './components/HealthBar.vue'
 import PipelineFlow from './components/PipelineFlow.vue'
@@ -9,10 +10,13 @@ import GpuOperationsPanel from './components/GpuOperationsPanel.vue'
 import BottleneckPanel from './components/BottleneckPanel.vue'
 import TimeSeriesPanel from './components/TimeSeriesPanel.vue'
 import QueueList from './components/QueueList.vue'
+import CjkRepairPanel from './components/CjkRepairPanel.vue'
 import EventLog from './components/EventLog.vue'
 import HelpModal from './components/HelpModal.vue'
 import { formatClockTime } from './format.js'
+import pkg from '../package.json'
 
+const APP_VERSION = pkg.version
 const REFRESH_OPTIONS = [5, 10, 30, 60]
 
 const status = ref(null)
@@ -82,7 +86,7 @@ onUnmounted(() => {
         <div class="brand">
           <div class="brand-line">
             <span class="brand-title">내서재 작업현황모니터</span>
-            <span class="brand-version">v1.0.0</span>
+            <span class="brand-version">v{{ APP_VERSION }}</span>
           </div>
           <div class="brand-line">
             <span class="brand-subtitle">NAE Observatory</span>
@@ -127,7 +131,14 @@ onUnmounted(() => {
       :processed="status?.processed ?? 0"
       :total="status?.total ?? 0"
       :percentage="status?.percentage ?? 0"
-    />
+      :awaiting-first-checkpoint="status?.awaiting_first_checkpoint ?? false"
+      :is-estimate="status?.processed_is_estimate ?? false"
+    >
+      <ActivityIndicator
+        :activity="!monitoringEnabled ? 'idle' : (monitorOnline === false ? 'stalled' : (status?.activity ?? 'idle'))"
+        :report-age-seconds="status?.report_age_seconds ?? null"
+      />
+    </ProgressPanel>
 
     <StatGrid
       :throughput-per-hour="status?.throughput_per_hour ?? null"
@@ -171,6 +182,8 @@ onUnmounted(() => {
       :stopped="status?.queue_stopped ?? false"
       :stop-reason="status?.queue_stop_reason ?? null"
     />
+
+    <CjkRepairPanel :jobs="status?.cjk_repair ?? []" />
 
     <EventLog :events="status?.events ?? []" />
 

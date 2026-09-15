@@ -47,7 +47,17 @@ N8N_HEALTH_URL = "http://127.0.0.1:5678/healthz"
 # Vol01 was launched separately, before the queue script existed.
 VOLUME_QUEUE: list[str] = [f"Fuller_Complete_Works_Vol{n:02d}" for n in range(1, 9)]
 
+# Sources currently going through the ad-hoc CJK claim-string repair pass
+# (scripts/nae_fuller_cjk_reextract.py) outside the F2 volume queue above.
+# Update this list by hand when a new source is repaired — mirrors
+# VOLUME_QUEUE's own hardcoded-list precedent.
+CJK_REPAIR_WATCH_IDENTIFIERS: tuple[str, ...] = ("Dagg_Church_Order", "Hiscox_Standard_Manual")
+
 _RUNNER_PATTERN = re.compile(r"NAE\.pipeline\.tsu\.runner --identifier (Fuller_Complete_Works_Vol\d+)")
+# scripts/nae_fuller_cjk_reextract.py — ad-hoc claim-string repair pass,
+# separate from the F2 extraction runner above. Read the same way (ps grep +
+# its own report file), never a write.
+_CJK_REPAIR_PATTERN = re.compile(r"nae_fuller_cjk_reextract --identifier (\S+) --apply")
 _VOLUME_NUM_PATTERN = re.compile(r"Vol(\d+)$")
 _QUEUE_START_PATTERN = re.compile(r"starting TSU generation: (Fuller_Complete_Works_Vol\d+)")
 _QUEUE_COMPLETE_PATTERN = re.compile(r"(Fuller_Complete_Works_Vol\d+) COMPLETE \(partial=False\)")
@@ -236,6 +246,13 @@ def read_ollama_models(timeout: float = 1.5) -> list[dict]:
 def parse_active_identifier(ps_text: str) -> str | None:
     match = _RUNNER_PATTERN.search(ps_text)
     return match.group(1) if match else None
+
+
+def parse_active_cjk_repair_identifiers(ps_text: str) -> set[str]:
+    """Every identifier currently mid-`nae_fuller_cjk_reextract --apply`
+    (there can be more than one running at once — Ollama itself serializes
+    the actual model calls, this dashboard just reports what's queued)."""
+    return set(_CJK_REPAIR_PATTERN.findall(ps_text))
 
 
 def read_json_safe(path: Path) -> dict | list | None:

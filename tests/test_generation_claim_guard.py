@@ -135,6 +135,20 @@ class TestClaimGuardHighRisk(unittest.TestCase):
         self.assertTrue(result.absolute_claim_blocked)
         self.assertTrue(result.scope_qualifier_required)
 
+    def test_evaluate_t3_only_blocks_via_rule_2a(self):
+        """T3(문헌 근거)만 있고 T1(본문) 근거가 없으면 규칙 2a로 절대주장 차단.
+        wrap_ranked_candidates의 T1 위장을 제거하면서 활성화된 경로다."""
+        guard = ClaimGuard(parallel_retriever_db_path=None)
+        evidence = [_make_evidence(TrustTier.T3, canonical_reference="Gen.24.12")]
+        result = guard.evaluate(
+            claim_text="이는 성경에서 유일한 사례입니다.",
+            evidence=evidence,
+        )
+        self.assertEqual(result.risk_level, RiskLevel.HIGH)
+        self.assertTrue(result.absolute_claim_blocked)
+        self.assertTrue(result.scope_qualifier_required)
+        self.assertIn("T1(본문) 근거 없이", result.reason)
+
 
 # ---------------------------------------------------------------------------
 # T3: GenerationService.generate() + ClaimGuard 통합 — try/except
@@ -192,14 +206,28 @@ class TestWrapRankedCandidates(unittest.TestCase):
     """wrap_ranked_candidates()가 RankedCandidate → EvidenceCandidate
    로 감싸는지 검증."""
 
-    def test_wrap_converts_ranked_candidate(self):
+    def test_wrap_infers_t3_for_literary_source(self):
+        """양성 신호가 없는 검색 후보(주석·신학서 TSU)는 T3로 감싼다 —
+        예전처럼 T1로 위장하지 않는다 (PM 정렬 감사 R2 / P0-4)."""
         ranked = [_make_candidate()]
         wrapped = wrap_ranked_candidates(ranked)
         self.assertEqual(len(wrapped), 1)
         self.assertIsInstance(wrapped[0], EvidenceCandidate)
-        self.assertEqual(wrapped[0].trust_tier, TrustTier.T1)
+        self.assertEqual(wrapped[0].trust_tier, TrustTier.T3)
         # canonical_reference는 ranked_candidate에서 전이되지 않음(EvidenceCandidate 시그니처상 첫 인자)
         self.assertIsNone(wrapped[0].canonical_reference)
+
+    def test_wrap_infers_t1_only_for_scripture_signal(self):
+        """source_type == "scripture" 양성 신호가 있을 때만 T1."""
+        ranked = [_make_candidate(metadata={"source_type": "scripture"})]
+        wrapped = wrap_ranked_candidates(ranked)
+        self.assertEqual(wrapped[0].trust_tier, TrustTier.T1)
+
+    def test_wrap_respects_explicit_trust_tier(self):
+        """메타데이터에 명시적 trust_tier가 있으면 그대로 사용."""
+        ranked = [_make_candidate(metadata={"trust_tier": "T2"})]
+        wrapped = wrap_ranked_candidates(ranked)
+        self.assertEqual(wrapped[0].trust_tier, TrustTier.T2)
 
     def test_wrap_passes_through_evidence(self):
         evidence = [_make_evidence(TrustTier.T2)]

@@ -189,7 +189,8 @@ class TestBuilderNeverCalledForBlockedOrErrored:
 class TestRunnerCliDefaultsToGateWiring:
     def test_main_no_args_uses_gate_wired_path(self, monkeypatch, capsys):
         monkeypatch.setattr(
-            runner, "_run_gate_wired", lambda model, max_candidates: {"gate_pass": 0, "tsu_generated": 0}
+            runner, "_run_gate_wired",
+            lambda model, max_candidates, resume=False: {"gate_pass": 0, "tsu_generated": 0},
         )
         exit_code = runner.main([])
         assert exit_code == 0

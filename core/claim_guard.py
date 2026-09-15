@@ -160,6 +160,23 @@ class ClaimGuard:
                     )
             return result
 
+        # Rule 2a: T1(본문) 근거가 하나도 없음 (T3 문헌 근거만, 또는 T3 + 일부 T2/T4).
+        # 이전에는 has_t1이 계산만 되고 소비되지 않아 이 규칙이 죽어 있었다 —
+        # wrap_ranked_candidates()가 모든 검색 결과를 T1로 위장하고 있어서
+        # 어차피 도달 불가능한 분기이기도 했다. 위장을 제거(_infer_trust_tier)
+        # 하면서 문서화된 규칙 2a를 함께 활성화한다 (PM 정렬 감사 R2 / P0-4).
+        if not has_t1:
+            result.absolute_claim_blocked = True
+            result.scope_qualifier_required = True
+            result.reason = "T1(본문) 근거 없이 절대·최상급 주장 불가"
+            if evidence:
+                first = evidence[0]
+                if first.dataset_id and first.tag_name and first.canonical_reference:
+                    result.suggested_wording = self._scope_statement(
+                        first.dataset_id, first.tag_name, first.canonical_reference
+                    )
+            return result
+
         # Rule 2c: 경쟁 후보 탐색
         competing_count = 0
         if tag_name and self.db_path:
@@ -240,14 +257,57 @@ from core.parallel_retriever import EvidenceCandidate  # noqa: E402
 from core.parallel_retriever import TrustTier  # noqa: E402
 
 
+def _infer_trust_tier(candidate: "RankedCandidate") -> TrustTier:
+    """RankedCandidate의 실제 신뢰 등급을 추론한다.
+
+    이전 구현은 검색 결과를 무조건 TrustTier.T1로 감쌌다. 그 결과
+    ClaimGuard의 "T1(본문) 근거 없이 절대·최상급 주장 불가"(규칙 2a)가
+    구조적으로 발화할 수 없었다 — 안전장치가 있는 것처럼 보이면서 실제로는
+    항상 통과하는 위장이었다 (PM 정렬 감사 R2 / P0-4).
+
+    TrustTier 정의 (core/dataset_registry.py):
+      T1 = 본문/원어/객관 구조 데이터
+      T2 = 검증된 큐레이션 의미 데이터
+      T3 = 주석/사전/논문 등 문헌 근거
+      T4 = 자동 분류 및 LLM 추론
+
+    현행 코퍼스(Fuller·Hiscox·Dagg 등)의 TSU는 성경 본문이 아니라 19세기
+    신학·주석서에서 추출한 문헌 단위이므로 기본 등급은 T3다. 성경 본문
+    자체임을 나타내는 양성 신호가 있을 때만 T1로 올린다 — 본문으로
+    위장하지 않는다.
+    """
+    meta = candidate.metadata or {}
+
+    # 1. 명시적 tier 신호가 있으면 그대로 사용 (향후 dataset_registry 연동 대비)
+    explicit = meta.get("trust_tier")
+    if not explicit:
+        prov = meta.get("source_provenance")
+        if isinstance(prov, dict):
+            explicit = prov.get("trust_tier")
+    if explicit:
+        if isinstance(explicit, TrustTier):
+            return explicit
+        try:
+            return TrustTier(str(explicit).upper())
+        except ValueError:
+            pass
+
+    # 2. 성경 본문 자체임을 나타내는 양성 신호일 때만 T1
+    if meta.get("source_type") == "scripture" or meta.get("is_scripture_text") is True:
+        return TrustTier.T1
+
+    # 3. 그 외 — 문헌 근거. 검색 후보의 절대다수가 여기에 해당한다.
+    return TrustTier.T3
+
+
 def wrap_ranked_candidates(
     candidates: list["RankedCandidate"],
 ) -> list["EvidenceCandidate"]:
     """core.retrieval.RankedCandidate 리스트를 core.parallel_retriever.EvidenceCandidate
-    리스트로 감싼다 (evidence_axis="t1_hybrid_search", trust_tier=T1).
-    GenerationService가 ParallelRetriever 없이도(현재 QueryProcessor는
-    ParallelRetriever를 쓰지 않음) response.candidates만으로 ClaimGuard를
-    호출할 수 있게 하는 어댑터."""
+    리스트로 감싼다. evidence_axis는 "t1_hybrid_search"(검색 축 이름 — trust
+    tier와 무관한 라벨)로 고정하되, trust_tier는 _infer_trust_tier()로
+    후보마다 실제 등급을 판정한다. GenerationService가 ParallelRetriever
+    없이도 response.candidates만으로 ClaimGuard를 호출할 수 있게 하는 어댑터."""
     from core.retrieval import RankedCandidate  # noqa: F811
 
     result: list[EvidenceCandidate] = []
@@ -256,7 +316,7 @@ def wrap_ranked_candidates(
             evidence = EvidenceCandidate(
                 canonical_reference=c.metadata.get("canonical_reference"),
                 evidence_axis="t1_hybrid_search",
-                trust_tier=TrustTier.T1,
+                trust_tier=_infer_trust_tier(c),
                 ranked_candidate=c,
                 dataset_id=c.metadata.get("dataset_id"),
                 tag_namespace=c.metadata.get("tag_namespace"),

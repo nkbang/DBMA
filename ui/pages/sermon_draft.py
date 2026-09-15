@@ -29,6 +29,7 @@ from core.sermon.doctrine_filter import check as doctrine_check
 # TLI interface via factory — UI MUST NOT import hunspell_adapter directly
 from core.tli.spell_engine import create_spell_engine
 from ui.state.query_processor import get_shared_query_processor
+from ui.components.passage_commentary_panel import render_passage_commentary_panel
 
 _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크게
 
@@ -168,6 +169,15 @@ def _render_input_step() -> None:
     files = _get_processor().engine.list_source_files()
 
     _render_book_coverage_buttons()
+
+    # [ADR-031 §9 연동] 입력한 본문 구절에 대한 내서재 근거 해설을 참고용
+    # 접이식 패널로 노출한다. st.form 밖에서 렌더해야 버튼이 즉시 동작한다
+    # (_render_book_coverage_buttons 와 동일 제약). 개요·확장 생성 경로는
+    # 무변경 — 순수 부가 참고.
+    render_passage_commentary_panel(
+        st.session_state.get("sermon_input_text", state["scripture_and_theme"]),
+        key_prefix="sermon_draft",
+    )
 
     with st.form("sermon_input_form"):
         scripture_and_theme = st.text_area(

@@ -93,7 +93,7 @@ main > .stMarkdown {
     font-weight: 600;
     color: #1b1c19;
     line-height: 1.35;
-    margin: 0 0 24px;
+    margin: 0 auto 24px;
     max-width: 672px;
 }
 .nae-hero .subheadline {

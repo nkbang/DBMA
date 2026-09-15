@@ -85,7 +85,8 @@ def _map_nae_to_citation_metadata(hit: dict[str, Any]) -> dict[str, Any]:
       source_author   → author            (직접)
       retrieval_score → hit.score         (직접)
       source_type     → source_type       (직접)
-      content_excerpt → source_text[:200] (직접)
+      content_excerpt → source_text[:200] (직접, ADR-024 §C 계약)
+      source_text     → source_text       (전문 — LLM 문맥용, 계약 밖 추가)
       scripture_ref   → paragraph/sentence (CitationBuilder가 verse_mapping
                                       으로 처리 — 여기선 verse_mapping
                                       에 book_id/chapter/verse_start 채움)
@@ -136,6 +137,21 @@ def _map_nae_to_citation_metadata(hit: dict[str, Any]) -> dict[str, Any]:
         "language": language,
         "source_type": payload.get("source_type"),
         "content_excerpt": (payload.get("source_text") or "")[:200],
+        # [2026-09-10, 옵션 A] 문단 리졸버가 쓰는 payload 원본 필드 pass-through
+        # (신규 추론 없음 — ADR-024 §C 정신). content_excerpt 200자 계약은 위에 유지.
+        "identifier": payload.get("identifier"),
+        "paragraph": payload.get("paragraph"),
+        "sentence": payload.get("sentence"),
+        "page": payload.get("page"),
+        "canonical_version": payload.get("canonical_version"),
+        "volume_id": payload.get("volume_id"),
+        # [2026-09-10] 전문(truncate 없음). content_excerpt와 별도 필드인
+        # 이유는 둘의 용도가 다르기 때문이다 — content_excerpt는 ADR-024
+        # §C 표가 정의하는 "인용 카드에 보여줄 발췌"(200자 상한이 곧
+        # 계약이므로 건드리지 않는다), source_text는 LLM에 실제로 넘길
+        # 근거 본문이다. bridge_query()가 여태 전자를 후자로 재사용해
+        # 모델이 문장 중간에서 잘린 조각을 근거로 받고 있었다.
+        "source_text": payload.get("source_text") or "",
         # Canonical IDs (ADR-017 준수)
         "source_id": payload.get("source_id"),
         "work_id": payload.get("work_id"),
@@ -219,7 +235,15 @@ def bridge_query(
             meta = _map_nae_to_citation_metadata(h)
             candidate = RankedCandidate(
                 tsu_id=h["tsu_id"],
-                content=meta.get("content_excerpt", ""),
+                # [2026-09-10] content_excerpt(200자 발췌)가 아니라 전문을
+                # 넘긴다. RankedCandidate.content는 ContextAssembler를 거쳐
+                # 그대로 llm_context_block이 되는, 모델이 읽는 근거 본문이다
+                # — 여기에 발췌를 넣으면 모델은 잘린 문장을 근거로 답한다.
+                # ADR-024 §C가 계약으로 정한 것은 Citation.content_excerpt
+                # 이며(그 200자는 아래 CitationBuilder 경로에서 metadata의
+                # content_excerpt로 그대로 유지된다), RankedCandidate.content
+                # 는 그 표에 없다 — 계약 위반이 아니라 계약 밖 편법의 수정.
+                content=meta.get("source_text") or meta.get("content_excerpt", ""),
                 metadata=meta,
                 vector_score=h["score"],
                 bm25_score=0.0,
@@ -239,4 +263,186 @@ def bridge_query(
 
     except Exception:  # Qdrant/Ollama 장애 — §G fail-closed
         logger.exception("[bridge_query] NAE retrieval failed (fail-closed)")
+        return []
+
+
+# ── 옵션 A: 문단 앵커드 근거 (PM 정렬 감사 선결 #4) ────────────────────
+# 설계: docs/NAE_PARAGRAPH_ANSWER_DELIVERY_DESIGN_v1.md / TO §2·§3
+#
+# bridge_query()(-> list[Citation], ADR-024 §D 계약)는 바이트 무변경으로
+# 둔다. 문단 확장이 필요한 호출자(UI _render_nae_section)는 아래 신규
+# 함수를 쓴다 — Citation dataclass 변경 없음(설계 가정 3 1순위).
+
+_authority_manifest_cache: dict | None = None
+
+
+def _authority_class_for(source_id: str | None) -> str | None:
+    """source_id → NAE authority manifest의 authority_class (표시 전용).
+
+    TSU 레코드·payload에 쓰지 않는다 (ADR-030 §7). 조회 실패/필드 부재 시
+    None — 카드는 나머지 서지로 정상 동작한다 (설계 가정 5).
+    """
+    global _authority_manifest_cache
+    if not source_id:
+        return None
+    if _authority_manifest_cache is None:
+        _authority_manifest_cache = {}
+        try:
+            import yaml  # PyYAML — 이미 프로젝트 의존성
+            from pathlib import Path
+
+            for rel in (
+                "NAE/pipeline/registration/state/source_manifest.yaml",
+                "NAE/authority/source_manifest.yaml",
+            ):
+                p = Path(__file__).resolve().parents[1] / rel
+                if not p.exists():
+                    continue
+                data = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+                for rec in data.get("sources", []):
+                    sid = rec.get("source_id")
+                    if sid and rec.get("authority_class") and sid not in _authority_manifest_cache:
+                        _authority_manifest_cache[sid] = rec["authority_class"]
+        except Exception:  # noqa: BLE001 — 표시 전용, 실패해도 무해
+            logger.debug("[authority_class] manifest 조회 실패 (무시)", exc_info=True)
+    return _authority_manifest_cache.get(source_id)
+
+
+def _enrich_hit_with_paragraph(meta: dict, score: float) -> dict:
+    """단일 히트(meta dict) → 문단 확장 dict. resolve 실패 시 source_text 폴백."""
+    from NAE.pipeline.canonical import paragraph_lookup
+
+    identifier = meta.get("identifier")
+    paragraph_index = meta.get("paragraph")
+    source_text = meta.get("source_text") or meta.get("content_excerpt") or ""
+
+    resolved = None
+    if identifier is not None and paragraph_index is not None:
+        try:
+            resolved = paragraph_lookup.resolve(
+                identifier,
+                int(paragraph_index),
+                neighbors=_paragraph_neighbors(),
+                expected_canonical_version=meta.get("canonical_version"),
+            )
+        except Exception:  # noqa: BLE001 — fail-soft (ADR-024 §G)
+            logger.warning("[bridge_paragraphs] resolve 예외 (source_text 폴백)", exc_info=True)
+
+    if resolved is not None and resolved.text:
+        evidence_paragraph = resolved.text
+        page_start = resolved.page_start
+        page_end = resolved.page_end
+        paragraph_resolved = True
+        scripture_refs = resolved.scripture_references
+    else:
+        evidence_paragraph = source_text
+        page_start = meta.get("page")
+        page_end = meta.get("page")
+        paragraph_resolved = False
+        scripture_refs = []
+
+    return {
+        "tsu_id": meta.get("tsu_id"),
+        "retrieval_score": score,
+        "evidence_paragraph": evidence_paragraph,
+        "anchor_sentence": source_text,
+        "paragraph_resolved": paragraph_resolved,
+        "claim": meta.get("claim"),  # UI가 "AI 요약" 접힘 줄로만 씀
+        "content_excerpt": meta.get("content_excerpt", ""),  # ADR-024 §C 계약 유지
+        "scripture_references": scripture_refs,
+        "bibliography": {
+            "author": meta.get("author"),
+            "work": meta.get("book") or meta.get("title"),
+            "edition_id": meta.get("edition_id"),
+            "volume_id": meta.get("volume_id"),
+            "page_start": page_start,
+            "page_end": page_end,
+            "paragraph_index": paragraph_index,
+            "identifier": identifier,
+        },
+        "authority_class": _authority_class_for(meta.get("source_id")),
+    }
+
+
+def _paragraph_neighbors() -> int:
+    import os
+
+    try:
+        return max(0, int(os.environ.get("NAE_PARAGRAPH_NEIGHBORS", "0")))
+    except ValueError:
+        return 0
+
+
+def bridge_query_paragraphs(
+    query_text: str,
+    *,
+    top_k: int = 10,
+    limit_check: bool = True,
+) -> list[dict]:
+    """bridge_query()와 같은 검색을 하되, 각 히트를 canonical.json 원문
+    문단으로 확장한 dict 리스트를 반환한다.
+
+    `NAE_PARAGRAPH_EVIDENCE=0`이면 문단 확장을 건너뛰고 source_text 전문
+    기준의 dict를 돌려준다(ae05415 동작과 등가, TO §6-1).
+
+    module gate·timeout·fail-closed 정책은 bridge_query()와 동일하다.
+    Citation dataclass는 건드리지 않는다(설계 가정 3 1순위).
+    """
+    from NAE.answer_context import paragraph_evidence_enabled
+
+    if limit_check and not module_registry.is_enabled("nae_pd"):
+        raise NaePdModuleDisabledError(
+            "nae_pd module is disabled — enable via `scripts/dbma_module.py enable nae_pd` first"
+        )
+
+    deadline = time.monotonic() + _HARD_TIMEOUT_MS / 1_000
+    ollama_client = ollama.Client(timeout=_HARD_TIMEOUT_MS / 1_000)
+
+    try:
+        _check_deadline(deadline)
+        vector = ollama_client.embeddings(model="bge-m3:latest", prompt=query_text)["embedding"]
+        _check_deadline(deadline)
+        remaining_s = max(0.5, deadline - time.monotonic())
+        hits = search(vector, top_k=top_k, limit_check=False, remaining_timeout_s=remaining_s)
+        _check_deadline(deadline)
+
+        if not hits:
+            return []
+
+        expand = paragraph_evidence_enabled()
+        out: list[dict] = []
+        for h in hits:
+            meta = _map_nae_to_citation_metadata(h)
+            if expand:
+                out.append(_enrich_hit_with_paragraph(meta, h["score"]))
+            else:
+                src = meta.get("source_text") or meta.get("content_excerpt") or ""
+                out.append({
+                    "tsu_id": meta.get("tsu_id"),
+                    "retrieval_score": h["score"],
+                    "evidence_paragraph": src,
+                    "anchor_sentence": src,
+                    "paragraph_resolved": False,
+                    "claim": meta.get("claim"),
+                    "content_excerpt": meta.get("content_excerpt", ""),
+                    "scripture_references": [],
+                    "bibliography": {
+                        "author": meta.get("author"),
+                        "work": meta.get("book") or meta.get("title"),
+                        "edition_id": meta.get("edition_id"),
+                        "volume_id": meta.get("volume_id"),
+                        "page_start": meta.get("page"),
+                        "page_end": meta.get("page"),
+                        "paragraph_index": meta.get("paragraph"),
+                        "identifier": meta.get("identifier"),
+                    },
+                    "authority_class": _authority_class_for(meta.get("source_id")),
+                })
+        return out
+
+    except NaePdModuleDisabledError:
+        raise
+
+    except Exception:  # Qdrant/Ollama 장애 — §G fail-closed
+        logger.exception("[bridge_query_paragraphs] NAE retrieval failed (fail-closed)")
         return []

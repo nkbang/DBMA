@@ -200,81 +200,81 @@ class ResponsePackage:
 # ============================================================
 
 BOOK_ID_TO_NAMES: dict[str, list[str]] = {
-    # Old Testament — Pentateuch
-    "GEN": ["genesis", "gen", "창세기", "창세"],
+    # Old Testament — Pentateuch (5권)
+    "GEN": ["genesis", "gen", "창세기", "창세", "창"],
     "EXO": ["exodus", "exo", "출애굽기", "출애", "출"],
     "LEV": ["leviticus", "lev", "레위기", "레"],
     "NUM": ["numbers", "num", "민수기", "민수", "민"],
     "DEU": ["deuteronomy", "deu", "신명기", "신명", "신"],
-    # Historical books
-    "JOS": ["joshua", "jos", "여호수아", "여호수"],
-    "JDG": ["judges", "jdge", "사사기", "사사"],
+    # Historical books (12권)
+    "JOS": ["joshua", "jos", "여호수아", "여호수", "수"],
+    "JDG": ["judges", "jdge", "사사기", "사사", "삿"],
     "RUT": ["ruth", "rut", "루트", "룻"],
-    "1SA": ["1 samuel", "1 sa", "1sa", "사무엘상"],
-    "2SA": ["2 samuel", "2 sa", "2sa", "사무엘하"],
-    "1KI": ["1 kings", "1 ki", "1ki", "열왕기상"],
-    "2KI": ["2 kings", "2 ki", "2ki", "열왕기하"],
-    "1CH": ["1 chronicles", "1 ch", "1ch", "역대상"],
-    "2CH": ["2 chronicles", "2 ch", "2ch", "역대하"],
+    "1SA": ["1 samuel", "1 sa", "1sa", "사무엘상", "삼상"],
+    "2SA": ["2 samuel", "2 sa", "2sa", "사무엘하", "삼하"],
+    "1KI": ["1 kings", "1 ki", "1ki", "열왕기상", "왕상"],
+    "2KI": ["2 kings", "2 ki", "2ki", "열왕기하", "왕하"],
+    "1CH": ["1 chronicles", "1 ch", "1ch", "역대상", "대상"],
+    "2CH": ["2 chronicles", "2 ch", "2ch", "역대하", "대하"],
     "EZR": ["ezra", "ezr", "에스라", "에스"],
-    "NEH": ["nehemiah", "neh", "느헤미야", "느헤"],
-    "EST": ["esther", "est", "에스더", "에스"],
-    # Wisdom books
+    "NEH": ["nehemiah", "neh", "느헤미야", "느헤", "느"],
+    "EST": ["esther", "est", "에스더", "스"],
+    # Wisdom books (5권)
     "JOB": ["job", "욥기", "욥"],
-    "PSA": ["psalms", "psalm", "psa", "시편", "시", "찬미"],
-    "PRO": ["proverbs", "prov", "pro", "잠언", "잠", "지혜"],
-    "ECC": ["ecclesiastes", "ecc", "전도서", "전도"],
-    "SOL": ["song of solomon", "sol", "아래의 노래", "찬가"],
-    # Prophetic books — Major
-    "ISA": ["isaiah", "isa", "이사야", "이사"],
-    "JER": ["jeremiah", "jer", "예레미야", "예레"],
-    "LAM": ["lamentations", "lam", "애가", "애", "통곡"],
-    "EZE": ["ezekiel", "eze", "에제키엘", "에스겔"],
-    "DAN": ["daniel", "dan", "다니엘", "다니"],
-    # Prophetic books — Minor
+    "PSA": ["psalms", "psalm", "psa", "시편", "시"],
+    "PRO": ["proverbs", "prov", "pro", "잠언", "잠"],
+    "ECC": ["ecclesiastes", "ecc", "전도서", "전"],
+    "SOL": ["song of solomon", "sol", "아가", "아가서", "아"],
+    # Prophetic books — Major (5권)
+    "ISA": ["isaiah", "isa", "이사야", "사"],
+    "JER": ["jeremiah", "jer", "예레미야", "예레", "렘"],
+    "LAM": ["lamentations", "lam", "애가", "애"],
+    "EZE": ["ezekiel", "eze", "에스겔", "겔"],
+    "DAN": ["daniel", "dan", "다니엘", "단"],
+    # Prophetic books — Minor (12권)
     "HOS": ["hosea", "hos", "호세아", "호"],
-    "JOEL": ["joel", "요엘", "요"],
-    "AMOS": ["amos", "아모스", "아"],
-    "OBA": ["obadiah", "oba", "오바댜", "오바디아", "오"],
+    "JOEL": ["joel", "요엘", "욜"],
+    "AMOS": ["amos", "아모스", "암"],
+    "OBA": ["obadiah", "oba", "오바댜", "오바디아", "옵"],
     "JON": ["jonah", "jon", "요나", "욘"],
     "MIC": ["micah", "mic", "미가", "미"],
     "NAM": ["nahum", "nam", "나훔", "나"],
-    "HAB": ["habakkuk", "hab", "하박국", "하바"],
-    "ZEP": ["zephaniah", "zep", "스바냐"],
-    "HAG": ["haggai", "hag", "학개"],
-    "ZEC": ["zechariah", "zec", "스가랴"],
-    "MAL": ["malachi", "mal", "말라기", "말라"],
-    # New Testament — Gospels
-    "MAT": ["matthew", "matt", "mt", "mat", "마태복음", "마태", "마타", "마"],
-    "MRK": ["mark", "mk", "mrk", "mar", "마르코복음", "마르코", "마가복음", "마가", "막", "막달"],
-    "LUK": ["luke", "lk", "luk", "루카복음", "루카", "눋", "누가"],
-    "JHN": ["john", "jn", "jhn", "요한복음", "요한", "요복", "요"],
-    # New Testament — History
-    "ACT": ["acts", "act", "사도행전", "사도", "사행"],
-    # New Testament — Pauline Epistles
+    "HAB": ["habakkuk", "hab", "하박국", "합"],
+    "ZEP": ["zephaniah", "zep", "스바냐", "습"],
+    "HAG": ["haggai", "hag", "학개", "학"],
+    "ZEC": ["zechariah", "zec", "스가랴", "슥"],
+    "MAL": ["malachi", "mal", "말라기", "말"],
+    # New Testament — Gospels (4권)
+    "MAT": ["matthew", "matt", "mt", "mat", "마태복음", "마태", "마"],
+    "MRK": ["mark", "mk", "mrk", "마가복음", "마가", "막"],
+    "LUK": ["luke", "lk", "luk", "누가복음", "눅"],
+    "JHN": ["john", "jn", "jhn", "요한복음", "요한", "요"],
+    # New Testament — History (1권)
+    "ACT": ["acts", "act", "사도행전", "행"],
+    # New Testament — Pauline Epistles (13권)
     "ROM": ["romans", "rom", "ro", "로마서", "로마", "롬"],
     "1CO": ["1 corinthians", "1 cor", "1 co", "1co", "고린도전서", "고린도전", "고전"],
     "2CO": ["2 corinthians", "2 cor", "2 co", "2co", "고린도후서", "고린도후", "고후"],
-    "GAL": ["galatians", "gal", "갈라티아", "갈", "갈서"],
-    "EPH": ["ephesians", "eph", "에베소서", "에베", "엡"],
-    "PHP": ["philippians", "phil", "php", "phl", "빌립보서", "빌립", "빌립보", "빌"],
-    "COL": ["colossians", "col", "골로새서", "골라", "골"],
-    "1TH": ["1 thessalonians", "1 thess", "1 th", "1the", "1th", "살례전서", "살례전", "살전"],
-    "2TH": ["2 thessalonians", "2 thess", "2 th", "2the", "2th", "살례후서", "살례후", "살후"],
-    "1TI": ["1 timothy", "1 tim", "1 ti", "1ti", "디모데전서", "디모데전", "전"],
-    "2TI": ["2 timothy", "2 tim", "2 ti", "2ti", "디모데후서", "디모데후", "후"],
-    "TIT": ["titus", "tit", "디도서", "디도"],
-    "PHM": ["philemon", "phm", "빌레몬서", "빌레몬"],
-    # New Testament — General Epistles
-    "HEB": ["hebrews", "heb", "히브리서", "히브", "히브리"],
-    "JAS": ["james", "jas", "야고보서", "야고", "雅", "약"],
-    "1PE": ["1 peter", "1 pe", "1pe", "베드로전서", "베드로전", "전서"],
-    "2PE": ["2 peter", "2 pe", "2pe", "베드로후서", "베드로후", "후서"],
-    "1JN": ["1 john", "1 jn", "1jn", "요한일서", "요한일", "일서"],
-    "2JN": ["2 john", "2 jn", "2jn", "요한이서", "요한이"],
-    "3JN": ["3 john", "3 jn", "3jn", "요한삼서", "요한삼"],
-    "JUD": ["jude", "jud", "유다서", "유다"],
-    # New Testament — Prophecy
+    "GAL": ["galatians", "gal", "갈라티아", "갈"],
+    "EPH": ["ephesians", "eph", "에베소서", "에베", "에", "엡"],
+    "PHP": ["philippians", "phil", "php", "phl", "빌립보서", "빌립보", "빌"],
+    "COL": ["colossians", "col", "골로새서", "골"],
+    "1TH": ["1 thessalonians", "1 thess", "1 th", "1the", "1th", "살레스전서", "살레스전", "살전"],
+    "2TH": ["2 thessalonians", "2 thess", "2 th", "2the", "2th", "살레스후서", "살레스후", "살후"],
+    "1TI": ["1 timothy", "1 tim", "1 ti", "1ti", "디모데전서", "디모데전", "딤전"],
+    "2TI": ["2 timothy", "2 tim", "2 ti", "2ti", "디모데후서", "디모데후", "딤후"],
+    "TIT": ["titus", "tit", "디도서", "딛"],
+    "PHM": ["philemon", "phm", "빌레몬서", "몬"],
+    # New Testament — General Epistles (8권)
+    "HEB": ["hebrews", "heb", "히브리서", "히"],
+    "JAS": ["james", "jas", "야고보서", "야고", "약"],
+    "1PE": ["1 peter", "1 pe", "1pe", "베드로전서", "베드로전", "벧전"],
+    "2PE": ["2 peter", "2 pe", "2pe", "베드로후서", "베드로후", "벧후"],
+    "1JN": ["1 john", "1 jn", "1jn", "요한일서", "요한일", "요일"],
+    "2JN": ["2 john", "2 jn", "2jn", "요한이서", "요한이", "요이"],
+    "3JN": ["3 john", "3 jn", "3jn", "요한삼서", "요한삼", "요삼"],
+    "JUD": ["jude", "jud", "유다서", "유다", "유"],
+    # New Testament — Prophecy (1권)
     "REV": ["revelation", "rev", "요한의 묵시록", "묵시록", "계", "계시록"],
 }
 
@@ -285,22 +285,84 @@ for book_id, names in BOOK_ID_TO_NAMES.items():
         NAME_TO_BOOK_ID[name] = book_id
 
 # Thematic keywords (from theological_scorer.py)
+#
+# [2026-09-10] 각 테마에 한국어 어휘를 병기했다. 단순한 번역 추가가 아니라
+# **교차언어 다리**를 놓는 것이 목적이다 — `_thematic_relevance_score()`는
+# 질의 쪽(`hits_query`)과 본문 쪽(`hits_content`)을 각각 검사해 둘 다
+# 걸리면 1.0, 한쪽만 걸리면 0.5를 준다. 어휘가 영어뿐이던 동안에는
+# 한국어 질의가 `hits_query`를 절대 만족시키지 못해, 19세기 영어 코퍼스를
+# 상대로 한국어로 묻는 이 앱의 기본 사용 형태에서 TRS가 사실상 죽어
+# 있었다. 이제 "은혜"로 물으면 질의 쪽이 mercy 테마에 걸리고 영어 본문의
+# "grace"가 본문 쪽에 걸려 두 언어가 같은 테마로 만난다.
+#
+# 매칭은 `kw in text_lower` 부분 문자열 방식이라 한국어 교착어미가 자연히
+# 흡수된다("은혜" ⊂ "은혜로우신"). 그래서 여기에는 어간 형태만 적는다.
+# 조사/어미를 붙인 변형을 나열할 필요가 없다.
+#
+# 한 음절 어휘는 넣지 않았다 — "영"(spirit)은 "영어/영국/영원"에,
+# "법"(law)은 "방법"에 걸린다. 두 음절 이상으로만 적는다.
 THEME_KEYWORDS: dict[str, list[str]] = {
-    "creation": ["create", "creation", "created", "beginning", "form", "make", "maker"],
-    "covenant": ["covenant", "promise", "oath", "sign", "everlasting", "perpetual"],
-    "redemption": ["redeem", "deliver", "save", "salvation", "ransom", "rescue"],
-    "judgment": ["judge", "judgment", "condemn", "punish", "wrath", "justice"],
-    "mercy": ["mercy", "grace", "compassion", "forgive", "forgiveness", "pity"],
-    "faith": ["faith", "believe", "trust", "belief", "faithful", "faithfulness"],
-    "worship": ["worship", "praise", "adoration", "holy", "glory", "worshipped"],
-    "law": ["law", "commandment", "statute", "ordinance", "torah", "decree"],
-    "kingdom": ["kingdom", "king", "reign", "sovereign", "throne", "rule"],
-    "spirit": ["spirit", "soul", "breath", "heart", "inner", "spiritual"],
-    "love": ["love", "loved", "charity", "dear", "beloved"],
-    "wisdom": ["wisdom", "wise", "understanding", "knowledge", "discern"],
-    "prophecy": ["prophesy", "prophecy", "vision", "reveal", "revelation", "seer"],
-    "resurrection": ["rise", "raised", "resurrect", "life", "death", "alive", "living"],
+    "creation": ["create", "creation", "created", "beginning", "form", "make", "maker",
+                 "창조", "창세", "태초", "피조", "지으신", "만드신"],
+    "covenant": ["covenant", "promise", "oath", "sign", "everlasting", "perpetual",
+                 "언약", "약속", "맹세", "서약", "계약"],
+    "redemption": ["redeem", "deliver", "save", "salvation", "ransom", "rescue",
+                   "구원", "구속", "대속", "속량", "구주", "건지", "구출"],
+    "judgment": ["judge", "judgment", "condemn", "punish", "wrath", "justice",
+                 "심판", "정죄", "형벌", "진노", "공의", "징계"],
+    "mercy": ["mercy", "grace", "compassion", "forgive", "forgiveness", "pity",
+              "은혜", "자비", "긍휼", "용서", "사죄", "불쌍"],
+    "faith": ["faith", "believe", "trust", "belief", "faithful", "faithfulness",
+              "믿음", "신앙", "신뢰", "신실", "충성"],
+    "worship": ["worship", "praise", "adoration", "holy", "glory", "worshipped",
+                "예배", "찬양", "경배", "찬미", "거룩", "영광"],
+    "law": ["law", "commandment", "statute", "ordinance", "torah", "decree",
+            "율법", "계명", "법도", "규례", "토라"],
+    "kingdom": ["kingdom", "king", "reign", "sovereign", "throne", "rule",
+                "왕국", "천국", "통치", "보좌", "주권", "다스리"],
+    "spirit": ["spirit", "soul", "breath", "heart", "inner", "spiritual",
+               "성령", "영혼", "심령", "영적", "마음"],
+    "love": ["love", "loved", "charity", "dear", "beloved",
+             "사랑", "애정", "자애"],
+    "wisdom": ["wisdom", "wise", "understanding", "knowledge", "discern",
+               "지혜", "명철", "분별", "총명", "슬기"],
+    "prophecy": ["prophesy", "prophecy", "vision", "reveal", "revelation", "seer",
+                 "예언", "선지", "계시", "환상", "묵시"],
+    "resurrection": ["rise", "raised", "resurrect", "life", "death", "alive", "living",
+                     "부활", "생명", "죽음", "살리", "다시 사"],
 }
+
+
+# [2026-09-10] 한국어 불용어 — `QueryParser._extract_keywords()` 전용.
+#
+# `_tokenize()`(kiwipiepy 형태소 분석)가 조사/어미를 떼고 내용 형태소만
+# 남기지만, 그 결과에는 여전히 검색 신호가 없는 기능적 어간이 섞인다
+# ("하", "있", "되", "것", "수"). 이들을 BM25 질의어로 넘기면 실제로
+# 점수를 **떨어뜨린다** — `bm25_score()`의 idf가 `log(2/(freq+1))+1`이라
+# 문서마다 흔한 어간일수록 항 점수가 낮아지고(음수까지 간다), 점수는
+# 매칭된 항들의 **평균**이라 이런 항이 평균을 끌어내리기 때문이다.
+#
+# 성경 장절 마커("장", "절")도 뺀다 — 장절은 `_extract_scripture_refs()`가
+# 전담하는 별도 경로이고, 여기 남으면 거의 모든 주석 문서에 걸리는
+# 잡음 항이 된다.
+KOREAN_STOP_WORDS: frozenset[str] = frozenset({
+    # 의존명사·대명사 잔여
+    "것", "수", "때", "등", "및", "이", "그", "저", "나", "너", "우리", "중",
+    "때문", "경우", "정도", "자체", "가지", "동안",
+    # 기능적 용언 어간 잔여
+    "하", "있", "되", "없", "같", "보", "가", "오", "알", "모르", "지나",
+    "드리", "사", "삼", "지", "들", "받",
+    # 의문사
+    "무엇", "어떻", "어찌", "왜", "어디", "누구", "언제", "얼마", "무슨",
+    # 문법적 연결 어간
+    "대하", "위하", "통하", "관하", "따르", "인하", "의하",
+    # 성경 장절 마커 (_extract_scripture_refs 전담)
+    "장", "절", "편", "권",
+})
+
+# 토큰에 한글이 하나라도 있는지 — 한국어/영어 토큰에 서로 다른 최소 길이
+# 규칙을 적용하기 위한 판별용(아래 _extract_keywords 참고).
+_HANGUL_RE = re.compile(r"[가-힣]")
 
 
 # ============================================================
@@ -318,12 +380,25 @@ class QueryParser:
     """
 
     # Intent detection patterns
+    # [2026-09-10] 각 intent에 한국어 표현을 병기했다. 이전까지 전부 영문
+    # 정규식이라 한국어 질의는 예외 없이 아래 폴백으로 떨어졌고, 폴백의
+    # 성경 용어 목록마저 영문이어서 결국 intent="unknown"으로 끝났다.
+    #
+    # dict 순서가 곧 우선순위다(_detect_intent가 첫 매칭에서 멈춘다).
+    # 한국어를 추가할 때도 이 순서를 존중해야 한다 — 예컨대 "설명"(exegesis)이
+    # "어떻게"(devotional)보다 먼저 걸려야 "이 본문을 설명해 주십시오"가
+    # 주해 질의로 잡힌다. 영어 목록도 같은 순서 전제로 짜여 있다.
     INTENT_PATTERNS: dict[str, str] = {
-        "exegesis": r"(?:explain|what does|meaning of|interpret|study|analysis|deep dive)",
-        "comparison": r"(?:compare|versus|vs\.?|difference between|similarities|unlike|while\s+\w+|but\s+\w+)",
-        "devotional": r"(?:how|why|what can we|personal|application|practical|spiritual growth|encourage)",
-        "theological": r"(?:doctrine|theology|belief|doctrinal|systematic|nature of|attribute of|God's nature)",
-        "cross-reference": r"(?:cross.?ref|other place|where else|parallel|same theme|similar passage|related)",
+        "exegesis": r"(?:explain|what does|meaning of|interpret|study|analysis|deep dive"
+                    r"|주해|주석|강해|해석|풀이|설명|무슨 뜻|뜻이 무엇|의미)",
+        "comparison": r"(?:compare|versus|vs\.?|difference between|similarities|unlike|while\s+\w+|but\s+\w+"
+                      r"|비교|차이|대조|다른 점|반면|어느 쪽)",
+        "devotional": r"(?:how|why|what can we|personal|application|practical|spiritual growth|encourage"
+                      r"|어떻게|어찌|왜|적용|실천|묵상|권면|위로|삶에|성도에게)",
+        "theological": r"(?:doctrine|theology|belief|doctrinal|systematic|nature of|attribute of|God's nature"
+                       r"|교리|교의|신학|조직신학|신조|신앙고백|속성|본질|정통)",
+        "cross-reference": r"(?:cross.?ref|other place|where else|parallel|same theme|similar passage|related"
+                           r"|상호\s?참조|관련\s?구절|다른 곳|평행|병행|비슷한 구절|연관)",
     }
 
     def __init__(self) -> None:
@@ -365,7 +440,15 @@ class QueryParser:
             if pattern.search(query):
                 return intent
         # Default to theological if it contains biblical terms
-        if re.search(r'(?:God|Jesus|Christ|Holy Spirit|law|grace|faith|covenant|kingdom|sin)', query, re.IGNORECASE):
+        # [2026-09-10] 한국어 신학 용어 추가 — 이 목록이 영문뿐이라
+        # "하나님의 은혜에 대하여" 같은 명백한 신학 질의도 "unknown"으로
+        # 떨어졌다. intent는 후속 랭킹에 쓰이므로 unknown은 손실이다.
+        if re.search(
+            r'(?:God|Jesus|Christ|Holy Spirit|law|grace|faith|covenant|kingdom|sin'
+            r'|하나님|하느님|예수|그리스도|성령|주님|성경|말씀|복음'
+            r'|은혜|믿음|구원|언약|율법|천국|교회|기도)',
+            query, re.IGNORECASE,
+        ):
             return "theological"
         return "unknown"
 
@@ -455,7 +538,26 @@ class QueryParser:
         return themes_found
 
     def _extract_keywords(self, query: str) -> list[str]:
-        """Extract meaningful keywords from query."""
+        """Extract meaningful keywords from query.
+
+        [2026-09-10] 이 함수의 결과는 `RetrievalEngine.retrieve()` STEP 2에서
+        `bm25_score(parsed_query.keywords, content)`로 그대로 들어간다
+        (하이브리드 가중치 0.25). 그런데 여태 토큰 추출이
+        `\b[a-zA-Z]{3,}\b`뿐이어서 **한국어 질의는 예외 없이 빈 리스트를
+        반환했고, 따라서 모든 한국어 질의의 BM25 점수가 0이었다.**
+
+        더 나쁜 것은 그 0이 비대칭이었다는 점이다 — 문서 쪽 토큰화를 맡는
+        `_tokenize()`는 이미 kiwipiepy 형태소 분석기를 써서 한국어를 제대로
+        처리하고 있었다(P1 fix, docs/TODO.md). 즉 색인 쪽은 한국어를 알고
+        질의 쪽만 몰랐다. 여기서 `_tokenize()`를 그대로 재사용해 양쪽
+        토큰화를 일치시키는 것이 이 수정의 핵심이다. 별도 한국어 토크나이저를
+        새로 만들지 않는다 — 같은 텍스트가 질의로 오느냐 본문으로 오느냐에
+        따라 다르게 쪼개지면 BM25는 애초에 성립하지 않는다.
+
+        영어 동작은 보존된다: kiwi는 영문을 공백/구두점 기준으로 그대로
+        내주고 소문자화하므로, 기존 정규식이 뽑던 것과 같은 낱말이 나온다.
+        3자 미만 영단어를 버리던 규칙도 아래에서 그대로 유지한다.
+        """
         stop_words = {
             "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
             "in", "on", "at", "to", "for", "of", "with", "by", "from", "and", "or",
@@ -467,8 +569,22 @@ class QueryParser:
             "why", "if", "then", "than", "so", "no", "yes", "about",
         }
 
-        words = re.findall(r'\b[a-zA-Z]{3,}\b', query.lower())
-        keywords = [w for w in words if w not in stop_words and len(w) > 2]
+        keywords: list[str] = []
+        for token in _tokenize(query):
+            if token in stop_words or token in KOREAN_STOP_WORDS:
+                continue
+            if _HANGUL_RE.search(token):
+                # 한국어: kiwi가 이미 조사/어미를 떼어 어간만 남겼으므로
+                # 길이 제한을 두지 않는다. 두 음절 규칙을 세우면 "죄",
+                # "주"(주님), "영"(영/성령) 같은 실질 어휘가 통째로 사라진다
+                # — 무의미한 한 음절 어간은 길이가 아니라
+                # KOREAN_STOP_WORDS로 걸러낸다.
+                keywords.append(token)
+            elif len(token) > 2 and token.isalpha():
+                # 영어: 기존 규칙 그대로(3자 이상, 순수 알파벳).
+                # isalpha()가 숫자를 배제하는데, 이것도 기존
+                # `[a-zA-Z]{3,}` 정규식과 같은 동작이다.
+                keywords.append(token)
 
         # Deduplicate while preserving order
         seen: set[str] = set()
@@ -949,17 +1065,64 @@ def compute_passage_match_score(
     return best
 
 
+# [2026-09-10, PM 정렬 감사 선결 #5] source_tier 문자열 → 등급 값 매핑.
+# 종전 compute_source_tier_bonus()는 이름과 달리 source_tier를 전혀 보지
+# 않고 review_status만 봤다("SourceTierBonus"라면서 review_status bonus였다).
+# 아래 표는 scripts/ingest_logos_export.py가 쓰는 값("scholarly_commentary")과
+# docs/LOCAL_MODEL_SERMON_ALGORITHM_DESIGN.md §9가 언급하는 값
+# ("logos_primary"/"personal_research")을 반영한다. 표에 없는 비어있지 않은
+# tier 문자열은 provenance를 갖췄다는 사실만으로 중간값(0.5)을 준다.
+_SOURCE_TIER_RANK: dict[str, float] = {
+    # 1차 자료 — 성경 본문/신조/신앙고백/Logos 원문
+    "logos_primary": 1.0,
+    "scripture": 1.0,
+    "confession": 1.0,
+    "creed": 1.0,
+    # 학술 2차 자료 — 주석/조직신학/학술 논문
+    "scholarly_commentary": 0.7,
+    "logos_secondary": 0.7,
+    "systematic_theology": 0.7,
+    "academic": 0.7,
+    # 개인 연구·설교 노트
+    "personal_research": 0.3,
+    "logos_personal": 0.3,
+    "sermon": 0.3,
+}
+
+
 def compute_source_tier_bonus(tsu: dict[str, Any]) -> float:
-    """Small reviewed-source bonus (design doc §9.3 `SourceTierBonus`, weight
-    0.05) — rewards externally-sourced (e.g. Logos-export) TSUs that have
-    passed human review, without letting an unreviewed external source
-    outrank a reviewed one on this component. Returns 0.0 for the entire
-    pre-existing corpus (no source_provenance field), so this is a no-op
-    everywhere except newly-tagged external sources."""
+    """Graded source-tier bonus (design doc §9.3 `SourceTierBonus`, weight
+    0.05) — rewards externally-sourced (e.g. Logos-export) TSUs by the tier
+    of their origin, gated by human review.
+
+    Returns 0.0 for the entire pre-existing corpus (no `source_provenance`
+    field), so this stays a no-op there. It only becomes active for TSUs
+    ingested with provenance (e.g. scripts/ingest_logos_export.py). Unlike
+    the previous implementation it now honours `source_tier` — the field
+    this function is named for — instead of collapsing everything to a
+    binary `review_status` flag.
+
+    Scoring:
+      - `source_tier` in _SOURCE_TIER_RANK → that value; unknown non-empty
+        tier → 0.5; no tier → fall back to 1.0-if-reviewed / 0.0 otherwise.
+      - review gate: `review_status in (reviewed, approved)` → full value;
+        otherwise ×0.6 (a tiered-but-unreviewed source still outranks a
+        source with no provenance at all, but not a reviewed one).
+    Result is clamped to [0.0, 1.0].
+    """
     provenance = tsu.get("source_provenance")
     if not provenance:
         return 0.0
-    return 1.0 if provenance.get("review_status") in ("reviewed", "approved") else 0.0
+
+    reviewed = provenance.get("review_status") in ("reviewed", "approved")
+    tier = (provenance.get("source_tier") or "").strip().lower()
+
+    if not tier:
+        return 1.0 if reviewed else 0.0
+
+    base = _SOURCE_TIER_RANK.get(tier, 0.5)
+    value = base if reviewed else base * 0.6
+    return max(0.0, min(1.0, value))
 
 
 def compute_content_quality_factor(tsu: dict[str, Any]) -> float:
@@ -1129,9 +1292,31 @@ def _parse_refs_from_text(text: str) -> list[ScriptureReference]:
     return refs
 
 
+def _lexical_tokens(text: str) -> set[str]:
+    """어휘 겹침(자카드) 계산용 토큰 집합.
+
+    [2026-09-10] `_thematic_relevance_score()`가 질의와 본문 양쪽을
+    `\b[a-zA-Z]{3,}\b`로만 토큰화해, 한국어 질의로 한국어 문서를 찾을 때
+    자카드가 **항상 0**이었다(사용자 개인 서재가 정확히 이 경우다).
+
+    한글이 있을 때만 형태소 분석기를 태우는 이유는 성능이다. 이 함수는
+    쿼리당 후보 문서마다 호출되고, theological scoring은 이미 측정된
+    병목이다(53k TSU 코퍼스에서 end-to-end의 82%). NAE 연구 코퍼스는
+    19세기 영어라 한글이 없으므로 그 경로는 기존 정규식 그대로 돌아
+    추가 비용이 0이다.
+
+    한국어 질의 × 영어 본문은 여전히 교집합이 비어 자카드 0이 된다 —
+    이건 결함이 아니라 정직한 값이다. 교차언어 연결은 자카드가 아니라
+    THEME_KEYWORDS(양쪽 언어 병기)가 담당한다.
+    """
+    if _HANGUL_RE.search(text):
+        return set(_tokenize(text))
+    return set(t.lower() for t in re.findall(r'\b[a-zA-Z]{3,}\b', text))
+
+
 def _thematic_relevance_score(query: str, tsu: dict[str, Any]) -> float:
     """Compute thematic relevance score (0-1)."""
-    query_tokens = set(t.lower() for t in re.findall(r'\b[a-zA-Z]{3,}\b', query))
+    query_tokens = _lexical_tokens(query)
     tsu_content = tsu.get("content", "")
     query_lower = query.lower()
     content_lower = tsu_content.lower()
@@ -1148,7 +1333,7 @@ def _thematic_relevance_score(query: str, tsu: dict[str, Any]) -> float:
 
     theme_score = max(theme_scores) if theme_scores else 0.0
 
-    tsu_words = set(t.lower() for t in re.findall(r'\b[a-zA-Z]{3,}\b', tsu_content[:1000]))
+    tsu_words = _lexical_tokens(tsu_content[:1000])
     if query_tokens and tsu_words:
         intersection = query_tokens & tsu_words
         union = query_tokens | tsu_words
@@ -1840,6 +2025,56 @@ class RetrievalEngine:
 # SECTION 9: CONTEXT ASSEMBLER & CITATION BUILDER — TASK 1
 # ============================================================
 
+def _format_context_source_label(metadata: dict, scripture_ref: str = "") -> str:
+    """검색 후보의 서지 정보를 사람이 읽는 한 줄로 만든다.
+
+    [2026-09-10, PM 정렬 감사 R3 / 선결 #3] 이전에는 assemble()이 만드는
+    LLM 문맥 블록이 `<context id="TSU-..." score="...">`뿐이라 저자·문헌·
+    위치가 전혀 없었다 — Citation 객체엔 있지만 모델에는 가지 않았고,
+    그래서 모델이 답변 본문에서 "풀러는 …라고 말한다"처럼 출처를 밝힐 수
+    없었다. 값이 없는 필드는 생략한다(지어내지 않는다). 라벨 규칙은
+    core/generation.py::_format_sermon_context(설교 경로)와 같은 소스
+    필드를 쓰되 페이지·문단·장절 위치를 더한다.
+    """
+    md = metadata or {}
+    author = str(md.get("author") or "").strip()
+    title = str(md.get("title") or "").strip()
+    book = str(md.get("book") or "").strip()
+    source_file = str(md.get("source_file") or "").strip()
+
+    parts: list[str] = []
+
+    # 저작물 라벨: title(가장 풍부) → book → source_file
+    work = title or book or source_file
+    if work:
+        # title이 이미 "{book} by {author}" 형태로 저자를 포함하면 중복 표기하지 않는다
+        if author and author not in work:
+            parts.append(f"{work} — {author}")
+        else:
+            parts.append(work)
+    elif author:
+        parts.append(author)
+
+    # 위치: 장절 → 페이지 → 문단
+    ref = str(scripture_ref or "").strip()
+    if ref and ref not in ("Unknown reference", "Unmapped passage"):
+        parts.append(ref)
+    page = md.get("page")
+    if page not in (None, "", "?"):
+        parts.append(f"p.{page}")
+    paragraph = md.get("paragraph")
+    if paragraph not in (None, "", "?"):
+        parts.append(f"문단 {paragraph}")
+
+    # 외부 소스(Logos 등) 원저작물 위치 — 설교 경로와 동일 규칙
+    prov = md.get("source_provenance")
+    loc = prov.get("logos_location") if isinstance(prov, dict) else None
+    if loc:
+        parts.append(str(loc))
+
+    return ", ".join(p for p in parts if p)
+
+
 class ContextAssembler:
     """Assembles final context block for LLM consumption."""
 
@@ -1873,9 +2108,15 @@ class ContextAssembler:
 
             scripture_contexts.append(f"[{ref_str}] Score={score:.3f}: {content[:300]}")
 
+            # [PM 정렬 감사 R3 / 선결 #3] 서지 정보를 블록 안에 함께 넣어
+            # 모델이 답변에서 출처를 밝힐 수 있게 한다. 정보가 없으면 줄을
+            # 넣지 않는다("출처: 미상" 같은 잡음 방지).
+            source_label = _format_context_source_label(candidate.metadata, ref_str)
+            source_line = f"출처: {source_label}\n" if source_label else ""
+
             context_parts.append(
                 f"<context id=\"{tsu_id}\" score=\"{score:.4f}\">\n"
-                f"{content}\n</context>\n"
+                f"{source_line}{content}\n</context>\n"
             )
 
         llm_context_block = "\n".join(context_parts)

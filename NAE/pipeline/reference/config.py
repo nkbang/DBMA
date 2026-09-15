@@ -16,6 +16,18 @@ QDRANT_URL = "http://localhost:7333"
 # Collection name (versioned per TSU_SCHEMA_VERSION convention)
 REFERENCE_COLLECTION_NAME = "nae_ref_v1"
 
+# Second reference collection — Baptist commentary corpus (verse-anchored,
+# e.g. Spurgeon's Treasury of David). Kept isolated from REFERENCE_COLLECTION_NAME
+# per ADR-013 collection-isolation principle: different source, different
+# chunking rule (verse-anchored vs. heading+prose dictionary entries).
+COMMENTARY_COLLECTION_NAME = "nae_ref_commentary_v1"
+
+# All collections search_reference() may query. Order does not affect
+# ranking (results are merged and re-sorted by score) but does affect
+# which collections exist to be searched at all — a name absent here is
+# never queried regardless of caller args.
+KNOWN_REFERENCE_COLLECTIONS = (REFERENCE_COLLECTION_NAME, COMMENTARY_COLLECTION_NAME)
+
 # Embedding model (must match the one used by NAE.pipeline.embed)
 DEFAULT_EMBED_MODEL = "bge-m3:latest"
 

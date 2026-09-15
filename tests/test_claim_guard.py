@@ -526,6 +526,34 @@ class TestClaimGuardT1T3Evidence:
 
 
 # ---------------------------------------------------------------------------
+# 테스트 11b: T3 단독 근거 (T1 없음) — 규칙 2a
+# ---------------------------------------------------------------------------
+
+class TestClaimGuardT3OnlyEvidence:
+    def test_t3_only_blocks_via_rule_2a(self):
+        """T3(문헌 근거)만 있고 T1(본문) 근거가 없으면 규칙 2a로 절대주장 차단.
+
+        wrap_ranked_candidates()가 검색 결과를 무조건 T1로 감싸던 위장을
+        제거하면서 활성화된 경로다 (PM 정렬 감사 R2 / P0-4). 그 전에는
+        has_t1이 계산만 되고 소비되지 않아 이 규칙이 죽어 있었다.
+        """
+        guard = ClaimGuard(parallel_retriever_db_path=None)
+        evidence = [
+            _make_evidence(
+                TrustTier.T3,
+                canonical_reference="Gen.24.12",
+                dataset_id="fuller_complete_works",
+                tag_name="prayer",
+            ),
+        ]
+        result = guard.evaluate("기도의 최초 사례는 Gen.24.12입니다.", evidence)
+        assert result.risk_level == RiskLevel.HIGH
+        assert result.absolute_claim_blocked is True
+        assert result.scope_qualifier_required is True
+        assert result.reason == "T1(본문) 근거 없이 절대·최상급 주장 불가"
+
+
+# ---------------------------------------------------------------------------
 # 테스트 12: 빈 evidence 리스트
 # ---------------------------------------------------------------------------
 

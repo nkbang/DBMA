@@ -1,14 +1,14 @@
 import json
 from unittest.mock import patch
 
-from NAE.pipeline.tsu import claim
+from NAE.pipeline.tsu import claim, config
 
 
 def _mock_response(payload: dict) -> dict:
     return {"response": json.dumps(payload, ensure_ascii=False)}
 
 
-@patch("NAE.pipeline.tsu.claim.ollama.generate")
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
 def test_extract_claim_parses_positive_claim(mock_generate):
     mock_generate.return_value = _mock_response({
         "is_claim": True,
@@ -33,7 +33,7 @@ def test_extract_claim_parses_positive_claim(mock_generate):
     assert result.error is None
 
 
-@patch("NAE.pipeline.tsu.claim.ollama.generate")
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
 def test_extract_claim_parses_negative_claim(mock_generate):
     mock_generate.return_value = _mock_response({"is_claim": False})
     result = claim.extract_claim("See page 12 for further discussion.")
@@ -41,7 +41,7 @@ def test_extract_claim_parses_negative_claim(mock_generate):
     assert result.claim is None
 
 
-@patch("NAE.pipeline.tsu.claim.ollama.generate")
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
 def test_extract_claim_drops_hallucinated_scripture_not_in_candidates(mock_generate):
     mock_generate.return_value = _mock_response({
         "is_claim": True,
@@ -55,7 +55,7 @@ def test_extract_claim_drops_hallucinated_scripture_not_in_candidates(mock_gener
     assert result.scriptures == []
 
 
-@patch("NAE.pipeline.tsu.claim.ollama.generate")
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
 def test_extract_claim_coerces_unknown_doctrine_to_other(mock_generate):
     mock_generate.return_value = _mock_response({
         "is_claim": True,
@@ -69,7 +69,7 @@ def test_extract_claim_coerces_unknown_doctrine_to_other(mock_generate):
     assert result.doctrine == "Other"
 
 
-@patch("NAE.pipeline.tsu.claim.ollama.generate")
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
 def test_extract_claim_clips_out_of_range_confidence(mock_generate):
     mock_generate.return_value = _mock_response({
         "is_claim": True, "claim": "X", "doctrine": None,
@@ -79,7 +79,7 @@ def test_extract_claim_clips_out_of_range_confidence(mock_generate):
     assert result.confidence == 1.0
 
 
-@patch("NAE.pipeline.tsu.claim.ollama.generate")
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
 def test_extract_claim_handles_llm_failure_without_raising(mock_generate):
     mock_generate.side_effect = RuntimeError("connection refused")
     result = claim.extract_claim("A sentence.")
@@ -87,9 +87,28 @@ def test_extract_claim_handles_llm_failure_without_raising(mock_generate):
     assert result.error is not None
 
 
-@patch("NAE.pipeline.tsu.claim.ollama.generate")
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
 def test_extract_claim_handles_unparseable_response(mock_generate):
     mock_generate.return_value = {"response": "I cannot help with that."}
     result = claim.extract_claim("A sentence.")
     assert result.is_claim is False
     assert result.error is not None
+
+
+@patch("NAE.pipeline.tsu.claim._CLIENT.generate")
+def test_extract_claim_bounds_hung_daemon_with_timeout(mock_generate):
+    # A wedged Ollama daemon -> httpx read timeout. Must fail soft (counted,
+    # not raised) so the batch trips run_fuller_f2.sh's llm_errors gate instead
+    # of hanging forever (NAE-TSU-BUILDER-RESUME-001 / F2 hang resilience).
+    class _Timeout(Exception):
+        pass
+
+    mock_generate.side_effect = _Timeout("timed out")
+    result = claim.extract_claim("A sentence.")
+    assert result.is_claim is False
+    assert "timed out" in (result.error or "")
+
+
+def test_claim_client_uses_configured_timeout():
+    # Locks the config wiring: the module client must carry CLAIM_HTTP_TIMEOUT_S.
+    assert claim._CLIENT._client.timeout.read == config.CLAIM_HTTP_TIMEOUT_S

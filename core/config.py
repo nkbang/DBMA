@@ -56,6 +56,17 @@ if not os.path.exists(_yaml_raw_dir):
     _yaml_raw_dir = os.path.join(DATA_DIR, "RAW")
 DEFAULT_RAW_DIR = _yaml_raw_dir  # type: ignore[assignment]  # resolved after condition check
 
+# [ADR-031] User-supplied Bible verse-text JSON (개역개정 등). Read-only
+# data layer for the "본문 해설" viewer — NOT part of the TSU/retrieval
+# corpus. Missing/invalid file is fail-closed by core/bible_text.py (the
+# viewer shows guidance, never crashes), so no existence check here.
+_yaml_bible_text_path = _yaml_dirs.get("bible_text_path", "data/bible/reference.json")
+BIBLE_TEXT_PATH = (
+    _yaml_bible_text_path
+    if os.path.isabs(_yaml_bible_text_path)
+    else os.path.join(BASE_DIR, _yaml_bible_text_path)
+)
+
 # [SPRINT17-Phase5-M1b-0.1] TSU/bench path configuration authority — additive
 # only, not yet referenced by core/retrieval.py or scripts/ (see M1b-0.2+).
 DEFAULT_BENCH_DIR = _yaml_dirs.get("bench_dir", "output/bench")
@@ -267,6 +278,15 @@ RETRIEVAL_DOCUMENT_CAP = _yaml_rag.get("document_cap", 2)
 DEFAULT_TEMPERATURE = _yaml_rag.get("default_temperature", 0.2)
 RAG_CHUNK_SIZE = _yaml_rag.get("chunk_size", 1200)
 RAG_CHUNK_OVERLAP = _yaml_rag.get("chunk_overlap", 120)
+
+# [2026-09-04] Q&A/본문해설 생성(core/generation.py::GenerationService)의 Ollama
+# 옵션. my-theology-bot-v2 는 Modelfile에 repeat_penalty/num_predict 를 지정하지
+# 않아 Ollama 기본값(repeat_penalty 1.1, num_predict 무제한)으로 돌고, 저온
+# 결정론 설정과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됨
+# (요한복음 1:10 해설). 두 값을 여기서 강제한다. SermonDraftService 는 긴
+# 출력이 정상이라 이 상한을 적용하지 않는다(별도 흐름).
+DEFAULT_REPEAT_PENALTY = _yaml_rag.get("repeat_penalty", 1.3)
+DEFAULT_NUM_PREDICT = _yaml_rag.get("num_predict", 1024)
 
 # ── UI 기본값 ───────────────────────────────────────────
 _yaml_ui = CFG.get("ui", {})

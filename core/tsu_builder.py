@@ -1,5 +1,9 @@
 """core/tsu_builder.py — TSU v1 builder (Index Authority, library layer).
 
+NOTE: This module contains **functions only** (build_tsu_records, write_tsu_dataset,
+write_manifest, etc.). There is no `TSUBuilder` class. If you see code importing
+`from core.tsu_builder import TSUBuilder`, it is stale — use the functions directly.
+
 SPRINT20-I-C-2-B: scripts/build_tsu_dataset.py에서 TSU 생성 라이브러리
 로직을 core로 승격한 모듈. Index Authority(docs/architecture/
 DBMA-Index-Authority-Design-v1.md)의 "Registry → TSU JSONL" 책임을 담당한다.
@@ -26,12 +30,16 @@ Design decisions (per SPRINT17-RG-5, 유지):
 from __future__ import annotations
 
 import datetime
+import fcntl
 import hashlib
 import json
 import os
 import re
 import subprocess
+import tempfile
+import threading
 import unicodedata
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Optional
 
@@ -481,11 +489,121 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
     return records
 
 
+# --- TSU dataset lock ------------------------------------------------------
+# [2026-09-07 incident] tsu_dataset.jsonl had no lock. registry_lock()
+# (core/identity_registry.py) only guards documents.json. The Streamlit
+# foreground (exclude_document_from_index, via the Library "정리" button) and
+# the 5-second BackgroundIndexBuilder daemon (reconcile_pending ->
+# reindex_document) both read-modify-write tsu_dataset.jsonl with zero
+# coordination — their non-atomic writes interleaved into a NUL-holed file.
+# _atomic_write_text() stops the corruption; this lock stops the remaining
+# lost-update race (two full reads, two filtered rewrites, last writer wins).
+#
+# Shape mirrors registry_lock(): an advisory flock on a sibling ".lock" file
+# (never the dataset itself, so os.replace() stays undisturbed). Added on top
+# of registry_lock's design: an in-process reentrant guard, so the
+# reconcile_pending() -> reindex_document() nesting on the daemon thread does
+# not self-deadlock trying to flock the same file twice.
+_tsu_lock_rlocks: dict[str, threading.RLock] = {}
+_tsu_lock_rlocks_guard = threading.Lock()
+_tsu_lock_local = threading.local()
+
+
+@contextmanager
+def tsu_dataset_lock(dataset_path: "os.PathLike[str] | str"):
+    """Serialize read-modify-write of a TSU JSONL dataset across threads and
+    processes. Reentrant within a single thread (safe to nest)."""
+    key = str(Path(dataset_path).resolve())
+
+    with _tsu_lock_rlocks_guard:
+        rlock = _tsu_lock_rlocks.get(key)
+        if rlock is None:
+            rlock = _tsu_lock_rlocks[key] = threading.RLock()
+
+    held: dict[str, int] = getattr(_tsu_lock_local, "held", None)
+    if held is None:
+        held = _tsu_lock_local.held = {}
+
+    rlock.acquire()
+    try:
+        if held.get(key, 0) == 0:
+            lock_path = key + ".lock"
+            os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
+            lock_file = open(lock_path, "w")
+            fcntl.flock(lock_file, fcntl.LOCK_EX)
+            held[key] = 1
+            try:
+                yield
+            finally:
+                del held[key]
+                fcntl.flock(lock_file, fcntl.LOCK_UN)
+                lock_file.close()
+        else:
+            held[key] += 1
+            try:
+                yield
+            finally:
+                held[key] -= 1
+    finally:
+        rlock.release()
+
+
+def _atomic_write_text(path: Path, write_body) -> None:
+    """Write `path` atomically.
+
+    [2026-09-07 incident] write_tsu_dataset()/write_manifest() used to open
+    the target directly with mode "w" (truncate in place) and never
+    fsync'd. When the process was interrupted mid-write — a Streamlit rerun
+    killing the running script is the confirmed trigger — the on-disk file
+    was left with the new head, an unflushed middle region that reads back
+    as NUL bytes, and the old file's tail beyond it. Every reader then hit
+    `json.loads()` on a line of "\\x00…" and raised
+    JSONDecodeError("Expecting value: line 1 column 1 (char 0)").
+
+    `write_body(file_obj)` fills a sibling temp file, which is flushed +
+    fsync'd, then os.replace()'d onto `path` (atomic on the same
+    filesystem); the directory is fsync'd so the rename is durable. A crash
+    at any point leaves either the complete old file or the complete new
+    one — never a half-written blend. On any error the temp file is
+    removed and `path` is left untouched.
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    fd, tmp_name = tempfile.mkstemp(
+        dir=str(path.parent),
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+    )
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            write_body(f)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
+
+    dir_fd = os.open(str(path.parent), os.O_RDONLY)
+    try:
+        os.fsync(dir_fd)
+    except OSError:
+        pass
+    finally:
+        os.close(dir_fd)
+
+
 def write_tsu_dataset(records: list[dict[str, Any]], dataset_path: Path) -> None:
-    dataset_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(dataset_path, "w", encoding="utf-8") as f:
+    """Write the TSU JSONL dataset atomically (see _atomic_write_text)."""
+    def _body(f):
         for rec in records:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    _atomic_write_text(Path(dataset_path), _body)
 
 
 def _git_commit_hash() -> Optional[str]:
@@ -542,7 +660,8 @@ def write_manifest(
         "config_file": "config.yaml",
         "config_sha256": _sha256_of_file(config_path) if config_path is not None else None,
     }
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, ensure_ascii=False, indent=2)
+    _atomic_write_text(
+        Path(manifest_path),
+        lambda f: json.dump(manifest, f, ensure_ascii=False, indent=2),
+    )
     return manifest

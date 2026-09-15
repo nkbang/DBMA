@@ -43,6 +43,7 @@ from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from ui.components.citation_card import render_citation_card
+from ui.components.nae_public_section import render_nae_public_section
 from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
 
 logger = logging.getLogger(__name__)
@@ -79,6 +80,21 @@ _HISTORY_MAX_CHARS_PER_MESSAGE = 300
 # sample before tightening this into anything stronger.
 _LOW_CONFIDENCE_SCORE_THRESHOLD = 0.45
 
+# [2026-09-10, PM 정렬 감사 P0-6 / 위험 R6] 검색이 근거를 하나도 반환하지
+# 못했을 때(top_k_results 비었고 Smith 사전 컨텍스트도 없음) 생성을 건너뛰고
+# 이 문구를 반환한다. 그렇지 않으면 답이 오직 70B 모델 내장 지식(출처 불명
+# 웹 학습 데이터)에서만 나오게 되어 "등록 자료 기반" 제품 원칙에 어긋난다.
+# 이것은 하드 게이트다 — 0건이라는 사실만 본다. 결과는 있지만 점수가 낮은
+# 경우는 여기서 막지 않는다(그 신호 _is_low_confidence는 소수 샘플 보정값이라
+# feedback_avoid_risky_uncertain_design에 따라 캡션 경고로만 남긴다).
+_NO_EVIDENCE_HOLD_TEXT = (
+    "현재 등록된 자료에서 이 질문에 답할 근거를 찾지 못했습니다.\n\n"
+    "이 앱은 등록·처리된 자료에 근거해서만 답변하도록 설계되어 있어, "
+    "관련 자료가 없을 때는 일반 지식만으로 답을 만들지 않습니다. "
+    "관련 문서를 추가하거나, 검색 범위를 넓히거나, 질문을 다르게 표현해 "
+    "다시 시도해 주세요."
+)
+
 
 def render_chat_page() -> None:
     """Render the DBMA RAG Chat page."""
@@ -97,6 +113,13 @@ def render_chat_page() -> None:
     prompt = st.chat_input("질문을 입력하세요...")
     if prompt:
         _handle_user_message(prompt.strip())
+
+    # [F6 준비, NAE_F4_F5_F6_PREPARATION_DESIGN_v1.md, ADR-024 §B/§E 준수]
+    # 게이트는 modules.nae_pd.enabled 하나뿐(신규 플래그 없음) — disabled면
+    # render_nae_public_section() 자체가 아무것도 그리지 않는다. 위 채팅
+    # 답변/인용 흐름과 합쳐지지 않는 완전히 별도 섹션으로, DBMA 결과에
+    # 바이트 단위로 무영향이다.
+    render_nae_public_section(key_prefix="chat")
 
     page.render_footer()
 
@@ -440,8 +463,14 @@ def generate_answer(
     # between TSU retrieval and generation — fault-isolated, zero regression.
     smith_results = _inject_smith_context(response, question)
 
-    # Even if retrieval returns no results, try generation (may still produce
-    # a useful answer from system prompt / prior context).
+    # [PM 정렬 감사 P0-6] 근거가 전혀 없으면(검색 0건 + 사전 컨텍스트 0건)
+    # 생성하지 않고 유보 문구를 돌려준다 — 이 경우 답은 오직 모델 내장
+    # 지식에서만 나오게 된다. 결과가 있으나 점수만 낮은 경우는 여기서
+    # 막지 않고 호출부의 _is_low_confidence 캡션 경고에 맡긴다.
+    if not response.top_k_results and not smith_results:
+        logger.info("[generate_answer] no evidence for query=%r → hold", question[:50])
+        return (_NO_EVIDENCE_HOLD_TEXT, [])
+
     try:
         stream = generator.generate_stream(
             response,
@@ -500,6 +529,27 @@ def _handle_user_message(question: str) -> None:
             "role": "assistant",
             "content": error_msg,
             "sources": [],
+        })
+        _save_chat_history()
+        return
+
+    # [PM 정렬 감사 P0-6] 검색이 근거를 하나도 반환하지 못하면 생성을 건너뛰고
+    # 유보 문구를 보여준다. RetrievalEngine에는 relevance floor가 없어 0건은
+    # 드물지만(코퍼스 비었거나 파일 스코프가 전부 제외한 경우 등), 그때 답을
+    # 생성하면 오직 모델 내장 지식에서만 나오게 된다.
+    if not response.top_k_results:
+        logger.info("[chat] no evidence for query=%r → hold", question[:50])
+        with st.chat_message("assistant"):
+            st.markdown(_NO_EVIDENCE_HOLD_TEXT)
+        st.session_state["chat_messages"].append({
+            "role": "assistant",
+            "content": _NO_EVIDENCE_HOLD_TEXT,
+            "sources": [],
+            "citations": None,
+            "error": None,
+            "low_confidence": True,
+            "claim_guard_result": None,
+            "evidence_hold": True,
         })
         _save_chat_history()
         return

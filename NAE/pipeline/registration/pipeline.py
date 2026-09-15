@@ -39,6 +39,15 @@ class RegistrationRequest:
     archive_source: str | None
     source_id: str
     manifest_path: Path
+    # ADR-030 v2.1 §8.4 additive M2 fields (optional — `required: false`).
+    # `register_source()` originally wrote only the 10 base keys; ADR-030
+    # Amendment B (2026-09-13) closes that gap so newly-registered sources
+    # carry the same fields the M-2 backfill gave the original 14 records,
+    # instead of needing a separate manual backfill each time.
+    content_genre: list[str] | None = None
+    authority_class: str | None = None
+    tradition: str | None = None
+    theological_category: list[str] | None = None
 
 
 @dataclass
@@ -162,7 +171,7 @@ def register_source(
         return result
 
     # PASS or WARNING both proceed (WARNING is non-blocking per ADR-021 SS8)
-    manifest_writer.write_entry(request.manifest_path, {
+    manifest_entry = {
         "source_id": source_id,
         "title": request.title,
         "author": f"{request.given_name} {request.surname}".strip(),
@@ -173,7 +182,27 @@ def register_source(
         "license": request.copyright_status,
         "archive_source": request.archive_source,
         "raw_checksum": preservation.checksum,
-    })
+    }
+    # ADR-030 §8.4 additive fields — included only when the caller supplied
+    # them, so a request that omits them (e.g. the Phase B smoke tests)
+    # still produces exactly the original 10-key record.
+    if request.content_genre is not None:
+        manifest_entry["content_genre"] = request.content_genre
+    if request.authority_class is not None:
+        manifest_entry["authority_class"] = request.authority_class
+    if request.tradition is not None:
+        manifest_entry["tradition"] = request.tradition
+    if request.theological_category is not None:
+        manifest_entry["theological_category"] = request.theological_category
+    # raw_path/checksum_target both point at primary_raw — the file that
+    # was actually extracted from and checksummed (matches the Dagg/Hiscox
+    # convention where the two fields coincide; Fuller/Smith differ only
+    # because their raw_item_dir ships an OCR sidecar distinct from the
+    # scanned original).
+    manifest_entry["raw_path"] = preservation.raw_path
+    manifest_entry["checksum_target"] = preservation.raw_path
+
+    manifest_writer.write_entry(request.manifest_path, manifest_entry)
     state_store.set_state(source_id, RegistrationState.QUALITY_PASSED)
     result.final_state = RegistrationState.QUALITY_PASSED
     if gate_result.verdict == qg.QualityGateVerdict.WARNING:

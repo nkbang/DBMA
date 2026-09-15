@@ -39,10 +39,32 @@ from typing import Optional
 import ollama
 
 from core.retrieval import Citation, RankedCandidate, ResponsePackage
-from core.config import DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE
+from core.config import (
+    DEFAULT_GEN_MODEL,
+    DEFAULT_NUM_PREDICT,
+    DEFAULT_REPEAT_PENALTY,
+    DEFAULT_TEMPERATURE,
+)
 from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
+from core.sermon.doctrine_vocabulary import DENOMINATION_PROFILE
 
 logger = logging.getLogger(__name__)
+
+
+def _gen_options(temperature: float) -> dict:
+    """GenerationService(Q&A·본문해설) 전용 Ollama 옵션.
+
+    my-theology-bot-v2 는 Modelfile 에 repeat_penalty/num_predict 를 지정하지
+    않아 Ollama 기본값(repeat_penalty≈1.1, num_predict 무제한)으로 돌고, 저온
+    결정론 설정과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됐다
+    (요한복음 1:10 해설). 두 값을 config.yaml::rag 에서 읽어 강제한다.
+    SermonDraftService 는 긴 출력이 정상이라 이 헬퍼를 쓰지 않는다.
+    """
+    return {
+        "temperature": temperature,
+        "repeat_penalty": DEFAULT_REPEAT_PENALTY,
+        "num_predict": DEFAULT_NUM_PREDICT,
+    }
 
 
 # ============================================================
@@ -94,6 +116,90 @@ def _sanitize_script_contamination(text: str) -> str:
     동일하게, 무엇으로 바꿔야 할지 모르는 문자는 만들어내지 않고 삭제만
     한다)."""
     return _SCRIPT_CONTAMINATION_RE.sub("", text)
+
+
+# ============================================================
+# 근거 강제 지시문 (Grounding Directive)
+# ============================================================
+#
+# [2026-09-10] 이전까지 답변 생성 프롬프트는 "문맥:\n{context}\n\n질문:\n{q}"가
+# 전부였고, 모델 SYSTEM 프롬프트(my-theology-bot-v2, resources/models/
+# Modelfile.theology-bot-v2에 사본 보관)에도 근거 제한 지시가 없었다. 그
+# 결과 검색된 근거와 모델 내장 지식(출처 불명 학습 데이터)이 아무 구분
+# 없이 섞였다 — 이 프로젝트가 로컬 전용 스택(Ollama/Qdrant)으로 외부
+# 호출을 물리적으로 차단해 놓고도 실제로는 막지 못하던 지점이다.
+#
+# 지시문은 문맥 "앞"이 아니라 "뒤"(질문 직전)에 놓는다: 긴 문맥 블록이
+# 앞에 오면 지시가 lost-in-the-middle로 희석되는 것이 일반적으로 알려진
+# 실패 양상이며, 여기서는 문맥 길이가 top_k에 따라 크게 변하므로 지시를
+# 항상 프롬프트 끝쪽 고정 위치에 두는 편이 안정적이다.
+#
+# 문맥이 없을 때(context_used=False)는 §3만 남긴 축약본을 쓴다 — 근거가
+# 아예 없는데 "아래 자료" 운운하면 모델이 없는 자료를 상상하게 된다.
+#
+# [2026-09-11, P0-5 A1 실측] 종전 §2("부족하다고 밝히고 자료가 실제로
+# 말하는 데까지만 답하라")는 허점이 있었다 — 실제 질의 "로마서 8:1-4은
+# 무엇을 말합니까?"에서 모델이 "자료에는 … 언급되어 있지 않습니다.
+# 따라서 … 제공할 수 없습니다."까지는 정확히 지시대로 답했으나, 곧바로
+# "그러나 일반적인 신학적 관점에서, …"로 이어 붙여 성경 본문을 기억으로
+# 인용하고 해설했다. "자료가 실제로 말하는 데까지만"이 "그 다음엔 일반
+# 지식으로 보충해도 된다"로 읽힌 것 — 이 앱이 근거 강제로 막으려는 바로
+# 그 행동이 부족 인정 뒤에 다시 새어 나온 사례다. §2를 "부족을 밝히면
+# 거기서 멈춰라"로 명시해 그 전환구를 직접 차단한다.
+_GROUNDING_DIRECTIVE = """지시:
+1. 위 자료에 실제로 적힌 내용만 근거로 삼아 답하라. 자료에 없는 사실·
+   인명·연도·장절을 추가하지 마라.
+2. 자료가 질문에 답하기 부족하면 그 사실만 밝히고 답을 끝내라. "그러나 일반적으로",
+   "일반적인 신학적 관점에서"와 같은 말로 자료에 없는 내용을 이어서 덧붙이지
+   마라 — 성경 본문 자체를 기억으로 인용하거나 그 뜻을 해설하는 것도 포함한다.
+   자료가 실제로 말하는 부분이 있으면 그 부분까지만 답하고, 전혀 없으면
+   "이 질문은 현재 등록된 자료로는 답할 수 없습니다."로 마쳐라.
+3. 자료가 영어 등 외국어면 그 뜻을 한국어로 옮겨 답하라. 원문을 그대로
+   붙여넣지 말고, 주어와 서술어가 갖춰진 완결된 한국어 문장으로 쓰라.
+4. 한국어(한글) 경어체로만 쓰라.
+5. 자료를 근거로 진술할 때는 그 자료에 붙은 "출처:" 표시(저자·문헌·위치)를
+   답변 안에서 함께 밝혀라. 출처 표시가 없으면 위치를 지어내지 말고 내용만
+   인용하라."""
+
+# ============================================================
+# 교단 신학 관점 지시문 (ADR-009 Amendment A, 2026-09-10)
+# ============================================================
+#
+# ADR-009(Accepted, 2026-07-22)는 사용자의 신학적 전통을 개혁파 침례교로
+# 확정하고 doctrine_filter를 **설교 초안 경로**에 연결했다. 그러나 질의응답
+# 경로(Chat/Research)에는 교단 신호가 전혀 없었다 — 모델 SYSTEM 프롬프트가
+# 말하는 "복음주의 및 개혁주의"는 개혁파 침례교와 모순되지는 않지만,
+# 신자세례·회중교회론·1689 언약신학을 특정하지 못한다. 목회자가 실제로
+# 답을 얻는 주 경로가 정작 자기 교단을 모르는 상태였다.
+#
+# 전통 표현은 지어내지 않고 core.sermon.doctrine_vocabulary의
+# DENOMINATION_PROFILE(=ADR-009 §Decision 원문)을 그대로 인용한다 —
+# 신학적 내용은 승인된 ADR이 단일 출처다.
+#
+# 설계상 가장 조심한 지점은 이 지시문이 근거 강제(_GROUNDING_DIRECTIVE)를
+# 무너뜨리지 않게 하는 것이다. "교단에 맞는 답"을 요구하면 모델은 자료에
+# 없는 교리를 보충해 전통에 맞추려는 유혹을 받는다 — 그건 이 앱이 막으려는
+# 바로 그 행동이다. 그래서 §3에 근거 지시가 우선한다고 명시하고, 지시문
+# 자체를 "자료를 어느 자리에서 읽을 것인가"(관점)로 한정했다. 자료가
+# 전통과 다르면 감추지 말고 드러내라는 §2도 같은 이유다.
+#
+# §4는 ADR-009 §Decision-4의 원칙("자동 차단 없음, 최종 신학적 판단
+# 권한은 목회자에게")을 프롬프트 수준에서 반복한 것이다 — 앱이 다른
+# 교단을 정죄하는 도구가 되어서는 안 된다.
+_DENOMINATION_DIRECTIVE = f"""신학 관점:
+1. 묻는 사람은 다음 전통에 서 있는 목회자다: {DENOMINATION_PROFILE}.
+   자료를 이 전통 안에서 읽고 정리하라.
+2. 자료가 이 전통과 다른 견해를 담고 있으면 감추지 마라. 누구의 견해인지
+   밝히고, 전통과 어떻게 다른지 함께 적어라.
+3. 전통에 맞추려고 자료에 없는 내용을 보태지 마라 — 위 "지시"가 이보다
+   우선한다.
+4. 다른 교단을 정죄하지 마라. 최종 판단은 묻는 목회자에게 있다."""
+
+
+_GROUNDING_DIRECTIVE_NO_CONTEXT = """지시:
+1. 참고할 자료가 검색되지 않았다. 자료가 없다는 사실을 먼저 밝혀라.
+2. 확인되지 않은 사실·인명·연도·장절을 지어내지 마라.
+3. 한국어(한글) 경어체의 완결된 문장으로 쓰라."""
 
 
 def _run_claim_guard(
@@ -157,17 +263,30 @@ class GenerationStream:
         self._context_used = context_used
         self._answer_parts: list[str] = []
         self._error: Optional[str] = None
+        # 스트리밍 경로는 mid-stream 재시도가 불가능하다(이미 UI에 토큰이
+        # 나갔으므로). 그래서 generate()의 "재시도 소진 → 강제 제거"에
+        # 해당하는 sanitize만 적용한다 — 청크가 도착할 때마다 비한글 오염
+        # 문자를 제거해서 라이브 출력·저장 answer 양쪽을 깨끗하게 유지한다.
+        self._contamination_seen: list[str] = []
 
     def __iter__(self):
         try:
             for chunk in ollama.generate(
                 model=self._gen_model,
                 prompt=self._prompt,
-                options={"temperature": self._temperature},
+                options=_gen_options(self._temperature),
                 stream=True,
             ):
                 piece = chunk["response"]
-                if piece:
+                if not piece:
+                    continue
+                bad = _detect_script_contamination(piece)
+                if bad:
+                    self._contamination_seen.extend(
+                        c for c in bad if c not in self._contamination_seen
+                    )
+                    piece = _sanitize_script_contamination(piece)
+                if piece:  # sanitize가 오염만 있던 청크를 비울 수 있다
                     self._answer_parts.append(piece)
                     yield piece
         except Exception as e:
@@ -183,6 +302,15 @@ class GenerationStream:
     def to_result(self) -> "GenerationResult":
         """Build the final GenerationResult. Call only after full iteration."""
         answer = "".join(self._answer_parts)
+        # 청크별로 이미 걸렀지만, 청크 경계에 걸친 문자를 대비해 한 번 더
+        # (clean이면 no-op). 스트리밍은 재시도 불가라 sanitize만 남긴다.
+        if self._contamination_seen:
+            logger.warning(
+                "[GenerationStream] 한국어 출력 오염 감지 → 제거"
+                " (스트리밍은 재시도 불가): %s",
+                self._contamination_seen,
+            )
+            answer = _sanitize_script_contamination(answer)
         claim_guard_result = _run_claim_guard(answer, self._response)
         return GenerationResult(
             question=self._response.question,
@@ -225,12 +353,25 @@ class GenerationService:
         gains this — the retrieval query itself (response.question) is
         unchanged, so this does NOT rewrite/condense the search query
         (that would be "Plan A", a separate, larger change). Callers that
-        don't pass it (Research/SermonDraft) see byte-identical prompts."""
+        don't pass it (Research/SermonDraft) see byte-identical prompts.
+
+        [2026-09-10] 근거 강제 지시문 추가 — _GROUNDING_DIRECTIVE 주석 참고.
+        "문맥:"을 "자료:"로 바꾼 것도 같은 변경의 일부다(지시문 §1이
+        "위 자료"를 가리키므로 라벨이 일치해야 한다)."""
         context = response.llm_context_block or ""
         history_block = f"이전 대화:\n{conversation_history}\n\n" if conversation_history.strip() else ""
         if context.strip():
-            return f"{history_block}문맥:\n{context}\n\n질문:\n{response.question}", True
-        return f"{history_block}질문:\n{response.question}", False
+            return (
+                f"{history_block}자료:\n{context}\n\n"
+                f"{_GROUNDING_DIRECTIVE}\n\n"
+                f"{_DENOMINATION_DIRECTIVE}\n\n"
+                f"질문:\n{response.question}"
+            ), True
+        return (
+            f"{history_block}{_GROUNDING_DIRECTIVE_NO_CONTEXT}\n\n"
+            f"{_DENOMINATION_DIRECTIVE}\n\n"
+            f"질문:\n{response.question}"
+        ), False
 
     def generate_stream(
         self,
@@ -277,7 +418,7 @@ class GenerationService:
                 result = ollama.generate(
                     model=gen_model,
                     prompt=prompt,
-                    options={"temperature": temperature},
+                    options=_gen_options(temperature),
                 )
                 answer = result["response"]
                 contamination = _detect_script_contamination(answer)
@@ -385,11 +526,12 @@ def _external_source_directive(candidates: list[RankedCandidate]) -> str:
 
 
 def _format_sermon_context(candidates: list[RankedCandidate], max_items: int = 15) -> str:
-    """설교문 워크플로 전용 컨텍스트 포맷 — core/retrieval.py::
-    ContextAssembler.assemble()의 <context id="tsu_id">는 사람이 읽을 수
-    있는 출처가 아니라(Chat/Research 공용 포맷이라 변경하지 않는다), 모델이
-    "[자료1]을 인용하라"처럼 구체적으로 지목할 수 있도록 제목·저자 라벨을
-    붙인 별도 포맷을 여기서 만든다."""
+    """설교문 워크플로 전용 컨텍스트 포맷 — 모델이 "[자료1]을 인용하라"처럼
+    번호로 지목할 수 있도록 제목·저자 라벨을 붙인 별도 포맷이다.
+
+    [2026-09-10] core/retrieval.py::ContextAssembler.assemble()의 <context>
+    블록도 이제 "출처:" 줄로 저자·문헌·위치를 담는다(PM 정렬 감사 R3). 다만
+    설교 경로는 번호 지목("[자료1]")이 필요해 이 전용 포맷을 계속 쓴다."""
     parts: list[str] = []
     for i, c in enumerate(candidates[:max_items], 1):
         title = c.metadata.get("title") or c.metadata.get("source_file") or "출처 미상"

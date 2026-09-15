@@ -1,15 +1,133 @@
 # DBMA State
 
 ## 버전 상태
-**DBMA v1.3.0 — Architecture Consolidation Release** (Research Grade /
-Production Candidate). 버전·Authority 정의는
+**DBMA v1.3.0 — Architecture Consolidation Release** (GA). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
 
 ```
-Release State:  v1.3.0 RC READY
-Development:    FROZEN
-Next:           GA validation / tag preparation
+Release State:  v1.3.0 GA RELEASED
+Development:    ACTIVE
+Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
+
+**[2026-09-13 종결] Q2 — BM25 전체 pool 스코어링 지연 해결 (사용자 승인 후 CUE 실행, Retrieval Engine 변경).**
+`core/retrieval.py::bm25_score()`가 매 질의마다 후보 문서 전체를 재토큰화하던
+구조를 코퍼스 인덱스 기준 토큰 캐시(`RetrievalEngine._bm25_token_cache`)로
+교체 — 기존 `_content_refs_cache`와 동일 패턴. `bm25_score()` 공개 시그니처·
+동작은 무변경(내부 산식만 `_bm25_score_from_tokens()`로 분리). 실측(코퍼스
+1,363 TSU): `로마서 8장 해석` 첫 호출 16,022ms → 캐시 워밍 후 731ms(약
+22배). 회귀 `dbma_env pytest tests --ignore=tests/nae` 2789 passed / 6
+skipped / 0 failed. 커밋 `dd56fab`, `origin`+`nas` push 완료. 상세는
+`docs/TODO.md` "완료 — Q2" 항목 참고. Q1(70.6B 생성 지연 원인)은 여전히
+GPU 점유(Fuller TSU 배치 진행 중으로 관측)로 보류 중 — corpus/GPU에는
+손대지 않음.
+
+**[2026-09-04 갱신] ADR-031(NAE Passage Commentary Viewer) Forensic Audit PASS → Approved.**
+v1.3.0 GA에 본문 해설 뷰어 기능 포함. Version Authority Status: RC READY → GA.
+
+**[2026-09-05 갱신] SESAME(Sermon Style Extraction & Modeling Engine) — HQ 지시로
+현재 Release 범위 제외, Post-Release Upgrade Item으로 동결 보존.**
+골격: `docs/architecture/ADR-032-SESAME-Sermon-Style-Engine.md` (§0 HQ Decision).
+현재 production mutation 및 SESAME 선행 구현(스텁·스키마·데이터 포함) 금지.
+착수 시 CUE가 TLI Style Engine 슬롯 · `sermon_corpus/analyzer` · ADR-002/009/012/030
+통합 관계 재검토 후 ADR-032 P0부터 진행.
+
+**[2026-09-07 종결] SESAME C1 Task Order 초안 작성 완료 — C1 정식 리뷰는 ADR-032 §15 기준 보류. SESAME 본체는 동결 유지.**
+
+■ 결정
+- **C1 독립 리뷰 보류.** ADR-032 §15상 C1 리뷰는 HQ 착수 지시 + 본안(§11 P0) 이후
+  §11 P1에서 수행. 현 동결 상태에선 순서상 이르며 필수 아님.
+  `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_001.md`(리뷰 결과물) 미생성.
+- SESAME 본체(§11 P0~P10) 전량 미착수 — HQ 착수 지시 게이트, §0 동결 유지.
+
+■ 산출물 (비승격 계획 메모, `dev/dbma-engine`, origin+nas 동기)
+- `docs/architecture/notes/SESAME-C1-Task-Order-DRAFT.md` (`b644dbf`, 217줄) —
+  §11 P0~P10에 C1 검토 라운드 C1-R0~R8 대응.
+- `docs/SESAME_C1_TASK_ORDER_DRAFT_REVIEW_REQUEST_001.md` (`5527df2`) — 리뷰 요청서.
+- `ADR-032` §15에 리뷰 보류 포인터 노트 추가 (`1863168`, 결정 계약 불변).
+
+■ 경위 (추적용, 이번 세션)
+- 원 `INTEGRATION_ANALYSIS.md` 교차점검: 코드 정찰은 정확하나 ADR-032 미인지 →
+  "ADR-010 작성"·"P0 구현 시작" 권고는 무효(ADR-010 점유·§0 동결 위반).
+- C1 리뷰 3회 전부 무효: C1(Cline)이 실제 repo가 아니라 자기 워크스페이스
+  `~/.cline/data/workspaces/chat`의 별도 `.git`(유령 커밋 `84a590c`→`a4e4066`→
+  `bb2541d`)을 감사 → CUE의 실제 push된 커밋·STATE.md를 "없음/날조"로 오판.
+  근본 원인 = C1 저장소 오인. 실제 DBMA repo·커밋·STATE.md는 전부 무결.
+
+■ 정리 완료
+- 유령 `.git` → 격리(rename) 후 **`rm -rf` 완전 삭제** (유령 커밋 + Cline checkpoint).
+- C1 유령 사본 삭제: `chat/docs/` (499줄 초안 버전 + REVIEW_REQUEST 사본).
+- `chat/SESAME/INTEGRATION_ANALYSIS.md`(원본) 보존. `chat`는 이제 git repo 아님.
+- 폴링 cron `63f995b0` 중단. C1 세션에 정리 메시지 큐 적재(위치 확인·리뷰 보류·대기).
+- 메모리 `feedback_c1_stale_status_reports.md` 갱신(사례 #12 + step 0: C1
+  `git toplevel/remote` 먼저 확인).
+
+■ 재개 조건
+HQ가 SESAME 착수를 지시하면 → CUE가 §11 P0(본안 확장) → P1에서 C1 독립 리뷰.
+그때 C1은 워크스페이스를 `/Users/David/DBMA`로 재설정해야 한다:
+- Cline: VS Code에서 `DBMA.code-workspace` 열기 (`.clinerules/` 자동 적용).
+- CC 세션: `cd /Users/David/DBMA` + change_directory, 또는 `~/DBMA`에서 새 세션.
+- 재설정 후 `git rev-parse --show-toplevel`(=/Users/David/DBMA)·`git remote -v`
+  (=origin+nas)·`git branch`·`git log -3` 4종 검증 통과해야 C1 보고 신뢰.
+
+**[2026-09-07 관찰] `core/` 미커밋 변경 = 별도 Cline(C1) 세션 작업 (SESAME 무관).**
+- `dev/dbma-engine` 워킹트리에 미커밋 변경 발견: `core/files.py`·`core/init.py`·
+  `core/text_splitter.py` 삭제(전부 미사용/빈 파일, 참조 0), `core/__init__.py`
+  패키지 docstring 1줄, `core/tsu_builder.py` "`TSUBuilder` 클래스 없음" 경고
+  docstring 4줄.
+- 출처: Cline 워크스페이스 `~/.cline/data/workspaces/7d2959dd` (2026-09-07 13:08
+  신규 생성, `/Users/David/DBMA`를 루트로), `core/*.py` mtime 13:41~13:43 +
+  `.pyc` 재생성(코드 실행됨). CCD 세션 목록엔 없음(Cline은 비-CCD).
+  이 세션(SESAME/CUE)은 `docs/`만 수정 — 무관.
+- `Fuller C1 Token-Regulated Execution` 세션 아님(2026-09-07 본인 확인:
+  worktree `smith-gate-cross-validation-4b511c`, 미결 작업 0). 미상의 다른 세션.
+- 조치: CUE는 손대지 않음(커밋·되돌리기 금지 — 동시 편집 충돌 방지).
+  해당 Cline/C1 세션이 마무리·커밋. 의도 확인은 그 세션 담당.
+- **[2026-09-07 종결] C1 독립 검증 후 CUE가 인수 커밋 완료 → `5c2ac97`
+  (`chore: remove dead core modules, add package + TSUBuilder-absence docstrings`),
+  `origin/dev/dbma-engine`에 push 완료.** 검증: 삭제 3개 모듈 잔존 import 0건,
+  버전 정합성 4종(config.yaml 1.3.0 / tag v1.3.0 / tsu_manifest 51390 / benchmark
+  v1.0.0), 회귀 `dbma_env pytest tests --ignore=tests/nae` 2609 pass / 0 fail.
+  브러시업 보고서 정정: "배포 준비 완료"는 미커밋 상태였음(본 커밋으로 해소),
+  `.gitignore` 미변경, `core/files.py`는 이동이 아닌 삭제. 워킹트리 clean.
+  검증 보고서: `docs/CORE_DEADFILE_CLEANUP_C1_VERIFICATION_REPORT_001.md`
+  (커밋 `0097542`).
+
+**[2026-09-07 종결] 대시보드 "내 서재 요약" 카운트 불일치 수정 (보유 107 < 정리 200).**
+- 원인: `ui/pages/processing.py::_render_ingestion_form()`의 폴더 후보가
+  `data/제련완성본`(`DEFAULT_OUTPUT_DIR`, 파이프라인 출력)까지 포함 →
+  2026-09-07 14:20 실행이 그 폴더 대상으로 돌아 `<원본>_pdf.md`/
+  `_pdf_chunks.txt` 등 산출물 98건이 신규 문서로 레지스트리에 등록,
+  `_get_effective_documents()` 필터 전부 통과.
+- 수정(UI 읽기 전용, 레지스트리·RAW·TSU·Retrieval 미변경):
+  `dashboard.py`에 `_is_pipeline_artifact_name()` 추가해 `_chunks.txt`/
+  `_chunks_meta.json`/`_<ext>.md` 산출물을 effective 집합에서 제외
+  (→ 정리된 자료 200→103), TSU 읽기 `errors="replace"`로 UnicodeDecodeError
+  크래시 방지. `processing.py` 폴더 후보에서 출력 폴더 차단.
+- 회귀: dashboard/processing/library/hygiene 171 pass/0 fail.
+  빌드 리포트: `docs/DBMA_LIBRARY_SUMMARY_COUNT_FIX_BUILD_REPORT_001.md`.
+
+**[2026-09-07 종결] 유령 문서 98건 데이터 정리 (Phase 2, 사용자 승인).**
+- 추가 근본원인: `core/index_orchestrator.py::reconcile_pending()`이
+  `pipeline_state==PROCESSED`만 보고 `ingest_status==EXCLUDED`를 무시 →
+  5초 주기 리컨사일러가 제외된 유령 문서(69건이 PROCESSED 상태)를 계속
+  재색인. 1차 정리 시도가 실행 중이던 Streamlit 서버 3개(1개는 launchd
+  `com.dbma.nae.dashboard`)의 리컨사일러와 쓰기 경쟁 → 데이터셋 오염,
+  `backups/phantom_registry_cleanup_20260907_152046/`에서 복원.
+- 수정: `reconcile_pending()` pending 스캔에 `ingest_status != "EXCLUDED"`
+  조건 추가(회귀 `tests/test_reconcile_pending.py`). 정리 스크립트 2개
+  신규 — `scripts/cleanup_phantom_registry_entries.py`(유령 98건
+  EXCLUDED + 데이터셋/색인 재빌드, `registry_lock` 보유로 리컨사일러와
+  직렬화), `scripts/sync_tsu_dataset_to_registry.py`(EXCLUDED 문서 전체
+  레코드를 데이터셋에서 제거 — 이전 EXCLUDED 13건의 5,086건 포함).
+- 실측: registry EXCLUDED 13→111, TSU 89,738줄→45,927(EXCLUDED 소속·손상
+  0), 후보 색인 재빌드 45,927 / 성경 색인 86,042, `reconcile_pending()`
+  재실행 시 `pending:0`·데이터셋 불변. 대시보드 정리된 자료 200→103.
+- 회귀: reconcile/orchestrator/dashboard/candidate/bible/registry_lock 등
+  353 pass/0 fail.
+- 미결: `.md` 원고 41건이 registry PROCESSED인데 TSU 레코드 없음(오늘
+  이전부터 — 원본 데이터셋도 76문서만). "정리된 자료 103" vs "처리완료
+  65/미처리 42" 기준차의 원인. 재색인은 별도 승인 필요.
 
 ## 현재 상태
 DBMA는 신학 문서 전용 TSU 기반 Theological Retrieval System이다.
@@ -724,6 +842,68 @@ post-commit hook 오작동을 원인까지 추적해 완전 제거.
   DBMA-ECP 이력 언급 — 정식 기록이라 보존.
 - `.git_corrupted_20260711/`, `.git_initial_corrupt/`(DBMA-ECP 내
   과거 git 손상 복구 백업으로 추정) — 범위 밖, 무접촉.
+
+---
+
+## 본문 해설 뷰어 (ADR-031, 2026-09-04, CUE 기록)
+
+"연구하기(설교 연구)" 화면에 **"본문 해설"** 탭 추가. 성경뷰어에서 책/장/절을
+지정하면 그 본문과 정합하는 내서재 주석 자료를 근거로 한국어 해설을 생성하고,
+본문에 각주 번호(①②③) + 하단 참고 자료 서지 목록 + "원문 보기" 상세 패널을
+붙인다. 내서재에 정합 자료가 없으면 안내만 표시하고 생성하지 않는다.
+
+- 신규 계층: 사용자 제공 성경 본문 JSON(`core/bible_text.py`, fail-closed).
+  경로 `config.yaml::directories.bible_text_path`(기본 `data/bible/reference.json`,
+  `.gitignore` 대상). 규격 `docs/NAE_BIBLE_TEXT_JSON_SPEC.md`.
+- Retrieval Engine / Embedding / TSU Pipeline / 기존 ADR **무접촉**.
+  `core/retrieval.py`·`core/generation.py` 시그니처 무변경(ADR-028 답습).
+  검색 = 기존 `QueryProcessor.process()`, 정합 = 기존
+  `compute_passage_match_score()` 재사용.
+- 신규: `core/passage_commentary.py`, `core/citation_format.py`,
+  `ui/components/passage_viewer.py`, `ui/pages/_passage_commentary_tab.py`.
+  `ui/pages/research.py` 각주 포맷 공용화(출력 동일, parity 테스트).
+- 테스트 39 PASS(신규) / 관련 회귀 290 PASS. `test_p41_toggle_and_telemetry.py`
+  의 `-k` 교차수트 순서 의존 실패 1건은 **사전 존재 결함**(자연 순서 13/13 PASS).
+- **[2026-09-04] ADR-031 Approved** — C1 Forensic Audit PASS(39/39, 회귀 74/74,
+  기존 시그니처 무변경, fail-closed) → 4개 승격 조건 충족, Proposed→Approved 승격
+  (커밋 `ee7a1f6`). 이후 Architecture Freeze Rule 보호 대상. v1.3.0 GA에 포함.
+  빌드 리포트: `docs/NAE_PASSAGE_COMMENTARY_VIEWER_BUILD_REPORT_001.md`.
+
+---
+
+## 본문 해설 라이브 시연 후 생성 경로 결함 3건 수정 (2026-09-04, CUE 기록)
+
+ADR-031 "본문 해설" 탭을 실제 앱(`streamlit run dbma_ui.py`)에서 시연하던 중
+발견한 `core/generation.py` 결함 3건. 전부 이 탭 전용이 아니라 **채팅·자료
+찾기·본문 해설이 공유하는 `GenerationService` 경로**에 영향을 준다.
+
+1. **커밋 `3900f07`** — 본문 해설 탭이 사이드바 "답변 생성 모델/답변 창의성"
+   설정을 무시하고 있었음. `ui/pages/chat.py::_settings_overrides()` 재사용해
+   채팅 화면과 동일하게 반영.
+
+2. **커밋 `6d3b707`** — `my-theology-bot-v2:latest` 가 저장소에 Modelfile이
+   없고(별도 blob에서 `ollama create`로 생성됨) `repeat_penalty`/`num_predict`
+   를 지정하지 않아 Ollama 기본값(≈1.1 / 무제한)으로 돌다가, 저온(0.3)
+   결정론 디코딩과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됨
+   (요한복음 1:10 해설). **주의**: 저장소 루트 `Modelfile` 은 이 모델이 아니라
+   C1 코드 어시스턴트(`qwen3.6:35b-DBMAcode`)용이라 애초에 무관 — 사용자
+   확인 후 `core/generation.py::_gen_options()` 헬퍼로 대체.
+   `config.yaml::rag.repeat_penalty=1.3`/`num_predict=1024` (조정 가능),
+   `GenerationService.generate()`/`generate_stream()` 두 경로에 적용.
+   `SermonDraftService` 는 긴 출력이 정상이라 미적용.
+
+3. **커밋 `b4401c5`** — 블로킹 `generate()` 에만 있던 CJK/가나/태국어 오염
+   제거(재시도+sanitize)가 `generate_stream()` 에는 없어 채팅·본문해설
+   스트리밍 답변에 오염 문자가 그대로 노출됨(실측: "世상의", "理解").
+   스트리밍은 mid-stream 재시도가 불가능해 "재시도 소진 → 강제 제거"에
+   해당하는 sanitize만 청크 단위로 적용(`GenerationStream.__iter__`) +
+   청크 경계 대비 `to_result()` 최종 sanitize 1회.
+
+**검증**: 3건 모두 같은 모델(`my-theology-bot-v2:latest`)로 요한복음 1:1/1:10
+해설을 실제 재생성해 확인 — 반복 루프 사라짐(8문단 완결), 스트리밍 로그에
+`한국어 출력 오염 감지 → 제거: ['理', '解']` 기록 후 렌더된 답변 본문
+오염 문자 0개(DOM 정규식 재스캔). 신규 테스트
+`tests/test_generation_stream_contamination.py`(5) 포함 관련 회귀 202 PASS.
 
 ---
 

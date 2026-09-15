@@ -24,6 +24,17 @@ TSU_SCHEMA_VERSION = "1"
 DEFAULT_CLAIM_MODEL = "my-theology-bot-v2:latest"
 CLAIM_TEMPERATURE = 0.0
 
+# HTTP read timeout (seconds) for the claim-extraction Ollama call. The module
+# `ollama.generate()` has an effectively unbounded read timeout, so a wedged
+# Ollama daemon makes the call block forever with no error and no log (observed
+# 2026-09-10: F2 Vol.03 silently stalled ~146 min mid-run). A bounded timeout
+# turns that into a normal per-call failure (ClaimResult.error) which the batch
+# counts and moves past; a real wedge then trips run_fuller_f2.sh's llm_errors
+# gate within minutes instead of hanging. 180s is a wide ceiling over the
+# ~10s a healthy inference takes. Failure-path only — extraction logic, prompt,
+# model and output determinism are unchanged (builder_version stays 3.0.0).
+CLAIM_HTTP_TIMEOUT_S = 180
+
 # Only prose sentences at or above this length are sent to the LLM as claim
 # candidates - short fragments ("See also.", "Amen.") are near-certain non-claims
 # and are skipped to save calls.

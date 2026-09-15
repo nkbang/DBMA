@@ -1,11 +1,13 @@
 """NAE/review/human/batch_manager.py — Human Review 확장 배치 관리
-(NAE-TSU-4107-EXPANSION-001).
+(NAE-TSU-4107-EXPANSION-001, Fuller_Complete_Works_Vol08 추가는
+NAE_FULLER_VOL08_TSU_COMPLETION_REPORT_001 후속 review_promotion
+착수분).
 
 Pilot 001(10건, 완료)을 넘어선 나머지 `review_status="generated"`
-4,107건을 `MAX_PENDING_REVIEW`(schema.py, 100) 이하 크기의 배치로
+레코드를 `MAX_PENDING_REVIEW`(schema.py, 100) 이하 크기의 배치로
 나눠 순차 진행하기 위한 모듈. 정렬 순서는 source 단위(Dagg 전체 →
-Hiscox 전체) × TSU ID 오름차순 — Pilot 001과 동일한 추적 가능성
-원칙을 따른다(임의 순서 금지).
+Hiscox 전체 → Fuller_Complete_Works_Vol08 전체) × TSU ID 오름차순 —
+Pilot 001과 동일한 추적 가능성 원칙을 따른다(임의 순서 금지).
 
 이 모듈은 Production TSU 파일을 읽기 전용으로만 사용하고, 절대
 수정하지 않는다. `decisions/`에도 쓰지 않는다(그건 언제나 사용자
@@ -22,7 +24,11 @@ from NAE.pipeline.index.config import CORPUS_ROOT
 from . import decision_gate
 from .schema import MAX_PENDING_REVIEW, PILOT_TSU_IDS
 
-TSU_IDENTIFIERS: tuple[str, ...] = ("Dagg_Church_Order", "Hiscox_Standard_Manual")
+TSU_IDENTIFIERS: tuple[str, ...] = (
+    "Dagg_Church_Order",
+    "Hiscox_Standard_Manual",
+    "Fuller_Complete_Works_Vol08",
+)
 
 BATCH_STATE_PATH = Path(__file__).resolve().parent / "batch_state.json"
 BATCH_SIZE = MAX_PENDING_REVIEW  # 기존 안전 게이트(100)를 배치 크기 상한으로 재사용

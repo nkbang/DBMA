@@ -23,6 +23,7 @@ from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from ui.state.store import StateStore
 from core.config import DEFAULT_OUTPUT_DIR
+from core.citation_format import extract_citation_year as _extract_citation_year, format_footnote_line
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +32,13 @@ from core.retrieval import QueryProcessor, RetrievalEngine, RankedCandidate, Cit
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from core.research_workspace import add_query_result, create_session, list_sessions, load_session
 from ui.components.citation_card import render_citation_card
-from ui.pages.chat import generate_answer, _is_low_confidence, _render_low_confidence_warning
+from ui.components.nae_public_section import render_nae_public_section
+from ui.pages.chat import (
+    generate_answer,
+    _is_low_confidence,
+    _render_low_confidence_warning,
+    _NO_EVIDENCE_HOLD_TEXT,
+)
 
 # [DBMA-SEARCH-INFRA-001 HQ 제안 ⑨] Top1/Top5 click tracking — only
 # meaningful when USE_INVERTED_INDEX routes through HybridQueryProcessor
@@ -307,7 +314,9 @@ def _render_ai_answer() -> None:
         st.caption("검색어를 입력하고 '검색 실행'을 클릭하세요.")
         return
     st.markdown(answer)
-    if st.session_state.get("research_ai_low_confidence"):
+    # 유보 문구 자체가 "근거 없음"을 이미 설명하므로 저신뢰 캡션을 중복
+    # 표시하지 않는다.
+    if answer != _NO_EVIDENCE_HOLD_TEXT and st.session_state.get("research_ai_low_confidence"):
         _render_low_confidence_warning()
 
 
@@ -485,98 +494,12 @@ def _render_saved_sessions() -> None:
 
 
 # ── 내서재 공개 자료 (Beta) ────────────────────────
+# [F6 준비, NAE_F4_F5_F6_PREPARATION_DESIGN_v1.md] 구현이
+# ui/components/nae_public_section.py로 이전되어 ui/pages/chat.py와
+# 공유된다 — 두 벌 유지 시 드리프트 위험이 있어 단일 소스로 통합.
 
 def _render_nae_section() -> None:
-    """내서재 공개 자료 검색 섹션 — module gating 준수 (§F).
-
-    nae_pd가 disabled면 이 함수가 아무것도 렌더링하지 않는다.
-    enabled일 때만 "내서재 공개 자료 (Beta)" 섹션을 표시하고,
-    DBMA 결과와 별도 영역으로 보여준다 (§B 병합 금지).
-    """
-    from core import module_registry
-
-    if not module_registry.is_enabled("nae_pd"):
-        return  # §F: disabled면 렌더링하지 않음
-
-    st.divider()
-    st.markdown(
-        '<h3><span class="material-symbols-outlined" style="font-size:22px; vertical-align:-4px;">menu_book</span> 내서재 공개 자료 (Beta)</h3>',
-        unsafe_allow_html=True,
-    )
-    st.caption("공개 신학 자료 — 내서재 자료와 별도 검색")
-
-    # 내서재 전용 검색어 입력 (DBMA 검색어와 분리)
-    nae_query = st.text_input(
-        "공개 자료 검색어",
-        placeholder="공개 신학 자료에서 검색할 질문을 입력하세요...",
-        key="nae_research_query",
-    )
-
-    if not nae_query:
-        st.info("검색어를 입력하고 '검색'을 클릭하세요.")
-        return
-
-    # 내서재 검색 실행 버튼
-    col1, col2 = st.columns([1, 4])
-    with col1:
-        if st.button("검색", type="primary", icon=":material/search:", use_container_width=True):
-            nae_results = _execute_nae_retrieval(nae_query)
-            st.session_state["nae_research_results"] = nae_results
-            st.session_state["nae_search_status"] = (
-                f"결과 {len(nae_results)}건" if nae_results else "결과 없음"
-            )
-
-    # 내서재 결과 표시
-    nae_results = st.session_state.get("nae_research_results")
-    nae_status = st.session_state.get("nae_search_status", "")
-
-    if not nae_results and not nae_status:
-        return
-
-    if nae_status:
-        st.caption(nae_status)
-
-    if not nae_results:
-        st.info("공개 자료에서 일치하는 결과가 없습니다.")
-        return
-
-    # 내서재 결과 카드 표시
-    for i, citation in enumerate(nae_results, 1):
-        score = getattr(citation, "retrieval_score", 0)
-        author = getattr(citation, "source_author", "") or "Unknown"
-        excerpt = getattr(citation, "content_excerpt", "") or ""
-        scripture = getattr(citation, "scripture_reference", "Unmapped")
-        source_title = getattr(citation, "source_title", "") or "Unknown Work"
-
-        with st.container():
-            st.markdown(f"**{i}. {source_title}**")
-            st.caption(f"Score: {score:.4f} | {scripture}")
-            st.caption(f"Author: {author}")
-            st.caption(excerpt[:300])
-            if getattr(citation, "tsu_id", None):
-                st.caption(f"출처 ID: {citation.tsu_id}")
-
-
-def _execute_nae_retrieval(query: str) -> list[Any]:
-    """NAE Qdrant 검색 실행 — bridge_query() 호출.
-
-    §G fail-closed: 모든 예외를 캐치하고 [] 반환.
-    """
-    try:
-        from NAE.retrieval_adapter import bridge_query, NaePdModuleDisabledError
-
-        # module gate는 bridge_query 내부에서 처리 — limit_check=True (기본값)
-        citations = bridge_query(query, top_k=10, limit_check=True)
-        return citations or []
-
-    except NaePdModuleDisabledError:
-        # 설정 오류 — UI가 구분해서 보여줘야 함
-        st.error("공개 자료 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")
-        return []
-
-    except Exception:  # noqa: BLE001 — §G fail-closed
-        st.warning("공개 자료 검색 중 오류가 발생했습니다. (fail-closed: 빈 결과)")
-        return []
+    render_nae_public_section(key_prefix="research")
 
 
 # ── Query Analysis ─────────────────────────────────────────────
@@ -956,7 +879,10 @@ def _render_research_page_with_detail() -> None:
                     st.session_state[fa_key] = False
             if a_key in st.session_state and st.session_state[a_key]:
                 st.markdown(st.session_state[a_key])
-                if st.session_state.get(fa_key):
+                if (
+                    st.session_state[a_key] != _NO_EVIDENCE_HOLD_TEXT
+                    and st.session_state.get(fa_key)
+                ):
                     _render_low_confidence_warning()
 
     # ── Bottom row: 3 action buttons ─────────────────────────────
@@ -1022,18 +948,14 @@ def _build_citation_text(detail: Any, source_file: str, document_id: str) -> str
     return "\n".join(parts)
 
 
-def _extract_citation_year(created_at: str | None) -> str | None:
-    """ISO 날짜 문자열(YYYY-...)에서 연도만 추출."""
-    if not created_at or len(created_at) < 4 or not created_at[:4].isdigit():
-        return None
-    return created_at[:4]
-
-
 def _build_footnote_citation(detail: Any, source_file: str, document_id: str) -> str:
     """Zotero 풋노트 인용 스타일을 벤치마킹한 각주 텍스트를 만든다.
 
     각주 번호는 세션 내 인용 삽입마다 새로 증가한다(워드프로세서 각주와 동일).
     같은 자료를 연속으로 재인용하면 "Ibid.", 비연속 재인용이면 약식 서지를 쓴다.
+
+    최초(전체) 인용 본문 조립은 core.citation_format.format_footnote_line()으로
+    공용화했다 — "연구하기 > 본문 해설" 각주와 같은 형식을 쓴다(출력 문자열 동일).
     """
     footnotes: list[str] = st.session_state.setdefault("research_footnotes", [])
     previously_cited = document_id in footnotes
@@ -1052,9 +974,7 @@ def _build_footnote_citation(detail: Any, source_file: str, document_id: str) ->
         short_title = title if len(title) <= 20 else f"{title[:20]}…"
         body = f"{author}, *{short_title}*." if author else f"*{short_title}*."
     else:
-        meta = ", ".join(x for x in (doc_type, year) if x)
-        head = f"{author}, *{title}*" if author else f"*{title}*"
-        body = f"{head} ({meta})." if meta else f"{head}."
+        body = format_footnote_line(author, title, doc_type, year)
 
     return f"{number}. {body}"
 

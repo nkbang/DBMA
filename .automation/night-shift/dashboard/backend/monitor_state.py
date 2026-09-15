@@ -77,6 +77,12 @@ class _PolledState:
     pipeline_stages: list = field(default_factory=list)
     bottleneck: dict | None = None
     gpu_health: dict | None = None
+    cjk_repair: list = field(default_factory=list)
+
+    # Live activity verdict for the progress indicator / spinner.
+    # idle | starting | working | stalled | stopped | error
+    activity: str = "idle"
+    report_age_seconds: float | None = None
 
 
 class MonitorState:
@@ -120,6 +126,21 @@ class MonitorState:
         self._lock = threading.Lock()
         self._state = _PolledState()
         self._reports: dict[str, dict] = {}
+        # When the current active identifier first appeared, so a run that
+        # has not checkpointed can move starting -> stalled once a checkpoint
+        # is clearly overdue.
+        self._run_started_at: dict[str, float] = {}
+        # A tsu_report.json is rewritten at every checkpoint (~every 100
+        # candidates). If it is older than this while the run is alive, a
+        # checkpoint is overdue -> the run is stalled.
+        self._stall_after_seconds = 1500.0
+        # builder.build_tsu_for_identifier(checkpoint_every=100) default — used
+        # only to cap the between-checkpoint progress estimate.
+        self.CHECKPOINT_EVERY = 100
+        # candidates_total is stable per identifier across re-runs; remember the
+        # last value we saw so a run that has not written its first checkpoint
+        # yet still shows a real progress scale (0 / N) instead of 0 / 0.
+        self._known_totals: dict[str, int] = {}
         self._throughput_history: dict[str, deque[ThroughputSample]] = {}
         self._system_history: deque[SystemSample] = deque()
         self._event_log = events_mod.EventLog()
@@ -147,11 +168,33 @@ class MonitorState:
             ollama_models = _safe(self._ollama_models_reader, [])
             registration_state = _safe(self._registration_state_reader, {})
 
-            report = None
-            if active:
-                report = collector.read_json_safe(self._tsu_root / active / "tsu_report.json")
-
             now = time.time()
+
+            report = None
+            report_age = None
+            if active:
+                report_path = self._tsu_root / active / "tsu_report.json"
+                report = collector.read_json_safe(report_path)
+                try:
+                    report_age = now - report_path.stat().st_mtime
+                except OSError:
+                    report_age = None
+                self._run_started_at.setdefault(active, now)
+                # forget stale run-start marks for identifiers no longer active
+                for k in list(self._run_started_at):
+                    if k != active:
+                        self._run_started_at.pop(k, None)
+            else:
+                self._run_started_at.clear()
+
+            activity = self._classify_activity(
+                active=active,
+                report=report,
+                report_age=report_age,
+                run_started_at=self._run_started_at.get(active) if active else None,
+                now=now,
+                stopped=self._stop_marker_path.exists(),
+            )
 
             disk_io_rate = self._rate_since_last(self._prev_disk_io, disk_io_raw, now,
                                                    {"read_bytes": "read_bytes_per_sec", "write_bytes": "write_bytes_per_sec"})
@@ -164,6 +207,7 @@ class MonitorState:
                 self._prev_net_io = {"ts": now, **net_io_raw}
 
             queue, queue_stopped, queue_stop_reason = self._compute_queue_snapshot(active, report)
+            cjk_repair = _safe(lambda: self._compute_cjk_repair_snapshot(ps_text), [])
 
             stages: list[dict] = []
             if active:
@@ -206,11 +250,17 @@ class MonitorState:
                 self._state.pipeline_stages = stages
                 self._state.bottleneck = bottleneck_verdict
                 self._state.gpu_health = gpu_health_verdict
+                self._state.cjk_repair = cjk_repair
+                self._state.activity = activity
+                self._state.report_age_seconds = report_age
                 self._state.last_poll_ts = now
                 self._state.last_poll_ok = True
 
                 if active and report is not None:
                     self._reports[active] = report
+                    tot = report.get("candidates_total")
+                    if isinstance(tot, int) and tot > 0:
+                        self._known_totals[active] = tot
                     hist = self._throughput_history.setdefault(active, deque())
                     hist.append(ThroughputSample(
                         ts=now,
@@ -218,6 +268,16 @@ class MonitorState:
                         elapsed_seconds=report.get("elapsed_seconds", 0.0),
                     ))
                     self._prune_by_age(hist, now)
+                elif active and report is None:
+                    # The active run has no readable tsu_report.json yet — a fresh
+                    # start before its first checkpoint, or a re-run whose report
+                    # file was removed. Do NOT keep serving the previous run's
+                    # progress numbers; drop the cached report/history so
+                    # snapshot() reports 0 processed / 0 elapsed. The stable
+                    # candidates_total is kept in _known_totals so the scale is
+                    # still 0 / N, not 0 / 0.
+                    self._reports.pop(active, None)
+                    self._throughput_history.pop(active, None)
 
                 self._system_history.append(SystemSample(
                     ts=now,
@@ -249,6 +309,26 @@ class MonitorState:
             with self._lock:
                 self._state.last_poll_ts = time.time()
                 self._state.last_poll_ok = False
+
+    def _classify_activity(self, *, active, report, report_age, run_started_at, now, stopped) -> str:
+        """One-word live state for the progress indicator.
+        idle | starting | working | stalled | stopped | error"""
+        if stopped:
+            return "stopped"
+        if not active:
+            return "idle"
+        if report is not None:
+            evaluated = report.get("candidates_evaluated") or 0
+            errors = report.get("llm_errors") or 0
+            if evaluated and errors / evaluated > 0.05:
+                return "error"
+            if report_age is not None and report_age > self._stall_after_seconds:
+                # a checkpoint is overdue while the run is still active
+                return "stalled"
+            return "working"
+        # active run with no report yet: fresh start, or first checkpoint overdue
+        age = (now - run_started_at) if run_started_at else 0.0
+        return "stalled" if age > self._stall_after_seconds else "starting"
 
     def _prune_by_age(self, buf: deque, now: float) -> None:
         cutoff = now - self._history_window
@@ -307,6 +387,30 @@ class MonitorState:
 
         return entries, stopped, stop_reason
 
+    def _compute_cjk_repair_snapshot(self, ps_text: str) -> list[dict]:
+        """Read-only status for `scripts/nae_fuller_cjk_reextract.py` runs —
+        separate from the F2 extraction queue above. `running` comes from a
+        live ps grep (same technique as parse_active_identifier); `report`
+        is whatever `cjk_reextract_report.json` currently holds for that
+        identifier, written only when a run (dry or applied) finishes."""
+        running_ids = collector.parse_active_cjk_repair_identifiers(ps_text)
+        entries = []
+        for identifier in collector.CJK_REPAIR_WATCH_IDENTIFIERS:
+            report = collector.read_json_safe(self._tsu_root / identifier / "cjk_reextract_report.json")
+            running = identifier in running_ids
+            if running:
+                status = "running"
+            elif isinstance(report, dict):
+                status = "complete"
+            else:
+                status = "not_started"
+            entries.append({
+                "identifier": identifier,
+                "status": status,
+                "report": report if isinstance(report, dict) else None,
+            })
+        return entries
+
     def snapshot(self) -> dict:
         with self._lock:
             active = self._state.active
@@ -330,20 +434,52 @@ class MonitorState:
             stages = list(self._state.pipeline_stages)
             bottleneck_verdict = dict(self._state.bottleneck) if self._state.bottleneck else None
             gpu_health_verdict = dict(self._state.gpu_health) if self._state.gpu_health else None
+            cjk_repair = list(self._state.cjk_repair)
+            activity = self._state.activity
+            report_age_seconds = self._state.report_age_seconds
             report = dict(self._reports.get(active, {})) if active else None
+            known_total = self._known_totals.get(active, 0) if active else 0
             throughput_hist = list(self._throughput_history.get(active, [])) if active else []
             system_hist = list(self._system_history)
             recent_events = self._event_log.recent()
 
-        processed = report.get("candidates_evaluated", 0) if report else 0
-        total = report.get("candidates_total", 0) if report else 0
+        checkpoint_evaluated = report.get("candidates_evaluated", 0) if report else 0
+        processed = checkpoint_evaluated
+        # Fall back to the last-known candidates_total for this identifier so a
+        # run that has not checkpointed yet still shows 0 / N, not 0 / 0.
+        total = (report.get("candidates_total", 0) if report else 0) or known_total
         errors = report.get("llm_errors", 0) if report else 0
         elapsed = report.get("elapsed_seconds", 0.0) if report else 0.0
+        awaiting_first_checkpoint = bool(active) and not report
+
+        # tsu_report.json is only rewritten every CHECKPOINT_EVERY candidates
+        # (~16 min at this model's rate), so the raw number sits flat between
+        # checkpoints and looks frozen. While the run is genuinely working,
+        # extrapolate from time-since-checkpoint and the observed rate — never
+        # past the next checkpoint (we can't confirm it yet).
+        processed_is_estimate = False
+        if (
+            self._state.activity == "working"
+            and report is not None
+            and checkpoint_evaluated > 0
+            and elapsed > 0
+            and report_age_seconds
+        ):
+            rate = elapsed / checkpoint_evaluated  # sec per candidate so far
+            if rate > 0:
+                est_extra = int(report_age_seconds / rate)
+                est_extra = max(0, min(est_extra, self.CHECKPOINT_EVERY - 1))
+                if est_extra > 0:
+                    processed = checkpoint_evaluated + est_extra
+                    processed_is_estimate = True
+
         percentage = round(100 * processed / total, 2) if total else 0.0
 
-        avg_rate_per_sec = (processed / elapsed) if elapsed > 0 else 0.0
+        # Rate stats stay anchored to the confirmed checkpoint count, not the
+        # extrapolated display value, so sec/item and throughput don't drift.
+        avg_rate_per_sec = (checkpoint_evaluated / elapsed) if elapsed > 0 else 0.0
         throughput_per_hour = round(avg_rate_per_sec * 3600, 1)
-        sec_per_item = round(elapsed / processed, 2) if processed > 0 else None
+        sec_per_item = round(elapsed / checkpoint_evaluated, 2) if checkpoint_evaluated > 0 else None
         remaining = max(total - processed, 0)
         eta_seconds = round(remaining / avg_rate_per_sec, 0) if avg_rate_per_sec > 0 else None
 
@@ -378,6 +514,11 @@ class MonitorState:
             "errors": errors,
             "elapsed_seconds": elapsed,
             "process_alive": process_alive,
+            "awaiting_first_checkpoint": awaiting_first_checkpoint,
+            "activity": activity,
+            "report_age_seconds": report_age_seconds,
+            "processed_is_estimate": processed_is_estimate,
+            "checkpoint_evaluated": checkpoint_evaluated,
             "ollama_online": ollama_online,
             "n8n_online": n8n_online,
             "system": {
@@ -407,6 +548,7 @@ class MonitorState:
             "queue": queue,
             "queue_stopped": queue_stopped,
             "queue_stop_reason": stop_reason,
+            "cjk_repair": cjk_repair,
             "throughput_history": throughput_sparkline,
             "latency_history": latency_sparkline,
             "gpu_history": gpu_history,

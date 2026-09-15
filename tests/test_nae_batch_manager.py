@@ -25,6 +25,12 @@ def _record(tid, review_status="generated"):
 @pytest.fixture()
 def synthetic_corpus(tmp_path, monkeypatch):
     monkeypatch.setattr(bm, "CORPUS_ROOT", tmp_path)
+    # bm.TSU_IDENTIFIERS의 모든 소스에 대해 빈 tsu.json을 미리 만들어 둔다 —
+    # 개별 테스트는 필요한 소스만 실제 레코드로 덮어쓰면 된다(신규
+    # 소스가 TSU_IDENTIFIERS에 추가돼도 기존 테스트가 FileNotFoundError로
+    # 깨지지 않도록).
+    for identifier in bm.TSU_IDENTIFIERS:
+        _write_tsu(tmp_path, identifier, [])
     return tmp_path
 
 
