@@ -77,6 +77,16 @@ Path/structure documentation rule:
   fill the gap. A documentation task fails if any stated fact cannot be
   traced to a tool call in this session.
 
+Continuation rule:
+- When told to "continue" or "keep writing," do not reconstruct where the
+  previous response stopped from memory. Read the target file (or the
+  actual output produced so far) first to confirm what was already
+  written, then resume only from that point.
+- Never regenerate a summary, analysis, or conclusion you already wrote.
+  Writing the same or near-identical paragraph twice is a failure.
+- If you cannot tell where the cutoff was, say so explicitly and check
+  before continuing — do not guess and restart from the top.
+
 Brand freeze rule (FROZEN — see docs/governance/DBMA-BRAND-GOV-001.md):
 - The product's user-facing brand is frozen: Korean "내서재", English "NAE"
   (always uppercase). "DBMA" remains the internal engineering/project

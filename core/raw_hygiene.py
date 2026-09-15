@@ -117,6 +117,36 @@ def purge_expired_trash(
     return result
 
 
+def empty_trash_now() -> dict[str, Any]:
+    """[사용자 요청: "앱에 휴지통 비우기 기능을 넣어라"]
+    보관기간과 무관하게 backups/deleted_raw_{날짜}/ 휴지통을 지금
+    전부 영구 삭제한다. purge_expired_trash()의 자동(하루 1회, 30일
+    경과분) 정리와 달리, 사용자가 UI에서 명시적으로 눌렀을 때만
+    실행되는 수동 비우기다.
+
+    purge_expired_trash()와 동일하게 excluded_documents_{날짜}/
+    (제외/삭제 시 딸려가는 .md/_chunks.txt/_chunks_meta.json)는
+    건드리지 않는다 — "휴지통"은 restore_raw_source()로 복구 가능한
+    deleted_raw_*만을 가리킨다. 폴더명이 예상 밖(deleted_raw_ 접두사가
+    아님)인 것도 그대로 둔다.
+
+    Returns:
+        {"purged_dirs": [str, ...], "purged_file_count": int}
+    """
+    result: dict[str, Any] = {"purged_dirs": [], "purged_file_count": 0}
+    if not BACKUP_ROOT.exists():
+        return result
+
+    for sub in sorted(BACKUP_ROOT.glob("deleted_raw_*")):
+        if not sub.is_dir():
+            continue
+        file_count = sum(1 for f in sub.rglob("*") if f.is_file())
+        shutil.rmtree(sub)
+        result["purged_dirs"].append(str(sub))
+        result["purged_file_count"] += file_count
+    return result
+
+
 def maybe_purge_expired_trash(
     output_dir: str = DEFAULT_OUTPUT_DIR,
     retention_days: int = TRASH_RETENTION_DAYS,
