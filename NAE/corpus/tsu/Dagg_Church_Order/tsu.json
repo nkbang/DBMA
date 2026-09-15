@@ -47804,7 +47804,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -47828,7 +47828,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지구上的 모든 교회는 아마도 하나 이상의 거짓 신자들을 가지고 있으며, 예수 그리스도께서는 거짓 신자들의 가입을 허락하지 않았으므로, 엄밀히 말해서 지구上的 기독교 교회가 존재하는지 의문이다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
+    }
   },
   {
     "id": "TSU-0000978",
@@ -53003,7 +53009,7 @@
     "paragraph": 625,
     "sentence": 1,
     "source_text": "Paul did not say, “ Be glory in the church to the end of time.” Local churches, like theatres, exist only in the present world; and when the end of time arrives, they will cease to exist.",
-    "claim": "교회는 현세에만 존재하며, 시간의 종말에 도달하면 소멸할 것이다.",
+    "claim": "지역교회들은 오직 현세에만 존재하며, 시간의 종말이 이르면 소멸할 것이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -53032,8 +53038,13 @@
       "resolved_at": "2026-08-08T18:04:32.154541+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "교회는 현세에만 존재하며, 시간의 종말에 도달하면消滅할 것이다.",
-    "cjk_status": "repaired"
+    "claim_raw": "교회는 현세에만 존재하며, 시간의 종말에 도달하면 소멸할 것이다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001084",
@@ -63563,7 +63574,7 @@
     "paragraph": 705,
     "sentence": 0,
     "source_text": "The bond of perfectness which unites the people of God on earth, makes them one with the church in heaven, who are made perfect",
-    "claim": "지상의 하나님의 백성들을 완전한 단결로 결합시키는 것은 그들을 하늘의 교회와 하나로 만들어 주며, 그들은 완전하게 됩니다.",
+    "claim": "지상의 하나님의 백성을 결합시키는 온전함의 띠는 그들을 이미 온전하게 된 하늘의 교회와 하나 되게 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -63592,8 +63603,13 @@
       "resolved_at": "2026-08-08T18:04:32.155307+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "지上的 하나님의 백성들을 완전한 단결로 결합시키는 것은 그들을 하늘의 교회와 하나로 만들어 주며, 그들은 완전하게 됩니다.",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "지상의 하나님의 백성들을 완전한 단결로 결합시키는 것은 그들을 하늘의 교회와 하나로 만들어 주며, 그들은 완전하게 됩니다.",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001299",
@@ -66201,7 +66217,7 @@
     "paragraph": 726,
     "sentence": 4,
     "source_text": "The simple fact that they are alike in professing the same religion is sufficient for the purpose of mental classification; but to constitute them really one body, some species of organization is necessary.",
-    "claim": "같은 종교를 믿는다는 단순한 사실은 영적인 분류의 목적에는 충분하지만, 정말로 하나의 몸을 구성하기 위해서는 어떤 종류의 조직이 필요합니다",
+    "claim": "동일한 종교를 고백한다는 단순한 사실은 정신적(개념적) 분류의 목적에는 충분하지만, 그들을 실제로 한 몸으로 만들기 위해서는 어떤 종류의 조직이 필요하다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -66230,8 +66246,13 @@
       "resolved_at": "2026-08-08T18:04:32.155494+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "同じ宗教を信仰するという単純な事実は精神的な分類の目的には十分ですが、本当に一つの身体を構成するためには何らかの種類の組織が必要です",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "같은 종교를 믿는다는 단순한 사실은 영적인 분류의 목적에는 충분하지만, 정말로 하나의 몸을 구성하기 위해서는 어떤 종류의 조직이 필요합니다",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001353",
@@ -68268,7 +68289,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -68292,7 +68313,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교황의 권력 남용이 가져온 폐해를 보고 탄식하는 사람들은 그 권力的 비밀을 배워야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
+    }
   },
   {
     "id": "TSU-0001395",
@@ -92420,7 +92447,7 @@
     "paragraph": 936,
     "sentence": 2,
     "source_text": "But can any one prove that it is inconsistent with the gospel for a Jew to retain circumcision, as a token of his connection with Abraham, and his interest in that remarkable people, through whom he still expects God to display the riches of his grace in the most wonderful manner ?",
-    "claim": "유대인들이 율법의 상징으로서 할례를 유지하는 것은 복음과 모순되지 않는다.",
+    "claim": "유대인이 아브라함과의 연계 및 그 백성에 속한 몫을 표지하기 위해 할례를 유지하는 것이 복음과 모순된다고 누가 입증할 수 있겠는가?",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -92449,8 +92476,13 @@
       "resolved_at": "2026-08-08T18:04:32.157401+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "유대人が 율법의 상징으로서 할례를 유지하는 것은 복음과 모순되지 않는다.",
-    "cjk_status": "repaired"
+    "claim_raw": "유대인들이 율법의 상징으로서 할례를 유지하는 것은 복음과 모순되지 않는다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001885",
@@ -94280,7 +94312,7 @@
     "paragraph": 952,
     "sentence": 9,
     "source_text": "These, and these only, bring forth the fruits of the kingdom; and, however the transfer to them may be understood, it cannot prove the churchmembership of infants.",
-    "claim": "유아들의 교회 회원 자격은 왕국을 위한 열매를 맺는 것과 관련이 없다.",
+    "claim": "왕국의 열매를 맺는 자들에게만 그 특권이 있으며, 그 이전이 어떻게 이해되든 그것이 유아의 교회 회원 자격을 입증할 수는 없다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -94309,8 +94341,13 @@
       "resolved_at": "2026-08-08T18:04:32.157532+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "유아들의 교회 회원資格은 왕국을 위한 열매를 맺는 것과 관련이 없다.",
-    "cjk_status": "repaired"
+    "claim_raw": "유아들의 교회 회원 자격은 왕국을 위한 열매를 맺는 것과 관련이 없다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0001923",
@@ -119887,7 +119924,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -119916,6 +119953,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
     }
   },
   {
@@ -122197,7 +122240,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -122221,7 +122264,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "일부 침례교도들은 논증의 유효성을 인정하며, 유아세례 목사들을 자신의講壇에 초대하지 않음으로써 일관성 없는 비난을 피한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
+    }
   },
   {
     "id": "TSU-0002490",
@@ -123224,7 +123273,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -123253,6 +123302,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
     }
   },
   {
@@ -124204,7 +124259,7 @@
     "paragraph": 1203,
     "sentence": 1,
     "source_text": "The example of the Saviour recommends the act on the ground of its utility.",
-    "claim": "구원의 주님의 예는 그 행위의 유용성에 근거하여 이를 권장한다.",
+    "claim": "구주의 본은 그 행위의 유용성에 근거하여 이를 권장한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -124233,8 +124288,13 @@
       "resolved_at": "2026-08-08T18:04:32.159713+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "구원者の 예는 그 행위의 유용성에 근거하여 이를 권장한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "구원의 주님의 예는 그 행위의 유용성에 근거하여 이를 권장한다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002531",
@@ -125480,7 +125540,7 @@
     "paragraph": 1219,
     "sentence": 1,
     "source_text": "On opening the inspired history of the church, we read, at the very beginning, “ They that gladly received his word were baptized: and they continued steadfastly in the apostles’ doctrine, and fellowship, and in breaking of bread, and in prayers.” Baptism is frequently mentioned in the subsequent history, and in the 20th chap.",
-    "claim": "초기 교회에서 세례는 중요한 의식으로 수행되었지만 발 씻기는 언급되지 않는다.",
+    "claim": "사도행전 기록에는 세례와 떡을 뗌은 자주 언급되지만, 발 씻기를 위해 모였다는 언급은 없다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -125509,8 +125569,13 @@
       "resolved_at": "2026-08-08T18:04:32.159803+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "초기 교회에서 세례는 중요한儀式로 수행되었지만 발 씻기는 언급되지 않는다.",
-    "cjk_status": "repaired"
+    "claim_raw": "초기 교회에서 세례는 중요한 의식으로 수행되었지만 발 씻기는 언급되지 않는다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002557",
@@ -125776,7 +125841,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -125805,6 +125870,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
     }
   },
   {
@@ -127771,7 +127842,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -127795,7 +127866,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "안식일에 대한 계명의 해석은 칠년을 기준으로 하는 안식年的 계명과 동일한 방법으로 적용되어야 한다.",
-    "cjk_status": "reextracted"
+    "cjk_status": "reextracted",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
+    }
   },
   {
     "id": "TSU-0002604",
@@ -128012,7 +128089,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -128036,7 +128113,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "일요일과 토요일을 기준으로 하는 안식日の 관행은 지구의 형태와 시간대에 따라 달라질 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
+    }
   },
   {
     "id": "TSU-0002609",
@@ -128057,7 +128140,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -128081,7 +128164,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "안식일이 명령되었다면 선교사들은 서로에게 안식일을 어기는 사람이 될 수밖에 없었으며, 모세의 지혜만으로 십계명을 정했다면 모든 시대와 국가, 그리고 모든 자오선에서 인간의 상태와 상황에 맞게 적용될 수 있는 十誡의 훌륭한 적합성이 보장되지 않았을 것이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
+    }
   },
   {
     "id": "TSU-0002610",
@@ -128102,7 +128191,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -128126,7 +128215,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성경이 주일 제7日の 관행을 명령한다면 전통에 의존해야 한다는 사실은 이러한 해석에 대한 반대意见이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
+    }
   },
   {
     "id": "TSU-0002611",
@@ -128780,7 +128875,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -128809,6 +128904,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": "batch_0034 part1 (1-139/310) human review."
     }
   },
   {
@@ -129069,7 +129170,7 @@
     "paragraph": 1251,
     "sentence": 0,
     "source_text": "The disciples at Troas met together to break bread ;? and the inspired historian is careful to tell us, that it was on “the first day of the week.” In writing to the Corinthians, Paul directed them, in making their religious contribution for the poor saints at Jerusalem, “On the first day of the week, let every one of you lay by him in store, as God hath prospered him.”’* In describing the wonderful revelation which he received on the isle of Patmos, John says, ‘‘ I was in the Spirit on the Lord's day.” 4 By this phrase, he seems to designate the day on which our Lord arose, and which had been consecrated to his worship.",
-    "claim": "첫째 날에 예배와 헌금이 이루어지는 것이 중요하다.",
+    "claim": "드로아의 제자들이 떡을 떼려고 첫날에 모였다는 것, 바울이 고린도 교인들에게 첫날에 헌금을 저축하라고 지시한 것, 요한이 밧모섬에서 \"주의 날\"에 성령 안에 있었다고 말한 것이 첫날 준수의 근거로 제시된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -129098,8 +129199,13 @@
       "resolved_at": "2026-08-08T18:04:32.160068+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "첫째 날에 예배와 헌금이行われる 것이 중요하다.",
-    "cjk_status": "repaired"
+    "claim_raw": "첫째 날에 예배와 헌금이 이루어지는 것이 중요하다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    }
   },
   {
     "id": "TSU-0002631",
