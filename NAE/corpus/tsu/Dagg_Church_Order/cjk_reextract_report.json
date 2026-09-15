@@ -1,0 +1,19 @@
+{
+  "identifier": "Dagg_Church_Order",
+  "cjk_reextract_version": "1.0.0",
+  "mode": "reextract",
+  "model": "my-theology-bot-v2:latest",
+  "generated_at": "2026-09-15T04:43:13.681104+00:00",
+  "candidates": 17,
+  "repaired": 0,
+  "reextracted": 0,
+  "residual": 16,
+  "failed": 1,
+  "elapsed_seconds": 503.7,
+  "applied": true,
+  "manual_repair_pass": {
+    "note": "Automated repair/reextract rounds plateaued on a residual set containing non-CJK contamination (Cyrillic/Vietnamese/Hindi/Arabic/Thai/Japanese kana) that the CJK-only HAN regex never targeted. Each record was checked against source_text and hand-corrected; 8 Greek-transliteration OCR artifacts already present in source_text (not model-introduced) were left untouched.",
+    "manually_repaired": 51,
+    "generated_at": "2026-09-15T04:49:42.766081+00:00"
+  }
+}

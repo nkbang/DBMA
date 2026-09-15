@@ -1,0 +1,19 @@
+{
+  "identifier": "Hiscox_Standard_Manual",
+  "cjk_reextract_version": "1.0.0",
+  "mode": "reextract",
+  "model": "my-theology-bot-v2:latest",
+  "generated_at": "2026-09-15T04:38:22.942427+00:00",
+  "candidates": 3,
+  "repaired": 0,
+  "reextracted": 0,
+  "residual": 3,
+  "failed": 0,
+  "elapsed_seconds": 88.1,
+  "applied": true,
+  "manual_repair_pass": {
+    "note": "Automated repair/reextract rounds plateaued on a residual set containing non-CJK contamination (Cyrillic/Vietnamese/Hindi/Arabic/Thai/Japanese kana) that the CJK-only HAN regex never targeted. Each record was checked against source_text and hand-corrected; 8 Greek-transliteration OCR artifacts already present in source_text (not model-introduced) were left untouched.",
+    "manually_repaired": 18,
+    "generated_at": "2026-09-15T04:49:42.766510+00:00"
+  }
+}

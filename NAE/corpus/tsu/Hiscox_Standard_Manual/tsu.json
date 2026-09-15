@@ -141,7 +141,7 @@
     "paragraph": 35,
     "sentence": 4,
     "source_text": "This hope has been realized.",
-    "claim": "이 надеж는 실현되었다.",
+    "claim": "이 소망은 실현되었다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
@@ -169,7 +169,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191142+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "이 надеж는 실현되었다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003387",
@@ -1560,7 +1562,7 @@
     "paragraph": 69,
     "sentence": 2,
     "source_text": "The deacons have principal charge of the temporalities of the church, so as to relieve the pastor in that department of labor.",
-    "claim": "장로회에서 집사들은 교회의 世俗적인 문제를 주로 담당하여 목사를 그 부분에서 지원한다.",
+    "claim": "장로회에서 집사들은 교회의 세속적인 문제를 주로 담당하여 목사를 그 부분에서 지원한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -1588,7 +1590,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191287+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "장로회에서 집사들은 교회의 世俗적인 문제를 주로 담당하여 목사를 그 부분에서 지원한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003420",
@@ -1775,7 +1779,7 @@
     "paragraph": 73,
     "sentence": 0,
     "source_text": "Note 2. — Tn the election of either a pastor or deacon, notice of such election should be given from the pulpit for at least two Sundays preceding the time for the same.",
-    "claim": "목사나 장로의 선거에서는 선거 이전에 최소 2주간 동안 예배에서 선거를公告해야 한다.",
+    "claim": "목사나 장로의 선거에서는 선거 이전에 최소 2주간 동안 예배에서 선거를 알리야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -1803,7 +1807,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191307+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "목사나 장로의 선거에서는 선거 이전에 최소 2주간 동안 예배에서 선거를公告해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003425",
@@ -2504,7 +2510,7 @@
     "paragraph": 79,
     "sentence": 2,
     "source_text": "Also trustees are elected by the church, or if the law so requires, by a society.",
-    "claim": "교회에서 신임을 받은 신탁人は 법이 요구하는 경우에는 사회에서 선출될 수 있다.",
+    "claim": "교회에서 신임을 받은 신뢰받는 사람들은 법이 요구하는 경우에는 사회에서 선출될 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -2532,7 +2538,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191362+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회에서 신임을 받은 신탁人は 법이 요구하는 경우에는 사회에서 선출될 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003440",
@@ -2596,7 +2604,7 @@
     "paragraph": 79,
     "sentence": 4,
     "source_text": "But these are not considered Scriptural church officers ; deacons might properly discharge all the functions of these offices, i",
-    "claim": "교회의 성경적 직분은 다کن(deacon)들이 수행할 수 있는 역할을 포함한다",
+    "claim": "교회의 성경적 직분은 집사(deacon)들이 수행할 수 있는 역할을 포함한다",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -2630,7 +2638,9 @@
       "review_date": "2026-08-11",
       "review_decision": "approved",
       "review_notes": null
-    }
+    },
+    "claim_raw": "교회의 성경적 직분은 다کن(deacon)들이 수행할 수 있는 역할을 포함한다",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003442",
@@ -2890,7 +2900,7 @@
     "paragraph": 81,
     "sentence": 6,
     "source_text": "A church should be allowed to manage its own affairs, both temporal and spiritual : and should be protected by law in doing so.",
-    "claim": "교회는 世俗적인 것과 영적인 것 모두를 자기의 일들을 관리할 수 있어야 하며, 법으로 보호되어야 한다.",
+    "claim": "교회는 세속적인 것과 영적인 것 모두를 자기의 일들을 관리할 수 있어야 하며, 법으로 보호되어야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -2918,7 +2928,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191392+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 世俗적인 것과 영적인 것 모두를 자기의 일들을 관리할 수 있어야 하며, 법으로 보호되어야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003448",
@@ -3178,7 +3190,7 @@
     "paragraph": 83,
     "sentence": 0,
     "source_text": "Note 10. — A church cannot unite in any corporate capacity with other organizations for religious, benevolent, moral reform, or other purposes ; but it may cooperate with these for any good object, and give to such societies its moral support, sympatic, and pecuniary aid.",
-    "claim": "교회는 다른 조직과 종교, 자선, 도덕 개혁 또는 기타 목적을 위해法人으로 합체할 수 없지만, 좋은 목적을 위해 협력하고 이러한 사회에 대한 도덕적 지지, 동정, 재정 지원을 제공할 수 있다.",
+    "claim": "교회는 다른 조직과 종교, 자선, 도덕 개혁 또는 기타 목적을 위해 법인으로 합체할 수 없지만, 좋은 목적을 위해 협력하고 이러한 사회에 대한 도덕적 지지, 동정, 재정 지원을 제공할 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -3206,7 +3218,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191413+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 다른 조직과 종교, 자선, 도덕 개혁 또는 기타 목적을 위해法人으로 합체할 수 없지만, 좋은 목적을 위해 협력하고 이러한 사회에 대한 도덕적 지지, 동정, 재정 지원을 제공할 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003454",
@@ -3319,7 +3333,7 @@
     "paragraph": 85,
     "sentence": 1,
     "source_text": "But they can appoint persons to bear messages, and to perform services for them, under instruction, and to report their action to the body. 18 STANDARD MANUAL",
-    "claim": "교회는 특정 개인이나 단체에게 공식적으로 대신 hành động할 수 있는 권한을 위임할 수 없지만, 지시 아래 메시지를 전달하고 서비스를 수행하며 그 행동에 대해 보고하는 사람들을 임명할 수 있다.",
+    "claim": "교회는 특정 개인이나 단체에게 공식적으로 대신 행동할 수 있는 권한을 위임할 수 없지만, 지시 아래 메시지를 전달하고 서비스를 수행하며 그 행동에 대해 보고하는 사람들을 임명할 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -3347,7 +3361,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191424+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 특정 개인이나 단체에게 공식적으로 대신 hành động할 수 있는 권한을 위임할 수 없지만, 지시 아래 메시지를 전달하고 서비스를 수행하며 그 행동에 대해 보고하는 사람들을 임명할 수 있다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003457",
@@ -3754,7 +3770,7 @@
     "paragraph": 90,
     "sentence": 0,
     "source_text": "The Lord's Supper is a provision of bread and wine, used to represent the body and the blood of Christ, partaken of by members of the church assembled for that purpose; in which service they commemorate the love of Christ exhibited in his death for them, and profess their faith and participation in the merits of his sacrifice as the only ground of their hope of eternal life.",
-    "claim": "주님의 만찬은 교회 회원들이 그 목적을 위해 모인 채로 참여하는 빵과 포도주의 제공으로서, 그들은 이 служ에서 그들의 대신 죽으심으로 나타난 그리스도의 사랑을 기념하며, 그의 희생의 공로에 대한 믿음과 참여를 영원한 생명의 소망의 유일한 근거로서 고백한다.",
+    "claim": "주님의 만찬은 교회 회원들이 그 목적을 위해 모인 채로 참여하는 빵과 포도주의 제공으로서, 그들은 이 예식에서 그들의 대신 죽으심으로 나타난 그리스도의 사랑을 기념하며, 그의 희생의 공로에 대한 믿음과 참여를 영원한 생명의 소망의 유일한 근거로서 고백한다.",
     "doctrine": "Lord's Supper",
     "scriptures": [],
     "citations": [],
@@ -3782,7 +3798,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191457+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "주님의 만찬은 교회 회원들이 그 목적을 위해 모인 채로 참여하는 빵과 포도주의 제공으로서, 그들은 이 служ에서 그들의 대신 죽으심으로 나타난 그리스도의 사랑을 기념하며, 그의 희생의 공로에 대한 믿음과 참여를 영원한 생명의 소망의 유일한 근거로서 고백한다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003466",
@@ -4630,7 +4648,7 @@
     "paragraph": 99,
     "sentence": 0,
     "source_text": "Note 8. — Baptism is not essential to salvation, for our churches utterly repudiate the dogma of ''baptismal regeneration \" ; but it is essential to obedience, since Christ has commanded it.",
-    "claim": "세례는 구원에 필수적이지 않지만, 복종과 그리스도에 대한 공개적인 고백 및 교회 회원資格에는 필수적이다.",
+    "claim": "세례는 구원에 필수적이지 않지만, 복종과 그리스도에 대한 공개적인 고백 및 교회 회원 자격에는 필수적이다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -4658,7 +4676,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191522+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례는 구원에 필수적이지 않지만, 복종과 그리스도에 대한 공개적인 고백 및 교회 회원資格에는 필수적이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003484",
@@ -5163,7 +5183,7 @@
     "paragraph": 107,
     "sentence": 0,
     "source_text": "Note 1. — Persons cannot be received to membership on the credit of letters from other denominations.",
-    "claim": "他の宗派からの手紙による信用では会員権を得ることはできない",
+    "claim": "다른 교파로부터의 편지에 의한 신뢰로는 회원 자격을 얻을 수 없다",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -5191,7 +5211,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191562+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "他の宗派からの手紙による信用では会員権を得ることはできない",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003495",
@@ -5990,7 +6012,7 @@
     "paragraph": 122,
     "sentence": 0,
     "source_text": "Note 14. — Persons excluded from other churches are not to be received to membership, except after the most careful investigation of all the facts in the case, and not unless it be manifest that the exclusion was unjustifiable, and that the church excluding persistently refuses to do justice to the excluded member.",
-    "claim": "다른 교회에서 배제된 개인은 매우慎重한 조사 후에만 회원으로 받아들여야 하며, 배제가 정당하지 않으며 배제한 교회가 배제된 회원에게 정의를 제공하기를 거부하는 경우에만 받아들여야 한다.",
+    "claim": "다른 교회에서 배제된 개인은 매우 신중한 조사 후에만 회원으로 받아들여야 하며, 배제가 정당하지 않으며 배제한 교회가 배제된 회원에게 정의를 제공하기를 거부하는 경우에만 받아들여야 한다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -6018,7 +6040,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191623+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "다른 교회에서 배제된 개인은 매우慎重한 조사 후에만 회원으로 받아들여야 하며, 배제가 정당하지 않으며 배제한 교회가 배제된 회원에게 정의를 제공하기를 거부하는 경우에만 받아들여야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003512",
@@ -6907,7 +6931,7 @@
     "paragraph": 137,
     "sentence": 1,
     "source_text": "Because evil-doers by delay become more persistent in evil, while others are drawn into the strife, and contentious parties insensibly are formed, which tend to divide the church into hostile factions.",
-    "claim": "악한 행동을 하는 사람들은 시간이 지날수록 악한 행동에 더욱固執하게 되며, 다른 사람들도 이 분쟁에 끌려들어 간다. 그리고 다툼의 당사자들이 무의식적으로 형성되어 교회를 적대적인 파벌로 나누는 경향이 있다.",
+    "claim": "악한 행동을 하는 사람들은 시간이 지날수록 악한 행동에 더욱 고집하게 되며, 다른 사람들도 이 분쟁에 끌려들어 간다. 그리고 다툼의 당사자들이 무의식적으로 형성되어 교회를 적대적인 파벌로 나누는 경향이 있다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [
@@ -6937,7 +6961,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191691+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "악한 행동을 하는 사람들은 시간이 지날수록 악한 행동에 더욱固執하게 되며, 다른 사람들도 이 분쟁에 끌려들어 간다. 그리고 다툼의 당사자들이 무의식적으로 형성되어 교회를 적대적인 파벌로 나누는 경향이 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003531",
@@ -6952,7 +6978,7 @@
     "paragraph": 138,
     "sentence": 1,
     "source_text": "Because that when the difficulty becomes chronic and deep-seated, the church is likely to undertake the discipline with judicial severity, and not in the spirit of meekness, in which the spiritual should restore the erring.",
-    "claim": "교회가 어려움에 직면하여 교회 징계를 수행할 때, 그 어려움이 만성화되고 깊이 뿌리박히게 되면 교회는 심판적인 엄격함으로 징계를 수행하게 되어 성도들을 회복시키는 영적 mềm고謙遜한 정신에서 벗어나게 된다.",
+    "claim": "교회가 어려움에 직면하여 교회 징계를 수행할 때, 그 어려움이 만성화되고 깊이 뿌리박히게 되면 교회는 심판적인 엄격함으로 징계를 수행하게 되어 성도들을 회복시키는 영적 부드러움과 겸손한 정신에서 벗어나게 된다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [
@@ -6982,7 +7008,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191695+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회가 어려움에 직면하여 교회 징계를 수행할 때, 그 어려움이 만성화되고 깊이 뿌리박히게 되면 교회는 심판적인 엄격함으로 징계를 수행하게 되어 성도들을 회복시키는 영적 mềm고謙遜한 정신에서 벗어나게 된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003532",
@@ -6997,7 +7025,7 @@
     "paragraph": 141,
     "sentence": 0,
     "source_text": "Offenses calling for discipline are usually considered as of two classes ; private or personal, and public or general.",
-    "claim": "교회 징계의 경우는 일반적으로 개인적이거나 공개적인 두 가지 类로 나뉜다.",
+    "claim": "교회 징계의 경우는 일반적으로 개인적이거나 공개적인 두 가지 유형으로 나뉜다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -7025,7 +7053,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191699+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회 징계의 경우는 일반적으로 개인적이거나 공개적인 두 가지 类로 나뉜다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003533",
@@ -7173,7 +7203,7 @@
     "paragraph": 146,
     "sentence": 1,
     "source_text": "Second step. — If this shall fail, then the offended member must take one or two of the brethren with him as witnesses, seek an interview with the offender, and, if possible, by their united wisdom and piety, remove the offense and harmonize the difficulty.",
-    "claim": "교회의紀律을 위한 두 번째 단계는 상처를 받은 교회 회원이 다른 형제나 자매 1-2명과 함께 가서 문제를 해결하고 화해하도록 노력하는 것이다.",
+    "claim": "교회의 규율을 위한 두 번째 단계는 상처를 받은 교회 회원이 다른 형제나 자매 1-2명과 함께 가서 문제를 해결하고 화해하도록 노력하는 것이다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -7201,7 +7231,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191713+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회의紀律을 위한 두 번째 단계는 상처를 받은 교회 회원이 다른 형제나 자매 1-2명과 함께 가서 문제를 해결하고 화해하도록 노력하는 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003537",
@@ -7216,7 +7248,7 @@
     "paragraph": 146,
     "sentence": 2,
     "source_text": "\"But if he will not hear thee, then take with thee one or two more, that in the mouth of two or three witnesses, every word may be established.\"",
-    "claim": "교회의紀律을 위한 과정에서, 문제가 해결되지 않을 경우에는 증인들을 동반하여 다시 대면해야 한다.",
+    "claim": "교회의 규율을 위한 과정에서, 문제가 해결되지 않을 경우에는 증인들을 동반하여 다시 대면해야 한다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -7244,7 +7276,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191716+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회의紀律을 위한 과정에서, 문제가 해결되지 않을 경우에는 증인들을 동반하여 다시 대면해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003538",
@@ -7523,7 +7557,7 @@
     "paragraph": 155,
     "sentence": 0,
     "source_text": "The more common causes of this class of offenses are the following: False doctrine (Gal. 1 : 9; 2 John 10), disregard of authority (Matt. 18 : 17 ; 1 Thess. 5 : 14), contention and strife (Rom. 16 : IT), immoral conduct (1 Cor. 5 : 11), disorderly walk (2 Thess. 3 : 6, 9), covetous spirit (Eph. 5 : 5. ; 1 Cor. 5 : 11), arrogant conduct (3 John 9), going to law (1 Cor. 6 : 6).",
-    "claim": "교회紀律의 일반적인 원인은 거짓 교리, 권위 무시, 다툼과 분쟁, 부도덕한 행위, 무질서한 삶, 탐욕스러운 정신,傲慢한 행동, 법정 소송 등이다.",
+    "claim": "교회 규율의 일반적인 원인은 거짓 교리, 권위 무시, 다툼과 분쟁, 부도덕한 행위, 무질서한 삶, 탐욕스러운 정신, 거만한 행동, 법정 소송 등이다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [
@@ -7555,7 +7589,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191741+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회紀律의 일반적인 원인은 거짓 교리, 권위 무시, 다툼과 분쟁, 부도덕한 행위, 무질서한 삶, 탐욕스러운 정신,傲慢한 행동, 법정 소송 등이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003545",
@@ -7707,7 +7743,7 @@
     "paragraph": 158,
     "sentence": 1,
     "source_text": "But if no one will, or can, pursue this course of personal effort, or if such a course proves unsuccessful, then any member having knowledge of the facts should confer with the pastor and deacons as to the best course to be pursued.",
-    "claim": "교회의紀律을執行할 때 개인적인 노력이 실패하거나 불가능한 경우, 목사와 장로们과協商하여 가장好的 대책을 찾도록 한다.",
+    "claim": "교회의 규율을 시행할 때 개인적인 노력이 실패하거나 불가능한 경우, 목사와 장로들과 협의하여 가장 좋은 대책을 찾도록 한다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [
@@ -7737,7 +7773,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191755+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회의紀律을執行할 때 개인적인 노력이 실패하거나 불가능한 경우, 목사와 장로们과協商하여 가장好的 대책을 찾도록 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003549",
@@ -7842,7 +7880,7 @@
     "paragraph": 162,
     "sentence": 2,
     "source_text": "He should be allowed to hear the evidence against him, know the witnesses, and be permitted to answer for himself.",
-    "claim": "교회紀律을 시행할 때는 죄를 지은 자가 자신을 변호할 기회를 가질 수 있어야 한다.",
+    "claim": "교회 규율을 시행할 때는 죄를 지은 자가 자신을 변호할 기회를 가질 수 있어야 한다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [
@@ -7872,7 +7910,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191766+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회紀律을 시행할 때는 죄를 지은 자가 자신을 변호할 기회를 가질 수 있어야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003552",
@@ -8020,7 +8060,7 @@
     "paragraph": 168,
     "sentence": 1,
     "source_text": "It must also he done under a deep sense of responsibility to maintain the honor of Christ's name, the purity of his church, and the integrity of his truth.",
-    "claim": "교회紀律은 그리스도의 이름의 영광, 교회의 순수성, 그리고 진리의 완전성을 유지하려는 깊은 책임감 아래에서 행해져야 한다.",
+    "claim": "교회 규율은 그리스도의 이름의 영광, 교회의 순수성, 그리고 진리의 완전성을 유지하려는 깊은 책임감 아래에서 행해져야 한다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -8048,7 +8088,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191781+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회紀律은 그리스도의 이름의 영광, 교회의 순수성, 그리고 진리의 완전성을 유지하려는 깊은 책임감 아래에서 행해져야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003556",
@@ -8106,7 +8148,7 @@
     "paragraph": 170,
     "sentence": 0,
     "source_text": "Note 3. — When private difficulties exist among members, which they cannot, or will not settle, the church should consider them as public offenses, and as such dispose of them, rather than suffer the perpetual injury which they inflict.",
-    "claim": "개인적인 어려움이 교회 구성원들 사이에서 존재할 때, 그들이 해결하지 못하거나 해결하기를 거부할 경우, 교회는 그것을 공적 범죄로 간주하고 처리해야 하며, इसस로 인한 영속적인 피해를 방지해야 한다.",
+    "claim": "개인적인 어려움이 교회 구성원들 사이에서 존재할 때, 그들이 해결하지 못하거나 해결하기를 거부할 경우, 교회는 그것을 공적 범죄로 간주하고 처리해야 하며, 그것으로 인한 영속적인 피해를 방지해야 한다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -8134,7 +8176,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191788+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "개인적인 어려움이 교회 구성원들 사이에서 존재할 때, 그들이 해결하지 못하거나 해결하기를 거부할 경우, 교회는 그것을 공적 범죄로 간주하고 처리해야 하며, इसस로 인한 영속적인 피해를 방지해야 한다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003558",
@@ -8192,7 +8236,7 @@
     "paragraph": 172,
     "sentence": 0,
     "source_text": "church, he becomes an offender, and subject to discipline.",
-    "claim": "교회에서 죄를 짓는 사람은 교회의 규율에服해야 한다.",
+    "claim": "교회에서 죄를 짓는 사람은 교회의 규율에 복종해야 한다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -8220,7 +8264,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191796+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회에서 죄를 짓는 사람은 교회의 규율에服해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003560",
@@ -8751,7 +8797,7 @@
     "paragraph": 186,
     "sentence": 2,
     "source_text": "It may make mistakes, but no human tribunal has authority to compel it to confess or correct them.",
-    "claim": "인간의 재판소는 그릇된 판단을 고치거나 اعتر복하도록 강요할 권한이 없다.",
+    "claim": "인간의 재판소는 그릇된 판단을 고치거나 시인하도록 강요할 권한이 없다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -8779,7 +8825,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191842+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "인간의 재판소는 그릇된 판단을 고치거나 اعتر복하도록 강요할 권한이 없다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003573",
@@ -9138,7 +9186,7 @@
     "paragraph": 199,
     "sentence": 1,
     "source_text": "If the church be right, it can afford to be generous.",
-    "claim": "교회가 올바르면慷慨할 수 있다.",
+    "claim": "교회가 올바르면 넉넉할 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -9166,7 +9214,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191874+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회가 올바르면慷慨할 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003582",
@@ -9525,7 +9575,7 @@
     "paragraph": 212,
     "sentence": 1,
     "source_text": "If he be not present, or do not wish to serve, any one may be elected to take the place.",
-    "claim": "목사가 출席하지 않거나 직무를 수행하지 않을 경우 다른 사람이 그 자리를 대신할 수 있다.",
+    "claim": "목사가 출석하지 않거나 직무를 수행하지 않을 경우 다른 사람이 그 자리를 대신할 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -9553,7 +9603,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191905+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "목사가 출席하지 않거나 직무를 수행하지 않을 경우 다른 사람이 그 자리를 대신할 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003591",
@@ -9611,7 +9663,7 @@
     "paragraph": 219,
     "sentence": 0,
     "source_text": "Note 8. — Although the church should endeavor to do nothing- which its members will be ashamed or afraid to have known by others, yet every member is bound, by the honor of a Christian, not to publish abroad, nor disclose to those without, the private affairs and business transactions of the body.",
-    "claim": "교회는 회원들의 명예를 지키기 위해 외부에 공개하지 않아야 할 사적인事務나 거래를 비밀로 유지해야 한다.",
+    "claim": "교회는 회원들의 명예를 지키기 위해 외부에 공개하지 않아야 할 사적인 일이나 거래를 비밀로 유지해야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -9639,7 +9691,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191914+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 회원들의 명예를 지키기 위해 외부에 공개하지 않아야 할 사적인事務나 거래를 비밀로 유지해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003593",
@@ -10084,7 +10138,7 @@
     "paragraph": 303,
     "sentence": 5,
     "source_text": "It is much more full in statement than the other, and is higher in its tone as to the doctrines of grace.",
-    "claim": "1689년 영국 침례교회의 신앙고백은 다른 것보다 더 자세하고 은혜의 교리에서 높은 тон을 가지고 있다.",
+    "claim": "1689년 영국 침례교회의 신앙고백은 다른 것보다 더 자세하고 은혜의 교리에서 높은 어조를 가지고 있다.",
     "doctrine": "Election",
     "scriptures": [],
     "citations": [],
@@ -10112,7 +10166,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191952+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "1689년 영국 침례교회의 신앙고백은 다른 것보다 더 자세하고 은혜의 교리에서 높은 тон을 가지고 있다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003604",
@@ -10686,7 +10742,7 @@
     "paragraph": 316,
     "sentence": 0,
     "source_text": "We believe the Scriptures teach that there is one, and only one, living and true God, an infinite, intelligent Spirit, whose name is Jehovah, the Maker and Supreme Ruler of Heaven and Earth i1 inexpressibly glorious in holiness,2 and worthy of all possible honor, confidence, and love;3 that in the unity of the Godhead there are three persons, the Father, the Son, and the Holy Ghost;4 equal in every divine perfection, and executing; distinct but harmonious offices in the great work of redemption.",
-    "claim": "하나님은 한 분이시며, 살아 계신 참된 하나님이시고, 무한하고 지혜로운 영으로서 천지의 창조주이자 至高の統治者로서 거룩함에 있어 표현할 수 없을 정도로 영광스럽고 모든 가능한 존경과 신뢰와 사랑을 받으실 분이시며, 하나님의 삼위일체에서 아버지와 아들과 성령으로 구성된 세 분의 위격이 존재하며, 모든 신적 완전성에서 동등하고 구속의伟大한 사업에서 서로 다른 그러나 조화로운 직분을 수행하신다.",
+    "claim": "하나님은 한 분이시며, 살아 계신 참된 하나님이시고, 무한하고 지혜로운 영으로서 천지의 창조주이자 가장 높은 통치자로서 거룩함에 있어 표현할 수 없을 정도로 영광스럽고 모든 가능한 존경과 신뢰와 사랑을 받으실 분이시며, 하나님의 삼위일체에서 아버지와 아들과 성령으로 구성된 세 분의 위격이 존재하며, 모든 신적 완전성에서 동등하고 구속의 큰 사업에서 서로 다른 그러나 조화로운 직분을 수행하신다.",
     "doctrine": "Trinity",
     "scriptures": [],
     "citations": [],
@@ -10714,7 +10770,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192005+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "하나님은 한 분이시며, 살아 계신 참된 하나님이시고, 무한하고 지혜로운 영으로서 천지의 창조주이자 至高の統治者로서 거룩함에 있어 표현할 수 없을 정도로 영광스럽고 모든 가능한 존경과 신뢰와 사랑을 받으실 분이시며, 하나님의 삼위일체에서 아버지와 아들과 성령으로 구성된 세 분의 위격이 존재하며, 모든 신적 완전성에서 동등하고 구속의伟大한 사업에서 서로 다른 그러나 조화로운 직분을 수행하신다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003618",
@@ -11458,7 +11516,7 @@
     "paragraph": 331,
     "sentence": 1,
     "source_text": "For God so loved the world that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-    "claim": "하나님은 세상을 इतन게 사랑하사 그의 독생자를 주셨으니, 누구든지 그를 믿는 자는 멸망하지 않고 영생을 얻게 하려 하심이다.",
+    "claim": "하나님은 세상을 이처럼 사랑하사 그의 독생자를 주셨으니, 누구든지 그를 믿는 자는 멸망하지 않고 영생을 얻게 하려 하심이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -11492,7 +11550,9 @@
       "review_date": "2026-08-11",
       "review_decision": "approved",
       "review_notes": null
-    }
+    },
+    "claim_raw": "하나님은 세상을 इतन게 사랑하사 그의 독생자를 주셨으니, 누구든지 그를 믿는 자는 멸망하지 않고 영생을 얻게 하려 하심이다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003634",
@@ -11948,7 +12008,7 @@
     "paragraph": 342,
     "sentence": 1,
     "source_text": "Being justified by faith, we have peace with God, through our Lord Jesus Christ; by whom also we have access by faith into this grace wherein we stand, and rejoice in hope of the glory of God.",
-    "claim": "우리는 믿음으로 의롭게 되어 하나님과 평화를 누ﾘ며, 주 예수 그리스도를 통하여 이 은혜에 들어가서 하나님의 영광의 소망을 즐긴다.",
+    "claim": "우리는 믿음으로 의롭게 되어 하나님과 평화를 누리며, 주 예수 그리스도를 통하여 이 은혜에 들어가서 하나님의 영광의 소망을 즐긴다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
@@ -11982,7 +12042,9 @@
       "review_date": "2026-08-11",
       "review_decision": "approved",
       "review_notes": null
-    }
+    },
+    "claim_raw": "우리는 믿음으로 의롭게 되어 하나님과 평화를 누ﾘ며, 주 예수 그리스도를 통하여 이 은혜에 들어가서 하나님의 영광의 소망을 즐긴다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003644",
@@ -13236,7 +13298,7 @@
     "paragraph": 370,
     "sentence": 1,
     "source_text": "Therefore I endure all things for the elects' sake, that they also may obtain the salvation which is in Christ Jesus with eternal glory. 1 Cor. 9 : 22 ; Rom. 8 : 28-30.",
-    "claim": "바울은 선택받은 자들을 위해 모든 것을 참아忍고, 그들이 그리스도 예수 안에서 영광과 함께 구원을 얻도록 하기 위함이다.",
+    "claim": "바울은 선택받은 자들을 위해 모든 것을 참아 견디고, 그들이 그리스도 예수 안에서 영광과 함께 구원을 얻도록 하기 위함이다.",
     "doctrine": "Election",
     "scriptures": [],
     "citations": [],
@@ -13264,7 +13326,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192191+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "바울은 선택받은 자들을 위해 모든 것을 참아忍고, 그들이 그리스도 예수 안에서 영광과 함께 구원을 얻도록 하기 위함이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003670",
@@ -13673,7 +13737,7 @@
     "paragraph": 380,
     "sentence": 0,
     "source_text": "We believe the Scriptures teach that such as are truly regenerate, being born of the Spirit, will not utterly fall away and perish, but will endure unto the end;1 that their persevering attachment to Christ is the grand mark which distinguishes thein from superficial professors;2 that a special Providence watches over their welfare ;3 and that they are kept by the power of God through faith unto salvation. 4",
-    "claim": "真正으로 거듭난 사람들은 성령으로 말미암아 태어난 사람들이기 때문에 결코 완전히 떨어져나가서 멸망하지不会, 오직 끝까지 견디게 되며, 그리스도께 대한 그들의 지속적인 헌신은 표면적 신자들과 구별되는 큰 표징이다.",
+    "claim": "진정으로 거듭난 사람들은 성령으로 말미암아 태어난 사람들로서 결코 완전히 떨어져서 멸망하지 않고 끝까지 견디며, 그리스도에 대한 그들의 지속적인 헌신은 표면적 신자들과 구별되는 큰 표식이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -13701,7 +13765,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192224+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "真正으로 거듭난 사람들은 성령으로 말미암아 태어난 사람들이기 때문에 결코 완전히 떨어져나가서 멸망하지不会, 오직 끝까지 견디게 되며, 그리스도께 대한 그들의 지속적인 헌신은 표면적 신자들과 구별되는 큰 표징이다.",
+    "cjk_status": "reextracted"
   },
   {
     "id": "TSU-0003679",
@@ -13863,7 +13929,7 @@
     "paragraph": 384,
     "sentence": 1,
     "source_text": "He who hath begun a good work in you will perform it until the day of Jesus Christ.",
-    "claim": "하나님이你们 안에 착한 일을 시작하신 이는 예수 그리스도 날까지 이루실 것임을 확신한다.",
+    "claim": "하나님이 너희 안에 착한 일을 시작하신 이는 예수 그리스도 날까지 이루실 것임을 확신한다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -13891,7 +13957,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192238+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "하나님이你们 안에 착한 일을 시작하신 이는 예수 그리스도 날까지 이루실 것임을 확신한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003683",
@@ -14396,7 +14464,7 @@
     "paragraph": 394,
     "sentence": 0,
     "source_text": "gifts, rights, and privileges invested in them by his word ; 5 that its only scriptural officers are bishops or pastors, and deacons,6 whose qualifications, claims, and duties are defined in the Epistles to Timothy and Titus.",
-    "claim": "교회는 성경에 의해 주어진 선물, 권利, 특권을 가지고 있으며, 감독자 또는 목사와 집사의 자격, 요구, 의무를 정의하는 팀전서와 디도서에 따라 성경적 직분만을 가지고 있다.",
+    "claim": "교회는 성경에 의해 주어진 선물, 권리, 특권을 가지고 있으며, 감독자 또는 목사와 집사의 자격, 요구, 의무를 정의하는 팀전서와 디도서에 따라 성경적 직분만을 가지고 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -14424,7 +14492,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192301+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 성경에 의해 주어진 선물, 권利, 특권을 가지고 있으며, 감독자 또는 목사와 집사의 자격, 요구, 의무를 정의하는 팀전서와 디도서에 따라 성경적 직분만을 가지고 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003694",
@@ -14786,7 +14856,7 @@
     "paragraph": 404,
     "sentence": 1,
     "source_text": "Baptizing them in the name of the Father, and of the Son, and of the Holy Ghost.",
-    "claim": "세례는 성부와 성자와 성령의 이름으로 行해야 한다.",
+    "claim": "세례는 성부와 성자와 성령의 이름으로 행해야 한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -14814,7 +14884,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192330+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례는 성부와 성자와 성령의 이름으로 行해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003702",
@@ -15803,7 +15875,7 @@
     "paragraph": 424,
     "sentence": 1,
     "source_text": "Render therefore unto Csesar the things that are Caesar's, and unto God the things that are God's.",
-    "claim": "하나님께는 하나님의 것을, 세사르에게는 세사ルの 것을 드려야 한다.",
+    "claim": "하나님께는 하나님의 것을, 세사르에게는 세사르의 것을 드려야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -15831,7 +15903,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192404+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "하나님께는 하나님의 것을, 세사르에게는 세사ルの 것을 드려야 한다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003723",
@@ -16278,7 +16352,7 @@
     "paragraph": 433,
     "sentence": 1,
     "source_text": "The wicked is driven away in his wickedness, but the righteous hath hope in his death.",
-    "claim": "악인은 그의 악행으로 인해 추방되지만, 의人は 죽음 속에서도 소망을 가지고 있다.",
+    "claim": "악인은 그의 악한 행동으로 인해 추방되지만, 의로운 사람은 죽음 속에서도 소망을 가지고 있다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -16306,7 +16380,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192446+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "악인은 그의 악행으로 인해 추방되지만, 의人は 죽음 속에서도 소망을 가지고 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003734",
@@ -16710,7 +16786,7 @@
     "paragraph": 442,
     "sentence": 1,
     "source_text": "Seeing it is a righteous thing with God to recompense tribulations to them who trouble you, and to you who are troubled, rest with us . . . when he shall come to be glorified in his saints, and to be admired in all them that believe.",
-    "claim": "하나님은 당신을 괴롭히는 자들에게 고난을 보응하시며,你们에게는 안식을 주실 것입니다.",
+    "claim": "하나님은 당신을 괴롭히는 자들에게 고난을 보응하시며, 당신에게는 안식을 주실 것입니다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -16738,7 +16814,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192483+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "하나님은 당신을 괴롭히는 자들에게 고난을 보응하시며,你们에게는 안식을 주실 것입니다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003744",
@@ -16839,7 +16917,7 @@
     "paragraph": 447,
     "sentence": 0,
     "source_text": "That we will exercise a Christian care and watchfulness over each other, and faithfully warn, exhort, and admonish each other as occasion may require:",
-    "claim": "그리스도인들은 서로를 돌보며 경계하고 필요할 때忠實하게警告하고 권고하며 책망해야 한다.",
+    "claim": "그리스도인들은 서로를 돌보며 경계하고 필요할 때 성실하게 경고하고 권고하며 책망해야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -16867,7 +16945,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192494+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "그리스도인들은 서로를 돌보며 경계하고 필요할 때忠實하게警告하고 권고하며 책망해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003747",
@@ -16882,7 +16962,7 @@
     "paragraph": 450,
     "sentence": 0,
     "source_text": "That, as we are the light of the world, and the salt of the earth, we will seek divine aid, to enable us to deny ungodliness and every worldly lust, and to walk circumspectly in the world, that we may win the souls of men :",
-    "claim": "신자들은 세상을 향한 빛과 땅의 소금으로서 하나님의 도움을 구하여 世俗的欲望을 부인하고謹慎하게 살며 사람들의 영혼을 얻기 위해 노력해야 한다.",
+    "claim": "신자들은 세상을 향한 빛과 땅의 소금으로서 하나님의 도움을 구하여 세속적인 욕망을 부인하고 신중하게 살며 사람들의 영혼을 얻기 위해 노력해야 한다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -16910,7 +16990,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192497+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "신자들은 세상을 향한 빛과 땅의 소금으로서 하나님의 도움을 구하여 世俗的欲望을 부인하고謹慎하게 살며 사람들의 영혼을 얻기 위해 노력해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003748",
@@ -17054,7 +17136,7 @@
     "paragraph": 457,
     "sentence": 1,
     "source_text": "Public morality and social purity should find in it an open and earnest advocate and defender.",
-    "claim": "교회는 공공 도덕과 사회적純潔을 열심히 옹호하고 방어해야 한다.",
+    "claim": "교회는 공공 도덕과 사회적 깨끗함을 열심히 옹호하고 방어해야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -17082,7 +17164,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192511+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 공공 도덕과 사회적純潔을 열심히 옹호하고 방어해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003752",
@@ -17312,7 +17396,7 @@
     "paragraph": 460,
     "sentence": 1,
     "source_text": "Resolved, That this church expects every member to contribute statedly for its pecuniary support, according to his ability, as God has prospered him, and that a refusal to do this will be considered a breach of covenant.",
-    "claim": "교회는 모든 회원이 자신의 능력과 하나님의祝福에 따라 정기적으로 교회를 재정적으로 지원할 것을 기대하며, 이를 거부하는 것은 언약을 위반하는 것으로 간주한다.",
+    "claim": "교회는 모든 회원이 자신의 능력과 하나님의 축복에 따라 정기적으로 교회를 재정적으로 지원할 것을 기대하며, 이를 거부하는 것은 언약을 위반하는 것으로 간주한다.",
     "doctrine": "Church Covenant",
     "scriptures": [],
     "citations": [],
@@ -17340,7 +17424,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192532+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 모든 회원이 자신의 능력과 하나님의祝福에 따라 정기적으로 교회를 재정적으로 지원할 것을 기대하며, 이를 거부하는 것은 언약을 위반하는 것으로 간주한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003758",
@@ -17529,7 +17615,7 @@
     "paragraph": 466,
     "sentence": 1,
     "source_text": "Resolved, That the members of this church are earnestly requested not to provide for, take part in, or by any means encourage dancing or card playing; but in all consistent ways to discountenance the same as a hindrance to personal godliness in their associations and tendencies, and an offense to brethren whom we should not willingly grieve. 80 STANDARD MANUAL",
-    "claim": "교회는 성도들이 개인적인 경건을 방해하고 형제들을 슬픔에 빠지게 하는舞踊이나 카드 게임과 같은 행위를 지지하거나 참여하지 말아야 한다.",
+    "claim": "교회는 성도들이 개인적인 경건을 방해하고 형제들을 슬픔에 빠지게 하는 춤이나 카드 게임과 같은 행위를 지지하거나 참여하지 말아야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -17557,7 +17643,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192550+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회는 성도들이 개인적인 경건을 방해하고 형제들을 슬픔에 빠지게 하는舞踊이나 카드 게임과 같은 행위를 지지하거나 참여하지 말아야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003763",
@@ -17572,7 +17660,7 @@
     "paragraph": 471,
     "sentence": 0,
     "source_text": "Pedobaptists, both Roman Catholic and Protestant, answer the question by saying that baptism is either the sprinkling or pouring of water upon the candidate, touching the forehead with wet fingers, or dipping the person wholly into water; in either case in the name of the Father, the Son, and the Spirit ; and that it may be administered to a candidate on his profession of faith, or FOR BAPTIST CHURCHES. 81",
-    "claim": "세례는 물을 뿌リ거나 부어 후보자에게施行되며, 아버지와 아들과 성령의 이름으로 행해지며, 신앙고백에 따라 후보자에게 施行될 수 있다.",
+    "claim": "세례는 물을 뿌리거나 부어 후보자에게 시행되며, 아버지와 아들과 성령의 이름으로 행해지며, 신앙고백에 따라 후보자에게 시행될 수 있다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -17600,7 +17688,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192554+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례는 물을 뿌リ거나 부어 후보자에게施行되며, 아버지와 아들과 성령의 이름으로 행해지며, 신앙고백에 따라 후보자에게 施行될 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003764",
@@ -17701,7 +17791,7 @@
     "paragraph": 473,
     "sentence": 2,
     "source_text": "Neither sprinkling a person with water, nor pouring water upon him can by any possibility be Christian baptism.",
-    "claim": "기독교 세례는 물을 뿌リ거나 부어주는 것이 아니라 물에 잠기는 것을 의미한다.",
+    "claim": "기독교 세례는 물을 뿌리거나 부어주는 것이 아니라 물에 잠기는 것을 의미한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -17729,7 +17819,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192565+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "기독교 세례는 물을 뿌リ거나 부어주는 것이 아니라 물에 잠기는 것을 의미한다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003767",
@@ -17744,7 +17836,7 @@
     "paragraph": 473,
     "sentence": 3,
     "source_text": "That this position is the true one, we appeal to the New Testament, and the best extant historical and philological authorities to establish.",
-    "claim": "기독교 세례는 물을 뿌リ거나 부어줄 수 없다.",
+    "claim": "기독교 세례는 물을 뿌리거나 부어줄 수 없다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -17772,7 +17864,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192568+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "기독교 세례는 물을 뿌リ거나 부어줄 수 없다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003768",
@@ -17787,7 +17881,7 @@
     "paragraph": 474,
     "sentence": 1,
     "source_text": "Baptist authorities are wholly omitted, not because they are less accurate or less valuable, but because we prefer to allow our opponents in this controversy to bear witness for us, rather than to testify in our own behalf. 82 STANDARD MANUAL",
-    "claim": "이 논쟁에서 우리는 우리의 반대자들이 우리를 대신 증언하도록 허용하기 위해 침례교 권위자들의 의견을 완전히省略한다.",
+    "claim": "이 논쟁에서 우리는 우리의 반대자들이 우리를 대신 증언하도록 허용하기 위해 침례교 권위자들의 의견을 완전히 생략한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -17815,7 +17909,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192572+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "이 논쟁에서 우리는 우리의 반대자들이 우리를 대신 증언하도록 허용하기 위해 침례교 권위자들의 의견을 완전히省略한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003769",
@@ -18045,7 +18141,7 @@
     "paragraph": 484,
     "sentence": 0,
     "source_text": "Grimm's Lexicon of the New Testament, which in Europe and America stands confessedly at the head of Greek lexicography, as translated and edited by Professor Thayer, of Harvard University, thus defines baptizo: \" (1) To dip repeatedly, to immerse, submerge. (2) To cleanse by dipping or submerging. (3) To overwhelm.",
-    "claim": "baptizo는 반복적으로 담그거나浸ける 것을 의미하며, 세례의 의식에서 특히 사용된다.",
+    "claim": "baptizo는 반복적으로 담그거나 잠기거나 것을 의미하며, 세례의 의식에서 특히 사용된다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18073,7 +18169,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192593+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "baptizo는 반복적으로 담그거나浸ける 것을 의미하며, 세례의 의식에서 특히 사용된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003775",
@@ -18088,7 +18186,7 @@
     "paragraph": 484,
     "sentence": 1,
     "source_text": "In the New Testament it is used particularly of the rite of sacred ablution ; first instituted by John the Baptist, afterward by Christ's command received by Christians and adjusted to the contents and nature of their religion, viz., an immersion in water, performed as a sign of the removal of sin, and administered to those who, impelled by a desire for salvation, sought admission to the benefits of the Messiah's kingdom.",
-    "claim": "신약에서 침례는 죄를 제거하는 상징으로서 물에浸ける 행위로 수행되며, 메시아의 왕국에 들어가고자 하는 사람들에게 주어지는 구원의 표시이다.",
+    "claim": "신약에서 침례는 죄를 제거하는 상징으로서 물에 잠기게 하는 행위로 수행되며, 메시아의 왕국에 들어가고자 하는 사람들에게 주어지는 구원의 표시이다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18116,7 +18214,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192596+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "신약에서 침례는 죄를 제거하는 상징으로서 물에浸ける 행위로 수행되며, 메시아의 왕국에 들어가고자 하는 사람들에게 주어지는 구원의 표시이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003776",
@@ -18131,7 +18231,7 @@
     "paragraph": 488,
     "sentence": 1,
     "source_text": "Moses Stuart, one of the ablest scholars America has produced, declared : \" Baptizo means to dip, plunge, or immerse into any liquid.",
-    "claim": "Baptizo는 어떤 액체에라도 담그거나沒시키는 것을 의미한다.",
+    "claim": "Baptizo는 어떤 액체에라도 담그거나 빠지게 하는 것을 의미한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18159,7 +18259,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192600+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "Baptizo는 어떤 액체에라도 담그거나沒시키는 것을 의미한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003777",
@@ -18174,7 +18276,7 @@
     "paragraph": 488,
     "sentence": 2,
     "source_text": "All lexicographers and critics of any note are agreed in this.\" Essay on Baptism, p. 51 ; Biblical Repository, 1833, p. 298.",
-    "claim": "유명한 학자들과 비평가들은 'baptizo'라는 단어가 물에 담그거나沒시키는 것을 의미한다는 데 동의한다.",
+    "claim": "유명한 학자들과 비평가들은 'baptizo'라는 단어가 물에 담그거나 빠뜨리는 것을 의미한다는 데 동의한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18202,7 +18304,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192603+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "유명한 학자들과 비평가들은 'baptizo'라는 단어가 물에 담그거나沒시키는 것을 의미한다는 데 동의한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003778",
@@ -18303,7 +18407,7 @@
     "paragraph": 491,
     "sentence": 2,
     "source_text": "Baptism by aspersion is as if one should say immersion by 86 STANDARD MANUAL",
-    "claim": "세례는 물 뿌림이 아닌浸禮이다.",
+    "claim": "세례는 물 뿌림이 아닌 잠김이다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18331,7 +18435,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192615+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례는 물 뿌림이 아닌浸禮이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003781",
@@ -18346,7 +18452,7 @@
     "paragraph": 495,
     "sentence": 0,
     "source_text": "Bishop Taylor says : \" The custom of the ancient churches was not sprinkling, but immersion, in pursuance of the meaning of the word in the commandments and the example of our blessed Saviour.\" Commentary on Matthew 3 : 16.",
-    "claim": "고대 교회들의 관습은 물 뿌리기가 아니라 침례였으며, 이는 계명과 우리의 복된 구원者の 예를 따르는 것",
+    "claim": "고대 교회들의 관습은 물 뿌리기가 아니라 세례였으며, 이는 계명과 우리의 복된 구원자의 예를 따르는 것",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18374,7 +18480,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192618+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "고대 교회들의 관습은 물 뿌리기가 아니라 침례였으며, 이는 계명과 우리의 복된 구원者の 예를 따르는 것",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003782",
@@ -18692,7 +18800,7 @@
     "paragraph": 513,
     "sentence": 0,
     "source_text": "Zanchius, the learned Roman Catholic Professor of Heidelberg, whose opinion De Courcy declared, \" is worth a thousand others,\" said : \" The proper signification of baptize is to immerse, plunge under, overwhelm in water.\" Works, Vol. VI., p. 217.",
-    "claim": "浸礼의 적절한 의미는 물에 잠기거나 물에沒하는 것이다.",
+    "claim": "세례의 적절한 의미는 물에 잠기거나 물에 빠지는 것이다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18720,7 +18828,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192647+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "浸礼의 적절한 의미는 물에 잠기거나 물에沒하는 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003790",
@@ -19083,7 +19193,7 @@
     "paragraph": 526,
     "sentence": 0,
     "source_text": "Dr. Schaff, the well-known church historian, says : u Immersion, and not sprinkling, was unquestionably the original form.",
-    "claim": "浸礼가 세례의 원래 형태였다",
+    "claim": "세례가 세례의 원래 형태였다",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -19111,7 +19221,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192679+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "浸礼가 세례의 원래 형태였다",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003799",
@@ -19341,7 +19453,7 @@
     "paragraph": 535,
     "sentence": 0,
     "source_text": "Archbishop Tillotson makes this comment : \" Anciently those who were baptized were immersed and buried in the water, to represent their death to sin ; and then did rise up out of the water, to signify their entrance upon a new life.",
-    "claim": "고대에 세례를 받은 사람들은 죄에 대한 죽음을 상징하기 위해 물에 잠기고 매장되었으며, затем 새로운 삶을 시작한다는 것을 나타내기 위해 물 밖으로 올라왔습니다.",
+    "claim": "고대에 세례를 받은 사람들은 죄에 대한 죽음을 상징하기 위해 물에 잠기고 매장되었으며, 그다음 새로운 삶을 시작한다는 것을 나타내기 위해 물 밖으로 올라왔습니다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -19369,7 +19481,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192701+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "고대에 세례를 받은 사람들은 죄에 대한 죽음을 상징하기 위해 물에 잠기고 매장되었으며, затем 새로운 삶을 시작한다는 것을 나타내기 위해 물 밖으로 올라왔습니다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003805",
@@ -19427,7 +19541,7 @@
     "paragraph": 536,
     "sentence": 0,
     "source_text": "John Wesley, the celebrated founder of Methodism, says: \" Buried with him, alluding to the ancient manner of baptizing by immersion.\" Note on Rom. 6 : Jp.",
-    "claim": "요한 웨슬리는 침례의 고대 방식인浸礼에 대한 언급으로 로마서 6장에서 예수님과 함께 매장되었다고 말합니다.",
+    "claim": "요한 웨슬리는 침례의 고대 방식인 물에 잠기어 받는 세례에 대한 언급으로 로마서 6장에서 예수님과 함께 매장되었다고 말합니다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -19455,7 +19569,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192708+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "요한 웨슬리는 침례의 고대 방식인浸礼에 대한 언급으로 로마서 6장에서 예수님과 함께 매장되었다고 말합니다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003807",
@@ -19513,7 +19629,7 @@
     "paragraph": 541,
     "sentence": 0,
     "source_text": "Whitefield says : im It is certain that in the words of our text (Rom. 6 : 4) there is an allusion to the manner of baptizing, which was by immersion\" Eighteen Sermons, p. 297.",
-    "claim": "화이트필드는 로마서 6:4의 문구에서 침례의 방식인浸礼에 대한 암시가 있다고 말한다.",
+    "claim": "화이트필드는 로마서 6:4의 문구에서 세례의 방식인 물에 잠기기에 대한 암시가 있다고 말한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -19541,7 +19657,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192715+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "화이트필드는 로마서 6:4의 문구에서 침례의 방식인浸礼에 대한 암시가 있다고 말한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003809",
@@ -20004,7 +20122,7 @@
     "paragraph": 554,
     "sentence": 1,
     "source_text": "The convert was plunged beneath the water, and as he rose from it he received the laying on of hands.\" Early Years of Christianity, p. 371^.",
-    "claim": "세례는 침례 방식으로 시행되었으며, 세례받은人は 물 밑으로沒시고 다시 올라오면서 손임을 받았다.",
+    "claim": "세례는 침례 방식으로 시행되었으며, 세례받은 사람은 물 밑으로 빠져서 다시 올라오면서 손임을 받았다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -20032,7 +20150,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192754+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례는 침례 방식으로 시행되었으며, 세례받은人は 물 밑으로沒시고 다시 올라오면서 손임을 받았다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003820",
@@ -20145,7 +20265,7 @@
     "paragraph": 558,
     "sentence": 0,
     "source_text": "Ellicott says : u Jewish ablutions arrived at a ceremonial purity in the Levitical sense, and had nothing in common with the figurative act which portrayed through immersion the complete disappearance of the old nature, and by the emerging again the beginning of 98 STANDARD MANUAL !",
-    "claim": "유대인의 세례는 레위기적 의미에서 의식적인 깨끗함에 도달했지만, 침수와 부상으로 구현된 옛 성품의 완전한消滅과 새로운 시작에는 아무 관련이 없다.",
+    "claim": "유대인의 세례는 법적 의미에서 의식적인 깨끗함에 도달했지만, 물에 잠기고 상처를 입어 구현된 옛 성품의 완전한 소멸과 새로운 시작에는 아무 관련이 없다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -20173,7 +20293,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192766+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "유대인의 세례는 레위기적 의미에서 의식적인 깨끗함에 도달했지만, 침수와 부상으로 구현된 옛 성품의 완전한消滅과 새로운 시작에는 아무 관련이 없다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003823",
@@ -20776,7 +20898,7 @@
     "paragraph": 577,
     "sentence": 0,
     "source_text": "Bishop Newton says: \"Baptism was usually performed by immersion, or dipping the whole body under water, to represent the death, burial, and resurrection of Christ, and thereby signify the person's own dying to sin, the destruction of its power, and his resurrection to a new life.\" PracL Expos.",
-    "claim": "세례는 일반적으로 물에 완전히 잠기거나 몸을 물 아래에 담그는 것으로, 그리스도의 죽음, 매장, 부활을 상징하며, 개인의 죄에 대한 죽음, 그 권力的 파괴, 새로운 삶으로의 부활을 의미한다.",
+    "claim": "세례는 일반적으로 물에 완전히 잠기거나 몸을 물 아래에 담그는 것으로, 그리스도의 죽음, 매장, 부활을 상징하며, 개인의 죄에 대한 죽음, 그 힘의 파괴, 새로운 삶으로의 부활을 의미한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -20804,7 +20926,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192812+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례는 일반적으로 물에 완전히 잠기거나 몸을 물 아래에 담그는 것으로, 그리스도의 죽음, 매장, 부활을 상징하며, 개인의 죄에 대한 죽음, 그 권力的 파괴, 새로운 삶으로의 부활을 의미한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003836",
@@ -21260,7 +21384,7 @@
     "paragraph": 587,
     "sentence": 3,
     "source_text": "Here was the germ of the pernicious dogma of \" baptismal regeneration,\" the foundation alike of infant baptism, and of sprinkling instead of immersion.",
-    "claim": "세례의 회생 교리는 유아 세례와 뿌림 대신에浸礼를 기반으로 한다.",
+    "claim": "세례의 회생 교리는 유아 세례와 뿌림 대신에 물에 잠김을 기반으로 한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -21288,7 +21412,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192848+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례의 회생 교리는 유아 세례와 뿌림 대신에浸礼를 기반으로 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003846",
@@ -21499,7 +21625,7 @@
     "paragraph": 599,
     "sentence": 0,
     "source_text": "What is open communion f Open, free or mixed communion is, strictly speaking, that which allows any one who desires, and believes himself qualified, to come to the Lord's Table, without any questions being asked, or conditions imposed by the church in which the ordinance is observed.",
-    "claim": "공개 영 ヾ은 누구든지 자격이 있다고 믿는 사람이 주님의 식탁에 오도록 허용하는 것입니다.",
+    "claim": "공개 성찬은 누구든지 자격이 있다고 믿는 사람이 주님의 식탁에 오도록 허용하는 것입니다.",
     "doctrine": "Lord's Supper",
     "scriptures": [],
     "citations": [],
@@ -21527,7 +21653,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192865+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "공개 영 ヾ은 누구든지 자격이 있다고 믿는 사람이 주님의 식탁에 오도록 허용하는 것입니다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003851",
@@ -21787,7 +21915,7 @@
     "paragraph": 603,
     "sentence": 3,
     "source_text": "For though a few churches and a few pastors, who in their extreme liberality might be disposed to invite everybody to the sacred ordinance, yet such a course would be contrary to their denominational standards, and opposed to the usages of their churches generally.",
-    "claim": "일부 교회와 목사들이極端한 자유주의적 관점으로 모든 사람을 성찬에 초대할 수 있지만, 이는 그들의 종파 표준과 일반적인 교회 관행에 반대된다.",
+    "claim": "일부 교회와 목사들이 극단적인 자유주의적 관점으로 모든 사람을 성찬에 초대할 수 있지만, 이는 그들의 종파 표준과 일반적인 교회 관행에 반대된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -21815,7 +21943,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192887+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "일부 교회와 목사들이極端한 자유주의적 관점으로 모든 사람을 성찬에 초대할 수 있지만, 이는 그들의 종파 표준과 일반적인 교회 관행에 반대된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003857",
@@ -21879,7 +22009,7 @@
     "paragraph": 605,
     "sentence": 1,
     "source_text": "Bat Baptists and Pedobaptists differ as to what constitutes baptism, the one rejecting, and the other accepting the validity of sprinkling.",
-    "claim": "침례교도와 유아세례교도는 침례의 구성 요소에 대해 의견이 다르며, 하나는 뿌림을 거부하고 다른 하나는 유효성을接受한다.",
+    "claim": "침례교도와 유아세례교도는 침례의 구성 요소에 대해 의견이 다르며, 하나는 뿌림을 거부하고 다른 하나는 유효성을 받아들인다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -21907,7 +22037,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192894+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "침례교도와 유아세례교도는 침례의 구성 요소에 대해 의견이 다르며, 하나는 뿌림을 거부하고 다른 하나는 유효성을接受한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003859",
@@ -22510,7 +22642,7 @@
     "paragraph": 608,
     "sentence": 4,
     "source_text": "For though one may be truly regenerate, and properly baptized, yet if he be a disorderly walker, violating his covenant obligations, living in sin, and bringing reproach on the Christian profession, he has no right to sit at the Lord's Table.",
-    "claim": "참된 재생과 올바른 세례를 받았더라도, 하나님의 계명에違反하고 죄로 살아가며 그리스도인 신앙을 욕되게 하는 자는 주의 만찬에 참여할 권리가 없다.",
+    "claim": "참된 재생과 올바른 세례를 받았더라도, 하나님의 계명에 어기고 죄로 살아가며 그리스도인 신앙을 욕되게 하는 자는 주의 만찬에 참여할 권리가 없다.",
     "doctrine": "Church Discipline",
     "scriptures": [],
     "citations": [],
@@ -22538,7 +22670,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192942+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "참된 재생과 올바른 세례를 받았더라도, 하나님의 계명에違反하고 죄로 살아가며 그리스도인 신앙을 욕되게 하는 자는 주의 만찬에 참여할 권리가 없다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003872",
@@ -22749,7 +22883,7 @@
     "paragraph": 611,
     "sentence": 2,
     "source_text": "Then they continued steadfast in the apostles' doctrine, and fellowship, and in breaking of bread, and in praya\\",
-    "claim": "초기 교회는 사도들의 가르침, 교제, 빵을 떼어 쓰고, 기도에坚持했다.",
+    "claim": "초기 교회는 사도들의 가르침, 교제, 빵을 떼어 쓰고, 기도에 집착했다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -22777,7 +22911,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192960+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "초기 교회는 사도들의 가르침, 교제, 빵을 떼어 쓰고, 기도에坚持했다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003877",
@@ -23484,7 +23620,7 @@
     "paragraph": 619,
     "sentence": 0,
     "source_text": "There is a small class of Baptists who are at times inclined to desire, and it may be, to seek a wider liberty at the Lord's Table FOR BAPTIST CHURCHES. 117",
-    "claim": "일부 침례교도들은 침례교회에서 주의 만찬에 대한 더 широк은 자유를 원하고 찾기도 한다.",
+    "claim": "일부 침례교도들은 침례교회에서 주의 만찬에 대한 더 넓은 자유를 원하고 찾기도 한다.",
     "doctrine": "Lord's Supper",
     "scriptures": [],
     "citations": [],
@@ -23512,7 +23648,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193014+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "일부 침례교도들은 침례교회에서 주의 만찬에 대한 더 широк은 자유를 원하고 찾기도 한다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003892",
@@ -23826,7 +23964,7 @@
     "paragraph": 620,
     "sentence": 9,
     "source_text": "It is a grave perversion when affection for his disciples sways us more than fidelity to our Lord.",
-    "claim": "주님의 신실함보다 제자에 대한 애정이 우리를 더 많이左右해서는 안 된다.",
+    "claim": "주님의 신실함보다 제자에 대한 애정이 우리를 더 많이 좌우해서는 안 된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -23854,7 +23992,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193039+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "주님의 신실함보다 제자에 대한 애정이 우리를 더 많이左右해서는 안 된다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003899",
@@ -23869,7 +24009,7 @@
     "paragraph": 620,
     "sentence": 10,
     "source_text": "We should not be so kind to them as. to be untrue to him.",
-    "claim": "우리는 주님께 대한 충성보다 제자들을 향한 애정이 우리를 더 많이左右해서는 안 된다.",
+    "claim": "우리는 주님께 대한 충성보다 제자들을 향한 애정이 우리를 더 많이 좌우해서는 안 된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -23897,7 +24037,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193042+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "우리는 주님께 대한 충성보다 제자들을 향한 애정이 우리를 더 많이左右해서는 안 된다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0003900",
@@ -24416,7 +24558,7 @@
     "paragraph": 626,
     "sentence": 3,
     "source_text": "They insist on immersion for themselves, and yet by a strange inconsistency give their fellowship and influence to perpetuate and sanction sprinkling for others.",
-    "claim": "침례를 받은 사람들은 침례에 대한 자신의 믿음을坚持하지만 다른 사람들에게는 뿌림을 허용하는 모순된 행동을 취한다.",
+    "claim": "침례를 받은 사람들은 침례에 대한 자신의 믿음을 지키지만 다른 사람들에게는 뿌림을 허용하는 모순된 행동을 취한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [
@@ -24446,7 +24588,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193082+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "침례를 받은 사람들은 침례에 대한 자신의 믿음을坚持하지만 다른 사람들에게는 뿌림을 허용하는 모순된 행동을 취한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003911",
@@ -24802,7 +24946,7 @@
     "paragraph": 642,
     "sentence": 0,
     "source_text": "Dr. Coleman says of the early churches : \" None indeed but believers in full communion with the church were permitted to be present.\" \" But agreeably to all the laws and customs of the church, baptism constituted membership with the church.",
-    "claim": "초기 교회에서 세례는 교회와의 회원资格을 구성하였다.",
+    "claim": "초기 교회에서 세례는 교회와의 회원 자격을 구성하였다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -24830,7 +24974,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193110+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "초기 교회에서 세례는 교회와의 회원资格을 구성하였다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003919",
@@ -25318,7 +25464,7 @@
     "paragraph": 656,
     "sentence": 2,
     "source_text": "It is a part of the false ' liberality } which now prevails in certain quarters, to welcome everybody * who thinks he loves Christ ' to commune in his body and blood.",
-    "claim": "주님의 만찬에 참여하기 위해 세례와 교회 회원資格이 필요하다는 전통적인 관점과는 달리, 현재 일부에서 나타나는 잘못된 '자유주의'는 누구든지 그리스도를 사랑한다고 생각하는 사람을 환영하는 것이다.",
+    "claim": "주님의 만찬에 참여하기 위해 세례와 교회 회원 자격이 필요하다는 전통적인 관점과는 달리, 현재 일부에서 나타나는 잘못된 자유주의는 누구든지 그리스도를 사랑한다고 생각하는 사람을 환영하는 것이다.",
     "doctrine": "Lord's Supper",
     "scriptures": [],
     "citations": [],
@@ -25346,7 +25492,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193153+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "주님의 만찬에 참여하기 위해 세례와 교회 회원資格이 필요하다는 전통적인 관점과는 달리, 현재 일부에서 나타나는 잘못된 '자유주의'는 누구든지 그리스도를 사랑한다고 생각하는 사람을 환영하는 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003931",
@@ -25834,7 +25982,7 @@
     "paragraph": 661,
     "sentence": 1,
     "source_text": "In our opinion the Baptist Church owes its amazing prosperity largely to its adherence to these views.",
-    "claim": "침례교회의驚異적인 번영은 침례에 대한 견해를 고수한 데 크게 기인한다.",
+    "claim": "침례교회의 놀라운 번영은 침례에 대한 견해를 고수한 데 크게 기인한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -25862,7 +26010,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193197+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "침례교회의驚異적인 번영은 침례에 대한 견해를 고수한 데 크게 기인한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003943",
@@ -25920,7 +26070,7 @@
     "paragraph": 661,
     "sentence": 4,
     "source_text": "It is not bigotry to adhere to one's convictions, providing the spirit of Christian love prevails.\"",
-    "claim": "기독교 사랑의 정신이 지배하는 한 자신의 신념에固執하는 것은 편견이 아니다.",
+    "claim": "기독교 사랑의 정신이 지배하는 한 자신의 신념에 고집하는 것은 편견이 아니다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -25948,7 +26098,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193204+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "기독교 사랑의 정신이 지배하는 한 자신의 신념에固執하는 것은 편견이 아니다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003945",
@@ -26909,7 +27061,7 @@
     "paragraph": 684,
     "sentence": 0,
     "source_text": "Bingham could find no earlier allusion to it than that of Tertullian, though he believed it arose earlier.",
-    "claim": "Bingham은 Tertullian 이전에 이에 대한 언급을 찾을 수 없었지만, 이것이 더早期에 발생했을 것이라고 믿었다.",
+    "claim": "Bingham은 테르툴리아누스 이전에 이에 대한 언급을 찾을 수 없었지만, 이것이 더 이전에 발생했을 것이라고 믿었다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
@@ -26937,7 +27089,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193285+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "Bingham은 Tertullian 이전에 이에 대한 언급을 찾을 수 없었지만, 이것이 더早期에 발생했을 것이라고 믿었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003968",
@@ -27425,7 +27579,7 @@
     "paragraph": 693,
     "sentence": 5,
     "source_text": "And here came in that pernicious error of \" baptismal regeneration,\" which gave rise to infant baptism, and which has through all these ages clung with more or less pertinacity to the clergy and laity of all churches which have practiced it.",
-    "claim": "세례의 회심(baptismal regeneration)이라는 유해한 오류가 나타나서 영아 세례를 초래하였고, 이 오류는 모든 교회에서 더 혹은 덜頑固하게 지속되어 왔다.",
+    "claim": "세례의 회심이라는 유해한 오류가 나타나서 영아 세례를 초래하였고, 이 오류는 모든 교회에서 더 혹은 덜 완강하게 지속되어 왔다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -27453,7 +27607,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193329+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "세례의 회심(baptismal regeneration)이라는 유해한 오류가 나타나서 영아 세례를 초래하였고, 이 오류는 모든 교회에서 더 혹은 덜頑固하게 지속되어 왔다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0003980",
@@ -28287,7 +28443,7 @@
     "paragraph": 722,
     "sentence": 2,
     "source_text": "The question then arises, What is the true and proper form of church organization and government ?",
-    "claim": "교회 조직과 정부의真正한 형태는 무엇인가?",
+    "claim": "교회 조직과 정부의 진정한 형태는 무엇인가?",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -28315,7 +28471,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193402+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회 조직과 정부의真正한 형태는 무엇인가?",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004000",
@@ -28416,7 +28574,7 @@
     "paragraph": 725,
     "sentence": 1,
     "source_text": "The prelatical, in which the governing power resides in prelates, or diocesan bishops, and the higher clergy; as in the Roman, Greek, English, and most Oriental churches.",
-    "claim": "교회 정부의 세 가지 형태 중 하나는 주교들 또는 교구 주교들과 고위 성직자들이 권력을掌握하는 Prelatical 체계이다.",
+    "claim": "교회 정부의 세 가지 형태 중 하나는 주교들 또는 교구 주교들과 고위 성직자들이 권력을 잡는 주교제 체계이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -28444,7 +28602,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193412+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회 정부의 세 가지 형태 중 하나는 주교들 또는 교구 주교들과 고위 성직자들이 권력을掌握하는 Prelatical 체계이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004003",
@@ -28796,7 +28956,7 @@
     "paragraph": 734,
     "sentence": 0,
     "source_text": "Mosheim says of the first century : \" In those primitive times, each Christian Church was composed of the people, the presiding officer's, and the assistants, or deacons.",
-    "claim": "초기 기독교 교회는 성도들, 주재官자들, 그리고 집사들로 구성되었다.",
+    "claim": "초기 기독교 교회는 성도들, 주재 관리자들, 그리고 집사들로 구성되었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -28824,7 +28984,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193443+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "초기 기독교 교회는 성도들, 주재官자들, 그리고 집사들로 구성되었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004011",
@@ -29035,7 +29197,7 @@
     "paragraph": 736,
     "sentence": 0,
     "source_text": "Coleman says : \" These churches, where ever formed, became separate and independent bodies, competent to appoint their own officers and administer their own government without reference or subordination to any control, authority, or foreign power.",
-    "claim": "초기 교회에서 형성된 각 교회는 독립적이고 자율적인 단체로, 자신의 직원을 임명하고 외국勢력의 통제나 권위에 대한 참조 또는 종속 없이 자신의 정부를 관리할 수 있었다.",
+    "claim": "초기 교회에서 형성된 각 교회는 독립적이고 자율적인 단체로, 자신의 직원을 임명하고 외국의 세력의 통제나 권위에 대한 참조 또는 종속 없이 자신의 정부를 관리할 수 있었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -29063,7 +29225,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193462+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "초기 교회에서 형성된 각 교회는 독립적이고 자율적인 단체로, 자신의 직원을 임명하고 외국勢력의 통제나 권위에 대한 참조 또는 종속 없이 자신의 정부를 관리할 수 있었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004016",
@@ -29470,7 +29634,7 @@
     "paragraph": 747,
     "sentence": 0,
     "source_text": "In the New Testament, the words bishop, presbyter, elder are used to designate church officers.",
-    "claim": "신약성경에서 감독자, 장로, 長老라는 단어는 교회 직분을 지칭하는 데 사용된다.",
+    "claim": "신약성경에서 감독자, 장로, 어른이라는 단어는 교회 직분을 지칭하는 데 사용된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -29498,7 +29662,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193494+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "신약성경에서 감독자, 장로, 長老라는 단어는 교회 직분을 지칭하는 데 사용된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004025",
@@ -29513,7 +29679,7 @@
     "paragraph": 747,
     "sentence": 1,
     "source_text": "They all, however, designate the same office, and therefore officially mean the same thing ; indeed, they are not unfrequently applied to the same individual.",
-    "claim": "신약성경에서 주교, 장로, 長老라는 단어는 모두 교회 직분을 가리키며, 공식적으로 같은 의미를 가지고 있다.",
+    "claim": "신약성경에서 주교, 장로, 어른이라는 단어는 모두 교회 직분을 가리키며, 공식적으로 같은 의미를 가지고 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -29541,7 +29707,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193498+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "신약성경에서 주교, 장로, 長老라는 단어는 모두 교회 직분을 가리키며, 공식적으로 같은 의미를 가지고 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004026",
@@ -29605,7 +29773,7 @@
     "paragraph": 747,
     "sentence": 3,
     "source_text": "The deacon^ were chosen to attend to the temporal interests of the church, as appears by the election of the seven, recorded in the sixth chapter of Acts.",
-    "claim": "교회에서 집사들은 교회의 世俗적인 관심사를 돌보는 역할을 맡았다.",
+    "claim": "교회에서 집사들은 교회의 세속적인 관심사를 돌보는 역할을 맡았다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -29633,7 +29801,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193506+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "교회에서 집사들은 교회의 世俗적인 관심사를 돌보는 역할을 맡았다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004028",
@@ -29648,7 +29818,7 @@
     "paragraph": 747,
     "sentence": 4,
     "source_text": "This was done in order that the apostles might be free from the temporal cares, and thus able to give their attention 148 STANDARD MANUAL",
-    "claim": "사도들이 교회의 世俗적인 문제에서 자유로워져 사역에 집중할 수 있도록 집사들이 선택되었다.",
+    "claim": "사도들이 교회의 세속적인 문제에서 자유로워져 사역에 집중할 수 있도록 집사들이 선택되었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -29676,7 +29846,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193510+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "사도들이 교회의 世俗적인 문제에서 자유로워져 사역에 집중할 수 있도록 집사들이 선택되었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004029",
@@ -29740,7 +29912,7 @@
     "paragraph": 748,
     "sentence": 2,
     "source_text": "While, therefore, the deacon is a church officer, his office does not constitute an order in the ministry at all, its functions belonging to temporal concerns, and not to a spiritual service.",
-    "claim": "디아코노스(deacon)의 직분은 교회에서 영적인 사역이 아닌 世俗적인 문제에 관한 기능을 가지고 있다.",
+    "claim": "디아코노스의 직분은 교회에서 영적인 사역이 아닌 세속적인 문제에 관한 기능을 가지고 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -29768,7 +29940,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193517+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "디아코노스(deacon)의 직분은 교회에서 영적인 사역이 아닌 世俗적인 문제에 관한 기능을 가지고 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004031",
@@ -29832,7 +30006,7 @@
     "paragraph": 750,
     "sentence": 0,
     "source_text": "might chance to be several to whom the titles bishop, presbyter, or elder were applied, they were all of equal rank or authority, though one might be selected to serve as the pastor of the church, and devote himself to its local interests ; while the others might give themselves to more general missionary work.",
-    "claim": "초기 교회에서 주교, 장로, 長老라는 직함을 받은 사람들이 모두 같은 계급이나 권위를 가지고 있었지만, 한 사람은 교회의 목사로서 선택될 수 있고, 다른 사람들은 더 일반적인 선교 활동에 헌신할 수 있다.",
+    "claim": "초기 교회에서 주교, 장로, 어른이라는 직함을 받은 사람들이 모두 같은 계급이나 권위를 가지고 있었지만, 한 사람은 교회의 목사로서 선택될 수 있고, 다른 사람들은 더 일반적인 선교 활동에 헌신할 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -29860,7 +30034,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193527+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "초기 교회에서 주교, 장로, 長老라는 직함을 받은 사람들이 모두 같은 계급이나 권위를 가지고 있었지만, 한 사람은 교회의 목사로서 선택될 수 있고, 다른 사람들은 더 일반적인 선교 활동에 헌신할 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004033",
@@ -29973,7 +30149,7 @@
     "paragraph": 753,
     "sentence": 0,
     "source_text": "churches were denominated sometimes presbyters, or elders, sl designation borrowed from the Jews, and indicative rather of the wisdom than the age of the persons, and sometimes also bishops; for it is most manifest that both terms are promiscuously used in the New Testament of one and the same class of persons.\" \" In these primitive times, each Christian church was composed of the people, the presiding officers, and the assistants, or deacons.",
-    "claim": "초기 기독교 교회는 장로와 감독으로 불리는 지도자들로 구성되어 있었으며, 이 용어들은 동일한 계층的人들을 가리키는 것으로 사용되었다.",
+    "claim": "초기 기독교 교회는 장로와 감독으로 불리는 지도자와 평신도, 그리고 집사로 구성되어 있었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -30001,7 +30177,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193540+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "초기 기독교 교회는 장로와 감독으로 불리는 지도자들로 구성되어 있었으며, 이 용어들은 동일한 계층的人들을 가리키는 것으로 사용되었다.",
+    "cjk_status": "reextracted"
   },
   {
     "id": "TSU-0004036",
@@ -30751,7 +30929,7 @@
     "paragraph": 770,
     "sentence": 2,
     "source_text": "What is their history?\" These are questions of interest; but a more important one would be : \"Are they right?",
-    "claim": "真正한 교회의 역사나 설립자보다 중요한 것은 그들의 신앙이 새约 성경의 가르침에 따라 있는가 하는 것이다.",
+    "claim": "진정한 교회의 역사나 설립자보다 중요한 것은 그들의 신앙이 새 약속 성경의 가르침에 따라 있는가 하는 것이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -30779,7 +30957,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193624+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "真正한 교회의 역사나 설립자보다 중요한 것은 그들의 신앙이 새约 성경의 가르침에 따라 있는가 하는 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004052",
@@ -30990,7 +31170,7 @@
     "paragraph": 771,
     "sentence": 1,
     "source_text": "If this claim be well founded, whether they have a written history of one century or of twenty, matters little.",
-    "claim": "바プ티스트 교회가 사도와 예언자들의 기초 위에 세워졌으며, 이 기초의 머릿돌은 예수 그리스도 자신이라는 주장이 옳다면, 그들이 1세기나 20세기의 기록된 역사を持고 있는지 여부는 중요하지 않다.",
+    "claim": "침례교 교회가 사도와 예언자들의 기초 위에 세워졌으며, 예수 그리스도가 주요 모퉁이 돌이라는 주장이 옳다면, 그들의 기록된 역사 길이가 1세기인지 20세기인지 중요하지 않다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -31018,7 +31198,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193642+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "바プ티스트 교회가 사도와 예언자들의 기초 위에 세워졌으며, 이 기초의 머릿돌은 예수 그리스도 자신이라는 주장이 옳다면, 그들이 1세기나 20세기의 기록된 역사を持고 있는지 여부는 중요하지 않다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0004057",
@@ -31572,7 +31754,7 @@
     "paragraph": 777,
     "sentence": 0,
     "source_text": "the Christian faith, and the truest representatives of the first disciples of Christ then existing.",
-    "claim": "그 당시 존재하는 그리스도의 첫 번째 제자의真正한 대표자들은 기독교 신앙을 지녔으며",
+    "claim": "그 당시 존재하는 그리스도의 첫 번째 제자의 진정한 대표자들은 기독교 신앙을 지녔으며",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -31600,7 +31782,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193684+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "그 당시 존재하는 그리스도의 첫 번째 제자의真正한 대표자들은 기독교 신앙을 지녔으며",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004069",
@@ -32056,7 +32240,7 @@
     "paragraph": 785,
     "sentence": 2,
     "source_text": "Denying the orthodoxy of the Romish Church, they re-baptized persons received from that body, and hence were FOR BAPTIST CHURCHES. 159",
-    "claim": "로마 가톨릭교회가 정통 교회라는 것을 부인하며, 그 教會에서 온 사람들을 재세례하고, 따라서 침례교회의 특징을 보였다.",
+    "claim": "로마 가톨릭교회가 정통 교회라는 것을 부인하며, 그 교회에서 온 사람들을 재세례하고, 따라서 침례교회의 특징을 보였다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -32084,7 +32268,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193720+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "로마 가톨릭교회가 정통 교회라는 것을 부인하며, 그 教會에서 온 사람들을 재세례하고, 따라서 침례교회의 특징을 보였다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004079",
@@ -32148,7 +32334,7 @@
     "paragraph": 788,
     "sentence": 1,
     "source_text": "These were new names, and names usually given by their enemies.",
-    "claim": "11세기와 그 이후의 시기에活躍한 종교개혁자들의 이름은 주로 적들에 의해 붙여진 것들이었다.",
+    "claim": "11세기와 그 이후의 시기에 활발하게 활동한 종교개혁자들의 이름은 주로 적들에 의해 붙여진 것들이었다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
@@ -32176,7 +32362,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193727+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "11세기와 그 이후의 시기에活躍한 종교개혁자들의 이름은 주로 적들에 의해 붙여진 것들이었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004081",
@@ -32240,7 +32428,7 @@
     "paragraph": 790,
     "sentence": 1,
     "source_text": "They declared and defended the rights of faith and conscience and the freedom of worship. 2.",
-    "claim": "침례교는 신앙과 양심의 권利 및 예배의 자유를 선언하고 옹호했다.",
+    "claim": "침례교는 신앙과 양심의 권리 및 예배의 자유를 선언하고 옹호했다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -32268,7 +32456,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193734+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "침례교는 신앙과 양심의 권利 및 예배의 자유를 선언하고 옹호했다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004083",
@@ -32381,7 +32571,7 @@
     "paragraph": 790,
     "sentence": 4,
     "source_text": "They baptized by dipping. 5.",
-    "claim": "그들은 침례를浸礼로 시행했다.",
+    "claim": "그들은 침례를 수세례로 시행했다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -32409,7 +32599,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193745+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "그들은 침례를浸礼로 시행했다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004086",
@@ -32914,7 +33106,7 @@
     "paragraph": 800,
     "sentence": 0,
     "source_text": "The Baptists of Holland have a history that reaches back to a very remote period, if not to the apostolic age, as some confidently assert.",
-    "claim": "네덜란드의 침례교도들은 사도 시대까지 거슬러 올라가는悠久한 역사를 가지고 있다.",
+    "claim": "네덜란드의 침례교도들은 사도 시대까지 거슬러 올라가는 오랜 역사를 가지고 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -32942,7 +33134,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193784+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "네덜란드의 침례교도들은 사도 시대까지 거슬러 올라가는悠久한 역사를 가지고 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004097",
@@ -33006,7 +33200,7 @@
     "paragraph": 801,
     "sentence": 0,
     "source_text": "Mosheim, in his church historv, savs : \" The true origin of that sect which acquired the name Anabaptist is hid in the remote depths of antiquity, and is consequently extremely difficult to be ascer-",
-    "claim": "아나바티스트 교파의真正한起源은古代의遠い過去에隠されており, 따라서非常に難しく調べることができる",
+    "claim": "아나바티스트 교파의 진정한 기원은 고대의 먼 과거에 가려져 있으며, 따라서 매우 어려워 조사할 수 있다",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -33034,7 +33228,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193791+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "아나바티스트 교파의真正한起源은古代의遠い過去에隠されており, 따라서非常に難しく調べることができる",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004099",
@@ -33597,7 +33793,7 @@
     "paragraph": 831,
     "sentence": 3,
     "source_text": "Not long after he adopted Baptist views of doctrine and church order, on account of which he was banished by his fellow Puritans, and driven out of Massachusetts, in the depths of a rigorous winter, in a new and inhospitable country.",
-    "claim": "윌리엄스는 침례교의 교리와 교회 질서를 받아들여서 동료 청교도们에 의해 추방당했다.",
+    "claim": "윌리엄스는 침례교의 교리와 교회 질서를 받아들여서 동료 청교도들에 의해 추방당했다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -33625,7 +33821,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193837+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "윌리엄스는 침례교의 교리와 교회 질서를 받아들여서 동료 청교도们에 의해 추방당했다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0004112",
@@ -33812,7 +34010,7 @@
     "paragraph": 833,
     "sentence": 4,
     "source_text": "Thus Roger Williams became the first ruler, and Rhode Island the first State which ever gave entire freedom to all persons to worship God, according to their own choice, without dictation or interference from civil or ecclesiastical authorities.",
-    "claim": "로저 윌리엄스는 모든 사람에게 자신의 선택에 따라 하나님을 예배할 수 있는 완전한 자유를 부여한 최초의 통치자였으며, 로드아일랜드는 민간 또는 교회 당국의 간섭이나 지시 없이 ऐस한 자유를 제공한 최초의 국가였다.",
+    "claim": "로저 윌리엄스는 모든 사람에게 자신의 선택에 따라 하나님을 예배할 수 있는 완전한 자유를 부여한 최초의 통치자였으며, 로드아일랜드는 민간 또는 교회 당국의 간섭이나 지시 없이 이러한 자유를 제공한 최초의 국가였다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -33840,7 +34038,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193857+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "로저 윌리엄스는 모든 사람에게 자신의 선택에 따라 하나님을 예배할 수 있는 완전한 자유를 부여한 최초의 통치자였으며, 로드아일랜드는 민간 또는 교회 당국의 간섭이나 지시 없이 ऐस한 자유를 제공한 최초의 국가였다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0004117",
@@ -33898,7 +34098,7 @@
     "paragraph": 837,
     "sentence": 2,
     "source_text": "But whether the present First Church in Providence was constituted before this date is still a disputed point.",
-    "claim": "현재 프로비던스에 있는 제일교회가 이 날짜 이전에 구성되었는지 여부는まだ 논쟁의 여지가 있다.",
+    "claim": "현재 프로비던스에 있는 제일교회가 이 날짜 이전에 구성되었는지 여부는 여전히 논쟁의 여지가 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -33926,7 +34126,9 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193864+00:00",
       "resolver_version": "1.0.0"
-    }
+    },
+    "claim_raw": "현재 프로비던스에 있는 제일교회가 이 날짜 이전에 구성되었는지 여부는まだ 논쟁의 여지가 있다.",
+    "cjk_status": "manual_repaired"
   },
   {
     "id": "TSU-0004119",
