@@ -77405,13 +77405,13 @@
     "paragraph": 807,
     "sentence": 0,
     "source_text": "Some persons understand the clause under consideration to import that the kingdom of glory belongs to little children; and they argue that if they have a right to the church in heaven, they ought not to be shut out from the church on earth.",
-    "claim": "어떤 사람들은 현재 논의하는 절이 어린 아이들에게 영광의 왕국이 속한다는 것을 의미하며, 그들이 하늘의 교회에 대한 권리가 있다면 땅 위의 교회에서 배제되어서는 안 된다고 주장한다.",
+    "claim": "어떤 사람들은 이 구절이 영광의 나라가 어린아이들에게 속한다는 뜻이며, 그들이 하늘의 교회에 대한 권리가 있다면 땅의 교회에서 배제되어서는 안 된다고 주장하지만, 저자는 곧이어 유아에게 영광의 나라에 대한 무조건적 권리가 있는 것은 아니라고 반박한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -77434,13 +77434,13 @@
       "resolved_at": "2026-08-08T18:04:32.156316+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "어떤 사람들은 현재 논의하는 절이 어린 아이들에게 영광의 왕국이 속한다는 것을 의미하며, 그들이 하늘의 교회에 대한 권리가 있다면 땅上的 교회에서 배제되어서는 안 된다고 주장한다.",
+    "claim_raw": "어떤 사람들은 현재 논의하는 절이 어린 아이들에게 영광의 왕국이 속한다는 것을 의미하며, 그들이 하늘의 교회에 대한 권리가 있다면 땅 위의 교회에서 배제되어서는 안 된다고 주장한다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0028 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0028 human review flagged Q2 problem (rejected); claim rewritten to correctly attribute the argument/rhetorical framing to its source (Argument N, opposing view, or explicit author conclusion) rather than asserting it as settled fact, using surrounding paragraph context. Requeued for fresh human review."
     }
   },
   {
@@ -95628,13 +95628,13 @@
     "paragraph": 971,
     "sentence": 0,
     "source_text": "day, and were branches of the same olive-tree; and the same constitution of things, uniting natural and spiritual branches on the same trunk, they suppose continues to the present time.",
-    "claim": "하나님의 백성은 자연적이고 영적인 가지들이 같은 올리브 나무에 연결되어 있으며, 이 구성은 현재까지 계속된다.",
+    "claim": "그들은 자연적 가지와 영적 가지가 같은 감람나무에 함께 붙어 있는 이 구성이 지금까지 계속된다고 본다 — 그러나 저자 자신의 견해에 따르면 자연적 가지는 꺾여 나갔고 이제는 한 종류의 가지만 남아 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -95657,13 +95657,13 @@
       "resolved_at": "2026-08-08T18:04:32.157648+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "하나님의 백성은 자연적이고 영적인 가지들이 같은オリ브 나무에 연결되어 있으며, 이 구성은 현재까지 계속된다.",
+    "claim_raw": "하나님의 백성은 자연적이고 영적인 가지들이 같은 올리브 나무에 연결되어 있으며, 이 구성은 현재까지 계속된다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0028 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0028 human review flagged Q2 problem (rejected); claim rewritten to correctly attribute the argument/rhetorical framing to its source (Argument N, opposing view, or explicit author conclusion) rather than asserting it as settled fact, using surrounding paragraph context. Requeued for fresh human review."
     }
   },
   {
@@ -98672,13 +98672,13 @@
     "paragraph": 993,
     "sentence": 5,
     "source_text": "The propriety of considering them disciples, may be proved by the passage, ‘‘ Why tempt ye God, to put a yoke on the neck of the disciples, which neither our fathers nor we were able to bear ?”’' The yoke of circumcision is here referred to.",
-    "claim": "그들을 제자로 간주하는 것은 적절하며, 이는 성경 구절 '왜 하나님을 시험하여 제자의 목에 우리 조상이나 우리가 능히 질 수 없는 멍에를 메게 하느냐?'에서 증명될 수 있다.",
+    "claim": "네 번째 논증(사명이 제자에게 세례를 요구한다는 논증)은, 이들을 제자로 보는 것이 타당함이 '어찌하여 하나님을 시험하여 우리 조상과 우리가 질 수 없던 멍에를 제자들의 목에 두려느냐'라는 구절(할례의 멍에를 가리킴)로 증명된다고 주장한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -98701,13 +98701,13 @@
       "resolved_at": "2026-08-08T18:04:32.157888+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "그们을 제자로 간주하는 것은 적절하며, 이는 성경 구절 '왜 하나님을 시험하여 제자의 목에 우리 조상이나 우리가 능히 질 수 없는 멍에를 메게 하느냐?'에서 증명될 수 있다.",
+    "claim_raw": "그들을 제자로 간주하는 것은 적절하며, 이는 성경 구절 '왜 하나님을 시험하여 제자의 목에 우리 조상이나 우리가 능히 질 수 없는 멍에를 메게 하느냐?'에서 증명될 수 있다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0028 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0028 human review flagged Q2 problem (rejected); claim rewritten to correctly attribute the argument/rhetorical framing to its source (Argument N, opposing view, or explicit author conclusion) rather than asserting it as settled fact, using surrounding paragraph context. Requeued for fresh human review."
     }
   },
   {
@@ -100438,13 +100438,13 @@
     "paragraph": 1013,
     "sentence": 0,
     "source_text": "Argument 6.—Infants were admitted to church-membership by circumcision, the initiatory rite under the former dispenkation ; and baptism now takes its place, being the same seal in a new form; and therefore ought to be administered to infants.",
-    "claim": "세례는 이전 계약하의 아이들의 할례의 자리를 대신하여 교회 회원권에 대한 입문 예식으로 영아들에게도 시행되어야 한다.",
+    "claim": "여섯 번째 논증에 따르면, 유아는 이전 시대의 입문 예식인 할례로 교회 회원권을 얻었고 이제 세례가 새로운 형태의 동일한 인침으로 그 자리를 대신하므로, 세례도 유아에게 시행되어야 한다고 주장된다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -100467,13 +100467,13 @@
       "resolved_at": "2026-08-08T18:04:32.158014+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "세례는 이전 언약下的 할례의 자리를 대신하여 교회 회원권에 대한 입문 예식으로 영아들에게도 시행되어야 한다.",
+    "claim_raw": "세례는 이전 계약하의 아이들의 할례의 자리를 대신하여 교회 회원권에 대한 입문 예식으로 영아들에게도 시행되어야 한다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0028 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0028 human review flagged Q2 problem (rejected); claim rewritten to correctly attribute the argument/rhetorical framing to its source (Argument N, opposing view, or explicit author conclusion) rather than asserting it as settled fact, using surrounding paragraph context. Requeued for fresh human review."
     }
   },
   {
@@ -101322,13 +101322,13 @@
     "paragraph": 1018,
     "sentence": 7,
     "source_text": "With this evidence before us, how can we hold ourselves bound by the Abrahamic covenant, and expect the blessings which it is understood to promise, if we refuse its only divinely authorized seal ?",
-    "claim": "아브라함의 계약을 지키고 그 약속된 축복을 기대하기 위해서는 하나님의 권위를 받은 계약의 표시, 즉 세례를 거부할 수 없다.",
+    "claim": "저자는 (그 이론이 성립한다면) 하나님께서 정하신 유일한 언약의 인침을 거부하고서도 어떻게 우리가 아브라함의 언약에 매인 자로 여겨지고 그 약속된 복을 기대할 수 있겠느냐고 반문 형태로 문제를 제기한다 — 다만 바로 앞 문장에서 사도들이 이런 이유를 제시하지 않았다는 것이 그 이론과 무관했다는 결정적 증거라고 말한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -101351,13 +101351,13 @@
       "resolved_at": "2026-08-08T18:04:32.158076+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "아브라함의 계약을 지키고 그 약속된 축복을 기대하기 위해서는 하나님의 권威를 받은 계약의 인, 즉 세례를 거부할 수 없다.",
+    "claim_raw": "아브라함의 계약을 지키고 그 약속된 축복을 기대하기 위해서는 하나님의 권위를 받은 계약의 표시, 즉 세례를 거부할 수 없다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0028 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0028 human review flagged Q2 problem (rejected); claim rewritten to correctly attribute the argument/rhetorical framing to its source (Argument N, opposing view, or explicit author conclusion) rather than asserting it as settled fact, using surrounding paragraph context. Requeued for fresh human review."
     }
   },
   {
@@ -109150,13 +109150,13 @@
     "paragraph": 1084,
     "sentence": 3,
     "source_text": "This is clearly an ordinary meal, preparatory to Paul’s departure.",
-    "claim": "사도행전에서 기록된 것은 일반 식사였으며, 성만찬의 관습이 일반적인 것이 아니었다.",
+    "claim": "저자는 드로아에서의 모임(행 20장)이 명백히 일반 식사였다고 결론짓고, 이를 근거로 사도행전에 성찬 관습의 사례가 기록되어 있지 않다고 주장한다.",
     "doctrine": "Lord's Supper",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "rejected",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -109179,13 +109179,13 @@
       "resolved_at": "2026-08-08T18:04:32.158645+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "사도행전에서 기록된 것은 일반 식사였으며, 성만찬의 관습이 обыч적인 것이 아니었다.",
+    "claim_raw": "사도행전에서 기록된 것은 일반 식사였으며, 성만찬의 관습이 일반적인 것이 아니었다.",
     "cjk_status": "manual_repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-15",
-      "review_decision": "rejected",
-      "review_notes": "batch_0028 (Dagg_Church_Order) human review, Q1/Q2/Q3 (Baptist theological lens)."
+    "review_metadata": null,
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "batch_0028 human review flagged Q2 problem (rejected); claim rewritten to correctly attribute the argument/rhetorical framing to its source (Argument N, opposing view, or explicit author conclusion) rather than asserting it as settled fact, using surrounding paragraph context. Requeued for fresh human review."
     }
   },
   {
