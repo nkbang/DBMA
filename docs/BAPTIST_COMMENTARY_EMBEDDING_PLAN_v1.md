@@ -159,6 +159,14 @@ YELLOW 해소: C1이 제안한 검증 스크립트를 CUE가 이 워크트리(�
 
 §5.4에서 CUE가 최초 보고한 수치(1,978 / 1,627 / 351 / 0)와 정확히 일치. §2-B(Amendment B 본체, 질문 5-11)는 아직 C1 검토 대기 중.
 
+### 5.8 C1 Review §2-B 결과 + HQ 승인 — Amendment B APPROVED (2026-09-14)
+
+C1이 §2-B(질문 5-11)까지 마쳐 최종 결과 문서(`docs/NAE_BAPTIST_COMMENTARY_M2_AMENDMENT_B_C1_REVIEW_RESULT_001.md`)를 제출했다 — `dev/dbma-engine`에 직접 커밋(`df57f95`)돼 있어 CUE가 `origin/dev/dbma-engine`을 PR #28 브랜치로 merge(충돌 없음, 커밋 `2127b7a`)해 반영했다.
+
+**최종 판정: GREEN.** 11개 질문 전부 통과(초기 YELLOW 2건 — 질문 4 청킹 실측·질문 9 manifest_writer split edge case — 모두 해소/조건부 수용). CUE가 보고 내용을 그대로 신뢰하지 않고 커밋 해시 실존·`ui/pages/chat.py` diff 재현 등 spot-check로 직접 검증 후 수용.
+
+사용자(Rev. Bang / HQ)가 2026-09-14 "HQ 승인한다"로 최종 승인 — Evidence Before Promotion Rule 4조건(구현·회귀·C1 GREEN·HQ 승인)이 전부 충족돼 **`ADR-030-AMENDMENT-B-Reference-Track-Post-Freeze-Registration.md`가 PROPOSED에서 APPROVED로 승격**됐다. PR #28 병합 진행(§5.9).
+
 ---
 
 ## 6. 확인이 더 필요한 사항 (결정하지 않고 기록만)

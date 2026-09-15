@@ -2,10 +2,12 @@
 
 | | |
 |---|---|
-| **Status** | **PROPOSED** (2026-09-13) — 구현✅·회귀✅·C1 독립검토✅ GREEN(2026-09-14) 충족, **HQ 승인만 대기**. Evidence Before Promotion Rule 4조건 완전 충족 전까지 Proposed 유지 |
+| **Status** | **APPROVED** (2026-09-14) — Evidence Before Promotion Rule 4조건 전부 충족: 구현✅·회귀✅·C1 GREEN✅(2026-09-14)·HQ 승인✅(2026-09-14) |
 | **Amends** | `ADR-030-NAE-Sermon-Corpus-Governance.md` (IMPLEMENTED, 2026-08-28) — §7 Metadata Authority, §8 M2 SSOT, §12 M-2 |
 | **Trigger** | 사용자 결정(2026-09-12, "옵션 A: ADR-030 Amendment") — `docs/BAPTIST_COMMENTARY_EMBEDDING_PLAN_v1.md` §5.5, Spurgeon *Treasury of David* Vol.1 Reference-track 파일럿 RAW 체크섬 등록 시도 중 발견된 충돌 |
 | **Deciders** | Rev. Bang / HQ = Final Authority · CUE = Architecture · C1 = Independent Review |
+| **Approved** | 2026-09-14 |
+| **Approver** | Rev. Bang / HQ |
 | **Adoption mutation** | 이 Amendment 채택 = Code(등록 파이프라인 2개 파일) 1 / M2 신규 레코드 1(`BAP-COMM-SPURGEON-TDA-VOL01`) / 테스트·validator 갱신 2 / Qdrant 0 / TSU 0 |
 | **Protected baseline (변경 금지)** | M2 원본 14 레코드(§1 목록)의 기존 필드 값 — 1글자도 변경하지 않는다 |
 
@@ -142,12 +144,12 @@ Amendment의 최소 범위를 벗어난다. 필요하면 별도 Amendment/후속
    재실행해 수치 일치 확인(1,978/1,627/351/0), Q9는 이론적 edge case이나 M2 실제 데이터에서 발생
    가능성 극히 낮다고 판단해 조건부 GREEN. CUE가 사후 spot-check(커밋 해시 실존·`chat.py` diff
    재현)로 보고 자체도 검증함.
-4. **HQ 승인** — 대기 (사용자가 "옵션 A: ADR-030 Amendment"로 진행 방향은 확정, C1 GREEN 확보 —
-   Amendment 본문 자체를 Approved로 승격하는 최종 승인만 남음)
+4. **HQ 승인** — ✅ 2026-09-14, Rev. Bang / HQ ("HQ 승인한다")
 
-조건 1·2·3 충족. 조건 4(HQ 승인)만 남았다. 이 Amendment를 근거로 **추가** 소스를 등록하는 것은
-조건 4 충족 후로 제한한다 — 이번 Spurgeon 1건 등록은 이미 완료됐고(§1), 그 결과가 조건 2/3을
-충족함이 위에서 확인됐다.
+**4조건 전부 충족 — Amendment B는 PROPOSED에서 APPROVED로 승격된다 (2026-09-14).** 이제 M2에
+새 Reference-track 소스를 등록하는 것은(§2.1의 파이프라인 경로로) 이 Amendment를 근거로 진행할
+수 있다 — 단, 매 등록마다 §2.2의 frozen-baseline 보호 원칙(원본 14개 무변경, 신규 레코드의
+`source_id`를 `M2_FROZEN_BASELINE_SOURCE_IDS`에 절대 포함시키지 않음)을 반드시 지킨다.
 
 ---
 
