@@ -1,0 +1,84 @@
+{
+  "batch_id": "fuller_vol08_bulk",
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0030343",
+      "tsu_id": "TSU-0030343",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-16",
+      "comment": "목차(TOC) 항목이 본문 주장으로 오분류되어 거부"
+    },
+    {
+      "gate_id": "GATE-TSU-0030345",
+      "tsu_id": "TSU-0030345",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-16",
+      "comment": "목차(TOC) 항목이 본문 주장으로 오분류되어 거부"
+    },
+    {
+      "gate_id": "GATE-TSU-0030342",
+      "tsu_id": "TSU-0030342",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-16",
+      "comment": "목차(TOC) 항목이 본문 주장으로 오분류되어 거부"
+    },
+    {
+      "gate_id": "GATE-TSU-0030346",
+      "tsu_id": "TSU-0030346",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-16",
+      "comment": "목차(TOC) 항목이 본문 주장으로 오분류되어 거부"
+    },
+    {
+      "gate_id": "GATE-TSU-0030344",
+      "tsu_id": "TSU-0030344",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-16",
+      "comment": "목차(TOC) 항목이 본문 주장으로 오분류되어 거부"
+    },
+    {
+      "gate_id": "GATE-TSU-0030341",
+      "tsu_id": "TSU-0030341",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-16",
+      "comment": "목차(TOC) 항목이 본문 주장으로 오분류되어 거부"
+    },
+    {
+      "gate_id": "GATE-BULK-FULLER-VOL08",
+      "tsu_id": "BULK",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리. (approved=5046)"
+    }
+  ]
+}
