@@ -19427,7 +19427,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19453,17 +19453,10 @@
     "claim_raw": "이 논쟁에서 우리는 우리의 반대자들이 우리를 대신 증언하도록 허용하기 위해 침례교 권위자들의 의견을 완전히省略한다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part3 (201-300/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19485,7 +19478,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19509,17 +19502,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19535,7 +19521,7 @@
     "paragraph": 476,
     "sentence": 1,
     "source_text": "This is the word always used by Christ and his apostles to express and define the ordinance.",
-    "claim": "그리스도와 사도들은 세례를 표현하고 정의하기 위해 항상 'baptizo'라는 단어를 사용했다.",
+    "claim": "Hiscox에 따르면, 그리스도와 사도들은 세례라는 규례를 표현하고 정의하기 위해 항상 baptizo라는 단어를 사용했다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -19576,6 +19562,12 @@
         "review_notes": "batch_0033 part3 (201-300/449) human review."
       },
       "superseded_review_status": "verified"
+    },
+    "claim_raw": "그리스도와 사도들은 세례를 표현하고 정의하기 위해 항상 'baptizo'라는 단어를 사용했다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "원문 자체는 'always used'로 일치하나, Hiscox의 논증적 주장을 무귀속 절대적 언어학적 사실처럼 제시함 - 귀속 명시로 정정"
     }
   },
   {
@@ -20280,7 +20272,7 @@
     "paragraph": 498,
     "sentence": 1,
     "source_text": "All those whom John baptized he buried beneath the waters, and raised them up again.",
-    "claim": "요한이 세례를 주었던 모든 사람을 물 아래에 묻고 다시 올려세웠다.",
+    "claim": "Hiscox는 칼빈 등 여러 주석가를 인용하여, 요한이 세례를 준 사람들을 물 아래 묻고 다시 일으켜 세웠다고 설명한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -20321,6 +20313,12 @@
         "review_notes": "batch_0033 part3 (201-300/449) human review."
       },
       "superseded_review_status": "verified"
+    },
+    "claim_raw": "요한이 세례를 주었던 모든 사람을 물 아래에 묻고 다시 올려세웠다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "원문은 캘빈 등 주석가 인용에 근거한 Hiscox의 해석적 주장인데 무귀속으로 확정적 역사서술처럼 제시됨 - 귀속 명시로 정정"
     }
   },
   {
