@@ -35748,7 +35748,7 @@
     "paragraph": 808,
     "sentence": 0,
     "source_text": "This testimony is all the more welcome, because it comes from those who have no ecclesiastical sympathies with Baptists, but who, in fidelity to history, bear honest testimony to the truth which history teaches.",
-    "claim": "침례교회의 역사적 진실에 대한 증언은 교회와 관련된 사람들의 신뢰할 수 있는 증거이다.",
+    "claim": "Hiscox에 따르면, 침례교와 아무런 교파적 이해관계가 없는 역사가들이 역사적 사실에 충실하여 침례교 역사의 진실을 정직하게 증언하기 때문에 그 증언은 더욱 값지다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -35776,6 +35776,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193813+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "침례교회의 역사적 진실에 대한 증언은 교회와 관련된 사람들의 신뢰할 수 있는 증거이다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "원문의 핵심(교파적 동조가 없는 외부 역사가의 증언이라서 더 가치 있다는 논지)이 '교회와 관련된 사람들의 증거'로 주체가 반전됨 — 원문 대로 정정하고 Hiscox 귀속 추가로 Q1 정정"
     }
   },
   {
@@ -35797,7 +35803,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35825,6 +35831,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "원문의 'established churches'(기존 국가교회 전반)가 '정교회(Orthodox Church)'로 오역됨 — 원문 표현으로 정정하고 Hiscox 귀속 추가로 Q1/Q2 보완"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
