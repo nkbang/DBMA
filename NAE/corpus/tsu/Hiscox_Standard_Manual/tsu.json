@@ -1784,7 +1784,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1808,7 +1808,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "장로회에서 집사들은 교회의 世俗적인 문제를 주로 담당하여 목사를 그 부분에서 지원한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003420",
@@ -10410,7 +10416,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10438,6 +10444,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "'신조(creed)'의 의미가 모호해 성경 전체의 권위를 부정하는 것으로 오독될 수 있음 — 귀속 및 괄호 설명 추가로 Q2 보완"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10508,7 +10520,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10530,6 +10542,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191928+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -16784,7 +16802,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -16812,6 +16830,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "원문에 없는 '두려워해야 한다' 절이 추가되어 의미가 반전됨(원문은 전반부만 인용) — Q1 보완"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -17278,7 +17302,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -17300,6 +17324,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192450+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -21120,7 +21150,7 @@
     "paragraph": 548,
     "sentence": 0,
     "source_text": "so do all other Christians in the world, except the Latins.",
-    "claim": "세계의 모든 기독교인들은 라틴인을 제외하고 동일한 관행을 따른다.",
+    "claim": "Hiscox가 인용한 Dr. Wall의 주장에 따르면, 그리스 정교회를 포함해 라틴(로마)측을 제외한 세계의 모든 기독교인이 침수 방식을 따른다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -21148,6 +21178,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192729+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "세계의 모든 기독교인들은 라틴인을 제외하고 동일한 관행을 따른다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "Dr. Wall의 인용 진술(History of Infant Baptism)이 귀속 없이 절대적 보편 명제로 제시됨 — 귀속 추가로 Q2 보완"
     }
   },
   {
@@ -21212,7 +21248,7 @@
     "paragraph": 548,
     "sentence": 2,
     "source_text": "But all other Christians in the world, who never owned the Pope's usurped power, do and ever did dip their infants in the ordinary use.",
-    "claim": "로마 교황의 권위를 인정하지 않는 모든 기독교인들은 일반적으로 아기들을 침례시키는 데 물을 뿌리거나 흘리는 대신에 담그는 방식을 사용한다.",
+    "claim": "Dr. Wall에 따르면, 로마 교황의 권위를 인정한 적이 없는 기독교인들은 예나 지금이나 일반적으로 유아에게 물을 뿌리거나 붓는 대신 침수시켜 왔다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -21240,6 +21276,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192737+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "로마 교황의 권위를 인정하지 않는 모든 기독교인들은 일반적으로 아기들을 침례시키는 데 물을 뿌리거나 흘리는 대신에 담그는 방식을 사용한다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "동일 인용문의 연속 부분이 귀속 없이 제시됨 — Dr. Wall 귀속 추가로 Q2 보완"
     }
   },
   {
@@ -21255,7 +21297,7 @@
     "paragraph": 548,
     "sentence": 3,
     "source_text": "All the Christians in Asia, all in Africa, and about one-third in Europe are of the last sort.\" Hist Inf.",
-    "claim": "아시아와 아프리카의 모든 기독교인과 유럽의 약 3분의 1은 세례에 대한 특정 관행을 따른다.",
+    "claim": "Dr. Wall에 따르면, 아시아의 모든 기독교인과 아프리카의 모든 기독교인, 그리고 유럽 기독교인의 약 3분의 1이 로마 교황권을 인정하지 않고 유아를 침수시키는 부류에 속한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -21283,6 +21325,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192740+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "아시아와 아프리카의 모든 기독교인과 유럽의 약 3분의 1은 세례에 대한 특정 관행을 따른다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "'아시아와 아프리카의 모든 기독교인'이라는 지나치게 광범위한 역사적 일반화가 귀속 없이 확정적 사실처럼 제시됨 — Dr. Wall 귀속 추가로 Q2 보완"
     }
   },
   {
@@ -30179,7 +30227,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -30201,6 +30249,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193398+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -31600,7 +31654,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -31624,7 +31678,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회에서 집사들은 교회의 世俗적인 관심사를 돌보는 역할을 맡았다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004028",
