@@ -5,7 +5,9 @@
 **이 워크시트는 자동 스캔(규칙 기반 휴리스틱)이 각 항목에 A/C 초안과 사유를 미리 채워 넣은 것입니다.**
 제안은 참고용 초안일 뿐이며 최종 판정이 아닙니다. 각 항목을 검토해 **동의(그대로 확정)** 또는 **수정(다른 판정으로 변경)**으로만 응답해주시면 되며, 서술은 필요 없습니다. 예: `1. 동의` 또는 `1. R (사유: ...)`.
 
-규칙 설명: `ABSOLUTE_TERM`=절대적 일반화 표현, `UNATTRIBUTED_CITATION`=제3자 인용 무귀속, `SABBATH_TOPIC`=안식일 계명 해석, `BAPTISM_ADMIN_TOPIC`=침례 집례자/방식, `HISTORICAL_SUCCESSION_TOPIC`=역사적 계승/기원, `DEFAULT_LOW_RISK`=저위험 기본값(원문과 직접 대응).
+규칙 설명: `ABSOLUTE_TERM`=절대적 일반화 표현, `UNATTRIBUTED_CITATION`=제3자 인용 무귀속, `SABBATH_TOPIC`=안식일 계명 해석, `BAPTISM_ADMIN_TOPIC`=침례 집례자/방식, `HISTORICAL_SUCCESSION_TOPIC`=역사적 계승/기원, `TRADITION_DELEGITIMIZING`=특정 전통 전체를 거짓/비기독교로 규정, `HISTORICAL_ERA_STATISTIC`=초기 교회사 통계적 서술, `DEFAULT_LOW_RISK`=저위험 기본값(원문과 직접 대응).
+
+(신학적 검토 반영: 성경 최종권위·신자침례·지역교회 자율성·보편/지역교회 구별·교회의 순결과 겸손 기준에 따라, 특정 전통 폄하 표현과 초기교회사 통계적 단정을 저자 개인 논증으로 귀속하는 규칙 2종을 추가함.)
 
 ## 1. TSU-0000271 (BAP-CHURCH-DAGG-001) — 제안: **A** [DEFAULT_LOW_RISK]
 - doctrine: Sanctification
@@ -85,10 +87,10 @@
 - 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
 - original_text: (앞) He is not the head of two bodies, the husband of two wives. His true church is a spiritually organized body, and spiritually joined to him its only head. The body claiming to be the church on the ground of external organization is a substitute, and its head is a substitute for Christ. (뒤) They first take the place of the true church and its true head, and afterwards oppose and persecute. They who see and deplore the mischief which the papal usurpation has wrought, should learn the secret of its power.
 
-## 14. TSU-0001393 (BAP-CHURCH-DAGG-001) — 제안: **A** [DEFAULT_LOW_RISK]
+## 14. TSU-0001393 (BAP-CHURCH-DAGG-001) — 제안: **C** [TRADITION_DELEGITIMIZING]
 - doctrine: Ecclesiology
 - claim: 거짓 교회와 그 지도자는 진정한 교회와 그 머리인 그리스도를 대신하여 먼저 자리잡고, 이후에 반대하고 박해한다.
-- 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
+- 제안 사유: 특정 전통/집단 전체를 거짓/비기독교로 규정하는 폄하적 표현 — 저자의 논쟁적 수사로 귀속하고 침례교 일반 입장으로 일반화 금지
 - original_text: (앞) His true church is a spiritually organized body, and spiritually joined to him its only head. The body claiming to be the church on the ground of external organization is a substitute, and its head is a substitute for Christ. They first take the place of the true church and its true head, and afterwards oppose and persecute. (뒤) They who see and deplore the mischief which the papal usurpation has wrought, should learn the secret of its power. The substitution of ecclesiastical organization for spiritual religion has wrought all the evil.
 
 ## 15. TSU-0001394 (BAP-CHURCH-DAGG-001) — 제안: **A** [DEFAULT_LOW_RISK]
@@ -409,10 +411,10 @@
 - 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
 - original_text: (앞) Various schemes have been proposed by the wisdom of men for amalgamating the different Christian denominations. All these originate in the erroneous conception that the unity of the universal church must be found in external organization. To effect the union sought for, compromises are required of the several parties, and the individual conscience must yield to the judgment of the many. (뒤) All these schemes of amalgamation are inconsistent with the Baptist faith. We seek spiritual unity.
 
-## 68. TSU-0003372 (BAP-CHURCH-DAGG-001) — 제안: **A** [DEFAULT_LOW_RISK]
+## 68. TSU-0003372 (BAP-CHURCH-DAGG-001) — 제안: **C** [HISTORICAL_ERA_STATISTIC]
 - doctrine: Baptism
 - claim: 첫 네 세기 동안 예외적인 경우를 제외하고는 침례가 대부분 물에 잠기거나 담그는 방식으로 시행되었다.
-- 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
+- 제안 사유: 초기/고대 교회사에 대한 통계적·확정적 서술 — 19세기 논쟁 문헌의 주장으로 귀속, 현대 역사학의 독립적 사실판정으로 보류
 - original_text: (앞) old English churches, he says, “ So called, I suppose, because baptism in the beginning of Christianity was performed in springs or fountains. * * In the primitive times we meet with them very large and capacious, not only that they might comport with the general customs of those times, viz.: of persons being immersed or put under water, but also because the stated times of baptism returning so seldom, great numbers were usually baptized at the same time. In the middle of them was always a partition, the one part for men, the other for women; that so by being baptized asunder they might avoid giving offence and scandal.” The author here cites the orders of Edward, when the crowd was so great they could not be gathered around the church door; all of which shows that baptism was often administered to adults, that it was by immersion, and that a very large number could be baptized on one occasion in the ordinary font. Again the author says, “Except upon extraordinary occasions, baptism was seldom, or perhaps never, administered for the first four centuries but by immersion or dipping. (뒤) Nor is aspersion or sprinkling ordinarily used, to this day, in any country that was never subject to the Pope; and among those that submitted to his authority, England was the last place where it was received; though it has never obtained so far as to be enjoined, dipping having been always prescribed by the rubric. The Salisbury Missal, printed in 1530 (the last that was in force before the Reformation), expressly requires and orders dipping.
 
 ## 69. TSU-0003375 (BAP-CHURCH-DAGG-001) — 제안: **A** [DEFAULT_LOW_RISK]
@@ -1159,10 +1161,10 @@
 - 제안 사유: 원문에 제3자 인용(Taylor)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요
 - original_text: (앞) STOURDZA,the Russian scholar and diplomat, says : " The church of the West has then departed from the example of Jesus Christ; she has obliterated the whole sublimity of the exterior sign. Baptism and immersion are identical. Baptism by aspersion is as if one should say immersion by 86 STANDARD MANUAL (뒤) aspersion, or any other absurdity of the same nature." Considerations, Orthodox Ch., p. 87. Bishop Taylor says : " The custom of the ancient churches was not sprinkling, but immersion, in pursuance of the meaning of the word in the commandments and the example of our blessed Saviour." Commentary on Matthew 3 : 16.
 
-## 193. TSU-0003781 (BAP-CHURCH-HISCOX) — 제안: **A** [DEFAULT_LOW_RISK]
+## 193. TSU-0003781 (BAP-CHURCH-HISCOX) — 제안: **C** [HISTORICAL_ERA_STATISTIC]
 - doctrine: Baptism
 - claim: Taylor 감독에 따르면, 고대 교회들의 관습은 물 뿌림이 아니라 침수였으며, 이는 계명의 의미와 복되신 구주의 본을 따른 것이다.
-- 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
+- 제안 사유: 초기/고대 교회사에 대한 통계적·확정적 서술 — 19세기 논쟁 문헌의 주장으로 귀속, 현대 역사학의 독립적 사실판정으로 보류
 - original_text: (앞) Baptism by aspersion is as if one should say immersion by 86 STANDARD MANUAL aspersion, or any other absurdity of the same nature." Considerations, Orthodox Ch., p. 87. Bishop Taylor says : " The custom of the ancient churches was not sprinkling, but immersion, in pursuance of the meaning of the word in the commandments and the example of our blessed Saviour." Commentary on Matthew 3 : 16. (뒤) an emblem of his future death and resurrection." Com. Epis.y Rom. 6 : Jf.
 
 ## 194. TSU-0003782 (BAP-CHURCH-HISCOX) — 제안: **C** [UNATTRIBUTED_CITATION]
@@ -1189,10 +1191,10 @@
 - 제안 사유: claim에 절대적/일반화 표현(전체) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요
 - original_text: (앞) All those whom John baptized he buried beneath the waters, and raised them up again. It is recorded that " John also was baptizing in Enon, near to Salim, because there was much water there." (John 3 : 23.) Why need much water, except for dipping, or burying the candidates in the act of baptism ? John Calvin, the great theologian, scholar, and commentator, whom Scaliger pronounced the most learned man in Europe, says: u From the words of John (chap. 3 : 23) it may be inferred that baptism was administered by John and Christ, by plunging the whole bodv under water." Com. on John 3 : 23. (뒤) a great plentv of water." Annot. John 3 : 23.
 
-## 198. TSU-0003786 (BAP-CHURCH-HISCOX) — 제안: **A** [DEFAULT_LOW_RISK]
+## 198. TSU-0003786 (BAP-CHURCH-HISCOX) — 제안: **C** [HISTORICAL_ERA_STATISTIC]
 - doctrine: Baptism
 - claim: 초기 교회에서 세례는 물에 침례로 행해졌으며 뿌림이 아니었다
-- 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
+- 제안 사유: 초기/고대 교회사에 대한 통계적·확정적 서술 — 19세기 논쟁 문헌의 주장으로 귀속, 현대 역사학의 독립적 사실판정으로 보류
 - original_text: (앞) John 3 : 23. With these agree Bengel, Curcselleus, Adam Clarke, Geikie, Stanley, and others. Venema, the ecclesiastical historian, says : " It is without controversy, that baptism in the primitive church was administered by immersion into water, and not by sprinkling ; seeing that John is said to have baptized in Jordan, and where there was much water, as Christ also did by his disciples in the neighborhood of those places. (뒤) Philip also going down into the water baptized the eunuch." Eccl. Hist., chop. J., sec. 138.
 
 ## 199. TSU-0003787 (BAP-CHURCH-HISCOX) — 제안: **C** [UNATTRIBUTED_CITATION]
@@ -1453,10 +1455,10 @@
 - 제안 사유: 원문에 제3자 인용(Wall)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요
 - original_text: (앞) IS, Ch. 4, Sec. 9, B. 15, Ch.3. Dr. Wall, who searched the records of antiquity for facts illustrating the history of the ordinances, says : " No church ever gave the communion to any persons before they were baptized. Among all the absurdities that were ever held, none ever maintained that any person should partake of the communion before he was baptized." Hist. (뒤) Inf. Bap., Part 1L, Ch. 9.
 
-## 242. TSU-0003918 (BAP-CHURCH-HISCOX) — 제안: **A** [DEFAULT_LOW_RISK]
+## 242. TSU-0003918 (BAP-CHURCH-HISCOX) — 제안: **C** [HISTORICAL_ERA_STATISTIC]
 - doctrine: Ecclesiology
 - claim: 초기 교회에서 세례는 교회와의 회원 자격을 구성하였다.
-- 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
+- 제안 사유: 초기/고대 교회사에 대한 통계적·확정적 서술 — 19세기 논쟁 문헌의 주장으로 귀속, 현대 역사학의 독립적 사실판정으로 보류
 - original_text: (앞) Inf. Bap., Part 1L, Ch. 9. Dr. Coleman says of the early churches : " None indeed but believers in full communion with the church were permitted to be present." " But agreeably to all the laws and customs of the church, baptism constituted membership with the church. (뒤) All baptized persons were legitimately numbered among the communicants as members of the church." Anc. Christ.
 
 ## 243. TSU-0003919 (BAP-CHURCH-HISCOX) — 제안: **C** [ABSOLUTE_TERM]
@@ -1645,10 +1647,10 @@
 - 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
 - original_text: (앞) It is an essential part of the system — the legitimate carrying out of the creed." FOR BAPTIST CHURCHES. 129 One of the customs held and upheld by Pedobaptist churches, which Baptists seriously condemn, is infant baptism. It is practiced by both Roman Catholics and Protestants as a religious institution ; and though not held as sacredly, or practiced as widely as formerly, it still prevails to a wide extent throughout the Christian world. (뒤) And yet it was not instituted by Christ, nor practiced by his apostles, nor known in the primitive churches, and has neither sanction nor recognition in the word of God. It is for this reason that Baptists utterly reject and condemn the custom, as not simply useless and without authority, but as a most pernicious and hurtful usage; that it is in- ' jurious both to the child that receives it, and to the church which allows it, can be easily shown.
 
-## 274. TSU-0003950 (BAP-CHURCH-HISCOX) — 제안: **A** [DEFAULT_LOW_RISK]
+## 274. TSU-0003950 (BAP-CHURCH-HISCOX) — 제안: **C** [HISTORICAL_ERA_STATISTIC]
 - doctrine: Baptism
 - claim: 세례는 예수 그리스도에 의해서 제정되지 않았으며, 그의 사도들에 의해 시행되지 않았고, 초기 교회에서 알려지지 않았으며, 하나님의 말씀에서 어떤 승인이나 인지도를 받지 못한다.
-- 제안 사유: claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요
+- 제안 사유: 초기/고대 교회사에 대한 통계적·확정적 서술 — 19세기 논쟁 문헌의 주장으로 귀속, 현대 역사학의 독립적 사실판정으로 보류
 - original_text: (앞) One of the customs held and upheld by Pedobaptist churches, which Baptists seriously condemn, is infant baptism. It is practiced by both Roman Catholics and Protestants as a religious institution ; and though not held as sacredly, or practiced as widely as formerly, it still prevails to a wide extent throughout the Christian world. And yet it was not instituted by Christ, nor practiced by his apostles, nor known in the primitive churches, and has neither sanction nor recognition in the word of God. (뒤) It is for this reason that Baptists utterly reject and condemn the custom, as not simply useless and without authority, but as a most pernicious and hurtful usage; that it is in- ' jurious both to the child that receives it, and to the church which allows it, can be easily shown. Baptism before faith, and without a profession of it, contradicts and 130 STANDARD MANUAL
 
 ## 275. TSU-0003951 (BAP-CHURCH-HISCOX) — 제안: **A** [DEFAULT_LOW_RISK]

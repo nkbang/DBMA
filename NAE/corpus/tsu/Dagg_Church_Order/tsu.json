@@ -13068,7 +13068,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -13092,17 +13092,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "부활의 도덕적/영적 의미 - 롬6장 성화적 함의 부합"
     }
   },
   {
@@ -27204,7 +27197,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -27230,17 +27223,10 @@
     "claim_raw": "예수님이 위임한 70人の 대부분이, 혹은 모두가 그 자리에 있었을 것이며, 사도들은 의식의 집행에서 그들의 서비스를 명령할 권위를 가지고 있었다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "다수 침례 집례 가능성에 대한 Dagg 역사적 추정, 사도행전 실현가능성 논증"
     }
   },
   {
@@ -53048,7 +53034,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -53079,17 +53065,10 @@
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "지역교회 현세성/영화된 보편교회 영원성 구별 - 침례교 교회론과 조화"
     }
   },
   {
@@ -59319,7 +59298,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59345,17 +59324,10 @@
     "claim_raw": "초기 기독교인들은 처음에 이방人が 기독교 계시에 동등한 특권을 가질 것이라는 개념이 없었고, 예루살렘이 여전히 기독교 예배의 중심지가 될 것으로 생각했지만, 곧 박해로 인해 그들의 오류를 깨달았다.",
     "cjk_status": "manual_repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "이방인 동등참여 이해 지연 - 행10-15장 전개와 조화"
     }
   },
   {
@@ -59726,7 +59698,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59752,17 +59724,10 @@
     "claim_raw": "지구上的 지역 교회에서의 회원資格보다 보편적인 교회의 회원資格이 훨씬 더 중요하다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "보편교회 회원됨 강조는 타당하나 지역교회 회원권 경시 근거로 오용 방지 위해 귀속 권장"
     }
   },
   {
@@ -59784,7 +59749,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59810,17 +59775,10 @@
     "claim_raw": "지방 교회보다 보편적인 교회의 회원資格이 더 중요하다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "7번과 동일 논지"
     }
   },
   {
@@ -63678,7 +63636,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -63709,17 +63667,10 @@
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "지상/하늘 성도 연합 - 히12:22-24 교제개념과 조화"
     }
   },
   {
@@ -64184,7 +64135,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -64208,17 +64159,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "거짓교사 분별 요청이지 일반적 사랑의무 부정 아님"
     }
   },
   {
@@ -64240,7 +64184,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -64264,17 +64208,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "10번과 동일 원리"
     }
   },
   {
@@ -68465,7 +68402,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -68491,17 +68428,10 @@
     "claim_raw": "교황의 권력 남용이 가져온 폐해를 보고 탄식하는 사람들은 그 권力的 비밀을 배워야 한다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0034 part1 (1-139/310) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "교황권 폐해 분석은 저자의 역사적/논쟁적 평가로 읽어야 함"
     }
   },
   {
@@ -71600,7 +71530,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -71626,17 +71556,10 @@
     "claim_raw": "그리스도의 교회가正式하게 시작된 날짜를 결정하는 데 어려움이 있다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "교회 시작시점 논의는 침례교 내에서도 다양한 강조 있음"
     }
   },
   {
@@ -76739,7 +76662,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -76770,17 +76693,10 @@
       "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "나라 참여/구성 구별 - Dagg의 유아교회회원권 논쟁 특정 해석"
     }
   },
   {
@@ -85489,7 +85405,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85515,17 +85431,10 @@
     "claim_raw": "구약의 예배 규례는 그리스도를預표하고 예언하는 것이었으며, 동시에 유대인들이 복음 특권에서 제외되고 이방인들이 받아들여지는 미래를 암시했다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "구약예배규례의 그리스도 예표/구속사적 전환 - 신약 성취관점과 조화"
     }
   },
   {
@@ -94636,7 +94545,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -94667,17 +94576,10 @@
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "왕국 복은 순종하는 믿는자에 속함 - 신자교회론적 논증 적절히 반영"
     }
   },
   {
@@ -107051,13 +106953,13 @@
     "paragraph": 1057,
     "sentence": 1,
     "source_text": "D. 250, interpreted the cries of new-born babes to be an asking for the grace which baptism was supposed to confer.",
-    "claim": "250년경에 일부 사람들은 신생아의 울음소리를 세례의 은혜를 구하는 것으로 해석했다.",
+    "claim": "250년경 키프리아누스는 신생아의 울음소리를 세례의 은혜를 구하는 것으로 해석했다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -107080,20 +106982,18 @@
       "resolved_at": "2026-08-08T18:04:32.158440+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "250년경에 일부人は 신생아의 울음소리를 세례의 은혜를 구하는 것으로 해석했다.",
+    "claim_raw": "250년경에 일부 사람들은 신생아의 울음소리를 세례의 은혜를 구하는 것으로 해석했다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "250년경 키프리아누스의 해석 - 원문 대비 주체를 '일부 사람들'에서 '키프리아누스'로 명확화 필요(claim 수정)"
+    },
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "250년경 키프리아누스의 해석 - 원문 대비 주체를 '일부 사람들'에서 '키프리아누스'로 명확화 필요(claim 수정)"
     }
   },
   {
@@ -120312,7 +120212,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -120343,17 +120243,10 @@
       "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0034 part1 (1-139/310) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "혼합성찬 관용 정당화의 논리적 함의 - Dagg의 엄격성찬 옹호 논증 정확히 반영"
     }
   },
   {
@@ -122648,7 +122541,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -122674,17 +122567,10 @@
     "claim_raw": "일부 침례교도들은 논증의 유효성을 인정하며, 유아세례 목사들을 자신의講壇에 초대하지 않음으로써 일관성 없는 비난을 피한다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0034 part1 (1-139/310) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "일관성 위해 유아세례파 목사 강단초대 자제하는 일부 침례교인 태도 - 원문 충실"
     }
   },
   {
@@ -123688,7 +123574,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -123719,17 +123605,10 @@
       "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0034 part1 (1-139/310) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "유아세례파도 자기침례이해에 따른 제한 실천 - 엄격성찬 논쟁핵심은 침례정의라는 Dagg 논증"
     }
   },
   {
@@ -126007,7 +125886,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -126038,17 +125917,10 @@
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "행전에 침례/떡뗌은 언급되나 발씻김 모임기록 없음 - 침묵논증은 보조논거일 뿐"
     }
   },
   {
@@ -128647,7 +128519,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -128673,17 +128545,10 @@
     "claim_raw": "일요일과 토요일을 기준으로 하는 안식日の 관행은 지구의 형태와 시간대에 따라 달라질 수 있다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0034 part1 (1-139/310) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "국제날짜변경선/시간대 관찰은 저자논증 정확히 요약"
     }
   },
   {
@@ -129472,7 +129337,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -129503,17 +129368,10 @@
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0034 part1 (1-139/310) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "첫날예배 신약기록에서 기독교주간계산 출발 확인 - 저자주장 충실히 요약"
     }
   },
   {
@@ -136372,7 +136230,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -136396,17 +136254,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "성령의 은사 주권적 분배 - 고전12장/엡4장 은사론과 조화"
     }
   },
   {
@@ -140916,7 +140767,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -140942,17 +140793,10 @@
     "claim_raw": "성경에서 목사의 임직에 대한 의무의 증거는 세례의 경우보다 명확하지 않지만 우리의 실천을指导하는 데에는 충분히 분명하다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": "목사임무 성경적증거가 침례만큼 명확치 않으나 실천인도에 충분하다는 Dagg 절제된 표현 - 원문 충실"
     }
   },
   {
