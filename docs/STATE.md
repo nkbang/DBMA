@@ -10,6 +10,27 @@ Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
 
+**[2026-09-16 완료] `NAE/citation_disclosure.py`에 authority_tier(T1~T4) 라벨 축 추가 (개인 RAG 제안서 §13 대응, 준비 단계).**
+- 배경: 목회자 개인 RAG(DBMA/NAE) 제안서 §11/§13에서 설계한 신학적 권위
+  등급(T1 정경/신조, T2 검증된 신학, T3 비교·변증 참고, T4 미검증)과 경고
+  라벨 삽입 로직을 실제 코드로 옮기는 첫 단계. 기존 `authority_class`
+  (ADR-030 §7.3: primary_doctrinal/historical_witness/reference/
+  application, 출처 장르·제작 품질 축)와는 **독립된 축**으로 설계 —
+  기존 필드·검증기·Retrieval Engine 미변경.
+- 구현: `get_tier_disclosure(authority_tier, *, tradition=None,
+  counter_refs=None)` 신규 함수. T1/T2 → None(경고 불필요), T3 →
+  counter_refs 없으면 ValueError(제안서 §11.4 하드 제약 재확인), T4 →
+  고정 미검토 안내문. 기존 `get_disclosure(authority_class)`는 무변경.
+- 범위 제한: `authority_tier` 필드는 아직 M2 소스 레지스트리 어디에도
+  없음(큐레이션 태깅 파이프라인 미구현) — 이번 변경은 §13.2 파이프라인의
+  ⑥(후처리 렌더링) 라벨 조회 로직만 구현. ①~⑤(검색 스코프 필터, 컨텍스트
+  조립)은 별도 착수 필요.
+- 테스트: `tests/test_citation_disclosure_tier.py` 신규 12건 전부 통과.
+  기존 `tests/test_nae_f6_chat_wiring.py::TestDisclosure` 회귀 영향 없음
+  확인(재실행 통과). Retrieval Engine·RAW·TSU Pipeline·Production
+  Registry 무변경 — Architecture Freeze 대상 없음, C1 Review 불필요
+  범위(사소한 준비 단계 추가)로 판단.
+
 **[2026-09-15 종결] 프로덕션 코퍼스 복구 계획 v1 — HQ 결정으로 영구 취소.**
 - 배경: 2026-09-07 사고로 TSU 89,737건(출처 122) → 1,363건(실질 1권)으로 축소.
   원인 사슬 검증: `ui/pages/processing.py`가 출력 폴더를 처리 후보로 오인 →
