@@ -13068,7 +13068,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -13090,6 +13090,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.151603+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -53015,7 +53021,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -53044,6 +53050,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -59260,7 +59272,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59284,7 +59296,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교인들은 처음에 이방人が 기독교 계시에 동등한 특권을 가질 것이라는 개념이 없었고, 예루살렘이 여전히 기독교 예배의 중심지가 될 것으로 생각했지만, 곧 박해로 인해 그들의 오류를 깨달았다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001211",
@@ -63580,7 +63598,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -63609,6 +63627,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -64073,7 +64097,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -64095,6 +64119,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.155341+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -64116,7 +64146,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -64138,6 +64168,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.155344+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -66217,7 +66253,7 @@
     "paragraph": 726,
     "sentence": 4,
     "source_text": "The simple fact that they are alike in professing the same religion is sufficient for the purpose of mental classification; but to constitute them really one body, some species of organization is necessary.",
-    "claim": "동일한 종교를 고백한다는 단순한 사실은 정신적(개념적) 분류의 목적에는 충분하지만, 그들을 실제로 한 몸으로 만들기 위해서는 어떤 종류의 조직이 필요하다.",
+    "claim": "Dagg는 (참신자들의 보편적 교회가 외적으로 조직된 하나의 단체인지를 논하는 문맥에서) 동일한 종교를 고백한다는 단순한 사실은 정신적(개념적) 분류의 목적에는 충분하지만, 그들을 실제로 한 몸으로 만들기 위해서는 어떤 종류의 조직이 필요하다고 주장한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -66246,12 +66282,12 @@
       "resolved_at": "2026-08-08T18:04:32.155494+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "같은 종교를 믿는다는 단순한 사실은 영적인 분류의 목적에는 충분하지만, 정말로 하나의 몸을 구성하기 위해서는 어떤 종류의 조직이 필요합니다",
+    "claim_raw": "동일한 종교를 고백한다는 단순한 사실은 정신적(개념적) 분류의 목적에는 충분하지만, 그들을 실제로 한 몸으로 만들기 위해서는 어떤 종류의 조직이 필요하다.",
     "cjk_status": "manual_repaired",
     "claim_correction": {
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
-      "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+      "reason": "보편 교회의 조직성 여부를 논하는 Dagg의 논증 문맥이 생략되어 절대 명제로 오독될 수 있음 — 문맥 명시로 Q2 보완"
     }
   },
   {
@@ -68199,7 +68235,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -68223,7 +68259,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "외부 조직을 근거로 교회를 주장하는 것은 대체이며, 그 頭는 그리스도의 대체이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001393",
@@ -71404,7 +71446,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -71428,7 +71470,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그리스도의 교회가正式하게 시작된 날짜를 결정하는 데 어려움이 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001458",
@@ -76685,7 +76733,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -76709,7 +76757,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "성도들의 왕국에 속한 모든 사람을 가리키는 '这样的'라는 단어가 문자 그대로の子供们만을 의미하지 않는다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001565",
@@ -83849,7 +83903,7 @@
     "paragraph": 852,
     "sentence": 2,
     "source_text": "As, in the exercises of an individual Christian, the discovery of salvation in Christ is withheld, until an anxiety is excited in his breast that makes the discovery welcome; so in the history of the world, the Messiah makes not his appearance, until mankind have felt the necessity of such a deliverer; then he comes, the desire of all nations.",
-    "claim": "구원의 필요성을 인식한 후에 메시야가 나타난다",
+    "claim": "Dagg는 그리스도인 개인의 회심 경험(구원의 필요를 절실히 느낀 후에야 그 발견이 반갑게 되는 것)에 비유하여, 인류 역사에서도 사람들이 구원자의 필요성을 느낀 후에야 메시야가 나타났다고 설명한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -83878,8 +83932,13 @@
       "resolved_at": "2026-08-08T18:04:32.156780+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "구원者の 필요성을 인식한 후에 메시야가 나타난다",
-    "cjk_status": "repaired"
+    "claim_raw": "구원의 필요성을 인식한 후에 메시야가 나타난다",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "Dagg 개인 신자의 회심 경험에 대한 유비적 수사를 무귀속 신학 명제로 제시 — 귀속·비유 구조 명시로 Q2 보완"
+    }
   },
   {
     "id": "TSU-0001710",
@@ -85223,7 +85282,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85247,7 +85306,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "구약의 예배 규례는 그리스도를預표하고 예언하는 것이었으며, 동시에 유대인들이 복음 특권에서 제외되고 이방인들이 받아들여지는 미래를 암시했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001738",
@@ -85564,7 +85629,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -85593,6 +85658,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part1 user-flagged claim text fix (translation error or missing Argument-N/conditional framing), grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -94318,7 +94389,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -94347,6 +94418,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -94713,7 +94790,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -94737,7 +94814,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "자연의 가지들이 다시嫁接될 때 또 다른 중요한 변화가 예상된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001931",
@@ -98546,7 +98629,7 @@
     "paragraph": 987,
     "sentence": 4,
     "source_text": "As thus interpreted, the Christian practice literally conforms to it.",
-    "claim": "그리스도인의 관행은 계명의 요구에 따라 일주일을 지키는 것과 관련하여 문자적으로 일치한다.",
+    "claim": "Dagg의 제4계명 재해석(십계명이 요구하는 것은 엿새 노동 후 돌아오는 '어떤 날'이지 반드시 토요일은 아니라는 해석)에 따르면, 그리스도인의 주일 준수 관행은 이 계명과 문자적으로 일치한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -98575,8 +98658,13 @@
       "resolved_at": "2026-08-08T18:04:32.157857+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "그리스도인의 관행은 十誡의 요구에 따라７일을 지키는 것과 관련하여 문자적으로 일치한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "그리스도인의 관행은 계명의 요구에 따라 일주일을 지키는 것과 관련하여 문자적으로 일치한다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "'As thus interpreted'가 가리키는 Dagg의 재해석 내용이 누락됨 — 재해석 내용 명시로 Q2 보완"
+    }
   },
   {
     "id": "TSU-0002009",
@@ -106343,7 +106431,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -106367,7 +106455,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "유스틴 순교자의 글에서 언급된 구절은 어린 시절에 예수님의 제자가 된 사람들에 대한 것으로,嬰兒洗禮에 대한 명확한 증거는 아님",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002167",
@@ -106682,7 +106776,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -106706,7 +106800,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "250년경에 일부人は 신생아의 울음소리를 세례의 은혜를 구하는 것으로 해석했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002174",
@@ -120911,7 +121011,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -120935,7 +121035,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 구성원은 그리스도의 법을 이해하고 있기 때문에 엄격히 지켜야 하며, 다른 사람들의 무지나 오류와는 상관없이如此해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002463",
@@ -124120,7 +124226,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -124144,7 +124250,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "洗足례는 단순한 의식이 아니라 아브라함 시대부터 행해진 필수적인 환대 행위로서, 사도 바울은 이와 같은 도덕적 의무를 다른 것들과 함께 좋은 작품에 대한 명성의 적절한 기초로 간주한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002528",
@@ -124265,7 +124377,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -124294,6 +124406,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -124513,7 +124631,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -124537,7 +124655,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "주님은 작은 행실에서도 실제적인 친절을 보여주는 본을 세우려 하셨지만, 그 친절이 필요와 유용성의 경계를 넘어서는 것은避하셨다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002536",
@@ -125546,7 +125670,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -125575,6 +125699,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -125995,7 +126125,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -126019,7 +126149,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "주님은 도덕적 의무를 강조하기 위하여 특정 행동을 명하셨으며, 그것이 종교적인儀式가 아님을 보여주고 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002566",
@@ -127448,7 +127584,7 @@
     "paragraph": 1237,
     "sentence": 0,
     "source_text": "Among the precepts of the decalogue, we find the command: “Remember the sabbath day.” As the whole decalogue binds us, so does this commandment.",
-    "claim": "십계명의 계명 중 하나는 안식일을 기억하라는 명령이며, 이 계명은 계명 전체와 마찬가지로 우리를 구속한다.",
+    "claim": "Dagg는 십계명 전체가 오늘날에도 그리스도인을 구속한다는 자신의 전제 위에서, 안식일을 기억하라는 계명 역시 십계명의 나머지 부분과 동일하게 구속력을 가진다고 주장한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -127477,8 +127613,13 @@
       "resolved_at": "2026-08-08T18:04:32.159940+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "십계명의 계명 중 하나는 안식일을 기억하라는 명령이며, 이 계명은 十계명 전체와 마찬가지로 우리를 구속한다.",
-    "cjk_status": "repaired"
+    "claim_raw": "십계명의 계명 중 하나는 안식일을 기억하라는 명령이며, 이 계명은 계명 전체와 마찬가지로 우리를 구속한다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "안식일 계명의 현재적 구속력을 무귀속 절대 명제로 제시 — Dagg의 전제 조건 명시로 Q2 보완"
+    }
   },
   {
     "id": "TSU-0002596",
@@ -128775,7 +128916,7 @@
     "paragraph": 1246,
     "sentence": 0,
     "source_text": "According to the view which we have taken of the fourth commandment, Christians obey it, as literally as the Jews.",
-    "claim": "그리스도인들은 유대인과 마찬가지로 네 번째 계명을 문자적으로 지키고 있다.",
+    "claim": "Dagg가 취한 제4계명 해석에 따르면, 그리스도인은 유대인과 마찬가지로 이 계명을 문자적으로 지킨다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -128804,8 +128945,13 @@
       "resolved_at": "2026-08-08T18:04:32.160041+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "그리스도인들은 유대인과 마찬가지로第四계명을 문자적으로 지키고 있다.",
-    "cjk_status": "repaired"
+    "claim_raw": "그리스도인들은 유대인과 마찬가지로 네 번째 계명을 문자적으로 지키고 있다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "원문의 'According to the view which we have taken'(Dagg 자신의 해석이라는 귀속)가 누락됨 — Q2 보완"
+    }
   },
   {
     "id": "TSU-0002623",
@@ -129176,7 +129322,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -129205,6 +129351,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -130206,7 +130358,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -130230,7 +130382,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "여성은 공개적인 예배에서 기도 인도를 맡는 것은 부적절하지만, 여성 전용 모임에서는 기도와 교회의益이 될 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002652",
@@ -134141,7 +134299,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -134165,7 +134323,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "유다의 증언과 그의 행동은 예수의誠實性을 입증한다",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002732",
@@ -135716,7 +135880,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -135738,6 +135902,12 @@
       "crosswalk_id": "f914f6c442983e59",
       "resolved_at": "2026-08-08T18:04:32.160977+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -145311,7 +145481,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -145335,7 +145505,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례는 지역 교회 회원資格의 전제조건이며, 세례의 집행은 말씀의 사역자들에게 속하므로 지역 교회들은 존재에 있어 사역에 의존한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0002960",
@@ -158019,7 +158195,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -158048,6 +158224,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0031 user-flagged claim text fix, grounded against source_text/context."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -164122,7 +164304,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -164146,7 +164328,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 통일을 이루기 위해 각 당사자는妥協해야 하며 개인의 양심은 다수의 판단에屈服해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003342",

@@ -363,7 +363,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -391,6 +391,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix; TSU-0003406/0003559 were page-break split sentences, corrected against the preceding paragraph fragment and reset for fresh review."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -743,7 +749,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -765,6 +771,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191200+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1025,7 +1037,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1053,6 +1065,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix; TSU-0003406/0003559 were page-break split sentences, corrected against the preceding paragraph fragment and reset for fresh review."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1074,7 +1092,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1096,6 +1114,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191238+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1117,7 +1141,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1140,7 +1164,12 @@
       "resolved_at": "2026-08-08T18:04:56.191241+00:00",
       "resolver_version": "1.0.0"
     },
-    "review_metadata": null,
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    },
     "claim_raw": "진정한 교회는 단순히 종교적 사회일 수 있으며, 일부 교리는 받아들이고 일부 계명을 실천할 수 있다.",
     "claim_correction": {
       "corrected_by": "CUE",
@@ -1363,7 +1392,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1385,6 +1414,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191258+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1602,7 +1637,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1624,6 +1659,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191276+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -7257,7 +7298,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -7281,7 +7322,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회가 어려움에 직면하여 교회 징계를 수행할 때, 그 어려움이 만성화되고 깊이 뿌리박히게 되면 교회는 심판적인 엄격함으로 징계를 수행하게 되어 성도들을 회복시키는 영적 mềm고謙遜한 정신에서 벗어나게 된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003532",
@@ -7355,7 +7402,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -7377,6 +7424,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191702+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -7602,7 +7655,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -7624,6 +7677,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191720+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -7647,7 +7706,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -7669,6 +7728,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191723+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -7741,7 +7806,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -7763,6 +7828,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191730+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -7886,7 +7957,7 @@
     ],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -7910,7 +7981,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회紀律의 일반적인 원인은 거짓 교리, 권위 무시, 다툼과 분쟁, 부도덕한 행위, 무질서한 삶, 탐욕스러운 정신,傲慢한 행동, 법정 소송 등이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003545",
@@ -7935,7 +8012,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -7957,6 +8034,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191744+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -8291,7 +8374,7 @@
     ],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -8313,6 +8396,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191770+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -8520,7 +8609,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -8544,7 +8633,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "개인적인 어려움이 교회 구성원들 사이에서 존재할 때, 그들이 해결하지 못하거나 해결하기를 거부할 경우, 교회는 그것을 공적 범죄로 간주하고 처리해야 하며, इसस로 인한 영속적인 피해를 방지해야 한다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003558",
@@ -8565,7 +8660,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -8587,6 +8682,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191791+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -8849,7 +8950,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -8871,6 +8972,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191814+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -8892,7 +8999,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -8920,6 +9027,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0034 user-flagged claim text fix; TSU-0003406/0003559 were page-break split sentences, corrected against the preceding paragraph fragment and reset for fresh review."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -8941,7 +9054,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -8963,6 +9076,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191820+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -8984,7 +9103,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9006,6 +9125,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191824+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9174,7 +9299,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9196,6 +9321,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191839+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9217,7 +9348,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9241,7 +9372,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "인간의 재판소는 그릇된 판단을 고치거나 اعتر복하도록 강요할 권한이 없다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003573",
@@ -9262,7 +9399,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9284,6 +9421,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191846+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9305,7 +9448,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9327,6 +9470,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191850+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9348,7 +9497,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9370,6 +9519,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191853+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9477,7 +9632,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9499,6 +9654,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191864+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9569,7 +9730,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9591,6 +9752,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191871+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9612,7 +9779,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9636,7 +9803,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회가 올바르면慷慨할 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003582",
@@ -9657,7 +9830,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9679,6 +9852,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191878+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9749,7 +9928,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9771,6 +9950,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191885+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9792,7 +9977,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9814,6 +9999,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191888+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9835,7 +10026,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9857,6 +10048,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191892+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9878,7 +10075,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -9900,6 +10097,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191895+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -9915,7 +10118,7 @@
     "paragraph": 211,
     "sentence": 3,
     "source_text": "But importayit matters should not be presented, except on previous consultation with the pastor and deacons.",
-    "claim": "중요한 문제는 목사와 장로들과의 이전 협의 없이 제시되어서는 안 된다.",
+    "claim": "중요한 문제는 목사 및 집사들과의 사전 협의 없이는 제시되어서는 안 된다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -9943,6 +10146,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191898+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "중요한 문제는 목사와 장로들과의 이전 협의 없이 제시되어서는 안 된다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "원문의 'deacons'(집사)가 '장로들'로 오역됨 — Q1 정정"
     }
   },
   {
@@ -10007,7 +10216,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10031,7 +10240,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "목사가 출席하지 않거나 직무를 수행하지 않을 경우 다른 사람이 그 자리를 대신할 수 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003591",
@@ -10052,7 +10267,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10074,6 +10289,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191910+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10140,7 +10361,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10162,6 +10383,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191917+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10177,7 +10404,7 @@
     "paragraph": 302,
     "sentence": 1,
     "source_text": "Baptists, especially, claim to have no authoritative creed except the New Testament.",
-    "claim": "침례교는 특히 신약성경만이 권위 있는 신조라고 주장한다.",
+    "claim": "Hiscox에 따르면, 침례교인은 신약성경 외에는 어떠한 공인된 신조(교리문서)도 인정하지 않는다고 주장한다.",
     "doctrine": "Scripture / Authority",
     "scriptures": [],
     "citations": [],
@@ -10205,6 +10432,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191921+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "침례교는 특히 신약성경만이 권위 있는 신조라고 주장한다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "'신조(creed)'의 의미가 모호해 성경 전체의 권위를 부정하는 것으로 오독될 수 있음 — 귀속 및 괄호 설명 추가로 Q2 보완"
     }
   },
   {
@@ -10226,7 +10459,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10248,6 +10481,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191924+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10312,7 +10551,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10334,6 +10573,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191931+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10484,7 +10729,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10506,6 +10751,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191945+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10527,7 +10778,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10549,6 +10800,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191948+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10570,7 +10827,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10594,7 +10851,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "1689년 영국 침례교회의 신앙고백은 다른 것보다 더 자세하고 은혜의 교리에서 높은 тон을 가지고 있다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003604",
@@ -10701,7 +10964,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10723,6 +10986,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191963+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -10744,7 +11013,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -10766,6 +11035,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191967+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -11130,7 +11405,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -11152,6 +11427,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191998+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -13790,7 +14071,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -13814,7 +14095,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바울은 선택받은 자들을 위해 모든 것을 참아忍고, 그들이 그리스도 예수 안에서 영광과 함께 구원을 얻도록 하기 위함이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003670",
@@ -14229,7 +14516,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -14253,7 +14540,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "真正으로 거듭난 사람들은 성령으로 말미암아 태어난 사람들이기 때문에 결코 완전히 떨어져나가서 멸망하지不会, 오직 끝까지 견디게 되며, 그리스도께 대한 그들의 지속적인 헌신은 표면적 신자들과 구별되는 큰 표징이다.",
-    "cjk_status": "reextracted"
+    "cjk_status": "reextracted",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003679",
@@ -14421,7 +14714,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -14445,7 +14738,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "하나님이你们 안에 착한 일을 시작하신 이는 예수 그리스도 날까지 이루실 것임을 확신한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003683",
@@ -14956,7 +15255,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -14980,7 +15279,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회는 성경에 의해 주어진 선물, 권利, 특권을 가지고 있으며, 감독자 또는 목사와 집사의 자격, 요구, 의무를 정의하는 팀전서와 디도서에 따라 성경적 직분만을 가지고 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003694",
@@ -15348,7 +15653,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -15372,7 +15677,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례는 성부와 성자와 성령의 이름으로 行해야 한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003702",
@@ -16324,7 +16635,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -16346,6 +16657,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192401+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -16461,7 +16778,7 @@
     "paragraph": 425,
     "sentence": 3,
     "source_text": "Fear not them which kill the body, but are not able to kill the soul.",
-    "claim": "신자들은 육체를 죽일 수 있는 자들을 두려워하지 말고, 영혼을 죽일 수 없는 자들을 두려워해야 한다.",
+    "claim": "육체를 죽일 수 있으나 영혼은 죽일 수 없는 자들을 두려워하지 말아야 한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -16489,6 +16806,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192411+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "신자들은 육체를 죽일 수 있는 자들을 두려워하지 말고, 영혼을 죽일 수 없는 자들을 두려워해야 한다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "원문에 없는 '두려워해야 한다' 절이 추가되어 의미가 반전됨(원문은 전반부만 인용) — Q1 보완"
     }
   },
   {
@@ -16559,7 +16882,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -16581,6 +16904,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192418+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -17090,7 +17419,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -17112,6 +17441,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192461+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -17233,7 +17568,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -17255,6 +17590,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192472+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -17425,7 +17766,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -17447,6 +17788,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192487+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -17619,7 +17966,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -17641,6 +17988,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192500+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -17811,7 +18164,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -17833,6 +18186,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192514+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -18146,7 +18505,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18168,6 +18527,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192540+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -18332,7 +18697,7 @@
     "paragraph": 471,
     "sentence": 0,
     "source_text": "Pedobaptists, both Roman Catholic and Protestant, answer the question by saying that baptism is either the sprinkling or pouring of water upon the candidate, touching the forehead with wet fingers, or dipping the person wholly into water; in either case in the name of the Father, the Son, and the Spirit ; and that it may be administered to a candidate on his profession of faith, or FOR BAPTIST CHURCHES. 81",
-    "claim": "세례는 물을 뿌리거나 부어 후보자에게 시행되며, 아버지와 아들과 성령의 이름으로 행해지며, 신앙고백에 따라 후보자에게 시행될 수 있다.",
+    "claim": "유아세례론자(Pedobaptist)들은 세례가 후보자에게 물을 뿌리거나 붓는 것 또는 온몸을 물에 담그는 것으로 시행될 수 있으며, 어느 경우든 성부·성자·성령의 이름으로, 신앙고백에 따라 시행될 수 있다고 본다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -18361,8 +18726,13 @@
       "resolved_at": "2026-08-08T18:04:56.192554+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "세례는 물을 뿌リ거나 부어 후보자에게施行되며, 아버지와 아들과 성령의 이름으로 행해지며, 신앙고백에 따라 후보자에게 施行될 수 있다.",
-    "cjk_status": "repaired"
+    "claim_raw": "세례는 물을 뿌리거나 부어 후보자에게 시행되며, 아버지와 아들과 성령의 이름으로 행해지며, 신앙고백에 따라 후보자에게 시행될 수 있다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "원문은 Pedobaptist측의 답변으로 명시되어 있는데 귀속 없이 일반 정의처럼 제시됨 — 귀속 추가로 Q2 보완"
+    }
   },
   {
     "id": "TSU-0003764",
@@ -18634,7 +19004,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18656,6 +19026,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192575+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -18726,7 +19102,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18748,6 +19124,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192582+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -18769,7 +19151,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18791,6 +19173,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192586+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -18812,7 +19200,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18834,6 +19222,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192589+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -18855,7 +19249,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18879,7 +19273,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "baptizo는 반복적으로 담그거나浸ける 것을 의미하며, 세례의 의식에서 특히 사용된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003775",
@@ -18951,7 +19351,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18975,7 +19375,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "Baptizo는 어떤 액체에라도 담그거나沒시키는 것을 의미한다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003777",
@@ -19184,7 +19590,7 @@
     "paragraph": 495,
     "sentence": 0,
     "source_text": "Bishop Taylor says : \" The custom of the ancient churches was not sprinkling, but immersion, in pursuance of the meaning of the word in the commandments and the example of our blessed Saviour.\" Commentary on Matthew 3 : 16.",
-    "claim": "고대 교회들의 관습은 물 뿌리기가 아니라 세례였으며, 이는 계명과 우리의 복된 구원자의 예를 따르는 것",
+    "claim": "Taylor 감독에 따르면, 고대 교회들의 관습은 물 뿌림이 아니라 침수였으며, 이는 계명의 의미와 복되신 구주의 본을 따른 것이다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -19213,8 +19619,13 @@
       "resolved_at": "2026-08-08T18:04:56.192618+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "고대 교회들의 관습은 물 뿌리기가 아니라 침례였으며, 이는 계명과 우리의 복된 구원者の 예를 따르는 것",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "고대 교회들의 관습은 물 뿌리기가 아니라 세례였으며, 이는 계명과 우리의 복된 구원자의 예를 따르는 것",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "Bishop Taylor의 인용문인데 귀속 없이 제시되었고 'immersion'이 '세례'로 뭉뚱그려져 침수라는 핵심 의미가 손실됨 — 귀속 및 '침수' 표현 복원으로 Q1/Q2 보완"
+    }
   },
   {
     "id": "TSU-0003782",
@@ -19235,7 +19646,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19257,6 +19668,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192622+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19327,7 +19744,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19349,6 +19766,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192630+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19470,7 +19893,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19492,6 +19915,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192640+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19615,7 +20044,7 @@
     ],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19637,6 +20066,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192651+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19709,7 +20144,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19731,6 +20166,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192658+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19899,7 +20340,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19921,6 +20362,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192672+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -20042,7 +20489,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20064,6 +20511,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192682+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -20332,7 +20785,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20354,6 +20807,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192704+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -20426,7 +20885,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20448,6 +20907,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192711+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -20520,7 +20985,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -20542,6 +21007,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192718+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -23530,7 +24001,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -23554,7 +24025,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "참된 재생과 올바른 세례를 받았더라도, 하나님의 계명에違反하고 죄로 살아가며 그리스도인 신앙을 욕되게 하는 자는 주의 만찬에 참여할 권리가 없다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003872",
@@ -24514,7 +24991,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -24538,7 +25015,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "일부 침례교도들은 침례교회에서 주의 만찬에 대한 더 широк은 자유를 원하고 찾기도 한다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003892",
@@ -24909,7 +25392,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -24933,7 +25416,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "우리는 주님께 대한 충성보다 제자들을 향한 애정이 우리를 더 많이左右해서는 안 된다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003900",
@@ -25809,7 +26298,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -25831,6 +26320,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193107+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -25903,7 +26398,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -25925,6 +26420,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193114+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26093,7 +26594,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26115,6 +26616,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193128+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26185,7 +26692,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26207,6 +26714,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193135+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26320,7 +26833,7 @@
     "paragraph": 652,
     "sentence": 0,
     "source_text": "churches, so far, I mean, as the present subject is concerned — i. e.-, it is determined by valid baptism\" Hibbard on Christ Bap., P. IL, p. 17 ^",
-    "claim": "교회는 유효한 세례에 의해 결정된다.",
+    "claim": "Hibbard(감리교 학자)에 따르면, 성찬 참여 및 교회 교제라는 현안에 관한 한, 교회 교제 여부는 유효한 세례에 의해 결정된다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -26348,6 +26861,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193147+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "교회는 유효한 세례에 의해 결정된다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "Hibbard(감리교 학자)의 인용문이며 '현안에 관한 한'이라는 범위 제한이 있는데 귀속·범위 없이 일반 명제로 제시됨 — 귀속 및 범위 제한 복원으로 Q1 정정"
     }
   },
   {
@@ -26567,7 +27086,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26589,6 +27108,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193164+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26800,7 +27325,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26822,6 +27347,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193181+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26843,7 +27374,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26865,6 +27396,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193185+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26886,7 +27423,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26908,6 +27445,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193189+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27072,7 +27615,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27096,7 +27639,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "기독교 사랑의 정신이 지배하는 한 자신의 신념에固執하는 것은 편견이 아니다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003945",
@@ -27166,7 +27715,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27188,6 +27737,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193211+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27209,7 +27764,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27231,6 +27786,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193214+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27491,7 +28052,7 @@
     "paragraph": 667,
     "sentence": 0,
     "source_text": "does violence to all New Testament teaching.",
-    "claim": "신약 교리는 모든 가르침이 폭력을 당한다.",
+    "claim": "신앙 이전에, 그리고 신앙고백 없이 시행되는 세례(유아세례)는 신약성경의 모든 가르침과 모순되며 그것에 폭력을 가한다.",
     "doctrine": "Scripture / Authority",
     "scriptures": [],
     "citations": [],
@@ -27519,6 +28080,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193236+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "신약 교리는 모든 가르침이 폭력을 당한다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "문장 앞부분(주어 'Baptism before faith, and without a profession of it')이 누락된 채 뒷부분만 추출됨 — 문맥 반영으로 Q1 보완"
     }
   },
   {
@@ -27583,7 +28150,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27605,6 +28172,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193243+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27626,7 +28199,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27648,6 +28221,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193247+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27755,7 +28334,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27777,6 +28356,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193257+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27798,7 +28383,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27820,6 +28405,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193261+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27841,7 +28432,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27863,6 +28454,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193264+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27884,7 +28481,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27906,6 +28503,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193268+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -27927,7 +28530,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -27949,6 +28552,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193271+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28013,7 +28622,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28035,6 +28644,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193278+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28056,7 +28671,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28078,6 +28693,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193282+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28224,7 +28845,7 @@
     "paragraph": 685,
     "sentence": 1,
     "source_text": "In the fifth and following ages it was generally FOR BAPTIST CHURCHES. 133",
-    "claim": "5세기 이후의 침례교회에서 일반적으로 유아 세례가 허용되었다.",
+    "claim": "Curcellaeus에 따르면, 유아세례는 기독교 최초 두 세기 동안 전혀 알려지지 않았으나 3~4세기에는 소수에게 허용되었고, 5세기와 그 이후 시대에는 일반적으로 받아들여졌다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -28252,6 +28873,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193297+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "5세기 이후의 침례교회에서 일반적으로 유아 세례가 허용되었다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "페이지 러닝헤더 'FOR BAPTIST CHURCHES. 133'이 문장 중간에 OCR 오염으로 삽입되어 침례교회가 유아세례를 허용했다는 반대 의미로 왜곡됨 — Curcellaeus 인용 귀속 및 오염 제거로 Q1 정정"
     }
   },
   {
@@ -28359,7 +28986,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28381,6 +29008,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193307+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28402,7 +29035,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28424,6 +29057,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193311+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28445,7 +29084,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28467,6 +29106,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193315+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28488,7 +29133,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28510,6 +29155,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193319+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28531,7 +29182,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28553,6 +29204,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193322+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28617,7 +29274,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28641,7 +29298,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "세례의 회심(baptismal regeneration)이라는 유해한 오류가 나타나서 영아 세례를 초래하였고, 이 오류는 모든 교회에서 더 혹은 덜頑固하게 지속되어 왔다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003980",
@@ -28662,7 +29325,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28684,6 +29347,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193332+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28748,7 +29417,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28770,6 +29439,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193339+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28791,7 +29466,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28813,6 +29488,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193343+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28920,7 +29601,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28942,6 +29623,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193354+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29006,7 +29693,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29028,6 +29715,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193361+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29049,7 +29742,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29071,6 +29764,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193365+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29092,7 +29791,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29114,6 +29813,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193369+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29135,7 +29840,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29157,6 +29862,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193373+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29178,7 +29889,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29200,6 +29911,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193377+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29221,7 +29938,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29243,6 +29960,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193380+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29266,7 +29989,7 @@
     ],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29288,6 +30011,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193384+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29309,7 +30038,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29331,6 +30060,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193387+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29395,7 +30130,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29417,6 +30152,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193394+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29481,7 +30222,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29505,7 +30246,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 조직과 정부의真正한 형태는 무엇인가?",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004000",
@@ -29569,7 +30316,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29591,6 +30338,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193408+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29612,7 +30365,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29636,7 +30389,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "교회 정부의 세 가지 형태 중 하나는 주교들 또는 교구 주교들과 고위 성직자들이 권력을掌握하는 Prelatical 체계이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004003",
@@ -29657,7 +30416,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29679,6 +30438,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193416+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29994,7 +30759,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -30018,7 +30783,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 교회는 성도들, 주재官자들, 그리고 집사들로 구성되었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004011",
@@ -30235,7 +31006,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -30259,7 +31030,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 교회에서 형성된 각 교회는 독립적이고 자율적인 단체로, 자신의 직원을 임명하고 외국勢력의 통제나 권위에 대한 참조 또는 종속 없이 자신의 정부를 관리할 수 있었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004016",
@@ -30672,7 +31449,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -30696,7 +31473,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "신약성경에서 감독자, 장로, 長老라는 단어는 교회 직분을 지칭하는 데 사용된다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004025",
@@ -30717,7 +31500,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -30741,7 +31524,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "신약성경에서 주교, 장로, 長老라는 단어는 모두 교회 직분을 가리키며, 공식적으로 같은 의미를 가지고 있다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004026",
@@ -30944,7 +31733,7 @@
     "paragraph": 748,
     "sentence": 2,
     "source_text": "While, therefore, the deacon is a church officer, his office does not constitute an order in the ministry at all, its functions belonging to temporal concerns, and not to a spiritual service.",
-    "claim": "디아코노스의 직분은 교회에서 영적인 사역이 아닌 세속적인 문제에 관한 기능을 가지고 있다.",
+    "claim": "Hiscox에 따르면, 집사 직분은 목회직(사역의 한 계층)에 속하지 않으며, 그 기능은 영적 사역이 아니라 세속적 사안에 속한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -30973,8 +31762,13 @@
       "resolved_at": "2026-08-08T18:04:56.193517+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "디아코노스(deacon)의 직분은 교회에서 영적인 사역이 아닌 世俗적인 문제에 관한 기능을 가지고 있다.",
-    "cjk_status": "repaired"
+    "claim_raw": "디아코노스의 직분은 교회에서 영적인 사역이 아닌 세속적인 문제에 관한 기능을 가지고 있다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "Hiscox 자신의 정의적 진술을 무귀속 절대 명제로 제시 — 귀속 표현 추가로 Q2 보완"
+    }
   },
   {
     "id": "TSU-0004031",
@@ -31187,7 +31981,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -31211,7 +32005,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 교회는 장로와 감독으로 불리는 지도자들로 구성되어 있었으며, 이 용어들은 동일한 계층的人들을 가리키는 것으로 사용되었다.",
-    "cjk_status": "reextracted"
+    "cjk_status": "reextracted",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004036",
@@ -31967,7 +32767,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -31991,7 +32791,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "真正한 교회의 역사나 설립자보다 중요한 것은 그들의 신앙이 새约 성경의 가르침에 따라 있는가 하는 것이다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004052",
@@ -32208,7 +33014,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -32232,7 +33038,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "바プ티스트 교회가 사도와 예언자들의 기초 위에 세워졌으며, 이 기초의 머릿돌은 예수 그리스도 자신이라는 주장이 옳다면, 그들이 1세기나 20세기의 기록된 역사を持고 있는지 여부는 중요하지 않다.",
-    "cjk_status": "manual_repaired"
+    "cjk_status": "manual_repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004057",
@@ -33466,7 +34278,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -33490,7 +34302,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "침례교는 신앙과 양심의 권利 및 예배의 자유를 선언하고 옹호했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004083",
@@ -33609,7 +34427,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -33633,7 +34451,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그들은 침례를浸礼로 시행했다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004086",
@@ -34138,7 +34962,7 @@
     "paragraph": 800,
     "sentence": 0,
     "source_text": "The Baptists of Holland have a history that reaches back to a very remote period, if not to the apostolic age, as some confidently assert.",
-    "claim": "네덜란드의 침례교도들은 사도 시대까지 거슬러 올라가는 오랜 역사를 가지고 있다.",
+    "claim": "네덜란드의 침례교도들은 매우 오래된 역사를 가지고 있으며, 일부는 이것이 사도 시대까지 거슬러 올라간다고 주장한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -34167,8 +34991,13 @@
       "resolved_at": "2026-08-08T18:04:56.193784+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "네덜란드의 침례교도들은 사도 시대까지 거슬러 올라가는悠久한 역사를 가지고 있다.",
-    "cjk_status": "repaired"
+    "claim_raw": "네덜란드의 침례교도들은 사도 시대까지 거슬러 올라가는 오랜 역사를 가지고 있다.",
+    "cjk_status": "repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "원문의 hedge('if not to the apostolic age, as some confidently assert')가 누락되어 단정적 주장으로 바뀜 — Q1 보완"
+    }
   },
   {
     "id": "TSU-0004097",
@@ -34616,7 +35445,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -34638,6 +35467,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193820+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -34745,7 +35580,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -34767,6 +35602,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193830+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -34876,7 +35717,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -34898,6 +35739,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193840+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -35005,7 +35852,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35027,6 +35874,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193851+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -35093,7 +35946,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35115,6 +35968,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193860+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -35181,7 +36040,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35203,6 +36062,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193867+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -35224,7 +36089,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35246,6 +36111,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193870+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -35267,7 +36138,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35289,6 +36160,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193874+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
