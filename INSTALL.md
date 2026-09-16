@@ -131,6 +131,19 @@ streamlit run dbma_ui.py
 | Streamlit 포트 충돌 | 다른 Streamlit 프로세스 종료 또는 `--server.port 8502` 옵션 |
 | `ModuleNotFoundError` | `source ~/envs/dbma311/bin/activate` 후 `pip install -r requirements.txt` 재실행 |
 
+### 앱 안에서 먼저 확인하기
+
+터미널 로그를 보기 전에, 앱의 「도움말」 화면 아래쪽 "앱 상태 자가 진단"
+버튼을 먼저 눌러보세요. Ollama 연결·필수 모델·디스크 여유·성경 본문·
+자료 건수 5가지를 한 번에 확인해 줍니다.
+
+### 지원 정책
+
+이 앱은 별도 유료 지원이 제공되지 않는 **베타 버전(as-is)**입니다.
+자가 진단으로도 해결되지 않는 문제는 GitHub Issues로만 문의해 주세요
+(전화·카카오톡 등 다른 채널은 받지 않습니다) — 응답 시간을 보장하지
+않습니다.
+
 ---
 
 ## 고급 / 선택 기능
