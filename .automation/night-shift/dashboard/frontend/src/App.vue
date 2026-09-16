@@ -11,6 +11,7 @@ import BottleneckPanel from './components/BottleneckPanel.vue'
 import TimeSeriesPanel from './components/TimeSeriesPanel.vue'
 import QueueList from './components/QueueList.vue'
 import CjkRepairPanel from './components/CjkRepairPanel.vue'
+import TsuReviewPanel from './components/TsuReviewPanel.vue'
 import EventLog from './components/EventLog.vue'
 import HelpModal from './components/HelpModal.vue'
 import { formatClockTime } from './format.js'
@@ -184,6 +185,8 @@ onUnmounted(() => {
       :stopped="status?.queue_stopped ?? false"
       :stop-reason="status?.queue_stop_reason ?? null"
     />
+
+    <TsuReviewPanel :review="status?.tsu_review ?? null" />
 
     <CjkRepairPanel :jobs="status?.cjk_repair ?? []" />
 

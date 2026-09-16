@@ -53,6 +53,14 @@ VOLUME_QUEUE: list[str] = [f"Fuller_Complete_Works_Vol{n:02d}" for n in range(1,
 # VOLUME_QUEUE's own hardcoded-list precedent.
 CJK_REPAIR_WATCH_IDENTIFIERS: tuple[str, ...] = ("Dagg_Church_Order", "Hiscox_Standard_Manual")
 
+# Sources that went through the NAE-TSU-REVIEW-WORKFLOW human review gate
+# (NAE/review/human/) — mirrors batch_manager.py's TSU_IDENTIFIERS. The other
+# Fuller volumes (01-07) are ADMITTED but processing-HOLD, not part of this
+# review, so they are intentionally excluded here.
+TSU_REVIEW_IDENTIFIERS: tuple[str, ...] = (
+    "Dagg_Church_Order", "Hiscox_Standard_Manual", "Fuller_Complete_Works_Vol08",
+)
+
 _RUNNER_PATTERN = re.compile(r"NAE\.pipeline\.tsu\.runner --identifier (Fuller_Complete_Works_Vol\d+)")
 # scripts/nae_fuller_cjk_reextract.py — ad-hoc claim-string repair pass,
 # separate from the F2 extraction runner above. Read the same way (ps grep +
