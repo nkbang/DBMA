@@ -1548,7 +1548,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1572,17 +1572,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part1 (1-100/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1604,7 +1597,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1628,17 +1621,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part2 (101-200/449, pool remainder) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1660,7 +1646,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1684,17 +1670,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part2 (101-200/449, pool remainder) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1716,7 +1695,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1740,17 +1719,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part2 (101-200/449, pool remainder) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -1772,7 +1744,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -1796,17 +1768,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -2054,7 +2019,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -2078,17 +2043,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part2 (101-200/449, pool remainder) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -2166,7 +2124,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -2190,17 +2148,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part2 (101-200/449, pool remainder) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -3369,7 +3320,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -3395,17 +3346,10 @@
     "claim_raw": "교회는 世俗적인 것과 영적인 것 모두를 자기의 일들을 관리할 수 있어야 하며, 법으로 보호되어야 한다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part2 (101-200/449, pool remainder) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -4278,7 +4222,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -4304,17 +4248,10 @@
     "claim_raw": "주님의 만찬은 교회 회원들이 그 목적을 위해 모인 채로 참여하는 빵과 포도주의 제공으로서, 그들은 이 служ에서 그들의 대신 죽으심으로 나타난 그리스도의 사랑을 기념하며, 그의 희생의 공로에 대한 믿음과 참여를 영원한 생명의 소망의 유일한 근거로서 고백한다.",
     "cjk_status": "manual_repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part2 (101-200/449, pool remainder) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
