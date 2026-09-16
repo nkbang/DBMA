@@ -412,7 +412,7 @@
     "paragraph": 49,
     "sentence": 0,
     "source_text": "The Greek word ekklesia, rendered \" church \" is derived from a word meaning",
-    "claim": "그리스어 단어 ekklesia는 '교회'로 번역되며, 그 의미는 특정 단어에서 유래한다.",
+    "claim": "Hiscox는 헬라어 ekklesia가 '불러냄을 받음(called out)'을 뜻하는 말에서 유래했다고 설명하며, 이를 '교회'라는 번역어의 어원적 근거로 제시한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -440,6 +440,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191172+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "그리스어 단어 ekklesia는 '교회'로 번역되며, 그 의미는 특정 단어에서 유래한다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "'called out' 어원 설명이 귀속 없이 현대 언어학적 사실처럼 제시됨(어원 오류의 반복 재생산 위험) — Hiscox 귀속 명시로 Q2 보완"
     }
   },
   {
@@ -455,7 +461,7 @@
     "paragraph": 51,
     "sentence": 0,
     "source_text": "\" called out,\" and is used to indicate a company called out from a larger and more general assembly or concourse of people.",
-    "claim": "교회는 더 큰 집회에서 부름받은 공동체이다.",
+    "claim": "Hiscox에 따르면, 신약성경에서 ekklesia는 하나님의 부르심으로 일반 대중 가운데서 구별되어 나온 공동체를 가리킨다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -483,6 +489,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.191177+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "교회는 더 큰 집회에서 부름받은 공동체이다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-15",
+      "reason": "동일한 어원론에 기반한 신학적 정의가 귀속 없이 제시됨 — Hiscox 귀속 명시로 Q2 보완"
     }
   },
   {
@@ -21214,7 +21226,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -21236,6 +21248,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.192725+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28439,7 +28457,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28461,6 +28479,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193250+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -28917,7 +28941,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28941,7 +28965,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "Bingham은 Tertullian 이전에 이에 대한 언급을 찾을 수 없었지만, 이것이 더早期에 발생했을 것이라고 믿었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003968",
@@ -28962,7 +28992,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -28984,6 +29014,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193289+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29152,7 +29188,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29174,6 +29210,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193304+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29440,7 +29482,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29462,6 +29504,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193325+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -29773,7 +29821,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -29795,6 +29843,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193350+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -36059,7 +36113,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -36081,6 +36135,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193844+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -36102,7 +36162,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -36124,6 +36184,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193847+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {

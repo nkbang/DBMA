@@ -59684,7 +59684,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59708,7 +59708,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지구上的 지역 교회에서의 회원資格보다 보편적인 교회의 회원資格이 훨씬 더 중요하다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001219",
@@ -59729,7 +59735,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -59753,7 +59759,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "지방 교회보다 보편적인 교회의 회원資格이 더 중요하다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0001220",
@@ -143542,7 +143554,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -143571,6 +143583,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "batch_0029 part3 (120-179) user-flagged claim text fix, grounded against source_text."
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
