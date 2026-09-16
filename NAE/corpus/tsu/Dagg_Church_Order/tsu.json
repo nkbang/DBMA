@@ -166202,7 +166202,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-DAGG-001",
     "author_id": "dagg_john_l",
@@ -166226,7 +166226,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "초기 기독교 관행에서 침례의 원래 방법인浸礼가 물을 뿌리는 방식으로 바뀐 것은 어린 아이들의 연약함을 이유로 한 부모들의 요청 때문이었다.",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-15",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0003377",
