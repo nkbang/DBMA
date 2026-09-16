@@ -1,7 +1,6 @@
 {
   "schema_version": "1.0.0",
   "batch_id": "batch_0044",
-  "generated_by": "NAE-TSU-4107-EXPANSION-001",
   "requests": [
     {
       "gate_id": "GATE-TSU-0000271",
@@ -31,7 +30,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0000558",
@@ -61,7 +65,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0000977",
@@ -91,7 +100,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001083",
@@ -121,7 +135,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001198",
@@ -151,7 +170,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001210",
@@ -181,7 +205,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001218",
@@ -211,7 +240,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001219",
@@ -241,7 +275,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001298",
@@ -271,7 +310,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001308",
@@ -301,7 +345,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001309",
@@ -331,7 +380,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001352",
@@ -361,7 +415,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001392",
@@ -391,7 +450,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001393",
@@ -421,7 +485,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001394",
@@ -451,7 +520,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001410",
@@ -481,7 +555,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001457",
@@ -511,7 +590,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001561",
@@ -541,7 +625,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(전혀) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001564",
@@ -571,7 +660,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001709",
@@ -601,7 +695,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001723",
@@ -631,7 +730,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(유일한) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001737",
@@ -661,7 +765,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001744",
@@ -691,7 +800,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001793",
@@ -721,7 +835,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001884",
@@ -751,7 +870,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001922",
@@ -781,7 +905,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0001930",
@@ -811,7 +940,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002008",
@@ -841,7 +975,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(반드시) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002166",
@@ -871,7 +1010,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002173",
@@ -901,7 +1045,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Neander)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002442",
@@ -931,7 +1080,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002462",
@@ -961,7 +1115,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002489",
@@ -991,7 +1150,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002510",
@@ -1021,7 +1185,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002527",
@@ -1051,7 +1220,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002530",
@@ -1081,7 +1255,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002535",
@@ -1111,7 +1290,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002556",
@@ -1141,7 +1325,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002562",
@@ -1171,7 +1360,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(일반적으로) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002565",
@@ -1201,7 +1395,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002580",
@@ -1231,7 +1430,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "안식일/제4계명 관련 주장 — Dagg의 특정 해석으로 귀속되어야 하며 침례교 전체 교리로 일반화 금지",
+        "rule": "SABBATH_TOPIC"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002584",
@@ -1261,7 +1465,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "안식일/제4계명 관련 주장 — Dagg의 특정 해석으로 귀속되어야 하며 침례교 전체 교리로 일반화 금지",
+        "rule": "SABBATH_TOPIC"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002588",
@@ -1291,7 +1500,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "안식일/제4계명 관련 주장 — Dagg의 특정 해석으로 귀속되어야 하며 침례교 전체 교리로 일반화 금지",
+        "rule": "SABBATH_TOPIC"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002595",
@@ -1321,7 +1535,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(전체) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002603",
@@ -1351,7 +1570,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "안식일/제4계명 관련 주장 — Dagg의 특정 해석으로 귀속되어야 하며 침례교 전체 교리로 일반화 금지",
+        "rule": "SABBATH_TOPIC"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002608",
@@ -1381,7 +1605,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002609",
@@ -1411,7 +1640,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002610",
@@ -1441,7 +1675,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002622",
@@ -1471,7 +1710,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "안식일/제4계명 관련 주장 — Dagg의 특정 해석으로 귀속되어야 하며 침례교 전체 교리로 일반화 금지",
+        "rule": "SABBATH_TOPIC"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002624",
@@ -1501,7 +1745,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002630",
@@ -1531,7 +1780,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002631",
@@ -1561,7 +1815,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002651",
@@ -1591,7 +1850,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002731",
@@ -1621,7 +1885,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002763",
@@ -1651,7 +1920,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002779",
@@ -1681,7 +1955,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002794",
@@ -1711,7 +1990,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002795",
@@ -1741,7 +2025,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002855",
@@ -1771,7 +2060,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002917",
@@ -1801,7 +2095,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002959",
@@ -1831,7 +2130,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "침례 집례자/방식의 적법성에 관한 주장 — 저자의 특정 논증 범위 확인 필요",
+        "rule": "BAPTISM_ADMIN_TOPIC"
+      }
     },
     {
       "gate_id": "GATE-TSU-0002974",
@@ -1861,7 +2165,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003139",
@@ -1891,7 +2200,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003217",
@@ -1921,7 +2235,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003238",
@@ -1951,7 +2270,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003259",
@@ -1981,7 +2305,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "침례 집례자/방식의 적법성에 관한 주장 — 저자의 특정 논증 범위 확인 필요",
+        "rule": "BAPTISM_ADMIN_TOPIC"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003341",
@@ -2011,7 +2340,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003372",
@@ -2041,7 +2375,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003375",
@@ -2071,7 +2410,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003376",
@@ -2101,7 +2445,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003383",
@@ -2131,7 +2480,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003384",
@@ -2161,7 +2515,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003385",
@@ -2191,7 +2550,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003386",
@@ -2221,7 +2585,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003387",
@@ -2251,7 +2620,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003388",
@@ -2281,7 +2655,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(일반적으로) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003389",
@@ -2311,7 +2690,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003390",
@@ -2341,7 +2725,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(일반적으로) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003391",
@@ -2371,7 +2760,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003392",
@@ -2401,7 +2795,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003393",
@@ -2431,7 +2830,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003394",
@@ -2461,7 +2865,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003395",
@@ -2491,7 +2900,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(유일한) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003396",
@@ -2521,7 +2935,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003397",
@@ -2551,7 +2970,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003398",
@@ -2581,7 +3005,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(일반적으로) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003399",
@@ -2611,7 +3040,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003400",
@@ -2641,7 +3075,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003401",
@@ -2671,7 +3110,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003402",
@@ -2701,7 +3145,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003403",
@@ -2731,7 +3180,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(전체) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003404",
@@ -2761,7 +3215,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003405",
@@ -2791,7 +3250,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003406",
@@ -2821,7 +3285,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003407",
@@ -2851,7 +3320,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003408",
@@ -2881,7 +3355,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003409",
@@ -2911,7 +3390,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(유일한) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003410",
@@ -2941,7 +3425,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003411",
@@ -2971,7 +3460,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003412",
@@ -3001,7 +3495,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003413",
@@ -3031,7 +3530,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003414",
@@ -3061,7 +3565,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003415",
@@ -3091,7 +3600,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003416",
@@ -3121,7 +3635,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003417",
@@ -3151,7 +3670,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003418",
@@ -3181,7 +3705,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003419",
@@ -3211,7 +3740,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003420",
@@ -3241,7 +3775,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003421",
@@ -3271,7 +3810,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003422",
@@ -3301,7 +3845,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003423",
@@ -3331,7 +3880,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003424",
@@ -3361,7 +3915,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003439",
@@ -3391,7 +3950,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003447",
@@ -3421,7 +3985,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003453",
@@ -3451,7 +4020,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003456",
@@ -3481,7 +4055,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003465",
@@ -3511,7 +4090,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(유일한) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003483",
@@ -3541,7 +4125,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003494",
@@ -3571,7 +4160,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003511",
@@ -3601,7 +4195,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003607",
@@ -3631,7 +4230,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003608",
@@ -3661,7 +4265,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003609",
@@ -3691,7 +4300,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003610",
@@ -3721,7 +4335,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003611",
@@ -3751,7 +4370,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003612",
@@ -3781,7 +4405,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003613",
@@ -3811,7 +4440,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003614",
@@ -3841,7 +4475,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003615",
@@ -3871,7 +4510,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003616",
@@ -3901,7 +4545,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003617",
@@ -3931,7 +4580,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003618",
@@ -3961,7 +4615,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003721",
@@ -3991,7 +4650,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003722",
@@ -4021,7 +4685,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003723",
@@ -4051,7 +4720,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003724",
@@ -4081,7 +4755,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003725",
@@ -4111,7 +4790,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(유일한) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003726",
@@ -4141,7 +4825,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003727",
@@ -4171,7 +4860,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003728",
@@ -4201,7 +4895,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003729",
@@ -4231,7 +4930,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003730",
@@ -4261,7 +4965,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003731",
@@ -4291,7 +5000,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003732",
@@ -4321,7 +5035,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003733",
@@ -4351,7 +5070,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003734",
@@ -4381,7 +5105,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003735",
@@ -4411,7 +5140,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003736",
@@ -4441,7 +5175,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003737",
@@ -4471,7 +5210,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003738",
@@ -4501,7 +5245,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003739",
@@ -4531,7 +5280,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003740",
@@ -4561,7 +5315,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003741",
@@ -4591,7 +5350,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003742",
@@ -4621,7 +5385,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003743",
@@ -4651,7 +5420,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003744",
@@ -4681,7 +5455,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003745",
@@ -4711,7 +5490,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003746",
@@ -4741,7 +5525,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003747",
@@ -4771,7 +5560,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003748",
@@ -4801,7 +5595,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003749",
@@ -4831,7 +5630,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003750",
@@ -4861,7 +5665,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003751",
@@ -4891,7 +5700,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003752",
@@ -4921,7 +5735,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003753",
@@ -4951,7 +5770,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003754",
@@ -4981,7 +5805,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003755",
@@ -5011,7 +5840,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003756",
@@ -5041,7 +5875,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003757",
@@ -5071,7 +5910,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003758",
@@ -5101,7 +5945,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003759",
@@ -5131,7 +5980,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003760",
@@ -5161,7 +6015,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003761",
@@ -5191,7 +6050,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003762",
@@ -5221,7 +6085,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003763",
@@ -5251,7 +6120,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003764",
@@ -5281,7 +6155,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003765",
@@ -5311,7 +6190,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003766",
@@ -5341,7 +6225,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003767",
@@ -5371,7 +6260,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003768",
@@ -5401,7 +6295,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003769",
@@ -5431,7 +6330,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003770",
@@ -5461,7 +6365,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(항상) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003771",
@@ -5491,7 +6400,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003772",
@@ -5521,7 +6435,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Scapula)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003773",
@@ -5551,7 +6470,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003774",
@@ -5581,7 +6505,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Robinson)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003775",
@@ -5611,7 +6540,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003776",
@@ -5641,7 +6575,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Stuart)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003777",
@@ -5671,7 +6610,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Stuart)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003778",
@@ -5701,7 +6645,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003779",
@@ -5731,7 +6680,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003780",
@@ -5761,7 +6715,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Taylor)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003781",
@@ -5791,7 +6750,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003782",
@@ -5821,7 +6785,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Taylor)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003783",
@@ -5851,7 +6820,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003784",
@@ -5881,7 +6855,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Calvin)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003785",
@@ -5911,7 +6890,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(전체) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003786",
@@ -5941,7 +6925,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003787",
@@ -5971,7 +6960,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Calvin)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003788",
@@ -6001,7 +6995,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003789",
@@ -6031,7 +7030,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Luther)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003790",
@@ -6061,7 +7065,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Luther)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003791",
@@ -6091,7 +7100,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Luther)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003792",
@@ -6121,7 +7135,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Cave)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003793",
@@ -6151,7 +7170,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(New Testament)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003794",
@@ -6181,7 +7205,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(New Testament)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003795",
@@ -6211,7 +7240,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Dean Alford)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003796",
@@ -6241,7 +7275,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(전체) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003797",
@@ -6271,7 +7310,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Dean Alford)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003798",
@@ -6301,7 +7345,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Dean Alford)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003799",
@@ -6331,7 +7380,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003800",
@@ -6361,7 +7415,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Oriental Church)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003801",
@@ -6391,7 +7450,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Neander)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003802",
@@ -6421,7 +7485,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Neander)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003803",
@@ -6451,7 +7520,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003804",
@@ -6481,7 +7555,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Wesley)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003805",
@@ -6511,7 +7590,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Wesley)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003806",
@@ -6541,7 +7625,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Wesley)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003807",
@@ -6571,7 +7660,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Bom. Bloomfield)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003808",
@@ -6601,7 +7695,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003809",
@@ -6631,7 +7730,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Zwingli)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003810",
@@ -6661,7 +7765,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Wall)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003811",
@@ -6691,7 +7800,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003812",
@@ -6721,7 +7835,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003813",
@@ -6751,7 +7870,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(일반적으로) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003814",
@@ -6781,7 +7905,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(일반적으로) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003815",
@@ -6811,7 +7940,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003819",
@@ -6841,7 +7975,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Pressense)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003822",
@@ -6871,7 +8010,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Ellicott)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003835",
@@ -6901,7 +8045,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(일반적으로) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003845",
@@ -6931,7 +8080,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Wall)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003850",
@@ -6961,7 +8115,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003856",
@@ -6991,7 +8150,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003858",
@@ -7021,7 +8185,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003871",
@@ -7051,7 +8220,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003876",
@@ -7081,7 +8255,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003891",
@@ -7111,7 +8290,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003898",
@@ -7141,7 +8325,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003899",
@@ -7171,7 +8360,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003910",
@@ -7201,7 +8395,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003917",
@@ -7231,7 +8430,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Wall)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003918",
@@ -7261,7 +8465,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003919",
@@ -7291,7 +8500,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003920",
@@ -7321,7 +8535,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(전체) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003921",
@@ -7351,7 +8570,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Dr. Doddridge)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003922",
@@ -7381,7 +8605,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Dr. Doddridge)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003923",
@@ -7411,7 +8640,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Dr. Doddridge)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003924",
@@ -7441,7 +8675,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Dr. Dick)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003925",
@@ -7471,7 +8710,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Hibbard)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003926",
@@ -7501,7 +8745,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "원문에 제3자 인용(Hibbard)이 있으나 claim에 귀속 표현이 없음 — Dagg/Hiscox 또는 인용 대상 귀속 필요",
+        "rule": "UNATTRIBUTED_CITATION"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003927",
@@ -7531,7 +8780,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003928",
@@ -7561,7 +8815,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003929",
@@ -7591,7 +8850,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003930",
@@ -7621,7 +8885,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003931",
@@ -7651,7 +8920,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003932",
@@ -7681,7 +8955,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003933",
@@ -7711,7 +8990,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003934",
@@ -7741,7 +9025,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003935",
@@ -7771,7 +9060,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003936",
@@ -7801,7 +9095,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003937",
@@ -7831,7 +9130,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003938",
@@ -7861,7 +9165,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003939",
@@ -7891,7 +9200,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003940",
@@ -7921,7 +9235,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003941",
@@ -7951,7 +9270,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003942",
@@ -7981,7 +9305,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003943",
@@ -8011,7 +9340,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003944",
@@ -8041,7 +9375,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003945",
@@ -8071,7 +9410,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003946",
@@ -8101,7 +9445,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "C",
+        "reason": "claim에 절대적/일반화 표현(모든) 포함 — 원문이 실제로 그 범위까지 주장하는지 확인 필요",
+        "rule": "ABSOLUTE_TERM"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003947",
@@ -8131,7 +9480,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003948",
@@ -8161,7 +9515,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003949",
@@ -8191,7 +9550,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003950",
@@ -8221,7 +9585,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003951",
@@ -8251,7 +9620,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     },
     {
       "gate_id": "GATE-TSU-0003952",
@@ -8281,7 +9655,12 @@
           "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
         }
       ],
-      "decision_status": "PENDING"
+      "decision_status": "PENDING",
+      "suggested": {
+        "verdict": "A",
+        "reason": "claim이 원문을 직접적으로 충실히 반영하는 것으로 보임(자동 스캔 기준) — 확인 필요",
+        "rule": "DEFAULT_LOW_RISK"
+      }
     }
   ]
 }
