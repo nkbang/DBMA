@@ -18330,7 +18330,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18354,17 +18354,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -18386,7 +18379,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -18410,17 +18403,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part3 (201-300/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19178,7 +19164,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19209,17 +19195,10 @@
       "reason": "원문은 Pedobaptist측의 답변으로 명시되어 있는데 귀속 없이 일반 정의처럼 제시됨 — 귀속 추가로 Q2 보완"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19241,7 +19220,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19265,17 +19244,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part3 (201-300/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19297,7 +19269,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19321,17 +19293,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part3 (201-300/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -19353,7 +19318,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -19379,17 +19344,10 @@
     "claim_raw": "기독교 세례는 물을 뿌リ거나 부어주는 것이 아니라 물에 잠기는 것을 의미한다.",
     "cjk_status": "manual_repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part3 (201-300/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
