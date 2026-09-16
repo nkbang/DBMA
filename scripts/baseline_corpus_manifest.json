@@ -1,0 +1,276 @@
+{
+  "_note": "배포판 기본 동봉(baseline) 코퍼스 매니페스트 — 전량 퍼블릭 도메인 (docs/RELEASE_ASSET_PROVENANCE.md, docs/DBMA_S2_4_CORPUS_EXPANSION_REPORT_001.md 참고). scripts/reset_for_beta.py가 초기화 후 이 목록으로 코퍼스를 재적재한다.",
+  "source_root": "~/NAE_CORPUS_RAW/raw/archive_org/sermons",
+  "source_file_in_dir": "ocr.txt",
+  "count": 67,
+  "entries": [
+    {
+      "filename": "Broadus_Lectures_on_History_of_Preaching.txt",
+      "source_dir": "Broadus_Lectures_on_History_of_Preaching"
+    },
+    {
+      "filename": "Broadus_Preparation_and_Delivery_of_Sermons.txt",
+      "source_dir": "Broadus_Preparation_and_Delivery_of_Sermons"
+    },
+    {
+      "filename": "Dargan_History_of_Preaching_Vol01.txt",
+      "source_dir": "Dargan_History_of_Preaching_Vol01"
+    },
+    {
+      "filename": "Dargan_History_of_Preaching_Vol02.txt",
+      "source_dir": "Dargan_History_of_Preaching_Vol02"
+    },
+    {
+      "filename": "Hovey_Heaven_Six_Sermons.txt",
+      "source_dir": "Hovey_Heaven_Six_Sermons"
+    },
+    {
+      "filename": "Keach_Tropologia_1681.txt",
+      "source_dir": "Keach_Tropologia_1681"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol01.txt",
+      "source_dir": "Maclaren_Expositions_Vol01"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol02.txt",
+      "source_dir": "Maclaren_Expositions_Vol02"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol03.txt",
+      "source_dir": "Maclaren_Expositions_Vol03"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol04.txt",
+      "source_dir": "Maclaren_Expositions_Vol04"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol05.txt",
+      "source_dir": "Maclaren_Expositions_Vol05"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol06.txt",
+      "source_dir": "Maclaren_Expositions_Vol06"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol07.txt",
+      "source_dir": "Maclaren_Expositions_Vol07"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol08.txt",
+      "source_dir": "Maclaren_Expositions_Vol08"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol09.txt",
+      "source_dir": "Maclaren_Expositions_Vol09"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol11.txt",
+      "source_dir": "Maclaren_Expositions_Vol11"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol12.txt",
+      "source_dir": "Maclaren_Expositions_Vol12"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol14.txt",
+      "source_dir": "Maclaren_Expositions_Vol14"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol15.txt",
+      "source_dir": "Maclaren_Expositions_Vol15"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol16.txt",
+      "source_dir": "Maclaren_Expositions_Vol16"
+    },
+    {
+      "filename": "Maclaren_Expositions_Vol17.txt",
+      "source_dir": "Maclaren_Expositions_Vol17"
+    },
+    {
+      "filename": "Spurgeon_Commenting_and_Commentaries.txt",
+      "source_dir": "Spurgeon_Commenting_and_Commentaries"
+    },
+    {
+      "filename": "Spurgeon_Evening_by_Evening.txt",
+      "source_dir": "Spurgeon_Evening_by_Evening"
+    },
+    {
+      "filename": "Spurgeon_Lectures_to_My_Students.txt",
+      "source_dir": "Spurgeon_Lectures"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol00.txt",
+      "source_dir": "Spurgeon_MTP_Vol00"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol03.txt",
+      "source_dir": "Spurgeon_MTP_Vol03"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol04.txt",
+      "source_dir": "Spurgeon_MTP_Vol04"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol05.txt",
+      "source_dir": "Spurgeon_MTP_Vol05"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol06.txt",
+      "source_dir": "Spurgeon_MTP_Vol06"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol07.txt",
+      "source_dir": "Spurgeon_MTP_Vol07"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol08.txt",
+      "source_dir": "Spurgeon_MTP_Vol08"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol09.txt",
+      "source_dir": "Spurgeon_MTP_Vol09"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol10.txt",
+      "source_dir": "Spurgeon_MTP_Vol10"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol11.txt",
+      "source_dir": "Spurgeon_MTP_Vol11"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol12.txt",
+      "source_dir": "Spurgeon_MTP_Vol12"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol13.txt",
+      "source_dir": "Spurgeon_MTP_Vol13"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol15.txt",
+      "source_dir": "Spurgeon_MTP_Vol15"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol19.txt",
+      "source_dir": "Spurgeon_MTP_Vol19"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol28.txt",
+      "source_dir": "Spurgeon_MTP_Vol28"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol30.txt",
+      "source_dir": "Spurgeon_MTP_Vol30"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol31.txt",
+      "source_dir": "Spurgeon_MTP_Vol31"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol32.txt",
+      "source_dir": "Spurgeon_MTP_Vol32"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol34.txt",
+      "source_dir": "Spurgeon_MTP_Vol34"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol36.txt",
+      "source_dir": "Spurgeon_MTP_Vol36"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol39.txt",
+      "source_dir": "Spurgeon_MTP_Vol39"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol41.txt",
+      "source_dir": "Spurgeon_MTP_Vol41"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol46.txt",
+      "source_dir": "Spurgeon_MTP_Vol46"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol47.txt",
+      "source_dir": "Spurgeon_MTP_Vol47"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol48.txt",
+      "source_dir": "Spurgeon_MTP_Vol48"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol50.txt",
+      "source_dir": "Spurgeon_MTP_Vol50"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol51.txt",
+      "source_dir": "Spurgeon_MTP_Vol51"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol52.txt",
+      "source_dir": "Spurgeon_MTP_Vol52"
+    },
+    {
+      "filename": "Spurgeon_MTP_Vol53.txt",
+      "source_dir": "Spurgeon_MTP_Vol53"
+    },
+    {
+      "filename": "Spurgeon_Metropolitan_Tabernacle_Pulpit_Vol01.txt",
+      "source_dir": "Spurgeon_MTP_Vol01"
+    },
+    {
+      "filename": "Spurgeon_Metropolitan_Tabernacle_Pulpit_Vol02.txt",
+      "source_dir": "Spurgeon_MTP_Vol02"
+    },
+    {
+      "filename": "Spurgeon_Morning_by_Morning.txt",
+      "source_dir": "Spurgeon_Morning_by_Morning"
+    },
+    {
+      "filename": "Spurgeon_NPSP_A.txt",
+      "source_dir": "Spurgeon_NPSP_A"
+    },
+    {
+      "filename": "Spurgeon_NPSP_B.txt",
+      "source_dir": "Spurgeon_NPSP_B"
+    },
+    {
+      "filename": "Spurgeon_NPSP_C.txt",
+      "source_dir": "Spurgeon_NPSP_C"
+    },
+    {
+      "filename": "Spurgeon_NPSP_D.txt",
+      "source_dir": "Spurgeon_NPSP_D"
+    },
+    {
+      "filename": "Spurgeon_NPSP_E.txt",
+      "source_dir": "Spurgeon_NPSP_E"
+    },
+    {
+      "filename": "Spurgeon_NPSP_F.txt",
+      "source_dir": "Spurgeon_NPSP_F"
+    },
+    {
+      "filename": "Spurgeon_Till_He_Come.txt",
+      "source_dir": "Spurgeon_Till_He_Come"
+    },
+    {
+      "filename": "Whitefield_Works_Vol01.txt",
+      "source_dir": "Whitefield_Works_Vol01"
+    },
+    {
+      "filename": "Whitefield_Works_Vol02.txt",
+      "source_dir": "Whitefield_Works_Vol02"
+    },
+    {
+      "filename": "Whitefield_Works_Vol03.txt",
+      "source_dir": "Whitefield_Works_Vol03"
+    },
+    {
+      "filename": "Whitefield_Works_Vol04.txt",
+      "source_dir": "Whitefield_Works_Vol04"
+    }
+  ]
+}
