@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "batch_size": 107,
+  "batch_size": 96,
   "batches": {
     "batch_0001": {
       "batch_number": 1,
@@ -403,6 +403,13 @@
       "batch_number": 36,
       "tsu_count": 107,
       "first_tsu_id": "TSU-0000558",
+      "last_tsu_id": "TSU-0004122",
+      "status": "requests_generated"
+    },
+    "batch_0037": {
+      "batch_number": 37,
+      "tsu_count": 96,
+      "first_tsu_id": "TSU-0001198",
       "last_tsu_id": "TSU-0004122",
       "status": "requests_generated"
     }
