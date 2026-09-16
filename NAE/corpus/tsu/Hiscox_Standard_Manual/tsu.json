@@ -412,7 +412,7 @@
     "paragraph": 49,
     "sentence": 0,
     "source_text": "The Greek word ekklesia, rendered \" church \" is derived from a word meaning",
-    "claim": "Hiscox는 헬라어 ekklesia가 '불러냄을 받음(called out)'을 뜻하는 말에서 유래했다고 설명하며, 이를 '교회'라는 번역어의 어원적 근거로 제시한다.",
+    "claim": "Hiscox는 헬라어 ekklesia가 '불러냄을 받음'이라는 뜻의 말에서 유래했으며, 일반 대중 가운데서 불려 나온 공동체를 가리킨다고 설명한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -441,11 +441,11 @@
       "resolved_at": "2026-08-08T18:04:56.191172+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "그리스어 단어 ekklesia는 '교회'로 번역되며, 그 의미는 특정 단어에서 유래한다.",
+    "claim_raw": "Hiscox는 헬라어 ekklesia가 '불러냄을 받음(called out)'을 뜻하는 말에서 유래했다고 설명하며, 이를 '교회'라는 번역어의 어원적 근거로 제시한다.",
     "claim_correction": {
       "corrected_by": "CUE",
-      "corrected_at": "2026-09-15",
-      "reason": "'called out' 어원 설명이 귀속 없이 현대 언어학적 사실처럼 제시됨(어원 오류의 반복 재생산 위험) — Hiscox 귀속 명시로 Q2 보완"
+      "corrected_at": "2026-09-16",
+      "reason": "'교회'라는 한국어 번역어 자체의 어원적 근거로 확장 서술된 부분 삭제, 원문 범위(ekklesia 어원+용례)로 한정 — Q1/Q2 보완"
     }
   },
   {
@@ -461,7 +461,7 @@
     "paragraph": 51,
     "sentence": 0,
     "source_text": "\" called out,\" and is used to indicate a company called out from a larger and more general assembly or concourse of people.",
-    "claim": "Hiscox에 따르면, 신약성경에서 ekklesia는 하나님의 부르심으로 일반 대중 가운데서 구별되어 나온 공동체를 가리킨다.",
+    "claim": "Hiscox에 따르면, 신약의 ekklesia는 하나님의 부르심으로 일반 대중 가운데서 구별되어 나온 성도들의 공동체를 가리킨다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -490,11 +490,11 @@
       "resolved_at": "2026-08-08T18:04:56.191177+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "교회는 더 큰 집회에서 부름받은 공동체이다.",
+    "claim_raw": "Hiscox에 따르면, 신약성경에서 ekklesia는 하나님의 부르심으로 일반 대중 가운데서 구별되어 나온 공동체를 가리킨다.",
     "claim_correction": {
       "corrected_by": "CUE",
-      "corrected_at": "2026-09-15",
-      "reason": "동일한 어원론에 기반한 신학적 정의가 귀속 없이 제시됨 — Hiscox 귀속 명시로 Q2 보완"
+      "corrected_at": "2026-09-16",
+      "reason": "ekklesia의 사전적 정의처럼 읽히지 않도록 Hiscox 귀속과 '성도들의 공동체'로 명확화 — Q2 보완"
     }
   },
   {
@@ -33981,7 +33981,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -34005,7 +34005,13 @@
       "resolver_version": "1.0.0"
     },
     "claim_raw": "그 당시 존재하는 그리스도의 첫 번째 제자의真正한 대표자들은 기독교 신앙을 지녔으며",
-    "cjk_status": "repaired"
+    "cjk_status": "repaired",
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
+    }
   },
   {
     "id": "TSU-0004069",
@@ -35357,7 +35363,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35386,6 +35392,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "원문의 hedge('if not to the apostolic age, as some confidently assert')가 누락되어 단정적 주장으로 바뀜 — Q1 보완"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -35754,7 +35766,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -35782,6 +35794,12 @@
       "corrected_by": "CUE",
       "corrected_at": "2026-09-15",
       "reason": "원문의 핵심(교파적 동조가 없는 외부 역사가의 증언이라서 더 가치 있다는 논지)이 '교회와 관련된 사람들의 증거'로 주체가 반전됨 — 원문 대로 정정하고 Hiscox 귀속 추가로 Q1 정정"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -36048,7 +36066,7 @@
     "paragraph": 831,
     "sentence": 1,
     "source_text": "He has been called their founder, because he organized the first church, and was intimately connected with their early history.",
-    "claim": "로저 윌리엄스는 미국의 첫 교회를 조직하고 초기 역사와 밀접한 관련이 있었기 때문에 종교 단체의 창시자로 불린다.",
+    "claim": "Hiscox에 따르면, 로저 윌리엄스는 미국 침례교의 형성과 초기 역사에 밀접하게 연관되었고, 첫 침례교회를 조직했다는 이유로 침례교의 창시자로 불리기도 했다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -36076,6 +36094,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193833+00:00",
       "resolver_version": "1.0.0"
+    },
+    "claim_raw": "로저 윌리엄스는 미국의 첫 교회를 조직하고 초기 역사와 밀접한 관련이 있었기 때문에 종교 단체의 창시자로 불린다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "'미국의 첫 교회'라는 과확장 표현을 '첫 침례교회'로 한정하고 Hiscox 귀속 추가 — Q1/Q3 보완"
     }
   },
   {
@@ -36338,7 +36362,7 @@
     "paragraph": 833,
     "sentence": 4,
     "source_text": "Thus Roger Williams became the first ruler, and Rhode Island the first State which ever gave entire freedom to all persons to worship God, according to their own choice, without dictation or interference from civil or ecclesiastical authorities.",
-    "claim": "로저 윌리엄스는 모든 사람에게 자신의 선택에 따라 하나님을 예배할 수 있는 완전한 자유를 부여한 최초의 통치자였으며, 로드아일랜드는 민간 또는 교회 당국의 간섭이나 지시 없이 이러한 자유를 제공한 최초의 국가였다.",
+    "claim": "Hiscox는 로저 윌리엄스와 로드아일랜드가 민간 및 교회 권력의 간섭 없이 모든 사람에게 예배의 자유를 부여한 최초의 사례였다고 평가한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -36367,8 +36391,13 @@
       "resolved_at": "2026-08-08T18:04:56.193857+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "로저 윌리엄스는 모든 사람에게 자신의 선택에 따라 하나님을 예배할 수 있는 완전한 자유를 부여한 최초의 통치자였으며, 로드아일랜드는 민간 또는 교회 당국의 간섭이나 지시 없이 ऐस한 자유를 제공한 최초의 국가였다.",
-    "cjk_status": "manual_repaired"
+    "claim_raw": "로저 윌리엄스는 모든 사람에게 자신의 선택에 따라 하나님을 예배할 수 있는 완전한 자유를 부여한 최초의 통치자였으며, 로드아일랜드는 민간 또는 교회 당국의 간섭이나 지시 없이 이러한 자유를 제공한 최초의 국가였다.",
+    "cjk_status": "manual_repaired",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "'최초의 통치자/국가'라는 절대적 우선권 주장에 Hiscox 귀속을 명시해 저자의 평가임을 분명히 함 — Q2 보완"
+    }
   },
   {
     "id": "TSU-0004117",
@@ -36636,7 +36665,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -36658,6 +36687,12 @@
       "crosswalk_id": "260d31b2331a3f8b",
       "resolved_at": "2026-08-08T18:04:56.193877+00:00",
       "resolver_version": "1.0.0"
+    },
+    "review_metadata": {
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   }
 ]
