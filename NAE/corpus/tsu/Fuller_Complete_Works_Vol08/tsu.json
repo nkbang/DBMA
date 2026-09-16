@@ -79072,21 +79072,20 @@
     "paragraph": 1311,
     "sentence": 4,
     "source_text": "The church at Pergamos is reproved for having those among them who held the doctrine of Balaam, and of the Nicolaitans.",
-    "claim": "베드로전서 교회는 발라암과 니고라티안의 교리를 지닌 사람들을 용인한 것에 대해 책망을 받았다.",
+    "claim": "버가모 교회는 발람과 니골라당의 교리를 지닌 자들을 용인한 것에 대해 책망을 받았다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "verified",
+    "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
-    "claim_raw": "베드로전서 교회는 발라암과 니고라티안의 교리를 지닌 사람들을容認한 것에 대해 책망을 받았다.",
+    "claim_raw": "베드로전서 교회는 발라암과 니고라티안의 교리를 지닌 사람들을 용인한 것에 대해 책망을 받았다.",
     "cjk_status": "repaired",
-    "review_metadata": {
-      "reviewer": "David",
-      "review_date": "2026-09-16",
-      "review_decision": "approved",
-      "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "원문 'The church at Pergamos'(버가모 교회, 계 2:14-15)를 '베드로전서 교회'로 오역 — ADR-030 Amendment C C1 검토(RESULT-001/002) 및 CUE 최종검증에서 확인된 유일한 진짜 Q1 오류. 성경 지명을 존재하지 않는 서명으로 대체한 명백한 오류로 재작성"
     }
   },
   {
