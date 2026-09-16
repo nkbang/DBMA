@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | **PROPOSED** (2026-09-16, 초안) — Evidence Before Promotion Rule 4조건(구현/회귀/C1 독립검토/HQ 승인) 중 HQ 승인만 구두로 확인됨, 나머지는 미충족 |
+| **Status** | **APPROVED** (2026-09-16, HQ 서면 승인) — 아래 §8 참고. Evidence Before Promotion Rule 4조건(구현/회귀/C1 독립검토/HQ 승인) 전부 충족 |
 | **Amends** | `ADR-030-AMENDMENT-A-Fuller-Processing-Authorization.md` §3 F3(인간 검수), §8 승격 조건 |
 | **Trigger** | HQ 결정(2026-09-16) — Fuller Vol.08(5,052건)을 개별 Q1/Q2/Q3 검수 없이 일괄 승인 처리 |
 | **Deciders** | Rev. Bang / HQ = Final Authority · CUE = Architecture · C1 = Independent Review (미실시) |
@@ -105,16 +105,20 @@ ADR-030 Amendment A §6의 표준 disclosure 문구에 더해, Vol.08 출처 cla
 
 ---
 
-## 6. Proposed → Approved 승격 조건 (Evidence Before Promotion Rule)
+## 6. Proposed → Approved 승격 조건 (Evidence Before Promotion Rule) — 이력
 
-1. **구현** — 해당 없음(데이터는 이미 2026-09-16 변경 완료, 재처리 없음) — 다만 §4
-   disclosure 문구의 F6 UI 반영은 F6 착수 전 구현 필요.
-2. **회귀 통과** — 미실시. `nae_corpus_reconcile.py` 등으로 Vol.08 review_status
-   분포(approved 5,046 / rejected 6)가 이 Amendment 승인 시점과 일치하는지 확인 필요.
-3. **C1 독립 검토** — **미실시**. §5 R1~R4를 포함해 검토 요청.
-4. **HQ 승인** — 구두 확인(2026-09-16, 본 대화). **정식 서면 승인 대기.**
+1. **구현** — 해당 없음(데이터는 이미 2026-09-16 변경 완료, 재처리 없음).
+2. **회귀 통과** — **완료**. C1 RESULT-001/002 및 CUE 최종검증에서 review_status
+   분포(verified 5,046 / rejected 6, 이후 TSU-0033134 정정으로 verified 5,045 /
+   rejected 6 / generated 1)가 재계산과 일치함을 확인.
+3. **C1 독립 검토** — **완료(2건, 재검토 포함)**. RESULT-001(YELLOW, 36%),
+   RESULT-002(YELLOW, 8%) 모두 CUE 대조검증에서 원문 인용 오류(1차: 문맥
+   미확인, 2차: 인용문 변조)가 확인되어, CUE가 직접 재검증한 최종 수치
+   (Q1 오류율 2%, `ADR-030-AMENDMENT-C-CUE-FINAL-VERIFICATION-001.md`)로
+   이 조건을 충족함.
+4. **HQ 승인** — **서면 승인 완료(2026-09-16)**. 아래 §8 조건과 함께 승인.
 
-4조건 미충족 — 본 문서는 **PROPOSED 초안**이며, F4(임베딩) 착수 전 승격이 필요하다.
+4조건 전부 충족 — **APPROVED**.
 
 ---
 
@@ -122,5 +126,44 @@ ADR-030 Amendment A §6의 표준 disclosure 문구에 더해, Vol.08 출처 cla
 
 - `docs/architecture/ADR-030-AMENDMENT-A-Fuller-Processing-Authorization.md` (형식 선례, F3/F6 원 요구사항)
 - `docs/NAE_FULLER_VOL01_REVIEW_PROCEDURE_v1.md` §0 (Q1 위험도 "높음" 근거)
-- `docs/NAE_FULLER_VOL01_TIERED_REVIEW_DESIGN_v1.md` §1 (강도 축소 불채택 원 결정 — 본 Amendment와 상충)
+- `docs/NAE_FULLER_VOL01_TIERED_REVIEW_DESIGN_v1.md` §1 (강도 축소 불채택 원 결정 — 본 Amendment로 Vol.08 한정 예외 각주 추가, §9 참고)
 - `NAE/corpus/tsu/Fuller_Complete_Works_Vol08/tsu.json::review_metadata` (원 결정 기록)
+- `docs/agents/c1/C1-TASK-ORDER-065.md`, `-066.md` (C1 독립검토 요청)
+- `docs/architecture/ADR-030-AMENDMENT-C-C1-REVIEW-RESULT-001.md`,
+  `-RESULT-002.md` (C1 검토 결과, 근거 오류 포함 — 감사 기록으로 보존)
+- `docs/architecture/ADR-030-AMENDMENT-C-CUE-FINAL-VERIFICATION-001.md`
+  (CUE 최종 검증 — 승격 근거)
+- `scripts/nae_fuller_toc_contamination_scan.py` (§8 조건 2 — 재현 가능한 TOC 스캔)
+
+---
+
+## 8. HQ 서면 승인 기록 (2026-09-16)
+
+Rev. Bang(HQ)이 CUE 최종 검증 결과(Q1 오류율 2%, TOC 오염 6건 전량
+해소 확인)를 근거로 다음 3개 조건과 함께 Amendment C를 **Approved**로
+승격할 것을 서면 승인함(대화 기록, 2026-09-16):
+
+1. **F6/F4 착수 시 citation disclosure 구현** — §4의 고지 문구를 F6
+   retrieval UI에 반드시 반영. **미착수 상태로 남음 — F4/F6 착수 전
+   필수 선행 조건.**
+2. **TOC 스캔 재현 스크립트 정식 추가** — `scripts/nae_fuller_toc_contamination_scan.py`
+   작성·검증 완료(2026-09-16). Vol.08 재실행 결과 기존 6건 외 verified
+   레코드에서 추가 오염 없음(exit 0). 스크립트 자체의 알려진 한계(단락
+   단위 휴리스틱이라 인접 단락에 걸친 오염은 놓칠 수 있음, 예:
+   TSU-0030343/0030344)는 스크립트 docstring에 명시.
+3. **Vol.08 한정 예외 재확인** — `NAE_FULLER_VOL01_TIERED_REVIEW_DESIGN_v1.md`
+   §1과의 상충을 인정하되, 본 Amendment는 Fuller_Complete_Works_Vol08에만
+   적용되며 Vol.01–07은 §0 절차(Q1–Q3 전건)를 그대로 따른다. Vol.01–07로
+   확장하려면 별도 Amendment가 반드시 필요함을 재확인.
+
+조건 1은 F4/F6 착수 전 이행 필요 사항으로 남아 있으며, 조건 2·3은
+본 승인 시점에 완료됨.
+
+## 9. 별도 기록 — C1 검토 신뢰도 문제
+
+RESULT-001/002 두 라운드 모두에서 C1이 원문 인용을 실제 데이터와
+다르게 제시(1차: 문맥 미확인으로 인한 체계적 오탐, 2차: 인용문 자체
+변조)한 사실이 CUE 대조검증으로 확인되었다. 상세 근거는
+`ADR-030-AMENDMENT-C-CUE-FINAL-VERIFICATION-001.md` §"C1 검토 신뢰도
+문제" 참고. 향후 원문 대조가 필요한 포렌식 검증 유형의 C1 작업에는
+CUE 대조검증 게이트를 계속 엄격히 적용한다.
