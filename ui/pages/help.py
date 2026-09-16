@@ -5,7 +5,10 @@ Stitch "도움말" 화면의 보이는 흐름을 실제 Streamlit 앱에 맞춰 
 
 import streamlit as st
 
+from core.self_diagnostic import run_self_diagnostic
 from ui.theme.colors import THEME
+
+_STATUS_ICON = {"정상": "check_circle", "확인 필요": "info", "오류": "error"}
 
 _FONT_LINK = """
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -148,4 +151,53 @@ def render_help_page() -> None:
             st.session_state["help_example_open"] = title
             st.info(detail)
 
-    st.caption("추가 문의사항은 관리자에게 문의하세요.")
+    _render_self_diagnostic_section()
+
+    st.caption(
+        "이 앱은 별도 유료 지원이 제공되지 않는 베타 버전입니다(as-is). "
+        "문제가 있으면 위 자가 진단 결과를 확인한 뒤, 그래도 해결되지 않으면 "
+        "관리자에게 문의해 주세요."
+    )
+
+
+def _render_self_diagnostic_section() -> None:
+    """[S5-3] 자가 진단 — 사용자가 스스로 눌러 앱 상태를 확인할 수 있게
+    한다. David에게 로그를 보내지 않고도 "무엇이 문제인지"를 먼저
+    좁힐 수 있도록 하는 1차 방어선이다."""
+    st.markdown(
+        f"<h3 style=\"margin: 2rem 0 1rem; color: {THEME.TEXT_SECONDARY}; font-size: 20px;\">앱 상태 자가 진단</h3>",
+        unsafe_allow_html=True,
+    )
+    st.caption("문제가 있어 보일 때 눌러보세요 — Ollama 연결, 필수 모델, 디스크 여유, 성경 본문, 자료 건수를 확인합니다.")
+
+    if st.button("자가 진단 실행", key="help_run_self_diagnostic", icon=":material/health_and_safety:"):
+        with st.spinner("확인하는 중..."):
+            st.session_state["help_diagnostic_results"] = run_self_diagnostic()
+
+    results = st.session_state.get("help_diagnostic_results")
+    if not results:
+        return
+
+    for r in results:
+        icon = _STATUS_ICON.get(r.status, "help")
+        if r.status == "정상":
+            bg, fg = THEME.STATUS_SUCCESS_BG, THEME.STATUS_SUCCESS
+        elif r.status == "확인 필요":
+            bg, fg = THEME.STATUS_WARNING_BG, THEME.STATUS_WARNING
+        else:
+            bg, fg = THEME.STATUS_ERROR_BG, THEME.STATUS_ERROR
+        st.markdown(
+            f"""
+            <div style="
+                display: flex; align-items: flex-start; gap: 10px;
+                background: {bg}; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px;
+            ">
+                <span class="material-symbols-outlined" style="color: {fg}; font-size: 20px;">{icon}</span>
+                <div>
+                    <div style="font-weight: 600; color: {THEME.TEXT_PRIMARY}; font-size: 14px;">{r.title} — {r.status}</div>
+                    <div style="font-size: 13px; color: {THEME.TEXT_SECONDARY};">{r.detail}</div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
