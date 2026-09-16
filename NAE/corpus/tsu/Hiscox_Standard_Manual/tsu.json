@@ -21749,7 +21749,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -21773,17 +21773,10 @@
       "resolver_version": "1.0.0"
     },
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -21855,7 +21848,7 @@
     "paragraph": 547,
     "sentence": 0,
     "source_text": "Dr. Wall, whose learned and laborious researches in connection with his exhaustive work on the History of Infant Baptism left little for others to discover in this field of scholarship, says : \" The Greek Church in all its branches does still use immersion, and 96 STANDARD MANUAL",
-    "claim": "그리스도 교회 모든 지파는 여전히 침례를 사용한다.",
+    "claim": "Dr. Wall에 따르면, 그리스 정교회는 그 모든 지파에서 여전히 침수 방식을 사용한다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -21896,6 +21889,12 @@
         "review_notes": null
       },
       "superseded_review_status": "verified"
+    },
+    "claim_raw": "그리스도 교회 모든 지파는 여전히 침례를 사용한다.",
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "원문 'The Greek Church in all its branches'(그리스 정교회의 모든 지파)를 '그리스도 교회 모든 지파'로 오역해 지시대상이 전혀 다른 명제가 됨 - Q1 정정"
     }
   },
   {
@@ -23601,7 +23600,7 @@
     "paragraph": 587,
     "sentence": 3,
     "source_text": "Here was the germ of the pernicious dogma of \" baptismal regeneration,\" the foundation alike of infant baptism, and of sprinkling instead of immersion.",
-    "claim": "세례의 회생 교리는 유아 세례와 뿌림 대신에 물에 잠김을 기반으로 한다.",
+    "claim": "세례중생(baptismal regeneration) 교리는 유아세례와, 침수 대신 뿌림을 사용하는 관행 둘 다의 기초가 되었다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -23630,7 +23629,7 @@
       "resolved_at": "2026-08-08T18:04:56.192848+00:00",
       "resolver_version": "1.0.0"
     },
-    "claim_raw": "세례의 회생 교리는 유아 세례와 뿌림 대신에浸礼를 기반으로 한다.",
+    "claim_raw": "세례의 회생 교리는 유아 세례와 뿌림 대신에 물에 잠김을 기반으로 한다.",
     "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": null,
@@ -23644,6 +23643,11 @@
         "review_notes": "batch_0033 part4 (301-400/449) human review."
       },
       "superseded_review_status": "verified"
+    },
+    "claim_correction": {
+      "corrected_by": "CUE",
+      "corrected_at": "2026-09-16",
+      "reason": "원문은 세례중생 교리가 유아세례/뿌림 관행의 '기초가 되었다'는 인과관계인데 claim이 이를 반대로(유아세례/뿌림이 세례중생 교리의 기반) 뒤집음 - Q1 정정"
     }
   },
   {
@@ -23861,7 +23865,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -23887,17 +23891,10 @@
     "claim_raw": "공개 영 ヾ은 누구든지 자격이 있다고 믿는 사람이 주님의 식탁에 오도록 허용하는 것입니다.",
     "cjk_status": "manual_repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -24271,7 +24268,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -24297,17 +24294,10 @@
     "claim_raw": "침례교도와 유아세례교도는 침례의 구성 요소에 대해 의견이 다르며, 하나는 뿌림을 거부하고 다른 하나는 유효성을接受한다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part4 (301-400/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -25171,7 +25161,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -25197,17 +25187,10 @@
     "claim_raw": "초기 교회는 사도들의 가르침, 교제, 빵을 떼어 쓰고, 기도에坚持했다.",
     "cjk_status": "repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part4 (301-400/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26278,7 +26261,7 @@
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26304,17 +26287,10 @@
     "claim_raw": "주님의 신실함보다 제자에 대한 애정이 우리를 더 많이左右해서는 안 된다.",
     "cjk_status": "manual_repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": "batch_0033 part4 (301-400/449) human review."
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
@@ -26336,7 +26312,7 @@
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
-    "review_status": "generated",
+    "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "source_id": "BAP-CHURCH-HISCOX",
     "author_id": "hiscox_edward_t",
@@ -26362,17 +26338,10 @@
     "claim_raw": "우리는 주님께 대한 충성보다 제자들을 향한 애정이 우리를 더 많이左右해서는 안 된다.",
     "cjk_status": "manual_repaired",
     "review_metadata": {
-      "reviewer": null,
-      "review_date": null,
-      "review_decision": "pending_rereview",
-      "review_notes": "batch_0033의 '표본 확인 후 나머지 일괄 승인' 방식이 F3 개별 Q1/Q2/Q3 검수 요건(ADR-030 Amendment A §3)을 충족하지 못해 무효화됨 (2026-09-16, 사용자 확인). review_status를 generated로 되돌리고 재검수 대기.",
-      "superseded_review_metadata": {
-        "reviewer": "David",
-        "review_date": "2026-09-15",
-        "review_decision": "approved",
-        "review_notes": null
-      },
-      "superseded_review_status": "verified"
+      "reviewer": "David",
+      "review_date": "2026-09-16",
+      "review_decision": "approved",
+      "review_notes": null
     }
   },
   {
