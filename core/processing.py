@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import json
+import re
 import shutil
 import traceback
 import logging
@@ -407,6 +408,117 @@ def mark_processed(output_dir: str, filename: str):
     state_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+# ── 사이드카 메타데이터 (DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md) ────
+#
+# D-1(파일 규약): 원본과 같은 디렉터리에 "전체 파일명 + .meta.json".
+# D-4(호출 위치): extract_text_from_file()의 "파일 자신의 내장 메타데이터만"
+# 계약을 지키기 위해 추출기 안에 넣지 않는다 — process_one_file()에서
+# 추출 직후 별도 단계로 처리한다.
+
+# [D-3] "신뢰 불가" 블랙리스트 — 대소문자 무시 정확 일치.
+_UNTRUSTWORTHY_EXACT = {
+    "untitled", "untitled-1", "untitled-2",
+    "luradocument", "adobe acrobat", "microsoft word",
+    "libreoffice", "google docs",
+}
+
+# [D-3] 파일명 그대로가 title/author로 남은 경우 (예: "Microsoft Word - doc1.doc")
+_FILENAME_PATTERN = re.compile(r"^.*\.(docx?|pdf|rtf)$", re.I)
+
+
+def _is_untrustworthy_embedded_value(value: Optional[str]) -> bool:
+    """[D-3] 내장 메타데이터 값이 "신뢰 불가"(=쓰레기)인지 판정한다.
+
+    빈 문자열/None은 이미 추출기 단계(core/extractors.py)에서 `.strip()
+    or None`으로 걸러져 여기 도달하지 않는다 — 이 함수는 "비어 있지 않지만
+    쓸모없는" 값만 다룬다(C1 RQ-2 실측: "Untitled", 제작 도구명 등).
+
+    판정: 블랙리스트 정확 일치 또는 파일명 패턴 → 즉시 신뢰 불가.
+    그 외에는 휴리스틱 3개 조건(길이 ≤5자 / 영문 알파벳만 / Title Case
+    자동생성 패턴) 중 3점 이상이면 신뢰 불가(C1 RQ-2 권고안 그대로).
+    """
+    if not value:
+        return False
+    stripped = value.strip()
+    lowered = stripped.lower()
+
+    if lowered in _UNTRUSTWORTHY_EXACT:
+        return True
+    if _FILENAME_PATTERN.match(stripped):
+        return True
+
+    score = 0
+    if len(stripped) <= 5:
+        score += 1
+    if stripped.isascii() and stripped.isalpha():
+        score += 1
+    if stripped[:1].isupper() and stripped[1:].islower() and " " not in stripped:
+        score += 1
+    return score >= 3
+
+
+def _load_sidecar_metadata(src_path: str) -> dict:
+    """[D-1] `<src_path>.meta.json`을 읽는다. 없거나 형식이 어긋나면 조용히
+    빈 dict를 반환한다(fail-closed — 사이드카 부재/오류가 처리 자체를
+    막으면 안 된다). 스키마: {"title": str, "author": str, "source": str}
+    — 세 키 모두 선택이며, `source`는 사이드카 파일 내부에만 남고 어떤
+    필드에도 직접 매핑되지 않는다(RQ-1 재검토 확정, source_provenance와
+    혼동 금지)."""
+    meta_path = f"{src_path}.meta.json"
+    if not os.path.isfile(meta_path):
+        return {}
+    try:
+        with open(meta_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError) as e:
+        logger.warning("[sidecar] %s 읽기 실패, 무시함: %s", meta_path, e)
+        return {}
+    if not isinstance(data, dict):
+        logger.warning("[sidecar] %s 최상위가 객체가 아님, 무시함", meta_path)
+        return {}
+    title = data.get("title")
+    author = data.get("author")
+    return {
+        "title": title.strip() if isinstance(title, str) and title.strip() else None,
+        "author": author.strip() if isinstance(author, str) and author.strip() else None,
+    }
+
+
+def resolve_title_author(
+    extracted_title: Optional[str], extracted_author: Optional[str], src_path: str
+) -> "tuple[Optional[str], Optional[str], Optional[str]]":
+    """[D-2, D-3] 내장 메타데이터와 사이드카를 결합해 최종 title/author를
+    정한다. 반환: (title, author, metadata_source). metadata_source는
+    "embedded"(내장 그대로 사용) 또는 "sidecar"(하나 이상의 필드를
+    사이드카로 대체) — 둘 다 없으면(둘 다 None) None.
+
+    title/author는 독립적으로 판정한다 — 하나가 쓰레기여도 다른 하나는
+    내장을 유지할 수 있다. 두 필드의 출처가 갈리는 경우 "sidecar"로
+    표시한다(하나라도 사이드카를 썼다는 뜻).
+    """
+    sidecar = _load_sidecar_metadata(src_path)
+
+    used_sidecar = False
+    final_title = extracted_title
+    if (extracted_title is None or _is_untrustworthy_embedded_value(extracted_title)) and sidecar.get("title"):
+        final_title = sidecar["title"]
+        used_sidecar = True
+
+    final_author = extracted_author
+    if (extracted_author is None or _is_untrustworthy_embedded_value(extracted_author)) and sidecar.get("author"):
+        final_author = sidecar["author"]
+        used_sidecar = True
+
+    if final_title is None and final_author is None:
+        metadata_source = None
+    elif used_sidecar:
+        metadata_source = "sidecar"
+    else:
+        metadata_source = "embedded"
+
+    return final_title, final_author, metadata_source
+
+
 # ── 핵심 처리 함수 ─────────────────────────────────────
 
 def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_rechunk=False):
@@ -465,6 +577,12 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # embedded metadata (PDF docinfo / DOCX core_properties), when present.
         extracted_title = raw_result.get("title")
         extracted_author = raw_result.get("author")
+        # [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md D-2/D-3] 내장이 없거나
+        # "신뢰 불가"(쓰레기 값)인 필드만 사이드카(<src_path>.meta.json)로
+        # 보충한다 — 내장이 정상이면 그대로 우선한다.
+        extracted_title, extracted_author, metadata_source = resolve_title_author(
+            extracted_title, extracted_author, src_path
+        )
 
         # [SPRINT15-DEBUG] extract success/fail 구분
         if full_text:
@@ -534,9 +652,15 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         file_hash = compute_content_hash(final_text)
         emit("identity", f"Document identity: {document_id[:16]}...", 0.42)
 
-        # [SPRINT17-Phase1-B-2] DocumentContext instance — created for future
-        # Phase 2 wiring only. Not read anywhere below in this function yet;
-        # build_document_metadata()/registry flow remain the source of truth.
+        # [SPRINT17-Phase1-B-2] DocumentContext instance.
+        # [정정, DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md 구현 중 발견] 위
+        # 주석은 더 이상 사실이 아니다 — _document_context.to_metadata_dict()
+        # 가 실제로 register_document()에 전달되는 값이다(~933행 부근,
+        # "DocumentContext is now the metadata source for register_document()").
+        # build_document_metadata() 호출(~810행)은 save_md_with_language()용
+        # 별도 경로다. 두 경로 모두 metadata_source를 채워야 한다 — 하나만
+        # 채우면 등록되는 값이 조용히 비게 된다(실측: 라이브 검증에서
+        # to_metadata_dict() 누락으로 registry에 None이 기록되는 것을 확인).
         _document_context = DocumentContext(
             document_id=document_id,
             file_hash=file_hash,
@@ -545,6 +669,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             is_ocr=is_ocr,
             title=extracted_title,
             author=extracted_author,
+            metadata_source=metadata_source,
         )
         # [SPRINT21-B Phase1] identity generated (doc_id/file_hash), chunking
         # not yet run — matches the IDENTIFIED state definition.
@@ -695,7 +820,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             noise_mode=noise.get("mode", "-"), source_type=ext,
             is_ocr=is_ocr, chunk_count=0,  # Will be updated after chunking
             title=extracted_title, author=extracted_author,
-            doc_type=doc_type,
+            doc_type=doc_type, metadata_source=metadata_source,
         )
 
         md_path = save_md_with_language(output_dir, stem, source_name, md_display_text, noise, ext, language, document_meta)

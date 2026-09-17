@@ -381,6 +381,8 @@ def build_tsu_records(registry: dict, output_dir: Path) -> list[dict[str, Any]]:
                 # target path instead).
                 "title": doc.get("title"),
                 "author": doc.get("author"),
+                # [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md] title/author 출처.
+                "metadata_source": doc.get("metadata_source"),
                 "chapter": doc.get("chapter"),
                 "page": doc.get("page"),
                 # [SPRINT20-E] propagate registry values already loaded
