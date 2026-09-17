@@ -242,6 +242,17 @@ class TestAuthorityTierGovernance:
         fails = v.check_authority_tier_fields(synthetic).failed
         assert any("V10" in f for f in fails), f"T3 without counter_refs should FAIL V10: {fails}"
 
+    def test_neg_09b_tier_without_tradition_relation_fails(self):
+        """authority_tier 는 있는데 tradition_relation 없음 → V9 FAIL.
+        (C1 Review Result 003, §3 CONCERN 반영 — 누락된 negative 케이스)"""
+        import scripts.m2_source_registry_validator as v
+        synthetic = [{**{k: "x" for k in M2_BASE_KEYS}, "source_id": "SYN-T3-NOREL",
+                      "authority_tier": "T3"}]  # tradition_relation 생략
+        fails = v.check_authority_tier_fields(synthetic).failed
+        assert any("V9" in f and "tradition_relation" in f for f in fails), (
+            f"authority_tier without tradition_relation should FAIL V9: {fails}"
+        )
+
     def test_neg_10_orphan_counter_ref_fails(self):
         """counter_refs 가 M2에 없는 source_id 를 참조 → V11 FAIL."""
         import scripts.m2_source_registry_validator as v
