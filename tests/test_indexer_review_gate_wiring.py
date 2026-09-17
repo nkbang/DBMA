@@ -208,17 +208,21 @@ class TestDryRunNoSideEffects:
 
 class TestProductionTsuReadOnlyDryRun:
     def test_real_production_dry_run_excludes_non_verified(self):
-        """실제 Production TSU(Dagg/Hiscox)를 대상으로 dry_run 실행 시
-        review_status=='verified'인 레코드만 통과해야 한다. Batch 1~24
-        Promotion 누적 결과 verified 2,148건(Batch 23까지 2,048 +
-        Batch 24 100건)이 현재의 정상 상태다."""
+        """실제 Production TSU(Dagg/Hiscox/Fuller Vol01-08)를 대상으로
+        dry_run 실행 시 review_status=='verified'인 레코드만 통과해야
+        한다. 2026-09-17 기준 Dagg(3,279) + Hiscox(612) +
+        Fuller_Complete_Works_Vol08(5,045, 커밋 a2f5ac47 일괄 승인)
+        = 8,936건이 현재의 정상 상태다. 이 값은 review-gate promotion이
+        진행될 때마다 갱신해 온 값이다(9(30)->30->60->...->3319, 이번이
+        10번째 갱신) — F3(사람 검수) 단계 집계일 뿐, Qdrant nae_tsu_v1의
+        동결된 baseline(F4/F5 미실행이라 3,319 그대로)과는 무관하다."""
         from pathlib import Path
 
         tsu_root = Path("NAE/corpus/tsu")
         if not tsu_root.exists():
             return
         summary = indexer.index_all(tsu_root=tsu_root, dry_run=True)
-        assert summary["indexed"] == 3319
+        assert summary["indexed"] == 8936
 
     def test_real_production_tsu_files_untouched(self):
         from pathlib import Path
