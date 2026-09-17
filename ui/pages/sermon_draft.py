@@ -30,6 +30,7 @@ from core.sermon.doctrine_filter import check as doctrine_check
 from core.tli.spell_engine import create_spell_engine
 from ui.state.query_processor import get_shared_query_processor
 from ui.components.passage_commentary_panel import render_passage_commentary_panel
+from ui.pages.chat import _render_claim_guard_warning
 
 _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크게
 
@@ -126,6 +127,7 @@ def _init_state() -> None:
             "outline": None,  # SermonOutline
             "candidates": [],  # list[RankedCandidate] — [자료N] 인용용 원본
             "expanded": {},  # point_index(int) -> str
+            "expanded_claim_guard": {},  # point_index(int) -> ClaimGuardResult | None
         }
 
 
@@ -290,6 +292,18 @@ def _render_doctrine_warning() -> None:
         st.caption(f"관련 범주: {', '.join(report.flagged_categories)} · 신뢰도: {report.confidence}")
 
 
+def _render_outline_claim_guard_warning() -> None:
+    """개요 전체 텍스트에서 ClaimGuard가 위험 표현을 탐지했을 때 안내한다.
+    Chat/Research의 _render_claim_guard_warning()과 동일한 신호
+    (absolute_claim_blocked / scope_qualifier_required)만 표시 — 사후
+    탐지 배너이며 생성 자체를 막지는 않는다(_render_doctrine_warning()과
+    같은 톤)."""
+    outline: SermonOutline = st.session_state["sermon_draft_state"]["outline"]
+    result = getattr(outline, "claim_guard_result", None)
+    if result and (result.absolute_claim_blocked or result.scope_qualifier_required):
+        _render_claim_guard_warning(result)
+
+
 def _render_candidate_review_report() -> None:
     """개요 생성 후 사용자에게 제시하는 검토 리포트 — 관련 자료의 유형 배지
     + 신뢰도 점수를 한눈에 보여준다. GAP §3-6 요구사항."""
@@ -354,6 +368,7 @@ def _render_outline_step() -> None:
     outline: SermonOutline = state["outline"]
 
     _render_doctrine_warning()
+    _render_outline_claim_guard_warning()
     _render_candidate_review_report()
     st.caption(f"설교 형식: {state['sermon_format']}")
     title = st.text_input("제목", value=outline.title, key="sermon_outline_title")
@@ -462,13 +477,19 @@ def _render_expansion_step() -> None:
         with st.expander(f"대지 {i + 1}: {point[:40]}", expanded=not already_done):
             if already_done:
                 st.markdown(state["expanded"][i])
+                cg_result = state["expanded_claim_guard"].get(i)
+                if cg_result and (
+                    cg_result.absolute_claim_blocked or cg_result.scope_qualifier_required
+                ):
+                    _render_claim_guard_warning(cg_result)
                 if st.button("다시 생성", icon=":material/refresh:", key=f"sermon_regen_{i}"):
                     del state["expanded"][i]
+                    state["expanded_claim_guard"].pop(i, None)
                     st.rerun()
             else:
                 if st.button("이 대지 확장하기", icon=":material/edit:", key=f"sermon_expand_{i}"):
                     with st.spinner("작성 중..."):
-                        text, error = service.expand_point(
+                        text, error, claim_guard_result = service.expand_point(
                             point,
                             state["scripture_and_theme"],
                             state["candidates"],
@@ -479,6 +500,7 @@ def _render_expansion_step() -> None:
                         st.error(f"생성 실패: {error}")
                     else:
                         state["expanded"][i] = text
+                        state["expanded_claim_guard"][i] = claim_guard_result
                         state["status"] = "expanding"
                         st.rerun()
 

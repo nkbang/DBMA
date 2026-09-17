@@ -243,11 +243,16 @@ _GROUNDING_DIRECTIVE_NO_CONTEXT = """지시:
 
 def _run_claim_guard(
     answer: str,
-    response: ResponsePackage,
+    candidates: list[RankedCandidate],
 ) -> ClaimGuardResult | None:
     """답변 텍스트에서 위험 표현을 탐지하고, 증거(candidates)로 ClaimGuard를
     실행한다. 실패하면 ClaimGuardResult(risk_level=NONE, ...)를 반환 —
-    답변 생성이 실패해도 답변 자체는 막히지 않는다."""
+    답변 생성이 실패해도 답변 자체는 막히지 않는다.
+
+    candidates는 response.top_k_results(Chat/Research) 또는
+    SermonDraftService에 전달된 후보 목록(설교 개요/대지 확장) 양쪽에서
+    그대로 재사용할 수 있도록 RankedCandidate 리스트를 직접 받는다 —
+    ResponsePackage 전체를 요구하지 않는다."""
     try:
         guard = ClaimGuard()
         risk_level, matched_terms = guard.detect_risk(answer)
@@ -262,7 +267,7 @@ def _run_claim_guard(
                 suggested_wording=None,
             )
         # 위험 표현이 있으면 evidence로 평가
-        wrapped = wrap_ranked_candidates(response.top_k_results)
+        wrapped = wrap_ranked_candidates(candidates)
         return guard.evaluate(claim_text=answer, evidence=wrapped)
     except Exception as e:
         logger.warning(
@@ -350,7 +355,7 @@ class GenerationStream:
                 self._contamination_seen,
             )
             answer = _sanitize_script_contamination(answer)
-        claim_guard_result = _run_claim_guard(answer, self._response)
+        claim_guard_result = _run_claim_guard(answer, self._response.top_k_results)
         return GenerationResult(
             question=self._response.question,
             answer=answer,
@@ -483,7 +488,7 @@ class GenerationService:
             answer = f"[생성 실패] Ollama 호출 중 오류가 발생했습니다: {e}"
             error = str(e)
 
-        claim_guard_result = _run_claim_guard(answer, response)
+        claim_guard_result = _run_claim_guard(answer, response.top_k_results)
         return GenerationResult(
             question=response.question,
             answer=answer,
@@ -513,6 +518,7 @@ class SermonOutline:
     introduction: str
     points: list[str] = field(default_factory=list)
     conclusion: str = ""
+    claim_guard_result: ClaimGuardResult | None = None
 
 
 # [설교 형식] 대지의 "성격"만 다르고 출력 스키마(제목/서론/대지N/결론)는
@@ -738,7 +744,12 @@ class SermonDraftService:
                     "[SermonDraftService.generate_outline] 재시도 소진 — 오염 문자 강제 제거"
                 )
                 raw = _sanitize_script_contamination(raw)
-            return _parse_outline(raw), None
+            outline = _parse_outline(raw)
+            outline.claim_guard_result = _run_claim_guard(
+                "\n".join([outline.title, outline.introduction, *outline.points, outline.conclusion]),
+                candidates,
+            )
+            return outline, None
         except Exception as e:
             logger.error(
                 "[SermonDraftService.generate_outline] Ollama generate 실패 (model=%s): %s",
@@ -755,13 +766,17 @@ class SermonDraftService:
         sermon_format: str = _DEFAULT_SERMON_FORMAT,
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
-    ) -> tuple[str, Optional[str]]:
+    ) -> tuple[str, Optional[str], ClaimGuardResult | None]:
         """승인된 대지 하나를 실제 설교문 문단으로 확장한다.
         style_examples는 콘텐츠 근거가 아니라 어투 참고용 — 별도 절로
         구분해 프롬프트에 그 의도를 명시한다(설계 문서 Q3).
         sermon_format에 따라 확장 방식이 갈린다 — 주제설교는 예화·적용
         중심, 강해설교는 본문 주해·문맥 중심(_EXPANSION_STYLE_GUIDANCE).
-        candidates: generate_outline()과 동일한 [자료N] 인용 가능 컨텍스트."""
+        candidates: generate_outline()과 동일한 [자료N] 인용 가능 컨텍스트.
+
+        반환값에 claim_guard_result를 추가(3-tuple)한다 — 대지 확장은
+        사람이 검토하는 단계 없이 바로 최종 초안에 조립되므로(설교 개요와
+        달리) 위험 표현·근거 등급을 개요보다 더 적극적으로 표시해야 한다."""
         context_block = _format_sermon_context(candidates)
         style_section = (
             f"\n\n문체 참고(아래는 설교자 본인의 과거 설교문 발췌 —"
@@ -808,10 +823,11 @@ class SermonDraftService:
                     "[SermonDraftService.expand_point] 재시도 소진 — 오염 문자 강제 제거"
                 )
                 text = _sanitize_script_contamination(text)
-            return text, None
+            claim_guard_result = _run_claim_guard(text, candidates)
+            return text, None, claim_guard_result
         except Exception as e:
             logger.error(
                 "[SermonDraftService.expand_point] Ollama generate 실패 (model=%s): %s",
                 gen_model, e,
             )
-            return "", str(e)
+            return "", str(e), None
