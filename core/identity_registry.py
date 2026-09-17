@@ -163,6 +163,10 @@ def register_document(
         "title": metadata.get("title"),
         "author": metadata.get("author"),
         "doc_type": metadata.get("doc_type"),
+        # [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md] title/author 출처 —
+        # "embedded" / "sidecar" / None(둘 다 미상). additive 필드, 기존
+        # 레코드 구조를 바꾸지 않는다(book/chapter/page와 동일 패턴).
+        "metadata_source": metadata.get("metadata_source"),
         # [SPRINT21-B Phase1] additive — default PROCESSED for callers that
         # don't supply it (e.g. scripts not yet updated), matching the
         # migration default above.
