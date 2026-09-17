@@ -1,5 +1,66 @@
 # DBMA State
 
+**[2026-09-18 완료] Track A 복원본에서 신학 무관 콘텐츠 제거 (HQ 지시).**
+- 대상 전수 확인(125개 출처 목록 육안 검토) 후 6개 문서 제거 결정 — 계획 문서가 명시한
+  UN 백과사전 외에, 육안 검토로 작곡 가이드·피트니스 서적·테스트 픽스처도 추가 발견:
+  - `A Concise Encyclopedia of the United Nations 2nd Edition.pdf` (4,027건)
+  - `6 Steps to Songwriting Success ...Blume, Jason.epub.pdf` (745건)
+  - `15-Minute Abs Workout (15 Minute Fitness).pdf` (110건)
+  - `15-Minute Dance Workout (15 Minute Fitness).pdf` (93건)
+  - `15-Minute Dance Workout _15 Minute Fitness__pdf.md` (94건)
+  - `_opvalidation_test.txt` (1건, 테스트 픽스처)
+  - 총 제거 5,070건. 나머지 119개 출처(주석서·조직신학·선교신학·설교문 등)는 전부
+    신학 관련으로 판단해 유지.
+- **부수 발견**: registry에서 이 중 4건은 이미 `ingest_status=EXCLUDED`였는데도 TSU
+  데이터셋에는 여전히 포함돼 있었음 — Sep 7 사고 원인과 같은 패턴(`reconcile_pending()`이
+  EXCLUDED를 무시하던 결함, STATE.md 기록상 코드는 이미 수정됐으나 이번에 복원한 TSU는
+  그 수정 이전 백업이라 잔존). 나머지 2건(UN 백과사전, Dance Workout .md)은 registry에
+  `PROCESSED`로 남아 있어 이번에 `EXCLUDED`로 갱신.
+- **처리**: `output/bench/tsu_dataset.jsonl` 84,766건(89,836→ -5,070)으로 교체,
+  `data/제련완성본/registry/documents.json` 해당 6건 `EXCLUDED` 갱신,
+  `tsu_manifest.json` 재작성(dataset_sha256/registry_sha256 갱신). 제거 전 상태는
+  `backups/pre_nontheo_removal_20260918/`에 보존(즉시 롤백 가능).
+- **검증**: 필터링 후 strict UTF-8 재로드 84,766건 정상, 잔존 신학무관 키워드 0건 확인.
+  실제 `retrieve()` 스모크 테스트는 이전 세션에서 앱 리소스 경합으로 미완료 상태 —
+  아직 재확인 못함.
+
+**[2026-09-18 진행중] Track A 백업 복원 실행 — 2026-09-18 동결 해지 항목(아래) 후속.**
+- **완료**: `output/bench/tsu_dataset.jsonl`을 `backups/phantom_registry_cleanup_
+  20260907_183948/`(SHA256 검증됨, `tsu_manifest.json` 기록값과 일치)에서 복원. 백업
+  자체에 UTF-8 디코딩 불가 바이트 1개(line 2042) 발견 — 그대로 복사했다면
+  `RetrievalEngine` 기동 시 크래시했을 것, 해당 줄만 안전 수정 후 복원(89,737건).
+  `data/제련완성본/registry/documents.json`도 같은 백업에서 복원(사용자 직접 실행).
+- **예기치 않은 이벤트**: 레지스트리 복원 시점에 Streamlit 앱이 실행 중이었음(PID
+  32395, `background_index_builder` 경쟁 가능성 — Phase 0가 경고한 바로 그 상황).
+  다만 결과적으로 앱 자체 파이프라인(`scripts/build_tsu_dataset.py`, commit
+  `9d69094b`)이 복원된 레지스트리(218 문서, PROCESSED 204) 기준으로 TSU를 자체
+  재빌드함 — **89,836건, 125개 출처, Spurgeon 오염 0건**으로 정상 상태 확인(수동
+  검증). 사용자에게 앱 종료 요청함(추가 경쟁 방지).
+- **검증 결과 (Track A 계획 §3 기준 대비)**:
+  - TSU ≥ 70,000: **PASS** (89,836)
+  - 출처 ≥ 100: **PASS** (125)
+  - `book_coverage()`(66권 중 40권+ 자료 표시): **미달** — 24권만 `verse_mapping.book_id`
+    매핑됨(기존에도 이 필드가 대부분 `None`이던 것과 같은 범주의 메타데이터 공백일
+    가능성 — 이번 복원이 유발한 문제인지 별도 확인 필요)
+  - 회귀 테스트 전량: **미실행**(Verification Cost Discipline에 따라 전체 스위트
+    대신 스모크만 우선 — 필요 시 별도 실행)
+  - 스모크(로마서 8장 등 검색): **미완료(타임아웃)** — 엔진 로드는 1.7초로 정상(89,836
+    tsus 확인)이나, `retrieve()` 단일 호출이 150초 뒤 강제 종료(exit 124)될 때까지
+    응답 없음. 데이터 손상이 아니라 리소스 경합(앱이 동시 실행 중이라 Ollama/GPU를
+    점유했을 가능성)으로 추정 — 앱 종료 후 재시도 필요, 이번 세션에서는 확인하지 못함
+- **알려진 후속 정리 항목(Phase 1 잔여, 이번엔 미해결)**:
+  - "2 Kings, Volume 13" 등 동일 서적이 `.pdf`/`.md`/`_chunks.txt` 3개 파일타입으로
+    각각 다른 `document_id`를 받은 구조적 중복 — `scripts/dedupe_tsu_dataset.py`는
+    이 패턴(파일타입 간 중복)을 다루지 않음(크기 동일한 재업로드 PDF만 처리하는
+    별개 로직) — 별도 통합 규칙 필요
+  - "A Concise Encyclopedia of the United Nations"(4,027건, 신학 무관) 계획 문서가
+    명시한 제외 대상, 아직 미제거
+  - Phase 2(재발 방지 가드 — TSU 50% 감소 시 경고 후 중단 등) 미착수
+- **다음 확인 필요**: 스모크 테스트 완료 결과, `book_coverage` 미달 원인, Phase 1
+  잔여 정리 항목 착수 여부 HQ 확인.
+
+**[2026-09-18 HQ 결정] 프로덕션 코퍼스 "1,363건 영구 동결" 결정 해지.**
+
 ## 버전 상태
 **DBMA v1.3.0 — Architecture Consolidation Release** (GA). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
@@ -9,6 +70,33 @@ Release State:  v1.3.0 GA RELEASED
 Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
+
+**[2026-09-18 HQ 결정] 프로덕션 코퍼스 "1,363건 영구 동결" 결정 해지 — 아래 2026-09-15
+항목의 "재개하지 말 것"을 철회한다.**
+- **해지 범위**: 2026-09-15 항목이 선언한 "코퍼스는 축소된 상태(1,363 TSU)로 영구
+  유지·재개 금지"라는 **동결 지시만** 해지한다. `DBMA_CORPUS_RECOVERY_PLAN_v1.md`가
+  제시한 Track A(백업 복원)/Track B(원본 재처리) 중 **무엇을 실행할지는 아직 별도
+  결정 없음** — HQ 후속 지시 대기. 이 항목만으로 Track A/B 착수를 승인한 것으로
+  간주하지 않는다(CLAUDE.md 예외 목록: "Corpus 전체 Migration"은 항상 별도 승인 필요).
+- **해지 배경 — 동결 해지 이전에 발견된 사실**: 2026-09-18 CUE가 프로덕션 파일
+  `output/bench/tsu_dataset.jsonl`(ADR-001 Production Retrieval Authority, `.gitignore`
+  대상이라 git 감사로는 보이지 않음)을 직접 확인한 결과, **"1,363건 동결"이 선언된
+  바로 그 날짜(2026-09-15 15:23)에 이미 119,595건(Spurgeon MTP 시리즈 67개 출처
+  전량, Fuller/Dagg/Hiscox 0건)로 통째로 교체된 상태**였다 — 이 교체 자체는 STATE.md
+  어디에도 기록되지 않은 미문서화 변경. 즉 "동결"은 문서상으로만 유효했고 실제
+  파일은 이미 동결 대상과 다른 상태로 존재하고 있었다. HQ가 이 사실을 보고받고
+  동결 결정 자체를 해지하기로 함.
+- **현재 실측 상태 (2026-09-18)**: `output/bench/tsu_dataset.jsonl` = 119,595건 / 67
+  출처(전부 Spurgeon) / 206MB. `RetrievalEngine._load_corpus()`는 필터링 없이 파일을
+  그대로 읽으므로, 이 파일이 곧 현재 검색 가능한 실질 코퍼스다. Fuller Vol01-08(TSU
+  claim 추출 33,132건, `NAE/corpus/tsu/Fuller_*`)과 Dagg/Hiscox(TSU claim 4,117건)는
+  M2 등록(QUALITY_PASSED)까지만 완료됐고 이 파일에는 포함되지 않음(스키마 불일치 —
+  claim/source_text 필드뿐, RetrievalEngine이 읽는 `content` 필드 없음) — 여전히
+  "임베딩 미완료" 상태.
+- **다음 필요한 HQ 결정**: (1) 지금의 Spurgeon 119,595건 상태를 새 기준선으로 인정할
+  것인지, 아니면 (2) Track A/B 중 하나로 별도 복구를 진행할 것인지, (3) Fuller/Dagg/
+  Hiscox를 이 코퍼스에 별도로 편입(임베딩)할 것인지 — 세 가지가 서로 배타적이지 않고
+  조합 가능하므로 다음 세션에서 명시적으로 확인 필요.
 
 **[2026-09-16 완료] `NAE/citation_disclosure.py`에 authority_tier(T1~T4) 라벨 축 추가 (개인 RAG 제안서 §13 대응, 준비 단계).**
 - 배경: 목회자 개인 RAG(DBMA/NAE) 제안서 §11/§13에서 설계한 신학적 권위
