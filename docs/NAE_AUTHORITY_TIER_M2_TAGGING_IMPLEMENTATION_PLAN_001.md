@@ -3,9 +3,9 @@
 **Plan ID:** NAE-AUTHORITY-TIER-M2-TAGGING-PLAN-001
 **Date:** 2026-09-16
 **Author:** CUE (Implementation Agent)
-**Status:** DRAFT — NOT YET IMPLEMENTED. Requires C1 Review + ADR-030 Amendment
-+ HQ approval before any code change (Architecture Freeze Rule, ADR-030 is
-Approved).
+**Status:** §4-§5 IMPLEMENTED (2026-09-17, commit `e3adb94`, ADR-030 Amendment D
+now APPROVED). §6-§8 (M2 backfill, `corpus_admissions.jsonl` tagging) remain
+NOT YET STARTED — separate HQ decision, out of scope for this implementation.
 **Depends on:** commit `d7228074` (`feat(nae): add authority_tier (T1-T4)
 disclosure labels to citation_disclosure`) — the label-lookup half of this
 feature already exists and is unaffected by this plan.
