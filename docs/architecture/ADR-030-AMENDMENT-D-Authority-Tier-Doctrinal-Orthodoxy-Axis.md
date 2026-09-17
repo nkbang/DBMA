@@ -50,6 +50,15 @@ ADR-030 §7.3은 이미 한 번 이 문제를 풀었다: `category`(TSU record, 
 > `authority_class`도 정통성 판정에 쓰이지 않는다. 두 필드는 독립적으로 채워진다 (§7.3의
 > "두 필드는 독립적으로 채워진다" 원칙을 그대로 계승).
 
+**C1 Review 반영 (`NAE_AUTHORITY_TIER_M2_TAGGING_C1_REVIEW_RESULT_001.md`, 질문 7, YELLOW
+finding):** 위 표는 §7.3과 구조적으로 유사하지만, "판단 주체" 행이 보여주듯 §7.3에는 없던
+차원을 추가한다 — `category`/`authority_class`는 둘 다 **자료 자체의 성격**만으로 값이
+정해지는 반면, `authority_tier`는 **사용자(HQ)의 신앙고백을 기준점으로 삼는 상대적 판단**이다.
+같은 자료(예: 어떤 교단의 신앙고백서)라도 이 시스템을 사용하는 목회자가 바뀌면 `T2`(own)일
+수도, `T3`(other_christian)일 수도 있다 — `authority_class`나 `category`에는 이런 사용자
+상대성이 존재하지 않는다. 따라서 이 관계 선언은 §7.3 패턴의 단순 재사용이 아니라, 그 패턴을
+**사용자 상대적 축에까지 확장**하는 것임을 명시적으로 인정한다.
+
 ### 2.2 신규 필드 (M2, `required: false` — §7.5 원칙 계승)
 
 ```
@@ -101,6 +110,15 @@ tradition_relation: own
   `authority_tier`를 실제 검색 스코프 필터링에 사용하는 것(제안서 §13.2 ①-⑤)은 **별도의, 더 큰
   변경**이며 이 Amendment의 범위 밖이다 — 승인되더라도 Retrieval Engine 변경 권한을 주지 않는다
   (CLAUDE.md "반드시 지켜야 하는 사항": Retrieval Engine은 명령 없이는 절대 변경 금지).
+
+  > **명시적 게이트 (C1 Review 반영, 질문 9, YELLOW finding):** 이 산문 선언만으로는 향후 이
+  > Amendment를 근거로 retrieval scope filter 구현을 시도하는 것을 기술적으로 막지 못한다는
+  > 지적에 따라, 다음을 이 Amendment의 **승인 범위에 대한 명시적 제약**으로 못박는다 — **본
+  > Amendment의 승인은 `core/retrieval.py` 또는 그 어떤 검색 경로 코드의 변경에도 권한을
+  > 부여하지 않는다. `authority_tier`를 실제 검색 스코프 필터링·랭킹·컨텍스트 조립에 사용하는
+  > 구현은, CUE 자신이 제안하는 경우를 포함해, 별도의 ADR Amendment 또는 신규 ADR의 C1
+  > Review + HQ 승인을 다시 거쳐야만 착수할 수 있다.** 이 Amendment의 승인을 그 별도 승인의
+  > 대체·선행 근거로 인용하는 것은 금지된다.
 - ADR-030 §4 TSU Track, §11 human-review 요구, §13 Migration, §14 Production Safety, §16 Scale
   Protection — 전부 그대로.
 - `NAE/citation_disclosure.py::get_tier_disclosure()`(커밋 `d7228074`) — 이미 구현·병합된 상태

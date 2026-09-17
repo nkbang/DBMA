@@ -69,6 +69,24 @@ No existing M2 key is renamed, removed, or reinterpreted. A record omitting
 all three fields is byte-identical to today's output — same guarantee
 ADR-030 Amendment B gave for its own additive fields.
 
+**Constraint added per C1 Review (`NAE_AUTHORITY_TIER_M2_TAGGING_C1_REVIEW_RESULT_001.md`,
+question 5, YELLOW finding):** every id listed in `counter_refs` MUST itself resolve to a
+source whose own `authority_tier ∈ {T1, T2}`. This is not just an orphan-reference check
+(§5 V11 below) — it rules out a T3 source citing another T3 (or T4) source as its rebuttal,
+which would otherwise permit a cycle (A's `counter_refs` names B, B's `counter_refs` names A,
+neither ever backed by an actual T1/T2 source). Only T1/T2 sources — sources already vetted as
+orthodox/own-tradition — may serve as a `counter_ref` target.
+
+**Tightened per C1 re-review prep (2026-09-17):** the constraint above only closes the cycle if
+T1/T2 records are *also* barred from carrying `counter_refs` themselves — otherwise "only T1/T2
+may be a target" doesn't yet forbid a T1/T2 record from pointing back into T3. To remove that
+residual ambiguity, this is now a normative rule, not just an implication of the field table:
+**`counter_refs` is only a valid field on a `T3` record. A record with `authority_tier ∈ {T1,
+T2, T4}` MUST NOT carry `counter_refs` at all** — enforced by §5's new V12 below. With T1/T2
+barred from having any `counter_refs` of their own, and T3 allowed to point only at T1/T2
+(never at T3 or T4), the reference graph has no edge leaving a T1/T2 node — a cycle is
+structurally unreachable, not just discouraged.
+
 ## 4. `RegistrationRequest` / `pipeline.py` Changes (design only)
 
 Mirrors the existing pattern in `NAE/pipeline/registration/pipeline.py`
@@ -123,10 +141,21 @@ VALID_TRADITION_RELATIONS = frozenset([
   `get_tier_disclosure()` already enforces at display time — two
   independent layers, matching the codebase's existing defense-in-depth
   style (see `citation_disclosure.py` docstring on this point).
-- **V11** (new): every id in `counter_refs` must resolve to an existing
+- **V11** (new): every id in `counter_refs` must (a) resolve to an existing
   `source_id` in the same M2 registry — orphan reference check, same
   category as the "참조 무결성 검사" flagged as a Priority-2 follow-up in
   `NAE_METADATA_AUTHORITY_PLAN_REVIEW_001.md` §4.2 for the Author/Work/
+  Edition registry — **and (b) point to a source whose own
+  `authority_tier ∈ {T1, T2}`** (§3 constraint above, added per C1 Review
+  question 5). (b) makes a `counter_ref` cycle structurally impossible: a
+  T3 source can only cite T1/T2 sources, and T1/T2 sources carry no
+  `counter_refs` of their own (§3 table — `counter_refs` is only required/
+  meaningful for T3), so the reference graph cannot loop back.
+- **V12** (new, tightened 2026-09-17): a record with `authority_tier ∈ {T1, T2, T4}` that
+  nonetheless carries a non-empty `counter_refs` → FAIL. This is what actually makes V11(b)'s
+  cycle-prevention argument hold — without it, "T3 may only point at T1/T2" restricts one
+  direction of the graph but leaves T1/T2 free to point back into T3, which V11(b) alone does
+  not forbid.
   Edition registry (this plan applies the same discipline to
   `counter_refs`).
 
