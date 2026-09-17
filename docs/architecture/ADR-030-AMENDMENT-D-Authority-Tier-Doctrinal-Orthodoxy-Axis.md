@@ -74,6 +74,34 @@ fail-closed 기본값. 이 fail-closed 규칙은 이 Amendment가 명문화하�
 `get_tier_disclosure()`가 아닌 별도 소비자 코드(아직 존재하지 않음, §13.2 ①-⑤에 해당)가 지켜야
 할 의무다.
 
+### 2.2.1 사용자 기본 전통("own") 설정 — HQ 결정, Plan 001 §12 Open Question 1 해소
+
+**HQ 결정 (2026-09-18):** `tradition_relation=own`은 **단일 고정값의 정확 일치**로 판정한다 —
+소스의 기존 `tradition` 필드 값이 **`"Particular Baptist"`**와 정확히 같을 때만 `own`이다.
+작은 allow-list(예: `Particular Baptist` + `Reformed Baptist` 등 여러 값을 함께 허용)는
+채택하지 않는다.
+
+**근거**: 현재 M2/`corpus_admissions.jsonl`에 실제로 존재하는 `tradition` 값은 실측 결과
+**`"Particular Baptist"` 단 한 가지뿐**이다(Dagg, Hiscox, Fuller Vol01-08, Smith 전부 동일
+값). 고정 단일값 매칭은 이 실제 데이터 100%와 정확히 일치하며, allow-list를 미리 만들어두는
+것은 아직 발생하지 않은 경우를 위한 추측성 설계(§ CLAUDE.md 금지 사항 "근거 없는 구조 변경
+금지"와 같은 정신 — 여기서는 "근거 없는 사전 확장")다. 새로운 침례교 하위 전통(예: General
+Baptist, Reformed Baptist 등)의 자료가 실제로 코퍼스에 들어올 때, 그때 가서 그 구체 사례를
+근거로 allow-list 확장 여부를 별도로 결정한다 — 지금은 확장하지 않는다.
+
+**적용 규칙**:
+- 신규 필드 아님 — 기존 `tradition` 필드(자유 텍스트, M2 §7.4 SSOT)를 그대로 참조만 한다.
+  `tradition_relation` 계산 로직(§13.2 등 향후 소비자 코드)이 `tradition == "Particular
+  Baptist"`이면 `own`, 그 외 기독교 전통이면 `allied`/`other_christian`, 비기독교·이단이면
+  `non_christian`/`heterodox`로 사람이 판정한다(자동 판정 아님 — Plan 001 §7 2/3단계 HQ 확인
+  원칙 그대로 적용).
+- 이 기본값은 **이 DBMA/NAE 인스턴스(사용자: David Bang / HQ)에 한정**된다 — 다른 목회자가 이
+  설계를 재사용할 경우 자신의 교단·신앙고백에 맞는 값으로 이 §2.2.1만 교체하면 된다(하드코딩
+  위치를 이 한 곳으로 한정해 이식성을 확보).
+- 코드/데이터 변경 없음 — `tradition_relation` 필드 자체가 아직 구현되지 않았으므로(§4-A A3
+  HQ 승인 전, Architecture Freeze Rule), 이 결정은 §4-B 구현 단계에서 그대로 반영될 설계
+  값이다.
+
 ### 2.3 코드 변경 (설계만 — 구현은 이 문서 승인 이후 별도 커밋)
 
 `docs/NAE_AUTHORITY_TIER_M2_TAGGING_IMPLEMENTATION_PLAN_001.md` §4-§6에 상세 설계 완료:

@@ -285,12 +285,13 @@ that process — it is not itself an implementation.
 
 ## 12. Open Questions for HQ
 
-- Should `tradition_relation=own` require an exact string match against a
-  single configured "my tradition" value, or a small allow-list (e.g. both
-  `Particular Baptist` and a broader `Reformed Baptist` bucket)? The
-  proposal's §11.2 used fixed codes (`reformed`, `baptist`, ...); the real
-  `tradition` field in production is free text (`"Particular Baptist"`).
-  This plan defers that decision to the Amendment, not to this plan.
+- ~~Should `tradition_relation=own` require an exact string match against a
+  single configured "my tradition" value, or a small allow-list~~ —
+  **RESOLVED by HQ (2026-09-18), see Amendment D §2.2.1**: exact-match
+  against the single fixed value `"Particular Baptist"` (the only
+  `tradition` value that actually exists in production today across Dagg/
+  Hiscox/Fuller/Smith). No allow-list. Extend only when a genuinely
+  different sub-tradition's source is actually admitted, not preemptively.
 - Does a `historical_witness` source (provenance-caveated but not
   doctrinally suspect) default-suggest T2, or should it always require
   explicit human tiering with no auto-suggestion at all? §7 step 1 above
