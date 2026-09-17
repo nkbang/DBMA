@@ -258,12 +258,14 @@ class TestProductionImmutability:
 class TestReviewGateImmutability:
     def test_real_production_review_gate_state_unchanged_by_import(self):
         """이 테스트 스위트를 import/실행하는 것만으로 실제 Production
-        Review Gate 판정이 바뀌지 않아야 한다(읽기 전용 재확인). Batch
-        1~24 Promotion 누적 결과 verified 2,148건이 현재 Production의
-        정상 상태이며, import가 이 값을 바꾸지 않는다는 것이 검증 대상."""
+        Review Gate 판정이 바뀌지 않아야 한다(읽기 전용 재확인). 2026-09-17
+        기준 Dagg+Hiscox+Fuller Vol08 verified 8,936건(커밋 a2f5ac47
+        일괄 승인 포함, tests/test_indexer_review_gate_wiring.py 동기화
+        참고)이 현재 Production의 정상 상태이며, import가 이 값을
+        바꾸지 않는다는 것이 검증 대상."""
         from NAE.pipeline.index import indexer
         summary = indexer.index_all(dry_run=True)
-        assert summary["indexed"] == 3319
+        assert summary["indexed"] == 8936
 
 
 class TestNoQdrantNoEmbeddingGuarantee:

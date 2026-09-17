@@ -35,7 +35,7 @@
 | **John Gill** | An Exposition of the Old and New Testament | Particular Baptist | Yes (1746–1763) | **실행 완료 = 신약 Vol.1**(1746 초판 3권 중 1권, 마태복음), §5.11. 신구약 전체는 구약 9권+신약 3~5권으로 여전히 매우 방대 — Vol.1 외 나머지는 향후 후보 |
 | A.T. Robertson | Word Pictures in the New Testament | Southern Baptist | **No — 보류(§5.12)**. Broadman Press 1932-33 등록·1960 갱신 확인(WebSearch), 상업 유료 판매 중(Laridian 등) | 헬라어 원어 해설 포함 — DBMA 헬라어 처리 요구사항과 정합하나 저작권 문제로 미착수 |
 | **John A. Broadus** | Commentary on Matthew (American Commentary) | Southern Baptist | Yes (1886) | **실행 완료**(단권), §5.13 |
-| B.H. Carroll | An Interpretation of the English Bible | Southern Baptist | Yes (1913, 저자 사후 출간 1916–1917) | 17권 시리즈, 설교체 주석 |
+| **B.H. Carroll** | An Interpretation of the English Bible | Southern Baptist | Yes (1913, 저자 사후 출간 1916–1917) | **실행 완료 = Vol.2**(출애굽기·레위기, 창세기 Vol.1은 대출전용이라 접근 불가), §5.14. 13~17권 시리즈(판본마다 다름), 설교체 주석 |
 
 **파일럿 선정 근거**: Spurgeon Vol.1은 (a) 확실한 public domain, (b) 시편 26편으로 분량이 관리 가능, (c) 절 단위 구조가 명확(시편 장:절별 해설)해 신규 청킹 규칙 검증에 적합, (d) 이미 §3에서 확인한 기존 scripture-reference 감지기(`NAE/pipeline/canonical/annotate.py::find_scripture_references_extended`)와의 정합성을 테스트하기 좋다.
 
@@ -226,6 +226,21 @@ C1이 §2-B(질문 5-11)까지 마쳐 최종 결과 문서(`docs/NAE_BAPTIST_COM
 - **M2 등록**: `BAP-COMM-BROADUS-MATT-VOL01`(Amendment B 근거) — 원본 17개 레코드 diff 0줄, 신규 15줄만 추가. validator baseline 12→13 갱신.
 - **임베딩 결과**: 3,025개 전부 성공, 에러 0.
 - **최종 확인**: `nae_ref_commentary_v1` = 9,662(Spurgeon 1,978 + Gill 4,659 + Broadus 3,025), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 전 과정 무변동. 전체 스위트 2,971 passed(환경 갭 2건 외 이상 없음).
+
+### 5.14 세션 재시작 + 다섯 번째 후보 실행 — B.H. Carroll, Vol.2 (2026-09-17)
+
+워크트리가 재활용되며 브랜치가 세션 시작 시점(`claude/musing-wing-0db5c8`)으로 되돌아갔다 — 재확인 결과 §5.9-5.13의 모든 PR(#28·31·35·36)은 `origin/dev/dbma-engine`에 그대로 병합돼 있어 작업 손실은 없었다(로컬 워크트리만 stale). 매 세션 새 브랜치를 origin/dev/dbma-engine에서 따는 기존 관례 덕에 복구 비용 없이 재개.
+
+**우선순위 재확인**: 세션 사이 "배포 버전 완성 최우선(총력 투입)" 지시(2026-09-15)와 별도 트랙(TSU/배포용 동봉서재)의 대규모 확장(PR #44, 출처 4→67, Spurgeon 29권·Broadus 2권 추가)이 있었음을 발견 — 겹침 여부 확인 결과 **무관**(그쪽 Broadus 2권은 "Lectures on History of Preaching"·"Preparation and Delivery of Sermons"로 이번 세션이 처리한 마태복음 주석과 다른 저작, Carroll·Gill 나머지 권은 그쪽에 없음). 사용자가 "나머지 후보도 진행하라"고 명시적으로 재확인해 계속 진행.
+
+- **원본 확보 — Vol.1(창세기) 접근 불가**: archive.org의 `bwb_S0-ATU-484_1`(창세기, Vol.1)는 401 Authorization Required(대출 전용). 대체 스캔 `bookofgenesisint0000bhca`도 403. Stanford Copyright Renewal DB·HathiTrust·LOC 전부 봇 차단으로 접근 불가(Robertson 조사 때와 동일 패턴). 3rd party(`grace-ebooks.com`) PDF는 출처 신뢰도가 낮아 사용자에게 확인 후 **Vol.2(출애굽기·레위기, 1913, Fleming H. Revell)로 파일럿 전환** — archive.org `interpretationof02carr`(자유 다운로드 확인됨), hocr.html+original.pdf 각 ~23MB, 482쪽.
+- **Canonicalize**: 2,760문단, **scripture_references 0건**(!) — 스팟체크로 원인 확인: 본문 자체는 깨끗하나("Job xxxi, 35", "Job ix, 33" 등) 인용 표기가 쉼표 구분(장, 절) 방식이라 기존 감지기의 마침표/콜론 패턴과 불일치. 데이터 손상 아님, 단순 표기 방식 차이 — 기본 `heading` 청커 사용 예정이라 영향 없음(새 정규식 추가하지 않음).
+- **M2 등록**: `BAP-COMM-CARROLL-IEB-VOL02`(Amendment B 근거) — 원본 18개 레코드 diff 0줄, 신규 15줄만 추가. validator baseline 13→14 갱신.
+- **임베딩 결과**: 855개 전부 성공, 에러 0.
+- **회귀 확인 중 발견(무관 사전 존재 실패 2건)**: `test_real_production_dry_run_excludes_non_verified`·`test_real_production_review_gate_state_unchanged_by_import`가 `indexed==3319` 기대와 달리 8,936을 반환 — stash로 내 변경 없이 재현해 **이번 세션과 무관함을 확인**(원인: 별도 세션의 S2-4 코퍼스 확장이 production dry-run 대상 레코드 수를 늘림). 수정하지 않음 — 배포 파이프라인 트랙 소관.
+- **최종 확인**: `nae_ref_commentary_v1` = 10,517(+Carroll 855), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 무변동. 전체 스위트 3,070 passed(기존 환경 갭 2건 + 위 무관 실패 2건, 전부 사전 존재·비관련 확인).
+
+**남은 후보**: Carroll Vol.1(창세기, 접근법 미해결)·Vol.3 이후, Gill 나머지 권(구약 9권+신약 2~4권). 이번 5개 후보 목록(§1) 기준으로는 4개 저자 전부 최소 1권씩 실행 완료(Robertson만 저작권으로 보류).
 
 ---
 
