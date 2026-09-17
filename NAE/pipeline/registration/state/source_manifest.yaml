@@ -265,3 +265,18 @@ sources:
   authority_class: reference
   raw_path: NAE/corpus/raw/archive_org/reference/Broadus_CommentaryMatthew/hocr.html
   checksum_target: NAE/corpus/raw/archive_org/reference/Broadus_CommentaryMatthew/hocr.html
+- source_id: BAP-COMM-CARROLL-IEB-VOL02
+  title: 'An Interpretation of the English Bible: The Books of Exodus and Leviticus'
+  author: B. H. Carroll
+  author_id: carroll_b_h
+  work_id: carroll_b_h-an_interpretation_of_the_english_bible_the_books_of_exodus_and_leviticus
+  edition_id: carroll_b_h-an_interpretation_of_the_english_bible_the_books_of_exodus_and_leviticus-1913_revell
+  year: 1913
+  license: public_domain
+  archive_source: archive_org
+  raw_checksum: 436f01e502b1a845f964b242ffec0efbc520843b6415d878ea10d2180cb1c3f0
+  content_genre:
+  - commentary
+  authority_class: reference
+  raw_path: NAE/corpus/raw/archive_org/reference/Carroll_InterpretationEB_Vol2/hocr.html
+  checksum_target: NAE/corpus/raw/archive_org/reference/Carroll_InterpretationEB_Vol2/hocr.html
