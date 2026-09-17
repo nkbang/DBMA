@@ -59,3 +59,39 @@ core/tsu_builder.py:458-471  registry → TSU record 전파
 
 C1-TASK-ORDER-067로 `source_provenance` 필드를 반영한 재답변을 요청한다.
 RQ-2는 재검토 불필요(확정).
+
+---
+
+## 추가 — RQ-1 재답변(RESULT_003) 대조검증 (2026-09-17)
+
+`docs/DBMA_SIDECAR_METADATA_C1_REVIEW_RESULT_003.md` 접수. 인용 3곳을
+전부 직접 대조:
+
+| 인용 | 실제 확인 |
+|---|---|
+| `core/tsu_builder.py:458` `record["source_provenance"] = {` | **일치** |
+| `core/generation.py:560` `has_external = any(...)` | **일치** |
+| `core/generation.py:589` `provenance = c.metadata.get("source_provenance")` | **일치** |
+
+**논증 검토:** `source_provenance`는 `source_tier`가 설정된(=Logos 출처)
+문서에만 채워지는 6키 고정 스키마 dict이고(`tsu_builder.py:456-467`의
+`if source_tier is not None: ... else: None` 분기 확인), `generation.py:560`
+에서 이 필드의 진위값만으로 "외부 소스 인용 규칙" 프롬프트 지시문을
+켠다. 사이드카의 `source`(자유 문자열, 모든 문서에 적용 가능)를 여기
+욱여넣으면 Logos 아닌 문서까지 그 판정이 잘못 켜진다 — **실제 동작
+오류를 유발하는 진짜 충돌**이며 단순 스타일 문제가 아니다.
+
+**정합성 확인:** 이 결론(`source`는 별도 `metadata_source` 선택 필드로)은
+1차 검토에서 이미 수용됐던 Q4("metadata_source, registry 무변경, TSU
+record 선택 필드로 한정")와 정확히 수렴한다 — 새 모순이 아니라 독립
+경로로 같은 결론에 재도달한 것.
+
+### 최종 판정: RQ-1 CONFIRMED (YELLOW), RQ-2 CONFIRMED (YELLOW, 기존 유지)
+
+두 질문 모두 검증 완료. 남은 것은 설계 문서에 다음 2건을 반영하는 것뿐:
+1. `title`/`author`만 기존 필드 재채움(GREEN), `source`는 별도
+   `metadata_source` 선택 필드 추가(additive)
+2. RQ-2 완화안(블랙리스트+휴리스틱)을 D-3 규칙에 명시
+
+이 두 가지를 반영한 설계 확정본을 만들면 C1 Review는 종결되고 HQ 승인
+단계로 넘어간다.
