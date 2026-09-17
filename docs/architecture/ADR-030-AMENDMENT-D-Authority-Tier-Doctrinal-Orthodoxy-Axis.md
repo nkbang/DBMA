@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | **PROPOSED (DRAFT)** — Evidence Before Promotion Rule 4조건 중 0개 충족. 구현 착수 전, C1 Review 요청 대기 |
+| **Status** | **PROPOSED** — Evidence Before Promotion Rule 4조건 중 **C1 독립 검토 GREEN 충족**(2026-09-17, `NAE_AUTHORITY_TIER_M2_TAGGING_C1_REVIEW_RESULT_002.md`), 구현 완료·회귀 통과·HQ 승인 3건 미충족. **구현은 여전히 착수 금지 — HQ 승인 대기** |
 | **Amends** | `ADR-030-NAE-Sermon-Corpus-Governance.md` (IMPLEMENTED, 2026-08-28) — §7 Metadata Authority, §8.4 M2 Schema 보강, §12 M-2 |
 | **Trigger** | 목회자 개인 RAG(DBMA/NAE) 제안서 §11/§13 — `NAE/citation_disclosure.py::get_tier_disclosure()`(커밋 `d7228074`, 2026-09-16)가 이미 T1-T4 라벨 조회 함수를 구현했으나, 이를 호출할 `authority_tier` 필드가 M2 어디에도 없음. 태깅 파이프라인 설계는 `docs/NAE_AUTHORITY_TIER_M2_TAGGING_IMPLEMENTATION_PLAN_001.md`(2026-09-16)로 선행 작성됨 |
 | **Deciders** | Rev. Bang / HQ = Final Authority · CUE = Architecture (초안 작성) · C1 = Independent Review (미착수) |
@@ -126,16 +126,33 @@ tradition_relation: own
 
 ## 4. Proposed → Approved 승격 조건 (Evidence Before Promotion Rule)
 
+이 Amendment는 Plan 001 §11이 정의한 대로 **2단계 게이트**를 거친다 — (A) 설계 자체의 승인
+게이트(구현 착수 여부를 결정), (B) 구현 이후의 표준 4조건 승격 게이트(Amendment B가 거친 것과
+동일한 절차). A가 끝나야 B가 시작된다.
+
+### 4-A. 설계 승인 게이트 (Plan 001 §11, 구현 착수 전)
+
 | # | 조건 | 상태 |
 |---|---|---|
-| 1 | 구현 완료 (§2.3 코드 변경 + §2.2 validator 신규 검사) | ⬜ 미착수 — 이 Amendment 승인 후 별도 구현 커밋 필요 |
-| 2 | 회귀 테스트 통과 (`tests/test_m2_source_registry_governance.py` 신규 pos/neg 케이스 포함, 전체 스위트 무회귀) | ⬜ 미착수 |
-| 3 | C1 독립 검토 GREEN | ⬜ 요청 대기 — 트리거 조건 충족(신규 Metadata Model 변경, CLAUDE.md 명시 항목) |
-| 4 | HQ 승인 | ⬜ 대기 |
+| A1 | ADR-030 Amendment 초안 작성 | ✅ 완료 (본 문서, 2026-09-16) |
+| A2 | C1 독립 검토 GREEN (설계 문서 대상, 코드 없음) | ✅ **완료** — 1차 YELLOW(`_RESULT_001.md`, 2026-09-17) → 3개 finding 해소 → 재검토 GREEN(`_RESULT_002.md`, 2026-09-17). CUE 사후 검증에서 git HEAD 메타데이터 1건 불일치 발견·기록했으나 내용 검증에는 영향 없음(해당 문서 §CUE 사후 검증 참고) |
+| A3 | HQ 승인 (설계 자체에 대한) | ⬜ 대기 |
 
-**4조건 중 0개 충족 — 이 문서는 PROPOSED 상태를 유지한다.** Architecture Freeze Rule에 따라, 이
-Amendment가 APPROVED로 승격되기 전까지 `authority_tier`/`tradition_relation`/`counter_refs`는
-어떤 M2 레코드에도 쓰여서는 안 되며, 이 필드들을 전제로 한 어떤 구현도 진행되어서는 안 된다.
+**A1·A2 완료, A3 대기 — 구현은 여전히 착수 금지.**
+
+### 4-B. 구현 승격 게이트 (A3 완료 후 시작, 아직 미착수)
+
+| # | 조건 | 상태 |
+|---|---|---|
+| B1 | 구현 완료 (§2.3 코드 변경 + §2.2 validator 신규 검사) | ⬜ 미착수 — A3(HQ 설계 승인) 이후 별도 구현 커밋 필요 |
+| B2 | 회귀 테스트 통과 (`tests/test_m2_source_registry_governance.py` 신규 pos/neg 케이스 포함, 전체 스위트 무회귀) | ⬜ 미착수 |
+| B3 | C1 독립 검토 GREEN (이번엔 실제 구현 코드 대상 — A2의 설계 검토와는 별개, Amendment B 선례와 동일한 사후검증형) | ⬜ 미착수 |
+| B4 | HQ 승인 (구현에 대한, 최종) | ⬜ 대기 |
+
+**Architecture Freeze Rule에 따라, A3(설계 HQ 승인)가 완료되기 전까지
+`authority_tier`/`tradition_relation`/`counter_refs`는 어떤 M2 레코드에도 쓰여서는 안 되며, 이
+필드들을 전제로 한 어떤 코드 구현도 진행되어서는 안 된다.** A3 완료 후에도 B1~B4를 모두
+충족해야 이 Amendment가 최종 APPROVED로 승격된다.
 
 ## 5. 관련 문서
 
