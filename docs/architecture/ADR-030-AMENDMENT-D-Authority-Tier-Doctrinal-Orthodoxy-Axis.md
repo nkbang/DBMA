@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | **PROPOSED** — Evidence Before Promotion Rule 4조건 중 **C1 독립 검토 GREEN 충족**(2026-09-17, `NAE_AUTHORITY_TIER_M2_TAGGING_C1_REVIEW_RESULT_002.md`), 구현 완료·회귀 통과·HQ 승인 3건 미충족. **구현은 여전히 착수 금지 — HQ 승인 대기** |
+| **Status** | **PROPOSED** — A3(설계 HQ 승인) 완료(2026-09-17, David/HQ, 채팅 승인). B1(구현) 완료(본 문서 §4-B). B2(회귀)/B3(구현 코드 C1 Review)/B4(구현 최종 HQ 승인) 미충족 — Amendment 최종 APPROVED 승격까지는 대기 |
 | **Amends** | `ADR-030-NAE-Sermon-Corpus-Governance.md` (IMPLEMENTED, 2026-08-28) — §7 Metadata Authority, §8.4 M2 Schema 보강, §12 M-2 |
 | **Trigger** | 목회자 개인 RAG(DBMA/NAE) 제안서 §11/§13 — `NAE/citation_disclosure.py::get_tier_disclosure()`(커밋 `d7228074`, 2026-09-16)가 이미 T1-T4 라벨 조회 함수를 구현했으나, 이를 호출할 `authority_tier` 필드가 M2 어디에도 없음. 태깅 파이프라인 설계는 `docs/NAE_AUTHORITY_TIER_M2_TAGGING_IMPLEMENTATION_PLAN_001.md`(2026-09-16)로 선행 작성됨 |
 | **Deciders** | Rev. Bang / HQ = Final Authority · CUE = Architecture (초안 작성) · C1 = Independent Review (미착수) |
@@ -136,23 +136,22 @@ tradition_relation: own
 |---|---|---|
 | A1 | ADR-030 Amendment 초안 작성 | ✅ 완료 (본 문서, 2026-09-16) |
 | A2 | C1 독립 검토 GREEN (설계 문서 대상, 코드 없음) | ✅ **완료** — 1차 YELLOW(`_RESULT_001.md`, 2026-09-17) → 3개 finding 해소 → 재검토 GREEN(`_RESULT_002.md`, 2026-09-17). CUE 사후 검증에서 git HEAD 메타데이터 1건 불일치 발견·기록했으나 내용 검증에는 영향 없음(해당 문서 §CUE 사후 검증 참고) |
-| A3 | HQ 승인 (설계 자체에 대한) | ⬜ 대기 |
+| A3 | HQ 승인 (설계 자체에 대한) | ✅ **완료** (2026-09-17, David/HQ, 채팅 승인 — "승인" 및 이후 구현 브랜치 생성 지시로 재확인) |
 
-**A1·A2 완료, A3 대기 — 구현은 여전히 착수 금지.**
+**A1·A2·A3 전부 완료 — §4-B 구현 게이트 진행 가능.**
 
-### 4-B. 구현 승격 게이트 (A3 완료 후 시작, 아직 미착수)
+### 4-B. 구현 승격 게이트 (A3 완료 후 시작)
 
 | # | 조건 | 상태 |
 |---|---|---|
-| B1 | 구현 완료 (§2.3 코드 변경 + §2.2 validator 신규 검사) | ⬜ 미착수 — A3(HQ 설계 승인) 이후 별도 구현 커밋 필요 |
-| B2 | 회귀 테스트 통과 (`tests/test_m2_source_registry_governance.py` 신규 pos/neg 케이스 포함, 전체 스위트 무회귀) | ⬜ 미착수 |
-| B3 | C1 독립 검토 GREEN (이번엔 실제 구현 코드 대상 — A2의 설계 검토와는 별개, Amendment B 선례와 동일한 사후검증형) | ⬜ 미착수 |
+| B1 | 구현 완료 (§2.3 코드 변경 + §2.2 validator 신규 검사) | ✅ **완료** (2026-09-17, CUE, 브랜치 `claude/authority-tier-m2-implementation`) — `NAE_AUTHORITY_TIER_M2_TAGGING_BUILD_REPORT_001.md` 참고 |
+| B2 | 회귀 테스트 통과 (`tests/test_m2_source_registry_governance.py` 신규 pos/neg 케이스 포함, 전체 스위트 무회귀) | ✅ **완료** — 신규 6종(pos_08/09, neg_09~12) 전부 PASS, 전체 스위트 3076 passed/17 skipped, 사전 존재 실패 2건(TSU baseline 드리프트, 본 구현과 무관)은 Build Report §3에 별도 기록 |
+| B3 | C1 독립 검토 GREEN (이번엔 실제 구현 코드 대상 — A2의 설계 검토와는 별개, Amendment B 선례와 동일한 사후검증형) | ⬜ 미착수 — 구현 코드 C1 Review 요청 필요 |
 | B4 | HQ 승인 (구현에 대한, 최종) | ⬜ 대기 |
 
-**Architecture Freeze Rule에 따라, A3(설계 HQ 승인)가 완료되기 전까지
-`authority_tier`/`tradition_relation`/`counter_refs`는 어떤 M2 레코드에도 쓰여서는 안 되며, 이
-필드들을 전제로 한 어떤 코드 구현도 진행되어서는 안 된다.** A3 완료 후에도 B1~B4를 모두
-충족해야 이 Amendment가 최종 APPROVED로 승격된다.
+**Architecture Freeze Rule에 따라, A3(설계 HQ 승인) 완료 이전에는 어떤 코드 구현도
+진행되지 않았다(git 히스토리 확인: 본 구현 커밋은 A3 완료 이후).** B3(구현 코드 C1 Review)와
+B4(최종 HQ 승인)를 모두 충족해야 이 Amendment가 최종 APPROVED로 승격된다.
 
 ## 5. 관련 문서
 

@@ -50,6 +50,10 @@ VALID_CONTENT_GENRE_VALUES = frozenset([
 VALID_THEOLOGICAL_CATEGORIES = frozenset([
     "confession", "ecclesiology", "soteriology", "missions",
 ])
+VALID_AUTHORITY_TIERS = frozenset(["T1", "T2", "T3", "T4"])
+VALID_TRADITION_RELATIONS = frozenset([
+    "own", "allied", "other_christian", "non_christian", "heterodox",
+])
 M2_BASE_KEYS = frozenset([
     "source_id", "title", "author", "author_id", "work_id",
     "edition_id", "year", "license", "archive_source", "raw_checksum",
@@ -57,6 +61,8 @@ M2_BASE_KEYS = frozenset([
 ADR030_ADDITIVE_FIELDS = frozenset([
     "authority_class", "content_genre", "theological_category",
     "tradition", "raw_path", "checksum_target",
+    # ADR-030 Amendment D (PROPOSED)
+    "authority_tier", "tradition_relation", "counter_refs",
 ])
 # ADR-030 v2.1 §12 M-2 backfilled exactly these 14 source_ids (2026-08-28,
 # `CUE-ADR-030-A2B2-CLASSIFICATION-RULE.md` RATIFIED v1.1) — their specific
@@ -212,6 +218,75 @@ class TestPositiveNewFields:
         assert fails == [], f"합성 레코드에서 예상외 FAIL: {fails}"
 
 
+# ── Amendment D: authority_tier governance (V9-V12) ─────────────────────────
+
+class TestAuthorityTierGovernance:
+    """ADR-030 Amendment D (PROPOSED) — authority_tier / tradition_relation /
+    counter_refs 검증. M2 백필은 아직 없음(found == [] 공허 통과) — 나머지는
+    synthetic 레코드로 validator 함수를 직접 호출해 검증한다 (test_pos_07과 동일 패턴)."""
+
+    def test_pos_08_authority_tier_vocab_when_present(self):
+        """authority_tier 가진 레코드만 값 ∈ 4-enum. 백필 이전엔 공허 통과."""
+        m2_data = _load_yaml(M2_PATH)
+        found = [s for s in m2_data.get("sources", []) if "authority_tier" in s]
+        for s in found:
+            assert s["authority_tier"] in VALID_AUTHORITY_TIERS, (
+                f"{s.get('source_id')}: unknown authority_tier={s['authority_tier']}"
+            )
+
+    def test_neg_09_t3_without_counter_refs_fails(self):
+        """authority_tier=T3 인데 counter_refs 없음 → V10 FAIL."""
+        import scripts.m2_source_registry_validator as v
+        synthetic = [{**{k: "x" for k in M2_BASE_KEYS}, "source_id": "SYN-T3-NOREF",
+                      "authority_tier": "T3", "tradition_relation": "other_christian"}]
+        fails = v.check_authority_tier_fields(synthetic).failed
+        assert any("V10" in f for f in fails), f"T3 without counter_refs should FAIL V10: {fails}"
+
+    def test_neg_10_orphan_counter_ref_fails(self):
+        """counter_refs 가 M2에 없는 source_id 를 참조 → V11 FAIL."""
+        import scripts.m2_source_registry_validator as v
+        synthetic = [{**{k: "x" for k in M2_BASE_KEYS}, "source_id": "SYN-T3-ORPHAN",
+                      "authority_tier": "T3", "tradition_relation": "other_christian",
+                      "counter_refs": ["NONEXISTENT-SOURCE-ID"]}]
+        fails = v.check_authority_tier_fields(synthetic).failed
+        assert any("V11" in f for f in fails), f"Orphan counter_ref should FAIL V11: {fails}"
+
+    def test_neg_11_counter_ref_target_not_t1_t2_fails(self):
+        """counter_refs 대상의 authority_tier 가 T1/T2 가 아니면 → V11(b) FAIL."""
+        import scripts.m2_source_registry_validator as v
+        target = {**{k: "x" for k in M2_BASE_KEYS}, "source_id": "SYN-T3-TARGET",
+                  "authority_tier": "T3", "tradition_relation": "other_christian"}
+        source = {**{k: "x" for k in M2_BASE_KEYS}, "source_id": "SYN-T3-SOURCE",
+                  "authority_tier": "T3", "tradition_relation": "other_christian",
+                  "counter_refs": ["SYN-T3-TARGET"]}
+        fails = v.check_authority_tier_fields([source, target]).failed
+        assert any("V11" in f for f in fails), (
+            f"counter_ref pointing at a non-T1/T2 target should FAIL: {fails}"
+        )
+
+    def test_neg_12_t1_t2_t4_with_counter_refs_fails(self):
+        """authority_tier ∈ {T1,T2,T4} 인데 counter_refs 가 있으면 → V12 FAIL
+        (V11(b)와 조합해 counter_ref 순환 참조를 구조적으로 차단하는 핵심 규칙)."""
+        import scripts.m2_source_registry_validator as v
+        for tier in ("T1", "T2", "T4"):
+            synthetic = [{**{k: "x" for k in M2_BASE_KEYS}, "source_id": f"SYN-{tier}-BADREF",
+                          "authority_tier": tier, "tradition_relation": "own",
+                          "counter_refs": ["SOME-ID"]}]
+            fails = v.check_authority_tier_fields(synthetic).failed
+            assert any("V12" in f for f in fails), f"{tier} with counter_refs should FAIL V12: {fails}"
+
+    def test_pos_09_t3_with_valid_t1_t2_counter_ref_passes(self):
+        """T3 → T2 counter_ref, T2 자신은 counter_refs 없음 → PASS (순환 불가능한 유효 케이스)."""
+        import scripts.m2_source_registry_validator as v
+        rebuttal = {**{k: "x" for k in M2_BASE_KEYS}, "source_id": "SYN-T2-REBUTTAL",
+                    "authority_tier": "T2", "tradition_relation": "own"}
+        source = {**{k: "x" for k in M2_BASE_KEYS}, "source_id": "SYN-T3-VALID",
+                  "authority_tier": "T3", "tradition_relation": "other_christian",
+                  "counter_refs": ["SYN-T2-REBUTTAL"]}
+        fails = v.check_authority_tier_fields([source, rebuttal]).failed
+        assert fails == [], f"valid T3→T2 counter_ref should PASS: {fails}"
+
+
 # ── New: M2 key governance ───────────────────────────────────────────────────
 
 class TestM2KeyGovernance:
@@ -230,8 +305,7 @@ class TestM2KeyGovernance:
         m2_data = _load_yaml(M2_PATH)
         base = {"source_id", "title", "author", "author_id", "work_id",
                 "edition_id", "year", "license", "archive_source", "raw_checksum"}
-        additive = {"authority_class", "content_genre", "theological_category",
-                    "tradition", "raw_path", "checksum_target"}
+        additive = set(ADR030_ADDITIVE_FIELDS)
         for s in m2_data["sources"]:
             keys = set(s.keys())
             assert keys.issubset(base | additive), f"{s.get('source_id')} unknown keys: {keys - (base | additive)}"
