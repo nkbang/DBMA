@@ -167,11 +167,12 @@ def build_document_metadata(
     title: Optional[str] = None,
     author: Optional[str] = None,
     doc_type: Optional[str] = None,
+    metadata_source: Optional[str] = None,
 ) -> dict:
     """Build complete document metadata object per METADATA_CONTRACT_v1.
-    
+
     Unknown values are set to None (never invents missing data).
-    
+
     Args:
         content: Document text content
         source_file: Original filename
@@ -188,7 +189,11 @@ def build_document_metadata(
         title: Document title (None if unknown)
         author: Author name (None if unknown)
         doc_type: Document type (주석/설교/시전/논문/기타, None if unknown)
-    
+        metadata_source: [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md] title/
+            author가 어디서 왔는지 — "embedded"(내장 그대로) /
+            "sidecar"(하나 이상 사이드카로 대체) / None(둘 다 미상).
+            core/processing.py::resolve_title_author()가 계산한다.
+
     Returns:
         Metadata dictionary with all required fields present
     """
@@ -223,8 +228,11 @@ def build_document_metadata(
         
         # Document type (unknown = None — never invent)
         "doc_type": doc_type,
+
+        # [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md] title/author의 출처
+        "metadata_source": metadata_source,
     }
-    
+
     return metadata
 
 
