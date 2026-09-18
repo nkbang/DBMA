@@ -48,6 +48,11 @@ class RegistrationRequest:
     authority_class: str | None = None
     tradition: str | None = None
     theological_category: list[str] | None = None
+    # ADR-030 Amendment D (PROPOSED, 2026-09-16) additive M2 fields — same
+    # optional/additive pattern as the Amendment B fields above.
+    authority_tier: str | None = None
+    tradition_relation: str | None = None
+    counter_refs: list[str] | None = None
 
 
 @dataclass
@@ -194,6 +199,14 @@ def register_source(
         manifest_entry["tradition"] = request.tradition
     if request.theological_category is not None:
         manifest_entry["theological_category"] = request.theological_category
+    # ADR-030 Amendment D (PROPOSED) additive fields — same conditional
+    # pattern as the Amendment B fields above.
+    if request.authority_tier is not None:
+        manifest_entry["authority_tier"] = request.authority_tier
+    if request.tradition_relation is not None:
+        manifest_entry["tradition_relation"] = request.tradition_relation
+    if request.counter_refs is not None:
+        manifest_entry["counter_refs"] = request.counter_refs
     # raw_path/checksum_target both point at primary_raw — the file that
     # was actually extracted from and checksummed (matches the Dagg/Hiscox
     # convention where the two fields coincide; Fuller/Smith differ only
