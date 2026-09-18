@@ -59,5 +59,9 @@ Retrieval Engine을 건드리는 신규 Architecture 제안이므로 실제
 
 ---
 
-*모드 제약: PLAN MODE로만 진행 — 이번 Task Order는 코드 작성이 아니라
-검토이므로 ACT MODE(파일 수정) 금지.*
+*모드 제약: 검토(§2) 자체는 PLAN MODE로 수행 — `core/`, `ui/`, `scripts/`,
+`tests/` 등 소스 코드 파일은 어떤 모드에서도 수정 금지(읽기만). 단,
+§4 산출물(`docs/agents/c1/C1-TASK-ORDER-061-REPORT.md`) 신규 작성은
+PLAN MODE로 불가능하므로 **그 파일 하나만** ACT MODE로 전환해 작성한다
+— ACT MODE 전환은 리포트 파일 생성/수정 목적에 한정하고, 다른 파일은
+건드리지 않는다.*
