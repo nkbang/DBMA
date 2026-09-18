@@ -111,7 +111,22 @@ _DOC_TYPE_ORDER = ["주석", "설교", "사전", "논문", "조직신학", "기�
 # 안 되면 자동으로 떨어지는 fallback.
 _DOC_TYPE_KEYWORDS: dict[str, list[str]] = {
     "주석": ["주석", "commentary", "註釋"],
-    "설교": ["설교", "말씀", "제목:", "본문:", "본문 말씀:"],
+    # [2026-09-15] 영어 키워드 추가. 5개 유형 중 "설교"만 영어 대응어가 0개여서
+    # (주석=commentary, 사전=dictionary/encyclopedia, 논문=abstract,
+    # 조직신학=systematic theology는 모두 존재) 영어 설교집이 어떤 title을 줘도
+    # "기타"로 떨어졌다 — 무료 배포 기본 코퍼스가 전량 영어 퍼블릭 도메인
+    # 설교라 직격 결함이었다(docs/DBMA_DOCTYPE_IMPACT_REPORT_001.md §4).
+    #
+    # 키워드 선정은 백업 코퍼스 122개 출처 + archive.org 설교 67종 실측으로
+    # 골랐다(docs/DBMA_DOCTYPE_SERMON_KEYWORDS_REPORT_001.md):
+    #   "preaching" 제외 — 일반 서술문에 걸린다("great awakenings without much
+    #     preaching"). Dargan/Broadus의 *History of Preaching*(설교학·역사이지
+    #     설교가 아님)까지 끌어와 오탐 2건 발생.
+    #   "sermons" 복수형만 사용 — 단수 "sermon"은 출판사 시리즈 광고 목록에
+    #     걸려 주석서를 설교로 오분류했다(Kent Hughes, Preaching the Word 시리즈).
+    #     실측상 title에 단수만 있는 자료는 0건이라 복수형만으로 손실이 없다.
+    # 이 조합의 백업 122건 오탐은 0건이다.
+    "설교": ["설교", "말씀", "제목:", "본문:", "본문 말씀:", "sermons", "pulpit", "homily"],
     "사전": ["사전", "辭典", "辞典", "dictionary", "encyclopedia"],
     "논문": ["논문", "초록", "abstract", "참고문헌", "학위논문"],
     "조직신학": ["조직신학", "systematic theology"],
@@ -152,11 +167,12 @@ def build_document_metadata(
     title: Optional[str] = None,
     author: Optional[str] = None,
     doc_type: Optional[str] = None,
+    metadata_source: Optional[str] = None,
 ) -> dict:
     """Build complete document metadata object per METADATA_CONTRACT_v1.
-    
+
     Unknown values are set to None (never invents missing data).
-    
+
     Args:
         content: Document text content
         source_file: Original filename
@@ -173,7 +189,11 @@ def build_document_metadata(
         title: Document title (None if unknown)
         author: Author name (None if unknown)
         doc_type: Document type (주석/설교/시전/논문/기타, None if unknown)
-    
+        metadata_source: [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md] title/
+            author가 어디서 왔는지 — "embedded"(내장 그대로) /
+            "sidecar"(하나 이상 사이드카로 대체) / None(둘 다 미상).
+            core/processing.py::resolve_title_author()가 계산한다.
+
     Returns:
         Metadata dictionary with all required fields present
     """
@@ -208,8 +228,11 @@ def build_document_metadata(
         
         # Document type (unknown = None — never invent)
         "doc_type": doc_type,
+
+        # [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md] title/author의 출처
+        "metadata_source": metadata_source,
     }
-    
+
     return metadata
 
 

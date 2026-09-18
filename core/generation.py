@@ -43,6 +43,7 @@ from core.config import (
     DEFAULT_GEN_MODEL,
     DEFAULT_NUM_PREDICT,
     DEFAULT_REPEAT_PENALTY,
+    DEFAULT_SERMON_NUM_PREDICT,
     DEFAULT_TEMPERATURE,
 )
 from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
@@ -58,12 +59,33 @@ def _gen_options(temperature: float) -> dict:
     않아 Ollama 기본값(repeat_penalty≈1.1, num_predict 무제한)으로 돌고, 저온
     결정론 설정과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됐다
     (요한복음 1:10 해설). 두 값을 config.yaml::rag 에서 읽어 강제한다.
-    SermonDraftService 는 긴 출력이 정상이라 이 헬퍼를 쓰지 않는다.
+    SermonDraftService 는 `_sermon_gen_options()`(아래)를 쓴다 — num_predict만
+    다르고 repeat_penalty는 공유한다.
     """
     return {
         "temperature": temperature,
         "repeat_penalty": DEFAULT_REPEAT_PENALTY,
         "num_predict": DEFAULT_NUM_PREDICT,
+    }
+
+
+def _sermon_gen_options(temperature: float) -> dict:
+    """SermonDraftService(개요·대지 확장) 전용 Ollama 옵션.
+
+    [2026-09-15, S1-4 배포 사양 품질 실측] 이전에는 "설교문은 긴 출력이
+    정상"이라는 이유로 repeat_penalty/num_predict를 아예 적용하지 않았다.
+    실측 결과 이는 num_predict 상한과 무관하게 그 자체로 문제였다 —
+    llama3.2:3b로 대지를 확장하면 repeat_penalty 없이는 groundedness
+    0/5(퇴행 반복: "우리에게 사랑을 주는 하나님으로서"류 문구를 20회+
+    그대로 반복), repeat_penalty=1.3을 추가하면 3.0/5로 개선됐다(같은
+    프롬프트, 같은 모델). num_predict는 `_gen_options()`의 1024를 그대로
+    쓰지 않는다 — 그 값은 실측상 설교 문단을 문장 중간에서 잘랐다.
+    `DEFAULT_SERMON_NUM_PREDICT`(기본 2048)를 대신 쓴다.
+    """
+    return {
+        "temperature": temperature,
+        "repeat_penalty": DEFAULT_REPEAT_PENALTY,
+        "num_predict": DEFAULT_SERMON_NUM_PREDICT,
     }
 
 
@@ -84,9 +106,26 @@ def _gen_options(temperature: float) -> dict:
 # (같은 실측에서 매 호출마다 오염 위치/여부가 달랐다).
 #
 # 한글(가-힣, 자모)과 아라비아 숫자·구두점·영문(성경 인명 로마자 표기 등)은
-# 검사 대상이 아니다 — 프로젝트가 실제로 배제하려는 것은 CJK 이웃 언어와
-# 태국어처럼 한국어 문장에 섞일 이유가 없는 문자뿐이다.
-_SCRIPT_CONTAMINATION_RE = re.compile(r"[぀-ヿ一-鿿฀-๿]")
+# 검사 대상이 아니다 — 프로젝트가 실제로 배제하려는 것은 한국어 문장에
+# 섞일 이유가 없는 외국 문자 체계뿐이다.
+#
+# [2026-09-11, P0-5 A3 실측] 범위를 CJK/태국어에서 넓혔다 — 실제 답변에
+# 키릴 문자("вопрос")가 섞여 나온 사례가 관측됐다. 같은 계열의 위험(한국어
+# 문장에 섞일 이유가 없는 완전히 다른 문자 체계)이므로 그리스·히브리·
+# 아랍 문자까지 함께 막는다.
+#
+# [2026-09-15, S1-4 배포 사양 품질 실측] llama3.2:3b로 SermonDraftService.
+# expand_point() 실측 중 데바나가리 문자("सफ란다")가 섞여 나오는 사례가
+# 추가로 관측됐다 — 위 5개 문자 체계에 없던 구멍. 데바나가리도 같은
+# 이유로 막는다.
+_SCRIPT_CONTAMINATION_RE = re.compile(
+    r"[぀-ヿ一-鿿฀-๿"      # 히라가나/가타카나, CJK 통합 한자, 태국어 (기존)
+    r"Ͱ-Ͽ"        # 그리스 문자
+    r"Ѐ-ӿ"        # 키릴 문자
+    r"֐-׿"        # 히브리 문자
+    r"؀-ۿ"        # 아랍 문자
+    r"ऀ-ॿ]"       # 데바나가리 문자
+)
 _MAX_LANGUAGE_RETRIES = 2
 
 
@@ -204,11 +243,16 @@ _GROUNDING_DIRECTIVE_NO_CONTEXT = """지시:
 
 def _run_claim_guard(
     answer: str,
-    response: ResponsePackage,
+    candidates: list[RankedCandidate],
 ) -> ClaimGuardResult | None:
     """답변 텍스트에서 위험 표현을 탐지하고, 증거(candidates)로 ClaimGuard를
     실행한다. 실패하면 ClaimGuardResult(risk_level=NONE, ...)를 반환 —
-    답변 생성이 실패해도 답변 자체는 막히지 않는다."""
+    답변 생성이 실패해도 답변 자체는 막히지 않는다.
+
+    candidates는 response.top_k_results(Chat/Research) 또는
+    SermonDraftService에 전달된 후보 목록(설교 개요/대지 확장) 양쪽에서
+    그대로 재사용할 수 있도록 RankedCandidate 리스트를 직접 받는다 —
+    ResponsePackage 전체를 요구하지 않는다."""
     try:
         guard = ClaimGuard()
         risk_level, matched_terms = guard.detect_risk(answer)
@@ -223,7 +267,7 @@ def _run_claim_guard(
                 suggested_wording=None,
             )
         # 위험 표현이 있으면 evidence로 평가
-        wrapped = wrap_ranked_candidates(response.top_k_results)
+        wrapped = wrap_ranked_candidates(candidates)
         return guard.evaluate(claim_text=answer, evidence=wrapped)
     except Exception as e:
         logger.warning(
@@ -311,7 +355,7 @@ class GenerationStream:
                 self._contamination_seen,
             )
             answer = _sanitize_script_contamination(answer)
-        claim_guard_result = _run_claim_guard(answer, self._response)
+        claim_guard_result = _run_claim_guard(answer, self._response.top_k_results)
         return GenerationResult(
             question=self._response.question,
             answer=answer,
@@ -444,7 +488,7 @@ class GenerationService:
             answer = f"[생성 실패] Ollama 호출 중 오류가 발생했습니다: {e}"
             error = str(e)
 
-        claim_guard_result = _run_claim_guard(answer, response)
+        claim_guard_result = _run_claim_guard(answer, response.top_k_results)
         return GenerationResult(
             question=response.question,
             answer=answer,
@@ -474,6 +518,7 @@ class SermonOutline:
     introduction: str
     points: list[str] = field(default_factory=list)
     conclusion: str = ""
+    claim_guard_result: ClaimGuardResult | None = None
 
 
 # [설교 형식] 대지의 "성격"만 다르고 출력 스키마(제목/서론/대지N/결론)는
@@ -560,15 +605,46 @@ _OUTLINE_POINT_GUIDANCE = {
     ),
 }
 
+# ============================================================
+# 예화 생성 금지 (HQ 지시, 2026-09-15)
+# ============================================================
+#
+# HQ 지시 원문: "예화는 절대 생성하지 않아야 한다. 없으면 없는대로 설교
+# 원고를 신앙양심대로 작성해야 한다."
+#
+# 이 지시 이전의 상태가 정확히 그 반대였다 — _EXPANSION_STYLE_GUIDANCE의
+# "주제설교" 항목이 "목회적 적용과 예화는 그 근거에서 자연스럽게 도출되게
+# 하라"로 **예화를 명시적으로 요구**하고 있었다. 제약("본문과 무관한 성경
+# 인물을 예화로 나열하지 마라")은 붙어 있었으나, 요구 자체가 남아 있는 한
+# 모델은 일화·실화·통계·유명인 발언을 지어낸다.
+#
+# 위험이 거꾸로 배치돼 있었다는 점이 더 중요하다: 강한 근거 강제
+# (_GROUNDING_DIRECTIVE — "자료에 없는 사실·인명·연도·장절을 추가하지 마라",
+# "부족하면 거기서 멈춰라")는 Chat/Research 경로에만 걸려 있고(:377, :382),
+# 정작 강단에 올라가는 설교 원고 경로는 더 약한 _QUALITY_DIRECTIVE만 쓴다
+# (:591, :716). 지어낸 예화는 목회자가 회중 앞에서 사실로 전달하게 되므로
+# 채팅 답변의 오류와 피해의 성격이 다르다.
+#
+# 이 지시문은 "예화를 쓰지 마라"가 아니라 "지어내지 마라"이다 — 참고 자료에
+# 실제로 있는 예화는 출처를 밝히고 쓸 수 있다. 없을 때 비워두는 것이
+# 허용된 결과이며, 그것이 기본값이다.
+_NO_FABRICATED_ILLUSTRATION_DIRECTIVE = (
+    "\n\n예화에 관한 절대 규칙:\n"
+    "- 예화·일화·실화·통계·유명인의 말·역사적 사건을 지어내지 마라. 참고 자료에"
+    " 실제로 적혀 있는 것만 쓸 수 있고, 쓸 때는 그 출처를 함께 밝혀라.\n"
+    "- 참고 자료에 마땅한 예화가 없으면 예화 없이 쓰라. 빈자리를 채우려고"
+    " 만들어 넣지 마라. 예화가 없는 설교는 결함이 아니다.\n"
+    "- 본문 주해와 적용만으로 대지를 완성하라."
+)
+
 _EXPANSION_STYLE_GUIDANCE = {
     "주제설교": (
         "참고 자료에 나온 신학적 근거를 구체적으로 인용·전개하며, 목회적"
-        " 적용과 예화는 그 근거에서 자연스럽게 도출되게 하라(본문과 무관한"
-        " 성경 인물을 예화로 나열하지 마라). 2~4개 문단."
+        " 적용이 그 근거에서 자연스럽게 도출되게 하라. 2~4개 문단."
     ),
     "강해설교": (
         "해당 절의 문맥과 원문의 의미, 그 절이 본문 전체 흐름에서 하는 역할을"
-        " 참고 자료의 주석적 논의에 근거해 풀어 설명하라. 예화보다 본문 자체의"
+        " 참고 자료의 주석적 논의에 근거해 풀어 설명하라. 본문 자체의"
         " 논리 전개와 주해에 비중을 두어 2~4개 문단으로 서술하라."
     ),
 }
@@ -577,7 +653,7 @@ _EXPANSION_STYLE_GUIDANCE = {
 def _outline_format_instructions(sermon_format: str, extra_directive: str = "") -> str:
     guidance = _OUTLINE_POINT_GUIDANCE.get(sermon_format, _OUTLINE_POINT_GUIDANCE[_DEFAULT_SERMON_FORMAT])
     return (
-        f"{_QUALITY_DIRECTIVE}{extra_directive}\n\n"
+        f"{_QUALITY_DIRECTIVE}{_NO_FABRICATED_ILLUSTRATION_DIRECTIVE}{extra_directive}\n\n"
         f"설교 형식: {sermon_format}. {guidance}\n\n"
         "아래 형식을 정확히 지켜 작성하라. 다른 설명이나 인사말을 덧붙이지 마라.\n"
         "제목: <설교 제목>\n"
@@ -646,7 +722,7 @@ class SermonDraftService:
             raw = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options={"temperature": temperature}
+                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
                 )
                 raw = result["response"]
                 contamination = _detect_script_contamination(raw)
@@ -668,7 +744,12 @@ class SermonDraftService:
                     "[SermonDraftService.generate_outline] 재시도 소진 — 오염 문자 강제 제거"
                 )
                 raw = _sanitize_script_contamination(raw)
-            return _parse_outline(raw), None
+            outline = _parse_outline(raw)
+            outline.claim_guard_result = _run_claim_guard(
+                "\n".join([outline.title, outline.introduction, *outline.points, outline.conclusion]),
+                candidates,
+            )
+            return outline, None
         except Exception as e:
             logger.error(
                 "[SermonDraftService.generate_outline] Ollama generate 실패 (model=%s): %s",
@@ -685,13 +766,17 @@ class SermonDraftService:
         sermon_format: str = _DEFAULT_SERMON_FORMAT,
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
-    ) -> tuple[str, Optional[str]]:
+    ) -> tuple[str, Optional[str], ClaimGuardResult | None]:
         """승인된 대지 하나를 실제 설교문 문단으로 확장한다.
         style_examples는 콘텐츠 근거가 아니라 어투 참고용 — 별도 절로
         구분해 프롬프트에 그 의도를 명시한다(설계 문서 Q3).
         sermon_format에 따라 확장 방식이 갈린다 — 주제설교는 예화·적용
         중심, 강해설교는 본문 주해·문맥 중심(_EXPANSION_STYLE_GUIDANCE).
-        candidates: generate_outline()과 동일한 [자료N] 인용 가능 컨텍스트."""
+        candidates: generate_outline()과 동일한 [자료N] 인용 가능 컨텍스트.
+
+        반환값에 claim_guard_result를 추가(3-tuple)한다 — 대지 확장은
+        사람이 검토하는 단계 없이 바로 최종 초안에 조립되므로(설교 개요와
+        달리) 위험 표현·근거 등급을 개요보다 더 적극적으로 표시해야 한다."""
         context_block = _format_sermon_context(candidates)
         style_section = (
             f"\n\n문체 참고(아래는 설교자 본인의 과거 설교문 발췌 —"
@@ -702,7 +787,8 @@ class SermonDraftService:
             sermon_format, _EXPANSION_STYLE_GUIDANCE[_DEFAULT_SERMON_FORMAT]
         )
         base_prompt = (
-            f"{_QUALITY_DIRECTIVE}{_external_source_directive(candidates)}\n\n"
+            f"{_QUALITY_DIRECTIVE}{_NO_FABRICATED_ILLUSTRATION_DIRECTIVE}"
+            f"{_external_source_directive(candidates)}\n\n"
             f"아래 설교 대지 하나를 실제 설교문 문단으로 확장하라. (설교 형식: {sermon_format})\n"
             f"본문/주제: {scripture_and_theme}\n"
             f"대지: {point_text}\n\n"
@@ -715,7 +801,7 @@ class SermonDraftService:
             text = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options={"temperature": temperature}
+                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
                 )
                 text = result["response"]
                 contamination = _detect_script_contamination(text)
@@ -737,10 +823,11 @@ class SermonDraftService:
                     "[SermonDraftService.expand_point] 재시도 소진 — 오염 문자 강제 제거"
                 )
                 text = _sanitize_script_contamination(text)
-            return text, None
+            claim_guard_result = _run_claim_guard(text, candidates)
+            return text, None, claim_guard_result
         except Exception as e:
             logger.error(
                 "[SermonDraftService.expand_point] Ollama generate 실패 (model=%s): %s",
                 gen_model, e,
             )
-            return "", str(e)
+            return "", str(e), None

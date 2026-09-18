@@ -35,6 +35,14 @@ Q1–Q3 (`flags:[]`) — 질문 세트 재생성 불요.
    `confidence`는 LLM 추출값 2단계(0.8/0.9)뿐이고 검수 triage 신호로서
    신뢰도가 검증된 바 없다 — 미검증 신호에 품질을 위임하지 않는다
    ([[feedback_avoid_risky_uncertain_design]]).
+
+   > **각주(2026-09-16, ADR-030 Amendment C)**: Fuller_Complete_Works_Vol08
+   > (5,052건)에 한해 HQ가 이 원칙의 예외를 서면 승인했다 — 저자 신뢰도
+   > (Particular Baptist 정통 신학자)를 근거로 개별 Q1–Q3 검수 없이
+   > 일괄 승인 처리(CUE 사후 검증 결과 Q1 오류율 2%로 확인). **이 예외는
+   > Vol.08에만 적용되며 Vol.01–07에는 확장되지 않는다** — 이 문서의
+   > 원칙(강도는 전 건 동일)은 Vol.01–07에 여전히 그대로 적용된다.
+   > 상세: `docs/architecture/ADR-030-AMENDMENT-C-Fuller-Vol08-Bulk-Approval-Exception.md`.
 2. **단계(tier)는 강도 차등이 아니라 처리 순서(priority).**
    조기에 침례교 정체성 커버리지를 확보하고, 문제 소지 큰 항목을 먼저 본다.
 3. **citations 항목은 별도 tier가 아니라 "추가 확인 단계".**

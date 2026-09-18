@@ -179,3 +179,79 @@ def test_no_hardcoded_values_in_guess():
         result = json.load(f)
     # dry-run이므로 변경 없음
     assert result["documents"]["empty_doc"]["doc_type"] is None
+
+# ── --reclassify 모드 (2026-09-15 추가) ─────────────────────────────
+#
+# 배경: doc_type은 처리 시점에 registry에 저장되고,
+# identity_registry.register_document()는 이미 등록된 document_id를 만나면
+# 기존 레코드를 그대로 반환한다(:131) — 재처리해도 갱신되지 않는다. 기본
+# 백필은 None만 채우므로 "기타"로 확정된 레코드도 건너뛴다. 그래서 분류 규칙
+# (_DOC_TYPE_KEYWORDS)이 개선돼도 기존 문서를 따라가게 할 경로가 없었다.
+# 실제 사례: 설교 유형 영어 키워드 추가 후에도 스펄전 설교집 3건이 "기타"로
+# 남았다(docs/DBMA_DOCTYPE_SERMON_KEYWORDS_REPORT_001.md).
+
+
+def _reclassify_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    """기존 doc_type이 "기타"인 레코드 2건 — 하나는 재분류되고 하나는 유지."""
+    out = tmp_path / "out"
+    out.mkdir()
+    # 설교 신호가 있는 문서 → 재분류 대상
+    (out / "sermons_txt.md").write_text(
+        "A collection of sermons preached at the tabernacle.", encoding="utf-8"
+    )
+    # 아무 신호 없는 문서 → "기타" 유지
+    (out / "plain_txt.md").write_text("Nothing identifying here.", encoding="utf-8")
+
+    data = {
+        "schema_version": "2.0",
+        "processing_version": "1.1.x",
+        "created_at": "2026-09-15T00:00:00",
+        "updated_at": "2026-09-15T00:00:00",
+        "documents": {
+            "d1": {"document_id": "d1", "source_file": "sermons.txt", "doc_type": "기타"},
+            "d2": {"document_id": "d2", "source_file": "plain.txt", "doc_type": "기타"},
+        },
+        "_meta": {"total_documents": 2},
+    }
+    reg = tmp_path / "documents.json"
+    reg.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    return reg, out
+
+
+def test_default_mode_never_touches_existing_value(tmp_path: Path):
+    """기본 모드는 값이 있는 레코드를 건드리지 않는다 — never invent 원칙 유지."""
+    reg, out = _reclassify_fixture(tmp_path)
+
+    backfill(str(reg), str(out), apply=True)  # reclassify 미지정
+
+    saved = json.loads(reg.read_text(encoding="utf-8"))
+    assert saved["documents"]["d1"]["doc_type"] == "기타"
+    assert saved["documents"]["d2"]["doc_type"] == "기타"
+
+
+def test_reclassify_updates_only_changed_records(tmp_path: Path):
+    reg, out = _reclassify_fixture(tmp_path)
+
+    backfill(str(reg), str(out), apply=True, reclassify=True)
+
+    saved = json.loads(reg.read_text(encoding="utf-8"))
+    assert saved["documents"]["d1"]["doc_type"] == "설교"  # 재분류됨
+    assert saved["documents"]["d2"]["doc_type"] == "기타"  # 결과 동일 → 유지
+
+
+def test_reclassify_dry_run_does_not_save(tmp_path: Path):
+    reg, out = _reclassify_fixture(tmp_path)
+    before = reg.read_text(encoding="utf-8")
+
+    backfill(str(reg), str(out), apply=False, reclassify=True)
+
+    assert reg.read_text(encoding="utf-8") == before
+
+
+def test_reclassify_backs_up_registry_before_saving(tmp_path: Path):
+    reg, out = _reclassify_fixture(tmp_path)
+
+    backfill(str(reg), str(out), apply=True, reclassify=True)
+
+    backups = list(tmp_path.glob("documents.json.*.bak"))
+    assert backups, "재분류 저장 전 백업이 없다 — 되돌릴 수단이 사라진다"

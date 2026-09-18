@@ -1,0 +1,1309 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0026",
+  "source_identifiers": [
+    "Dagg_Church_Order"
+  ],
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0000193",
+      "tsu_id": "TSU-0000193",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000198",
+      "tsu_id": "TSU-0000198",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000256",
+      "tsu_id": "TSU-0000256",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000271",
+      "tsu_id": "TSU-0000271",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000431",
+      "tsu_id": "TSU-0000431",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000548",
+      "tsu_id": "TSU-0000548",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000558",
+      "tsu_id": "TSU-0000558",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000595",
+      "tsu_id": "TSU-0000595",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000720",
+      "tsu_id": "TSU-0000720",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000882",
+      "tsu_id": "TSU-0000882",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000884",
+      "tsu_id": "TSU-0000884",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000886",
+      "tsu_id": "TSU-0000886",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000893",
+      "tsu_id": "TSU-0000893",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000894",
+      "tsu_id": "TSU-0000894",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000897",
+      "tsu_id": "TSU-0000897",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000908",
+      "tsu_id": "TSU-0000908",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000909",
+      "tsu_id": "TSU-0000909",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000930",
+      "tsu_id": "TSU-0000930",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000931",
+      "tsu_id": "TSU-0000931",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000939",
+      "tsu_id": "TSU-0000939",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000943",
+      "tsu_id": "TSU-0000943",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0000977",
+      "tsu_id": "TSU-0000977",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001023",
+      "tsu_id": "TSU-0001023",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001027",
+      "tsu_id": "TSU-0001027",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001065",
+      "tsu_id": "TSU-0001065",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001069",
+      "tsu_id": "TSU-0001069",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001073",
+      "tsu_id": "TSU-0001073",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001083",
+      "tsu_id": "TSU-0001083",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001104",
+      "tsu_id": "TSU-0001104",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001105",
+      "tsu_id": "TSU-0001105",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001114",
+      "tsu_id": "TSU-0001114",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001115",
+      "tsu_id": "TSU-0001115",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001116",
+      "tsu_id": "TSU-0001116",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001119",
+      "tsu_id": "TSU-0001119",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001142",
+      "tsu_id": "TSU-0001142",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001152",
+      "tsu_id": "TSU-0001152",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001153",
+      "tsu_id": "TSU-0001153",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001154",
+      "tsu_id": "TSU-0001154",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001158",
+      "tsu_id": "TSU-0001158",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001161",
+      "tsu_id": "TSU-0001161",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001171",
+      "tsu_id": "TSU-0001171",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001181",
+      "tsu_id": "TSU-0001181",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001191",
+      "tsu_id": "TSU-0001191",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001198",
+      "tsu_id": "TSU-0001198",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001210",
+      "tsu_id": "TSU-0001210",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001213",
+      "tsu_id": "TSU-0001213",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001216",
+      "tsu_id": "TSU-0001216",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001218",
+      "tsu_id": "TSU-0001218",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001219",
+      "tsu_id": "TSU-0001219",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001226",
+      "tsu_id": "TSU-0001226",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001227",
+      "tsu_id": "TSU-0001227",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001248",
+      "tsu_id": "TSU-0001248",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001273",
+      "tsu_id": "TSU-0001273",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001297",
+      "tsu_id": "TSU-0001297",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001298",
+      "tsu_id": "TSU-0001298",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001308",
+      "tsu_id": "TSU-0001308",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001309",
+      "tsu_id": "TSU-0001309",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001312",
+      "tsu_id": "TSU-0001312",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001324",
+      "tsu_id": "TSU-0001324",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001328",
+      "tsu_id": "TSU-0001328",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001332",
+      "tsu_id": "TSU-0001332",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001352",
+      "tsu_id": "TSU-0001352",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001370",
+      "tsu_id": "TSU-0001370",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001379",
+      "tsu_id": "TSU-0001379",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001392",
+      "tsu_id": "TSU-0001392",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001393",
+      "tsu_id": "TSU-0001393",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001394",
+      "tsu_id": "TSU-0001394",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001405",
+      "tsu_id": "TSU-0001405",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001409",
+      "tsu_id": "TSU-0001409",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001410",
+      "tsu_id": "TSU-0001410",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001413",
+      "tsu_id": "TSU-0001413",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001419",
+      "tsu_id": "TSU-0001419",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001420",
+      "tsu_id": "TSU-0001420",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001423",
+      "tsu_id": "TSU-0001423",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001427",
+      "tsu_id": "TSU-0001427",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001430",
+      "tsu_id": "TSU-0001430",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001439",
+      "tsu_id": "TSU-0001439",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001457",
+      "tsu_id": "TSU-0001457",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001462",
+      "tsu_id": "TSU-0001462",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001467",
+      "tsu_id": "TSU-0001467",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001487",
+      "tsu_id": "TSU-0001487",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001488",
+      "tsu_id": "TSU-0001488",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001528",
+      "tsu_id": "TSU-0001528",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001529",
+      "tsu_id": "TSU-0001529",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001533",
+      "tsu_id": "TSU-0001533",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001534",
+      "tsu_id": "TSU-0001534",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001552",
+      "tsu_id": "TSU-0001552",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001561",
+      "tsu_id": "TSU-0001561",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001562",
+      "tsu_id": "TSU-0001562",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001564",
+      "tsu_id": "TSU-0001564",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001565",
+      "tsu_id": "TSU-0001565",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001574",
+      "tsu_id": "TSU-0001574",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001583",
+      "tsu_id": "TSU-0001583",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001588",
+      "tsu_id": "TSU-0001588",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001593",
+      "tsu_id": "TSU-0001593",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001594",
+      "tsu_id": "TSU-0001594",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001607",
+      "tsu_id": "TSU-0001607",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001609",
+      "tsu_id": "TSU-0001609",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001629",
+      "tsu_id": "TSU-0001629",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    },
+    {
+      "gate_id": "GATE-TSU-0001643",
+      "tsu_id": "TSU-0001643",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0026 사용자 검토 (Dagg_Church_Order), Q1/Q2/Q3 기준. 문맥 확장 적용됨."
+    }
+  ]
+}

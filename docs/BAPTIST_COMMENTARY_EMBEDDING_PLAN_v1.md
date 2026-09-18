@@ -27,15 +27,15 @@
 
 ---
 
-## 1. 후보 저작 5개 (기록용, 실행은 Spurgeon Vol.1만)
+## 1. 후보 저작 5개 (기록용 — 실행은 §5 참고)
 
 | 저자 | 저작 | 침례교 계열 | Public Domain | 비고 |
 |---|---|---|---|---|
-| **C.H. Spurgeon** | The Treasury of David (전 7권) | Particular Baptist | Yes (1885년경 완간) | **파일럿 = Vol.1 (시편 1–26편)**. 시편 전체 해설, 분량 방대(전권 ~3,500쪽) |
-| John Gill | An Exposition of the Old and New Testament | Particular Baptist | Yes (1746–1763) | 신구약 전체 주석, 분량 매우 방대(Spurgeon보다 큼). 향후 후보 |
-| A.T. Robertson | Word Pictures in the New Testament | Southern Baptist | Yes (1930년, 저자 사후 저작권 만료국 확인 필요 — 미국은 1930 출간이라 최근까지 저작권 존재 가능성, 별도 확인 필요) | 헬라어 원어 해설 포함 — DBMA 헬라어 처리 요구사항과 정합 |
-| John A. Broadus | Commentary on Matthew (American Commentary) | Southern Baptist | Yes (1886) | 마태복음 단권 주석 |
-| B.H. Carroll | An Interpretation of the English Bible | Southern Baptist | Yes (1913, 저자 사후 출간 1916–1917) | 17권 시리즈, 설교체 주석 |
+| **C.H. Spurgeon** | The Treasury of David (전 7권) | Particular Baptist | Yes (1885년경 완간) | **실행 완료 = Vol.1 (시편 1–26편)**, §5.1-5.10. 시편 전체 해설, 분량 방대(전권 ~3,500쪽) |
+| **John Gill** | An Exposition of the Old and New Testament | Particular Baptist | Yes (1746–1763) | **실행 완료 = 신약 Vol.1**(1746 초판 3권 중 1권, 마태복음), §5.11. 신구약 전체는 구약 9권+신약 3~5권으로 여전히 매우 방대 — Vol.1 외 나머지는 향후 후보 |
+| A.T. Robertson | Word Pictures in the New Testament | Southern Baptist | **No — 보류(§5.12)**. Broadman Press 1932-33 등록·1960 갱신 확인(WebSearch), 상업 유료 판매 중(Laridian 등) | 헬라어 원어 해설 포함 — DBMA 헬라어 처리 요구사항과 정합하나 저작권 문제로 미착수 |
+| **John A. Broadus** | Commentary on Matthew (American Commentary) | Southern Baptist | Yes (1886) | **실행 완료**(단권), §5.13 |
+| **B.H. Carroll** | An Interpretation of the English Bible | Southern Baptist | Yes (1913, 저자 사후 출간 1916–1917) | **실행 완료 = Vol.2**(출애굽기·레위기, 창세기 Vol.1은 대출전용이라 접근 불가), §5.14. 13~17권 시리즈(판본마다 다름), 설교체 주석 |
 
 **파일럿 선정 근거**: Spurgeon Vol.1은 (a) 확실한 public domain, (b) 시편 26편으로 분량이 관리 가능, (c) 절 단위 구조가 명확(시편 장:절별 해설)해 신규 청킹 규칙 검증에 적합, (d) 이미 §3에서 확인한 기존 scripture-reference 감지기(`NAE/pipeline/canonical/annotate.py::find_scripture_references_extended`)와의 정합성을 테스트하기 좋다.
 
@@ -189,6 +189,58 @@ C1이 §2-B(질문 5-11)까지 마쳐 최종 결과 문서(`docs/NAE_BAPTIST_COM
 4. `chunk_canonical`로 재임베딩 — 1,978개 청크, 에러 0, `scripture_reference` 필드는 payload에서 완전히 제거(잘못된 값보다 없는 게 낫다는 원칙). 스팟체크로 확인. `nae_tsu_v1`/`nae_ref_v1` 카운트 재확인 — 무변동.
 
 **교훈**: 실측 검증은 집계 통계(개수)만으로는 불충분하다 — 값의 분포/다양성까지 확인해야 이런 종류의 "전부 같은 잘못된 값" 결함을 잡을 수 있다. 이 교훈을 코드(가드 함수)와 테스트에 모두 반영했다.
+
+### 5.11 두 번째 후보 실행 — John Gill, Exposition of the NT Vol.1 (2026-09-15)
+
+사용자 지시 "Gill 진행해" → 후보 5개 중 Gill 착수. §1의 원안("구약 9권+신약 3~5권, 전체 매우 방대")대로 전체를 한 번에 진행하지 않고, 신약 Vol.1(1746 초판 3권 중 1권, 마태복음)로 파일럿 범위를 사용자와 재확인 후 진행 — Spurgeon과 동일한 "먼저 최소 단위로 검증" 원칙.
+
+- **원본**: archive.org `bim_eighteenth-century_an-exposition-of-the-new_1746_1` — hocr.html(189MB)+original.pdf(2.58GB, 사용자 승인 후 다운로드). 802쪽.
+- **Canonicalize**: 19,729문단, scripture_references 1,281건.
+- **verse-anchored 재시도 → §5.10 가드가 즉시 작동**: `anchor_book_prefix="Matthew"`로 시도 시 다양성 비율 0.08(<0.5)로 경고 발동. Spurgeon과 원인은 다름 — Gill은 실제로 "Matt. xiii. 29" 식 장:절 재인용을 잘 하지만, **18세기 장 s(ſ) 활자 + 심한 OCR 손상**으로 로마숫자 장 번호 인식이 자주 실패해 앞선 앵커(예: "Matthew 1:1")가 최대 244개 청크(143~644쪽, 사실상 책 나머지 전체)에 걸쳐 잘못 이어짐 — 스팟체크로 확인(비유·산상변모 등 서로 다른 장 내용인데 전부 같은 태그). §5.10에서 만든 가드가 새 저작·새 원인에도 정확히 작동함을 실증.
+- **처리**: 기본 `heading` 청커로 진행(4,670개 청크, dry-run 에러 0).
+- **M2 등록**: `BAP-COMM-GILL-ENT-VOL01`(Amendment B 근거, `content_genre=[commentary]`, `authority_class=reference`) — 원본 15개 레코드 diff 0줄, 신규 15줄만 추가 확인. `scripts/m2_source_registry_validator.py`의 `registration_quality_passed` baseline 11→12 갱신(Amendment B가 명시한 "매 등록마다 재확인" 절차 그대로).
+- **임베딩 결과**: 4,670개 중 4,659개 성공(99.8%), **11개 실패** — 원인: 일부 청크가 7,000자 이상으로 부풀어(단일 문단이 chunk_size 1,200자를 훨씬 초과 — OCR 손상이 심한 구간에서 문단 재구성(`reflow.py`)이 문단 경계를 놓쳐 거대한 단일 "문단"이 됨) bge-m3 컨텍스트 한도 초과. `ingest()`의 fail-soft 설계대로 개별 스킵 후 나머지 계속 처리(전체 실패 아님) — Fuller 등 기존 OCR 자료의 "일부 누락 가능" 공개 관례와 동일 성격의 결함.
+- **최종 확인**: `nae_ref_commentary_v1` = 6,637(Spurgeon 1,978 + Gill 4,659), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 전 과정 무변동. 전체 스위트 2,956 passed(환경 갭 2건 외 이상 없음).
+
+**미해결로 남긴 것**: 거대 단일문단 청크(7 사례 중 3건 표본 확인, 나머지 8건 미조사) 강제 분할 로직은 이번 범위 밖 — `chunk_canonical`의 기존(Smith 때부터의) 동작 그대로이며, 발생 빈도(0.24%)가 낮아 별도 수정 없이 fail-soft로 수용.
+
+### 5.12 세 번째 후보 시도 — A.T. Robertson, 저작권 문제로 보류 (2026-09-15)
+
+사용자 지시 "Robertson 진행해" → §1에서 이미 "저작권 만료국 확인 필요"로 플래그해둔 항목이라 원본 확보 전에 먼저 확인 시도.
+
+- Stanford Copyright Renewal Database·HathiTrust 카탈로그 모두 봇 차단(Cloudflare/유사 방화벽)으로 브라우저 자동화로도 접근 불가 — 직접 검증 실패.
+- WebSearch로 우회 확인: Broadman Press가 1932-33년 저작권 등록, **1960년 갱신(renewal) 확인**. 갱신됐으므로 발행연도별 95년 보호기간이 온전히 적용된다(6권 세트, 1930-1933년 발행 — 권마다 만료 시점이 다름).
+- 정황 증거: Laridian·BibleAnalyzer 등 성경 소프트웨어 업체가 이 저작을 **유료 애드온으로 판매 중** — 확실한 PD 주석(Spurgeon·Gill·Calvin 등)은 이런 식으로 별도 유료 판매되지 않는 것과 대비.
+- **결론: 저작권 유효 가능성이 높다고 판단, 원본 확보 자체를 하지 않고 사용자에게 즉시 보고** — 사용자가 Broadus로 전환 결정.
+
+**향후 재검토 조건**: 실제 저작권 등록/갱신 기록을 권 단위로 직접 확인할 수 있는 경로(Stanford DB 접근 방법 변경, 또는 저작권 전문가 확인)가 생기면 재상정 가능. 그 전까지 Robertson은 후보에서 제외.
+
+### 5.13 네 번째 후보 실행 — John A. Broadus, Commentary on Matthew (2026-09-15)
+
+사용자 지시 "Broadus 진행해" → §1의 확실한 PD 후보(1886, 단권)로 전환.
+
+- **원본**: archive.org `commentaryongosp01broa` — hocr.html(80MB)+original.pdf(67MB), 사용자 승인 후 다운로드. 686쪽. OCR 품질 양호(Spurgeon·Gill보다 깨끗함, 1886년 근대 활자).
+- **Canonicalize**: 7,109문단, scripture_references 381건.
+- **verse-anchored 사전 확인**: `anchor_book_prefix="Matthew"`로 직접 테스트 — 다양성 비율 0.007(2,687개 태깅 청크 중 고유값 18개, 최다 "Matthew 11:6" 480개). Broadus도 해설 중인 마태복음 본문 자체는 장:절을 잘 재인용하지 않고(전체 참조 중 Matthew는 19건뿐, Luke 85건·Mark 71건이 더 많음 — 공관복음 비교 인용이 대부분), 동일한 실패 패턴 재현. 기본 `heading` 청커로 진행(3,025개 청크).
+  - (부수 발견: CLI `--chunker verse_anchored`가 `anchor_book_prefix`를 지정할 방법이 없어 함수 기본값 "Psalms"로만 테스트됨 — 이번엔 함수를 직접 호출해 정확한 책으로 재확인. CLI 파라미터화는 후속 과제로 남김.)
+- **M2 등록**: `BAP-COMM-BROADUS-MATT-VOL01`(Amendment B 근거) — 원본 17개 레코드 diff 0줄, 신규 15줄만 추가. validator baseline 12→13 갱신.
+- **임베딩 결과**: 3,025개 전부 성공, 에러 0.
+- **최종 확인**: `nae_ref_commentary_v1` = 9,662(Spurgeon 1,978 + Gill 4,659 + Broadus 3,025), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 전 과정 무변동. 전체 스위트 2,971 passed(환경 갭 2건 외 이상 없음).
+
+### 5.14 세션 재시작 + 다섯 번째 후보 실행 — B.H. Carroll, Vol.2 (2026-09-17)
+
+워크트리가 재활용되며 브랜치가 세션 시작 시점(`claude/musing-wing-0db5c8`)으로 되돌아갔다 — 재확인 결과 §5.9-5.13의 모든 PR(#28·31·35·36)은 `origin/dev/dbma-engine`에 그대로 병합돼 있어 작업 손실은 없었다(로컬 워크트리만 stale). 매 세션 새 브랜치를 origin/dev/dbma-engine에서 따는 기존 관례 덕에 복구 비용 없이 재개.
+
+**우선순위 재확인**: 세션 사이 "배포 버전 완성 최우선(총력 투입)" 지시(2026-09-15)와 별도 트랙(TSU/배포용 동봉서재)의 대규모 확장(PR #44, 출처 4→67, Spurgeon 29권·Broadus 2권 추가)이 있었음을 발견 — 겹침 여부 확인 결과 **무관**(그쪽 Broadus 2권은 "Lectures on History of Preaching"·"Preparation and Delivery of Sermons"로 이번 세션이 처리한 마태복음 주석과 다른 저작, Carroll·Gill 나머지 권은 그쪽에 없음). 사용자가 "나머지 후보도 진행하라"고 명시적으로 재확인해 계속 진행.
+
+- **원본 확보 — Vol.1(창세기) 접근 불가**: archive.org의 `bwb_S0-ATU-484_1`(창세기, Vol.1)는 401 Authorization Required(대출 전용). 대체 스캔 `bookofgenesisint0000bhca`도 403. Stanford Copyright Renewal DB·HathiTrust·LOC 전부 봇 차단으로 접근 불가(Robertson 조사 때와 동일 패턴). 3rd party(`grace-ebooks.com`) PDF는 출처 신뢰도가 낮아 사용자에게 확인 후 **Vol.2(출애굽기·레위기, 1913, Fleming H. Revell)로 파일럿 전환** — archive.org `interpretationof02carr`(자유 다운로드 확인됨), hocr.html+original.pdf 각 ~23MB, 482쪽.
+- **Canonicalize**: 2,760문단, **scripture_references 0건**(!) — 스팟체크로 원인 확인: 본문 자체는 깨끗하나("Job xxxi, 35", "Job ix, 33" 등) 인용 표기가 쉼표 구분(장, 절) 방식이라 기존 감지기의 마침표/콜론 패턴과 불일치. 데이터 손상 아님, 단순 표기 방식 차이 — 기본 `heading` 청커 사용 예정이라 영향 없음(새 정규식 추가하지 않음).
+- **M2 등록**: `BAP-COMM-CARROLL-IEB-VOL02`(Amendment B 근거) — 원본 18개 레코드 diff 0줄, 신규 15줄만 추가. validator baseline 13→14 갱신.
+- **임베딩 결과**: 855개 전부 성공, 에러 0.
+- **회귀 확인 중 발견(무관 사전 존재 실패 2건)**: `test_real_production_dry_run_excludes_non_verified`·`test_real_production_review_gate_state_unchanged_by_import`가 `indexed==3319` 기대와 달리 8,936을 반환 — stash로 내 변경 없이 재현해 **이번 세션과 무관함을 확인**(원인: 별도 세션의 S2-4 코퍼스 확장이 production dry-run 대상 레코드 수를 늘림). 수정하지 않음 — 배포 파이프라인 트랙 소관.
+- **최종 확인**: `nae_ref_commentary_v1` = 10,517(+Carroll 855), `nae_tsu_v1`=3,319·`nae_ref_v1`=34,948 무변동. 전체 스위트 3,070 passed(기존 환경 갭 2건 + 위 무관 실패 2건, 전부 사전 존재·비관련 확인).
+
+**남은 후보**: Carroll Vol.1(창세기, 접근법 미해결)·Vol.3 이후, Gill 나머지 권(구약 9권+신약 2~4권). 이번 5개 후보 목록(§1) 기준으로는 4개 저자 전부 최소 1권씩 실행 완료(Robertson만 저작권으로 보류).
 
 ---
 

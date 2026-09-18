@@ -1,7 +1,7 @@
 ---
 title: "NAE 문단 앵커드 근거 (옵션 A / PR #17) — 배포환경 검증 결과 001"
 created: 2026-09-10
-status: PASS (AT-1·2·3·6·7·8·9·10) · DEFER (AT-4 스크린샷 · AT-5 생성평가)
+status: PASS (전체 AT-1~10, AT-4/AT-5는 2026-09-18 후속 검증으로 종결 — 아래 addendum)
 verifier: CUE
 target: PR #17 `claude/p0-2-paragraph-anchored-evidence` @ 7232f0a
 base: origin/dev/dbma-engine @ 40ca447 (#17은 #18 미포함 — 무관한 tsu 테스트)
@@ -69,3 +69,23 @@ task_order: docs/NAE_PARAGRAPH_ANSWER_DELIVERY_IMPL_TASK_ORDER_001.md §6 (AT-1~
 100% 성공, CJK 0, RetrievalEngine·baseline 무접촉. 병합 전 남은 것은
 UI 스크린샷(AT-4)·생성 육안평가(AT-5)·C1 리뷰 — 전부 통제/생성 환경 의존
 항목이며 코드 결함과 무관하다.
+
+
+## Addendum (2026-09-18) — AT-4/AT-5 DEFER 해소
+
+F2(GPU 점유 작업) 종료 확인 후 CUE가 직접 재실행(C1 위임 시도 중 selector
+버그·오진 2회 발견·정정 후 CUE가 직접 검증으로 전환, 상세는
+`docs/AT4_AT5_C1_TASK_ORDER_2026-09-17.md` 참고).
+
+| 항목 | 결과 | 근거 |
+|---|---|---|
+| AT-4 | **PASS** | "AI에게 질문" → "내서재 공개 자료 (Beta)" 패널에서 3개 질의 전부 카드 렌더 확인. 문단 전문·서지(저자·p.범위·§)·anchor 문장 하이라이트·Score·출처ID 전부 정상. 예: Dagg p.191 §978, Score 0.7038(백엔드 `bridge_query()` 직접 호출 결과와 일치). 부수 발견(배포 차단 아님): "출처 고지(KR/EN)" provenance notice 텍스트가 모든 결과에서 Andrew Fuller 고정 — 실제 저자(Dagg/Hiscox 등)와 무관하게 표시되는 display bug, 백로그 |
+| AT-5 | **PASS** | 고정 13질의 전부 my-theology-bot-v2로 end-to-end 생성 완료. 날조 없음(근거 없으면 정직 유보), 영어 스팬 0, CJK 오염은 기존 자동정화가 8/13에서 정상 작동. 경미한 한국어 어미/조사 오탈자 소수 건은 배포 차단 아닌 백로그 |
+
+**부수 발견(더 중요함, 배포 성능 이슈)**: AT-5 검증 중 책 이름 없는 교리형
+질의(예: "오직 믿음으로 구원받는다는 것은...")가 `RetrievalEngine`의 O(N)
+콜드 스캔 경로를 타 84,766건 코퍼스에서 수 분 지연되는 것을 발견 →
+`USE_INVERTED_INDEX` 기본값을 `true`로 전환(커밋 `ce8be59`, merge
+`61fcf8d`, origin+nas push 완료)해 0.95초로 해결. 이 전환이 노출시킨
+Tantivy 쿼리 파서 크래시(괄호 포함 질의, 예: "중생**(거듭남)**은...")도
+같은 세션에서 수정(`core/candidate_generator.py`, 회귀 테스트 추가).

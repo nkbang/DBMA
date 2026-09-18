@@ -72,6 +72,20 @@ class TestBuildIndex:
         count = build_index(dataset_path, index_dir)
         assert count == 3
 
+    def test_missing_dataset_file_builds_empty_index_not_crash(self, tmp_path):
+        """[CI validate 실패 수정, 2026-09-18] tsu_dataset_path가 없으면
+        빈 코퍼스로 취급한다 — core/retrieval.py::RetrievalEngine.
+        _load_corpus()가 이미 문서화한 "파일 없음 = 정상 초기 상태"
+        계약과 동일. USE_INVERTED_INDEX 기본값이 true가 된 뒤, 이 함수만
+        FileNotFoundError로 죽어 실제 코퍼스가 없는 환경(CI의 AppTest
+        기반 UI 테스트 등)을 깨뜨렸다."""
+        missing = tmp_path / "no_such_tsu_dataset.jsonl"
+        index_dir = tmp_path / "idx"
+        count = build_index(missing, index_dir)
+        assert count == 0
+        # 크래시 없이 열 수 있는 정상 인덱스여야 한다.
+        CandidateGenerator(index_dir)
+
 
 class TestOpenOrBuildIndexStaleness:
     """[Bug tracked since C1-TASK-ORDER-050-REPORT.md §5 "영어 쿼리 결과
@@ -109,6 +123,23 @@ class TestOpenOrBuildIndexStaleness:
         results = generator.search(_pq("유일무이스핑크스단어"), k=10)
         ids = {c.tsu_id for c in results}
         assert "TSU-NEW-001" in ids
+
+    def test_bootstrap_with_missing_dataset_file_does_not_crash(self, tmp_path):
+        """[CI validate 실패 수정, 2026-09-18] 코퍼스 파일이 아직 없는
+        첫 실행(예: CI, 초기화 직후)에서도 크래시 없이 빈 인덱스를
+        연다 — meta_file이 없는 최초 부트스트랩 경로와, meta_file은
+        있지만 데이터셋 파일이 그새 사라진 staleness 재확인 경로
+        둘 다 커버한다."""
+        missing = tmp_path / "no_such_tsu_dataset.jsonl"
+        index_dir = tmp_path / "tantivy_index"
+
+        generator = open_or_build_index(missing, index_dir)
+        assert generator._index.searcher().num_docs == 0
+
+        # 두 번째 호출(staleness 재확인 경로)도 여전히 파일이 없는 상태 —
+        # 재빌드를 시도하다 크래시하지 않고 그대로 열려야 한다.
+        generator_again = open_or_build_index(missing, index_dir)
+        assert generator_again._index.searcher().num_docs == 0
 
     def test_matching_index_is_not_rebuilt_unnecessarily(self, tmp_path, dataset_path):
         # Perf guard: at real corpus scale a rebuild costs 60~200+ seconds
@@ -175,6 +206,26 @@ class TestSearch:
         results = generator.search(_pq("totally unrelated english words"), k=10, book_ids=["ROM"])
         ids = {c.tsu_id for c in results}
         assert ids == {"TSU-ROM-001", "TSU-ROM-002"}
+
+    def test_parenthetical_query_does_not_raise(self, generator):
+        """[2026-09-18 회귀] 괄호가 든 자연어 질의("중생(거듭남)은...")가
+        Tantivy 쿼리 파서 문법 오류(ValueError)로 크래시하던 실사고 재현.
+        USE_INVERTED_INDEX 기본 활성화 후 AT-5 실행 중 발견 —
+        parse_query()가 소괄호를 그룹핑 문법으로 해석해 예외를 던졌다."""
+        results = generator.search(_pq("은혜(값없는 선물)에 대해"), k=10)
+        ids = {c.tsu_id for c in results}
+        assert "TSU-ROM-001" in ids
+
+    def test_other_tantivy_special_chars_do_not_raise(self, generator):
+        for q in ['은혜: 정의', '은혜"강조"', '은혜 AND 성령', '은혜^2', '은혜~']:
+            generator.search(_pq(q), k=10)  # 예외만 안 나면 통과
+
+    def test_ascii_apostrophe_query_does_not_raise(self, generator):
+        """[2026-09-18 회귀, P0-5 실채점 중 발견] "believer's baptism"처럼
+        ASCII 아포스트로피가 든 영어 낱말이 섞인 질의(한영 자료 기반
+        F유형)가 parse_query()에서 Syntax Error로 크래시하던 실사고
+        재현 — 소괄호 수정 때는 잡히지 않았던 별도의 특수문자."""
+        generator.search(_pq("믿음(believer's baptism)에 대해"), k=10)
 
 
 class TestSnippets:

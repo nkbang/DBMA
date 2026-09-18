@@ -1,0 +1,637 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0039",
+  "generated_by": "NAE-TSU-4107-EXPANSION-001",
+  "requests": [
+    {
+      "gate_id": "GATE-TSU-0003376",
+      "tsu_id": "TSU-0003376",
+      "source_id": "BAP-CHURCH-DAGG-001",
+      "work_id": "WORK-DAGG-CHURCH-ORDER-001",
+      "edition_id": "WORK-DAGG-CHURCH-ORDER-001-1871",
+      "doctrine": "Baptism",
+      "original_text": "(앞) The Salisbury Missal, printed in 1530 (the last that was in force before the Reformation), expressly requires and orders dipping. And in the first Common Prayer Book of King Edward VI., the priest’s general order is to dip it in water.” Here we see that it was not on account of climate any change grew up; the people in the extreme north were the last to surrender the original mode; and not even the Pope’s authority could compel them to strike out of their Missal the form received in the simplicity of their early reception of Christianity. Farther, we read that from love for the primitive ordinance, “fonts were in times of popery unfitly and surreptitiously placed near the churches.” The author states the alleged, and then the real cause why affusion took the place of immersion, as follows :—‘‘ Many fond ladies at first, and then by degrees the common people, would persuade the minister that their children were too tender for dipping. (뒤) But what principally tended to confirm this practice, was that several of our English divines flying to Germany, Switzerland, &c., during the bloody 300 APPENDIX. reign of Queen Mary, and returning home when Queen Elizabeth came to the crown, brought back with them a great love and zeal for the customs of those churches beyond sea, where they had been sheltered and received.",
+      "claim": "초기 기독교 관행에서 침례의 원래 방법인 물에 잠기기가 물을 뿌리는 방식으로 바뀐 것은 어린 아이들의 연약함을 이유로 한 부모들의 요청 때문이었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003391",
+      "tsu_id": "TSU-0003391",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) It is applied to a building used for Christian worship, to a congregation of Christian worshipers, to a religious establishment, to a given form of ecclesiastical order, to the aggregate of all Christian believers, and to a local company of Christian disciples associated in covenant for religious purposes. The latter is its common use in the New Testament. The Greek word ekklesia, rendered \" church \" is derived from a word meaning (뒤) \" called out,\" and is used to indicate a company called out from a larger and more general assembly or concourse of people. In the free Greek cities, it designated a company of persons possessed of the rights of citizenship, and charged with certain important functions of administration in public affairs, summoned, or called out, from the common mass of the people.",
+      "claim": "Hiscox는 헬라어 ekklesia가 '불러냄을 받음(called out)'을 뜻하는 말에서 유래했다고 설명하며, 이를 '교회'라는 번역어의 어원적 근거로 제시한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003392",
+      "tsu_id": "TSU-0003392",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The latter is its common use in the New Testament. The Greek word ekklesia, rendered \" church \" is derived from a word meaning \" called out,\" and is used to indicate a company called out from a larger and more general assembly or concourse of people. (뒤) In the free Greek cities, it designated a company of persons possessed of the rights of citizenship, and charged with certain important functions of administration in public affairs, summoned, or called out, from the common mass of the people. In the New Testament, the ekklesia is a company of persons called out and separated from the common multitude by a divine calling, chosen to be saints, invested with the privileges, and charged with the duties of citizenship in the kingdom of Christ.",
+      "claim": "Hiscox에 따르면, 신약성경에서 ekklesia는 하나님의 부르심으로 일반 대중 가운데서 구별되어 나온 공동체를 가리킨다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003402",
+      "tsu_id": "TSU-0003402",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) They are commissioned to preach the gospel to men, and to live the gospel before men, that Christ may be honored and sinners saved. They should, therefore, be constantly striving to realize the grand purpose of their existence and fulfill the mission of their high calling. That church which does the most to honor Christ and save man will be the most honored by him, and the most influential and prosperous in all that pertains to the true tunctions of a church. (뒤) And since a church, as a body, is what its individual members are in their religious life and influence, therefore each member should strive to become in holy living what he desires the church to be. Note 1. — A body of Christian disciples may fail to meet some of the requirements of the gospels, and still be a true church of Christ, providing it fulfills the fundamental conditions of a Scriptural faith and practice.",
+      "claim": "교회가 그리스도께 영광을 돌리고 사람들을 구원하는 데 가장 많은 것을 하는 교회는 그리스도에 의해 가장 존경받고, 참된 교회의 기능과 관련하여 가장 영향력 있고 번영할 것이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003604",
+      "tsu_id": "TSU-0003604",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Election",
+      "original_text": "(앞) The other is substantially the London Confession of Faith, published by English Baptists in 1689. It is much more full in statement than the other, and is higher in its tone as to the doctrines of grace. American Baptists are decidedly Calvinistic as to substance of doctrine, but moderately so, being midway between the extremes of Arminianism and Antinomianism. (뒤) Though diversities of opinion may incline to either extreme, the \" general atonement \" view is for the most part held, while the \" particular atonement V theory is maintained by not a few. The freedom of the human will is declared, while the sovereignty of divine grace, and the absolute necessity of the 58 STANDARD MANUAL",
+      "claim": "American Baptists는 교리적으로 칼빈주의적이지만 중도적인 입장에 있으며, 아르미니우스주의와 반율법주의의 극단 사이에서 균형을 유지한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003605",
+      "tsu_id": "TSU-0003605",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Soteriology",
+      "original_text": "(앞) It is much more full in statement than the other, and is higher in its tone as to the doctrines of grace. American Baptists are decidedly Calvinistic as to substance of doctrine, but moderately so, being midway between the extremes of Arminianism and Antinomianism. Though diversities of opinion may incline to either extreme, the \" general atonement \" view is for the most part held, while the \" particular atonement V theory is maintained by not a few. (뒤) The freedom of the human will is declared, while the sovereignty of divine grace, and the absolute necessity of the 58 STANDARD MANUAL Spirit's work in faith and salvation are maintained.",
+      "claim": "미국 침례교는 일반적으로 대속론에 대한 '일반적인 속죄' 관점을 지지하지만 일부에서는 '특수한 속죄' 이론을 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003777",
+      "tsu_id": "TSU-0003777",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "(앞) Pbof. Moses Stuart, one of the ablest scholars America has produced, declared : \" Baptizo means to dip, plunge, or immerse into any liquid. All lexicographers and critics of any note are agreed in this.\" Essay on Baptism, p. 51 ; Biblical Repository, 1833, p. 298. (뒤) \"All lexicographers and critics, of any note, are agreed in this,\" says one of the foremost scholars of the age, and he a Pedobaptist. What a concession !",
+      "claim": "유명한 학자들과 비평가들은 'baptizo'라는 단어가 물에 담그거나 빠뜨리는 것을 의미한다는 데 동의한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003822",
+      "tsu_id": "TSU-0003822",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "(앞) Kurtz gays : \" Baptism took place by a complete immersion.\" Church History, p. Kraus says : \" Baptism was performed bv immersion in the name of the Trinity.\" Church History, p. 56. 1882. Ellicott says : u Jewish ablutions arrived at a ceremonial purity in the Levitical sense, and had nothing in common with the figurative act which portrayed through immersion the complete disappearance of the old nature, and by the emerging again the beginning of 98 STANDARD MANUAL ! (뒤) a totallv new life.\" Life of Christ, p. 110. as far as possible.\" Cited, Stennet ad Russen p. 176.",
+      "claim": "유대인의 세례는 법적 의미에서 의식적인 깨끗함에 도달했지만, 물에 잠기고 상처를 입어 구현된 옛 성품의 완전한 소멸과 새로운 시작에는 아무 관련이 없다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003941",
+      "tsu_id": "TSU-0003941",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "(앞) To charge Baptists with bigotry because they FOR BAPTIST CHURCHES. 127 abide by the logical consequences of their system is absurd.\" * The Christian Advocate, of New York, the leading journal of American Methodists, said : \" The regular Baptist churches in the United States may be considered to-day as practically a unit on three points — the nonuse of infant baptism, the immersion of believers only upon a profession of faith, and the administration of the holy communion to such only as have been immersed by ministers holding these views. (뒤) In our opinion the Baptist Church owes its amazing prosperity largely to its adherence to these views. In doctrine and government, and in other respects, it is the same as the Congregationalists.",
+      "claim": "미국 침례교회의 정통 교회는 세 가지 주요한 점에 있어 일치하고 있다: 유아세례의 거부, 신앙 고백 후에만 믿는 자에게 세례를 집행하는 것, 그리고 이러한 견해를 지닌 목사들에 의해 세례받은 사람들에게만 성찬을 집행하는 것",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003954",
+      "tsu_id": "TSU-0003954",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "(앞) Baptism before faith, and without a profession of it, contradicts and 130 STANDARD MANUAL does violence to all New Testament teaching. Now, that infant baptism is not of Scriptural authority, and was not known in the first Christian ages, nearly all its advocates and defenders have with considerable candor admitted. (뒤) Only a few of their historians and scholars can be cited here. Dr. William Wall, a learned divine of the English Church, who wrote the History of Infant Baptism, a work so able that the clergy in convocation assembled gave him a vote of thanks for his defense of the custom, says : \" Among all the persons that are recorded as baptized by the Apostles, there is no express mention of any infants.\" Hist.",
+      "claim": "유아 세례는 성경적 권위에 근거하지 않으며 초기 기독교 시대에는 알려지지 않았다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003958",
+      "tsu_id": "TSU-0003958",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "(앞) Bap., Part II, p. 8. Neander says : \" Baptism was administered at first only to adults, as men were accustomed to conceive of baptism and faith as strictly counected. We have all reason for not deriving infant baptism from apostolic institution.\" Ch. Hist, Vol. I., p. 311; Plant, and. (뒤) Train, Vol I.9 p. 222. Prof.",
+      "claim": "세례는 사도 시대에 어린이를 위한 세례가 허용되지 않았다",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003971",
+      "tsu_id": "TSU-0003971",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "(앞) Religion, B. I, Ch. 12. Salmasius says : \" In the first two centuries no one was baptized, except, being instructed in the faith and acquainted with the doctrines of Christ, he was able to profess himself a believer.\" Hist. (뒤) Bapt. Suicer.",
+      "claim": "초기 2세기에는 신앙을 배우고 그리스도의 교리를 알고 믿음을 고백할 수 있는 사람만이 세례를 받았다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0003984",
+      "tsu_id": "TSU-0003984",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Baptism",
+      "original_text": "(앞) Lange's words are weighty, and should be carefully pondered by Protestant defenders of this Papal emanation. He says : \" Would the Protestant Church fulfill and attain to its final destiny, the baptism of new-born children must of necessity be abolished. It has sunk down to a mere formality, without any meaning for the child.\" History of Protestantism, p. 34- (뒤) Mucli stress is laid by some of the advocates of infant baptism on the fact that in FOR BAPTIST CHURCHES. 137 the Acts of the apostles several cases of household baptism are mentioned.",
+      "claim": "영아 세례는 의미 없는 형식이 되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004028",
+      "tsu_id": "TSU-0004028",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The bishop — called also presbyter, or elder —was the pastor, or overseer of the spiritual flock, watching, guiding, and feeding it, as the shepherd does his sheep. The deacon^ were chosen to attend to the temporal interests of the church, as appears by the election of the seven, recorded in the sixth chapter of Acts. This was done in order that the apostles might be free from the temporal cares, and thus able to give their attention 148 STANDARD MANUAL (뒤) more exclusively to the spiritual welfare of the people. The word deacon means a minister, a servant It is sometimes applied to the apostles, and even to Christ himself, in that general sense as one who \" came, not to be ministered unto, but to minister, and to give his life a ransom for many.\" Some of the first deacons were also efficient preachers of the gospel, but their work as deacons pertained to other service in the churches.",
+      "claim": "사도들이 교회의 세속적인 문제에서 자유로워져 사역에 집중할 수 있도록 집사들이 선택되었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004068",
+      "tsu_id": "TSU-0004068",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) As such they were traduced and persecuted continually. And though they may have had their errors, they were the best and purest defenders of FOR BAPTIST CHURCHES. 157 the Christian faith, and the truest representatives of the first disciples of Christ then existing. (뒤) The State churches were the heretics ; while those so-called sects were the true successors of the first Christians. They were defamed and oppressed.",
+      "claim": "그 당시 존재하는 그리스도의 첫 번째 제자의 진정한 대표자들은 기독교 신앙을 지녔으며",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004096",
+      "tsu_id": "TSU-0004096",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) They however rejected all his overtures, whereupon he left them with threats of war and wretchedness. Not long after, Wales was invaded by the Saxons, and many of these inoffensive Christians cruelly murdered, as was believed, at the instigation of this bigoted zealot, the exacting Austin. The Baptists of Holland have a history that reaches back to a very remote period, if not to the apostolic age, as some confidently assert. (뒤) And this antiquity is conceded by historians who have no sympathy with their denominational sentiments. Mosheim, in his church historv, savs : \" The true origin of that sect which acquired the name Anabaptist is hid in the remote depths of antiquity, and is consequently extremely difficult to be ascer-",
+      "claim": "네덜란드의 침례교도들은 매우 오래된 역사를 가지고 있으며, 일부는 이것이 사도 시대까지 거슬러 올라간다고 주장한다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004104",
+      "tsu_id": "TSU-0004104",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) Belig. Knowledge, Art. Mennonites. This testimony is all the more welcome, because it comes from those who have no ecclesiastical sympathies with Baptists, but who, in fidelity to history, bear honest testimony to the truth which history teaches. (뒤) FOR BAPTIST CHURCHES. 165 The circumstances under which their evidence was produced give it additional force.",
+      "claim": "침례교회의 역사적 진실에 대한 증언은 교회와 관련된 사람들의 신뢰할 수 있는 증거이다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004105",
+      "tsu_id": "TSU-0004105",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) The circumstances under which their evidence was produced give it additional force. Cardinal Hossitts, chairman of the council at Trent, says : \" If the truth of religion were to be judged of by the readiness and cheerfulness which a man of any sect shows in suffering, then the opinions and persuasions of no sect can be truer or surer, than those of the Anabaptists ; since there have been none, for these twelve hundred years past, that have been more grievouslv punished.\" Orchards Hist Bap., Sec' 1%, part 30 y p. 86 J^ Many thousands of the Dutch Baptists, called Anabaptists, and Mennonisrs, miserably perished by the hands of their cruel persecutors, for no crime but their refusal to conform to established churches.1 (뒤) Benedict's Hist. Baptists, Ch. IV.",
+      "claim": "네덜란드의 침례교도인 아나바티스트와 메노파는 정교회에 순종하지 않아 잔혹한 박해를 받아 수천 명이 죽었다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004110",
+      "tsu_id": "TSU-0004110",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) FOR BAPTIST CHURCHES. 169 Roger Williams, a distinguished and an honored name, was identified with the rise of the denomination in America. He has been called their founder, because he organized the first church, and was intimately connected with their early history. (뒤) Williams was born in Wales, 1598, educated at Oxford, England, came to America in 1630, and settled as minister of the Puritan church in Salem, Massachusetts. Not long after he adopted Baptist views of doctrine and church order, on account of which he was banished by his fellow Puritans, and driven out of Massachusetts, in the depths of a rigorous winter, in a new and inhospitable country.",
+      "claim": "로저 윌리엄스는 미국의 첫 교회를 조직하고 초기 역사와 밀접한 관련이 있었기 때문에 종교 단체의 창시자로 불린다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004116",
+      "tsu_id": "TSU-0004116",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Ecclesiology",
+      "original_text": "(앞) He was also appointed first Governor of Rhode Island. Full liberty was granted in matters of religion. Thus Roger Williams became the first ruler, and Rhode Island the first State which ever gave entire freedom to all persons to worship God, according to their own choice, without dictation or interference from civil or ecclesiastical authorities. (뒤) gration increased, other churches grew up, having no connection with that ; and with considerable rapidity the sentiments of Baptists spread into adjoining colonies, particularly west and south. For a long time, however, they were sorely persecuted, especially in Massachusetts and Connecticut.",
+      "claim": "로저 윌리엄스는 모든 사람에게 자신의 선택에 따라 하나님을 예배할 수 있는 완전한 자유를 부여한 최초의 통치자였으며, 로드아일랜드는 민간 또는 교회 당국의 간섭이나 지시 없이 이러한 자유를 제공한 최초의 국가였다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    },
+    {
+      "gate_id": "GATE-TSU-0004122",
+      "tsu_id": "TSU-0004122",
+      "source_id": "BAP-CHURCH-HISCOX",
+      "work_id": "WORK-HISCOX-STANDARD-MANUAL-001",
+      "edition_id": "WORK-HISCOX-STANDARD-MANUAL-001-1890",
+      "doctrine": "Election",
+      "original_text": "(앞) Estimated at 1,450. sions, Sunday-schools, or other religious or moral reform movements, lest they should seem to interfere with the divine decrees. They are Antinomian in doctrine, and are said to number 45,000. (뒤) The Campbellites, Disciples, Reformers, or Christians, as they are variously called, estimated at 850,000. The Winebrennorians, or Church of God.",
+      "claim": "일부 교파는 안티노미안주의적 교리를 가지고 있으며 약 45,000명의 추종자를 갖고 있다.",
+      "evidence": "",
+      "flags": [],
+      "review_questions": [
+        {
+          "code": "Q1",
+          "label": "Claim Fidelity",
+          "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"
+        },
+        {
+          "code": "Q2",
+          "label": "Theological Accuracy",
+          "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"
+        },
+        {
+          "code": "Q3",
+          "label": "Context Sufficiency",
+          "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"
+        }
+      ],
+      "decision_status": "PENDING"
+    }
+  ]
+}

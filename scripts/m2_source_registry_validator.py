@@ -17,6 +17,13 @@ baseline 에 직접 검사한다. 어떤 schema 파일도 PASS 판정에 관여�
   V6  M2 레코드에 신규 필드가 있을 때 shape 검사 (부재 = skip)
   V7  실제 M2 record identity 변형 (len==14, known keys only)
   V8  baseline 이탈
+  V9  authority_tier 값이 4-value enum 밖, 또는 tradition_relation 누락/오탈 (부재 = PASS)
+      (ADR-030 Amendment D, PROPOSED — 구현 선행, Amendment 자체는 HQ 최종 승인 전)
+  V10 authority_tier=T3 인데 counter_refs 없거나 비어있음
+  V11 counter_refs 각 id가 (a) M2에 존재하는 source_id 가 아니거나(orphan),
+      (b) 그 대상의 authority_tier ∉ {T1, T2}
+  V12 authority_tier ∈ {T1, T2, T4} 인데 counter_refs 가 non-empty
+      (V11(b)와 조합해 counter_ref 순환 참조를 구조적으로 차단)
 
 read-only. exit!=0 은 위반 존재 시에만.
 
@@ -50,6 +57,10 @@ VALID_CONTENT_GENRE_VALUES = frozenset([
 VALID_THEOLOGICAL_CATEGORIES = frozenset([
     "confession", "ecclesiology", "soteriology", "missions",
 ])
+VALID_AUTHORITY_TIERS = frozenset(["T1", "T2", "T3", "T4"])
+VALID_TRADITION_RELATIONS = frozenset([
+    "own", "allied", "other_christian", "non_christian", "heterodox",
+])
 M2_BASE_KEYS = frozenset([
     "source_id", "title", "author", "author_id", "work_id",
     "edition_id", "year", "license", "archive_source", "raw_checksum",
@@ -57,15 +68,21 @@ M2_BASE_KEYS = frozenset([
 ADR030_ADDITIVE_FIELDS = frozenset([
     "authority_class", "content_genre", "theological_category",
     "tradition", "raw_path", "checksum_target",
+    # ADR-030 Amendment D (PROPOSED) — see docs/architecture/
+    # ADR-030-AMENDMENT-D-Authority-Tier-Doctrinal-Orthodoxy-Axis.md
+    "authority_tier", "tradition_relation", "counter_refs",
 ])
 M2_PATH = PROJECT_ROOT / "NAE" / "pipeline" / "registration" / "state" / "source_manifest.yaml"
 M1_PATH = PROJECT_ROOT / "NAE" / "authority" / "source_manifest.yaml"
 M3_PATH = PROJECT_ROOT / "NAE" / "manifest" / "NAE_SOURCE_MANIFEST_v1.csv"
 FORBIDDEN_REGISTRY_DIR = PROJECT_ROOT / "NAE" / "corpus" / "governance"
 # registration_quality_passed: 10 (M-2 baseline) + 1 (BAP-COMM-SPURGEON-TDA-VOL01,
-# ADR-030 Amendment B, 2026-09-13) = 11. A drift guard, not an open range —
-# any further increase needs its own explicit bump + authorization record.
-BASELINE = {"nae_tsu_v1": 3319, "nae_ref_v1": 34948, "canonical_dirs": 17, "registration_quality_passed": 11}
+# ADR-030 Amendment B, 2026-09-13) + 1 (BAP-COMM-GILL-ENT-VOL01, same Amendment B
+# authority, 2026-09-15) + 1 (BAP-COMM-BROADUS-MATT-VOL01, same Amendment B
+# authority, 2026-09-15) + 1 (BAP-COMM-CARROLL-IEB-VOL02, same Amendment B
+# authority, 2026-09-17) = 14. A drift guard, not an open range — any further
+# increase needs its own explicit bump + authorization record.
+BASELINE = {"nae_tsu_v1": 3319, "nae_ref_v1": 34948, "canonical_dirs": 17, "registration_quality_passed": 14}
 # ADR-030 v2.1 §12 M-2 backfilled exactly these 14 source_ids (2026-08-28).
 # ADR-030 Amendment B (2026-09-13) authorizes appending further M2 records —
 # V7/V8 below protect this frozen set's identity/count without capping M2's
@@ -216,7 +233,8 @@ def check_no_required_metadata() -> ValidationResult:
     result = ValidationResult()
     synthetic = [{k: "x" for k in M2_BASE_KEYS}]
     fails = (check_authority_class_enum(synthetic).failed
-             + check_new_field_definitions(synthetic).failed)
+             + check_new_field_definitions(synthetic).failed
+             + check_authority_tier_fields(synthetic).failed)
     if fails:
         result.add("FAIL", f"V5: 합성 레코드에서 예상외 FAIL: {fails}")
     else:
@@ -273,6 +291,76 @@ def check_new_field_definitions(sources=None) -> ValidationResult:
     else:
         result.add("PASS", f"V6: raw_path/checksum_target 파일 전부 존재")
     result.add("PASS", "V6: all present ADR-030 fields have correct shape")
+    return result
+
+
+def check_authority_tier_fields(sources=None) -> ValidationResult:
+    """V9-V12: authority_tier / tradition_relation / counter_refs (ADR-030 Amendment D, PROPOSED).
+
+    V9  authority_tier ∉ 4-enum, 또는 authority_tier 있는데 tradition_relation
+        없거나 값이 5-enum 밖 (부재 = skip)
+    V10 authority_tier=T3 인데 counter_refs 없거나 비어있음
+    V11 counter_refs 각 id가 (a) M2 내 존재하는 source_id 가 아니거나(orphan),
+        (b) 그 대상 레코드의 authority_tier ∉ {T1, T2}
+    V12 authority_tier ∈ {T1, T2, T4} 인데 counter_refs 가 non-empty
+        (V11(b)와 조합해 counter_ref 그래프에 순환이 구조적으로 불가능해짐 —
+        T3만 counter_refs를 가질 수 있고, T3는 T1/T2만 가리킬 수 있고,
+        T1/T2는 counter_refs 자체를 가질 수 없으므로 그래프를 되짚어 올 간선이 없음)
+    """
+    result = ValidationResult()
+    if sources is None:
+        if not M2_PATH.exists():
+            result.add("FAIL", "V9: M2 path missing")
+            return result
+        m2_data = yaml.safe_load(M2_PATH.read_text(encoding="utf-8"))
+        sources = m2_data.get("sources", [])
+
+    has_any = any(
+        k in s for s in sources
+        for k in ("authority_tier", "tradition_relation", "counter_refs")
+    )
+    if not has_any:
+        result.add("PASS", "V9-V12: no authority_tier fields in M2 (not yet tagged, all skip)")
+        return result
+
+    by_id = {s.get("source_id"): s for s in sources if s.get("source_id")}
+
+    for source in sources:
+        sid = source.get("source_id", "UNKNOWN")
+        tier = source.get("authority_tier")
+        rel = source.get("tradition_relation")
+        counter_refs = source.get("counter_refs")
+
+        if tier is not None and tier not in VALID_AUTHORITY_TIERS:
+            result.add("FAIL", f"V9: M2 record {sid} has invalid authority_tier '{tier}'")
+        if tier is not None and rel is None:
+            result.add("FAIL", f"V9: M2 record {sid} has authority_tier but no tradition_relation")
+        if rel is not None and rel not in VALID_TRADITION_RELATIONS:
+            result.add("FAIL", f"V9: M2 record {sid} has invalid tradition_relation '{rel}'")
+
+        if tier == "T3" and not counter_refs:
+            result.add("FAIL", f"V10: M2 record {sid} is authority_tier=T3 but has no counter_refs")
+
+        if tier in ("T1", "T2", "T4") and counter_refs:
+            result.add("FAIL", f"V12: M2 record {sid} authority_tier={tier} must not carry counter_refs")
+
+        if counter_refs:
+            if not isinstance(counter_refs, list) or not all(isinstance(x, str) for x in counter_refs):
+                result.add("FAIL", f"V11: M2 record {sid} counter_refs must be list[str]")
+            else:
+                for ref in counter_refs:
+                    target = by_id.get(ref)
+                    if target is None:
+                        result.add("FAIL", f"V11: M2 record {sid} counter_refs orphan reference '{ref}'")
+                    elif target.get("authority_tier") not in ("T1", "T2"):
+                        result.add(
+                            "FAIL",
+                            f"V11: M2 record {sid} counter_ref '{ref}' target "
+                            f"authority_tier={target.get('authority_tier')!r} not in {{T1, T2}}",
+                        )
+
+    if not result.failed:
+        result.add("PASS", "V9-V12: authority_tier fields valid where present")
     return result
 
 
@@ -354,6 +442,7 @@ def validate() -> ValidationResult:
         ("V6", check_new_field_definitions),
         ("V7", check_m2_identity),
         ("V8", check_baseline),
+        ("V9-V12", check_authority_tier_fields),
     ]:
         r = fn()
         result.passed.extend(r.passed)

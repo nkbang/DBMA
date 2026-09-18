@@ -78,6 +78,7 @@ class _PolledState:
     bottleneck: dict | None = None
     gpu_health: dict | None = None
     cjk_repair: list = field(default_factory=list)
+    tsu_review: dict | None = None
 
     # Live activity verdict for the progress indicator / spinner.
     # idle | starting | working | stalled | stopped | error
@@ -146,6 +147,11 @@ class MonitorState:
         self._event_log = events_mod.EventLog()
         self._prev_event_facts: dict | None = None
         self._prev_disk_io: dict | None = None
+        # tsu.json per review-source can be several MB (Fuller Vol08 ~7MB);
+        # re-parsing it every 5s poll regardless of change would be wasteful
+        # now that review is largely static, so cache the computed counts
+        # keyed by the file's mtime and only re-read when it actually changes.
+        self._tsu_review_cache: dict[str, tuple[float, dict]] = {}
         self._prev_net_io: dict | None = None
 
     def poll(self) -> None:
@@ -208,6 +214,7 @@ class MonitorState:
 
             queue, queue_stopped, queue_stop_reason = self._compute_queue_snapshot(active, report)
             cjk_repair = _safe(lambda: self._compute_cjk_repair_snapshot(ps_text), [])
+            tsu_review = _safe(self._compute_tsu_review_snapshot, None)
 
             stages: list[dict] = []
             if active:
@@ -251,6 +258,7 @@ class MonitorState:
                 self._state.bottleneck = bottleneck_verdict
                 self._state.gpu_health = gpu_health_verdict
                 self._state.cjk_repair = cjk_repair
+                self._state.tsu_review = tsu_review
                 self._state.activity = activity
                 self._state.report_age_seconds = report_age
                 self._state.last_poll_ts = now
@@ -411,6 +419,51 @@ class MonitorState:
             })
         return entries
 
+    def _compute_tsu_review_snapshot(self) -> dict:
+        """Read-only rollup of NAE-TSU-REVIEW-WORKFLOW `review_status` counts
+        across the sources that went through the human review gate
+        (`NAE/review/human/`). Each tsu.json is only re-parsed when its
+        mtime changes — the file can run several MB, and once review is
+        complete it stops changing between polls."""
+        sources = []
+        total = verified = rejected = generated = 0
+        for identifier in collector.TSU_REVIEW_IDENTIFIERS:
+            path = self._tsu_root / identifier / "tsu.json"
+            try:
+                mtime = path.stat().st_mtime
+            except OSError:
+                mtime = None
+
+            cached = self._tsu_review_cache.get(identifier)
+            if cached is not None and mtime is not None and cached[0] == mtime:
+                counts = cached[1]
+            else:
+                records = collector.read_json_safe(path)
+                counts = {"total": 0, "verified": 0, "rejected": 0, "generated": 0}
+                if isinstance(records, list):
+                    for r in records:
+                        counts["total"] += 1
+                        status = r.get("review_status")
+                        if status in ("verified", "rejected", "generated"):
+                            counts[status] += 1
+                if mtime is not None:
+                    self._tsu_review_cache[identifier] = (mtime, counts)
+
+            sources.append({"identifier": identifier, **counts})
+            total += counts["total"]
+            verified += counts["verified"]
+            rejected += counts["rejected"]
+            generated += counts["generated"]
+
+        return {
+            "sources": sources,
+            "total": total,
+            "verified": verified,
+            "rejected": rejected,
+            "generated": generated,
+            "complete": total > 0 and generated == 0,
+        }
+
     def snapshot(self) -> dict:
         with self._lock:
             active = self._state.active
@@ -435,6 +488,7 @@ class MonitorState:
             bottleneck_verdict = dict(self._state.bottleneck) if self._state.bottleneck else None
             gpu_health_verdict = dict(self._state.gpu_health) if self._state.gpu_health else None
             cjk_repair = list(self._state.cjk_repair)
+            tsu_review = dict(self._state.tsu_review) if self._state.tsu_review else None
             activity = self._state.activity
             report_age_seconds = self._state.report_age_seconds
             report = dict(self._reports.get(active, {})) if active else None
@@ -549,6 +603,7 @@ class MonitorState:
             "queue_stopped": queue_stopped,
             "queue_stop_reason": stop_reason,
             "cjk_repair": cjk_repair,
+            "tsu_review": tsu_review,
             "throughput_history": throughput_sparkline,
             "latency_history": latency_sparkline,
             "gpu_history": gpu_history,

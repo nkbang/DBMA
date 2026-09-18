@@ -1,0 +1,785 @@
+{
+  "batch_id": "batch_0044_part1_1_60",
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0000271",
+      "tsu_id": "TSU-0000271",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "부활의 도덕적/영적 의미 - 롬6장 성화적 함의 부합"
+    },
+    {
+      "gate_id": "GATE-TSU-0000558",
+      "tsu_id": "TSU-0000558",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "다수 침례 집례 가능성에 대한 Dagg 역사적 추정, 사도행전 실현가능성 논증"
+    },
+    {
+      "gate_id": "GATE-TSU-0000977",
+      "tsu_id": "TSU-0000977",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "원문 'probably' 유보 있음 - 거짓고백자 혼입가능성/교회 불완전성 강조하는 수사적 논증으로 귀속 필요, 참교회 실재 부정 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0001083",
+      "tsu_id": "TSU-0001083",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "지역교회 현세성/영화된 보편교회 영원성 구별 - 침례교 교회론과 조화"
+    },
+    {
+      "gate_id": "GATE-TSU-0001198",
+      "tsu_id": "TSU-0001198",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "예루살렘교회 초기 독특성 강조하는 Dagg 논증 - 구속사적 전개 의미, 지역교회 정당성 부정 아님, 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001210",
+      "tsu_id": "TSU-0001210",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "이방인 동등참여 이해 지연 - 행10-15장 전개와 조화"
+    },
+    {
+      "gate_id": "GATE-TSU-0001218",
+      "tsu_id": "TSU-0001218",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "보편교회 회원됨 강조는 타당하나 지역교회 회원권 경시 근거로 오용 방지 위해 귀속 권장"
+    },
+    {
+      "gate_id": "GATE-TSU-0001219",
+      "tsu_id": "TSU-0001219",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "7번과 동일 논지"
+    },
+    {
+      "gate_id": "GATE-TSU-0001298",
+      "tsu_id": "TSU-0001298",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "지상/하늘 성도 연합 - 히12:22-24 교제개념과 조화"
+    },
+    {
+      "gate_id": "GATE-TSU-0001308",
+      "tsu_id": "TSU-0001308",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "거짓교사 분별 요청이지 일반적 사랑의무 부정 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0001309",
+      "tsu_id": "TSU-0001309",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "10번과 동일 원리"
+    },
+    {
+      "gate_id": "GATE-TSU-0001352",
+      "tsu_id": "TSU-0001352",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "Dagg 외적 보편교회 조직 비판 - 참보편교회 부정 아닌 가시적 중앙조직 증거없음 주장, 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001392",
+      "tsu_id": "TSU-0001392",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "외부조직 근거 교회주장 비판 - 교황권 비판 역사적 문맥 귀속 필요, 모든 제도적 전통에 기계적 적용 금지"
+    },
+    {
+      "gate_id": "GATE-TSU-0001393",
+      "tsu_id": "TSU-0001393",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "'거짓교회' 규정은 Dagg 반교황권 논쟁 문맥 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001394",
+      "tsu_id": "TSU-0001394",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "교황권 폐해 분석은 저자의 역사적/논쟁적 평가로 읽어야 함"
+    },
+    {
+      "gate_id": "GATE-TSU-0001410",
+      "tsu_id": "TSU-0001410",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "외적제도 기준시 악한지도자도 직분자 가능 비판 - 경건한 자격/교회인정/말씀충성 함께 고려 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001457",
+      "tsu_id": "TSU-0001457",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "교회 시작시점 논의는 침례교 내에서도 다양한 강조 있음"
+    },
+    {
+      "gate_id": "GATE-TSU-0001561",
+      "tsu_id": "TSU-0001561",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "나라 참여/구성 구별 - Dagg의 유아교회회원권 논쟁 특정 해석"
+    },
+    {
+      "gate_id": "GATE-TSU-0001564",
+      "tsu_id": "TSU-0001564",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "'그 같은 자' 해석은 마19:14 관련 Dagg 논증 - 교단간 논쟁점이라 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001709",
+      "tsu_id": "TSU-0001709",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "메시아 오심-인류필요인식 연결은 Dagg 구속사적 설명 - 하나님 주권적 때와 인간필요인식 동일시 방지 위해 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001723",
+      "tsu_id": "TSU-0001723",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "'그리스도 이전 유일한 신적 예배공동체' - Dagg의 구약 이스라엘 이해 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001737",
+      "tsu_id": "TSU-0001737",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "구약예배규례의 그리스도 예표/구속사적 전환 - 신약 성취관점과 조화"
+    },
+    {
+      "gate_id": "GATE-TSU-0001744",
+      "tsu_id": "TSU-0001744",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "'첫언약 결함/무익' 표현은 히브리서 논증 문맥(죄성/언약목적완성) 필요, 구약 무가치 오해 방지"
+    },
+    {
+      "gate_id": "GATE-TSU-0001793",
+      "tsu_id": "TSU-0001793",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "'영원한' 용례의 문맥적 제한 해석은 본문별 검토 필요, 일반명제 확대 자제"
+    },
+    {
+      "gate_id": "GATE-TSU-0001884",
+      "tsu_id": "TSU-0001884",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "할례를 문화적 표지로 유지 가능하다는 Dagg 질문형 논증 - 오늘날 적용 신중 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0001922",
+      "tsu_id": "TSU-0001922",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "왕국 복은 순종하는 믿는자에 속함 - 신자교회론적 논증 적절히 반영"
+    },
+    {
+      "gate_id": "GATE-TSU-0001930",
+      "tsu_id": "TSU-0001930",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "자연가지 재접붙임은 롬11장 종말론 해석 - 침례교 전체 종말론 아님, 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002008",
+      "tsu_id": "TSU-0002008",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "제4계명 재해석은 Dagg 특수 안식일론 - 침례교 보편필수교리 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0002166",
+      "tsu_id": "TSU-0002166",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "유스틴 순교자 본문이 유아세례 명확 증거 아니라는 평가는 Dagg 역사해석 - 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002173",
+      "tsu_id": "TSU-0002173",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "250년경 키프리아누스의 해석 - 원문 대비 주체를 '일부 사람들'에서 '키프리아누스'로 명확화 필요(claim 수정)"
+    },
+    {
+      "gate_id": "GATE-TSU-0002442",
+      "tsu_id": "TSU-0002442",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "혼합성찬 관용 정당화의 논리적 함의 - Dagg의 엄격성찬 옹호 논증 정확히 반영"
+    },
+    {
+      "gate_id": "GATE-TSU-0002462",
+      "tsu_id": "TSU-0002462",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "그리스도의 법 인식-준수 원칙은 타당하나 미침례자 회원권/성찬 문맥이며 해석 차이 인정 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002489",
+      "tsu_id": "TSU-0002489",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "일관성 위해 유아세례파 목사 강단초대 자제하는 일부 침례교인 태도 - 원문 충실"
+    },
+    {
+      "gate_id": "GATE-TSU-0002510",
+      "tsu_id": "TSU-0002510",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "유아세례파도 자기침례이해에 따른 제한 실천 - 엄격성찬 논쟁핵심은 침례정의라는 Dagg 논증"
+    },
+    {
+      "gate_id": "GATE-TSU-0002527",
+      "tsu_id": "TSU-0002527",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "발씻김을 비의식 환대행위로 보는 것은 Dagg 해석 - 제3예식으로 보는 전통과 구별 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002530",
+      "tsu_id": "TSU-0002530",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "예수님 발씻김을 실용적 친절 본으로 보는 Dagg 해석 - 특정 예전이해로 귀속"
+    },
+    {
+      "gate_id": "GATE-TSU-0002535",
+      "tsu_id": "TSU-0002535",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "필요/유익 범위내 실천적 섬김 해석은 설득력 있으나 요13장 상징적 차원 배제 확대 자제"
+    },
+    {
+      "gate_id": "GATE-TSU-0002556",
+      "tsu_id": "TSU-0002556",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "행전에 침례/떡뗌은 언급되나 발씻김 모임기록 없음 - 침묵논증은 보조논거일 뿐"
+    },
+    {
+      "gate_id": "GATE-TSU-0002562",
+      "tsu_id": "TSU-0002562",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "딤전5:10 근거 추론은 Dagg 추론 - 해석학적 결론은 교단 전통별 상이함"
+    },
+    {
+      "gate_id": "GATE-TSU-0002565",
+      "tsu_id": "TSU-0002565",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "발씻김 비종교의식/도덕적의무 결론은 Dagg 해석으로 승인가능하나 침례교전체 일치교리 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0002580",
+      "tsu_id": "TSU-0002580",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "안식일이 창조때 알려진 제도라는 것은 Dagg 안식일론 - 침례교 정체성 중심교리 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0002584",
+      "tsu_id": "TSU-0002584",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "안식일제도의 인간본성 적합성은 Dagg 자연법적/창조질서적 논증"
+    },
+    {
+      "gate_id": "GATE-TSU-0002588",
+      "tsu_id": "TSU-0002588",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "의식법/재판법/도덕법 구별은 개혁파 침례교 전통에서 흔하나 모든 침례교 동일체계 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0002595",
+      "tsu_id": "TSU-0002595",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "십계명 전체 구속력 전제는 Dagg 것 - 신약아래 율법기능/제4계명적용 견해차 명시 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002603",
+      "tsu_id": "TSU-0002603",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "제4계명 재해석(엿새노동뒤 반복되는 하루)은 Dagg 특수논증 - 보편교리 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0002608",
+      "tsu_id": "TSU-0002608",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "국제날짜변경선/시간대 관찰은 저자논증 정확히 요약"
+    },
+    {
+      "gate_id": "GATE-TSU-0002609",
+      "tsu_id": "TSU-0002609",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "시간대논증/모세지식 부분은 Dagg 수사적 추론 - 성경영감교리와 별개, 과학사적 진술로 확대 자제"
+    },
+    {
+      "gate_id": "GATE-TSU-0002610",
+      "tsu_id": "TSU-0002610",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "'성경이 특정요일 명령시 전통의존 문제' 내용은 Dagg 반론 - 표현 정확화 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002622",
+      "tsu_id": "TSU-0002622",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "그리스도인이 유대인처럼 제4계명 문자적 준수는 Dagg 자신의 해석 결론 - 침례교 전체합의 아님"
+    },
+    {
+      "gate_id": "GATE-TSU-0002624",
+      "tsu_id": "TSU-0002624",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "첫날예배 신약기록에서 기독교주간계산 출발 확인 - 저자주장 충실히 요약"
+    },
+    {
+      "gate_id": "GATE-TSU-0002630",
+      "tsu_id": "TSU-0002630",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "행20:7/고전16:2/계1:10 첫날준수 근거는 널리 사용된 논증이나 각 구절의 명시적 명령여부는 해석상 논점"
+    },
+    {
+      "gate_id": "GATE-TSU-0002631",
+      "tsu_id": "TSU-0002631",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "첫날준수를 '추천'하는 기독교계시라는 Dagg 표현은 주일신학 한 전통적 주장으로 귀속 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002651",
+      "tsu_id": "TSU-0002651",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "여성 공적기도 제한/여성모임 긍정 견해는 Dagg 시대적/해석적 입장 - 오늘날 침례교 실천 다양함"
+    },
+    {
+      "gate_id": "GATE-TSU-0002731",
+      "tsu_id": "TSU-0002731",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "유다 고백/행동을 예수 무죄 보조증거로 보는 변증적 추론 - '진실성'보다 '무죄와 사역진정성 간접증언' 표현이 정확"
+    },
+    {
+      "gate_id": "GATE-TSU-0002763",
+      "tsu_id": "TSU-0002763",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "성령의 은사 주권적 분배 - 고전12장/엡4장 은사론과 조화"
+    },
+    {
+      "gate_id": "GATE-TSU-0002779",
+      "tsu_id": "TSU-0002779",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "은사받은 사역자가 동역자/후보자 식별 원칙은 목회적 지혜이나 지역교회 분별/인정/파송 약화 방지 필요"
+    },
+    {
+      "gate_id": "GATE-TSU-0002794",
+      "tsu_id": "TSU-0002794",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "안수시 장로회 협력 얻어야 한다는 Dagg 목회질서론 - 상위치리기관 필수승인으로 이해 안함"
+    },
+    {
+      "gate_id": "GATE-TSU-0002795",
+      "tsu_id": "TSU-0002795",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "57번과 동일 - 목회자 협력/검증 유익하나 교회밖 장로회 동의 절대요건화 자제"
+    },
+    {
+      "gate_id": "GATE-TSU-0002855",
+      "tsu_id": "TSU-0002855",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-16",
+      "comment": "목사임무 성경적증거가 침례만큼 명확치 않으나 실천인도에 충분하다는 Dagg 절제된 표현 - 원문 충실"
+    },
+    {
+      "gate_id": "GATE-TSU-0002917",
+      "tsu_id": "TSU-0002917",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-16",
+      "comment": "그리스도의 계승보존 가능성은 Dagg 사도적계승 논쟁문맥 - 침례교는 역사적주교계승보다 복음/사도가르침/교회충실성 본질 강조"
+    }
+  ]
+}

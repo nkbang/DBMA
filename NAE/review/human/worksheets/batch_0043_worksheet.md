@@ -1,0 +1,23 @@
+# batch_0043 검토 워크시트 (4건 — Hiscox 보완분 재검토, 최종 잔여)
+
+검토 기준: Q1=Claim Fidelity / Q2=Theological Accuracy / Q3=Context Sufficiency. 판정: A=승인, C=문맥필요, R=거부.
+
+## 1. TSU-0003391 (BAP-CHURCH-HISCOX)
+- doctrine: Ecclesiology
+- claim: Hiscox는 헬라어 ekklesia가 '불러냄을 받음'이라는 뜻의 말에서 유래했으며, 일반 대중 가운데서 불려 나온 공동체를 가리킨다고 설명한다.
+- original_text: (앞) It is applied to a building used for Christian worship, to a congregation of Christian worshipers, to a religious establishment, to a given form of ecclesiastical order, to the aggregate of all Christian believers, and to a local company of Christian disciples associated in covenant for religious purposes. The latter is its common use in the New Testament. The Greek word ekklesia, rendered " church " is derived from a word meaning (뒤) " called out," and is used to indicate a company called out from a larger and more general assembly or concourse of people. In the free Greek cities, it designated a company of persons possessed of the rights of citizenship, and charged with certain important functions of administration in public affairs, summoned, or called out, from the common mass of the people.
+
+## 2. TSU-0003392 (BAP-CHURCH-HISCOX)
+- doctrine: Ecclesiology
+- claim: Hiscox에 따르면, 신약의 ekklesia는 하나님의 부르심으로 일반 대중 가운데서 구별되어 나온 성도들의 공동체를 가리킨다.
+- original_text: (앞) The latter is its common use in the New Testament. The Greek word ekklesia, rendered " church " is derived from a word meaning " called out," and is used to indicate a company called out from a larger and more general assembly or concourse of people. (뒤) In the free Greek cities, it designated a company of persons possessed of the rights of citizenship, and charged with certain important functions of administration in public affairs, summoned, or called out, from the common mass of the people. In the New Testament, the ekklesia is a company of persons called out and separated from the common multitude by a divine calling, chosen to be saints, invested with the privileges, and charged with the duties of citizenship in the kingdom of Christ.
+
+## 3. TSU-0004110 (BAP-CHURCH-HISCOX)
+- doctrine: Ecclesiology
+- claim: Hiscox에 따르면, 로저 윌리엄스는 미국 침례교의 형성과 초기 역사에 밀접하게 연관되었고, 첫 침례교회를 조직했다는 이유로 침례교의 창시자로 불리기도 했다.
+- original_text: (앞) FOR BAPTIST CHURCHES. 169 Roger Williams, a distinguished and an honored name, was identified with the rise of the denomination in America. He has been called their founder, because he organized the first church, and was intimately connected with their early history. (뒤) Williams was born in Wales, 1598, educated at Oxford, England, came to America in 1630, and settled as minister of the Puritan church in Salem, Massachusetts. Not long after he adopted Baptist views of doctrine and church order, on account of which he was banished by his fellow Puritans, and driven out of Massachusetts, in the depths of a rigorous winter, in a new and inhospitable country.
+
+## 4. TSU-0004116 (BAP-CHURCH-HISCOX)
+- doctrine: Ecclesiology
+- claim: Hiscox는 로저 윌리엄스와 로드아일랜드가 민간 및 교회 권력의 간섭 없이 모든 사람에게 예배의 자유를 부여한 최초의 사례였다고 평가한다.
+- original_text: (앞) He was also appointed first Governor of Rhode Island. Full liberty was granted in matters of religion. Thus Roger Williams became the first ruler, and Rhode Island the first State which ever gave entire freedom to all persons to worship God, according to their own choice, without dictation or interference from civil or ecclesiastical authorities. (뒤) gration increased, other churches grew up, having no connection with that ; and with considerable rapidity the sentiments of Baptists spread into adjoining colonies, particularly west and south. For a long time, however, they were sorely persecuted, especially in Massachusetts and Connecticut.

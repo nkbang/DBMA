@@ -1,0 +1,529 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0029_part2_confirmed",
+  "source_identifiers": [
+    "Dagg_Church_Order"
+  ],
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0002433",
+      "tsu_id": "TSU-0002433",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002439",
+      "tsu_id": "TSU-0002439",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002442",
+      "tsu_id": "TSU-0002442",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002462",
+      "tsu_id": "TSU-0002462",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002469",
+      "tsu_id": "TSU-0002469",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002472",
+      "tsu_id": "TSU-0002472",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002483",
+      "tsu_id": "TSU-0002483",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002486",
+      "tsu_id": "TSU-0002486",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002487",
+      "tsu_id": "TSU-0002487",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002489",
+      "tsu_id": "TSU-0002489",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002501",
+      "tsu_id": "TSU-0002501",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002510",
+      "tsu_id": "TSU-0002510",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002523",
+      "tsu_id": "TSU-0002523",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002527",
+      "tsu_id": "TSU-0002527",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002529",
+      "tsu_id": "TSU-0002529",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002530",
+      "tsu_id": "TSU-0002530",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002531",
+      "tsu_id": "TSU-0002531",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002535",
+      "tsu_id": "TSU-0002535",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0002537",
+      "tsu_id": "TSU-0002537",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003137",
+      "tsu_id": "TSU-0003137",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003139",
+      "tsu_id": "TSU-0003139",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003150",
+      "tsu_id": "TSU-0003150",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003159",
+      "tsu_id": "TSU-0003159",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003161",
+      "tsu_id": "TSU-0003161",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003162",
+      "tsu_id": "TSU-0003162",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003163",
+      "tsu_id": "TSU-0003163",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003171",
+      "tsu_id": "TSU-0003171",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003180",
+      "tsu_id": "TSU-0003180",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003183",
+      "tsu_id": "TSU-0003183",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003184",
+      "tsu_id": "TSU-0003184",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003190",
+      "tsu_id": "TSU-0003190",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003191",
+      "tsu_id": "TSU-0003191",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003217",
+      "tsu_id": "TSU-0003217",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003234",
+      "tsu_id": "TSU-0003234",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003238",
+      "tsu_id": "TSU-0003238",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003259",
+      "tsu_id": "TSU-0003259",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003265",
+      "tsu_id": "TSU-0003265",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003284",
+      "tsu_id": "TSU-0003284",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003295",
+      "tsu_id": "TSU-0003295",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    },
+    {
+      "gate_id": "GATE-TSU-0003308",
+      "tsu_id": "TSU-0003308",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0029 (101-119, 180-200 confirmed) 사용자 검토."
+    }
+  ]
+}

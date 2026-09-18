@@ -47,10 +47,14 @@ from core.retrieval import (
 
 
 def is_enabled() -> bool:
-    """USE_INVERTED_INDEX=true gates the Stage-1 CandidateGenerator path.
-    Defaults to false — the existing RetrievalEngine path stays authoritative
-    until this is explicitly turned on (HQ 원칙: 기존 경로와 나란히 유지)."""
-    return os.environ.get("USE_INVERTED_INDEX", "false").strip().lower() == "true"
+    """USE_INVERTED_INDEX gates the Stage-1 CandidateGenerator path.
+    [2026-09-18, 배포 성능 발견] Defaults to true — RetrievalEngine의 STEP 1/2가
+    책 이름 없는 질의(교리/주제 질문, 가장 흔한 사용 패턴)에서 metadata filter가
+    코퍼스 전체를 통과시켜 BM25가 O(N) 콜드 스캔을 하는 문제(84,766건 코퍼스에서
+    쿼리 1건이 수 분 이상 걸림, 실측 확인)를 HybridQueryProcessor가 Tantivy
+    역색인으로 우회한다(실측 14.3ms, 53,231건 코퍼스 기준). 필요 시
+    USE_INVERTED_INDEX=false로 명시적으로 되돌릴 수 있다."""
+    return os.environ.get("USE_INVERTED_INDEX", "true").strip().lower() == "true"
 
 
 class HybridRetriever:
@@ -189,6 +193,49 @@ class HybridRetriever:
         return ranked[:k_output]
 
 
+class _EngineCompat:
+    """[2026-09-18, USE_INVERTED_INDEX 기본 true 전환] core.retrieval.
+    RetrievalEngine의 `.engine` 표면 중 UI가 직접 호출하는 3개 메서드/속성
+    (list_source_files, book_coverage, tsus)만 HybridQueryProcessor 위에
+    재현한다 — RetrievalEngine을 별도로 생성하지 않고 이미 로드된
+    tsu_by_id를 재사용. ui/pages/chat.py:140, sermon_draft.py:159,186,538,
+    sermon_research.py:149가 이 표면에 의존한다."""
+
+    def __init__(self, tsu_by_id: dict[str, dict[str, Any]]) -> None:
+        self.tsus = list(tsu_by_id.values())
+
+    def list_source_files(self, registry_path: Optional[str] = None) -> list[str]:
+        import os as _os
+        from core.config import DEFAULT_REGISTRY_PATH
+
+        registry_path = registry_path or DEFAULT_REGISTRY_PATH
+        valid_sources: set[str] = set()
+        if _os.path.exists(registry_path):
+            from core.identity_registry import load_identity_registry
+            registry = load_identity_registry(registry_path)
+            for doc in registry.get("documents", {}).values():
+                if (doc.get("ingest_status") == "PROCESSED"
+                        and doc.get("superseded_by") is None):
+                    sf = doc.get("source_file")
+                    if sf:
+                        valid_sources.add(sf)
+
+        result = {sf for t in self.tsus if (sf := t.get("source_file"))}
+        if _os.path.exists(registry_path):
+            result &= valid_sources
+        return sorted(result)
+
+    def book_coverage(self) -> dict[str, int]:
+        coverage: dict[str, set[str]] = {}
+        for t in self.tsus:
+            book_id = (t.get("verse_mapping") or {}).get("book_id")
+            source_file = t.get("source_file")
+            if not book_id or not source_file:
+                continue
+            coverage.setdefault(book_id, set()).add(source_file)
+        return {book_id: len(files) for book_id, files in coverage.items()}
+
+
 class HybridQueryProcessor:
     """Drop-in replacement for `core.retrieval.QueryProcessor`'s `.process()`
     interface — same signature, same `ResponsePackage` return type — routing
@@ -251,6 +298,7 @@ class HybridQueryProcessor:
             build_bible_index(tsu_dataset_path, bible_index_path)
         bible_index = BibleIndex(bible_index_path)
         self.retriever = HybridRetriever(generator, tsu_by_id, bible_index=bible_index)
+        self.engine = _EngineCompat(tsu_by_id)
         self.telemetry = SearchTelemetry(telemetry_path)
         self.cache = SearchResultCache(cache_path)
 
@@ -336,10 +384,21 @@ class HybridQueryProcessor:
 def load_tsu_by_id(tsu_dataset_path: str) -> dict[str, dict[str, Any]]:
     """Load the TSU dataset into an id-keyed dict for Stage 2 lookups —
     same file RetrievalEngine._load_corpus() reads, just indexed by tsu_id
-    instead of kept as a list."""
+    instead of kept as a list.
+
+    [CI validate 실패 수정, 2026-09-18] tsu_dataset_path가 없으면 빈 dict를
+    반환한다 — core/retrieval.py::RetrievalEngine._load_corpus()가 문서화한
+    "파일 없음 = 첫 실행/초기화 직후의 정상 상태 → 빈 코퍼스" 계약과 동일.
+    core/candidate_generator.py::build_index()에 이미 적용한 것과 같은 수정
+    (e121752)을 이 호출부에도 적용 — HybridQueryProcessor.__init__()이
+    open_or_build_index() 다음에 바로 이 함수를 호출해, 앞서 고친 크래시가
+    막힌 뒤에도 여기서 그대로 재발했다."""
     import json
+    from pathlib import Path
 
     tsu_by_id: dict[str, dict[str, Any]] = {}
+    if not Path(tsu_dataset_path).exists():
+        return tsu_by_id
     with open(tsu_dataset_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()

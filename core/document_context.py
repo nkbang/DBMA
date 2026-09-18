@@ -52,6 +52,12 @@ class DocumentContext:
     # Structural metadata (unknown = None 원칙 유지)
     title: Optional[str] = None
     author: Optional[str] = None
+    # [DBMA_SIDECAR_METADATA_DESIGN_FINAL_v2.md] title/author 출처 —
+    # "embedded" / "sidecar" / None. core/processing.py::resolve_title_author()
+    # 가 계산해 process_one_file()에서 설정한다. source_provenance(아래,
+    # Logos 콘텐츠 원천 6키 dict)와 이름이 비슷하지만 완전히 별개다 —
+    # 혼동 금지(RQ-1 재검토 확정 사항).
+    metadata_source: Optional[str] = None
     book: Optional[str] = None
     chapter: Optional[int] = None
     page: Optional[int] = None
@@ -160,6 +166,7 @@ class DocumentContext:
             # Structural fields (unknown = None)
             "title": self.title,
             "author": self.author,
+            "metadata_source": self.metadata_source,
             "book": self.book,
             "chapter": self.chapter,
             "page": self.page,

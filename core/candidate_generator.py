@@ -18,6 +18,7 @@ Phase 2-6, not this module.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
@@ -28,6 +29,16 @@ from core.retrieval import ParsedQuery
 
 # Text fields searched for BM25 candidate generation.
 _TEXT_FIELDS = ["title", "content", "author"]
+
+# [2026-09-18] Tantivy query-DSL special characters that crash parse_query()
+# when they appear in ordinary natural-language text (e.g. Korean
+# parenthetical asides like "중생(거듭남)") instead of being treated as
+# literal -- see search()'s except ValueError fallback.
+# [2026-09-18, P0-5 실채점 중 발견] ASCII apostrophe(')도 별도로 크래시를
+# 낸다 -- "believer's baptism"처럼 영어 낱말이 섞인 신학 질의(F유형,
+# 한영 자료 기반)에서 실제로 관측됨. 커브드 쿼트(’, U+2019)는 문제없어
+# 제외 -- ASCII 아포스트로피만 Tantivy 문법에서 특별 취급된다.
+_TANTIVY_SPECIAL_CHARS_RE = re.compile(r"[+\-&|!(){}\[\]^\"~*?:\\']")
 
 # Metadata fields stored with the "raw" tokenizer so they support exact-match
 # term filtering (Stage 1 pre-filter — HQ principle: filters apply before
@@ -103,7 +114,15 @@ def _tsu_to_tantivy_doc(tsu: dict, schema: tantivy.Schema) -> tantivy.Document:
 
 def build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> int:
     """Build a fresh Tantivy index from a TSU JSONL dataset. Returns the
-    number of documents indexed. Overwrites any existing index at index_dir."""
+    number of documents indexed. Overwrites any existing index at index_dir.
+
+    [CI validate 실패 수정, 2026-09-18] tsu_dataset_path가 없으면 빈 코퍼스로
+    취급한다 — core/retrieval.py::RetrievalEngine._load_corpus()가 이미
+    문서화한 계약("첫 실행·초기화 직후 파일이 없는 것은 정상 상태 —
+    빈 코퍼스, 크래시 아님")과 동일. USE_INVERTED_INDEX 기본값이 true로
+    바뀐 뒤(2026-09-18), 이 함수만 그 계약 없이 FileNotFoundError로
+    죽어 CI의 AppTest 기반 UI 테스트(실제 코퍼스 파일이 없는 환경)를
+    깨뜨렸다."""
     index_dir = Path(index_dir)
     index_dir.mkdir(parents=True, exist_ok=True)
     schema = build_schema()
@@ -122,14 +141,15 @@ def build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> int:
     writer.delete_all_documents()
 
     count = 0
-    with open(tsu_dataset_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("$"):
-                continue
-            tsu = json.loads(line)
-            writer.add_document(_tsu_to_tantivy_doc(tsu, schema))
-            count += 1
+    if Path(tsu_dataset_path).exists():
+        with open(tsu_dataset_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("$"):
+                    continue
+                tsu = json.loads(line)
+                writer.add_document(_tsu_to_tantivy_doc(tsu, schema))
+                count += 1
     writer.commit()
     idx.reload()
 
@@ -161,15 +181,18 @@ def open_or_build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> 
             stored = json.load(f)
         stored_count = stored.get("record_count", 0)
 
-        # Count current dataset records (same logic as build_index does)
+        # Count current dataset records (same logic as build_index does).
+        # A missing file counts as 0 (empty corpus), matching build_index()'s
+        # own tolerance above.
         current_count = 0
-        with open(tsu_dataset_path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line or line.startswith("$"):
-                    continue
-                json.loads(line)  # validate JSON
-                current_count += 1
+        if Path(tsu_dataset_path).exists():
+            with open(tsu_dataset_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("$"):
+                        continue
+                    json.loads(line)  # validate JSON
+                    current_count += 1
 
         if current_count != stored_count:
             build_index(tsu_dataset_path, index_dir)
@@ -241,7 +264,19 @@ class CandidateGenerator:
             words = exact_phrase.strip().split()
             text_query = tantivy.Query.phrase_query(self._schema, "content", words)
         else:
-            text_query = self._index.parse_query(query_text, default_field_names=search_fields)
+            try:
+                text_query = self._index.parse_query(query_text, default_field_names=search_fields)
+            except ValueError:
+                # [2026-09-18] Natural-language Korean queries routinely carry
+                # Tantivy query-DSL special chars (parens for clarifying
+                # asides like "중생(거듭남)", colons, quotes) that the parser
+                # rejects outright instead of treating as literal text —
+                # confirmed crash, not a graceful no-match. Strip them and
+                # retry once rather than losing the query entirely; this
+                # only fires on the exception path so well-formed queries
+                # are unaffected.
+                sanitized = _TANTIVY_SPECIAL_CHARS_RE.sub(" ", query_text)
+                text_query = self._index.parse_query(sanitized, default_field_names=search_fields)
 
         effective_books = book_ids if book_ids is not None else parsed_query.detected_books
         subqueries = [(tantivy.Occur.Must, text_query)]

@@ -254,6 +254,74 @@ class TestHumanDecisionImmutability:
             record.reviewer_id = "someone-else"
 
 
+class TestContextEnrichment:
+    """batch_0024~0034 실제 검토에서 Q3(Context Sufficiency)가 반복적으로
+    C로 남은 근본 원인 회귀 방지 테스트: (1) original_text에 인접 문장이
+    전혀 없었던 문제, (2) 앞뒤 1문장 창이 페이지/문단 경계에서 잘린 문장에는
+    무용했던 문제(TSU-0003406/0003559, batch_0034에서 실측)."""
+
+    def _fake_canonical(self, paragraphs):
+        return {"paragraphs": paragraphs}
+
+    def _para(self, index, page, sentences):
+        return {"type": "prose", "index": index, "page_start": page,
+                "sentences": [{"text": s} for s in sentences]}
+
+    def test_original_text_gains_surrounding_sentences(self, monkeypatch):
+        canonical = self._fake_canonical([
+            self._para(0, 1, ["앞 문장.", "본문 문장.", "뒤 문장."]),
+        ])
+        monkeypatch.setattr(dg.tsu_parser, "load_canonical", lambda identifier: canonical)
+        dg._FLAT_SENTENCE_INDEX_CACHE.clear()
+        record = {
+            "id": "TSU-TEST-0001", "identifier": "Some_Identifier",
+            "page": 1, "paragraph": 0, "sentence": 1,
+            "source_text": "본문 문장.", "claim": "c", "doctrine": "d", "source_id": "s",
+        }
+        req = dg.build_requests_from_records([record])[0]
+        assert "앞 문장." in req.original_text
+        assert "본문 문장." in req.original_text
+        assert "뒤 문장." in req.original_text
+
+    def test_context_window_crosses_paragraph_and_page_boundary(self, monkeypatch):
+        """페이지 경계에서 분할된 문장(예: TSU-0003406)도 직전 문단의
+        마지막 문장을 context_before로 얻어야 한다 — 같은 문단 안에서만
+        찾던 예전 구현은 이 경우 아무 문맥도 못 찾았다."""
+        canonical = self._fake_canonical([
+            self._para(0, 1, ["이전 페이지 문장 1.", "이전 페이지 문장 2."]),
+            self._para(1, 2, ["다음 페이지로 이어지는 문장.", "그 다음 문장."]),
+        ])
+        monkeypatch.setattr(dg.tsu_parser, "load_canonical", lambda identifier: canonical)
+        dg._FLAT_SENTENCE_INDEX_CACHE.clear()
+        record = {
+            "id": "TSU-TEST-0004", "identifier": "Some_Identifier",
+            "page": 2, "paragraph": 1, "sentence": 0,
+            "source_text": "다음 페이지로 이어지는 문장.", "claim": "c", "doctrine": "d", "source_id": "s",
+        }
+        req = dg.build_requests_from_records([record])[0]
+        assert "이전 페이지 문장 1." in req.original_text
+        assert "이전 페이지 문장 2." in req.original_text
+        assert "그 다음 문장." in req.original_text
+
+    def test_falls_back_to_source_text_when_context_lookup_misses(self, monkeypatch):
+        """조회 실패 시 문맥을 지어내지 않고 기존 동작(source_text 그대로)을 유지."""
+        monkeypatch.setattr(dg.tsu_parser, "load_canonical", lambda identifier: None)
+        dg._FLAT_SENTENCE_INDEX_CACHE.clear()
+        record = {
+            "id": "TSU-TEST-0002", "identifier": "Some_Identifier",
+            "page": 9, "paragraph": 9, "sentence": 9,
+            "source_text": "고립된 문장.", "claim": "c", "doctrine": "d", "source_id": "s",
+        }
+        req = dg.build_requests_from_records([record])[0]
+        assert req.original_text == "고립된 문장."
+
+    def test_no_identifier_falls_back_to_source_text(self, monkeypatch):
+        dg._FLAT_SENTENCE_INDEX_CACHE.clear()
+        record = {"id": "TSU-TEST-0003", "source_text": "출처 없음.", "claim": "c", "doctrine": "d", "source_id": "s"}
+        req = dg.build_requests_from_records([record])[0]
+        assert req.original_text == "출처 없음."
+
+
 class TestRegression:
     def test_pilot_reference_reused_not_duplicated(self):
         """decision_gate.py가 schema.PILOT_REFERENCE를 재사용하는지(별도

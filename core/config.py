@@ -275,6 +275,11 @@ RAG_TOP_K = _yaml_rag.get("top_k", 4)
 # 0이면 비활성(기존 동작). 특정 문서(예: 과청킹된 2 Kings Vol13)가 top-k를
 # 독점하는 편중을 완화한다.
 RETRIEVAL_DOCUMENT_CAP = _yaml_rag.get("document_cap", 2)
+# [ADR-034] Sentence-Window context expansion: 이웃 청크를 몇 개까지
+# LLM 컨텍스트에 이어붙일지. 0이면 비활성(기존 동작과 동일). 랭킹/스코어링/
+# Citation에는 영향 없음 — ContextAssembler.assemble()의 LLM 컨텍스트
+# 블록에서만 사용.
+CONTEXT_WINDOW_NEIGHBORS = _yaml_rag.get("context_window_neighbors", 1)
 DEFAULT_TEMPERATURE = _yaml_rag.get("default_temperature", 0.2)
 RAG_CHUNK_SIZE = _yaml_rag.get("chunk_size", 1200)
 RAG_CHUNK_OVERLAP = _yaml_rag.get("chunk_overlap", 120)
@@ -283,10 +288,19 @@ RAG_CHUNK_OVERLAP = _yaml_rag.get("chunk_overlap", 120)
 # 옵션. my-theology-bot-v2 는 Modelfile에 repeat_penalty/num_predict 를 지정하지
 # 않아 Ollama 기본값(repeat_penalty 1.1, num_predict 무제한)으로 돌고, 저온
 # 결정론 설정과 맞물려 같은 구절을 수백 번 반복하는 퇴행 루프가 실측됨
-# (요한복음 1:10 해설). 두 값을 여기서 강제한다. SermonDraftService 는 긴
-# 출력이 정상이라 이 상한을 적용하지 않는다(별도 흐름).
+# (요한복음 1:10 해설). 두 값을 여기서 강제한다.
 DEFAULT_REPEAT_PENALTY = _yaml_rag.get("repeat_penalty", 1.3)
 DEFAULT_NUM_PREDICT = _yaml_rag.get("num_predict", 1024)
+
+# [2026-09-15, S1-4 배포 사양 품질 실측] SermonDraftService는 "긴 출력이
+# 정상이라 repeat_penalty를 안 쓴다"는 근거로 위 두 값을 전혀 적용받지
+# 않았는데, 실측 결과 repeat_penalty 부재가 num_predict 상한과 무관하게
+# 그 자체로 퇴행 반복을 유발했다(llama3.2:3b, 요한복음 3:16 대지 확장:
+# groundedness 0/5, "우리에게 사랑을 주는 하나님으로서"류 문구를 20회+
+# 그대로 반복). repeat_penalty는 적용하되, num_predict는 sermon 문단
+# 길이에 맞춰 별도 값을 둔다(기존 1024는 실측상 문장 중간에서 출력을
+# 잘랐다) — 두 옵션을 하나로 묶어 취급한 것이 원래 설계의 오류였다.
+DEFAULT_SERMON_NUM_PREDICT = _yaml_rag.get("sermon_num_predict", 2048)
 
 # ── UI 기본값 ───────────────────────────────────────────
 _yaml_ui = CFG.get("ui", {})

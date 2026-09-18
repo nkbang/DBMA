@@ -134,10 +134,13 @@ rag:
   chunk_overlap: 120
   # [2026-09-04] Q&A·본문해설 생성(core/generation.py::GenerationService)의
   # Ollama 옵션. my-theology-bot-v2 가 저온 결정론 설정에서 같은 구절을
-  # 반복하는 퇴행 루프(요한복음 1:10 해설 실측) 방지. 설교문 생성은 별도
-  # 흐름이라 이 상한을 적용하지 않는다.
+  # 반복하는 퇴행 루프(요한복음 1:10 해설 실측) 방지.
   repeat_penalty: 1.3
   num_predict: 1024
+  # [2026-09-15, S1-4] 설교 대지 확장(SermonDraftService)은 repeat_penalty는
+  # 위 값을 공유하되, num_predict만 문단 길이에 맞춰 따로 둔다 — 1024는
+  # 실측상 문장 중간에서 출력을 잘랐다(llama3.2:3b 테스트).
+  sermon_num_predict: 2048
 
 # ── UI Defaults ────────────────────────────────────────
 ui:
@@ -162,3 +165,53 @@ modules:
     corpus_root: "NAE/corpus/tsu"
     manifest_dir: "NAE/pipeline/ingest/manifests"
     index_collection: "nae_tsu_v1"
+
+# ── Workspace Reset (ADR-033) ──────────────────────────────
+# 배포 전 튜닝용 티어드 리셋. scripts/reset_workspace.py 가 읽는다.
+# 층위 B(protected_prefixes)에서 RAW/소스 6항목(data/RAW/, NAE/corpus/raw/,
+# data/bible/, sermon_corpus/, data/sermon_corpus/, data/beta_corpus/)을
+# 제거하는 수정은 ADR-033 Amendment 없이 금지 — 유틸리티가 기동 시 강제 복원한다.
+reset:
+  protected_prefixes:
+    - data/RAW/
+    - NAE/corpus/raw/
+    - data/bible/
+    - sermon_corpus/
+    - data/sermon_corpus/
+    - data/beta_corpus/
+    - .git
+    - core/
+    - ui/
+    - scripts/
+    - tests/
+    - docs/
+    - NAE/pipeline/
+    - NAE/authority/
+    - NAE/governance/
+    - config.yaml
+    - .env
+  tiers:
+    T1:
+      - "output/*"
+      - "chroma_db/*"
+      - "cache/*"
+      - "NAE/corpus/embeddings/*"
+      - "data/제련완성본/*_pdf.md"
+      - "data/제련완성본/*_chunks.txt"
+      - "data/제련완성본/*_chunks_meta.json"
+      - "data/제련완성본/*_pdf_chunks*.json"
+      - "data/normalized/*"
+      - "data/processed/*"
+      - "data/nae/*"
+      - "data/inbox/*"
+      - "reports/*"
+      - "evidence/*"
+    T2:
+      - "NAE/corpus/tsu/*"
+      - "NAE/corpus/manifests/*"
+      - "NAE/corpus/quarantine/*"
+      - "NAE/benchmark/*"
+    # T3: 설계만 — 구현하지 않음 (HQ 결정 2026-09-07). scripts/reset_workspace.py 는 T3 거부.
+  # 기본 빈 목록. HQ가 명시적으로 채우고 --drop-qdrant 를 줘야 drop.
+  # 운영 인덱스(nae_tsu_v1/nae_bible_v1/nae_ref_v1)는 예외 케이스 (ADR-033 §4.4).
+  qdrant_collection_whitelist: []

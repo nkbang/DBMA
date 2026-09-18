@@ -1,5 +1,92 @@
 # DBMA State
 
+**[2026-09-18 완료] 배포 게이트 점검 4건 + Retrieval 성능 이슈 발견·수정 (CUE).**
+- **보안 체크리스트(S1-3)**: `scripts/security_preflight.py --apply` 재실행,
+  R7 통과(4/5 적용, 1/5 부분충족·백로그). 보고서
+  `docs/RELEASE_SECURITY_CHECKLIST_STATUS.md` 갱신.
+- **코퍼스 후속 확인**: book_coverage 24/66권 미달은 버그 아님 — 119개
+  출처 중 다수가 특정 1권 전담 주석서라 총 책 수가 적게 몰리는 콘텐츠
+  구성 특성. `retrieve()` 정상(5.09초, 84,766건 기준).
+- **P0-5 준비상태**: 문서 보류조건("자료 처리 완료 후 재개") 충족 확인 —
+  코퍼스가 매튜 풀 1권 → 119개 출처로 확장됨. 실제 24건 채점 실행은
+  사용자 몫으로 남음.
+- **AT-4/AT-5 PASS**: `docs/NAE_PARAGRAPH_ANSWER_DELIVERY_DEPLOY_VERIFICATION_001.md`
+  Addendum(2026-09-18) 참고. C1 위임 시도 중 selector 버그·자기모순 2건
+  발견·정정 후 CUE가 직접 재현·판정.
+- **[배포 성능 이슈 발견·수정]** 책 이름 없는 교리형 질의가
+  `RetrievalEngine`의 O(N) 콜드 스캔 경로를 타 84,766건 코퍼스에서
+  수 분 지연(실측, 재현 확인) — 가장 흔한 사용 패턴이라 심각. 이미
+  구현·검증돼 있던 `HybridQueryProcessor`(Tantivy 역색인)로 우회하는
+  `USE_INVERTED_INDEX` 기본값을 `true`로 전환(실측 쿼리 0.95초, 1회성
+  인덱스 부트스트랩 36초). 전환이 노출시킨 두 결함도 같이 수정:
+  `HybridQueryProcessor.engine` 인터페이스 누락(chat.py/sermon_draft.py
+  크래시 위험) → `_EngineCompat` 추가, 괄호 포함 질의에서 Tantivy 쿼리
+  파서 크래시(`중생(거듭남)은...`) → `core/candidate_generator.py`
+  sanitize-and-retry 처리. 회귀 `pytest tests --ignore=tests/nae` 전량
+  통과(2930+, 무관한 NAE raw 자산 2건 제외). 커밋 `ce8be59`, merge
+  `61fcf8d`, origin+nas push 완료.
+
+**[2026-09-18 완료] Track A 복원본에서 신학 무관 콘텐츠 제거 (HQ 지시).**
+- 대상 전수 확인(125개 출처 목록 육안 검토) 후 6개 문서 제거 결정 — 계획 문서가 명시한
+  UN 백과사전 외에, 육안 검토로 작곡 가이드·피트니스 서적·테스트 픽스처도 추가 발견:
+  - `A Concise Encyclopedia of the United Nations 2nd Edition.pdf` (4,027건)
+  - `6 Steps to Songwriting Success ...Blume, Jason.epub.pdf` (745건)
+  - `15-Minute Abs Workout (15 Minute Fitness).pdf` (110건)
+  - `15-Minute Dance Workout (15 Minute Fitness).pdf` (93건)
+  - `15-Minute Dance Workout _15 Minute Fitness__pdf.md` (94건)
+  - `_opvalidation_test.txt` (1건, 테스트 픽스처)
+  - 총 제거 5,070건. 나머지 119개 출처(주석서·조직신학·선교신학·설교문 등)는 전부
+    신학 관련으로 판단해 유지.
+- **부수 발견**: registry에서 이 중 4건은 이미 `ingest_status=EXCLUDED`였는데도 TSU
+  데이터셋에는 여전히 포함돼 있었음 — Sep 7 사고 원인과 같은 패턴(`reconcile_pending()`이
+  EXCLUDED를 무시하던 결함, STATE.md 기록상 코드는 이미 수정됐으나 이번에 복원한 TSU는
+  그 수정 이전 백업이라 잔존). 나머지 2건(UN 백과사전, Dance Workout .md)은 registry에
+  `PROCESSED`로 남아 있어 이번에 `EXCLUDED`로 갱신.
+- **처리**: `output/bench/tsu_dataset.jsonl` 84,766건(89,836→ -5,070)으로 교체,
+  `data/제련완성본/registry/documents.json` 해당 6건 `EXCLUDED` 갱신,
+  `tsu_manifest.json` 재작성(dataset_sha256/registry_sha256 갱신). 제거 전 상태는
+  `backups/pre_nontheo_removal_20260918/`에 보존(즉시 롤백 가능).
+- **검증**: 필터링 후 strict UTF-8 재로드 84,766건 정상, 잔존 신학무관 키워드 0건 확인.
+  실제 `retrieve()` 스모크 테스트는 이전 세션에서 앱 리소스 경합으로 미완료 상태 —
+  아직 재확인 못함.
+
+**[2026-09-18 진행중] Track A 백업 복원 실행 — 2026-09-18 동결 해지 항목(아래) 후속.**
+- **완료**: `output/bench/tsu_dataset.jsonl`을 `backups/phantom_registry_cleanup_
+  20260907_183948/`(SHA256 검증됨, `tsu_manifest.json` 기록값과 일치)에서 복원. 백업
+  자체에 UTF-8 디코딩 불가 바이트 1개(line 2042) 발견 — 그대로 복사했다면
+  `RetrievalEngine` 기동 시 크래시했을 것, 해당 줄만 안전 수정 후 복원(89,737건).
+  `data/제련완성본/registry/documents.json`도 같은 백업에서 복원(사용자 직접 실행).
+- **예기치 않은 이벤트**: 레지스트리 복원 시점에 Streamlit 앱이 실행 중이었음(PID
+  32395, `background_index_builder` 경쟁 가능성 — Phase 0가 경고한 바로 그 상황).
+  다만 결과적으로 앱 자체 파이프라인(`scripts/build_tsu_dataset.py`, commit
+  `9d69094b`)이 복원된 레지스트리(218 문서, PROCESSED 204) 기준으로 TSU를 자체
+  재빌드함 — **89,836건, 125개 출처, Spurgeon 오염 0건**으로 정상 상태 확인(수동
+  검증). 사용자에게 앱 종료 요청함(추가 경쟁 방지).
+- **검증 결과 (Track A 계획 §3 기준 대비)**:
+  - TSU ≥ 70,000: **PASS** (89,836)
+  - 출처 ≥ 100: **PASS** (125)
+  - `book_coverage()`(66권 중 40권+ 자료 표시): **미달** — 24권만 `verse_mapping.book_id`
+    매핑됨(기존에도 이 필드가 대부분 `None`이던 것과 같은 범주의 메타데이터 공백일
+    가능성 — 이번 복원이 유발한 문제인지 별도 확인 필요)
+  - 회귀 테스트 전량: **미실행**(Verification Cost Discipline에 따라 전체 스위트
+    대신 스모크만 우선 — 필요 시 별도 실행)
+  - 스모크(로마서 8장 등 검색): **미완료(타임아웃)** — 엔진 로드는 1.7초로 정상(89,836
+    tsus 확인)이나, `retrieve()` 단일 호출이 150초 뒤 강제 종료(exit 124)될 때까지
+    응답 없음. 데이터 손상이 아니라 리소스 경합(앱이 동시 실행 중이라 Ollama/GPU를
+    점유했을 가능성)으로 추정 — 앱 종료 후 재시도 필요, 이번 세션에서는 확인하지 못함
+- **알려진 후속 정리 항목(Phase 1 잔여, 이번엔 미해결)**:
+  - "2 Kings, Volume 13" 등 동일 서적이 `.pdf`/`.md`/`_chunks.txt` 3개 파일타입으로
+    각각 다른 `document_id`를 받은 구조적 중복 — `scripts/dedupe_tsu_dataset.py`는
+    이 패턴(파일타입 간 중복)을 다루지 않음(크기 동일한 재업로드 PDF만 처리하는
+    별개 로직) — 별도 통합 규칙 필요
+  - "A Concise Encyclopedia of the United Nations"(4,027건, 신학 무관) 계획 문서가
+    명시한 제외 대상, 아직 미제거
+  - Phase 2(재발 방지 가드 — TSU 50% 감소 시 경고 후 중단 등) 미착수
+- **다음 확인 필요**: 스모크 테스트 완료 결과, `book_coverage` 미달 원인, Phase 1
+  잔여 정리 항목 착수 여부 HQ 확인.
+
+**[2026-09-18 HQ 결정] 프로덕션 코퍼스 "1,363건 영구 동결" 결정 해지.**
+
 ## 버전 상태
 **DBMA v1.3.0 — Architecture Consolidation Release** (GA). 버전·Authority 정의는
 `docs/architecture/DBMA-Version-Authority-v1.md`가 단일 기준이다.
@@ -9,6 +96,88 @@ Release State:  v1.3.0 GA RELEASED
 Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
+
+**[2026-09-18 HQ 결정] 프로덕션 코퍼스 "1,363건 영구 동결" 결정 해지 — 아래 2026-09-15
+항목의 "재개하지 말 것"을 철회한다.**
+- **해지 범위**: 2026-09-15 항목이 선언한 "코퍼스는 축소된 상태(1,363 TSU)로 영구
+  유지·재개 금지"라는 **동결 지시만** 해지한다. `DBMA_CORPUS_RECOVERY_PLAN_v1.md`가
+  제시한 Track A(백업 복원)/Track B(원본 재처리) 중 **무엇을 실행할지는 아직 별도
+  결정 없음** — HQ 후속 지시 대기. 이 항목만으로 Track A/B 착수를 승인한 것으로
+  간주하지 않는다(CLAUDE.md 예외 목록: "Corpus 전체 Migration"은 항상 별도 승인 필요).
+- **해지 배경 — 동결 해지 이전에 발견된 사실**: 2026-09-18 CUE가 프로덕션 파일
+  `output/bench/tsu_dataset.jsonl`(ADR-001 Production Retrieval Authority, `.gitignore`
+  대상이라 git 감사로는 보이지 않음)을 직접 확인한 결과, **"1,363건 동결"이 선언된
+  바로 그 날짜(2026-09-15 15:23)에 이미 119,595건(Spurgeon MTP 시리즈 67개 출처
+  전량, Fuller/Dagg/Hiscox 0건)로 통째로 교체된 상태**였다 — 이 교체 자체는 STATE.md
+  어디에도 기록되지 않은 미문서화 변경. 즉 "동결"은 문서상으로만 유효했고 실제
+  파일은 이미 동결 대상과 다른 상태로 존재하고 있었다. HQ가 이 사실을 보고받고
+  동결 결정 자체를 해지하기로 함.
+- **현재 실측 상태 (2026-09-18)**: `output/bench/tsu_dataset.jsonl` = 119,595건 / 67
+  출처(전부 Spurgeon) / 206MB. `RetrievalEngine._load_corpus()`는 필터링 없이 파일을
+  그대로 읽으므로, 이 파일이 곧 현재 검색 가능한 실질 코퍼스다. Fuller Vol01-08(TSU
+  claim 추출 33,132건, `NAE/corpus/tsu/Fuller_*`)과 Dagg/Hiscox(TSU claim 4,117건)는
+  M2 등록(QUALITY_PASSED)까지만 완료됐고 이 파일에는 포함되지 않음(스키마 불일치 —
+  claim/source_text 필드뿐, RetrievalEngine이 읽는 `content` 필드 없음) — 여전히
+  "임베딩 미완료" 상태.
+- **다음 필요한 HQ 결정**: (1) 지금의 Spurgeon 119,595건 상태를 새 기준선으로 인정할
+  것인지, 아니면 (2) Track A/B 중 하나로 별도 복구를 진행할 것인지, (3) Fuller/Dagg/
+  Hiscox를 이 코퍼스에 별도로 편입(임베딩)할 것인지 — 세 가지가 서로 배타적이지 않고
+  조합 가능하므로 다음 세션에서 명시적으로 확인 필요.
+
+**[2026-09-16 완료] `NAE/citation_disclosure.py`에 authority_tier(T1~T4) 라벨 축 추가 (개인 RAG 제안서 §13 대응, 준비 단계).**
+- 배경: 목회자 개인 RAG(DBMA/NAE) 제안서 §11/§13에서 설계한 신학적 권위
+  등급(T1 정경/신조, T2 검증된 신학, T3 비교·변증 참고, T4 미검증)과 경고
+  라벨 삽입 로직을 실제 코드로 옮기는 첫 단계. 기존 `authority_class`
+  (ADR-030 §7.3: primary_doctrinal/historical_witness/reference/
+  application, 출처 장르·제작 품질 축)와는 **독립된 축**으로 설계 —
+  기존 필드·검증기·Retrieval Engine 미변경.
+- 구현: `get_tier_disclosure(authority_tier, *, tradition=None,
+  counter_refs=None)` 신규 함수. T1/T2 → None(경고 불필요), T3 →
+  counter_refs 없으면 ValueError(제안서 §11.4 하드 제약 재확인), T4 →
+  고정 미검토 안내문. 기존 `get_disclosure(authority_class)`는 무변경.
+- 범위 제한: `authority_tier` 필드는 아직 M2 소스 레지스트리 어디에도
+  없음(큐레이션 태깅 파이프라인 미구현) — 이번 변경은 §13.2 파이프라인의
+  ⑥(후처리 렌더링) 라벨 조회 로직만 구현. ①~⑤(검색 스코프 필터, 컨텍스트
+  조립)은 별도 착수 필요.
+- 테스트: `tests/test_citation_disclosure_tier.py` 신규 12건 전부 통과.
+  기존 `tests/test_nae_f6_chat_wiring.py::TestDisclosure` 회귀 영향 없음
+  확인(재실행 통과). Retrieval Engine·RAW·TSU Pipeline·Production
+  Registry 무변경 — Architecture Freeze 대상 없음, C1 Review 불필요
+  범위(사소한 준비 단계 추가)로 판단.
+
+**[2026-09-15 종결] 프로덕션 코퍼스 복구 계획 v1 — HQ 결정으로 영구 취소.**
+- 배경: 2026-09-07 사고로 TSU 89,737건(출처 122) → 1,363건(실질 1권)으로 축소.
+  원인 사슬 검증: `ui/pages/processing.py`가 출력 폴더를 처리 후보로 오인 →
+  유령 문서 98건 등록 → `core/index_orchestrator.py::reconcile_pending()`이
+  EXCLUDED 무시하고 재삽입 → 정리 스크립트 연쇄 실행. 근본 원인 2곳
+  (`processing.py:246`, `index_orchestrator.py:236`) 이미 수정 완료.
+  데이터 손실 0건 — 백업 89,737건 전량 + 원본 122/122권 Calibre 라이브러리
+  확보 확인 (`docs/DBMA_CORPUS_RECOVERY_PLAN_v1.md` 참고).
+- 2트랙 복구 계획(Track A 백업 복원 즉시 가용성 회복 / Track B 원본 점진
+  재처리)이 작성돼 HQ 승인 요청됐으나, **사용자가 복구를 영구 취소** —
+  Phase 0~4 어느 것도 착수하지 않음. 프로덕션 코퍼스는 축소된 상태(1,363
+  TSU / 실질 1권)로 영구 유지. 계획 문서는 사고 경위·백업 위치 기록용으로
+  보존, 상단에 CANCELLED 표시. 커밋 `102d1673`(`origin/dev/dbma-engine`
+  push 완료). **재개하지 말 것** — 향후 세션이 코퍼스 축소를 관측해도
+  의도된 확정 상태다.
+
+**[2026-09-15 종결] Dagg + Hiscox TSU claim CJK/foreign-script 오염 정리 완료.**
+- 배경: `scripts/nae_fuller_cjk_reextract.py`(repair→reextract)가 Han 정규식
+  기준 오염 306+84건 중 대부분을 자동 정리했으나 42건에서 plateau(Dagg
+  candidates 17/residual 16/failed 1, Hiscox candidates 3/residual 3/failed 0).
+  원인은 `my-theology-bot-v2`가 GPU 고부하 상황에서 code-switching.
+- 스캔 범위를 CJK-only HAN 정규식 밖(Cyrillic/Vietnamese/Hindi/Arabic/Thai/
+  Japanese-kana)까지 넓혀 77건 추가 오염 확인 → 전량 source_text 대조 후
+  수동 교정: Dagg 68건, Hiscox 21건 (`cjk_status=manual_repaired`,
+  `needs_review` 해제, `claim_raw` 보존).
+- 그리스어 음역 OCR 아티팩트 8건은 소스 원문(18~19세기 스캔) 자체 문제로
+  source grounding 원칙상 의도적으로 미수정.
+- 검증: 양쪽 tsu.json claim 필드 전체 재스캔 → 오염 0건. 기존 review_
+  promotion/batch_manager/dashboard 테스트 54건 unmodified 통과. batch_0024
+  재생성해 human-review 대기열이 정리된 claim 반영.
+- 커밋 `84d8b635`(`fix(nae): complete CJK/foreign-script claim contamination
+  cleanup — Dagg + Hiscox`), `origin/dev/dbma-engine` push 완료(ahead/behind
+  없음 확인). 후속 조치 없음 — 세션 종료.
 
 **[2026-09-13 종결] Q2 — BM25 전체 pool 스코어링 지연 해결 (사용자 승인 후 CUE 실행, Retrieval Engine 변경).**
 `core/retrieval.py::bm25_score()`가 매 질의마다 후보 문서 전체를 재토큰화하던
@@ -242,6 +411,17 @@ leakage 제거 + 인용·출처 공용 컴포넌트) 발급. `chat.py`의
   (**DRAFT**): Smith 이후 corpus expansion pipeline 고정 — Phase 0~7,
   Terminology Corpus 분리, NAC pilot 우선, cross-lingual gate,
   Library Source Control 시기. governance document.
+- `docs/architecture/ADR-033-Workspace-Reset-Utility.md` (**ACCEPTED**,
+  2026-09-07): 배포 전 튜닝용 티어드 워크스페이스 리셋. `scripts/reset_workspace.py`
+  — T1(파생물: output/·chroma_db/·cache/·embeddings/·제련완성본 파생확장자·
+  normalized/processed) + T2(+NAE/corpus/tsu 비추적분·manifests·quarantine·
+  benchmark·옵션 Qdrant drop). **T3(RAW/소스)는 설계만, 구현 안 함** — `--tier T3`
+  거부. 2-층위 Protected Paths(git ls-files 추적 전체 + 명시 prefix, RAW/소스는
+  config에서 빠지면 강제 복원), dry-run 기본, 하드코딩 확인 문구, `backups/reset_<ts>/`
+  이동 + manifest.json, 클린 트리 가드. Qdrant drop은 whitelist `[]` 기본·정확 일치·
+  config url(6333, ADR-013 격리). 승격 4조건 충족(구현·회귀 2784 PASS·C1 APPROVE·HQ 승인),
+  커밋 `bfc3df8` @ `claude/project-data-reset-c10afd`. 후속: UI 유지보수 탭 T1 버튼,
+  `scripts/reset_for_release.py` 처리 방향(wrapper vs 폐기, HQ 결정 대기).
 
 ---
 

@@ -199,6 +199,15 @@ class TestLoadTsuById:
         assert set(tsu_by_id.keys()) == {"TSU-ROM-001", "TSU-ACT-001"}
         assert tsu_by_id["TSU-ROM-001"]["title"] == "로마서 주석"
 
+    def test_missing_dataset_file_returns_empty_dict_not_crash(self, tmp_path):
+        """[CI validate 실패 수정, 2026-09-18] core/candidate_generator.py::
+        build_index()와 동일한 "파일 없음 = 빈 코퍼스" 계약 — 이 함수만
+        빠져 있어 candidate_generator.py를 고친 뒤에도 CI에서 그대로
+        재발했다(HybridQueryProcessor.__init__()이 open_or_build_index()
+        바로 다음에 이 함수를 호출)."""
+        missing = tmp_path / "no_such_tsu_dataset.jsonl"
+        assert load_tsu_by_id(str(missing)) == {}
+
 
 class TestHybridRetrieverTelemetryOut:
     def test_telemetry_out_populated_for_hybrid_route(self, retriever):
@@ -409,9 +418,12 @@ class TestHybridQueryProcessor:
 
 
 class TestFeatureFlag:
-    def test_disabled_by_default(self, monkeypatch):
+    def test_enabled_by_default(self, monkeypatch):
+        """[2026-09-18] 기본값 true로 전환 — RetrievalEngine의 O(N) 콜드 스캔
+        문제(책 이름 없는 질의에서 84,766건 코퍼스 전체 스캔, 실측 수 분 소요)를
+        HybridQueryProcessor(Tantivy 역색인, 실측 14.3ms)로 우회하기 위함."""
         monkeypatch.delenv("USE_INVERTED_INDEX", raising=False)
-        assert is_enabled() is False
+        assert is_enabled() is True
 
     def test_enabled_when_true(self, monkeypatch):
         monkeypatch.setenv("USE_INVERTED_INDEX", "true")
@@ -420,6 +432,10 @@ class TestFeatureFlag:
     def test_case_insensitive(self, monkeypatch):
         monkeypatch.setenv("USE_INVERTED_INDEX", "TRUE")
         assert is_enabled() is True
+
+    def test_explicit_false_disables(self, monkeypatch):
+        monkeypatch.setenv("USE_INVERTED_INDEX", "false")
+        assert is_enabled() is False
 
     def test_other_values_are_disabled(self, monkeypatch):
         monkeypatch.setenv("USE_INVERTED_INDEX", "1")

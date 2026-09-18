@@ -1,0 +1,490 @@
+{
+  "schema_version": "1.0.0",
+  "batch_id": "batch_0033_part5_401_449",
+  "source_identifiers": [
+    "Hiscox_Standard_Manual"
+  ],
+  "decisions": [
+    {
+      "gate_id": "GATE-TSU-0003910",
+      "tsu_id": "TSU-0003910",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003917",
+      "tsu_id": "TSU-0003917",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003918",
+      "tsu_id": "TSU-0003918",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003919",
+      "tsu_id": "TSU-0003919",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003920",
+      "tsu_id": "TSU-0003920",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003921",
+      "tsu_id": "TSU-0003921",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003922",
+      "tsu_id": "TSU-0003922",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003923",
+      "tsu_id": "TSU-0003923",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003924",
+      "tsu_id": "TSU-0003924",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003925",
+      "tsu_id": "TSU-0003925",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003926",
+      "tsu_id": "TSU-0003926",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003927",
+      "tsu_id": "TSU-0003927",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003928",
+      "tsu_id": "TSU-0003928",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003929",
+      "tsu_id": "TSU-0003929",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003930",
+      "tsu_id": "TSU-0003930",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003931",
+      "tsu_id": "TSU-0003931",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003932",
+      "tsu_id": "TSU-0003932",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003933",
+      "tsu_id": "TSU-0003933",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003934",
+      "tsu_id": "TSU-0003934",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003935",
+      "tsu_id": "TSU-0003935",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003936",
+      "tsu_id": "TSU-0003936",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003937",
+      "tsu_id": "TSU-0003937",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003938",
+      "tsu_id": "TSU-0003938",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003939",
+      "tsu_id": "TSU-0003939",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003940",
+      "tsu_id": "TSU-0003940",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003941",
+      "tsu_id": "TSU-0003941",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003942",
+      "tsu_id": "TSU-0003942",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003943",
+      "tsu_id": "TSU-0003943",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003944",
+      "tsu_id": "TSU-0003944",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003945",
+      "tsu_id": "TSU-0003945",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003946",
+      "tsu_id": "TSU-0003946",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003947",
+      "tsu_id": "TSU-0003947",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "C",
+        "Q3": "A"
+      },
+      "final_decision": "CONDITIONAL",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003948",
+      "tsu_id": "TSU-0003948",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003949",
+      "tsu_id": "TSU-0003949",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003950",
+      "tsu_id": "TSU-0003950",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003951",
+      "tsu_id": "TSU-0003951",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    },
+    {
+      "gate_id": "GATE-TSU-0003952",
+      "tsu_id": "TSU-0003952",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "review_timestamp": "2026-09-15",
+      "comment": "batch_0033 (401-449/449, pool 잔존분) 사용자 검토, Hiscox_Standard_Manual."
+    }
+  ]
+}

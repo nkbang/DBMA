@@ -30,11 +30,27 @@ from core.sermon.doctrine_filter import check as doctrine_check
 from core.tli.spell_engine import create_spell_engine
 from ui.state.query_processor import get_shared_query_processor
 from ui.components.passage_commentary_panel import render_passage_commentary_panel
+from ui.pages.chat import _render_claim_guard_warning
 
 _CANDIDATE_K = 20  # 설교 개요용 넓은 후보군 — Chat(k=3~5)보다 크게
 
 _STATUS_HAS_OUTLINE = {"outline_generated", "reviewing", "approved", "expanding", "draft_complete"}
 _STATUS_HAS_EXPANSION = {"approved", "expanding", "draft_complete"}
+
+# [B-1, 배포 차단 항목 — NAE_FREE_DISTRIBUTION_PLAN_v1.md §6] 자료 0건일 때
+# 설교 생성을 막는 안전장치. 근거 없이 LLM이 설교 원고를 지어내면 목회자가
+# 그것을 강단에서 그대로 쓸 수 있어 피해가 되돌릴 수 없다 — §5.1 예화 생성
+# 금지 원칙과 같은 계열의 제약이다. 기준은 ui/pages/chat.py의
+# _NO_EVIDENCE_HOLD_TEXT(P0-6 유보응답)와 동일하게 "검색 결과 0건"을 하드
+# 게이트로 쓴다 — 결과는 있으나 점수만 낮은 경우는 여기서 막지 않는다.
+_SERMON_NO_EVIDENCE_TEXT = (
+    "현재 등록된 자료에서 이 본문/주제와 관련된 근거를 찾지 못해 개요를 "
+    "생성하지 않았습니다.\n\n"
+    "이 앱은 등록·처리된 자료에 근거해서만 설교 개요를 작성하도록 설계되어 "
+    "있어, 관련 자료가 없을 때는 일반 지식만으로 원고를 지어내지 않습니다. "
+    "서재에 관련 자료를 추가하거나, 본문/주제를 다르게 표현해 다시 "
+    "시도해 주세요."
+)
 
 
 def _apply_sermon_draft_styles() -> None:
@@ -111,6 +127,7 @@ def _init_state() -> None:
             "outline": None,  # SermonOutline
             "candidates": [],  # list[RankedCandidate] — [자료N] 인용용 원본
             "expanded": {},  # point_index(int) -> str
+            "expanded_claim_guard": {},  # point_index(int) -> ClaimGuardResult | None
         }
 
 
@@ -225,6 +242,18 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
             logger.exception("Sermon draft search failed")
             st.error("검색 중 문제가 있었습니다. 다시 시도해주세요.")
             return
+
+        # [B-1] 자료 0건이면 여기서 멈춘다 — service.generate_outline()을
+        # 아예 호출하지 않으므로 Ollama도 호출되지 않는다. 이것은 오류가
+        # 아니라 정상 종료 상태다(§5.1과 동일한 원칙).
+        if not response.top_k_results:
+            logger.info(
+                "[sermon_draft] no evidence for scripture_and_theme=%r → hold",
+                scripture_and_theme[:50],
+            )
+            st.warning(_SERMON_NO_EVIDENCE_TEXT)
+            return
+
         outline, error = service.generate_outline(
             scripture_and_theme, response.top_k_results, sermon_format=sermon_format
         )
@@ -261,6 +290,18 @@ def _render_doctrine_warning() -> None:
         st.warning(w)
     if report.flagged_categories:
         st.caption(f"관련 범주: {', '.join(report.flagged_categories)} · 신뢰도: {report.confidence}")
+
+
+def _render_outline_claim_guard_warning() -> None:
+    """개요 전체 텍스트에서 ClaimGuard가 위험 표현을 탐지했을 때 안내한다.
+    Chat/Research의 _render_claim_guard_warning()과 동일한 신호
+    (absolute_claim_blocked / scope_qualifier_required)만 표시 — 사후
+    탐지 배너이며 생성 자체를 막지는 않는다(_render_doctrine_warning()과
+    같은 톤)."""
+    outline: SermonOutline = st.session_state["sermon_draft_state"]["outline"]
+    result = getattr(outline, "claim_guard_result", None)
+    if result and (result.absolute_claim_blocked or result.scope_qualifier_required):
+        _render_claim_guard_warning(result)
 
 
 def _render_candidate_review_report() -> None:
@@ -327,6 +368,7 @@ def _render_outline_step() -> None:
     outline: SermonOutline = state["outline"]
 
     _render_doctrine_warning()
+    _render_outline_claim_guard_warning()
     _render_candidate_review_report()
     st.caption(f"설교 형식: {state['sermon_format']}")
     title = st.text_input("제목", value=outline.title, key="sermon_outline_title")
@@ -394,6 +436,13 @@ def _render_expansion_step() -> None:
         st.warning("승인된 대지가 없습니다 — 2단계에서 대지를 추가한 뒤 다시 승인하세요.")
         return
 
+    # [B-1] 개요 단계에서 자료 0건이면 이미 차단되므로 정상 흐름에서는
+    # candidates가 비지 않는다. 그래도 2차 방어선으로 남긴다 — expand_point()
+    # 도 Ollama를 호출하는 지점이라 근거 없이 대지를 확장하면 안 된다.
+    if not state["candidates"]:
+        st.warning(_SERMON_NO_EVIDENCE_TEXT)
+        return
+
     style_examples = _build_style_examples(state["style_files"])
 
     # §2.3 맞춤법 검사: 확장 단계에서도 검사
@@ -428,13 +477,19 @@ def _render_expansion_step() -> None:
         with st.expander(f"대지 {i + 1}: {point[:40]}", expanded=not already_done):
             if already_done:
                 st.markdown(state["expanded"][i])
+                cg_result = state["expanded_claim_guard"].get(i)
+                if cg_result and (
+                    cg_result.absolute_claim_blocked or cg_result.scope_qualifier_required
+                ):
+                    _render_claim_guard_warning(cg_result)
                 if st.button("다시 생성", icon=":material/refresh:", key=f"sermon_regen_{i}"):
                     del state["expanded"][i]
+                    state["expanded_claim_guard"].pop(i, None)
                     st.rerun()
             else:
                 if st.button("이 대지 확장하기", icon=":material/edit:", key=f"sermon_expand_{i}"):
                     with st.spinner("작성 중..."):
-                        text, error = service.expand_point(
+                        text, error, claim_guard_result = service.expand_point(
                             point,
                             state["scripture_and_theme"],
                             state["candidates"],
@@ -445,6 +500,7 @@ def _render_expansion_step() -> None:
                         st.error(f"생성 실패: {error}")
                     else:
                         state["expanded"][i] = text
+                        state["expanded_claim_guard"][i] = claim_guard_result
                         state["status"] = "expanding"
                         st.rerun()
 
