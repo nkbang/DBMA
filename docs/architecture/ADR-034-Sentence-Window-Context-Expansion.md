@@ -6,19 +6,19 @@ based_on:
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
   - docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md
 created: 2026-09-17
-status: Proposed (구현 전, HQ 승인 대기 — Retrieval Engine 변경 항목이라
-  CLAUDE.md CUE Operating Policy "반드시 지켜야 하는 사항"에 따라 명시적
-  승인 없이는 코드 변경 금지)
-scope_modified: docs/architecture/ 신규 문서만 (코드 미수정)
+status: Proposed (설계 승인 — 사용자 지시 "작업을 진행하라", 2026-09-18 —
+  단, Retrieval Engine 변경 항목이라 CLAUDE.md CUE Operating Policy상
+  C1 독립 리뷰 통과 전까지 core/retrieval.py 코드 변경은 착수하지 않는다)
+scope_modified: docs/architecture/ 신규 문서만 (코드 미수정) — 이번 갱신도 문서만
 ---
 
 # ADR-034: Sentence-Window Context Expansion
 
 | | |
 |---|---|
-| Status | Proposed |
-| Date | 2026-09-17 |
-| Deciders | HQ (승인 대기) / CUE (조사·설계) |
+| Status | Proposed (설계 승인, C1 Review 대기) |
+| Date | 2026-09-17 (갱신 2026-09-18) |
+| Deciders | HQ (설계 승인 완료, 2026-09-18) / CUE (조사·설계) / C1 (독립 리뷰 — 대기) |
 | Supersedes | — |
 | Superseded by | — |
 | Amends | 없음 |
@@ -128,11 +128,12 @@ Policy의 "반드시 지켜야 하는 사항(명령 없이는 절대 변경 금�
 
 ---
 
-## Next Steps (HQ 승인 대기)
+## Next Steps
 
-1. 이 ADR(Proposed) 검토·승인.
-2. 승인 시 C1 Review 요청(신규 Architecture 변경, CLAUDE.md CUE 정책상
-   "새 ADR 작성/새 Architecture Layer 추가"에 해당 — Retrieval Engine을
-   건드리는 변경이므로 특히 필요).
-3. 승인 후 구현 → 단위테스트 → 회귀 → Build Report → Git Commit/Push
+1. ~~이 ADR(Proposed) 설계 검토·승인~~ — **완료 (2026-09-18, 사용자 지시
+   "작업을 진행하라")**.
+2. **C1 Review 요청 — 진행 중 (`docs/agents/c1/C1-TASK-ORDER-061-ADR034-DESIGN-REVIEW.md`)**.
+   신규 Architecture 변경(Retrieval Engine을 건드리는 설계)이라 CLAUDE.md
+   CUE 정책상 구현 착수 전 필수.
+3. C1 APPROVE 이후 구현 → 단위테스트 → 회귀 → Build Report → Git Commit/Push.
    (CUE 표준 순서).
