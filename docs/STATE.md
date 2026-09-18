@@ -385,6 +385,17 @@ leakage 제거 + 인용·출처 공용 컴포넌트) 발급. `chat.py`의
   (**DRAFT**): Smith 이후 corpus expansion pipeline 고정 — Phase 0~7,
   Terminology Corpus 분리, NAC pilot 우선, cross-lingual gate,
   Library Source Control 시기. governance document.
+- `docs/architecture/ADR-033-Workspace-Reset-Utility.md` (**ACCEPTED**,
+  2026-09-07): 배포 전 튜닝용 티어드 워크스페이스 리셋. `scripts/reset_workspace.py`
+  — T1(파생물: output/·chroma_db/·cache/·embeddings/·제련완성본 파생확장자·
+  normalized/processed) + T2(+NAE/corpus/tsu 비추적분·manifests·quarantine·
+  benchmark·옵션 Qdrant drop). **T3(RAW/소스)는 설계만, 구현 안 함** — `--tier T3`
+  거부. 2-층위 Protected Paths(git ls-files 추적 전체 + 명시 prefix, RAW/소스는
+  config에서 빠지면 강제 복원), dry-run 기본, 하드코딩 확인 문구, `backups/reset_<ts>/`
+  이동 + manifest.json, 클린 트리 가드. Qdrant drop은 whitelist `[]` 기본·정확 일치·
+  config url(6333, ADR-013 격리). 승격 4조건 충족(구현·회귀 2784 PASS·C1 APPROVE·HQ 승인),
+  커밋 `bfc3df8` @ `claude/project-data-reset-c10afd`. 후속: UI 유지보수 탭 T1 버튼,
+  `scripts/reset_for_beta.py` 처리 방향(wrapper vs 폐기, HQ 결정 대기).
 
 ---
 
