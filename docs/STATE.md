@@ -1,5 +1,31 @@
 # DBMA State
 
+**[2026-09-18 완료] 배포 게이트 점검 4건 + Retrieval 성능 이슈 발견·수정 (CUE).**
+- **보안 체크리스트(S1-3)**: `scripts/security_preflight.py --apply` 재실행,
+  R7 통과(4/5 적용, 1/5 부분충족·백로그). 보고서
+  `docs/RELEASE_SECURITY_CHECKLIST_STATUS.md` 갱신.
+- **코퍼스 후속 확인**: book_coverage 24/66권 미달은 버그 아님 — 119개
+  출처 중 다수가 특정 1권 전담 주석서라 총 책 수가 적게 몰리는 콘텐츠
+  구성 특성. `retrieve()` 정상(5.09초, 84,766건 기준).
+- **P0-5 준비상태**: 문서 보류조건("자료 처리 완료 후 재개") 충족 확인 —
+  코퍼스가 매튜 풀 1권 → 119개 출처로 확장됨. 실제 24건 채점 실행은
+  사용자 몫으로 남음.
+- **AT-4/AT-5 PASS**: `docs/NAE_PARAGRAPH_ANSWER_DELIVERY_DEPLOY_VERIFICATION_001.md`
+  Addendum(2026-09-18) 참고. C1 위임 시도 중 selector 버그·자기모순 2건
+  발견·정정 후 CUE가 직접 재현·판정.
+- **[배포 성능 이슈 발견·수정]** 책 이름 없는 교리형 질의가
+  `RetrievalEngine`의 O(N) 콜드 스캔 경로를 타 84,766건 코퍼스에서
+  수 분 지연(실측, 재현 확인) — 가장 흔한 사용 패턴이라 심각. 이미
+  구현·검증돼 있던 `HybridQueryProcessor`(Tantivy 역색인)로 우회하는
+  `USE_INVERTED_INDEX` 기본값을 `true`로 전환(실측 쿼리 0.95초, 1회성
+  인덱스 부트스트랩 36초). 전환이 노출시킨 두 결함도 같이 수정:
+  `HybridQueryProcessor.engine` 인터페이스 누락(chat.py/sermon_draft.py
+  크래시 위험) → `_EngineCompat` 추가, 괄호 포함 질의에서 Tantivy 쿼리
+  파서 크래시(`중생(거듭남)은...`) → `core/candidate_generator.py`
+  sanitize-and-retry 처리. 회귀 `pytest tests --ignore=tests/nae` 전량
+  통과(2930+, 무관한 NAE raw 자산 2건 제외). 커밋 `ce8be59`, merge
+  `61fcf8d`, origin+nas push 완료.
+
 **[2026-09-18 완료] Track A 복원본에서 신학 무관 콘텐츠 제거 (HQ 지시).**
 - 대상 전수 확인(125개 출처 목록 육안 검토) 후 6개 문서 제거 결정 — 계획 문서가 명시한
   UN 백과사전 외에, 육안 검토로 작곡 가이드·피트니스 서적·테스트 픽스처도 추가 발견:

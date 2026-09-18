@@ -176,6 +176,19 @@ class TestSearch:
         ids = {c.tsu_id for c in results}
         assert ids == {"TSU-ROM-001", "TSU-ROM-002"}
 
+    def test_parenthetical_query_does_not_raise(self, generator):
+        """[2026-09-18 회귀] 괄호가 든 자연어 질의("중생(거듭남)은...")가
+        Tantivy 쿼리 파서 문법 오류(ValueError)로 크래시하던 실사고 재현.
+        USE_INVERTED_INDEX 기본 활성화 후 AT-5 실행 중 발견 —
+        parse_query()가 소괄호를 그룹핑 문법으로 해석해 예외를 던졌다."""
+        results = generator.search(_pq("은혜(값없는 선물)에 대해"), k=10)
+        ids = {c.tsu_id for c in results}
+        assert "TSU-ROM-001" in ids
+
+    def test_other_tantivy_special_chars_do_not_raise(self, generator):
+        for q in ['은혜: 정의', '은혜"강조"', '은혜 AND 성령', '은혜^2', '은혜~']:
+            generator.search(_pq(q), k=10)  # 예외만 안 나면 통과
+
 
 class TestSnippets:
     """[DBMA-SEARCH-INFRA-001 Phase 2-5] Snippets generated via Tantivy's own

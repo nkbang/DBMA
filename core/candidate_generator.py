@@ -18,6 +18,7 @@ Phase 2-6, not this module.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
@@ -28,6 +29,12 @@ from core.retrieval import ParsedQuery
 
 # Text fields searched for BM25 candidate generation.
 _TEXT_FIELDS = ["title", "content", "author"]
+
+# [2026-09-18] Tantivy query-DSL special characters that crash parse_query()
+# when they appear in ordinary natural-language text (e.g. Korean
+# parenthetical asides like "중생(거듭남)") instead of being treated as
+# literal -- see search()'s except ValueError fallback.
+_TANTIVY_SPECIAL_CHARS_RE = re.compile(r'[+\-&|!(){}\[\]^"~*?:\\]')
 
 # Metadata fields stored with the "raw" tokenizer so they support exact-match
 # term filtering (Stage 1 pre-filter — HQ principle: filters apply before
@@ -241,7 +248,19 @@ class CandidateGenerator:
             words = exact_phrase.strip().split()
             text_query = tantivy.Query.phrase_query(self._schema, "content", words)
         else:
-            text_query = self._index.parse_query(query_text, default_field_names=search_fields)
+            try:
+                text_query = self._index.parse_query(query_text, default_field_names=search_fields)
+            except ValueError:
+                # [2026-09-18] Natural-language Korean queries routinely carry
+                # Tantivy query-DSL special chars (parens for clarifying
+                # asides like "중생(거듭남)", colons, quotes) that the parser
+                # rejects outright instead of treating as literal text —
+                # confirmed crash, not a graceful no-match. Strip them and
+                # retry once rather than losing the query entirely; this
+                # only fires on the exception path so well-formed queries
+                # are unaffected.
+                sanitized = _TANTIVY_SPECIAL_CHARS_RE.sub(" ", query_text)
+                text_query = self._index.parse_query(sanitized, default_field_names=search_fields)
 
         effective_books = book_ids if book_ids is not None else parsed_query.detected_books
         subqueries = [(tantivy.Occur.Must, text_query)]
