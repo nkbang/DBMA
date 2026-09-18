@@ -38,6 +38,7 @@ def test_creates_processor_on_first_call(tmp_path, monkeypatch):
     monkeypatch.setattr(qp_module, "DEFAULT_TSU_MANIFEST_PATH", str(manifest))
     monkeypatch.setattr(qp_module, "QueryProcessor", _FakeProcessor)
     monkeypatch.setattr(qp_module.st, "session_state", _FakeSessionState())
+    monkeypatch.setattr(qp_module, "is_enabled", lambda: False)  # [2026-09-18] 기본값 true 전환 후에도 이 파일은 legacy QueryProcessor 경로를 검증
 
     proc = qp_module.get_shared_query_processor()
     assert isinstance(proc, _FakeProcessor)
@@ -50,6 +51,7 @@ def test_returns_same_instance_when_dataset_unchanged(tmp_path, monkeypatch):
     monkeypatch.setattr(qp_module, "DEFAULT_TSU_MANIFEST_PATH", str(manifest))
     monkeypatch.setattr(qp_module, "QueryProcessor", _FakeProcessor)
     monkeypatch.setattr(qp_module.st, "session_state", _FakeSessionState())
+    monkeypatch.setattr(qp_module, "is_enabled", lambda: False)  # [2026-09-18] 기본값 true 전환 후에도 이 파일은 legacy QueryProcessor 경로를 검증
 
     proc1 = qp_module.get_shared_query_processor()
     proc2 = qp_module.get_shared_query_processor()
@@ -62,6 +64,7 @@ def test_recreates_processor_when_dataset_hash_changes(tmp_path, monkeypatch):
     monkeypatch.setattr(qp_module, "DEFAULT_TSU_MANIFEST_PATH", str(manifest))
     monkeypatch.setattr(qp_module, "QueryProcessor", _FakeProcessor)
     monkeypatch.setattr(qp_module.st, "session_state", _FakeSessionState())
+    monkeypatch.setattr(qp_module, "is_enabled", lambda: False)  # [2026-09-18] 기본값 true 전환 후에도 이 파일은 legacy QueryProcessor 경로를 검증
 
     proc1 = qp_module.get_shared_query_processor()
 
@@ -78,6 +81,7 @@ def test_missing_manifest_does_not_force_recreate(tmp_path, monkeypatch):
     monkeypatch.setattr(qp_module, "DEFAULT_TSU_MANIFEST_PATH", str(manifest))
     monkeypatch.setattr(qp_module, "QueryProcessor", _FakeProcessor)
     monkeypatch.setattr(qp_module.st, "session_state", _FakeSessionState())
+    monkeypatch.setattr(qp_module, "is_enabled", lambda: False)  # [2026-09-18] 기본값 true 전환 후에도 이 파일은 legacy QueryProcessor 경로를 검증
 
     proc1 = qp_module.get_shared_query_processor()
     proc2 = qp_module.get_shared_query_processor()

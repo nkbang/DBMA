@@ -409,9 +409,12 @@ class TestHybridQueryProcessor:
 
 
 class TestFeatureFlag:
-    def test_disabled_by_default(self, monkeypatch):
+    def test_enabled_by_default(self, monkeypatch):
+        """[2026-09-18] 기본값 true로 전환 — RetrievalEngine의 O(N) 콜드 스캔
+        문제(책 이름 없는 질의에서 84,766건 코퍼스 전체 스캔, 실측 수 분 소요)를
+        HybridQueryProcessor(Tantivy 역색인, 실측 14.3ms)로 우회하기 위함."""
         monkeypatch.delenv("USE_INVERTED_INDEX", raising=False)
-        assert is_enabled() is False
+        assert is_enabled() is True
 
     def test_enabled_when_true(self, monkeypatch):
         monkeypatch.setenv("USE_INVERTED_INDEX", "true")
@@ -420,6 +423,10 @@ class TestFeatureFlag:
     def test_case_insensitive(self, monkeypatch):
         monkeypatch.setenv("USE_INVERTED_INDEX", "TRUE")
         assert is_enabled() is True
+
+    def test_explicit_false_disables(self, monkeypatch):
+        monkeypatch.setenv("USE_INVERTED_INDEX", "false")
+        assert is_enabled() is False
 
     def test_other_values_are_disabled(self, monkeypatch):
         monkeypatch.setenv("USE_INVERTED_INDEX", "1")
