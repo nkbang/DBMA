@@ -17,7 +17,9 @@ Phase 2-6, not this module.
 
 from __future__ import annotations
 
+import fcntl
 import json
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
@@ -71,6 +73,37 @@ class CandidateRef:
         }
 
 
+@contextmanager
+def index_write_lock(index_dir: str | Path):
+    """Serialize Tantivy IndexWriter acquisition on `index_dir` across
+    threads/processes — same advisory-flock-on-a-sibling-file pattern as
+    core/identity_registry.py::registry_lock().
+
+    Tantivy allows only one open IndexWriter per index directory (in this
+    process or any other); it enforces that itself via its own
+    `.tantivy-writer.lock` file and raises `ValueError: ... LockBusy`
+    instead of waiting when a second writer tries to open concurrently.
+    Nothing previously coordinated the callers that each independently
+    open a writer on the SAME shared index_dir: every Streamlit session
+    builds its own HybridQueryProcessor (ui/state/query_processor.py) and
+    the background reconcile daemon (core/index_orchestrator.py) calls
+    reindex_document()/replace_document()/delete_document() on its own
+    thread — two of these racing to open a writer at the same moment is
+    exactly the observed `LockBusy` crash. This lock makes each writer-
+    holding critical section mutually exclusive so the second caller
+    blocks and waits instead of hitting Tantivy's own non-blocking guard.
+    """
+    index_dir = Path(index_dir)
+    index_dir.mkdir(parents=True, exist_ok=True)
+    lock_path = index_dir / ".writer.lock"
+    with open(lock_path, "w") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(f, fcntl.LOCK_UN)
+
+
 def build_schema() -> tantivy.Schema:
     """TSU field mapping — same shape as scripts/bench_search_engines/tantivy_bench.py's
     schema, plus tokenizer_name='raw' on filter fields so exact term queries work."""
@@ -103,7 +136,21 @@ def _tsu_to_tantivy_doc(tsu: dict, schema: tantivy.Schema) -> tantivy.Document:
 
 def build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> int:
     """Build a fresh Tantivy index from a TSU JSONL dataset. Returns the
-    number of documents indexed. Overwrites any existing index at index_dir."""
+    number of documents indexed. Overwrites any existing index at index_dir.
+
+    Acquires `index_write_lock()` itself — safe to call directly (e.g.
+    core/index_orchestrator.py's rebuild_tsu_index()). `open_or_build_index()`
+    below calls `_build_index_locked()` instead, from inside a lock it
+    already holds, since flock is not reentrant within one process (a
+    second flock() on the same file from the same process blocks forever
+    waiting for the first to release — nesting this function's own lock
+    would self-deadlock)."""
+    with index_write_lock(index_dir):
+        return _build_index_locked(tsu_dataset_path, index_dir)
+
+
+def _build_index_locked(tsu_dataset_path: str | Path, index_dir: str | Path) -> int:
+    """build_index()'s actual work. Caller must already hold index_write_lock(index_dir)."""
     index_dir = Path(index_dir)
     index_dir.mkdir(parents=True, exist_ok=True)
     schema = build_schema()
@@ -149,30 +196,41 @@ def open_or_build_index(tsu_dataset_path: str | Path, index_dir: str | Path) -> 
 
     Also rebuilds when the dataset record count no longer matches the
     on-disk index (staleness detection).
+
+    The staleness check + build runs inside `index_write_lock()` (double-
+    checked: re-reads meta_file only after acquiring the lock) so that
+    concurrent callers on the same index_dir — every Streamlit session
+    creates its own HybridQueryProcessor at startup, and the background
+    reconcile daemon in core/index_orchestrator.py runs on its own thread —
+    serialize instead of racing to open a second Tantivy IndexWriter, which
+    is what previously crashed with `ValueError: ... LockBusy`. A caller
+    that waited behind another caller's rebuild sees the now-fresh
+    meta_file and skips redundant work.
     """
     index_dir = Path(index_dir)
     meta_file = index_dir / "index_meta.json"
 
-    if not meta_file.exists():
-        build_index(tsu_dataset_path, index_dir)
-    else:
-        # Detect staleness: compare stored record count with current dataset
-        with open(meta_file, "r", encoding="utf-8") as f:
-            stored = json.load(f)
-        stored_count = stored.get("record_count", 0)
+    with index_write_lock(index_dir):
+        if not meta_file.exists():
+            _build_index_locked(tsu_dataset_path, index_dir)
+        else:
+            # Detect staleness: compare stored record count with current dataset
+            with open(meta_file, "r", encoding="utf-8") as f:
+                stored = json.load(f)
+            stored_count = stored.get("record_count", 0)
 
-        # Count current dataset records (same logic as build_index does)
-        current_count = 0
-        with open(tsu_dataset_path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line or line.startswith("$"):
-                    continue
-                json.loads(line)  # validate JSON
-                current_count += 1
+            # Count current dataset records (same logic as build_index does)
+            current_count = 0
+            with open(tsu_dataset_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("$"):
+                        continue
+                    json.loads(line)  # validate JSON
+                    current_count += 1
 
-        if current_count != stored_count:
-            build_index(tsu_dataset_path, index_dir)
+            if current_count != stored_count:
+                _build_index_locked(tsu_dataset_path, index_dir)
 
     return CandidateGenerator(index_dir)
 
@@ -326,13 +384,14 @@ class CandidateGenerator:
         """Incremental index update for a single document's TSUs — delete any
         existing rows for these tsu_ids, then re-add. Used when the caller
         already knows the exact tsu_ids being replaced (e.g. tests)."""
-        writer = self._index.writer()
-        for tsu in tsus:
-            writer.delete_documents("tsu_id", tsu.get("tsu_id", ""))
-        for tsu in tsus:
-            writer.add_document(_tsu_to_tantivy_doc(tsu, self._schema))
-        writer.commit()
-        self._index.reload()
+        with index_write_lock(self.index_dir):
+            writer = self._index.writer()
+            for tsu in tsus:
+                writer.delete_documents("tsu_id", tsu.get("tsu_id", ""))
+            for tsu in tsus:
+                writer.add_document(_tsu_to_tantivy_doc(tsu, self._schema))
+            writer.commit()
+            self._index.reload()
         return len(tsus)
 
     def replace_document(self, document_id: str, new_tsus: list[dict]) -> int:
@@ -347,22 +406,24 @@ class CandidateGenerator:
 
         Returns the number of new TSUs added.
         """
-        writer = self._index.writer()
-        writer.delete_documents("document_id", document_id)
-        for tsu in new_tsus:
-            writer.add_document(_tsu_to_tantivy_doc(tsu, self._schema))
-        writer.commit()
-        self._index.reload()
+        with index_write_lock(self.index_dir):
+            writer = self._index.writer()
+            writer.delete_documents("document_id", document_id)
+            for tsu in new_tsus:
+                writer.add_document(_tsu_to_tantivy_doc(tsu, self._schema))
+            writer.commit()
+            self._index.reload()
         return len(new_tsus)
 
     def delete_document(self, document_id: str) -> None:
         """Remove all rows for `document_id` without replacement — used for
         exclude/superseded-purge flows (core/index_orchestrator.py's
         exclude_document_from_index()/reconcile_pending())."""
-        writer = self._index.writer()
-        writer.delete_documents("document_id", document_id)
-        writer.commit()
-        self._index.reload()
+        with index_write_lock(self.index_dir):
+            writer = self._index.writer()
+            writer.delete_documents("document_id", document_id)
+            writer.commit()
+            self._index.reload()
 
 
 def _first(stored: dict, field_name: str) -> str:
