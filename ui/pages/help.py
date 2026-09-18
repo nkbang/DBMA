@@ -154,7 +154,7 @@ def render_help_page() -> None:
     _render_self_diagnostic_section()
 
     st.caption(
-        "이 앱은 별도 유료 지원이 제공되지 않는 베타 버전입니다(as-is). "
+        "이 앱은 별도 유료 지원이 제공되지 않습니다(as-is). "
         "문제가 있으면 위 자가 진단 결과를 확인한 뒤, 그래도 해결되지 않으면 "
         "관리자에게 문의해 주세요."
     )

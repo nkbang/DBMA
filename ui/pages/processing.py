@@ -369,7 +369,7 @@ def _render_ingestion_form() -> None:
     # tests/test_process_batch_force_reingest.py의 명시적 계약("두 게이트를
     # 혼동하지 말 것")을 깨므로, 반드시 별도 컨트롤로 둔다
     # (tests/test_force_rechunk.py 참고).
-    # 엔지니어링 유지보수용 위험 옵션 — 일반 사용자(베타 테스터)에게는 불필요해
+    # 엔지니어링 유지보수용 위험 옵션 — 일반 사용자에게는 불필요해
     # 숨긴다. NAE_ADMIN_MODE=1일 때만 노출 (ui/app.py의 Monitor 게이트와 동일 패턴).
     if os.environ.get("NAE_ADMIN_MODE") == "1":
         icon_col, checkbox_col = st.columns([1, 30])

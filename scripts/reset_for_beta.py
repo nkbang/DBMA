@@ -4,11 +4,16 @@
 # 전체 wipe(= ADR-033 T3 범위, 현재 미구현)를 담당하며, 처리 방향
 # (reset_workspace.py --tier T3 wrapper 로 축소 vs 완전 폐기)은 HQ 승인 대기.
 # 그때까지 동작은 그대로 보존한다.
-"""scripts/reset_for_beta.py — 베타 배포 전 전체 데이터 초기화 + 기본 코퍼스 재적재.
+# [2026-09-18, HQ 결정] 배포판을 베타/정식으로 이원화하지 않기로 함 — 이
+# 스크립트 이름·docstring의 "베타"는 과거 명칭 잔재이며, 실제로는 "배포
+# 준비용 초기화 + 기본 코퍼스 재적재" 유틸리티다. 기능/이름 자체의 구조적
+# 변경(리네임 등)은 core/retrieval.py, tests/test_reset_for_beta_reseed.py
+# 등 참조가 많아 별도 작업으로 미룬다.
+"""scripts/reset_for_beta.py — 배포 전 전체 데이터 초기화 + 기본 코퍼스 재적재.
 
 테스터마다 자신의 파일로 새로 테스트하는 것을 전제로, RAW 원본을 포함한
 모든 처리 산출물을 초기화한다(이전 exclude 기능의 backups/ 보존 원칙과
-달리, 이 스크립트는 "개발자가 테스트하며 넣은 데이터 자체가 베타에
+달리, 이 스크립트는 "개발자가 테스트하며 넣은 데이터 자체가 배포판에
 무의미하다"는 전제).
 
 [2026-09-15, S5 선결 — reset_for_beta.py ↔ NAE_FREE_DISTRIBUTION_PLAN_v1.md
@@ -96,7 +101,7 @@ def _backup_dir() -> Path:
 
 def dry_run() -> None:
     print("=" * 80)
-    print("베타 배포 전 전체 데이터 초기화 — dry run")
+    print("배포 전 전체 데이터 초기화 — dry run")
     print("=" * 80)
 
     backup_dir = _backup_dir()
