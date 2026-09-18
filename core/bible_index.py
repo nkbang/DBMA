@@ -199,7 +199,15 @@ def _row_count(db_path: str | Path) -> int:
 
 def build_index(tsu_dataset_path: str | Path, db_path: str | Path) -> int:
     """Build a fresh BibleIndex from a TSU JSONL dataset. Returns the number
-    of posting rows written. Overwrites any existing index at db_path."""
+    of posting rows written. Overwrites any existing index at db_path.
+
+    [CI validate 실패 수정, 2026-09-18] tsu_dataset_path가 없으면 빈
+    인덱스(0 rows)로 취급한다 — core/retrieval.py::RetrievalEngine.
+    _load_corpus()가 문서화한 "파일 없음 = 정상 초기 상태 → 빈 코퍼스"
+    계약과 동일. core/candidate_generator.py::build_index()/
+    core/hybrid_candidate_pipeline.py::load_tsu_by_id()에 이미 적용한
+    것과 같은 수정을 HybridQueryProcessor.__init__()의 세 번째 호출부인
+    이 함수에도 적용."""
     import json
 
     db_path = Path(db_path)
@@ -208,18 +216,19 @@ def build_index(tsu_dataset_path: str | Path, db_path: str | Path) -> int:
 
     index = BibleIndex(db_path)
     total = 0
-    with open(tsu_dataset_path, "r", encoding="utf-8") as f:
-        batch = []
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("$"):
-                continue
-            batch.append(json.loads(line))
-            if len(batch) >= 5000:
+    if Path(tsu_dataset_path).exists():
+        with open(tsu_dataset_path, "r", encoding="utf-8") as f:
+            batch = []
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("$"):
+                    continue
+                batch.append(json.loads(line))
+                if len(batch) >= 5000:
+                    total += index.add_tsus(batch)
+                    batch = []
+            if batch:
                 total += index.add_tsus(batch)
-                batch = []
-        if batch:
-            total += index.add_tsus(batch)
     index.close()
     return total
 

@@ -144,6 +144,17 @@ class TestBuildIndexFromDataset:
         assert index.lookup("Bible.John.3.16") == ["TSU-1"]
         assert index.lookup("Bible.Acts") == ["TSU-2"]
 
+    def test_missing_dataset_file_builds_empty_index_not_crash(self, tmp_path):
+        """[CI validate 실패 수정, 2026-09-18] core/candidate_generator.py::
+        build_index()와 동일한 "파일 없음 = 빈 코퍼스" 계약 —
+        HybridQueryProcessor.__init__()의 세 호출부(open_or_build_index,
+        load_tsu_by_id, 이 함수) 중 이 함수만 빠져 있었다."""
+        missing = tmp_path / "no_such_tsu_dataset.jsonl"
+        db_path = tmp_path / "bible_index.sqlite3"
+        total = build_index(missing, db_path)
+        assert total == 0
+        BibleIndex(db_path)  # 크래시 없이 열 수 있어야 한다
+
 
 class TestResolveQuery:
     def test_resolves_korean_and_english_forms_to_same_result(self, tmp_path):

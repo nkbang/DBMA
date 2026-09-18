@@ -384,10 +384,21 @@ class HybridQueryProcessor:
 def load_tsu_by_id(tsu_dataset_path: str) -> dict[str, dict[str, Any]]:
     """Load the TSU dataset into an id-keyed dict for Stage 2 lookups —
     same file RetrievalEngine._load_corpus() reads, just indexed by tsu_id
-    instead of kept as a list."""
+    instead of kept as a list.
+
+    [CI validate 실패 수정, 2026-09-18] tsu_dataset_path가 없으면 빈 dict를
+    반환한다 — core/retrieval.py::RetrievalEngine._load_corpus()가 문서화한
+    "파일 없음 = 첫 실행/초기화 직후의 정상 상태 → 빈 코퍼스" 계약과 동일.
+    core/candidate_generator.py::build_index()에 이미 적용한 것과 같은 수정
+    (e121752)을 이 호출부에도 적용 — HybridQueryProcessor.__init__()이
+    open_or_build_index() 다음에 바로 이 함수를 호출해, 앞서 고친 크래시가
+    막힌 뒤에도 여기서 그대로 재발했다."""
     import json
+    from pathlib import Path
 
     tsu_by_id: dict[str, dict[str, Any]] = {}
+    if not Path(tsu_dataset_path).exists():
+        return tsu_by_id
     with open(tsu_dataset_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
