@@ -220,6 +220,13 @@ class TestSearch:
         for q in ['은혜: 정의', '은혜"강조"', '은혜 AND 성령', '은혜^2', '은혜~']:
             generator.search(_pq(q), k=10)  # 예외만 안 나면 통과
 
+    def test_ascii_apostrophe_query_does_not_raise(self, generator):
+        """[2026-09-18 회귀, P0-5 실채점 중 발견] "believer's baptism"처럼
+        ASCII 아포스트로피가 든 영어 낱말이 섞인 질의(한영 자료 기반
+        F유형)가 parse_query()에서 Syntax Error로 크래시하던 실사고
+        재현 — 소괄호 수정 때는 잡히지 않았던 별도의 특수문자."""
+        generator.search(_pq("믿음(believer's baptism)에 대해"), k=10)
+
 
 class TestSnippets:
     """[DBMA-SEARCH-INFRA-001 Phase 2-5] Snippets generated via Tantivy's own

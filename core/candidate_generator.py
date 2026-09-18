@@ -34,7 +34,11 @@ _TEXT_FIELDS = ["title", "content", "author"]
 # when they appear in ordinary natural-language text (e.g. Korean
 # parenthetical asides like "중생(거듭남)") instead of being treated as
 # literal -- see search()'s except ValueError fallback.
-_TANTIVY_SPECIAL_CHARS_RE = re.compile(r'[+\-&|!(){}\[\]^"~*?:\\]')
+# [2026-09-18, P0-5 실채점 중 발견] ASCII apostrophe(')도 별도로 크래시를
+# 낸다 -- "believer's baptism"처럼 영어 낱말이 섞인 신학 질의(F유형,
+# 한영 자료 기반)에서 실제로 관측됨. 커브드 쿼트(’, U+2019)는 문제없어
+# 제외 -- ASCII 아포스트로피만 Tantivy 문법에서 특별 취급된다.
+_TANTIVY_SPECIAL_CHARS_RE = re.compile(r"[+\-&|!(){}\[\]^\"~*?:\\']")
 
 # Metadata fields stored with the "raw" tokenizer so they support exact-match
 # term filtering (Stage 1 pre-filter — HQ principle: filters apply before
