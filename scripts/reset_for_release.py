@@ -45,7 +45,8 @@
   건너뛰고 경고만 남긴다 — 재적재 실패가 초기화 자체를 막지 않는다.
 
 기본은 dry-run(목록만 출력) — 실제 삭제는 --execute 플래그가 있어야 하고,
-그 전에 반드시 backups/pre_beta_reset_{YYYYMMDD}/로 전체 백업한다
+그 전에 반드시 backups/pre_release_reset_{YYYYMMDD}/로 전체 백업한다
+(2026-09-18부터 이 접두사 사용 — 과거 백업은 `pre_beta_reset_*`로 남아있음)
 (scripts/cleanup_legacy_outputs.py와 동일한 안전 패턴).
 
 Usage:
@@ -96,7 +97,7 @@ EMPTY_REGISTRY_SCHEMA = {
 
 def _backup_dir() -> Path:
     timestamp = datetime.now().strftime("%Y%m%d")
-    return BACKUP_ROOT / f"pre_beta_reset_{timestamp}"
+    return BACKUP_ROOT / f"pre_release_reset_{timestamp}"
 
 
 def dry_run() -> None:

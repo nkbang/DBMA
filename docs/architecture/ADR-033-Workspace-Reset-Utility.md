@@ -64,7 +64,8 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 이미 베타 배포용 전체 초기화 스크립트가 존재한다. 특징:
 
 - 대상: `data/RAW/` + `{output_dir}` + `chroma_db/` + TSU dataset/manifest 파일
-- dry-run 기본, `--execute` 시 `backups/pre_beta_reset_<YYYYMMDD>/`로 전체 복사 후 삭제
+- dry-run 기본, `--execute` 시 `backups/pre_release_reset_<YYYYMMDD>/`로 전체 복사 후 삭제
+  (2026-09-18 Amendment 이전 백업은 `backups/pre_beta_reset_<YYYYMMDD>/`로 존재)
 - registry는 삭제 대신 빈 스키마로 재생성
 
 **한계** (ADR-033이 보완하는 지점):
