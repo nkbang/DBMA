@@ -1,5 +1,5 @@
 {
-  "_note": "배포판 기본 동봉(baseline) 코퍼스 매니페스트 — 전량 퍼블릭 도메인 (docs/RELEASE_ASSET_PROVENANCE.md, docs/DBMA_S2_4_CORPUS_EXPANSION_REPORT_001.md 참고). scripts/reset_for_beta.py가 초기화 후 이 목록으로 코퍼스를 재적재한다.",
+  "_note": "배포판 기본 동봉(baseline) 코퍼스 매니페스트 — 전량 퍼블릭 도메인 (docs/RELEASE_ASSET_PROVENANCE.md, docs/DBMA_S2_4_CORPUS_EXPANSION_REPORT_001.md 참고). scripts/reset_for_release.py가 초기화 후 이 목록으로 코퍼스를 재적재한다.",
   "source_root": "~/NAE_CORPUS_RAW/raw/archive_org/sermons",
   "source_file_in_dir": "ocr.txt",
   "count": 67,

@@ -136,16 +136,16 @@
 
 ---
 
-### Q7. 배포 파급 — `reset_for_beta.py`와 사이드카 보관 위치
+### Q7. 배포 파급 — `reset_for_release.py`와 사이드카 보관 위치
 
 **답: GREEN (정보 제공)**
 
-근거: 요청서 §3 Q7에서 언급한 `scripts/reset_for_beta.py`와 `docs/NAE_FREE_DISTRIBUTION_PLAN_v1.md`.
+근거: 요청서 §3 Q7에서 언급한 `scripts/reset_for_release.py`와 `docs/NAE_FREE_DISTRIBUTION_PLAN_v1.md`.
 
-**분석:** `scripts/reset_for_beta.py`가 `data/RAW/`를 통째로 비우면 사이드카도 함께 소멸합니다. 무료 배포 패키지에서 기본 코퍼스를 동봉한다면:
+**분석:** `scripts/reset_for_release.py`가 `data/RAW/`를 통째로 비우면 사이드카도 함께 소멸합니다. 무료 배포 패키지에서 기본 코퍼스를 동봉한다면:
 
 - **권고:** 사이드카를 RAW와 **동일 디렉터리**에 보관하십시오. 그래야 "원본 파일 + 사이드카"가 항상 한 세트로 이동합니다.
-- `reset_for_beta.py`에서 사이드카를 제외하려면 `.meta.json`을 별도 목록에 추가해야 하지만, 이는 배포 파급이 아니라 운영 파급입니다.
+- `reset_for_release.py`에서 사이드카를 제외하려면 `.meta.json`을 별도 목록에 추가해야 하지만, 이는 배포 파급이 아니라 운영 파급입니다.
 
 **판정: GREEN** — 사이드카를 RAW와 동일 디렉터리에 보관하면 배포 시 일관성 유지됩니다. 별도 보관 위치는 불필요한 복잡성만 추가합니다.
 

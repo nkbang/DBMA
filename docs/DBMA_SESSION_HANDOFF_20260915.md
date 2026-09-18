@@ -260,4 +260,4 @@ X를 안 한다"는 주장은 **함수 본문을 직접 열어** 확인할 것.
 도구:
 - `scripts/doctype_impact_report.py` — doc_type 변경 영향 산출(읽기 전용)
 - `scripts/backfill_doc_type.py --reclassify` — 분류 규칙 변경을 기존 문서에 반영
-- `scripts/reset_for_beta.py` — 배포 전 데이터 초기화(삭제 전 자동 백업)
+- `scripts/reset_for_release.py` — 배포 전 데이터 초기화(삭제 전 자동 백업)

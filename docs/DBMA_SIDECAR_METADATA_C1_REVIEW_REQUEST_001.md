@@ -175,7 +175,7 @@ title을 입력으로 받는다. 따라서 사이드카로 title이 채워지면
    전 영향 문서 목록을 산출해 HQ 승인, (c) `doc_type`만 기존 값 고정 중
    어느 쪽으로 다뤄야 하는가?
 
-7. **배포 파급** — `scripts/reset_for_beta.py`는 `data/RAW/`를 통째로 비운다.
+7. **배포 파급** — `scripts/reset_for_release.py`는 `data/RAW/`를 통째로 비운다.
    사이드카도 함께 소멸한다. 무료 배포 패키지(`docs/NAE_FREE_DISTRIBUTION_PLAN_v1.md`)
    에 기본 코퍼스를 동봉한다면 사이드카는 어디에 보관돼야 하는가 — RAW 동봉,
    별도 `data/baseline/`, 아니면 리셋 대상에서 제외?

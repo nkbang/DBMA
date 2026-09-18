@@ -1,6 +1,6 @@
-"""tests/test_reset_for_beta_reseed.py — scripts/reset_for_beta.py 재적재 회귀.
+"""tests/test_reset_for_release_reseed.py — scripts/reset_for_release.py 재적재 회귀.
 
-[2026-09-15, S5 선결] scripts/reset_for_beta.py는 원래 초기화 후 아무것도
+[2026-09-15, S5 선결] scripts/reset_for_release.py는 원래 초기화 후 아무것도
 다시 채우지 않아, "배포판은 첫 실행부터 퍼블릭 도메인 기본 코퍼스(67종)를
 갖춰야 한다"는 NAE_FREE_DISTRIBUTION_PLAN_v1.md "① 기본 동봉" 계획과
 충돌했다(초기화를 실행하면 방금 적재한 기본 코퍼스가 지워진 채로
@@ -22,7 +22,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-import scripts.reset_for_beta as rfb
+import scripts.reset_for_release as rfb
 
 
 def _write_manifest(path: Path, source_root: Path, entries: list[dict]) -> None:

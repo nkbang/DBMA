@@ -7,16 +7,16 @@
 # [2026-09-18, HQ 결정] 배포판을 베타/정식으로 이원화하지 않기로 함 — 이
 # 스크립트 이름·docstring의 "베타"는 과거 명칭 잔재이며, 실제로는 "배포
 # 준비용 초기화 + 기본 코퍼스 재적재" 유틸리티다. 기능/이름 자체의 구조적
-# 변경(리네임 등)은 core/retrieval.py, tests/test_reset_for_beta_reseed.py
+# 변경(리네임 등)은 core/retrieval.py, tests/test_reset_for_release_reseed.py
 # 등 참조가 많아 별도 작업으로 미룬다.
-"""scripts/reset_for_beta.py — 배포 전 전체 데이터 초기화 + 기본 코퍼스 재적재.
+"""scripts/reset_for_release.py — 배포 전 전체 데이터 초기화 + 기본 코퍼스 재적재.
 
 테스터마다 자신의 파일로 새로 테스트하는 것을 전제로, RAW 원본을 포함한
 모든 처리 산출물을 초기화한다(이전 exclude 기능의 backups/ 보존 원칙과
 달리, 이 스크립트는 "개발자가 테스트하며 넣은 데이터 자체가 배포판에
 무의미하다"는 전제).
 
-[2026-09-15, S5 선결 — reset_for_beta.py ↔ NAE_FREE_DISTRIBUTION_PLAN_v1.md
+[2026-09-15, S5 선결 — reset_for_release.py ↔ NAE_FREE_DISTRIBUTION_PLAN_v1.md
 "① 기본 동봉" 충돌 해소] 원래 이 스크립트는 초기화 후 아무것도 다시 채우지
 않았다 — 그런데 배포판은 첫 실행부터 쓸 수 있는 퍼블릭 도메인 기본 코퍼스
 (스펄전 등 67종, `scripts/baseline_corpus_manifest.json`)를 동봉해야 한다는
@@ -49,9 +49,9 @@
 (scripts/cleanup_legacy_outputs.py와 동일한 안전 패턴).
 
 Usage:
-    python scripts/reset_for_beta.py                  # dry-run
-    python scripts/reset_for_beta.py --execute         # 초기화 + 기본 코퍼스 재적재
-    python scripts/reset_for_beta.py --execute --no-reseed   # 초기화만(완전히 빈 상태)
+    python scripts/reset_for_release.py                  # dry-run
+    python scripts/reset_for_release.py --execute         # 초기화 + 기본 코퍼스 재적재
+    python scripts/reset_for_release.py --execute --no-reseed   # 초기화만(완전히 빈 상태)
 """
 
 from __future__ import annotations

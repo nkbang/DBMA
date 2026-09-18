@@ -94,7 +94,7 @@ knrv.json"). 대한성서공회 저작권 대상이며, `NAE_FREE_DISTRIBUTION_P
 ## 즉시 확인 완료
 
 `scripts/build_mac_package.sh`, `scripts/setup_beta_tester.command`,
-`scripts/reset_for_beta.py` 3개 전부 `grep`으로 확인 — `beta_corpus`,
+`scripts/reset_for_release.py` 3개 전부 `grep`으로 확인 — `beta_corpus`,
 `knrv`, `data/bible` 참조가 **하나도 없다.** 현재 패키징 경로는 이 위험
 자산들을 우발적으로 포함하지 않는다. 단, S5(패키징) 작업 시 새 스크립트가
 `data/` 전체를 통째로 복사하는 방식으로 짜이지 않도록 주의해야 한다.

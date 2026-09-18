@@ -32,12 +32,12 @@
 Whitefield Works)은 **사용자가 업로드한 자료가 아니라 베타 배포용 기본
 동봉 코퍼스**다.
 
-- 스크립트: `scripts/reset_for_beta.py`
+- 스크립트: `scripts/reset_for_release.py`
 - 매니페스트: `scripts/baseline_corpus_manifest.json` (`"count": 67`,
   전량 퍼블릭 도메인, 출처는 `docs/RELEASE_ASSET_PROVENANCE.md`,
   `docs/DBMA_S2_4_CORPUS_EXPANSION_REPORT_001.md` 참고)
-- 근거 커밋: `891b84e` (2026-09-15) — "S5 선결 — reset_for_beta.py가 기본
-  동봉 코퍼스를 지우는 충돌 해소". 이 커밋 이후 `reset_for_beta.py
+- 근거 커밋: `891b84e` (2026-09-15) — "S5 선결 — reset_for_release.py가 기본
+  동봉 코퍼스를 지우는 충돌 해소". 이 커밋 이후 `reset_for_release.py
   --execute` 실행 시 RAW 초기화 → 매니페스트 기준 자동 재적재가
   일어나도록 계약이 바뀌었다.
 - 파일 타임스탬프(2026-09-15 11:54~15:16)가 해당 커밋 직후와 일치 —
