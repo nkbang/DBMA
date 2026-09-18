@@ -6,19 +6,20 @@ based_on:
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
   - docs/architecture/ADR-008-Semantic-Chunking-Production-Path.md
 created: 2026-09-17
-status: Proposed (설계 승인 — 사용자 지시 "작업을 진행하라", 2026-09-18 —
-  단, Retrieval Engine 변경 항목이라 CLAUDE.md CUE Operating Policy상
-  C1 독립 리뷰 통과 전까지 core/retrieval.py 코드 변경은 착수하지 않는다)
-scope_modified: docs/architecture/ 신규 문서만 (코드 미수정) — 이번 갱신도 문서만
+status: Proposed (구현·테스트·회귀 완료, C1 APPROVE — Git Commit/Push만
+  사용자 명시 승인 대기. Retrieval Engine 변경은 CLAUDE.md CUE Operating
+  Policy 예외 목록상 Git 자동화 대상에서 제외되어 있다)
+scope_modified: docs/architecture/, core/config.py, core/retrieval.py,
+  tests/test_sentence_window_context_expansion.py (구현 완료, 커밋 대기)
 ---
 
 # ADR-034: Sentence-Window Context Expansion
 
 | | |
 |---|---|
-| Status | Proposed (설계 승인, C1 Review 대기) |
+| Status | Proposed (구현·C1 APPROVE 완료, Git Commit/Push 승인 대기) |
 | Date | 2026-09-17 (갱신 2026-09-18) |
-| Deciders | HQ (설계 승인 완료, 2026-09-18) / CUE (조사·설계) / C1 (독립 리뷰 — 대기) |
+| Deciders | HQ (설계 승인 2026-09-18) / CUE (조사·설계·구현) / C1 (독립 리뷰 **APPROVE**, 2026-09-18) |
 | Supersedes | — |
 | Superseded by | — |
 | Amends | 없음 |
@@ -132,8 +133,17 @@ Policy의 "반드시 지켜야 하는 사항(명령 없이는 절대 변경 금�
 
 1. ~~이 ADR(Proposed) 설계 검토·승인~~ — **완료 (2026-09-18, 사용자 지시
    "작업을 진행하라")**.
-2. **C1 Review 요청 — 진행 중 (`docs/agents/c1/C1-TASK-ORDER-061-ADR034-DESIGN-REVIEW.md`)**.
-   신규 Architecture 변경(Retrieval Engine을 건드리는 설계)이라 CLAUDE.md
-   CUE 정책상 구현 착수 전 필수.
-3. C1 APPROVE 이후 구현 → 단위테스트 → 회귀 → Build Report → Git Commit/Push.
+2. ~~C1 Review 요청~~ — **완료, APPROVE** (`docs/agents/c1/C1-TASK-ORDER-061-REPORT.md`,
+   2026-09-18). 5개 핵심 주장 전부 소스 직접 검증으로 사실 확인, 조건부
+   권고 3건(실측 필수/N=1 기본값/Citation 비노출) 전부 설계와 일치.
+3. ~~구현 → 단위테스트 → 회귀 → Build Report~~ — **완료 (2026-09-18)**.
+   `docs/ADR-034-SENTENCE-WINDOW-BUILD-REPORT-001.md` 참고. 신규 단위테스트
+   12건 PASS, 전체 회귀 2986 passed/17 skipped/0 failed. 실측(84k TSU
+   합성 벤치마크): 인덱스 구축 10.34ms, 조회 0.0008ms/call — 무시 가능한
+   수준 확인(C1 권고 #1 이행).
+4. **Git Commit/Push — 사용자 확인 대기**. Retrieval Engine 변경은
+   CLAUDE.md CUE Operating Policy 예외 목록상 ADR/C1 승인과 별개로
+   커밋·푸시 자동화 대상에서 제외 — 명시 승인 후 진행.
+5. (병합 후 후속) 실제 TSU 데이터셋으로 Top-K 밀집 시 컨텍스트 블록
+   길이 증가량 실측 — Build Report §4 "남은 실측" 참고.
    (CUE 표준 순서).
