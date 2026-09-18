@@ -35,9 +35,14 @@ import tracemalloc
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
-from core.config import DEFAULT_REGISTRY_PATH, DEFAULT_TSU_DATASET_PATH, RETRIEVAL_DOCUMENT_CAP
+from core.config import (
+    CONTEXT_WINDOW_NEIGHBORS,
+    DEFAULT_REGISTRY_PATH,
+    DEFAULT_TSU_DATASET_PATH,
+    RETRIEVAL_DOCUMENT_CAP,
+)
 
 # [SPRINT17-RG-3] Runtime usage verification — additive logging only, no logic change.
 logger = logging.getLogger(__name__)
@@ -1413,6 +1418,13 @@ class RetrievalEngine:
         self.tsus: list[dict[str, Any]] = []
         self._load_corpus()
 
+        # [ADR-034] Sentence-Window neighbor index — document_id별 chunk_id
+        # 순서와 chunk_id→인덱스 매핑. TSU 스키마/파이프라인 변경 없이
+        # 기존 document_id/chunk_id만으로 구축(로드 시 1회, O(N)).
+        self._chunk_id_to_idx: dict[str, int] = {}
+        self._doc_chunk_order: dict[str, list[str]] = {}
+        self._build_neighbor_index()
+
         # [SPRINT28-C] TF-IDF is a fallback-only path — retrieve() STEP 3
         # only reads self.vectors when the BGE-M3 embedding backend is
         # unavailable/fails. Measured (SPRINT28-C Preflight): eagerly
@@ -1483,6 +1495,65 @@ class RetrievalEngine:
                         self.tsus.append(json.loads(line))
                     except json.JSONDecodeError:
                         continue
+
+    def _build_neighbor_index(self) -> None:
+        """[ADR-034] Build document_id -> ordered chunk_id list and
+        chunk_id -> self.tsus index, once, from the existing document_id/
+        chunk_id fields already present on every TSU record
+        (core/tsu_builder.py assigns chunk_id = generate_chunk_id(document_id,
+        idx) and appends records in idx order). No TSU schema or pipeline
+        change required. Read-only w.r.t. self.tsus; safe to call once
+        right after _load_corpus()."""
+        for idx, tsu in enumerate(self.tsus):
+            chunk_id = tsu.get("chunk_id")
+            if not chunk_id:
+                continue
+            self._chunk_id_to_idx[chunk_id] = idx
+            document_id = tsu.get("document_id")
+            if document_id:
+                self._doc_chunk_order.setdefault(document_id, []).append(chunk_id)
+
+    def get_neighbor_context(
+        self, candidate_metadata: dict[str, Any], num_neighbors: int = 1
+    ) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
+        """[ADR-034] Return (before, after) lists of (chunk_id, content) for
+        up to num_neighbors chunks immediately preceding/following this
+        candidate's chunk within the same document, in document order.
+        Empty at document boundaries, single-chunk documents, or when the
+        candidate's chunk_id/document_id is unrecognized — never raises
+        ("모르면 비워둔다"). Does not touch ranking, scoring, or self.tsus."""
+        document_id = candidate_metadata.get("document_id")
+        chunk_id = candidate_metadata.get("chunk_id")
+        if not document_id or not chunk_id or num_neighbors <= 0:
+            return [], []
+        order = self._doc_chunk_order.get(document_id)
+        if not order:
+            return [], []
+        try:
+            pos = order.index(chunk_id)
+        except ValueError:
+            return [], []
+
+        def _lookup(chunk_pos: int) -> Optional[tuple[str, str]]:
+            neighbor_id = order[chunk_pos]
+            neighbor_idx = self._chunk_id_to_idx.get(neighbor_id)
+            if neighbor_idx is None:
+                return None
+            return neighbor_id, self.tsus[neighbor_idx].get("content", "")
+
+        before = [
+            hit
+            for offset in range(num_neighbors, 0, -1)
+            if (npos := pos - offset) >= 0
+            and (hit := _lookup(npos)) is not None
+        ]
+        after = [
+            hit
+            for offset in range(1, num_neighbors + 1)
+            if (npos := pos + offset) < len(order)
+            and (hit := _lookup(npos)) is not None
+        ]
+        return before, after
 
     def _build_tfidf_index(self) -> None:
         """Build TF-IDF index from TSU corpus."""
@@ -2078,15 +2149,35 @@ def _format_context_source_label(metadata: dict, scripture_ref: str = "") -> str
 class ContextAssembler:
     """Assembles final context block for LLM consumption."""
 
-    def assemble(self, top_k: list[RankedCandidate], parsed_query: ParsedQuery) -> tuple[str, list[str]]:
+    def assemble(
+        self,
+        top_k: list[RankedCandidate],
+        parsed_query: ParsedQuery,
+        neighbor_lookup: Optional[
+            Callable[[dict[str, Any], int], tuple[list[tuple[str, str]], list[tuple[str, str]]]]
+        ] = None,
+        num_neighbors: int = 0,
+    ) -> tuple[str, list[str]]:
         """
         Assemble the LLM context block and scripture context.
+
+        [ADR-034] neighbor_lookup/num_neighbors optionally stitch adjacent
+        chunks (same document, immediately before/after) into the LLM
+        context block only — scripture_contexts, ranking, scoring, and
+        citations (built separately from top_k) are all unaffected. Pass
+        RetrievalEngine.get_neighbor_context as neighbor_lookup to enable;
+        omit (default) for the original unexpanded behavior.
 
         Returns:
             (llm_context_block, scripture_context_list)
         """
         scripture_contexts: list[str] = []
         context_parts: list[str] = []
+        # Chunks already present verbatim in top_k should not be duplicated
+        # as a neighbor of another candidate in the same block.
+        in_block_chunk_ids = {
+            cid for c in top_k if (cid := c.metadata.get("chunk_id"))
+        }
 
         for i, candidate in enumerate(top_k):
             tsu_id = candidate.tsu_id
@@ -2114,9 +2205,17 @@ class ContextAssembler:
             source_label = _format_context_source_label(candidate.metadata, ref_str)
             source_line = f"출처: {source_label}\n" if source_label else ""
 
+            body = content
+            if neighbor_lookup is not None and num_neighbors > 0:
+                before, after = neighbor_lookup(candidate.metadata, num_neighbors)
+                before_text = [t for cid, t in before if cid not in in_block_chunk_ids]
+                after_text = [t for cid, t in after if cid not in in_block_chunk_ids]
+                if before_text or after_text:
+                    body = "\n".join([*before_text, content, *after_text])
+
             context_parts.append(
                 f"<context id=\"{tsu_id}\" score=\"{score:.4f}\">\n"
-                f"{source_line}{content}\n</context>\n"
+                f"{source_line}{body}\n</context>\n"
             )
 
         llm_context_block = "\n".join(context_parts)
@@ -2294,8 +2393,14 @@ class QueryProcessor:
             parsed_query, k_output=k, embedding_cache=self.cache, file_scope=file_scope
         )
 
-        # 3. Assemble context
-        llm_context_block, scripture_contexts = self.context_assembler.assemble(candidates[:k], parsed_query)
+        # 3. Assemble context [ADR-034: Sentence-Window neighbor expansion,
+        # LLM context block only — ranking/scoring/citations unaffected]
+        llm_context_block, scripture_contexts = self.context_assembler.assemble(
+            candidates[:k],
+            parsed_query,
+            neighbor_lookup=self.engine.get_neighbor_context,
+            num_neighbors=CONTEXT_WINDOW_NEIGHBORS,
+        )
 
         # 4. Build citations
         citations = self.citation_builder.build_citations(candidates[:k])

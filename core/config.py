@@ -275,6 +275,11 @@ RAG_TOP_K = _yaml_rag.get("top_k", 4)
 # 0이면 비활성(기존 동작). 특정 문서(예: 과청킹된 2 Kings Vol13)가 top-k를
 # 독점하는 편중을 완화한다.
 RETRIEVAL_DOCUMENT_CAP = _yaml_rag.get("document_cap", 2)
+# [ADR-034] Sentence-Window context expansion: 이웃 청크를 몇 개까지
+# LLM 컨텍스트에 이어붙일지. 0이면 비활성(기존 동작과 동일). 랭킹/스코어링/
+# Citation에는 영향 없음 — ContextAssembler.assemble()의 LLM 컨텍스트
+# 블록에서만 사용.
+CONTEXT_WINDOW_NEIGHBORS = _yaml_rag.get("context_window_neighbors", 1)
 DEFAULT_TEMPERATURE = _yaml_rag.get("default_temperature", 0.2)
 RAG_CHUNK_SIZE = _yaml_rag.get("chunk_size", 1200)
 RAG_CHUNK_OVERLAP = _yaml_rag.get("chunk_overlap", 120)
