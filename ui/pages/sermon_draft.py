@@ -26,6 +26,8 @@ from core.retrieval import QueryProcessor
 from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
 from core.sermon.bible_books import BIBLE_BOOKS
 from core.sermon.doctrine_filter import check as doctrine_check
+from dataclasses import asdict
+from core.sermon_artifact import SermonArtifact, generate_sermon_id, save_sermon_artifact
 # TLI interface via factory — UI MUST NOT import hunspell_adapter directly
 from core.tli.spell_engine import create_spell_engine
 from ui.state.query_processor import get_shared_query_processor
@@ -520,13 +522,21 @@ def _render_expansion_step() -> None:
                 f"전체 설교문 맞춤법 확인 필요 ({len(spell_errors_expansion)}개): "
                 + ", ".join(f"`{e['word']}`" for e in spell_errors_expansion[:10])
             )
-        st.download_button(
-            "⬇️ 다운로드 (.md)",
-            data=full_draft,
-            file_name="sermon_draft.md",
-            mime="text/markdown",
-            use_container_width=True,
-        )
+        col_dl, col_save = st.columns(2)
+        with col_dl:
+            st.download_button(
+                "⬇️ 다운로드 (.md)",
+                data=full_draft,
+                file_name="sermon_draft.md",
+                mime="text/markdown",
+                use_container_width=True,
+            )
+        with col_save:
+            if st.button(
+                "💾 저장 — 설교 보관함", type="primary", use_container_width=True, key="sermon_save_artifact"
+            ):
+                sermon_id = _save_current_artifact(outline, state)
+                st.success(f"저장되었습니다 ({sermon_id}). '저장된 설교' 탭에서 다시 열 수 있습니다.")
 
 
 def _build_style_examples(style_files: list[str]) -> str:
@@ -543,6 +553,34 @@ def _build_style_examples(style_files: list[str]) -> str:
                 excerpts.append(tsu.get("content", "")[:400])
                 break
     return "\n---\n".join(excerpts)
+
+
+def _save_current_artifact(outline: SermonOutline, state: dict) -> str:
+    """[P1, DBMA_SERMON_ARTIFACT_PIPELINE_DESIGN_v1.md §4] 완성된 설교
+    상태를 SermonArtifact로 변환해 저장한다. candidate 본문은 저장하지
+    않고 tsu_id만 남긴다 — TSU 데이터셋이 정본(설계 §4 설계 판단).
+    groundedness는 P1에서 계산하지 않는다(설계 §6 — P1은 LLM 호출 없음)."""
+    doctrine_report = state.get("doctrine_report")
+    artifact = SermonArtifact(
+        sermon_id=generate_sermon_id(),
+        scripture_and_theme=state["scripture_and_theme"],
+        sermon_format=state["sermon_format"],
+        outline={
+            "title": outline.title,
+            "introduction": outline.introduction,
+            "points": outline.points,
+            "conclusion": outline.conclusion,
+        },
+        expanded={str(k): v for k, v in state["expanded"].items()},
+        evidence={
+            "candidate_tsu_ids": [c.tsu_id for c in state["candidates"]],
+            "retrieval": {"k": _CANDIDATE_K, "query_id": "sermon-draft"},
+        },
+        doctrine_report=asdict(doctrine_report) if doctrine_report is not None else None,
+        generation={"style_files": state["style_files"]},
+    )
+    save_sermon_artifact(artifact)
+    return artifact.sermon_id
 
 
 def _assemble_draft(outline: SermonOutline, expanded: dict) -> str:
