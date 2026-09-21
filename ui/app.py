@@ -33,6 +33,7 @@ from ui.pages.monitor import render_monitor_page
 from ui.pages.sermon_draft import render_sermon_draft_page
 from ui.pages.sermon_research import render_sermon_research_hub_page
 from ui.pages.sermon_review import render_sermon_review_page
+from ui.pages.sermon_library import render_sermon_library_page
 from ui.pages.onboarding import render_onboarding_page
 from ui.pages.help import render_help_page
 
@@ -307,6 +308,7 @@ def _render_sidebar() -> str:
             "AI에게 질문": "AI에게 질문",
             "설교 연구": "연구하기",
             "설교문 작성": "설교 준비",
+            "저장된 설교": "저장된 설교",
             "설교 리뷰": "설교 모음 정리",
         }
         # [NAE-UPLOAD-AUTO] 자료 등록(업로드) 화면은 일반 사용자도 직접
@@ -423,6 +425,7 @@ def _render_page_content(page: str) -> None:
         "AI에게 질문": render_chat_page,
         "설교 연구": render_sermon_research_hub_page,
         "설교문 작성": render_sermon_draft_page,
+        "저장된 설교": render_sermon_library_page,
         "설교 리뷰": render_sermon_review_page,
         "Monitor": render_monitor_page,
         "도움말": render_help_page,
