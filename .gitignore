@@ -1,8 +1,8 @@
 # Data directories (runtime/generated)
 data/
 # root-anchored: the runtime data dir is ./storage/, but a bare "storage/"
-# also swallowed the source package scripts/crosswalk/storage/ (same
-# overmatch class as the reports/ -> /reports/ fix in 14ed5ed).
+# also swallowed the source package scripts/crosswalk/storage/
+# (same overmatch class as reports/ -> /reports/ fix).
 /storage/
 rag_index/
 
@@ -34,13 +34,13 @@ ENV/
 .tsu_venv/
 .venv_beta/
 
-# Mac package build output (scripts/build_mac_package.sh)
+# Mac package build output
 dist/
 
-# Backup directory (legacy launchers)
+# Backup directory
 archive/
 
-# Sprint validation outputs (sprint artifacts, not production)
+# Sprint validation outputs
 output/SPRINT5_ENGINEERING_VALIDATION/
 
 # Chroma DB cache
@@ -56,13 +56,9 @@ cache/embeddings/
 backup/
 backups/
 backup_chroma.log
-
-# Embedding cache (all subdirs, not just cache/embeddings/ — e.g.
-# cache/embeddings_backup_YYYYMMDD/ was previously untracked-but-unignored)
 cache/
 
-# Stray files from unquoted "pip install pkg>=X.Y.Z" (shell interprets
-# '>' as a redirect, creating a file literally named "=X.Y.Z")
+# Stray files from unquoted pip installs
 =*
 
 # Log files
@@ -72,7 +68,7 @@ logs/*.jsonl
 .git.bak.*/
 .idea/
 
-# Claude Code local/personal settings (per-developer, not shared)
+# Claude Code local/personal settings
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
 
@@ -96,12 +92,11 @@ dbma_env/
 # Secrets
 .webui_secret_key
 
-# NAE raw/canonical source corpus (large acquired source material,
-# not meant to be version-controlled — see docs/NAE_SOURCE_PIPELINE.md)
+# NAE raw/canonical source corpus
 NAE/corpus/raw/
 NAE/corpus/canonical/
 
-# NAE one-off acquisition working artifacts (logs/intermediate jsonl)
+# NAE one-off acquisition working artifacts
 scripts/_bulk_download_early_baptist.log
 scripts/_bulk_download_early_baptist.done
 scripts/_classify_early_baptist.log
@@ -110,18 +105,14 @@ scripts/_classify_early_baptist_meta.jsonl
 # Scratch/working tmp directory
 tmp/
 
-# Evidence-tool seal test scratch dirs — tests/test_evidence_tools.py used to
-# create test_seal_<rand>/ in the repo root (now isolated to a system tmpdir);
-# keep ignored so a stray run never gets committed again.
+# Evidence-tool seal test scratch dirs
 test_seal_*/
 
-# NAE Live Dashboard frontend (Node build artifacts — regenerate with
-# `npm install && npm run build` in .automation/night-shift/dashboard/frontend/)
+# NAE Live Dashboard frontend
 node_modules/
 .automation/night-shift/dashboard/logs/
 
-# Local agent/IDE tool configs — not DBMA project source (per-machine,
-# per-tool skill/rule installs: Claude Code, Continue, Cursor, Roo, etc.)
+# Local agent/IDE tool configs
 .agents/
 .claude/
 .continue/
@@ -129,8 +120,7 @@ node_modules/
 .roo/
 .idea/
 
-# docker-compose ad-hoc backups (n8n/file-access config edits, 2026-08-13) —
-# not version-controlled, just save with a new name if you need to keep one
+# docker-compose ad-hoc backups
 docker-compose.yml.bak*
 docker-compose.yml.backup-*
 
@@ -138,12 +128,12 @@ docker-compose.yml.backup-*
 beta_app.log
 *.log
 
-# Local Qdrant runtime DB (legacy path, ADR-003 — not the production store)
+# Local Qdrant runtime DB
 qdrant_db/
 
-# TSU Extraction Queue Worker runtime state (mutates on every run, not
-# source — see NAE/pipeline/tsu/worker/config.py DEFAULT_STATE_PATH /
-# DEFAULT_EXCEPTION_QUEUE_PATH)
+# TSU Extraction Queue Worker runtime state
 NAE/corpus/tsu/worker_state*.json
 NAE/corpus/tsu/worker_exception_queue.json
-.env
+
+# PEB runtime
+peb/runs/*.jsonl
