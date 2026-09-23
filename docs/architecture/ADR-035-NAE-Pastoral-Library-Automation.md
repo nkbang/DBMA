@@ -10,7 +10,7 @@ based_on:
   - docs/architecture/ADR-023-DBMA-N8N-Automation-Full-Processing.md (Approved — CLI 드라이버 boundary 선례)
   - ui/pages/library.py:685-707 (2026-09-07 오리판 정리 UX 사고 기록 — 자동 삭제 위험 실측 근거)
 created: 2026-09-23
-status: Proposed (구현 전, HQ 승인 대기)
+status: Approved (2026-09-23, Rev. Bang 최종 승인 — §5 승격 조건 4개 전부 충족)
 scope_modified: docs/architecture/ only (코드 미수정)
 ---
 
@@ -18,9 +18,9 @@ scope_modified: docs/architecture/ only (코드 미수정)
 
 | | |
 |---|---|
-| Status | **Proposed** (CUE 초안, C1 Review + Rev. Bang 승인 대기) |
+| Status | **Approved** (2026-09-23, Rev. Bang 최종 승인 — `docs/NAE_ADR035_IMPLEMENTATION_REPORT.md` 참고. 승격 조건 4개(구현 완료/회귀 테스트 통과/C1 독립 리뷰/사용자 승인) 전부 충족) |
 | Date | 2026-09-23 |
-| Deciders | CUE (초안), C1 (Review 완료 — `docs/agents/c1/C1-TASK-ORDER-071-COMPLETE.md`), Rev. Bang (승인 대기) |
+| Deciders | CUE (초안), C1 (Review 완료 — `docs/agents/c1/C1-TASK-ORDER-071-COMPLETE.md`), Rev. Bang (2026-09-23 최종 승인) |
 | Input | `NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md` §6 (C1), Phase 1 UI 통합 완료(PR #75) 이후 후속 |
 | Supersedes | — |
 | Superseded by | — |
