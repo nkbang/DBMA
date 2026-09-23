@@ -2,6 +2,7 @@
 from __future__ import annotations
 import argparse
 import asyncio
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 import yaml
@@ -25,7 +26,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 async def async_main(args: argparse.Namespace) -> int:
     scenario = load_yaml(args.scenario)
-    run_file = args.runs_dir / f"{scenario['id']}.jsonl"
+    run_stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    run_file = args.runs_dir / f"{scenario['id']}-{run_stamp}.jsonl"
     recorder = SessionRecorder(run_file)
     planner = OllamaPlanner(args.ollama_model, args.ollama_url)
     if args.dry_run:

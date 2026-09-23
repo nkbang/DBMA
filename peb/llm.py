@@ -28,19 +28,33 @@ Rules:
 - Never claim a source was found unless the visible UI shows it.
 - Do not decide PASS or FAIL.
 - Finish only when the scenario goal is reasonably satisfied.
+- You are given `previous_action`: the action you executed right before this
+  turn. Use it, together with `visible_observation`, to tell whether your
+  last action already changed the screen. Do not propose the exact same
+  action and target again unless nothing else on the visible screen can move
+  the goal forward.
+- If `blocked_action` is present, that action was rejected because it
+  repeats your previous action. Do not resubmit it. Look at
+  `visible_observation` for a different visible control (a tab, button, or
+  field) that fits the current workflow objective and act on that instead.
 """
 
 class OllamaPlanner:
-    def __init__(self, model: str, base_url: str = "http://127.0.0.1:11434") -> None:
+    def __init__(self, model: str, base_url: str = "http://127.0.0.1:11434",
+                 request_timeout: int = 420) -> None:
         self.model = model
         self.base_url = base_url.rstrip("/")
+        self.request_timeout = request_timeout
 
     def next_action(self, scenario: dict[str, Any], observation: str,
-                    history: list[dict[str, Any]]) -> dict[str, Any]:
+                    history: list[dict[str, Any]],
+                    blocked_action: dict[str, Any] | None = None) -> dict[str, Any]:
+        previous_action = history[-1]["action"] if history else None
         payload = {
             "model": self.model,
             "stream": False,
             "format": "json",
+            "think": False,
             "options": {"temperature": 0.1},
             "messages": [
                 {"role": "system", "content": SYSTEM_PROMPT},
@@ -49,7 +63,9 @@ class OllamaPlanner:
                     "workflow": scenario["workflow"],
                     "limits": scenario["limits"],
                     "visible_observation": observation[:12000],
+                    "previous_action": previous_action,
                     "interaction_history": history[-8:],
+                    "blocked_action": blocked_action,
                 }, ensure_ascii=False)},
             ],
         }
@@ -60,7 +76,7 @@ class OllamaPlanner:
             method="POST",
         )
         try:
-            with urllib.request.urlopen(request, timeout=180) as response:
+            with urllib.request.urlopen(request, timeout=self.request_timeout) as response:
                 data = json.loads(response.read().decode("utf-8"))
         except urllib.error.URLError as exc:
             raise RuntimeError(

@@ -21,6 +21,39 @@ class SessionRecorder:
                 {"timestamp": utc_now(), **event}, ensure_ascii=False
             ) + "\n")
 
+def action_signature(action: dict[str, Any]) -> tuple[str, str]:
+    """Identity of an action for repeat detection: action kind + visible target."""
+    target = (action.get("target") or action.get("text") or "").strip()
+    return (action.get("action", ""), target)
+
+def resolve_step_action(
+    planner: Any,
+    scenario: dict[str, Any],
+    observation: str,
+    history: list[dict[str, Any]],
+    last_signature: tuple[str, str] | None,
+) -> tuple[dict[str, Any], bool, bool]:
+    """Ask the planner for the next action.
+
+    If the planner repeats the exact action+target it already executed, it
+    gets one more chance — with the repeat flagged via `blocked_action` — to
+    pick a different visible control instead of looping or finishing early.
+    Returns (action, should_execute, was_blocked).
+    """
+    action = planner.next_action(scenario, observation, history)
+    signature = action_signature(action)
+    if action["action"] == "finish" or signature != last_signature:
+        return action, True, False
+
+    retry_action = planner.next_action(
+        scenario, observation, history, blocked_action=action
+    )
+    retry_signature = action_signature(retry_action)
+    if retry_action["action"] == "finish" or retry_signature != last_signature:
+        return retry_action, True, True
+
+    return retry_action, False, True
+
 class BrowserDriver:
     def __init__(self, base_url: str, recorder: SessionRecorder,
                  headless: bool = True) -> None:
@@ -84,6 +117,7 @@ async def run_browser(scenario: dict[str, Any], planner: Any,
                       headless: bool) -> dict[str, Any]:
     driver = BrowserDriver(base_url, recorder, headless=headless)
     history: list[dict[str, Any]] = []
+    last_signature: tuple[str, str] | None = None
     try:
         await driver.start()
         max_steps = int(scenario["limits"]["max_steps"])
@@ -94,7 +128,16 @@ async def run_browser(scenario: dict[str, Any], planner: Any,
                 "step": step,
                 "text": observation,
             })
-            action = planner.next_action(scenario, observation, history)
+            action, should_execute, was_blocked = resolve_step_action(
+                planner, scenario, observation, history, last_signature,
+            )
+            if was_blocked:
+                recorder.record({
+                    "event": "repeated_action_blocked",
+                    "step": step,
+                    "action": action,
+                    "executed": should_execute,
+                })
             recorder.record({
                 "event": "planner_action",
                 "step": step,
@@ -104,10 +147,14 @@ async def run_browser(scenario: dict[str, Any], planner: Any,
                 "step": step,
                 "action": action,
                 "observation": observation[-4000:],
+                "blocked": was_blocked,
             })
+            if not should_execute:
+                continue
             if action["action"] == "finish":
                 return {"status": "COMPLETED", "steps": step}
             await driver.act(action)
+            last_signature = action_signature(action)
         return {"status": "STEP_LIMIT_REACHED", "steps": max_steps}
     finally:
         await driver.close()
