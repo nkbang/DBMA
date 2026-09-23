@@ -349,7 +349,7 @@ def _render_document_detail_panel() -> None:
     _render_provenance_section(selected_doc.get("title", ""))
 
     # ── Chunk Preview (RAGFlow-style on-demand chunking preview) ────
-    # 엔지니어링 진단 패널 — 일반 사용자(베타 테스터)에게는 불필요해 숨긴다.
+    # 엔지니어링 진단 패널 — 일반 사용자에게는 불필요해 숨긴다.
     # NAE_ADMIN_MODE=1일 때만 노출 (ui/app.py의 Monitor 게이트와 동일 패턴).
     if os.environ.get("NAE_ADMIN_MODE") == "1":
         _render_chunk_preview_section(selected_doc.get("title", ""), selected_doc.get("type", ""))

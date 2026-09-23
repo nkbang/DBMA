@@ -1,6 +1,6 @@
 """Regression test — RetrievalEngine tolerates a missing TSU dataset file.
 
-Before a fresh install (or right after scripts/reset_for_beta.py) has
+Before a fresh install (or right after scripts/reset_for_release.py) has
 processed its first document, output/bench/tsu_dataset.jsonl doesn't
 exist yet. RetrievalEngine used to hard-crash with FileNotFoundError in
 that state, which surfaced as a raw traceback on ui/pages/sermon_draft.py

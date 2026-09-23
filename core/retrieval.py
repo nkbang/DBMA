@@ -1473,7 +1473,7 @@ class RetrievalEngine:
         """Load TSU dataset from JSONL file.
 
         A missing file is a legitimate state — first launch, or right after
-        scripts/reset_for_beta.py — before any document has been processed
+        scripts/reset_for_release.py — before any document has been processed
         into a TSU dataset yet (core/index_orchestrator.py writes it on
         first rebuild_tsu_index()/reindex_document() call). Treated as an
         empty corpus rather than a hard crash, so the UI can show its own

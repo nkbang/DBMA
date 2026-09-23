@@ -27,6 +27,13 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 > 2026-09-07 모두 충족하여 ACCEPTED로 승격. 이제 Architecture Freeze Rule의 보호 대상이다 —
 > 이후 변경은 ADR Amendment/Revision 선행 필수.
 
+> **Amendment (2026-09-18, HQ 지시 — 배포판 베타/정식 이원화 폐지)**: 본
+> ADR이 지명하는 기존 자산 `scripts/reset_for_beta.py`(구 파일명)를
+> `scripts/reset_for_release.py`로 리네임했다(기능·동작 변경 없음, "베타"
+> 명칭 제거가 목적). 아래 본문의 `reset_for_release.py` 표기는 모두 이
+> 리네임 이후 파일명이다. §1.3의 T3 흡수 설계 및 HQ 승인 대기 항목(§
+> 체크리스트) 자체의 결정 내용은 변경되지 않았다.
+
 ---
 
 ## 1. Context
@@ -52,12 +59,13 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 4. **추적 불가** — 무엇을 언제 왜 지웠는지 기록이 남지 않음. 프로젝트 원칙("작업은 반드시
    추적 가능해야 한다")과 배치됨.
 
-### 1.3 기존 자산 — `scripts/reset_for_beta.py`
+### 1.3 기존 자산 — `scripts/reset_for_release.py`
 
 이미 베타 배포용 전체 초기화 스크립트가 존재한다. 특징:
 
 - 대상: `data/RAW/` + `{output_dir}` + `chroma_db/` + TSU dataset/manifest 파일
-- dry-run 기본, `--execute` 시 `backups/pre_beta_reset_<YYYYMMDD>/`로 전체 복사 후 삭제
+- dry-run 기본, `--execute` 시 `backups/pre_release_reset_<YYYYMMDD>/`로 전체 복사 후 삭제
+  (2026-09-18 Amendment 이전 백업은 `backups/pre_beta_reset_<YYYYMMDD>/`로 존재)
 - registry는 삭제 대신 빈 스키마로 재생성
 
 **한계** (ADR-033이 보완하는 지점):
@@ -70,8 +78,8 @@ scope_modified: scripts/reset_workspace.py (신규), config.yaml (reset 그룹 �
 | Qdrant 컬렉션 처리 | Qdrant(현 primary) 미대응 — chroma만 |
 | 휴지통 이동 후 완전삭제 옵션 | `backups/`가 무한 증가 |
 
-ADR-033은 `reset_for_beta.py`를 **T3의 특수 사례**로 흡수한다. 구현 시
-`reset_for_beta.py`는 `reset_workspace.py --tier T3 --include-raw`의 얇은
+ADR-033은 `reset_for_release.py`를 **T3의 특수 사례**로 흡수한다. 구현 시
+`reset_for_release.py`는 `reset_workspace.py --tier T3 --include-raw`의 얇은
 wrapper로 남기거나 deprecate 표시한다 (§7에서 결정).
 
 ### 1.2 현재 워크스페이스 실측 (2026-09-07)
@@ -123,7 +131,7 @@ ADR-030 FROZEN baseline은 T2에서도 변경되지 않는다.
 
 **T3 결정 근거**: 배포 전 튜닝은 RAW 재취득 없이 파생물 재생성만으로 충분하다.
 RAW 삭제 능력을 코드로 노출하면 사고 표면만 넓어진다. T3는 이 문서에 설계로만
-남기고, 필요 시 별도 승인 후 `reset_for_beta.py` 경로로 처리한다.
+남기고, 필요 시 별도 승인 후 `reset_for_release.py` 경로로 처리한다.
 
 ### 2.2 Protected Paths — 어떤 티어에서도 삭제 불가
 
@@ -338,13 +346,13 @@ Qdrant drop)와 T3는 CLI 전용. UI에서 삭제 대상 목록과 용량, 이�
       §2.2 2-층위 보호 + RAW gitignore 명시 보호 + config 강제 복원, §2.3 확인 문구 확정, §4.4 운영 인덱스 예외
 - [x] C1 재검토 완료 (2026-09-07: **APPROVE** — 6개 항목 전량 통과, MEDIUM 해소 확인)
 - [x] T1+T2 구현 완료 (2026-09-07): `scripts/reset_workspace.py`, `config.yaml` `reset:` 섹션,
-      `scripts/reset_for_beta.py` DEPRECATED 주석
+      `scripts/reset_for_release.py` DEPRECATED 주석
 - [x] `tests/test_reset_workspace.py` 21개 PASS
 - [x] 전체 회귀 PASS: 2784 passed, 15 skipped (72s)
 - [x] Build Report: `output/ADR-033-T1T2-EXEC-REPORT.md`
 - [x] **HQ 승인** (2026-09-07) → Status `PROPOSED` → `ACCEPTED`, STATE.md 기록 완료
 - [ ] (후속) UI 유지보수 탭 T1 버튼 — 별도 작업으로 분리 (ADR §4.5, 이번 범위 밖)
-- [ ] **HQ 승인 대기 항목**: `scripts/reset_for_beta.py` 처리 방향 — (a) `reset_workspace.py --tier T3` wrapper로 축소,
+- [ ] **HQ 승인 대기 항목**: `scripts/reset_for_release.py` 처리 방향 — (a) `reset_workspace.py --tier T3` wrapper로 축소,
       또는 (b) 즉시 deprecate. T3 미구현 기간 동안은 파일 상단에
       `# DEPRECATED (ADR-033): T3 미구현. 신규 리셋은 scripts/reset_workspace.py 사용.` 주석만 추가하고 동작은 보존.
 - [ ] 승인 시 Status `PROPOSED` → `ACCEPTED`, STATE.md 기록

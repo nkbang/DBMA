@@ -447,7 +447,7 @@ leakage 제거 + 인용·출처 공용 컴포넌트) 발급. `chat.py`의
   이동 + manifest.json, 클린 트리 가드. Qdrant drop은 whitelist `[]` 기본·정확 일치·
   config url(6333, ADR-013 격리). 승격 4조건 충족(구현·회귀 2784 PASS·C1 APPROVE·HQ 승인),
   커밋 `bfc3df8` @ `claude/project-data-reset-c10afd`. 후속: UI 유지보수 탭 T1 버튼,
-  `scripts/reset_for_beta.py` 처리 방향(wrapper vs 폐기, HQ 결정 대기).
+  `scripts/reset_for_release.py` 처리 방향(wrapper vs 폐기, HQ 결정 대기).
 
 ---
 

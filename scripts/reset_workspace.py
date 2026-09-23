@@ -381,7 +381,7 @@ def run_reset(
     if tier == "T3":
         raise ResetAbort(
             "T3 (RAW/소스 삭제)는 설계만 — 구현하지 않음 (ADR-033 §2.1). "
-            "필요 시 scripts/reset_for_beta.py 를 별도 승인 후 사용."
+            "필요 시 scripts/reset_for_release.py 를 별도 승인 후 사용."
         )
     if tier not in ("T1", "T2"):
         raise ValueError(f"--tier 는 T1 또는 T2 (받음: {tier!r})")
