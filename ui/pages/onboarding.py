@@ -454,9 +454,11 @@ def render_onboarding_page() -> None:
 
     if nav_library or nav_research or nav_explore:
         st.session_state["show_onboarding"] = False
-        st.session_state["nav_page"] = (
-            "Library" if nav_library else "Research" if nav_research else "AI에게 질문"
-        )
+        # [NAE Phase 1 화면 통합] "AI에게 질문"은 별도 화면이 아니라
+        # "Research"(연구·채팅) 화면의 "채팅" 뷰로 통합됨.
+        if nav_explore:
+            st.session_state["research_workspace_view"] = "채팅"
+        st.session_state["nav_page"] = "Library" if nav_library else "Research"
         st.rerun()
 
     # ── Hero ─────────────────────────────────────────────────

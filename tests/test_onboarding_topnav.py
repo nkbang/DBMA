@@ -37,7 +37,10 @@ def test_topnav_explore_button_navigates_to_ai_chat():
     at = _run_onboarding()
     at.button(key="topnav_explore").click().run()
     assert not at.exception
-    assert at.session_state["nav_page"] == "AI에게 질문"
+    # [NAE Phase 1 화면 통합] "AI에게 질문"은 Research(연구·채팅) 화면의
+    # "채팅" 뷰로 통합됨.
+    assert at.session_state["nav_page"] == "Research"
+    assert at.session_state["research_workspace_view"] == "채팅"
 
 
 def test_topnav_login_button_is_disabled():

@@ -27,8 +27,7 @@ from ui.theme.colors import THEME
 from ui.pages.dashboard import render_dashboard_page
 from ui.pages.library import render_library_hub_page
 from ui.pages.processing import render_processing_page
-from ui.pages.research import render_research_page
-from ui.pages.chat import render_chat_page
+from ui.pages.research import render_research_workspace_page
 from ui.pages.monitor import render_monitor_page
 from ui.pages.sermon_research import render_sermon_workspace_page
 from ui.pages.sermon_review import render_sermon_review_page
@@ -302,11 +301,14 @@ def _render_sidebar() -> str:
             "Dashboard": "홈",
             "Library": "내 서재",
             "Processing": "자료 등록",
-            "Research": "자료 찾기",
-            "AI에게 질문": "AI에게 질문",
+            "Research": "연구·채팅",
             "설교 준비": "설교 준비",
             "설교 리뷰": "설교 모음 정리",
         }
+        # [NAE Phase 1 화면 통합] "AI에게 질문"은 더 이상 별도 최상위
+        # 메뉴가 아니라 "Research"(연구·채팅) 화면 내부의 "연구"/"채팅"
+        # 뷰 전환(ui/pages/research.py::render_research_workspace_page)으로
+        # 통합됨.
         # [NAE Phase 1 화면 통합] "설교 연구"(허브)와 "설교문 작성"은 더 이상
         # 별도 최상위 메뉴가 아니라 "설교 준비" 화면 내부의 "연구"/"작성"
         # 뷰 전환(ui/pages/sermon_research.py::render_sermon_workspace_page)
@@ -425,8 +427,7 @@ def _render_page_content(page: str) -> None:
         "Dashboard": render_dashboard_page,
         "Library": render_library_hub_page,
         "Processing": render_processing_page,
-        "Research": render_research_page,
-        "AI에게 질문": render_chat_page,
+        "Research": render_research_workspace_page,
         "설교 준비": render_sermon_workspace_page,
         "설교 리뷰": render_sermon_review_page,
         "Monitor": render_monitor_page,
