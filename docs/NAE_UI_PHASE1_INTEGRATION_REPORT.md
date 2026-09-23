@@ -61,11 +61,19 @@ wrapper 함수를 만들어 화면을 묶었다. `st.tabs`는 코드에서 활�
 신규 문서: `docs/NAE_COMMERCIAL_APP_UX_SCREEN_BENCHMARK_001.md`,
 본 문서.
 
-## 제외 범위 (다음 HQ 결정 대기)
+## 제외 범위
 
-- `monitor.py`/`onboarding.py`/`sermon_review.py`/`NAE/benchmark/` 제거·분리
-  — 이전 검토에서 보류 권고(모니터는 이미 `NAE_ADMIN_MODE` 게이트로
-  처리돼 있어 추가 조치 불필요, 나머지는 실사용 근거 부족).
+- **`monitor.py`(HQ 최종 결정, 2026-09-23)**: 조치 불필요로 종결. 이미
+  `NAE_ADMIN_MODE` 게이트로 일반 사용자에게 노출되지 않고 있음
+  (`ui/app.py:320`) — C1 원 제안(제거)은 이미 해결된 상태였음.
+- **`onboarding.py`(HQ 최종 결정, 2026-09-23)**: **유지**. C1의 제거
+  근거("재방문율 극히 낮음")는 실측 없는 추정이었고, 실제로는
+  `show_onboarding`이 디스크에 저장되지 않아 브라우저 세션마다 다시
+  뜨는 구조라 전제 자체가 불확실함. 604줄이지만 격리돼 있어 유지보수
+  부담이 낮고, 승인된 Stitch 브랜드 자산이기도 해 제거 이득 대비
+  근거가 부족 — 코드 변경 없음.
+- `sermon_review.py`/`NAE/benchmark/` 제거·분리는 여전히 HQ 결정
+  대기(실사용 근거 부족으로 보류 권고 유지).
 - research.py↔chat.py 공용 함수(`generate_answer` 등)를 별도 모듈로
   리팩터링하는 것 — 상업 앱 벤치마크에서도 확인된 "채팅을 검색 결과에
   완전히 인라인화"하는 더 급진적인 통합은 코드 재구성이 필요해 Phase 2
