@@ -29,13 +29,13 @@ def _run_app(session_state: dict | None = None) -> AppTest:
 
 def test_sidebar_has_sermon_research_menu_item():
     at = _run_app()
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     assert not at.exception
 
 
 def test_sermon_research_hub_empty_state():
     at = _run_app()
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     assert not at.exception
     texts = [m.value for m in at.markdown] + [m.value for m in at.info]
     assert any("아직 담긴 자료가 없습니다" in t for t in texts)
@@ -73,7 +73,7 @@ def test_hub_absorbs_selection_buffer_and_dedupes():
             "added_at": "2026-08-19T00:00:00",
         }],
     })
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     assert not at.exception
     assert at.session_state["sermon_research_state"]["materials"][0]["tsu_id"] == "t1"
     assert at.session_state["sermon_research_selection"] == []
@@ -91,7 +91,7 @@ def test_hub_outline_and_continue_button_navigates_to_sermon_draft():
             "outline_draft": [],
         },
     })
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     assert not at.exception
 
     outline_widgets = [ta for ta in at.text_area if ta.key == "sermon_outline_draft_input"]
@@ -103,7 +103,7 @@ def test_hub_outline_and_continue_button_navigates_to_sermon_draft():
     assert len(continue_buttons) == 1
     continue_buttons[0].click().run()
     assert not at.exception
-    assert at.session_state["nav_page"] == "설교문 작성"
+    assert at.session_state["sermon_workspace_view"] == "작성"
 
 
 def test_hub_remove_material():
@@ -118,7 +118,7 @@ def test_hub_remove_material():
             "outline_draft": [],
         },
     })
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     remove_buttons = [b for b in at.button if b.key and b.key.startswith("sermon_remove_")]
     assert len(remove_buttons) == 1
     remove_buttons[0].click().run()
@@ -150,7 +150,7 @@ def _hub_state(materials=None, notes=None, outline=None) -> dict:
 
 def test_adapter_seeds_empty_sermon_draft_state():
     at = _run_app({"sermon_research_state": _hub_state()})
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     btn = [b for b in at.button if b.label == "설교 작성으로 이어가기"]
     assert len(btn) == 1
     btn[0].click().run()
@@ -164,7 +164,7 @@ def test_adapter_seeds_empty_sermon_draft_state():
     assert seeded["status"] == "input"
     assert seeded["style_files"] == []  # no shared_query_processor in this session
     assert at.session_state["sermon_input_text"] == seeded["scripture_and_theme"]
-    assert at.session_state["nav_page"] == "설교문 작성"
+    assert at.session_state["sermon_workspace_view"] == "작성"
 
 
 def test_adapter_does_not_overwrite_in_progress_draft():
@@ -183,7 +183,7 @@ def test_adapter_does_not_overwrite_in_progress_draft():
         "sermon_research_state": _hub_state(),
         "sermon_draft_state": dict(existing),
     })
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     btn = [b for b in at.button if b.label == "설교 작성으로 이어가기"]
     btn[0].click().run()
     assert not at.exception
@@ -205,7 +205,7 @@ def test_adapter_does_not_overwrite_manually_typed_theme():
         "sermon_research_state": _hub_state(),
         "sermon_draft_state": dict(existing),
     })
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     btn = [b for b in at.button if b.label == "설교 작성으로 이어가기"]
     btn[0].click().run()
     assert not at.exception
@@ -229,7 +229,7 @@ def test_adapter_matches_style_files_when_processor_already_loaded():
         "sermon_research_state": _hub_state(),
         "shared_query_processor": _FakeProcessor(),
     })
-    at.sidebar.radio[0].set_value("설교 연구").run()
+    at.sidebar.radio[0].set_value("설교 준비").run()
     btn = [b for b in at.button if b.label == "설교 작성으로 이어가기"]
     btn[0].click().run()
     assert not at.exception

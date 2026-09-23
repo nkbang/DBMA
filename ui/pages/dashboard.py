@@ -135,7 +135,7 @@ def _render_quick_actions() -> None:
     actions = [
         ("자료 찾기", "Research"),
         ("질문하기", "AI에게 질문"),
-        ("설교 준비", "설교문 작성"),
+        ("설교 준비", "설교 준비"),
         ("도움말", "도움말"),
     ]
     cols = st.columns(4)
@@ -153,7 +153,7 @@ def _render_library_navigation() -> None:
     actions = [
         ("나의 서재", "Library"),
         ("지식 연결", "Research"),
-        ("목회 연구", "설교 연구"),
+        ("목회 연구", "설교 준비"),
     ]
     cols = st.columns(3)
     for col, (label, target) in zip(cols, actions):

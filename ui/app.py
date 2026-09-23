@@ -30,8 +30,7 @@ from ui.pages.processing import render_processing_page
 from ui.pages.research import render_research_page
 from ui.pages.chat import render_chat_page
 from ui.pages.monitor import render_monitor_page
-from ui.pages.sermon_draft import render_sermon_draft_page
-from ui.pages.sermon_research import render_sermon_research_hub_page
+from ui.pages.sermon_research import render_sermon_workspace_page
 from ui.pages.sermon_review import render_sermon_review_page
 from ui.pages.onboarding import render_onboarding_page
 from ui.pages.help import render_help_page
@@ -305,10 +304,13 @@ def _render_sidebar() -> str:
             "Processing": "자료 등록",
             "Research": "자료 찾기",
             "AI에게 질문": "AI에게 질문",
-            "설교 연구": "연구하기",
-            "설교문 작성": "설교 준비",
+            "설교 준비": "설교 준비",
             "설교 리뷰": "설교 모음 정리",
         }
+        # [NAE Phase 1 화면 통합] "설교 연구"(허브)와 "설교문 작성"은 더 이상
+        # 별도 최상위 메뉴가 아니라 "설교 준비" 화면 내부의 "연구"/"작성"
+        # 뷰 전환(ui/pages/sermon_research.py::render_sermon_workspace_page)
+        # 으로 통합됨.
         # [NAE Phase 1 화면 통합] "저장된 설교"는 더 이상 별도 최상위
         # 메뉴가 아니라 "Library"(내 서재) 화면의 두 번째 탭으로 통합됨
         # (NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2, ui/pages/library.py
@@ -425,8 +427,7 @@ def _render_page_content(page: str) -> None:
         "Processing": render_processing_page,
         "Research": render_research_page,
         "AI에게 질문": render_chat_page,
-        "설교 연구": render_sermon_research_hub_page,
-        "설교문 작성": render_sermon_draft_page,
+        "설교 준비": render_sermon_workspace_page,
         "설교 리뷰": render_sermon_review_page,
         "Monitor": render_monitor_page,
         "도움말": render_help_page,

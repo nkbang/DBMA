@@ -15,7 +15,31 @@ import streamlit as st
 
 from ui.pages._base import BasePage
 from ui.pages._passage_commentary_tab import render_passage_commentary_tab
+from ui.pages.sermon_draft import render_sermon_draft_page
 from core.generation import SERMON_FORMATS
+
+
+def render_sermon_workspace_page() -> None:
+    """[NAE Phase 1 화면 통합] "설교 연구"(허브)와 "설교문 작성"을 하나의
+    사이드바 진입점으로 묶는다. st.tabs는 코드에서 활성 탭을 바꿀 수
+    없어(Streamlit 제약) "이어가기" 버튼 클릭 시 자동 전환이 안 되므로,
+    이미 이 코드베이스의 nav_page와 동일한 "session_state 키 + st.radio"
+    패턴으로 전환한다(ui/app.py의 nav_page 방식 재사용).
+    NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2 화면2 제안."""
+    if "sermon_workspace_view" not in st.session_state:
+        st.session_state["sermon_workspace_view"] = "연구"
+
+    view = st.radio(
+        "설교 준비 단계",
+        ["연구", "작성"],
+        key="sermon_workspace_view",
+        horizontal=True,
+        label_visibility="collapsed",
+    )
+    if view == "연구":
+        render_sermon_research_hub_page()
+    else:
+        render_sermon_draft_page()
 
 
 def render_sermon_research_hub_page() -> None:
@@ -75,7 +99,10 @@ def _go_to_sermon_draft() -> None:
     state = st.session_state.get("sermon_research_state")
     if state and state["materials"]:
         _seed_sermon_draft_state(state)
-    st.session_state["nav_page"] = "설교문 작성"
+    # [NAE Phase 1 화면 통합] 이전에는 nav_page를 바꿔 별도 최상위
+    # 화면("설교문 작성")으로 전환했으나, 두 화면이 render_sermon_workspace_page
+    # 아래 탭으로 통합되어 같은 페이지 내부 뷰 전환으로 대체됨.
+    st.session_state["sermon_workspace_view"] = "작성"
 
 
 def _seed_sermon_draft_state(state: dict) -> None:
