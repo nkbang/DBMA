@@ -106,6 +106,15 @@ def _go_to(page_name: str) -> None:
     st.session_state["nav_page"] = page_name
 
 
+def _go_to_chat() -> None:
+    """[NAE Phase 1 화면 통합] "AI에게 질문"은 더 이상 별도 최상위 화면이
+    아니라 "Research"(연구·채팅) 화면의 "채팅" 뷰로 통합됨
+    (ui/pages/research.py::render_research_workspace_page). nav_page와
+    함께 뷰 상태도 지정해 기존처럼 채팅 화면으로 바로 이동시킨다."""
+    st.session_state["research_workspace_view"] = "채팅"
+    st.session_state["nav_page"] = "Research"
+
+
 def _render_status_banner() -> None:
     """One glance: can I use this right now, and what's in it."""
     status_label, status_icon, status_color, status_bg = _get_overall_status()
@@ -133,15 +142,16 @@ def _render_quick_actions() -> None:
         unsafe_allow_html=True,
     )
     actions = [
-        ("자료 찾기", "Research"),
-        ("질문하기", "AI에게 질문"),
-        ("설교 준비", "설교문 작성"),
-        ("도움말", "도움말"),
+        ("자료 찾기", _go_to, "Research"),
+        ("질문하기", _go_to_chat, None),
+        ("설교 준비", _go_to, "설교 준비"),
+        ("도움말", _go_to, "도움말"),
     ]
     cols = st.columns(4)
-    for col, (label, target) in zip(cols, actions):
+    for col, (label, callback, target) in zip(cols, actions):
         with col:
-            st.button(label, use_container_width=True, on_click=_go_to, args=(target,), key=f"_quick_{label}")
+            kwargs = {"args": (target,)} if target is not None else {}
+            st.button(label, use_container_width=True, on_click=callback, key=f"_quick_{label}", **kwargs)
 
 
 def _render_library_navigation() -> None:
@@ -153,7 +163,7 @@ def _render_library_navigation() -> None:
     actions = [
         ("나의 서재", "Library"),
         ("지식 연결", "Research"),
-        ("목회 연구", "설교 연구"),
+        ("목회 연구", "설교 준비"),
     ]
     cols = st.columns(3)
     for col, (label, target) in zip(cols, actions):

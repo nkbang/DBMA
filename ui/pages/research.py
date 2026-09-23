@@ -35,6 +35,7 @@ from ui.components.citation_card import render_citation_card
 from ui.components.nae_public_section import render_nae_public_section
 from ui.pages.chat import (
     generate_answer,
+    render_chat_page,
     _is_low_confidence,
     _render_low_confidence_warning,
     _NO_EVIDENCE_HOLD_TEXT,
@@ -160,6 +161,33 @@ def _apply_research_styles() -> None:
 
 
 # ── Main Render Function ───────────────────────────────────────
+
+def render_research_workspace_page() -> None:
+    """[NAE Phase 1 화면 통합] "Research"(연구)와 "AI에게 질문"(채팅)을
+    하나의 사이드바 진입점으로 묶는다. research.py는 이미 chat.py의
+    generate_answer 등을 직접 import해 강하게 결합돼 있고, 각 화면의
+    private 함수를 참조하는 기존 테스트(test_chat_*.py 5개,
+    test_research_*.py 3개)가 있어 로직 자체는 옮기지 않고 뷰 전환만
+    추가한다. st.tabs는 코드로 활성 탭을 바꿀 수 없어(Streamlit 제약),
+    Dashboard/온보딩의 "질문하기" 빠른 진입이 채팅 뷰로 바로 열리도록
+    ui/pages/sermon_research.py::render_sermon_workspace_page와 동일한
+    "session_state 키 + st.radio" 패턴(research_workspace_view)을 쓴다.
+    NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2 화면1 제안."""
+    if "research_workspace_view" not in st.session_state:
+        st.session_state["research_workspace_view"] = "연구"
+
+    view = st.radio(
+        "연구/채팅",
+        ["연구", "채팅"],
+        key="research_workspace_view",
+        horizontal=True,
+        label_visibility="collapsed",
+    )
+    if view == "연구":
+        render_research_page()
+    else:
+        render_chat_page()
+
 
 def render_research_page() -> None:
     """Render the DBMA Research Workspace page (Stitch style)."""

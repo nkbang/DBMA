@@ -14,6 +14,7 @@ import streamlit as st
 from pathlib import Path
 
 from ui.pages._base import BasePage
+from ui.pages.sermon_library import render_sermon_library_page
 from ui.theme.colors import THEME
 from ui.components.tables import document_table, search_results_table
 from ui.state.store import StateStore
@@ -99,6 +100,18 @@ def _apply_library_styles() -> None:
         """,
         unsafe_allow_html=True,
     )
+
+
+def render_library_hub_page() -> None:
+    """[NAE Phase 1 화면 통합] "내 자료"(render_library_page)와 "저장된
+    설교"(render_sermon_library_page)를 하나의 사이드바 진입점 아래 탭으로
+    묶는다. 두 화면의 내부 렌더링/상태 로직은 변경하지 않는다 — 탭 전환
+    UI만 추가(NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2 화면3)."""
+    tab_library, tab_sermons = st.tabs(["내 자료", "저장된 설교"])
+    with tab_library:
+        render_library_page()
+    with tab_sermons:
+        render_sermon_library_page()
 
 
 def render_library_page() -> None:

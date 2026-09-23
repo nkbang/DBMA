@@ -25,15 +25,12 @@ st.set_page_config(
 from core.config import APP_VERSION, DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE, GEN_MODEL_OPTIONS
 from ui.theme.colors import THEME
 from ui.pages.dashboard import render_dashboard_page
-from ui.pages.library import render_library_page
+from ui.pages.library import render_library_hub_page
 from ui.pages.processing import render_processing_page
-from ui.pages.research import render_research_page
-from ui.pages.chat import render_chat_page
+from ui.pages.research import render_research_workspace_page
 from ui.pages.monitor import render_monitor_page
-from ui.pages.sermon_draft import render_sermon_draft_page
-from ui.pages.sermon_research import render_sermon_research_hub_page
+from ui.pages.sermon_research import render_sermon_workspace_page
 from ui.pages.sermon_review import render_sermon_review_page
-from ui.pages.sermon_library import render_sermon_library_page
 from ui.pages.onboarding import render_onboarding_page
 from ui.pages.help import render_help_page
 
@@ -302,15 +299,24 @@ def _render_sidebar() -> str:
 
         pages = {
             "Dashboard": "홈",
-            "Library": "내 자료",
+            "Library": "내 서재",
             "Processing": "자료 등록",
-            "Research": "자료 찾기",
-            "AI에게 질문": "AI에게 질문",
-            "설교 연구": "연구하기",
-            "설교문 작성": "설교 준비",
-            "저장된 설교": "저장된 설교",
+            "Research": "연구·채팅",
+            "설교 준비": "설교 준비",
             "설교 리뷰": "설교 모음 정리",
         }
+        # [NAE Phase 1 화면 통합] "AI에게 질문"은 더 이상 별도 최상위
+        # 메뉴가 아니라 "Research"(연구·채팅) 화면 내부의 "연구"/"채팅"
+        # 뷰 전환(ui/pages/research.py::render_research_workspace_page)으로
+        # 통합됨.
+        # [NAE Phase 1 화면 통합] "설교 연구"(허브)와 "설교문 작성"은 더 이상
+        # 별도 최상위 메뉴가 아니라 "설교 준비" 화면 내부의 "연구"/"작성"
+        # 뷰 전환(ui/pages/sermon_research.py::render_sermon_workspace_page)
+        # 으로 통합됨.
+        # [NAE Phase 1 화면 통합] "저장된 설교"는 더 이상 별도 최상위
+        # 메뉴가 아니라 "Library"(내 서재) 화면의 두 번째 탭으로 통합됨
+        # (NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2, ui/pages/library.py
+        # ::render_library_hub_page). 라우팅 dict도 함께 갱신.
         # [NAE-UPLOAD-AUTO] 자료 등록(업로드) 화면은 일반 사용자도 직접
         # 자료를 올릴 수 있어야 해서 항상 노출한다 — 이전에는 "일반
         # 사용자에게 불필요"하다는 가정으로 NAE_ADMIN_MODE 뒤에 숨겨져
@@ -419,13 +425,10 @@ def _render_page_content(page: str) -> None:
     """
     page_renderers = {
         "Dashboard": render_dashboard_page,
-        "Library": render_library_page,
+        "Library": render_library_hub_page,
         "Processing": render_processing_page,
-        "Research": render_research_page,
-        "AI에게 질문": render_chat_page,
-        "설교 연구": render_sermon_research_hub_page,
-        "설교문 작성": render_sermon_draft_page,
-        "저장된 설교": render_sermon_library_page,
+        "Research": render_research_workspace_page,
+        "설교 준비": render_sermon_workspace_page,
         "설교 리뷰": render_sermon_review_page,
         "Monitor": render_monitor_page,
         "도움말": render_help_page,
