@@ -228,6 +228,55 @@ class TestSearch:
         generator.search(_pq("믿음(believer's baptism)에 대해"), k=10)
 
 
+class TestKoreanParticleMatching:
+    """[2026-09-21, S6-1 P0-5 재실행 중 실측 발견] Tantivy 기본 토크나이저는
+    공백 기준으로만 나눠 조사(-이/-을/-의 등)가 붙은 형태를 그대로 한
+    토큰으로 인덱싱한다 — "하나님" 질의가 "하나님이"가 들어간 문서와
+    매칭이 안 되던 실사고. 위 FIXTURE_TSUS는 이 한계를 피하려고 일부러
+    키워드를 띄어 쓴 텍스트였는데(모듈 docstring 참고), 그래서는 이
+    회귀를 못 잡는다 — 조사가 실제로 붙은 문장으로 별도 검증한다."""
+
+    @pytest.fixture
+    def particle_generator(self, tmp_path):
+        tsus = [
+            {
+                "tsu_id": "TSU-PART-001",
+                "content": "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니",
+                "title": "요한복음 강해",
+                "author": "저자명",
+                "source_file": "john_exposition.pdf",
+                "verse_mapping": {"book_id": "JHN"},
+                "language": "ko",
+            },
+        ]
+        dataset_path = tmp_path / "tsu.jsonl"
+        with open(dataset_path, "w", encoding="utf-8") as f:
+            for tsu in tsus:
+                f.write(json.dumps(tsu, ensure_ascii=False) + "\n")
+        index_dir = tmp_path / "index"
+        build_index(str(dataset_path), str(index_dir))
+        return CandidateGenerator(str(index_dir))
+
+    def test_bare_noun_query_matches_particle_attached_form(self, particle_generator):
+        """질의 "하나님"(조사 없음)이 색인된 "하나님이"(조사 붙음)와 매칭돼야
+        한다 — 수정 전에는 0건이었다."""
+        results = particle_generator.search(_pq("하나님"), k=10)
+        ids = {c.tsu_id for c in results}
+        assert ids == {"TSU-PART-001"}
+
+    def test_object_particle_stripped(self, particle_generator):
+        results = particle_generator.search(_pq("세상"), k=10)
+        ids = {c.tsu_id for c in results}
+        assert ids == {"TSU-PART-001"}
+
+    def test_metadata_field_search_also_tokenized(self, particle_generator):
+        """title/author 필드(`fields=["title","author"]`, Query Planner의
+        metadata route)도 같은 방식으로 대칭 적용돼야 한다."""
+        results = particle_generator.search(_pq("강해"), k=10, fields=["title"])
+        ids = {c.tsu_id for c in results}
+        assert ids == {"TSU-PART-001"}
+
+
 class TestSnippets:
     """[DBMA-SEARCH-INFRA-001 Phase 2-5] Snippets generated via Tantivy's own
     SnippetGenerator for the k candidates returned — no separate preview

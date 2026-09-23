@@ -124,6 +124,32 @@ Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
   Hiscox를 이 코퍼스에 별도로 편입(임베딩)할 것인지 — 세 가지가 서로 배타적이지 않고
   조합 가능하므로 다음 세션에서 명시적으로 확인 필요.
 
+**[2026-09-23 HQ 결정] 위 "다음 필요한 HQ 결정" 답변 — 옵션 (1) 채택. Spurgeon 67종
+기준선 확정.**
+- **경위**: 2026-09-18 이후 이 결정이 STATE.md 어디에도 명시적으로 기록되지 않은 채
+  `output/bench/tsu_dataset.jsonl`이 119,595건→130,401건(67종 동일, Vol10~13 chunk
+  수 약 2배 증가·원인 미상)으로 계속 갱신되며 사실상 옵션 (1) 방향으로 흘러갔다.
+  2026-09-22 세션이 이 미문서화 상태를 발견(`docs/DBMA_SESSION_HANDOFF_20260922.md`
+  §2) → C1 Task Order 070으로 사실조사 위임 → 결과
+  (`docs/DBMA_CORPUS_TRACK_TIMELINE_C1_REPORT_001.md`)를 CUE가 전량 독립 재검증
+  (grep/`wc -l`/`stat` 실측 전부 일치 확인) → 2026-09-23 사용자에게 3개 옵션 제시 →
+  **옵션 (1) 승인**.
+  - Track A(84,766건/125출처, 한글 자료·Fuller/Dagg/Hiscox 포함)는 **채택하지
+    않는다** — 복구·병합 작업 없음.
+  - Fuller/Dagg/Hiscox 별도 편입(옵션 3)도 **이번 결정에 포함되지 않는다** — 필요 시
+    별도 HQ 승인 후 착수.
+- **확정 기준선**: `output/bench/tsu_dataset.jsonl` = 130,401건 / 67출처(전부
+  archive.org 영문 퍼블릭 도메인 — Spurgeon·Maclaren·Whitefield·Broadus·Dargan·
+  Keach·Hovey). `scripts/baseline_corpus_manifest.json`(commit `891b84e`,
+  `1ddafc4`)이 이미 이 67종을 배포판 베이스라인으로 지정한 상태와 **일치** — 이번
+  결정으로 추가 코드 변경 불필요, 기존 S6-1(Release 자산)·사이드카 백필(PR #55/#60)
+  작업이 그대로 유효해짐.
+- **영향**: S6-4(GitHub Release 발행)·S6-2(P0-5 인적채점)·S6-3(외부 테스터)가 막혀
+  있던 선결 조건 해소 — `docs/DBMA_S6_2_S6_3_READINESS_001.md` 참고, 재개 가능.
+- **미결로 남는 것**: Vol10~13 chunk 수가 `spurgeon_119595`(2026-09-17) 대비 약 2배
+  증가한 정확한 원인·시점은 여전히 증거 없음(C1 보고서 RQ-2 "빈 구간" 참고) — 배포
+  차단 사유는 아니므로 별도 조사 없이 진행, 필요 시 추후 재조사.
+
 **[2026-09-16 완료] `NAE/citation_disclosure.py`에 authority_tier(T1~T4) 라벨 축 추가 (개인 RAG 제안서 §13 대응, 준비 단계).**
 - 배경: 목회자 개인 RAG(DBMA/NAE) 제안서 §11/§13에서 설계한 신학적 권위
   등급(T1 정경/신조, T2 검증된 신학, T3 비교·변증 참고, T4 미검증)과 경고

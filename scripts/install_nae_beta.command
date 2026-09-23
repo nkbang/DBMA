@@ -160,6 +160,28 @@ if [ "$NEED_DOWNLOAD" = "1" ]; then
     echo "$LATEST_TAG" > "$VERSION_FILE"
 fi
 
+# [S6-1 R4 해결, scripts/build_corpus_bundle.sh] 앱 소스(git 태그 tarball)에는
+# data/·output/이 .gitignore 대상이라 코퍼스가 담기지 않는다 — 기본 동봉
+# 서재는 같은 태그의 GitHub Release 자산으로 별도 배포한다. 이미 코퍼스가
+# 있으면(업데이트 시 PERSIST_ITEMS로 보존됐거나 테스터가 직접 채운 경우)
+# 건너뛴다. 실패해도 치명적이지 않다 — 빈 서재로 시작해도 앱 자체는
+# 정상 동작한다(R1 정상 차단 화면).
+CORPUS_MARKER="$APP_DIR/output/bench/tsu_dataset.jsonl"
+if [ ! -s "$CORPUS_MARKER" ]; then
+    notify "기본 자료" "기본 서재를 내려받는 중입니다..."
+    CORPUS_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/${LATEST_TAG}/nae_baseline_corpus.tar.gz"
+    CORPUS_TMP="$INSTALL_DIR/_corpus_download.tar.gz"
+    rm -f "$CORPUS_TMP"
+    if curl -fL "$CORPUS_URL" -o "$CORPUS_TMP" 2>/dev/null && [ -s "$CORPUS_TMP" ]; then
+        tar -xzf "$CORPUS_TMP" -C "$APP_DIR" \
+            && notify "기본 자료" "기본 서재 적재가 완료되었습니다." \
+            || notify "기본 자료 없음" "기본 서재 압축 해제에 실패했습니다 — 빈 서재로 시작합니다."
+    else
+        notify "기본 자료 없음" "기본 서재를 내려받지 못했습니다 — 빈 서재로 시작합니다. '자료 등록' 탭에서 직접 추가할 수 있습니다."
+    fi
+    rm -f "$CORPUS_TMP"
+fi
+
 cd "$APP_DIR"
 chmod +x scripts/setup_beta_tester.command
 exec ./scripts/setup_beta_tester.command

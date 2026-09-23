@@ -25,10 +25,44 @@ from typing import Optional
 
 import tantivy
 
-from core.retrieval import ParsedQuery
+from core.retrieval import ParsedQuery, _tokenize
 
-# Text fields searched for BM25 candidate generation.
+# Text fields searched for BM25 candidate generation (semantic names used by
+# callers — see _SEARCH_FIELD_MAP for the actual indexed field each maps to).
 _TEXT_FIELDS = ["title", "content", "author"]
+
+# [2026-09-21, S6-1 P0-5 재실행 중 실측 발견] Tantivy's default tokenizer only
+# splits on whitespace/punctuation — it has no Korean morphological analysis,
+# so a query for "하나님" never matches an indexed token "하나님이" (particle
+# attached). This is the exact same asymmetry core/retrieval.py::_tokenize()
+# already fixed for the older RetrievalEngine path (2026-09-10, see that
+# module's comments) — kiwipiepy strips particles/endings on the DOCUMENT
+# side there. CandidateGenerator (Phase 2-2, this module) was built afterward
+# as a parallel engine and never got the same fix; once USE_INVERTED_INDEX
+# defaulted to true (2026-09-18), Korean-only queries against the live app
+# silently returned near-zero results (confirmed: "하나님" / "세상" / "예정론"
+# all returned 0 candidates against a freshly rebuilt index, while the
+# English word "God" returned 5 — proving this is a tokenization gap, not a
+# stale-index or corpus-content problem).
+#
+# Fix: reuse `core.retrieval._tokenize()` (single source of truth, not
+# duplicated) to pre-segment BOTH the indexed text and the query text into
+# kiwi morphemes before Tantivy ever sees them, via a second, non-stored
+# "_search" field per text field. The original `title`/`content`/`author`
+# fields stay untokenized and stored, so snippets/stored values in search
+# results still read as fluent Korean — only the matching path changes.
+# English is unaffected (kiwi passes ASCII text through on whitespace/
+# punctuation, per the note above _tokenize()'s definition in retrieval.py).
+_SEARCH_FIELD_MAP = {"title": "title_search", "content": "content_search", "author": "author_search"}
+
+
+def _tokenize_for_index(text: str) -> str:
+    """Space-joined kiwi morphemes for a Tantivy `_search` field. Empty
+    input returns "" (add_text("") is a no-op field, matching the existing
+    `tsu.get(...) or ""` pattern for the stored counterpart fields)."""
+    if not text:
+        return ""
+    return " ".join(_tokenize(text))
 
 # [2026-09-18] Tantivy query-DSL special characters that crash parse_query()
 # when they appear in ordinary natural-language text (e.g. Korean
@@ -89,6 +123,11 @@ def build_schema() -> tantivy.Schema:
     sb.add_text_field("title", stored=True)
     sb.add_text_field("content", stored=True)
     sb.add_text_field("author", stored=True)
+    # [Korean tokenization fix, see _SEARCH_FIELD_MAP] not stored — query-
+    # matching only, pre-segmented at index time via _tokenize_for_index().
+    sb.add_text_field("title_search", stored=False)
+    sb.add_text_field("content_search", stored=False)
+    sb.add_text_field("author_search", stored=False)
     sb.add_text_field("tsu_id", stored=True, tokenizer_name="raw")
     sb.add_text_field("document_id", stored=True, tokenizer_name="raw")
     sb.add_text_field("source_file", stored=True, tokenizer_name="raw")
@@ -103,6 +142,9 @@ def _tsu_to_tantivy_doc(tsu: dict, schema: tantivy.Schema) -> tantivy.Document:
     doc.add_text("title", tsu.get("title") or "")
     doc.add_text("content", tsu.get("content") or "")
     doc.add_text("author", tsu.get("author") or "")
+    doc.add_text("title_search", _tokenize_for_index(tsu.get("title") or ""))
+    doc.add_text("content_search", _tokenize_for_index(tsu.get("content") or ""))
+    doc.add_text("author_search", _tokenize_for_index(tsu.get("author") or ""))
     doc.add_text("tsu_id", tsu.get("tsu_id", ""))
     doc.add_text("document_id", tsu.get("document_id") or "")
     doc.add_text("source_file", tsu.get("source_file") or "")
@@ -261,11 +303,25 @@ class CandidateGenerator:
 
         search_fields = fields or _TEXT_FIELDS
         if exact_phrase:
+            # [known gap, not fixed here] phrase_query is word-order-sensitive
+            # by construction, so it must match against the untokenized
+            # "content" field's raw tokens — a Korean exact_phrase inherits
+            # the same particle-mismatch weakness this fix otherwise closes.
+            # Narrow route (Query Planner's quoted-text "exact" case only);
+            # left as a documented follow-up rather than expanded scope here.
             words = exact_phrase.strip().split()
             text_query = tantivy.Query.phrase_query(self._schema, "content", words)
         else:
+            # [Korean tokenization fix] query side must be segmented the same
+            # way the index side was (_tokenize_for_index) or a particle-
+            # bearing query token never matches its stemmed indexed form —
+            # symmetry, not just a query-side patch.
+            indexed_search_fields = [_SEARCH_FIELD_MAP.get(f, f) for f in search_fields]
+            tokenized_query_text = _tokenize_for_index(query_text) or query_text
             try:
-                text_query = self._index.parse_query(query_text, default_field_names=search_fields)
+                text_query = self._index.parse_query(
+                    tokenized_query_text, default_field_names=indexed_search_fields
+                )
             except ValueError:
                 # [2026-09-18] Natural-language Korean queries routinely carry
                 # Tantivy query-DSL special chars (parens for clarifying
@@ -275,8 +331,8 @@ class CandidateGenerator:
                 # retry once rather than losing the query entirely; this
                 # only fires on the exception path so well-formed queries
                 # are unaffected.
-                sanitized = _TANTIVY_SPECIAL_CHARS_RE.sub(" ", query_text)
-                text_query = self._index.parse_query(sanitized, default_field_names=search_fields)
+                sanitized = _TANTIVY_SPECIAL_CHARS_RE.sub(" ", tokenized_query_text)
+                text_query = self._index.parse_query(sanitized, default_field_names=indexed_search_fields)
 
         effective_books = book_ids if book_ids is not None else parsed_query.detected_books
         subqueries = [(tantivy.Occur.Must, text_query)]
@@ -321,7 +377,21 @@ class CandidateGenerator:
 
         snippet_generator = None
         if with_snippets and result.hits:
-            snippet_generator = tantivy.SnippetGenerator.create(searcher, text_query, self._schema, "content")
+            # [Korean tokenization fix] text_query now targets the *_search
+            # fields, not "content" — SnippetGenerator needs a query against
+            # the field it highlights from, so build a separate one here
+            # against untokenized "content" (best-effort highlighting; a
+            # Korean query with particles may under-highlight, same
+            # limitation noted on exact_phrase above, but this only affects
+            # which words get bolded in the preview, not which documents
+            # are returned).
+            try:
+                snippet_query = self._index.parse_query(query_text, default_field_names=["content"])
+            except ValueError:
+                snippet_query = self._index.parse_query(
+                    _TANTIVY_SPECIAL_CHARS_RE.sub(" ", query_text), default_field_names=["content"]
+                )
+            snippet_generator = tantivy.SnippetGenerator.create(searcher, snippet_query, self._schema, "content")
             snippet_generator.set_max_num_chars(snippet_max_chars)
 
         candidates: list[CandidateRef] = []
