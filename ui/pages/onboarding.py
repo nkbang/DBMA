@@ -563,13 +563,6 @@ def render_onboarding_page() -> None:
         unsafe_allow_html=True,
     )
 
-    st.write("")
-    skip_clicked = st.button("나중에 하기", key="_onboard_skip")
-    if skip_clicked:
-        dismiss_onboarding()
-        st.session_state["show_onboarding"] = False
-        st.rerun()
-
     # ── Footer ───────────────────────────────────────────────
     # "이용약관"/"개인정보처리방침"은 아직 실제 문서가 없어 비활성 텍스트로
     # 표시한다("로그인" 버튼과 동일한 처리). "도움말"은 실제 화면이 있어
