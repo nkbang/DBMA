@@ -35,6 +35,7 @@ from ui.pages.sermon_research import render_sermon_research_hub_page
 from ui.pages.sermon_review import render_sermon_review_page
 from ui.pages.onboarding import render_onboarding_page
 from ui.pages.help import render_help_page
+from core.user_prefs import has_dismissed_onboarding
 
 
 # 사이드바 브랜드 워드마크 "내서재"가 여는 로컬 랜딩 페이지 (Stitch 목업).
@@ -67,7 +68,9 @@ def main() -> None:
     _apply_global_styles()
 
     # ── First-run Onboarding ───────────────────────────────────
-    if st.session_state.get("show_onboarding", True):
+    # 기본값은 세션이 아니라 디스크에 남긴 완료 여부로 정한다 — 그래야
+    # 새로고침/재실행 후에도 한 번 닫은 온보딩이 되살아나지 않는다.
+    if st.session_state.get("show_onboarding", not has_dismissed_onboarding()):
         render_onboarding_page()
         return
 

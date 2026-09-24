@@ -8,6 +8,8 @@ Stitch "프리미엄 랜딩 페이지" 디자인을 Streamlit으로 옮긴 첫 �
 
 import streamlit as st
 
+from core.user_prefs import dismiss_onboarding
+
 _FONT_LINKS = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
@@ -453,6 +455,7 @@ def render_onboarding_page() -> None:
     st.markdown('</div>', unsafe_allow_html=True)
 
     if nav_library or nav_research or nav_explore:
+        dismiss_onboarding()
         st.session_state["show_onboarding"] = False
         st.session_state["nav_page"] = (
             "Library" if nav_library else "Research" if nav_research else "AI에게 질문"
@@ -489,6 +492,7 @@ def render_onboarding_page() -> None:
         )
 
     if start_clicked or load_clicked:
+        dismiss_onboarding()
         st.session_state["show_onboarding"] = False
         st.session_state["nav_page"] = "Library"
         st.rerun()
@@ -560,6 +564,7 @@ def render_onboarding_page() -> None:
     st.write("")
     skip_clicked = st.button("나중에 하기", key="_onboard_skip")
     if skip_clicked:
+        dismiss_onboarding()
         st.session_state["show_onboarding"] = False
         st.rerun()
 
@@ -597,6 +602,7 @@ def render_onboarding_page() -> None:
         unsafe_allow_html=True,
     )
     if help_clicked:
+        dismiss_onboarding()
         st.session_state["show_onboarding"] = False
         st.session_state["nav_page"] = "도움말"
         st.rerun()

@@ -6,9 +6,21 @@
 
 import os
 
+import pytest
 from streamlit.testing.v1 import AppTest
 
+import core.user_prefs
+
 APP_PATH = os.path.join(os.path.dirname(__file__), "..", "ui", "app.py")
+
+
+@pytest.fixture(autouse=True)
+def _isolate_user_prefs(tmp_path, monkeypatch):
+    """dismiss_onboarding()이 실제 프로젝트 output 디렉터리를 오염시키지
+    않도록 prefs 파일 경로를 임시 디렉터리로 돌린다."""
+    monkeypatch.setattr(
+        core.user_prefs, "_PREFS_PATH", str(tmp_path / "user_prefs.json")
+    )
 
 
 def _run_onboarding() -> AppTest:
