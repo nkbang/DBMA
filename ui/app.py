@@ -36,7 +36,7 @@ from ui.pages.help import render_help_page
 from core.user_prefs import has_dismissed_onboarding
 
 
-# 사이드바 브랜드 워드마크 "내서재" — 클릭 시 앱 메인(Dashboard)으로 이동.
+# 사이드바 브랜드 워드마크 "내서재" — 클릭 시 온보딩 페이지로 이동.
 
 
 def main() -> None:
@@ -46,8 +46,10 @@ def main() -> None:
     _apply_global_styles()
 
     # ── First-run Onboarding ───────────────────────────────────
-    # 기본값은 세션이 아니라 디스크에 남긴 완료 여부로 정한다 — 그래야
-    # 새로고침/재실행 후에도 한 번 닫은 온보딩이 되살아나지 않는다.
+    # 기본값은 세션이 아니라 서버 프로세스 메모리(core.user_prefs)에 남긴
+    # 완료 여부로 정한다 — 브라우저 새로고침엔 살아남지만(그래야 한 번
+    # 닫은 온보딩이 되살아나지 않는다), 앱(서버 프로세스)을 새로 열면
+    # 다시 초기화되어 온보딩이 뜬다.
     if st.session_state.get("show_onboarding", not has_dismissed_onboarding()):
         render_onboarding_page()
         return
@@ -232,9 +234,13 @@ def _render_sidebar() -> str:
         The selected page name.
     """
     with st.sidebar:
-        # 브랜드 워드마크 "내서재 / NAE" — 클릭하면 앱 메인(Dashboard)으로 이동.
-        if st.button("내서재", key="sidebar_brand_link", help="메인으로 돌아가기"):
-            st.session_state["nav_page"] = "Dashboard"
+        # 브랜드 워드마크 "내서재 / NAE" — 클릭하면 온보딩 페이지로 이동.
+        # dismiss_onboarding()은 호출하지 않는다 — "본 적 있음" 여부(서버
+        # 프로세스 메모리에 영속)는 그대로 두고, 이번 세션에서만 다시
+        # 보여준다. 온보딩 화면 안의 실제 액션(연구 시작하기 등)을 눌러야
+        # 다시 dismiss되고 앱으로 들어간다.
+        if st.button("내서재", key="sidebar_brand_link", help="온보딩 화면으로 돌아가기"):
+            st.session_state["show_onboarding"] = True
             st.rerun()
 
         st.markdown(
