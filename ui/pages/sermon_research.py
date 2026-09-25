@@ -65,6 +65,19 @@ def render_sermon_research_hub_page() -> None:
 def _render_hub_tab() -> None:
     state = st.session_state["sermon_research_state"]
 
+    # [ADR-035 §3.1 항목2] 옵트인 자동 수집 토글 — 기본 꺼짐. 켠 사용자는
+    # "연구/채팅" 화면에서 검색을 실행할 때마다 상위 결과가 수동 클릭
+    # 없이 이 허브에 자동 반영된다(ui/pages/research.py::
+    # _maybe_auto_collect_for_sermon_research). 기존 수동 "설교 연구에
+    # 추가" 버튼은 계속 동작한다.
+    st.toggle(
+        "검색할 때 상위 결과 자동 반영",
+        key="sermon_research_auto_collect",
+        help="켜면 \"연구/채팅\" 화면에서 검색을 실행할 때마다 상위 결과가 "
+        "자동으로 여기에 담깁니다. 기본은 꺼짐 — 꺼두면 지금처럼 카드의 "
+        "\"설교 연구에 추가\" 버튼으로만 담깁니다.",
+    )
+
     if not state["materials"]:
         st.info(
             "아직 담긴 자료가 없습니다. \"검색·연구\" 화면에서 결과 카드의 "
