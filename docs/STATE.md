@@ -97,6 +97,30 @@ Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
 
+**[2026-09-14 완료] Fuller Complete Works F2(TSU 생성) 전체 완주(Vol.01~08) + CJK 오염 재추출.**
+- **F2 완주**: `f2_run.log` "F2 done — all volumes complete"(2026-09-14 11:28 UTC).
+  Vol.01~08 전량 `gate PASS`+push. `claims_extracted` 합계 ≈26,269건(Vol01
+  3,643 / Vol02 2,674 / Vol03 3,277 / Vol04 4,314 / Vol05 2,597 / Vol06
+  2,712 / Vol07 4,746 / Vol08 5,052). `builder_version` 3.0.0 무변경.
+- **watchdog auto-recovery 첫 실전 검증**: Vol.08 처리 중 실제 Ollama wedge
+  발생(`f2_watchdog.log` 16:49~16:52 UTC probe 2회 연속 실패) →
+  `scripts/nae_f2_watchdog.sh`가 kill+`launchctl kickstart`+`--resume` 재기동
+  자동 수행(~5분), checkpoint 1,300부터 무손실 재개. [[project_tsu_builder_resume]]
+  3-gap 설계(resume+timeout+watchdog)가 설계 이후 처음으로 실제 장애 상황에서
+  검증됨 — 사용자 개입 없이 완전 자동 복구.
+- **CJK 오염 재추출**: `scripts/nae_fuller_cjk_reextract.py --all --apply`
+  실행(Dagg/Hiscox 제외, Fuller Vol01-08만 대상 — frozen baseline 무접촉).
+  오염 후보 2,645건(전체 claims의 ~10.1%) → repaired 2,272(85.9%)/residual
+  359(13.6%, `needs_review=cjk_residual` 플래그)/failed 14(0.5%, LLM
+  timeout, 원문 유지). `claim_raw` 전량 보존, drift guard 적용, doctrine/
+  scriptures/citations/is_claim/page/paragraph/sentence 불변. 커밋
+  `fbdc5b8`, `dev/dbma-engine` push 완료.
+- **현재 상태**: F3(인간검수) 이전 — Qdrant 미반영, 검색·프로덕션 앱 동작에
+  영향 없음(Amendment A §8 게이트 유지). 관련 PR: F4/F5/F6 준비(#27)·
+  침례교 주석 reference-track 준비(#28) 둘 다 2026-09-15 병합 완료(코드만,
+  `--apply`/`modules.nae_pd.enabled` 미실행·false 유지).
+- **다음 필요 결정**: F3 착수 범위(전량 vs 표본) — HQ 결정 대기.
+
 **[2026-09-18 HQ 결정] 프로덕션 코퍼스 "1,363건 영구 동결" 결정 해지 — 아래 2026-09-15
 항목의 "재개하지 말 것"을 철회한다.**
 - **해지 범위**: 2026-09-15 항목이 선언한 "코퍼스는 축소된 상태(1,363 TSU)로 영구
