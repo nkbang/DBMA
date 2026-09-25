@@ -15,12 +15,11 @@ APP_PATH = os.path.join(os.path.dirname(__file__), "..", "ui", "app.py")
 
 
 @pytest.fixture(autouse=True)
-def _isolate_user_prefs(tmp_path, monkeypatch):
-    """dismiss_onboarding()이 실제 프로젝트 output 디렉터리를 오염시키지
-    않도록 prefs 파일 경로를 임시 디렉터리로 돌린다."""
-    monkeypatch.setattr(
-        core.user_prefs, "_PREFS_PATH", str(tmp_path / "user_prefs.json")
-    )
+def _isolate_user_prefs(monkeypatch):
+    """dismiss_onboarding()은 프로세스 메모리(core.user_prefs._prefs)에
+    남는다 — 테스트끼리 그 상태를 공유하지 않도록 매 테스트마다 새
+    dict로 초기화한다."""
+    monkeypatch.setattr(core.user_prefs, "_prefs", {})
 
 
 def _run_onboarding() -> AppTest:

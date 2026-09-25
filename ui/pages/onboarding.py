@@ -66,6 +66,25 @@ main > .stMarkdown {
 }
 
 /* ── Hero ────────────────────────────────────────────────── */
+/* 둥근 사각형 카드 프레임 — 히어로 텍스트 + CTA 버튼까지 감싼다.
+   st.container(key="hero_card")가 실제 DOM 부모이므로 Streamlit이 붙여
+   주는 `st-key-hero_card` 클래스를 타겟팅한다(st.markdown으로 연 <div>를
+   별도 호출로 닫는 방식은 DOM 매칭이 안 돼 버튼이 카드 밖으로 샜었다).
+   .nae-card(기능 카드)/.nae-hero-illustration과 같은 톤(#c3c7c7 테두리,
+   흰 배경, 은은한 그림자)으로 통일했다. 좌우/위 패딩은 안쪽 .nae-hero가
+   이미 갖고 있어(96px 24px 64px) 프레임 자체엔 두지 않는다 — 이중 패딩
+   방지. 버튼 행 아래 여백만 프레임의 padding-bottom으로 준다. 일러스트/
+   기능카드/인용문 섹션은 각자 이미 고유 프레임이 있어 그대로 바깥에
+   둔다(카드 속 카드 방지). */
+.st-key-hero_card {
+    max-width: 896px;
+    margin: 48px auto 0;
+    padding-bottom: 48px;
+    background: #ffffff;
+    border: 1px solid #c3c7c7;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.03);
+}
 .nae-hero {
     text-align: center;
     padding: 96px 24px 64px;
@@ -464,34 +483,40 @@ def render_onboarding_page() -> None:
         st.session_state["nav_page"] = "Library" if nav_library else "Research"
         st.rerun()
 
-    # ── Hero ─────────────────────────────────────────────────
-    st.markdown(
-        """
-        <div class="nae-hero">
-            <div style="margin-bottom: 48px;">
-                <div class="classical-title">內書齋</div>
-                <div class="classical-subtitle">내서재</div>
+    # ── Hero (둥근 사각형 카드 프레임으로 감쌈) ────────────────
+    # st.markdown으로 연 <div>를 이후 별도 호출로 닫는 방식은 DOM상
+    # 매칭이 안 돼 버튼이 카드 밖으로 새어나간다 — st.container(key=...)로
+    # 감싸야 안의 마크다운+버튼 위젯이 실제로 같은 부모 밑에 들어가고,
+    # CSS도 Streamlit이 자동으로 붙여주는 `st-key-hero_card` 클래스로
+    # 그 컨테이너 자체를 타겟팅할 수 있다.
+    with st.container(key="hero_card"):
+        st.markdown(
+            """
+            <div class="nae-hero">
+                <div style="margin-bottom: 48px;">
+                    <div class="classical-title">內書齋</div>
+                    <div class="classical-subtitle">내서재</div>
+                </div>
+                <div class="headline" style="text-align: center;">책이 답하고,<br>기록이 말합니다.</div>
+                <p class="subheadline">
+                    개인의 자료와 연구를 하나의 지식으로 연결하는<br>
+                    목회자를 위한 AI 연구실
+                </p>
             </div>
-            <div class="headline" style="text-align: center;">책이 답하고,<br>기록이 말합니다.</div>
-            <p class="subheadline">
-                개인의 자료와 연구를 하나의 지식으로 연결하는<br>
-                목회자를 위한 AI 연구실
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True,
+        )
 
-    # ── Hero Actions ─────────────────────────────────────────
-    _, btn_col1, btn_col2, _ = st.columns([2, 1.4, 1.4, 2])
-    with btn_col1:
-        start_clicked = st.button(
-            "연구 시작하기", use_container_width=True, type="primary", key="hero_start"
-        )
-    with btn_col2:
-        load_clicked = st.button(
-            "자료 불러오기", use_container_width=True, key="hero_load"
-        )
+        # ── Hero Actions ─────────────────────────────────────
+        _, btn_col1, btn_col2, _ = st.columns([2, 1.4, 1.4, 2])
+        with btn_col1:
+            start_clicked = st.button(
+                "연구 시작하기", use_container_width=True, type="primary", key="hero_start"
+            )
+        with btn_col2:
+            load_clicked = st.button(
+                "자료 불러오기", use_container_width=True, key="hero_load"
+            )
 
     if start_clicked or load_clicked:
         dismiss_onboarding()
