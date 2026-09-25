@@ -35,9 +35,6 @@ from ui.pages.help import render_help_page
 from core.user_prefs import has_dismissed_onboarding
 
 
-# 사이드바 브랜드 워드마크 "내서재" — 클릭 시 앱 메인(Dashboard)으로 이동.
-
-
 def main() -> None:
     """Main application entry point."""
 
@@ -231,8 +228,19 @@ def _render_sidebar() -> str:
         The selected page name.
     """
     with st.sidebar:
-        # 브랜드 워드마크 "내서재 / NAE" — 클릭하면 앱 메인(Dashboard)으로 이동.
-        if st.button("내서재", key="sidebar_brand_link", help="메인으로 돌아가기"):
+        # 브랜드 워드마크 "내서재 / NAE" — 클릭하면 앱 내부 초기 랜딩
+        # 화면(대시보드/홈)으로 돌아간다. 예전에는 서버 프로세스에서
+        # webbrowser.open()으로 Stitch 목업 정적 파일(file:// 경로)을
+        # 별도 브라우저 탭으로 열었으나, 이는 실행 중인 앱과 무관한
+        # 죽은 목업일 뿐이라 사용자에게는 "홈으로 안 가고 엉뚱한 파일
+        # 경로가 열린다"는 버그로 보였다(2026-09-24 버그 리포트).
+        # 다른 quick-action 버튼들과 동일한 nav_page 전환 패턴으로 교체.
+        #
+        # st.button에 key를 주면 Streamlit이 감싸는 컨테이너에
+        # `st-key-<key>` CSS 클래스를 붙여준다(1.58 button.py docstring에
+        # 문서화된 안정 선택자). 그걸로 버튼 크롬을 걷어내 원래
+        # .nae-sidebar-name 워드마크(28px/600)처럼 보이게 한다.
+        if st.button("내서재", key="sidebar_brand_link", help="홈으로 이동"):
             st.session_state["nav_page"] = "Dashboard"
             st.rerun()
 
