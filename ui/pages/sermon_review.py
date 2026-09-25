@@ -5,9 +5,14 @@ core.multi_doc_splitter.split_sermon_collection()으로 분리한 뒤,
 날짜(주일)별로 — 같은 날짜에 여러 설교가 있으면 제목별로 — 한 편씩
 넘겨보며 검수하는 뷰어.
 
-Scope: 이 페이지는 리뷰(읽기)만 담당한다. 분리된 설교를 실제 TSU/
-identity_registry에 개별 문서로 등록하는 단계는 별도 범위(아직 미구현,
-2026-07-24 세션에서 명시적으로 범위 밖으로 남김).
+분리된 설교는 개별 문서로 저장할 수 있다(2026-07-24, save_sermon_record()
+사용) — data/RAW/설교_분리/ 밑에 .md로 써서 기존 Processing 파이프라인이
+다른 RAW 파일과 동일하게 인식하게 하는 설계로, 새 인제스트 경로를 따로
+만들지 않는다. 자동 분리 직후 제목/날짜/성구가 갖춰진 설교는 일괄 자동
+저장되고(_auto_save_records), 개별 설교도 화면에서 바로 저장 가능하다
+(_render_save_as_document). TSU/identity_registry 등록 자체는 이 저장된
+RAW 파일이 Processing 페이지를 거쳐 처리될 때 이루어진다 — 이 페이지는
+분리·검수·RAW 저장까지만 담당한다.
 """
 
 from pathlib import Path
