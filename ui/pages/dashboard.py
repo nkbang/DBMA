@@ -14,6 +14,7 @@ from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from core.config import APP_VERSION, APP_NAME, DEFAULT_RAW_DIR
 from core.execution_context import ExecutionContext
+from core.raw_folder_watcher import maybe_check_new_raw_files
 
 
 def render_dashboard_page() -> None:
@@ -31,6 +32,7 @@ def render_dashboard_page() -> None:
     _render_dashboard_search()
     _render_quick_actions()
     _render_status_banner()
+    _render_new_raw_files_notice()
     _render_continue_reading_card()
     _render_recent_search_card()
     _render_recent_materials()
@@ -132,6 +134,41 @@ def _render_status_banner() -> None:
     </div>
     """
     st.markdown(html, unsafe_allow_html=True)
+
+
+def _render_new_raw_files_notice() -> None:
+    """[ADR-035 §3.1 항목1] RAW 폴더에 Finder 등으로 직접 넣은(업로드
+    UI를 거치지 않은) 새 파일을 감지해 알림만 띄운다 — 자동으로
+    처리하지 않는다. "처리하기" 클릭 시 Processing 화면으로 이동해
+    사용자가 원클릭으로 확인·실행한다(기존 "문서 처리 시작" 버튼과
+    동일 경로, 새 처리 로직을 만들지 않음).
+
+    core/raw_folder_watcher.py::maybe_check_new_raw_files()가 하루 1회로
+    폴링을 제한하므로, 오늘 이미 확인했으면 이 함수는 아무것도 하지
+    않는다(반환값 None) — 이 경우 세션에 남은 이전 결과(있다면)로
+    계속 배너를 보여준다."""
+    result = maybe_check_new_raw_files()
+    if result is not None:
+        st.session_state["_new_raw_files_cache"] = result
+    new_files = st.session_state.get("_new_raw_files_cache") or []
+
+    if not new_files:
+        return
+
+    with st.container(border=True):
+        cols = st.columns([5, 2])
+        with cols[0]:
+            st.markdown(f"**새 파일 {len(new_files)}건 발견** — RAW 폴더에 직접 추가된 문서입니다.")
+            st.caption(", ".join(f["name"] for f in new_files[:5]) + (" 외" if len(new_files) > 5 else ""))
+        with cols[1]:
+            st.button(
+                "처리하기",
+                type="primary",
+                use_container_width=True,
+                on_click=_go_to,
+                args=("Processing",),
+                key="new_raw_files_go_process",
+            )
 
 
 def _render_quick_actions() -> None:
