@@ -1,0 +1,36 @@
+id: PEB-SERMON-001
+version: 0.1
+title: John 3 new birth research
+persona: peb/persona/pastor.yaml
+goal:
+  statement: >
+    요한복음 3장 1-10절을 연구하여 니고데모에게 예수님께서
+    거듭남을 말씀하신 의미를 이해하고, 에스겔 36장과의
+    연결을 확인한 뒤 설교 준비에 사용할 중심 명제를 정리한다.
+workflow:
+  - id: W1
+    objective: start_research
+    user_intent: >
+      요한복음 3장 1-10절에서 니고데모에게 예수님이
+      거듭남을 말씀하신 이유를 연구하고 싶다.
+  - id: W2
+    objective: inspect_evidence
+    user_intent: >
+      검색 결과 가운데 실제 근거가 되는 자료를 확인하고 싶다.
+  - id: W3
+    objective: biblical_connection
+    user_intent: >
+      에스겔 36장과 요한복음 3장의 연결을 확인하고 싶다.
+  - id: W4
+    objective: synthesis
+    user_intent: >
+      확인된 근거를 바탕으로 설교의 중심 명제를 정리하고 싶다.
+limits:
+  max_steps: 12
+  finish_when: research_goal_satisfied
+ui:
+  expected_start:
+    page_text_contains:
+      - 연구
+      - 채팅
+  preferred_view: 연구
