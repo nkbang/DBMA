@@ -53,6 +53,21 @@ def resolve_step_action(
         return retry_action, True, True
 
     return retry_action, False, True
+def check_success_criteria(scenario: dict[str, Any], observation: str) -> bool:
+    """Check if scenario's success_criteria are met. Returns True if all conditions satisfied."""
+    criteria = scenario.get("success_criteria")
+    if not criteria or criteria.get("type") != "observation_contains":
+        return False
+    
+    conditions = criteria.get("conditions", [])
+    for cond in conditions:
+        field = cond.get("field", "")
+        contains = cond.get("contains", "")
+        if field == "body_text" and contains not in observation:
+            return False
+    return True
+
+
 
 class BrowserDriver:
     def __init__(self, base_url: str, recorder: SessionRecorder,
@@ -92,11 +107,32 @@ class BrowserDriver:
 
         if kind == "ask":
             text = action.get("text", "")
-            field = self.page.get_by_label("검색어", exact=True)
-            await field.fill(text)
-            await self.page.get_by_role(
-                "button", name=re.compile("검색 실행")
-            ).click()
+            
+            # Chat page textarea (primary) — placeholder="질문을 입력하세요..."
+            field = self.page.get_by_placeholder("질문을 입력하세요...")
+            if await field.count() > 0:
+                try:
+                    await field.fill(text)
+                    send_btn = self.page.get_by_role("button", name="Send message")
+                    try:
+                        await send_btn.click()
+                    except Exception:
+                        pass  # button may be disabled during processing
+                except Exception:
+                    pass  # fill failed, continue to fallback
+            else:
+                # Fallback: Dashboard search input — placeholder="문서, 저자, 주제 또는 성경 구절 검색..."
+                field = self.page.get_by_placeholder(
+                    "문서, 저자, 주제 또는 성경 구절 검색..."
+                )
+                if await field.count() > 0:
+                    try:
+                        await field.fill(text)
+                        await self.page.get_by_role(
+                            "button", name="질문하기"
+                        ).click()
+                    except Exception:
+                        pass  # fill failed, continue gracefully
 
         elif kind == "click":
             target = action.get("target") or action.get("text")
@@ -128,6 +164,16 @@ async def run_browser(scenario: dict[str, Any], planner: Any,
                 "step": step,
                 "text": observation,
             })
+            
+            # Check success criteria before planning next action
+            if check_success_criteria(scenario, observation):
+                recorder.record({
+                    "event": "success_criteria_met",
+                    "step": step,
+                    "observation_preview": observation[:500],
+                })
+                return {"status": "COMPLETED", "steps": step, "reason": "success_criteria_met"}
+            
             action, should_execute, was_blocked = resolve_step_action(
                 planner, scenario, observation, history, last_signature,
             )
