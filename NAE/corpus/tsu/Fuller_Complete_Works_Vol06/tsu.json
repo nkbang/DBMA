@@ -7434,14 +7434,16 @@
     "paragraph": 395,
     "sentence": 1,
     "source_text": "Myriads of myriads, a number that no man could number, unite in ascribing worthiness to the Lamb, and that on the same ground as redeemed men had done, namely, his having been '* slain :\" a proof this of disinterested affection, both to the Redeemer and the redeemed.",
-    "claim": "수많은 천사들이 어린 양을 죽임을 받으신 것에 대한 이유로 찬양하며, 그에게 합당성을 돌リ며, 이는 구원받은 사람들과 같은 이유로 찬양한다.",
+    "claim": "수많은 천사들이 어린 양을 죽임을 받으신 것에 대한 이유로 찬양하며, 그에게 합당성을 돌리며, 이는 구원받은 사람들과 같은 이유로 찬양한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "수많은 천사들이 어린 양을 죽임을 받으신 것에 대한 이유로 찬양하며, 그에게 합당성을 돌リ며, 이는 구원받은 사람들과 같은 이유로 찬양한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023217",
@@ -8547,14 +8549,16 @@
     "paragraph": 441,
     "sentence": 2,
     "source_text": "And power was given iinto them, over the fourth part of the earth, to kill with sword, and with hunger, and with death, and with the beasts of the earth.",
-    "claim": "사タン은 죽음과 지옥을 통해 땅의 사분의 일에 대한 권력을 가지고 죽음과 기근과 땅의 짐승을 통해 사람들을 죽이도록 허락받았다.",
+    "claim": "사탄은 죽음과 지옥을 통해 땅의 사분의 일에 대한 권력을 가지고 죽음과 기근과 땅의 짐승을 통해 사람들을 죽이도록 허락받았다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사タン은 죽음과 지옥을 통해 땅의 사분의 일에 대한 권력을 가지고 죽음과 기근과 땅의 짐승을 통해 사람들을 죽이도록 허락받았다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023267",
@@ -12773,14 +12777,16 @@
     "paragraph": 600,
     "sentence": 5,
     "source_text": "On hearing them, John was about to write, but is told by a voice from heaven to \"seal up the things which the thunders uttered, and write them not.\" The thunders then were not mere sounds but certaia \" things,\" which though they were not at present to be disclosed, yet in due time should be fulfilled.",
-    "claim": "요한은 гром의 음성을 듣고 기록하려 했지만 하늘로부터의 음성이 그것을 봉인하고 기록하지 말라고 말한다.",
+    "claim": "요한은 우레의 음성을 듣고 기록하려 했지만 하늘로부터의 음성이 그것을 봉인하고 기록하지 말라고 말한다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "요한은 гром의 음성을 듣고 기록하려 했지만 하늘로부터의 음성이 그것을 봉인하고 기록하지 말라고 말한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023457",
@@ -14492,7 +14498,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "알비게енс는 1160년 이후 곧 와ルド의 추종자들의 신앙을 수용하였다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0023534",
@@ -15413,7 +15422,7 @@
     "paragraph": 694,
     "sentence": 0,
     "source_text": "After the suppression of the Bohemians, for nearly a hundred years, true religion was in a manner crushed.",
-    "claim": "진정한 종교는 약 100년 동안 подав려져 있었다.",
+    "claim": "진정한 종교는 약 100년 동안 억압되어 있었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [
@@ -15422,7 +15431,9 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "진정한 종교는 약 100년 동안 подав려져 있었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023576",
@@ -15806,7 +15817,7 @@
     "paragraph": 704,
     "sentence": 4,
     "source_text": "No reason can be given why the seceding Northern nations should be called *' a tenth part of Ihe city;\" nor do any events which attended the Reformation appear to correspond with the slaughter of \"7000 names of men.\" If the tenth part of the city fell as early as the Reformation, the seventh angel must have sounded his trumpet •' quickly\" after it ; and this some writers, who believed the for- mer, have very consistently maintained, conceiving also that the Millennium commenced, or would commence, towards the middle of the eighteenth century.",
-    "claim": "개혁과 관련된 사건들이 성경에 기록된 도시의十分일 부분과 7000명의 이름에 대한 예언과 일치하지 않는다.",
+    "claim": "개혁과 관련된 사건들이 성경에 기록된 도시의 열 부분과 7000명의 이름에 대한 예언과 일치하지 않는다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -15815,8 +15826,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "개혁과 관련된 사건들이 성경에 기록된 '도시의十分일 phần'과 '7000명의 이름'에 대한 예언과 일치하지 않는다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023593",
@@ -16960,7 +16970,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "진정한 기독교인들은 항상 그리스도의 왕국을 확장하려는 жел로 구별된다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0023644",
@@ -18608,14 +18621,16 @@
     "paragraph": 797,
     "sentence": 2,
     "source_text": "Such has been the state of the Protestants in all popish countries ; such has been their state in France from the revocation of the Edict of Nantes in 1685, to the Revolution in 1789, though of late they were treated with less severity than formerly, being allowed to meet in the day-time, only under mili- tary inspection.",
-    "claim": "개신교도들은 가톨릭 국가들에서 역사적으로 박해를 받아 왔으며, 프랑스의 나нт 조약 폐지에서부터 1789년 혁명까지 특히 심한 박해를 받았다.",
+    "claim": "개신교도들은 가톨릭 국가들에서 역사적으로 박해를 받아 왔으며, 프랑스의 난트 조약 폐지에서부터 1789년 혁명까지 특히 심한 박해를 받았다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "개신교도들은 가톨릭 국가들에서 역사적으로 박해를 받아 왔으며, 프랑스의 나нт 조약 폐지에서부터 1789년 혁명까지 특히 심한 박해를 받았다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023718",
@@ -19672,7 +19687,7 @@
     "paragraph": 824,
     "sentence": 2,
     "source_text": "The church of God on earth,. rela- tively considered, or as being his *' tabernacle,\" possesses a sacrei character.",
-    "claim": "지上的 교회는 상대적으로 또는 하나님의 성소로 간주될 때 성스러운 특성을 가지고 있다.",
+    "claim": "지上的 교회는 상대적으로 또는 하나님의 성소로 간주될 때 거룩한 특성을 가지고 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -22526,14 +22541,16 @@
     "paragraph": 925,
     "sentence": 3,
     "source_text": "The song they sing is that of \" Hoses and the Lamb.\" As the song of Moses at the Red Se? magnified the victory of the Lord over the Egyptians, so this song will cele- brate the triumph of the Lamb and of his followers over enemies of a similar character.",
-    "claim": "하늘의 합창단이 노래하는 노래는 '모세와 어린 양'의 노래로서, 모세의 노래가 적인 이집트인 над 위에서 승리한 것을 찬양한 것처럼, 이 노래는 어린 양과 그의 추종자들이 유사한 성격의 적들 над에서 승리하는 것을 기념할 것이다.",
+    "claim": "하늘의 합창단이 노래하는 노래는 '모세와 어린 양'의 노래로서, 모세의 노래가 적인 이집트인 위에서 승리한 것을 찬양한 것처럼, 이 노래는 어린 양과 그의 추종자들이 유사한 성격의 적들 위에서 승리하는 것을 기념할 것이다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하늘의 합창단이 노래하는 노래는 '모세와 어린 양'의 노래로서, 모세의 노래가 적인 이집트인 над 위에서 승리한 것을 찬양한 것처럼, 이 노래는 어린 양과 그의 추종자들이 유사한 성격의 적들 над에서 승리하는 것을 기념할 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023894",
@@ -23935,7 +23952,7 @@
     "paragraph": 985,
     "sentence": 0,
     "source_text": "Preparatory to this great day we have The mustering of the forces — \" Three unclean spirits like frogs,\" are described as going forth amongst the nations to gather them together ; one from the mouth of the dragon, another from that of the beast, and another from that of the false prophet.",
-    "claim": "세 개의 불결한 영, 개구리 같은 것,가 용의 입과 짐승의 입과 거짓 예언者の 입에서 나와서 각국을 모으기 위해 땅에 두루 다니는 것으로 묘사된다.",
+    "claim": "세 개의 불결한 영, 개구리 같은 것,가 용의 입과 짐승의 입과 거짓 예언자의 입에서 나와서 각국을 모으기 위해 땅에 두루 다니는 것으로 묘사된다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -23944,8 +23961,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "세 개의 불결한 영, 개구리 같은 것,가 드래곤의 입과 짐승의 입과 거짓 先知의 입에서 나와서 각국을 모으기 위해 땅에 두루 다니는 것으로 묘사된다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0023957",
@@ -27564,7 +27580,7 @@
     "paragraph": 1089,
     "sentence": 6,
     "source_text": "They were therefore fellow-labourers in the same cause, and must not worship one another, but God.",
-    "claim": "同じ 목적의 위해 공동으로 일하는 사람들은, 서로 경배해서는 안 되며, 하나님만을 경배해야 한다",
+    "claim": "같은 목적의 위해 공동으로 일하는 사람들은, 서로 경배해서는 안 되며, 하나님만을 경배해야 한다",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -27573,8 +27589,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "同じ目的のために共同して働く者たちは、互いに礼拝してはならず、神のみを礼拝しなければならない",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024120",
@@ -28859,7 +28874,7 @@
     "paragraph": 1135,
     "sentence": 0,
     "source_text": "We have seen the taking of the beast and the false prophet, and in that the fall of Babylon : but the principal mover in the confed- eracy is the dragon, and of him no mention was made in the battle before described.",
-    "claim": "용과 거짓 예언者の 패배는 바벨론의 몰락을 의미하지만, 그 연합의 주요 주도자는 용이며, 이전에 묘사된 전투에서 용에 대한 언급은 없었다.",
+    "claim": "용과 거짓 예언가의 패배는 바벨론의 몰락을 의미하지만, 그 연합의 주요 주도자는 용이며, 이전에 묘사된 전투에서 용에 대한 언급은 없었다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -28868,8 +28883,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "용과 거짓 先知의 패배는 바벨론의 몰락을 의미하지만, 그 연합의 주요 주도자는 용이며, 이전에 묘사된 전투에서 용에 대한 언급은 없었다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024178",
@@ -29816,14 +29830,16 @@
     "paragraph": 1159,
     "sentence": 0,
     "source_text": "enmity ngainst God and religion as they possessed at death : but as to their being able to collect together, and to encompass the church of God in hope of destroying it, the idea is gross and inadmissible.",
-    "claim": "사タン과 하나님에 대한 적개심을 가지고 죽은 자들이 하나님의 교회를 파괴하기 위해 모일 수 있는 것은 아님",
+    "claim": "사탄과 하나님에 대한 적개심을 가지고 죽은 자들이 하나님의 교회를 파괴하기 위해 모일 수 있는 것은 아님",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사タン과 하나님에 대한 적개심을 가지고 죽은 자들이 하나님의 교회를 파괴하기 위해 모일 수 있는 것은 아님",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024219",
@@ -31209,14 +31225,16 @@
     "paragraph": 1192,
     "sentence": 1,
     "source_text": "H And death and hell zvere cast into the lake of fire.",
-    "claim": "사タン과 그의 추종자들은 불의 호수에 던져질 것",
+    "claim": "사탄과 그의 추종자들은 불의 호수에 던져질 것",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사タン과 그의 추종자들은 불의 호수에 던져질 것",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024281",
@@ -31483,14 +31501,16 @@
     "paragraph": 1199,
     "sentence": 0,
     "source_text": "\" Death and hell (or tiie grave ) were cast into the lake of fire.\" Death and the grave are things which belong to time, and whicli, as rivers are lost in the ocean, will now be swallowed up in eter- nity.",
-    "claim": "사タン과 사망과 음부는 불의 호수에 던져질 것",
+    "claim": "사탄과 죽음과 지옥은 불의 호수에 던져질 것",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사タン과 사망과 음부는 불의 호수에 던져질 것",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024293",
@@ -35259,14 +35279,16 @@
     "paragraph": 1305,
     "sentence": 3,
     "source_text": "Then the judgment having sat upon the little horn, and his dominion being taken away, the king, dom, and dominion, and the greatness of the kingdom under the whole heaven, shall be given to the people of the saints of the Mogt High, whose kingdom is an everlasting kingdom, and all dominioni shall serve and obey him.",
-    "claim": "마지막 때에 성도들의 백성이 영원한 왕국을 받고, 모든 권세가 그들에게 주어짐으로써 하나님께 служ고 복종하게 될 것",
+    "claim": "마지막 때에 성도들의 백성이 영원한 왕국을 받고, 모든 권세가 그들에게 주어짐으로써 하나님께 섬기고 복종하게 될 것",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "마지막 때에 성도들의 백성이 영원한 왕국을 받고, 모든 권세가 그들에게 주어짐으로써 하나님께 служ고 복종하게 될 것",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024461",
@@ -37218,14 +37240,17 @@
     "paragraph": 1432,
     "sentence": 0,
     "source_text": "In a letter to Mrs. Pearce, from Plymouth, dated Sept, 2, 1794, the dark side of the cloud seems towards him : — \" I have felt much barrenness,\" says he, \" as to spiritual things, since I have been here, compared with my usual frame at home ; and it is a poor exchange to enjoy the creature at the expense of the Creator's presence.",
-    "claim": "영적 사물에 대한 khôoyoğunluk을 느끼고 있으며, 창조물의 즐거움을 창조주의 현존의 대가로 바꾸는 것은 가치がない 것으로 보인다.",
+    "claim": "영적 사물에 대한 깊이를 느끼고 있으며, 창조물의 즐거움을 창조주의 현존의 대가로 바꾸는 것은 가치がない 것으로 보인다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "영적 사물에 대한 khôoyoğunluk을 느끼고 있으며, 창조물의 즐거움을 창조주의 현존의 대가로 바꾸는 것은 가치がない 것으로 보인다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0024549",
@@ -44081,14 +44106,16 @@
     "paragraph": 1864,
     "sentence": 2,
     "source_text": "I dare not pray with impor- tunity for any earthly good ; for ' who knoweth what is good for man in this life, all the days of his vain life which he spendeth as A shadow V Bat strength to bear the loss of earthly comforts, he has promised : for that I importune ; and Ihat^ I doubt not, will be granted.",
-    "claim": "지상적인 благ을 위해 고집스럽게 기도할 수 없다. 그러나 지상적인 위안을 잃었을 때 그것을 견딜 수 있는 힘을 주시겠다고 약속하셨기 때문에, 그것을 위해 고집스럽게 기도한다.",
+    "claim": "지상적인 복을 위해 고집스럽게 기도할 수 없다. 그러나 지상적인 위안을 잃었을 때 그것을 견딜 수 있는 힘을 주시겠다고 약속하셨기 때문에, 그것을 위해 고집스럽게 기도한다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "지상적인 благ을 위해 고집스럽게 기도할 수 없다. 그러나 지상적인 위안을 잃었을 때 그것을 견딜 수 있는 힘을 주시겠다고 약속하셨기 때문에, 그것을 위해 고집스럽게 기도한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024858",
@@ -44261,7 +44288,7 @@
     "paragraph": 1874,
     "sentence": 2,
     "source_text": "No, this is not our rest ; it is polluted with sin, and dashed with sorrow : but though our pains in themselves are evil, yet our God turns the curse into a blessing, and makes all that we meet with accomplish our good.",
-    "claim": "지구上的 삶은 우리의 진정한 안식처가 아니며, 하나님은 우리가 겪는 고통과 어려움을 축복으로 바꾸시고 우리의 선을 이루게 하신다.",
+    "claim": "지구 위의 삶은 우리의 진정한 안식처가 아니며, 하나님은 우리가 겪는 고통과 어려움을 축복으로 바꾸시고 우리의 선을 이루게 하신다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
@@ -44270,8 +44297,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "지구上的 삶은 우리의真正한 안식처가 아니며, 하나님은 우리가 겪는 고통과 어려움을祝福으로 바꾸시고 우리의 선을 이루게 하신다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024866",
@@ -45300,14 +45326,16 @@
     "paragraph": 2061,
     "sentence": 6,
     "source_text": "I thank him that ever he took me into his service ; and now, if he see fit to give me a discharge, I submit.\"",
-    "claim": "하나님께서 나를 자신의 служ시에 불러주신 것을 감사하며, 이제 하나님께서 나를 해임시키시려면 순종하겠습니다.",
+    "claim": "하나님께서 나를 자신의 봉사에 불러주신 것을 감사하며, 이제 하나님께서 나를 파면시키시려면 순종하겠습니다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님께서 나를 자신의 служ시에 불러주신 것을 감사하며, 이제 하나님께서 나를 해임시키시려면 순종하겠습니다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0024913",
@@ -48762,14 +48790,16 @@
     "paragraph": 2354,
     "sentence": 6,
     "source_text": "Three examples of virtue and goodness ; exhibiting the genuine influences of the true religion of Jesus before the world —Perhaps three mothers training up to lead three future fi^milies in the way to heaven.",
-    "claim": "세 명의 어머니가 세 가정을 천국으로 인도하는 길을 가르치는 진정한 예수님의 종교의 영향력을 세상에 보여주는 добродетели와 선함의 세 가지 예",
+    "claim": "세 명의 어머니가 세 가정을 천국으로 인도하는 길을 가르치는 진정한 예수님의 종교의 영향력을 세상에 보여주는 덕과 선함의 세 가지 예",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "세 명의 어머니가 세 가정을 천국으로 인도하는 길을 가르치는 진정한 예수님의 종교의 영향력을 세상에 보여주는 добродетели와 선함의 세 가지 예",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025069",
@@ -49493,7 +49523,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "창조주가 반역하는 인간들을 사랑하여 왕좌를 십자가와 교환하고, 그로써 파괴된 세계를 하나님께 примир했다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0025101",
@@ -49730,14 +49763,16 @@
     "paragraph": 2395,
     "sentence": 1,
     "source_text": "We should yield ourselves to its influence without reserve.",
-    "claim": "그리스도의 복음이 참이라면, 우리는 그 влия력에 무조건적으로 자신을 내어 맡겨야 한다.",
+    "claim": "그리스도의 복음이 참이라면, 우리는 그 영향력에 무조건적으로 자신을 내어 맡겨야 한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도의 복음이 참이라면, 우리는 그 влия력에 무조건적으로 자신을 내어 맡겨야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025112",
@@ -51978,14 +52013,16 @@
     "paragraph": 2527,
     "sentence": 1,
     "source_text": "What melancholy ravages does he make, even in this world !",
-    "claim": "사タン은 이 세상을 멸망시키고 모든 영광을 더럽히며 하나님의 작품을 파괴한다.",
+    "claim": "사탄은 이 세상을 멸망시키고 모든 영광을 더럽히며 하나님의 작품을 파괴한다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사タン은 이 세상을 멸망시키고 모든 영광을 더럽히며 하나님의 작품을 파괴한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025214",
@@ -53546,14 +53583,16 @@
     "paragraph": 2549,
     "sentence": 1,
     "source_text": "The total destruction of death is laid in the irreversible counsel of the Most High.",
-    "claim": "사タン과 사망의 완전한 파괴는 하나님의 불변하는 계획에 의해 이루어진다.",
+    "claim": "사탄과 죽음의 완전한 파괴는 하나님의 불변하는 계획에 의해 이루어진다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사タン과 사망의 완전한 파괴는 하나님의 불변하는 계획에 의해 이루어진다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025284",
@@ -55188,14 +55227,16 @@
     "paragraph": 2597,
     "sentence": 5,
     "source_text": "While he abode among us, his affections were evidently and eminently in heaven ; his work, his family, and his people, were the only objects of regard, which made him willing to forego the bliss of the eternal world : and when he perceived that it was the Lord's will that he should depart, your welfare vvas still his chief concern.",
-    "claim": "그의 감정은 명백하게 하늘에 있었고, 그의 일, 가족, 그리고 그의 백성들이 영원한 세계의 бл리스를 포기하게 만든 유일한 고려 대상이었다.",
+    "claim": "그의 감정은 명백하게 하늘에 있었고, 그의 일, 가족, 그리고 그의 백성들이 영원한 세계의 행복을 포기하게 만든 유일한 고려 대상이었다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그의 감정은 명백하게 하늘에 있었고, 그의 일, 가족, 그리고 그의 백성들이 영원한 세계의 бл리스를 포기하게 만든 유일한 고려 대상이었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025358",
@@ -56412,14 +56453,16 @@
     "paragraph": 2626,
     "sentence": 5,
     "source_text": "You will gladly consecrate the gain of your merchandise to the Lord, and honour him with your substance.",
-    "claim": "신자는 모든 물질적 이익을 주님께 드려 그로 말미암아 하나님께 영광을 돌リ야 한다.",
+    "claim": "신자는 모든 물질적 이익을 주님께 드려 그로 말미암아 하나님께 영광을 돌려야 한다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "신자는 모든 물질적 이익을 주님께 드려 그로 말미암아 하나님께 영광을 돌リ야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025413",
@@ -57190,14 +57233,16 @@
     "paragraph": 2640,
     "sentence": 0,
     "source_text": "Let then the expectation that this promise will be accomplished, moderate your sorrows, on the present occasion, and on all others, and direct them into a proper channel.",
-    "claim": "하나님의 약속이 이루어질 것이라는 기대가 현재의 슬픔과 다른 모든 슬픔을 완화시키고, 그것을 올바른 방향으로 направ혀야 한다.",
+    "claim": "하나님의 약속이 이루어질 것이라는 기대가 현재의 슬픔과 다른 모든 슬픔을 완화시키고, 그것을 올바른 방향으로 나아가야 한다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님의 약속이 이루어질 것이라는 기대가 현재의 슬픔과 다른 모든 슬픔을 완화시키고, 그것을 올바른 방향으로 направ혀야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025448",

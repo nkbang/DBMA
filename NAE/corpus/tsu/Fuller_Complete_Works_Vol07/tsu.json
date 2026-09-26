@@ -4352,7 +4352,7 @@
     "paragraph": 122,
     "sentence": 4,
     "source_text": "All your forefa- thers acted upon a principle which you seem about to abandon.",
-    "claim": "그들의 조상들은 하나님을 믿음으로 행하였는데, 너희는似乎要放弃这种原则",
+    "claim": "그들의 조상들은 하나님을 믿음으로 행하였는데, 너희는 거의 이런 원칙을 포기하려는 것 같다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -4361,8 +4361,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "그들의 조상们은 하나님을 믿음으로 행하였는데,你们似乎要放弃这种原则",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025790",
@@ -4773,7 +4772,7 @@
     "paragraph": 129,
     "sentence": 0,
     "source_text": "* May not the great disputes which have taken place concern mg faith and reason, as if the one were opposite to the other, have arisen, in a great degree, from using the term reason without defining it ?",
-    "claim": "성경과 이성의 대립으로 인한 큰 논쟁은 이성을 정의하지 않고 사용한 결과에 부분적으로 起因한다",
+    "claim": "성경과 이성의 대립으로 인한 큰 논쟁은 이성을 정의하지 않고 사용한 결과에 부분적으로 원인이 된다",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
@@ -4782,8 +4781,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "성경과 이성의 대립으로 인한 큰 논쟁은 이성이라는 용어를 정의하지 않고 사용한 결과에部分적으로起因한다",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025809",
@@ -6000,7 +5998,7 @@
     "paragraph": 151,
     "sentence": 7,
     "source_text": "We speak of his personal excellencies, divine and human ; of his love, zeal, right- eousness, meekness, patience, kc. but what know we of them * We rejoice in his being constituted our surety, to obey the law, and endure the curse in our stead ; but how know we that so in- deed it is.",
-    "claim": "우리는 예수 그리스도의 개인적德목과 그의 사랑, 열정, 의, 겸손, 인내 등에 대해 말하지만 실제로 그것을 얼마나 알고 있는가?",
+    "claim": "우리는 예수 그리스도의 개인적 덕목과 그의 사랑, 열정, 의, 겸손, 인내 등에 대해 말하지만 실제로 그것을 얼마나 알고 있는가?",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -6009,8 +6007,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "우리는 예수 그리스도의 개인적徳목과 그의 사랑, 열정, 의, 겸손,忍耐 등에 대해 말하지만 실제로 그것을 얼마나 알고 있는가?",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025864",
@@ -7002,14 +6999,16 @@
     "paragraph": 164,
     "sentence": 1,
     "source_text": "For one actually divested of earthly good to look upward, and set his heart on things above, is faith ; but for one still possessed of this, one on whom providence smiles, pros- pering him in all he sets his hand to, blessing him with wife and children, houses and lands, in abundance ; for him to exercise such a degree of indifference to all these, as to derive his chief happiness from invisible realities, this i^ faith indeed !",
-    "claim": "지상적인 благ을 소유하고 있지 않은 사람과 지상적인 благ을 소유하고 있는 사람이 모두 하늘에 대한 믿음을 가질 수 있지만, 지상적인 благ을 소유하고 있으면서도 하늘에 대한 믿음을 가지는 것이 더 큰 믿음이다.",
+    "claim": "지상적인 복을 소유하고 있지 않은 사람과 지상적인 복을 소유하고 있는 사람이 모두 하늘에 대한 믿음을 가질 수 있지만, 지상적인 복을 소유하고 있으면서도 하늘에 대한 믿음을 가지는 것이 더 큰 믿음이다.",
     "doctrine": "Other",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "지상적인 благ을 소유하고 있지 않은 사람과 지상적인 благ을 소유하고 있는 사람이 모두 하늘에 대한 믿음을 가질 수 있지만, 지상적인 благ을 소유하고 있으면서도 하늘에 대한 믿음을 가지는 것이 더 큰 믿음이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0025909",
@@ -13003,7 +13002,7 @@
     "paragraph": 265,
     "sentence": 4,
     "source_text": "If we mix not faith with the doctrine we deliver, it will not profit us-.",
-    "claim": "설교자가 전하는 교리와 믿음이 결합하지 않으면 그것은 우리에게 이益이 되지 않는다.",
+    "claim": "설교자가 전하는 교리와 믿음이 결합하지 않으면 그것은 우리에게 이익이 되지 않는다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
@@ -13012,8 +13011,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "설교자가 전하는 교리와 믿음이 결합하지 않으면 그것은 우리에게益이 되지 않는다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0026180",
@@ -13270,14 +13268,16 @@
     "paragraph": 272,
     "sentence": 0,
     "source_text": "and eminency in grace and holiness in a miniver, deserves our serious attention.",
-    "claim": "은혜와 거룩함의 뛰어난 자는 우리의 심각한 주의를 заслуж한다.",
+    "claim": "은혜와 거룩함의 뛰어난 자는 우리의 심각한 주의를 받을 자격이 있다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "은혜와 거룩함의 뛰어난 자는 우리의 심각한 주의를 заслуж한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0026192",
@@ -18670,7 +18670,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님은 자녀의 의무를 이유로ではなく 사랑으로 은혜를 주시며, 하나님은 또한 성실, 순종, 질서정연함을 사랑하는 마음으로 은혜를 주신다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0026434",
@@ -18890,14 +18893,16 @@
     "paragraph": 388,
     "sentence": 1,
     "source_text": "If the love that we bear to our Christian friends were but properly directed, if our minds were but capacious enough to take all things into consideration, we should mingle joy with all our mourning, on their account.",
-    "claim": "그리스도인들이 다른 그리스도인들에게 느끼는 사랑이 올바른 방향으로 направ이고 모든 것을 고려할 수 있다면, 그들은 슬픔과 함께 기쁨을 느끼게 될 것이다.",
+    "claim": "그리스도인들이 다른 그리스도인들에게 느끼는 사랑이 올바른 방향으로 나아지고 모든 것을 고려할 수 있다면, 그들은 슬픔과 함께 기쁨을 느끼게 될 것이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도인들이 다른 그리스도인들에게 느끼는 사랑이 올바른 방향으로 направ이고 모든 것을 고려할 수 있다면, 그들은 슬픔과 함께 기쁨을 느끼게 될 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0026444",
@@ -20529,7 +20534,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도의 부요함은 사도들이 맡은 바이며, 이것은 탐구할 수 없는 것으로 불리며, حتى 가장 높은 계층의 창조된 지성들도 이것을 더 나은 발전을 위해 살펴본다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0026518",
@@ -21010,7 +21018,7 @@
     "paragraph": 445,
     "sentence": 2,
     "source_text": "He who beholds the glory of the divine holiness, will, in that glass, perceive his own polluted and perishing condition ; and, when properly impressed with a sense of these things, he will naturally embrace the doctrine of a Saviour, yea, and of a great one.",
-    "claim": "신의 거룩함의 영광을 볼 때,人は 자신의 부정하고 망하는 상태를 인식하게 되며, 이러한 것들에 대한 감각을 제대로 받았을 때, 자연스럽게 구원者の 교리를 받아들이게 된다.",
+    "claim": "신의 거룩함의 영광을 볼 때, 사람은 자신의 부정하고 망하는 상태를 인식하게 되며, 이러한 것들에 대한 감각을 제대로 받았을 때, 자연스럽게 구원者の 교리를 받아들이게 된다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -25823,14 +25831,16 @@
     "paragraph": 540,
     "sentence": 2,
     "source_text": "Hitherto there has been an outer-court for you, and you have worshipped in it.",
-    "claim": "지금까지 외적인 예배의 장소가 있었고,你们는 그곳에서 예배를 드렸습니다.",
+    "claim": "지금까지 외적인 예배의 장소가 있었고, 여러분은 그곳에서 예배를 드렸습니다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "지금까지 외적인 예배의 장소가 있었고,你们는 그곳에서 예배를 드렸습니다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0026757",
@@ -26377,14 +26387,17 @@
     "paragraph": 552,
     "sentence": 3,
     "source_text": "You confess uot your iniquity upon the head of the substitute ; therefore it will be found upon your own head.",
-    "claim": "구원받지 못한 자는 대속자의 머리 위에 자신의 불의를 اعتر5223하지 않으면 그 불의가 자신의 머리 위에 돌아온다.",
+    "claim": "구원받지 못한 자는 대속者の 머리 위에 자신의 불의를 인정하지 않으면 그 불의가 자신의 머리 위에 돌아온다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "구원받지 못한 자는 대속자의 머리 위에 자신의 불의를 اعتر5223하지 않으면 그 불의가 자신의 머리 위에 돌아온다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0026782",
@@ -29312,14 +29325,16 @@
     "paragraph": 623,
     "sentence": 0,
     "source_text": "How grateful are the recollections of a godly parent, when, upon his dying bed, he is able to say to his children ; ' I have taught you tne good and the right way ; the things which you have heard and seen in me, do ; and the God of peace shall be with you.' And, though he may not in this world witness those effects which would have rejoiced his heart, yet his labour will not be lost.",
-    "claim": "하나님의 자녀로 사도패트릭처럼 믿음과 행함을 지키는 것은 하나님께 영광을 돌リ며, 그 믿음을 후손에게 전하는 것은 하나님의 평안을 받는 길이다.",
+    "claim": "하나님의 자녀로 사도패트릭처럼 믿음과 행함을 지키는 것은 하나님께 영광을 돌리며, 그 믿음을 후손에게 전하는 것은 하나님의 평안을 받는 길이다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님의 자녀로 사도패트릭처럼 믿음과 행함을 지키는 것은 하나님께 영광을 돌リ며, 그 믿음을 후손에게 전하는 것은 하나님의 평안을 받는 길이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0026914",
@@ -30785,14 +30800,16 @@
     "paragraph": 659,
     "sentence": 1,
     "source_text": "For thus saith the Lord of hosts, Yet once, it is a little while, and I will shake the heavens, and the earth, and the sea, and the dry land : and I will shake all nations ; and the desire of all nations shall come ; and I will fill this house with glory saith the Lord of hosts.",
-    "claim": "메시아는 두 번째 성전이 서 있는 동안에 오실 것이며, 그의 присensemce로 인해 성전의 영광이 이전 성전보다 더 클 것이라고 약속한다.",
+    "claim": "메시아는 두 번째 성전이 서 있는 동안에 오실 것이며, 그의 존재로 인해 성전의 영광이 이전 성전보다 더 클 것이라고 약속한다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "메시아는 두 번째 성전이 서 있는 동안에 오실 것이며, 그의 присensemce로 인해 성전의 영광이 이전 성전보다 더 클 것이라고 약속한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0026980",
@@ -35789,7 +35806,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "목사의 권위가 합법적이고 비난받지 않을 수 있는 세 가지 필수 요소는 교회에서 자유롭게 선택된 것, 그들이 따르는 기준이 그들의 의지ではなく 그리스도의 의지라는 것, 그리고 그들이 다른 사람에게 강조하는 것이 자신에게도 동일하게 적용된다는 것입니다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0027205",
@@ -38490,14 +38510,16 @@
     "paragraph": 796,
     "sentence": 1,
     "source_text": "Ought we not to seek the good of our native land ; the land of our fathers' sepulchres ; a land, where we are protected by mild and wholesome laws, administered under a paternal prince ; a land, where civil and religious freedom are enjoyed in a higher degree than in",
-    "claim": "우리는 우리의 조국, 즉 우리의 조상들이 묻혀 있는 땅, 우리를 보호하는 온화하고 건강한 법률이 부왕 같은 왕 아래 시행되는 땅, 시민적이고 종교적인 자유가 다른 곳보다 더 높은 수준으로 즐기는 땅의 благ을 추구해야 한다.",
+    "claim": "우리는 우리의 조국, 즉 우리의 조상들이 묻혀 있는 땅, 우리를 보호하는 온화하고 건강한 법률이 부왕 같은 왕 아래 시행되는 땅, 시민적이고 종교적인 자유가 다른 곳보다 더 높은 수준으로 즐기는 땅의 복을 추구해야 한다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "우리는 우리의 조국, 즉 우리의 조상들이 묻혀 있는 땅, 우리를 보호하는 온화하고 건강한 법률이 부왕 같은 왕 아래 시행되는 땅, 시민적이고 종교적인 자유가 다른 곳보다 더 높은 수준으로 즐기는 땅의 благ을 추구해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027327",
@@ -39956,14 +39978,16 @@
     "paragraph": 825,
     "sentence": 0,
     "source_text": "If it be objected, that the sinfulness of war would not lie so much at the door of the centurions and soldiers as of the govern- ment by whose authority it was proclaimed and executed ; I allow there is considerable force in this : but yet, if the thing itself were necessarily, and in all cases, sinful, every party voluntarily concerned in it must have been a partaker of the guilt, though it were in different degrees.",
-    "claim": "전쟁의 죄는 정부의 권위에 의해 선언되고 실행되는 것에 더 많이 леж을 수 있지만, 전쟁 자체가 필연적으로 모든 경우에 죄라면, 모든 관련 당사자는 다른 정도로 죄의 공유자가 될 것이다.",
+    "claim": "전쟁의 잘못은 정부의 권위에 의해 선언되고 실행되는 것에 더 많이 있을 수 있지만, 전쟁 자체가 필연적으로 모든 경우에 잘못이라면, 모든 관련 당사자는 다른 정도로 잘못의 공유자가 될 것이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "전쟁의 죄는 정부의 권위에 의해 선언되고 실행되는 것에 더 많이 леж을 수 있지만, 전쟁 자체가 필연적으로 모든 경우에 죄라면, 모든 관련 당사자는 다른 정도로 죄의 공유자가 될 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027393",
@@ -40534,14 +40558,16 @@
     "paragraph": 838,
     "sentence": 4,
     "source_text": "Yet, peradventure, for his own name's sake, or from a regard to his own cause, which is here singularly protected, the Lord may hearken to our prayers, and save us from deserved ruin.",
-    "claim": "하나님의 이름과 그의 사역을 위해 우리의 기도를 들으사 우리를 заслуж된 파멸에서 구원하실 수 있다.",
+    "claim": "하나님의 이름과 그의 사역을 위해 우리의 기도를 들으사 우리를 당한 파멸에서 구원하실 수 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님의 이름과 그의 사역을 위해 우리의 기도를 들으사 우리를 заслуж된 파멸에서 구원하실 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027419",
@@ -41686,14 +41712,17 @@
     "paragraph": 877,
     "sentence": 0,
     "source_text": "The amount is, Whether Jesus be the Messiah, or not, his ap- pearance in the world had this character pertaining to it, that it was the period in which the sacrifice and the oblation actually ceased.",
-    "claim": "예수님의 세계への 출현은 희생과 제사 의 실제적인 중단을 의미하는 기간이었다.",
+    "claim": "예수님의 세계への 출현은 희생과 제사의 실제적인 중단을 의미하는 기간이었다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "예수님의 세계への 출현은 희생과 제사 의 실제적인 중단을 의미하는 기간이었다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0027471",
@@ -42084,14 +42113,16 @@
     "paragraph": 884,
     "sentence": 1,
     "source_text": "For thus saith the Lord of hosts, Yet once, it is a little while, and I will shake the heavens, and the earth, and the sea, and the dry land : and I will shake all nations ; and the desire of all nations shall come ; and I will fill this house with glory saith the Lord of hosts.",
-    "claim": "메시아는 두 번째 성전이 서 있는 동안에 오실 것이며, 그의 присensemce로 인해 성전은 영광을 받을 것이라고 하게리 선지자에 의해 암시되었다.",
+    "claim": "메시아는 두 번째 성전이 서 있는 동안에 오실 것이며, 그의 존재로 인해 성전은 영광을 받을 것이라고 예레미야 선지자에 의해 암시되었다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "메시아는 두 번째 성전이 서 있는 동안에 오실 것이며, 그의 присensemce로 인해 성전은 영광을 받을 것이라고 하게리 선지자에 의해 암시되었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027489",
@@ -43307,7 +43338,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도는 자신의 영혼의 고난을 보고 만족하기 위해 그 고난을 переж어야 했다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0027544",
@@ -46637,14 +46671,16 @@
     "paragraph": 978,
     "sentence": 0,
     "source_text": "If you inquire, wherefore has God planted desires in your na- tures that it is not in the power of creation to satisfy. 1 answer, that von might be led to seek satisfaction where it is to be found.",
-    "claim": "하나님은 창조물이 만족시킬 수 없는 жел정을 우리에게 심어주셨고, 그것은 우리로 하여금 만족을 찾을 수 있는 곳을 찾도록 이끌기 위한 것임",
+    "claim": "하나님은 창조물이 만족시킬 수 없는 욕정을 우리에게 심어주셨고, 그것은 우리로 하여금 만족을 찾을 수 있는 곳을 찾도록 이끌기 위한 것임",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님은 창조물이 만족시킬 수 없는 жел정을 우리에게 심어주셨고, 그것은 우리로 하여금 만족을 찾을 수 있는 곳을 찾도록 이끌기 위한 것임",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027695",
@@ -49511,7 +49547,7 @@
     "paragraph": 1039,
     "sentence": 0,
     "source_text": "We have seen men who, under the smiles of providence, have been cheerful and amiable, when disappointments and losses have overtaken them, sink into sullen dejection, and never more lift up their head.",
-    "claim": "하나님의 계획下的 축복을 경험한 사람들이 실패와 손실에 직면하면 우울과 절망에 빠질 수 있다.",
+    "claim": "하나님의 계획 아래의 축복을 경험한 사람들이 실패와 손실에 직면하면 우울과 절망에 빠질 수 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
@@ -49520,8 +49556,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "하나님의 섭리下的 축복을 경험한 사람들이 실패와 손실에 직면하면 우울과 절망에 빠질 수 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027825",
@@ -50378,7 +50413,7 @@
     "paragraph": 1053,
     "sentence": 5,
     "source_text": "Notwithstanding the modest and humble appearance which these objections assume, they will be found to be no better than a species oj self -righteous pride, opposed to the humiliating gospel of Christ.",
-    "claim": "겉으로는 겸손하고謙遜한 모습을 보이지만, 실제로는 자아옳은 자존심으로 나타나며, 그리스도의 겸손한 복음에 반대된다.",
+    "claim": "겉으로는 겸손하고 겸손한 모습을 보이지만, 실제로는 자아옳은 자존심으로 나타나며, 그리스도의 겸손한 복음에 반대된다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
@@ -50387,8 +50422,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "겉으로는 겸손하고謙遜한 모습을 보이지만, 실제로는 자아옳은 Pride로 나타나며, 그리스도의 겸손한 복음에 반대된다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027864",
@@ -50579,7 +50613,7 @@
     "paragraph": 1055,
     "sentence": 8,
     "source_text": "If there be any bar in your way ; it is your conceit of some kind of worthiness being necessary to recommend you to the grace of tbe Saviour : and take heed lest you perish un- der this delusion, after the example of apostate Israel, who followed after the law of righteousness, but never attained it : and where' fore ?",
-    "claim": "구원者の 은혜를 받기 위해서는 어떤 종류의 가치가 필요하다고 생각하는 자만이 장애물이 될 수 있다",
+    "claim": "구원의 은혜를 받기 위해서는 어떤 종류의 가치가 필요하다고 생각하는 자만이 장애물이 될 수 있다",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -50588,8 +50622,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "구원者の 은혜를 받기 위해서는 어떤 종류의 가치가 필요하다고 생각하는 자만심이 장애물이 될 수 있다",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027873",
@@ -52020,14 +52053,16 @@
     "paragraph": 1075,
     "sentence": 11,
     "source_text": "If its blessings suit your de- sires, they are all your own.",
-    "claim": "복음의 축복이 당신의 жел시에 부합한다면, 그것은 모두 당신의 것입니다.",
+    "claim": "복음의 축복이 당신의 소원이면, 그것은 모두 당신의 것입니다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "복음의 축복이 당신의 жел시에 부합한다면, 그것은 모두 당신의 것입니다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027938",
@@ -52398,14 +52433,16 @@
     "paragraph": 1092,
     "sentence": 1,
     "source_text": "We know the curse to which that people were devoted, even from the days of their ancestor Canaan, the Son of Ham.",
-    "claim": "가나안 족속은 그들의 조상 하ム의 아들 가나안의 날로부터 저주를 받았다.",
+    "claim": "가나안 족속은 그들의 조상 함의 아들 가나안의 날로부터 저주를 받았다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "가나안 족속은 그들의 조상 하ム의 아들 가나안의 날로부터 저주를 받았다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0027955",
@@ -54315,7 +54352,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도만이 마음의 жел망을 만족시킬 수 있으며, 기독교인들은 세계에서 그들의 жел망이 만족되는 유일한 사람들이다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0028041",
@@ -54359,7 +54399,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "창조물 전체의 능력으로는 죄 있는 불멸의 존재에게 그들의 жел심을 이루어 줄 수 없지만, 예수님만이 영생에 대한 말씀을 가지고 있다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0028043",
@@ -61893,14 +61936,16 @@
     "paragraph": 1265,
     "sentence": 6,
     "source_text": "Natural affection, though, in itself, it be mere animal attachment and has nothing morally good in it, yet to be without it argues the perfection of depravity.",
-    "claim": "자연적인 애정은 도덕적으로 좋은 것은 아니지만, 그것이 отсутств하는 것은 완전한 타락을 의미한다.",
+    "claim": "자연적인 애정은 도덕적으로 좋은 것은 아니지만, 그것이 부족하는 것은 완전한 타락을 의미한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "자연적인 애정은 도덕적으로 좋은 것은 아니지만, 그것이 отсутств하는 것은 완전한 타락을 의미한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0028383",
@@ -62245,14 +62290,16 @@
     "paragraph": 1269,
     "sentence": 4,
     "source_text": "Repenting of their sins, they believed in the Messiah as at hand ; and, being thus reconciled to God, they became reconciled to one another : loving and being loved, forgiving and being for- given.",
-    "claim": "죄인들이 회개하고 메시야를 믿음으로써 하나님과 서로에게 примир되어 사랑과 용서를 나눔으로써 하나님과 서로에게 примир된다.",
+    "claim": "죄인들이 회개하고 메시야를 믿음으로써 하나님과 서로에게 화해되어 사랑과 용서를 나눔으로써 하나님과 서로에게 화해된다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "죄인들이 회개하고 메시야를 믿음으로써 하나님과 서로에게 примир되어 사랑과 용서를 나눔으로써 하나님과 서로에게 примир된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0028399",
@@ -62399,14 +62446,16 @@
     "paragraph": 1274,
     "sentence": 3,
     "source_text": "Pride, self-will, and the love of money, are the great sour- ces of those calamities which, in all ages, have deluged the world with misery ; but, if we believe the gopel, they will be, in a good measure dried up, and then the current which has been fed by them must cease to flow.",
-    "claim": "교만, 자기 의지, 그리고 돈에 대한 사랑은 모든 시대에 세계를 고통으로 침수시킨 그 큰 재난의 주요 원인이다. 그러나 복음을 믿는다면, 이러한 원인들이 상당 부분 말라가고, 그에 의해 تغذية되는 흐름도 멈출 것이다.",
+    "claim": "교만, 자기 의지, 그리고 돈에 대한 사랑은 모든 시대에 세계를 고통으로 침수시킨 그 큰 재난의 주요 원인이다. 그러나 복음을 믿는다면, 이러한 원인들이 상당 부분 말라가고, 그에 의해 영양을 받는 흐름도 멈출 것이다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "교만, 자기 의지, 그리고 돈에 대한 사랑은 모든 시대에 세계를 고통으로 침수시킨 그 큰 재난의 주요 원인이다. 그러나 복음을 믿는다면, 이러한 원인들이 상당 부분 말라가고, 그에 의해 تغذية되는 흐름도 멈출 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0028406",
@@ -63019,7 +63068,7 @@
     "paragraph": 1284,
     "sentence": 5,
     "source_text": "Have the attrocities committed by Europeans on the shores of Africa, and in other parts of the world, been owing to Christianity, or to the want of it ?",
-    "claim": "유럽人が 아프리카와 세계의 다른 지역에서 저지른 학살은 기독교 때문인지, 기독교의 부족 때문인지 질문한다.",
+    "claim": "유럽인이 아프리카와 세계의 다른 지역에서 저지른 학살은 기독교 때문인지, 기독교의 부족 때문인지 질문한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -63028,8 +63077,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "유럽人が 아프리카와 세계의 다른 지역에서 저지른 학살은 기독교 때문인지, 기독교의 부족 때문인지 질문한다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0028434",
@@ -66976,7 +67024,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "믿음은 단순한 지적 인식 이상의 것であり, 그리스도와 그의 죽음으로 말미암는 구원의 길에 대한 마음의 열린 수용을 포함한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0028612",
@@ -67724,7 +67775,7 @@
     "paragraph": 1366,
     "sentence": 2,
     "source_text": "He that believetb on the Son is joined, or united, to him, and as such, by the constitution of the covenant of grace, becomes interested in all his benefits.",
-    "claim": "믿음으로 말미암아 하나님의 아들께 합체되거나 연합하게 되며, 은혜의 약속의 조항에 따라 그의 모든 복을 얻는 권利를 가지게 된다.",
+    "claim": "믿음으로 말미암아 하나님의 아들께 합체되거나 연합하게 되며, 은혜의 약속의 조항에 따라 그의 모든 복을 얻는 권리를 가지게 된다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
@@ -67733,8 +67784,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "믿음으로 말미암아 하나님의 아들께 합체되거나 연합하게 되며, 은혜의 언약의 조항에 따라 그의 모든 복을 얻는 권利를 가지게 된다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0028646",
@@ -68018,14 +68068,17 @@
     "paragraph": 1371,
     "sentence": 7,
     "source_text": "The spirit which is congenial with the gospel-dispensation is not that of bondage, that we should be held in slavish fear, but that of adoption, whereby we cry Abba, Father ; and, if we do not actually possess it, it is because we are wanting to ourselves.",
-    "claim": "복음의 섭리와 일치하는 영은 노예 같은 страх이 아닌 양자 된 자의 영으로서 우리가 아바, 아버지라고 부를 수 있게 함을 말한다.",
+    "claim": "복음의 섭리와 일치하는 영은 노예 같은 страх이 아닌 양자 된 자의 영으로서 우리가 아버지라고 부를 수 있게 함을 말한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "복음의 섭리와 일치하는 영은 노예 같은 страх이 아닌 양자 된 자의 영으로서 우리가 아바, 아버지라고 부를 수 있게 함을 말한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0028659",
@@ -71041,14 +71094,16 @@
     "paragraph": 1425,
     "sentence": 0,
     "source_text": "If justification consist in a manifestation, impression, or persua- sion, that we are justified, condemnation must be a like impression, or persuasion, that we are condemned : but this is not true.",
-    "claim": "정당화는 어떤 прояв, 인상, 또는 확신에 의해 구성될 수 없으며, 정죄도 마찬가지로 인상 또는 확신에 의해 구성될 수 없다.",
+    "claim": "정당화는 어떤 현상, 인상, 또는 확신에 의해 구성될 수 없으며, 정죄도 마찬가지로 인상 또는 확신에 의해 구성될 수 없다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "정당화는 어떤 прояв, 인상, 또는 확신에 의해 구성될 수 없으며, 정죄도 마찬가지로 인상 또는 확신에 의해 구성될 수 없다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0028795",
@@ -71741,7 +71796,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도의 죽음으로 죄가 용서되거나 속죄되고, 죄인들이 모든 죄에서 구원되고, примирены 및 정화되고, 그의 순종으로 많은 사람들이 의롭다 하심을 받는다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0028826",
@@ -72176,14 +72234,16 @@
     "paragraph": 1442,
     "sentence": 0,
     "source_text": "they are pure, undeserved favour.",
-    "claim": "그것들은 순수하고, заслуг 없는 은혜이다.",
+    "claim": "그것들은 순수하고, 공로 없는 은혜이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그것들은 순수하고, заслуг 없는 은혜이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0028846",
@@ -75737,7 +75797,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "바울은 죄人的 수용을 말하고, 야고보는 성도의 승인을 말한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0029005",
@@ -80442,7 +80505,7 @@
     "paragraph": 1607,
     "sentence": 0,
     "source_text": "But, though all sinners are far off from God, yet some are far- ther off than others.",
-    "claim": "모든 죄人は 하나님으로부터 멀리 떨어져 있지만, 어떤 이는 다른 이보다 더 멀리 떨어져 있다.",
+    "claim": "모든 죄人は 하느님으로부터 멀리 떨어져 있지만, 어떤 이는 다른 이보다 더 멀리 떨어져 있다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -83331,7 +83394,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사랑은 상대방과의 관계 상태에 따라 평화와 우애 또는 후회, 회개, 그리고 화해의 жел기로 작용한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0029346",
@@ -83856,14 +83922,16 @@
     "paragraph": 1662,
     "sentence": 4,
     "source_text": "Is it not, that the one is void of love, and the other is not so ?",
-    "claim": "하나님을 두려워하는 두 가지 종류의 страх은 하나는 사랑이 포함되지 않고 다른 하나는 사랑이 포함된다는 점에서 차이가 있다.",
+    "claim": "하나님을 두려워하는 두 가지 종류의 두려움이 하나는 사랑이 포함되지 않고 다른 하나는 사랑이 포함된다는 점에서 차이가 있다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님을 두려워하는 두 가지 종류의 страх은 하나는 사랑이 포함되지 않고 다른 하나는 사랑이 포함된다는 점에서 차이가 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029370",
@@ -84194,14 +84262,16 @@
     "paragraph": 1664,
     "sentence": 10,
     "source_text": "All the labours and journeys of a loving head of a family are directed to their comfort ; and all the busy cares of an affectionate wife, to the honour and happiness",
-    "claim": "사랑은 가족의 안녕과 행복을 위해 모든 노력과 여행을 направляет",
+    "claim": "사랑은 가족의 안녕과 행복을 위해 모든 노력과 여행을 지시한다",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사랑은 가족의 안녕과 행복을 위해 모든 노력과 여행을 направляет",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029385",
@@ -84854,14 +84924,16 @@
     "paragraph": 1675,
     "sentence": 2,
     "source_text": "The serious tone of caution with which the precept is delivered, is expressive of this sentiment : it is only in cases of great danger, that we are charged to take good heed.",
-    "claim": "경고의 엄숙한 тон은 위험이 크다는 것을 나타낸다.",
+    "claim": "경고의 엄숙한 음색은 위험이 크다는 것을 나타낸다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "경고의 엄숙한 тон은 위험이 크다는 것을 나타낸다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029415",
@@ -88825,7 +88897,7 @@
     "paragraph": 1743,
     "sentence": 0,
     "source_text": "The death of Christ stands connected, in the divine promise, with the salvation of sinners.",
-    "claim": "그리스도의 죽음은 하나님의 약속에서 죄人の 구원과 연결되어 있다.",
+    "claim": "그리스도의 죽음은 하나님의 약속에서 죄인의 구원과 연결되어 있다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -88834,8 +88906,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "그리스도의 죽음은 하나님의 약속에서 죄人の 구원과 연결되어 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029594",
@@ -89658,14 +89729,16 @@
     "paragraph": 1767,
     "sentence": 0,
     "source_text": "reconciled, we shall be saved by his life.",
-    "claim": "그의 생명으로 우리가 구원을 받을 것이라는 사실은 우리가 примир되었다는 것을 의미한다.",
+    "claim": "그의 생명으로 우리가 구원을 받을 것이라는 사실은 우리가 화해되었다는 것을 의미한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그의 생명으로 우리가 구원을 받을 것이라는 사실은 우리가 примир되었다는 것을 의미한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029631",
@@ -89702,14 +89775,16 @@
     "paragraph": 1767,
     "sentence": 2,
     "source_text": "First: By his death he made atonement for us : this is expressed by his having reconciled us to God, or restored us to his favour as the lawgiver and judge of the world.",
-    "claim": "그리스도의 죽음으로 우리를 위해 속죄를 이루어 하나님께 우리를 примир시켰다",
+    "claim": "그리스도의 죽음으로 우리를 위해 속죄를 이루어 하나님께 우리를 화해시켰다",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도의 죽음으로 우리를 위해 속죄를 이루어 하나님께 우리를 примир시켰다",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029633",
@@ -92988,14 +93063,16 @@
     "paragraph": 1816,
     "sentence": 7,
     "source_text": "If any man, therefore, depart utterly from God, he ought to conclude, that the fear of God was not in him.",
-    "claim": "만약 어떤 사람이 전적으로 하나님을 떠난다면, 그는 하나님의 страх이 그에게 없었음을 결론지을 수 있다.",
+    "claim": "만약 어떤 사람이 전적으로 하느님을 떠난다면, 그는 하느님의 두려움이 그에게 없었음을 결론지을 수 있다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "만약 어떤 사람이 전적으로 하나님을 떠난다면, 그는 하나님의 страх이 그에게 없었음을 결론지을 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029781",
@@ -93194,7 +93271,7 @@
     "paragraph": 1818,
     "sentence": 0,
     "source_text": "of the Saviour to receive those that come to him are, indeed, dis- honourable to God ; but doubts of our own sincerity, founded upon our departures in heart and conduct from him, are so far from be- ing sinful, that they are necessary to awaken us to self-examina- tion.",
-    "claim": "구원者の 우리를 받아들이시는 의도는 하나님께 부끄러운 것이지만, 우리의 진정성에 대한 의심은 우리를 자기성찰로 이끌기 위해 필요하다.",
+    "claim": "구원의 우리를 받아들이시는 의도는 하나님께 부끄러운 것이지만, 우리의 진정성에 대한 의심은 우리를 자기성찰로 이끌기 위해 필요하다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -93203,8 +93280,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "구원者の 우리를 받아들이시는 의도는 하나님께 불명예스럽지만, 우리의 진정성에 대한 의심은 우리를 자기성찰로 이끌기 위해 필요하다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0029790",
@@ -98539,14 +98615,16 @@
     "paragraph": 1929,
     "sentence": 8,
     "source_text": "The works of God are silent preachers : in their mouth, there is no reproof but what a hard heart can misconstrue into the approbation of the Creator, understanding his bounties as rewards conferred on his virtuous creatures : this, therefore is the only preaching which many will hear.",
-    "claim": "신의 작품은 침묵의 설교자이며, 그들의 입에는 단단한 마음이 창조주의 칭찬으로 잘못 해석할 수 있는 책망이 없으며, 그의 은총을 그의 добродетель한 창조물에게 주어진 보상으로 이해한다.",
+    "claim": "신의 작품은 침묵의 설교자이며, 그들의 입에는 단단한 마음이 창조주의 칭찬으로 잘못 해석할 수 있는 책망이 없으며, 그의 은총을 그의 덕스러운 창조물에게 주어진 보상으로 이해한다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "신의 작품은 침묵의 설교자이며, 그들의 입에는 단단한 마음이 창조주의 칭찬으로 잘못 해석할 수 있는 책망이 없으며, 그의 은총을 그의 добродетель한 창조물에게 주어진 보상으로 이해한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030031",
@@ -103500,14 +103578,16 @@
     "paragraph": 2014,
     "sentence": 5,
     "source_text": "As, on the sounding of the jubilee trumpet, the captives were liberated ; so, when the trump of God shall sound, the righteous dead shall be raised, and their resurrec- tion will be to the creatures of God the signal of emancipation from under the effects of sin.",
-    "claim": "하나님의 나팔 소리가 울リ면 의로운 죽은 자가 부활하며, 그 부활은 하나님의 피조물들에게 죄의 영향으로부터 해방되는 신호가 될 것이다.",
+    "claim": "하나님의 나팔 소리가 울리면 의로운 죽은 자가 부활하며, 그 부활은 하나님의 피조물들에게 죄의 영향으로부터 해방되는 신호가 될 것이다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님의 나팔 소리가 울リ면 의로운 죽은 자가 부활하며, 그 부활은 하나님의 피조물들에게 죄의 영향으로부터 해방되는 신호가 될 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030255",
@@ -104100,14 +104180,17 @@
     "paragraph": 2028,
     "sentence": 1,
     "source_text": "But for grace, we should have had no good deeds to be rewarded ; or, if we had, they could no more be named in that day than the good behaviour of a murderer will bear to be alleged as a balance against his crimes.",
-    "claim": "은혜 없이는 선한 행실도 없을 것이며, 即使 있더라도 그것은 죄에 대한 대가로 인정되지 않는다.",
+    "claim": "은혜 없이는 선한 행실도 없을 것이며,就算 있더라도 그것은 죄에 대한 대가로 인정되지 않는다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "은혜 없이는 선한 행실도 없을 것이며, 即使 있더라도 그것은 죄에 대한 대가로 인정되지 않는다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0030282",
@@ -104320,7 +104403,7 @@
     "paragraph": 2030,
     "sentence": 7,
     "source_text": "The word preached has not profited them, not being mixed with faith.",
-    "claim": "믿음과 섞이지 않은 설교는 사람들에게 이益이 되지 않는다.",
+    "claim": "믿음과 섞이지 않은 설교는 사람들에게 이익이 되지 않는다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -104329,8 +104412,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "믿음과 섞이지 않은 설교는 사람들에게益이 되지 않는다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030292",
@@ -105302,14 +105384,16 @@
     "paragraph": 2097,
     "sentence": 2,
     "source_text": "He was singular- ly regular and punctual in fulfilling his engagements, whether in preaching or visiting, not only in attending, but in being there at the time ; and earnestly inculcated it on his pupils, if they wished to command respect.",
-    "claim": "그는 약속을 지키고 시간을 지키는 것에 매우 정직하고 пункту얼하여, 설교나 방문에서 시간을 지키는 것을 중요하게 여겼고, 그의 제자들에게도 이러한 태도를 강조하였다.",
+    "claim": "그는 약속을 지키고 시간을 지키는 것에 매우 정직하고 시간을 정확히 지키는 것에 매우 정직하여, 설교나 방문에서 시간을 지키는 것을 중요하게 여겼고, 그의 제자들에게도 이러한 태도를 강조하였다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그는 약속을 지키고 시간을 지키는 것에 매우 정직하고 пункту얼하여, 설교나 방문에서 시간을 지키는 것을 중요하게 여겼고, 그의 제자들에게도 이러한 태도를 강조하였다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030336",

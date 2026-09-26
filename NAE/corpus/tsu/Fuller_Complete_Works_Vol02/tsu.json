@@ -2649,14 +2649,16 @@
     "paragraph": 131,
     "sentence": 0,
     "source_text": "The question at present is not, which ot these representations is true or consonant to scriptnre ? but, which has the greatest ten- dency to promote repentance ?",
-    "claim": "현재의 문제는 어느 대표적인 묘사가 성경에 부합하는지 또는 진실한지에 대한 것이 아니라, 어떤 묘사가 가장 큰 회개 тенден리를 촉진하는지에 대한 것이다.",
+    "claim": "현재의 문제는 어느 대표적인 묘사가 성경에 부합하는지 또는 진실한지에 대한 것이 아니라, 어떤 묘사가 가장 큰 회개 경향을 촉진하는지에 대한 것이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "현재의 문제는 어느 대표적인 묘사가 성경에 부합하는지 또는 진실한지에 대한 것이 아니라, 어떤 묘사가 가장 큰 회개 тенден리를 촉진하는지에 대한 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0007886",
@@ -4052,14 +4054,16 @@
     "paragraph": 167,
     "sentence": 1,
     "source_text": "When therefore, they see such effects attend their labours, they think t^iemselves warranted to ascribe them, as the Apostle did, to the name of the Lord Jesus, and to the Spirit of our God.^''*",
-    "claim": "복음주의자들은 그들의 노력에 따른 결과를 주님 예수 그리스도의 이름과 하나님의 성령에게 돌リ며, 그들의 노력의 효과를 보았을 때, 그들은 사도처럼 주님 예수 그리스도의 이름과 하나님의 성령에게 그것을 돌릴 수 있다고 생각한다.",
+    "claim": "복음주의자들은 그들의 노력에 따른 결과를 주님 예수 그리스도의 이름과 하나님의 성령에게 돌리며, 그들의 노력의 효과를 보았을 때, 그들은 사도처럼 주님 예수 그리스도의 이름과 하나님의 성령에게 그것을 돌릴 수 있다고 생각한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "복음주의자들은 그들의 노력에 따른 결과를 주님 예수 그리스도의 이름과 하나님의 성령에게 돌リ며, 그들의 노력의 효과를 보았을 때, 그들은 사도처럼 주님 예수 그리스도의 이름과 하나님의 성령에게 그것을 돌릴 수 있다고 생각한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0007949",
@@ -4142,7 +4146,7 @@
     "paragraph": 168,
     "sentence": 3,
     "source_text": "Wickliffe, Luther, Knox, Latimer, Gilpin, Bunyan, Livingstone, Franck, Blair, El- liot, Edwards, Whitefield, Tennant, and all who have been emi- nently blessed to the revival of practical godliness, have con- stantly availed themselves of this method ; and, prejudice apart, it is impossible to deny, that great and excellent moral effects have followed.\"!",
-    "claim": "성령님의 사역자들은 실천적인 경건함의 부흥을 위해 특정한 방법을 사용해 왔으며, 이 방법은 위대하고优秀한 도덕적 효과를 가져왔다.",
+    "claim": "성령님의 사역자들은 실천적인 경건함의 부흥을 위해 특정한 방법을 사용해 왔으며, 이 방법은 위대하고 훌륭한 도덕적 효과를 가져왔다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [
@@ -4153,8 +4157,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "성령님의 사역자들은 실천적인 경건함의 부흥을 위해 특정한 방법을 사용해 왔으며, 이 방법은伟大하고优秀한 도덕적 효과를 가져왔다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0007953",
@@ -4257,14 +4260,17 @@
     "paragraph": 175,
     "sentence": 4,
     "source_text": "The Doctor is pleased to add, \" Our people having in general been brought up in habits of virtue, such great chan- ges in character and conduct are less necessary in their case.\"*",
-    "claim": "박사에 따르면, 일반적으로 добродетели의 습관으로 자란 사람들의 경우, 큰 성격과 행동의 변화는 그들에게 덜 필요하다.",
+    "claim": "박사에 따르면, 일반적으로徳의 습관으로 자란 사람들의 경우, 큰 성격과 행동의 변화는 그들에게 덜 필요하다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "박사에 따르면, 일반적으로 добродетели의 습관으로 자란 사람들의 경우, 큰 성격과 행동의 변화는 그들에게 덜 필요하다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0007958",
@@ -6672,7 +6678,7 @@
     "paragraph": 261,
     "sentence": 1,
     "source_text": "Although in a work of that kind there be frequently, no doubt, a chan<'e of hands ; yet it is easy to see, that, of late years, (a very short interval excep* ed,) it has been principally, if not entirely, under Socinian direction ; and, so far as relgion is concerned, has been used as an instrument for the propaga- tion of that system.",
-    "claim": "Monthly Review는 최근 몇 년간 주로 소시니안주의 지지者の 지시에 따라 운영되어 왔으며, 종교와 관련하여 그 시스템을 전파하는 도구로 사용되었다.",
+    "claim": "Monthly Review는 최근 몇 년간 주로 소시니안주의 지지자들의 지시에 따라 운영되어 왔으며, 종교와 관련하여 그 시스템을 전파하는 도구로 사용되었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -6681,8 +6687,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "Monthly Review는 최근 몇 년간 주로 소시니안주의者的 지시에 따라 운영되어 왔으며, 종교와 관련하여 그 시스템을 전파하는 도구로 사용되었다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0008067",
@@ -9765,14 +9770,16 @@
     "paragraph": 358,
     "sentence": 1,
     "source_text": "As to others, Dr. Priestley acknowledges, as we have seen already, that our principles are \"generally favourable io devotion:'''* and devotion, if it be what he denominates it, \"a leading virtue,\" will doubtless be followed with other virtues correspondent with it.",
-    "claim": "칼빈주의는 비재생자에게만 добродетeli와 선함의 뿌리를 찍는 도끼일 뿐이며, 다른 사람들에게는 그렇지 않다.",
+    "claim": "칼빈주의는 비재생자에게만 덕과 선함의 뿌리를 찍는 도끼일 뿐이며, 다른 사람들에게는 그렇지 않다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "칼빈주의는 비재생자에게만 добродетeli와 선함의 뿌리를 찍는 도끼일 뿐이며, 다른 사람들에게는 그렇지 않다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0008206",
@@ -10992,7 +10999,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "칼빈주의자와 프리스틀리의 구원 계획 사이의 선택의 차이는 원래 임명이나 결과의 확실성에ではなく, 중간 원인이나 신이 그렇게 결정한 이유에 있다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0008261",
@@ -12185,14 +12195,16 @@
     "paragraph": 462,
     "sentence": 3,
     "source_text": "And, as to the moral effects which their religious principles have produced, they are granted, on all hands to be considerable.",
-    "claim": "그들의 종교적 원칙이 도덕적으로 знач심한 영향을 미친다.",
+    "claim": "그들의 종교적 원칙이 도덕적으로 매우 중요한 영향을 미친다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그들의 종교적 원칙이 도덕적으로 знач심한 영향을 미친다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0008315",
@@ -14948,14 +14960,16 @@
     "paragraph": 540,
     "sentence": 3,
     "source_text": "Nor can this be to the disadvantage of the universe, but the contrary ; as will appear, if it be considered, that it is the glory of God to do that which shall be best upon the whole.",
-    "claim": "하나님의 영광은 우주 전체의 최고의 благ을 위해 작용한다",
+    "claim": "하나님의 영광은 우주 전체의 최고의 선을 위해 작용한다",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님의 영광은 우주 전체의 최고의 благ을 위해 작용한다",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0008440",
@@ -17688,7 +17702,7 @@
     "paragraph": 609,
     "sentence": 0,
     "source_text": "If we may estimate the candour of Socinians, from the Spirit discovered by Mr. Robinson, in the latter part of his life, the con- clusion will not be very favourable to their system.",
-    "claim": "소시니안주의자들의誠實性은 그들의 시스템에 대해 매우 불리한 결론으로 이어질 수 있다.",
+    "claim": "소시니안주의자들의 성실성은 그들의 시스템에 대해 매우 불리한 결론으로 이어질 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -17697,8 +17711,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "소시니안주의者的誠實性은 그들의 시스템에 대해 매우 불리한 결론으로 이어질 수 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0008562",
@@ -18143,14 +18156,16 @@
     "paragraph": 638,
     "sentence": 2,
     "source_text": "I acknowledge, I should have thought so, if I had not read in Dr. Priestley's Doctrine of Philosophical Necessity, as follows : \"Not that 1 think that the sacred writers were Necessarians^ for they were not philosophers ; not even our Saviour himself, as far as appears : — But their habitual devotion naturally led them to refer all things to God, without reflecting on the rigorous meaning Of their language ; and, very probably, had they been interrogated on the subject, they would have appeared not to be apprised of the Necessarian scheme, and would have answered in a manner unfa- vourable toit.\"§ The sacred writers, it seems, were well-mean- ing person:- ; but, at the same time, so ignorant, as not to know the meaning of their own language ; nay, so ignorant, that, had it been explained to them, they would have been incapable of taking it in !",
-    "claim": "성경의 저자들은 필ософ가가 아니었기 때문에 필연론(Necessarianism)에 대해 무지했다",
+    "claim": "성경의 저자들은 철학자가 아니었기 때문에 필연론에 대해 무지했다",
     "doctrine": "Scripture / Authority",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "성경의 저자들은 필ософ가가 아니었기 때문에 필연론(Necessarianism)에 대해 무지했다",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0008582",
@@ -19185,14 +19200,17 @@
     "paragraph": 664,
     "sentence": 2,
     "source_text": "If Dr. Priestley mean no more by these expressions, than that our conduct in life, whether virtuous or vicious, depends upon our choice, the Calvinistic scheme, as well as his own allows of it.",
-    "claim": "칼빈주의는 인간의 선택에 따라 добродетель이나 악덕이 결정된다는 것을 인정한다",
+    "claim": "칼빈주의는 인간의 선택에 따라徳이나 악덕이 결정된다는 것을 인정한다",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "칼빈주의는 인간의 선택에 따라 добродетель이나 악덕이 결정된다는 것을 인정한다",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0008629",
@@ -19984,7 +20002,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그ような 결론을 도출하기 위한 전제는 잘 정립되어야 한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0008665",
@@ -23467,7 +23488,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "종교적 신념이 다른 사람들은 자신의 신념과 반대되는 교리를 담은 책이나 자료를 распростран하지 않는다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0008821",
@@ -29662,7 +29686,7 @@
     "paragraph": 962,
     "sentence": 1,
     "source_text": "Our notions of the evil of sin exceed those of our opponents.",
-    "claim": "저희의 잘못에 대한 나쁨에 대한 개념은 저희의 반대者の 것보다 더 크다.",
+    "claim": "저희의 잘못에 대한 나쁨에 대한 개념은 저희의 반대자들의 것보다 더 크다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -29671,8 +29695,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "저희의 죄에 대한 악성에 대한 개념은 저희의 반대者の 것보다 더 크다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009100",
@@ -29843,7 +29866,7 @@
     "paragraph": 964,
     "sentence": 1,
     "source_text": "The friends of that scheme conceive of man as a good kind of being, and suppose there is a greater proportion of virtue in the world than vice; and that things, upon the whole, are getting better still, and so tending to happiness.",
-    "claim": "소시니안주의 지지者の 친구들은 인간을 선한 존재로 간주하며, 세상의 악보다 선이 더 많다고 생각하며, 모든 것이 행복으로 향해 나아가고 있다고 믿는다.",
+    "claim": "소시니안주의 지지자들의 친구들은 인간을 선한 존재로 간주하며, 세상의 악보다 선이 더 많다고 생각하며, 모든 것이 행복으로 향해 나아가고 있다고 믿는다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -29852,8 +29875,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "소시니안주의者的 친구들은 인간을 선한 존재로 간주하며, 세상의 악보다 선이 더 많다고 생각하며, 모든 것이 행복으로 향해 나아가고 있다고 믿는다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009108",
@@ -30497,7 +30519,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그는 깊이 있는 종교적 감정을 느꼈고, 이러한 감정에서 그는 부러움을 받을 자であった",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0009137",
@@ -31574,14 +31599,17 @@
     "paragraph": 1031,
     "sentence": 1,
     "source_text": "I never knew a person in his dying moments, alarmed for the consequence of having assumed too little to him- self, or for having ascribed too much to Christ : but many, in that hour of serious reflection, have been more than a little apprehen- sive of danger from the contrary.",
-    "claim": "사람이 죽음의 순간에 자신에게 너무 적은 것을 가정하거나 그리스도에게 너무 많은 것을 귀속한 것에 대한 결과를 두려워하는 경우는 없지만, 반대의 경우에는 많은 사람들이 그 опас성에 대해 매우 걱정한다.",
+    "claim": "人が 죽음의 순간에 자신에게 너무 적은 것을 가정하거나 그리스도에게 너무 많은 것을 귀속한 것에 대한 결과를 두려워하는 경우는 없지만, 반대의 경우에는 많은 사람들이 그 위험에 대해 매우 걱정한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사람이 죽음의 순간에 자신에게 너무 적은 것을 가정하거나 그리스도에게 너무 많은 것을 귀속한 것에 대한 결과를 두려워하는 경우는 없지만, 반대의 경우에는 많은 사람들이 그 опас성에 대해 매우 걱정한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0009186",
@@ -31980,14 +32008,16 @@
     "paragraph": 1042,
     "sentence": 0,
     "source_text": "Dr. Priestley, in his Letters to Dr. Price, observes, that, \" In pass- ing from Trinitarianism to High Arianism,from this to your Low Arian- ism, and from this to Soclnianism, even of the lowest kind, in which Christ is considered as a mere man, the son of Joseph and Mary, and naturally as fallible and peccable as Moses, or any other prophet, there are sufficient sources of gratitude and devotion.",
-    "claim": "삼위일체에서 고 아리우스주의, 저 아리우스주의,そして 최하위 소시니안주의로의 전환은 충분한 감사의 원천과 헌신을 제공한다.",
+    "claim": "삼위일체에서 고 아리우스주의, 저 아리우스주의, 그리고 최하위 소시니안주의로의 전환은 충분한 감사의 원천과 헌신을 제공한다.",
     "doctrine": "Trinity",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "삼위일체에서 고 아리우스주의, 저 아리우스주의,そして 최하위 소시니안주의로의 전환은 충분한 감사의 원천과 헌신을 제공한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009204",
@@ -32884,14 +32914,17 @@
     "paragraph": 1066,
     "sentence": 1,
     "source_text": "The man,\" he adds, \" who believes these things only, and who, together with this, acknowledges a universal providence, ordering all events ; who is persuaded that our very hearts are constantly open to the divine inspection, so that no iniquity, or purpose of it, can escape his observation, will not be a bad man, or a dangerous member of society.\"* Dr. Priestley, elsewhere, as we have seen, acknowl- edges, that \" the love of God, in giving his Son to die for us, is the consideration on which the scriptures always lay the greatest stress as a motive to gratitude and obedience ;\" and yet he speaks here, of *' a future state of retribution, as being that in Christian- ity which is most favourable to virtue.'' One should think, that what the scriptures always lay the greatest stress upon, should be that in Christianity which is most favourable to virtue, be it what it may.",
-    "claim": "기독교에서 미래의 보응 상태와 하나님의 普遍적인 섭리가 도덕적 德性을 위한 동기부여가 될 수 있다.",
+    "claim": "기독교에서 미래의 보응 상태와 하나님의 普遍적인 섭리가 도덕적 덕성을 위한 동기부여가 될 수 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "기독교에서 미래의 보응 상태와 하나님의 普遍적인 섭리가 도덕적 德性을 위한 동기부여가 될 수 있다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0009245",
@@ -33214,14 +33247,16 @@
     "paragraph": 1074,
     "sentence": 0,
     "source_text": "ing a desire to depart^ and to be with Christ ; which is far better.",
-    "claim": "그리스도와 함께 있는 것이 죽음보다 더 나은 것이라는 жел함",
+    "claim": "그리스도와 함께 있는 것이 죽음보다 더 나은 것이라는 소원",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도와 함께 있는 것이 죽음보다 더 나은 것이라는 жел함",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009260",
@@ -33792,7 +33827,7 @@
     "paragraph": 1082,
     "sentence": 5,
     "source_text": "For our light affliction, which is but for a moment, worketh for us a far more exceeding and eternal weight of glory ; while zve look not at the things which are seen, but at the things which are not seen : for the things which are seen are temporal; but (he things which are not seen are eternal.",
-    "claim": "신자들의暂时的 어려움은 영원한 영광을 위한 준비가 된다.",
+    "claim": "신자들의 일시적인 어려움은 영원한 영광을 위한 준비가 된다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -33801,8 +33836,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "신자들의暂时的 苦难은 영원한 영광을 위한 준비가 된다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009286",
@@ -35273,7 +35307,7 @@
     "paragraph": 1123,
     "sentence": 6,
     "source_text": "This is infidelity undisguised.",
-    "claim": "모든 종교 형태에서 사람들이 매우 진심으로 믿을 수 있으며, 이러한 진심으로 모든人が 하나님 앞에서 동일하게 받아들여진다는 주장은 사실 무신론이다.",
+    "claim": "모든 종교 형태에서 사람들이 매우 진심으로 믿을 수 있으며, 이러한 진심으로 모든人が 하느님 앞에서 동일하게 받아들여진다는 주장은 사실 무신론이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -38011,7 +38045,7 @@
     "paragraph": 1207,
     "sentence": 3,
     "source_text": "Scriptural facts, such as those which Dr. Toulmin al- leges, afford a proper test of the practical efficacy of scripture doctrines; and, if brought against the cause of Infidelity, would be in point.",
-    "claim": "성경的事實은 성경 교리의 실제적인 효능을 시험하는 적절한 기준을 제공한다",
+    "claim": "성경의 사실은 성경 교리의 실제적인 효능을 시험하는 적절한 기준을 제공한다",
     "doctrine": "Scripture / Authority",
     "scriptures": [],
     "citations": [],
@@ -38020,8 +38054,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "성경的事実은 성경 교리의 실제적인 효능을 시험하는 적절한 기준을 제공한다",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009475",
@@ -38058,14 +38091,16 @@
     "paragraph": 1207,
     "sentence": 5,
     "source_text": "The facts to which Dr. Toulmin wishes to draw the reader's attention, prove nothing in favor of Unitarianism or Trinitarianism : for, before they can be brought to bear, the work of proof must be accom- plished by other means.",
-    "claim": "드. تول민이 주목을 끌고자 하는 사실들은 유니테리언주의나 삼위일체론을 증명하는 데 아무런 도움이 되지 않는다.",
+    "claim": "박사 톨민이 주목을 끌고자 하는 사실들은 일신론이나 삼위일체론을 증명하는 데 아무런 도움이 되지 않는다.",
     "doctrine": "Trinity",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "드. تول민이 주목을 끌고자 하는 사실들은 유니테리언주의나 삼위일체론을 증명하는 데 아무런 도움이 되지 않는다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009477",
@@ -38080,7 +38115,7 @@
     "paragraph": 1207,
     "sentence": 6,
     "source_text": "An attempt to establish the practical ef- ficacy of modern Unitarianism by scriptural facts, is like producing the fruits of Palestine, in order to ascertain the soil of Taunton.",
-    "claim": "성경的事實만으로는 현대 유니테리언주의의 실제 효능을 입증할 수 없다",
+    "claim": "성경의 사실만으로는 현대 유니테리언주의의 실제 효능을 입증할 수 없다",
     "doctrine": "Trinity",
     "scriptures": [],
     "citations": [],
@@ -38089,8 +38124,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "성경的事実만으로는 현대 유니테리언주의의 실제 효능을 입증할 수 없다",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009478",
@@ -40863,7 +40897,7 @@
     "paragraph": 1384,
     "sentence": 2,
     "source_text": "The knowledge of Christ's doctrine was formerly promoted by doing his will: and being known, it invariably wrought in a way of righteousness.",
-    "claim": "그리스도의 교리는 옛날에 그의 뜻을 행함으로써 알게 되고, 알게 된 후에는 항상 올바름의 방향으로作用한다.",
+    "claim": "그리스도의 교리는 옛날에 그의 뜻을 행함으로써 알게 되고, 알게 된 후에는 항상 올바름의 방향으로 작용한다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -40872,8 +40906,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "그리스도의 교리는 옛날에 그의 뜻을 행함으로써 알게 되고, 알게 된 후에는 항상 의로움의 방향으로作用한다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009603",
@@ -41714,7 +41747,7 @@
     "paragraph": 1408,
     "sentence": 2,
     "source_text": "I could allege, from Mr. Neale's History of that persecuted people, (a work which Dr. Toulmin is now publishing,) that, \" While others were at plays and interludes, at revels, or walking in the fields, or at the diversions of bowling, fencing, &c. on the evening of the Sabbath, the Puritans, with their families, were employed in reading the scriptures, singing psalms, catechising their children, repeating sermons, and prayer : nor was this only the work of the Lord's- day ; but they had their hours of family-devotion on the week- days, esteeming it their duty to take care of the souls, as well as of the bodies of their servants.",
-    "claim": "순수한 개혁주의자들은 주일과 주중을 포함한 모든 시간에 성경 읽기, 시편 노래, 아이们 교리 교육, 설교 반복, 그리고 기도를 통해 가족 예배를 실천하였다.",
+    "claim": "순수한 개혁주의자들은 주일과 주중을 포함한 모든 시간에 성경 읽기, 시편 노래, 아이들 교리 교육, 설교 반복, 그리고 기도를 통해 가족 예배를 실천하였다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -41723,8 +41756,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "순수한 개혁주의자들은 주일과 주중을 포함한 모든 시간에 성경阅读, 시편 노래, 아동 교리 교육, 설교 반복, 그리고 기도를 통해 가족 예배를 실천하였다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009641",
@@ -42005,14 +42037,16 @@
     "paragraph": 1427,
     "sentence": 1,
     "source_text": "Upon this supposition, Dr. Toulmin has written presumptuously, in affirming, that \" the number of sincere, conscientious persons, attentive to the cul- tivation of pious affections, hath borne a small proportion to those who have been nominal Socinians and Calvinists.\"* It is presumptuous also in him to complain of the want o^ candour and justice in his opponent.!",
-    "claim": "드. تول민은 소시니안과 칼빈주의자들의 신앙심과 행동에 대한 비판에서 편견을 보였다.",
+    "claim": "드. 툴민은 소시니안과 칼빈주의자들의 신앙심과 행동에 대한 비판에서 편견을 보였다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "드. تول민은 소시니안과 칼빈주의자들의 신앙심과 행동에 대한 비판에서 편견을 보였다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009654",
@@ -43665,14 +43699,17 @@
     "paragraph": 1477,
     "sentence": 1,
     "source_text": "All this is mere supposition, for which not the shadow of a proof is offered; and yet, without it, Dr. Toulmin's conclusion must fall to the ground.",
-    "claim": "드. تول민의 결론은 단지 가정에 근거하며, 증거가 없다.",
+    "claim": "박사 تول민의 결론은 단지 가정에 근거하며, 증거가 없다.",
     "doctrine": "Trinity",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "드. تول민의 결론은 단지 가정에 근거하며, 증거가 없다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0009729",
@@ -47321,14 +47358,16 @@
     "paragraph": 1592,
     "sentence": 1,
     "source_text": "I may observe, howev- er, that the definition given of this virtue, does not appear to me to answer to the scriptural account of it.",
-    "claim": "저자에 따르면, 제공된 정의는 성경에서 묘사된 страх의 정의와 일치하지 않는다.",
+    "claim": "저자에 따르면, 제공된 정의는 성서에서 묘사된 두려움의 정의와 일치하지 않는다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "저자에 따르면, 제공된 정의는 성경에서 묘사된 страх의 정의와 일치하지 않는다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0009894",
@@ -49925,14 +49964,16 @@
     "paragraph": 1722,
     "sentence": 2,
     "source_text": "I have long thought such a turn of mind to be very advan- tageous, or very dangerous : persons of this description either make great advances in truth, or fall into great errors.",
-    "claim": "추측적인 성향의 사람들은 либо 진리에서 큰 발전을 이루거나 큰 오류에 빠질 수 있다.",
+    "claim": "추측적인 성향의 사람들은 진리에서 큰 발전을 이루거나 큰 오류에 빠질 수 있다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "추측적인 성향의 사람들은 либо 진리에서 큰 발전을 이루거나 큰 오류에 빠질 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0010011",
@@ -50103,14 +50144,16 @@
     "paragraph": 1726,
     "sentence": 5,
     "source_text": "Can you now say, that you did not deserve this ?",
-    "claim": "당신은 하나님의 은총에서 추방되고 그의 앞에서 영원히 추방되는 것을 заслуж한다고 생각한다.",
+    "claim": "당신은 하나님의 은총에서 추방되고 그의 앞에서 영원히 추방되는 것을 가치 있다고 생각한다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "당신은 하나님의 은총에서 추방되고 그의 앞에서 영원히 추방되는 것을 заслуж한다고 생각한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0010019",
@@ -51957,7 +52000,7 @@
     "paragraph": 1793,
     "sentence": 0,
     "source_text": "Our Lord told the Jews, that, if they believed not that he was the Messiah, they should die in their sins^ and whither he went they could not come : (John viii. 21.) but, according to your scheme, they might die in their sins, and yet be able to go whither he went, and inherit eternal life.",
-    "claim": "주님은 유대인들에게 믿지 않으면 죄 가운데 죽을 것이며, 그들이 갈 수 없는 곳으로 가신다고 말씀하셨지만, 당신의 관점에서는 죄 가운데 죽어도 주님께서 간 곳으로 갈 수 있고, 영생을 наслед받을 수 있다고 주장한다.",
+    "claim": "주님은 유대인들에게 믿지 않으면 죄 가운데 죽을 것이며, 그들이 갈 수 없는 곳으로 가신다고 말씀하셨지만, 당신의 관점에서는 죄 가운데 죽어도 주님께서 간 곳으로 갈 수 있고, 영생을 물려받을 수 있다고 주장한다.",
     "doctrine": "Soteriology",
     "scriptures": [
       "John 8:21"
@@ -51966,7 +52009,9 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "주님은 유대인들에게 믿지 않으면 죄 가운데 죽을 것이며, 그들이 갈 수 없는 곳으로 가신다고 말씀하셨지만, 당신의 관점에서는 죄 가운데 죽어도 주님께서 간 곳으로 갈 수 있고, 영생을 наслед받을 수 있다고 주장한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0010100",
@@ -53003,14 +53048,16 @@
     "paragraph": 1831,
     "sentence": 0,
     "source_text": "that though they be cast into the pit of destruction, yet it shall not prove bottomless ; and, that though they have to encounter devour- ing fire, yet they shall not dwell with everlasting burnings.",
-    "claim": "신자들은 심지어 파멸의 구덩이에 던져지거나 пожирающий 불에 직면하더라도 영원한 멸망이나 불에 사로잡히지 않는다.",
+    "claim": "신자들은 심지어 파멸의 구덩이에 던져지거나 삼키는 불에 직면하더라도 영원한 멸망이나 불에 사로잡히지 않는다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "신자들은 심지어 파멸의 구덩이에 던져지거나 пожирающий 불에 직면하더라도 영원한 멸망이나 불에 사로잡히지 않는다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0010147",
@@ -54714,7 +54761,7 @@
     "paragraph": 1883,
     "sentence": 3,
     "source_text": "An impassable gulf between the blessed and the accursed, equally militates against the recovery of the one, as the relapse of the other.",
-    "claim": "구원받은 자와 저주받은 자 사이에는 돌이킬 수 없는 간격이 존재하여, 전者的 회복과 후者の 재락을 모두 방해한다.",
+    "claim": "구원받은 자와 저주받은 자 사이에는 돌이킬 수 없는 간격이 존재하여, 전者的 회복과 후者的 재락을 모두 방해한다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -54937,14 +54984,16 @@
     "paragraph": 1889,
     "sentence": 2,
     "source_text": "None, it is plainly inti- mated, will be able to enter there, who have not agonized here.",
-    "claim": "구원에 들어가기 위해서는 먼저 이 땅에서 고통과 борь음을 통해 준비해야 한다.",
+    "claim": "구원에 들어가기 위해서는 먼저 이 땅에서 고통과 투쟁을 통해 준비해야 한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "구원에 들어가기 위해서는 먼저 이 땅에서 고통과 борь음을 통해 준비해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0010233",
@@ -58812,7 +58861,7 @@
     "paragraph": 2011,
     "sentence": 0,
     "source_text": "'^ All things,\" you allege, \" are to be reconciled to the Father by the blood of the cross : but, while any continue in enmity against God, this can never be performed.\" (p. 364.) You refer, I suppose, to Col. i. 19, 20.",
-    "claim": "십자가의 피로 모든 것이 아버지께로 примир되어야 하지만, 하나님께 대하여 적의를 지닌 사람들이 계속 존재하는 한, 이것은 결코 수행될 수 없다.",
+    "claim": "십자가의 피로 모든 것이 아버지께로 화해되어야 하지만, 하나님께 대하여 적의를 지닌 사람들이 계속 존재하는 한, 이것은 결코 수행될 수 없다.",
     "doctrine": "Soteriology",
     "scriptures": [
       "Colossians 1:19"
@@ -58821,7 +58870,9 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "십자가의 피로 모든 것이 아버지께로 примир되어야 하지만, 하나님께 대하여 적의를 지닌 사람들이 계속 존재하는 한, 이것은 결코 수행될 수 없다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0010406",
@@ -58845,7 +58896,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "만물의 примир음이 모든 천상과 지상 거주자의 구원을 의미한다면, 거룩한 천사도 불경건한 천사도 구원받고, 또한 사도는 쓸모없는 중언부언을 하는 것이 된다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0010407",
@@ -58908,7 +58962,7 @@
     "paragraph": 2011,
     "sentence": 4,
     "source_text": "But, through the blood of Christ, all things are reconciled ; and, under his head- ship, all made to subserve the present and everlasting good, of them who believe in him.",
-    "claim": "그리스도의 피를 통해 모든 것이 примир되어 그의 지도 아래 믿는 자들의 현재와 영원한 선을 위해 모든 것이 служ하게 된다.",
+    "claim": "그리스도의 피를 통해 모든 것이 화해되어 그의 지도 아래 믿는 자들의 현재와 영원한 선을 위해 모든 것이 служ하게 된다.",
     "doctrine": "Soteriology",
     "scriptures": [
       "Colossians 1:19"
@@ -58917,7 +58971,10 @@
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도의 피를 통해 모든 것이 примир되어 그의 지도 아래 믿는 자들의 현재와 영원한 선을 위해 모든 것이 служ하게 된다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0010410",
@@ -58954,14 +59011,16 @@
     "paragraph": 2014,
     "sentence": 1,
     "source_text": "Death is swallowed up in vi€tori/ ; which is the same thing as the last enemy being destroyed.",
-    "claim": "사タン과 사망이 완전히 파괴되어 그리스도께서 모든 것 위에 우세하게 되실 때 사망은 완전히 승리되어 소멸된다.",
+    "claim": "사탄과 죽음이 완전히 파괴되어 그리스도께서 모든 것 위에 우세하게 되실 때 죽음은 완전히 승리되어 소멸된다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "사タン과 사망이 완전히 파괴되어 그리스도께서 모든 것 위에 우세하게 되실 때 사망은 완전히 승리되어 소멸된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0010412",
