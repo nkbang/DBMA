@@ -113,3 +113,88 @@ def test_sermon_expansion_gets_marker_but_no_notice(monkeypatch):
     assert error is None
     assert _CONTAMINATION_MARKER in text
     assert "제거했습니다" not in text, "원고에 안내 문구가 섞이면 안 된다"
+
+
+# ── 라틴 문자 오염 (2026-09-26) ───────────────────────────────
+#
+# _SCRIPT_CONTAMINATION_RE는 문자 체계로 판정해 라틴 알파벳을 전부 면제한다 —
+# 정상 출력에 "Charles Haddon Spurgeon"·영문 원문 인용이 들어가기 때문이다.
+# 그래서 순수 라틴 외국어 혼입(독일어 persönlich, 인도네시아어 bahwa)은 원리상
+# 탐지되지 않았다. 판별 기준은 사전이 아니라 **근거 문맥**이다.
+#
+# 실측 검증(P0-5 24건 × 2회분): 재현율 2/2, 오탐 0/107 라틴 토큰.
+# 사전을 주 신호로 쓴 초안은 has·soldiers·Churches(굴절형)와 Hiscox·Dagg·Dei
+# (고유명사)를 오탐했다 — 문맥 신호로 바꾸자 사라졌다.
+
+_CTX = (
+    "Charles Haddon Spurgeon preached on justification and the deacon's "
+    "qualifications in the Metropolitan Tabernacle Pulpit."
+)
+
+
+def test_latin_quoted_from_context_is_not_flagged():
+    answer = "스퍼전은 justification 을 다룹니다(출처: Metropolitan Tabernacle Pulpit)."
+    assert gen._detect_latin_contamination(answer, _CTX) == []
+
+
+def test_foreign_latin_words_are_flagged():
+    """09-23 실측 사례 2건을 그대로 고정한다."""
+    answer = "이것은 bahwa 그리고 persönlich 한 문제입니다."
+    assert gen._detect_latin_contamination(answer, _CTX) == ["bahwa", "persönlich"]
+
+
+def test_capitalized_tokens_exempt_as_proper_nouns():
+    """Hiscox·Dagg·Dei 류 고유명사가 오탐되던 문제."""
+    answer = "Hiscox와 Dagg는 Imago Dei를 다루지 않습니다."
+    assert gen._detect_latin_contamination(answer, _CTX) == []
+
+
+def test_no_context_means_no_judgment():
+    """근거가 없으면 판정 근거도 없다 — 추측으로 표시하지 않는다."""
+    assert gen._detect_latin_contamination("bahwa persönlich", "") == []
+
+
+def test_latin_notice_lists_words():
+    notice = gen._latin_notice(["bahwa", "persönlich"])
+    assert "bahwa" in notice and "persönlich" in notice
+    assert gen._latin_notice([]) == ""
+
+
+class _RespWithContext(_Resp):
+    def __init__(self):
+        super().__init__()
+        self.llm_context_block = _CTX
+
+
+def test_latin_contamination_discloses_without_deleting(monkeypatch):
+    """계약 — 라틴 오염은 지우지 않고 고지만 붙인다.
+
+    단어 삭제는 글자 삭제보다 파괴적이고, 판정 표본이 작아(양성 2건) 검증되지
+    않은 판정 위에 제거 로직을 얹지 않는다(feedback_avoid_risky_uncertain_design).
+    """
+    monkeypatch.setattr(
+        gen.ollama, "generate",
+        lambda **_k: {"response": "칭의는 bahwa 중요한 교리입니다."},
+    )
+
+    result = gen.GenerationService().generate(_RespWithContext())
+
+    assert "bahwa" in result.answer, "라틴 오염 단어를 삭제하면 안 된다"
+    assert "외국어로 보이는 단어" in result.answer
+
+
+def test_streaming_path_also_discloses_latin(monkeypatch):
+    """채팅이 실제로 쓰는 경로(generate_stream)에도 적용돼야 한다 —
+    블로킹 generate()에만 붙이면 사용자에게는 아무 효과가 없다."""
+    def fake(**_k):
+        for piece in ["칭의는 ", "bahwa ", "중요합니다."]:
+            yield {"response": piece}
+
+    monkeypatch.setattr(gen.ollama, "generate", fake)
+
+    stream = gen.GenerationService().generate_stream(_RespWithContext())
+    list(stream)
+    answer = stream.to_result().answer
+
+    assert "bahwa" in answer, "삭제하지 않는다"
+    assert "외국어로 보이는 단어" in answer
