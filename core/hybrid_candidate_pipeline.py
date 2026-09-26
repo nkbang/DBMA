@@ -30,6 +30,7 @@ from dataclasses import asdict
 from core.candidate_generator import CandidateGenerator, CandidateRef, open_or_build_index
 from core.bible_index import BibleIndex
 from core.query_planner import QueryPlan, classify
+from core.query_translation import contains_hangul, translate_to_english
 from core.rrf import reciprocal_rank_fusion
 from core.search_cache import SearchResultCache, make_cache_key
 from core.retrieval import (
@@ -57,6 +58,12 @@ def is_enabled() -> bool:
     return os.environ.get("USE_INVERTED_INDEX", "true").strip().lower() == "true"
 
 
+# 코퍼스의 한국어 비중이 이 값 미만이면 한글 질의를 Stage-1 전에 번역한다.
+# 배포 기준선 실측값은 0.00%(119,595건 전량 영문)이고, 한국어 자료가 유의미하게
+# 쌓이면(20% 이상) 번역 전처리는 자동으로 멈춘다.
+_KOREAN_CORPUS_THRESHOLD = 0.20
+
+
 class HybridRetriever:
     """Stage 0 (Query Planner) -> Stage 1 (CandidateGenerator or Bible Index,
     depending on route) -> Stage 2 (reused scoring) -> ranked top-K. Mirrors
@@ -74,6 +81,131 @@ class HybridRetriever:
         self.candidate_generator = candidate_generator
         self.tsu_by_id = tsu_by_id
         self.bible_index = bible_index
+
+    def _corpus_korean_ratio(self) -> float:
+        """코퍼스에서 한국어 TSU가 차지하는 비율(1회 계산 후 캐시)."""
+        cached = getattr(self, "_ko_ratio", None)
+        if cached is None:
+            total = len(self.tsu_by_id) or 1
+            ko = sum(1 for t in self.tsu_by_id.values() if (t.get("language") or "") == "ko")
+            cached = ko / total
+            self._ko_ratio = cached
+        return cached
+
+    def _should_translate_upfront(self, query_text: str) -> bool:
+        """한국어 질의를 Stage-1 **전에** 번역할지.
+
+        [2026-09-26 설계 정정] 처음에는 "Stage-1이 0건일 때만 번역"으로 좁혔다.
+        그 설계는 실패했다 — 한국어 토큰이 영문 코퍼스의 **OCR 잡음**에는
+        걸리기 때문에 0건이 되지 않고, 따라서 번역이 영원히 발동하지 않는다.
+        실측(P0-5 유보 17건): 구절 참조가 있는 5건이 번역 없이 후보를 얻었고
+        그 내용은 전부 잡음이었다(OCR 쓰레기·성구 색인 페이지·거울상 OCR).
+
+        그래서 발동 기준을 "결과가 비었는가"가 아니라 **"질의 언어와 코퍼스
+        언어가 어긋났는가"**로 바꾼다. 코퍼스에 한국어가 거의 없으면(현 배포
+        기준선은 정확히 0.00%) 한글 질의는 어휘 일치가 성립할 수 없으므로
+        번역이 필수 전처리다. 코퍼스에 한국어 자료가 쌓이면 이 조건이 저절로
+        거짓이 되어 번역이 멈춘다.
+        """
+        if not contains_hangul(query_text):
+            return False
+        return self._corpus_korean_ratio() < _KOREAN_CORPUS_THRESHOLD
+
+    def _corpus_has_book_ids(self) -> bool:
+        """코퍼스에 book_id가 하나라도 있는지(1회 계산 후 캐시).
+
+        [2026-09-26] 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진 TSU가
+        0건(0.0%)이다. 그런데 CandidateGenerator.search()는 질의에서 감지된
+        책 이름을 `book_id` term 필터(Occur.Must)로 얹으므로, 이 코퍼스에서는
+        **성경 책 이름이 들어간 모든 질의가 구조적으로 0건**이 된다.
+          실측: "no condemnation in Christ Jesus"        -> 2건
+                "Romans no condemnation in Christ Jesus" -> 0건 (ROM 감지)
+        설교 준비 질의는 대개 책 이름을 포함하므로 영향이 넓다.
+
+        해결은 "0건이면 필터를 버리고 재시도"가 아니다 — 그렇게 하면 필터 없는
+        검색이 OCR 잡음을 후보로 채워 넣고(실측 확인), 그 결과 번역 폴백이
+        발동하지 못해 정직한 0건보다 나빠진다. 필터가 **만족 불가능할 때만**
+        애초에 얹지 않는 것이 정확한 처방이다.
+        """
+        cached = getattr(self, "_has_book_ids", None)
+        if cached is None:
+            cached = any(
+                (t.get("verse_mapping") or {}).get("book_id")
+                for t in self.tsu_by_id.values()
+            )
+            self._has_book_ids = cached
+        return cached
+
+    def _query_parser(self) -> QueryParser:
+        """번역문 재파싱 전용. HybridQueryProcessor가 이미 parser를 갖지만
+        HybridRetriever는 독립적으로 쓰이기도 해서(테스트·A/B) 자체 보유한다."""
+        if getattr(self, "_parser_cached", None) is None:
+            self._parser_cached = QueryParser()
+        return self._parser_cached
+
+    def _generate_candidates(
+        self,
+        parsed_query: ParsedQuery,
+        candidate_k: int,
+        file_scope: Optional[list[str]],
+        telemetry_out: Optional[dict[str, Any]],
+    ) -> list[CandidateRef]:
+        """Stage 1 — route 분류 후 후보를 만든다. 번역 재시도가 같은 경로를
+        다시 타야 하므로 메서드로 분리했다(로직 변경 없음)."""
+        plan = classify(parsed_query.original_query, parsed_query)
+        if telemetry_out is not None:
+            telemetry_out["route"] = plan.route
+        candidate_tsu_ids: Optional[list[str]] = None
+
+        if plan.route == "bible" and self.bible_index is not None:
+            seen: set[str] = set()
+            candidate_tsu_ids = []
+            for ref in parsed_query.scripture_refs:
+                for tsu_id in self.bible_index.lookup_scripture_ref(ref):
+                    if tsu_id not in seen:
+                        # [Bug fix] Respect file_scope the same way other routes do.
+                        if file_scope is not None and (
+                            self.tsu_by_id.get(tsu_id, {}).get("source_file") not in file_scope
+                        ):
+                            continue
+                        seen.add(tsu_id)
+                        candidate_tsu_ids.append(tsu_id)
+            # bm25_score has no meaning for a posting-list hit — every match
+            # is an equally exact reference match; Stage 2 (theological/
+            # passage score) differentiates within this set.
+            candidates = [
+                CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:candidate_k]
+            ]
+            # [2026-09-26] Bible Index가 비어 있으면 자유 텍스트 검색으로 내려간다.
+            # 실측: 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진 TSU가
+            # 0건(0.0%)이라 bible_posting 테이블이 0행이다. 구절 참조가 들어간
+            # 질의는 전부 이 route로 들어와 빈 포스팅 리스트를 받고 0건으로
+            # 끝났는데, 설교 준비에서 가장 흔한 질의 형태가 바로 그것이다.
+            # 포스팅 히트가 있으면 기존 동작이 그대로 유지되고(정확 참조 우선),
+            # 없을 때만 내려가므로 0건보다 나빠질 수 없다.
+            if not candidates:
+                if telemetry_out is not None:
+                    telemetry_out["route"] = "bible->hybrid"
+                candidates = self.candidate_generator.search(
+                    parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
+                    book_ids=None if self._corpus_has_book_ids() else [],
+                )
+        elif plan.route == "exact":
+            candidates = self.candidate_generator.search(
+                parsed_query, k=candidate_k, source_files=file_scope,
+                exact_phrase=plan.exact_phrase, with_snippets=False,
+            )
+        elif plan.route == "metadata":
+            candidates = self.candidate_generator.search(
+                parsed_query, k=candidate_k, source_files=file_scope,
+                fields=["title", "author"], with_snippets=False,
+            )
+        else:  # "greek" or "hybrid" — default free-text search, unchanged
+            candidates = self.candidate_generator.search(
+                parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
+                book_ids=None if self._corpus_has_book_ids() else [],
+            )
+        return candidates
 
     def retrieve(
         self,
@@ -104,44 +236,42 @@ class HybridRetriever:
         - greek/hybrid: CandidateGenerator's default free-text search,
           unchanged from before the Query Planner existed.
         """
-        plan = classify(parsed_query.original_query, parsed_query)
-        if telemetry_out is not None:
-            telemetry_out["route"] = plan.route
-        candidate_tsu_ids: Optional[list[str]] = None
+        # [2026-09-26] 언어 불일치 전처리 — 결과가 빈 뒤가 아니라 **앞에서**
+        # 번역한다(위 _should_translate_upfront 주석의 실패 근거 참고).
+        if self._should_translate_upfront(parsed_query.original_query):
+            translated = translate_to_english(parsed_query.original_query)
+            if translated:
+                parsed_query = self._query_parser().parse(translated)
+                if telemetry_out is not None:
+                    telemetry_out["translation_used"] = True
+                    telemetry_out["translated_query"] = translated
 
-        if plan.route == "bible" and self.bible_index is not None:
-            seen: set[str] = set()
-            candidate_tsu_ids = []
-            for ref in parsed_query.scripture_refs:
-                for tsu_id in self.bible_index.lookup_scripture_ref(ref):
-                    if tsu_id not in seen:
-                        # [Bug fix] Respect file_scope the same way other routes do.
-                        if file_scope is not None and (
-                            self.tsu_by_id.get(tsu_id, {}).get("source_file") not in file_scope
-                        ):
-                            continue
-                        seen.add(tsu_id)
-                        candidate_tsu_ids.append(tsu_id)
-            # bm25_score has no meaning for a posting-list hit — every match
-            # is an equally exact reference match; Stage 2 (theological/
-            # passage score) differentiates within this set.
-            candidates = [
-                CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:candidate_k]
-            ]
-        elif plan.route == "exact":
-            candidates = self.candidate_generator.search(
-                parsed_query, k=candidate_k, source_files=file_scope,
-                exact_phrase=plan.exact_phrase, with_snippets=False,
-            )
-        elif plan.route == "metadata":
-            candidates = self.candidate_generator.search(
-                parsed_query, k=candidate_k, source_files=file_scope,
-                fields=["title", "author"], with_snippets=False,
-            )
-        else:  # "greek" or "hybrid" — default free-text search, unchanged
-            candidates = self.candidate_generator.search(
-                parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
-            )
+        candidates = self._generate_candidates(
+            parsed_query, candidate_k, file_scope, telemetry_out
+        )
+
+        # [2026-09-26] 한국어 질의 ↔ 영문 코퍼스 불일치 구제.
+        # Stage-1이 어휘 일치이므로 한국어 토큰은 영문 본문과 교집합이 0이고,
+        # 여기서 폴백이 없으면 그대로 0건으로 끝난다(실측: P0-5 유보 17건 중
+        # 16건이 이 경로). 이미 후보를 찾은 질의는 건드리지 않으므로 빠른 경로의
+        # 지연이 늘지 않는다 — 막다른 길에서만 번역을 시도한다.
+        # 번역 실패 시 원래의 0건이 유지될 뿐이라 순손실이 없다.
+        if not candidates and contains_hangul(parsed_query.original_query):
+            translated = translate_to_english(parsed_query.original_query)
+            if translated:
+                translated_pq = self._query_parser().parse(translated)
+                retried = self._generate_candidates(
+                    translated_pq, candidate_k, file_scope, telemetry_out
+                )
+                if retried:
+                    # Stage-2(신학·구절 점수)도 실제로 후보를 찾아낸 질의를
+                    # 기준으로 계산한다 — 한국어 원문으로 영문 청크를 채점하면
+                    # 후보는 번역문이 고르고 점수는 원문이 매기는 불일치가 된다.
+                    parsed_query = translated_pq
+                    candidates = retried
+                    if telemetry_out is not None:
+                        telemetry_out["translation_used"] = True
+                        telemetry_out["translated_query"] = translated
 
         if telemetry_out is not None:
             telemetry_out["candidate_count"] = len(candidates)

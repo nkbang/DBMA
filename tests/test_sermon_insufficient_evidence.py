@@ -142,7 +142,10 @@ def test_expansion_step_holds_when_candidates_empty(monkeypatch):
     mod._render_expansion_step()
 
     assert service.expand_calls == 0
-    assert warnings == [mod._SERMON_NO_EVIDENCE_TEXT]
+    # [2026-09-26] 유보 문구 뒤에 서재 언어 고지가 덧붙는다(영문 서재일 때만) —
+    # 문구가 붙었는지가 아니라 "유보 안내가 떴는지"가 이 테스트의 관심사다.
+    assert len(warnings) == 1
+    assert warnings[0].startswith(mod._SERMON_NO_EVIDENCE_TEXT)
 
 
 def test_expansion_step_reaches_loop_when_candidates_present(monkeypatch):

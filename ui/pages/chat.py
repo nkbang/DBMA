@@ -38,6 +38,7 @@ import streamlit as st
 
 from ui.pages._base import BasePage
 from core.config import DATA_DIR
+from core.query_translation import corpus_language_notice
 from core.retrieval import QueryProcessor, RankedCandidate, Citation
 from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
@@ -469,7 +470,10 @@ def generate_answer(
     # 막지 않고 호출부의 _is_low_confidence 캡션 경고에 맡긴다.
     if not response.top_k_results and not smith_results:
         logger.info("[generate_answer] no evidence for query=%r → hold", question[:50])
-        return (_NO_EVIDENCE_HOLD_TEXT, [])
+        # [2026-09-26] 서재가 영문뿐일 때 "근거 없음"을 "주제가 없음"으로
+        # 오해하지 않도록 원인을 덧붙인다(한국어 자료가 쌓이면 자동 소멸).
+        notice = corpus_language_notice(getattr(getattr(processor, "engine", None), "tsus", None))
+        return (_NO_EVIDENCE_HOLD_TEXT + notice, [])
 
     try:
         stream = generator.generate_stream(
