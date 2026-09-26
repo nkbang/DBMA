@@ -630,32 +630,32 @@
 ### 121. TSU-0017653  [Justification]
 - **원문**: In short, a righteousness is made of it, which of all things is most odious in the sight of God.
 - **claim**: 인위적으로 만들어진 의로운 행위는 하나님의 눈에 가장 싫은 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 122. TSU-0018763  [Providence]
 - **원문**: And can all these wants be supplied by only the opening of his hand?
 - **claim**: 하나님의 손의 열림만으로 모든 필요를 충족시킬 수 있는가?
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 123. TSU-0017204  [미분류]
 - **원문**: They may be supposed to have been first con- ferred either by friends or enemies : if by the former, they com- comly assume the question at issue ; and if by the latter, they arc as commonly mere terms of reproach^ But allowing them to have been conferred impartially, yet it is next to impossible for a name to express more than some one or two leading doctrines pertainins: to a system.
 - **claim**: 종교의 다양한 체계나 교리들을 설명하는 이름들은 대개 그 이름에 의존해서 의견을 내리는 것이 안전하지 않다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 124. TSU-0017798  [Soteriology]
 - **원문**: ministers give it up, contenting themselves with exhorting their hearers to things with which they can comply consistently with reigning enmity to God in their hearts ; to things which contaio nothing truly good in them, and which a sinner may therefore per- form through his whole life, and be shut out of heaven at last as a worker of iniquity.
 - **claim**: 목회자들은 성도들이 하나님께 대한 적개심을 가지고도 순종할 수 있는 것에 대해 설교하며, 참으로 선한 것이 없는 것과 죄인이 평생 동안 행할 수 있는 것에 대해 설교한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: claim이 원문의 핵심 결론("평생 행해도 결국 지옥/worker of iniquity로 쫓겨남")을 누락.
 
 ### 125. TSU-0019062  [Soteriology]
 - **원문**: The joy of hope being so new and unexpected a thing, and succeeding to great darkness and distress, produces a wonderful change in his mind.
 - **claim**: 희망의 기쁨은 이전의 큰 어둠과 고통 이후에 찾아오므로, 사람의 마음에 놀라운 변화를 일으킨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 126. TSU-0019928  [Soteriology]
 - **원문**: Inquire whether the scriptures do not exhort, admonish, and persuade sinners to those very things which, where they exist, are ascribed to the grace of God.
 - **claim**: 성경은 죄인들에게 하나님의 은혜로 여겨지는 것들을 권면, 경고, 설득한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 127. TSU-0019685  [Church Discipline]
 - **원문**: In reference to the incestuous Corinthian, there are no directions given for his being admonished, and exclu- ded only in case of his being incorrigibly impenitent.
@@ -665,12 +665,12 @@
 ### 128. TSU-0017373  [Soteriology]
 - **원문**: And having here found rest to his soul, he will not be less but more attentive to the means of salvation than he was be- fore.
 - **claim**: 구원받은 자는 구원 수단에 대한 주의가 이전보다 더 커질 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 129. TSU-0019104  [Confession]
 - **원문**: The thirty-second and thirty-eighth Psalms express the wretchedness of his mind till he confessed his sin, and obtained mercy.
 - **claim**: 다윗은 죄를 고백하기 전까지 마음이 비참했으며, 죄를 고백하고 자비를 얻은 후에야 평안을 찾았다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 130. TSU-0017023  [Providence]
 - **원문**: To this " vanity" they are sub- jected : *' not willingl}'" indeed ; (for every creature, in its prop- er station, naturally inclines to serve and honour its Creator, and whenever it does otherwise it is against nature) but by reason of him who hath subjected the same in hope.
@@ -680,7 +680,7 @@
 ### 131. TSU-0018518  [Sanctification]
 - **원문**: As it is not talent, but morality, that constitutes character among men, so it is not the natural, but the moral perfections of God, which properly constitute his character.
 - **claim**: 하나님의 성품은 자연적인 속성보다는 도덕적인 완전함에 의해 구성된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 132. TSU-0019233  [Ecclesiology]
 - **원문**: Where this is the case, however, much will be neglected, especially of those parts of duty which fall not under the eye of creatures.
@@ -690,82 +690,82 @@
 ### 133. TSU-0018599  [Trinity]
 - **원문**: I need not adduce the evidences of this truth : the sacred scriptures are full of them* Divine perfections are ordinarily ascribed to him, and divine worship is paid to him, both by angels and men.
 - **claim**: 성경은 성자의 신성과 개인성을 증명하는 증거들로 가득 차 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 134. TSU-0017217  [Sanctification]
 - **원문**: Many a slothful servant hates his mas- ter aod his service, and yet has pride and presumption enough to claim the reward.
 - **claim**: 게으른 종은 주인과 그의 일을 싫어하면서도 자만과 추측으로 보상을 주장할 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 135. TSU-0016985  [Soteriology]
 - **원문**: The glory which accompanied his first appearing eclipsed every thing which had gone before it.
 - **claim**: 그리스도의 첫 번째 나타남에 동반된 영광은 이전의 모든 것을 가리켰다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 136. TSU-0017968  [Soteriology]
 - **원문**: By happy experience I can bear witness that gra- cious is the Lord and righteous : yea, our God is merciful.
 - **claim**: 하나님은 은혜로우시고 의로우시며, 우리 하나님은 자비로우시다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 137. TSU-0017504  [Soteriology]
 - **원문**: Those sins which the scriptures forgive, are forgiven ; and those which they retain, are retained : but the scriptures de- clare no sin to be forgiven which is unlamented.
 - **claim**: 성경이 용서하는 죄는 용서되고, 성경이 간직하는 죄는 간직되며, 성경은 후회하지 않는 죄를 용서된 것으로 선언하지 않는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 138. TSU-0020137  [Ecclesiology]
 - **원문**: John who wa* the most loving, or charitable, perhaps of all the dibciples of Christ, is so far from considering a departure from the truth as a light matter, and the subject of it as entitled to the same Christian affection as heretofore, that he expressly writes as follows: — Whosoever trunss^resseth^ and ahideth not in the doctrine of Christ HATH NOT GoD. — If there come any unto rjoUy and bring not this d irtrine, receive him not into your house, neither bid him God-speed ; for he that hiddeth him God-speed is partaker of HI* EVIL DEEDS.
 - **claim**: 진리를 떠난 자는 하나님을 가지지 못하며, 그에게 호의를 보여서는 안 된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 139. TSU-0017150  [Soteriology]
 - **원문**: If once a sinner derives comfort from anj thing short of Christ, he from thence falls asleep in security ; and it is well if he awakes in this world.
 - **claim**: 그리스도 외의 어떤 것에서 위안을 얻는 자는 안심의 잠에 빠져서 이 세상을 떠나기 전에 깨어나기 어렵다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 140. TSU-0016079  [Sanctification]
 - **원문**: If taken generally, for the exercise of spiritual affection, truth is here the cause, and these exercises are its imme- diate e^ec^s.
 - **claim**: 진리(truth)는 영적 감정의 실천의 원인이고, 이러한 실천은 진리의 직접적인 결과이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 141. TSU-0018095  [Other]
 - **원문**: iutelj at the divine discretion, it tends powerfully to impress this idea both upon saints and sinners.
 - **claim**: 신의 주권적인 판단은 성도와 죄인 모두에게 강한 영향을 미쳐 성도들은 하나님의 은혜로 자신이 있는 것임을 인정하게 하고, 죄인들은 헛된 소망을 버리고 주권적인 자비의 품에 빠지도록 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 절단된 원문("iutelj at the divine discretion...")에서 검증불가능한 구체적 내용을 대거 지어냄.
 
 ### 142. TSU-0018311  [Scripture / Authority]
 - **원문**: The evidence which is afforded of the being and perfections of God, by the creation which surrounds us and of which we ourselves area part, is no more superceded by revelation, than the law is render- ed void by faith.
 - **claim**: 신의 존재와 완전성에 대한 증거는 계시로 인해 폐지되지 않는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 143. TSU-0018937  [Eschatology]
 - **원문**: By the horrid imprecations which we so commonly hear from hardened sinners, who call upon God to damn their bodies and souls, it would seem as if they laid their account with damnation, and wished to ftimiliarize it ; as if they had made a covenant with death, and with hell were at agreement ; but when God shall lay judgment to the hne, and righteous nesp to the plummet, these refuges of lies will suddenly be swept away.
 - **claim**: 경건하지 못한 죄인들이 하나님께 저주를 요청하는 것은 그들이 심판을 각오했으며 죽음과 지옥과의 계약을 맺었다는 것을 나타낸다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 144. TSU-0017588  [Justification]
 - **원문**: Many will now acknowledge, in addition to this, that their hopes of being accepted of God are through the merits of Jesus Christ: but it is not by such language that a self-righteous spirit is to be disguised Nor is it peculiar to those whom we call decent char- acters, to trust that they are righteous and despise others : for the same spirit may be seen in the most profligate of mankind.
 - **claim**: 많은 사람들이 그들의 구원은 예수 그리스도의 공로로 인해 가능하다고 인정하지만, 이 언어로 자기의 올바른 영을 숨길 수는 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 145. TSU-0017837  [Sanctification]
 - **원문**: I formed resolutions of amendment, and fixed times when I would return to God by repentance ; but, as the former seldom proved to be of any account in the hour of temptation, so the latter passed over, and left me where I was.
 - **claim**: 회개와 개심의 필요성에 대한 성경의 가르침을 읽었지만, 실제로 회개하기 위한 결심과 시도를 하였음에도 불구하고, 유혹의 순간에 그 결심이 무의미해졌고, 결국 이전과 같은 상태로 남아있었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 146. TSU-0017755  [Ecclesiology]
 - **원문**: The circumstance of being of a party, or denomination, which has the sanction of authority, or the greatest numbers, or people of the greatest opulence and respectability, belonging to it, is fre- quently known to furnish occasion to spiritual pride.
 - **claim**: 종교적 권위나 다수의 사람들, 또는 부유하고 존경받는 사람들이 속한 종교 단체에 속하는 것은 종종 영적 교만을 일으킬 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 147. TSU-0019517  [Soteriology]
 - **원문**: " O Lord, have mercy upon me a most wretched caitiff, and miserable sinner !
 - **claim**: 저는 가장 불행하고 비참한 죄인입니다. 주님께서는 저에게 자비를 베푸시기를 바랍니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 148. TSU-0018867  [Soteriology]
 - **원문**: Here lies the 2;reat difficulty of salvation.
 - **claim**: 구원에는 큰 어려움이 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 149. TSU-0016658  [Soteriology]
 - **원문**: The intention of God not to remove this impossibility, and so not to save him, is a purpose to withhold not only that which he was not obliged to be- stow, but that which is never represented in the scriptures a sneces- sary to the consistency of exhortations or invitations.
@@ -775,22 +775,22 @@
 ### 150. TSU-0018229  [Lord's Supper]
 - **원문**: Except ye eat the flesh of the Son of Man, and drink his blood, ye have no life in you.
 - **claim**: 예수님의 육체를 먹고 그의 피를 마시지 않으면 생명이 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 151. TSU-0018375  [Scripture / Authority]
 - **원문**: It required one degree of inspiration to foretel future events, and another to narrate facts which fell under the writer's knowledge.
 - **claim**: 성경의 영감은 예언과 역사 기록에 따라 다른 정도를 요구한다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 152. TSU-0016691  [Election]
 - **원문**: preach the gospel to every creature, while he never expected any others to believe and be saved by it than those who were ordained to eternal life.
 - **claim**: 복음은 모든 피조물에게 전파되어야 하지만, 영원한 생명으로 예정받은 사람들만이 그것을 믿고 구원받을 것이라는 기대 아래 전파되어야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 153. TSU-0016817  [Soteriology]
 - **원문**: which, to them who imbibed it, became in them " a well of jiving water springing up into everlasting life."
 - **claim**: 성도들에게는 영생의 샘이 되어 영생에 이르는 생명의 물이 되어준다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 154. TSU-0018285  [Sanctification]
 - **원문**: This, and not merely the well-being of man, is the reason given why murder should be punished with death.
@@ -800,22 +800,22 @@
 ### 155. TSU-0017762  [Sanctification]
 - **원문**: The contempt with which some affect to treat all forms and rules, and those who adhere to them, is far from being to their honour, and bears too near a resemblance to the spirit of Diogenes, who trampled up- on the pride of Plato, and that, as Plato told him, aziA greater pride.
 - **claim**: 일부 사람들이 모든 형식과 규칙을 경시하는 것은 그들의 명예에 도움이 되지 않으며, 플라톤의 자존심을 밟아버린 디오게네스의 정신과 너무도 유사하다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 156. TSU-0020119  [Ecclesiology]
 - **원문**: Among other things they divided into parties, boasted of the talents of their preachers, connived at the most wnnatural kind of fornication, went to law with one another, communed with idolaters at their temples, and profa- ned the supper of the Lord, by appropriating it to purposes of sen- sual indulgence 1 Such were the fruits of error.
 - **claim**: 일부 초기 기독교 공동체는 잘못된 신학적 관념으로 인해 부도덕한 행동과 잘못된 실천을 저지르었다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 157. TSU-0019974  [Baptism]
 - **원문**: Whether it be not virtually required by them ? and, Whether they be not binding on believers ?
 - **claim**: 세례와 성찬의 규례는 성경에서 명시적으로 요구되지 않지만, 믿는 이들에게는 의무적으로 요구될 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과, 정확함.
 
 ### 158. TSU-0017637  [Ecclesiology]
 - **원문**: Neither would the primitive ministers have been charged not to lord it over God's heritage, if such things had never made their appearance.
 - **claim**: 초기 교회에서 목회자들이 하나님의 백성들을 지배하지 않도록 경고받은 것은 실제로 그런 문제가 발생했기 때문이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과, 정확함.
 
 ### 159. TSU-0020079  [Justification]
 - **원문**: Hence it is, that in the gospel, as heard and re- ceived, we are said to stand.
@@ -825,7 +825,7 @@
 ### 160. TSU-0018650  [Soteriology]
 - **원문**: While this was done, the Holy Spirit gave testimooy to the word of his grace, and ren- dered it effectual.
 - **claim**: 성령은 하나님의 은혜의 말씀에 증거를 주시고 그것을 효과적으로 이루어주신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ---
 
@@ -834,47 +834,47 @@
 ### 161. TSU-0021934  [Sanctification]
 - **원문**: We feel for the imposition practised on Isaac : and yet it was no doubt a chastise- ment to him for his ill-placed partiality for Esau, on grounds so unworthy of him, and to the disregarding of what God had revealed concerning them.
 - **claim**: 이사악에게 행해진 속임수는 그의 잘못된 편애를 교정하는 하나님의 징계였을 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 162. TSU-0021524  [Sanctification]
 - **원문**: Such was the harvest which Lot reaped from his well-watered plain ; and such are the tVuits very commonly seen in those that follow his example I
 - **claim**: 로트가 그의 비옥한 평원에서 거둔 결실은 그의 예를 따르는 사람들에게서 흔히 보이는 열매와 같다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 163. TSU-0020670  [미분류]
 - **원문**: Doubtless it was to one of Adam^s daughters, mentioned in Chap. v. 4. which near affinity, though since forbidden, was then absolutely necessary.
 - **claim**: 아담의 딸 중 하나와의 근친혼은 당시에는 필수적이었지만 나중에 금지되었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 164. TSU-0020697  [Eschatology]
 - **원문**: Notwithstanding the longevity of the antediluvians, it is re- corded of them all, in their turn, that they died.
 - **claim**: 홍수 이전의 사람들은 모두 죽었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 165. TSU-0020807  [Providence]
 - **원문**: what is doing in our world ; but his looking upon the earth denotes a special observance of it, as though he had instituted an inquiry into its afifairs.
 - **claim**: 하나님의 세계에 대한 특별한 관찰이 있다는 것
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 166. TSU-0022374  [Ecclesiology]
 - **원문**: We see here that it is good to be connected with them that fear God, but much better to cast in our lot with them.
 - **claim**: 하나님을 경외하는 사람들과 연합하는 것이 좋지만, 그들과 함께 운명을 함께하는 것이 더 낫다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 167. TSU-0020359  [Trinity]
 - **원문**: What a condescension then, thought 1, must it be for the eternal God to stamp his image upon man !
 - **claim**: 신은 인간에게 자신의 형상을 부여하는 것이 큰 겸손이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 168. TSU-0021762  [Election]
 - **원문**: Among others, his regard for Isaac, constituting him his heir, and settling his other sons at a sufficient distance from him, shows that his heart was still with God's heart, or that he whom the Lord had chosen was the object to whom his thoughts were chiefly directed.
 - **claim**: 아브라함은 이삭을 상속인으로 삼고 다른 아들들을 충분한 거리에서 정착시킴으로써 여호와의 마음과 그의 마음이 여전히 일치하고 있음을 보여준다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 169. TSU-0020744  [Ecclesiology]
 - **원문**: The church being thus corrupted, and in a manner lost in the world, there is nothing left to resist the torrent of depravity.
 - **claim**: 교회가 부패하고 세속화되어 도덕적 타락의 물결에 저항할 수 있는 것이 아무것도 남아 있지 않다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 170. TSU-0022006  [Election]
 - **원문**: Finally : He closed this extraordinary vision by a solemn vow, or dedication of himself to God, And Jacob vowed a vow^ sayings If God will he with me, and will keep me in this way that I go^ and will give me bread to eat, and raiment to put on, so that I come again to my father'' s house in peace : then shall Jehovah be my God.
@@ -884,27 +884,27 @@
 ### 171. TSU-0020515  [Soteriology]
 - **원문**: But lo, she also shifts the blame : The Serpent beguiled me, and I did eat. ^ I was deceived, 1 did not mean evil ; but was drawn into it through the wiles of an evil being.' Such is the excuse which multitudes make to this day, when they can find no better : ' The devil tempted me to it !' Still God continues his forbearance ; makes no answer ; but or- ders her as it were, to stand aside.
 - **claim**: 인간은 자신의 죄를 다른 사람이나 사탄에게 책임을 전가하는 경향이 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 172. TSU-0022544  [Providence]
 - **원문**: Avarice and distrust would have wished for much, and have been for hoarding it in such a time as this : but Jacob is contented with a little, desirous that others should have a part as well as himself; and with respect to futurity, he puts his trust in
 - **claim**: 야곱은 조금만으로 만족하며, 미래에 대한 신뢰는 하나님께 둔다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 173. TSU-0020782  [Sanctification]
 - **원문**: It does not merely distinguish good men from bad men, but good men from one another.
 - **claim**: 성도들 사이에서도 그들의 헌신과 신앙의 정도에 따라 구별이 존재한다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 174. TSU-0022686  [미분류]
 - **원문**: The words of dying men to their children are or should be interesting ; es- pecially of good men, and still more of men inspired of God.
 - **claim**: 하나님으로부터 영감을 받은 선한 사람들의 죽음에 임박한 말은 특히 관심을 끌어야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 175. TSU-0022557  [Soteriology]
 - **원문**: See how fruitful love is of kind contrivance ; seeking and finding opportunities to gratify itself, by closer and closer interviews.
 - **claim**: 사랑은 친밀한 만남을 통해 자신을 기쁘게 하는 기회를 찾고 발견하는 창의적인 방법을 낳는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 176. TSU-0021902  [미분류]
 - **원문**: The above account, however, does not appear greatly to his honour.
@@ -914,22 +914,22 @@
 ### 177. TSU-0020983  [Providence]
 - **원문**: To all this may be added, that the inhabitants of Afri- 'T'.'d seem to be marked out as objects of slavery by the European nations.
 - **claim**: 아프리카의 주민들은 유럽 국가들에 의해 노예로 간주되는 것으로 보인다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 178. TSU-0021996  [Providence]
 - **원문**: Now such was the present vision ; it was the Lord his God saying Amen to his father's blessing.* He was takintj leave of Canaan, and if he had calculated on human probabilities, he was never likely to return to it, at least during the lifetime of Esau : but by the gift of the land on which he lay, to him and to his seed, he was taught to expect it, and to consider himself only as a sojourner at Haran.
 - **claim**: 야곱은 하나님의 축복을 통해 가나안 땅을 자기와 그의 자손에게 받은 선물로 간주하고, 하란에서 단지 나그네로 있는 것으로 생각했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 179. TSU-0022850  [Eschatology]
 - **원문**: But this book traces this antipathy to its source ; and gives us reason. to expect its continuance till Satan and his cause shall be bruised under our feet'.
 - **claim**: 이 책은 이 반대감의 근원을 추적하며, 사탄과 그의 계획이 우리 발 아래 짓밟히기까지 이 반대감이 계속될 것이라는 이유를 제공한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 180. TSU-0020819  [Church Covenant]
 - **원문**: Ob- serve three things in particular. (1.) The leading ideas suggested by a covenant are those of peace and good-will between the par- ties, and if differences have subsisted, forgiveness of the past and security for the future.
 - **claim**: 하나님의 언약은 평화와 양자 간의 친선, 과거의 용서, 그리고 미래의 안정성을 포함하는 개념이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 181. TSU-0021630  [Justification]
 - **원문**: In the first instance he is justified by faith, exclu-
@@ -939,7 +939,7 @@
 ### 182. TSU-0022846  [Providence]
 - **원문**: If the world were det?troyed by a flood, there could no nations have existed till a little before the times of Abraham.
 - **claim**: 세계가 홍수에 의해 파괴되었다면, 아브라함 시대 직전까지는 어떤 국가도 존재하지 않았을 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 183. TSU-0020750  [Soteriology]
 - **원문**: Yet such is the account here given.
@@ -949,12 +949,12 @@
 ### 184. TSU-0021410  [Baptism]
 - **원문**: But we do not think ourselves warranted to reason from cir- cumcision to baptism ; from the circumcision of males to the baptism of males and females ; and from the circumcision of the children of a nation, (the great- er part of whom were unbelievers,) 2i^<\.oi servants born in the house, or bought with money, to tho baptism of the children of believers.
 - **claim**: 신약성경에서 명시된 예가 없기 때문에 할례와 세례를 직접 연관지어 성도들의 자녀에 대한 세례를 정당화할 수 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 185. TSU-0021032  [Providence]
 - **원문**: This division of the earth is elsewhere ascribed to the Most High.* Probably it was by lot, which was of his dis- posing; or if by the fathers of the different families, all was sub- ject to the direction of His providence who fixes and bounds our habitation.
 - **claim**: 지구의 분리는 가장 높은 분에게 기인하며, 이는 주사 또는 가족의 아버지에 의해 행해졌을 수 있지만, 모든 것은 그의 섭리의 지시에 따라 이루어졌다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 186. TSU-0022111  [Soteriology]
 - **원문**: They will acknowledge the true God in words ; but their hearts and houses are the abodes of spiritual idolatry.
@@ -969,22 +969,22 @@
 ### 188. TSU-0021015  [Election]
 - **원문**: Jehovah hath called me from the womb: and hath said unto me.
 - **claim**: 여호와가 나를 태에서 부르셨고, 내게 말씀하셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 189. TSU-0020676  [Scripture / Authority]
 - **원문**: Some have supposed that we are indebted to revelation ^or all this kind of knowledge.
 - **claim**: 일부 사람들은 이러한 종류의 지식에 대해 계시에 빚진 바 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 190. TSU-0020795  [Providence]
 - **원문**: And he has only to let the laws of nature take their course, in order to efifect it; for when men depart from God, the principle of union is lost, and self-love gov- erns every thing : and being lovers of their ownselves, they will be covetous, boasters, proud, blasphemers, disobedient to pa- rents, unthankful, unholy, without natural affection, truce-hrealcers.
 - **claim**: 인간이 하나님을 떠나면 자기 사랑이 모든 것을 지배하게 되어, 서로간의 단결이 깨지고, 탐욕, 교만, 불경건 등의 악한 성품이 나타난다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 191. TSU-0021482  [Providence]
 - **원문**: If ten righteous men had been found in Sodom, it had been spared for their sakes : but alas, there is no such number!
 - **claim**: 소돔에 의로운 사람들이 있었다면 그들을 위해 소돔이 파괴되지 않았을 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 192. TSU-0021034  [Election]
 - **원문**: It was rather lent than given to them, from the first.
@@ -994,17 +994,17 @@
 ### 193. TSU-0021735  [Soteriology]
 - **원문**: Both are means appointed of God to bring them to Christ j and if the Lord be with them in their work, such will be the effect.
 - **claim**: 하나님의 뜻에 따라 두 가지 수단은 사람들을 그리스도께로 인도하는 데 사용된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 194. TSU-0021983  [Sanctification]
 - **원문**: That which to a right mind is as plain as the most public highway, to a mind per- verted shall appear full of difliculties.
 - **claim**: 옳은 마음을 가진 사람에게는 분명한 진리가 있지만, 타락한 마음을 가진 사람에게는 그것이 어려운 것으로 보인다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 195. TSU-0021919  [미분류]
 - **원문**: He was not first in the transgression.
 - **claim**: 야곱은 처음으로 범죄를 저지른 것이 아니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 196. TSU-0020978  [미분류]
 - **원문**: They were the first who set up for empire ; and so far from being subject to the descen- dants of Shemor Jupheth, the latter were often invaded, and driven into corners by them.
@@ -1014,22 +1014,22 @@
 ### 197. TSU-0022102  [Ecclesiology]
 - **원문**: Laban also, notwithstanding his keeping these images in his house, could after- wards invoke Jehovah to watch between him and Jacob, (ver. 49.) The truth seems to be, they were like some in after times, who sioear by the Lord, and by Malcham ;] and others in our times, who are neither cold nor hot, but seem to wish to serve both God and mammon.
 - **claim**: 구약 시대에 일부 사람들은 하나님과 다른 신을 함께 섬기고자 하는 이중적인 마음을 가지고 있었다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 198. TSU-0021637  [Soteriology]
 - **원문**: The terms are stronger than had ever been used on any former occasion, and as such, more ex- l)ressive of divine complacency.
 - **claim**: 하나님의 약속은 이전과는 다르게 강력한 용어로 표현되어 하나님의 기쁨을 더욱 분명하게 나타낸다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 199. TSU-0021225  [Ecclesiology]
 - **원문**: This was treating him in character, and in fact presenting the tenth of his spoils as an offering to God.
 - **claim**: 아브람은 그의 전리품의 열 번째를 하나님께 드리는 것으로 멜기세덱에게 축복의 대가로 열 번째를 주었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 200. TSU-0020507  [Confession]
 - **원문**: The truth will not come out without a direct inquiry on the subject.
 - **claim**: 진실은 직접적인 질문 없이는 드러나지 않는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ---
 
@@ -1038,12 +1038,12 @@
 ### 201. TSU-0023125  [Ecclesiology]
 - **원문**: This, and most of the primitive churches met with great oppo- sition from the Jewish synagogue, which is here again called " the synagogire of Satan ; " whose members having rejected the Mes- siah, were no longer worthy of the name of Jews.
 - **claim**: 유대인 회당은 사탄의 회당으로 불려질 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 202. TSU-0023293  [Election]
 - **원문**: Of the tribe of Reuben were sealed twelve thousand.
 - **claim**: 르우벤 지파에서 1만 2천 명이 인을 받았다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 203. TSU-0023527  [Ecclesiology]
 - **원문**: In England, during the reign of Henry II. namely, from WJA to 1189, they were persecuted under the name of Publicans.
@@ -1053,17 +1053,17 @@
 ### 204. TSU-0025453  [Providence]
 - **원문**: He has yet blessings in store to communicate.
 - **claim**: 그는 아직도 분배할 축복을 가지고 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 205. TSU-0024636  [Lord's Supper]
 - **원문**: How pleasant will it be to sit down at the Lord's table with our black brethren, and hear Jesus preached in their language !
 - **claim**: 주님의 식탁에서 흑인 형제들과 함께 앉아 그들의 언어로 예수님의 복음을 듣는 것은 기쁨일 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 206. TSU-0024146  [Eschatology]
 - **원문**: He will not wait for the fall of the antichristian powers ere he extends his spiritual kingdom.
 - **claim**: 그리스도는 안티크리스도 세력이 무너지기 전에 자신의 영적 왕국을 확장할 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 207. TSU-0024025  [Ecclesiology]
 - **원문**: Such was its character from the days of Constantine to the revelation of the man of sin.
@@ -1073,17 +1073,17 @@
 ### 208. TSU-0024188  [Eschatology]
 - **원문**: With respect to the latter the ** thousadd year**' require, 1 think, in this instance to be taken literally ; ibr if understood of so many years as there are days in this period, the duration of the world would greatly exceed what we are elseivhere given to expect.
 - **claim**: 천년은 문자적으로 이해되어야 하며, 천년 동안의 기간이 실제 연수로 계산된다면 세계의 지속 기간이 기대보다 훨씬 길어질 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 209. TSU-0023517  [Ecclesiology]
 - **원문**: The history of the witnesses will be principally found in that of the Waldenses and Albigenses, who for a succession of centuries spread themselves over almost every nation in Europe, and in in- numerable instances bore testimony, at the expense of their lives, against the corruptions of the antichristian party.
 - **claim**: 와르도파와 알비파의 역사에서 주로 목격된 대로, 그들은 수세기에 걸쳐 거의 모든 유럽 국가에 걸쳐 퍼져나가며, 수많은 경우에 자신의 목숨을 희생하면서도 반기독교 세력의 부패에 대해 증언했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 210. TSU-0025107  [Justification]
 - **원문**: God forbid that I should glory, save in the cj-oss of Christ Jesus my Lord !
 - **claim**: 그리스도 예수의 십자가 외에는 다른 것으로 자랑할 수 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 211. TSU-0023635  [Ecclesiology]
 - **원문**: " The ark of the testament being seen," implies the removal of the vail ; and as it was not to be seen in the second temple, but only in the first, its being seen here would seem to denote the restoration of pure primitive Christianity, as
@@ -1093,12 +1093,12 @@
 ### 212. TSU-0023026  [Church Discipline]
 - **원문**: They " worked," yea, they "laboured," for Christ, and when called to encounter persecution, bore it with " patience." They were zealous also in the exercise of a strict and holy discipline, not suffering evil characters and impostors to remain amongst them : and in this course of obedeince they had " not fainted." Altogether, this is a high character.
 - **claim**: 그들은 그리스도님의 일을 위해 열심히 일하고 고난을 인내로 견디며, 엄격하고 거룩한 교회 규율을 실천하여 악한 사람들과 사기꾼들을 그들 중에서 용납하지 않았으며, 이러한 순종의 과정에서 낙심하지 않았다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 213. TSU-0024248  [Eschatology]
 - **원문**: The " first resurrection" appears to me to be no other than the Millennium itself, to which all that is said of it will apply.
 - **claim**: 첫 번째 부활은 천년왕국 자체이며, 천년왕국에 대한 모든 언급이 적용된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 214. TSU-0025187  [Sanctification]
 - **원문**: Hence it is, in a great degree, that so much of the spirit of bondage, and so little of the spirit of adoption prevails among Christians.
@@ -1108,32 +1108,32 @@
 ### 215. TSU-0025542  [Sanctification]
 - **원문**: Yet there have been seasons when I have been affected with such a delightful sense of the loveliness of God, as to ravish my soul, and give predominance to the sacred passion.
 - **claim**: 하나님의 아름다움을 경험한 적이 있어 영혼을 감동시키고 거룩한 열정을 주도하게 했다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 216. TSU-0023222  [Eschatology]
 - **원문**: Such an august and affecting representation expresses the sen- timents which become the friends of Christ while contemplating that great cause which is carrying on in the worUl, and which the world in a manner overlooks.
 - **claim**: 그리스도의 친구들은 그리스도께서 이 세상에서 이루고 계시는 큰 일을 생각할 때 감동과 경외감을 느낀다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 217. TSU-0025528  [Eschatology]
 - **원문**: The symptoms have been very threatening, and Thave repeatedly thought that, let the physician do what he will, ho cannot keep me long from those heavenly joys, for which, blessed be God, 1 hare lately been much longing ; and were it not for my dear people and family, I should have earnestly prayed for leave to depart, and be with Christ, which is so much better than to abide in this vain, suffering, sinning
 - **claim**: 저자는 자신의 병이 심각하여 곧 주님과 함께 하게 될 것이라고 생각하며, 가족과 친척을 떠나야 한다는 생각에 슬픔을 느끼고 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 218. TSU-0024281  [Eschatology]
 - **원문**: This is the second death. 15 .ind whosoever was not found written in the book of life was cast into the lake of fire.
 - **claim**: lake of fire는 두 번째 사망을 의미하며, 생명책에 이름이 기록되지 않은 자는 그곳에 던져진다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 219. TSU-0024692  [Providence]
 - **원문**: The termination of these tender and interesting exercises, and of all his other labours, in so speedy a removal from the present scene of action, may teach us not to draw any certain conclusion as to the designs of God con- cerning our future labours, from the ardour or sincerity of our feelings.
 - **claim**: 하나님의 미래 계획을 우리의 열정이나 진실성으로 판단해서는 안 된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 220. TSU-0024694  [Providence]
 - **원문**: Suffice it, that in matters of everlasting mo- ment he has engaged to perfect that which concerns us.
 - **claim**: 하나님은 우리와 관련된 영원한 문제들에서 우리를 완전하게 하실 것이라고 약속하셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 221. TSU-0023128  [Soteriology]
 - **원문**: The retention of it under a succession of cruel persecutions required great patience ; yet they had kept it, and the Lord promised in return to keep them in a particular time of trial that was coming upon the world.
@@ -1148,7 +1148,7 @@
 ### 223. TSU-0023887  [Eschatology]
 - **원문**: As the vials are a subdivision of the third and last woe-trumpet, they could not begin to be poured out till that trumpet was sounded : and as they are emphatically called the seven last plagues, they must refer to the latter end of ihe 126(> years.
 - **claim**: 세계의 마지막 때에 일곱 대접은 세 번째 나팔의 마지막 재앙을 의미하며, 그 재앙은 1260년의 마지막에 일어날 것임을 나타낸다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 224. TSU-0025272  [Eschatology]
 - **원문**: Should not this awaken our concern, and excite us to make that important inquiry.
@@ -1158,52 +1158,52 @@
 ### 225. TSU-0024254  [Eschatology]
 - **원문**: " Bless- ed is he that waiteth and cometh to the thousand three hundred and five and thirty days!" Each of these passages refers to the same period.
 - **claim**: 다니엘 12:12와 같은 성경 본문은 같은 기간을 가리키며, 이 기간에 대한 축복이 언급된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 226. TSU-0024847  [Sanctification]
 - **원문**: Wlien shall I be like my Lord !
 - **claim**: 저는 주님과 같아지기를 간절히 소원합니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 227. TSU-0024191  [Eschatology]
 - **원문**: Son. — But now once in the end of the world hath he appeared to put svCay sin by the sacrifice himself — ♦' The end of all things is at hand — The coming of the Lord draweth nigh — Behold, the judge standeth before the door — He that testifieth these things saith, Surely /come quickhj P^ Heb. i. 1. ix. 26. 1 Pet. iv. 7.
 - **claim**: 하나님의 최종 계시는 예수 그리스도에게 의해 이루어졌으며, 세계의 종말과 주님의 재림이 가까워지고 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 228. TSU-0023195  [Ecclesiology]
 - **원문**: They are not described as being themselves on earth, or in a state of affliction, but as before the throne of God : as though a number of the spirits of just men made perfect had been chosen of God, to represent in his immediate presence their brethren upon earth, and who, as things should be described which concerned the church, would express the interest they felt in them.
 - **claim**: 일부 정의된 의로운 사람들의 영은 하나님의 보좌 앞에서 지구 위의 형제들을 대신하여 하나님께 관심을 표현하기 위해 선택되었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 229. TSU-0023609  [Eschatology]
 - **원문**: It is however not only under the same trumpet, but during the period in which the wit- nesses continue to enjoy that security to which they were then in- traduced, that this event has occurred.
 - **claim**: 증인들이 안정감을 즐기던 기간 동안 특정 사건이 발생했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 230. TSU-0022948  [Scripture / Authority]
 - **원문**: I enter on it with fear : but as I shall not attempt to explain that which appears to me of doubtful import, I hope it may not be a presumptuous, but a profitable undertaking.*
 - **claim**: 저자는 성경의 어려운 부분을 설명하려는 시도를 함에 있어 두려움을 느끼지만, 의심스러운 부분은 설명하지 않으므로 이 시도가 유익할 것이라고 희망한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 231. TSU-0025365  [Other]
 - **원문**: Some modern enthusiasts (who can believe any thing which does not imply that they are so guilty as to need the incarnate Son of God to make an atonement for their sins by his precious blood) have fancied that the body of Jesus, who according to them was a mere man like ourselves, as- cended no higher than the atmosphere which surrounds the earth, and that he occasionally descends from thence to this globe, to visit in- visibly, and one at a time, the various congregations of Christians.
 - **claim**: 일부 현대적인 열렬한 신자들은 예수님의 몸이 지구를 둘러싼 대기에만 올라갔으며, 그가 간혹 그곳에서 내려와 기독교인들의 다양한 모임을 보이지 않게 방문한다고 상상했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 232. TSU-0022985  [Trinity]
 - **원문**: Jesus Christ therefore is " the Alpha and the Omega, the beginning and the ending, who is, and who was, and who is to come, the Almighty ;" and consequently is able to preserve his church, and to execute the punishments denounced in this prophecy against her enemies.
 - **claim**: 예수 그리스도는 모든 것의 시작과 끝이며, 전능자로서 교회를 보존하고 적들에게 예언된 형벌을 집행할 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 233. TSU-0023505  [Eschatology]
 - **원문**: In this way all who have perseveringly set them- selves against the truth of God, have been slain by it ; not only as incurring the wrath to come, but spiritual judgments even in this life : such are blindness of mind and hardness of heart, the most awful and sure presages of eternal death.
 - **claim**: 하나님의 진리를 거스르는 자들은 하나님의 진리 때문에 영적 판단을 받게 되며, 이는 영원한 죽음의 앞잡이인 마음의 맹목과 마음의 경직을 포함한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 234. TSU-0023645  [Ecclesiology]
 - **원문**: And these persons having only laid the foundation of faith in remote and barbarous places, and con- stituted other pastors, committed to them the culture of those they had perfectly introduced to the faith, departing again to other regions and nations, accompanied with the grace and co-operatio» of God." Lib.
 - **claim**: 복음주의자들은 신앙의 기초를 먼 곳과 야만적인 지역에 놓고, 다른 목회자를 임명하여 이미 신앙을 완전히 받아든 사람들의 양육을 맡기고, 다시 다른 지역과 민족으로 가서 하나님의 은혜와 협력을 받는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 235. TSU-0024579  [Baptism]
 - **원문**: In less than five months, I baptized nearly forty persons, almost all newly awakened.
@@ -1213,17 +1213,17 @@
 ### 236. TSU-0025584  [Soteriology]
 - **원문**: My dear Jesus's sufferings were much sorer and more bitter than mine ; ^nd did he thus suffer, and shall I repine?
 - **claim**: 예수님의 고난은 내 고난보다 더 심하고 쓰라렸으며, 예수님이 그렇게 고난을 겪으셨다면 나는 불평하지 말아야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 237. TSU-0023183  [미분류]
 - **원문**: We know that this from of old was a sign of peace and good will to men.
 - **claim**: 무지개는 옛날부터 인간에게 평화와 선의의 징조였다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 238. TSU-0025063  [Soteriology]
 - **원문**: If he perceived any of his acquaintance bewildered in fruitless speculations, he would in an affectionate manner endeavour to draw off their attention from these mazes of confusion to the sim- ple doctrine of the cross.
 - **claim**: 십자가의 단순한 교리를 통해 혼란스러운 추측에서 벗어날 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 239. TSU-0024285  [Eschatology]
 - **원문**: His memory is itself the book from which he will judge the world.
@@ -1233,7 +1233,7 @@
 ### 240. TSU-0024852  [Providence]
 - **원문**: I am prepared for all his will, and hope that I shall never have a feeling, whose language is not, « Thy will be done.'
 - **claim**: 저는 하나님의 모든 뜻에 준비되어 있으며, 그분의 뜻이 이루어지기를 바라는 감정만 가지기를 희망합니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ---
 
@@ -1252,7 +1252,7 @@
 ### 243. TSU-0029817  [Trinity]
 - **원문**: He is the only begotten Son, who dwelleth in his bosom, and who never offended him at any time, but always did that which was pleasing in his sight.
 - **claim**: 예수 그리스도는 하나님 아버지의 유일한 아들이시며, 항상 아버지의 기뻐하시는 일을 행하셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 244. TSU-0028426  [Ecclesiology]
 - **원문**: We could appeal to the pacific spirit and conduct of thousands in our own times, who influenced by the same princi- ples, seek, by every mean in their power, to heal the divisions, and alleviate the miseries of mankind.
@@ -1262,112 +1262,112 @@
 ### 245. TSU-0027770  [Soteriology]
 - **원문**: If you have read the scrip- tures, or gone to a place of worship, merely from custom, and not from any love you had to these things ; if you have relieved the poor out of pride, rather than pure compassion; and if that which has preserved you from the grossest vices has been rather a regard to your interest, health, or character, than any concern for the ho- nour of God ; can such things be acceptable in his sight ?
 - **claim**: 하나님의 눈앞에서 외적인 종교 행위나 관습이 순수한 동기 없이 행해진다면 그것은 받아들여지지 않는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 246. TSU-0026515  [Scripture / Authority]
 - **원문**: That the oracles of God contain deep things, requires but little proof.
 - **claim**: 하나님의 말씀에는 깊은 진리가 포함되어 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 247. TSU-0026225  [Ecclesiology]
 - **원문**: This was a work which Cyrus him- self enjoined, and upon which the hearts of the people were fixed.
 - **claim**: 바빌론 포로에서 돌아온 유다의 자손들은 Cyrus의 칙령에 따라 성전을 재건하는 일에 주목을 기울였고, 이것은 Cyrus가 명한 일이었으며 백성들의 마음이 이 일에 집중되어 있었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 248. TSU-0030289  [Sanctification]
 - **원문**: Could he have utter- ed his heart to you, his children, it would have been to press upon you a perseverance in the things that you have received and learned.
 - **claim**: 그의 자녀들에게 그의 마음을 표현할 수 있었다면, 받았고 배운 것들에 대한 인내를 강조하는 것이었을 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 249. TSU-0027696  [Soteriology]
 - **원문**: and he that hath no money ; come ye, buy and eat ; yea, come, buy ■wine and milk without money, and icithout price.
 - **claim**: 구원은 돈이나 값없이 얻을 수 있다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 250. TSU-0026876  [Eschatology]
 - **원문**: The King will say unto those at his right hand, Come ye blessed of my Father. — I was an hungered, and ye gave me meat : I was thirsty, and ye gave me drink ; I tms a stranger, and ye took me in : naked, and ye clothed me : I was sick, and ye visited me : I was in prison, and ye came unto me.
 - **claim**: 주님은 그의 오른쪽에 있는 자들에게 복을 받은 자들로 부르며, 그들이 주님에게 음식과 음료를 주고, 주님을 환영하고, 주님을 의복하고, 주님을 방문하고, 주님을 감옥에서 방문했다고 말합니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 251. TSU-0028874  [Confession]
 - **원문**: Why did our Lord direct us, in our daily prayers, to say, Forgive us our debts, as we forgive our debtors : and why add, If ye forgive not men their trespasses, neither will your heavenly Father forgive your trespasses ?
 - **claim**: 주님은 우리에게 매일 기도에서 우리의 부채를 용서해 주시기를 구하고, 우리가 다른 사람의 잘못을 용서하지 않으면 하늘의 아버지께서도 우리의 잘못을 용서하지 않으실 것이라고 가르치셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 252. TSU-0028127  [Ecclesiology]
 - **원문**: And it is worthy of notice, that those who most departed from the doctrine of Christ, such as the Corinthians, the Galatians, and the Hebrews, were most faulty in matters of practice.
 - **claim**: 그리스도의 교리에서 가장 멀리 떨어진 교회들은, 특히 코린토인, 갈라디아인, 히브리인들은 실제적인 삶의 문제에서 가장 많은 결점을 가지고 있었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 253. TSU-0030001  [Eschatology]
 - **원문**: For we know that the whole creation groaneth and travaileth in pain together until now.
 - **claim**: 창조물은 고통과 탄식으로 함께 고통받고 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 254. TSU-0029547  [Sanctification]
 - **원문**: O to be made conformable to his death in these things ; to love God, so as to account it our meat and drink to do his will j so as to reckon his friends our friends, and his cause our cause ; to be willing to do any thing, or suffer any thing, for his name's sake ; and to feel the withholding of his favour our severest loss !
 - **claim**: 그리스도의 죽음과 같은 사랑과 헌신을 가지기 위해, 하나님의 뜻을 행하는 것을 삶의 목적으로 여기고, 하나님의 이름을 위해 모든 것을 감수하는 마음을 가지며, 하나님의 은혜를 잃는 것을 가장 큰 손실로 여기는 것이 중요하다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 255. TSU-0027295  [Church Discipline]
 - **원문**: The zeal of a few will be attributed to prejudice ; and the person concerned, instead of being convinced aud humbled, will be hardened in his sin.
 - **claim**: 교회 징계가 제대로 이루어지지 않으면, 몇몇 사람의 열성은 편견으로 여겨지게 되고, 해당되는 사람은 죄에 대해 깨닫고 겸손해지기보다는 죄에 더욱 굳어지게 된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 256. TSU-0027654  [Sanctification]
 - **원문**: It was by thinking of his ways, that David turned ha feet to God's testimonies.
 - **claim**: 다비드가 하나님의 계시로 돌아선 것은 그의 길을 생각함으로써 가능했다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 257. TSU-0025743  [Soteriology]
 - **원문**: If faith is the belief of the truth, then whatever I believe ought to be a truth, and a truth supported by evidence, prior to, and independently of, my believing it.
 - **claim**: 신앙은 증거에 의해 뒷받침되는 진리를 믿는 것이어야 하며, 그 진리는 믿는 것 이전에 존재해야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 258. TSU-0029617  [Ecclesiology]
 - **원문**: It was the day also in which, as far as their persecuted state would admit, the churches were assembled for Christian worship ; and while they, doubtless, remembered the venerable Apostle in their prayers, the Lord, by him, remembered and provided for them.
 - **claim**: 주님의 날에 교회가 기도와 예배를 통해 하나님을 기억하는 동안, 하나님도 그들을 기억하시고 돌보신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 259. TSU-0026294  [Baptism]
 - **원문**: We might as well wait for impressions, and con- clude, from the want of them, that the time is not come for the performance of other duties, as those of baptism and the Lord's Supper.
 - **claim**: 세례와 주의 만찬을 포함한 다른 의무의 수행을 위해 감정이나 영적 감동을 기다리는 것은 적절하지 않다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 260. TSU-0028371  [미분류]
 - **원문**: That form of government, be it what it mav, which contributes most to the administration of substantial justice in a country, and cuts of the motives to war in respect of other countries, is the best ; but while men are corrupt, selfish and am- bitious, and possess the means of extending their power, they will never be in want of a plea for disturbing the repose of mankind.
 - **claim**: 인간이 부패하고 이기적이며 야망을 가지고 권력을 확장할 수 있는 수단을 가지고 있는 한, 그들은 다른 국가와의 전쟁을 일으키는 동기를 제공할 수 있는 구실을 결코 부족하지 않을 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 261. TSU-0029512  [Soteriology]
 - **원문**: If it were a matter of small account, it maybe presumed, that the father would not have made so much of it, as to give his son to be made a sacrifice to atone for it ; and that the Son of Gcd would not have laid down his life for that purpose.
 - **claim**: 그리스도의 죽음은 죄가 매우 심각하다는 것을 전제로 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 262. TSU-0028938  [Justification]
 - **원문**: Finally : If ignorance of God's right- eousness were the reason of the non-submission of the Jews to the gospel-way of justification, there must have been, in that truth, something directly opposed to justification in any other way, and which, had it been properly understood, would have cut up all hopes from every other quarter.
 - **claim**: 유대인들이 복음의 의롭다 함을 받는 길에 순종하지 않는 이유는 하나님의 의를 알지 못하는 것이었으며, 이 진리를 제대로 이해했다면 다른 방법으로 의롭다 함을 얻는 모든 희망을 끊어버렸을 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 263. TSU-0030019  [Providence]
 - **원문**: Who can count the sacrifices and offerings which have been made of God's creatures to Jupiter, Mars, Venus, Bacchus, and other abomina- tions of the West ; or to Brama, Veeshnoo, Seeb, Dhoorga, Jug- gernaut, and other abominations of the East ?
 - **claim**: 인간은 하나님의 창조물과 은혜를 잘못된 목적으로 사용하여 우상에게 바친다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 264. TSU-0030295  [Eschatology]
 - **원문**: You see here, that if a man keep Christ's saying, he will never see death.
 - **claim**: 그리스도의 말씀을 지키는 사람은 결코 죽음을 보지 않다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 265. TSU-0029488  [Lord's Supper]
 - **원문**: It was a wonderful in- stance of condescending love in the Lord Jesus, to desire to be remembered by us.
 - **claim**: 주 예수님은 우리가 그를 기억하기를 원하신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 266. TSU-0029742  [Soteriology]
 - **원문**: That men of all reli- gions have paid some attention to morals is true ; but, in doing so, they have not been influenced so much by their religion as by the necessity which all men feel of maintaining somewhat of a correct conduct towards one another.
 - **claim**: 모든 종교의 사람들이 도덕에 대해 어느 정도 주의를 기울였지만, 이는 그들의 종교 때문이 아니라 서로에 대한 올바른 행동을 유지해야 하는 필요성 때문이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 267. TSU-0030043  [Eschatology]
 - **원문**: Assuredly, that must be a most important object, the accomplishment of which thus interests the whole creation.
@@ -1377,32 +1377,32 @@
 ### 268. TSU-0028593  [Soteriology]
 - **원문**: Hence, it is necessary to be convinced of sin, in order to receive the Saviour.
 - **claim**: 죄를 nhận드는 것은 구원자를 받는 데 필요하다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 269. TSU-0025796  [Justification]
 - **원문**: Through faith she received strength to conceive seed, and was delivered of a child when she was past age, because she judged him faithful who had promised.
 - **claim**: 사라는 믿음으로 인해 나이가 많음에도 불구하고 아이를 임신하고 출산할 수 있는 힘을 받았다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 270. TSU-0028402  [Soteriology]
 - **원문**: We have seen already, that the root of all the discord in the world is found in mankind having forsaken God : that, therefore, which is the means of bringing them back to God, and that only, will restore concord.
 - **claim**: 인간이 하나님을 떠난 것이 세상의 모든 불화의 근원이며, 따라서 인간을 하나님께로 돌아가게 하는 것이 조화를 회복시킨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 271. TSU-0027839  [Providence]
 - **원문**: Our way may be covered with darkness, so much so, that we cannot see where the next step will place us : but we have a Leader, who sees through all, and who has promised to guide us with his eye.
 - **claim**: 우리의 길이 어둠으로 덮여 있어 다음 발걸음이 어디에 닿을지 볼 수 없더라도, 우리는 모든 것을 꿰뚫어보는 지도자와 함께 하며, 그분은 우리를 그의 눈으로 인도하실 것이라고 약속하셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 272. TSU-0028423  [Soteriology]
 - **원문**: These things certainly furnish occasion for the unbelieving part of the world, who seek occasion, to stumble at the gospel : hence a woe is pronounced on the world because of offences, or stumbling- blocks, and a still heavier one on those by whom the offence com- eth.
 - **claim**: 세상이 복음을 거부하는 이유는 믿는 자들의 행동이 항상 그들의 신앙과 일치하지 않기 때문이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 273. TSU-0027555  [Eschatology]
 - **원문**: And he answered, Until the cities be was- ted without inhabitant, and the houses without man, and the land be utterly desolate.
 - **claim**: 주께서 도시가 무인으로 버려지고 집이 사람 없이 황폐해질 때까지
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 274. TSU-0026151  [Sanctification]
 - **원문**: This it is that will teach you to be of a meek, mild, peaceful, hum- ble spirit.
@@ -1412,17 +1412,17 @@
 ### 275. TSU-0025896  [Election]
 - **원문**: The result was, he refused to be called the son of Pharaoh's daughter, choosing rather to suffer affliction with the people of God than to enjoy the pleasures of sin
 - **claim**: 모세는 하나님의 백성과 함께 고난을 겪는 것을 선택하여 죄의 즐거움을 누리는 것보다 하나님의 백성과 함께 하기를 원했다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 276. TSU-0029621  [Soteriology]
 - **원문**: It was the life which commenced at his resurrection ; when, being raised from the dead, he dieth no more : death hath no more dominion aver him.
 - **claim**: 그리스도의 부활 이후의 삶은 죽음에서 부활한 후에 시작되었으며, 그리스도는 더 이상 죽지 않는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 277. TSU-0026524  [미분류]
 - **원문**: Though we must not stop at first principles, yet ice must be well grounded in them.
 - **claim**: 기초 원리를 잘 이해하는 것이 중요하다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과, 정확함.
 
 ### 278. TSU-0025665  [Soteriology]
 - **원문**: When the terms faith and sense are used, it is common with many, to understand, by the latter, sensible com- munion with God.
@@ -1432,12 +1432,12 @@
 ### 279. TSU-0030157  [Sanctification]
 - **원문**: To strengthen ourselves, and one another, in this way, is to build up ourselves on our own conceits.
 - **claim**: 자아도취에 의존하여 자신을 강화하는 것은 자기만의 상상에 근거한 것에 불과하다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과, 정확함.
 
 ### 280. TSU-0028889  [Justification]
 - **원문**: There are but two ways in which creatures can be justified before God : one is by works, the other by grace.
 - **claim**: 신자는 두 가지 방법으로 하나님 앞에서 의롭다 여김을 받을 수 있다: 하나는 행위로, 다른 하나는 은혜로
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과, 정확함.
 
 ---
 
@@ -1446,67 +1446,67 @@
 ### 281. TSU-0034369  [Confession]
 - **원문**: But Fourthly : Though assured of being with Christ in paradise, there is no mention of his making this a part of his confession^ or telling the spectators that he was going to heaven. — What was said on this subject was by Christ, and not by him.
 - **claim**: 그리스도와 함께 천국에 있는 것을 확신했음에도 불구하고, 그 이는 그것을 그의 신앙고백의 일부로 만들거나 그가 천국으로 가고 있다고 관중들에게 말하지 않았다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 282. TSU-0035169  [Providence]
 - **원문**: God's work did appear to Moses and his associates, and his glory to their children, and that at an early period.
 - **claim**: 모세와 그의 동료들에게는 하나님의 작품이 나타났고, 그의 영광이 그들의 자녀들에게 나타났으며, 이는 초기에 일어났습니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 283. TSU-0034326  [Soteriology]
 - **원문**: But it ought to be considered, that for the crimes which he confesses he lies under no indictment, and therefore they do not affect his life : but for the crime which he denies, he stands not only indicted but condemned : — this therefore affecting his life, he is under the strongest temptation that can be conceived to deny it.
 - **claim**: 죄인을 심판할 때, 그가 자백하는 죄는 그의 생명에 영향을 미치지 않지만, 그가 부인하는 죄는 그의 생명에 직접적인 영향을 미치므로, 그는 그 죄를 부인할 가장 강한 유혹에 놓여 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 284. TSU-0033357  [Trinity]
 - **원문**: distinction reaches ; is it not also too much for them to decide upon the precis* kind and degree of union which is necessary I© denominate the great Creator of the world — the one God. £'
 - **claim**: 하나님의 본질과 속성에 대한 이해는 인간의 판단력을 넘어서는 것일 수 있다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 285. TSU-0034328  [Soteriology]
 - **원문**: Secondly : The few things uttered by the dying thief had no bearing on his temporal interest, but were the pure dictates of truth and righteousness. — In condemning his own conduct, he justified his countrymen as to their treatment of him : yet at the same time he condemned them as to their treatment of Jesus.
 - **claim**: 사형수는 자신의 행동을 비난하면서 동시에 예수를 대하는 사람들의 행동을 비난했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 286. TSU-0032750  [Ecclesiology]
 - **원문**: Neither can we discharge, the duties of our station in the world, or in the church, without forming some judgment of those about us.
 - **claim**: 우리는 우리 주변에 대해 어떤 판단을 내리지 않고서는 세상의 역할이나 교회의 역할을 수행할 수 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 287. TSU-0031844  [Sanctification]
 - **원문**: Again: The Lord direct your hearts into the love of God, and into the pa- tient waiting for Christ
 - **claim**: 주님께서 우리의 마음을 하나님의 사랑과 그리스도에 대한 인내하는 기다림으로 인도하실 것
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 288. TSU-0034750  [Sanctification]
 - **원문**: We do not always act up to our advantages.
 - **claim**: 우리는 항상 우리의 특권에 따라 행동하지 않는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 289. TSU-0031031  [Other]
 - **원문**: Such an unrighteous detention of our worldly weal this tantamount to the conduct of the unjust steward, who wasted hislord's goods.
 - **claim**: 세상적인 부를 의롭지 않게 간직하는 것은 주인의 재산을 낭비한 부정한 집사의 행동과 같다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 290. TSU-0031087  [Sanctification]
 - **원문**: Thirdly : God's graciously connecting blessings with the obedience of his people, serves to show, not only his love to Christ, and to them, but his regard to righteousness.
 - **claim**: 하나님의 은혜는 그의 백성의 순종과 관련이 있으며, 이것은 하나님의 사랑과 의로움에 대한 관심을 보여준다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 291. TSU-0032487  [Soteriology]
 - **원문**: Christ, the glory of God was to be manifested in a way of good will to men, even to enemies ; angels therefore dwelt upon this idea at his birth, and the disciples were taught to cherish it.
 - **claim**: 그리스도의 영광은 인간, 심지어 적들에게까지 선의를 나타내는 방식으로 나타나야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 292. TSU-0031001  [Soteriology]
 - **원문**: Why do ye not understand my speech? said our Lord to the Jews.
 - **claim**: 주님은 유대인들에게 왜 그분의 말씀을 이해하지 못하는지 질문하셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 293. TSU-0034544  [Providence]
 - **원문**: For this you have the greatest encouragements surely that a God can give !
 - **claim**: 하나님은 가장 큰 격려를 주신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 294. TSU-0034362  [Soteriology]
 - **원문**: Had it been necessary for him to pos- sess a set of virtuous habits, each acquired by a series of virtuous acts, the way had been too circuitous for him : but the word ot
@@ -1516,22 +1516,22 @@
 ### 295. TSU-0034771  [Ecclesiology]
 - **원문**: Happy were it for our churches if we could come to a closer imitation of this model !
 - **claim**: 교회가 이 모범을 더 가까이 따랐으면 좋겠다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 296. TSU-0030684  [Soteriology]
 - **원문**: Conversion is a marriage, wherein (with reverence be it spoken) Christ resigns up himself with all he is and has to us, and we resign ourselves with all we are and have to him.
 - **claim**: 구원은 그리스도와의 결혼과 같은 것으로, 그리스도는 자신이 가지고 있는 모든 것을 우리에게, 그리고 우리는 우리가 가지고 있는 모든 것을 그리스도에게 바치는 것
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 297. TSU-0030551  [Providence]
 - **원문**: David prayed for the life of his child : God did not reprove him for praying, yet neither did he grant him his request.
 - **claim**: 다윗이 그의 아이의 생명을 위해 기도했지만, 하나님은 그의 기도를 책망하지는 않았지만 그의 요청을 허락하지도 않았다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 298. TSU-0032072  [Eschatology]
 - **원문**: That which is here referred to, is something which should be wrought for Israel under the reign of the Messiah, and at a time when the earth should be full of the knowledge of the Lord, as the waters
 - **claim**: 메시아의 통치하에 이스라엘을 위해 이루어질 일은 지구가 주님의 지식으로 가득 찰 때 일어나며, 그것은 메시아 시대에 일어날 사건이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 299. TSU-0034498  [Scripture / Authority]
 - **원문**: We know he did thus to Christ himself ;- and if to him, why not to us ?
@@ -1541,42 +1541,42 @@
 ### 300. TSU-0034105  [Ecclesiology]
 - **원문**: From the whole we see (1) The vast importance of a right beginning in religion, if we be wrong in the outset, the further we go the further we are off : but entering in at the door of the sheepfold, we shall go in and out, and find pasture.
 - **claim**: 종교에서 올바른 시작은 매우 중요하며, 시작이 잘못되면 점점 더 멀어지지만, 양의 우리로 들어가면 출입할 수 있고, 목초를 찾을 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 301. TSU-0030546  [Sanctification]
 - **원문**: It is a dangerous state of mind to be praying daily for keeping and quick- ening grace, and yet to be easy without it ; to rest contented with asking communion with God, instead of enjoying it.
 - **claim**: 일상적으로 은혜를 구하는 기도를 드리는 동안 실제로 은혜를 받는 것에 만족하지 못하는 것은 위험한 마음의 상태이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 302. TSU-0031374  [Soteriology]
 - **원문**: Jesus saith to the weary and heavy laden, Learn of me, for I am meek and lowly of heart, and ye shall fnd rest unto your souls.
 - **claim**: 그리스도는 피로하고 짐진 자들에게 그에게서 배워서 마음의 평안을 찾을 수 있도록 초청한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 303. TSU-0030506  [Scripture / Authority]
 - **원문**: God's word is that to those who meditate in it by day and by night, which the rivers of waters are to a tree planted by their side.
 - **claim**: 하나님의 말씀은 낮과 밤으로 묵상하는 자에게 강물 옆에 심겨진 나무에게 강물이 된 것과 같이 효과가 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 304. TSU-0032547  [Eschatology]
 - **원문**: If the objects of our desire be confined to this world, this world shall be our all : but if they extend to another, that other shall be our portion.
 - **claim**: 인간이 이 세상에 대한 욕망만을 추구한다면 이 세상이 그들의 전부가 될 것이며, 만약 다른 세계, 즉 천국에 대한 욕망을 가진다면 그 천국이 그들의 몫이 될 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 305. TSU-0034649  [Church Covenant]
 - **원문**: The vows of God are upon us.
 - **claim**: 하나님의 서원은 우리에게 있으므로
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 306. TSU-0031937  [Sanctification]
 - **원문**: Listen, ye wives I Be in subjection to your own husbands, that if any obey not the zvord, they also may without the word, be won by the conversation of the wives.
 - **claim**: 아내들은 남편에게 순종하여, 복음을 듣지 않는 남편들을 그들의 행동으로 감화시킬 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 307. TSU-0033873  [미분류]
 - **원문**: In men- tioning the month Abib, e. g. a Jew would think nothing of greenness or verdure, which is its true and primarymeaning ; but merely of the time of his forefathers coming out of Egypt, and of the institution of the passover.
 - **claim**: 유대인들은 아비브월을 언급할 때 초록색이나 푸르름과 같은 원래 의미보다는 이스라엘의 이집트 탈출과 유월절 제도의 시기와 관련된 것으로 생각한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 308. TSU-0034197  [Ecclesiology]
 - **원문**: If I had no hope of Christianity obtaining the dominion " till then," I should hav* little or no hope at all : for though God is able to turn them, as well as others, to himself, yet it is not his usual way of working in order to promote his own cause.
@@ -1591,7 +1591,7 @@
 ### 310. TSU-0034363  [Justification]
 - **원문**: faith was nigh him, and he laid hold of it ; with his heart believing unto righteousness, and with his mouth making confession unto sal- vation.
 - **claim**: 믿음은 그의 마음에 가까이 있었고, 그는 그것을 잡았으며, 그의 마음으로는 의로움을 믿고, 그의 입으로는 구원을 고백하였다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 311. TSU-0033029  [Soteriology]
 - **원문**: Men have the same natural powers to love Christ, as to hate him ; to believe, as to disbelieve ; and this it is which constitutes their accountableness.
@@ -1601,7 +1601,7 @@
 ### 312. TSU-0032195  [Providence]
 - **원문**: How unsearchable are ha judgments, and Jus ways past finding out I
 - **claim**: 하나님의 판단과 길은 인간으로 하여금 탐구할 수 없을 정도로 깊고 이해할 수 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 313. TSU-0035323  [Ecclesiology]
 - **원문**: It is too much to infer from this that we are to sit down in despair, and attempt nothing ; but it will be profitable to know the limited ex-
@@ -1616,31 +1616,31 @@
 ### 315. TSU-0032622  [Eschatology]
 - **원문**: Christ would not have directed us to ask for a specific object, and without any proviso, when he knew it would never be granted.
 - **claim**: 그리스도는 우리에게 결코 이루어지지 않을 것을 아는데도 특정한 물건을 요구하도록 지시하지 않으셨을 것입니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 316. TSU-0030347  [Ecclesiology]
 - **원문**: If any man love not the Lord Jesus Christ, let him be anathema Maran-atha.
 - **claim**: 주 예수 그리스도를 사랑하지 않는 자는 저주를 받을 것
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 317. TSU-0034897  [Sanctification]
 - **원문**: In duties of this description, it is not God's usual, at least not his universal method, to furnish us with minute precepts, but rather with general principles which will naturally lead us to the practice of them.
 - **claim**: 하나님은 일반적으로 우리에게 세부적인 계명을 주는 것이 아니라, 그 계명을 실천하게 이끄는 일반적인 원칙들을 주신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 318. TSU-0034797  [Church Discipline]
 - **원문**: It is glorious to see a people in such cases acting in the spirit of Levi, who did not acknowledge his brethren, nor know his own children ; but ob- served God's word, and kept his covenant !
 - **claim**: 교회 질서를 유지하기 위해 교회 구성원들이 하나님의 말씀을 지키고 언약을 준수하는 것은 영광이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 319. TSU-0034595  [Ecclesiology]
 - **원문**: With this, brethren, like the priests that bear the ark of God, your feet will stand firm amidst all the swellings of Jordan !
 - **claim**: 신자들은 하나님의 언약을 지키는 사제들처럼 모든 도전 속에서 굳건히 서 있을 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ### 320. TSU-0033854  [Election]
 - **원문**: The result is, that in God's leaving great numbers of Abraham's poster- ity to perish in unbelief, and calling a people for himself, partly of Jews and partly of Gentiles, (ver. 24. 27.) he proceeded on the same principle as that on which he had proceeded from the beginning.
 - **claim**: 하나님은 자신의 주권에 따라 선택과 구원에 대해 결정하신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 일괄검토(default A) — 스크립트오염/절단 자동검사 통과.
 
 ---
