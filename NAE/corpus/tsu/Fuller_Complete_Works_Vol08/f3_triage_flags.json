@@ -1,0 +1,9081 @@
+{
+  "identifier": "Fuller_Complete_Works_Vol08",
+  "triage_version": "1.0.0",
+  "total_records": 5052,
+  "flagged_records": 1275,
+  "flag_counts": {
+    "rhetorical_question": 288,
+    "quote_attribution": 570,
+    "conditional_hypothetical": 317,
+    "truncated_fragment": 153,
+    "very_short_fragment": 88
+  },
+  "items": [
+    {
+      "tsu_id": "TSU-0030342",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030343",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030344",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030347",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030363",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030367",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030369",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030371",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030372",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030379",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030385",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030390",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030393",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030399",
+      "doctrine": null,
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030400",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030405",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030406",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030407",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030409",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030410",
+      "doctrine": "Church Discipline",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030415",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030417",
+      "doctrine": "Church Discipline",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030419",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030423",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030432",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030437",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030443",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030452",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030453",
+      "doctrine": null,
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030455",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030456",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030459",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030460",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030461",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030467",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030468",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030469",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030472",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030475",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030476",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030478",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030482",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030486",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030487",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030488",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030489",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030490",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030492",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030494",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030497",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030515",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030517",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030525",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030527",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030528",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030529",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030531",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030532",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030533",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030534",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030535",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030540",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030541",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030545",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030547",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030548",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030555",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030557",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030561",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030566",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030568",
+      "doctrine": "Confession",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030572",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030574",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030575",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030579",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030580",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030581",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030584",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030588",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030591",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030593",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030594",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030595",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030597",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030599",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030605",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030608",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030610",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030612",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030613",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030617",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030619",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030635",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030637",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030643",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030649",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030651",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030658",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030660",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030664",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030665",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030669",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030670",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030676",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030679",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030681",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030686",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030687",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030689",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030690",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030691",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030692",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030693",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030694",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030696",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030697",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030698",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030699",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030700",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030701",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030702",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030704",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030711",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030712",
+      "doctrine": "Election",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030720",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030738",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030753",
+      "doctrine": "Election",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030758",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030765",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030767",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030770",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030771",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030778",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030785",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030787",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030792",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030793",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030798",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030802",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030805",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030809",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030817",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030818",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030819",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030820",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030825",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030830",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030831",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030832",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030834",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030842",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030843",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030848",
+      "doctrine": null,
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030850",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030852",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030859",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030862",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030864",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030868",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030871",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030875",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030877",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030879",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030882",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030883",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030891",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030892",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030893",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030894",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030902",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030909",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030910",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030915",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030930",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030939",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030943",
+      "doctrine": "Other",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030945",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030948",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030949",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030950",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030954",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030958",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030966",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030967",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030968",
+      "doctrine": "Justification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030970",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030974",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030978",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030981",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030983",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030985",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030991",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030995",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0030999",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031001",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031002",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031005",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031008",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031009",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031011",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031013",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031016",
+      "doctrine": "Justification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031019",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031023",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031034",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031035",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031036",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031039",
+      "doctrine": "Other",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031040",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031044",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031048",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031074",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031076",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031084",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031094",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031095",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031097",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031100",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031103",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031104",
+      "doctrine": "Confession",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031106",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031107",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031110",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031112",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031113",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031117",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031122",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031123",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031125",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031127",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031128",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031130",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031133",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031142",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031145",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031146",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031147",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031148",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031149",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031150",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031151",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031155",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031168",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031181",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031183",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031186",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031189",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031193",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031201",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031204",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031216",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031232",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031233",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031234",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031236",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031245",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031273",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031278",
+      "doctrine": "Trinity",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031282",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031285",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031286",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031287",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031288",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031289",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031292",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031304",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031305",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031311",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031320",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031321",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031329",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031331",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031334",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031337",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031338",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031339",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031340",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031341",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031347",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031348",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031351",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031357",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031358",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031360",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031367",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031375",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031381",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031388",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031389",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031391",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031392",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031394",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031398",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031420",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031425",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031426",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031427",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031428",
+      "doctrine": "Trinity",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031430",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031431",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031432",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031435",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031436",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031438",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031441",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031442",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031448",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031452",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031455",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031457",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031463",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031468",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031471",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031475",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031492",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031498",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031504",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031506",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031507",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031513",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031516",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031520",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031526",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031527",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031549",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031550",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031551",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031553",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031554",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031555",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031559",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031561",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031563",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031564",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031568",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031579",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031580",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031583",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031584",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031585",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031587",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031589",
+      "doctrine": null,
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031591",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031592",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031599",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031600",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031609",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031619",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031624",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031627",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031631",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031634",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031640",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031643",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031646",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031651",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031655",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031660",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031663",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031664",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031665",
+      "doctrine": "Eschatology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031667",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031668",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031669",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031671",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031673",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031682",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031686",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031689",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031690",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031691",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031694",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031695",
+      "doctrine": null,
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031701",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031702",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031703",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031704",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031709",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031710",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031713",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031714",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031715",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031716",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031720",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031721",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031722",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031723",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031724",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031725",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031726",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031727",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031728",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031729",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031732",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031734",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031736",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031738",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031739",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031742",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031746",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031752",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031754",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031759",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031765",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031771",
+      "doctrine": null,
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031775",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031776",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031778",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031780",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031784",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031790",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031798",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031799",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031801",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031802",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031806",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031807",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031814",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031823",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031828",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031829",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031830",
+      "doctrine": "Providence",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031833",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031834",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031835",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031839",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031842",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031843",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031848",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031859",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031860",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031861",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031864",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031872",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031875",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031880",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031884",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031891",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031895",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031897",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031898",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031903",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031904",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031905",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031908",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031909",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031919",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031929",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031931",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031948",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031950",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031951",
+      "doctrine": "Election",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031955",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031956",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031963",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031966",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031970",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031972",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031977",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031981",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031983",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031985",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031987",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0031991",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032003",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032015",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032018",
+      "doctrine": "Election",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032025",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032027",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032032",
+      "doctrine": null,
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032038",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032044",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032055",
+      "doctrine": null,
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032056",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032071",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032079",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032081",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032084",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032101",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032103",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032121",
+      "doctrine": "Eschatology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032135",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032139",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032141",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032153",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032154",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032165",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032172",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032183",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032197",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032211",
+      "doctrine": null,
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032212",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032226",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032229",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032245",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032249",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032251",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032252",
+      "doctrine": "Justification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032254",
+      "doctrine": null,
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032258",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032259",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032261",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032262",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032269",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032295",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032302",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032303",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032305",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032308",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032309",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032310",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032312",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032320",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032323",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032326",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032338",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032343",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032349",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032353",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032358",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032362",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032365",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032373",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032374",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032375",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032381",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032386",
+      "doctrine": "Eschatology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032388",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032390",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032395",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032402",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032403",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032406",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032407",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032408",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032411",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032412",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032413",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032415",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032422",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032425",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032430",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032437",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032439",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032442",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032448",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032449",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032453",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032455",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032470",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032475",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032479",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032482",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032483",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032489",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032495",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032501",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032503",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032504",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032505",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032509",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032510",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032514",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032516",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032521",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032526",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032528",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032533",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032534",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032536",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032537",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032540",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032545",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032546",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032547",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032550",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032552",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032557",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032560",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032563",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032572",
+      "doctrine": "Election",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032583",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032586",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032591",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032593",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032594",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032614",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032617",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032619",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032622",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032628",
+      "doctrine": "Eschatology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032632",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032639",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032641",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032657",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032659",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032660",
+      "doctrine": "Justification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032661",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032668",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032670",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032672",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032674",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032675",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032677",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032680",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032688",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032689",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032691",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032692",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032716",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032718",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032724",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032727",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032728",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032734",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032735",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032749",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032754",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032757",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032759",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032764",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032770",
+      "doctrine": "Eschatology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032775",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032779",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032780",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032783",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032788",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032790",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032800",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032802",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032810",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032813",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032818",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032825",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032829",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032836",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032838",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032847",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032857",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032860",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032863",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032864",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032876",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032879",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032885",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032886",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032889",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032891",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032892",
+      "doctrine": "Other",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032898",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032912",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032917",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032918",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032928",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032938",
+      "doctrine": "Providence",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032941",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032943",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032944",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032945",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032948",
+      "doctrine": "Providence",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032950",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032952",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032962",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032969",
+      "doctrine": "Eschatology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032981",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032987",
+      "doctrine": null,
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032992",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032998",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0032999",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033014",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033020",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033023",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033024",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033026",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033028",
+      "doctrine": "Election",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033031",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033036",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033037",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033038",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033040",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033043",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033045",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033046",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033047",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033052",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033054",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033057",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033068",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033069",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033070",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033076",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033077",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033085",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033090",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033091",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033092",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033096",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033099",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033114",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033122",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033128",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033135",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033138",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033146",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033147",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033151",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033152",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033155",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033156",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033160",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033163",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033165",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033167",
+      "doctrine": "Trinity",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033171",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033173",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033174",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033180",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033185",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033197",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033199",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033202",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033203",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033211",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033230",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033231",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033246",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033251",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033252",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033257",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033264",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033283",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033288",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033290",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033293",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033299",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033303",
+      "doctrine": null,
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033305",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033315",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033316",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033320",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033324",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033327",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033330",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033332",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033333",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033334",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033335",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033339",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033340",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question",
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033344",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033345",
+      "doctrine": null,
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033349",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033351",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033352",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033355",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033356",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033357",
+      "doctrine": "Trinity",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033363",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033365",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033367",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033368",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033369",
+      "doctrine": "Trinity",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033374",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033375",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033376",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033386",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033389",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033392",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033398",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033402",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033406",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033410",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033414",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033419",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033421",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033422",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033424",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033425",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033427",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033430",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033433",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033436",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033440",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033441",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question",
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033443",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033444",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033462",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033463",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033464",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033471",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033474",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033475",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033476",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033477",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033478",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033483",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033484",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033485",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033490",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033491",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033494",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033495",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033496",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033501",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033503",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033505",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033508",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033510",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033512",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033516",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033535",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033539",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033540",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033547",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033558",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033560",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033561",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033564",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033565",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033566",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033572",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033573",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033574",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033575",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033578",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033593",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033597",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033600",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033603",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033609",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033612",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033615",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033620",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033621",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033624",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033628",
+      "doctrine": "Other",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033636",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033638",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033641",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033643",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033670",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033671",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033682",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033683",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033688",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033699",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033714",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033716",
+      "doctrine": "Election",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033719",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033723",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033724",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033726",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033733",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033742",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033743",
+      "doctrine": "Baptism",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033744",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question",
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033745",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033748",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033751",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033752",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033753",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033761",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033764",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033767",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033772",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033776",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033778",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033779",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033786",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033787",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033804",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033807",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033808",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033816",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033818",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033827",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033832",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033835",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033836",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033837",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033838",
+      "doctrine": null,
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033840",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033841",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033845",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033850",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033852",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033856",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033858",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033859",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033861",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033865",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033869",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033871",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033876",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033879",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033881",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033884",
+      "doctrine": "Baptism",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033886",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033888",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033889",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033890",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033894",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033895",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033896",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033899",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033901",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033903",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033912",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033913",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033915",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033917",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033918",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033922",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033926",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033927",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033928",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033931",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033932",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033933",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033936",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033938",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033950",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033954",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033956",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033957",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033958",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033961",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033963",
+      "doctrine": "Trinity",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033968",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033970",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033975",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033976",
+      "doctrine": "Election",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033977",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033981",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033982",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033985",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033995",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033996",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0033998",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034009",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034031",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034033",
+      "doctrine": "Eschatology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034036",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034045",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034047",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034054",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034055",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034056",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034058",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034063",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034064",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034066",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034070",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034082",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034085",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034091",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034099",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034109",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034111",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034117",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034118",
+      "doctrine": "Providence",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034119",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034122",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034130",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034132",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034134",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034141",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034142",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034143",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034147",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034149",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034161",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034164",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034167",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034173",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034174",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034176",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034177",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034178",
+      "doctrine": "Election",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034189",
+      "doctrine": "Election",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034191",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034193",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034195",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034197",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034198",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034199",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034200",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034203",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034204",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034205",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034208",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034213",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034227",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034238",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034240",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034245",
+      "doctrine": "Church Discipline",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034246",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034260",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034267",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034269",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034270",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034271",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034273",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034277",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034279",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034280",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034282",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034284",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034289",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034291",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034293",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034296",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034304",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034307",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034308",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034312",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034318",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034320",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034329",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034341",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034343",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034346",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034348",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034354",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034356",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034359",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034361",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034362",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034363",
+      "doctrine": "Justification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034367",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034369",
+      "doctrine": "Confession",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034370",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034371",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034372",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034374",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034377",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034380",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034382",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034384",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034385",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034388",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034396",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034397",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034398",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034399",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034401",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034402",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034405",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034406",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034413",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034415",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034419",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034421",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034426",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034430",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034432",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034435",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034437",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034438",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034442",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034443",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034447",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034456",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034467",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034479",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034480",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution",
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034481",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034487",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034490",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034498",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034499",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034502",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034503",
+      "doctrine": "Scripture / Authority",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034504",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034508",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034509",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034513",
+      "doctrine": "Eschatology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034531",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034532",
+      "doctrine": "Eschatology",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034533",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034535",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034541",
+      "doctrine": "Eschatology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034547",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034548",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034549",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034557",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034570",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034571",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034572",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034576",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034577",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034596",
+      "doctrine": "Eschatology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034599",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034604",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034619",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034633",
+      "doctrine": "Baptism",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034639",
+      "doctrine": "Baptism",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034647",
+      "doctrine": "Baptism",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034649",
+      "doctrine": "Church Covenant",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034651",
+      "doctrine": "Confession",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034655",
+      "doctrine": "Trinity",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034661",
+      "doctrine": "Baptism",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034668",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034675",
+      "doctrine": "Baptism",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034681",
+      "doctrine": "Baptism",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034683",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034684",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034685",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034686",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question",
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034694",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034696",
+      "doctrine": "Baptism",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034698",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034720",
+      "doctrine": "Baptism",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034721",
+      "doctrine": "Baptism",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034722",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034723",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034727",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034730",
+      "doctrine": "Baptism",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034731",
+      "doctrine": "Baptism",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034741",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034743",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034747",
+      "doctrine": "Baptism",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034761",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034763",
+      "doctrine": "Trinity",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034768",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034769",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034783",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034788",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034794",
+      "doctrine": "Church Discipline",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034797",
+      "doctrine": "Church Discipline",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034799",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034800",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034801",
+      "doctrine": null,
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034805",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034808",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034813",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034815",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034822",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034825",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034827",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034828",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034832",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034833",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034839",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034841",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034850",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034855",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034858",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034861",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034862",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034865",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034868",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034870",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034883",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034893",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034898",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034899",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034900",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034902",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034903",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034911",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034913",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034922",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034923",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034925",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034929",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034930",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034931",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034932",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034943",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034957",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034968",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034972",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034981",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034984",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034988",
+      "doctrine": "Lord's Supper",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034992",
+      "doctrine": "Baptism",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0034999",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035003",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035004",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035007",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035008",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035010",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035011",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035014",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035029",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035035",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035044",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035050",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035060",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035079",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035087",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035090",
+      "doctrine": "Providence",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035098",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035102",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035107",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035109",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035111",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035114",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035116",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035130",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035132",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035135",
+      "doctrine": "Providence",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035138",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035140",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035141",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035142",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035143",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035148",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035149",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035151",
+      "doctrine": "Providence",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035152",
+      "doctrine": "Providence",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035153",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035155",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035164",
+      "doctrine": "Election",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035165",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035174",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035175",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035183",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035189",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035191",
+      "doctrine": "Soteriology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035194",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035199",
+      "doctrine": "Justification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035209",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035221",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035229",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035240",
+      "doctrine": "Eschatology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035241",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035243",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035258",
+      "doctrine": "Justification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035260",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035263",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035268",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035272",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035273",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035274",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035280",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035281",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035286",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035289",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035291",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035292",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035294",
+      "doctrine": "Sanctification",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035296",
+      "doctrine": "Justification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035298",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035299",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035300",
+      "doctrine": "Soteriology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035310",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035311",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035312",
+      "doctrine": "Sanctification",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035316",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035317",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035318",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035323",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035325",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035326",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035327",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035328",
+      "doctrine": "Providence",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035335",
+      "doctrine": "Soteriology",
+      "flags": [
+        "conditional_hypothetical"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035343",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question",
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035344",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035346",
+      "doctrine": "Sanctification",
+      "flags": [
+        "very_short_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035347",
+      "doctrine": "Sanctification",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035350",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035353",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "rhetorical_question"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035359",
+      "doctrine": null,
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035360",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035361",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035363",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035365",
+      "doctrine": "Ecclesiology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035369",
+      "doctrine": "Sanctification",
+      "flags": [
+        "truncated_fragment"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035372",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035374",
+      "doctrine": "Soteriology",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035382",
+      "doctrine": "Trinity",
+      "flags": [
+        "quote_attribution"
+      ]
+    },
+    {
+      "tsu_id": "TSU-0035386",
+      "doctrine": "Soteriology",
+      "flags": [
+        "truncated_fragment"
+      ]
+    }
+  ]
+}
