@@ -145,16 +145,56 @@ def _contamination_retry_note(chars: list[str]) -> str:
     )
 
 
+# 오염 문자를 지운 자리에 남기는 표식. 한 글자당 하나를 넣어 "여기에 글자가
+# 있었다"는 사실이 눈에 보이게 한다.
+_CONTAMINATION_MARKER = "□"
+
+# 답변 수준(질의응답)에서 덧붙이는 고지. 개요·대지 확장 경로에는 붙이지 않는다
+# (파싱·조립 대상 텍스트에 안내 문구가 섞이면 산출물이 오염된다).
+_CONTAMINATION_NOTICE = (
+    "\n\n⚠️ 이 답변을 만드는 중 한국어가 아닌 문자가 반복적으로 섞여 나와"
+    " {count}자를 제거했습니다(제거한 자리는 {marker} 로 표시). 그 부분의 단어가"
+    " 불완전할 수 있으니 확인하고 쓰시고, 다시 생성하면 정상 출력될 수 있습니다."
+)
+
+
 def _sanitize_script_contamination(text: str) -> str:
-    """재시도(_MAX_LANGUAGE_RETRIES)를 다 써도 오염이 남을 때의 최종
-    방어선. 실측 결과(동일 프롬프트 3회 연속 실패, 매번 다른 문자로 오염)
-    재시도만으로는 특정 개념 주변의 오염을 신뢰성 있게 없앨 수 없다는 것이
-    확인됐다 — 문장을 일부 손상시키는 한이 있어도 사용자에게 비한글 문자가
-    그대로 노출되는 것보다는 낫다는 판단으로, 오염 문자를 제거한다(대체
-    번역은 하지 않음 — 없는 내용을 지어내지 않는다는 프로젝트 원칙과
-    동일하게, 무엇으로 바꿔야 할지 모르는 문자는 만들어내지 않고 삭제만
-    한다)."""
-    return _SCRIPT_CONTAMINATION_RE.sub("", text)
+    """재시도(_MAX_LANGUAGE_RETRIES)를 다 써도 오염이 남을 때의 최종 방어선.
+
+    실측 결과(동일 프롬프트 3회 연속 실패, 매번 다른 문자로 오염) 재시도만으로는
+    특정 개념 주변의 오염을 신뢰성 있게 없앨 수 없다. 대체 번역은 하지 않는다 —
+    없는 내용을 지어내지 않는다는 프로젝트 원칙과 같다.
+
+    [2026-09-26 변경] 종전에는 오염 문자를 **조용히 삭제**했다. 그 결과 남은
+    문장이 정상처럼 보이면서 단어가 망가졌다 — P0-5 재실행 24건 실측
+    (`docs/DBMA_P0_5_RERUN_20260926_SIGNALS_001.md`):
+
+        B2: "이미 하나님 앞에서 완전히로워졌기 때문에"   ← 義 삭제, "의로워졌기"가 깨짐
+        H1: "그 속에서 정와 사랑을 실현시키고자"          ← 義 삭제, "정의"가 "정"으로
+        E2: 같은 괄호 문구가 두 번 반복되며 문장 불성립
+
+    "의"(righteousness)처럼 핵심 신학 용어가 한 글자 삭제로 사라지는데, 독자는
+    그것을 오탈자로 읽고 넘어가거나 잘못 복원한다. 삭제 자체보다 **삭제를
+    감추는 것**이 문제다.
+
+    그래서 삭제 대신 한 글자당 표식({marker})을 남긴다 — 이 앱의 "없으면 없는
+    대로" 원칙을 문자 수준에 적용한 것이다. 없는 글자를 지어내지도, 없어진
+    사실을 감추지도 않는다.
+
+    유보로 전환하는 안도 검토했으나 기각했다 — 위 실측에서 소진 7건 중 실제로
+    못 읽을 수준은 E2 1건뿐이고 B2·H1·C2는 내용이 온전해, 전량 유보는 쓸 만한
+    답변을 버리는 과잉이다. 손상 정도로 분기하는 안은 검증되지 않은 임계값 위에
+    차단 로직을 얹는 형태라 `feedback_avoid_risky_uncertain_design`에 걸린다.
+    """
+    return _SCRIPT_CONTAMINATION_RE.sub(_CONTAMINATION_MARKER, text)
+
+
+def _contamination_notice(text: str) -> str:
+    """표식이 들어간 답변에 붙일 고지. 표식이 없으면 빈 문자열."""
+    count = text.count(_CONTAMINATION_MARKER)
+    if not count:
+        return ""
+    return _CONTAMINATION_NOTICE.format(count=count, marker=_CONTAMINATION_MARKER)
 
 
 # ============================================================
@@ -350,11 +390,12 @@ class GenerationStream:
         # (clean이면 no-op). 스트리밍은 재시도 불가라 sanitize만 남긴다.
         if self._contamination_seen:
             logger.warning(
-                "[GenerationStream] 한국어 출력 오염 감지 → 제거"
+                "[GenerationStream] 한국어 출력 오염 감지 → 표식 처리"
                 " (스트리밍은 재시도 불가): %s",
                 self._contamination_seen,
             )
             answer = _sanitize_script_contamination(answer)
+            answer += _contamination_notice(answer)
         claim_guard_result = _run_claim_guard(answer, self._response.top_k_results)
         return GenerationResult(
             question=self._response.question,
@@ -476,9 +517,11 @@ class GenerationService:
                 prompt = base_prompt + _contamination_retry_note(contamination)
             else:
                 logger.warning(
-                    "[GenerationService.generate] 재시도 소진 — 오염 문자 강제 제거"
+                    "[GenerationService.generate] 재시도 소진 — 오염 문자 표식 처리"
                 )
                 answer = _sanitize_script_contamination(answer)
+                # 표식만으로는 독자가 원인을 모른다 — 답변 경로에서는 고지까지 붙인다.
+                answer += _contamination_notice(answer)
             error = None
         except Exception as e:
             logger.error(
@@ -741,7 +784,7 @@ class SermonDraftService:
                 # 2단계 검토가 있지만, 그 화면에 애초에 비한글 문자가 뜨는
                 # 것 자체를 막기 위해 여기서도 제거한다.
                 logger.warning(
-                    "[SermonDraftService.generate_outline] 재시도 소진 — 오염 문자 강제 제거"
+                    "[SermonDraftService.generate_outline] 재시도 소진 — 오염 문자 표식 처리"
                 )
                 raw = _sanitize_script_contamination(raw)
             outline = _parse_outline(raw)
@@ -820,7 +863,7 @@ class SermonDraftService:
                 # st.markdown()으로 바로 표시 — 수정 UI가 없다) 여기서
                 # 걸러내는 것이 개요 쪽보다 더 중요하다.
                 logger.warning(
-                    "[SermonDraftService.expand_point] 재시도 소진 — 오염 문자 강제 제거"
+                    "[SermonDraftService.expand_point] 재시도 소진 — 오염 문자 표식 처리"
                 )
                 text = _sanitize_script_contamination(text)
             claim_guard_result = _run_claim_guard(text, candidates)
