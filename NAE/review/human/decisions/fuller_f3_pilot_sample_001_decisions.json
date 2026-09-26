@@ -1,0 +1,864 @@
+{
+  "batch_id": "fuller_f3_pilot_sample_001",
+  "decisions": [
+    {
+      "tsu_id": "TSU-0006495",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "C"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "타인의 주장 인용을 저자 주장으로 오해할 위험. 원문은 인용/비판 문맥인데 claim이 일반화되어 저자 주장처럼 제시됨. 인용자(he)의 정체·저자 태도 확인 필요."
+    },
+    {
+      "tsu_id": "TSU-0007131",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(일괄 승인)"
+    },
+    {
+      "tsu_id": "TSU-0004412",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(일괄 승인)"
+    },
+    {
+      "tsu_id": "TSU-0007267",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "[정정 — 이전 일괄승인 취소] claim이 원문의 직접적 의미를 넘어 신학적 확장(인간의 선행/의로움 부정 문구 추가)."
+    },
+    {
+      "tsu_id": "TSU-0005965",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(일괄 승인)"
+    },
+    {
+      "tsu_id": "TSU-0005809",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(일괄 승인)"
+    },
+    {
+      "tsu_id": "TSU-0006288",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(일괄 승인)"
+    },
+    {
+      "tsu_id": "TSU-0006085",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(일괄 승인)"
+    },
+    {
+      "tsu_id": "TSU-0007625",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "claim이 원문의 논지를 정확히 포착하지 못함. 원문은 indefinite language 논의인데 claim 뉘앙스가 다름 — 저자는 보편적 속죄를 부정하려는 취지."
+    },
+    {
+      "tsu_id": "TSU-0006516",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "조건부 문맥 누락. 원문은 totally prevails일 때라는 조건부인데 claim은 조건 없이 단정적으로 제시."
+    },
+    {
+      "tsu_id": "TSU-0004948",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": ""
+    },
+    {
+      "tsu_id": "TSU-0007752",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "문맥 부족, 과도한 일반화. 원문은 특정 맥락의 impossibility인데 claim이 과도하게 확장."
+    },
+    {
+      "tsu_id": "TSU-0006145",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "C",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "CONDITIONAL",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "원문이 의문문인데 주장으로 변환. 원문은 수사의문문인데 claim이 결론처럼 서술."
+    },
+    {
+      "tsu_id": "TSU-0007584",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "C"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "반어적 문맥 누락. heading_suspected 자동플래그는 False(목차 오분류 아님) — 반어법을 놓친 별도 오류 유형."
+    },
+    {
+      "tsu_id": "TSU-0004483",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "C"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "조건문 → 절대적 주장으로 변환. 원문의 조건부 성격이 claim에서 누락됨."
+    },
+    {
+      "tsu_id": "TSU-0031133",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "C",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "절단된 문장(원문이 'acter,'로 시작 — 문단/페이지 경계 절단). 자동 heading_suspected=False, 별도 결함 유형(청킹/OCR 경계 문제)."
+    },
+    {
+      "tsu_id": "TSU-0007282",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "national guilt = our sins(집단/1인칭복수)로 동일시되는 원문인데 claim이 '국가적 죄'와 '개인의 죄'를 분리 — 원문에 없는 구분 생성. Q2/Q3 미판정."
+    },
+    {
+      "tsu_id": "TSU-0007551",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(대명사 They를 문맥상 necessity/impossibility로 올바르게 해소)."
+    },
+    {
+      "tsu_id": "TSU-0007626",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "절단된 구절 — heading_suspected."
+    },
+    {
+      "tsu_id": "TSU-0006126",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "부정문을 긍정으로 잘못 번역."
+    },
+    {
+      "tsu_id": "TSU-0007497",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "\"보편적인\" 추가 — 원문에 없는 보편성 해석."
+    },
+    {
+      "tsu_id": "TSU-0006639",
+      "reviewer_id": "David",
+      "answers": {
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "가정문 문맥 불충분."
+    },
+    {
+      "tsu_id": "TSU-0004434",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "비유적 표현(Pool of Bethesda) 문맥 누락."
+    },
+    {
+      "tsu_id": "TSU-0004134",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확함(cross-check 후 default A)."
+    },
+    {
+      "tsu_id": "TSU-0004633",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "직접 성경구절 인용, 정확함(default A)."
+    },
+    {
+      "tsu_id": "TSU-0006842",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "저자의 시각으로 올바르게 서술(default A)."
+    },
+    {
+      "tsu_id": "TSU-0004923",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "충실한 요약(default A)."
+    },
+    {
+      "tsu_id": "TSU-0004285",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "원문이 끝에서 정의적 동치로 귀결 — claim이 이를 반영, 왜곡 아님(default A)."
+    },
+    {
+      "tsu_id": "TSU-0005286",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "직역 수준의 충실한 번역(default A)."
+    },
+    {
+      "tsu_id": "TSU-0006214",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "2Cor3:18 충실한 파라프레이즈(default A)."
+    },
+    {
+      "tsu_id": "TSU-0005008",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "대체로 충실 — enlightening→계시 번역에 조명/계시 혼동 여지, 경미(default A)."
+    },
+    {
+      "tsu_id": "TSU-0005094",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "intimated(암시)가 단정으로 다소 강해졌으나 추론 범위 내(default A)."
+    },
+    {
+      "tsu_id": "TSU-0006464",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "정확히 번역. CUE의 'according to this' 인용구조 우려는 검토 후 기각."
+    },
+    {
+      "tsu_id": "TSU-0005298",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "사용자 판단 A. CUE의 quote/author 혼동 우려는 기각."
+    },
+    {
+      "tsu_id": "TSU-0007655",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "사용자 판단 A(조건문/순환논리 우려 기각)."
+    },
+    {
+      "tsu_id": "TSU-0005513",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "사용자 판단 A(수사의문문 우려 기각)."
+    },
+    {
+      "tsu_id": "TSU-0007167",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "사용자 판단 A(인용구조 우려 기각)."
+    },
+    {
+      "tsu_id": "TSU-0007687",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "[정정] 'This can only be said of those who have heard the gospel, and rejected it' 정확히 번역. 이전 R 판정 취소."
+    },
+    {
+      "tsu_id": "TSU-0007633",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "사용자 판단 A(수사의문문+문맥의존 우려 기각)."
+    },
+    {
+      "tsu_id": "TSU-0006629",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "사용자 판단 A. CUE 잔여의견(부정/긍정 대비) 기록만 남김."
+    },
+    {
+      "tsu_id": "TSU-0004759",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "사용자 판단 A. CUE 잔여의견(두번째 문장 미반영) 기록만 남김."
+    },
+    {
+      "tsu_id": "TSU-0008382",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "rhetorical question을 확정적 주장으로 변환."
+    },
+    {
+      "tsu_id": "TSU-0010017",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "개인 사례를 인간 일반으로 확대."
+    },
+    {
+      "tsu_id": "TSU-0008866",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "논리적 역설 뉘앙스 누락, 순환적 재구성."
+    },
+    {
+      "tsu_id": "TSU-0010269",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "비판대상 견해와 교정된 견해 혼동."
+    },
+    {
+      "tsu_id": "TSU-0009839",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "예외조건(their good...ultimate end) 누락, 절대화."
+    },
+    {
+      "tsu_id": "TSU-0009922",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "claim이 원문에 없음(메타발언을 내용주장으로 오해)."
+    },
+    {
+      "tsu_id": "TSU-0009795",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "Mr. Kentish 주장을 Fuller 주장으로 오분류."
+    },
+    {
+      "tsu_id": "TSU-0008692",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "기술을 규범으로 오류."
+    },
+    {
+      "tsu_id": "TSU-0010378",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "저자가 반박하는 주장을 저자 주장으로 오분류(실제 반대 입장)."
+    },
+    {
+      "tsu_id": "TSU-0008383",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "지시어(such a conduct) 상실, 독립 일반원칙화."
+    },
+    {
+      "tsu_id": "TSU-0009311",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "'scheme of Infidelity'(비판대상) 원칙을 Fuller 주장으로 오분류."
+    },
+    {
+      "tsu_id": "TSU-0009897",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "opponent 주장을 저자 주장처럼 단정 제시(후반부만 반대취지 일부 반영)."
+    },
+    {
+      "tsu_id": "TSU-0007782",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "인용 주장을 확정 주장으로 처리 + 'Dissenters'를 '불신자'로 오역."
+    },
+    {
+      "tsu_id": "TSU-0008011",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "재확인 — 정확함."
+    },
+    {
+      "tsu_id": "TSU-0014037",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "5단어 원문에서 전기적 내용 완전 지어냄 — 명백한 환각."
+    },
+    {
+      "tsu_id": "TSU-0013771",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "비판적 태도는 반영되나 구체 내용(선택자/영적축복 목록)이 원문에 없음 — 과잉해석."
+    },
+    {
+      "tsu_id": "TSU-0013992",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "원문 이미지와 다른 신학용어(희생제물) 도입, 원문에 없음."
+    },
+    {
+      "tsu_id": "TSU-0015946",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "sectarian→세대주의 오역 + catholic도 오역(보편적이 맞음)."
+    },
+    {
+      "tsu_id": "TSU-0015722",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "claim 전체가 원문(부정문)에 근거 없음 — 심한 환각."
+    },
+    {
+      "tsu_id": "TSU-0013780",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "다른 성경주제(요14:13-14 응답기도)를 과도 연결."
+    },
+    {
+      "tsu_id": "TSU-0015045",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "중립 기술에 평가적 해석 추가."
+    },
+    {
+      "tsu_id": "TSU-0015516",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "절단+페이지인용 혼입 — 청킹 결함."
+    },
+    {
+      "tsu_id": "TSU-0014414",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "번역 어색·중복, 의미는 대체로 보존."
+    },
+    {
+      "tsu_id": "TSU-0015471",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "heading을 claim으로 오분류 — heading_suspected 적중 사례."
+    },
+    {
+      "tsu_id": "TSU-0014395",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "claim 핵심 내용이 원문에 전혀 없음."
+    },
+    {
+      "tsu_id": "TSU-0014570",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_pilot_sample_001",
+      "comment": "CUE 이견 수용 — Company 번역 정확, 느슨하나 명백한 오류 아님."
+    }
+  ]
+}
