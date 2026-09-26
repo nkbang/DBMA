@@ -227,7 +227,7 @@
 ### 42. TSU-0008644  [Soteriology]
 - **원문**: If to God, we have reason to lie in the dust, and acknowledge, it was he that quickened us when tve ware dead in sins : if to ourselves, the doctrine of the Stoics will be established, and we shall have whereof to glory,
 - **claim**: 우리의 마음가짐의 변화는 하나님께 빚진 것이거나 우리 자신에게 빚진 것인데, 하나님께 빚진 경우에는 우리가 죄에서 죽었을 때 하나님께서 우리를 살리셨음을 인정해야 하며, 우리 자신에게 빚진 경우에는 스토아 철학의 교리가 확립되고 우리는 자랑할 수 있는 근거를 가지게 된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 43. TSU-0010017  [Soteriology]
 - **원문**: I think you have told me of your great distress of soul, arising from a consciousness of your deserving to be cast out of God's favour, and banished forever from his presence.
@@ -237,7 +237,7 @@
 ### 44. TSU-0009977  [Soteriology]
 - **원문**: Were the Jews under Peter's sermon, the jailor and his household, or any others of whom there is an account in the Acts of the Apostles, converted in the manner Mr. Kentish describes ?
 - **claim**: 사도행전에서 기록된 사람들의 회심은 켄티시 씨가 설명한 방식으로 일어난 것이 아니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 수사의문문("Were the Jews... converted in the manner Mr. Kentish describes?")을 단정으로 변환(귀속은 유지됨, 경미).
 
 ### 45. TSU-0008866  [Election]
 - **원문**: Was it not for- the same reason which John elsewhere gives for his being pre- ferred before him ; viz. that he was before him?
@@ -262,17 +262,17 @@
 ### 49. TSU-0010406  [Soteriology]
 - **원문**: But, if the reconciliation of things in earth, and things in heaven, denote the salvation of all the inhabitants of heaven and earth, it would follow : (1.) That the holy angels are saved, as well as the unholy ; though, in fact, they never sinned. (2.) That when the Apostle adds, And you that were sometime alienated, and enemies in yonr minds by wicked works, yet now hath he reconciled, he deals in unmeaning tautolo- gy.
 - **claim**: 만물의 примир음이 모든 천상과 지상 거주자의 구원을 의미한다면, 거룩한 천사도 불경건한 천사도 구원받고, 또한 사도는 쓸모없는 중언부언을 하는 것이 된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: ⚠️claim에 키릴문자 오염("примир음") — 스크립트 오염, CJK 재추출 범위 밖(별도 데이터 결함).
 
 ### 50. TSU-0009117  [Sanctification]
 - **원문**: While Paul was ignorant of his true character, he was calm and easy,
 - **claim**: 바울이 자신의 진정한 성품을 모를 때 그는 마음이 평안하고 편안했다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 51. TSU-0009438  [Ecclesiology]
 - **원문**: In either case, their testimony is unworthy of regard; which is downright Infidelity.
 - **claim**: 어떤 경우에든지, 그들의 증언은 고려할 가치가 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "which is downright Infidelity"(둘째 절) 누락.
 
 ### 52. TSU-0009795  [Providence]
 - **원문**: As to the glory of God consisting in the exercise of his goodness, if it be meant of the manifestation of the divine glory, and good- ness be put for moral excellence, it is the same thing as that which I have acknowledged ; namely, that "the glory of God consists in doing that which shall be best upon the whole :" but, by goodness, Mr. Kentish means merely beneficence, undistinguished benefi- cence, or the pursuit of ultimate happiness in behalf of every intelligent being in the creation, obedient or rebellious, penitent or impenitent, men or devils.
@@ -292,22 +292,22 @@
 ### 55. TSU-0009448  [Other]
 - **원문**: The ancient Socinians, though they went great lengths, are, nevertheless, far outdone by the moderns.
 - **claim**: 현대 소시니안주의는 옛 소시니안주의보다 더 극단적이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 56. TSU-0008538  [Baptism]
 - **원문**: Though he held with Paedobaptism, and in this manner defended it, yet I should never think of imputing a spirit of perse^ cution to Pasdobaptists in general ; or of charging their sentiment, in that particular, with being of a persecuting tendency.
 - **claim**: 개신교 세례 신자 일반적으로 박해정신을 지니고 있지 않다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "Paedobaptism/Paedobaptists"를 "개신교 세례 신자"로 오역(유아세례주의자가 맞음).
 
 ### 57. TSU-0007826  [Ecclesiology]
 - **원문**: It is the conduct of the general body, from which we ought to form our es- timate.
 - **claim**: 어떤 교단의 일반적인 신자들의 행동이 그 교단의 가치를 평가하는 데 기준이 되어야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 58. TSU-0007954  [Ecclesiology]
 - **원문**: Dr. Priestley professes to think highly of the Metho- dists, and acknowledges that they have " civilized and Christian, ized a great part of the uncivilized and unchrislianized part of this country."!
 - **claim**: 감리교는 문명화와 기독교화에 기여했다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: Dr. Priestley의 인정 발언이 저자 직접 주장처럼 귀속 소실.
 
 ### 59. TSU-0008383  [Ecclesiology]
 - **원문**: On the contrary, such a conduct must have recommended itself to the heart of every friend of righteousness in the universe, as well as have prevented the shocking effusion of blood, which followed their refusal.
@@ -317,42 +317,42 @@
 ### 60. TSU-0008991  [Trinity]
 - **원문**: How could they judge by his exterior appearance, whether he was merely a man, or both God and man ?
 - **claim**: 그리스도의 외적인 모습만으로는 그가 단순한 인간인지 또는 하나님과 인간인지 판단할 수 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 수사의문문을 단정으로 변환.
 
 ### 61. TSU-0008589  [Trinity]
 - **원문**: Secondly : Admitting that a greater degree of spiritual pride exists among Trinitarians, than among their opponents ; if we were, for once, to follow Dr. Priestley's example, it might be accounted for without any reflection upon their principles.
 - **claim**: 삼위일체론자들 사이에 더 높은 정도의 영적 교만이 존재할 수 있지만, 그것은 삼위일체론의 원칙에 대한 반영이 아님을 인정할 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 62. TSU-0009308  [Soteriology]
 - **원문**: Such attempts, also, suppose what is not true; That their not believing in Christianity, is owing to some fault in the system, as generally received, and not to the temper of their own minds.
 - **claim**: 비교적주의자들의 기독교 불신은 기독교 신앙 자체의 결함이 아니라 그들의 마음가짐에 문제가 있기 때문이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 63. TSU-0009342  [Scripture / Authority]
 - **원문**: Deists themselves do not so reject the Bible as to disbelieve every historical event which is there recorded.
 - **claim**: 이신론자들은 성경을 완전히 거부하지는 않으며, 기록된 모든 역사적 사건을 믿지 않는 것이 아님
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 64. TSU-0009970  [Sanctification]
 - **원문**: True conversion from sin to holiness, we regard as the work of time and labour " If it were necessary to examine this subject, the conversion pleaded for by Mr. Kentish might appear as mean in our esteem, as ours does in his.
 - **claim**: 진정한 회심은 시간과 노력의 결과이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 65. TSU-0009428  [Scripture / Authority]
 - **원문**: Were they to embrace Dr- Priestley's notions of Christianity, they must give up this princi- ple, and consider their own sacred writings in a much meaner light than they at present do.
 - **claim**: 유대인들이 드. 프리스트리의 기독교 관념을 받아들이면 성경에 대한 그들의 원칙을 포기하고 현재보다 성경을 더 낮은 시선으로 볼 수 밖에 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 66. TSU-0008283  [Election]
 - **원문**: prove, that the Antinomian is the only consistent absolute predesti-
 - **claim**: 안티노미안주의자는 절대적 예정론의 일관된 유일한 입장이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 양끝 절단된 단편("prove, that..."~"...predesti-")에 기반한 claim — 청킹 결함.
 
 ### 67. TSU-0009323  [미분류]
 - **원문**: Further : If Mr. Robinson was mistaken, and if Dr. Priestley do really maintain the insufficiency of human reason in matters of religion ; it will follow, after all that he has pleaded in behalf of reason, that he is no better friend to it than other people.
 - **claim**: 드. 프리스트리가 인간의 이성의 불충분성을 주장한다면, 그는 이성의 옹호를 위해 많은 주장을 펴왔음에도 불구하고, 다른 사람들보다 이성의 친구가 아님을 알 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 68. TSU-0009311  [Scripture / Authority]
 - **원문**: One of the most important principles in the scheme of Infidelity, it is well known, is THE SUFFICIENCY OF HUMAN REASON.
@@ -362,12 +362,12 @@
 ### 69. TSU-0008621  [Soteriology]
 - **원문**: Who maketh thee to differ? said the Apostle, and what hast thou that thou didst not receive ?
 - **claim**: 모든 것은 하나님으로부터 받은 것이라는 사실
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 1고전4:7 수사의문문 2개를 단정으로 변환.
 
 ### 70. TSU-0008756  [Soteriology]
 - **원문**: What the sun is to the system of nature, that the doctrine of the cross is to the system of the gospel ; it is the life of it.
 - **claim**: 십자가의 교리는 복음의 핵심이며, 모든 복음적 진리가 만나는 중심점이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "모든 복음적 진리가 만나는 중심점" — 보이는 원문에 없는 추가.
 
 ### 71. TSU-0009897  [Providence]
 - **원문**: The main objection that 1 feel to the scheme of my opponent, on this head, is, that the divine goodness, according to his notion of it, necessarily pursues the ultimate happiness of all creatures, pure or impure, penitent or impenitent, men or devils.
@@ -377,17 +377,17 @@
 ### 72. TSU-0009869  [Soteriology]
 - **원문**: Their views of things will not suffer them to speak of his taking upon him flesh and blood; of his taking upon him not the nature of angels, but the seed of Abraham ; of his being in the form of God, and yet taking upon him the form of a servant, and being made in the likeness of men ; of our being fo7'given for his sake ; or of the promise of an eternal inheritance being received by means of his death.^ According to their principles, his coming into the world was no act of his own; he had no existence, prior to his existing in flesh and blood ; it was not a matter of choice with him, whether he would be made an angel or a man ; he never existed in any other form, nor sustained any other character than that of a servant ; his death had no influence on the forgiveness of our sins, or in procuring eternal life : none of these things, therefore, afford to them any foundation for gratitude.
 - **claim**: 일부 교파는 예수의 인성을 인정하지 않으며, 그의 죽음이 우리의 죄를 용서하는 데 영향을 미치지 않는다고 주장한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: ⚠️신학내용 오류 — 원문은 그리스도의 선재성/신성 부정을 서술하는데 claim은 "인성을 인정하지 않으며"로 반대 개념 서술.
 
 ### 73. TSU-0010216  [Soteriology]
 - **원문**: If there be a sin, for the pardon of which Christians are forbidden to pray ; it must be on account of its being the revealed vvill of God, that it never should be pardon- ed.
 - **claim**: 기독교인들은 하나님의 계시된 뜻에 따라 결코 용서받지 못할 죄에 대하여 기도하지 말아야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 조건문("If there be a sin...")을 명령형 단정으로 변환.
 
 ### 74. TSU-0008812  [Lord's Supper]
 - **원문**: Except ye eat my flesh and drink my blood, ye have no life in you : — and the bread that I will give is my flesh, that I will give for the life of the world.
 - **claim**: 그리스도의 육체를 먹고 그의 피를 마시지 않으면 생명이 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 75. TSU-0007782  [Trinity]
 - **원문**: It was said, in a paper that was published more than once, " The ancient, like the Modern Dissenters, worshipped one God; they hnew nothing of the Nicene or Athanasian creeds." The celebra- ted authoress of The Address to the Opposers of the Repeal of the Corporation and Test Acts, is not clear in this matter.
@@ -397,7 +397,7 @@
 ### 76. TSU-0009279  [Eschatology]
 - **원문**: Oncc morc : you Tcad. concerning those who shall obtain that world, and the resurrection, that they cannot die any more ; that they shall go no more out : that the inheritance to which they are reserved is incorruptible, andfadeth not away ; and that the weight of glory which we look for, is eternal.
 - **claim**: 그들이 얻을 세상을 부활에 관하여, 그들은 더 이상 죽을 수 없으며, 더 이상 나가지 않을 것이다; 그들에게 예약된 유산은 부패하지도 않고, 사라지지도 않으며, 우리가 기대하는 영광의 무게는 영원하다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 77. TSU-0008011  [미분류]
 - **원문**: The Popish Missionaries had engines to work with which Socinians have not.
@@ -407,17 +407,17 @@
 ### 78. TSU-0008611  [Justification]
 - **원문**: But, as though it were designed in perfect opposition to the apostolic doctrine, So- cinian writers were constantly exclaiming against the Calvinistic system, because it maintains the insufficiency of a good moral life, to recommend us to the favour of God.
 - **claim**: 소시니안 작가들은 칼빈주의 체계가 인간의 도덕적 삶의 불충분성을 주장하는 것에 대해 항상 반대했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 79. TSU-0009254  [Eschatology]
 - **원문**: The spiritual, holy, and happy state, which, according to the Calvinis- tic system, commences at death, and is augmented at the resurrec- tion, tends, more than a little, to promote this virtue.
 - **claim**: 칼빈주의 체계에 따르면 영적이고 거룩하고 행복한 상태는 죽음에서 시작되고 부활에서 증가한다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 80. TSU-0010175  [Eschatology]
 - **원문**: Well done, good and faithful-servant ; enter thou into the joy of thy lord.
 - **claim**: 주님은 충성된 종에게 칭찬과 상을 주신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ---
 
@@ -426,12 +426,12 @@
 ### 81. TSU-0013905  [Soteriology]
 - **원문**: But, through the mediation of Christ, a re-union is effected.
 - **claim**: 그리스도의 중재를 통해 재결합이 이루어진다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 82. TSU-0013517  [Scripture / Authority]
 - **원문**: Its entrance into the mind gives light : and light which discovers the works of darkness.
 - **claim**: 성경의 진리는 마음에 빛을 주어 어둠의 행위를 드러낸다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 83. TSU-0014037  [미분류]
 - **원문**: Bolingbroke has done the same.
@@ -441,7 +441,7 @@
 ### 84. TSU-0015921  [Ecclesiology]
 - **원문**: Once more : Love, be it for the sake of what it may. will so unite us to one another as to renrler separation pain- ful, and lead to the use of all possible means of preventing it.
 - **claim**: 사랑은 어떤 이유로든 우리를 서로 결합시켜 분리가 고통스럽게 느껴지게 하고, 이를 방지하기 위한 모든 가능한 수단을 사용하도록 이끌어준다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 85. TSU-0013771  [Soteriology]
 - **원문**: The wri- ter of these pages acknowledges he never could perceive that any clear or determinate idea, was conveyed by the term, purchase, in this connexion ; nor does it appear to him to be applicable to the subject, unless it be in an im- proper or figurative sense.
@@ -451,52 +451,52 @@
 ### 86. TSU-0015455  [Soteriology]
 - **원문**: It consists in sin;* and if ignorance and unbelief are sins, they are of the essence of spirit- ual death.
 - **claim**: 영적 죽음은 죄로 구성되며, 무지와 불신앙이 죄라면 그것은 영적 죽음의 본질이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 87. TSU-0013885  [Providence]
 - **원문**: First : Among the variety of objects which are here specified as the works of God, the earth is mentioned as being, in a sort, his pecu- liar property.
 - **claim**: 지구는 하나님의 특별한 소유물로 간주된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 88. TSU-0014354  [Ecclesiology]
 - **원문**: Thesr men talk of liberty, while they are razing it to its foundation.
 - **claim**: 자유를 말하지만 실제로는 자유의 기초를 파괴하고 있다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 89. TSU-0013920  [Providence]
 - **원문**: member, be it ever so small, cannot suffer without the whole body, in some degree, suffering with it ; so if we consider our world as a member of the great body or system of being, it might naturally be supposed that the ill or well-being of the former would, in some measure, effect the happiness of the latter.
 - **claim**: 세계는 큰 존재 체계의 일부로, 그 안에서 작은 구성원인 세계의 잘됨이나 못됨이 전체 체계의 행복에 영향을 미친다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 90. TSU-0013547  [Ecclesiology]
 - **원문**: It was thus that Judaism was corrupted by the old Pharisees, and Christianity by the Papal hierarchy.
 - **claim**: 유대교와 기독교는 각각 파리サイ인과 교황청의 계층에 의해 부패되었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: ⚠️claim에 가타카나 오염("파리サイ인") — 스크립트 오염, CJK 재추출 범위 밖(별도 데이터 결함).
 
 ### 91. TSU-0014122  [Election]
 - **원문**: They that obtain the victory with Christ are called, and cho- sen, and faithful.*
 - **claim**: 그리스도와 함께 승리를 얻는 자들은 부르심을 받고, 선택을 받고, 충실하다고 불리운다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 92. TSU-0014995  [Soteriology]
 - **원문**: Of the four sorts of hearers, only one brought forth fruit.
 - **claim**: 오직 한 종류의 듣는 이만이 열매를 맺었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 93. TSU-0015724  [Ecclesiology]
 - **원문**: The w.ty in which the apostles actually proceeded, in the form- ing md org;inizing of churches, correspond? with these statements.
 - **claim**: 사도들이 실제로 교회를 형성하고 조직하는 방식은 성서의 진술과 일치한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 94. TSU-0015227  [Sanctification]
 - **원문**: But how, if the state of the will contended for should be that of a deliver- atir.c from prejudice, by which evidence comes to be properl} regarded?
 - **claim**: 인간의 의지 상태는 편견에서 벗어나 증거를 올바르게 고려하는 상태일 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 95. TSU-0015116  [Soteriology]
 - **원문**: Mr. M'Lean admits, then, the necessity of conviction of sin, previously in the order of things, to faith in Christ ; only there is no holiness, and consequently no true repentance in it. 1 have allowed in Letter I. that many convictions are to be resolved into the mere operations of an enlightened conscience, and do not issue in true conversion.
 - **claim**: 진정한 회개와 구원에 이르는 믿음에는 먼저 죄에 대한 확신이 필요하다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 귀속(Mr. M'Lean) 소실 + "확신이 참회로 이어지지 않을 수 있다"는 핵심 유보 뉘앙스 누락, 의미가 반대방향으로 단순화됨.
 
 ### 96. TSU-0013992  [Eschatology]
 - **원문**: What is said of the barren vine if applicable to the finally impenitent : li is not Jit for any work — it is good for nothing but to be burntd !* The only way in which they promote the general good is by their overthrow : like the censors of Korah and his company whicli were made into broad plates for a covering to the altar ; that they might be a sign to the children of Israel in future generations ;t or like Lot's wife, who was converted into -^pillar of salt, or a lasting monument of divine displeasure !
@@ -506,32 +506,32 @@
 ### 97. TSU-0014665  [Soteriology]
 - **원문**: Neither the coinpnny addressed by Peter, nor the Philipi.iu jailor, were encouraged from any thing in the state of their own ruind<, though each were deeply inapressed, but from the gospel only.
 - **claim**: 구원은 오직 복음으로만 가능하다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 98. TSU-0012938  [Other]
 - **원문**: Finally, It IS subersive of all true morality.
 - **claim**: 진정한 도덕성을 파괴한다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 99. TSU-0013756  [Soteriology]
 - **원문**: " Our sins," he adds, " are called debts, not properly, but metaphorically."!
 - **claim**: 죄는 빚으로 비유적으로 표현된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 100. TSU-0015238  [Soteriology]
 - **원문**: And unbe- lief is disobedience.
 - **claim**: 불신은 불순종이다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 101. TSU-0012775  [미분류]
 - **원문**: If Christianity had really been a relic of heathenism, as you suggest, there is little reason to think that you would have so strenuously opposed it.
 - **claim**: 기독교가 실제로 이교도의 유물이었다면, 그에 대한 반대가 그렇게 강렬하지는 않았을 것이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 102. TSU-0015852  [Ecclesiology]
 - **원문**: If the nature of Christ's kingdom were placed in those things in in which the Apostle places it, the government and discipline of the church would be considered as means, and not as ends.
 - **claim**: 그리스도의 왕국이 사도들이 강조하는 바와 같이 교회 정부와 규율은 목적이 아니라 수단으로 간주되어야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 조건문을 규범적 단정("간주되어야 한다")으로 변환.
 
 ### 103. TSU-0015946  [Ecclesiology]
 - **원문**: There is a zeal which may properly be denominated catholic, a.nd one which may as properly be denominated sectarian.
@@ -541,7 +541,7 @@
 ### 104. TSU-0013628  [Scripture / Authority]
 - **원문**: The account given of the creation of the sun, moon, and stars, is not intended, as Mr. Henry observes, to describe things " as they are in themselves, and in their own nature, to satisfy the curious ; but as they are in rela- tion to this earth, to which they serve as lights ; and this is enough
 - **claim**: 창세기에서 태양, 달, 별의 창조에 대한 설명은 그 것들의 본질이나 내재된 특성에 대해 호기심을 충족시키기 위함이 아니라, 이 땅과 관련하여 그들이 비추는 빛으로서의 역할에 초점을 둔다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 105. TSU-0015722  [Church Discipline]
 - **원문**: It m not that ostentntious thing which, under the name of an "ordinance," has become oflatc a mere bone of contention.
@@ -556,17 +556,17 @@
 ### 107. TSU-0014947  [Soteriology]
 - **원문**: If faith be a mere passive reception of the truth, it were as improper for the apostles to beseech sin- ners to be reconciled to God, as for ordinary ministers to do so.
 - **claim**: 신앙은 단순한 수동적인 진리 수용일 경우, 사도들이 죄인들에게 하나님과 화해하도록 간청하는 것이 일반 목사들이 그렇게 하는 것과 마찬가지로 부적절하다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 108. TSU-0014224  [Ecclesiology]
 - **원문**: If it be only un- derstood that no one shall be forbidden to teach Christianity, and no one but the evil doer receive interruption from the magistrate. the work will go on in the most gradual and yet effectual manner.
 - **claim**: 크리스천교를 가르치는 것을 누구도 금지하지 않으며, 악한 자만이 치안판사로부터 방해를 받는다면, 일이 가장 점진적이고 효과적으로 진행될 것
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 109. TSU-0015377  [Soteriology]
 - **원문**: Spiritual illumination precedes believing ; such an illu- mination too, as removes carnality from the mind, renders the soul spiritual, and so enables it to discern and believe spiritual things.
 - **claim**: 영적 계시가 믿음에 앞서며, 이러한 계시는 마음의 육적인 성질을 제거하고 영적인 것으로 만들어 믿음을 가능하게 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "illumination"을 "계시"로 오역(조명·깨우침이 맞음) — Vol01 TSU-0005008과 동일한 재발 패턴.
 
 ### 110. TSU-0015045  [Sanctification]
 - **원문**: And should a fa- vourable turn be pven to their affliction, they are affected in another way ; they weep, and thank God for their hopes of recov- ery, not doubting but they shall become other men.
@@ -581,7 +581,7 @@
 ### 112. TSU-0013810  [Soteriology]
 - **원문**: For he may have no just right to dispose of his life; or if he have, he has no power to resume it: there may like- wise be no such relation between the parties, as that the suffering of the one should express displeasure against the conduct of the other.
 - **claim**: 어떤 무고한 사람이 유죄한 사람을 대신해 죽으려 해도, 그것이 받아들여지거나 적절하다고 간주되지 않는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 구체적 시나리오("무고한 사람이 유죄한 사람 대신 죽으려 해도")가 보이는 원문에서 뒷받침되지 않음 — 과잉 구체화.
 
 ### 113. TSU-0014414  [Trinity]
 - **원문**: He must, therefore, be a rival, taking place of the Divinity.
@@ -596,7 +596,7 @@
 ### 115. TSU-0013055  [Soteriology]
 - **원문**: The hope and fear against which these writers declaim are those of a slave ; and where love is absent, these, it is granted, are the only elTects which the doctrine of rewards and punish- ments will profluce.
 - **claim**: 도덕적 보상과 처벌에 대한 가르침은 사랑이 없을 때는 노예의 희망과 두려움을 일으키는 효과만을 낳는다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 116. TSU-0014570  [Church Covenant]
 - **원문**: As to " covenanting with the Company," the quotation from Mr. Marshman,* proves their willingness to give every possible secu- rity for their peaceable and good behaviour.
@@ -611,17 +611,17 @@
 ### 118. TSU-0015784  [Lord's Supper]
 - **원문**: It is also a fact, with regard to the time, that our Saviour first sat down with his disciples, on the evening of iheffth day of the week, the night in which he was betrayed ; but though that was a memorable night, and is mentioned by the apostle in connexion with the supper, yet no one supposes it to be binding upon, us ; especially as we know it was afterwards celebrated on the first day of the week by the church at Troas.
 - **claim**: 주님의 만찬은 처음에 유대인들의 대속 주간에 열리는 저녁 식사와 관련이 있었지만, 그 특정한 시간이나 방식은 우리에게 구속력이 없다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "유대인들의 대속 주간" — 원문(최후의 만찬 요일 설명)에 없는 개념 추가/오역.
 
 ### 119. TSU-0013711  [Confession]
 - **원문**: Surely if we present a petition in our own names, in which we beg pardon, and promise not to repeat the offence, this might suffice.
 - **claim**: 우리가 우리 이름으로 용서를 청하고 죄를 다시 짓지 않겠다고 약속하는 청원을 제시하면 이것이 충분할 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ### 120. TSU-0012930  [미분류]
 - **원문**: Mr. Hobbcs maintained that The civil law %Das the sole foundation of right and wrong y and that religion had no obligation but as enjoined ny the magistrate.
 - **claim**: 토마스 홉스는 시민법이 옳고 그름의 유일한 근거이며 종교는 법을 집행하는 자에 의해 명령된 경우에만 의무를 지닌다고 주장했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: cross-check 통과(default A).
 
 ---
 
@@ -660,7 +660,7 @@
 ### 127. TSU-0019685  [Church Discipline]
 - **원문**: In reference to the incestuous Corinthian, there are no directions given for his being admonished, and exclu- ded only in case of his being incorrigibly impenitent.
 - **claim**: 코린토 교회에서 근친상간을 저지른 사람에 대한 경고와 추방에 대한 지침이 주어지지 않았으며, 이는 그의 고집된 불회개에 대한 경우에만 추방이 고려되었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "지침이 주어지지 않았으며"가 이후 "~경우에만 추방 고려"와 자기모순 — 원문의 예외조항 구조를 정확히 못 살림.
 
 ### 128. TSU-0017373  [Soteriology]
 - **원문**: And having here found rest to his soul, he will not be less but more attentive to the means of salvation than he was be- fore.
@@ -675,7 +675,7 @@
 ### 130. TSU-0017023  [Providence]
 - **원문**: To this " vanity" they are sub- jected : *' not willingl}'" indeed ; (for every creature, in its prop- er station, naturally inclines to serve and honour its Creator, and whenever it does otherwise it is against nature) but by reason of him who hath subjected the same in hope.
 - **claim**: 창조물들은 인간의 반역으로 인해 반란의 원인에 복종하게 되었지만, 이는 창조물들의 본성에 어긋나며, 창조주가 창조물을 희망을 가지고 복종시키신 결과이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "인간의 반역으로 인해" — 보이는 원문(롬8:20 계열)에 없음.
 
 ### 131. TSU-0018518  [Sanctification]
 - **원문**: As it is not talent, but morality, that constitutes character among men, so it is not the natural, but the moral perfections of God, which properly constitute his character.
@@ -685,7 +685,7 @@
 ### 132. TSU-0019233  [Ecclesiology]
 - **원문**: Where this is the case, however, much will be neglected, especially of those parts of duty which fall not under the eye of creatures.
 - **claim**: 첫사랑을 잃어버린 교회에서는 다른 많은 의무가 소홀해질 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "첫사랑을 잃어버린 교회"(계2:4 암시) — 보이는 원문에 없음, 문맥 의존.
 
 ### 133. TSU-0018599  [Trinity]
 - **원문**: I need not adduce the evidences of this truth : the sacred scriptures are full of them* Divine perfections are ordinarily ascribed to him, and divine worship is paid to him, both by angels and men.
@@ -770,7 +770,7 @@
 ### 149. TSU-0016658  [Soteriology]
 - **원문**: The intention of God not to remove this impossibility, and so not to save him, is a purpose to withhold not only that which he was not obliged to be- stow, but that which is never represented in the scriptures a sneces- sary to the consistency of exhortations or invitations.
 - **claim**: 하나님의 구원 의도는 인간의 마음 상태에 따라 결정되며, 하나님은 그들에게 필요한 것을 주지 않기로 결정할 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "인간의 마음 상태에 따라 결정되며" — 보이는 원문에 없는 인과관계 추가.
 
 ### 150. TSU-0018229  [Lord's Supper]
 - **원문**: Except ye eat the flesh of the Son of Man, and drink his blood, ye have no life in you.
@@ -795,7 +795,7 @@
 ### 154. TSU-0018285  [Sanctification]
 - **원문**: This, and not merely the well-being of man, is the reason given why murder should be punished with death.
 - **claim**: 인간은 하나님의 형상으로 창조되었기 때문에 살인에는 사형이 따른다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: CUE 제안 승인 — 창9:6(살인=사형 근거) 문맥 반영으로 보임, 지어낸 내용 아님.
 
 ### 155. TSU-0017762  [Sanctification]
 - **원문**: The contempt with which some affect to treat all forms and rules, and those who adhere to them, is far from being to their honour, and bears too near a resemblance to the spirit of Diogenes, who trampled up- on the pride of Plato, and that, as Plato told him, aziA greater pride.
@@ -820,7 +820,7 @@
 ### 159. TSU-0020079  [Justification]
 - **원문**: Hence it is, that in the gospel, as heard and re- ceived, we are said to stand.
 - **claim**: 복음에서 우리가 듣고 받을 때 우리는 의롭다 함을 받은 상태에 있다고 말할 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "stand"를 "의롭다 함"으로 특정화 — doctrine 태그상 개연성은 있으나 이 단편만으론 과도한 신학적 구체화.
 
 ### 160. TSU-0018650  [Soteriology]
 - **원문**: While this was done, the Holy Spirit gave testimooy to the word of his grace, and ren- dered it effectual.
@@ -879,7 +879,7 @@
 ### 170. TSU-0022006  [Election]
 - **원문**: Finally : He closed this extraordinary vision by a solemn vow, or dedication of himself to God, And Jacob vowed a vow^ sayings If God will he with me, and will keep me in this way that I go^ and will give me bread to eat, and raiment to put on, so that I come again to my father'' s house in peace : then shall Jehovah be my God.
 - **claim**: 야곱은 하나님께 서원하여 하나님을 그의 하나님으로 인정하고, 하나님께서 그의 약속을 이루신다면 십일조를 드리겠다고 약속했다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "십일조를 드리겠다" — 창28장 전체로는 사실이나, 보이는 원문 단편(맹세 앞부분)에는 없음, 외부지식 주입.
 
 ### 171. TSU-0020515  [Soteriology]
 - **원문**: But lo, she also shifts the blame : The Serpent beguiled me, and I did eat. ^ I was deceived, 1 did not mean evil ; but was drawn into it through the wiles of an evil being.' Such is the excuse which multitudes make to this day, when they can find no better : ' The devil tempted me to it !' Still God continues his forbearance ; makes no answer ; but or- ders her as it were, to stand aside.
@@ -909,7 +909,7 @@
 ### 176. TSU-0021902  [미분류]
 - **원문**: The above account, however, does not appear greatly to his honour.
 - **claim**: 이사악을 향한 이삭의 편애는 리브가에게 계시된 것을 무시하는 것으로 보이며, 사냥감에 대한 그의 애착은 약점으로 보인다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 구체적 서술(리브가/사냥/편애)이 극히 짧은 원문("The above account...does not appear greatly to his honour")만으론 검증 불가 — 문맥 의존.
 
 ### 177. TSU-0020983  [Providence]
 - **원문**: To all this may be added, that the inhabitants of Afri- 'T'.'d seem to be marked out as objects of slavery by the European nations.
@@ -934,7 +934,7 @@
 ### 181. TSU-0021630  [Justification]
 - **원문**: In the first instance he is justified by faith, exclu-
 - **claim**: 아브라함은 첫 번째 경우에 믿음으로 의롭게 됩니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 절단된 원문("exclu-") — heading_suspected.
 
 ### 182. TSU-0022846  [Providence]
 - **원문**: If the world were det?troyed by a flood, there could no nations have existed till a little before the times of Abraham.
@@ -944,7 +944,7 @@
 ### 183. TSU-0020750  [Soteriology]
 - **원문**: Yet such is the account here given.
 - **claim**: 인간의 악함은 모든 시대에 존재해 왔으며, 때로는 더 심해지기도 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "인간의 악함은 모든 시대에..." — 원문("Yet such is the account here given")에 전혀 근거 없음.
 
 ### 184. TSU-0021410  [Baptism]
 - **원문**: But we do not think ourselves warranted to reason from cir- cumcision to baptism ; from the circumcision of males to the baptism of males and females ; and from the circumcision of the children of a nation, (the great- er part of whom were unbelievers,) 2i^<\.oi servants born in the house, or bought with money, to tho baptism of the children of believers.
@@ -959,12 +959,12 @@
 ### 186. TSU-0022111  [Soteriology]
 - **원문**: They will acknowledge the true God in words ; but their hearts and houses are the abodes of spiritual idolatry.
 - **claim**: 많은 프로테스탄트와 프로테스탄트 비국교도들은 말로는 참된 하나님을 인정하지만, 그들의 마음과 집은 영적 우상숭배의 처소이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "많은 프로테스탄트와...비국교도들은" — 특정 집단 지정 근거가 보이는 원문에 없음.
 
 ### 187. TSU-0021582  [Providence]
 - **원문**: time posse^5sed of true religion, he must look back upon these humbling, but gracious dispensations of the God of his father Abraham, with very tender emotions.
 - **claim**: 진정한 종교를 소유한 사람들은 아브라함의 하나님의 은혜로운 섭리를 매우 따뜻한 감정으로 돌아보아야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 절단/손상된 원문("time posse^5sed...")에 기반, 문맥 불완전.
 
 ### 188. TSU-0021015  [Election]
 - **원문**: Jehovah hath called me from the womb: and hath said unto me.
@@ -989,7 +989,7 @@
 ### 192. TSU-0021034  [Election]
 - **원문**: It was rather lent than given to them, from the first.
 - **claim**: 하나님이 이스라엘에게 약속한 땅은 처음부터 이스라엘의 소유물로 간주되었으며, 가나안 족속은 하나님의 허락으로 일시적으로 그 땅을 차지하고 있었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "lent"의 주체(이스라엘/가나안 중 누구에게 lent인지)가 이 단편만으론 불명 — 문맥 필요.
 
 ### 193. TSU-0021735  [Soteriology]
 - **원문**: Both are means appointed of God to bring them to Christ j and if the Lord be with them in their work, such will be the effect.
@@ -1009,7 +1009,7 @@
 ### 196. TSU-0020978  [미분류]
 - **원문**: They were the first who set up for empire ; and so far from being subject to the descen- dants of Shemor Jupheth, the latter were often invaded, and driven into corners by them.
 - **claim**: 세계 초기에 한민족은 제국을 세웠고, 셈과 야벳의 자손은 종종 침략을 받고 구석으로 밀려났습니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: ⚠️심각한 오류 — "Shem/Japheth의 자손"과 대비되는 주체(문맥상 Ham 계열)를 "한민족"(한국)으로 오역, 시대착오적.
 
 ### 197. TSU-0022102  [Ecclesiology]
 - **원문**: Laban also, notwithstanding his keeping these images in his house, could after- wards invoke Jehovah to watch between him and Jacob, (ver. 49.) The truth seems to be, they were like some in after times, who sioear by the Lord, and by Malcham ;] and others in our times, who are neither cold nor hot, but seem to wish to serve both God and mammon.
@@ -1048,7 +1048,7 @@
 ### 203. TSU-0023527  [Ecclesiology]
 - **원문**: In England, during the reign of Henry II. namely, from WJA to 1189, they were persecuted under the name of Publicans.
 - **claim**: 헨리 2세의 치세 동안, 즉 1154년부터 1189년까지, 영국의 발두아파는 공공연한 죄인이라는 이름으로 박해를 받았다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: CUE 제안 승인 — "Publicans"는 헨리2세 시대 실제 이단분파 별칭, "발두아파" 해석이 "세리" 문자역보다 타당.
 
 ### 204. TSU-0025453  [Providence]
 - **원문**: He has yet blessings in store to communicate.
@@ -1068,7 +1068,7 @@
 ### 207. TSU-0024025  [Ecclesiology]
 - **원문**: Such was its character from the days of Constantine to the revelation of the man of sin.
 - **claim**: 콘스탄티누스 시대부터 죄의 사람의 계시까지 그리스도인 정부로서의 특성이 유지되었다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "its"(그리스도인 정부로서의 특성) 지정 근거가 이 단편에 없음 — 문맥 의존.
 
 ### 208. TSU-0024188  [Eschatology]
 - **원문**: With respect to the latter the ** thousadd year**' require, 1 think, in this instance to be taken literally ; ibr if understood of so many years as there are days in this period, the duration of the world would greatly exceed what we are elseivhere given to expect.
@@ -1088,7 +1088,7 @@
 ### 211. TSU-0023635  [Ecclesiology]
 - **원문**: " The ark of the testament being seen," implies the removal of the vail ; and as it was not to be seen in the second temple, but only in the first, its being seen here would seem to denote the restoration of pure primitive Christianity, as
 - **claim**: 성소의 궤가 보이는 것은 순수한 초기 기독교의 회복을 나타낸다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 원문 "would seem to denote"(추정/가설)를 claim이 "나타낸다"(단정)로 헤지 제거.
 
 ### 212. TSU-0023026  [Church Discipline]
 - **원문**: They " worked," yea, they "laboured," for Christ, and when called to encounter persecution, bore it with " patience." They were zealous also in the exercise of a strict and holy discipline, not suffering evil characters and impostors to remain amongst them : and in this course of obedeince they had " not fainted." Altogether, this is a high character.
@@ -1103,7 +1103,7 @@
 ### 214. TSU-0025187  [Sanctification]
 - **원문**: Hence it is, in a great degree, that so much of the spirit of bondage, and so little of the spirit of adoption prevails among Christians.
 - **claim**: 그리스도인들 사이에서 종의 영이 많고 양자의 영이 적게 나타나는 것은 두 가지 영의 차이 때문이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "두 가지 영의 차이 때문이다" — 원문의 "Hence"(앞 문맥의 결론)를 자기설명적 원인으로 오인, 순환적.
 
 ### 215. TSU-0025542  [Sanctification]
 - **원문**: Yet there have been seasons when I have been affected with such a delightful sense of the loveliness of God, as to ravish my soul, and give predominance to the sacred passion.
@@ -1138,12 +1138,12 @@
 ### 221. TSU-0023128  [Soteriology]
 - **원문**: The retention of it under a succession of cruel persecutions required great patience ; yet they had kept it, and the Lord promised in return to keep them in a particular time of trial that was coming upon the world.
 - **claim**: 복음은 순교와 박해를 견디는 믿음의 인내를 요구한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "it"→"복음" 특정화 근거가 이 단편에 없음 — 문맥 의존.
 
 ### 222. TSU-0024586  [Sanctification]
 - **원문**: Our hearts need steeling to part with our much-loved brethren, who are about to venture their all for the name of the Lord Jesus.
 - **claim**: 그리스도인의 마음은 주님의 이름을 위해 모든 것을 위험에 빠뜨릴 준비가 되어 있어야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 핵심 주어 혼동 — 원문은 "우리 마음이 이별을 견디도록 강해져야"인데 claim은 "모든 것을 위험에 빠뜨릴 준비"로 선교사 측 내용과 혼동.
 
 ### 223. TSU-0023887  [Eschatology]
 - **원문**: As the vials are a subdivision of the third and last woe-trumpet, they could not begin to be poured out till that trumpet was sounded : and as they are emphatically called the seven last plagues, they must refer to the latter end of ihe 126(> years.
@@ -1153,7 +1153,7 @@
 ### 224. TSU-0025272  [Eschatology]
 - **원문**: Should not this awaken our concern, and excite us to make that important inquiry.
 - **claim**: 어떤 사건이 우리에게 중요한 질문을 하게 만들고 우리의 관심을 끌어야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 수사의문문을 단정으로 변환 + "어떤 사건" 지시어 불명.
 
 ### 225. TSU-0024254  [Eschatology]
 - **원문**: " Bless- ed is he that waiteth and cometh to the thousand three hundred and five and thirty days!" Each of these passages refers to the same period.
@@ -1208,7 +1208,7 @@
 ### 235. TSU-0024579  [Baptism]
 - **원문**: In less than five months, I baptized nearly forty persons, almost all newly awakened.
 - **claim**: 저자는 5개월 동안 거의 40명의 새로 깨어난 사람들을 세례했습니다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 재확인 — "I baptized nearly forty persons" 정확히 번역.
 
 ### 236. TSU-0025584  [Soteriology]
 - **원문**: My dear Jesus's sufferings were much sorer and more bitter than mine ; ^nd did he thus suffer, and shall I repine?
@@ -1228,7 +1228,7 @@
 ### 239. TSU-0024285  [Eschatology]
 - **원문**: His memory is itself the book from which he will judge the world.
 - **claim**: 하나님의 기억은 그가 세계를 심판할 책이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: CUE 제안 승인 — "~은 책이다" 은유 구조가 claim에도 동일하게 보존됨.
 
 ### 240. TSU-0024852  [Providence]
 - **원문**: I am prepared for all his will, and hope that I shall never have a feeling, whose language is not, « Thy will be done.'
@@ -1242,12 +1242,12 @@
 ### 241. TSU-0027999  [Soteriology]
 - **원문**: But to what does their intercession amount ?
 - **claim**: 그들의 간청은 자비나 선행이 아닌 자기 사랑의 결과로 보인다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 수사의문문("But to what does their intercession amount?")에 답이 전혀 없는데 claim이 구체적 답("자기사랑")을 지어냄.
 
 ### 242. TSU-0028232  [Other]
 - **원문**: It is on this principle, that our Lord, in view of the unbelief of the Jewish nation, thus speaks, in prophecy : / said, I have la- boured in vain.
 - **claim**: 주님은 유대인 민족의 불신앙을 예견하여 이렇게 말씀하셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: CUE 제안 승인 — 원문과 claim 내용 거의 일치.
 
 ### 243. TSU-0029817  [Trinity]
 - **원문**: He is the only begotten Son, who dwelleth in his bosom, and who never offended him at any time, but always did that which was pleasing in his sight.
@@ -1257,7 +1257,7 @@
 ### 244. TSU-0028426  [Ecclesiology]
 - **원문**: We could appeal to the pacific spirit and conduct of thousands in our own times, who influenced by the same princi- ples, seek, by every mean in their power, to heal the divisions, and alleviate the miseries of mankind.
 - **claim**: 그리스도인들은 모든 사람의 선을 추구하며, 심지어는 자신의 적들을 위해도 선을 추구한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "적들을 위해도 선을 추구" — 원문(분열 치유·인류 고통 완화)에 없는 개념(원수사랑) 추가.
 
 ### 245. TSU-0027770  [Soteriology]
 - **원문**: If you have read the scrip- tures, or gone to a place of worship, merely from custom, and not from any love you had to these things ; if you have relieved the poor out of pride, rather than pure compassion; and if that which has preserved you from the grossest vices has been rather a regard to your interest, health, or character, than any concern for the ho- nour of God ; can such things be acceptable in his sight ?
@@ -1372,7 +1372,7 @@
 ### 267. TSU-0030043  [Eschatology]
 - **원문**: Assuredly, that must be a most important object, the accomplishment of which thus interests the whole creation.
 - **claim**: 창조물의 관심을 끌고 있는 목적은 매우 중요하다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: CUE 제안 승인 — 원문과 claim이 근접, 과도한 단순화로 보기 어려움.
 
 ### 268. TSU-0028593  [Soteriology]
 - **원문**: Hence, it is necessary to be convinced of sin, in order to receive the Saviour.
@@ -1407,7 +1407,7 @@
 ### 274. TSU-0026151  [Sanctification]
 - **원문**: This it is that will teach you to be of a meek, mild, peaceful, hum- ble spirit.
 - **claim**: 겸손하고 평화로운 영을 가지는 것이 중요하다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "teach you"(가르쳐 줄 것) 인과 프레임 소실 + 형용사(meek/mild/peaceful/humble) 4개→2개로 축소.
 
 ### 275. TSU-0025896  [Election]
 - **원문**: The result was, he refused to be called the son of Pharaoh's daughter, choosing rather to suffer affliction with the people of God than to enjoy the pleasures of sin
@@ -1427,7 +1427,7 @@
 ### 278. TSU-0025665  [Soteriology]
 - **원문**: When the terms faith and sense are used, it is common with many, to understand, by the latter, sensible com- munion with God.
 - **claim**: 많은 사람들이 신과 교통하는 것을 믿음과 감각으로 이해한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "the latter"(sense만 해당)를 반영 못하고 "믿음과 감각" 둘 다로 확대 — 원문의 대조 구조 상실.
 
 ### 279. TSU-0030157  [Sanctification]
 - **원문**: To strengthen ourselves, and one another, in this way, is to build up ourselves on our own conceits.
@@ -1511,7 +1511,7 @@
 ### 294. TSU-0034362  [Soteriology]
 - **원문**: Had it been necessary for him to pos- sess a set of virtuous habits, each acquired by a series of virtuous acts, the way had been too circuitous for him : but the word ot
 - **claim**: 어떤 사람이 구원이나 축복을 받기 위해 많은 добродетель적인 습관을 습득하거나 많은 добродетель적인 행동을 해야 한다면, 그것은 너무나 길고 어려운 길이다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: ⚠️claim에 키릴문자/러시아어 오염("добродетель적인", 2회) — 스크립트 오염, 세 번째 사례.
 
 ### 295. TSU-0034771  [Ecclesiology]
 - **원문**: Happy were it for our churches if we could come to a closer imitation of this model !
@@ -1536,7 +1536,7 @@
 ### 299. TSU-0034498  [Scripture / Authority]
 - **원문**: We know he did thus to Christ himself ;- and if to him, why not to us ?
 - **claim**: 사탄은 성경의 말씀을 통해 우리에게 많은 것을 제안할 수 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "성경의 말씀을 통해" 메커니즘이 보이는 원문("We know he did thus to Christ himself")에 없음 — 문맥 의존.
 
 ### 300. TSU-0034105  [Ecclesiology]
 - **원문**: From the whole we see (1) The vast importance of a right beginning in religion, if we be wrong in the outset, the further we go the further we are off : but entering in at the door of the sheepfold, we shall go in and out, and find pasture.
@@ -1581,12 +1581,12 @@
 ### 308. TSU-0034197  [Ecclesiology]
 - **원문**: If I had no hope of Christianity obtaining the dominion " till then," I should hav* little or no hope at all : for though God is able to turn them, as well as others, to himself, yet it is not his usual way of working in order to promote his own cause.
 - **claim**: 기독교가 지속 가능한 발전을 이루기 위해서는 사회의 모든 계층이 기독교를 받아들이고 지지해야 하며, 특히 권력과 부를 가진 사람들이 기독교의 편에 서야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "사회 모든 계층이...특히 권력과 부를 가진 사람들이" — 원문(하나님의 통상적 사역방식에 관한 저자의 소망)과 다른 규범적 내용을 지어냄.
 
 ### 309. TSU-0030698  [Soteriology]
 - **원문**: When he saw us in our impoverished and ruined ' condition, and gave his own Son to die for us, did he act an unfeel- ing part towards us ?
 - **claim**: 하나님이 우리를 향한 사랑과 자비를 보여주셨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 수사의문문을 단정으로 변환(의미방향은 맞으나 패턴 일관성상 반영).
 
 ### 310. TSU-0034363  [Justification]
 - **원문**: faith was nigh him, and he laid hold of it ; with his heart believing unto righteousness, and with his mouth making confession unto sal- vation.
@@ -1596,7 +1596,7 @@
 ### 311. TSU-0033029  [Soteriology]
 - **원문**: Men have the same natural powers to love Christ, as to hate him ; to believe, as to disbelieve ; and this it is which constitutes their accountableness.
 - **claim**: 인간은 그들의 책임을 구성하는 사랑과 미움, 믿음과 불신을 포함한 자연적인 능력을 가지고 있다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: "동일한 능력"(사랑=미움, 믿음=불신 대칭)이 책임의 근거라는 논증 구조를 못 살리고 단순 나열로 처리.
 
 ### 312. TSU-0032195  [Providence]
 - **원문**: How unsearchable are ha judgments, and Jus ways past finding out I
@@ -1606,7 +1606,7 @@
 ### 313. TSU-0035323  [Ecclesiology]
 - **원문**: It is too much to infer from this that we are to sit down in despair, and attempt nothing ; but it will be profitable to know the limited ex-
 - **claim**: 우리는 교회 내의 결점과 부조리를 발견할 때 절망에 빠지지 말고, 오히려 이를 바로잡고 보완하기 위해 노력해야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 절단된 원문("limited ex-") — heading_suspected.
 
 ### 314. TSU-0031133  [Ecclesiology]
 - **원문**: acter, there are two things which appear to be absolutely necessary to the discharge of this sacred office ; one is, that he have a true desire after it, and the other, an ability for it.
