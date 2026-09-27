@@ -1,5 +1,10 @@
 # fuller_f3_vol0408_resample_001 검토 워크시트 (F3 옵션③ — Vol04-08 재표본)
 
+**[2026-09-26 종료(CLOSED_EARLY)]** Vol04 40건 중 7건만 판정된 상태에서 사용자 지시로
+중단. 사유: 이 재표본의 목적(Vol01-03 vs Vol04-08 rigor 격차 해소)이 같은 날 진행된
+파일럿(fuller_f3_pilot_sample_001) 320건 전면 재검토(246A/73R/1C)로 이미 달성됨. 나머지
+193건은 미판정 상태로 남으며, 판정 완료된 7건은 아래에 보존됨.
+
 - 목적: 파일럿(320건) 결론에서 확인된 Vol01-03(rigorous, 45% reject) vs
   Vol04-08(light, 16% reject) 검수 rigor 격차 해소 — Vol04-08 볼륨당 40건
   (총 200건) 신규 층화표본으로 동일 수준 rigor 재검수.
@@ -16,37 +21,37 @@
 ### 1. TSU-0018189  [Soteriology]
 - **원문**: This is true of opportuni- ties and means of grace, or of what is above described as the indi- rect influence of the Holy Spirit ; but not of his special influence.
 - **claim**: 성령의 특별한 영향은 구원이나 죄의 증가와 직접적으로 관련되어 있지 않다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 선행지시어 "this"가 가리키는 대상이 단편에 없음. claim의 "구원이나 죄의 증가"는 원문에 없는 내용 — 날조/근거 없는 추가.
 
 ### 2. TSU-0016448  [Sanctification]
 - **원문**: Instead of its being a question, whether God requires any thing of carnal men which is spiritually goo<! ; it is evident, both from Scripture and the nature of things, that he requires .\oti5Ing but WMAT IS so.
 - **claim**: 하나님은 육신의 사람들에게 영적으로 좋은 것을 요구하신다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 정확함(OCR 잡음 있으나 의미 보존).
 
 ### 3. TSU-0019469  [Sanctification]
 - **원문**: The more we are emptied of self-sufficiency, the more sensibly shall we feej our dependence, and the more importunately implore that the Lord would save us as it were from ourselves, and restore us for his name's sake.
 - **claim**: 자아의 자족심이 비워질수록 우리의 의존성을 더 깊이 느끼게 되고, 주님께서 우리를 우리 자신으로부터 구원하시고 그의 이름을 위해 우리를 회복해 주시도록 더 간절히 구하게 된다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 정확함.
 
 ### 4. TSU-0017594  [Soteriology]
 - **원문**: The conflicts of mind, by which many for a long time are deprived of all peace and enjoyment, are no other than the struggles between the gospel way of salvation, and a secret attachment to self-righteousness.
 - **claim**: 구원의 복음적인 방법과 자기의 정의에 대한 비밀스러운 집착 사이의 투쟁이 많은 사람들을 오랫동안 평화와 즐거움을 빼앗는 마음의 갈등을 일으킨다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 정확함(원인/결과 순서만 재배열, 의미 동일).
 
 ### 5. TSU-0019534  [Sanctification]
 - **원문**: Remember hons you have received and heard, and holdfast and repent.
 - **claim**: 회개하기 위해 받은 것과 들은 것을 기억하고 굳게 잡아야 한다
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: 원문(계 3:3)은 기억/굳게 잡음/회개 3개 병렬 명령인데 claim이 "회개하기 위해 기억하고"로 원문에 없는 수단-목적 인과 구조를 임의 부여.
 
 ### 6. TSU-0019670  [Ecclesiology]
 - **원문**: He is "subverted ;" that is, his professed faith in the gospel is, in effect, overturned, or rendered void ; consequently, he re- quires to be treated as an unbeliever.
 - **claim**: 복음에 대한 그의 신앙은 효과적으로 뒤집혀지거나 무효화되므로, 그는 비신자와 같이 대우받아야 한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 정확함.
 
 ### 7. TSU-0018513  [Other]
 - **원문**: In this respect, man, though fallen, still retains his Creator's image, and therefore can- not be murdered or cursed without incurring his high displeasure.
 - **claim**: 인간은 타락했음에도 여전히 창조주의 형상을 간직하고 있기 때문에, 인간을 살해하거나 저주하는 것은 창조주의 큰 불쾌를 초래한다.
-- Q1: [ ]   Q2: [ ]   Q3: [ ]   comment: 
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: 정확함.
 
 ### 8. TSU-0018116  [Soteriology]
 - **원문**: in which he finds very little need of Christ, and becomes, in his own eyes, a being of consequence.

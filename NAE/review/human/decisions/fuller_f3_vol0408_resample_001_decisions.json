@@ -1,0 +1,98 @@
+{
+  "batch_id": "fuller_f3_vol0408_resample_001",
+  "status": "CLOSED_EARLY",
+  "status_note": "2026-09-26 사용자 지시로 종료. Vol04의 40건 중 7건만 판정된 상태에서 중단. 종료 사유: 이 재표본의 목적(Vol01-03 rigorous vs Vol04-08 light 검수 rigor 격차 해소)이 같은 날 진행된 파일럿(fuller_f3_pilot_sample_001) 320건 전면 재검토(전 볼륨 동일 rigor로 라인바이라인 재대조, 246A/73R/1C)로 이미 달성되어 별도 재표본이 불필요해짐. 아래 7건 판정은 기록으로 보존.",
+  "decisions": [
+    {
+      "tsu_id": "TSU-0018189",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_vol0408_resample_001",
+      "comment": "선행지시어 'this' 무엇을 가리키는지 단편에 없음. claim의 '구원이나 죄의 증가'는 원문에 없는 내용 — 날조/근거 없는 추가."
+    },
+    {
+      "tsu_id": "TSU-0016448",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_vol0408_resample_001",
+      "comment": "정확함(OCR 잡음 있으나 의미 보존)."
+    },
+    {
+      "tsu_id": "TSU-0019469",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_vol0408_resample_001",
+      "comment": "정확함."
+    },
+    {
+      "tsu_id": "TSU-0017594",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_vol0408_resample_001",
+      "comment": "정확함(원인/결과 순서만 재배열, 의미 동일)."
+    },
+    {
+      "tsu_id": "TSU-0019534",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "R",
+        "Q2": "R",
+        "Q3": "R"
+      },
+      "final_decision": "REJECTED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_vol0408_resample_001",
+      "comment": "원문(계 3:3)은 기억/굳게 잡음/회개 3개 병렬 명령인데 claim이 '회개하기 위해 기억하고'로 원문에 없는 수단-목적 인과 구조를 임의 부여."
+    },
+    {
+      "tsu_id": "TSU-0019670",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_vol0408_resample_001",
+      "comment": "정확함."
+    },
+    {
+      "tsu_id": "TSU-0018513",
+      "reviewer_id": "David",
+      "answers": {
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
+      },
+      "final_decision": "APPROVED",
+      "decided_at": "2026-09-26",
+      "source": "fuller_f3_vol0408_resample_001",
+      "comment": "정확함."
+    }
+  ]
+}
