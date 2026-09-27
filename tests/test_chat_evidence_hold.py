@@ -6,7 +6,7 @@
 낮더라도) 평소처럼 생성한다.
 
 Streamlit 런타임 없이 검증 — _get_processor / _get_generation_service /
-_inject_smith_context / _settings_overrides를 monkeypatch한다.
+_inject_reference_context / _settings_overrides를 monkeypatch한다.
 """
 
 import os
@@ -67,7 +67,7 @@ def _patch(monkeypatch, *, top_k_results, smith_results):
     gen = _FakeGenerationService()
     monkeypatch.setattr(mod, "_get_processor", lambda: proc)
     monkeypatch.setattr(mod, "_get_generation_service", lambda: gen)
-    monkeypatch.setattr(mod, "_inject_smith_context", lambda response, question: smith_results)
+    monkeypatch.setattr(mod, "_inject_reference_context", lambda response, question: smith_results)
     monkeypatch.setattr(mod, "_settings_overrides", lambda: {})
     return mod, proc, gen
 

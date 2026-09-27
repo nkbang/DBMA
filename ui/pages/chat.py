@@ -311,23 +311,25 @@ def _settings_overrides() -> dict:
     return overrides
 
 
-def _format_smith_context(smith_results: list[dict]) -> str:
-    """Format Smith Bible Dictionary results as a distinct context block.
+def _format_reference_context(entries: list[dict], label: str) -> str:
+    """Format reference-corpus results (Smith or Baptist commentary) as a
+    distinct context block, tagged with an explicit source label.
 
     Results are separated from TSU context with a clear delimiter so the LLM
     knows these are background reference entries, not scripture passages.
 
     Args:
-        smith_results: Raw results from search_reference() for Smith entries.
+        entries: Raw results from search_reference() for one source group.
+        label: Human-readable source name shown in the block header.
 
     Returns:
         Formatted string block, or empty string if no results.
     """
-    if not smith_results:
+    if not entries:
         return ""
 
-    lines = ["<reference>", "[참고 자료: Smith Bible Dictionary]", ""]
-    for i, entry in enumerate(smith_results, 1):
+    lines = ["<reference>", f"[참고 자료: {label}]", ""]
+    for i, entry in enumerate(entries, 1):
         heading = entry.get("heading_context", "") or entry.get("text", "")[:80]
         volume = entry.get("volume", "")
         page = entry.get("page_start")
@@ -346,72 +348,99 @@ def _format_smith_context(smith_results: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def _inject_smith_context(
+def _inject_reference_context(
     response: "ResponsePackage",
     query: str,
 ) -> list[dict]:
-    """Check Smith activation and inject context into the response.
+    """Check reference activation and inject context into the response.
 
     This is a side-effect function that mutates `response.llm_context_block`
-    in-place to append Smith results. It also returns Smith results for
-    potential display in the UI.
+    in-place to append reference results. It also returns them for potential
+    display in the UI.
+
+    Searches both known reference collections — Smith Bible Dictionary
+    (`nae_ref_v1`) and the Baptist commentary corpus (`nae_ref_commentary_v1`:
+    Gill/Broadus/Carroll/Spurgeon, embedded under ADR-030 Amendment B but
+    never previously wired into chat retrieval) — and labels each group
+    separately in the injected context so the LLM can attribute them
+    correctly.
 
     Args:
         response: The ResponsePackage from TSU retrieval.
         query: The original user question.
 
     Returns:
-        Smith results list (may be empty if not activated or no results).
+        Combined reference results list (may be empty if not activated or
+        no results).
     """
-    # Check if Smith should be activated for this query
+    # Check if reference retrieval should be activated for this query
     if not should_activate_smith(query):
         return []
 
-    # Rewrite query for better Smith search
+    # Rewrite query for better dictionary/commentary-style search
     search_query = rewrite_query_for_smith(query) or query
 
-    # Search Smith reference corpus (fault-isolated — never raises)
+    # Search each reference collection separately, each with its own top_k
+    # quota (fault-isolated per collection — never raises). A single merged
+    # top-k across both collections was tried first and rejected: Smith's
+    # much larger corpus (34,948 vs 10,517 chunks) routinely out-scored
+    # commentary hits on raw cosine similarity, crowding it out of the
+    # combined top-3 entirely — defeating the purpose of wiring commentary
+    # in. Querying separately guarantees both source groups get a chance to
+    # surface. The query embedding is content-hash cached
+    # (reference_retrieval_adapter._get_cached_embedding), so the second
+    # call reuses it and only pays for the extra Qdrant round trip.
     try:
         from NAE.reference_retrieval_adapter import search_reference
-        smith_results = search_reference(search_query, top_k=3)
+        from NAE.pipeline.reference import config as ref_config
+        smith_entries = search_reference(
+            search_query, top_k=2, collection_names=[ref_config.REFERENCE_COLLECTION_NAME],
+        )
+        commentary_entries = search_reference(
+            search_query, top_k=2, collection_names=[ref_config.COMMENTARY_COLLECTION_NAME],
+        )
     except Exception as e:
-        logger.warning("[chat] Smith retrieval failed (TSU unaffected): %s", e)
+        logger.warning("[chat] Reference retrieval failed (TSU unaffected): %s", e)
         return []
 
-    # Filter to only Smith Bible Dictionary entries
-    smith_entries = [
-        r for r in smith_results
-        if "smith" in str(r.get("source_id", "")).lower()
-        or "smith" in str(r.get("volume", "")).lower()
-    ]
-
-    if not smith_entries:
+    if not smith_entries and not commentary_entries:
         return []
 
-    # Format Smith context block
-    smith_context = _format_smith_context(smith_entries)
+    blocks = []
+    if smith_entries:
+        blocks.append(_format_reference_context(smith_entries, "Smith Bible Dictionary"))
+    if commentary_entries:
+        blocks.append(_format_reference_context(
+            commentary_entries, "침례교 주석가 문헌 (Gill/Broadus/Carroll/Spurgeon)",
+        ))
+
+    if not blocks:
+        return []
+
+    reference_context = "\n\n".join(blocks)
 
     # ADR-028 §8/§5: hierarchy instruction inserted exactly once, between
-    # TSU evidence and the <reference> block — Smith must never be read as
-    # primary evidence or override TSU theological corpus / scripture.
+    # TSU evidence and the <reference> block(s) — reference material must
+    # never be read as primary evidence or override TSU theological corpus
+    # / scripture, regardless of which source group it comes from.
     hierarchy_notice = (
-        "참고: 아래 <reference> 항목은 보조 자료(Smith Bible Dictionary)입니다. "
+        "참고: 아래 <reference> 항목(들)은 보조 자료입니다. "
         "주요 근거는 위 신학 문헌(TSU) 및 성경 본문을 우선하고, "
         "이 참고 자료가 그 해석을 대체하거나 덮어쓰지 않도록 하십시오."
     )
-    smith_block = f"{hierarchy_notice}\n\n{smith_context}"
+    reference_block = f"{hierarchy_notice}\n\n{reference_context}"
 
     # Append to existing TSU context (if any) — distinct section
     if response.llm_context_block:
-        response.llm_context_block += f"\n\n{smith_block}"
+        response.llm_context_block += f"\n\n{reference_block}"
     else:
-        response.llm_context_block = smith_block
+        response.llm_context_block = reference_block
 
     logger.info(
-        "[chat] Smith Bible Dictionary activated for query=%r → %d entries injected",
-        query[:50], len(smith_entries),
+        "[chat] Reference context activated for query=%r → smith=%d commentary=%d entries injected",
+        query[:50], len(smith_entries), len(commentary_entries),
     )
-    return smith_entries
+    return smith_entries + commentary_entries
 
 
 def generate_answer(
@@ -428,9 +457,11 @@ def generate_answer(
     imported by research.py so both pages share the same GenerationService
     call path.
 
-    SPRINT34-SMITH-PHASEB: Smith Bible Dictionary context is now injected
-    between TSU retrieval and generation when query intent matches dictionary-
-    style lookups (proper nouns, theological terms, definition-seeking).
+    SPRINT34-SMITH-PHASEB: Reference context (Smith Bible Dictionary +
+    Baptist commentary corpus — Gill/Broadus/Carroll/Spurgeon) is now
+    injected between TSU retrieval and generation when query intent matches
+    dictionary-style lookups (proper nouns, theological terms,
+    definition-seeking).
 
     Parameters
     ----------
@@ -459,15 +490,16 @@ def generate_answer(
         logger.warning("Retrieval failed in generate_answer: %s", e)
         return ("", [])
 
-    # SPRINT34-SMITH-PHASEB: Inject Smith Bible Dictionary context
+    # SPRINT34-SMITH-PHASEB (+ Baptist commentary follow-up): Inject
+    # reference context (Smith Bible Dictionary + Baptist commentary corpus)
     # between TSU retrieval and generation — fault-isolated, zero regression.
-    smith_results = _inject_smith_context(response, question)
+    reference_results = _inject_reference_context(response, question)
 
     # [PM 정렬 감사 P0-6] 근거가 전혀 없으면(검색 0건 + 사전 컨텍스트 0건)
     # 생성하지 않고 유보 문구를 돌려준다 — 이 경우 답은 오직 모델 내장
     # 지식에서만 나오게 된다. 결과가 있으나 점수만 낮은 경우는 여기서
     # 막지 않고 호출부의 _is_low_confidence 캡션 경고에 맡긴다.
-    if not response.top_k_results and not smith_results:
+    if not response.top_k_results and not reference_results:
         logger.info("[generate_answer] no evidence for query=%r → hold", question[:50])
         return (_NO_EVIDENCE_HOLD_TEXT, [])
 
