@@ -320,3 +320,24 @@ class TestVersePhraseBoost:
         )
         hits = gen.search(pq, k=2, with_snippets=False)
         assert hits[0].tsu_id == "T-VERSE"
+
+    def test_numbered_book_match_ranked_below_exact_book(self, tmp_path):
+        tsus = [
+            {"tsu_id": "T-1JOHN", "content": "Hereby perceive we the love of God, 1 John iii. 16, "
+             "because he laid down his life for us; 1 John iii. 16",
+             "title": "", "author": "", "source_file": "a.txt", "verse_mapping": {}},
+            {"tsu_id": "T-JOHN", "content": "For God so loved the world, John iii. 16, that he gave",
+             "title": "", "author": "", "source_file": "b.txt", "verse_mapping": {}},
+        ]
+        path = tmp_path / "tsu.jsonl"
+        path.write_text("\n".join(json.dumps(t) for t in tsus), encoding="utf-8")
+        build_index(path, tmp_path / "idx")
+        gen = CandidateGenerator(tmp_path / "idx")
+        pq = ParsedQuery(
+            original_query="요한복음 3장 16절", intent="unknown",
+            translated_terms=["john", "iii", "16"],
+            translated_phrases=[["john", "iii", "16"]],
+        )
+        hits = gen.search(pq, k=2, with_snippets=False)
+        assert [h.tsu_id for h in hits] == ["T-JOHN", "T-1JOHN"]
+        assert hits[0].bm25_score > hits[1].bm25_score

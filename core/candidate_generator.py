@@ -25,6 +25,7 @@ from typing import Optional
 
 import tantivy
 
+from core.query_translation import verse_phrase_match_kind
 from core.retrieval import ParsedQuery
 
 # Text fields searched for BM25 candidate generation.
@@ -380,6 +381,15 @@ class CandidateGenerator:
                     for r in snippet.highlighted()
                 ]
 
+            # [2026-09-26] Undo the phrase boost for chunks whose only verse
+            # match is a numbered book ("1 John iii. 16" for 요한복음 3장 16절)
+            # — Tantivy phrases can't exclude a preceding token. Heuristic:
+            # divide by the boost and sort those after the rest.
+            if parsed_query.translated_phrases and verse_phrase_match_kind(
+                _first(stored, "content") or "", parsed_query.translated_phrases
+            ) == "ordinal_only":
+                score = score / _VERSE_PHRASE_BOOST
+
             candidates.append(
                 CandidateRef(
                     tsu_id=_first(stored, "tsu_id"),
@@ -391,6 +401,8 @@ class CandidateGenerator:
                     highlight_ranges=highlight_ranges,
                 )
             )
+        if parsed_query.translated_phrases:
+            candidates.sort(key=lambda c: -c.bm25_score)
         return candidates
 
     def reindex_document(self, tsus: list[dict]) -> int:

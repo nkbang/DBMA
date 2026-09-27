@@ -33,7 +33,7 @@ import re
 
 # 검색 캐시 키에 들어간다(core/search_cache.make_cache_key) — 사전을 바꾸면
 # 올려서 이전 번역으로 만든 캐시 결과가 재사용되지 않게 한다.
-QUERY_TRANSLATION_VERSION = "2"
+QUERY_TRANSLATION_VERSION = "3"
 
 _HANGUL_RE = re.compile(r"[가-힣]")
 
@@ -289,3 +289,29 @@ def translate_query_terms(
             if en not in terms:
                 terms.append(en)
     return terms
+
+
+# 구문 바로 앞에 서수가 붙은 경우 — "1 John iii. 16", "I. John", "First John".
+# Tantivy 구문 질의는 앞 토큰을 배제할 수 없어 "john iii 16"이 요한일서
+# 표기에도 일치한다(실측: 요한복음 3장 16절 질의 1위가 요일 3:16 설교).
+_ORDINAL_PREFIX_RE = re.compile(
+    r"(?:^|[^a-z0-9])(?:[123]|i{1,3}|first|second|third|1st|2nd|3rd)[\s.]*$", re.IGNORECASE
+)
+
+
+def verse_phrase_match_kind(content: str, phrases: list[list[str]]) -> str | None:
+    """"exact" if some phrase occurs without an ordinal prefix, "ordinal_only"
+    if every occurrence is prefixed (a different, numbered book), None if no
+    phrase occurs at all. Separators follow the tokenizer: punctuation and
+    whitespace between words ("John iii. 16", "John 3:16")."""
+    found_ordinal = False
+    for words in phrases:
+        pattern = re.compile(
+            r"\b" + r"[\s.,:;]+".join(re.escape(w) for w in words) + r"\b", re.IGNORECASE
+        )
+        for m in pattern.finditer(content):
+            if _ORDINAL_PREFIX_RE.search(content[max(0, m.start() - 12):m.start()]):
+                found_ordinal = True
+            else:
+                return "exact"
+    return "ordinal_only" if found_ordinal else None

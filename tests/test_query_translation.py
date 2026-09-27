@@ -99,3 +99,25 @@ def test_verse_phrases_skip_short_and_non_ascii_aliases():
 
 def test_english_query_gets_no_phrases():
     assert QueryParser().parse("Romans 8:28").translated_phrases == []
+
+
+# --- v3: numbered-book (ordinal prefix) verse matches -----------------------
+
+import pytest
+
+from core.query_translation import verse_phrase_match_kind
+
+_JOHN_3_16 = [["john", "iii", "16"], ["john", "3", "16"]]
+
+
+@pytest.mark.parametrize("text,kind", [
+    ("For God so loved the world, John iii. 16.", "exact"),
+    ("see John 3:16 again", "exact"),
+    ("He laid down his life for us, 1 John iii. 16.", "ordinal_only"),
+    ("First John iii. 16", "ordinal_only"),
+    ("I. John iii. 16 and also John 3:16", "exact"),  # one unprefixed hit suffices
+    ("Levi John iii. 16", "exact"),  # a word ending in "i" is not an ordinal
+    ("no reference here", None),
+])
+def test_verse_phrase_match_kind(text, kind):
+    assert verse_phrase_match_kind(text, _JOHN_3_16) == kind
