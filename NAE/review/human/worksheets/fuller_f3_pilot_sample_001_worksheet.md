@@ -470,8 +470,8 @@
 
 ### 90. TSU-0013547  [Ecclesiology]
 - **원문**: It was thus that Judaism was corrupted by the old Pharisees, and Christianity by the Papal hierarchy.
-- **claim**: 유대교와 기독교는 각각 파리サイ인과 교황청의 계층에 의해 부패되었다.
-- Q1: [R]   Q2: [R]   Q3: [R]   comment: ⚠️claim에 가타카나 오염("파리サイ인") — 스크립트 오염, CJK 재추출 범위 밖(별도 데이터 결함).
+- **claim**: 유대교와 기독교는 각각 바리새인과 교황청의 계층에 의해 부패되었다. (2026-09-26 CJK v2 재추출로 수정됨; 판정 당시 문구: "...파리サイ인...")
+- Q1: [A]   Q2: [A]   Q3: [A]   comment: [2026-09-26 재검토] 최초 REJECTED 사유는 가타카나 오염("파리サイ인")이었으나 CJK v2 재추출로 "바리새인"으로 정상 수정됨. 수정된 claim이 원문("Pharisees"/"Papal hierarchy")과 정확히 일치 — 거부 사유 소멸, APPROVED로 전환.
 
 ### 91. TSU-0014122  [Election]
 - **원문**: They that obtain the victory with Christ are called, and cho- sen, and faithful.*
@@ -1510,8 +1510,8 @@
 
 ### 294. TSU-0034362  [Soteriology]
 - **원문**: Had it been necessary for him to pos- sess a set of virtuous habits, each acquired by a series of virtuous acts, the way had been too circuitous for him : but the word ot
-- **claim**: 어떤 사람이 구원이나 축복을 받기 위해 많은 добродетель적인 습관을 습득하거나 많은 добродетель적인 행동을 해야 한다면, 그것은 너무나 길고 어려운 길이다.
-- Q1: [R]   Q2: [R]   Q3: [R]   comment: ⚠️claim에 키릴문자/러시아어 오염("добродетель적인", 2회) — 스크립트 오염, 세 번째 사례.
+- **claim**: 어떤 사람이 구원이나 축복을 받기 위해 많은 덕스러운 습관을 습득하거나 많은 덕스러운 행동을 해야 한다면, 그것은 너무나 길고 어려운 길이다. (2026-09-26 CJK v2 재추출로 수정됨; 판정 당시 문구: "...добродетель적인..." 2회)
+- Q1: [R]   Q2: [R]   Q3: [R]   comment: [2026-09-26 재검토] 최초 REJECTED 사유였던 키릴문자 오염은 CJK v2 재추출로 해소됨. 그러나 원문이 "the way had been too circuitous for him : but the word ot"에서 절단된 단편이라 "구원이나 축복을 받기 위해"라는 목적이 원문에 명시되어 있지 않음 — claim이 단편에 없는 인과·목적을 임의로 부여한 절단 단편 결함. REJECTED 유지(사유만 오염→절단 단편으로 교체).
 
 ### 295. TSU-0034771  [Ecclesiology]
 - **원문**: Happy were it for our churches if we could come to a closer imitation of this model !

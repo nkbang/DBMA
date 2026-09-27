@@ -1488,14 +1488,14 @@
       "tsu_id": "TSU-0013547",
       "reviewer_id": "David",
       "answers": {
-        "Q1": "R",
-        "Q2": "R",
-        "Q3": "R"
+        "Q1": "A",
+        "Q2": "A",
+        "Q3": "A"
       },
-      "final_decision": "REJECTED",
+      "final_decision": "APPROVED",
       "decided_at": "2026-09-26",
       "source": "fuller_f3_pilot_sample_001",
-      "comment": "⚠️claim에 가타카나 오염(\"파리サイ인\") — 스크립트 오염, CJK 재추출 범위 밖(별도 데이터 결함)."
+      "comment": "[재검토] 최초 REJECTED 사유는 가타카나 오염(\"파리サイ인\")이었으나 CJK v2 재추출(2026-09-26)로 \"바리새인\"으로 정상 수정됨. 수정된 claim이 원문(\"Pharisees\"/\"Papal hierarchy\")과 정확히 일치 — 거부 사유 소멸, APPROVED로 전환."
     },
     {
       "tsu_id": "TSU-0015116",
@@ -1872,7 +1872,7 @@
       "final_decision": "REJECTED",
       "decided_at": "2026-09-26",
       "source": "fuller_f3_pilot_sample_001",
-      "comment": "⚠️claim에 키릴문자/러시아어 오염(\"добродетель적인\", 2회) — 스크립트 오염, 세 번째 사례."
+      "comment": "[재검토] 최초 REJECTED 사유였던 키릴문자 오염은 CJK v2 재추출(2026-09-26)로 해소됨. 그러나 원문이 절단된 단편(\"...the way had been too circuitous for him : but the word ot\")이라 \"구원이나 축복을 받기 위해\"라는 목적이 원문에 명시되어 있지 않음 — claim이 단편에 없는 인과·목적을 임의로 부여한 절단 단편 결함. REJECTED 유지(사유만 오염->절단 단편으로 교체)."
     },
     {
       "tsu_id": "TSU-0034498",
