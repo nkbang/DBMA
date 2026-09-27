@@ -119,7 +119,34 @@ Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
   영향 없음(Amendment A §8 게이트 유지). 관련 PR: F4/F5/F6 준비(#27)·
   침례교 주석 reference-track 준비(#28) 둘 다 2026-09-15 병합 완료(코드만,
   `--apply`/`modules.nae_pd.enabled` 미실행·false 유지).
-- **다음 필요 결정**: F3 착수 범위(전량 vs 표본) — HQ 결정 대기.
+- **다음 필요 결정**: F3 착수 범위(전량 vs 표본) — HQ 결정 대기. → **[2026-09-26 CUE 판단·HQ 승인] 결정 완료**, 아래 항목 참고.
+
+**[2026-09-26 완료] F3 착수 범위 최종 결정 — 2단계 게이트 롤아웃.**
+- **경과**: F3 착수 전 320건 층화표본(볼륨당 40건) 파일럿 검수 →
+  스크립트 오염 확장 재추출(v1.1.0, Han+가나+키릴+그리스+히브리+아랍)
+  → 패턴기반 triage 스캐너(`scripts/nae_fuller_f3_triage_scan.py`)
+  → 파일럿 320건 전면 재검토(전 볼륨 동일 rigor 라인바이라인 원문대조).
+- **최종 파일럿 결과**: 246 APPROVED / 73 REJECTED / 1 CONDITIONAL
+  (거부율 23.1%). 결함은 무작위가 아니라 구조적 패턴(인용 오귀속,
+  수사의문문→단정 변환, 조건문 평탄화, 절단 OCR 단편, 근거없는 내용
+  추가, 특정 오역 — 예: "sectarian"→"세대주의", "Publicans"→"발두아파",
+  원문에 없는 "한민족" 민족 지정) 6종으로 recurring.
+  기록: `NAE/review/human/decisions/fuller_f3_pilot_sample_001_decisions.json`,
+  `NAE/review/human/worksheets/fuller_f3_pilot_sample_001_worksheet.md`.
+- **triage 스캔 전체 결과**: 9,433/29,015건(32.5%) 패턴 플래그.
+  `NAE/corpus/tsu/Fuller_Complete_Works_Vol0*/f3_triage_flags.json`.
+- **최종 결정(2단계 게이트)**:
+  1. triage 플래그 9,433건 → 전량 인적검수 대상으로 편입(결함 상관관계
+     확인된 서브셋, 검수 비용 대비 효율 최고).
+  2. 미플래그 19,582건 → 즉시 프로덕션 승격, `needs_review`류 메타데이터로
+     "F3 미검수" 태깅 후 잔여 결함율은 추후 별도 표본으로 주기적 재검증.
+  3. 29,015건 전량 라인바이라인 수동검수는 **하지 않음** — 배포 최우선
+     과제([[project_deploy_version_top_priority]])와 충돌, 이미 확보한
+     근거로 충분히 대체 가능하다고 판단.
+- **종료 처리**: 옵션③(Vol04-08 200건 재표본)은 목적(rigor 격차 해소)이
+  파일럿 전면 재검토로 이미 달성되어 7/200건 상태에서 종료
+  (`fuller_f3_vol0408_resample_001_decisions.json` status=CLOSED_EARLY).
+- **다음 실행 단계**: triage 플래그 9,433건 인적검수 큐 편성(미착수).
 
 **[2026-09-18 HQ 결정] 프로덕션 코퍼스 "1,363건 영구 동결" 결정 해지 — 아래 2026-09-15
 항목의 "재개하지 말 것"을 철회한다.**
