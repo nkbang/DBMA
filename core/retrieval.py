@@ -37,6 +37,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Optional
 
+from core.query_translation import translate_query_terms
 from core.config import (
     CONTEXT_WINDOW_NEIGHBORS,
     DEFAULT_REGISTRY_PATH,
@@ -86,6 +87,9 @@ class ParsedQuery:
     language: str = "en"
     author: str = ""
     source_book: str = ""
+    # [2026-09-26] 한국어 질의의 영어 번역 검색어(core/query_translation.py).
+    # 영어 질의는 항상 빈 리스트.
+    translated_terms: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -98,6 +102,7 @@ class ParsedQuery:
             "language": self.language,
             "author": self.author,
             "source_book": self.source_book,
+            "translated_terms": self.translated_terms,
         }
 
 
@@ -436,6 +441,19 @@ class QueryParser:
 
         # 6. Keyword extraction (existing, unmodified)
         parsed.keywords = self._extract_keywords(query)
+
+        # 7. [2026-09-26] Korean → English query translation. The TSU corpus
+        # is mostly English, so a Korean query's own tokens barely match any
+        # body text at the BM25 candidate stage. Translated terms are
+        # appended (never replacing the Korean ones) — see
+        # core/query_translation.py. No-op for queries without Hangul.
+        book_names = [BOOK_ID_TO_NAMES[b][0] for b in parsed.detected_books if b in BOOK_ID_TO_NAMES]
+        parsed.translated_terms = translate_query_terms(query, book_names)
+        if parsed.translated_terms:
+            parsed.keywords = parsed.keywords + [
+                t for t in parsed.translated_terms if t not in parsed.keywords
+            ]
+            logger.info("[query_translation] ko->en terms=%s", parsed.translated_terms)
 
         return parsed
 

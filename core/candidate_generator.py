@@ -264,6 +264,11 @@ class CandidateGenerator:
             words = exact_phrase.strip().split()
             text_query = tantivy.Query.phrase_query(self._schema, "content", words)
         else:
+            # [2026-09-26] Append English translations of a Korean query
+            # (core/query_translation.py) — Tantivy's default OR-query then
+            # matches English body text too. Exact-phrase route untouched.
+            if parsed_query.translated_terms:
+                query_text = f"{query_text} {' '.join(parsed_query.translated_terms)}"
             try:
                 text_query = self._index.parse_query(query_text, default_field_names=search_fields)
             except ValueError:
