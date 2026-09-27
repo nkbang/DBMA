@@ -33,7 +33,7 @@ import re
 
 # 검색 캐시 키에 들어간다(core/search_cache.make_cache_key) — 사전을 바꾸면
 # 올려서 이전 번역으로 만든 캐시 결과가 재사용되지 않게 한다.
-QUERY_TRANSLATION_VERSION = "1"
+QUERY_TRANSLATION_VERSION = "2"
 
 _HANGUL_RE = re.compile(r"[가-힣]")
 
@@ -179,12 +179,87 @@ def has_hangul(text: str) -> bool:
     return bool(_HANGUL_RE.search(text))
 
 
-def translate_query_terms(query: str, book_names: list[str] | None = None) -> list[str]:
+_ROMAN_NUMERALS = [
+    (100, "c"), (90, "xc"), (50, "l"), (40, "xl"),
+    (10, "x"), (9, "ix"), (5, "v"), (4, "iv"), (1, "i"),
+]
+
+
+def to_roman(n: int) -> str:
+    out = ""
+    for value, numeral in _ROMAN_NUMERALS:
+        while n >= value:
+            out += numeral
+            n -= value
+    return out
+
+
+def scripture_ref_terms(refs: list) -> list[str]:
+    """[v2] Chapter/verse of detected references in the corpus' own notation.
+
+    실측(2026-09-26, 주요 14권): 영어 본문 구절 표기는 로마숫자 장
+    "Romans viii. 28"이 4,854건(79%), "8:28" 1,133건, "8. 28" 222건.
+    Tantivy/BM25 토크나이저는 "viii."→"viii", "8:28"→"8","28"로 쪼개므로
+    로마숫자 장 + 아라비아 장 + 절 번호를 각각 검색어로 넣는다.
+    verse_start==0은 파서의 "장만 지정" 표시라 절 번호를 넣지 않는다.
+    """
+    terms: list[str] = []
+    for ref in refs:
+        chapter = getattr(ref, "chapter", None)
+        if not chapter or chapter <= 0:
+            continue
+        candidates = [to_roman(chapter), str(chapter)]
+        verse_start = getattr(ref, "verse_start", 0) or 0
+        if verse_start > 0:
+            candidates.append(str(verse_start))
+        for term in candidates:
+            if term not in terms:
+                terms.append(term)
+    return terms
+
+
+_MAX_PHRASES = 12
+
+
+def scripture_ref_phrases(refs: list, book_aliases: dict[str, list[str]]) -> list[list[str]]:
+    """[v2] Word sequences for Tantivy phrase queries, one per (alias ×
+    chapter notation) of each detected reference — e.g. ROM 8:28 →
+    ["romans","viii","28"], ["rom","viii","28"], ["romans","8","28"], …
+
+    Term OR-matching alone let common tokens ("iii" in "Matthew iii") pull
+    unrelated chunks up for "요한복음 3장 16절"; an exact adjacency match
+    ("John iii. 16" tokenizes to john/iii/16) is the precise signal.
+    Only ASCII aliases of 3+ letters are used (skips "ro", "jn").
+    """
+    phrases: list[list[str]] = []
+    for ref in refs:
+        chapter = getattr(ref, "chapter", None)
+        if not chapter or chapter <= 0:
+            continue
+        verse_start = getattr(ref, "verse_start", 0) or 0
+        tail_options = [[to_roman(chapter)], [str(chapter)]]
+        if verse_start > 0:
+            tail_options = [t + [str(verse_start)] for t in tail_options]
+        for alias in book_aliases.get(getattr(ref, "book_id", ""), []):
+            words = alias.lower().split()
+            if not alias.isascii() or not words or len(words[-1]) < 3 or not words[-1].isalpha():
+                continue
+            for tail in tail_options:
+                phrase = words + tail
+                if phrase not in phrases:
+                    phrases.append(phrase)
+    return phrases[:_MAX_PHRASES]
+
+
+def translate_query_terms(
+    query: str, book_names: list[str] | None = None, scripture_refs: list | None = None
+) -> list[str]:
     """Return English search terms for a Korean query (empty if no Hangul).
 
     `book_names`: English names of books the parser already detected
     (e.g. ["romans"]) — added so a Korean book mention ("로마서") also
-    matches English body text. Output is de-duplicated, ordered by where
+    matches English body text. `scripture_refs`: parsed references whose
+    chapter/verse are added in corpus notation (see scripture_ref_terms). Output is de-duplicated, ordered by where
     each term appears in the query, with book names first.
     """
     if not query or not has_hangul(query):
@@ -206,6 +281,9 @@ def translate_query_terms(query: str, book_names: list[str] | None = None) -> li
         for word in name.lower().split():
             if word.isalpha() and word not in terms:
                 terms.append(word)
+    for term in scripture_ref_terms(scripture_refs or []):
+        if term not in terms:
+            terms.append(term)
     for _, ko in sorted(hits):
         for en in KO_EN_THEOLOGY_TERMS[ko]:
             if en not in terms:

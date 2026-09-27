@@ -62,3 +62,40 @@ def test_cache_key_depends_on_translation_version(monkeypatch):
     monkeypatch.setattr(sc, "QUERY_TRANSLATION_VERSION", QUERY_TRANSLATION_VERSION + "x")
     k2 = make_cache_key("칭의", 10, None, "fp")
     assert k1 != k2
+
+
+# --- v2: chapter/verse terms and verse phrases (2026-09-26) ---------------
+
+from core.query_translation import scripture_ref_phrases, scripture_ref_terms, to_roman
+from core.retrieval import BOOK_ID_TO_NAMES, ScriptureReference
+
+
+def test_to_roman():
+    assert [to_roman(n) for n in (1, 4, 8, 9, 23, 40, 119, 150)] == [
+        "i", "iv", "viii", "ix", "xxiii", "xl", "cxix", "cl"
+    ]
+
+
+def test_scripture_ref_terms_verse_and_chapter_only():
+    assert scripture_ref_terms([ScriptureReference("ROM", 8, 28)]) == ["viii", "8", "28"]
+    # verse_start == 0 is the parser's "chapter only" sentinel — no verse term.
+    assert scripture_ref_terms([ScriptureReference("PSA", 23, 0)]) == ["xxiii", "23"]
+
+
+def test_production_parser_translates_korean_chapter_verse():
+    # "8장 28절" is only parsed by EnhancedQueryParser (the production
+    # QueryParser alias), after the base parse — translation must re-run.
+    parsed = QueryParser().parse("로마서 8장 28절")
+    assert parsed.translated_terms == ["romans", "viii", "8", "28"]
+    assert ["romans", "viii", "28"] in parsed.translated_phrases
+    assert ["rom", "viii", "28"] in parsed.translated_phrases
+
+
+def test_verse_phrases_skip_short_and_non_ascii_aliases():
+    phrases = scripture_ref_phrases([ScriptureReference("JHN", 3, 16)], BOOK_ID_TO_NAMES)
+    assert ["john", "iii", "16"] in phrases
+    assert all(p[0] not in {"jn", "요한복음", "요"} for p in phrases)
+
+
+def test_english_query_gets_no_phrases():
+    assert QueryParser().parse("Romans 8:28").translated_phrases == []

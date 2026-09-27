@@ -40,6 +40,9 @@ _TEXT_FIELDS = ["title", "content", "author"]
 # 제외 -- ASCII 아포스트로피만 Tantivy 문법에서 특별 취급된다.
 _TANTIVY_SPECIAL_CHARS_RE = re.compile(r"[+\-&|!(){}\[\]^\"~*?:\\']")
 
+# Score multiplier for exact verse-notation phrase matches (see search()).
+_VERSE_PHRASE_BOOST = 3.0
+
 # Metadata fields stored with the "raw" tokenizer so they support exact-match
 # term filtering (Stage 1 pre-filter — HQ principle: filters apply before
 # candidate generation, not after).
@@ -282,6 +285,19 @@ class CandidateGenerator:
                 # are unaffected.
                 sanitized = _TANTIVY_SPECIAL_CHARS_RE.sub(" ", query_text)
                 text_query = self._index.parse_query(sanitized, default_field_names=search_fields)
+            # [2026-09-26] Boost exact verse notation ("John iii. 16") from a
+            # translated Korean scripture ref — Should-only, so a chunk still
+            # needs to match either the term query or a phrase.
+            if parsed_query.translated_phrases and "content" in search_fields:
+                text_query = tantivy.Query.boolean_query(
+                    [(tantivy.Occur.Should, text_query)] + [
+                        (tantivy.Occur.Should, tantivy.Query.boost_query(
+                            tantivy.Query.phrase_query(self._schema, "content", words),
+                            _VERSE_PHRASE_BOOST,
+                        ))
+                        for words in parsed_query.translated_phrases
+                    ]
+                )
 
         effective_books = book_ids if book_ids is not None else parsed_query.detected_books
         subqueries = [(tantivy.Occur.Must, text_query)]

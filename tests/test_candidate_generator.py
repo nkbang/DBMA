@@ -296,3 +296,27 @@ class TestReindexDocument:
         results = generator.search(_pq("고유단어테스트"), k=10)
         ids = {c.tsu_id for c in results}
         assert "TSU-ROM-001" in ids
+
+
+class TestVersePhraseBoost:
+    """[2026-09-26] Translated Korean verse refs boost exact notation
+    ("John iii. 16") over chunks that merely share common tokens ("iii")."""
+
+    def test_exact_verse_notation_outranks_shared_tokens(self, tmp_path):
+        tsus = [
+            {"tsu_id": "T-NOISE", "content": "Matthew iii. 2 and iii. 7 and John i. 16 iii iii",
+             "title": "", "author": "", "source_file": "a.txt", "verse_mapping": {}},
+            {"tsu_id": "T-VERSE", "content": "For God so loved the world, John iii. 16, that he gave",
+             "title": "", "author": "", "source_file": "b.txt", "verse_mapping": {}},
+        ]
+        path = tmp_path / "tsu.jsonl"
+        path.write_text("\n".join(json.dumps(t) for t in tsus), encoding="utf-8")
+        build_index(path, tmp_path / "idx")
+        gen = CandidateGenerator(tmp_path / "idx")
+        pq = ParsedQuery(
+            original_query="요한복음 3장 16절", intent="unknown",
+            translated_terms=["john", "iii", "16"],
+            translated_phrases=[["john", "iii", "16"]],
+        )
+        hits = gen.search(pq, k=2, with_snippets=False)
+        assert hits[0].tsu_id == "T-VERSE"
