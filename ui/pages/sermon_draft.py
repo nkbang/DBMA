@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from core.retrieval import QueryProcessor
+from core.query_translation import corpus_language_notice
 from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
 from core.sermon.bible_books import BIBLE_BOOKS
 from core.sermon.doctrine_filter import check as doctrine_check
@@ -253,7 +254,10 @@ def _generate_outline(scripture_and_theme: str, style_files: list[str], sermon_f
                 "[sermon_draft] no evidence for scripture_and_theme=%r → hold",
                 scripture_and_theme[:50],
             )
-            st.warning(_SERMON_NO_EVIDENCE_TEXT)
+            st.warning(
+                _SERMON_NO_EVIDENCE_TEXT
+                + corpus_language_notice(getattr(getattr(processor, "engine", None), "tsus", None))
+            )
             return
 
         outline, error = service.generate_outline(
@@ -442,7 +446,10 @@ def _render_expansion_step() -> None:
     # candidates가 비지 않는다. 그래도 2차 방어선으로 남긴다 — expand_point()
     # 도 Ollama를 호출하는 지점이라 근거 없이 대지를 확장하면 안 된다.
     if not state["candidates"]:
-        st.warning(_SERMON_NO_EVIDENCE_TEXT)
+        st.warning(
+            _SERMON_NO_EVIDENCE_TEXT
+            + corpus_language_notice(getattr(getattr(_get_processor(), "engine", None), "tsus", None))
+        )
         return
 
     style_examples = _build_style_examples(state["style_files"])

@@ -294,7 +294,7 @@
     "paragraph": 131,
     "sentence": 3,
     "source_text": "Without this, we shall esteem his salvation itself no otherwise than a happy expedi- ent to escape eternal misery.",
-    "claim": "구원 자체를 영원한 고통에서 벗어나는 счастлив한 수단으로 여길 뿐이다.",
+    "claim": "구원 자체를 영원한 고통에서 벗어나는 행복한 수단으로 여길 뿐이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -307,7 +307,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "구원 자체를 영원한 고통에서 벗어나는 счастлив한 수단으로 여길 뿐이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030352",
@@ -3598,7 +3600,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "우리가 우리 자신의 이성을 설정하여, 우리의 이해 범위 내에 있지 않은 것은 신성한 진리로서 받아들이지 않기로 결심한다면, 우리는 하나님의 말씀을 멸시하며, 그것을 교리나 교정의ために 읽고 있다고 말할 수 없다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0030469",
@@ -4765,7 +4770,7 @@
     "paragraph": 185,
     "sentence": 13,
     "source_text": "From errors in judgment, proceed errors in spirit and conduct : if once the truths of God sink into disesteem, his precepts, in the spirituality of them, will not continue to be re- garded.",
-    "claim": "오류 있는 판단은 영적인 행동上的 오류로 이어진다",
+    "claim": "오류 있는 판단은 영적인 행동의 오류로 이어진다",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -4774,8 +4779,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "오류 있는 판단은 영적이고 행동上的 오류로 이어진다",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -9334,7 +9338,7 @@
     "paragraph": 242,
     "sentence": 2,
     "source_text": "Without this, all direc- tions will be in vain, and all means without effect.",
-    "claim": "하나님께로 돌아가고자 하는 진정한 жел구가 없으면 모든 노력과 수단이 무의미하다.",
+    "claim": "하나님께로 돌아가고자 하는 진정한 욕망이 없으면 모든 노력과 수단이 무의미하다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -9347,7 +9351,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님께로 돌아가고자 하는 진정한 жел구가 없으면 모든 노력과 수단이 무의미하다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030673",
@@ -12007,7 +12013,7 @@
     "paragraph": 270,
     "sentence": 14,
     "source_text": "Another false inference which they draw Vol. VIII. 6",
-    "claim": "현代人は 자신의 신념이 옳고 그른지보다 진실성만이 중요하다고 잘못된 결론을 내린다.",
+    "claim": "현대인은 자신의 신념이 옳고 그른지보다 진실성만이 중요하다고 잘못된 결론을 내린다.",
     "doctrine": "Scripture / Authority",
     "scriptures": [],
     "citations": [],
@@ -12016,8 +12022,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "현대人は 자신의 신념이 옳고 그른지보다 진정성만이 중요하다고 잘못된 결론을 내린다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -12691,7 +12696,7 @@
     "paragraph": 281,
     "sentence": 2,
     "source_text": "There were three things of which these people had very wrong notions ; namely, riches, beauty, and discernment.",
-    "claim": "부유함, 아름다움, 식별력에 대한 잘못된 개념이 사람들을 духов적으로 불행하게 만든다.",
+    "claim": "부유함, 아름다움, 식별력에 대한 잘못된 개념이 사람들을 영적으로 불행하게 만든다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -12704,7 +12709,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "부유함, 아름다움, 식별력에 대한 잘못된 개념이 사람들을 духов적으로 불행하게 만든다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030791",
@@ -14182,7 +14189,7 @@
     "paragraph": 296,
     "sentence": 10,
     "source_text": "I will be as the dew unto Israel ; and he shall grow as the lily, and cast forth his roots as Lebanon, Ephraim shall say, What have I to do any more with idols ?",
-    "claim": "하나님은 이스라엘에게 роса와 같은 존재가 되어 이스라엘이 백합화처럼 자라게 하시고 레바논처럼 뿌리를 내리게 하며, 에프라임은 우상에 더 이상 연관되지 않도록 하신다.",
+    "claim": "하나님은 이스라엘에게 이슬과 같은 존재가 되어 이스라엘이 백합화처럼 자라게 하시고 레바논처럼 뿌리를 내리게 하며, 에프라임은 우상에 더 이상 연관되지 않도록 하신다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -14195,7 +14202,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님은 이스라엘에게 роса와 같은 존재가 되어 이스라엘이 백합화처럼 자라게 하시고 레바논처럼 뿌리를 내리게 하며, 에프라임은 우상에 더 이상 연관되지 않도록 하신다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0030844",
@@ -19220,7 +19229,7 @@
     "paragraph": 384,
     "sentence": 5,
     "source_text": "They perceived the parable was aimed at a sin in which they lived ; but instead of being reproved and hum- bled, they affected, like the same kind of people in the present day, to carry it off v\\ ith a high hand, and treated the reprover with derision.",
-    "claim": "파리サイ인들은 예수님의 비유가 그들의 죄를 비판하는 것으로 이해했지만, 그들은 비판을 받고 겸손해지기보다는 조롱으로 대응했다.",
+    "claim": "파리 사두개인들은 예수님의 비유가 그들의 죄를 비판하는 것으로 이해했지만, 그들은 비판을 받고 겸손해지기보다는 조롱으로 대응했다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -19233,7 +19242,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "파리サイ인들은 예수님의 비유가 그들의 죄를 비판하는 것으로 이해했지만, 그들은 비판을 받고 겸손해지기보다는 조롱으로 대응했다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031022",
@@ -20213,7 +20224,7 @@
     "paragraph": 404,
     "sentence": 1,
     "source_text": "There is a day approaching, when God will bring to light the hidden things of darkness, and make manifest the counsels of the heart ; and then shall every man have praise of God.",
-    "claim": "하나님은 모든 사람의 마음가짐과 행동을 드러내시고, 그 때마다 각人が 하나님으로부터 받은赞扬을 받을 것이다.",
+    "claim": "하나님은 모든 사람의 마음가짐과 행동을 드러내시고, 그 때마다 각人が 하나님으로부터 받은 칭찬을 받을 것이다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -20473,7 +20484,7 @@
     "paragraph": 408,
     "sentence": 1,
     "source_text": "Whet) we hear a Thornton, a Howard, or a Paul ac- knowledge, By the grace of God I am what J am, there is a thou- sand times mere meaning in the expression, and a thousand times more f^Jorv redounds to God, than in the uttering of the same worrit by some men, even though they be men of real piety.",
-    "claim": "하나님의 은혜로 말미암아 성도들은 자신이 된 것에 대해 감사하고, 하나님의 영광을 돌リ는 표현이 더 의미가 있다.",
+    "claim": "하나님의 은혜로 말미암아 성도들은 자신이 된 것에 대해 감사하고, 하나님의 영광을 돌리는 표현이 더 의미가 있다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -20486,7 +20497,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님의 은혜로 말미암아 성도들은 자신이 된 것에 대해 감사하고, 하나님의 영광을 돌リ는 표현이 더 의미가 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031066",
@@ -21598,7 +21611,7 @@
     "paragraph": 426,
     "sentence": 3,
     "source_text": "Let him give no rest to his eyes, nor slumber to his eyelids, till all is reconciled : oth- erwise, whether he pray in public or desist, his soul will be exposed to the most imminent danger.",
-    "claim": "그는 그의 눈에 휴식을 주지 않고, 그의 눈꺼풀에 잠을 주지 말고, 모든 것이 примир될 때까지: 그렇지 않으면, 그는 공개적으로 기도하거나 중단하더라도, 그의 영혼은 가장 임박한 위험에 노출될 것이다.",
+    "claim": "그는 그의 눈에 휴식을 주지 않고, 그의 눈꺼풀에 잠을 주지 말고, 모든 것이 화해할 때까지: 그렇지 않으면, 그는 공개적으로 기도하거나 중단하더라도, 그의 영혼은 가장 임박한 위험에 노출될 것이다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -21611,7 +21624,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "그는 그의 눈에 휴식을 주지 않고, 그의 눈꺼풀에 잠을 주지 말고, 모든 것이 примир될 때까지: 그렇지 않으면, 그는 공개적으로 기도하거나 중단하더라도, 그의 영혼은 가장 임박한 위험에 노출될 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031106",
@@ -23798,7 +23813,7 @@
     "paragraph": 464,
     "sentence": 8,
     "source_text": "It is no objection to this, that it is said, If they had known him. they would not have crucified the Ijord of glory ; for knowledge is not here put for a mere conviction that fie was the Messiah, but for that spiritual discernment, which is pos- sessed only by believers, being revealed to them by the Spirit, who searcheth the deep things of God From certain passages of scrip- ture, it appears to me that some of the Pharisees were guilty of the unpardonable sin.",
-    "claim": "파라삽들이 주님을 расп니는 것은 용서할 수 없는 죄를 범한 것일 수 있다.",
+    "claim": "파라삽들이 주님을 십자가에 못 박는 것은 용서할 수 없는 죄를 범한 것일 수 있다.",
     "doctrine": "Soteriology",
     "scriptures": [
       "John 9:41"
@@ -23813,7 +23828,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "파라삽들이 주님을 расп니는 것은 용서할 수 없는 죄를 범한 것일 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031184",
@@ -26034,7 +26051,7 @@
     "paragraph": 507,
     "sentence": 4,
     "source_text": "He describes him as a lamb without spot.",
-    "claim": "예수는 흠이 없는 어린 양으로 опис된다.",
+    "claim": "예수는 흠이 없는 어린 양으로 묘사된다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -26047,7 +26064,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "예수는 흠이 없는 어린 양으로 опис된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031263",
@@ -33881,7 +33900,7 @@
     "paragraph": 636,
     "sentence": 4,
     "source_text": "The disappointment and unexpected shock that he and his adherents met with on this occasion, seem plainly intimated by our Saviour's having spoiled principalities and powers, and made a show of them openly, triumphing over them on his cross : and though the holy angels might be supposed to understand much more than fallen ones, yet were they not equal to this sub- ject till events made it manifest.",
-    "claim": "구원者の 십자가에서 원수들을 공개적으로 무력화시키고 이기심으로써, 하나님의 지혜를 천사들과 권세들에게 알리셨다.",
+    "claim": "구원의 십자가에서 원수들을 공개적으로 무력화시키고 이기심으로써, 하나님의 지혜를 천사들과 권세들에게 알리셨다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -33890,8 +33909,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "구원者の 십자가에서 원수들을 공개적으로 무력화시키고 이기심으로써, 하나님의 지혜를 천사들과 권세들에게 알리셨다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -36531,7 +36549,7 @@
     "paragraph": 671,
     "sentence": 3,
     "source_text": "It is often alleged in behalf of the advocates of certain doctrines, that allowing them to be in an error, yet there is no reason to question their sincerity : and if so, it may be only an innocent mistake.",
-    "claim": "오류를 지닌 교리라도 그 주장者の 진실성은 의심할 이유가 없을 수 있다",
+    "claim": "오류를 지닌 교리라도 그 주장자의 진실성은 의심할 이유가 없을 수 있다",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -36540,8 +36558,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "오류를 지닌 교리라도 그 주장者の 진정성은 의심할 이유가 없을 수 있다",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -40147,7 +40164,7 @@
     "paragraph": 735,
     "sentence": 1,
     "source_text": "I see men who have learned to be economical in order to be generous ; men whose deep poverty abounds to the riches of their liberality !",
-    "claim": "어떤 사람들은 자기를 부족하게 느끼면서도 щедрость을 실천할 줄 압니다.",
+    "claim": "어떤 사람들은 자기를 부족하게 느끼면서도 넉넉함을 실천할 줄 압니다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -40160,7 +40177,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "어떤 사람들은 자기를 부족하게 느끼면서도 щедрость을 실천할 줄 압니다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031762",
@@ -44163,7 +44182,7 @@
     "paragraph": 826,
     "sentence": 1,
     "source_text": "The one is grace, the other gifts.",
-    "claim": "그리스도 몸의 일반 구성원과 특별한 은사を持つ 구성원을 구별하는 것은 각각 은혜와 은사이다.",
+    "claim": "그리스도 몸의 일반 구성원과 특별한 은사를 가진 구성원을 구별하는 것은 각각 은혜와 은사이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -44172,8 +44191,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "그리스도身体의 일반 구성원과 특별한 은사を持つ 구성원을 구별하는 것은 각각 은혜와 은사이다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -45910,7 +45928,7 @@
     "paragraph": 850,
     "sentence": 9,
     "source_text": "Afterward shall the children of Israel return and seek Jehovah their God, and David their king, in the latter days.",
-    "claim": "이스라엘의 자녀들은 나중에 여호와 их 하나님과 다윗 их 왕을 찾으러 돌아올 것이다.",
+    "claim": "이스라엘의 자녀들은 나중에 여호와 하나님과 다윗 왕을 찾으러 돌아올 것이다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -45923,7 +45941,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "이스라엘의 자녀들은 나중에 여호와 их 하나님과 다윗 их 왕을 찾으러 돌아올 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031966",
@@ -46164,7 +46184,7 @@
     "paragraph": 853,
     "sentence": 5,
     "source_text": "But what are they now ? scattered over the face of the earth ; no longer a body, but sepa- rated bone from his bone ; no more possessed of that life and spirit v. hich distinguished their holy predecessors, but dry as bones which have been long dead ; not only devoid of every thing like true religion, like other sinners, but singularly averse to it.",
-    "claim": "이스라엘은 과거에 하나님께 살아있는 몸이었지만, 현재는 흩어져 있고, 그들의 선조들이 가지고 있던 성령과 생명이 отсутств하여 마치 오래 전에 죽은 뼈처럼 말라 버렸다.",
+    "claim": "이스라엘은 과거에 하나님께 살아있는 몸이었지만, 현재는 흩어져 있고, 그들의 선조들이 가지고 있던 성령과 생명이 없어서 마치 오래 전에 죽은 뼈처럼 말라 버렸다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -46177,7 +46197,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "이스라엘은 과거에 하나님께 살아있는 몸이었지만, 현재는 흩어져 있고, 그들의 선조들이 가지고 있던 성령과 생명이 отсутств하여 마치 오래 전에 죽은 뼈처럼 말라 버렸다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0031975",
@@ -51933,7 +51955,7 @@
     "paragraph": 943,
     "sentence": 1,
     "source_text": "Now, much of prudence consists in the proper timing of things.",
-    "claim": "신중함의 많은 부분은 적절한 시기에 вещ들을 처리하는 것에 있다.",
+    "claim": "신중함의 많은 부분은 적절한 시기에 일들을 처리하는 것에 있다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
@@ -51946,7 +51968,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "신중함의 많은 부분은 적절한 시기에 вещ들을 처리하는 것에 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032177",
@@ -52382,7 +52406,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "동방 세계가 하나님의 교회에 합류함을 나타내는 것이 미디안과 에바의 낙타, 세바의 모든 것, 케다ルの 양털, 느하욧의 양떼이다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0032192",
@@ -52595,7 +52622,7 @@
     "paragraph": 948,
     "sentence": 3,
     "source_text": "At this day there are many thousands of negroes in the West India Islands, who have embraced the gospel, while their owners, basking in wealth, and rolling in debauchery, will neither enter into the king- dom of God themselves, nor suffer others who would enter in.",
-    "claim": "서인도 제도에서 많은 흑人が 복음을 받아들이고 있지만, 그들의 주인들은 부와 방탕에 빠져서 하나님의 나라에 들어가지도 않고, 다른 사람들도 들어가지 못하게 한다.",
+    "claim": "서인도 제도에서 많은 흑인이 복음을 받아들이고 있지만, 그들의 주인들은 부와 방탕에 빠져서 하나님의 나라에 들어가지도 않고, 다른 사람들도 들어가지 못하게 한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -52604,8 +52631,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "서인도 제도에서 많은 흑人が 복음을 받아들이고 있지만, 그들의 주인들은 부와 방탕에 빠져서 하나님의 나라에 들어가지도 않고, 다른 사람들도 들어가지 못하게 한다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -54697,7 +54723,7 @@
     "paragraph": 972,
     "sentence": 6,
     "source_text": "An earnest desire to do right, and to see righteousness towards God and toward man prevail in the earth.",
-    "claim": "진정한 종교는 하나님과 사람에 대한 의를 행하기 위한 열정적인 жел셈이다.",
+    "claim": "진정한 종교는 하나님과 사람에 대한 의를 행하기 위한 열정적인 жел심이다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -54710,7 +54736,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "진정한 종교는 하나님과 사람에 대한 의를 행하기 위한 열정적인 жел셈이다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0032274",
@@ -57375,7 +57404,7 @@
     "paragraph": 1004,
     "sentence": 0,
     "source_text": "In proof of the gross defectiveness of the pharisaical system of morality, he goes on to account for it, by convicting its authors of having by their glosses, in a course of time, greatly corrupted the law : and this must have cut the deeper on account of an attachment to the law being their principal pretext for opposing him.",
-    "claim": "파리サイ인들의 도덕 체계는 결함이 많고, 그들은 율법을 해석하는 과정에서 율법을 크게 부패시켰다.",
+    "claim": "파리 사두개인들의 도덕 체계는 결함이 많고, 그들은 율법을 해석하는 과정에서 율법을 크게 부패시켰다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -57388,7 +57417,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "파리サイ인들의 도덕 체계는 결함이 많고, 그들은 율법을 해석하는 과정에서 율법을 크게 부패시켰다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032369",
@@ -58021,7 +58052,7 @@
     "paragraph": 1012,
     "sentence": 3,
     "source_text": "The pharisees were worldly men, and the religion of such men is merely political : so far as good and evil affect society, they feel in some degree ; but as to the honour of God, they have no concern about it",
-    "claim": "파리サイ인들은 세속적인 사람들로서, 그들의 종교는 단순히 정치적인 것에 불과하며, 하나님의 영광에 대한 관심은 없다.",
+    "claim": "파리 사두개인들은 세속적인 사람들로서, 그들의 종교는 단순히 정치적인 것에 불과하며, 하나님의 영광에 대한 관심은 없다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -58034,7 +58065,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "파리サイ인들은 세속적인 사람들로서, 그들의 종교는 단순히 정치적인 것에 불과하며, 하나님의 영광에 대한 관심은 없다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032392",
@@ -58189,7 +58222,7 @@
     "paragraph": 1018,
     "sentence": 1,
     "source_text": "Under the head of adultery there occurred an- other case, namely, that of divorce; in which the pharisaical doc- trine had greatly courrupted the law.",
-    "claim": "파리サイ인들의 교리는 이혼에 관한 율법을 크게 부패시켰다.",
+    "claim": "파리 사두개인들의 교리는 이혼에 관한 율법을 크게 부패시켰다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -58202,7 +58235,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "파리サイ인들의 교리는 이혼에 관한 율법을 크게 부패시켰다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032398",
@@ -58301,7 +58336,7 @@
     "paragraph": 1018,
     "sentence": 5,
     "source_text": "And though the law respecting marriage, as given to Israel, was less pure than the original law of creation, yet it was much purer than it had since become in the hands of pharisaic expositors, through whom divorces were be- come so common as, in a manner, to deluge the land with adultery.",
-    "claim": "구약의 이혼 관련 법은 창조 초기의 순수한 법보다 덜 순수했지만, 파리サイ인들의 해석을 통해 더 부정한 상태로 변질되었다.",
+    "claim": "구약의 이혼 관련 법은 창조 초기의 순수한 법보다 덜 순수했지만, 파리세인들의 해석을 통해 더 부정한 상태로 변질되었다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -58314,7 +58349,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "구약의 이혼 관련 법은 창조 초기의 순수한 법보다 덜 순수했지만, 파리サイ인들의 해석을 통해 더 부정한 상태로 변질되었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032402",
@@ -63262,7 +63299,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "구약의 신자들은 하나님을 아버지로 여겼지만, 일반적으로 그분을 그ような 사랑스러운 이름으로 부르지 않았다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0032576",
@@ -63424,7 +63464,7 @@
     "paragraph": 1097,
     "sentence": 2,
     "source_text": "As for me, Iwill come into thy house in the multi- tude of thy mercy : and in thy fear will I worship toward thy holy temple.",
-    "claim": "하나님의 집에서 많은 자비로 들어가서 하나님의 страх으로 성전을 향해 예배한다.",
+    "claim": "하나님의 집에서 많은 자비로 들어가서 하나님의 두려움으로 성전을 향해 예배한다.",
     "doctrine": "Other",
     "scriptures": [],
     "citations": [],
@@ -63437,7 +63477,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님의 집에서 많은 자비로 들어가서 하나님의 страх으로 성전을 향해 예배한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032582",
@@ -64735,7 +64777,7 @@
     "paragraph": 1106,
     "sentence": 6,
     "source_text": "Instead of earth resembling heaven, as to obedience to the divine will, it bears a much nearer resemblance to hell.",
-    "claim": "지구上的 많은 사람들은 하나님의 의지에 순종하는天堂과는 달리, 지옥과 더 유사한 모습을 보인다.",
+    "claim": "지구上的 많은 사람들은 하나님의 의지에 순종하는 천국과는 달리, 지옥과 더 유사한 모습을 보인다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -66088,7 +66130,7 @@
     "paragraph": 1119,
     "sentence": 0,
     "source_text": "dnlge in implacable resentment, it is presumption to expect any other than that we shall perish in our sins, ver. 14, 15.",
-    "claim": "우리가 우리의 죄에서 멸하지 않는다면, 우리는 우리의 죄에서 멸할 것이라는 것을 기대하는 것은傲慢이다.",
+    "claim": "우리가 우리의 죄에서 멸하지 않는다면, 우리는 우리의 죄에서 멸할 것이라는 것을 기대하는 것은 오만이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -66097,8 +66139,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "우리가 우리의 죄에서灭하지 않는다면, 우리는 우리의 죄에서灭할 것이라는 것을 기대하는 것은傲慢이다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -66485,7 +66526,7 @@
     "paragraph": 1120,
     "sentence": 16,
     "source_text": "Many a man would have killed Saul in the cave of Adullam, and have pleaded, as David's servants did, that the Loid had delivered his enemy into his hand: but so did not David, because of the fear of God.— I o\"nly add, There is no necess iry connexion between going into temptation and coming out of it.",
-    "claim": "하나님의 страх을 가진 사람들은 기회가 있더라도 자기 이익을 위해 행동하지 않는다.",
+    "claim": "하나님의 두려움을 가진 사람들은 기회가 있더라도 자기 이익을 위해 행동하지 않는다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
@@ -66498,7 +66539,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님의 страх을 가진 사람들은 기회가 있더라도 자기 이익을 위해 행동하지 않는다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032690",
@@ -66569,7 +66612,7 @@
     "paragraph": 1123,
     "sentence": 0,
     "source_text": "The concluding doxology, though omitted by Luke, and thought by some not to have been originally included by Matthew, appears to agree with the foregoing petitions, and to furnish encourage- ment to hope for an answer.",
-    "claim": "마태복음의 заключ적 도살기가 앞서간 기도들과 일치하며, 응답에 대한 희망을 주는 것으로 보인다.",
+    "claim": "마태복음의 결론적 도살자가 앞서간 기도들과 일치하며, 응답에 대한 희망을 주는 것으로 보인다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
@@ -66582,7 +66625,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "마태복음의 заключ적 도살기가 앞서간 기도들과 일치하며, 응답에 대한 희망을 주는 것으로 보인다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032693",
@@ -69208,7 +69253,7 @@
     "paragraph": 1156,
     "sentence": 2,
     "source_text": "Such an invitation would not else have been given.",
-    "claim": "하나님께 دع함을 받은 것은 그분이 우리에게 필요로 하는 모든 것을 풍성히 제공하실 수 있다는 것을 의미한다.",
+    "claim": "하나님께 부름을 받은 것은 그분이 우리에게 필요로 하는 모든 것을 풍성히 제공하실 수 있다는 것을 의미한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -69221,7 +69266,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님께 دع함을 받은 것은 그분이 우리에게 필요로 하는 모든 것을 풍성히 제공하실 수 있다는 것을 의미한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0032786",
@@ -72670,7 +72717,7 @@
     "paragraph": 1205,
     "sentence": 7,
     "source_text": "As the two blind men, when rebuked by the multitude, and charged to hold their peace, cried the more a great deal, and pressed towards the Saviour, so the publicans and sin- ners were not to be deterred by the rebukes of their leaders ; but on hearing of the kingdom of God, pressed into it.",
-    "claim": "세금 징수官과 죄인들이 지도자들의 책망에도 불구하고 하나님의 나라에 대한 소식을 듣고 그 나라에 들어가려는 의지를 가지고 있었다.",
+    "claim": "세금 징수관과 죄인들이 지도자들의 책망에도 불구하고 하나님의 나라에 대한 소식을 듣고 그 나라에 들어가려는 의지를 가지고 있었다.",
     "doctrine": "Soteriology",
     "scriptures": [
       "Luke 7:18"
@@ -72681,8 +72728,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "세금 징수官과 죄인들이 지도자들의 책망에도 불구하고 하나님의 나라에 대한 소식을 듣고 그 나라에 들어가려는 의지를 가지고 있었다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -75047,7 +75093,7 @@
     "paragraph": 1242,
     "sentence": 0,
     "source_text": "* The three unclean spirits coming out of the mouth of the dragon, of the beast, and of the false prophet, (Rev. xvi. 13.) may be no other than delusive and destructive principles-.",
-    "claim": "요한계시록 16:13의 용, 짐승, 그리고 거짓 예언者の 입에서 나오는 세 가지 부정한 영은 유혹적이고 파괴적인 원리일 수 있다.",
+    "claim": "요한계시록 16:13의 용, 짐승, 그리고 거짓 예언자의 입에서 나오는 세 가지 부정한 영은 유혹적이고 파괴적인 원리일 수 있다.",
     "doctrine": "Eschatology",
     "scriptures": [
       "Revelation 16:13"
@@ -75058,8 +75104,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "요한계시록 16:13의 용, 짐승, 그리고 거짓 先知의 입에서 나오는 세 가지 부정한 영은 유혹적이고 파괴적인 원리일 수 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -76245,7 +76290,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "수단을 사용하는 것은 그 목적에 대한 정직한 жел망이 존재한다는 것을 가정한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0033034",
@@ -76372,7 +76420,7 @@
     "paragraph": 1259,
     "sentence": 7,
     "source_text": "If you reply, 4 You should pray for such a desire,' you must mean, if you mean any thing, that I should ex- press my desire to God, that I may have a desire ; and I tell you that I have none to express !",
-    "claim": "죄인에게는 하나님께 정직한 마음을 소원하는 жел함이 없기 때문에 기도할 수 없다.",
+    "claim": "죄인에게는 하나님께 정직한 마음을 소원하는 바람이 없기 때문에 기도할 수 없다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -76385,7 +76433,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "죄인에게는 하나님께 정직한 마음을 소원하는 жел함이 없기 때문에 기도할 수 없다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0033039",
@@ -76822,7 +76872,7 @@
     "paragraph": 1276,
     "sentence": 0,
     "source_text": "In discoursing on the subject, I shall endeavour to ascertain wherein the common salvation consists ; inquire why it is so called ; and show the importance of its being made the grand theme of our ministrations, and the first object of our attachment.",
-    "claim": "구원은 설교와 신앙의 중심 тем이 되어야 하며, 그 중요성을 강조해야 한다.",
+    "claim": "구원은 설교와 신앙의 중심 주제가 되어야 하며, 그 중요성을 강조해야 한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -76835,7 +76885,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "구원은 설교와 신앙의 중심 тем이 되어야 하며, 그 중요성을 강조해야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0033055",
@@ -82419,7 +82471,7 @@
     "paragraph": 1382,
     "sentence": 0,
     "source_text": "The objects desired, though expressed by the Jewish lawgiver, have'nothing in them peculiar to that dispensation ; but are equally suited to our times as to others.",
-    "claim": "유대인 법의 규정에 의해 표현된 желаем한 대상은 그 특수한 시대에만 해당하는 것이 아니라 모든 시대에 적합하다.",
+    "claim": "유대인 법의 규정에 의해 표현된 원하는 대상은 그 특별한 시대에만 해당하는 것이 아니라 모든 시대에 적합하다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -82432,7 +82484,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "유대인 법의 규정에 의해 표현된 желаем한 대상은 그 특수한 시대에만 해당하는 것이 아니라 모든 시대에 적합하다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0033253",
@@ -84227,7 +84281,7 @@
     "paragraph": 1398,
     "sentence": 5,
     "source_text": "It was glorious for God in his providence to drive out paganism and popery from this kingdom ; but if it stop here, what are we the better ?",
-    "claim": "하나님의 섭리로 이 땅에서异教도와 가톨릭을 몰아내는 것은 영광스럽지만, 그것이 여기서 끝나면 우리에게는 아무런 이익도 없다.",
+    "claim": "하나님의 섭리로 이 땅에서 이교도와 가톨릭을 몰아내는 것은 영광스럽지만, 그것이 여기서 끝나면 우리에게는 아무런 이익도 없다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
@@ -84236,8 +84290,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "하나님의 섭리로 이 땅에서 이교도와 가톨릭을 몰아내는 것은 영광스럽지만, 그것이 여기서 끝나면 우리에게는 아무런益도 없다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -86770,7 +86823,7 @@
     "paragraph": 1467,
     "sentence": 0,
     "source_text": "standing ; yea, if thou criest after knowledge, and liftest up thy voice for understanding ; if thou seekest her as silver, and searchest for her as for hid treasures ; then shalt thou understand the fear of the Lord, and find the knowledge of God.",
-    "claim": "지식과 이해를 열심히 추구하면 주님의 страх과 하나님의 지식을 얻을 수 있다.",
+    "claim": "지식과 이해를 열심히 추구하면 주님의 두려움과 하나님의 지식을 얻을 수 있다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -86783,7 +86836,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "지식과 이해를 열심히 추구하면 주님의 страх과 하나님의 지식을 얻을 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0033407",
@@ -89364,7 +89419,7 @@
     "paragraph": 1512,
     "sentence": 4,
     "source_text": "Paul, in his Kpis- tles, seldom deals in reproof, without applauding at the same time what was praiseworthy.",
-    "claim": "바울은 그의 서신에서 잘못된 것을 책망할 때 동시에 칭찬할 만한 것을赞扬하는 경우가 많다.",
+    "claim": "바울은 그의 서신에서 잘못된 것을 책망할 때 동시에 칭찬할 만한 것을 칭찬하는 경우가 많다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -89373,8 +89428,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "바울은 그의 서신에서 잘못된 것을 책망할 때同時에 칭찬할 만한 것을赞扬하는 경우가 많다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -89819,7 +89873,7 @@
     "paragraph": 1526,
     "sentence": 3,
     "source_text": "God, I am afraid, will blast m}' future life and ministry, as he justly may, and cause me to end my days in degradation and disgrace !",
-    "claim": "신자는 하나님께 영광을 드리지 않으면 하나님께서 그의 미래와 사역을 파괴하고, 그로 하여금 수치와屈辱이 아닌 수치와 모욕 속에서 일생을 마감하게 할 수 있다.",
+    "claim": "신자는 하나님께 영광을 드리지 않으면 하나님께서 그의 미래와 사역을 파괴하고, 그로 하여금 수치와 모욕이 아닌 수치와 모욕 속에서 일생을 마감하게 할 수 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
@@ -89828,8 +89882,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "신자는 하나님께 영광을 드리지 않으면 하나님께서 그의 미래와 사역을 파괴하고, 그로 하여금 수치와屈辱 속에서 일생을 마감하게 할 수 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -91043,7 +91096,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님이 창조한 존재는 그의 모든 작품이 이렇게 왜곡되는 것을 보고 후회하고, 그것들을 만들지 않았으면 좋았 бы라고 원할 것이다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0033557",
@@ -97413,7 +97469,7 @@
     "paragraph": 1692,
     "sentence": 1,
     "source_text": "If we were to substitute the term apostasy for sin, from the 6th to the 10th verse, the meaning would be clear. ' Whoso abideth in him, apostatizeth not : who- soever apostatizeth hath not seen him, neither known him. — He that is guilty of apostasy is of the devil : for the devil hath been an apostate from the beginning. — Whosoever is born of God doth not apostatize ; for his seed remaineth in him : and he cannot apostatize, because he is born of God.'",
-    "claim": "만약 우리가 6절부터 10절까지의 \"죄\"를 \"背신\"이라는 용어로 대체하면, 그 의미는 분명해질 것이다",
+    "claim": "만약 우리가 6절부터 10절까지의 \"죄\"를 \"배신\"이라는 용어로 대체하면, 그 의미는 분명해질 것이다",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -97422,8 +97478,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "もし私たちが6節から10節までの「罪」を「離反」という用語に置き換えれば、その意味は明らかになる",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -97674,7 +97729,7 @@
     "paragraph": 1701,
     "sentence": 0,
     "source_text": "between the seed of the serpent and the seed of the woman.",
-    "claim": "사타ンの 자손과 여자의 자손 사이에 대립이 존재한다",
+    "claim": "사탄의 자손과 여자의 자손 사이에 대립이 존재한다",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -97687,7 +97742,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "사타ンの 자손과 여자의 자손 사이에 대립이 존재한다",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0033788",
@@ -99272,7 +99329,7 @@
     "paragraph": 1754,
     "sentence": 0,
     "source_text": "First : It is introduced to declare the source of salvation to be mere grace, or undeserved favour, and to cut off all hopes of ac- ceptance with God by works of any hind. — In this connexion we find it in Rom. xi. 5, 6.",
-    "claim": "구원의 근원은 단순한 은혜 또는 заслуг 없는 은총이며, 모든 종류의 행위에 의한 하나님과의 수용의 모든 희망을 끊는다는 것을 선언하기 위해 소개된다.",
+    "claim": "구원의 근원은 단순한 은혜 또는 값없는 은총이며, 모든 종류의 행위에 의한 하나님과의 수용의 모든 희망을 끊는다는 것을 선언하기 위해 소개된다.",
     "doctrine": "Soteriology",
     "scriptures": [
       "Romans 11:5"
@@ -99287,7 +99344,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "구원의 근원은 단순한 은혜 또는 заслуг 없는 은총이며, 모든 종류의 행위에 의한 하나님과의 수용의 모든 희망을 끊는다는 것을 선언하기 위해 소개된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0033845",
@@ -101036,7 +101095,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "그들은 영원한 문제에 관심을 둘 жел망이 있지만 시간을 할애할 수 없다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0033906",
@@ -101458,7 +101520,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "일부 기독교 교파는 기독교를 그 원시적인 순수성으로 회복하려는 양심적인 жел로부터 생겨났다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0033921",
@@ -102138,7 +102203,7 @@
     "paragraph": 1808,
     "sentence": 7,
     "source_text": "That when the laying on of hands was accompanied with the conferring of extraordinary gifts, it is doubtful whether they were not imposed, for that spe- cific purpose only.",
-    "claim": "手を 얹는 것이 특별한 은사와 함께 일어났을 때, 그것이 특정 목적만을 위해 시행된 것인지에 대해 의문이 있다.",
+    "claim": "손을 얹는 것이 특별한 은사와 함께 일어났을 때, 그것이 특정 목적만을 위해 시행된 것인지에 대해 의문이 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [
       "Acts 8:17"
@@ -102149,8 +102214,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "손을 얹는 것이 특별한 은사와 함께行해졌을 때, 그것이 특정 목적만을 위해 시행된 것인지에 대해 의문이 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -103559,7 +103623,7 @@
     "paragraph": 1833,
     "sentence": 0,
     "source_text": "To be a servant to iniquity is descriptive of the state of every unconverted sinner.",
-    "claim": "회개하지 않은 죄人は 모두 불의에 종복한 상태에 있다.",
+    "claim": "회개하지 않은 죄人は 모두 부정에 종속된 상태에 있다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -103758,7 +103822,7 @@
     "paragraph": 1837,
     "sentence": 0,
     "source_text": "Moreover, If the mind be unrestrained by the fear of God, a regard to man will have but a feeble hold of it.",
-    "claim": "하나님의 страх이 마음을 제약하지 않으면, 사람에 대한 고려는 약한 영향력을 가질 뿐이다.",
+    "claim": "하나님의 두려움이 마음을 제약하지 않으면, 사람에 대한 고려는 약한 영향력을 가질 뿐이다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -103771,7 +103835,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님의 страх이 마음을 제약하지 않으면, 사람에 대한 고려는 약한 영향력을 가질 뿐이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0034001",
@@ -103786,7 +103852,7 @@
     "paragraph": 1837,
     "sentence": 1,
     "source_text": "Sin in various shapes will be indulged in secret: and being so indulged, it will soon break out into open vices ; for it is not in the power of a man, with all its contrivances, long to conceal the ruling dispositions Qf his soul.",
-    "claim": "하나님의 страх이 마음을 제약하지 않으면, 사람에 대한 고려는 약한 영향력을 가지게 되고, 비밀리에 죄를 즐기게 되며, 결국은 공개적인 악행으로 나타나게 된다.",
+    "claim": "하나님의 두려움이 마음을 제약하지 않으면, 사람에 대한 고려는 약한 영향력을 가지게 되고, 비밀리에 죄를 즐기게 되며, 결국은 공개적인 악행으로 나타나게 된다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -103799,7 +103865,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "하나님의 страх이 마음을 제약하지 않으면, 사람에 대한 고려는 약한 영향력을 가지게 되고, 비밀리에 죄를 즐기게 되며, 결국은 공개적인 악행으로 나타나게 된다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0034002",
@@ -103870,7 +103938,7 @@
     "paragraph": 1838,
     "sentence": 1,
     "source_text": "Purity of mind, like cleanliness of apparel, is accompanied with a desire of avoiding every thing that might defile; and even where this has no place, conscience, aided by education and example, is a great preservative against immoral and destructive courses ; but if we once plunge into the vices of the world, emulation is extia* guished.",
-    "claim": "순수한 마음과 깨끗한 옷은 더럽히는 모든 것을 피하는 жел과 함께 하며, 양심과 교육 및 좋은榜樣의 도움으로는 부도덕하고 파괴적인 길을 막는 데 큰 역할을 한다.",
+    "claim": "순수한 마음과 깨끗한 옷은 더럽히는 모든 것을 피하는 жел과 함께 하며, 양심과 교육 및 좋은 모범의 도움으로는 부도덕하고 파괴적인 길을 막는 데 큰 역할을 한다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -107112,7 +107180,7 @@
     "paragraph": 1900,
     "sentence": 0,
     "source_text": "If, indeed, our differences consist merely in words ; or though they should be things, yet if they do not affect the first principles of the doctrine of Christ, considering the imperfections which attach to the best of men, a spirit of moderation or forbearance is here in character.",
-    "claim": "교리上的 차이점이 첫째로 그리스도의 교리와 관련이 없거나, 혹은 중요하지 않은 경우에는 관용과 온화한 태도가 필요하다.",
+    "claim": "교리상의 차이점이 첫째로 그리스도의 교리와 관련이 없거나, 혹은 중요하지 않은 경우에는 관용과 온화한 태도가 필요하다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -107121,8 +107189,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "교리上的 차이점이 첫째로 그리스도의 교리와 관련이 없거나, 혹은 중요하지 않은 경우에는 관용과 온화한 태도가 필요하다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -109289,7 +109356,7 @@
     "paragraph": 1927,
     "sentence": 0,
     "source_text": "Christianity, to be sure, will never obtain the dominion she de- serves, while any class of society continues to set her at nought : but if its scale should be made at last to preponderate by the mighty influence of rank and station and wealth being thrown into it, things must proceed on very different principles from what they have done.",
-    "claim": "기독교는 사회의 어떤 계층에서도 무시당하는 경우에는 결코 заслуж된 지위를 얻을 수 없지만, 만약 기독교가 권위와 지위, 부의 강력한 영향력으로 인해 우세해진다면, 다른 원칙에 따라 진행될 것이다.",
+    "claim": "기독교는 사회의 어떤 계층에서도 무시당하는 경우에는 결코 합당한 지위를 얻을 수 없지만, 만약 기독교가 권위와 지위, 부의 강력한 영향력으로 인해 우세해진다면, 다른 원칙에 따라 진행될 것이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -109302,7 +109369,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "기독교는 사회의 어떤 계층에서도 무시당하는 경우에는 결코 заслуж된 지위를 얻을 수 없지만, 만약 기독교가 권위와 지위, 부의 강력한 영향력으로 인해 우세해진다면, 다른 원칙에 따라 진행될 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0034197",
@@ -109526,7 +109595,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "기독교적 관용의 прит장에서 일관성과 정직성이 부족하면 기독교적 관용은 무의미하다",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0034205",
@@ -112419,7 +112491,7 @@
     "paragraph": 2004,
     "sentence": 0,
     "source_text": "Those who imbibe this opinion could have nothing to say to a condemned malefactor unless it were to examine him as to the reality and heinousnessof his crimes, hoping to tind him less guilty than was alleged.",
-    "claim": "죄인에게 구원은 죄의 심각성과 현실을 조사하여 그의 죄가 기소된 것보다 덜 گن다고 판단하는 것을 바탕으로 한다",
+    "claim": "죄인에게 구원은 죄의 심각성과 현실을 조사하여 그의 죄가 기소된 것보다 덜 어리석다고 판단하는 것을 바탕으로 한다",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -112432,7 +112504,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "죄인에게 구원은 죄의 심각성과 현실을 조사하여 그의 죄가 기소된 것보다 덜 گن다고 판단하는 것을 바탕으로 한다",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0034308",
@@ -113287,7 +113361,7 @@
     "paragraph": 2018,
     "sentence": 1,
     "source_text": "A self-right- eous spectator would have cried shame on such a petition ; and had he himself been influenced by that spirit, he might have suppressed it. as being unworthy of so great a favour.",
-    "claim": "자기 의로움에 사로잡힌 사람들은 그런 청원을 부끄럽다고 외치고, 예수님도 그런 영에 영향을 받았다면 그런 청원을 가치 없는 것으로 여겨서 подав렸을 것이다.",
+    "claim": "자기 의로움에 사로잡힌 사람들은 그런 청원을 부끄럽다고 외치고, 예수님도 그런 영에 영향을 받았다면 그런 청원을 가치 없는 것으로 여겨서 외면했을 것이다.",
     "doctrine": "Justification",
     "scriptures": [],
     "citations": [],
@@ -113300,7 +113374,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "자기 의로움에 사로잡힌 사람들은 그런 청원을 부끄럽다고 외치고, 예수님도 그런 영에 영향을 받았다면 그런 청원을 가치 없는 것으로 여겨서 подав렸을 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0034339",
@@ -113967,7 +114043,7 @@
     "paragraph": 2023,
     "sentence": 9,
     "source_text": "Had it been necessary for him to pos- sess a set of virtuous habits, each acquired by a series of virtuous acts, the way had been too circuitous for him : but the word ot",
-    "claim": "어떤 사람이 구원이나 축복을 받기 위해 많은 добродетель적인 습관을 습득하거나 많은 добродетель적인 행동을 해야 한다면, 그것은 너무나 길고 어려운 길이다.",
+    "claim": "어떤 사람이 구원이나 축복을 받기 위해 많은 덕스러운 습관을 습득하거나 많은 덕스러운 행동을 해야 한다면, 그것은 너무나 길고 어려운 길이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -113980,7 +114056,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "어떤 사람이 구원이나 축복을 받기 위해 많은 добродетель적인 습관을 습득하거나 많은 добродетель적인 행동을 해야 한다면, 그것은 너무나 길고 어려운 길이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0034363",
@@ -117039,7 +117117,7 @@
     "paragraph": 2083,
     "sentence": 4,
     "source_text": "The graces of the Spirit, however, become a ground of hope, not through any inherent merit, but in virtue of the promise of God ; or rather they are the evidence of our interest in the promise.",
-    "claim": "성령의 은사는 내재된 заслуг이 아니라 하나님의 약속에 근거하여 소망의 근거가 되며, 약속에 대한 우리의 관심의 증거이다.",
+    "claim": "성령의 은사는 내재된功德이 아니라 하나님의 약속에 근거하여 소망의 근거가 되며, 약속에 대한 우리의 관심의 증거이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -117052,7 +117130,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "성령의 은사는 내재된 заслуг이 아니라 하나님의 약속에 근거하여 소망의 근거가 되며, 약속에 대한 우리의 관심의 증거이다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0034472",
@@ -120963,7 +121044,7 @@
     "paragraph": 2130,
     "sentence": 7,
     "source_text": "O brethren, be it our daily concern and earnest endeavour to grow in every grace, to excel in every virtue.",
-    "claim": "그리스도인들은 모든 은사에서 성장하고 모든徳목에서 우수해지기 위해 매일 노력해야 한다.",
+    "claim": "그리스도인들은 모든 은사에서 성장하고 모든 덕목에서 우수해지기 위해 매일 노력해야 한다.",
     "doctrine": "Sanctification",
     "scriptures": [],
     "citations": [],
@@ -120972,8 +121053,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "그리스도인들은 모든 은사에서 성장하고 모든徳목에서 우수해지기 위해 매일 노력해야 한다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -121948,7 +122028,7 @@
     "paragraph": 2147,
     "sentence": 7,
     "source_text": "The sin of the pharisees and lawyers consisted, not in their refusing to submit to baptism as unbelievers ; but in not embracing the Messiah, and so putting on the badge of his profession.",
-    "claim": "파리사들과 율법학者の 죄는 세례를 거부한 것이 아니라, 메시아를 받아들이지 않고 그의 직분의 표를 착용하지 않은 것에 있다.",
+    "claim": "파리사들과 율법학자의 죄는 세례를 거부한 것이 아니라, 메시아를 받아들이지 않고 그의 직분의 표를 착용하지 않은 것에 있다.",
     "doctrine": "Baptism",
     "scriptures": [],
     "citations": [],
@@ -121957,8 +122037,7 @@
     "review_status": "verified",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "파리サイ인과 율법학者の 죄는 세례를 거부한 것이 아니라, 메시아를 받아들이지 않고 그의 직분의 표를 착용하지 않은 것에 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual",
+    "cjk_status": "repaired",
     "review_metadata": {
       "reviewer": "David",
       "review_date": "2026-09-16",
@@ -125430,7 +125509,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "교회의 모든 활동과 결정은 목사나 장로만의 관심사ではなく, 교회 구성원 모두의 관심과 참여가 필요하다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0034769",
@@ -129670,7 +129752,7 @@
     "paragraph": 2259,
     "sentence": 0,
     "source_text": "Neither is it by attending to a ceremony which the country and climate ordinarily render unnecessary, that we comply with our Lord's precept, Ye ought to wash one another's feet ; but by love serving one another.",
-    "claim": "주님의 계명을 지키는 것은 의식에 참여하는 것이 아니라 서로 사랑으로 служ음으로써 이루어진다.",
+    "claim": "주님의 계명을 지키는 것은 의식에 참여하는 것이 아니라 서로 사랑으로 섬김으로써 이루어진다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -129683,7 +129765,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "주님의 계명을 지키는 것은 의식에 참여하는 것이 아니라 서로 사랑으로 служ음으로써 이루어진다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0034920",
@@ -131173,7 +131257,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "교회 규칙이나 교리는 세상의 정책이나 방법으로 채워져서는 안 되며, 오히려 순수한 жел로 그 규칙이나 교리의 진정한 의도에 따라 시행되어야 한다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0034973",
@@ -134270,7 +134357,7 @@
     "paragraph": 2326,
     "sentence": 6,
     "source_text": "Wherefore, we receiving a kingdom ichich cannot be moved, let us have grace whereby we may serve God acceptably, with rev- erence and godly fear.",
-    "claim": "신자들은 흔들리지 않는 왕국을 받았으므로, 하나님을 경외와 경건한 страх으로 받들며 기쁘게 섬기기 위해 은혜를 받아야 한다.",
+    "claim": "신자들은 흔들리지 않는 왕국을 받았으므로, 하나님을 두려움과 신뢰로 받들며 기쁘게 섬기기 위해 은혜를 받아야 한다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -134283,7 +134370,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "신자들은 흔들리지 않는 왕국을 받았으므로, 하나님을 경외와 경건한 страх으로 받들며 기쁘게 섬기기 위해 은혜를 받아야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0035083",
@@ -135314,7 +135403,7 @@
     "paragraph": 2361,
     "sentence": 3,
     "source_text": "Indeed we are allowed to feel on such occasions, in moderation ; at the grave of his friend Lazarus, Jesus wept.",
-    "claim": "우리는 умеренно한 정도에서 슬픔을 느낄 수 있다.",
+    "claim": "우리는 적당한 정도에서 슬픔을 느낄 수 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
@@ -135327,7 +135416,9 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "우리는 умеренно한 정도에서 슬픔을 느낄 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0035120",
@@ -135581,7 +135672,10 @@
       "review_date": "2026-09-16",
       "review_decision": "approved",
       "review_notes": "Fuller_Complete_Works_Vol08은 침례교 신학자 Andrew Fuller의 저작이므로 사용자(reviewer)가 개별 Q1/Q2/Q3 검토 없이 일괄 승인하기로 결정함(2026-09-16). 목차(TOC) 오분류로 클레임이 왜곡된 6건은 예외적으로 거부 처리."
-    }
+    },
+    "claim_raw": "사도는 하나님의 교회에 유익하게 되고자 하는 жел과 그리스도와 함께 있기를 원하는 두 가지 갈등에 빠져 있었다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0035129",

@@ -1,10 +1,17 @@
-"""NAE Fuller F2 — targeted repair of CJK-contaminated TSU `claim` text.
+"""NAE Fuller F2 — targeted repair of script-contaminated TSU `claim` text.
 
-WHY: `my-theology-bot-v2` (Qwen-family) code-switched into Chinese/Japanese
-under GPU load, leaving Han characters in ~10% of Vol.01 and ~8% of Vol.02
-`claim` strings. Pure string substitution cannot fix this cleanly (the
-contamination is morpheme-level — particles/conjugation break). This script
-does a targeted LLM *repair* pass on only the affected records.
+WHY: `my-theology-bot-v2` (Qwen-family) code-switched into other scripts
+under GPU load, leaving foreign characters in TSU `claim` strings. The
+original pass (2026-09-14) covered CJK (Han) only and found ~10% of Vol.01
+contaminated this way. The F3 pilot review (320-item stratified sample,
+2026-09-26) then found the same code-switching failure mode in *other*
+scripts the Han-only regex could not see: Cyrillic/Russian (TSU-0010406,
+TSU-0034362) and Japanese katakana (TSU-0013547). This revision widens
+detection to Han+Hiragana/Katakana+Cyrillic+Greek+Hebrew+Arabic so a single
+rerun across Vol01-08 catches all of it. Pure string substitution cannot fix
+this cleanly (the contamination is morpheme-level — particles/conjugation
+break). This script does a targeted LLM *repair* pass on only the affected
+records.
 
 SCOPE / SAFETY:
 - Does NOT modify `NAE/pipeline/tsu/builder.py` / `claim.py` / `builder_version`.
@@ -54,18 +61,29 @@ from NAE.pipeline.tsu import config as tsu_config  # noqa: E402
 _CLIENT = Client(timeout=tsu_config.CLAIM_HTTP_TIMEOUT_S)
 
 TSU_ROOT = REPO_ROOT / "NAE" / "corpus" / "tsu"
-REEXTRACT_VERSION = "1.0.0"
-HAN = re.compile(r"[㐀-䶿一-鿿豈-﫿\U00020000-\U0002a6df]")
+REEXTRACT_VERSION = "1.1.0"
+# Widened 2026-09-26 (F3 pilot review finding) from Han-only to all scripts
+# observed to code-switch into: CJK(Han)+compat, Hiragana/Katakana, Cyrillic,
+# Greek, Hebrew, Arabic. Field/status names (cjk_status, cjk_residual) kept
+# unchanged for compatibility with the 2026-09-14 Han-only pass's records.
+HAN = re.compile(
+    "[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF"   # CJK Unified + Ext-A + Compat
+    "\u3040-\u30FF"                                # Hiragana/Katakana
+    "\u0400-\u04FF"                                # Cyrillic
+    "\u0370-\u03FF"                                # Greek
+    "\u0590-\u05FF"                                # Hebrew
+    "\u0600-\u06FF]"                               # Arabic
+)
 
-_REPAIR_PROMPT = """다음 한국어 문장에는 한자 또는 중국어·일본어 단어가 잘못 섞여 있다.
-그 한자·외국어 부분만 같은 뜻의 한국어(한글)로 바꿔라.
+_REPAIR_PROMPT = """다음 한국어 문장에는 외국 문자(한자·중국어·일본어·키릴/러시아어·그리스어·히브리어·아랍어 등)가 잘못 섞여 있다.
+그 외국 문자 부분만 같은 뜻의 한국어(한글)로 바꿔라.
 
 문장: {claim}
 
 엄격한 규칙:
-- 문장의 구조·어순·길이·의미를 그대로 둔다. 섞인 한자/외국어 토큰만 한글로 치환한다.
+- 문장의 구조·어순·길이·의미를 그대로 둔다. 섞인 외국 문자 토큰만 한글로 치환한다.
 - 내용을 추가·삭제·부연하지 않는다. 원래 문장보다 길어지면 안 된다.
-- 한자, 병음, 중국어 간체/번체, 일본어 가나를 결과에 남기지 않는다.
+- 한자, 가나, 키릴, 그리스어, 히브리어, 아랍어 문자를 결과에 남기지 않는다.
 - 조사·어미가 어색해지면 그 부분만 자연스럽게 맞춘다.
 - 고친 문장 한 줄만 출력한다. 설명·따옴표·화살표·"원문"/"결과" 같은 라벨 금지."""
 
