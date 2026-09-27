@@ -324,6 +324,21 @@ class CandidateGenerator:
             )
             result = searcher.search(fallback_query, k)
 
+        # [2026-09-26] book_id is document-level (core/tsu_builder.py: set only
+        # when the file itself is a single-book commentary), so for a corpus of
+        # sermon collections every TSU is "UNK" and a book filter auto-derived
+        # from the query ("로마서", "Romans") matched nothing — even the
+        # filter-only fallback above returned 0 (docs/NAE_BOOK_ID_FILTER_ZERO_
+        # RESULT_INVESTIGATION_001.md). When the filter came from the parser
+        # (caller didn't pass book_ids) and nothing matched, drop just the book
+        # filter and search again; the caller's source_files scope is kept.
+        if not result.hits and book_ids is None and parsed_query.detected_books:
+            return self.search(
+                parsed_query, k=k, book_ids=[], source_files=source_files,
+                with_snippets=with_snippets, snippet_max_chars=snippet_max_chars,
+                fields=fields, exact_phrase=exact_phrase,
+            )
+
         snippet_generator = None
         if with_snippets and result.hits:
             snippet_generator = tantivy.SnippetGenerator.create(searcher, text_query, self._schema, "content")

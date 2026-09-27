@@ -128,6 +128,18 @@ class HybridRetriever:
             candidates = [
                 CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:candidate_k]
             ]
+            # [2026-09-26] The Bible Index is built from verse_mapping, which is
+            # empty for every TSU whose source isn't a single-book commentary
+            # (measured: 0 posting rows on the 119,595-TSU corpus). An empty
+            # posting list is "no index coverage", not "no relevant text" —
+            # fall back to the default free-text search instead of returning 0.
+            if not candidates:
+                candidates = self.candidate_generator.search(
+                    parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
+                )
+                if telemetry_out is not None:
+                    telemetry_out["route"] = "hybrid"
+                    telemetry_out["route_fallback_from"] = "bible"
         elif plan.route == "exact":
             candidates = self.candidate_generator.search(
                 parsed_query, k=candidate_k, source_files=file_scope,

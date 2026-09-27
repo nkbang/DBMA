@@ -1,6 +1,6 @@
 # 성경책 이름 질의 0건 — 원인 조사 001
 
-- 날짜: 2026-09-26 · 브랜치 `claude/tsu-data-processing-query-8f79fe` · 코드 변경 없음(조사만)
+- 날짜: 2026-09-26 · 브랜치 `claude/tsu-data-processing-query-8f79fe` · 수정안 A 구현(PR #88)
 
 ## 증상 (UI 경로 `HybridRetriever`, 실데이터 읽기전용)
 | 질의 | detected_books | route | 후보 | book 필터 제거 시 |
@@ -37,5 +37,17 @@
 
 ## 상태
 - [x] 원인 확정 (실측)
-- [ ] 수정안 A 승인 대기 (Retrieval Engine 변경)
+- [x] 수정안 A 구현 — 사용자 승인(2026-09-26 채팅)
 - [ ] 수정안 B 검토
+- [ ] 구절 질의 상위에 책 색인 페이지(예: Maclaren 색인)가 오는 품질 문제 — content_quality로 색인 페이지 감점 검토
+
+## 수정안 A 결과
+| 파일 | 내용 |
+|---|---|
+| `core/candidate_generator.py` | 파서가 자동 도출한 book 필터로 0건이면 book 필터만 빼고 재검색(`book_ids` 명시 시엔 유지, `source_files` 유지) |
+| `core/hybrid_candidate_pipeline.py` | bible 경로 0건 → 자유검색 폴백, telemetry `route=hybrid`, `route_fallback_from=bible` |
+| `tests/test_book_filter_unk_corpus_fallback.py` | 전 TSU가 UNK인 실제 코퍼스 형태 재현 5건 |
+
+검증: 신규 5 passed · 관련 회귀 446 passed / 1 skipped · 실데이터 위 5개 질의 전부 0 → 30건.
+
+진행률: 책 이름 질의 0건 해소 100% / 구절 질의 품질 약 40%
