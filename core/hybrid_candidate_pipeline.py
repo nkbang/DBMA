@@ -43,7 +43,29 @@ from core.retrieval import (
     ResponsePackage,
     compute_theological_score,
     compute_passage_match_score,
+    compute_content_quality_factor,
 )
+from core.index_page_detector import INDEX_PAGE_QUALITY_SCORE, is_index_page
+
+
+_INDEX_PAGE_OVERFETCH = 3
+
+
+def _quality_factor(tsu: dict[str, Any]) -> float:
+    """[2026-09-26] Same 0.7~1.0 multiplicative penalty RetrievalEngine
+    applies (compute_content_quality_factor) — HybridRetriever previously
+    ignored content_quality entirely. Back-of-book index pages, which the
+    stored noise classification often labels NORMAL_CONTENT, are detected
+    at query time and treated as DOWNWEIGHT (core/index_page_detector.py)."""
+    factor = (
+        compute_content_quality_factor(tsu)
+        if isinstance(tsu.get("content_quality"), dict) else 1.0
+    )
+    if is_index_page(tsu.get("content", "")):
+        factor = min(factor, compute_content_quality_factor(
+            {"content_quality": {"quality_score": INDEX_PAGE_QUALITY_SCORE}}
+        ))
+    return factor
 
 
 def is_enabled() -> bool:
@@ -75,6 +97,18 @@ class HybridRetriever:
         self.tsu_by_id = tsu_by_id
         self.bible_index = bible_index
 
+    def _demote_index_pages(self, candidates: list[CandidateRef], candidate_k: int) -> list[CandidateRef]:
+        """Keep Stage-1 order but put back-of-book index pages after every
+        other candidate, then cap at candidate_k. Index pages are only
+        backfill — never dropped outright when nothing else matched (same
+        "classifier, not a deleter" principle as content_quality)."""
+        prose: list[CandidateRef] = []
+        index_pages: list[CandidateRef] = []
+        for cand in candidates:
+            content = self.tsu_by_id.get(cand.tsu_id, {}).get("content", "")
+            (index_pages if is_index_page(content) else prose).append(cand)
+        return (prose + index_pages)[:candidate_k]
+
     def retrieve(
         self,
         parsed_query: ParsedQuery,
@@ -104,6 +138,10 @@ class HybridRetriever:
         - greek/hybrid: CandidateGenerator's default free-text search,
           unchanged from before the Query Planner existed.
         """
+        # [2026-09-26] Over-fetch so back-of-book index pages can be pushed
+        # behind real prose before the candidate_k cap (see
+        # _demote_index_pages); Stage-2 scoring still sees candidate_k only.
+        fetch_k = candidate_k * _INDEX_PAGE_OVERFETCH
         plan = classify(parsed_query.original_query, parsed_query)
         if telemetry_out is not None:
             telemetry_out["route"] = plan.route
@@ -126,22 +164,36 @@ class HybridRetriever:
             # is an equally exact reference match; Stage 2 (theological/
             # passage score) differentiates within this set.
             candidates = [
-                CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:candidate_k]
+                CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:fetch_k]
             ]
+            # [2026-09-26] The Bible Index is built from verse_mapping, which is
+            # empty for every TSU whose source isn't a single-book commentary
+            # (measured: 0 posting rows on the 119,595-TSU corpus). An empty
+            # posting list is "no index coverage", not "no relevant text" —
+            # fall back to the default free-text search instead of returning 0.
+            if not candidates:
+                candidates = self.candidate_generator.search(
+                    parsed_query, k=fetch_k, source_files=file_scope, with_snippets=False,
+                )
+                if telemetry_out is not None:
+                    telemetry_out["route"] = "hybrid"
+                    telemetry_out["route_fallback_from"] = "bible"
         elif plan.route == "exact":
             candidates = self.candidate_generator.search(
-                parsed_query, k=candidate_k, source_files=file_scope,
+                parsed_query, k=fetch_k, source_files=file_scope,
                 exact_phrase=plan.exact_phrase, with_snippets=False,
             )
         elif plan.route == "metadata":
             candidates = self.candidate_generator.search(
-                parsed_query, k=candidate_k, source_files=file_scope,
+                parsed_query, k=fetch_k, source_files=file_scope,
                 fields=["title", "author"], with_snippets=False,
             )
         else:  # "greek" or "hybrid" — default free-text search, unchanged
             candidates = self.candidate_generator.search(
-                parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
+                parsed_query, k=fetch_k, source_files=file_scope, with_snippets=False,
             )
+
+        candidates = self._demote_index_pages(candidates, candidate_k)
 
         if telemetry_out is not None:
             telemetry_out["candidate_count"] = len(candidates)
@@ -186,7 +238,7 @@ class HybridRetriever:
                 bm25_score=bm25_score,
                 theological_score=theological_score,
                 passage_score=passage_score,
-                final_score=rrf_scores.get(tsu_id, 0.0),
+                final_score=rrf_scores.get(tsu_id, 0.0) * _quality_factor(tsu),
             ))
 
         ranked.sort(key=lambda r: (-r.final_score, r.tsu_id))

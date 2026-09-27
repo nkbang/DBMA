@@ -36,6 +36,8 @@ import unicodedata
 from pathlib import Path
 from typing import Any, Optional
 
+from core.query_translation import QUERY_TRANSLATION_VERSION
+
 
 def normalize_query(query: str) -> str:
     """Normalize a query string for cache-key purposes: Unicode NFKC, collapse
@@ -57,7 +59,12 @@ def make_cache_key(
     the dataset fingerprint for index-version invalidation."""
     normalized = normalize_query(query)
     scope_part = ",".join(sorted(file_scope)) if file_scope else ""
-    raw = f"{normalized}|k={k}|scope={scope_part}|ds={dataset_fingerprint or ''}"
+    # qt=: query-translation glossary version — a glossary change alters
+    # which candidates a Korean query retrieves, so old entries must miss.
+    raw = (
+        f"{normalized}|k={k}|scope={scope_part}|ds={dataset_fingerprint or ''}"
+        f"|qt={QUERY_TRANSLATION_VERSION}"
+    )
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
 

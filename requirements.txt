@@ -42,4 +42,8 @@ hunspell
 # core/tli/korean_tokenizer.py — BM25 한국어 형태소 분석(P1, docs/TODO.md).
 # 순수 wheel 배포(Cython 컴파일, 시스템 mecab/JVM 불필요) — Apple Silicon
 # 포함 어디서나 pip install만으로 설치된다.
-kiwipiepy
+# [2026-09-26] 버전 고정: 0.24.0이 "성화"를 "성"으로 분석해 CI의
+# test_query_parser_korean이 실패(09-25부터 전 브랜치). 운영 venv
+# (~/envs/dbma311)와 기존 BM25 토큰이 0.23.2 기준이므로 그에 맞춘다.
+# 올릴 때는 한국어 토큰화 회귀 확인 후 재색인과 함께.
+kiwipiepy==0.23.2
