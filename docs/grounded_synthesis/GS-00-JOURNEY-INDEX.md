@@ -175,8 +175,9 @@ PHASE n WORK ORDER REPORT
 - [x] P4 Synthesis Input Boundary — `9eae5167` (r1 첫 제출 GREEN, HQ 승인 2026-09-27)
 - [x] P5 Claim-Evidence Binding — `20bf6ddd` (r1 첫 제출 GREEN, HQ 승인 2026-09-27)
 - [x] P6 Grounded Answer — `2e3eaeea` (r0 잘못된 대상 오전달 → r1 재지시 후 GREEN, HQ 승인 2026-09-27)
+- [x] P7 Citation/Provenance — `f9f4a55f` (r1 HOLD: id_exists short-circuit 결함 → r2 GREEN, HQ 승인 2026-09-27)
 - [ ] G0 staged 변경 처리 결정 (HQ) — 계속 보류, GS 커밋은 경로 지정으로 계속 격리
-- [ ] P7 ~ P12, Final
+- [ ] P8 ~ P12, Final
 
-진행률: 약 47% (P1/P2/P3A/P4/P5/P6 GREEN, ADR-036 Accepted, P7 발급)
+진행률: 약 53% (P1/P2/P3A/P4/P5/P6/P7 GREEN, ADR-036 Accepted, P8 발급)
 - 이월 이슈: Claim ID 전역 고유성(P5 CUE 리뷰) — P9 통합 시점에 재확인 필요
