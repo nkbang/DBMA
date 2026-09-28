@@ -181,15 +181,19 @@ PHASE n WORK ORDER REPORT
 - [x] P10 Regression/Architecture Integrity Audit — `0d265afc` (r1 첫 제출 GREEN, HQ 승인 2026-09-28)
 - [x] P11 Production Safety Audit — `06e5a47b` (r1 HOLD: 항목4/6 동어반복(자기자신 diff) → r2 GREEN, HQ 승인 2026-09-28)
 - [x] P12 Final Implementation Report + CUE Final Validation — `1e58a2ea`, 보강 `912e6789` (첫 제출 GREEN, HQ 최종 승인 2026-09-28)
-- [~] **여정 완결 — 잠정 보류(HOLD)로 하향** — PR #90 CI가 실결함 발견(아래), HOTFIX 검증 완료 전까지 P12 GREEN 및 최종 완결 선언을 잠정 무효로 취급
+- [x] **여정 완결 — HOTFIX 검증 완료로 GREEN 복구** (2026-09-28)
 
-진행률: 97%(HOTFIX 검증 대기) — 기능 결함 여부 미확정, **검증 무결성 결함은 확정**
+진행률: **100%** — HOTFIX(`c2cdf147` feat/peb-v0.1, `d50db6cd` PR 브랜치) 양쪽
+반영·CUE 독립 재검증(별도 워크트리 2곳에서 74 passed 재현) 완료, PR #90 CI
+`validate` success 확인.
 
 ## ⚠️ P12 이후 발견된 검증 무결성 결함 (2026-09-28, PR #90 CI)
 
+**해결됨(2026-09-28) — 아래 참고.**
+
 `tests/test_evidence_assembly.py`(P3A), `test_grounded_synthesis_input.py`(P4),
 `test_grounded_claims.py`(P5), `test_grounded_answer.py`(P6) 4개 파일에 절대경로
-`/Users/David/DBMA`가 16곳 하드코딩되어 있었다. 로컬 환경(CUE 세션이 실행된
+`/Users/David/DBMA`가 15곳 하드코딩되어 있었다. 로컬 환경(CUE 세션이 실행된
 바로 그 머신)에는 이 경로가 실제로 존재해서, **P3A~P6 CUE 교차검증에서 "독립
 재실행"했다고 기록한 이 4개 파일의 구조적 안전성 테스트(TestStaticSafety,
 AC5/AC6/AC8/AC9 grep 계열)는 실제로는 항상 같은 고정 경로만 검사했다** — 어느
@@ -207,10 +211,17 @@ CUE가 다른 방식(직접 파일 읽기, 다른 경로에서 grep)으로 이�
 가능성은 낮게 본다. 그러나 이 4개 파일의 자체 테스트가 그걸 실제로
 증명하지 못했다는 사실은 정직하게 기록한다.
 
-**처리**: `GS-POST-P12-HOTFIX-hardcoded-path.md` 발급 — 4개 파일 경로
-portable화 + 하드코딩 경로 재발 방지 가드 테스트 신규 추가 + CUE가
-`/Users/David/DBMA`가 아닌 별도 checkout에서 독립 재실행 + P12 최종검증
-재실행 + PR #90 CI 재실행. 전부 통과해야 P12 GREEN·여정 완결을 재선언한다.
+**처리 완료**: `GS-POST-P12-HOTFIX-hardcoded-path.md` 발급(외부 교차검증
+4건 반영해서 1회 수정 — 개수 15로 정정, 커밋 후 워크트리 검증 순서 교정,
+가드테스트 포함 5파일 단일 커밋, 재귀 검사로 교정) → C1이
+`feat/peb-v0.1`에 `c2cdf147`로 커밋(15곳 전부 `_PROJECT_ROOT` 기반으로
+교체 + `tests/test_no_hardcoded_absolute_paths.py` 신규 가드 테스트) →
+CUE가 diff 전수 정독 + 별도 워크트리(`/tmp/cue-portability-check`)에서
+독립 재실행(74 passed, C1 보고와 일치) → 동일 커밋을 PR 브랜치
+(`claude/grounded-synthesis-p1-p12`)에 CUE가 직접 cherry-pick(`d50db6cd`,
+충돌 0) → 그 브랜치에서 전체 회귀 재실행(3394 passed, 0 failed, 16
+skipped) → push → **PR #90 CI(`validate`) success 확인**. 재귀 검사로
+`tests/` 전체에서 하드코딩 절대경로 0건(Python 소스 기준) 확정.
 
 ## 최종 통합 (main 병합 준비)
 
@@ -219,7 +230,8 @@ portable화 + 하드코딩 경로 재발 방지 가드 테스트 신규 추가 +
   커밋만 cherry-pick(충돌 0, 파일목록 feat/peb-v0.1 diff와 정확히 일치).
   최신 main 위에서 전체 재실행: **3393 passed, 0 failed, 16 skipped**
 - **PR #90**: https://github.com/nkbang/DBMA/pull/90
-  (`claude/grounded-synthesis-p1-p12` → `main`), CI 대기 중, Auto-fix 꺼둠
+  (`claude/grounded-synthesis-p1-p12` → `main`, HEAD `d50db6cd`),
+  **CI `validate` success**, mergeable=MERGEABLE/CLEAN. Auto-fix 꺼둠
   (HQ 직접 판단 선호). main 직접 병합은 별도 HQ 승인 필요.
 
 - 이월 이슈: Claim ID 전역 고유성(P5 CUE 리뷰) — `GS-FINAL-IMPLEMENTATION-REPORT.md`
