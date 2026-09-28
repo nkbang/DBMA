@@ -173,7 +173,9 @@ PHASE n WORK ORDER REPORT
 - [x] P3 + P3A Multi-Query Assembly + Manifest — `14fccb54` (r1 HOLD → r2 HOLD → r3 GREEN, HQ 승인 2026-09-27)
 - [x] ADR-036 Grounded Synthesis Boundary — Accepted (2026-09-27, P3A 승인과 함께 처리)
 - [x] P4 Synthesis Input Boundary — `9eae5167` (r1 첫 제출 GREEN, HQ 승인 2026-09-27)
+- [x] P5 Claim-Evidence Binding — `20bf6ddd` (r1 첫 제출 GREEN, HQ 승인 2026-09-27)
 - [ ] G0 staged 변경 처리 결정 (HQ) — 계속 보류, GS 커밋은 경로 지정으로 계속 격리
-- [ ] P5 ~ P12, Final
+- [ ] P6 ~ P12, Final
 
-진행률: 약 33% (P1/P2/P3A/P4 GREEN, ADR-036 Accepted, P5 발급)
+진행률: 약 40% (P1/P2/P3A/P4/P5 GREEN, ADR-036 Accepted, P6 발급)
+- P6 WO 발급 시 전달할 것: Claim ID 전역 고유성 이슈(P5 CUE 리뷰 §Remaining issues)
