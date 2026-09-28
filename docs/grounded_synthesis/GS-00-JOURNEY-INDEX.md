@@ -180,8 +180,20 @@ PHASE n WORK ORDER REPORT
 - [x] P9 Full Integration Test — `5738c709` (r1 HOLD: 프롬프트 evidence_id 누락 → r2 HOLD: 정본 결과파일 미갱신(+2회 재전송) → r3 GREEN, HQ 승인 2026-09-28. 첫 실모델 실행: A1/B1 grounded 도달 실증)
 - [x] P10 Regression/Architecture Integrity Audit — `0d265afc` (r1 첫 제출 GREEN, HQ 승인 2026-09-28)
 - [x] P11 Production Safety Audit — `06e5a47b` (r1 HOLD: 항목4/6 동어반복(자기자신 diff) → r2 GREEN, HQ 승인 2026-09-28)
-- [ ] G0 staged 변경 처리 결정 (HQ) — 계속 보류, GS 커밋은 경로 지정으로 계속 격리
-- [ ] P12, Final — 여정의 마지막 C1 산출물
+- [x] P12 Final Implementation Report + CUE Final Validation — `1e58a2ea`, 보강 `912e6789` (첫 제출 GREEN, HQ 최종 승인 2026-09-28)
+- [x] **여정 완결** — CUE 최종 검증 7문항 전부 PASS
 
-진행률: 약 80% (P1~P11 GREEN, ADR-036 Accepted, P12 발급 — 최종 Phase)
-- 이월 이슈: Claim ID 전역 고유성(P5 CUE 리뷰) — 아직 실사용에서 문제 재현 안 됨, P12 최종보고서에 반영할 것
+진행률: **100%** — Grounded Synthesis P1~P12 완료(2026-09-28)
+
+## 최종 통합 (main 병합 준비)
+
+- `feat/peb-v0.1`: 원본 개발/감사 브랜치(GS 13개 커밋 + G0 무관 staged 6건 포함), 그대로 보존
+- `claude/grounded-synthesis-p1-p12`: `origin/main` 기준 신규 브랜치, GS 13개
+  커밋만 cherry-pick(충돌 0, 파일목록 feat/peb-v0.1 diff와 정확히 일치).
+  최신 main 위에서 전체 재실행: **3393 passed, 0 failed, 16 skipped**
+- **PR #90**: https://github.com/nkbang/DBMA/pull/90
+  (`claude/grounded-synthesis-p1-p12` → `main`), CI 대기 중, Auto-fix 꺼둠
+  (HQ 직접 판단 선호). main 직접 병합은 별도 HQ 승인 필요.
+
+- 이월 이슈: Claim ID 전역 고유성(P5 CUE 리뷰) — `GS-FINAL-IMPLEMENTATION-REPORT.md`
+  §12(d)에 기록됨, 실사용 통합(D2) 시점에 재확인 필요
