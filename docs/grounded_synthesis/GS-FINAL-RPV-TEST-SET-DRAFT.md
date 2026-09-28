@@ -310,3 +310,45 @@ raw 출력 (RankedCandidate 개수/ID 또는 fixture evidence_id):
 ```
 
 RPV-06a/06b는 위에 추가로 테스트 계정 ID와 fixture 원문 전체를 포함한다.
+
+## 실행 대상 정정 (2026-09-28)
+
+real RPV 실행 대상은 **9개**다(8개 아님): `01a, 01b, 02, 03a, 03b, 04, 07,
+08a, 08b`. 05a/05b/06a/06b는 HOLD.
+
+## Candidate Pipeline Trace WO (2단계 조사, c8f7e41a 격리 워크트리, read-only)
+
+**배경**: Tantivy 인덱스 재생성(Sep 28 15:54) 후에도 fixture 문서가
+no-scope 검색에서 0건으로 확인됨(`rpv_preflight_v2_result.json`, CUE
+검증 완료 — 117줄 전체, `pwd` 필드 포함, RPV-06a/06b 둘 다 10/10 Broadus).
+단순 stale-index 문제가 아니라 "등록한 개인 자료를 일반 질문으로 찾을 수
+있는가"라는 상위 사용자 경로 자체가 깨진 상태로 판단됨.
+
+**조사 파이프라인 단계**(코드 참조 — `core/hybrid_candidate_pipeline.py`,
+기본 `candidate_k=30`, `fetch_k = candidate_k * _INDEX_PAGE_OVERFETCH`):
+```
+classify() [core/query_planner.py]
+  → CandidateGenerator.search() [core/candidate_generator.py]
+  → fetch_k 단위 후보 생성
+  → _demote_index_pages() candidate_k 절단 [hybrid_candidate_pipeline.py:100-110]
+  → tsu_by_id join
+  → Stage 2 scoring(theological/passage)
+  → top-k 반환
+```
+
+**조사 항목**:
+1. fixture의 TSU record·`tsu_id`·`source_file`·content가 `tsu_dataset.jsonl`과
+   Tantivy 인덱스에 실제 존재하는지 직접 조회로 확인
+2. fixture 본문의 고유 문구(예: "포도나무 비유 설교노트", "μένω")로
+   exact/free-text 검색했을 때 candidate generation 단계(fetch_k 시점)에
+   들어오는지 확인 — no-scope 자연어 질의가 아니라 fixture 고유어로
+   직접 테스트
+3. 위 파이프라인 6단계 중 정확히 어느 단계에서 fixture가 사라지는지
+   각 단계 직후 중간값을 출력/기록해 추적
+4. **high-k(예: candidate_k=200 이상)로 재실행**해 top-10과 비교 —
+   "애초에 후보 생성이 안 됨"과 "후보엔 있지만 top-10 랭킹에서 밀림"을
+   구분
+
+**금지 사항**: 코드/인덱스/코퍼스 수정 금지. 원인 위치가 단계별로
+확정된 뒤에만 별도 corrective WO를 발급한다. real RPV는 이 조사
+완료 전까지 시작하지 않는다.
