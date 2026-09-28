@@ -171,7 +171,7 @@ def phase6_fault_isolation():
     from ui.pages.chat import _get_processor, _inject_reference_context
     from NAE import reference_retrieval_adapter
     original_search = reference_retrieval_adapter.search_reference
-    def failing_search(query, top_k=3):
+    def failing_search(query, top_k=3, collection_names=None):
         raise ConnectionError("Simulated Smith connection failure")
     reference_retrieval_adapter.search_reference = failing_search
     try:
