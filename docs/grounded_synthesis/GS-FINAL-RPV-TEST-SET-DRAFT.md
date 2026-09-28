@@ -244,6 +244,45 @@ Report: 원인 가설 + 근거 코드/데이터 인용. 수정 제안은 별도 
   (추정 금지) — 위 확정본 텍스트를 그대로 업로드하고, 임의로 내용을
   바꾸거나 요약하지 않는다.
 
+## RPV-06a/06b 최종 preflight 결과 (2026-09-28) — CUE 검증 완료, HOLD
+
+**fixture 업로드**: 격리 워크트리(`/Users/David/DBMA-rpv-c8f7e41a`)의
+`data/RAW/`에 확정본 텍스트 그대로 저장 → `_execute_processing()` 파이프라인
+실행 → TSU dataset 204,262건 → 204,272건(+10, fixture A 7청크 + fixture B
+3청크). evidence_id: A=`6f323b08ce388551d2fa772c756a828e`(tsu_id 접두사
+`TSU-JHN-` — 성구 참조 정상 파싱), B=`5ce2824e947da15da8893fbb45c07239`.
+CUE가 `grep -c`로 청크 수·evidence_id 존재 직접 재확인, 원본
+`/Users/David/DBMA` 미변경 확인.
+
+**retrieval 결과** (`output/bench/rpv_preflight_result.json`, CUE가 직접
+열람해 수치 대조 — 정확히 일치):
+
+| 테스트 | 결과 수 | top-1 source | top-1 score |
+|---|---|---|---|
+| RPV-06a + file_scope | 7 | fixture A | 0.3404 |
+| RPV-06b + file_scope | 3 | fixture B | 0.3785 |
+| RPV-06a no-scope(실제 RPV 조건) | 10 | Broadus | 0.3643 |
+| RPV-06b no-scope(실제 RPV 조건) | 10 | Broadus | 0.2171 |
+
+**판정**: `file_scope`로 강제 지정하면 fixture가 정상 검색됨 —
+청킹·임베딩 자체는 올바르게 동작. 그러나 **실제 RPV 조건(사용자가
+scope를 지정하지 않고 그냥 질문)에서는 두 fixture 모두 top-10에
+전혀 등장하지 않고 Broadus만 반환됨.** Tantivy candidate index가
+`reindex_document()` schema mismatch로 신규 문서를 candidate
+generation 경로에 반영하지 못하는 것이 원인으로 추정(C1 보고,
+CUE 미검증 — 원인 자체는 별도 조사 필요).
+
+**RPV-06a**: HOLD · **RPV-06b**: HOLD
+
+**⚠️ 이 결과의 함의(RPV-05 편중 문제보다 더 근본적)**: RPV-06의 원래
+목적은 "Personal Corpus가 Default Corpus에 override되지 않는가"였다.
+그런데 지금은 **그 질문 이전 단계 — 방금 업로드한 개인 문서가 일반
+질의에서 전혀 검색되지 않는다.** Personal Corpus 우선순위를 논하기
+전에, 신규 업로드 문서가 애초에 retrieval candidate pool에 진입하지
+못하는 더 기초적인 결함(추정)이다. GS 결함 아님(§4 동일 원칙 —
+retrieval/인덱싱 계층), 단 실사용 임팩트가 RPV-05 편중보다 클 수
+있어 별도로 강조 기록한다.
+
 ## RPV 종료 후 처리 (테스트 계정)
 
 RPV-FINAL 보고 제출 시 다음을 함께 기록한다:
