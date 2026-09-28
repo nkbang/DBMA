@@ -1,0 +1,33 @@
+{
+  "taken_at": "2026-09-27T13:23:45-05:00",
+  "taken_by": "CUE (read-only)",
+  "purpose": "Grounded Synthesis P4 착수 전 운영 데이터 기준선 — P11 Production Safety 비교 기준(GS-00 §6)",
+  "root": "/Users/David/DBMA",
+  "protected": {
+    "output/bench/tsu_dataset.jsonl": {
+      "sha256": "0881618d16e46f8495ed067975e0869cafa4d80b6a4a549b567539644fe49c56",
+      "size": 329869977,
+      "mtime": "2026-09-27T00:10:55"
+    },
+    "output/bench/tsu_manifest.json": {
+      "sha256": "67159d211c4db14acf8f174aa9d2a4ecb115aeaf51c2940090c2005a6184665e",
+      "size": 326,
+      "mtime": "2026-09-27T00:10:55",
+      "tsu_count": 204262,
+      "source_document_count": 90
+    },
+    "output/bench/tantivy_index": {
+      "aggregate_sha256": "0d4536a13338692dbebde2037284e23950437b01e2b97dce10ecc7e5116d80b6",
+      "aggregate_method": "sorted(file names) → sha256(name + sha256(file)) 누적",
+      "file_count": 132,
+      "total_bytes": 265709032
+    }
+  },
+  "runtime_cache_excluded": [
+    "output/bench/search_cache.sqlite3",
+    "output/bench/search_telemetry.sqlite3",
+    "output/bench/bible_index.sqlite3"
+  ],
+  "qdrant": "스냅샷 시점에 http://localhost:6333 응답 없음(미실행) — P9 실행 전 스냅샷에서 컬렉션별 point 수 기록",
+  "note": "tsu_dataset.jsonl/tsu_manifest.json은 2026-09-27 00:10 Grounded Synthesis 밖의 작업으로 재생성된 상태다. 이 기준선은 그 이후 상태를 기록한 것이다."
+}
