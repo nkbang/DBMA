@@ -179,8 +179,9 @@ PHASE n WORK ORDER REPORT
 - [x] P8 Negative/Failure-path Validation — `e5eecd5f` (r1 HOLD: Case C/D P3A 미통과 → r2 HOLD: citation check 대체pool 우회(+1회 재전송) → r3 GREEN, HQ 승인 2026-09-27)
 - [x] P9 Full Integration Test — `5738c709` (r1 HOLD: 프롬프트 evidence_id 누락 → r2 HOLD: 정본 결과파일 미갱신(+2회 재전송) → r3 GREEN, HQ 승인 2026-09-28. 첫 실모델 실행: A1/B1 grounded 도달 실증)
 - [x] P10 Regression/Architecture Integrity Audit — `0d265afc` (r1 첫 제출 GREEN, HQ 승인 2026-09-28)
+- [x] P11 Production Safety Audit — `06e5a47b` (r1 HOLD: 항목4/6 동어반복(자기자신 diff) → r2 GREEN, HQ 승인 2026-09-28)
 - [ ] G0 staged 변경 처리 결정 (HQ) — 계속 보류, GS 커밋은 경로 지정으로 계속 격리
-- [ ] P11 ~ P12, Final
+- [ ] P12, Final — 여정의 마지막 C1 산출물
 
-진행률: 약 73% (P1/P2/P3A/P4~P10 GREEN, ADR-036 Accepted, P11 발급)
-- 이월 이슈: Claim ID 전역 고유성(P5 CUE 리뷰) — 아직 실사용에서 문제 재현 안 됨, P12에서 재확인
+진행률: 약 80% (P1~P11 GREEN, ADR-036 Accepted, P12 발급 — 최종 Phase)
+- 이월 이슈: Claim ID 전역 고유성(P5 CUE 리뷰) — 아직 실사용에서 문제 재현 안 됨, P12 최종보고서에 반영할 것
