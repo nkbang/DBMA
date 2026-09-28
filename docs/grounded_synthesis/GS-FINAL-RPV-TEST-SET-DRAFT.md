@@ -7,6 +7,49 @@
 - 실행 금지: 이 문서는 정의 단계 산출물이며, 실제 Real Pastoral Query Execution은
   preflight 결과 + HQ 최종 승인 후에만 시작한다.
 
+## Preflight 1차 실행 결과 — 무효 (c2cdf147, 2026-09-28)
+
+C1이 `/Users/David/DBMA`(로컬 HEAD `c2cdf147`)에서 실행한 1차 preflight는
+**무효 처리**한다. 사유:
+- `c2cdf147`은 main 병합 커밋 `c8f7e41a`의 조상이 아니며, `core/retrieval.py`의
+  한국어→영어 질의 번역 기능(PR #88, `core/query_translation.py`)이 빠져 있음
+- G0 비-GS 변경이 작업 트리에 섞여 있어 실행 환경이 배포 대상과 다름
+- CUE 독립 재검증 결과: RPV-01a/01b/02/03a/03b/04/05a/07(8개 중 7개) top-10이
+  전부 단일 문서(`Broadus_Lectures_on_History_of_Preaching.txt`, 코퍼스 내
+  크기 순위 80/83위)에서만 나왔고, 표본 열람 결과 질의와 무관한 내용 확인.
+  `bm25_score`가 질의 내에서 상수(0.5 또는 1.0)로 수렴하는 현상도 확인 —
+  일부는 코드상 의도된 동작(bible route posting-list, `bm25_score=1.0`
+  placeholder, `core/hybrid_candidate_pipeline.py:163-167`), 나머지
+  free-text route의 0.5 수렴은 **원인 미확정 — 관찰값으로만 기록, 결함 판정
+  내리지 않음**(HQ 지시, 2026-09-28)
+- RPV-05a("Multi-source") 등 다출처 요건이 있는 항목은 이 결과 기준으로
+  **HOLD**(PASS 기준 미충족)
+
+## Preflight 2차 실행 WO (c8f7e41a, 격리된 새 워크트리)
+
+**생성 명령**(HQ 확정, 2026-09-28):
+```bash
+git -C /Users/David/DBMA worktree add --detach /Users/David/DBMA-rpv-c8f7e41a c8f7e41a
+```
+
+**환경 격리 원칙(원본 코퍼스·인덱스 보호)** — 심볼릭 링크 금지:
+- TSU dataset·manifest: `/Users/David/DBMA/output/bench/`에서 **읽기 전용
+  복사본**을 새 워크트리 내부로 복사(`cp`, 링크 금지)
+- Tantivy index: 새 워크트리 내부에 **별도 복사본**을 만들어 사용
+  (원본 인덱스에 candidate index 재생성/쓰기 발생 위험 차단)
+- cache·telemetry: 새 워크트리 내부의 임시 경로로 분리(원본 경로 사용 금지)
+- 이유: preflight 실행이 candidate index 재생성, telemetry, cache 쓰기를
+  유발할 수 있어 원본 코퍼스·인덱스를 오염시킬 위험이 있음
+
+**보고 형식 변경** — "본문 전체" 금지, 감사 가능한 최소 정보만:
+- top-3 각각에 대해: evidence ID(tsu_id), source_file, final_score,
+  관련 구절의 **짧은 검토용 발췌**(1~2문장), content hash(sha256 등)
+- 코퍼스 본문을 감사 보고서에 대량 복제하지 않는다
+
+**점수 관찰 기록** — 결함 판정 아님, 관찰만:
+- `bm25_score`/`vector_score`/`theological_score`가 질의 내 10건에서
+  상수로 수렴하는지 여부를 항목별로 기록(원인 규명은 이번 범위 아님)
+
 ## Preflight 실행 전 공통 확인 사항
 
 - 실행 위치: `/Users/David/DBMA` (main, 병합 커밋 `c8f7e41a` 포함 여부 확인 후)
