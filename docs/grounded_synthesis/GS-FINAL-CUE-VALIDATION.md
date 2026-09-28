@@ -50,6 +50,36 @@ C1 최종보고 §13("3423 passed / 4 failed")과 정확히 일치. 4개 실패�
 이미 GS 무관(G0 config.yaml 변경 2건 + NAE/corpus/raw 환경 격차 2건)으로 확인된
 바로 그 4건과 동일.
 
+**정확한 수치 표현**(외부 교차검증 지적 반영): "3423개 전부 PASS"라는 압축 표현은
+오해 소지가 있다. 정확히는 총 3429개 시도 중 **3423 PASS / 4 FAIL(GS 무관) / 2 SKIP**이다.
+
+### 추가 검증 — G0 완전 격리 후 클린 기준 회귀 (2026-09-28)
+
+인과관계를 최종적으로 확정하기 위해, G0의 6개 파일(`config.yaml`,
+`core/candidate_generator.py`, `core/hybrid_candidate_pipeline.py`,
+`scripts/merge_nae_corpus.py`, `scripts/process_unprocessed_nae.py`,
+`scripts/test_default_corpus_query.py`)을 `git stash push -u`로 완전히
+격리한 뒤(고유 태그로 추적, `git stash apply`로 복원 — bare pop 금지 규칙 준수)
+전체 스위트를 재실행했다:
+
+```
+$ git stash push -u -m "CG-clean-baseline-check-<ts>" -- config.yaml \
+    core/candidate_generator.py core/hybrid_candidate_pipeline.py \
+    scripts/merge_nae_corpus.py scripts/process_unprocessed_nae.py \
+    scripts/test_default_corpus_query.py
+$ PYTHONDONTWRITEBYTECODE=1 ~/envs/dbma311/bin/python -m pytest tests/ -q
+2 failed, 3425 passed, 2 skipped, 16 warnings in 267.40s
+
+FAILED tests/test_m2_source_registry_governance.py::TestM2KeyGovernance::test_raw_path_checksum_target_files_exist
+FAILED tests/test_m2_source_registry_governance.py::TestValidatorIntegration::test_int_01_validator_passes
+```
+
+G0를 제거하니 `config.yaml` 관련 2개 실패가 정확히 사라지고(3423→3425 passed,
+4→2 failed), 남은 2개는 `NAE/corpus/raw` 환경 격차로 이미 설명된 것과 동일하다 —
+**GS 관련 실패는 0건임을 클린 기준에서 최종 확정**했다. 이후 `git stash apply
+<sha>` + `git add`로 G0를 정확히 원상복구했다(`git diff --cached --stat`으로
+원래 diffstat과 라인 수까지 일치 확인 후 stash drop).
+
 ## R6 grep 전체 재실행(Evidence boundary 재확인)
 
 ```
@@ -107,7 +137,8 @@ max_evidence로 잘렸어야 하는" 이론적 경계까지 스스로 지적한 
 
 Grounded Synthesis 여정(P1~P12) 최종 검증 완료 — **GREEN**.
 11개 커밋, 22개 파일(전부 GS 명명 규칙 내, 범위 이탈 0건), 신규 테스트
-220개 + 기존 3203개 = 3423개 전부 PASS(4개 실패는 GS 무관, CUE 독립 재확인).
+220개 + 기존 3203개 = 3423개 PASS, 4개 FAIL(GS 무관, 클린 기준(G0 제외)
+재실행으로 0건 확정), 2개 SKIP.
 핵심 불변식 7개(retrieval authority 유지, evidence boundary, multi-query
 provenance, dedup 정책, claim grounding, insufficient-evidence 정상 처리,
 기존 시스템 무손상) 전부 CUE가 코드·테스트를 직접 재확인해서 PASS 판정.
