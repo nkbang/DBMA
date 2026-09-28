@@ -50,6 +50,98 @@ git -C /Users/David/DBMA worktree add --detach /Users/David/DBMA-rpv-c8f7e41a c8
 - `bm25_score`/`vector_score`/`theological_score`가 질의 내 10건에서
   상수로 수렴하는지 여부를 항목별로 기록(원인 규명은 이번 범위 아님)
 
+## Preflight 2차 결과 (c8f7e41a 격리 워크트리, 2026-09-28) — CUE 재검증 완료
+
+**실행 범위**: raw JSON에 포함된 항목은 10개뿐이다 — `RPV-01a, 01b, 02, 03a,
+03b, 04, 05a, 05b, 07, 08a`. 나머지 3개는 이번 100-슬롯 집계에서 **제외**했다:
+- `RPV-06a`, `RPV-06b`: fixture 업로드 미실행(테스트 계정 미지정, 계속 보류)
+- `RPV-08b`: `file_scope` 기반 인위적 0건 통제 질의라 자연어 10건 집계와
+  성격이 달라 별도 처리(결과 자체는 별도 기록, 아래 §RPV-08b 참고)
+
+**환경/격리 검증(CUE 독립 확인)**: `git -C /Users/David/DBMA-rpv-c8f7e41a
+rev-parse HEAD` = `c8f7e41a` 일치. `find /Users/David/DBMA/output/bench
+-newermt "2026-09-28 14:00:00"` 결과 없음(원본 미변경). `output/bench/`
+전 파일 `-rw-r--r--` 실제 복사본(심볼릭 링크 아님), `tantivy_index` 254MB
+실데이터. **격리 지시 정확히 준수됨.**
+
+**숫자 검증**: RPV-04/05b/01a의 source_file 목록을 raw JSON에서 직접
+추출해 보고서 표와 대조 — 정확히 일치. 날조 없음.
+
+### 신규 발견 — 코퍼스 편중 (retrieval 랭킹, GS와 무관)
+
+10개 질의 × 10건 = 100개 후보 슬롯 전체 집계:
+```
+19  Broadus_Lectures_on_History_of_Preaching.txt
+18  Broadus_Preparation_and_Delivery_of_Sermons.txt
+18  Dagg_Church_Order.jsonl
+18  Hiscox_Standard_Manual.jsonl
+12  Fuller_Complete_Works_Vol01.jsonl
+ 8  Dargan_History_of_Preaching_Vol01.txt
+ 2  Maclaren_Expositions_Vol01.txt
+ 2  Dargan_History_of_Preaching_Vol02.txt
+ 2  Fuller_Complete_Works_Vol02.jsonl
+ 1  Keach_Tropologia_1681.txt
+```
+83개 코퍼스 문서 중 **10개만** 100개 슬롯을 채웠고, 코퍼스에서 가장 큰
+자료(`Smith_Bible_Dictionary` 4권, 전체 24%)는 **단 한 번도 등장하지 않음.**
+이 패턴은 GS 결함이 아니다 — GS는 retrieval 후보의 관련성/다양성을 새로
+판정하는 계층이 아니다(HQ, 2026-09-28). **별도 read-only WO로 분리 조사**
+(아래 §Retrieval Ranking Investigation WO).
+
+### RPV별 4-필드 판정 (HQ 지정 형식)
+
+| RPV-ID | Retrieval Relevance | Source Diversity | GS Claim/Citation Integrity | Product-Use Finding |
+|---|---|---|---|---|
+| RPV-01a | 낮음(표본 발췌가 헬라어 문법과 무관 — 설교학 서적 인용) | 5개 문서(형식상 충족) | 미실행(real RPV 대기) | **관찰 대기** — real 실행 후 GS가 이 낮은 관련성 근거를 어떻게 처리하는지 관찰 필요 |
+| RPV-01b | 낮음 | 5개 | 미실행 | 관찰 대기 |
+| RPV-02 | 낮음 | 5개 | 미실행 | 관찰 대기 |
+| RPV-03a | 낮음 | 5개 | 미실행 | 관찰 대기 |
+| RPV-03b | 낮음 | 5개 | 미실행 | 관찰 대기 |
+| RPV-04 | 중간(Maclaren/Keach 등 상대적으로 다양) | 6개(최다) | 미실행 | 관찰 대기 |
+| RPV-05a | 낮음(Beatitudes 주석이 아니라 설교학 서적) | 5개(형식 충족, 실질 낮음) | 미실행 | **PRODUCT-USE FINDING / HOLD** — "여러 주석가 비교" 요건 미충족 |
+| RPV-05b | **매우 낮음** — 질의가 명시한 "Fuller"가 top-10에 0건 | 5개(Fuller 배제) | 미실행 | **PRODUCT-USE FINDING / HOLD** — 질의가 지목한 저자 자체가 근거에서 빠짐 |
+| RPV-07 | 낮음 | 5개 | 미실행 | 관찰 대기 |
+| RPV-08a | 해당없음(가공 인물 통제) | 5개 | 미실행 | 정상 동작(의도된 semantic 매칭) |
+
+RPV-05a/05b는 HQ 지시대로 **PRODUCT-USE FINDING / HOLD**로 기록하며,
+GS 결함으로 분류하지 않는다.
+
+### RPV-08b (통제 질의, 별도 집계)
+
+```
+Query: "the grace of God" (file_scope=["nonexistent_file_xyz_99887766.txt"])
+Count: 0
+Verdict: insufficient_evidence가 정상 (file_scope로 의도적 0건)
+```
+자연어 100-슬롯 집계에서 제외한 이유: 인위적 file_scope 통제라 실제
+코퍼스 커버리지를 반영하지 않음.
+
+## Retrieval Ranking Investigation WO (GS/RPV와 분리된 별도 read-only 조사)
+
+```
+WORK ORDER — RETRIEVAL RANKING INVESTIGATION (read-only, GS 범위 밖)
+
+목적: RPV preflight에서 관찰된 코퍼스 편중의 원인을 read-only로 조사한다.
+  코드/인덱스/코퍼스 수정 금지 — 조사 및 보고만.
+
+조사 항목:
+1. Smith_Bible_Dictionary(4권, 전체 코퍼스의 24%)가 왜 100개 슬롯에서
+   한 번도 상위 10위 안에 들지 못하는지 (임베딩 생성 여부, 인덱싱 여부,
+   스코어 정규화 등 확인)
+2. bible route의 bm25_score=1.0 고정(core/hybrid_candidate_pipeline.py:163-167)이
+   실제로 얼마나 자주 트리거되는지 — 성구 참조가 없는 일반 신학 질의
+   (예: RPV-03a "예정론과 자유의지")도 이 경로를 타는지 classify() 로직 확인
+2b. free-text route에서도 bm25_score가 상수로 수렴하는 경우가 있는지
+   (1차 preflight에서 관찰됨) — Tantivy 점수 정규화/클램핑 로직 확인
+3. Broadus/Dagg/Hiscox/Dargan 등 특정 문헌 클러스터가 반복적으로
+   상위 랭킹을 차지하는 스코어 요인 분석(embedding 품질, chunk 길이,
+   content_quality 필드 등)
+
+Allowed files: 없음(코드 수정 금지)
+Report: 원인 가설 + 근거 코드/데이터 인용. 수정 제안은 별도 WO로 분리.
+```
+
+
 ## Preflight 실행 전 공통 확인 사항
 
 - 실행 위치: `/Users/David/DBMA` (main, 병합 커밋 `c8f7e41a` 포함 여부 확인 후)
