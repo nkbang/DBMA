@@ -15,12 +15,16 @@ ABSOLUTE RULES:
 """
 
 import subprocess
+from pathlib import Path
 from typing import Any
 
 import pytest
 
 from core.grounded_claims import Claim, ClaimExtractor, StubClaimExtractor, bind_claims
 from core.grounded_synthesis_input import SynthesisInput
+
+
+_PROJECT_ROOT = Path(__file__).resolve().parents[1]  # tests/ 의 부모 = 저장소 루트
 
 
 # ============================================================
@@ -180,7 +184,7 @@ class TestAC5_NoClaimGuardImport:
             [
                 "grep", "-nE",
                 r"^(import|from)\s+.*claim_guard",
-                "/Users/David/DBMA/core/grounded_claims.py",
+                str(_PROJECT_ROOT / "core" / "grounded_claims.py"),
             ],
             capture_output=True,
             text=True,
@@ -220,7 +224,7 @@ class TestAC6_ResponsibilityBoundary:
             [
                 "grep", "-nE",
                 r"^(import|from)\s+.*prompt_text|^\s*\.prompt_text\b|synthesis_input\.prompt_text",
-                "/Users/David/DBMA/core/grounded_claims.py",
+                str(_PROJECT_ROOT / "core" / "grounded_claims.py"),
             ],
             capture_output=True,
             text=True,
