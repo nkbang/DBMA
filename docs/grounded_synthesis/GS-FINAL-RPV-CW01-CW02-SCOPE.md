@@ -1,8 +1,12 @@
-# CW-01 / CW-02 Corrective WO — 범위 고정 (HQ 승인, 미구현)
+# CW-01 / CW-02 Corrective WO — 범위 고정 (HQ 승인, 구현 착수 승인됨)
 
 - 작성: CUE, 2026-09-28. HQ가 승인한 corrective WO 2건의 범위를 코드
-  레벨로 고정한다. **이 문서는 구현하지 않는다** — C1 착수는 HQ의
-  별도 "corrective implementation 승인" 이후.
+  레벨로 고정한다.
+- **2026-09-28 HQ 구현 착수 승인**: `CW-01 = APPROVED`, `CW-02 = APPROVED`.
+  C1은 아래 범위 안에서만 implementation한다. C-03(grounded 상태 정책)은
+  이번 corrective cycle의 scope가 아니다 — `GS-FINAL-RPV-C03-ARCHITECTURE-
+  DECISION-BRIEF.md` 참고, ADR-036 B6 유지(structural grounded ≠ semantic
+  support verified 구분 유지, 상태 체계 변경 없음).
 
 ---
 
@@ -104,7 +108,25 @@ Tantivy 변경, 새 retrieval engine 도입, 새 corpus 추가, UI 전면 개편
 LLM provider 변경, GS architecture 확장 — 전부 금지. 범위는 P5/P6/P7
 경계와 사용자 출력 정제로 한정.
 
+## CUE 검증 체크리스트 (구현 후, HQ §5 그대로)
+
+**CW-01**:
+- [ ] instruction-like text가 Claim으로 추출되지 않는가
+- [ ] evidence_id instruction이 Claim text에 혼입되지 않는가
+- [ ] 정상 Claim extraction이 유지되는가(회귀: 02/03b/07 재실행해 여전히
+      정상 claim 나오는지)
+- [ ] valid/invalid binding semantics 불변(`bind_claims()` 계약 그대로)
+- [ ] 기존 P5 tests(`tests/test_grounded_claims.py` 등) 통과
+
+**CW-02**:
+- [ ] `[evidence_id: ...]` 내부 marker가 사용자 출력에 노출되지 않는가
+- [ ] 내부 Evidence binding 유지(정제는 표시용 텍스트에만 적용)
+- [ ] citation/provenance 유지(`check_citation_provenance()` 결과 불변)
+- [ ] 정상 answer text 손상 없음
+
+CUE는 GREEN을 선언하지 않는다 — 검증 결과만 HQ에 제출.
+
 ## 현재 상태
 
-**범위만 고정됨. 구현 미착수.** HQ의 "corrective implementation 승인" 이후
-C1에게 전달한다.
+**HQ 구현 착수 승인 완료(2026-09-28).** C1에게 아래 범위로 전달, 수정
+완료 시 CUE read-only 재검증 → HQ 제출 → 승인 시 9건 재-RPV + 05/06 추가.
