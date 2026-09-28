@@ -231,8 +231,9 @@ skipped) → push → **PR #90 CI(`validate`) success 확인**. 재귀 검사로
   최신 main 위에서 전체 재실행: **3393 passed, 0 failed, 16 skipped**
 - **PR #90**: https://github.com/nkbang/DBMA/pull/90
   (`claude/grounded-synthesis-p1-p12` → `main`, HEAD `d50db6cd`),
-  **CI `validate` success**, mergeable=MERGEABLE/CLEAN. Auto-fix 꺼둠
-  (HQ 직접 판단 선호). main 직접 병합은 별도 HQ 승인 필요.
+  CI `validate` success — **HQ가 별도 세션에서 직접 병합 완료**
+  (`c8f7e41a`, `origin/main` 2026-09-28). Grounded Synthesis P1~P12가
+  공식적으로 `main`에 포함됨.
 
 - 이월 이슈: Claim ID 전역 고유성(P5 CUE 리뷰) — `GS-FINAL-IMPLEMENTATION-REPORT.md`
   §12(d)에 기록됨, 실사용 통합(D2) 시점에 재확인 필요
