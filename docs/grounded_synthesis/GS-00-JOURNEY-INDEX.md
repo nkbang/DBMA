@@ -170,8 +170,9 @@ PHASE n WORK ORDER REPORT
 
 - [x] P1 Evidence Data Model — `2dd40d2e`
 - [x] P2 EvidencePool — `db677ac6`
-- [ ] G0 staged 변경 처리 결정 (HQ)
-- [ ] P3 + P3A Multi-Query Assembly (C1 구현 중 — `core/evidence_assembly.py` untracked, manifest 없음)
+- [x] P3 + P3A Multi-Query Assembly + Manifest — `14fccb54` (r1 HOLD → r2 HOLD → r3 GREEN, HQ 승인 2026-09-27)
+- [x] ADR-036 Grounded Synthesis Boundary — Accepted (2026-09-27, P3A 승인과 함께 처리)
+- [ ] G0 staged 변경 처리 결정 (HQ) — 계속 보류, GS 커밋은 경로 지정으로 계속 격리
 - [ ] P4 ~ P12, Final
 
-진행률: 약 20% (12개 게이트 중 2개 통과, P3 진행 중)
+진행률: 약 27% (P1/P2/P3A GREEN, ADR-036 Accepted, P4 발급 준비)

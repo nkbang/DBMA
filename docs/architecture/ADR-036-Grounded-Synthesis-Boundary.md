@@ -5,7 +5,7 @@ based_on:
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
   - docs/architecture/DBMA-Grounded-Synthesis-P4-Final-Journey-CUE-Review-2026-09-27.md
 created: 2026-09-27
-status: Proposed (설계만 — 구현 전. P4 착수의 선행 조건)
+status: Accepted (HQ 승인 2026-09-27, GS-P03A GREEN 승인과 함께 처리)
 scope_modified: core/grounded_synthesis_input.py, core/grounded_claims.py,
   core/grounded_answer.py, core/grounded_citation.py (전부 신규,
   P4~P7에서 순차 생성), docs/grounded_synthesis/, tests/test_grounded_*.py
@@ -15,9 +15,9 @@ scope_modified: core/grounded_synthesis_input.py, core/grounded_claims.py,
 
 | | |
 |---|---|
-| Status | Proposed |
+| Status | **Accepted** (2026-09-27) |
 | Date | 2026-09-27 |
-| Deciders | HQ (방향 승인) / CUE (설계) / C1 (구현, 이 ADR 동결 후) |
+| Deciders | HQ (승인, 2026-09-27) / CUE (설계) / C1 (구현) |
 | Supersedes | — |
 | Amends | 없음 — `core/generation.py`의 운영 근거-강제 경로(`_GROUNDING_DIRECTIVE`, ClaimGuard)는 그대로 둔다 |
 
