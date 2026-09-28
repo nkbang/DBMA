@@ -76,8 +76,48 @@ PYTHONDONTWRITEBYTECODE=1 ~/envs/dbma311/bin/python -m pytest \
 2. 같은 수정을 `claude/grounded-synthesis-p1-p12`(PR #90 브랜치)에도 반영해야
    한다 — CUE가 직접 처리한다(별도 지시 불필요, C1은 1번만 완료하면 된다).
 
+## 회귀 방지 (신규 요구사항 — HQ 지시)
+
+같은 결함이 재발하지 않도록, `tests/` 디렉터리 어디에도 절대경로가
+하드코딩되지 않았음을 확인하는 가드 테스트를 새로 추가한다.
+
+허용 파일에 `tests/test_no_hardcoded_absolute_paths.py`(신규)를 추가한다:
+
+```python
+"""tests/에 로컬 개발 환경의 절대경로가 하드코딩되지 않았는지 확인.
+
+CI 러너(/home/runner/work/...)와 로컬 개발 환경(/Users/<user>/...)의
+경로가 다르므로, 테스트 코드에 특정 사용자의 홈 디렉터리 절대경로가
+박혀 있으면 그 환경에서만 우연히 통과하고 다른 환경에서는 깨진다
+(2026-09-28 PR #90 CI에서 실제로 발견된 사고 재발 방지)."""
+
+import re
+from pathlib import Path
+
+_TESTS_DIR = Path(__file__).resolve().parent
+_FORBIDDEN_PATTERN = re.compile(r"/Users/[A-Za-z0-9_.-]+/DBMA")
+
+
+def test_no_hardcoded_developer_absolute_paths():
+    offenders = []
+    for py_file in _TESTS_DIR.glob("*.py"):
+        if py_file.name == "test_no_hardcoded_absolute_paths.py":
+            continue
+        text = py_file.read_text(encoding="utf-8", errors="ignore")
+        for lineno, line in enumerate(text.splitlines(), start=1):
+            if _FORBIDDEN_PATTERN.search(line):
+                offenders.append(f"{py_file.name}:{lineno}: {line.strip()}")
+    assert not offenders, (
+        "하드코딩된 개발자 절대경로 발견 (CI에서 깨짐):\n" + "\n".join(offenders)
+    )
+```
+
+이 테스트도 방금 만든 4개 파일 수정과 함께 통과해야 한다(즉 수정 후에는
+0건이어야 한다). 이 가드는 향후 어떤 Phase에서도 같은 패턴이 재발하면
+로컬에서든 CI에서든 즉시 잡아낸다.
+
 ## 보고
 
-`grep -rn "/Users/David/DBMA" tests/*.py` 출력(0건이어야 함)과 포터빌리티
-검증 pytest 출력을 그대로 붙여서 보고해라. 마지막 줄은 `HOLD` 또는
-`CUE READ-ONLY REVALIDATION REQUESTED`.
+`grep -rn "/Users/David/DBMA" tests/*.py` 출력(0건이어야 함), 포터빌리티
+검증 pytest 출력, 신규 가드 테스트 결과를 그대로 붙여서 보고해라. 마지막
+줄은 `HOLD` 또는 `CUE READ-ONLY REVALIDATION REQUESTED`.

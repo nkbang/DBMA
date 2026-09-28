@@ -181,9 +181,36 @@ PHASE n WORK ORDER REPORT
 - [x] P10 Regression/Architecture Integrity Audit — `0d265afc` (r1 첫 제출 GREEN, HQ 승인 2026-09-28)
 - [x] P11 Production Safety Audit — `06e5a47b` (r1 HOLD: 항목4/6 동어반복(자기자신 diff) → r2 GREEN, HQ 승인 2026-09-28)
 - [x] P12 Final Implementation Report + CUE Final Validation — `1e58a2ea`, 보강 `912e6789` (첫 제출 GREEN, HQ 최종 승인 2026-09-28)
-- [x] **여정 완결** — CUE 최종 검증 7문항 전부 PASS
+- [~] **여정 완결 — 잠정 보류(HOLD)로 하향** — PR #90 CI가 실결함 발견(아래), HOTFIX 검증 완료 전까지 P12 GREEN 및 최종 완결 선언을 잠정 무효로 취급
 
-진행률: **100%** — Grounded Synthesis P1~P12 완료(2026-09-28)
+진행률: 97%(HOTFIX 검증 대기) — 기능 결함 여부 미확정, **검증 무결성 결함은 확정**
+
+## ⚠️ P12 이후 발견된 검증 무결성 결함 (2026-09-28, PR #90 CI)
+
+`tests/test_evidence_assembly.py`(P3A), `test_grounded_synthesis_input.py`(P4),
+`test_grounded_claims.py`(P5), `test_grounded_answer.py`(P6) 4개 파일에 절대경로
+`/Users/David/DBMA`가 16곳 하드코딩되어 있었다. 로컬 환경(CUE 세션이 실행된
+바로 그 머신)에는 이 경로가 실제로 존재해서, **P3A~P6 CUE 교차검증에서 "독립
+재실행"했다고 기록한 이 4개 파일의 구조적 안전성 테스트(TestStaticSafety,
+AC5/AC6/AC8/AC9 grep 계열)는 실제로는 항상 같은 고정 경로만 검사했다** — 어느
+워크트리·브랜치에서 pytest를 실행했는지와 무관하게 결과가 같았을 것이다.
+GitHub Actions 러너(`/home/runner/work/DBMA/DBMA`)에서 그 경로가 존재하지
+않아 처음으로 드러났다(PR #90 `validate` 체크 11개 실패).
+
+**영향 범위**: 이 4개 파일의 grep 기반 정적 검사(TestStaticSafety 4개,
+AC5/AC6 각 1개, AC6 1개, AC8/AC9 각 1개 — 총 9~11개 테스트)의 과거 PASS
+기록은 "검증되지 않은 것"으로 재분류한다. **기능 코드(core/evidence_assembly.py,
+core/grounded_claims.py, core/grounded_answer.py, core/grounded_synthesis_input.py)
+자체가 실제로 금지 import/호출을 포함하는지는 별도로 재확인 필요** —
+CUE가 다른 방식(직접 파일 읽기, 다른 경로에서 grep)으로 이미 여러 차례
+확인한 바 있어(각 Phase 리뷰 문서의 V4 "코드 정독" 섹션) 실제 위반
+가능성은 낮게 본다. 그러나 이 4개 파일의 자체 테스트가 그걸 실제로
+증명하지 못했다는 사실은 정직하게 기록한다.
+
+**처리**: `GS-POST-P12-HOTFIX-hardcoded-path.md` 발급 — 4개 파일 경로
+portable화 + 하드코딩 경로 재발 방지 가드 테스트 신규 추가 + CUE가
+`/Users/David/DBMA`가 아닌 별도 checkout에서 독립 재실행 + P12 최종검증
+재실행 + PR #90 CI 재실행. 전부 통과해야 P12 GREEN·여정 완결을 재선언한다.
 
 ## 최종 통합 (main 병합 준비)
 
