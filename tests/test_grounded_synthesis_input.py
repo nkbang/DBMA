@@ -18,6 +18,7 @@ ABSOLUTE RULES:
 """
 
 import subprocess
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -26,6 +27,9 @@ from core.evidence_assembly import AssemblyManifest, QuerySpec
 from core.evidence_model import Evidence
 from core.evidence_pool import EvidencePool
 from core.grounded_synthesis_input import SynthesisInput, build_synthesis_input
+
+
+_PROJECT_ROOT = Path(__file__).resolve().parents[1]  # tests/ 의 부모 = 저장소 루트
 
 
 # ============================================================
@@ -308,7 +312,7 @@ class TestAC8_NoScoreAccess:
                 "grep", "-nE",
                 r"\.final_score|\.retrieval_score|\.bm25_score|\.theological_score|\.passage_score|"
                 r"sorted\(|\.sort\(",
-                "/Users/David/DBMA/core/grounded_synthesis_input.py",
+                str(_PROJECT_ROOT / "core" / "grounded_synthesis_input.py"),
             ],
             capture_output=True,
             text=True,
@@ -332,7 +336,7 @@ class TestAC9_NoForbiddenImports:
                 r"^import\s+(ollama|qdrant_client|tantivy|requests|httpx|urllib|subprocess|socket)|"
                 r"^from\s+(ollama|qdrant_client|tantivy|requests|httpx|urllib|subprocess|socket)|"
                 r"QueryProcessor|HybridQueryProcessor|RetrievalEngine|HybridRetriever|CandidateGenerator|GenerationService",
-                "/Users/David/DBMA/core/grounded_synthesis_input.py",
+                str(_PROJECT_ROOT / "core" / "grounded_synthesis_input.py"),
             ],
             capture_output=True,
             text=True,

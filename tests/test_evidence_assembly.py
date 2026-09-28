@@ -26,7 +26,11 @@ import ast
 import os
 import subprocess
 import sys
+from pathlib import Path
 from typing import Any
+
+
+_PROJECT_ROOT = Path(__file__).resolve().parents[1]  # tests/ 의 부모 = 저장소 루트
 
 import pytest
 
@@ -656,10 +660,10 @@ class TestPhase1Phase2Regression:
         """Phase 1: tests/test_evidence_model.py 실행."""
         result = subprocess.run(
             [sys.executable, "-m", "pytest", "tests/test_evidence_model.py", "-v", "--tb=short"],
-            cwd="/Users/David/DBMA",
+            cwd=str(_PROJECT_ROOT),
             capture_output=True,
             text=True,
-            env={**os.environ, "PYTHONPATH": "/Users/David/DBMA"},
+            env={**os.environ, "PYTHONPATH": str(_PROJECT_ROOT)},
         )
         assert result.returncode == 0, (
             f"Phase 1 tests failed:\n{result.stdout}\n{result.stderr}"
@@ -669,10 +673,10 @@ class TestPhase1Phase2Regression:
         """Phase 2: tests/test_evidence_pool.py 실행."""
         result = subprocess.run(
             [sys.executable, "-m", "pytest", "tests/test_evidence_pool.py", "-v", "--tb=short"],
-            cwd="/Users/David/DBMA",
+            cwd=str(_PROJECT_ROOT),
             capture_output=True,
             text=True,
-            env={**os.environ, "PYTHONPATH": "/Users/David/DBMA"},
+            env={**os.environ, "PYTHONPATH": str(_PROJECT_ROOT)},
         )
         assert result.returncode == 0, (
             f"Phase 2 tests failed:\n{result.stdout}\n{result.stderr}"
@@ -688,7 +692,7 @@ class TestStaticSafety:
 
     def test_no_retrieval_imports(self):
         """core/evidence_assembly.py가 retrieval 관련 클래스를 import하지 않음."""
-        source_path = "/Users/David/DBMA/core/evidence_assembly.py"
+        source_path = str(_PROJECT_ROOT / "core" / "evidence_assembly.py")
         with open(source_path, "r") as f:
             source = f.read()
 
@@ -719,7 +723,7 @@ class TestStaticSafety:
 
     def test_no_retrieval_calls(self):
         """core/evidence_assembly.py가 retrieval 함수를 호출하지 않음."""
-        source_path = "/Users/David/DBMA/core/evidence_assembly.py"
+        source_path = str(_PROJECT_ROOT / "core" / "evidence_assembly.py")
         with open(source_path, "r") as f:
             source = f.read()
 
@@ -736,7 +740,7 @@ class TestStaticSafety:
 
     def test_no_qdrant_tantivy_access(self):
         """core/evidence_assembly.py가 Qdrant/Tantivy에 접근하지 않음."""
-        source_path = "/Users/David/DBMA/core/evidence_assembly.py"
+        source_path = str(_PROJECT_ROOT / "core" / "evidence_assembly.py")
         with open(source_path, "r") as f:
             source = f.read()
 
@@ -748,7 +752,7 @@ class TestStaticSafety:
 
     def test_no_llm_generation(self):
         """core/evidence_assembly.py가 LLM generation을 수행하지 않음."""
-        source_path = "/Users/David/DBMA/core/evidence_assembly.py"
+        source_path = str(_PROJECT_ROOT / "core" / "evidence_assembly.py")
         with open(source_path, "r") as f:
             source = f.read()
 

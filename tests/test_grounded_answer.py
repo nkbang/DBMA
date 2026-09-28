@@ -15,6 +15,7 @@ ABSOLUTE RULES:
 """
 
 import subprocess
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -22,6 +23,9 @@ import pytest
 from core.grounded_claims import Claim
 from core.grounded_answer import GroundedAnswer, assemble_grounded_answer
 from core.grounded_synthesis_input import SynthesisInput
+
+
+_PROJECT_ROOT = Path(__file__).resolve().parents[1]  # tests/ 의 부모 = 저장소 루트
 
 
 # ============================================================
@@ -199,7 +203,7 @@ class TestAC5_NoAutoConflictDetection:
             [
                 "grep", "-nEi",
                 r"similarity|cosine|difflib|fuzzy|ratio\(|\.similarity|conflict.*detect|antonym|반대|유사도",
-                "/Users/David/DBMA/core/grounded_answer.py",
+                str(_PROJECT_ROOT / "core" / "grounded_answer.py"),
             ],
             capture_output=True,
             text=True,
@@ -244,7 +248,7 @@ class TestAC6_NoGenerationCall:
             [
                 "grep", "-nE",
                 r"^(import|from)\s+.*generation",
-                "/Users/David/DBMA/core/grounded_answer.py",
+                str(_PROJECT_ROOT / "core" / "grounded_answer.py"),
             ],
             capture_output=True,
             text=True,
@@ -259,7 +263,7 @@ class TestAC6_NoGenerationCall:
             [
                 "grep", "-nE",
                 r"_GROUNDING_DIRECTIVE|_DENOMINATION_DIRECTIVE",
-                "/Users/David/DBMA/core/grounded_answer.py",
+                str(_PROJECT_ROOT / "core" / "grounded_answer.py"),
             ],
             capture_output=True,
             text=True,
