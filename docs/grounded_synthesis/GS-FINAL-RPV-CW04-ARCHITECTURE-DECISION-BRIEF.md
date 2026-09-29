@@ -379,6 +379,60 @@ HQ 승인
 금지 범위, 테스트, G0, RPV-06a/06b 검증 조건 포함). 그 전 단계인
 "CUE 독립 Architecture Verification"이 현재 CUE의 작업 범위다.
 
+## CUE 독립 Architecture Verification (2026-09-29)
+
+HQ 승인된 AD-01(Option C)/AD-02(Option D)가 실제 baseline
+(`/Users/David/DBMA-rpv-c8f7e41a`, HEAD `c8f7e41a`)에서 구조적으로
+실현 가능한지 read-only로 확인(구현 아님, 코드 변경 없음).
+
+### AD-01 — 4단계 propagation 경로 실현 가능성
+
+```text
+Authoritative source/document metadata → explicit corpus membership
+→ retrieval/candidate → Evidence.corpus_type
+```
+
+- **document_id가 이미 전 구간에 연결되어 있음을 확인**:
+  `core/evidence_adapters/tsu_adapter.py:69,80,98`에서
+  `tsu_record.get("document_id")`가 TSU record → Evidence 변환 전
+  구간에 이미 threading되어 있다. 즉 registry(`documents.json`)의
+  document_id 레코드에 명시적 membership 필드를 추가하면, **기존
+  document_id 연결고리를 그대로 타고 downstream까지 전달 가능** —
+  HQ가 요구한 "새로운 독립 SSOT를 만들지 않는다"는 제약과 부합하는
+  구현 경로가 실제로 존재함을 확인.
+- TSU record는 일반 JSON dict이므로(`tsu_id, source_file, document_id,
+  ...` 등 15개 필드 확인, 스키마 고정 아님) 신규 필드 추가에 구조적
+  장벽 없음.
+- `RankedCandidate`(`core/retrieval.py`), `CandidateRef`
+  (`core/candidate_generator.py`)는 일반 `@dataclass`(frozen 아님) —
+  신규 필드 추가에 구조적 장벽 없음.
+- **결론**: AD-01의 4단계 경로는 기존 `document_id` 연결을 재사용하는
+  방식으로 실현 가능하며, 이는 CUE 권고안의 "옵션 C" 취지와 HQ의
+  "신규 독립 SSOT 아님" 제약을 동시에 만족하는 구체적 구현 지점이다
+  (구현 방식 자체는 여전히 Gate 2B Implementation Brief에서 확정).
+
+### AD-02 — Option D(post-processing role-aware merge) 실현 가능성
+
+- `HybridRetriever.retrieve()`(`core/hybrid_candidate_pipeline.py:112`,
+  return 지점 `ranked.sort(...); return ranked[:k_output]`)는 명확한
+  단일 반환점을 가진다 — role-aware merge를 `retrieve()` **내부**가
+  아니라 `HybridQueryProcessor.process()` 호출 경계에서 후처리
+  단계로 삽입 가능함을 확인. 이는 AD-02 Decision Matrix에서 예상한
+  "기존 retrieval 영향 국소적" 주장을 코드 구조로 뒷받침한다.
+- `core/retrieval.py`(RetrievalEngine, ADR-001 authority)와
+  `core/grounded_*.py`(GS, ADR-036 boundary)는 이 경로 어디에도
+  개입하지 않아도 된다 — 기존 금지 목록(§공통 전제) 위반 없이 구현
+  가능한 지점이 실제로 존재함을 확인.
+
+### 검증 결론
+
+AD-01/AD-02 둘 다 **HQ가 승인한 제약(신규 SSOT 아님, GS 무변경,
+retrieval engine 무변경) 안에서 실현 가능한 구체적 코드 지점이
+baseline에 실제로 존재**한다. 이 확인은 Implementation Plan의
+타당성을 뒷받침하는 것이지, 구현 방식 자체를 확정하는 것은 아니다 —
+정확한 파일/함수/필드 설계는 HQ의 Gate 2B Implementation Brief에서
+다뤄야 한다.
+
 ## 현재 상태
 
 ```text
@@ -387,8 +441,10 @@ CW-04 Gate 2A                   [✓ HQ]
 CW-04 Architecture Decision     [✓ HQ APPROVED]
   AD-01 Membership SSOT         [✓ HQ — Option C]
   AD-02 Retrieval Role Policy   [✓ HQ — Option D]
-CW-04 Gate 2B                   [NOT AUTHORIZED — CUE Architecture
-                                  Verification 대기]
+CUE Architecture Verification   [✓ CUE — 실현 가능성 확인 완료]
+CW-04 Gate 2B                   [NOT AUTHORIZED — HQ Implementation
+                                  Brief 발행 대기]
 C1                              [STOP]
-CUE                             [NEXT — 독립 Architecture Verification]
+CUE                             [STOP — HQ Gate 2B Implementation
+                                  Brief 대기]
 ```
