@@ -282,7 +282,7 @@ HQ Decision
 Required`, 또는 (Retrieval 변경이 필요하나 HQ 재승인 미획득 시)
 `[HOLD] Retrieval Re-Authorization Required`.
 
-## 17. 현재 상태
+## 17. 현재 상태 (2026-09-28 Gate 1 착수 승인 시점 — 이후 경과는 §18 참고)
 
 ```text
 CW-04 = APPROVED (Gate 1 scope)
@@ -294,9 +294,89 @@ Implementation = NOT AUTHORIZED
 Retrieval-layer change = NOT AUTHORIZED
 ```
 
+**최신 상태는 §18 "Gate 1 종료 — CUE 독립 검증 및 HQ 최종 판정"을
+참고할 것** — Gate 1은 [✓ HQ]로 종료됐고, G0 절차 위반이 기록됐으며,
+Gate 2A(Retrieval Role Design, 구현 없음)가 다음 단계로 예고됐다.
+
 **2026-09-28 HQ Gate 1 착수 승인.** C1은 §7 Gate 0(G0 worktree identity
 확인) 통과 후 §8 Gate 1 조사(Q1-Q5)만 수행한다 — 코드 변경 없음.
 Gate 1 산출물(§8 형식)을 C1이 보고하면 CUE가 §13 기준으로 독립
 검증한다. Q1-Q5 결론이 `B(Retrieval-layer correction required)`로
 나오더라도 §9 Gate 2 HQ Re-Authorization 없이는 어떤 코드도 수정하지
 않는다.
+
+## 18. Gate 1 종료 — CUE 독립 검증 및 HQ 최종 판정 (2026-09-28)
+
+**C1 Gate 1 조사 결과**: Q1-Q7 전부 보고(코드 인용 다수 포함), 결론
+`Q5=B(RETRIEVAL), Required change=RETRIEVAL`.
+
+**CUE 독립 검증**: `/Users/David/DBMA-rpv-c8f7e41a`(정확한 baseline)
+에서 C1이 인용한 모든 코드를 직접 재대조. `evidence_model.py`,
+`tsu_adapter.py`, `evidence_pool.py`, `retrieval.py`,
+`candidate_generator.py`, `NAE/retrieval_adapter.py` 인용은 전부
+정확. 단 `hybrid_candidate_pipeline.py:330-338` 인용은 **부정확**
+(실제 `RankedCandidate(...)` 생성 위치는 234-241번째 줄) — C1이
+G0 불일치를 인지하고도 STOP하지 않고 `/Users/David/DBMA`(`feat/peb-v0.1`,
+`c2cdf147`, `c8f7e41a`의 자손 아님)에서 조사를 강행한 직접적 결과.
+CUE가 올바른 baseline에서 234번째 줄을 직접 확인해 **실질적 결론은
+무효화되지 않음**을 확인(같은 함수에서 `corpus_type` 미설정 재확인).
+
+**HQ 최종 판정**:
+```text
+CW-04 Gate 1                         [✓ HQ]
+  Q1–Q3                              [✓ CUE]
+  Q4                                 [✓ CUE — Retrieval layer]
+  Q5                                 [✓ CUE — B / RETRIEVAL]
+  Q6                                 [HOLD — 제안된 fixture/query가
+                                       Bible route 가능성 있어 무효,
+                                       재설계 필요]
+  Q7                                 [✓ CUE]
+G0 procedural compliance             [✗ C1 — violation confirmed]
+
+CW-04 Gate 1 technical findings      [VALIDATED]
+CW-04 Gate 1 procedural compliance   [FAILED]
+
+CW-04 Gate 2A (Retrieval Role Design)  [NEXT — HQ 발행 예정]
+CW-04 Gate 2B (Implementation)         [NOT AUTHORIZED]
+RPV-06                                 [HOLD]
+GS-FINAL-RPV                           [HOLD]
+C1                                     [STOP]
+CUE                                    [STOP — Gate 1 audit 완료]
+```
+
+**Gate 1에서 확정된 3가지 architecture 사실**(C1 주장이 아니라 CUE가
+실제 baseline에서 검증해 승격됨):
+1. `Evidence.corpus_type`은 존재하지만 retrieval lineage에 연결되지
+   않는다(TSU → RankedCandidate → CandidateRef 경로에 필드 자체가
+   없고, adapter가 항상 `CORPUS_DEFAULT`로 하드코딩).
+2. Personal 자료도 Evidence 단계에서 Default로 분류될 수 있다 —
+   더 이상 observation이 아니라 확인된 architecture gap.
+3. GS(P4-P9)는 이 문제를 해결할 위치가 아니다 — retrieval이 evidence
+   set/order를 결정하고 GS는 공급받은 evidence를 synthesis할 뿐이라는
+   경계는 유지되어야 한다.
+
+**G0 원칙 강화(HQ, 신규)**: G0는 read-only investigation에도 예외
+없이 적용된다. G0 불일치 후 C1이 임의로 작업을 계속한 결과물은 그
+자체로 acceptance evidence가 아니다 — CUE가 올바른 baseline에서
+독립적으로 동일 내용을 재검증했을 때만 그 검증 결과가 acceptance
+evidence가 된다. (baseline provenance 보호 목적, C1 처벌 목적 아님)
+
+**다음 단계(예고)**: Gate 2를 2단계로 세분화한다.
+- **Gate 2A — Retrieval Role Design**: 구현 없이 설계안만. HQ가
+  Design Scope를 발행할 예정. D1(corpus membership SSOT) / D2(role
+  propagation 경로: TSU→RankedCandidate→CandidateRef→Evidence) /
+  D3(retrieval semantics: "항상 더 높은 relevance"가 아니라 "사용자가
+  선택한 primary research context") / D4(ranking mechanism 후보:
+  score adjustment / candidate quota-composition / two-stage retrieval
+  / primary+supplemental / other — 신규 retrieval engine·대규모
+  rewrite 제외) / D5(Default supplementation이 여전히 작동해야 함 —
+  "Personal 우선"이 "Default 차단"이 되면 안 됨) / D6(GS boundary
+  유지 증명).
+- **Gate 2B — Implementation Authorization**: Gate 2A 설계가 HQ
+  승인된 후에만 별도 재승인.
+
+RPV-06a는 이번 Q6에서 제안된 질문("요한복음 15장...")을 acceptance
+fixture로 채택하지 않는다 — Bible route 가능성이 있어 무효. Gate 2A
+단계에서 `route=hybrid`이면서 Personal/Default candidate가 모두
+실제 baseline에서 존재함을 먼저 확인한 질문을 선정한 뒤 RPV-06a를
+재실행한다.
