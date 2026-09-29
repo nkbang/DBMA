@@ -184,7 +184,7 @@ HQ Architecture Decision
 [반려] → 설계 재작업 또는 [HOLD] Architecture Decision Required
 ```
 
-## 8. 현재 상태
+## 8. 현재 상태 (2026-09-28 1차 제출 후 — 최신은 §9 참고)
 
 ```text
 CW-04 Gate 1     [✓ HQ]
@@ -195,3 +195,100 @@ CUE              [C1 산출물 대기 → 독립 검증 예정]
 RPV-06           [HOLD]
 GS-FINAL-RPV     [HOLD]
 ```
+
+## 9. 1차 제출 CUE 독립 검증 + HQ 판정 (2026-09-28)
+
+**C1 1차 제출**: 산출물 1-10 전부 제출. G0는 이번엔 위치 자체는 정상이었으나
+(CUE가 `/Users/David/DBMA-rpv-c8f7e41a` 직접 재확인) **확인 명령 출력
+자체를 보고서에 포함하지 않음** — 절차상 재지적 대상.
+
+**CUE 독립 검증**: 산출물 1-8, 10의 코드 인용(`evidence_model.py`,
+`tsu_adapter.py`, `evidence_assembly.py`, `evidence_pool.py`,
+`hybrid_candidate_pipeline.py`, `retrieval.py:1792-1798`,
+`grounded_synthesis_input.py`, `query_planner.py`)을 baseline에서
+전부 직접 대조 — 정확함(Gate 1 때의 줄번호 오류 재발 없음). 그러나
+**산출물 9(RPV-06a/06b 재선정 질문)는 사실관계 오류로 반증됨** — CUE가
+제안 질문을 baseline에서 직접 라이브 재실행한 결과, `route=hybrid`는
+맞지만 **fixture A/B가 top-10 candidate에 전혀 등장하지 않음(0/10
+둘 다)**. C1이 route 분류만 확인하고 실제 검색 결과는 검증하지 않은
+것이 원인.
+
+**HQ 최종 판정**:
+```text
+CW-04 Gate 2A
+  산출물 1   [✓ CUE]
+  산출물 2   [✓ CUE]
+  산출물 3   [✓ CUE]
+  산출물 4   [✓ CUE — design candidate]
+  산출물 5   [✓ CUE — design candidate]
+  산출물 6   [✓ CUE]
+  산출물 7   [✓ CUE — proposal]
+  산출물 8   [✓ CUE]
+  산출물 9   [HOLD — REWORK]
+  산출물 10  [✓ CUE — subject to Q8/architecture decision]
+
+Gate 2A final decision     [HOLD]
+Gate 2B                    [NOT AUTHORIZED]
+C1                         [REWORK ONLY — 산출물 9만]
+CUE                        [NEXT — 산출물 9 재검증]
+```
+
+**중요(HQ)**: 산출물 10의 "quota-based two-stage retrieval"도 승인된
+것이 아니다 — 여전히 설계 후보다. Q8 SSOT와 Personal/Default semantics가
+Architecture Decision으로 확정되기 전에는 quota나 boost를 구현안으로
+승격하지 않는다.
+
+### 산출물 9 재작업 지시
+
+```text
+STATUS
+  기존 산출물 1–8, 10       유지
+  산출물 9                  REWORK REQUIRED
+  Gate 2A 최종 승인          HOLD
+  Gate 2B                   NOT AUTHORIZED
+
+허용 범위
+  - RPV-06a/06b 질문 재선정
+  - route=hybrid 확인
+  - 실제 retrieval 실행
+  - fixture candidate 등장 여부 확인
+  - 필요한 경우 fixture/query 관계 재설계
+  - 결과 문서 작성
+
+금지
+  - 코드 수정 / retrieval 수정 / ranking 수정 / fixture 내용 변경
+  - corpus/index 변경 / GS 변경 / quota·boost 구현
+```
+
+**RPV-06a**: fixture A의 실제 주제(요한복음 15장 포도나무 비유, 거함,
+가지치기)와 의미적으로 연결되면서 scripture reference를 직접 포함하지
+않는 자연어 질문 필요(예시 후보일 뿐, 채택 전 검증 필수):
+"포도나무와 가지의 비유에서 열매를 맺기 위해 주님 안에 거한다는
+의미를 설명해 주세요"
+
+**RPV-06b**: fixture B의 실제 주제(성령의 은사, 고린도전서 12장)와
+맞는 질문 필요(예시 후보):
+"성령께서 교회에 다양한 은사를 주신다는 관점에서 은사의 종류와
+목적을 정리해 주세요"
+
+**증명해야 할 3가지**: (1) route=hybrid (2) fixture가 실제 retrieval
+candidate에 등장 (3) fixture의 관련 내용과 질문이 실제로 연결됨 —
+이 셋을 라이브 실행으로 증명해야 하며, 예시 질문을 그대로 채택하는
+것이 목적이 아니다.
+
+**보고 필수 항목** (단순히 `fixture_id in top_10`만 보고 금지):
+```text
+Query → ParsedQuery → route → retrieval candidate count
+→ fixture candidate count → fixture rank(s) → fixture source_file
+→ corpus_type → BM25 / semantic / final score
+```
+그리고 왜 그 fixture가 질문에 적합한 evidence인지 fixture 원문과
+검색 결과를 대조해 확인할 것(코드 근거가 아니라 원문 대조).
+
+### G0 절차 재교정 (2차 지적)
+
+작업 위치가 실제로 맞았더라도 G0 확인 명령의 실제 출력을 보고서에
+포함하지 않은 것은 절차 준수 실패다. "컨텍스트를 알고 있다"는 G0
+증거를 대체할 수 없다. 다음 보고서에는 `pwd`, `git rev-parse
+--show-toplevel`, `git branch --show-current`, `git rev-parse HEAD`의
+실제 출력을 반드시 포함한다.
