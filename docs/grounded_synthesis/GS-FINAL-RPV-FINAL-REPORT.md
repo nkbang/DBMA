@@ -234,6 +234,48 @@ GS-FINAL-RPV                             [✓ HQ] — 2026-09-29 최종 승인
   이 누락을 보완함. 기술적 완료 여부와는 분리해 별도 관리 대상으로
   기록.
 
-C1/CUE 모두 STOP. GS-FINAL-RPV는 이 시점 기준으로 종결됐으며, 향후
-재개는 새로운 HQ 지시(신규 corrective WO, RPV 확장, backfill 작업
-등)를 통해서만 이루어진다.
+## 9. 코드 병합 최종 기록 (2026-09-29)
+
+§1-8의 서술은 GS-FINAL-RPV *문서*(journey record)에 대한 것이었다.
+AD-01/AD-02·CW-05의 **실제 코드**는 별도 PR로 병합됐으며, 이 절이
+그 최종 확인 기록이다.
+
+- **PR [#93](https://github.com/nkbang/DBMA/pull/93)** — `feat/cw04-ad01-ad02-nae-app` → `main`,
+  merge commit `59dce53a3b66f712005c97d001f5ddb4553e04ad`
+- **포함 커밋 3개**:
+  - `d202238d` — AD-01(Option C)/AD-02(Option D) 구현
+    (`core/evidence_adapters/tsu_adapter.py`, `core/identity_registry.py`)
+  - `0b1a1b66` — CW-05 search_cache.py thread-safety 수정
+  - `4f044da5` — CI 이식성 수정(`tests/test_ad01_ad02_corpus_membership.py`
+    가 로컬 전용 registry 파일에 의존하던 것을 `mock.patch` 기반
+    자기완결형 테스트로 재작성 — 최초 CI 실행에서 5 FAILED + 4 ERROR로
+    드러남, AD-01/AD-02 코드 자체는 정상이었고 테스트 이식성 문제였음)
+- **CUE 최종 확인**: `origin/main` 직접 fetch 후 `tsu_adapter.py`의
+  `corpus_membership`/`DEFAULT_REGISTRY_PATH`, `search_cache.py`의
+  `check_same_thread=False`/`threading.Lock`을 `git show origin/main:...`
+  로 직접 열람해 실재 확인. 로컬 검증 워크트리와 `origin/main` 간
+  해당 5개 파일 diff = 완전 동일(empty). 관련 테스트
+  (`test_ad01_ad02_corpus_membership.py` + `test_search_cache_thread_safety.py`
+  + `test_search_cache.py`) 43개 전부 PASS 재확인.
+- **GitHub Actions CI**: PASS(`mergeStateStatus=CLEAN` 확인 후 병합)
+
+**PR #91/#92(문서)와 PR #93(코드)이 모두 `main`에 병합된 시점을
+GS-FINAL-RPV의 완전한 최종 종결로 기록한다** — 이전까지는 "문서만
+종결"이었고 실제 구현 코드는 로컬 워크트리(`/Users/David/DBMA-cw04-nae-app`)
+에만 존재해 공유 저장소 히스토리에 없는 상태였음을 이 경위 그대로
+남긴다(재발 방지 목적 — "검증 완료 = 병합 완료"가 아니라는 교훈).
+
+## 10. 최종 상태 (코드+문서 통합)
+
+```
+GS-FINAL-RPV 문서                        [✓ HQ] — main 병합(PR #91, #92)
+CW-04/CW-05 실제 코드                     [✓ HQ] — main 병합(PR #93,
+                                            merge commit 59dce53a)
+main 기준 최종 검증                       [✓ CUE]
+
+GS-FINAL-RPV                             [✓ HQ] COMPLETE — 문서·코드 모두 종결
+```
+
+C1/CUE 모두 STOP. GS-FINAL-RPV는 이 시점 기준으로 완전히 종결됐으며,
+향후 재개는 새로운 HQ 지시(신규 corrective WO, RPV 확장, backfill
+작업 등)를 통해서만 이루어진다.
