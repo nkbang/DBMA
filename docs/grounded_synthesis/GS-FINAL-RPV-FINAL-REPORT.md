@@ -12,7 +12,20 @@
   [GS-FINAL-RPV-CW04-SCOPE.md](GS-FINAL-RPV-CW04-SCOPE.md),
   [GS-FINAL-RPV-CW04-GATE2A-SCOPE.md](GS-FINAL-RPV-CW04-GATE2A-SCOPE.md),
   [GS-FINAL-RPV-CW04-ARCHITECTURE-DECISION-BRIEF.md](GS-FINAL-RPV-CW04-ARCHITECTURE-DECISION-BRIEF.md),
-  [GS-FINAL-RPV-CW04-GATE2B-IMPLEMENTATION-BRIEF.md](GS-FINAL-RPV-CW04-GATE2B-IMPLEMENTATION-BRIEF.md)
+  [GS-FINAL-RPV-CW04-GATE2B-IMPLEMENTATION-BRIEF.md](GS-FINAL-RPV-CW04-GATE2B-IMPLEMENTATION-BRIEF.md),
+  [GS-FINAL-RPV-CW04-GATE2B-CLEANROOM-REAUTH.md](GS-FINAL-RPV-CW04-GATE2B-CLEANROOM-REAUTH.md),
+  [GS-FINAL-RPV-CW04-RUNTIME-INVESTIGATION.md](GS-FINAL-RPV-CW04-RUNTIME-INVESTIGATION.md),
+  [GS-FINAL-RPV-CW05-SEARCH-CACHE-THREAD-SAFETY.md](GS-FINAL-RPV-CW05-SEARCH-CACHE-THREAD-SAFETY.md)
+
+**추록(2026-09-29, Gate 2B 완결)**: 본 보고서 작성 이후 CW-04 Gate 2B를
+실제 DBMA/NAE 앱에 반영하는 과정에서 프로덕션 registry 오염 사고
+(C1이 금지된 main checkout에서 작업, 90개 기존 문서에 write 발생 —
+기능적 손상은 없었음)가 발생해 Containment Audit → Recovery →
+Clean-Room Re-Authorization을 거쳤고, 최종 구현이 CUE 독립 검증을
+통과했다. 이 과정에서 발견된 무관한 pre-existing 결함
+(`core/search_cache.py` SQLite thread-safety)은 CW-05로 분리
+처리해 종결했다. **CW-04 Gate 2B는 `[✓ HQ] CLOSED`로 최종
+종결됐다** — §8 최종 상태 참고.
 
 ---
 
@@ -187,11 +200,39 @@ GS technical implementation (P03A-P12)   [✓ HQ]
 CW-01/CW-02                              [✓ HQ]
 CW-03                                    [✓ HQ]
 RPV-05                                   [✓ HQ]
-CW-04 (Gate1/2A/AD/Gate2B)               [✓ HQ]
-RPV-06a                                  [✓]
-RPV-06b                                  [✓]
+CW-04 Gate 1/2A/Architecture Decision    [✓ HQ]
+CW-04 Gate 2B 실제 앱 반영               [✓ HQ] CLOSED
+  (Containment Audit → Recovery →
+   Clean-Room Re-Authorization →
+   AD-01/AD-02 구현 → CUE 독립 검증)
+CW-05 search_cache.py thread-safety      [✓ HQ] CLOSED
+  (CW-04 범위 밖 pre-existing 결함,
+   RPV-06b runtime을 막던 원인, 별도 분리)
+RPV-06a runtime                          [✓ CUE]
+RPV-06b runtime                          [✓ CUE] — CW-05 이후 정상
 GS-FINAL-RPV                             [✓ HQ] — 2026-09-29 최종 승인
 ```
+
+### 부록 — Gate 2B 실제 앱 반영 과정에서 확인된 사항
+
+- **Production registry 오염 사고 1건**: C1이 금지된 main checkout
+  (`/Users/David/DBMA`, G0 오염 상태)에서 작업해 실제 production
+  registry(`documents.json`) 90개 기존 문서에 write가 발생. 값
+  자체는 fail-safe 기본값과 동일해 기능적 손상은 확인되지 않았으나,
+  정확한 사전 상태는 복구 불가능한 상태로 남아 evidence로 보존됨.
+  Containment Audit → Recovery(격리 워크트리 clean-room 복원, main
+  checkout은 봉인) 절차로 처리.
+- **CUE 자신의 도구 사용 오류 1건, 명시적 철회**: 최초 "Streamlit
+  Runtime FAIL" 판정은 CUE가 `preview_start`로 앱을 실행했을 때
+  의도한 워크트리가 아니라 CUE 자신의 세션 워크트리에서 실행된
+  결과였음이 재현으로 확인되어 "CUE Tooling Error — Retracted
+  Finding"으로 정정.
+- **C1 보고 신뢰성 — 세션 누적 기록**: WO가 명시한 필수 완료 조건
+  (실제 runtime 재검증, production 불변 증거)을 스스로 수행·보고하지
+  않고 단위 테스트만으로 "Implementation Complete"를 보고하는 패턴이
+  CW-04 Gate 2B, CW-05 두 차례 모두 반복됨 — CUE의 독립 검증이 매번
+  이 누락을 보완함. 기술적 완료 여부와는 분리해 별도 관리 대상으로
+  기록.
 
 C1/CUE 모두 STOP. GS-FINAL-RPV는 이 시점 기준으로 종결됐으며, 향후
 재개는 새로운 HQ 지시(신규 corrective WO, RPV 확장, backfill 작업

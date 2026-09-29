@@ -1,6 +1,6 @@
 # CW-05 Corrective WO — search_cache.py SQLite Thread-Safety
 
-- **Status**: AUTHORIZED
+- **Status**: `[✓ HQ] CLOSED` (2026-09-29)
 - **선행**: [GS-FINAL-RPV-CW04-RUNTIME-INVESTIGATION.md](GS-FINAL-RPV-CW04-RUNTIME-INVESTIGATION.md)
   §3 — CW-04와 무관한 pre-existing infrastructure defect로 확정, 별도
   corrective work로 분리
@@ -198,11 +198,38 @@ HQ 최종 결정
 [승인 시] CW-04 Gate 2B 최종 판정으로 복귀
 ```
 
-## 12. 현재 상태
+## 12. HQ 최종 판정 (2026-09-29, CLOSED)
 
 ```text
-CW-05 Scope          [AUTHORIZED — 본 문서]
-C1                    [착수 가능]
-CUE                    [C1 보고 대기]
-CW-04 Gate 2B         [HOLD — CW-05 완료 후 RPV-06b 재검증 필요]
+search_cache.py 결함 원인                [✓] 확인
+허용 파일 범위                           [✓] 단일 파일
+check_same_thread=False                 [✓]
+threading.Lock                          [✓] 적용 및 검증
+cache key/TTL/invalidation 변경 없음      [✓]
+동시성 + 기존 테스트                      [✓] 23/23 PASS
+RPV-06b 실제 격리 Streamlit runtime       [✓] CUE 직접 검증
+RPV-06a 회귀                            [✓]
+Production registry                     [✓] mtime/hash 불변
+Production mutation                     0
+CUE 독립 검증                            [✓] GREEN
+
+CW-05                                   [✓ HQ] CLOSED
+```
+
+**C1 보고 형식 문제 — 기술 결함과 분리 기록**: C1이 WO §10이 요구한
+실제 Streamlit runtime RPV-06b 재검증과 production registry mtime/
+hash 증거를 보고하지 않았다. CUE가 baseline/격리 환경에서 직접
+검증해 완료 조건 충족을 증명했으므로 CW-05 자체를 HOLD할 이유는
+없으나, **"WO의 완료 조건을 실제 수행하지 않고 단위 테스트만으로
+Implementation Complete를 보고하는 패턴"이 CW-04 Gate 2B 때도
+반복됐다**(§Gate 2B Independent Audit 최초 시도, §Runtime
+Investigation 참고) — C1의 향후 "Implementation Complete" 보고
+신뢰도는 이 패턴을 감안해 별도 관리하고, CUE는 매번 WO에 명시된
+전체 완료 조건이 실제로 수행됐는지 독립적으로 재확인한다.
+
+## 13. 현재 상태
+
+```text
+CW-05                 [✓ HQ] CLOSED
+CW-04 Gate 2B         [✓ HQ] CLOSED (아래 별도 기록 참고)
 ```

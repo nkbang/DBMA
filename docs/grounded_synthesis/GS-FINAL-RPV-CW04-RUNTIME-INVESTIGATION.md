@@ -1,6 +1,6 @@
 # CW-04 Gate 2B — Runtime Investigation 최종 기록
 
-- **Status**: HQ 판정 완료 — Gate 2B `[HOLD — FINAL DISPOSITION PENDING]`
+- **Status**: `[✓ HQ] CW-04 Gate 2B CLOSED` (2026-09-29, §6 참고)
 - **선행**: [GS-FINAL-RPV-CW04-GATE2B-CLEANROOM-REAUTH.md](GS-FINAL-RPV-CW04-GATE2B-CLEANROOM-REAUTH.md),
   CUE Independent Audit(1차, Runtime FAIL 판정 포함), CUE Root-Cause
   Investigation(2차)
@@ -104,3 +104,58 @@ CW-04
 
 C1에게 `search_cache.py`를 즉시 수정시키지 않는다 — 별도 작업 지시서
 발행 후 착수. 현재 C1/CUE 모두 대기.
+
+## 6. HQ 최종 판정 (2026-09-29) — CW-04 Gate 2B CLOSED
+
+[GS-FINAL-RPV-CW05-SEARCH-CACHE-THREAD-SAFETY.md](GS-FINAL-RPV-CW05-SEARCH-CACHE-THREAD-SAFETY.md)
+완료(`[✓ HQ] CLOSED`) 후 CUE가 격리 환경에서 RPV-06b를 실제
+Streamlit runtime으로 재검증 — 예외 없이 정상 응답 생성 확인.
+RPV-06a도 회귀 확인. Production registry mtime/hash 전 과정 불변.
+
+```text
+CW-04 AD-01 implementation       [✓ CUE]
+CW-04 AD-02 implementation       [✓ CUE]
+GS integrity                     [✓ CUE]
+Retrieval integrity              [✓ CUE]
+Regression                       [✓ CUE]
+Production mutation              [0]
+
+RPV-06a runtime                  [✓ CUE]
+RPV-06b runtime                  [✓ CUE — CW-05 이후 정상]
+
+CW-05 search-cache defect        [✓ HQ CLOSED]
+
+CW-04 Gate 2B                    [✓ HQ] CLOSED
+```
+
+**중요**: 이는 CW-04가 원래 승인된 AD-01/AD-02 범위에서 완료되었다는
+의미다. CW-05의 수정 내용을 CW-04의 코드 범위로 소급 재분류하지
+않는다 — CW-04(`d202238d`, `tsu_adapter.py`/`identity_registry.py`)
+와 CW-05(`search_cache.py`)는 별개 커밋·별개 범위로 유지한다.
+
+### 전체 상태 (기준선 고정)
+
+```text
+GS-FINAL-RPV                    [✓ HQ]
+AD-01 Option C                  [✓ HQ]
+AD-02 Option D                  [✓ HQ]
+CW-04 Recovery                  [✓ HQ]
+Clean-Room Re-Authorization     [✓ HQ]
+G5 Isolation                    [✓ CUE]
+
+AD-01 implementation            [✓ CUE]
+AD-02 implementation            [✓ CUE]
+GS / Retrieval integrity        [✓ CUE]
+Regression                      [✓ CUE]
+Production mutation             [0]
+
+RPV-06a runtime                 [✓ CUE]
+RPV-06b runtime                 [✓ CUE]
+
+CW-05 Search Cache              [✓ HQ CLOSED]
+CW-04 Gate 2B                   [✓ HQ CLOSED]
+```
+
+다음 단계는 CW-04를 다시 수정하는 것이 아니라, 이 상태를 기준선으로
+고정하고 다음 승인된 작업으로 넘어가는 것이다. C1/CUE 모두 이
+기준선에서 대기.
