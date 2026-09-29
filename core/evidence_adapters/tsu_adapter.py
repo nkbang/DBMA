@@ -20,14 +20,18 @@ ABSOLUTE RULES:
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
+import os
 from typing import Any, Optional
 
 from core.evidence_model import (
     CORPUS_DEFAULT,
+    CORPUS_PERSONAL,
     Evidence,
     EvidenceProvenance,
 )
+from core.config import DEFAULT_REGISTRY_PATH
 from core.retrieval import RankedCandidate
 
 logger = logging.getLogger(__name__)
@@ -173,19 +177,22 @@ class TSUEvidenceFactory:
     """Evidence 생성을 위한 factory 인터페이스.
 
     corpus_type을 결정하는 resolver 역할을 한다.
-    현재는 TSU-derived = "default"만 지원.
-    Personal Corpus는 향후 Phase에서 추가.
+    registry(documents.json)의 corpus_membership 필드를 조회하여
+    personal/default를 구분한다.
     """
 
-    def __init__(self) -> None:
-        self._default_adapter = TSUEvidenceAdapter(corpus_type=CORPUS_DEFAULT)
+    def __init__(self, document_id: Optional[str] = None) -> None:
+        self._corpus_type = TSUEvidenceFactory.resolve_corpus_type(
+            source_file=None, document_id=document_id
+        )
+        self._default_adapter = TSUEvidenceAdapter(corpus_type=self._corpus_type)
 
     def create_from_tsu(
         self,
         tsu_record: dict[str, Any],
         query: Optional[str] = None,
     ) -> Evidence:
-        """TSU record에서 Evidence 생성 (default corpus)."""
+        """TSU record에서 Evidence 생성 (registry corpus_membership 기준)."""
         return self._default_adapter.adapt(tsu_record, query)
 
     def create_from_tsu_batch(
@@ -197,13 +204,48 @@ class TSUEvidenceFactory:
         return self._default_adapter.adapt_batch(tsu_records, query)
 
     @staticmethod
-    def resolve_corpus_type(source_file: Optional[str]) -> str:
-        """source_file 기반 corpus_type 결정 (future-proof).
+    def resolve_corpus_type(
+        source_file: Optional[str] = None, document_id: Optional[str] = None
+    ) -> str:
+        """registry 기반 corpus_type 결정.
 
-        현재는 TSU-derived = "default"만 반환.
-        Personal Corpus가 추가되면 source_path 패턴으로 구분한다.
+        document_id를 documents.json registry에서 조회하여
+        corpus_membership 필드의 값을 반환한다.
+        registry가 없거나 필드가 없는 경우 fail-safe로 CORPUS_DEFAULT를 반환.
+
+        Parameters
+        ----------
+        source_file : str or None
+            원본 파일 경로 (하위 호환성 위해 유지).
+        document_id : str or None
+            registry 조회용 document_id.
+
+        Returns
+        -------
+        str
+            "personal" | "default"
         """
-        # [Phase 1] TSU-derived result는 항상 default
+        if not document_id:
+            return CORPUS_DEFAULT
+
+        # Use authoritative DEFAULT_REGISTRY_PATH from core.config
+        abs_path = os.path.abspath(DEFAULT_REGISTRY_PATH)
+        if not os.path.isfile(abs_path):
+            return CORPUS_DEFAULT
+
+        try:
+            with open(abs_path, "r", encoding="utf-8") as f:
+                registry = json.load(f)
+            doc_record = registry.get("documents", {}).get(document_id)
+            if doc_record is None:
+                return CORPUS_DEFAULT
+            membership = doc_record.get("corpus_membership")
+            if membership in (CORPUS_PERSONAL, CORPUS_DEFAULT):
+                return membership
+        except (json.JSONDecodeError, OSError):
+            pass
+
+        # fail-safe: registry가 없거나 필드가 없으면 기존 동작 유지
         return CORPUS_DEFAULT
 
 
@@ -221,8 +263,19 @@ class RankedCandidateEvidenceAdapter:
         Evidence (core.evidence_model)
     """
 
-    def __init__(self, corpus_type: str = CORPUS_DEFAULT) -> None:
-        self.corpus_type = corpus_type
+    def __init__(
+        self,
+        corpus_type: str = CORPUS_DEFAULT,
+        document_id: Optional[str] = None,
+    ) -> None:
+        # explicit corpus_type이 있으면 그대로 사용 (하위 호환)
+        # 없으면 registry에서 document_id로 조회
+        if corpus_type != CORPUS_DEFAULT or document_id is None:
+            self.corpus_type = corpus_type
+        else:
+            self.corpus_type = TSUEvidenceFactory.resolve_corpus_type(
+                source_file=None, document_id=document_id
+            )
 
     def adapt(self, candidate: RankedCandidate) -> Evidence:
         """단일 RankedCandidate를 Evidence로 변환.
@@ -251,6 +304,11 @@ class RankedCandidateEvidenceAdapter:
         source_type = metadata.get("source_type")
         document_title = metadata.get("title")
 
+        # --- corpus_type: per-candidate registry lookup (AD-01/AD-02) ---
+        corpus_type = TSUEvidenceFactory.resolve_corpus_type(
+            source_file=source_file, document_id=document_id
+        )
+
         # --- Content ---
         text = candidate.content or ""
 
@@ -272,7 +330,7 @@ class RankedCandidateEvidenceAdapter:
 
         return Evidence(
             evidence_id=evidence_id,
-            corpus_type=self.corpus_type,
+            corpus_type=corpus_type,
             source_type=source_type,
             source_file=source_file,
             document_id=document_id,
