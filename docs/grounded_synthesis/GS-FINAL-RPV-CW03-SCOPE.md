@@ -1,10 +1,13 @@
-# CW-03 Corrective WO — P5 Parser 단일-Claim 구조 결함 (DRAFT, HQ 승인 대기)
+# CW-03 Corrective WO — P5 Parser 단일-Claim 구조 결함 (구현 착수 승인됨)
 
 - 작성: CUE, 2026-09-28. RPV-05 Root-Cause Trace 결과([GS-FINAL-RPV-TEST-SET-DRAFT.md](GS-FINAL-RPV-TEST-SET-DRAFT.md)
   및 채팅 제출 보고서 "RPV-05 HOLD Root-Cause Trace" 참고)에서 확인된 P5 파싱 결함의
-  corrective WO 초안이다. **DRAFT 상태 — HQ 승인 전까지 C1/CUE 누구도 구현에
-  착수하지 않는다.** CW-01/CW-02와 동일하게 `GS-FINAL-RPV-CW01-CW02-SCOPE.md`
+  corrective WO다. CW-01/CW-02와 동일하게 `GS-FINAL-RPV-CW01-CW02-SCOPE.md`
   포맷을 따른다.
+- **2026-09-28 HQ 구현 착수 승인**: `CW-03 = APPROVED`. G0(작업 디렉터리
+  identity)는 C1이 PASS 확인함(`/Users/David/DBMA-rpv-c8f7e41a`, detached
+  HEAD `c8f7e41acfa0e5444d8b02ecb84da9c53a588441`). C1은 아래 범위 안에서만
+  implementation한다.
 
 ---
 
@@ -148,8 +151,16 @@ CUE는 GREEN을 선언하지 않는다 — 검증 결과만 HQ에 제출한다.
 
 ## 현재 상태
 
-**DRAFT — HQ 승인 대기.** 구현 착수 승인 전까지 C1/CUE 누구도 이 파일을
-수정하지 않는다. 2026-09-28 HQ 1차 검토: 방향/범위 분리는 적절하나
-binding-scope acceptance 기준과 Case A-E 회귀 조건 보강을 요구 — 본
-개정판에 반영 완료. HQ가 (a) 이 개정판을 승인하여 구현 착수를 지시하거나,
-(b) 다른 검증 경로를 택할지 결정한 후 다음 단계로 진행한다.
+**CW-03 = APPROVED (구현 착수 승인, 2026-09-28).** 경위: 1차 초안 제출
+(`af9574c`) → HQ 1차 검토(방향/범위 분리 적절, binding-scope acceptance
+기준 + Case A-E 회귀 조건 보강 요구) → 개정판(`e28d6a1`) → C1 G0
+preflight 1차 FAIL(`/Users/David/DBMA`, `feat/peb-v0.1`, `c2cdf147` —
+잘못된 디렉터리) → CUE가 `/Users/David/DBMA-rpv-c8f7e41a` 정상 유지
+확인 후 이동 지시 → C1 G0 preflight 재실행 PASS(`/Users/David/DBMA-rpv-c8f7e41a`,
+detached HEAD `c8f7e41a`) → HQ 최종 구현 착수 승인.
+
+**다음 단계**: C1이 이 문서의 범위(허용 파일: `parse_llm_claims()`만) 안에서
+구현을 제안하고, CUE가 read-only로 Case A-E 전부(특히 Case E — RPV-05
+실제 재현·해소)를 직접 재실행해 독립 검증한다. CUE는 C1의 구현 완료
+보고를 그대로 승인하지 않는다 — 검증 결과만 HQ에 제출하고, HQ 승인
+전까지 CW-03을 [✓ HQ]로 승격하지 않는다.
