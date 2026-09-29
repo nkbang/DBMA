@@ -386,6 +386,68 @@ classify() [core/query_planner.py]
   전부 True) — 기존 문서화된 paraphrase 한계([GS-FINAL-RPV-C03-ARCHITECTURE-DECISION-BRIEF.md](GS-FINAL-RPV-C03-ARCHITECTURE-DECISION-BRIEF.md)
   범위), CW-03 대상 아님, 차단 사유 아님.
 
-**판정**: **RPV-05 Multi-source = [✓ CUE]**. Multi-source contribution
-(Fuller Vol.8 포함)이 최종 답변에 정상 반영됨을 CW-03 적용 코드로 실측
-확인. HQ 최종 승인 대기.
+**판정**: **RPV-05 Multi-source = [✓ HQ]** (2026-09-28 HQ 최종 승인).
+Multi-source contribution이 최종 답변에 정상 반영됨을 CW-03 적용
+코드로 실측 확인.
+
+**HQ 사실관계 정정(2026-09-28)**: claim_000의 evidence_id는
+`NAE-TSU-0025626`(로마서 3:24)이며, 이 소스에 "Fuller Vol.7"이라는
+저자명을 임의로 연결하지 않는다 — EvidencePool 5건 어디에도 Fuller
+Vol.7은 등장하지 않았다(CUE 실측 확인). 기록은 evidence_id 기준으로만
+한다.
+
+## RPV-06 Read-Only Validation 결과 (2026-09-28, CUE 실측 + HQ 판정)
+
+기존 fixture(A=John 15 포도나무, B=고전 12 은사) 그대로, retrieval
+레벨(P1-P2)만 CUE가 직접 재검증(LLM 호출 불필요).
+
+**RPV-06a = [HOLD — invalid test condition]**: 질의에 "요한복음 15장"
+포함 → `core/query_planner.py::classify()`가 `route="bible"`(scripture
+reference detected)로 분류 → `bible_index.lookup_scripture_ref()`만
+사용, `CandidateGenerator`(Default corpus 포함) 완전 우회. Default
+corpus가 후보 풀에 진입할 기회 자체가 없으므로 **Personal vs Default
+우선순위를 이 테스트로 측정할 수 없다** — 제품 결함의 증거가 아니라
+fixture/question validity failure로 판정(HQ). RPV-06 acceptance
+충족을 위해서는 유효한 질문으로 06a를 재설계해야 한다(CW-04 범위).
+
+**RPV-06b = [OBSERVATION — priority mechanism absent]**: 질의에
+scripture reference 없음 → `route="hybrid"`, Default corpus와 정상
+경쟁. 실측 스코어:
+
+| rank | tsu_id | bm25_score | theological_score | final_score | 출처 |
+|---|---|---|---|---|---|
+| 1 | `cf067845..._00832` | 10.97 | 0.315 | 0.04548 | Default |
+| 2 | `5ce2824e..._00002`(fixture B) | **84.68** | 0.2446 | 0.04441 | Personal |
+| 5 | `5ce2824e..._00001`(fixture B) | 18.04 | 0.1345 | 0.04337 | Personal |
+
+fixture B는 BM25가 압도적으로 높음(84.68 vs 나머지 ~10)에도 `final_score`
+산식에서 rank 1을 Default corpus 문서에 내준다. **HQ 판정**: Default가
+의도적으로 Personal보다 권위 있게 설계된 것이 아니라, **현재 retrieval
+scoring에 Personal Corpus를 우선시키는 corpus-role signal이 아예
+없다** — 따라서 "Personal Corpus = Primary, Default Corpus =
+Supplemental"이라는 NAE 제품 원칙이 retrieval 계층에서 보장되지 않음이
+실측 확인됨. GS(P1-P9) 결함이 아니라 GS에 전달되기 전 evidence
+selection 계층의 product architecture gap.
+
+## GS-FINAL-RPV 공식 상태 (2026-09-28)
+
+```
+GS technical implementation (P03A-P12)   [✓ HQ]
+CW-01/CW-02                              [✓ HQ]
+CW-03                                    [✓ HQ]
+RPV-05                                   [✓ HQ]
+RPV-06a                                  [HOLD — invalid test condition]
+RPV-06b                                  [OBSERVATION — priority mechanism absent]
+GS-FINAL-RPV                             [HOLD]
+```
+
+**다음 단계(HQ 예고, 착수 전 별도 승인 필요)**: CW-04 — RPV-06a 유효
+재설계, "Personal > Default" NAE 요구사항 정의, 현재 retrieval/scoring이
+이를 보장하지 못하는 범위 확정, 어느 계층에서 구현할지 결정, 기존
+Retrieval authority/ADR-001/GS 경계 충돌 여부 확인, 재검증 acceptance
+기준 정의. **"Personal을 항상 rank 1로" 같은 구현 방식을 CW-04의
+목표로 성급하게 확정하지 않는다** — 이번 관찰을 곧장 해법으로
+번역하지 않는다.
+
+**현재 상태**: C1 [STOP], CUE [본 보고 후 STOP]. 코드/retrieval/
+ranking 수정 없음. RPV-06 HOLD 유지.
