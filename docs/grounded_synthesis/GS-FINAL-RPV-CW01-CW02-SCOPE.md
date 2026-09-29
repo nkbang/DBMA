@@ -128,5 +128,13 @@ CUE는 GREEN을 선언하지 않는다 — 검증 결과만 HQ에 제출.
 
 ## 현재 상태
 
-**HQ 구현 착수 승인 완료(2026-09-28).** C1에게 아래 범위로 전달, 수정
-완료 시 CUE read-only 재검증 → HQ 제출 → 승인 시 9건 재-RPV + 05/06 추가.
+**CW-01 [✓ HQ] / CW-02 [✓ HQ]** (2026-09-28, CUE read-only 재검증 GREEN →
+HQ 승인). 검증 경위 요약: 1~2차 제출은 잘못된 디렉터리(`/Users/David/DBMA`,
+G0 오염된 메인 체크아웃)에서 작업해 격리 워크트리에 반영 안 됨 확인 →
+파일만 격리 워크트리로 복사 → 3차 수정(`...` placeholder 제외 + `(...)`
+괄호 제거)까지 CUE가 실제 Ollama로 RPV-03a/04/03b 직접 재실행해
+전부 PASS 확인. `git diff --stat`(1개 파일만 변경), `find -newermt`
+(TSU/Tantivy 무변경, telemetry/cache만 변경) 확인 완료.
+
+**다음 단계**: 기존 RPV 9건 재실행 → RPV-05(Multi-source) → RPV-06
+(Personal+Default Corpus) → GS-FINAL-RPV 최종 판단.
