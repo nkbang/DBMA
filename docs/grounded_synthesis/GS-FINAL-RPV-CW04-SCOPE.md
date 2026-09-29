@@ -285,13 +285,18 @@ Required`, 또는 (Retrieval 변경이 필요하나 HQ 재승인 미획득 시)
 ## 17. 현재 상태
 
 ```text
-CW-04 = DRAFT
-C1 = STOP
-CUE = STOP
+CW-04 = APPROVED (Gate 1 scope)
+Gate 1 = AUTHORIZED (2026-09-28 HQ 승인)
+Gate 2 = NOT AUTHORIZED
+C1 = Gate 1 investigation 착수 가능 (read-only만)
+CUE = C1 Gate 1 보고 대기 → 독립 검증 예정
 Implementation = NOT AUTHORIZED
 Retrieval-layer change = NOT AUTHORIZED
 ```
 
-CW-04 Scope가 HQ에 의해 승인되더라도 최초 승인 범위는 Gate 1 조사·
-판정까지이며, Retrieval-layer 변경은 별도의 Gate 2 HQ Re-Authorization
-없이는 수행하지 않는다.
+**2026-09-28 HQ Gate 1 착수 승인.** C1은 §7 Gate 0(G0 worktree identity
+확인) 통과 후 §8 Gate 1 조사(Q1-Q5)만 수행한다 — 코드 변경 없음.
+Gate 1 산출물(§8 형식)을 C1이 보고하면 CUE가 §13 기준으로 독립
+검증한다. Q1-Q5 결론이 `B(Retrieval-layer correction required)`로
+나오더라도 §9 Gate 2 HQ Re-Authorization 없이는 어떤 코드도 수정하지
+않는다.
