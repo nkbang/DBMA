@@ -185,35 +185,82 @@ embedding model, 대규모 ranking rewrite, GS architecture 변경은
 
 ---
 
-## HQ Architecture Decision (작성 요청 — 아래 채워서 승인)
+## CUE 권고안 (2026-09-29, HQ 명시적 요청에 의한 원칙 예외)
 
-```text
+**주의**: 이 세션 전체의 확립된 원칙("CUE는 architecture 정책을
+권고하지 않는다", C-03/본 브리프 §Decision 1·2에서 유지)에 대한
+**명시적 예외**다. HQ가 "Decision Matrix 근거로 권고안 작성"을 직접
+지시했다. 아래는 CUE의 권고이며, **HQ의 최종 승인/수정/반려를
+대체하지 않는다.**
+
 ### AD-01 — Corpus Membership SSOT
 
-Decision:
-[HQ 선택]
+```text
+Decision (CUE 권고):
+옵션 C — 업로드/ingestion 시점 명시적 membership 필드 신설
 
 Rationale:
-[기존 코드/데이터에서 확인된 사실 근거]
+우선순위 ①(기존 Architecture 보존)·②(Membership authority)가
+⑥(변경 범위 최소화)보다 우선한다는 HQ 원칙 적용 결과:
+- 옵션 A(source_file 패턴)는 Q8-2에서 "암묵적 추론"으로 판정됨 —
+  membership을 명시적으로 표현하지 않아 ②(authority)를 만족 못함.
+- 옵션 B(기존 Registry)는 Q8-4가 "불확실"로 판정됨 — 원 설계 의도
+  (curated sample 큐레이션)를 Personal/Default 이분류 용도로 전용하면
+  기존 구조의 의미를 왜곡할 위험이 있어, 오히려 ①(기존 Architecture
+  보존)을 해칠 수 있다. "이미 있으니 재사용한다"가 "이미 있는 것의
+  의미를 보존한다"와 다를 수 있음이 Q8-4에서 드러남.
+- 옵션 C는 Q8-2(명시성) YES, Q8-3(propagation 가능) YES로 ②를 가장
+  분명히 만족한다. Q8-5(새 SSOT 불필요)만 NO — 이는 ⑥ 항목이며
+  우선순위상 ②보다 하위이므로 결정을 뒤집지 않는다.
 
 Rejected alternatives:
-[선택하지 않은 옵션과 이유]
+- 옵션 A: membership이 암묵적(경로 문자열 추론)이라 authority
+  invariant("must have one authoritative source")를 구조적으로
+  보장하지 못함 — 경로 규칙이 바뀌면 조용히 깨짐.
+- 옵션 B: 기존 Registry("sample_library.json"/"documents.json")를
+  전용하는 것은 재사용이 아니라 의미 왜곡이 될 위험이 Q8-4에서
+  확인됨. 또한 이 worktree 실측상 sample_library.json이 부재해
+  즉시 전체 데이터에 적용 가능한지도 불확실(Q8-1 약함).
 
 Invariant:
 Personal / Default membership must have one authoritative source.
-
----
+(옵션 C 적용 시 — 그 source는 업로드 시점에 기록되는 명시적 필드이며,
+이후 TSU record/registry record에 영속적으로 보존된다.)
+```
 
 ### AD-02 — Retrieval Role Policy
 
-Decision:
-[HQ 선택]
+```text
+Decision (CUE 권고):
+옵션 D — Relevance retrieval + role-aware merge
 
 Rationale:
-[relevance / role / architecture 근거]
+우선순위 ③(relevance integrity)·④(역할 명시성)가 ⑥(변경 범위
+최소화)보다 우선한다는 HQ 원칙 적용 결과:
+- 옵션 A(Score adjustment)/B(Fixed quota)는 Decision Matrix의
+  "relevance 보존" 행에서 둘 다 "위험"으로 판정됨(corpus_type이
+  score 공식에 직접 섞이거나, quota가 관련 없는 evidence를 강제
+  포함시킬 수 있음) — ③을 직접 위반할 위험이 있어 우선순위상 먼저
+  배제됨.
+- 옵션 C(Two-stage retrieval)와 D는 둘 다 ③·④를 만족한다. 그러나
+  C는 "기존 retrieval 영향" 행에서 `HybridRetriever.retrieve()`
+  전체 재구조화가 필요해 ①(기존 Architecture 보존)에 대한 영향이
+  D보다 크다 — CW-04 금지 목록의 "대규모 ranking rewrite"와의 경계에
+  더 가깝다.
+- D는 동일하게 ③·④를 만족하면서 "기존 retrieval 영향"이 상대적으로
+  국소적(`retrieve()` 이후 merge 단계 1곳 추가, `core/retrieval.py`
+  무변경 가능) — ①을 D가 C보다 더 잘 보존한다. ①이 ⑥보다 우선하므로
+  "구현이 더 쉬워서"가 아니라 "기존 아키텍처를 덜 건드려서" D를
+  선택하는 것이 우선순위 원칙과 정합한다.
 
 Rejected alternatives:
-[선택하지 않은 정책]
+- 옵션 A: corpus_type을 score 공식에 직접 섞으면 relevance integrity
+  (③)가 corpus membership 정책에 의해 훼손될 위험이 구조적으로 존재.
+- 옵션 B: 고정 quota는 질문과 무관한 evidence를 강제 포함시킬 수
+  있어 ③을 위반하며, quota 숫자 자체의 근거가 없음(Gate 2A에서
+  "4:6 근거 없음"으로 이미 지적됨).
+- 옵션 C: ③·④는 만족하나 기존 `HybridRetriever.retrieve()` 구조를
+  더 크게 바꿔야 해 ①(기존 Architecture 보존) 원칙에서 D보다 불리.
 
 Invariants:
 - Personal = primary research context
@@ -222,27 +269,45 @@ Invariants:
 - Default is not excluded
 - Query Role and Corpus Role remain independent
 - GS does not perform corpus retrieval or corpus classification
-
----
+```
 
 ### Gate 2B Authorization
 
+```text
 Status:
-NOT AUTHORIZED until CUE verifies AD-01 and AD-02.
+NOT AUTHORIZED. 위 권고안은 HQ 승인 전까지 구현 근거로 사용되지 않는다.
 ```
 
-이 결정문이 채워지고 CUE가 AD-01/AD-02를 baseline에서 독립 검증한
-뒤에만 별도의 **Gate 2B Implementation Authorization** 문서를
-발행하고, C1 구현이 착수될 수 있다. 그 전까지 C1/CUE는 STOP을
-유지한다.
+---
+
+## 진행 절차 (CUE 권고 제출 이후)
+
+```text
+CUE 권고안 (본 절)
+    ↓
+HQ 검토 — 승인 / 수정 / 반려
+    ↓
+[승인 또는 수정] → HQ Architecture Decision 확정 (Decision/Rationale/
+                    Rejected alternatives/Invariant 최종본)
+    ↓
+Gate 2B Implementation Authorization 발행
+    ↓
+C1 구현 → CUE 독립 검증 → RPV-06 재검증 → HQ 최종 승인
+```
+
+CUE의 권고는 HQ의 결정을 대신하지 않는다 — HQ가 그대로 승인하든,
+다른 옵션으로 수정하든, 반려하고 재검토를 요구하든 전부 HQ의
+권한이다.
 
 ## 현재 상태
 
 ```text
 CW-04 Gate 1                    [✓ HQ]
-CW-04 Gate 2A                   [✓ VALIDATED / DESIGN EVIDENCE]
-CW-04 Architecture Decision     [DRAFT — HQ 결정 대기, 본 문서]
+CW-04 Gate 2A                   [✓ HQ]
+CW-04 Architecture Decision     [CUE 권고안 제출 — HQ 검토 대기]
+  AD-01 Membership SSOT         [CUE 권고: 옵션 C — HQ 승인 대기]
+  AD-02 Retrieval Role Policy   [CUE 권고: 옵션 D — HQ 승인 대기]
 CW-04 Gate 2B                   [NOT AUTHORIZED]
 C1                              [STOP]
-CUE                             [STOP — HQ 결정 대기]
+CUE                             [STOP — HQ 검토 대기]
 ```
