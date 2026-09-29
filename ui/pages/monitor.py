@@ -30,6 +30,14 @@ _STAGE_LABELS = {
 
 def render_monitor_page() -> None:
     """Render the DBMA System Monitor page."""
+    # ui/app.py의 사이드바 메뉴 게이트(NAE_ADMIN_MODE=1일 때만 "Monitor" 노출)와
+    # 동일한 이중 방어 — 다른 admin-only 섹션들(library.py/processing.py/
+    # research.py)과 같은 패턴으로, nav_page가 다른 경로로 "Monitor"가 되더라도
+    # 여기서 다시 막는다.
+    if os.environ.get("NAE_ADMIN_MODE") != "1":
+        st.info("이 페이지는 관리자 모드에서만 사용할 수 있습니다.")
+        return
+
     page = BasePage(title="시스템 모니터", icon="monitor_heart")
     page.render_header()
 
