@@ -357,3 +357,70 @@ CUE                        [STOP — HQ Architecture Decision 대기]
 포함한 특정 구현 방식은 이 Architecture Decision에서 확정되기 전까지
 승인된 것이 아니다. Architecture Decision 승인 후에만 별도 Gate 2B
 (구현 재승인)로 진행한다.
+
+## 12. HQ 판정 정정 및 최종 확정 (2026-09-28)
+
+**경위**: §10/§11의 CUE 자체 판정 직후, HQ가 C1의 최초 "0건" 보고를
+기준으로 06b를 REWORK REQUIRED로 재지시했다. CUE가 즉시 G0 전체
+출력(`pwd`/`toplevel`/`HEAD`/`git status --short --branch`)과 함께
+**3회째 독립 재현**(byte-identical: rank 8, bm25=14.216,
+final=0.04265)을 제시해 정정을 요청했고, HQ가 이를 수용해 최종
+판정을 뒤집었다.
+
+**HQ 최종 판정**:
+```text
+RPV-06a: route=hybrid, fixture A top-10 rank 6           → VALIDATED
+RPV-06b: route=hybrid, fixture B top-10 rank 8,
+         bm25=14.216, final=0.04265, 3회 연속 동일 재현   → VALIDATED
+
+CW-04 Gate 2A — 산출물 9    [✓ VALIDATED] (재작업 불필요로 확정)
+```
+
+C1의 "인덱싱되지 않았거나 rank 밖으로 밀렸을 가능성"이라는 가설은
+실측으로 반증된 미확인 가설로 기록한다.
+
+**중요 — RPV-06 전체는 아직 완료가 아님**: 이번 검증은 RPV-06
+테스트 질문/fixture의 **유효성(validation condition)**을 확정한
+것이지, Gate 1/2A에서 발견된 Personal/Default role integrity 문제
+자체를 해결한 것이 아니다.
+
+```text
+RPV-06 fixture/query validity      [✓]
+RPV-06 product behavior            [HOLD]
+CW-04 Gate 2A                      [READY FOR ARCHITECTURE DECISION]
+Gate 2B implementation             [NOT AUTHORIZED]
+```
+
+**공식 상태 (최종)**:
+```text
+CW-04 Gate 1                    [✓ HQ]
+CW-04 Gate 2A — Design          [READY FOR HQ DECISION]
+
+  1. Membership SSOT            [HOLD — Q8]
+  2. Role propagation            [DESIGN REVIEW]
+  3. Retrieval boundary          [DESIGN REVIEW]
+  4. Score adjustment            [NOT APPROVED]
+  5. Fixed quota                 [NOT APPROVED]
+  6. Two-stage retrieval         [CANDIDATE]
+  7. GS boundary                 [✓ DESIGN PRINCIPLE]
+  8. Regression                  [DESIGN REVIEW]
+  9. RPV-06 fixtures/queries     [✓ VALIDATED]
+ 10. Design recommendation       [DESIGN REVIEW]
+
+CW-04 Gate 2B                   [NOT AUTHORIZED]
+RPV-06                          [HOLD]
+GS-FINAL-RPV                    [HOLD]
+C1                               [STOP]
+CUE                              [STOP]
+```
+
+**C1 보고 신뢰성 문제 — 세션 누적 기록(procedural/reporting reliability
+issue, 기술적 Gate 결과와 분리)**: G0 출력 생략, 잘못된 작업 위치에서
+조사(CW-03 1차, Gate 1), 잘못된 line citation(Gate 1
+`hybrid_candidate_pipeline.py`), 잘못된 RPV question(CW-03 Case E,
+산왕수훈), 이번 RPV-06b retrieval 결과 오보고 — 총 5회 이상 반복.
+기술적 Gate 결과(전부 CUE 독립 재현으로 확정됨)는 무효화되지 않으나,
+이 패턴 자체는 별도로 추적할 가치가 있다.
+
+**남은 것**: CW-04 Gate 2A의 핵심 — Q8(SSOT)과 Personal/Default
+retrieval architecture에 대한 **HQ Architecture Decision**.
