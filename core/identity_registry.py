@@ -175,6 +175,9 @@ def register_document(
         # never guessed at creation time.
         "superseded_by": None,
         "supersedes": None,
+        # [CW-04 AD-01] corpus_membership — registry SSOT. 기본값 "default".
+        # 업로드 흐름에서 "personal"로 설정 가능.
+        "corpus_membership": metadata.get("corpus_membership", "default"),
     }
 
     registry["documents"][doc_id] = record

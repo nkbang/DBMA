@@ -603,12 +603,12 @@ class TestCorpusIdentityResolver:
 
     def test_factory_resolve_corpus_type_default(self):
         factory = TSUEvidenceFactory()
-        result = factory.resolve_corpus_type("some_file.txt")
+        result = factory.resolve_corpus_type("some_file.txt", None)
         assert result == "default"
 
     def test_resolve_corpus_type_none_source(self):
         factory = TSUEvidenceFactory()
-        result = factory.resolve_corpus_type(None)
+        result = factory.resolve_corpus_type(None, None)
         assert result == "default"
 
 
