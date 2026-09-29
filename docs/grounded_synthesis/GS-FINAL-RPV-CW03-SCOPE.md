@@ -59,23 +59,57 @@ claim으로 채택"하는 226-241번째 줄의 구조 자체는 CW-01/CW-02 이�
 함수 내부이되 위 특정 목적으로 한정)와 겹치지만 다른 결함이다 — 별도 corrective
 WO로 분리해 HQ 승인을 받는다.
 
-## 목표 (제안, HQ 확정 필요)
+## Acceptance 기준 (HQ 확정, 2026-09-28)
 
-1. LLM raw output이 여러 문단(복수 claim)으로 구성된 경우, **문단별로 개별
-   claim을 생성**하고 각 claim에는 **해당 문단에 실제로 등장한 evidence_id만**
-   바인딩한다 (전역 스캔 방식 폐기, 문단 단위 로컬 스캔으로 전환).
-2. 기존 단일-claim 사례(문단이 1개뿐인 출력)는 현재 동작과 동일하게 유지 —
-   회귀 없음.
-3. CW-01(prompt-echo skip)·CW-02(marker 제거)의 계약은 문단 단위 파싱으로
-   확장될 때도 그대로 유지한다 — 각 문단 처리 시 동일하게 적용.
+**핵심 원칙 — "첫 문단 문제를 고친다"가 목표가 아니다.**
+
+> Claim text와 evidence_id binding의 범위가 **동일한 synthesis unit**을
+> 기준으로 일치해야 한다.
+
+즉 구현이 "여러 문단으로 나눠서 처리"하는 형태를 취하든 다른 방식을
+취하든, 성공 조건은 문단 개수를 늘리는 것 자체가 아니라 **claim_text가
+가리키는 synthesis unit과 evidence_ids가 실제로 등장한 synthesis unit이
+항상 동일해야 한다**는 것이다. 구현이 이 불변조건을 만족하는 한 구체적
+방식(문단 분할/구조화 출력 포맷/다른 파싱 전략 등)은 C1이 제안하고
+CUE가 검증한다 — CUE는 특정 구현 방식을 강제하지 않는다.
+
+## 목표 (제안, 위 Acceptance 기준 하위)
+
+1. synthesis unit(문단 또는 LLM이 실제로 구분한 단위) 별로 개별 claim을
+   생성하고, 각 claim에는 **해당 unit에 실제로 등장한 evidence_id만**
+   바인딩한다 (전역 스캔 방식 폐기).
+2. 기존 단일-unit 사례(출력이 1개 unit뿐인 경우)는 현재 동작과 동일하게
+   유지 — 회귀 없음.
+3. CW-01(prompt-echo skip)·CW-02(marker 제거)의 계약은 unit 단위 파싱으로
+   확장될 때도 그대로 유지한다.
 4. `core/grounded_claims.py::bind_claims()`의 `evidence_ids ⊆
    included_evidence_ids` fail-closed 계약은 변경하지 않는다.
 
-**주의 — CUE는 구체적 구현 방식(정규식 재설계 vs. 문단 분할 전처리 vs. 다른
-접근)을 지시하지 않는다.** 이는 C1이 제안하고 CUE가 검증하는 통상 절차를
-따른다. 위 목표(1)의 "문단 단위 파싱"이 유일한 해법이라고 CUE가 단정하지도
-않는다 — HQ가 다른 검증 경로(예: C-03처럼 정책 결정으로 우회)를 택할 수도
-있다는 점을 인지하고 있다.
+## 회귀 조건 (HQ 확정, Case A-E — 구현 완료의 필요조건)
+
+**CW-03은 unit test만 통과해서 완료되는 corrective work가 아니다.** 아래
+5개 케이스, 특히 Case E(RPV-05 실제 재현·해소)를 모두 충족해야 한다.
+
+- **Case A** — 1개 문단 + 1개 evidence → 기존 정상 동작 보존(회귀 없음).
+- **Case B** — 2개 이상 문단 + 서로 다른 evidence → 각 claim이 해당
+  evidence와 올바르게 binding.
+- **Case C** — 여러 evidence_id가 전체 output에 존재 → 다른 문단의
+  evidence가 첫 claim에 누출되지 않음.
+- **Case D** — CW-01/CW-02 regression 없음 → prompt echo / parser
+  artifact 재발 없음.
+- **Case E** (가장 중요) — RPV-05 실제 질문을 재실행해, multi-source
+  synthesis(HQ 원문 표현: "Fuller Vol.7 + Fuller Vol.8을 포함한")가
+  최종 claim/answer에 보존됨을 확인.
+  **CUE 주석**: RPV-05 root-cause trace에서 CUE가 직접 확인한
+  EvidencePool/SynthesisInput에는 Fuller Vol.8(`NAE-TSU-0033580`)만
+  포함되어 있었고 Fuller Vol.7은 관측되지 않았다(포함된 5건:
+  `TSU-UNK-e1e68a35c3c031676bc13dc47a06f934_chunk_00650`,
+  `NAE-TSU-0025626`, `NAE-TSU-0033580`, `TSU-UNK-74edb7923a40d79e01af51e24b8e8285_chunk_00064`,
+  `NAE-UNC-Smith_Bible_Dictionary_HackettAbbot_Vol2_p009893`). Case E
+  검증 시점에 retrieval 결과가 그 사이 달라졌을 수 있으므로, C1/CUE는
+  구현 검증 시 **그 시점의 실제 EvidencePool 구성을 다시 확인**한 뒤
+  "실제로 포함된 multi-source 전부가 최종 claim/answer에 보존되는가"를
+  기준으로 판정한다 — Fuller Vol.7의 존재를 가정하지 않는다.
 
 ## 허용 파일
 
@@ -96,13 +130,15 @@ retrieval engine/신규 corpus/UI/LLM provider/GS architecture 확장 전부
 
 ## CUE 검증 체크리스트 (구현 후, 구현 승인 시 적용)
 
-- [ ] 문단별 claim 분리가 실제로 동작하는가 (RPV-05 질의 재실행,
-      야고보서 문단이 별도 claim으로 나오는지)
-- [ ] 각 claim의 evidence_ids가 해당 문단에 실제 등장한 것만으로
-      한정되는가 (전역 오염 없는지)
-- [ ] CW-01(prompt-echo skip)이 문단 단위 파싱에서도 여전히 동작하는가
-- [ ] CW-02(marker 제거)가 문단 단위 파싱에서도 여전히 동작하는가
-- [ ] 기존 단일-문단 사례(02/03a/03b/04/07/08a/08b) 회귀 없음 — 재실행해
+- [ ] Case A — 1문단+1evidence 기존 동작 보존
+- [ ] Case B — 2문단 이상, 서로 다른 evidence가 각 claim에 정확히 binding
+- [ ] Case C — 다른 unit의 evidence가 첫 claim에 누출되지 않음(binding
+      scope = synthesis unit 일치 확인)
+- [ ] Case D — CW-01(prompt-echo skip)·CW-02(marker 제거) regression 없음
+- [ ] Case E — RPV-05 질의 재실행, 검증 시점의 실제 EvidencePool 구성을
+      다시 확인한 뒤 그 안의 multi-source 전부가 최종 claim/answer에
+      보존되는지 확인(Fuller Vol.7 존재를 가정하지 않음, 위 CUE 주석 참고)
+- [ ] 기존 단일-unit 사례(02/03a/03b/04/07/08a/08b) 회귀 없음 — 재실행해
       claim 개수·evidence_ids·valid 여부 동일한지
 - [ ] `bind_claims()` 계약 불변 (evidence_ids ⊆ included_evidence_ids
       fail-closed 유지)
@@ -113,6 +149,7 @@ CUE는 GREEN을 선언하지 않는다 — 검증 결과만 HQ에 제출한다.
 ## 현재 상태
 
 **DRAFT — HQ 승인 대기.** 구현 착수 승인 전까지 C1/CUE 누구도 이 파일을
-수정하지 않는다. HQ가 (a) 이 WO를 승인하여 구현 착수를 지시하거나,
-(b) 다른 검증 경로(예: 문단 단위 파싱 대신 다른 접근, 혹은 corrective
-WO 없이 관찰만 기록)를 택할지 결정한 후 다음 단계로 진행한다.
+수정하지 않는다. 2026-09-28 HQ 1차 검토: 방향/범위 분리는 적절하나
+binding-scope acceptance 기준과 Case A-E 회귀 조건 보강을 요구 — 본
+개정판에 반영 완료. HQ가 (a) 이 개정판을 승인하여 구현 착수를 지시하거나,
+(b) 다른 검증 경로를 택할지 결정한 후 다음 단계로 진행한다.
