@@ -429,25 +429,52 @@ Supplemental"이라는 NAE 제품 원칙이 retrieval 계층에서 보장되지 
 실측 확인됨. GS(P1-P9) 결함이 아니라 GS에 전달되기 전 evidence
 selection 계층의 product architecture gap.
 
-## GS-FINAL-RPV 공식 상태 (2026-09-28)
+## CW-04 완료 — RPV-06a/06b 재검증 (2026-09-29, [✓ HQ] 최종 승인)
+
+CW-04(Gate 1 원인 추적 → Gate 2A 설계 검토 → Architecture Decision
+AD-01=Option C/AD-02=Option D → Gate 2B 구현)가 완료됐다. 상세 경위는
+[GS-FINAL-RPV-CW04-SCOPE.md](GS-FINAL-RPV-CW04-SCOPE.md),
+[GS-FINAL-RPV-CW04-GATE2A-SCOPE.md](GS-FINAL-RPV-CW04-GATE2A-SCOPE.md),
+[GS-FINAL-RPV-CW04-ARCHITECTURE-DECISION-BRIEF.md](GS-FINAL-RPV-CW04-ARCHITECTURE-DECISION-BRIEF.md),
+[GS-FINAL-RPV-CW04-GATE2B-IMPLEMENTATION-BRIEF.md](GS-FINAL-RPV-CW04-GATE2B-IMPLEMENTATION-BRIEF.md)
+참고.
+
+**구현**(commit `4192d94`, `/Users/David/DBMA-rpv-c8f7e41a`): registry
+(`documents.json`)에 명시적 `corpus_membership` 필드 도입,
+`TSUEvidenceFactory.resolve_corpus_type()`이 하드코딩된 `"default"`
+대신 registry를 조회하도록 변경(fail-safe로 기존 데이터는 `"default"`
+유지). `HybridRetriever.retrieve()` 내부는 무변경 — ranking/scoring
+로직 그대로.
+
+**RPV-06a/06b 재검증 결과(CUE 독립 재현, 구현 전/후 대조)**:
+
+| | 질문 | route | rank(불변) | corpus_type |
+|---|---|---|---|---|
+| RPV-06a | "포도나무와 가지의 비유에서 열매를 맺기 위해 주님 안에 거한다는 의미를 설명해 주세요" | hybrid | 6 → **6(불변)** | default → **personal** |
+| RPV-06b | "성령께서 교회에 다양한 은사를 주신다는 관점에서 은사의 종류와 목적을 정리해 주세요" | hybrid | 8 → **8(불변)** | default → **personal** |
+
+구현 전/후 bm25/final_score가 정확히 동일(ranking 무변경 확인)하면서,
+fixture만 `corpus_type=personal`로 정확히 태깅되고 나머지 evidence는
+`default` 유지됨을 CUE가 라이브로 직접 재현했다 — "Personal Corpus =
+Primary, Default Corpus = Supplemental"이라는 NAE 제품 원칙을
+retrieval 결과에 구조적으로 표현할 수 있는 기반이 마련됐다(단, 이번
+CW-04 범위는 corpus_type 태깅/전달까지이며, "role-aware" 소비 방식
+— 예: UI에서 Personal/Default를 구분해 표시하는 것 — 은 별도 범위).
+
+## GS-FINAL-RPV 공식 상태 (2026-09-29, 최종)
 
 ```
 GS technical implementation (P03A-P12)   [✓ HQ]
 CW-01/CW-02                              [✓ HQ]
 CW-03                                    [✓ HQ]
 RPV-05                                   [✓ HQ]
-RPV-06a                                  [HOLD — invalid test condition]
-RPV-06b                                  [OBSERVATION — priority mechanism absent]
-GS-FINAL-RPV                             [HOLD]
+CW-04 (Gate1/2A/AD/Gate2B)               [✓ HQ]
+RPV-06a                                  [✓ — corpus_type=personal 확인, rank 6 유지]
+RPV-06b                                  [✓ — corpus_type=personal 확인, rank 8 유지]
+GS-FINAL-RPV                             [10-case 재확인 + RPV-06 완료 — HQ 최종 판단 대기]
 ```
 
-**다음 단계(HQ 예고, 착수 전 별도 승인 필요)**: CW-04 — RPV-06a 유효
-재설계, "Personal > Default" NAE 요구사항 정의, 현재 retrieval/scoring이
-이를 보장하지 못하는 범위 확정, 어느 계층에서 구현할지 결정, 기존
-Retrieval authority/ADR-001/GS 경계 충돌 여부 확인, 재검증 acceptance
-기준 정의. **"Personal을 항상 rank 1로" 같은 구현 방식을 CW-04의
-목표로 성급하게 확정하지 않는다** — 이번 관찰을 곧장 해법으로
-번역하지 않는다.
-
-**현재 상태**: C1 [STOP], CUE [본 보고 후 STOP]. 코드/retrieval/
-ranking 수정 없음. RPV-06 HOLD 유지.
+**현재 상태**: C1 [STOP], CUE [STOP]. RPV-05(1) + 기존 9-case
+regression + RPV-06a/06b(2) = 총 12개 케이스 전부 [✓] 상태.
+GS-FINAL-RPV 전체 최종 판단(acceptance criterion 10-20개 질문 충족
+확인 포함)은 HQ 결정 사항으로 남긴다.

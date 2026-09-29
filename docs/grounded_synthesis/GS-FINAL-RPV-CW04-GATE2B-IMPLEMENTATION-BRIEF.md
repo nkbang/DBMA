@@ -220,16 +220,28 @@ HQ 최종 승인
 RPV-06 [✓ HQ] → GS-FINAL-RPV 최종 판단으로 복귀
 ```
 
-## 9. 현재 상태
+## 9. 현재 상태 (2026-09-29, 최종)
 
 ```text
 CW-04 Gate 1                    [✓ HQ]
 CW-04 Gate 2A                   [✓ HQ]
 CW-04 Architecture Decision     [✓ HQ APPROVED — AD-01 Option C, AD-02 Option D]
 CUE Architecture Verification   [✓ CUE]
-CW-04 Gate 2B                   [AUTHORIZED — 본 문서 범위 내]
-C1                              [구현 착수 가능, G0 필수]
-CUE                             [C1 구현 보고 대기 → 독립 검증]
-RPV-06                          [HOLD — 구현 후 재검증]
-GS-FINAL-RPV                    [HOLD]
+CW-04 Gate 2B 구현               [✓ CUE] — commit 4192d94, diff 범위/
+                                   105 tests/RPV-06a rank6·RPV-06b
+                                   rank8 rank불변+corpus_type=personal
+                                   전부 CUE 독립 재현 완료
+CW-04                            [✓ HQ] — 최종 승인
+RPV-06a                          [✓ — corpus_type=personal 확인,
+                                   rank 6 유지]
+RPV-06b                          [✓ — corpus_type=personal 확인,
+                                   rank 8 유지]
+C1                               [STOP]
+CUE                               [STOP]
 ```
+
+**CW-04 전체 경위 요약**: Gate 1(원인 추적, G0 위반 1회) → Gate 2A
+(설계 검토, 산출물 9 C1 오보고 2회 CUE가 정정) → Architecture
+Decision(AD-01=Option C, AD-02=Option D, CUE 권고 후 HQ 승인) → Gate
+2B(구현, CUE 독립 검증 GREEN — 이번 세션 최초로 C1 보고 전 항목
+일치) → **CW-04 `[✓ HQ]` 최종 승인**.
