@@ -299,15 +299,96 @@ CUE의 권고는 HQ의 결정을 대신하지 않는다 — HQ가 그대로 승�
 다른 옵션으로 수정하든, 반려하고 재검토를 요구하든 전부 HQ의
 권한이다.
 
+## HQ 최종 결정 (2026-09-29, APPROVED)
+
+```text
+AD-01 Membership SSOT       [✓ HQ APPROVED — Option C]
+AD-02 Retrieval Role Policy [✓ HQ APPROVED — Option D]
+CW-04 Architecture Decision [✓ HQ APPROVED]
+CW-04 Gate 2B                [NOT AUTHORIZED — until CUE verification
+                               of implementation plan]
+```
+
+### AD-01 승인 시 HQ 제한 조건 (CUE 권고문 표현 수정)
+
+Option C를 "새로운 독립 SSOT를 만드는 것"으로 해석하지 않는다. 구현
+시 하나의 authoritative membership 값이 downstream까지 그대로
+보존되어야 한다:
+
+```text
+Authoritative source/document metadata
+        ↓
+explicit corpus membership
+        ↓
+retrieval/candidate
+        ↓
+Evidence.corpus_type
+```
+
+`source_file` 패턴 추론은 membership authority가 아니다(이미 CUE
+권고안에서 옵션 A를 배제한 근거와 일치).
+
+### AD-02 승인 시 HQ 제외 항목 (명시적으로 이번 결정에 불포함)
+
+```text
+Personal score boost       X
+Personal rank-1 강제       X
+4:6 fixed quota            X
+Default 제거               X
+새로운 retrieval engine    X
+GS에서 corpus 분류         X
+```
+
+relevance는 relevance대로 유지하고, Personal/Default 역할은 별도
+metadata/assembly 차원에서 보존한다.
+
+### 반드시 유지할 Invariant (최종)
+
+```text
+Personal = primary research context
+Default  = supplemental reference context
+
+Query Role ≠ Corpus Role
+
+Personal ≠ rank 1 강제
+Default  ≠ 검색 제외
+
+Corpus membership = authoritative metadata
+GS ≠ retrieval/corpus classification
+```
+
+### 다음 단계 (HQ 확정 순서)
+
+```text
+AD-01/AD-02 HQ 승인
+        ↓
+CUE 독립 Architecture Verification
+        ↓
+Implementation Plan
+        ↓
+HQ Gate 2B Authorization
+        ↓
+C1 구현
+        ↓
+CUE 검증
+        ↓
+HQ 승인
+```
+
+**CW-04 Gate 2B Implementation Brief는 HQ가 작성 예정**(허용 파일,
+금지 범위, 테스트, G0, RPV-06a/06b 검증 조건 포함). 그 전 단계인
+"CUE 독립 Architecture Verification"이 현재 CUE의 작업 범위다.
+
 ## 현재 상태
 
 ```text
 CW-04 Gate 1                    [✓ HQ]
 CW-04 Gate 2A                   [✓ HQ]
-CW-04 Architecture Decision     [CUE 권고안 제출 — HQ 검토 대기]
-  AD-01 Membership SSOT         [CUE 권고: 옵션 C — HQ 승인 대기]
-  AD-02 Retrieval Role Policy   [CUE 권고: 옵션 D — HQ 승인 대기]
-CW-04 Gate 2B                   [NOT AUTHORIZED]
+CW-04 Architecture Decision     [✓ HQ APPROVED]
+  AD-01 Membership SSOT         [✓ HQ — Option C]
+  AD-02 Retrieval Role Policy   [✓ HQ — Option D]
+CW-04 Gate 2B                   [NOT AUTHORIZED — CUE Architecture
+                                  Verification 대기]
 C1                              [STOP]
-CUE                             [STOP — HQ 검토 대기]
+CUE                             [NEXT — 독립 Architecture Verification]
 ```
