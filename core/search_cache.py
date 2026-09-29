@@ -31,6 +31,7 @@ import hashlib
 import json
 import re
 import sqlite3
+import threading
 import time
 import unicodedata
 from pathlib import Path
@@ -112,7 +113,8 @@ class _L2SqliteCache:
 
     def __init__(self, db_path: str | Path) -> None:
         self.db_path = str(db_path)
-        self._conn = sqlite3.connect(self.db_path)
+        self._conn = sqlite3.connect(self.db_path, check_same_thread=False)
+        self._lock = threading.Lock()
         self._conn.executescript(self._SCHEMA)
         self._conn.commit()
 
@@ -120,33 +122,37 @@ class _L2SqliteCache:
         self._conn.close()
 
     def get(self, key: str) -> Optional[Any]:
-        row = self._conn.execute(
-            "SELECT value_json, expires_at FROM cache_entry WHERE key = ?", (key,)
-        ).fetchone()
-        if row is None:
-            return None
-        value_json, expires_at = row
-        if time.time() > expires_at:
-            self._conn.execute("DELETE FROM cache_entry WHERE key = ?", (key,))
-            self._conn.commit()
-            return None
-        return json.loads(value_json)
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT value_json, expires_at FROM cache_entry WHERE key = ?", (key,)
+            ).fetchone()
+            if row is None:
+                return None
+            value_json, expires_at = row
+            if time.time() > expires_at:
+                self._conn.execute("DELETE FROM cache_entry WHERE key = ?", (key,))
+                self._conn.commit()
+                return None
+            return json.loads(value_json)
 
     def set(self, key: str, value: Any, ttl_seconds: float) -> None:
-        self._conn.execute(
-            "INSERT OR REPLACE INTO cache_entry (key, value_json, expires_at) VALUES (?, ?, ?)",
-            (key, json.dumps(value, ensure_ascii=False), time.time() + ttl_seconds),
-        )
-        self._conn.commit()
+        with self._lock:
+            self._conn.execute(
+                "INSERT OR REPLACE INTO cache_entry (key, value_json, expires_at) VALUES (?, ?, ?)",
+                (key, json.dumps(value, ensure_ascii=False), time.time() + ttl_seconds),
+            )
+            self._conn.commit()
 
     def clear(self) -> None:
-        self._conn.execute("DELETE FROM cache_entry")
-        self._conn.commit()
+        with self._lock:
+            self._conn.execute("DELETE FROM cache_entry")
+            self._conn.commit()
 
     def purge_expired(self) -> int:
-        cur = self._conn.execute("DELETE FROM cache_entry WHERE expires_at < ?", (time.time(),))
-        self._conn.commit()
-        return cur.rowcount
+        with self._lock:
+            cur = self._conn.execute("DELETE FROM cache_entry WHERE expires_at < ?", (time.time(),))
+            self._conn.commit()
+            return cur.rowcount
 
 
 class SearchResultCache:
