@@ -478,3 +478,78 @@ GS-FINAL-RPV                             [10-case 재확인 + RPV-06 완료 — 
 regression + RPV-06a/06b(2) = 총 12개 케이스 전부 [✓] 상태.
 GS-FINAL-RPV 전체 최종 판단(acceptance criterion 10-20개 질문 충족
 확인 포함)은 HQ 결정 사항으로 남긴다.
+
+---
+
+## GS-FINAL-RPV [✓ HQ] — 최종 승인 (2026-09-29)
+
+### 최종 케이스 집계 (acceptance criterion 10-20개 질문 충족)
+
+| 카테고리 | 케이스 | 상태 |
+|---|---|---|
+| Biblical Text / Exegetical / Theological / Historical / Sermon Research / Insufficient Evidence | 01a, 01b, 02, 03a, 03b, 04, 07, 08a, 08b (9개) | [✓] real RPV 2차 regression, CW-01/CW-02 적용 후 재확인 완료 |
+| Multi-source | RPV-05 (1개) | [✓ HQ] — CW-03 적용, 야고보서 2:21(Fuller Vol.8) 최종 답변 반영 확인 |
+| Personal + Default Corpus | RPV-06a, RPV-06b (2개) | [✓] — CW-04 적용, corpus_type=personal 정상 태깅 + rank 불변 확인 |
+| **합계** | **12개** | **10-20개 acceptance criterion 충족** |
+
+### 전체 여정 요약
+
+```
+GS-00 ~ GS-P12 (Grounded Synthesis 기술 구현)         [✓ HQ]
+  ↓
+PR #90 merge (c8f7e41a)                                [✓ HQ]
+  ↓
+GS-FINAL-RPV 9-case 1차 실행 → 결함 발견(C-01/C-02/C-03) [HOLD]
+  ↓
+CW-01(claim parsing)/CW-02(marker 제거)                [✓ HQ]
+  ↓
+9-case 2차 regression 전부 GREEN                        [✓ HQ]
+  ↓
+RPV-05(Multi-source) → 초기 HOLD → 근본원인 추적          [✓ CUE]
+  ↓
+CW-03(P5 paragraph-scope binding)                       [✓ HQ]
+  ↓
+RPV-05 재검증 GREEN                                     [✓ HQ]
+  ↓
+RPV-06(Personal+Default) → 초기 HOLD/OBSERVATION         [발견: corpus-role
+                                                          signal 부재]
+  ↓
+CW-04(Gate1 원인추적 → Gate2A 설계검토 → AD-01/AD-02
+      Architecture Decision → Gate2B 구현)               [✓ HQ]
+  ↓
+RPV-06a/06b 재검증 GREEN                                 [✓]
+  ↓
+GS-FINAL-RPV                                             [✓ HQ 최종 승인]
+```
+
+### 판정 기준 요약
+
+- **Grounding**: 모든 grounded 케이스에서 `Claim.evidence_ids ⊆
+  included_evidence_ids` fail-closed 계약 유지(ADR-036 B4, 전체
+  세션에서 CUE가 코드로 직접 반복 확인).
+- **Semantic support**: `span_found_in_text` 미달 사례들은 C-03
+  Architecture Decision Brief에서 이미 "구조적 검증과 의미 지지
+  판정은 별도 층"이라는 ADR-036 B6 원 설계로 정리됨 — GS-FINAL-RPV
+  acceptance 기준 밖(별도 표본 검토 대상으로 문서화).
+- **Multi-source integrity**: RPV-05에서 CW-03 적용 후 다출처
+  evidence가 최종 답변에 실제로 반영됨을 실측 확인.
+- **Corpus role integrity**: RPV-06에서 CW-04 적용 후 Personal/Default
+  구분이 retrieval → Evidence까지 구조적으로 보존됨을 실측 확인
+  (단, ranking 자체에 Personal 우선권을 부여하는 것은 이번 범위
+  밖 — AD-02가 명시적으로 배제한 정책).
+
+### 알려진 잔여 사항 (GS-FINAL-RPV 범위 밖, 별도 기록)
+
+- retrieval routing의 bible-route bypass(scripture reference 포함
+  질의는 Default corpus를 원천 배제) — CW-04 Gate 1/2A에서 발견,
+  이번 corpus_membership 도입과는 별개 이슈로 남아있음.
+- Registry 기반 corpus_membership은 신규 업로드/fixture에만 적용되며,
+  기존 대량 코퍼스에 대한 backfill은 이번 범위에 포함되지 않음(Gate
+  2B Implementation Brief §1.3에서 명시적으로 배제).
+- citation `span_not_found` (paraphrase 한계)는 C-03에서 정리된 대로
+  옵션 D(사람/CUE 표본 검토 정례화)가 제품 운영에는 아직 가동되지
+  않은 상태.
+
+**C1/CUE 모두 STOP.** GS-FINAL-RPV는 이 시점 기준으로 종결됐으며,
+향후 재개는 새로운 HQ 지시(신규 corrective WO, 신규 RPV 확장 등)를
+통해서만 이루어진다.
