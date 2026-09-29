@@ -239,9 +239,41 @@ def mark_superseded(registry: dict, old_document_id: str, new_document_id: str) 
     """[SPRINT21-G-2 Option C] Link a superseded document to its
     replacement. Does not touch document_id/file_hash/content — purely an
     additive relationship. Caller is responsible for persisting the
-    registry afterward."""
-    old_record = registry["documents"].get(old_document_id)
-    new_record = registry["documents"].get(new_document_id)
+    registry afterward.
+
+    [NAE-SUPERSESSION-LINK-INTEGRITY-001] document_id is a content hash, so
+    the same ID can come back after A -> B (content reverted, or the record
+    was deleted and re-registered). Linking blindly then produced
+    supersedes/superseded_by cycles (Vol10~13) and dangling refs (Vol51~53).
+    After this call:
+
+      1. old_document_id == new_document_id -> no-op.
+      2. new_document_id is current: superseded_by is None.
+      3. old_document_id.supersedes != new_document_id. If new was an
+         ancestor of old, every link that made it one (X.supersedes ==
+         new) is dropped, leaving the single chain new -> ... -> old.
+      4. old/new never reference an ID absent from the registry (dangling
+         supersedes/superseded_by are reset to None).
+    """
+    documents = registry["documents"]
+    if old_document_id == new_document_id:
+        return
+    old_record = documents.get(old_document_id)
+    new_record = documents.get(new_document_id)
+
+    for rec in (old_record, new_record):
+        if rec is None:
+            continue
+        for key in ("supersedes", "superseded_by"):
+            if rec.get(key) and rec[key] not in documents:
+                rec[key] = None
+
+    if new_record is not None:
+        new_record["superseded_by"] = None
+        for other in documents.values():
+            if other.get("supersedes") == new_document_id:
+                other["supersedes"] = None
+
     if old_record is not None:
         old_record["superseded_by"] = new_document_id
     if new_record is not None:
