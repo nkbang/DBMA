@@ -292,3 +292,68 @@ Query → ParsedQuery → route → retrieval candidate count
 증거를 대체할 수 없다. 다음 보고서에는 `pwd`, `git rev-parse
 --show-toplevel`, `git branch --show-current`, `git rev-parse HEAD`의
 실제 출력을 반드시 포함한다.
+
+## 10. 산출물 9 확정 + Gate 2A 종료 (2026-09-28)
+
+**C1 2차 제출**: 단일 스크립트로 두 후보 질문(RPV-06a/06b)을 라이브
+재실행. RPV-06a는 `route=hybrid`, fixture A가 rank 6(bm25=18.854)에
+등장 — 목표 달성으로 보고. RPV-06b는 `route=hybrid`이나 fixture B가
+top-10에 **"0건, 미등장"**으로 보고.
+
+**CUE 독립 재현**: `/Users/David/DBMA-rpv-c8f7e41a`(G0 재확인 완료)
+에서 동일 두 질문을 직접 재실행.
+
+| 질문 | route | C1 보고 | CUE 실측 재현 | 판정 |
+|---|---|---|---|---|
+| RPV-06a 후보("포도나무와 가지의 비유에서...") | hybrid | rank 6, bm25=18.854 | **rank 6, bm25=18.854 — 완전 일치** | ✅ 확인 |
+| RPV-06b 후보("성령께서 교회에...") | hybrid | **0건, 미등장** | **rank 8, bm25=14.216, theological=0.232, final=0.04265 — 실제로 등장** | ❌ **C1 보고 오류, CUE가 정정** |
+
+**결론**: 두 후보 질문 모두 CW-04 §3.1 조건(route=hybrid, fixture가
+실제 candidate pool에 등장)을 충족한다. C1의 RPV-06b "미등장" 보고는
+사실과 반대였으며, CUE의 직접 재현으로 정정됐다 — 이 결과(rank 6 /
+rank 8, raw 스코어 포함)를 산출물 9의 최종 확정본으로 채택한다.
+
+### RPV-06a/06b 확정 질문 (산출물 9 최종)
+
+- **RPV-06a**: "포도나무와 가지의 비유에서 열매를 맺기 위해 주님 안에
+  거한다는 의미를 설명해 주세요" — route=hybrid, fixture A
+  (`TSU-JHN-6f323b08ce388551d2fa772c756a828e_chunk_00003`) rank 6
+- **RPV-06b**: "성령께서 교회에 다양한 은사를 주신다는 관점에서 은사의
+  종류와 목적을 정리해 주세요" — route=hybrid, fixture B
+  (`TSU-UNK-5ce2824e947da15da8893fbb45c07239_chunk_00002`) rank 8
+
+### C1 보고 정확성 — 반복 기록
+
+이번 세션에서 C1의 실행 결과 보고가 CUE의 직접 재현과 불일치한 사례가
+누적됐다(CW-03 완료 보고 허위, RPV-05 질의 치환, Gate 1 줄번호 오류,
+이번 RPV-06b "미등장" 오보). CW-03/CW-04 C1 보고 표준(§10)의
+"서술적 결론 ≠ evidence" 원칙이 계속 유효함을 재확인 — CUE의 독립
+재현 없이는 C1 단독 보고를 acceptance evidence로 채택하지 않는다는
+운영 원칙이 이번에도 정당화됐다.
+
+## 11. Gate 2A 최종 상태 — 전체 종료
+
+```text
+CW-04 Gate 2A
+  산출물 1   [✓ CUE]
+  산출물 2   [✓ CUE]
+  산출물 3   [✓ CUE]
+  산출물 4   [✓ CUE — design candidate]
+  산출물 5   [✓ CUE — design candidate]
+  산출물 6   [✓ CUE]
+  산출물 7   [✓ CUE — proposal]
+  산출물 8   [✓ CUE]
+  산출물 9   [✓ CUE — CUE 재현으로 확정, RPV-06a rank6/RPV-06b rank8]
+  산출물 10  [✓ CUE — subject to Q8/architecture decision]
+
+Gate 2A final decision     [✓ CUE — 전체 종료]
+Gate 2B                    [NOT AUTHORIZED]
+C1                         [STOP]
+CUE                        [STOP — HQ Architecture Decision 대기]
+```
+
+**다음 단계**: HQ Architecture Decision — Q8(SSOT), Q1-Q6(D1-D6) 설계
+질문에 대한 정책 결정. 산출물 10의 "quota-based two-stage retrieval"을
+포함한 특정 구현 방식은 이 Architecture Decision에서 확정되기 전까지
+승인된 것이 아니다. Architecture Decision 승인 후에만 별도 Gate 2B
+(구현 재승인)로 진행한다.
