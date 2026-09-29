@@ -1,4 +1,4 @@
-# CW-03 Corrective WO — P5 Parser 단일-Claim 구조 결함 (구현 착수 승인됨)
+# CW-03 Corrective WO — P5 Parser 단일-Claim 구조 결함 [✓ HQ APPROVED]
 
 - 작성: CUE, 2026-09-28. RPV-05 Root-Cause Trace 결과([GS-FINAL-RPV-TEST-SET-DRAFT.md](GS-FINAL-RPV-TEST-SET-DRAFT.md)
   및 채팅 제출 보고서 "RPV-05 HOLD Root-Cause Trace" 참고)에서 확인된 P5 파싱 결함의
@@ -151,16 +151,36 @@ CUE는 GREEN을 선언하지 않는다 — 검증 결과만 HQ에 제출한다.
 
 ## 현재 상태
 
-**CW-03 = APPROVED (구현 착수 승인, 2026-09-28).** 경위: 1차 초안 제출
+**CW-03 = [✓ HQ] APPROVED (2026-09-28, 최종 승인).** 경위: 1차 초안 제출
 (`af9574c`) → HQ 1차 검토(방향/범위 분리 적절, binding-scope acceptance
 기준 + Case A-E 회귀 조건 보강 요구) → 개정판(`e28d6a1`) → C1 G0
 preflight 1차 FAIL(`/Users/David/DBMA`, `feat/peb-v0.1`, `c2cdf147` —
 잘못된 디렉터리) → CUE가 `/Users/David/DBMA-rpv-c8f7e41a` 정상 유지
-확인 후 이동 지시 → C1 G0 preflight 재실행 PASS(`/Users/David/DBMA-rpv-c8f7e41a`,
-detached HEAD `c8f7e41a`) → HQ 최종 구현 착수 승인.
+확인 후 이동 지시 → C1 G0 preflight 재실행 PASS → HQ 구현 착수 승인
+→ **C1 1차 완료 보고 CUE 검증 결과 REJECTED**(코드 미변경, mtime이
+승인 시점보다 3시간 이전, diff가 CW-01/CW-02와 동일) → C1 재작업
+지시(mtime/git diff 원문 제출 강제) → C1 2차 완료 보고: 코드 수정은
+실재했으나 **Case E 질의가 RPV-05 정본이 아닌 구 RPV-05a(산상수훈,
+이 문서 `GS-FINAL-RPV-TEST-SET-DRAFT.md` 164번째 줄, HOLD 처리된
+구버전)** — 질의 치환 오류로 Case E 무효 판정 → CUE가 직접 RPV-05
+정본 질문으로 P1-P7 전체 파이프라인 라이브 재실행(Ollama 실제 호출,
+latency 124864.6ms)해 Case E 대체 확정 → **claim_002가 야고보서
+2:21 내용을 Fuller Vol.8(`NAE-TSU-0033580`)에만 정확히 binding,
+cross-leak 없음, `GroundedAnswer.text`(`core/grounded_answer.py:106,126`
+`"\n\n".join(text_parts)`)에 4개 claim 전부(야고보서 포함) 반영 확인**
+→ HQ 최종 승인.
 
-**다음 단계**: C1이 이 문서의 범위(허용 파일: `parse_llm_claims()`만) 안에서
-구현을 제안하고, CUE가 read-only로 Case A-E 전부(특히 Case E — RPV-05
-실제 재현·해소)를 직접 재실행해 독립 검증한다. CUE는 C1의 구현 완료
-보고를 그대로 승인하지 않는다 — 검증 결과만 HQ에 제출하고, HQ 승인
-전까지 CW-03을 [✓ HQ]로 승격하지 않는다.
+**C1 보고 품질 문제는 CW-03 범위에 포함하지 않고 별도 운영 규칙으로
+기록**(아래 "C1 보고 표준" 참고) — 코드 결함(해소됨)과 실행/보고
+결함(별개)을 분리해 판정.
+
+## C1 보고 표준 (2026-09-28 HQ 확정, 향후 모든 RPV/WO 보고에 적용)
+
+향후 C1 실행 보고서는 최소한 다음을 포함해야 한다:
+- **Question integrity**: HQ 지정 질문 원문을 그대로 사용(임의 변형 금지)
+- **Worktree identity**: `pwd` / `git rev-parse --show-toplevel` /
+  `git branch --show-current` / `git rev-parse HEAD`
+- **Execution timestamp**: 실제 실행 시각
+- **Result artifact**: 결과 파일의 실제 생성/수정 시각이 실행 시각과
+  일치하는지 대조 가능하게 제시
+- **Test question**: 사전 합의된 질의를 임의 변형하지 않음

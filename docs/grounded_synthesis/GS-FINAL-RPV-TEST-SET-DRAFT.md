@@ -352,3 +352,40 @@ classify() [core/query_planner.py]
 **금지 사항**: 코드/인덱스/코퍼스 수정 금지. 원인 위치가 단계별로
 확정된 뒤에만 별도 corrective WO를 발급한다. real RPV는 이 조사
 완료 전까지 시작하지 않는다.
+
+## RPV-05 정본 재검증 [✓ CUE] (2026-09-28, CW-03 적용 후)
+
+**주의**: 위 §"RPV-05a/RPV-05b"(101-107번째 줄, 산상수훈/Fuller비교
+질의)는 구버전 항목으로 이후 HQ 지시로 **단일 정본 질문으로 대체**됐다.
+이 절은 그 정본 질문에 대한 CW-03 적용 후 재검증 기록이다.
+
+**질문(정본)**: "로마서 3장의 칭의와 야고보서 2장의 행함은 서로
+모순되는 것처럼 보이는데, 두 본문을 어떻게 조화롭게 이해할 수
+있습니까?"
+
+**실행**: CUE가 `/Users/David/DBMA-rpv-c8f7e41a`(G0 확인됨)에서
+`scripts/grounded_synthesis_integration_demo.py`를 CW-03 적용 코드로
+직접 라이브 실행(Ollama 실제 호출, P5 latency 124864.6ms). 결과 파일:
+`/tmp/cue_rpv05_cw03_verify.json`(세션 로컬, 영구 보관 대상 아님 —
+필요시 output/bench/에 재수록 검토).
+
+**결과**:
+- EvidencePool/SynthesisInput: 5건 포함, truncated=False
+- Claim 4건 전부 `valid=True`, 각 claim이 정확히 1개 evidence_id에만
+  대응(cross-leak 없음):
+  - claim_000: 로마서 3:24 ← `NAE-TSU-0025626`
+  - claim_001: 로마서 3:31 ← `TSU-UNK-74edb7923a40d79e01af51e24b8e8285_chunk_00064`
+  - **claim_002: 야고보서 2:21 ← `NAE-TSU-0033580`(Fuller Vol.8)**
+  - claim_003: 로마서 3:26 ← `TSU-UNK-e1e68a35c3c031676bc13dc47a06f934_chunk_00650`
+- `GroundedAnswer.status = grounded`, `GroundedAnswer.text`는
+  `"\n\n".join(text_parts)`(`core/grounded_answer.py:106,126`)로 4개
+  claim 전부를 이어붙이므로 야고보서 2:21 내용이 최종 사용자 답변에
+  실제로 포함됨 — **RPV-05 원 결함(Fuller Vol.8이 인용은 되나 답변에는
+  야고보서 내용이 전혀 없던 문제) 해소 확인**.
+- `citation_check`: 4건 전부 `span_found_in_text=False`(id/provenance는
+  전부 True) — 기존 문서화된 paraphrase 한계([GS-FINAL-RPV-C03-ARCHITECTURE-DECISION-BRIEF.md](GS-FINAL-RPV-C03-ARCHITECTURE-DECISION-BRIEF.md)
+  범위), CW-03 대상 아님, 차단 사유 아님.
+
+**판정**: **RPV-05 Multi-source = [✓ CUE]**. Multi-source contribution
+(Fuller Vol.8 포함)이 최종 답변에 정상 반영됨을 CW-03 적용 코드로 실측
+확인. HQ 최종 승인 대기.
