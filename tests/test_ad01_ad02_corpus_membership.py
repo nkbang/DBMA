@@ -69,24 +69,44 @@ class TestAD01ResolveCorpusType:
 class TestAD01TSUEvidenceFactory:
     """TSUEvidenceFactory - document_id 기반 corpus_type."""
 
-    def test_init_with_personal_document(self):
-        factory = TSUEvidenceFactory(document_id="6f323b08ce388551d2fa772c756a828e")
-        assert factory._corpus_type == CORPUS_PERSONAL
-
-    def test_init_with_default_document(self):
-        factory = TSUEvidenceFactory(document_id="nonexistent_doc_id_00000")
-        assert factory._corpus_type == CORPUS_DEFAULT
-
-    def test_create_from_tsu_preserves_corpus_type(self):
-        factory = TSUEvidenceFactory(document_id="6f323b08ce388551d2fa772c756a828e")
-        tsu_record = {
-            "tsu_id": "TSU-TEST-001",
-            "source_file": "test.txt",
-            "document_id": "6f323b08ce388551d2fa772c756a828e",
-            "content": "test content",
+    def test_init_with_personal_document(self, tmp_path):
+        reg = {
+            "documents": {
+                "6f323b08ce388551d2fa772c756a828e": {"corpus_membership": "personal"}
+            }
         }
-        evidence = factory.create_from_tsu(tsu_record)
-        assert evidence.corpus_type == CORPUS_PERSONAL
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            factory = TSUEvidenceFactory(document_id="6f323b08ce388551d2fa772c756a828e")
+            assert factory._corpus_type == CORPUS_PERSONAL
+
+    def test_init_with_default_document(self, tmp_path):
+        reg = {"documents": {}}
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            factory = TSUEvidenceFactory(document_id="nonexistent_doc_id_00000")
+            assert factory._corpus_type == CORPUS_DEFAULT
+
+    def test_create_from_tsu_preserves_corpus_type(self, tmp_path):
+        reg = {
+            "documents": {
+                "6f323b08ce388551d2fa772c756a828e": {"corpus_membership": "personal"}
+            }
+        }
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            factory = TSUEvidenceFactory(document_id="6f323b08ce388551d2fa772c756a828e")
+            tsu_record = {
+                "tsu_id": "TSU-TEST-001",
+                "source_file": "test.txt",
+                "document_id": "6f323b08ce388551d2fa772c756a828e",
+                "content": "test content",
+            }
+            evidence = factory.create_from_tsu(tsu_record)
+            assert evidence.corpus_type == CORPUS_PERSONAL
 
 
 class TestAD02RankedCandidateEvidenceAdapter:
@@ -108,43 +128,71 @@ class TestAD02RankedCandidateEvidenceAdapter:
             },
         )
 
-    def test_adapt_personal_fixture_a(self):
-        adapter = RankedCandidateEvidenceAdapter(document_id="6f323b08ce388551d2fa772c756a828e")
-        candidate = self._make_candidate(0.78, "6f323b08ce388551d2fa772c756a828e")
-        evidence = adapter.adapt(candidate)
-        assert evidence.corpus_type == CORPUS_PERSONAL
-        assert evidence.retrieval_score == 0.85
-        assert evidence.bm25_score == 0.72
-        assert evidence.final_score == 0.78
-        assert evidence.provenance.source_file == "fixture_6f323b08ce388551d2fa772c756a828e.txt"
-        assert evidence.provenance.document_id == "6f323b08ce388551d2fa772c756a828e"
+    def test_adapt_personal_fixture_a(self, tmp_path):
+        reg = {
+            "documents": {
+                "6f323b08ce388551d2fa772c756a828e": {"corpus_membership": "personal"}
+            }
+        }
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            adapter = RankedCandidateEvidenceAdapter(document_id="6f323b08ce388551d2fa772c756a828e")
+            candidate = self._make_candidate(0.78, "6f323b08ce388551d2fa772c756a828e")
+            evidence = adapter.adapt(candidate)
+            assert evidence.corpus_type == CORPUS_PERSONAL
+            assert evidence.retrieval_score == 0.85
+            assert evidence.bm25_score == 0.72
+            assert evidence.final_score == 0.78
+            assert evidence.provenance.source_file == "fixture_6f323b08ce388551d2fa772c756a828e.txt"
+            assert evidence.provenance.document_id == "6f323b08ce388551d2fa772c756a828e"
 
-    def test_adapt_nonexistent_document_default(self):
-        adapter = RankedCandidateEvidenceAdapter(document_id="nonexistent_doc_id_00000")
-        candidate = self._make_candidate(0.78, "nonexistent_doc_id_00000")
-        evidence = adapter.adapt(candidate)
-        assert evidence.corpus_type == CORPUS_DEFAULT
+    def test_adapt_nonexistent_document_default(self, tmp_path):
+        reg = {"documents": {}}
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            adapter = RankedCandidateEvidenceAdapter(document_id="nonexistent_doc_id_00000")
+            candidate = self._make_candidate(0.78, "nonexistent_doc_id_00000")
+            evidence = adapter.adapt(candidate)
+            assert evidence.corpus_type == CORPUS_DEFAULT
 
-    def test_adapt_batch_preserves_order(self):
-        adapter = RankedCandidateEvidenceAdapter(document_id="6f323b08ce388551d2fa772c756a828e")
-        c1 = self._make_candidate(0.78, "6f323b08ce388551d2fa772c756a828e")
-        c2 = self._make_candidate(0.82, "nonexistent_doc_id_00000")
-        evidences = adapter.adapt_batch([c1, c2])
-        assert len(evidences) == 2
-        assert evidences[0].corpus_type == CORPUS_PERSONAL
-        assert evidences[1].corpus_type == CORPUS_DEFAULT
-        assert evidences[0].final_score == c1.final_score
-        assert evidences[1].final_score == c2.final_score
+    def test_adapt_batch_preserves_order(self, tmp_path):
+        reg = {
+            "documents": {
+                "6f323b08ce388551d2fa772c756a828e": {"corpus_membership": "personal"}
+            }
+        }
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            adapter = RankedCandidateEvidenceAdapter(document_id="6f323b08ce388551d2fa772c756a828e")
+            c1 = self._make_candidate(0.78, "6f323b08ce388551d2fa772c756a828e")
+            c2 = self._make_candidate(0.82, "nonexistent_doc_id_00000")
+            evidences = adapter.adapt_batch([c1, c2])
+            assert len(evidences) == 2
+            assert evidences[0].corpus_type == CORPUS_PERSONAL
+            assert evidences[1].corpus_type == CORPUS_DEFAULT
+            assert evidences[0].final_score == c1.final_score
+            assert evidences[1].final_score == c2.final_score
 
-    def test_adapt_always_uses_per_candidate_lookup(self):
+    def test_adapt_always_uses_per_candidate_lookup(self, tmp_path):
         """adapt()는 항상 per-candidate registry lookup을 사용함 (AD-02 설계)."""
-        adapter = RankedCandidateEvidenceAdapter(
-            corpus_type=CORPUS_DEFAULT,
-            document_id="6f323b08ce388551d2fa772c756a828e",
-        )
-        candidate = self._make_candidate(0.78, "6f323b08ce388551d2fa772c756a828e")
-        evidence = adapter.adapt(candidate)
-        assert evidence.corpus_type == CORPUS_PERSONAL
+        reg = {
+            "documents": {
+                "6f323b08ce388551d2fa772c756a828e": {"corpus_membership": "personal"}
+            }
+        }
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            adapter = RankedCandidateEvidenceAdapter(
+                corpus_type=CORPUS_DEFAULT,
+                document_id="6f323b08ce388551d2fa772c756a828e",
+            )
+            candidate = self._make_candidate(0.78, "6f323b08ce388551d2fa772c756a828e")
+            evidence = adapter.adapt(candidate)
+            assert evidence.corpus_type == CORPUS_PERSONAL
 
 
 class TestAD02RankingUnchanged:
@@ -187,34 +235,37 @@ class TestAD02RankingUnchanged:
 
 
 class TestIsolatedFixtureVerification:
-    """worktree isolated registry의 fixture A/B가 실제로 personal로 인식되는지."""
+    """tmp_path + mock.patch 기반 자기완결적 fixture A/B 검증.
+
+    원래 목적: worktree isolated registry의 fixture A/B가 실제로 personal로
+    인식되는지 확인. CI 환경에서는 로컬 registry 파일이 없으므로, tmp_path에
+    fixture A/B가 corpus_membership="personal"로 등록된 registry를 직접 만들고
+    mock.patch로 주입해 동일한 검증을 수행한다.
+    """
 
     @pytest.fixture(autouse=True)
-    def _verify_isolated_registry(self):
-        from core.config import DEFAULT_REGISTRY_PATH
-        reg_path = os.path.abspath(DEFAULT_REGISTRY_PATH)
-        assert os.path.isfile(reg_path), f"Registry file not found: {reg_path}"
-        with open(reg_path, "r", encoding="utf-8") as f:
-            registry = json.load(f)
-        docs = registry.get("documents", {})
-        fixture_a = docs.get("6f323b08ce388551d2fa772c756a828e")
-        assert fixture_a is not None, "Fixture A (John 15) not in isolated registry"
-        assert fixture_a.get("corpus_membership") == "personal", \
-            f"Fixture A corpus_membership = {fixture_a.get('corpus_membership')!r}, expected 'personal'"
-        fixture_b = docs.get("5ce2824e947da15da8893fbb45c07239")
-        assert fixture_b is not None, "Fixture B (1 Cor 12) not in isolated registry"
-        assert fixture_b.get("corpus_membership") == "personal", \
-            f"Fixture B corpus_membership = {fixture_b.get('corpus_membership')!r}, expected 'personal'"
+    def _isolated_fixture_registry(self, tmp_path):
+        """Fixture A/B가 personal로 등록된 registry를 tmp_path에 생성."""
+        reg = {
+            "documents": {
+                "6f323b08ce388551d2fa772c756a828e": {"corpus_membership": "personal"},
+                "5ce2824e947da15da8893fbb45c07239": {"corpus_membership": "personal"},
+            }
+        }
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps(reg), encoding="utf-8")
+        with mock.patch("core.evidence_adapters.tsu_adapter.DEFAULT_REGISTRY_PATH", str(reg_file)):
+            yield reg_file
 
-    def test_fixture_a_resolve_personal(self):
+    def test_fixture_a_resolve_personal(self, _isolated_fixture_registry):
         result = TSUEvidenceFactory.resolve_corpus_type(document_id="6f323b08ce388551d2fa772c756a828e")
         assert result == CORPUS_PERSONAL
 
-    def test_fixture_b_resolve_personal(self):
+    def test_fixture_b_resolve_personal(self, _isolated_fixture_registry):
         result = TSUEvidenceFactory.resolve_corpus_type(document_id="5ce2824e947da15da8893fbb45c07239")
         assert result == CORPUS_PERSONAL
 
-    def test_fixture_a_evidence_personal(self):
+    def test_fixture_a_evidence_personal(self, _isolated_fixture_registry):
         adapter = RankedCandidateEvidenceAdapter(document_id="6f323b08ce388551d2fa772c756a828e")
         candidate = RankedCandidate(
             tsu_id="TSU-JHN-6f323b08",
@@ -229,7 +280,7 @@ class TestIsolatedFixtureVerification:
         evidence = adapter.adapt(candidate)
         assert evidence.corpus_type == CORPUS_PERSONAL
 
-    def test_fixture_b_evidence_personal(self):
+    def test_fixture_b_evidence_personal(self, _isolated_fixture_registry):
         adapter = RankedCandidateEvidenceAdapter(document_id="5ce2824e947da15da8893fbb45c07239")
         candidate = RankedCandidate(
             tsu_id="TSU-UNK-5ce2824e",
