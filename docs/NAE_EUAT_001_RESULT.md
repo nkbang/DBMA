@@ -9,6 +9,7 @@
 - **App**: `http://localhost:8501` (Streamlit `ui/app.py`, pid 66564, 2026-09-29 16:27 기동). 생성 모델은 `my-theology-bot-v2:latest`(53GB).
 - **Branch / Commit**: `~/DBMA` 메인 체크아웃 `feat/peb-v0.1` @ `c2cdf147`. 미커밋 수정 17개가 이미 있는 상태였다. 이 문서를 작성한 세션 워크트리는 시험 대상이 아니다.
 - **Test date**: 2026-09-29, 약 16:30~17:30 CDT
+- **코드 기준선 주의 (2026-09-29 후속 확인)**: 시험 대상 `feat/peb-v0.1`은 `origin/main`과 **분기**되어 있다(main에 없는 커밋 105개, main에만 있는 커밋 82개). 실행 경로(`chat.py`, `research.py`, `core/generation.py`, `core/retrieval.py`, `NAE/retrieval_adapter.py`)를 바꾼 peb 전용 커밋은 `398bc5cd`(한국어 질의 번역 전처리·빈 게이트 폴백), `2a326b2b`·`78e51c7e`(오염 문자 삭제 대신 표식+고지) 등이다. 따라서 "□" 표식과 한국어 질의 검색 동작은 peb 코드의 결과이며 `main`의 동작과 다를 수 있다. 채팅이 내 서재만 검색하고 NAE 브리지(`bridge_query`)를 답변 경로에서 쓰지 않는 구조는 두 브랜치에서 동일함을 확인했다(`chat.py`의 NAE/Smith/보류 참조 수 10건씩, 브리지 참조 0건).
 - **Corpus/index**
   - `nae_tsu_v1` = 3,319 points (Qdrant 실측). 내역은 Dagg 2,958 + Hiscox 361이고 **Fuller는 0**.
   - `nae_ref_v1` = 34,948 (Smith 사전만).
