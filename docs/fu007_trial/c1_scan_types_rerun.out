@@ -1,0 +1,314 @@
+Total cases: 24
+
+--- A1 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 353 chars
+  Sources (5):
+    - Evening by evening : or, Readings at eventide for 
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - Evening by evening : or, Readings at eventide for 
+
+--- A2 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 36 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - Expositions of holy scripture /
+    - Expositions of holy scripture /
+
+--- A3 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 428 chars
+  Sources (5):
+    - Expositions of holy scripture /
+    - The Metropolitan Tabernacle Pulpit
+    - Expositions of holy scripture /
+    - Expositions of holy scripture /
+    - Expositions of holy scripture /
+
+--- B1 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: True
+  Answer length: 544 chars
+  Sources (5):
+    - THE METROPOLITAN TABERNACLE PULPIT
+    - THE METROPOLITAN TABERNACLE PULPIT
+    - Commenting and commentaries
+    - Sermons preached and revised by the Rev. C. H. Spu
+    - Spurgeon’s Sermons - Vol. XV - Metropolitan Tabern
+
+--- B2 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 712 chars
+  Sources (5):
+    - Till he come : communion meditations and addresses
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - Sermons Preached and Revised by C. H. Spurgeon
+    - The Metropolitan Tabernacle Pulpit
+
+--- B3 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 228 chars
+  Sources (5):
+    - Lectures on the History of Preaching
+    - The Metropolitan Tabernacle Pulpit
+    - A History of Preaching
+    - A History of Preaching
+    - A History of Preaching
+
+--- C1 ---
+  Type: ANSWER
+  ClaimGuard: high
+  Error: None
+  Has transition phrase: False
+  Answer length: 861 chars
+  Sources (5):
+    - Spurgeon’s Sermons - Vol. XI - Metropolitan Tabern
+    - The Metropolitan Tabernacle Pulpit
+    - Spurgeon’s Sermons - Vol. XV - Metropolitan Tabern
+    - Metropolitan Tabernacle Pulpit
+    - Morning by morning; or, Daily readings for the fam
+
+--- C2 ---
+  Type: ANSWER
+  ClaimGuard: high
+  Error: None
+  Has transition phrase: False
+  Answer length: 885 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - THE METROPOLITAN TABERNACLE PULPIT
+    - The Metropolitan Tabernacle Pulpit
+
+--- C3 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 844 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - Spurgeon’s Sermons - Vol. XI - Metropolitan Tabern
+
+--- D1 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 511 chars
+  Sources (5):
+    - A treatise on the preparation and delivery of serm
+    - Lectures on the History of Preaching
+    - A History of Preaching
+    - A treatise on the preparation and delivery of serm
+    - A History of Preaching
+
+--- D2 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: True
+  Answer length: 504 chars
+  Sources (5):
+    - Lectures on the History of Preaching
+    - Sermons Preached and Revised by the Rev. C. H. Spu
+    - A treatise on the preparation and delivery of serm
+    - Sermons preached and revised by the Rev. C. H. Spu
+    - Sermons preached and revised by the Rev. C. H. Spu
+
+--- D3 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: True
+  Answer length: 808 chars
+  Sources (5):
+    - Till he come : communion meditations and addresses
+    - Till he come : communion meditations and addresses
+    - Till he come : communion meditations and addresses
+    - Expositions of Holy Scripture
+    - Till he come : communion meditations and addresses
+
+--- E1 ---
+  Type: ABSTENTION
+  ClaimGuard: high
+  Error: None
+  Has transition phrase: True
+  Answer length: 796 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit Sermons Preache
+    - A History of Preaching
+    - The Metropolitan Tabernacle Pulpit
+    - Spurgeon’s Sermons - Vol. XV - Metropolitan Tabern
+    - The Metropolitan Tabernacle Pulpit
+
+--- E2 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 437 chars
+  Sources (5):
+    - Spurgeon’s Sermons - Vol. XV - Metropolitan Tabern
+    - Morning by morning; or, Daily readings for the fam
+    - A treatise on the preparation and delivery of serm
+    - The Metropolitan Tabernacle Pulpit  1884: Vol 30
+    - The Metropolitan Tabernacle Pulpit
+
+--- E3 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 276 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit Sermons Preache
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit Sermons Preache
+    - The Metropolitan Tabernacle Pulpit Sermons Preache
+    - The Metropolitan Tabernacle Pulpit  1884: Vol 30
+
+--- F1 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 186 chars
+  Sources (5):
+    - A History of Preaching
+    - Sermons Preached and Revised by the Rev. C. H. Spu
+    - Sermons preached and revised by the Rev. C. H. Spu
+    - Sermons preached and revised by the Rev. C. H. Spu
+    - Sermons preached and revised by the Rev. C. H. Spu
+
+--- F2 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: True
+  Answer length: 195 chars
+  Sources (5):
+    - Tropologia: or, A key to open scripture-metaphors.
+    - Tropologia: or, A key to open scripture-metaphors.
+    - Spurgeon’s Sermons - Vol. XV - Metropolitan Tabern
+    - Tropologia: or, A key to open scripture-metaphors.
+    - Spurgeon’s Sermons - Vol. XV - Metropolitan Tabern
+
+--- F3 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 153 chars
+  Sources (5):
+    - Expositions of holy scripture /
+    - Spurgeon’s Sermons - Vol. XV - Metropolitan Tabern
+    - The Metropolitan Tabernacle Pulpit
+    - Sermons preached and revised by the Rev. C. H. Spu
+    - A History of Preaching
+
+--- G1 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 82 chars
+  Sources (5):
+    - A treatise on the preparation and delivery of serm
+    - Lectures on the History of Preaching
+    - A History of Preaching
+    - A treatise on the preparation and delivery of serm
+    - A History of Preaching
+
+--- G2 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 164 chars
+  Sources (5):
+    - A treatise on the preparation and delivery of serm
+    - A History of Preaching
+    - A treatise on the preparation and delivery of serm
+    - A treatise on the preparation and delivery of serm
+    - Lectures on the History of Preaching
+
+--- G3 ---
+  Type: ABSTENTION
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: True
+  Answer length: 239 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+
+--- H1 ---
+  Type: PARTIAL
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: False
+  Answer length: 190 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit
+    - Sermons preached and revised by the Rev. C. H. Spu
+    - Sermons Preached and Revised by the Rev. C. H. Spu
+    - Sermons preached and revised by the Rev. C. H. Spu
+    - A History of Preaching
+
+--- H2 ---
+  Type: ANSWER
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: True
+  Answer length: 292 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - The Metropolitan Tabernacle Pulpit
+    - Spurgeon’s Sermons - Vol. XI - Metropolitan Tabern
+    - The Metropolitan Tabernacle Pulpit
+
+--- H3 ---
+  Type: PARTIAL
+  ClaimGuard: none
+  Error: None
+  Has transition phrase: True
+  Answer length: 199 chars
+  Sources (5):
+    - The Metropolitan Tabernacle Pulpit
+    - Commenting and commentaries
+    - Heaven
+    - Expositions of holy scripture /
+    - A treatise on the preparation and delivery of serm
+
