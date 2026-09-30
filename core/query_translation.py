@@ -33,7 +33,7 @@ import re
 
 # 검색 캐시 키에 들어간다(core/search_cache.make_cache_key) — 사전을 바꾸면
 # 올려서 이전 번역으로 만든 캐시 결과가 재사용되지 않게 한다.
-QUERY_TRANSLATION_VERSION = "3"
+QUERY_TRANSLATION_VERSION = "4"
 
 _HANGUL_RE = re.compile(r"[가-힣]")
 
@@ -166,6 +166,13 @@ KO_EN_THEOLOGY_TERMS: dict[str, list[str]] = {
     "고난": ["suffering", "affliction"],
     "감사": ["thanksgiving"],
     "천사": ["angel", "angels"],
+    # 교단명 — [FU-007] 최장 일치가 "침례교"의 "침례"(baptism), "장로교"의
+    # "장로"(elder)를 잡던 오역 보정(P0-5 B3·D1·G1 실측). 교단명 자체를 항목으로 둔다.
+    "침례교": ["baptist", "baptists"],
+    "장로교": ["presbyterian", "presbyterians"],
+    "감리교": ["methodist", "methodists"],
+    "루터교": ["lutheran", "lutherans"],
+    "성공회": ["anglican", "episcopal"],
     # 신학 일반
     "교리": ["doctrine"],
     "신학": ["theology"],

@@ -22,6 +22,7 @@ through, so no UI file needed any change.
 from __future__ import annotations
 
 import os
+import re
 import time
 from typing import Any, Optional
 
@@ -30,10 +31,16 @@ from dataclasses import asdict
 from core.candidate_generator import CandidateGenerator, CandidateRef, open_or_build_index
 from core.bible_index import BibleIndex
 from core.query_planner import QueryPlan, classify
-from core.query_translation import contains_hangul, translate_to_english
+from core.query_translation import (
+    contains_hangul,
+    scripture_ref_phrases,
+    scripture_ref_terms,
+    translate_to_english,
+)
 from core.rrf import reciprocal_rank_fusion
 from core.search_cache import SearchResultCache, make_cache_key
 from core.retrieval import (
+    BOOK_ID_TO_NAMES,
     ParsedQuery,
     RankedCandidate,
     QueryParser,
@@ -84,6 +91,29 @@ def is_enabled() -> bool:
 # 배포 기준선 실측값은 0.00%(119,595건 전량 영문)이고, 한국어 자료가 유의미하게
 # 쌓이면(20% 이상) 번역 전처리는 자동으로 멈춘다.
 _KOREAN_CORPUS_THRESHOLD = 0.20
+
+
+
+def _carry_scripture_notation(original: ParsedQuery, translated: ParsedQuery) -> ParsedQuery:
+    """[FU-007 결합안] LLM 번역문 재파싱 결과에 원문 파싱의 구절 표기 확장을 잇는다.
+
+    LLM 번역은 "로마서 8장"을 "Romans 8"로 옮기지만, 코퍼스 구절 표기는 79%가
+    로마숫자 장("Romans viii. 28")이다(core/query_translation.scripture_ref_terms
+    주석의 2026-09-26 실측). 사전 번역(main)이 하던 로마숫자 장·구문 가중을
+    **원문 한국어 파싱의 구절 참조** 기준으로 다시 붙인다 — 번역문에서 참조가
+    누락·변형돼도 원문 참조가 기준이다. 용어 사전 번역어는 붙이지 않는다
+    (LLM 번역과 이중 추가 방지; 사전은 LLM 실패 시 원문 파싱에 남아 폴백이 된다).
+    """
+    refs = original.scripture_refs or translated.scripture_refs
+    if not refs:
+        return translated
+    have = set(re.findall(r"[a-z0-9]+", translated.original_query.lower()))
+    extra = [t for t in scripture_ref_terms(refs) if t not in have]
+    translated.translated_terms = list(translated.translated_terms) + [
+        t for t in extra if t not in translated.translated_terms
+    ]
+    translated.translated_phrases = scripture_ref_phrases(refs, BOOK_ID_TO_NAMES)
+    return translated
 
 
 class HybridRetriever:
@@ -219,7 +249,9 @@ class HybridRetriever:
             # 없을 때만 내려가므로 0건보다 나빠질 수 없다.
             if not candidates:
                 if telemetry_out is not None:
-                    telemetry_out["route"] = "bible->hybrid"
+                    # [FU-007] main 텔레메트리 표기로 통일(route + route_fallback_from).
+                    telemetry_out["route"] = "hybrid"
+                    telemetry_out["route_fallback_from"] = "bible"
                 candidates = self.candidate_generator.search(
                     parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
                     book_ids=None if self._corpus_has_book_ids() else [],
@@ -278,7 +310,9 @@ class HybridRetriever:
         if self._should_translate_upfront(parsed_query.original_query):
             translated = translate_to_english(parsed_query.original_query)
             if translated:
-                parsed_query = self._query_parser().parse(translated)
+                parsed_query = _carry_scripture_notation(
+                    parsed_query, self._query_parser().parse(translated)
+                )
                 if telemetry_out is not None:
                     telemetry_out["translation_used"] = True
                     telemetry_out["translated_query"] = translated
@@ -296,7 +330,9 @@ class HybridRetriever:
         if not candidates and contains_hangul(parsed_query.original_query):
             translated = translate_to_english(parsed_query.original_query)
             if translated:
-                translated_pq = self._query_parser().parse(translated)
+                translated_pq = _carry_scripture_notation(
+                    parsed_query, self._query_parser().parse(translated)
+                )
                 retried = self._generate_candidates(
                     translated_pq, fetch_k, file_scope, telemetry_out
                 )

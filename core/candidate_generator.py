@@ -316,6 +316,11 @@ class CandidateGenerator:
             words = exact_phrase.strip().split()
             text_query = tantivy.Query.phrase_query(self._schema, "content", words)
         else:
+            # [2026-09-26] Append English translations of a Korean query
+            # (core/query_translation.py) — Tantivy's default OR-query then
+            # matches English body text too. Exact-phrase route untouched.
+            if parsed_query.translated_terms:
+                query_text = f"{query_text} {' '.join(parsed_query.translated_terms)}"
             # [Korean tokenization fix] query side must be segmented the same
             # way the index side was (_tokenize_for_index) or a particle-
             # bearing query token never matches its stemmed indexed form —
@@ -337,6 +342,19 @@ class CandidateGenerator:
                 # are unaffected.
                 sanitized = _TANTIVY_SPECIAL_CHARS_RE.sub(" ", tokenized_query_text)
                 text_query = self._index.parse_query(sanitized, default_field_names=indexed_search_fields)
+            # [2026-09-26] Boost exact verse notation ("John iii. 16") from a
+            # translated Korean scripture ref — Should-only, so a chunk still
+            # needs to match either the term query or a phrase.
+            if parsed_query.translated_phrases and "content" in search_fields:
+                text_query = tantivy.Query.boolean_query(
+                    [(tantivy.Occur.Should, text_query)] + [
+                        (tantivy.Occur.Should, tantivy.Query.boost_query(
+                            tantivy.Query.phrase_query(self._schema, "content", words),
+                            _VERSE_PHRASE_BOOST,
+                        ))
+                        for words in parsed_query.translated_phrases
+                    ]
+                )
 
         effective_books = book_ids if book_ids is not None else parsed_query.detected_books
         subqueries = [(tantivy.Occur.Must, text_query)]
