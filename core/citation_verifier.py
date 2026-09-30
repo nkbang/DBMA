@@ -27,7 +27,14 @@ from typing import Any, Sequence
 
 # `(출처: 라벨)` — 전각 괄호·콜론도 허용. 라벨 안에 괄호가 없다고 가정한다
 # (`_format_context_source_label`이 만드는 라벨은 괄호를 쓰지 않는다).
-_CITATION_RE = re.compile(r"[(（]\s*출처\s*[:：]\s*([^()（）]{2,240}?)\s*[)）]")
+# 두 형식을 인용으로 본다.
+#  1) `(출처: 라벨)` — 프롬프트가 요구한 형식
+#  2) `(… — 저자, p.N, 문단 M)` — 모델이 "출처:" 없이 쓰는 서지 형식(2026-09-29 실제 생성에서
+#     관측). 괄호 안에 줄표(—)와 쪽/문단 표지가 함께 있을 때만 인용으로 본다.
+_CITATION_RE = re.compile(
+    r"[(（]\s*출처\s*[:：]\s*([^()（）]{2,240}?)\s*[)）]"
+    r"|[(（]\s*([^()（）]{2,240}?—[^()（）]{2,160}?(?:p\.\s?\d|문단\s?\d)[^()（）]{0,40}?)\s*[)）]"
+)
 
 _LATIN_WORD = re.compile(r"[A-Za-z][A-Za-z'’-]{3,}")  # 4자 이상
 _NUMBER = re.compile(r"(?<![\d,.])\d{3,4}(?!\d)")  # 3~4자리 (연도·번호). "1,691"/"p.160"의 일부는 제외
@@ -87,7 +94,7 @@ def _get(obj: Any, name: str) -> Any:
     return getattr(obj, name, None)
 
 
-def _candidate_name_tokens(candidate: Any, citation: Any | None) -> set[str]:
+def _candidate_name_text(candidate: Any, citation: Any | None) -> str:
     md = _get(candidate, "metadata") or {}
     parts = [
         md.get("title"), md.get("book"), md.get("author"), md.get("source_file"),
@@ -95,7 +102,11 @@ def _candidate_name_tokens(candidate: Any, citation: Any | None) -> set[str]:
         _get(citation, "source_author") if citation is not None else None,
         _get(citation, "source_file") if citation is not None else None,
     ]
-    return _name_tokens(" ".join(str(p) for p in parts if p))
+    return " ".join(str(p) for p in parts if p)
+
+
+def _candidate_name_tokens(candidate: Any, citation: Any | None) -> set[str]:
+    return _name_tokens(_candidate_name_text(candidate, citation))
 
 
 def _sentence_before(answer: str, start: int, lower_bound: int) -> str:
@@ -129,13 +140,19 @@ def verify_citations(
         _candidate_name_tokens(c, cits[i] if i < len(cits) else None)
         for i, c in enumerate(candidates)
     ]
-    cand_text_words = [_words(str(_get(c, "content") or "")) for c in candidates]
+    # 지지 근거 = 본문 + 서지 정보(제목·저자). 모델이 받은 문맥에는 "출처: 제목 — 저자" 줄이
+    # 본문과 함께 들어가므로, 문장에 나온 책 제목·저자 이름은 그 후보로 뒷받침된다
+    # (본문에만 한정하면 "The Standard Manual … — Edward T. Hiscox는 …" 같은 정상 문장이 오탐된다).
+    cand_text_words = [
+        _words(str(_get(c, "content") or "")) | _words(_candidate_name_text(c, cits[i] if i < len(cits) else None))
+        for i, c in enumerate(candidates)
+    ]
     cand_text_raw = [str(_get(c, "content") or "") for c in candidates]
 
     last_end = 0
     for m in _CITATION_RE.finditer(answer):
         result.citations_found += 1
-        label = m.group(1)
+        label = m.group(1) or m.group(2)
         citation_text = m.group(0)
         sentence = _sentence_before(answer, m.start(), last_end)
         last_end = m.end()

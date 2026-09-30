@@ -142,3 +142,10 @@ NAE 근거를 채팅 답변의 LLM 컨텍스트에 `<public_theology>` 같은 **
 
 - 사용자 결정 → C1 Review 요청(새 ADR 작성은 C1 Review 요청 시점에 해당) → 구현 Task Order(방안 확정 후) → 구현·회귀 → C1 재검토 → 사용자 승인으로 Approved 승격.
 - 이 문서의 수치·경로 근거는 CUE가 직접 확인한 값이다(EUAT-001 보고서, 부록 A, FU-003 Build Report, 코드 열람).
+
+## 10. 구현 상태 (2026-09-29)
+
+- 결정: 사용자가 방안 **B**를 선택(트리거는 권고대로 명시적 버튼). 이 ADR은 **Proposed 그대로**다 — Approved 승격에는 C1 독립 리뷰와 사용자 승인이 남아 있다. B는 Approved ADR을 변경하지 않으므로 Proposed 상태에서 구현할 수 있다.
+- 구현: `NAE/public_answer.py`(신규), `ui/components/nae_public_section.py`. `chat.py`·`core/retrieval.py`·`NAE/retrieval_adapter.py` 무변경. 상세와 수용 기준 결과: [Build Report](../NAE_EUAT_001_FU001_B_BUILD_REPORT.md).
+- 시험 결과 요약: EUAT-01·02 근거 기반 답변(인용 위치 포함), EUAT-03 정직한 유보, EUAT-04 1689 부재를 밝히고 실제 Hiscox 문장 인용, EUAT-05는 일반론 위주로 약함(종합 미해결은 §5의 알려진 한계).
+- 알려진 한계: 한국어 직접 인용문의 원문 일치는 기계적으로 검증할 수 없다(Build Report §6).

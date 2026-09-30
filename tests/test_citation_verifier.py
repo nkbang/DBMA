@@ -149,3 +149,74 @@ class TestEdgeCases:
         answer = "1871 판입니다(출처: Church Order — John L. Dagg)."
         r = verify_citations(answer, [cand], [cit])
         assert r.issues and "1871" in r.issues[0].tokens
+
+
+class TestBibliographicCitationForm:
+    """모델이 "출처:" 없이 쓴 서지 형식 인용 — 2026-09-29 실제 생성(EUAT-01 공개 자료 답변)에서 관측.
+
+    이 형식이 인식되지 않으면 검증기가 "인용 0건 → 이슈 없음"으로 통과해 버린다.
+    """
+
+    DAGG = _cand(
+        "Church Order",
+        "John L. Dagg",
+        "The general agreement of Baptist churches, in doctrine as well as church order.",
+    )
+
+    def test_real_generated_answer_forms_are_recognized(self):
+        answer = (
+            "Dagg는 침례교회의 일반적인 합의를 강조합니다"
+            "(Church Order — John L. Dagg, p.296, 문단 1520). "
+            "또한 그는 질문을 던집니다"
+            '("그러나 교회의 질서가 바뀐 것은 무엇이었는가?" — Church Order — John L. Dagg, p.99, 문단 541).'
+        )
+        r = verify_citations(answer, [self.DAGG])
+        assert r.citations_found == 2
+        assert not r.has_issues
+
+    def test_fabricated_number_in_bibliographic_form_is_flagged(self):
+        answer = "1689 고백서가 그렇게 가르칩니다(Church Order — John L. Dagg, p.296, 문단 1520)."
+        r = verify_citations(answer, [self.DAGG])
+        assert r.citations_found == 1
+        assert r.issues and "1689" in r.issues[0].tokens
+
+    def test_unknown_source_in_bibliographic_form_is_flagged(self):
+        answer = "그렇게 가르칩니다(Systematic Theology Handbook — Charles Hodge, p.12)."
+        r = verify_citations(answer, [self.DAGG])
+        assert [i.kind for i in r.issues] == [KIND_SOURCE_NOT_RETRIEVED]
+
+    def test_ordinary_parenthetical_is_not_a_citation(self):
+        # 줄표가 있어도 쪽/문단 표지가 없으면 인용으로 보지 않는다
+        answer = "교회(회중 — 신자의 모임)는 성경에 근거합니다. 자세한 것은 (참고) 항목을 보십시오."
+        assert verify_citations(answer, [self.DAGG]).citations_found == 0
+
+
+class TestSourceNamesInSentenceAreSupported:
+    """실제 생성(EUAT-04 공개 자료 답변)에서 나온 오탐 회귀: 문장에 책 제목·저자 이름이
+    나오고 인용 라벨은 "p.167, 문단 790"뿐인 경우. 제목·저자는 본문이 아니라 서지 정보에
+    있으므로 근거 본문에만 대조하면 오탐된다."""
+
+    HISCOX = _cand(
+        "The Standard Manual for Baptist Churches",
+        "Edward T. Hiscox",
+        "They held the Bible to be the only rule and authority in concerns of religious faith and practice.",
+        "Hiscox_Standard_Manual",
+    )
+
+    def test_real_generated_sentence_with_page_only_label_is_not_flagged(self):
+        answer = (
+            'The Standard Manual for Baptist Churches — Edward T. Hiscox는 "They held the Bible to be '
+            'the only rule and authority in concerns of religious faith and practice"라고 합니다'
+            "(출처: p.167, 문단 790)."
+        )
+        r = verify_citations(answer, [self.HISCOX])
+        assert r.citations_found == 1
+        assert not r.has_issues
+
+    def test_misquote_with_source_names_is_still_flagged(self):
+        answer = (
+            'The Standard Manual for Baptist Churches — Edward T. Hiscox는 "They rejected every '
+            'creed whatsoever and confession"라고 합니다(출처: p.167, 문단 790).'
+        )
+        r = verify_citations(answer, [self.HISCOX])
+        assert r.has_issues and r.issues[0].kind == KIND_TOKEN_UNSUPPORTED
