@@ -315,3 +315,140 @@ def verse_phrase_match_kind(content: str, phrases: list[list[str]]) -> str | Non
             else:
                 return "exact"
     return "ordinal_only" if found_ordinal else None
+
+
+# ---------------------------------------------------------------------------
+# [FU-007 통합 시도] 아래는 origin/dev/dbma-engine(398bc5cd)의 LLM 번역 전처리.
+# 같은 날(2026-09-26) 같은 결함을 두 라인이 각자 고쳐 같은 파일명을 만들었다
+# (add/add 충돌). 두 API는 이름이 겹치지 않아 한 모듈에 공존시키고, 어느 쪽을
+# 검색 경로에서 호출할지는 호출부(hybrid_candidate_pipeline/candidate_generator)
+# 에서 결정한다. 원래 docstring 요지: 한국어 질의 → llama3.1:8b 전체 문장 번역,
+# 실패 시 None(순손실 없음), QUERY_TRANSLATION_FALLBACK=false로 비활성.
+# ---------------------------------------------------------------------------
+
+import logging
+import os
+from typing import Optional
+
+logger = logging.getLogger(__name__)
+
+# 한글 음절·자모. 번역 발동 여부 판정에만 쓴다.
+_HANGUL_ANY_RE = re.compile(r"[가-힣ㄱ-ㅎㅏ-ㅣ]")
+
+# 번역은 무거운 신학 모델이 필요한 작업이 아니다 — DEFAULT_GEN_MODEL
+# (my-theology-bot-v2, 42GB)을 쓰면 검색 지연이 불필요하게 커진다.
+_DEFAULT_TRANSLATION_MODEL = "llama3.1:8b"
+
+# 번역문이 이 길이를 넘으면 모델이 번역이 아니라 설명·답변을 한 것으로 보고
+# 버린다(질의는 보통 한 문장이다). 원문 길이에 비례한 상한이 아니라 절대
+# 상한을 쓰는 이유: 짧은 질의에 장문 해설을 붙이는 실패가 실제 관측되는 양상.
+_MAX_TRANSLATION_CHARS = 400
+
+_PROMPT = """Translate the following Korean search query into English.
+
+Rules:
+- Output ONLY the translated query. No explanation, no quotes, no prefix.
+- Keep Bible references in standard English form (예: 로마서 8:1-4 -> Romans 8:1-4).
+- Preserve theological terms with their standard English equivalents.
+- Do not answer the question. Translate it.
+
+Korean query:
+{query}"""
+
+
+def contains_hangul(text: str) -> bool:
+    """질의에 한글이 있는지. 번역 발동 판정 전용."""
+    return bool(_HANGUL_ANY_RE.search(text or ""))
+
+
+def is_enabled() -> bool:
+    """`QUERY_TRANSLATION_FALLBACK=false`로 끌 수 있다. 기본 활성 —
+    끄면 한국어 질의가 다시 0건으로 돌아간다(현재 재현율 0%)."""
+    return os.environ.get("QUERY_TRANSLATION_FALLBACK", "true").strip().lower() == "true"
+
+
+def _model() -> str:
+    return os.environ.get("QUERY_TRANSLATION_MODEL", _DEFAULT_TRANSLATION_MODEL).strip()
+
+
+def _clean(raw: str) -> Optional[str]:
+    """모델 출력에서 번역문만 남긴다. 신뢰할 수 없으면 None."""
+    if not raw:
+        return None
+    text = raw.strip()
+
+    # 흔한 군더더기 제거: 앞머리 라벨, 감싼 인용부호.
+    text = re.sub(r"^(?:translation|translated query|english)\s*[:：]\s*", "", text, flags=re.I)
+    text = text.strip().strip('"').strip("'").strip()
+
+    # 여러 줄로 답하면 첫 줄만 쓴다(설명이 뒤따르는 실패 양상).
+    text = text.splitlines()[0].strip() if text else ""
+
+    if not text or len(text) > _MAX_TRANSLATION_CHARS:
+        return None
+    # 번역 결과에 한글이 그대로 남아 있으면 번역이 아니다.
+    if contains_hangul(text):
+        return None
+    # 영문자가 하나도 없으면 쓸 수 없다.
+    if not re.search(r"[A-Za-z]", text):
+        return None
+    return text
+
+
+def translate_to_english(query: str) -> Optional[str]:
+    """한국어 질의를 영어로 번역한다. 실패·비활성·불필요 시 None.
+
+    절대 예외를 올리지 않는다 — 이 함수는 이미 0건인 막다른 길에서만 호출되고,
+    실패하면 그 0건이 유지될 뿐이다. 검색 요청 전체를 깨뜨려서는 안 된다.
+    """
+    if not is_enabled():
+        return None
+    if not query or not contains_hangul(query):
+        return None
+
+    try:
+        import ollama
+
+        result = ollama.generate(
+            model=_model(),
+            prompt=_PROMPT.format(query=query),
+            options={"temperature": 0.0},
+        )
+        translated = _clean(result.get("response", ""))
+    except Exception as e:  # 모델 부재·데몬 정지·타임아웃 전부 여기로
+        logger.warning("[query_translation] 번역 실패, 원래 결과 유지: %s", e)
+        return None
+
+    if translated:
+        logger.info("[query_translation] %r -> %r", query[:60], translated[:60])
+    return translated
+
+
+# 현재 서재가 사실상 비한국어일 때 0건 안내에 덧붙이는 고지.
+# 근거: 사용자가 "근거 없음"을 "이 주제가 서재에 없다"로 읽으면 오해가 된다 —
+# 실제로는 자료가 있는데 언어가 달라 검색이 실패한 사례가 P0-5 유보 17건 중
+# 16건이었다(docs/DBMA_P0_5_EVIDENCE_HOLD_ROOT_CAUSE_001.md). 번역 전처리가
+# 들어간 뒤에도 0건이 남는 경우가 있으므로, 원인을 밝혀 두는 것이 정직하다.
+_CORPUS_LANGUAGE_NOTICE = (
+    "\n\n참고: 현재 서재는 영문 자료로 구성되어 있습니다. 한국어 질문은 검색 시 "
+    "자동으로 영어로 번역해 찾지만, 번역된 표현이 원문의 어휘와 어긋나면 근거를 "
+    "찾지 못할 수 있습니다. 영어 키워드로 다시 시도하면 찾아지는 경우가 있습니다."
+)
+
+
+def corpus_language_notice(tsus) -> str:
+    """서재의 한국어 비중이 낮으면 언어 고지 문구를, 아니면 빈 문자열을 반환한다.
+
+    UI의 0건 안내 뒤에 덧붙이는 용도. 한국어 자료가 쌓이면 자동으로 사라진다.
+    실패해도 안내 자체를 깨뜨리지 않도록 예외를 흡수한다.
+    """
+    try:
+        items = list(tsus or [])
+        if not items:
+            return ""
+        ko = sum(1 for t in items if (t.get("language") or "") == "ko")
+        if ko / len(items) >= 0.20:
+            return ""
+    except Exception:  # noqa: BLE001 — 안내 문구가 페이지를 깨뜨리면 안 된다
+        return ""
+    return _CORPUS_LANGUAGE_NOTICE

@@ -235,6 +235,19 @@ PYEOF
 #      반드시 백그라운드(&)로 띄우고 이 스크립트는 정상 종료해야 한다.
 notify "5/5 실행" "내서재를 여는 중입니다..."
 STREAMLIT_PORT=8520
+
+# 이전 실행의 서버 프로세스가 여전히 살아있으면(사용자가 브라우저 창만
+# 닫고 백그라운드 프로세스는 안 끄는 게 보통이라 흔함) 이 포트를 계속
+# 붙잡고 있다. Streamlit은 포트 충돌 시 다른 포트로 넘어가지 않고 새
+# 프로세스가 조용히 죽어버리므로(실측: "Port 8520 is not available"),
+# 정리 없이 새로 띄우면 아래 curl/open이 그 낡은 프로세스로 가버려
+# "앱을 새로 열었는데 온보딩이 안 뜨고 예전 화면 그대로"로 보인다
+# (core/user_prefs.py가 dismiss 여부를 서버 프로세스 메모리에 남기므로,
+# 프로세스가 안 바뀌면 dismiss 상태도 그대로 남는다). 그래서 새로
+# 띄우기 전에 이 스크립트가 띄웠던 프로세스를 먼저 확실히 종료한다.
+pkill -f "streamlit run dbma_ui.py.*--server.port ${STREAMLIT_PORT}" 2>/dev/null || true
+sleep 1
+
 nohup streamlit run dbma_ui.py --server.headless true --server.port "$STREAMLIT_PORT" \
     > "$PROJECT_ROOT/beta_app.log" 2>&1 &
 disown

@@ -30,6 +30,7 @@ from dataclasses import asdict
 from core.candidate_generator import CandidateGenerator, CandidateRef, open_or_build_index
 from core.bible_index import BibleIndex
 from core.query_planner import QueryPlan, classify
+from core.query_translation import contains_hangul, translate_to_english
 from core.rrf import reciprocal_rank_fusion
 from core.search_cache import SearchResultCache, make_cache_key
 from core.retrieval import (
@@ -77,6 +78,12 @@ def is_enabled() -> bool:
     역색인으로 우회한다(실측 14.3ms, 53,231건 코퍼스 기준). 필요 시
     USE_INVERTED_INDEX=false로 명시적으로 되돌릴 수 있다."""
     return os.environ.get("USE_INVERTED_INDEX", "true").strip().lower() == "true"
+
+
+# 코퍼스의 한국어 비중이 이 값 미만이면 한글 질의를 Stage-1 전에 번역한다.
+# 배포 기준선 실측값은 0.00%(119,595건 전량 영문)이고, 한국어 자료가 유의미하게
+# 쌓이면(20% 이상) 번역 전처리는 자동으로 멈춘다.
+_KOREAN_CORPUS_THRESHOLD = 0.20
 
 
 class HybridRetriever:

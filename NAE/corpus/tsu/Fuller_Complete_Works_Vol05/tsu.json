@@ -898,14 +898,16 @@
     "paragraph": 204,
     "sentence": 7,
     "source_text": "The clouds also, by emptying them- selves upon the earth, set us an example of generosity ; and re- prove those who,/w// of this world's good, yet keep it principally to themselves.*",
-    "claim": "구름이 땅에 비를 내리는 것을 통해 우리에게 щедрость의 본을 보여주고, 이 세상의 좋은 것을 주로 자신만 위해 간직하는 사람들을 책망한다.",
+    "claim": "구름이 땅에 비를 내리는 것을 통해 우리에게 넉넉함의 본을 보여주고, 이 세상의 좋은 것을 주로 자신만 위해 간직하는 사람들을 책망한다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "구름이 땅에 비를 내리는 것을 통해 우리에게 щедрость의 본을 보여주고, 이 세상의 좋은 것을 주로 자신만 위해 간직하는 사람들을 책망한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0020327",
@@ -5187,7 +5189,7 @@
     "paragraph": 308,
     "sentence": 1,
     "source_text": "Though they are no certain sign of grace received, (as there was nothing good at present in our first parents,) yet they are the workings ofa merci-",
-    "claim": "성령의 역사尽管가 아니라도 은혜를 받았음에 대한 확실한 징조이지만, 그것은 은혜의 역사이다.",
+    "claim": "성령의 역사尽管이 아니라도 은혜를 받았음에 대한 확실한 징조이지만, 그것은 은혜의 역사이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -15424,7 +15426,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "니므롯과 미츠라임은 하ム의 자손으로 바벨론과 이집트의 제국을 세웠다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0020980",
@@ -15615,14 +15620,16 @@
     "paragraph": 584,
     "sentence": 3,
     "source_text": "Shem was the ancestor of Abram, and so of Israel ; who, while the descendants of both Ham and Japheth were lost in idolatry, knew and worshipped Je- hovah, the only true God ; and of whom, as concerning the flesh, Christ came, who is over all, God blessed forever.",
-    "claim": "셈은 아브라함의 조상으로서 이스라엘의 조상이 되었고, 이스라엘은 하ム과 야벳의 자손들이 우상숭배에 빠진 반면에 유일한 참된 하나님 여호와를 알고 예배하였으며, 그리스도는 이스라엘의 육신에 관하여 오셨고, 모든 것 위에 계시는 하나님으로 영원토록 복음받으실 분이다.",
+    "claim": "셈은 아브라함의 조상으로서 이스라엘의 조상이 되었고, 이스라엘은 함과 야벳의 자손들이 우상숭배에 빠진 반면에 유일한 참된 하나님 여호와를 알고 예배하였으며, 그리스도는 이스라엘의 육신에 관하여 오셨고, 모든 것 위에 계시는 하나님으로 영원토록 복음받으실 분이다.",
     "doctrine": "Election",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "셈은 아브라함의 조상으로서 이스라엘의 조상이 되었고, 이스라엘은 하ム과 야벳의 자손들이 우상숭배에 빠진 반면에 유일한 참된 하나님 여호와를 알고 예배하였으며, 그리스도는 이스라엘의 육신에 관하여 오셨고, 모든 것 위에 계시는 하나님으로 영원토록 복음받으실 분이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0020989",
@@ -16459,14 +16466,16 @@
     "paragraph": 612,
     "sentence": 4,
     "source_text": "There are instances, however, of individuals, even from among Ham's posterity, who obtained mercy.",
-    "claim": "하ム의 자손 중에서도 일부 개인이 자비를 얻은 경우가 있다.",
+    "claim": "함의 자손 중에서도 일부 개인이 자비를 얻은 경우가 있다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하ム의 자손 중에서도 일부 개인이 자비를 얻은 경우가 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021027",
@@ -16481,14 +16490,16 @@
     "paragraph": 612,
     "sentence": 5,
     "source_text": "Of them were Rahabthe harlot, Uriah the Hittite, Obed- edom, and Ittai, and his brethren the Gittites, and the Syropheni- cian woman who applied to Christ.",
-    "claim": "하ム의 자손 중에서도 자비를 얻은 사람들이 있었다.",
+    "claim": "함의 자손 중에서도 자비를 얻은 사람들이 있었다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하ム의 자손 중에서도 자비를 얻은 사람들이 있었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021028",
@@ -18237,14 +18248,16 @@
     "paragraph": 669,
     "sentence": 1,
     "source_text": "We may not be called upon to part with them ; but our minds must be made up to do so, if they stand between us and Christ. (4.) The implicit faith which a compliance with it would call for.",
-    "claim": "그리스도와의 관계에서 우리의 마음은 그리스도보다 다른 모든 것을 مقدم시하지 않아야 하며, 필요하다면 그리스도를 위해 모든 것을 포기할 준비가 되어 있어야 한다.",
+    "claim": "그리스도와의 관계에서 우리의 마음은 그리스도보다 다른 모든 것을 먼저 두지 않아야 하며, 필요하다면 그리스도를 위해 모든 것을 포기할 준비가 되어 있어야 한다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "그리스도와의 관계에서 우리의 마음은 그리스도보다 다른 모든 것을 مقدم시하지 않아야 하며, 필요하다면 그리스도를 위해 모든 것을 포기할 준비가 되어 있어야 한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021107",
@@ -18394,14 +18407,16 @@
     "paragraph": 670,
     "sentence": 1,
     "source_text": "The promise had reference to things which could be but of small account to an eye of sense ; but faith would find enough in it to satisfy the most enlarged desires.",
-    "claim": "믿음은 약속에서 가장 크게 확장된 жел망을 충족시킬 만큼 충분한 것을 찾을 수 있다.",
+    "claim": "믿음은 약속에서 가장 크게 확장된 소원을 충족시킬 만큼 충분한 것을 찾을 수 있다.",
     "doctrine": "Other",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "믿음은 약속에서 가장 크게 확장된 жел망을 충족시킬 만큼 충분한 것을 찾을 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021114",
@@ -19465,14 +19480,16 @@
     "paragraph": 694,
     "sentence": 2,
     "source_text": "He feared they would kill him for his wife's sake ; but God, by introducing plagues amojig them, inspired them witit fear, and induced them to send him and his wife away in safety.",
-    "claim": "하나님은 아ブラ함을 그의 잘못된 행동으로 인한 어려움과 시험에서 구원하셨다.",
+    "claim": "하나님은 아브라함을 그의 잘못된 행동으로 인한 어려움과 시험에서 구원하셨다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님은 아ブラ함을 그의 잘못된 행동으로 인한 어려움과 시험에서 구원하셨다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021162",
@@ -19931,7 +19948,7 @@
     "paragraph": 707,
     "sentence": 9,
     "source_text": "Abram and Lot could love and pray for one another when there was nothing to ruffle their feelings : and Saul and Barnabas could both serve the cause of Christ; though unhap- pily, through a third person, they cannot act in close concert.",
-    "claim": "아브람과 롯, 그리고 사울과 바나바의 경우처럼, 서로 다른 성격이나 의견을 가진 사람들일지라도, 올바른 태도와 이기적인 마음이 아니라 무私한 마음이 아니라 무私の 마음이 아니라 이기심이 없는 마음이 있다면, 그들은 하나님의 일을 위해 함께 일할 수 있다.",
+    "claim": "아브람과 롯, 그리고 사울과 바나바의 경우처럼, 서로 다른 성격이나 의견을 가진 사람들일지라도, 올바른 태도와 이기적인 마음이 아니라 무私の 마음이 아니라 무私の 마음이 아니라 이기심이 없는 마음이 있다면, 그들은 하나님의 일을 위해 함께 일할 수 있다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -24858,14 +24875,16 @@
     "paragraph": 844,
     "sentence": 0,
     "source_text": "As a sign or token of this solemn 'covenant with Abraham and his posterity, every man-child among them was required to be circumcised in the flesh of his foreskin ; and not only their own children, but thosa of their servants, hoimin their house y or bought loith their money.",
-    "claim": "아브라함과 그의 자손との 언약의 표징으로, 그들 중 모든 남자는 할례를 받았으며, 이는 그들의 자녀와 그들의 집에 있는 하인들, 그리고 그들의 돈으로 산 사람들에게도 적용되었다.",
+    "claim": "아브라함과 그의 자손과의 언약의 표징으로, 그들 중 모든 남자는 할례를 받았으며, 이는 그들의 자녀와 그들의 집에 있는 하인들, 그리고 그들의 돈으로 산 사람들에게도 적용되었다.",
     "doctrine": "Other",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "아브라함과 그의 자손との 언약의 표징으로, 그들 중 모든 남자는 할례를 받았으며, 이는 그들의 자녀와 그들의 집에 있는 하인들, 그리고 그들의 돈으로 산 사람들에게도 적용되었다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021404",
@@ -27824,14 +27843,16 @@
     "paragraph": 919,
     "sentence": 11,
     "source_text": "In the integrity of my heart t and innocency of my hands, have I done this.",
-    "claim": "나는 깨끗한 마음과 чист한 손으로 이 일을 행했다.",
+    "claim": "나는 깨끗한 마음과 깨끗한 손으로 이 일을 행했다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "나는 깨끗한 마음과 чист한 손으로 이 일을 행했다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021538",
@@ -30322,7 +30343,7 @@
     "paragraph": 994,
     "sentence": 4,
     "source_text": "Hither then was led God's own Son, his only Son, whom he loved, and in whom all nations of the earth were to be blessed ; nor was he spared at the awful crisis by means of a substitute, but was himself freely delivered up as the substitute of others.",
-    "claim": "하나님의 아들, 즉 하나님께서 사랑하시고 모든 민족을 축복하시는 자,는 대신者的 대신에 스스로를 자유롭게 내어주셨다.",
+    "claim": "하나님의 아들, 즉 하나님께서 사랑하시고 모든 민족을 축복하시는 자,는 대신하는 자 대신에 스스로를 자유롭게 내어주셨다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
@@ -30331,8 +30352,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "하나님의 아들, 즉 하나님께서 사랑하시고 모든 민족을 축복하시는 자,는 대신者の 대신에 스스로를 자유롭게 내어주셨다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021651",
@@ -31696,7 +31716,10 @@
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "성경을 검색하고 하나님이 응답하신 모든 기도를 선택하면, 그것들이 믿음의 기도であった 것을 알 수 있을 것이다.",
+    "cjk_status": "residual",
+    "needs_review": "cjk_residual"
   },
   {
     "id": "TSU-0021712",
@@ -33937,7 +33960,7 @@
     "paragraph": 1097,
     "sentence": 3,
     "source_text": "If the birthright that was bought at this time had con- sisted of any temporal advantages of dignity, authority, or property fo be enjoyed in the lifetime of the parties, Esau would not have made so light of it as he did, calling it this birthright, and inti- mating that he should soon die, and then it would be of no use to him.t It is a fact too that Jacob had none of the ordinary advantages of the birthright during his life-time.",
-    "claim": "에서와 야곱이 받은 첫째아들의 권리는 일시적인 이익이나 물질적 권益이 아닌 영적인 의미를 가졌다.",
+    "claim": "에서와 야곱이 받은 첫째아들의 권리는 일시적인 이익이나 물질적 권익이 아닌 영적인 의미를 가졌다.",
     "doctrine": "Election",
     "scriptures": [],
     "citations": [],
@@ -33946,8 +33969,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "에서와 야곱이 받은 장자의 권리는 일시적인 이익이나 물질적 권益이 아닌 영적인 의미를 가졌다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021813",
@@ -35181,14 +35203,16 @@
     "paragraph": 1122,
     "sentence": 1,
     "source_text": "Here again we see how vanity attaches to every earthly good ; prosperity begets envy, and from envy proceeds injury.",
-    "claim": "지상적인 благ에 대한 번영은 시기와 손상을 유발하는 질투를 낳는다.",
+    "claim": "지상적인 복에 대한 번영은 시기와 손상을 유발하는 질투를 낳는다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "지상적인 благ에 대한 번영은 시기와 손상을 유발하는 질투를 낳는다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021869",
@@ -36986,7 +37010,7 @@
     "paragraph": 1162,
     "sentence": 2,
     "source_text": "And this may farther account for the blessing of Isaac on the former dwelling princi- pally upon temporal advantages, as designed of God to cut off the vain hopes of the latter, of enjoying the power attached to the blessing, while he despised the blessing itself.",
-    "claim": "이사악의 축복이 이전에 주로 시간적 이익에 초점을 두었던 것은, 하나님의 계획이 후者の 희망을 끊는 것이었고, 축복 자체를 경시하면서 축복에 딸린 권력을 즐기고자 했기 때문이다.",
+    "claim": "이삭의 축복이 이전에 주로 시간적 이익에 초점을 두었던 것은, 하나님의 계획이 후者の 희망을 끊는 것이었고, 축복 자체를 경시하면서 축복에 딸린 권력을 즐기고자 했기 때문이다.",
     "doctrine": "Election",
     "scriptures": [],
     "citations": [],
@@ -37255,14 +37279,16 @@
     "paragraph": 1166,
     "sentence": 5,
     "source_text": "Such also was the motive of the hatred which, in after ages, subsisted in theEdomites against Israel.",
-    "claim": "에дом 사람들의 이스라엘에 대한 증오는 주님께서 이스라엘을 은혜로 받으셨기 때문이다.",
+    "claim": "에돔 사람들의 이스라엘에 대한 증오는 주님께서 이스라엘을 은혜로 받으셨기 때문이다.",
     "doctrine": "Election",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "에дом 사람들의 이스라엘에 대한 증오는 주님께서 이스라엘을 은혜로 받으셨기 때문이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0021962",
@@ -39277,7 +39303,7 @@
     "paragraph": 1224,
     "sentence": 0,
     "source_text": "First: The domestic discords, envies, and jealousies, between Jacob's wives, serve to teach us the wisdom and goodness of the Christian law, that every man have his own wife, as well as every woman her own husband.",
-    "claim": "야곱의 아내들 사이의 가사 분쟁, 시기, 질투는 기독교 법의 지혜와 선하음을 가르쳐주는데, 이는 각人が 자신의 배우자를 가지는 것에 관한 것이다.",
+    "claim": "야곱의 아내들 사이의 가사 분쟁, 시기, 질투는 기독교 법의 지혜와 선함을 가르쳐주는데, 이는 각人が 자신의 배우자를 갖는 것에 관한 것이다.",
     "doctrine": "Ecclesiology",
     "scriptures": [],
     "citations": [],
@@ -46526,14 +46552,16 @@
     "paragraph": 1473,
     "sentence": 2,
     "source_text": "Even the casting away of them has proved the recon- ciling of the world, and how much more shall the receiving of them at a future day be as life from the dead !",
-    "claim": "이스라엘의 폐절은 세계의 примир을 가져왔고, 미래에 그들이 다시 받아들여질 때는 죽은 자로부터의 생명과 같을 것이다.",
+    "claim": "이스라엘의 폐절은 세계의 화해를 가져왔고, 미래에 그들이 다시 받아들여질 때는 죽은 자로부터의 생명과 같을 것이다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "이스라엘의 폐절은 세계의 примир을 가져왔고, 미래에 그들이 다시 받아들여질 때는 죽은 자로부터의 생명과 같을 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022379",
@@ -47896,14 +47924,16 @@
     "paragraph": 1506,
     "sentence": 1,
     "source_text": "Man in every age and country has felt in himself a consciousness of his being what he ought not to be, a fearfulness of having in another state to give an account, with many other things of the kind ; but all is uncertain.",
-    "claim": "인간은 모든 시대와 지역에서 자신의 상태에 대한 의식과 다른 상태에서 책임을 질 страх을 느끼지만 모든 것이 불확실하다.",
+    "claim": "인간은 모든 시대와 지역에서 자신의 상태에 대한 의식과 다른 상태에서 책임을 질 두려움을 느끼지만 모든 것이 불확실하다.",
     "doctrine": "Soteriology",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "인간은 모든 시대와 지역에서 자신의 상태에 대한 의식과 다른 상태에서 책임을 질 страх을 느끼지만 모든 것이 불확실하다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022441",
@@ -49160,14 +49190,16 @@
     "paragraph": 1558,
     "sentence": 8,
     "source_text": "In both he eyes the hand of God in doing every thing for him, and gives the glory to him only.",
-    "claim": "하나님은 모든 일에서 그의 손길을 보시고, 하나님께만 영광을 돌リ며 있다.",
+    "claim": "하나님은 모든 일에서 그의 손길을 보시고, 하나님께만 영광을 돌리며 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님은 모든 일에서 그의 손길을 보시고, 하나님께만 영광을 돌リ며 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022498",
@@ -50532,14 +50564,16 @@
     "paragraph": 1621,
     "sentence": 3,
     "source_text": "It will misconstrue even good- ness itself, and find fear where no fear is.",
-    "claim": "인간의 마음은 어둠과 불안의 상태에서 حتى 선함도 잘못 이해하고, 두려움이 없는 곳에서도 두려움을 찾을 수 있다.",
+    "claim": "인간의 마음은 어둠과 불안의 상태에서 심지어 선함도 잘못 이해하고, 두려움이 없는 곳에서도 두려움을 찾을 수 있다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "인간의 마음은 어둠과 불안의 상태에서 حتى 선함도 잘못 이해하고, 두려움이 없는 곳에서도 두려움을 찾을 수 있다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022560",
@@ -51596,14 +51630,16 @@
     "paragraph": 1698,
     "sentence": 2,
     "source_text": "Nor did he mean that they should abuse the doctrine of providence, to the making light of sin ; but merely that they should eye the hand of God in all, so as to be reconciled to the event, though they might weep in secret for the part which they had acted.",
-    "claim": "하나님의 섭리를 이해하는 것은 죄를 가볍게 여기는 것이 아니라, 모든 일에 하나님의 손길을 보아 사건에 대해 примир될 수 있도록 하는 것이다.",
+    "claim": "하나님의 섭리를 이해하는 것은 죄를 가볍게 여기는 것이 아니라, 모든 일에 하나님의 손길을 보아 사건에 대해 화해할 수 있도록 하는 것이다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.9,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "하나님의 섭리를 이해하는 것은 죄를 가볍게 여기는 것이 아니라, 모든 일에 하나님의 손길을 보아 사건에 대해 примир될 수 있도록 하는 것이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022608",
@@ -55250,14 +55286,16 @@
     "paragraph": 1822,
     "sentence": 1,
     "source_text": "The first may denote his advantages ; and the last the benevolent use he should make of them, opening his harbours for the reception of distressed mariners.",
-    "claim": "제ブル론의 이점은 그의 장점을 나타낼 수 있으며, 그의 장점을 사용하여 어려움에 처한 사람들을 도와주는 것은 그의 의무이다.",
+    "claim": "제 버릇의 이점은 그의 장점을 나타낼 수 있으며, 그의 장점을 사용하여 어려움에 처한 사람들을 도와주는 것은 그의 의무이다.",
     "doctrine": "Providence",
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "제ブル론의 이점은 그의 장점을 나타낼 수 있으며, 그의 장점을 사용하여 어려움에 처한 사람들을 도와주는 것은 그의 의무이다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022772",
@@ -55362,14 +55400,16 @@
     "paragraph": 1823,
     "sentence": 4,
     "source_text": "This situation would neither require the heroic qualities of Jodah, nor the enterprising ones of Zebulon ; and his disposition should coincide with it, preferring the fruits of peace and industry, though obliged to pay tribute for them, to the more splendid fortunes of commerce, or triumphs of war.",
-    "claim": "이사кар와 같은 사람들의 성향은 평화와 산업을 통해 얻는 결실을 선호하며, 그 대가로 조공을 내는 것을 더 좋아한다.",
+    "claim": "이삭과 같은 사람들의 성향은 평화와 산업을 통해 얻는 결실을 선호하며, 그 대가로 조공을 내는 것을 더 좋아한다.",
     "doctrine": null,
     "scriptures": [],
     "citations": [],
     "confidence": 0.8,
     "extraction_method": "llm",
     "review_status": "generated",
-    "model": "my-theology-bot-v2:latest"
+    "model": "my-theology-bot-v2:latest",
+    "claim_raw": "이사кар와 같은 사람들의 성향은 평화와 산업을 통해 얻는 결실을 선호하며, 그 대가로 조공을 내는 것을 더 좋아한다.",
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022777",
@@ -55494,7 +55534,7 @@
     "paragraph": 1828,
     "sentence": 3,
     "source_text": "It serves to show the state of the patriarch's mind ; and that while pronouncing blessings on his posterity in respect to their settlement in the earthly Canaan, he was himself going to a better country, even a heavenly one.",
-    "claim": "야곱은 그의 자손들에게 땅을 축복하는 동시에 자신은 더 좋은天堂을 향해 가고 있다.",
+    "claim": "야곱은 그의 자손들에게 땅을 축복하는 동시에 자신은 더 좋은 하늘을 향해 가고 있다.",
     "doctrine": "Eschatology",
     "scriptures": [],
     "citations": [],
@@ -55503,8 +55543,7 @@
     "review_status": "generated",
     "model": "my-theology-bot-v2:latest",
     "claim_raw": "야곱은 그의 자손들에게 땅을祝福하는 동시에 자신은 더 좋은 천국을 향해 가고 있다.",
-    "cjk_status": "residual",
-    "needs_review": "cjk_residual"
+    "cjk_status": "repaired"
   },
   {
     "id": "TSU-0022783",
