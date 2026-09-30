@@ -86,3 +86,30 @@ class TestOtherSourcesDoNotGetFullerNotice:
         assert text is not None
         assert "Fuller" not in text
         assert "이 자료" in text
+
+
+class TestVol08BulkApprovalNotice:
+    """ADR-030 Amendment C §4 — Vol.08 전용 추가 고지 (F4/F6 착수 전 필수)."""
+
+    def test_vol08_by_identifier_gets_additional_notice(self):
+        from NAE.citation_disclosure import BULK_APPROVAL_DISCLOSURE
+
+        text = get_disclosure("historical_witness", identifier="Fuller_Complete_Works_Vol08")
+        assert text.startswith(HISTORICAL_WITNESS_DISCLOSURE)
+        assert text.endswith(BULK_APPROVAL_DISCLOSURE)
+        assert "일괄" in text and "approved in bulk" in text
+
+    def test_vol08_by_source_id(self):
+        text = get_disclosure("historical_witness", source_id="BAP-MISS-FULLER-VOL08")
+        assert "approved in bulk" in text
+
+    def test_other_fuller_volumes_do_not_get_it(self):
+        for ident in ("Fuller_Complete_Works_Vol01", "Fuller_Complete_Works_Vol07"):
+            assert get_disclosure("historical_witness", identifier=ident) == HISTORICAL_WITNESS_DISCLOSURE
+
+    def test_author_only_does_not_imply_vol08(self):
+        assert get_disclosure("historical_witness", author="Andrew Fuller") == HISTORICAL_WITNESS_DISCLOSURE
+
+    def test_non_fuller_never_gets_it(self):
+        text = get_disclosure("historical_witness", identifier="Dagg_Church_Order", author="John L. Dagg")
+        assert "approved in bulk" not in text

@@ -57,6 +57,25 @@ HISTORICAL_WITNESS_DISCLOSURE = (
     "Authority class: historical witness."
 )
 
+# ADR-030 Amendment C §4 — Vol.08 (bulk-approved without per-item review)
+# additional notice, appended to the Amendment A §6 notice for Vol.08 only.
+BULK_APPROVAL_DISCLOSURE = (
+    "**추가 고지 (KR)** — 이 자료는 개별 항목 검수 없이 저작 단위로 일괄 "
+    "승인되었습니다.\n\n"
+    "**Additional Notice (EN)** — This material was approved in bulk without "
+    "per-item review."
+)
+
+
+def _is_fuller_vol08(source_id: str | None, identifier: str | None) -> bool:
+    """Amendment C 예외 대상(Fuller Vol.08)인지 판별. 소스 ID/identifier만 본다.
+
+    저자 이름만으로는 권을 알 수 없으므로 Vol.08로 간주하지 않는다.
+    """
+    if (source_id or "").upper() == "BAP-MISS-FULLER-VOL08":
+        return True
+    return (identifier or "") == "Fuller_Complete_Works_Vol08"
+
 
 def _is_fuller_source(
     source_id: str | None, identifier: str | None, author: str | None
@@ -115,6 +134,8 @@ def get_disclosure(
     if source_id is None and identifier is None and author is None and work is None:
         return HISTORICAL_WITNESS_DISCLOSURE
     if _is_fuller_source(source_id, identifier, author):
+        if _is_fuller_vol08(source_id, identifier):
+            return HISTORICAL_WITNESS_DISCLOSURE + "\n\n" + BULK_APPROVAL_DISCLOSURE
         return HISTORICAL_WITNESS_DISCLOSURE
     return _generic_historical_witness_disclosure(author, work)
 

@@ -53,7 +53,12 @@ DEFAULT_REPORT_PATH = PROJECT_ROOT / "output" / "nae_fuller_f5_upsert_report.jso
 # Amendment A header "CLEAN baseline (변경 금지)". Not re-derived at runtime
 # on purpose: the guard must fail loudly if the live collection ever drifts
 # from this fixed expectation, rather than silently re-baselining itself.
-EXPECTED_BASELINE_COUNT = 3319
+FROZEN_ADR_BASELINE_COUNT = 3319
+# FU-002-A Option B (사용자 승인, 2026-09-29): Dagg 321 + Hiscox 251 신규 색인.
+# ADR-030 baseline 서술(3,319)은 이 조사 범위 밖이라 갱신하지 않았고, 가드는
+# 두 구성요소의 합을 기대한다 — 그 외의 어떤 드리프트도 여전히 거부한다.
+FU002A_APPROVED_ADDITIONS = 572
+EXPECTED_BASELINE_COUNT = FROZEN_ADR_BASELINE_COUNT + FU002A_APPROVED_ADDITIONS
 
 
 class BaselineDriftError(RuntimeError):
@@ -178,7 +183,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--apply", action="store_true",
-        help="Actually upsert into nae_tsu_v1. Refuses (BaselineDriftError) unless the pre-upsert baseline is exactly 3,319 points.",
+        help="Actually upsert into nae_tsu_v1. Refuses (BaselineDriftError) unless the pre-upsert baseline is exactly 3,891 points (3,319 ADR-frozen + 572 FU-002-A).",
     )
     args = parser.parse_args()
 

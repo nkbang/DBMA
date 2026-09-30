@@ -89,7 +89,8 @@ class TestF5UpsertDryRun:
         fact, not just a code comment that can silently drift from the sum."""
         from scripts import nae_fuller_f5_upsert as f5
 
-        assert f5.EXPECTED_BASELINE_COUNT == 2958 + 361
+        assert f5.FROZEN_ADR_BASELINE_COUNT == 2958 + 361
+        assert f5.EXPECTED_BASELINE_COUNT == 2958 + 361 + 321 + 251  # + FU-002-A
 
     def test_default_dry_run_makes_zero_qdrant_writes(self, tmp_path, monkeypatch):
         from scripts import nae_fuller_f5_upsert as f5
@@ -100,9 +101,9 @@ class TestF5UpsertDryRun:
         ])
 
         fake_client = MagicMock()
-        # baseline: 3319 pre-existing points, none of them Fuller.
+        # baseline: 3891 pre-existing points, none of them Fuller.
         fake_client.scroll.return_value = ([
-            MagicMock(payload={"tsu_id": f"TSU-{i:07d}"}) for i in range(1, 3320)
+            MagicMock(payload={"tsu_id": f"TSU-{i:07d}"}) for i in range(1, 3892)
         ], None)
         monkeypatch.setattr(f5.qdrant_store, "get_client", lambda *a, **k: fake_client)
         monkeypatch.setattr(f5, "_embed_for_upsert", lambda record: [0.1] * 1024)
@@ -111,7 +112,7 @@ class TestF5UpsertDryRun:
 
         fake_client.upsert.assert_not_called()
         assert report["mode"] == "dry-run"
-        assert report["baseline_count"] == 3319
+        assert report["baseline_count"] == 3891
         assert report["fuller_verified_total"] == 1
 
     def test_apply_refuses_if_baseline_count_drifted(self, tmp_path, monkeypatch):
@@ -125,7 +126,7 @@ class TestF5UpsertDryRun:
         ])
 
         fake_client = MagicMock()
-        # Drifted baseline: only 3000 points instead of 3319.
+        # Drifted baseline: only 3000 points instead of 3891.
         fake_client.scroll.return_value = ([
             MagicMock(payload={"tsu_id": f"TSU-{i:07d}"}) for i in range(1, 3001)
         ], None)
