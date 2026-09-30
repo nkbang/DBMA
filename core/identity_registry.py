@@ -248,6 +248,24 @@ def mark_superseded(registry: dict, old_document_id: str, new_document_id: str) 
         new_record["supersedes"] = old_document_id
 
 
+def remove_document(registry: dict, document_id: str) -> Optional[dict]:
+    """Delete a document record AND clear every supersedes/superseded_by
+    link that pointed at it (NAE-REBUILD-TSU-LINK-CLEANUP-001). A bare
+    `del registry["documents"][id]` leaves dangling links on the surviving
+    neighbours. Caller persists the registry afterward.
+
+    Returns the removed record, or None if document_id not in registry."""
+    record = registry["documents"].pop(document_id, None)
+    if record is None:
+        return None
+    for other in registry["documents"].values():
+        if other.get("supersedes") == document_id:
+            other["supersedes"] = None
+        if other.get("superseded_by") == document_id:
+            other["superseded_by"] = None
+    return record
+
+
 def exclude_document(registry: dict, document_id: str, reason: str = "") -> Optional[dict]:
     """문서를 처리 대상에서 제외 처리한다(원본 RAW 파일은 건드리지 않음).
 
