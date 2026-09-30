@@ -59,11 +59,15 @@ def test_strips_cjk_from_each_streamed_piece(monkeypatch):
         assert _detect_script_contamination(piece) == []
     joined = "".join(yielded)
     assert "私" not in joined and "世" not in joined
-    assert joined == "요한복음 1:1은 의 말씀 상"
+    # [2026-09-26] 삭제 → 표식. 조용히 지우면 "의"가 사라진 "로워졌기"처럼
+    # 망가진 단어가 정상처럼 보인다(P0-5 실측 B2/H1).
+    assert joined == "요한복음 1:1은 □의 말씀 □상"
 
     result = stream.to_result()
     assert _detect_script_contamination(result.answer) == []
-    assert result.answer == "요한복음 1:1은 의 말씀 상"
+    # 답변 경로에는 고지가 덧붙는다 — 본문은 그대로 앞에 온다.
+    assert result.answer.startswith("요한복음 1:1은 □의 말씀 □상")
+    assert "□" in result.answer and "제거했습니다" in result.answer
 
 
 def test_skips_piece_that_is_only_contamination(monkeypatch):
@@ -74,8 +78,10 @@ def test_skips_piece_that_is_only_contamination(monkeypatch):
     stream = GenerationService().generate_stream(_make_response())
     yielded = list(stream)
 
-    assert yielded == ["좋은 답", "니다"]  # 오염만 있던 청크는 yield 안 됨
-    assert stream.to_result().answer == "좋은 답니다"
+    # [2026-09-26] 오염만 있던 청크도 이제 표식으로 남는다 — 글자가 있었다는
+    # 사실을 감추지 않는 것이 이 변경의 요점이다.
+    assert yielded == ["좋은 답", "□", "니다"]
+    assert stream.to_result().answer.startswith("좋은 답□니다")
 
 
 def test_clean_korean_passes_through_unchanged(monkeypatch):
@@ -88,7 +94,7 @@ def test_clean_korean_passes_through_unchanged(monkeypatch):
     assert stream.to_result().answer == "태초에 말씀이 계시니라 (요 1:1)"
 
 
-def test_thai_and_kana_also_removed(monkeypatch):
+def test_thai_and_kana_also_marked(monkeypatch):
     monkeypatch.setattr(
         "core.generation.ollama.generate",
         _fake_generate(["은혜 ", "ก", "가 ", "ナ", "충만"]),
@@ -97,4 +103,4 @@ def test_thai_and_kana_also_removed(monkeypatch):
     list(stream)  # to_result()는 완전 순회 후에만 유효
     result = stream.to_result()
     assert _detect_script_contamination(result.answer) == []
-    assert result.answer == "은혜 가 충만"
+    assert result.answer.startswith("은혜 □가 □충만")

@@ -1,14 +1,14 @@
 {
   "identifier": "Fuller_Complete_Works_Vol03",
-  "cjk_reextract_version": "1.0.0",
+  "cjk_reextract_version": "1.1.0",
   "mode": "repair",
   "model": "my-theology-bot-v2:latest",
-  "generated_at": "2026-09-14T13:18:34.466032+00:00",
-  "candidates": 299,
-  "repaired": 255,
+  "generated_at": "2026-09-26T07:18:09.128010+00:00",
+  "candidates": 80,
+  "repaired": 40,
   "reextracted": 0,
-  "residual": 42,
-  "failed": 2,
-  "elapsed_seconds": 2139.8,
+  "residual": 39,
+  "failed": 1,
+  "elapsed_seconds": 555.3,
   "applied": true
 }

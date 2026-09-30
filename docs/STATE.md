@@ -97,6 +97,30 @@ Development:    ACTIVE
 Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
 ```
 
+**[2026-09-14 완료] Fuller Complete Works F2(TSU 생성) 전체 완주(Vol.01~08) + CJK 오염 재추출.**
+- **F2 완주**: `f2_run.log` "F2 done — all volumes complete"(2026-09-14 11:28 UTC).
+  Vol.01~08 전량 `gate PASS`+push. `claims_extracted` 합계 ≈26,269건(Vol01
+  3,643 / Vol02 2,674 / Vol03 3,277 / Vol04 4,314 / Vol05 2,597 / Vol06
+  2,712 / Vol07 4,746 / Vol08 5,052). `builder_version` 3.0.0 무변경.
+- **watchdog auto-recovery 첫 실전 검증**: Vol.08 처리 중 실제 Ollama wedge
+  발생(`f2_watchdog.log` 16:49~16:52 UTC probe 2회 연속 실패) →
+  `scripts/nae_f2_watchdog.sh`가 kill+`launchctl kickstart`+`--resume` 재기동
+  자동 수행(~5분), checkpoint 1,300부터 무손실 재개. [[project_tsu_builder_resume]]
+  3-gap 설계(resume+timeout+watchdog)가 설계 이후 처음으로 실제 장애 상황에서
+  검증됨 — 사용자 개입 없이 완전 자동 복구.
+- **CJK 오염 재추출**: `scripts/nae_fuller_cjk_reextract.py --all --apply`
+  실행(Dagg/Hiscox 제외, Fuller Vol01-08만 대상 — frozen baseline 무접촉).
+  오염 후보 2,645건(전체 claims의 ~10.1%) → repaired 2,272(85.9%)/residual
+  359(13.6%, `needs_review=cjk_residual` 플래그)/failed 14(0.5%, LLM
+  timeout, 원문 유지). `claim_raw` 전량 보존, drift guard 적용, doctrine/
+  scriptures/citations/is_claim/page/paragraph/sentence 불변. 커밋
+  `fbdc5b8`, `dev/dbma-engine` push 완료.
+- **현재 상태**: F3(인간검수) 이전 — Qdrant 미반영, 검색·프로덕션 앱 동작에
+  영향 없음(Amendment A §8 게이트 유지). 관련 PR: F4/F5/F6 준비(#27)·
+  침례교 주석 reference-track 준비(#28) 둘 다 2026-09-15 병합 완료(코드만,
+  `--apply`/`modules.nae_pd.enabled` 미실행·false 유지).
+- **다음 필요 결정**: F3 착수 범위(전량 vs 표본) — HQ 결정 대기.
+
 **[2026-09-18 HQ 결정] 프로덕션 코퍼스 "1,363건 영구 동결" 결정 해지 — 아래 2026-09-15
 항목의 "재개하지 말 것"을 철회한다.**
 - **해지 범위**: 2026-09-15 항목이 선언한 "코퍼스는 축소된 상태(1,363 TSU)로 영구
@@ -123,6 +147,70 @@ Next:           ADR-031(본문 해설 뷰어) GA 포함 / v1.4.0 계획
   것인지, 아니면 (2) Track A/B 중 하나로 별도 복구를 진행할 것인지, (3) Fuller/Dagg/
   Hiscox를 이 코퍼스에 별도로 편입(임베딩)할 것인지 — 세 가지가 서로 배타적이지 않고
   조합 가능하므로 다음 세션에서 명시적으로 확인 필요.
+
+**[2026-09-23 HQ 결정] 위 "다음 필요한 HQ 결정" 답변 — 옵션 (1) 채택. Spurgeon 67종
+기준선 확정.**
+- **경위**: 2026-09-18 이후 이 결정이 STATE.md 어디에도 명시적으로 기록되지 않은 채
+  `output/bench/tsu_dataset.jsonl`이 119,595건→130,401건(67종 동일, Vol10~13 chunk
+  수 약 2배 증가·원인 미상)으로 계속 갱신되며 사실상 옵션 (1) 방향으로 흘러갔다.
+  2026-09-22 세션이 이 미문서화 상태를 발견(`docs/DBMA_SESSION_HANDOFF_20260922.md`
+  §2) → C1 Task Order 070으로 사실조사 위임 → 결과
+  (`docs/DBMA_CORPUS_TRACK_TIMELINE_C1_REPORT_001.md`)를 CUE가 전량 독립 재검증
+  (grep/`wc -l`/`stat` 실측 전부 일치 확인) → 2026-09-23 사용자에게 3개 옵션 제시 →
+  **옵션 (1) 승인**.
+  - Track A(84,766건/125출처, 한글 자료·Fuller/Dagg/Hiscox 포함)는 **채택하지
+    않는다** — 복구·병합 작업 없음.
+  - Fuller/Dagg/Hiscox 별도 편입(옵션 3)도 **이번 결정에 포함되지 않는다** — 필요 시
+    별도 HQ 승인 후 착수.
+- **확정 기준선**: `output/bench/tsu_dataset.jsonl` = 130,401건 / 67출처(전부
+  archive.org 영문 퍼블릭 도메인 — Spurgeon·Maclaren·Whitefield·Broadus·Dargan·
+  Keach·Hovey). `scripts/baseline_corpus_manifest.json`(commit `891b84e`,
+  `1ddafc4`)이 이미 이 67종을 배포판 베이스라인으로 지정한 상태와 **일치** — 이번
+  결정으로 추가 코드 변경 불필요, 기존 S6-1(Release 자산)·사이드카 백필(PR #55/#60)
+  작업이 그대로 유효해짐.
+- **영향**: S6-4(GitHub Release 발행)·S6-2(P0-5 인적채점)·S6-3(외부 테스터)가 막혀
+  있던 선결 조건 해소 — `docs/DBMA_S6_2_S6_3_READINESS_001.md` 참고, 재개 가능.
+- **미결로 남는 것**: Vol10~13 chunk 수가 `spurgeon_119595`(2026-09-17) 대비 약 2배
+  증가한 정확한 원인·시점은 여전히 증거 없음(C1 보고서 RQ-2 "빈 구간" 참고) — 배포
+  차단 사유는 아니므로 별도 조사 없이 진행, 필요 시 추후 재조사.
+
+**[2026-09-23 완료] S6-2 — P0-5 대표 질의 24건 인적 채점 완료.**
+- **0단계(CUE)**: `docs/NAE_GOLD_QUERY_SET_P0_5_RESULT_001.md`(2026-09-18
+  구버전)가 사이드카 백필 이후 재실행분인 `RAW_ANSWERS_001.json`
+  (2026-09-23)을 반영 못 해, `scripts/p0_5_run_all.py`가 RESULT.md를
+  재생성하지 않음을 확인 후 CUE가 JSON 24건을 그대로 재작성(신규 답변
+  생성 없음, PR #73). 근거 0건 유보 6→17/24건(코퍼스가 Spurgeon 67종
+  기준선으로 교체된 이후 첫 재실행이라 범용 본문·상담류 질의가
+  매칭되지 않음), 인용 출처 메타데이터 공백 74→0/90건(사이드카 백필
+  효과).
+- **채점**: 사용자 요청으로 다른 세션(C1)이 `~/DBMA`(메인 체크아웃,
+  미커밋)에 `docs/NAE_GOLD_QUERY_SET_P0_5_001_ANSWERS.md`를 자동
+  생성 — `docs/NAE_GOLD_QUERY_SET_P0_5_001.md`가 정한 8개 축 슬라이더가
+  아니라 PASS/FLAG/NOT VERIFIED 3단계로 판정. 원칙상 "채점은 사용자만"
+  (S6-2 작업 명령서 1단계)이었으나, 사용자가 2026-09-23 이 자동 판정을
+  검토 후 **최종 결과로 승인**(예외 승인, 재발 시 다시 명시적 승인
+  필요).
+  - **C3 판정 조정**: 원안 FLAG → 사용자가 FAIL로 상향. 사유: 답변이
+    "Spurgeon은 개혁파 침례교 전통과 다른 견해"라고 서술 — 사실 오류
+    (Spurgeon은 개혁파 침례교 대표 신학자)이며 C1 스스로 "중대 결함"이라
+    쓴 것과 FLAG 판정이 모순.
+  - **최종 집계**: NOT VERIFIED 17 · PASS 2(F1, G1) · FLAG 4(B1, B2, B3,
+    F3) · FAIL 1(C3).
+  - **B2 문자 오염 근본 원인**(CUE 진단, 2026-09-23): `core/generation.py:121`
+    `_SCRIPT_CONTAMINATION_RE`가 히라가나/가타카나/CJK/태국/그리스/키릴/
+    히브리/아랍/데바나가리 9개 문자 체계만 검사하고 라틴 문자는 전부
+    면제(성경 로마자 인명 허용 목적) — 독일어 `persönlich` 혼입이
+    탐지·재시도 안 됨. 추가로 "의"/"성령" 같은 한글 토큰 드롭은 외국
+    문자 유입이 아니라 문자 체계 검사로 원리상 탐지 불가능한 유형.
+    B1의 인도네시아어 "bahwa" 혼입도 같은 사각지대(순수 라틴 알파벳).
+    **수정은 이번 라운드에 보류** — 관찰 기록만 남김.
+- **결과 파일**: `docs/NAE_GOLD_QUERY_SET_P0_5_RESULT_001.md`(원문
+  자료, PR #73 병합 완료),
+  `docs/NAE_GOLD_QUERY_SET_P0_5_001_ANSWERS.md`(최종 채점 결과,
+  이번 커밋).
+- **다음 조치**: S6-3(외부 테스터 섭외, 준비 완료 —
+  `docs/DBMA_S6_2_S6_3_READINESS_001.md`) 착수 여부 사용자와 상의.
+  B2/B1류 라틴 문자·토큰 드롭 필터 사각지대 수정 여부도 별도 결정 필요.
 
 **[2026-09-16 완료] `NAE/citation_disclosure.py`에 authority_tier(T1~T4) 라벨 축 추가 (개인 RAG 제안서 §13 대응, 준비 단계).**
 - 배경: 목회자 개인 RAG(DBMA/NAE) 제안서 §11/§13에서 설계한 신학적 권위
