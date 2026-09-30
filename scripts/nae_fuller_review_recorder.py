@@ -13,6 +13,8 @@ Usage:
     python scripts/nae_fuller_review_recorder.py --list
     python scripts/nae_fuller_review_recorder.py --batch 1 --stats
     python scripts/nae_fuller_review_recorder.py --batch 1 --redo TSU-0004133
+    python scripts/nae_fuller_review_recorder.py --series v08 --batch 1   # Vol.08 재검수 (FU-004 b-1)
+    python scripts/nae_fuller_review_recorder.py --series v08 --list
 
 Per question: a / r / c   (A=accurate/ok, R=reject, C=context insufficient)
 Any prompt also accepts:  s = skip this TSU   b = back (redo previous)   q = save & quit
@@ -42,10 +44,30 @@ VALID_Q4 = {
 FINAL = {"APPROVED", "CONDITIONAL", "REJECTED"}
 
 
-def _batch_id(arg: str) -> str:
-    if arg.startswith("fuller_v01_batch_"):
-        return arg
-    return f"fuller_v01_batch_{int(arg):04d}"
+# 시리즈별 배치 ID 규칙. v01=Vol.01 파일럿(4자리), v08=Vol.08 재검수(3자리, FU-004 b-1).
+_SERIES = {
+    "v01": {"prefix": "fuller_v01_batch_", "width": 4},
+    "v08": {"prefix": "fuller_v08_rereview_batch_", "width": 3},
+}
+
+# v08 요청 파일에는 review_questions가 없어 Vol.01 요청과 동일한 Q1–Q3를 기본 주입한다.
+DEFAULT_QUESTIONS = [
+    {"code": "Q1", "label": "Claim Fidelity",
+     "prompt": "이 재진술(claim)이 원문의 실제 의미를 정확히 표현하는가?"},
+    {"code": "Q2", "label": "Theological Accuracy",
+     "prompt": "이 claim이 신학적으로 왜곡되거나 과장되지 않았는가?"},
+    {"code": "Q3", "label": "Context Sufficiency",
+     "prompt": "제공된 원문 맥락(앞/뒤 문장)이 판단하기에 충분한가?"},
+]
+
+
+def _batch_id(arg: str, series: str = "v01") -> str:
+    # 완전한 배치 ID는 시리즈와 무관하게 그대로 인정한다.
+    for cfg in _SERIES.values():
+        if arg.startswith(cfg["prefix"]):
+            return arg
+    cfg = _SERIES[series]
+    return f"{cfg['prefix']}{int(arg):0{cfg['width']}d}"
 
 
 def _req_path(bid: str) -> Path:
@@ -134,6 +156,8 @@ def _print_card(bid: str, i: int, n: int, tally: dict, req: dict) -> None:
     print(f"[{bid}]  {i}/{n}   A:{tally['APPROVED']}  C:{tally['CONDITIONAL']}  R:{tally['REJECTED']}")
     print("-" * 78)
     print(f"tsu_id   : {req['tsu_id']}   doctrine: {req.get('doctrine') or '(none)'}")
+    if req.get("tier"):
+        print(f"tier     : {req['tier']}   signals: {', '.join(req.get('triage_flags') or []) or '(none)'}")
     print(f"claim    : {req.get('claim','')}")
     print("-" * 78)
     print("original_text:")
@@ -174,7 +198,7 @@ def _review_batch(bid: str, redo: str | None) -> None:
         _print_card(bid, done + idx + 1, len(reqs), tally, req)
         try:
             ans = {}
-            for q in req.get("review_questions", []):
+            for q in (req.get("review_questions") or DEFAULT_QUESTIONS):
                 ans[q["code"]] = _ask_answer(q["code"], q["label"], q["prompt"])
             q4 = _ask_q4()
             if q4:
@@ -247,8 +271,8 @@ def _stats(bid: str) -> None:
           f"(A {t['APPROVED']}  C {t['CONDITIONAL']}  R {t['REJECTED']})")
 
 
-def _list_all() -> None:
-    files = sorted(glob.glob(str(REQUESTS_DIR / "fuller_v01_batch_*_requests.json")))
+def _list_all(series: str = "v01") -> None:
+    files = sorted(glob.glob(str(REQUESTS_DIR / f"{_SERIES[series]['prefix']}*_requests.json")))
     grand = {"n": 0, "done": 0}
     for f in files:
         bid = Path(f).name.replace("_requests.json", "")
@@ -263,18 +287,20 @@ def _list_all() -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Fuller Vol.01 human-review recorder")
-    ap.add_argument("--batch", help="batch number (1) or id (fuller_v01_batch_0001)")
+    ap.add_argument("--series", choices=sorted(_SERIES), default="v01",
+                    help="v01=Vol.01 파일럿(기본), v08=Vol.08 재검수 (예: --series v08 --batch 1)")
+    ap.add_argument("--batch", help="batch number (1) or full id (fuller_v01_batch_0001 / fuller_v08_rereview_batch_001)")
     ap.add_argument("--list", action="store_true", help="show all batches + progress")
     ap.add_argument("--stats", action="store_true", help="show one batch's progress and exit")
     ap.add_argument("--redo", metavar="TSU_ID", help="clear one decision and re-review it")
     args = ap.parse_args()
 
     if args.list:
-        _list_all()
+        _list_all(args.series)
         return
     if not args.batch:
         ap.error("--batch is required (or use --list)")
-    bid = _batch_id(args.batch)
+    bid = _batch_id(args.batch, args.series)
     if args.stats:
         _stats(bid)
         return
