@@ -15,6 +15,7 @@ import해서 사용한다.
 from __future__ import annotations
 
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -118,18 +119,82 @@ def extract_claims_with_ollama(
     return claims, "ok"
 
 
+def _is_prompt_echo(line: str) -> bool:
+    """LLM이 프롬프트 지시문을 그대로 반복한 줄인지 판별 (CW-01).
+
+    LLM이 프롬프트의 출력 형식 지시나 evidence_id 설명을 claim text로
+    반복하는 경우를 감지한다.
+    """
+    stripped = line.strip()
+    if not stripped:
+        return False
+    # 프롬프트에 포함된 지시문 패턴들
+    echo_patterns = [
+        "출력 형식",
+        "evidence_ids는 위에서 본",
+        "[evidence_id: ...] 값을 그대로",
+        "각 줄을 (",
+        "claim_text, [evidence_ids]",
+        "evidence_id를 대괄호",
+    ]
+    for pat in echo_patterns:
+        if pat in stripped:
+            return True
+    # "[evidence_id:" 로만 시작하고 실제 ID가 아닌 placeholder 패턴
+    if re.match(r'^\[evidence_id:\s*\.\.\.', stripped):
+        return True
+    return False
+
+
+def _clean_evidence_markers(text: str) -> str:
+    """claim text에서 [evidence_id: ...] 마커와 주변 공백/구두점을 제거 (CW-02).
+
+    제거 후 남은 ", )" 같은 빈 구두점도 정리한다.
+    """
+    # 1) [evidence_id: X] 마커 제거 (양쪽 공백만 — 쉼표는 보존)
+    text = re.sub(r'\s*\[evidence_id:\s*[^\]]+\][ \t]*', ' ', text)
+    # 2) 마커 제거 후 남은 ", )" / "," / ") " 등 빈 구두점 정리
+    # 루프로 반복 — re.sub는 한 번만 매칭하므로 중복 제거 필요
+    for _ in range(5):  # 최대 5회 반복 (실제로는 1-2회면 충분)
+        new_text = re.sub(r'\s*,\s*\)', ')', text)
+        if new_text == text:
+            break
+        text = new_text
+    for _ in range(5):
+        new_text = re.sub(r'\s*,\s*\]', ']', text)
+        if new_text == text:
+            break
+        text = new_text
+    # 그 다음 나머지 쉼표 정리 (", )" 처리 후이므로 안전)
+    text = re.sub(r'\s*,\s*', ', ', text)            # 여러 쉼표 정리
+    text = re.sub(r'\)\s*\)', ')', text)            # "))" -> ")"
+    text = re.sub(r'\]\s*\]', ']', text)            # "]]" -> "]"
+    # 3) trailing ", ," 패턴 제거 (마커 제거 후 남은 연속 쉼표)
+    for _ in range(5):
+        new_text = re.sub(r',\s*,', ',', text)
+        if new_text == text:
+            break
+        text = new_text
+    # 4) trailing comma 제거 (마커 제거 후 맨 끝에 남은 ,)
+    text = re.sub(r',\s*$', '', text)
+    # 5) 중복 공백 정리
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+
 def parse_llm_claims(llm_output: str, pool) -> list[tuple[str, list[str]]]:
     """Ollama 출력을 (claim_text, [evidence_ids]) 쌍으로 파싱.
 
     프롬프트가 [evidence_id: X] 형식으로 ID를 제공하므로, 해당 패턴도 함께 추출.
     실제 evidence_id 포맷(NAE-TSU-..., TSU-UNK-..._chunk_..., NAE-UNC-..._p... 등)을 넓게 커버.
+
+    CW-01: LLM이 프롬프트 지시문을 claim text로 반복하는 경우 감지·스킵
+    CW-02: claim text 내 [evidence_id: ...] 마커 제거 + 주변 공백/구두점 정리
     """
     raw_claims: list[tuple[str, list[str]]] = []
 
     if "근거 자료 없음" in llm_output or "no evidence" in llm_output.lower():
         return [("근거 자료가 없습니다.", [])]
-
-    import re
 
     # 1) 프롬프트에서 본 [evidence_id: X] 패턴 우선 추출 (non-greedy, 쉼표/공백에서 끊음)
     evidence_id_patterns = re.findall(r'evidence_id:\s*([^\],\s]+(?:_[^,\]\s]+)*)', llm_output)
@@ -149,12 +214,25 @@ def parse_llm_claims(llm_output: str, pool) -> list[tuple[str, list[str]]]:
 
     unique_ids = all_candidates
 
-    # 첫 줄을 claim text로 사용
-    first_line = llm_output.strip().split("\n")[0]
-    if len(first_line) >= 5 and unique_ids:
-        raw_claims.append((first_line, unique_ids))
-    elif len(first_line) >= 5:
-        raw_claims.append((first_line, []))
+    # 2) claim text 추출 — 첫 줄이 프롬프트 지시문 반복이면 스킵 (CW-01)
+    lines = llm_output.strip().split("\n")
+    claim_line: str | None = None
+    for line in lines:
+        if not _is_prompt_echo(line):
+            claim_line = line.strip()
+            break
+
+    if claim_line is None:
+        # 모든 줄이 프롬프트 반복이면 빈 결과
+        return []
+
+    # 3) claim text에서 [evidence_id: ...] 마커 제거 + 주변 정리 (CW-02)
+    claim_text = _clean_evidence_markers(claim_line)
+
+    if len(claim_text) >= 5 and unique_ids:
+        raw_claims.append((claim_text, unique_ids))
+    elif len(claim_text) >= 5:
+        raw_claims.append((claim_text, []))
 
     return raw_claims
 

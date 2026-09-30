@@ -84,6 +84,11 @@ class DocumentContext:
     # TSU references (ADR-002 매핑 테이블 방식 — future integration point)
     tsu_refs: list[str] = field(default_factory=list)
 
+    # [CW-04 AD-01] corpus_membership — Personal vs Default 구분.
+    # "personal" | "default". register_document()의 metadata.get("corpus_membership", "default")
+    #와 정확히 대응. 기본값은 "default"(기존 데이터 호환).
+    corpus_membership: str = "default"
+
     # Lifecycle
     # [SPRINT21-B Phase1] pipeline_state tracks how far this document has
     # progressed toward being searchable: NEW/IDENTIFIED/EXTRACTED/PROCESSED/
@@ -197,6 +202,9 @@ class DocumentContext:
             "supersedes": self.supersedes,
             "last_content_hash": self.last_content_hash,
             "max_retries": self.max_retries,
+
+            # [CW-04 AD-01] corpus_membership — Personal vs Default 구분
+            "corpus_membership": self.corpus_membership,
         }
 
     @classmethod
@@ -270,6 +278,8 @@ class DocumentContext:
             last_processed_at=meta.get("last_processed_at", ""),
             md_path=meta.get("md_path"),
             copied_source_path=meta.get("copied_source_path"),
+            # [CW-04 AD-01] corpus_membership — registry에서 읽은 값을 그대로 사용
+            corpus_membership=meta.get("corpus_membership", "default"),
         )
         if isinstance(meta.get("pipeline_flags"), dict):
             ctx.pipeline_flags = dict(meta["pipeline_flags"])

@@ -160,7 +160,7 @@ maintenance:
 # 브랜드명이 아닌 내부 식별자만 여기 사용한다.
 modules:
   nae_pd:
-    enabled: false
+    enabled: true
     display_name: "NAE Public Theology Module"
     corpus_root: "NAE/corpus/tsu"
     manifest_dir: "NAE/pipeline/ingest/manifests"

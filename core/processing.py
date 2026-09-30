@@ -521,7 +521,7 @@ def resolve_title_author(
 
 # ── 핵심 처리 함수 ─────────────────────────────────────
 
-def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_rechunk=False):
+def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_rechunk=False, corpus_membership="default"):
     """단일 파일 처리 (업그레이드 v2 — 검증 + 리트라이 + 배치 상태)
 
     force_rechunk: True면 classify_ingest_decision()이 SKIP(콘텐츠 해시
@@ -532,6 +532,9 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
     (tests/test_process_batch_force_reingest.py 참고): force_reingest는
     "이 파일명을 다시 시도하라"는 뜻이고, force_rechunk는 "내용이
     같아도 청킹 로직을 다시 돌려라"는 뜻이다.
+
+    corpus_membership: [CW-04 AD-01] Personal vs Default 구분.
+    "personal" | "default". registry record에 기록됨.
     """
     logs = []
     metrics = {}
@@ -671,6 +674,8 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
             author=extracted_author,
             metadata_source=metadata_source,
         )
+        # [CW-04 AD-01] corpus_membership — 업로드 시점 명시적 설정
+        _document_context.corpus_membership = corpus_membership
         # [SPRINT21-B Phase1] identity generated (doc_id/file_hash), chunking
         # not yet run — matches the IDENTIFIED state definition.
         set_pipeline_state(_document_context, "IDENTIFIED")
@@ -1060,7 +1065,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         return {"success": False, "logs": logs, "metrics": metrics, "artifacts": artifacts, "failed_stage": failed_stage or "unexpected", "reason": _failure_reason}
 
 
-def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_reingest=False, force_rechunk=False):
+def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_overlap, report=None, force_reingest=False, force_rechunk=False, corpus_membership="default"):
     """배치 처리 (업그레이드 v2 — 중복 파일 제외 + 배치 상태 추적)
 
     [SPRINT21-G-3-B Gap#3 fix] force_reingest=True면 .batch_state.json
@@ -1074,6 +1079,8 @@ def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_
     (청킹 알고리즘 변경 후 전체 재청킹용, 2026-07-21 도입). force_reingest와
     별개 파라미터 — 이 함수 자신은 두 값을 그대로 각자의 역할로 전달할 뿐,
     서로 대신하지 않는다.
+
+    corpus_membership: [CW-04 AD-01] 모든 파일에 적용될 corpus membership 값.
     """
     logger.info("[SPRINT1] ingestion start: %d files", len(file_list))
     processed_set = set() if force_reingest else get_processed_files(output_dir)
@@ -1086,7 +1093,7 @@ def process_batch(file_list, converter, splitter, output_dir, chunk_size, chunk_
             results.append({"success": True, "logs": logs, "metrics": {}, "artifacts": {}, "skipped": True})
             continue
 
-        result = process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report, force_rechunk=force_rechunk)
+        result = process_one_file(file_info, converter, splitter, output_dir, chunk_size, chunk_overlap, report, force_rechunk=force_rechunk, corpus_membership=corpus_membership)
         results.append(result)
 
     logger.info("[SPRINT1] ingestion end: %d files processed", len(results))
