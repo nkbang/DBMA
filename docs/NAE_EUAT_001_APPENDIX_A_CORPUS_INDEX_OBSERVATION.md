@@ -39,6 +39,8 @@
 
 **RECOMMENDATION**: 별도 Task Order로 `scripts/nae_incremental_ingest.py --apply`를 Dagg → Hiscox 순으로 실행한다. 신규·변경분만 upsert한다. Embedding Engine과 Qdrant 쓰기이므로 사전 승인이 필요하다. `docs/NAE_FULLER_PREFLIGHT_CUE_VERIFICATION_001.md`가 보호 파일(`embed/client.py`, `tsu/builder.py`)의 미커밋 수정 상태에서 `--apply`를 실행하는 것을 ADR-030 §14 위반으로 경고하므로, 실행 전에 메인 체크아웃의 미커밋 파일 17개 중 해당 파일이 있는지 확인해야 한다.
 
+**조치 결과 (2026-09-29, FU-002-A 선택지 B)**: 신규 572건(Dagg 321, Hiscox 251)을 증분 인덱싱하여 `nae_tsu_v1`은 3,319 → **3,891**이 됐다. 기존 3,319포인트는 해시 기준 불변이며, CHANGED 17건은 보류했다. Hiscox "Church Discipline" 분류 TSU는 38 → 85건이 됐고 EUAT-01의 1위 근거가 권징 사유 문단으로 바뀌었다. 상세: [FU-002-A 결과](NAE_EUAT_001_FU002A_OPTION_B_RESULT.md). 이 부록의 표(A-1, A-2)는 조치 **이전** 시점 기록이다.
+
 ## A-3. CHANGED 17건: 오염된 claim의 사후 교정
 
 **OBSERVED**: 색인된 TSU 17건(Dagg 14, Hiscox 3)의 claim에 타 문자가 섞인 옛 문장이 남아 있고, `tsu.json`에는 교정본이 있다.
