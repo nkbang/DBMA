@@ -42,7 +42,9 @@ from core.retrieval import QueryProcessor, RankedCandidate, Citation
 from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
+from core.citation_verifier import issue_messages
 from ui.components.citation_card import render_citation_card
+from ui.components.display_quality import claim_guard_message, usable_heading_label
 from ui.components.nae_public_section import render_nae_public_section
 from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
 
@@ -572,6 +574,9 @@ def _handle_user_message(question: str) -> None:
             or claim_guard_result.scope_qualifier_required
         ):
             _render_claim_guard_warning(claim_guard_result)
+        citation_warnings = issue_messages(getattr(result, "citation_check", None))
+        if citation_warnings:
+            _render_citation_warnings(citation_warnings)
         if response.top_k_results:
             # Determine this turn's message index for stable key generation.
             msgs = st.session_state.get("chat_messages", [])
@@ -590,6 +595,7 @@ def _handle_user_message(question: str) -> None:
         "error": result.error,
         "low_confidence": low_confidence,
         "claim_guard_result": claim_guard_result,
+        "citation_warnings": citation_warnings,
     })
     _save_chat_history()
 
@@ -649,10 +655,17 @@ def _render_low_confidence_warning() -> None:
 def _render_claim_guard_warning(result) -> None:
     """ClaimGuard가 위험 주장을 탐지했을 때 안내 박스를 표시한다.
     _render_low_confidence_warning()와 동일한 패턴(st.caption)."""
-    if result.suggested_wording:
-        st.caption(f"주장 검증: {result.suggested_wording}")
-    else:
-        st.caption(f"주장 검증: {result.reason}")
+    message = claim_guard_message(result)
+    if message:  # 표시할 내용이 없으면 빈 "주장 검증:" 라벨을 남기지 않는다
+        st.caption(f"주장 검증: {message}")
+
+
+def _render_citation_warnings(warnings: list[str]) -> None:
+    """답변 속 인용이 근거와 맞지 않을 수 있을 때 안내한다(경고 전용, 답변은 그대로).
+    _render_claim_guard_warning()과 같은 패턴(st.caption)."""
+    st.caption("⚠️ 출처 확인 필요 — 아래 인용은 이번에 검색된 근거로 확인되지 않았습니다.")
+    for w in warnings:
+        st.caption(f"· {w}")
 
 
 def _render_chat_history() -> None:
@@ -664,6 +677,8 @@ def _render_chat_history() -> None:
                 _render_low_confidence_warning()
             if msg["role"] == "assistant" and msg.get("claim_guard_result"):
                 _render_claim_guard_warning(msg["claim_guard_result"])
+            if msg["role"] == "assistant" and msg.get("citation_warnings"):
+                _render_citation_warnings(msg["citation_warnings"])
             if msg["role"] == "assistant" and msg.get("sources"):
                 with st.expander(f"출처 ({len(msg['sources'])}개)", expanded=False):
                     for _src_idx, candidate in enumerate(msg["sources"]):
@@ -767,7 +782,8 @@ def _render_clickable_source(
     structure = candidate.metadata.get("structure", {})
     heading_path = structure.get("heading_path", [])
     heading_hierarchy = " > ".join(heading_path) if heading_path else ""
-    display_label = heading_hierarchy or source_file or "출처 미상"
+    # 본문 조각·깨진 청크가 헤딩 자리에 들어온 경우(예: "• • ••»")는 파일명으로 대체
+    display_label = usable_heading_label(heading_hierarchy) or source_file or "출처 미상"
 
     # Stable key: depends only on rendering position, not on any counter.
     btn_key = f"nav_src_{msg_index}_{source_index_in_msg}_{abs(hash(candidate.tsu_id)) & 0xFFFFFFFF:x}"

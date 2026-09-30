@@ -48,6 +48,7 @@ def render_nae_public_section(key_prefix: str) -> None:
     query_key = f"{key_prefix}_nae_research_query"
     results_key = f"{key_prefix}_nae_research_results"
     status_key = f"{key_prefix}_nae_search_status"
+    failure_key = f"{key_prefix}_nae_search_failure"
 
     nae_query = st.text_input(
         "공개 자료 검색어",
@@ -63,10 +64,10 @@ def render_nae_public_section(key_prefix: str) -> None:
     with col1:
         if st.button("검색", type="primary", icon=":material/search:", use_container_width=True, key=f"{key_prefix}_nae_search_btn"):
             nae_results = _execute_nae_retrieval(nae_query)
+            failure = None if nae_results else _current_retrieval_failure()
             st.session_state[results_key] = nae_results
-            st.session_state[status_key] = (
-                f"결과 {len(nae_results)}건" if nae_results else "결과 없음"
-            )
+            st.session_state[failure_key] = failure
+            st.session_state[status_key] = retrieval_status_text(len(nae_results), failure)
 
     nae_results = st.session_state.get(results_key)
     nae_status = st.session_state.get(status_key, "")
@@ -78,7 +79,8 @@ def render_nae_public_section(key_prefix: str) -> None:
         st.caption(nae_status)
 
     if not nae_results:
-        st.info("공개 자료에서 일치하는 결과가 없습니다.")
+        kind, message = empty_result_message(st.session_state.get(failure_key))
+        (st.warning if kind == "warning" else st.info)(message)
         return
 
     for i, item in enumerate(nae_results, 1):
@@ -86,6 +88,41 @@ def render_nae_public_section(key_prefix: str) -> None:
             _render_nae_paragraph_card(i, item)
         else:
             _render_nae_legacy_card(i, item)
+
+
+_FAILURE_TEXT = {
+    "timeout": "검색이 시간 초과되었습니다 (결과가 없다는 뜻이 아닙니다). 잠시 후 다시 시도해 주세요.",
+    "error": "검색 중 오류가 발생했습니다 (결과가 없다는 뜻이 아닙니다). 다시 시도해 주세요.",
+}
+
+
+def retrieval_status_text(count: int, failure: str | None) -> str:
+    """검색 상태 한 줄 — 0건이어도 "실패"와 "자료 없음"을 구분해 표시한다.
+
+    어댑터는 ADR-024 §G fail-closed로 장애/타임아웃을 빈 리스트로 삼키므로,
+    호출자가 어댑터의 실패 사유(`last_retrieval_failure`)를 함께 넘겨야 구분된다.
+    """
+    if count:
+        return f"결과 {count}건"
+    if failure:
+        return "검색 실패" if failure == "error" else "검색 시간 초과"
+    return "결과 없음"
+
+
+def empty_result_message(failure: str | None) -> tuple[str, str]:
+    """(종류, 문구) — 종류는 "warning"(검색 실패) 또는 "info"(정상 0건)."""
+    if failure:
+        return "warning", _FAILURE_TEXT.get(failure, _FAILURE_TEXT["error"])
+    return "info", "공개 자료에서 일치하는 결과가 없습니다."
+
+
+def _current_retrieval_failure() -> str | None:
+    try:
+        from NAE.retrieval_adapter import last_retrieval_failure
+
+        return last_retrieval_failure()
+    except Exception:  # noqa: BLE001 — 표시용 부가 정보, 실패해도 검색 결과에 영향 없음
+        return None
 
 
 def _render_nae_paragraph_card(i: int, hit: dict) -> None:
@@ -111,7 +148,12 @@ def _render_nae_paragraph_card(i: int, hit: dict) -> None:
         if authority_class:
             st.caption(f"자료 등급: {authority_class}")
 
-        disclosure = get_disclosure(authority_class)
+        disclosure = get_disclosure(
+            authority_class,
+            identifier=bib.get("identifier"),
+            author=bib.get("author"),
+            work=bib.get("work"),
+        )
         if disclosure:
             st.warning(disclosure)  # ADR-030 Amendment A §6 — F6 UI 필수 노출
 

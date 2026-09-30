@@ -15,6 +15,7 @@ Based on DBMA-UX-007 §6 specification.
 
 import streamlit as st
 
+from ui.components.display_quality import is_comparable_relevance
 from ui.theme.colors import DBMADesignSystemColors as THEME
 
 
@@ -75,7 +76,16 @@ def render_citation_card(
 
     meta_html = "".join(meta_rows) if meta_rows else ""
 
-    stars = _stars_html(relevance_score, THEME.CITE_STAR_FILLED)
+    # RRF 척도 점수(0.06 이하)는 별점으로 바꾸면 항상 ☆☆☆☆☆가 되어 "관련 없음"으로
+    # 오해된다(EUAT-001) — 비교 가능한 유사도일 때만 별점 줄을 표시한다.
+    if is_comparable_relevance(relevance_score):
+        stars = _stars_html(relevance_score, THEME.CITE_STAR_FILLED)
+        relevance_html = (
+            f'<div style="font-size:13px;color:{THEME.TEXT_SECONDARY};">'
+            f"{stars} 관련성 — 검색어와의 연관성 기준</div>"
+        )
+    else:
+        relevance_html = ""
 
     # Render card container with real st.button() below it
     card_html = f"""
@@ -91,9 +101,7 @@ def render_citation_card(
                     font-size:13px;margin-bottom:8px;">
             {meta_html}
         </dl>
-        <div style="font-size:13px;color:{THEME.TEXT_SECONDARY};">
-            {stars} 관련성 — 검색어와의 연관성 기준
-        </div>
+        {relevance_html}
     </div>
     """
     st.markdown(card_html, unsafe_allow_html=True)
