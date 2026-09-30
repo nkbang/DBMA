@@ -17,11 +17,11 @@ scope_modified: docs/architecture/ only — 코드 미수정 (본 ADR은 설계 
 
 | 항목 | 내용 |
 |---|---|
-| Status | **Proposed** — Approved 아님. 기존 Approved ADR(특히 ADR-024)을 변경·대체하지 않는다 |
+| Status | **Approved** (2026-09-30, Rev. Bang 승인) — Evidence Before Promotion 4조건 충족, §11 참고. 기존 Approved ADR(특히 ADR-024)을 변경·대체하지 않는다. 결정: 방안 B |
 | 작성 | CUE, 2026-09-29 (EUAT-001 후속 FU-001) |
 | 결정권자 | Rev. Bang / HQ = Final Authority |
 | 번호 | 036 (ADR-035는 `claude/adr-035-pastoral-library-automation`·`feat/peb-v0.1`에 이미 존재해 회피) |
-| 승격 조건 | Evidence Before Promotion 4조건: 구현 완료 / 회귀 통과 / C1 독립 리뷰 / 사용자 승인 — 전부 충족 전까지 Proposed |
+| 승격 조건 | Evidence Before Promotion 4조건: 구현 완료 / 회귀 통과 / C1 독립 리뷰 / 사용자 승인 — **2026-09-30 전부 충족(§11)** |
 | 변경 없음(범위) | Retrieval Engine 랭킹, `nae_tsu_v1` 인덱스, ADR-024 §A/§F/§G/§H, corpus 등록·인덱싱 |
 
 ## 1. Context — 무엇이 문제인가
@@ -150,3 +150,18 @@ NAE 근거를 채팅 답변의 LLM 컨텍스트에 `<public_theology>` 같은 **
 - 구현: `NAE/public_answer.py`(신규), `ui/components/nae_public_section.py`. `chat.py`·`core/retrieval.py`·`NAE/retrieval_adapter.py` 무변경. 상세와 수용 기준 결과: [Build Report](../NAE_EUAT_001_FU001_B_BUILD_REPORT.md).
 - 시험 결과 요약: EUAT-01·02 근거 기반 답변(인용 위치 포함), EUAT-03 정직한 유보, EUAT-04 1689 부재를 밝히고 실제 Hiscox 문장 인용, EUAT-05는 일반론 위주로 약함(종합 미해결은 §5의 알려진 한계).
 - 알려진 한계: 한국어 직접 인용문의 원문 일치는 기계적으로 검증할 수 없다(Build Report §6).
+
+## 11. 승격 기록 (Proposed → Approved, 2026-09-30)
+
+Evidence Before Promotion 4조건을 모두 확인하고 승격했다.
+
+| 조건 | 근거 |
+|---|---|
+| 구현 완료 | `NAE/public_answer.py`, `ui/components/nae_public_section.py`, `core/citation_verifier.py` 보강 (커밋 `7173f57a`, PR #102 병합 `d1c06d25`). 수용 기준 AC-1~AC-8 결과: [Build Report](../NAE_EUAT_001_FU001_B_BUILD_REPORT.md) |
+| 회귀 통과 | 전체 3,490 passed / 17 skipped (라이브 Qdrant 통합 테스트 1건 제외). CI `validate` 통과 |
+| C1 독립 리뷰 | C1 보고 F1~F6·B1~B7·C1~C2 검토. CUE가 재실행 교차검증해 테스트 수(54, 32, 3,490)와 변경 범위(`core/generation.py` 삭제 0줄, `NAE/retrieval_adapter.py` 삭제 1줄, `core/retrieval.py` 무변경)를 재현. 기록: [C1 검토 결과](../NAE_EUAT_001_C1_REVIEW_RESULT_FU003_FU001B.md) |
+| 사용자 승인 | Rev. Bang, 2026-09-30 채팅 "승인" |
+
+- 이 승격은 **방안 B만** 승인한다. 방안 C(단일 답변 병합)는 별도 ADR·ADR-024 Amendment가 필요한 더 큰 결정으로 남는다.
+- 승격은 사용자 화면 반영을 뜻하지 않는다. 실행 중인 앱(`feat/peb-v0.1`)에는 아직 반영되지 않았고, 릴리스 라인 통합(FU-007)이 선행되어야 한다.
+- ADR-024는 변경하지 않았다. `TestNoMergeIntoGeneration` 가드는 그대로 유효하다. ADR-024에 각주를 남길지는 별도 판단이다(§8 항목 3).
