@@ -48,6 +48,7 @@ EUAT-001(2026-09-29, 실제 앱 UI)의 핵심 발견:
 | 항목 | 내용 | 시사점 |
 |---|---|---|
 | ADR-028 (Accepted) | Smith 사전은 같은 LLM 컨텍스트에 **별도 `<reference>` 블록 + 계층 지시문**으로 주입한다. 순위 병합 없음 | "별도 블록으로 생성 컨텍스트에 넣는 것"은 이미 승인된 패턴이다. 단 Smith는 보조 자료이고 NAE 공개 자료는 1차 신학 문헌이라 역할이 다르다 |
+| PR #89 (2026-09-29 `main` 병합, `732fb435`) | 채팅이 reference 계열 **두 컬렉션**을 답변 컨텍스트에 별도 `<reference>` 블록으로 주입한다: Smith 사전(`nae_ref_v1`)과 Baptist 주석(`nae_ref_commentary_v1`: Gill·Broadus·Spurgeon·Carroll). **컬렉션마다 별도 top_k 할당(각 2건)**이며, 두 컬렉션을 하나의 top-k로 합치는 안은 원 코사인 점수에서 Smith가 주석을 밀어내 시도 후 기각됐다고 코드 주석에 기록 | (1) 이 ADR의 문제 진술 1번 "채팅은 내 서재와 Smith만"은 이제 "내 서재 + reference 계열(사전·주석)"이 맞다. TSU 트랙(Dagg/Hiscox, `nae_tsu_v1`)은 여전히 채팅 답변 경로에 없다. (2) 서로 다른 점수 척도를 하나의 순위로 합치지 않고 컬렉션별 할당으로 다루는 것이 이미 구현된 선례이며 ADR-024 §B의 취지와 일치한다. 방안 B(별도 답변)와 방안 C(역할 표시 블록 결합) 모두 이 선례 위에서 비교된다 |
 | ADR-013 / 2026-08-16 격리 사고 | NAE는 `core/`와 분리된 서브시스템, 벡터 저장소도 별개(`nae_qdrant` 7333). Dagg 1건이 DBMA 등록부로 오염된 사고 이력 | 어떤 방안이든 **저장 계층 격리**(NAE 근거를 DBMA 등록부·인덱스·6333에 쓰지 않음)를 지켜야 한다 |
 | ADR-001 | Retrieval Engine 단일 정본 | 랭킹·검색 엔진 변경은 범위 밖 |
 | Grounded Synthesis AD-02 (HQ 승인, Option D) | Personal(1차) / Default(보조) 역할 정책은 **랭킹 병합이 아니라 역할 보존 병합**(post-processing role-aware merge), Personal rank 1 강제 금지 | 다만 그 "Default corpus"는 DBMA의 기본 코퍼스이며 NAE 공개 자료(`nae_tsu_v1`)가 아니다. 용어를 혼동하지 않는다. 역할 보존 병합 원칙은 참고 가능 |
