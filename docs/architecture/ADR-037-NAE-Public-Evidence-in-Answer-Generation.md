@@ -1,5 +1,5 @@
 ---
-title: "ADR-036: NAE Public-Theology Evidence in Answer Generation (Chat/Research)"
+title: "ADR-037: NAE Public-Theology Evidence in Answer Generation (Chat/Research)"
 category: architecture
 based_on:
   - docs/architecture/ADR-001-Retrieval-Engine-Authority.md
@@ -13,14 +13,14 @@ based_on:
 scope_modified: docs/architecture/ only — 코드 미수정 (본 ADR은 설계 결정 문서, 구현은 별도 작업 명령 필요)
 ---
 
-# ADR-036: NAE Public-Theology Evidence in Answer Generation (Chat/Research)
+# ADR-037: NAE Public-Theology Evidence in Answer Generation (Chat/Research)
 
 | 항목 | 내용 |
 |---|---|
 | Status | **Proposed** — Approved 아님. 기존 Approved ADR(특히 ADR-024)을 변경·대체하지 않는다 |
 | 작성 | CUE, 2026-09-29 (EUAT-001 후속 FU-001) |
 | 결정권자 | Rev. Bang / HQ = Final Authority |
-| 번호 | 036 (ADR-035는 `claude/adr-035-pastoral-library-automation`·`feat/peb-v0.1`에 이미 존재해 회피) |
+| 번호 | 037 — 2026-09-30 HQ ② 결정으로 036에서 재부여(ADR-036은 먼저 작성된 GS 경계 ADR `ADR-036-Grounded-Synthesis-Boundary.md`가 사용). 최초 작성 시 036을 고른 경위: ADR-035는 `claude/adr-035-pastoral-library-automation`·`feat/peb-v0.1`에 이미 존재해 회피 |
 | 승격 조건 | Evidence Before Promotion 4조건: 구현 완료 / 회귀 통과 / C1 독립 리뷰 / 사용자 승인 — 전부 충족 전까지 Proposed |
 | 변경 없음(범위) | Retrieval Engine 랭킹, `nae_tsu_v1` 인덱스, ADR-024 §A/§F/§G/§H, corpus 등록·인덱싱 |
 
@@ -41,7 +41,7 @@ EUAT-001(2026-09-29, 실제 앱 UI)의 핵심 발견:
 - 금지의 직접 대상은 **서로 다른 척도의 점수를 하나의 랭킹으로 섞는 것**이다.
 - **생성 단계에서 근거를 어떻게 다룰지**는 §B가 명시적으로 다루지 않는다. 다만 `TestNoMergeIntoGeneration`이 "병합 금지"를 생성 경로에까지 확장해 코드로 고정해 두었다(테스트 docstring: "DBMA 결과와 NAE 결과를 같은 답변/랭킹에 병합하지 않는다").
 - §H는 UI에서 NAE 결과에 출처 배지를 붙일 것, DBMA/NAE 중복 제거는 "의도적으로 없음"을 정한다.
-- 이 ADR-036이 §B가 예고한 "후속 ADR"에 해당한다.
+- 이 ADR-037이 §B가 예고한 "후속 ADR"에 해당한다.
 
 ### 1.2 관련 선례와 제약
 

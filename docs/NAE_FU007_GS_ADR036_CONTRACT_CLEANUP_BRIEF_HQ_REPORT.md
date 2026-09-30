@@ -1,5 +1,7 @@
 # FU-007 / GS — ADR-036 ARCHITECTURE CONTRACT CLEANUP BRIEF
 
+> **번호 재부여 안내(2026-09-30, HQ ② 결정 A)**: 이 문서에서 공개 자료 근거 답변 ADR을 가리키는 "ADR-036"(또는 ADR-036-B)은 **ADR-037**(`docs/architecture/ADR-037-NAE-Public-Evidence-in-Answer-Generation.md`)로 재부여됐다. GS 경계 ADR은 ADR-036을 유지한다. 본문은 재부여 이전 시점의 기록으로 그대로 둔다.
+
 - 작성: CUE · 2026-09-30
 - 단계: HQ 결정 순서 ② ADR 정리(① 릴리스 라인 = `dev/dbma-engine` 확정 이후)
 - 방법: 읽기 전용

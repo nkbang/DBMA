@@ -118,7 +118,7 @@ def _gen_overrides() -> dict:
 
 
 def _render_public_answer(key_prefix: str, question: str, results: list, answer_key: str) -> None:
-    """ADR-036 방안 B(Proposed) — 이 패널이 가져온 문단 근거만으로 **별도** 답변을 만든다.
+    """ADR-037 방안 B(Proposed) — 이 패널이 가져온 문단 근거만으로 **별도** 답변을 만든다.
 
     사용자가 버튼을 눌렀을 때만 생성한다(자동 실행 없음). 내 서재 답변과 병합하지 않고
     이 섹션 안에서 근거·인용·고지·경고를 따로 보여준다. 문단 근거(dict)가 없으면

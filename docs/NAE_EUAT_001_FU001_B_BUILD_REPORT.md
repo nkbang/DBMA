@@ -1,10 +1,10 @@
 # FU-001 방안 B Build Report: 공개 자료 근거 답변
 
-작성일 2026-09-29. 근거: [ADR-036](architecture/ADR-036-NAE-Public-Evidence-in-Answer-Generation.md)(Proposed) 방안 B, 사용자 결정(2026-09-29 "B로 진행"). 트리거는 ADR 권고대로 **명시적 버튼**.
+작성일 2026-09-29. 근거: [ADR-037](architecture/ADR-037-NAE-Public-Evidence-in-Answer-Generation.md)(Proposed) 방안 B, 사용자 결정(2026-09-29 "B로 진행"). 트리거는 ADR 권고대로 **명시적 버튼**.
 
 ## 결론
 
-"내서재 공개 자료(Beta)" 패널에서 사용자가 **버튼을 눌렀을 때만**, 그 패널이 가져온 문단 근거로 **별도 답변**을 생성한다. 내 서재 답변과 병합하지 않는다. Retrieval Engine, 인덱스, 채팅 답변 경로(`chat.py`)는 변경하지 않았다. 신규 테스트 29건, 전체 회귀 3,490 passed / 17 skipped(라이브 Qdrant 통합 1건 제외). ADR-036은 **Proposed 상태 그대로**다(승격은 C1 리뷰 + 사용자 승인 필요).
+"내서재 공개 자료(Beta)" 패널에서 사용자가 **버튼을 눌렀을 때만**, 그 패널이 가져온 문단 근거로 **별도 답변**을 생성한다. 내 서재 답변과 병합하지 않는다. Retrieval Engine, 인덱스, 채팅 답변 경로(`chat.py`)는 변경하지 않았다. 신규 테스트 29건, 전체 회귀 3,490 passed / 17 skipped(라이브 Qdrant 통합 1건 제외). ADR-037은 **Proposed 상태 그대로**다(승격은 C1 리뷰 + 사용자 승인 필요).
 
 ## 1. 변경 파일
 
@@ -17,7 +17,7 @@
 
 `ui/pages/chat.py`, `core/retrieval.py`, `NAE/retrieval_adapter.py`, 인덱스는 이번 변경에서 수정하지 않았다.
 
-## 2. 설계 준수 (ADR-036 수용 기준)
+## 2. 설계 준수 (ADR-037 수용 기준)
 
 | AC | 내용 | 결과 |
 |---|---|---|
@@ -63,7 +63,7 @@
 ## 7. 반영·확인이 남은 것
 
 - **사용자가 보는 앱에는 반영되지 않았다.** 앱은 `~/DBMA`(`feat/peb-v0.1`)에서 구동 중이고 이 변경은 `main` 기준 브랜치에 있다. 릴리스 라인 통합은 [FU-007](NAE_EUAT_001_FU007_BASELINE_DIVERGENCE_RESULT.md) 결정이 선행되어야 한다. FU-007의 병합 충돌 예측에 이번 변경 파일(`NAE/public_answer.py`, `nae_public_section.py`)은 포함되지 않는다.
-- ADR-036 승격 조건: 구현 완료(이 문서) / 회귀 통과(3,490) / **C1 독립 리뷰(대기)** / **사용자 승인(대기)**.
+- ADR-037 승격 조건: 구현 완료(이 문서) / 회귀 통과(3,490) / **C1 독립 리뷰(대기)** / **사용자 승인(대기)**.
 
 ## 8. C1 검토 요청 (자기완결형 지시)
 
@@ -72,7 +72,7 @@
 이 메시지가 지시의 전부다. 저장소에서 Task Order를 찾지 마라.
 
 [대상] 워크트리 /Users/David/DBMA/.claude/worktrees/sleepy-ellis-ad7a97 (브랜치 claude/nae-end-user-acceptance-test-bd2fff)의 FU-001 방안 B 변경분.
-먼저 git -C <워크트리> log -1, git -C <워크트리> status -s 를 실행해 보고하라. (ADR: docs/architecture/ADR-036-NAE-Public-Evidence-in-Answer-Generation.md, Proposed)
+먼저 git -C <워크트리> log -1, git -C <워크트리> status -s 를 실행해 보고하라. (ADR: docs/architecture/ADR-037-NAE-Public-Evidence-in-Answer-Generation.md, Proposed)
 [검증 항목] 명령을 직접 실행하고 출력 원문을 붙여라. 확인 못 하면 "미확인".
 R1 <워크트리>에서 python -m pytest tests/test_nae_public_answer.py tests/test_citation_verifier.py tests/test_nae_f6_chat_wiring.py -q → 전부 통과
 R2 git diff --stat 으로 ui/pages/chat.py, core/retrieval.py, NAE/retrieval_adapter.py 가 이번 변경에 없는지 (ADR-024 §B, ADR-001)

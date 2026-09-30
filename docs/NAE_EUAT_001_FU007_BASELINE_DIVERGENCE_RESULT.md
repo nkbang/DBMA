@@ -77,5 +77,5 @@
 
 ## 7. 이 조사가 구현 결정에 주는 영향
 
-- ADR-036 방안 B는 `NAE/*`와 `ui/components/nae_public_section.py`가 중심이며, 이 파일들은 `main`과 `dev/dbma-engine`이 서로 충돌하지 않는다(충돌 3개에 없음). 따라서 B는 `main` 기준으로 구현해도 이후 병합이 깨끗할 것으로 예측된다.
+- ADR-037 방안 B는 `NAE/*`와 `ui/components/nae_public_section.py`가 중심이며, 이 파일들은 `main`과 `dev/dbma-engine`이 서로 충돌하지 않는다(충돌 3개에 없음). 따라서 B는 `main` 기준으로 구현해도 이후 병합이 깨끗할 것으로 예측된다.
 - 다만 사용자가 실제 앱에서 보려면 `main`의 변경이 릴리스 라인에 도달해야 하므로 위 병합 결정이 선행 조건이다.

@@ -1,4 +1,4 @@
-"""tests/test_nae_public_answer.py — ADR-036 방안 B(공개 자료 근거 답변) 검증.
+"""tests/test_nae_public_answer.py — ADR-037 방안 B(공개 자료 근거 답변) 검증.
 
 수용 기준 대응: AC-2(검색 범위 문구), AC-3(근거 0건이면 생성 안 함), AC-4(내 서재
 경로와 미병합), AC-5(소스별 고지), AC-6(저장 계층 무변경), AC-7(모듈 비활성 no-op).

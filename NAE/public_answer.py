@@ -1,4 +1,4 @@
-"""공개 자료 근거 답변 (ADR-036 방안 B, Proposed).
+"""공개 자료 근거 답변 (ADR-037 방안 B, Proposed).
 
 "내서재 공개 자료(Beta)" 패널이 가져온 문단 근거(`bridge_query_paragraphs`)만으로
 **별도의** 답변을 생성한다. 내 서재 답변과 병합하지 않고(ADR-024 §B), 근거·인용·고지·
@@ -32,7 +32,7 @@ from NAE.citation_disclosure import get_disclosure
 
 logger = logging.getLogger("nae.public_answer")
 
-# 생성 컨텍스트에 넣는 근거 문단 수 상한(고유 문단 기준). ADR-036 §3 "N은 구현 시 결정".
+# 생성 컨텍스트에 넣는 근거 문단 수 상한(고유 문단 기준). ADR-037 §3 "N은 구현 시 결정".
 # 채팅의 기본 k(5)와 같은 값 — 32k 컨텍스트에서 문단(수백~수천 자) 5개는 여유가 있다.
 MAX_EVIDENCE = 5
 # 문단 하나가 비정상적으로 길 때 컨텍스트를 잠식하지 않도록 자르는 상한(자).
@@ -106,7 +106,7 @@ def build_public_evidence_package(
     """근거 히트로 `GenerationService`가 받는 `ResponsePackage`를 만든다.
 
     사용할 근거가 하나도 없으면 None — 호출자는 생성하지 않고 보류 문구를 보여준다
-    (일반 지식만으로 답을 만들지 않는다는 ADR-036 수용 기준 AC-3).
+    (일반 지식만으로 답을 만들지 않는다는 ADR-037 수용 기준 AC-3).
     """
     chosen = select_evidence(hits, max_items)
     if not chosen:

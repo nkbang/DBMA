@@ -7,7 +7,7 @@
 
 | ID | 제목 | 성격 | 승인 필요 | 선행 |
 |---|---|---|---|---|
-| FU-001 | 채팅–TSU 결합 여부 ADR 결정 | 설계(ADR) | 사용자 결정 + C1 Review | 없음 — **ADR-036 초안 작성, 사용자 결정 B(2026-09-29), 방안 B 구현 완료(C1 검토·승격 대기).** [ADR-036](architecture/ADR-036-NAE-Public-Evidence-in-Answer-Generation.md), [Build Report](NAE_EUAT_001_FU001_B_BUILD_REPORT.md) |
+| FU-001 | 채팅–TSU 결합 여부 ADR 결정 | 설계(ADR) | 사용자 결정 + C1 Review | 없음 — **ADR-037 초안 작성, 사용자 결정 B(2026-09-29), 방안 B 구현 완료(C1 검토·승격 대기).** [ADR-037](architecture/ADR-037-NAE-Public-Evidence-in-Answer-Generation.md), [Build Report](NAE_EUAT_001_FU001_B_BUILD_REPORT.md) |
 | FU-002 | Dagg·Hiscox 증분 재인덱싱 | 데이터 변경 | **사전 승인** (Embedding/Qdrant 쓰기) | FU-002-P(사전점검) — **완료(선택지 B): 신규 572건 적용, CHANGED 17건 보류.** [결과](NAE_EUAT_001_FU002A_OPTION_B_RESULT.md) |
 | FU-003 | 신뢰 표시 결함 수정 (인용 검증·출처 고지·표시 품질) | 구현 | 부분(아래 참조) | 없음 — **구현 완료(C1 검토 대기).** [Build Report](NAE_EUAT_001_FU003_BUILD_REPORT.md) |
 | FU-004 | Fuller·1689 인덱싱 범위 결정 | 설계/조사 | 사용자 결정 | 없음 |
