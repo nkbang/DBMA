@@ -1,5 +1,7 @@
 # GS 운영 통합 — ⑤ 구현 설계 자료
 
+> **정정(2026-09-30, ⑤ C1 검토 교차검증)**: 이 문서의 "앱 호출자 5곳"은 **main·b39572aa 기준**이다. 릴리스 라인 **dev(`195189b8`)에서는 4곳**이다(chat.py 2곳, `passage_commentary_panel.py` L94, `_passage_commentary_tab.py` L119). 공개 자료 답변(ADR-037)의 `NAE/public_answer.py`와 `nae_public_section.py`의 `generate_stream` 호출은 dev에 없고, 착지(Phase 0) 뒤에 들어온다.
+
 - 작성: CUE · 2026-09-30
 - 단계: HQ 결정 순서 ⑤ 구현 설계
 - 선행 결정
@@ -50,7 +52,7 @@
 ## 3. 목표 구조 [DESIGN OPTION]
 
 ```text
-ui/pages/chat.py (5개 호출자)
+ui/ 호출자 (dev 4곳 / main·b39572aa 5곳)
    │  response = processor.process(...)            ← 현행 그대로
    ▼
 [신규] GS 오케스트레이터  core/grounded_synthesis_executor.py
@@ -87,7 +89,7 @@ GenerationResult (+ 신규 선택 필드)  → UI 표시(④-2 결정에 따라)
 
 | | 흐름 | 필요 변경 | 비고 |
 |---|---|---|---|
-| S-A 비스트리밍 | generate → validate → display | UI 5곳을 비스트리밍 호출로 전환 | P0-5 생성 시간 32~276초 동안 화면이 비어 있음([CONFIRMED] P0-5 로그) |
+| S-A 비스트리밍 | generate → validate → display | UI 호출자(dev 4곳 / main 5곳)를 비스트리밍 호출로 전환 | P0-5 생성 시간 32~276초 동안 화면이 비어 있음([CONFIRMED] P0-5 로그) |
 | S-B 현행 | stream → display → validate | 없음 | display-before-validation 유지(④ C2) |
 | S-C 버퍼 | stream → buffer → validate → display | UI가 `st.write_stream` 대신 스트림을 소비한 뒤 표시. 버퍼는 `GenerationStream._answer_parts`에 이미 있음(④ C6) | 진행 표시 설계 필요 |
 
@@ -114,7 +116,7 @@ GenerationResult (+ 신규 선택 필드)  → UI 표시(④-2 결정에 따라)
 | 범위 | 포함 호출자 | 고려 사항 |
 |---|---|---|
 | 채팅만 | `chat.py` L481·L566 | 가장 좁음. 본문 해설·공개 자료 답변은 현행 유지 |
-| 앱 5곳 전부 | + `nae_public_section.py` L147, `passage_commentary_panel.py` L94, `_passage_commentary_tab.py` L119 | ADR-037(공개 자료) 경로와 교차. ADR-037의 "기존 근거 강제 지시문 재사용" 계약과의 관계를 정해야 함 |
+| 앱 호출자 전부 | + `passage_commentary_panel.py` L94, `_passage_commentary_tab.py` L119 (dev 4곳). 착지 후에는 `nae_public_section.py` L147 추가(main·b39572aa 5곳) | ADR-037(공개 자료) 경로와 교차. dev에는 이 경로(`NAE/public_answer.py`)가 아직 없음. ADR-037의 "기존 근거 강제 지시문 재사용" 계약과의 관계를 정해야 함 |
 | 공통 | — | 교단 지시문 근거가 ADR-009 Amendment A(**Proposed**). 생성 계약이 바뀌면 교단 지시문 위치도 정해야 함 |
 
 ### 4-5. 사용자 노출 문구 (④ 결정 5)

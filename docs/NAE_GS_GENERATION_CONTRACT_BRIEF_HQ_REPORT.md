@@ -1,5 +1,7 @@
 # GS 생성·스트리밍 계약 — ④ 사실 기반 설계 브리프
 
+> **정정(2026-09-30, ⑤ C1 검토 교차검증)**: 이 문서의 "앱 호출자 5곳"은 **main·b39572aa 기준**이다. 릴리스 라인 **dev(`195189b8`)에서는 4곳**이다(chat.py 2곳, `passage_commentary_panel.py` L94, `_passage_commentary_tab.py` L119). 공개 자료 답변(ADR-037)의 `NAE/public_answer.py`와 `nae_public_section.py`의 `generate_stream` 호출은 dev에 없고, 착지(Phase 0) 뒤에 들어온다.
+
 - 작성: CUE · 2026-09-30
 - 단계: HQ 결정 순서 ④(생성·스트리밍 계약)
   - 완료: ① 릴리스 라인 = dev, ② ADR-036 = GS 경계 / ADR-037 = 공개 자료, ③ GS 계약 = A(citation provenance) + B(citation span)
@@ -36,7 +38,7 @@
 | 인용 검증 경고(`issue_messages`) | **없음** | L581 |
 | 대화 기록에 `result.answer` 저장 | L591 | L596 |
 
-- 같은 모양의 다른 호출자: `generate_answer()` L479/L481(스트림을 소비만 하고 `to_result`), 공개 자료 패널 `nae_public_section.py` L147, 본문 해설 `passage_commentary_panel.py` L94·`_passage_commentary_tab.py` L119. 앱 호출자는 5곳 모두 `generate_stream()`을 쓴다.
+- 같은 모양의 다른 호출자: `generate_answer()` L479/L481(스트림을 소비만 하고 `to_result`), 공개 자료 패널 `nae_public_section.py` L147, 본문 해설 `passage_commentary_panel.py` L94·`_passage_commentary_tab.py` L119. 앱 호출자는 모두 `generate_stream()`을 쓴다 — main·b39572aa 5곳, dev 4곳(dev에는 `nae_public_section.py`의 호출이 없음).
 - `generate()`(비스트리밍)는 앱에서 호출되지 않는다(평가 스크립트·테스트·`core/passage_commentary.py` L344 비스트리밍 경로에서만).
 
 ## C2. 검증 시점 — CONFIRMED: **display-before-validation**
@@ -90,7 +92,7 @@
 
 | 방식 | 흐름 | 현재 구조와의 관계 | 변경 지점 |
 |---|---|---|---|
-| A | generate → validate → display | `generate()`(b39572aa L600~)가 이미 "생성 후 검증 결과까지 담은 `GenerationResult`"를 돌려준다. 앱은 쓰지 않는다 | UI 호출자 5곳을 `generate()`로 전환. 스트리밍 표시 소멸. 재시도 로직(`generate()`에만 있음)이 함께 적용됨 |
+| A | generate → validate → display | `generate()`(b39572aa L600~)가 이미 "생성 후 검증 결과까지 담은 `GenerationResult`"를 돌려준다. 앱은 쓰지 않는다 | UI 호출자(dev 4곳 / main 5곳)를 `generate()`로 전환. 스트리밍 표시 소멸. 재시도 로직(`generate()`에만 있음)이 함께 적용됨 |
 | **B (현재)** | generate_stream → display → validate | chat.py L564~L578(dev) / L566~L581(b39572aa) | 없음(현행) |
 | C | generate_stream → buffer → validate → final display | 버퍼 자체는 이미 있다: `GenerationStream._answer_parts`에 청크를 모으고(dev L434·L460, b39572aa L453·L479) `to_result()`가 합친다 | UI가 `st.write_stream(stream)` 대신 스트림을 먼저 소비하고 `to_result()` 뒤에 표시. 진행 표시 방식은 별도 설계 |
 
@@ -106,7 +108,7 @@
 | 원문 인용 구간(B) | 모델이 원문 구간을 함께 출력하게 할 수 있다. 저장하려면 B8 변경이 필요하다 | [INFERRED] 한국어 claim에서 영어 원문 구간을 결정적으로 찾을 방법은 없다(찾는 일 자체가 ③이 제외한 의미 대응) | — |
 | 스트리밍 | 구조화 출력을 그대로 스트리밍하면 표기가 화면에 노출된다 → 사실상 C6-C(버퍼) | 현행 스트리밍 유지 가능 | 설계에 따름 |
 | 검증 전 표시 | 버퍼 시 없음 | 스트리밍 유지 시 **있음** | 설계에 따름 |
-| 변경 범위 | `_build_prompt` 또는 `prompt_text`, core 파서, B8(구간), UI 5곳, `GenerationResult` | 추출기(GS 밖), 라벨→ID 대응, `GenerationResult`, 경고 표시 | A·B 변경의 합 |
+| 변경 범위 | `_build_prompt` 또는 `prompt_text`, core 파서, B8(구간), UI 호출자(dev 4곳 / main 5곳), `GenerationResult` | 추출기(GS 밖), 라벨→ID 대응, `GenerationResult`, 경고 표시 | A·B 변경의 합 |
 
 ## C8. P0-5 실패 커버리지 (현재 GS, 설계 변경 전) — CONFIRMED
 
@@ -173,7 +175,7 @@ C10 Independent reproducibility       CONFIRMED
 1. 생성 방식: A(구조화) / B(생성 후 추출) / C(혼합)
 2. 스트리밍: A(비스트리밍) / B(현행) / C(버퍼 후 표시). 검증 결과로 **차단**할지, 경고만 할지
 3. 원문 인용 구간 필드(B8 변경)의 도입 여부와 ADR 경로
-4. 새 ADR(B1이 요구)의 범위: 채팅만 / 앱 호출자 5곳 전부 / 공개 자료 답변(ADR-037) 포함 여부
+4. 새 ADR(B1이 요구)의 범위: 채팅만 / 앱 호출자 전부(dev 4곳, 착지 후 공개 자료 답변 포함 시 5곳) / 공개 자료 답변(ADR-037) 포함 여부
 5. "grounded" 라벨의 사용자 노출 방식(③ 명칭 규칙)
 
 C(semantic grounding)는 이 결정들과 무관하게 **미해결 별도 문제**로 남는다.
