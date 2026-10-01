@@ -70,26 +70,37 @@ class HybridRetriever:
     RetrievalEngine.retrieve()'s STEP 3/4/5 scoring formula closely enough
     for direct A/B comparison, without importing or modifying RetrievalEngine
     itself.
+
+    [P1 최적화] tsu_by_id는 lazy-loaded: None이면 retriever가 교체됨.
     """
 
     def __init__(
         self,
         candidate_generator: CandidateGenerator,
-        tsu_by_id: dict[str, dict[str, Any]],
+        tsu_by_id: Optional[dict[str, dict[str, Any]]],
         bible_index: Optional[BibleIndex] = None,
     ) -> None:
         self.candidate_generator = candidate_generator
-        self.tsu_by_id = tsu_by_id
+        self.tsu_by_id = tsu_by_id  # None 가능 (lazy loading)
         self.bible_index = bible_index
 
     def _corpus_korean_ratio(self) -> float:
-        """코퍼스에서 한국어 TSU가 차지하는 비율(1회 계산 후 캐시)."""
+        """코퍼스에서 한국어 TSU가 차지하는 비율(1회 계산 후 캐시).
+
+        [P1 최적화] tsu_by_id가 None이면 lazy loading 전이므로 0.0 반환.
+        """
         cached = getattr(self, "_ko_ratio", None)
-        if cached is None:
-            total = len(self.tsu_by_id) or 1
-            ko = sum(1 for t in self.tsu_by_id.values() if (t.get("language") or "") == "ko")
-            cached = ko / total
-            self._ko_ratio = cached
+        if cached is not None:
+            return cached
+        if self.tsu_by_id is None:
+            # Lazy loading 전: 코퍼스 정보를 알 수 없음
+            # 기본값 0.0 (영문 코퍼스 가정) → 번역이 항상 발동
+            self._ko_ratio = 0.0
+            return 0.0
+        total = len(self.tsu_by_id) or 1
+        ko = sum(1 for t in self.tsu_by_id.values() if (t.get("language") or "") == "ko")
+        cached = ko / total
+        self._ko_ratio = cached
         return cached
 
     def _should_translate_upfront(self, query_text: str) -> bool:
@@ -114,26 +125,20 @@ class HybridRetriever:
     def _corpus_has_book_ids(self) -> bool:
         """코퍼스에 book_id가 하나라도 있는지(1회 계산 후 캐시).
 
-        [2026-09-26] 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진 TSU가
-        0건(0.0%)이다. 그런데 CandidateGenerator.search()는 질의에서 감지된
-        책 이름을 `book_id` term 필터(Occur.Must)로 얹으므로, 이 코퍼스에서는
-        **성경 책 이름이 들어간 모든 질의가 구조적으로 0건**이 된다.
-          실측: "no condemnation in Christ Jesus"        -> 2건
-                "Romans no condemnation in Christ Jesus" -> 0건 (ROM 감지)
-        설교 준비 질의는 대개 책 이름을 포함하므로 영향이 넓다.
-
-        해결은 "0건이면 필터를 버리고 재시도"가 아니다 — 그렇게 하면 필터 없는
-        검색이 OCR 잡음을 후보로 채워 넣고(실측 확인), 그 결과 번역 폴백이
-        발동하지 못해 정직한 0건보다 나빠진다. 필터가 **만족 불가능할 때만**
-        애초에 얹지 않는 것이 정확한 처방이다.
+        [P1 최적화] tsu_by_id가 None이면 lazy loading 전이므로 False 반환.
         """
         cached = getattr(self, "_has_book_ids", None)
-        if cached is None:
-            cached = any(
-                (t.get("verse_mapping") or {}).get("book_id")
-                for t in self.tsu_by_id.values()
-            )
-            self._has_book_ids = cached
+        if cached is not None:
+            return cached
+        if self.tsu_by_id is None:
+            # Lazy loading 전: 알 수 없으므로 False (book_id 필터 비활성화)
+            self._has_book_ids = False
+            return False
+        cached = any(
+            (t.get("verse_mapping") or {}).get("book_id")
+            for t in self.tsu_by_id.values()
+        )
+        self._has_book_ids = cached
         return cached
 
     def _query_parser(self) -> QueryParser:
@@ -149,10 +154,17 @@ class HybridRetriever:
         candidate_k: int,
         file_scope: Optional[list[str]],
         telemetry_out: Optional[dict[str, Any]],
+        force_route: Optional[str] = None,
     ) -> list[CandidateRef]:
         """Stage 1 — route 분류 후 후보를 만든다. 번역 재시도가 같은 경로를
-        다시 타야 하므로 메서드로 분리했다(로직 변경 없음)."""
+        다시 타야 하므로 메서드로 분리했다(로직 변경 없음).
+
+        `force_route`: 번역 후 metadata→hybrid 강제 등 외부에서 라우트를
+        덮어쓸 때 사용 (None이면 자동 분류).
+        """
         plan = classify(parsed_query.original_query, parsed_query)
+        if force_route is not None:
+            plan = QueryPlan(route=force_route, reason=f"forced by caller")
         if telemetry_out is not None:
             telemetry_out["route"] = plan.route
         candidate_tsu_ids: Optional[list[str]] = None
@@ -236,18 +248,30 @@ class HybridRetriever:
         - greek/hybrid: CandidateGenerator's default free-text search,
           unchanged from before the Query Planner existed.
         """
+        # [P1 최적화] tsu_by_id가 None이면 lazy loading으로 교체
+        if self.tsu_by_id is None:
+            raise RuntimeError(
+                "HybridRetriever.tsu_by_id is None — call HybridQueryProcessor._ensure_retriever() first"
+            )
         # [2026-09-26] 언어 불일치 전처리 — 결과가 빈 뒤가 아니라 **앞에서**
         # 번역한다(위 _should_translate_upfront 주석의 실패 근거 참고).
+        translation_used = False
+        force_route = None  # [P1] 번역 여부와 관계없이 항상 정의됨
         if self._should_translate_upfront(parsed_query.original_query):
             translated = translate_to_english(parsed_query.original_query)
             if translated:
                 parsed_query = self._query_parser().parse(translated)
+                # 번역된 질의의 route가 metadata면 hybrid로 강제 (content 검색 필요)
+                plan_check = classify(translated, parsed_query)
+                if plan_check.route == "metadata":
+                    force_route = "hybrid"
                 if telemetry_out is not None:
                     telemetry_out["translation_used"] = True
                     telemetry_out["translated_query"] = translated
+                translation_used = True
 
         candidates = self._generate_candidates(
-            parsed_query, candidate_k, file_scope, telemetry_out
+            parsed_query, candidate_k, file_scope, telemetry_out, force_route,
         )
 
         # [2026-09-26] 한국어 질의 ↔ 영문 코퍼스 불일치 구제.
@@ -366,6 +390,51 @@ class _EngineCompat:
         return {book_id: len(files) for book_id, files in coverage.items()}
 
 
+class _EngineCompatLazy:
+    """[P1 최적화] tsu_by_id lazy loading용 engine wrapper.
+    HybridQueryProcessor를 감싸서 .tsus/.list_source_files/.book_coverage
+    표면을 제공한다 — 실제 데이터는 첫 접근 시 로드된다.
+    """
+
+    def __init__(self, hqp: "HybridQueryProcessor") -> None:
+        self._hqp = hqp
+
+    @property
+    def tsus(self) -> list[dict[str, Any]]:
+        return list(self._hqp.tsu_by_id.values())
+
+    def list_source_files(self, registry_path: Optional[str] = None) -> list[str]:
+        import os as _os
+        from core.config import DEFAULT_REGISTRY_PATH
+
+        registry_path = registry_path or DEFAULT_REGISTRY_PATH
+        valid_sources: set[str] = set()
+        if _os.path.exists(registry_path):
+            from core.identity_registry import load_identity_registry
+            registry = load_identity_registry(registry_path)
+            for doc in registry.get("documents", {}).values():
+                if (doc.get("ingest_status") == "PROCESSED"
+                        and doc.get("superseded_by") is None):
+                    sf = doc.get("source_file")
+                    if sf:
+                        valid_sources.add(sf)
+
+        result = {sf for t in self.tsus if (sf := t.get("source_file"))}
+        if _os.path.exists(registry_path):
+            result &= valid_sources
+        return sorted(result)
+
+    def book_coverage(self) -> dict[str, int]:
+        coverage: dict[str, set[str]] = {}
+        for t in self.tsus:
+            book_id = (t.get("verse_mapping") or {}).get("book_id")
+            source_file = t.get("source_file")
+            if not book_id or not source_file:
+                continue
+            coverage.setdefault(book_id, set()).add(source_file)
+        return {book_id: len(files) for book_id, files in coverage.items()}
+
+
 class HybridQueryProcessor:
     """Drop-in replacement for `core.retrieval.QueryProcessor`'s `.process()`
     interface — same signature, same `ResponsePackage` return type — routing
@@ -420,15 +489,17 @@ class HybridQueryProcessor:
         self.cache_ttl_seconds = cache_ttl_seconds
 
         generator = open_or_build_index(tsu_dataset_path, candidate_index_dir)
-        tsu_by_id = load_tsu_by_id(tsu_dataset_path)
+        # [P1 최적화] lazy loading: tsu_by_id는 첫 검색 시 로드 (초기화 2s → <0.1s)
+        self._tsu_dataset_path = tsu_dataset_path
+        self._tsu_by_id: Optional[dict[str, dict[str, Any]]] = None
         bible_path = Path(bible_index_path)
         # Build BibleIndex if file doesn't exist OR has 0 rows (empty/stale index).
         # A bare file check misses the case where the file was created but never populated.
         if not bible_path.exists() or _row_count(bible_path) == 0:
             build_bible_index(tsu_dataset_path, bible_index_path)
         bible_index = BibleIndex(bible_index_path)
-        self.retriever = HybridRetriever(generator, tsu_by_id, bible_index=bible_index)
-        self.engine = _EngineCompat(tsu_by_id)
+        self.retriever = HybridRetriever(generator, None, bible_index=bible_index)
+        self.engine = _EngineCompatLazy(self)
         self.telemetry = SearchTelemetry(telemetry_path)
         self.cache = SearchResultCache(cache_path)
 
@@ -436,6 +507,23 @@ class HybridQueryProcessor:
         self.context_assembler = ContextAssembler()
         self.citation_builder = CitationBuilder()
         self.response_formatter = ResponseFormatter()
+
+    @property
+    def tsu_by_id(self) -> dict[str, dict[str, Any]]:
+        """Lazy-loaded TSU dataset — loaded on first access."""
+        if self._tsu_by_id is None:
+            self._tsu_by_id = load_tsu_by_id(self._tsu_dataset_path)
+        return self._tsu_by_id
+
+    def _ensure_retriever(self) -> HybridRetriever:
+        """Ensure retriever has tsu_by_id (lazy-loaded)."""
+        if self.retriever.tsu_by_id is None:
+            self.retriever = HybridRetriever(
+                self.retriever.candidate_generator,
+                self.tsu_by_id,
+                bible_index=self.retriever.bible_index,
+            )
+        return self.retriever
 
     def _dataset_fingerprint(self) -> Optional[str]:
         """Same manifest.dataset_sha256 read ui/state/query_processor.py
@@ -463,6 +551,9 @@ class HybridQueryProcessor:
         file_scope: Optional[list[str]] = None,
     ) -> ResponsePackage:
         t_start = time.perf_counter()
+
+        # [P1 최적화] lazy loading된 tsu_by_id로 retriever 교체
+        self._ensure_retriever()
 
         fingerprint = self._dataset_fingerprint()
         cache_key = make_cache_key(query, k, file_scope, fingerprint)

@@ -440,3 +440,167 @@ class TestFeatureFlag:
     def test_other_values_are_disabled(self, monkeypatch):
         monkeypatch.setenv("USE_INVERTED_INDEX", "1")
         assert is_enabled() is False
+
+
+class TestCorpusHasBookIdsRegression:
+    """[F-1 regression] _corpus_has_book_ids()가 lazy-loading 구조에서
+    any(...) 계산을 잃어 항상 None을 반환하던 결함의 회귀 테스트.
+
+    원래 코드:
+        cached = getattr(self, "_has_book_ids", None)
+        if cached is None:
+            cached = any(
+                (t.get("verse_mapping") or {}).get("book_id")
+                for t in self.tsu_by_id.values()
+            )
+            self._has_book_ids = cached
+        return cached
+
+    Track A 수정에서 any(...) 계산과 return cached가 삭제되어
+    tsu_by_id가 로드된 상태에서도 False만 반환되던 문제.
+    """
+
+    def test_case_a_book_id_exists_returns_true(self, tmp_path):
+        """CASE A — book_id가 있는 TSU fixture: True 반환."""
+        tsus = [
+            {
+                "tsu_id": "TSU-ROM-001",
+                "content": "test content",
+                "title": "Test",
+                "author": "Test",
+                "source_file": "test.pdf",
+                "verse_mapping": {"book_id": "ROM"},
+                "language": "ko",
+            },
+        ]
+        path = tmp_path / "tsu.jsonl"
+        with open(path, "w", encoding="utf-8") as f:
+            for tsu in tsus:
+                f.write(json.dumps(tsu, ensure_ascii=False) + "\n")
+
+        index_dir = tmp_path / "idx"
+        build_index(path, index_dir)
+        tsu_by_id = load_tsu_by_id(str(path))
+        retriever = HybridRetriever(
+            CandidateGenerator(index_dir), tsu_by_id
+        )
+
+        # tsu_by_id가 로드된 상태
+        assert retriever.tsu_by_id is not None
+        assert len(retriever.tsu_by_id) > 0
+
+        # book_id가 있으므로 True
+        result = retriever._corpus_has_book_ids()
+        assert result is True, (
+            f"book_id가 있는 TSU corpus에서 True여야 함, got {result}"
+        )
+        # 캐시 확인
+        assert getattr(retriever, "_has_book_ids") is True
+
+    def test_case_b_no_book_id_returns_false(self, tmp_path):
+        """CASE B — book_id가 없는 TSU fixture: False 반환."""
+        tsus = [
+            {
+                "tsu_id": "TSU-NO-BK-001",
+                "content": "test content without verse_mapping",
+                "title": "Test",
+                "author": "Test",
+                "source_file": "test.pdf",
+                "verse_mapping": {},
+                "language": "ko",
+            },
+            {
+                "tsu_id": "TSU-NO-BK-002",
+                "content": "another without book_id",
+                "title": "Test2",
+                "author": "Test2",
+                "source_file": "test2.pdf",
+                # verse_mapping 키 아예 없음
+                "language": "ko",
+            },
+        ]
+        path = tmp_path / "tsu.jsonl"
+        with open(path, "w", encoding="utf-8") as f:
+            for tsu in tsus:
+                f.write(json.dumps(tsu, ensure_ascii=False) + "\n")
+
+        index_dir = tmp_path / "idx"
+        build_index(path, index_dir)
+        tsu_by_id = load_tsu_by_id(str(path))
+        retriever = HybridRetriever(
+            CandidateGenerator(index_dir), tsu_by_id
+        )
+
+        result = retriever._corpus_has_book_ids()
+        assert result is False, (
+            f"book_id가 없는 TSU corpus에서 False여야 함, got {result}"
+        )
+
+    def test_case_c_lazy_state_returns_false(self, tmp_path):
+        """CASE C — tsu_by_id가 None인 lazy 상태: False 반환."""
+        # CandidateGenerator는 실제 인덱스가 필요하므로 빈 인덱스 생성
+        empty_tsus = [
+            {
+                "tsu_id": "TSU-EMPTY-001",
+                "content": "empty fixture",
+                "title": "Test",
+                "author": "Test",
+                "source_file": "test.pdf",
+                "language": "ko",
+            },
+        ]
+        path = tmp_path / "tsu.jsonl"
+        with open(path, "w", encoding="utf-8") as f:
+            for tsu in empty_tsus:
+                f.write(json.dumps(tsu, ensure_ascii=False) + "\n")
+
+        index_dir = tmp_path / "idx"
+        build_index(path, index_dir)
+        retriever = HybridRetriever(
+            CandidateGenerator(index_dir), None  # lazy loading 전
+        )
+
+        result = retriever._corpus_has_book_ids()
+        assert result is False, (
+            f"lazy 상태(False)에서 False여야 함, got {result}"
+        )
+        assert getattr(retriever, "_has_book_ids") is False
+
+    def test_mixed_book_id_some_none_returns_true(self, tmp_path):
+        """혼합 케이스: 일부 TSU만 book_id를 가질 때 True 반환."""
+        tsus = [
+            {
+                "tsu_id": "TSU-MIX-001",
+                "content": "has book_id",
+                "title": "Test",
+                "author": "Test",
+                "source_file": "test.pdf",
+                "verse_mapping": {"book_id": "ROM"},
+                "language": "ko",
+            },
+            {
+                "tsu_id": "TSU-MIX-002",
+                "content": "no book_id",
+                "title": "Test2",
+                "author": "Test2",
+                "source_file": "test2.pdf",
+                "verse_mapping": {},
+                "language": "ko",
+            },
+        ]
+        path = tmp_path / "tsu.jsonl"
+        with open(path, "w", encoding="utf-8") as f:
+            for tsu in tsus:
+                f.write(json.dumps(tsu, ensure_ascii=False) + "\n")
+
+        index_dir = tmp_path / "idx"
+        build_index(path, index_dir)
+        tsu_by_id = load_tsu_by_id(str(path))
+        retriever = HybridRetriever(
+            CandidateGenerator(index_dir), tsu_by_id
+        )
+
+        result = retriever._corpus_has_book_ids()
+        assert result is True, (
+            f"book_id가 하나라도 있으면 True여야 함, got {result}"
+        )
