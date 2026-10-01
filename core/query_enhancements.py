@@ -685,6 +685,10 @@ class EnhancedQueryParser(QueryParser):
                 unique_refs.append(ref)
         parsed.scripture_refs = unique_refs
 
+        # [2026-09-26] Re-run translation now that the final books/refs are
+        # known — Korean chapter/verse refs ("8장 28절") only appear above.
+        self._apply_translation(parsed, query)
+
         return parsed
 
     def check_negative_query(self, query: str, min_token_matches: int = 2) -> dict[str, Any]:
