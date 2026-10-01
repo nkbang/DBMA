@@ -129,12 +129,19 @@ def register_document(
 
     # Check 1: Exact document_id match
     if doc_id and doc_id in registry["documents"]:
-        return (registry["documents"][doc_id], False)
+        existing = registry["documents"][doc_id]
+        # [CW-04 AD-01] Re-processing: update corpus_membership from metadata
+        if "corpus_membership" in metadata:
+            existing["corpus_membership"] = metadata["corpus_membership"]
+        return (existing, False)
 
     # Check 2: Content hash match (handles filename changes)
     if file_hash:
         for existing_doc in registry["documents"].values():
             if existing_doc.get("file_hash") == file_hash:
+                # [CW-04 AD-01] Re-processing: update corpus_membership from metadata
+                if "corpus_membership" in metadata:
+                    existing_doc["corpus_membership"] = metadata["corpus_membership"]
                 return (existing_doc, False)
 
     # New document — build record
@@ -175,6 +182,9 @@ def register_document(
         # never guessed at creation time.
         "superseded_by": None,
         "supersedes": None,
+        # [CW-04 AD-01] corpus_membership — registry SSOT. 기본값 "default".
+        # 업로드 흐름에서 "personal"로 설정 가능.
+        "corpus_membership": metadata.get("corpus_membership", "default"),
     }
 
     registry["documents"][doc_id] = record
