@@ -46,6 +46,8 @@ from ui.state.query_processor import get_shared_query_processor, record_query_la
 from ui.components.citation_card import render_citation_card
 from ui.components.nae_public_section import render_nae_public_section
 from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
+from core.module_registry import is_enabled
+from core.grounded_synthesis_executor import execute_synthesis
 
 logger = logging.getLogger(__name__)
 
@@ -493,6 +495,59 @@ def generate_answer(
     return (answer_text, sources)
 
 
+def _run_grounded_synthesis(
+    response: object, question: str
+) -> Optional[object]:
+    """P5-D: GS executor orchestration (feature switch controlled).
+
+    SynthesisInput ← response.top_k_results
+    raw_claims ← stub (P9 실모델 구현 전)
+    → ExecutionResult stored in session state.
+
+    ADR-036 B1: 기존 GenerationService 대체 아님. 병렬 실행.
+    ADR-036 B9: prohibited import 없음.
+    """
+    try:
+        from core.grounded_synthesis_input import SynthesisInput
+        from core.evidence_pool import EvidencePool
+
+        # Build EvidencePool from retrieval results
+        candidates = response.top_k_results if hasattr(response, "top_k_results") else []
+        pool = EvidencePool()
+
+        for c in candidates:
+            pool.add(SimpleNamespace(
+                evidence_id=getattr(c, "tsu_id", ""),
+                text=getattr(c, "content", ""),
+                metadata=getattr(c, "metadata", {}),
+                score=getattr(c, "final_score", 0.0),
+            ))
+
+        synthesis_input = SynthesisInput(
+            query_specs=[],
+            included_evidence_ids=[],
+            excluded_evidence_ids=[],
+            truncated=False,
+            prompt_text="",
+        )
+
+        # Stub claims (P9 실모델 구현 전)
+        raw_claims: list[tuple[str, list[str]]] = []
+
+        # Execute GS orchestration
+        from core.grounded_synthesis_executor import execute_synthesis
+
+        result = execute_synthesis(synthesis_input, raw_claims, pool)
+
+        # Store in session state for UI display
+        st.session_state["gs_execution_result"] = result
+        return result
+
+    except Exception as e:
+        logger.warning("[gs_executor] execution failed: %s", e)
+        return None
+
+
 def _handle_user_message(question: str) -> None:
     """Run one retrieval-generation round for a single question.
 
@@ -559,6 +614,11 @@ def _handle_user_message(question: str) -> None:
         return
 
     low_confidence = _is_low_confidence(response.top_k_results)
+
+    # P5-D: GS executor wiring (feature switch controlled)
+    gs_result: Optional[object] = None
+    if is_enabled("nae_pd"):
+        gs_result = _run_grounded_synthesis(response, question)
 
     with st.chat_message("assistant"):
         stream = generator.generate_stream(
