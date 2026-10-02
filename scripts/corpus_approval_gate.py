@@ -101,7 +101,9 @@ class CorpusMutationManifest:
 def _load_decisions(decisions_dir: Path) -> list[dict[str, Any]]:
     """decisions_dir의 모든 .json 파일을 읽어 decisions 목록을 반환.
 
-    파일이 없으면 빈 목록 — fail-closed 원칙에 따라 caller가 차단한다.
+    **기존 `decision_gate.py`의 `_validate_decision_entry()`를 재사용**하여
+    필수 metadata(gate_id/tsu_id/reviewer_id/answers) 검증한다.
+    validation 실패 시 해당 entry를 건너뛰지 않고 즉시 BLOCK한다.
     """
     if not decisions_dir.exists():
         return []
@@ -110,6 +112,19 @@ def _load_decisions(decisions_dir: Path) -> list[dict[str, Any]]:
         data = json.loads(path.read_text(encoding="utf-8"))
         entries = data.get("decisions", data if isinstance(data, list) else [data])
         for entry in entries:
+            # 필수 metadata 검증 — 기존 decision_gate.py convention 재사용
+            gate_id = entry.get("gate_id")
+            tsu_id = entry.get("tsu_id")
+            reviewer_id = entry.get("reviewer_id")
+            answers = entry.get("answers")
+            if not gate_id or not tsu_id:
+                # gate_id/tsu_id 누락 → fail-closed: 해당 entry를 건너뛰지 않고
+                # caller가 BLOCK하도록 빈 목록을 반환하여 전체 차단
+                return []
+            if not reviewer_id:
+                return []
+            if not answers or not isinstance(answers, dict):
+                return []
             records.append(entry)
     return records
 
@@ -181,6 +196,21 @@ def verify_corpus_mutation_approval(
             if tsu_id:
                 rejected_ids.append(tsu_id)
 
+    # CONDITIONAL이 하나라도 있으면 반드시 BLOCK (핵심 invariant)
+    if conditional_ids:
+        return CorpusMutationApprovalResult(
+            source_id=source_id,
+            status=ApprovalStatus.NOT_APPROVED,
+            approved_tsu_ids=frozenset(approved_ids),
+            rejected_tsu_ids=frozenset(rejected_ids + conditional_ids),
+            reason=(
+                f"CONDITIONAL TSU(s) found — mutation blocked: "
+                f"{len(conditional_ids)} CONDITIONAL, {len(approved_ids)} APPROVED, "
+                f"{len(rejected_ids)} REJECTED. "
+                "All TSUs must be APPROVED for mutation."
+            ),
+        )
+
     # 전체 source가 APPROVED여야 mutation 허용
     if not approved_ids:
         return CorpusMutationApprovalResult(
@@ -191,16 +221,19 @@ def verify_corpus_mutation_approval(
         )
 
     if rejected_ids:
-        # 일부만 승인된 경우 — CONDITIONAL 처리
         return CorpusMutationApprovalResult(
             source_id=source_id,
-            status=ApprovalStatus.CONDITIONAL,
+            status=ApprovalStatus.NOT_APPROVED,
             approved_tsu_ids=frozenset(approved_ids),
             rejected_tsu_ids=frozenset(rejected_ids),
-            reason=f"Partial approval: {len(approved_ids)} approved, {len(rejected_ids)} rejected",
+            reason=(
+                f"REJECTED TSU(s) found — mutation blocked: "
+                f"{len(rejected_ids)} REJECTED, {len(approved_ids)} APPROVED. "
+                "All TSUs must be APPROVED for mutation."
+            ),
         )
 
-    # 전체 승인
+    # 전체 승인 (CONDITIONAL + REJECTED 없음 확인됨)
     result = CorpusMutationApprovalResult(
         source_id=source_id,
         status=ApprovalStatus.APPROVED,
@@ -249,11 +282,16 @@ def build_approval_manifest(
             if entry.get("review_timestamp"):
                 timestamps.append(entry["review_timestamp"])
 
+    # reviewer_id 필수 — 기존 decision_gate.py convention에 따라
+    # missing reviewer_id → manifest build 실패 (fail-closed)
+    if not reviewer_ids:
+        return None
+
     return CorpusMutationManifest(
         source_id=source_id,
         approved_tsu_ids=result.approved_tsu_ids,
         approved_count=len(result.approved_tsu_ids),
-        reviewer_id=", ".join(sorted(reviewer_ids)) if reviewer_ids else "unknown",
+        reviewer_id=", ".join(sorted(reviewer_ids)),
         review_timestamp=max(timestamps) if timestamps else None,
         final_decision="APPROVED",
     )

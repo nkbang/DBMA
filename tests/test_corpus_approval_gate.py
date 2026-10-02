@@ -33,6 +33,34 @@ from scripts.merge_nae_corpus import merge_nae_corpus
 # ---------------------------------------------------------------------------
 
 def _make_decisions_dir(tmp_path: Path, source_id: str, decisions: list[dict]) -> Path:
+    """decisions directory를 생성 — 누락된 metadata는 기본값으로 보완.
+
+    기존 테스트와의 호환성: gate_id/reviewer_id/answers가 없으면
+    기본값을 추가하여 validation을 통과하도록 한다.
+    새 테스트에서 명시적으로 누락된 metadata를 검증하려면
+    이 helper 대신 직접 파일을 작성해야 한다.
+    """
+    ddir = tmp_path / "decisions"
+    ddir.mkdir(parents=True)
+    enriched: list[dict] = []
+    for entry in decisions:
+        e = dict(entry)
+        if not e.get("gate_id"):
+            e["gate_id"] = f"G-{source_id}"
+        if not e.get("reviewer_id"):
+            e["reviewer_id"] = f"R-{source_id}"
+        if not e.get("answers"):
+            e["answers"] = {"Q1": "A", "Q2": "A", "Q3": "A"}
+        enriched.append(e)
+    file_data = {"decisions": enriched}
+    (ddir / f"{source_id}_decisions.json").write_text(
+        json.dumps(file_data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return ddir
+
+
+def _make_decisions_dir_raw(tmp_path: Path, source_id: str, decisions: list[dict]) -> Path:
+    """metadata 보완 없이 decisions directory를 생성 — V2/V3/V4 테스트용."""
     ddir = tmp_path / "decisions"
     ddir.mkdir(parents=True)
     file_data = {"decisions": decisions}
@@ -198,7 +226,7 @@ class TestMismatchedApproval:
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "CONDITIONAL" in str(exc_info.value)
+        assert "REJECTED" in str(exc_info.value) or "CONDITIONAL" in str(exc_info.value) or "BLOCKED" in str(exc_info.value)
 
     def test_manifest_mismatch_blocks(self):
         manifest = CorpusMutationManifest(
@@ -417,8 +445,260 @@ class TestDirectCallProtection:
 
 
 # ---------------------------------------------------------------------------
-# F-3 Regression — 기존 idempotent/atomic/dedup 기능 보존
+# V1: CONDITIONAL invariant — CONDITIONAL은 반드시 BLOCK
 # ---------------------------------------------------------------------------
+
+class TestConditionalInvariant:
+    """APPROVED + CONDITIONAL → BLOCK (핵심 invariant)."""
+
+    def test_approved_plus_conditional_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "MixedSource",
+            [
+                {"tsu_id": "TSU-001", "work_id": "MixedSource", "gate_id": "G1",
+                 "reviewer_id": "R1", "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+                {"tsu_id": "TSU-002", "work_id": "MixedSource", "gate_id": "G1",
+                 "reviewer_id": "R1", "answers": {"Q1": "C"}, "final_decision": "CONDITIONAL"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("MixedSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+        assert result.blocked is True
+
+    def test_conditional_only_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "ConditionalOnlySource",
+            [
+                {"tsu_id": "TSU-003", "work_id": "ConditionalOnlySource", "gate_id": "G2",
+                 "reviewer_id": "R2", "answers": {"Q1": "C"}, "final_decision": "CONDITIONAL"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("ConditionalOnlySource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+        assert result.blocked is True
+
+    def test_approved_plus_rejected_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "MixedARSource",
+            [
+                {"tsu_id": "TSU-004", "work_id": "MixedARSource", "gate_id": "G3",
+                 "reviewer_id": "R3", "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+                {"tsu_id": "TSU-005", "work_id": "MixedARSource", "gate_id": "G3",
+                 "reviewer_id": "R3", "answers": {"Q1": "R"}, "final_decision": "REJECTED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("MixedARSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+        assert result.blocked is True
+# ---------------------------------------------------------------------------
+
+
+
+# ---------------------------------------------------------------------------
+# V2: Decision validation — 기존 decision_gate.py convention 재사용 검증
+# ---------------------------------------------------------------------------
+
+class TestDecisionValidation:
+    """기존 HumanDecisionRecord schema 필수 metadata 검증."""
+
+    def test_missing_reviewer_id_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "NoReviewerSource",
+            [
+                {"tsu_id": "TSU-006", "work_id": "NoReviewerSource", "gate_id": "G4",
+                 "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("NoReviewerSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+
+    def test_missing_answers_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "NoAnswersSource",
+            [
+                {"tsu_id": "TSU-007", "work_id": "NoAnswersSource", "gate_id": "G5",
+                 "reviewer_id": "R5", "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("NoAnswersSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+
+    def test_missing_gate_id_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "NoGateIdSource",
+            [
+                {"tsu_id": "TSU-008", "work_id": "NoGateIdSource", "reviewer_id": "R6",
+                 "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("NoGateIdSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+
+    def test_missing_tsu_id_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "NoTsuIdSource",
+            [
+                {"work_id": "NoTsuIdSource", "gate_id": "G7", "reviewer_id": "R7",
+                 "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("NoTsuIdSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+
+    def test_malformed_answers_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "MalformedAnswersSource",
+            [
+                {"tsu_id": "TSU-009", "work_id": "MalformedAnswersSource", "gate_id": "G8",
+                 "reviewer_id": "R8", "answers": "not_a_dict", "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("MalformedAnswersSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+
+    def test_invalid_final_decision_blocks(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "InvalidDecisionSource",
+            [
+                {"tsu_id": "TSU-010", "work_id": "InvalidDecisionSource", "gate_id": "G9",
+                 "reviewer_id": "R9", "answers": {"Q1": "A"}, "final_decision": "INVALID"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("InvalidDecisionSource", ddir)
+        assert result.status == ApprovalStatus.NOT_APPROVED
+
+
+# ---------------------------------------------------------------------------
+# V3: Manifest reviewer_id fallback 제거
+# ---------------------------------------------------------------------------
+
+class TestManifestReviewerId:
+    """build_approval_manifest에서 missing reviewer_id → None."""
+
+    def test_valid_approval_builds_manifest(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "ValidSource",
+            [
+                {"tsu_id": "TSU-011", "work_id": "ValidSource", "gate_id": "G10",
+                 "reviewer_id": "R10", "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+            ],
+        )
+        manifest = build_approval_manifest("ValidSource", ddir)
+        assert manifest is not None
+        assert manifest.source_id == "ValidSource"
+
+    def test_missing_reviewer_id_returns_none(self, tmp_path: Path):
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "NoReviewerManifestSource",
+            [
+                {"tsu_id": "TSU-012", "work_id": "NoReviewerManifestSource", "gate_id": "G11",
+                 "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+            ],
+        )
+        manifest = build_approval_manifest("NoReviewerManifestSource", ddir)
+        assert manifest is None
+
+
+# ---------------------------------------------------------------------------
+# V4: Mutation path protection — 실제 merge_nae_corpus()에서 BLOCK 검증
+# ---------------------------------------------------------------------------
+
+class TestMutationPathProtection:
+    """merge_nae_corpus()에서 gate가 dataset을 보호하는지 확인."""
+
+    def test_approved_plus_conditional_blocks_merge(self, tmp_path: Path):
+        corpus_root = _make_corpus_root(tmp_path, "MixedMergeSource", ["TSU-020", "TSU-021"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "MixedMergeSource",
+            [
+                {"tsu_id": "TSU-020", "work_id": "MixedMergeSource", "gate_id": "G20",
+                 "reviewer_id": "R20", "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+                {"tsu_id": "TSU-021", "work_id": "MixedMergeSource", "gate_id": "G20",
+                 "reviewer_id": "R20", "answers": {"Q1": "C"}, "final_decision": "CONDITIONAL"},
+            ],
+        )
+        dataset = tmp_path / "dataset_mixed.jsonl"
+        orig_content = json.dumps({"tsu_id": "X"}) + "\n"
+        dataset.write_text(orig_content, encoding="utf-8")
+        orig_bytes = dataset.read_bytes()
+
+        with pytest.raises(CorpusMutationBlockedError):
+            merge_nae_corpus(
+                source_id="MixedMergeSource",
+                nae_corpus_dir=corpus_root,
+                tsu_dataset_path=dataset,
+                decisions_dir=ddir,
+            )
+        assert dataset.read_bytes() == orig_bytes
+
+    def test_missing_metadata_blocks_merge(self, tmp_path: Path):
+        corpus_root = _make_corpus_root(tmp_path, "NoReviewerMergeSource", ["TSU-022"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "NoReviewerMergeSource",
+            [
+                {"tsu_id": "TSU-022", "work_id": "NoReviewerMergeSource", "gate_id": "G21",
+                 "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+            ],
+        )
+        dataset = tmp_path / "dataset_nometa.jsonl"
+        orig_content = json.dumps({"tsu_id": "Y"}) + "\n"
+        dataset.write_text(orig_content, encoding="utf-8")
+        orig_bytes = dataset.read_bytes()
+
+        with pytest.raises(CorpusMutationBlockedError):
+            merge_nae_corpus(
+                source_id="NoReviewerMergeSource",
+                nae_corpus_dir=corpus_root,
+                tsu_dataset_path=dataset,
+                decisions_dir=ddir,
+            )
+        assert dataset.read_bytes() == orig_bytes
+
+    def test_approved_plus_rejected_blocks_merge(self, tmp_path: Path):
+        corpus_root = _make_corpus_root(tmp_path, "MixedARMergeSource", ["TSU-023", "TSU-024"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "MixedARMergeSource",
+            [
+                {"tsu_id": "TSU-023", "work_id": "MixedARMergeSource", "gate_id": "G22",
+                 "reviewer_id": "R22", "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+                {"tsu_id": "TSU-024", "work_id": "MixedARMergeSource", "gate_id": "G22",
+                 "reviewer_id": "R22", "answers": {"Q1": "R"}, "final_decision": "REJECTED"},
+            ],
+        )
+        dataset = tmp_path / "dataset_ar.jsonl"
+        orig_content = json.dumps({"tsu_id": "Z"}) + "\n"
+        dataset.write_text(orig_content, encoding="utf-8")
+        orig_bytes = dataset.read_bytes()
+
+        with pytest.raises(CorpusMutationBlockedError):
+            merge_nae_corpus(
+                source_id="MixedARMergeSource",
+                nae_corpus_dir=corpus_root,
+                tsu_dataset_path=dataset,
+                decisions_dir=ddir,
+            )
+        assert dataset.read_bytes() == orig_bytes
+
+    def test_valid_approval_allows_merge(self, tmp_path: Path):
+        corpus_root = _make_corpus_root(tmp_path, "ValidMergeSource", ["TSU-025"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "ValidMergeSource",
+            [
+                {"tsu_id": "TSU-025", "work_id": "ValidMergeSource", "gate_id": "G23",
+                 "reviewer_id": "R23", "answers": {"Q1": "A"}, "final_decision": "APPROVED"},
+            ],
+        )
+        dataset = tmp_path / "dataset_valid.jsonl"
+        dataset.write_text("", encoding="utf-8")
+
+        result = merge_nae_corpus(
+            source_id="ValidMergeSource",
+            nae_corpus_dir=corpus_root,
+            tsu_dataset_path=dataset,
+            decisions_dir=ddir,
+        )
+        assert result["status"] == "completed"
+        assert result["merged_count"] == 1
 
 class TestF3Regression:
     def test_idempotent_by_tsu_id(self, tmp_path: Path):
