@@ -106,6 +106,30 @@ def tmp_dirs(tmp_path: Path):
     }
 
 
+def _make_approved_decisions_dir(tmp_path: Path, source_id: str, tsu_ids: list[str] | None = None) -> Path:
+    """approved decisions directory를 생성 — 통합 merge_nae_corpus()의 approval gate 통과용."""
+    ddir = tmp_path / "decisions"
+    ddir.mkdir(parents=True, exist_ok=True)
+    if tsu_ids is None:
+        tsu_ids = [f"TSU-{source_id}"]
+    decisions = []
+    for tid in tsu_ids:
+        decisions.append({
+            "tsu_id": tid,
+            "work_id": source_id,
+            "gate_id": f"G-{source_id}",
+            "reviewer_id": f"R-{source_id}",
+            "answers": {"Q1": "A", "Q2": "A", "Q3": "A"},
+            "final_decision": "APPROVED",
+            "review_timestamp": "2026-10-01T00:00:00Z",
+        })
+    file_data = {"decisions": decisions}
+    (ddir / f"{source_id}_decisions.json").write_text(
+        json.dumps(file_data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return ddir
+
+
 def test_case1_single_source_once(tmp_dirs):
     """CASE 1: 동일 source 1회 처리 — 정상 record count, duplicate 0."""
     doc_dir = tmp_dirs["nae_corpus"] / "TestDoc_A"
@@ -114,6 +138,8 @@ def test_case1_single_source_once(tmp_dirs):
     with open(doc_dir / "tsu.json", "w", encoding="utf-8") as f:
         json.dump([rec], f, ensure_ascii=False)
     result = merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-1']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -137,6 +163,8 @@ def test_case2_same_source_twice(tmp_dirs):
     with open(doc_dir / "tsu.json", "w", encoding="utf-8") as f:
         json.dump([rec], f, ensure_ascii=False)
     result1 = merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-2']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -145,6 +173,8 @@ def test_case2_same_source_twice(tmp_dirs):
     with open(tmp_dirs["tsu_dataset"], "r", encoding="utf-8") as f:
         lines1 = [json.loads(line) for line in f if line.strip()]
     result2 = merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-2']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -176,6 +206,8 @@ def test_case3_preserve_unrelated(tmp_dirs):
     with open(doc_dir / "tsu.json", "w", encoding="utf-8") as f:
         json.dump([rec], f, ensure_ascii=False)
     result = merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-3']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -208,6 +240,8 @@ def test_case4_add_new_tsu(tmp_dirs):
         with open(doc_dir / "tsu.json", "w", encoding="utf-8") as f:
             json.dump([rec], f, ensure_ascii=False)
     result = merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-4', 'NAE-5']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -246,6 +280,8 @@ def test_case5_dedup_preserves_existing(tmp_dirs):
 
     # Execute — dedup should silently skip NAE-5 (already exists)
     result = merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-5']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -327,7 +363,9 @@ def test_case5b_atomic_write_failure_preserves_dataset(tmp_dirs):
 
         with pytest.raises(WriteFailure):
             merge_nae_corpus(
-                nae_corpus_dir=tmp_dirs["nae_corpus"],
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-51']),
+        nae_corpus_dir=tmp_dirs["nae_corpus"],
                 tsu_dataset_path=tmp_dirs["tsu_dataset"],
                 manifest_path=tmp_dirs["manifest_path"],
                 registry_path=tmp_dirs["registry_path"],
@@ -356,6 +394,8 @@ def test_case6_manifest_consistency(tmp_dirs):
     with open(doc_dir / "tsu.json", "w", encoding="utf-8") as f:
         json.dump([rec], f, ensure_ascii=False)
     merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-6']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -388,6 +428,8 @@ def test_case7_provenance_preservation(tmp_dirs):
     with open(doc_dir / "tsu.json", "w", encoding="utf-8") as f:
         json.dump([rec], f, ensure_ascii=False)
     merge_nae_corpus(
+        source_id="WORK_007",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_007", ['NAE-7']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -417,7 +459,7 @@ def test_case8_cross_run_idempotency(tmp_dirs):
         rec = _make_naes_record(
             id_=8 + i, book=f"Book H{i+1}", author="Author H",
             source_type="nae_canonical", copyright_status="public_domain",
-            author_id=f"AUTH_00{8+i}", work_id=f"WORK_00{8+i}",
+            author_id=f"AUTH_00{8+i}", work_id="WORK_008",
             scriptures=scriptures,
         )
         with open(doc_dir / "tsu.json", "w", encoding="utf-8") as f:
@@ -427,6 +469,8 @@ def test_case8_cross_run_idempotency(tmp_dirs):
     with open(tmp_dirs["tsu_dataset"], "w", encoding="utf-8") as f:
         f.write(json.dumps(unrelated, ensure_ascii=False) + "\n")
     result1 = merge_nae_corpus(
+        source_id="WORK_008",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_008", ['NAE-8', 'NAE-9']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -444,6 +488,8 @@ def test_case8_cross_run_idempotency(tmp_dirs):
         for r in lines1 if "nae_metadata" in r and r["nae_metadata"]
     }
     result2 = merge_nae_corpus(
+        source_id="WORK_008",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_008", ['NAE-8', 'NAE-9']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -487,16 +533,17 @@ def test_regression_empty_tsu_json(tmp_dirs):
 
     # Should not raise IndexError
     result = merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001"),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
         registry_path=tmp_dirs["registry_path"],
     )
 
-    # Only the unrelated record should remain
-    assert result["total_records"] == 1
-    assert result["nae_records"] == 0
-    assert result["new_documents"] == 0
+    # Empty corpus → skipped (no NAE records to merge)
+    assert result["status"] == "skipped"
+    # Only the unrelated record should remain in dataset
     with open(tmp_dirs["tsu_dataset"], "r", encoding="utf-8") as f:
         lines = [json.loads(line) for line in f if line.strip()]
     assert len(lines) == 1
@@ -512,6 +559,8 @@ def test_regression_document_id_nae_prefix(tmp_dirs):
         json.dump([rec], f, ensure_ascii=False)
 
     merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-90']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
@@ -587,7 +636,10 @@ def test_regression_default_args_no_typeerror(tmp_path: Path, monkeypatch):
 
     try:
         # 3. 실제 merge_nae_corpus() 호출 — 인자 없음!
-        result = mod.merge_nae_corpus()
+        result = mod.merge_nae_corpus(
+            source_id="WORK_001",
+            decisions_dir=_make_approved_decisions_dir(tmp_path, "WORK_001", ['NAE-100']),
+        )
         assert isinstance(result, dict), f"Expected dict result, got {type(result)}"
 
         # C. tmp corpus에서 TSU가 추가됨
@@ -656,6 +708,8 @@ def test_regression_registry_document_entry(tmp_dirs):
         json.dump([rec], f, ensure_ascii=False)
 
     merge_nae_corpus(
+        source_id="WORK_001",
+        decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-91']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
         manifest_path=tmp_dirs["manifest_path"],
