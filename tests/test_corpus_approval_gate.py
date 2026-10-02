@@ -32,6 +32,18 @@ from scripts.merge_nae_corpus import merge_nae_corpus
 # Fixtures
 # ---------------------------------------------------------------------------
 
+@pytest.fixture(autouse=True)
+def _isolate_production_paths(tmp_path, monkeypatch):
+    """merge_nae_corpus()의 기본 경로(dataset/manifest/registry)가 production을
+    가리키지 않도록 모든 테스트에서 tmp로 override한다."""
+    import scripts.merge_nae_corpus as m
+
+    out = tmp_path / "_isolated_output"
+    monkeypatch.setattr(m, "DEFAULT_OUTPUT_DIR", out)
+    monkeypatch.setattr(m, "DEFAULT_TSU_DATASET_PATH", out / "bench" / "tsu_dataset.jsonl")
+    monkeypatch.setattr(m, "DEFAULT_TSU_MANIFEST_PATH", out / "bench" / "tsu_manifest.json")
+    monkeypatch.setattr(m, "registry_path_for", lambda _d: out / "registry" / "documents.json")
+
 def _make_decisions_dir(tmp_path: Path, source_id: str, decisions: list[dict]) -> Path:
     """decisions directory를 생성 — 누락된 metadata는 기본값으로 보완.
 
@@ -729,11 +741,9 @@ class TestF3Regression:
             [{"tsu_id": "TSU-001", "work_id": "IdempotentSource",
               "final_decision": "APPROVED"}],
         )
-        # _transform_nae_record()가 tsu_id를 "NAE-{id}"로 생성하므로
-        # existing dataset도 동일한 tsu_id를 가져야 dedup이 작동함
         dataset = tmp_path / "dataset.jsonl"
         dataset.write_text(
-            json.dumps({"tsu_id": "NAE-1", "work_id": "IdempotentSource"}, ensure_ascii=False) + "\n",
+            json.dumps({"tsu_id": "TSU-001", "work_id": "IdempotentSource"}, ensure_ascii=False) + "\n",
             encoding="utf-8",
         )
 
@@ -746,17 +756,22 @@ class TestF3Regression:
         assert result["new_records_after_dedup"] == 0
         assert result["duplicate_count"] == 1
 
-    def test_atomic_write_preserves_on_failure(self):
-        """통합 버전: core.tsu_builder.write_tsu_dataset의 atomicity 검증."""
+    def test_atomic_write_preserves_on_failure(self, tmp_path: Path, monkeypatch):
+        """write 도중 실패해도 기존 dataset은 그대로 보존된다 (F-3 atomic)."""
+        import os
         from core.tsu_builder import write_tsu_dataset
 
-        tmpdir = tempfile.mkdtemp()
-        target = Path(tmpdir) / "test.jsonl"
-        records = [{"tsu_id": "TEST-001", "content": "test"}]
-        write_tsu_dataset(records, target)
-        assert target.exists()
-        content = target.read_text(encoding="utf-8")
-        assert "TEST-001" in content
+        target = tmp_path / "test.jsonl"
+        original = json.dumps({"tsu_id": "KEEP-1"}) + "\n"
+        target.write_text(original, encoding="utf-8")
+
+        def _boom(*a, **k):
+            raise OSError("simulated replace failure")
+
+        monkeypatch.setattr(os, "replace", _boom)
+        with pytest.raises(OSError):
+            write_tsu_dataset([{"tsu_id": "NEW-1"}], target)
+        assert target.read_text(encoding="utf-8") == original
 
     def test_dedup_preserves_existing(self, tmp_path: Path):
         corpus_root = _make_corpus_root(tmp_path, "DedupSource", ["TSU-001"])
@@ -767,10 +782,8 @@ class TestF3Regression:
         )
         dataset = tmp_path / "dataset.jsonl"
         original_claim = "Original claim text"
-        # _transform_nae_record()가 tsu_id를 "NAE-{id}"로 생성하므로
-        # existing dataset도 동일한 tsu_id를 가져야 dedup이 작동함
         dataset.write_text(
-            json.dumps({"tsu_id": "NAE-1", "claim": original_claim}, ensure_ascii=False) + "\n",
+            json.dumps({"tsu_id": "TSU-001", "claim": original_claim}, ensure_ascii=False) + "\n",
             encoding="utf-8",
         )
 
@@ -945,6 +958,52 @@ class TestMutationPathSemantics:
         )
         assert result["status"] == "completed"
         assert result["new_records_after_dedup"] == 1
+
+
+class TestMutationScopeEqualsApproval:
+    """mutation 대상 ID 집합 == 승인된 plan 집합 (혼합 work_id / ID 불일치 방어)."""
+
+    def test_mixed_work_id_file_does_not_mutate_unapproved_records(self, tmp_path: Path):
+        corpus_root = _make_corpus_root(tmp_path, "ScopeSource", ["TSU-070"])
+        tsu_file = corpus_root / "ScopeSource" / "tsu.json"
+        records = json.loads(tsu_file.read_text(encoding="utf-8"))
+        records.append({"id": 99, "tsu_id": "TSU-OTHER", "work_id": "OtherSource",
+                        "claim": "unapproved", "source_text": "x"})
+        tsu_file.write_text(json.dumps(records), encoding="utf-8")
+        ddir = _make_decisions_dir(
+            tmp_path, "ScopeSource",
+            [{"tsu_id": "TSU-070", "work_id": "ScopeSource", "gate_id": "G70",
+              "reviewer_id": "R70", "answers": {"Q1": "A", "Q2": "A", "Q3": "A"},
+              "final_decision": "APPROVED"}],
+        )
+        dataset = tmp_path / "dataset.jsonl"
+        dataset.write_text("", encoding="utf-8")
+        result = merge_nae_corpus(
+            source_id="ScopeSource", nae_corpus_dir=corpus_root,
+            tsu_dataset_path=dataset, decisions_dir=ddir,
+            manifest_path=tmp_path / "m.json", registry_path=tmp_path / "r.json",
+        )
+        ids = [json.loads(l)["tsu_id"] for l in dataset.read_text(encoding="utf-8").splitlines()]
+        assert ids == ["TSU-070"]
+        assert result["new_records_after_dedup"] == 1
+
+    def test_written_tsu_id_equals_planned_id_when_tsu_id_differs_from_id(self, tmp_path: Path):
+        corpus_root = _make_corpus_root(tmp_path, "IdSource", ["TSU-071"])  # id=1, tsu_id=TSU-071
+        ddir = _make_decisions_dir(
+            tmp_path, "IdSource",
+            [{"tsu_id": "TSU-071", "work_id": "IdSource", "gate_id": "G71",
+              "reviewer_id": "R71", "answers": {"Q1": "A", "Q2": "A", "Q3": "A"},
+              "final_decision": "APPROVED"}],
+        )
+        dataset = tmp_path / "dataset.jsonl"
+        dataset.write_text("", encoding="utf-8")
+        merge_nae_corpus(
+            source_id="IdSource", nae_corpus_dir=corpus_root,
+            tsu_dataset_path=dataset, decisions_dir=ddir,
+            manifest_path=tmp_path / "m.json", registry_path=tmp_path / "r.json",
+        )
+        ids = [json.loads(l)["tsu_id"] for l in dataset.read_text(encoding="utf-8").splitlines()]
+        assert ids == ["TSU-071"]  # NAE-1이 아니라 승인된 ID 그대로
 
 
 if __name__ == "__main__":

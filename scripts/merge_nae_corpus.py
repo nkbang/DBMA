@@ -43,6 +43,19 @@ from core.tsu_builder import (
 )
 
 
+def _nae_tsu_id(nae_rec: dict) -> str | None:
+    """NAE record의 production tsu_id. 명시된 tsu_id 우선, 없으면 NAE-{id}.
+
+    planned_tsu_ids 계산과 실제 기록(_transform_nae_record)이 같은 함수를 쓰도록
+    하여 승인 범위와 mutation 범위의 불일치를 구조적으로 막는다.
+    """
+    if nae_rec.get("tsu_id"):
+        return nae_rec["tsu_id"]
+    if nae_rec.get("id") is not None:
+        return f"NAE-{nae_rec['id']}"
+    return None
+
+
 def _transform_nae_record(nae_rec: dict, doc_id: str) -> dict:
     """Transform a NAE corpus TSU record to production TSU format.
 
@@ -83,9 +96,9 @@ def _transform_nae_record(nae_rec: dict, doc_id: str) -> dict:
         verse_mapping = {"_nae_scriptures": nae_scriptures}
 
     return {
-        "tsu_id": f"NAE-{nae_rec['id']}",
+        "tsu_id": _nae_tsu_id(nae_rec),
         "document_id": doc_id,
-        "chunk_id": f"NAE-{nae_rec['id']}",
+        "chunk_id": _nae_tsu_id(nae_rec),
         "content": nae_rec.get("source_text", ""),
         "verse_mapping": verse_mapping,
         "themes": [],
@@ -199,11 +212,11 @@ def merge_nae_corpus(
             if tsu_file.exists():
                 data = json.loads(tsu_file.read_text(encoding="utf-8"))
                 for record in data:
-                    # corpus record는 tsu_id 대신 id를 가질 수 있음
-                    # _transform_nae_record()가 tsu_id를 "NAE-{id}"로 생성함
-                    tid = record.get("tsu_id") or f"NAE-{record.get('id', '')}"
-                    if tid and record.get("work_id") == source_id:
-                        planned_tsu_ids.add(tid)
+                    # planned ID는 실제 기록될 ID와 동일한 _nae_tsu_id()로 계산
+                    if record.get("work_id") == source_id:
+                        tid = _nae_tsu_id(record)
+                        if tid:
+                            planned_tsu_ids.add(tid)
 
     if not planned_tsu_ids:
         return {
@@ -263,14 +276,13 @@ def merge_nae_corpus(
             if not tsu_file.exists():
                 continue
 
-            # source_id filter: only process matching source
-            if source_id is not None:
-                data = json.loads(tsu_file.read_text(encoding="utf-8"))
-                has_source = any(r.get("work_id") == source_id for r in data)
-                if not has_source:
-                    continue
-
-            data = json.loads(tsu_file.read_text(encoding="utf-8"))
+            # 레코드 단위 source filter: 승인 범위 밖 work_id는 절대 병합하지 않는다
+            data = [
+                r for r in json.loads(tsu_file.read_text(encoding="utf-8"))
+                if r.get("work_id") == source_id
+            ]
+            if not data:
+                continue
             doc_id = f"nae_{item.name}"
             nae_docs_info[item] = {
                 "document_id": doc_id,
@@ -284,6 +296,15 @@ def merge_nae_corpus(
                 nae_records.append(prod_rec)
 
         print(f"  Read {len(nae_records)} NAE corpus records from {len(nae_docs_info)} documents")
+
+        # 승인 범위 방어선: mutation 대상 ID 집합 == 승인된 planned 집합이어야 한다
+        mutation_ids = {r["tsu_id"] for r in nae_records}
+        if mutation_ids != planned_tsu_ids:
+            raise CorpusMutationBlockedError(
+                "Corpus mutation BLOCKED: mutation set != approved plan "
+                f"(extra={sorted(mutation_ids - planned_tsu_ids)[:5]}, "
+                f"missing={sorted(planned_tsu_ids - mutation_ids)[:5]})"
+            )
 
         # 4. Dedup by tsu_id (F-3 idempotency)
         existing_ids = {r["tsu_id"] for r in existing_records}
