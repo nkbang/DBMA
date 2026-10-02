@@ -12,16 +12,24 @@ Approval gate (PR #111):
   - Mandatory verify_mutation_gate() before any mutation
   - Fail-closed: no approval -> no mutation
   - CLI option cannot circumvent the gate
+
+Production path safety (NAE-MERGE-PRODUCTION-PATH-SAFETY-001):
+  - No implicit production default — output_root must be explicit
+  - dataset/manifest/registry must share the same output root
+  - Production target requires separate approval artifact
+  - realpath-based production detection (no string comparison)
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import sys
-from pathlib import Path
+from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -41,6 +49,174 @@ from core.tsu_builder import (
     write_tsu_dataset,
     write_manifest,
 )
+
+
+
+# ---------------------------------------------------------------------------
+# Production path safety infrastructure
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class TargetPaths:
+    """Resolved mutation target paths — all derived from a single output_root."""
+    output_root: Path | None
+    dataset_path: Path
+    manifest_path: Path
+    registry_path: Path
+    is_production: bool
+
+
+def resolve_target_paths(
+    output_root: Optional[Path],
+    tsu_dataset_path: Optional[Path] = None,
+    manifest_path: Optional[Path] = None,
+    registry_path: Optional[Path] = None,
+) -> TargetPaths:
+    """Resolve mutation target paths from explicit output_root."""
+    if output_root is not None:
+        resolved = Path(output_root).resolve()
+        output_root_resolved = resolved
+    else:
+        output_root_resolved = None
+
+    ds_resolved = Path(tsu_dataset_path).resolve() if tsu_dataset_path is not None else None
+    mf_resolved = Path(manifest_path).resolve() if manifest_path is not None else None
+    rg_resolved = Path(registry_path).resolve() if registry_path is not None else None
+
+    if output_root_resolved is not None:
+        bench_dir = output_root_resolved / "bench"
+        dataset_path = bench_dir / "tsu_dataset.jsonl"
+        manifest_path_resolved = bench_dir / "tsu_manifest.json"
+        registry_dir = output_root_resolved / "registry"
+        registry_path_resolved = registry_dir / "identity_registry.json"
+        is_production = _is_production_path(output_root_resolved)
+        return TargetPaths(
+            output_root=output_root_resolved,
+            dataset_path=dataset_path,
+            manifest_path=manifest_path_resolved,
+            registry_path=registry_path_resolved,
+            is_production=is_production,
+        )
+
+    paths_provided = [p for p in [ds_resolved, mf_resolved, rg_resolved] if p is not None]
+    if len(paths_provided) >= 2:
+        roots = set()
+        for p in paths_provided:
+            if "bench" in str(p):
+                roots.add(p.parent.parent)
+            elif "registry" in str(p):
+                roots.add(p.parent.parent)
+            else:
+                roots.add(p.parent)
+        if len(roots) > 1:
+            raise CorpusMutationBlockedError(
+                f"Mixed mutation paths detected — all paths must share the same output root. "
+                f"Roots: {sorted(str(r) for r in roots)}"
+            )
+        actual_root = next(iter(roots))
+        is_production = _is_production_path(actual_root)
+        return TargetPaths(
+            output_root=actual_root,
+            dataset_path=ds_resolved if ds_resolved else actual_root / "bench" / "tsu_dataset.jsonl",
+            manifest_path=mf_resolved if mf_resolved else actual_root / "bench" / "tsu_manifest.json",
+            registry_path=rg_resolved if rg_resolved else actual_root / "registry" / "identity_registry.json",
+            is_production=is_production,
+        )
+
+    prod_root = Path(DEFAULT_OUTPUT_DIR).resolve()
+    return TargetPaths(
+        output_root=None,
+        dataset_path=Path(DEFAULT_TSU_DATASET_PATH),
+        manifest_path=Path(DEFAULT_TSU_MANIFEST_PATH),
+        registry_path=Path(registry_path_for(DEFAULT_OUTPUT_DIR)),
+        is_production=_is_production_path(prod_root),
+    )
+
+
+def _is_production_path(resolved_path: Path) -> bool:
+    """Check if a resolved path points to the production output directory."""
+    prod_root = Path(DEFAULT_OUTPUT_DIR).resolve()
+    return resolved_path == prod_root
+
+
+def compute_dataset_sha256(dataset_path: Path) -> str:
+    """Compute SHA-256 hash of a dataset file."""
+    h = hashlib.sha256()
+    if not dataset_path.exists():
+        return ""
+    with open(dataset_path, "rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def verify_production_target_approval(
+    target_root: Path,
+    source_id: str,
+    dataset_path: Path,
+    decisions_dir: Path,
+    approval_dir: Path | None = None,
+) -> tuple[bool, str]:
+    """Verify production target approval artifact exists and is valid.
+
+    Args:
+        target_root: The resolved output root path.
+        source_id: Source ID to look up.
+        dataset_path: Current dataset path for SHA comparison.
+        decisions_dir: Decisions directory (for context).
+        approval_dir: Explicit approval directory override (for testing).
+                      Defaults to NAE/review/human/production_targets/.
+    """
+    if approval_dir is not None:
+        approval_path = approval_dir / f"{source_id}.json"
+    else:
+        approval_path = Path("NAE") / "review" / "human" / "production_targets" / f"{source_id}.json"
+
+    if not approval_path.exists():
+        return False, f"Production target approval artifact not found: {approval_path}"
+
+    try:
+        approval = json.loads(approval_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as e:
+        return False, f"Failed to read production target approval: {e}"
+
+    required_fields = [
+        "schema_version", "source_id", "target_root_realpath",
+        "reviewer_id", "gate_id", "dataset_sha256_before",
+        "final_decision", "approved_at",
+    ]
+    for field in required_fields:
+        if field not in approval or not approval[field]:
+            return False, f"Missing required field in approval artifact: {field}"
+
+    sv = approval["schema_version"]
+    if not isinstance(sv, int) or sv < 1:
+        return False, f"Invalid schema_version: {sv}"
+
+    if approval["source_id"] != source_id:
+        return False, (
+            f"source_id mismatch: approval={approval['source_id']!r}, "
+            f"current={source_id!r}"
+        )
+
+    target_realpath = str(target_root.resolve())
+    if approval["target_root_realpath"] != target_realpath:
+        return False, (
+            f"target_root_realpath mismatch: approval={approval['target_root_realpath']!r}, "
+            f"current={target_realpath!r}"
+        )
+
+    if approval["final_decision"] != "APPROVED":
+        return False, f"final_decision is not APPROVED: {approval['final_decision']!r}"
+
+    current_sha = compute_dataset_sha256(dataset_path)
+    if approval["dataset_sha256_before"] != current_sha:
+        return False, (
+            f"dataset_sha256 mismatch: approval={approval['dataset_sha256_before']!r}, "
+            f"current={current_sha!r}"
+        )
+
+    return True, "Production target approval verified"
 
 
 def _nae_tsu_id(nae_rec: dict) -> str | None:
@@ -176,6 +352,7 @@ def _validate_dataset(records: list[dict], dataset_path: Path) -> None:
 
 def merge_nae_corpus(
     source_id: Optional[str] = None,
+    output_root: Optional[Path] = None,
     nae_corpus_dir: Optional[Path] = None,
     tsu_dataset_path: Optional[Path] = None,
     manifest_path: Optional[Path] = None,
@@ -195,14 +372,50 @@ def merge_nae_corpus(
       - verify_mutation_gate() is called BEFORE any mutation
       - No CLI option or environment variable can circumvent this gate
       - Function-level enforcement: direct Python call also triggers gate
+
+    Production path safety (NAE-MERGE-PRODUCTION-PATH-SAFETY-001):
+      - output_root must be explicit — no implicit production default
+      - dataset/manifest/registry derived from output_root
+      - Production target requires separate approval artifact
     """
-    # NEW-1 fix: use Path for / operator; default corpus path = NAE/corpus/tsu
-    # (matches process_unprocessed_nae.py convention)
+    # Path resolution via resolve_target_paths() — no implicit defaults
+    target = resolve_target_paths(
+        output_root=output_root,
+        tsu_dataset_path=tsu_dataset_path,
+        manifest_path=manifest_path,
+        registry_path=registry_path,
+    )
+
+    # Block if no mutation paths specified at all
+    if target.output_root is None:
+        raise CorpusMutationBlockedError(
+            "No output_root or mutation paths specified. "
+            "Provide explicit --output-root or tsu_dataset_path/manifest_path/registry_path."
+        )
+
+    # Use resolved paths
+    tsu_dataset_path = target.dataset_path
+    manifest_path = target.manifest_path
+    registry_path = target.registry_path
+
+    # Corpus and decisions dir defaults (non-mutation paths — safe to default)
     nae_corpus_dir = Path(nae_corpus_dir or (Path("NAE") / "corpus" / "tsu"))
-    tsu_dataset_path = Path(tsu_dataset_path or DEFAULT_TSU_DATASET_PATH)
-    manifest_path = Path(manifest_path or DEFAULT_TSU_MANIFEST_PATH)
-    registry_path = Path(registry_path or registry_path_for(DEFAULT_OUTPUT_DIR))
     decisions_dir = Path(decisions_dir or (Path("NAE") / "review" / "human" / "decisions"))
+
+    # Production target approval gate — before any mutation
+    if target.is_production:
+        print(f"\nProduction target detected: {target.output_root}")
+        valid, reason = verify_production_target_approval(
+            target_root=target.output_root,
+            source_id=source_id or "",
+            dataset_path=tsu_dataset_path,
+            decisions_dir=decisions_dir,
+        )
+        if not valid:
+            raise CorpusMutationBlockedError(
+                f"Production target approval FAILED: {reason}"
+            )
+        print(f"  Production target approval PASSED: {reason}")
 
     # 0. TSU planning — planned_tsu_ids 생성 (approval gate용)
     planned_tsu_ids: set[str] = set()
@@ -394,10 +607,10 @@ if __name__ == "__main__":
     )
     parser.add_argument("--source", required=True,
         help="Source ID to merge (e.g., Fuller_Complete_Works_Vol02)")
+    parser.add_argument("--output-root", required=True,
+        help="Explicit output root for dataset/manifest/registry mutation")
     parser.add_argument("--corpus-dir", default=None,
         help="NAE corpus TSU directory")
-    parser.add_argument("--dataset-path", default=None,
-        help="Target TSU dataset path")
     parser.add_argument("--decisions-dir", default=None,
         help="Human decisions directory")
     args = parser.parse_args()
@@ -405,8 +618,8 @@ if __name__ == "__main__":
     try:
         result = merge_nae_corpus(
             source_id=args.source,
+            output_root=Path(args.output_root),
             nae_corpus_dir=Path(args.corpus_dir) if args.corpus_dir else None,
-            tsu_dataset_path=Path(args.dataset_path) if args.dataset_path else None,
             decisions_dir=Path(args.decisions_dir) if args.decisions_dir else None,
         )
         print(f"\n=== Merge Result ===")

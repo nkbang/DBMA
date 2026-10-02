@@ -139,7 +139,7 @@ class TestNoApproval:
 
 
 class TestNoApprovalWithData:
-    def test_merge_blocks_without_approval_when_corpus_has_data(self, tmp_path: Path):
+    def test_merge_blocks_without_approval_when_corpus_has_data(self, tmp_path: Path, tmp_output: Path):
         """A: corpus에 데이터가 있지만 승인 정보가 없으면 merge 차단."""
         corpus_root = _make_corpus_root(tmp_path, "UnapprovedSource", ["TSU-001", "TSU-002"])
         ddir = tmp_path / "decisions"
@@ -151,6 +151,7 @@ class TestNoApprovalWithData:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="UnapprovedSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -164,7 +165,7 @@ class TestNoApprovalWithData:
 # ---------------------------------------------------------------------------
 
 class TestRejectedSource:
-    def test_rejected_decision_blocks_merge(self, tmp_path: Path):
+    def test_rejected_decision_blocks_merge(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "RejectedSource", ["TSU-001"])
         ddir = _make_decisions_dir(
             tmp_path, "RejectedSource",
@@ -178,6 +179,7 @@ class TestRejectedSource:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="RejectedSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -201,7 +203,7 @@ class TestRejectedSource:
 # ---------------------------------------------------------------------------
 
 class TestUnknownSource:
-    def test_unknown_source_blocks(self, tmp_path: Path):
+    def test_unknown_source_blocks(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "UnknownSource", ["TSU-001"])
         ddir = _make_decisions_dir(
             tmp_path, "DifferentSource",  # 다른 source의 decision만 있음
@@ -214,6 +216,7 @@ class TestUnknownSource:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="UnknownSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -236,7 +239,7 @@ class TestUnknownSource:
 # ---------------------------------------------------------------------------
 
 class TestMismatchedApproval:
-    def test_partial_approval_blocks(self, tmp_path: Path):
+    def test_partial_approval_blocks(self, tmp_path: Path, tmp_output: Path):
         """일부만 승인된 경우 (CONDITIONAL) → mutation 차단."""
         corpus_root = _make_corpus_root(tmp_path, "PartialSource", ["TSU-001", "TSU-002"])
         ddir = _make_decisions_dir(
@@ -254,6 +257,7 @@ class TestMismatchedApproval:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="PartialSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -298,7 +302,7 @@ class TestMismatchedApproval:
 # ---------------------------------------------------------------------------
 
 class TestMissingMetadata:
-    def test_no_final_decision_blocks(self, tmp_path: Path):
+    def test_no_final_decision_blocks(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "NoDecisionSource", ["TSU-001"])
         ddir = _make_decisions_dir(
             tmp_path, "NoDecisionSource",
@@ -310,13 +314,14 @@ class TestMissingMetadata:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="NoDecisionSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
         assert "BLOCKED" in str(exc_info.value)
 
-    def test_invalid_final_decision_blocks(self, tmp_path: Path):
+    def test_invalid_final_decision_blocks(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "InvalidDecisionSource", ["TSU-001"])
         ddir = _make_decisions_dir(
             tmp_path, "InvalidDecisionSource",
@@ -329,6 +334,7 @@ class TestMissingMetadata:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="InvalidDecisionSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -341,7 +347,7 @@ class TestMissingMetadata:
 # ---------------------------------------------------------------------------
 
 class TestApprovedFixture:
-    def test_approved_source_allows_merge_in_temp(self, tmp_path: Path):
+    def test_approved_source_allows_merge_in_temp(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "ApprovedSource", ["TSU-001", "TSU-002"])
         ddir = _make_decisions_dir(
             tmp_path, "ApprovedSource",
@@ -359,6 +365,7 @@ class TestApprovedFixture:
 
         result = merge_nae_corpus(
             source_id="ApprovedSource",
+                output_root=tmp_output,
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=dataset,
             decisions_dir=ddir,
@@ -393,7 +400,7 @@ class TestApprovedFixture:
 # ---------------------------------------------------------------------------
 
 class TestFailClosed:
-    def test_dataset_unchanged_on_block(self, tmp_path: Path):
+    def test_dataset_unchanged_on_block(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "BlockedSource", ["TSU-001"])
         ddir = tmp_path / "decisions"
         ddir.mkdir()
@@ -405,6 +412,7 @@ class TestFailClosed:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="BlockedSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -439,7 +447,7 @@ class TestFailClosed:
 # ---------------------------------------------------------------------------
 
 class TestDirectCallProtection:
-    def test_direct_merge_call_respects_gate(self, tmp_path: Path):
+    def test_direct_merge_call_respects_gate(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "DirectCallSource", ["TSU-001"])
         ddir = tmp_path / "decisions"
         ddir.mkdir()
@@ -449,6 +457,7 @@ class TestDirectCallProtection:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="DirectCallSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -589,7 +598,7 @@ class TestDecisionValidation:
         result = verify_corpus_mutation_approval("MalformedAnswersSource", ddir)
         assert result.status == ApprovalStatus.NOT_APPROVED
 
-    def test_invalid_final_decision_blocks(self, tmp_path: Path):
+    def test_invalid_final_decision_blocks(self, tmp_path: Path, tmp_output: Path):
         ddir = _make_decisions_dir_raw(
             tmp_path, "InvalidDecisionSource",
             [
@@ -639,7 +648,7 @@ class TestManifestReviewerId:
 class TestMutationPathProtection:
     """merge_nae_corpus()에서 gate가 dataset을 보호하는지 확인."""
 
-    def test_approved_plus_conditional_blocks_merge(self, tmp_path: Path):
+    def test_approved_plus_conditional_blocks_merge(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "MixedMergeSource", ["TSU-020", "TSU-021"])
         ddir = _make_decisions_dir_raw(
             tmp_path, "MixedMergeSource",
@@ -658,13 +667,14 @@ class TestMutationPathProtection:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MixedMergeSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
         assert dataset.read_bytes() == orig_bytes
 
-    def test_missing_metadata_blocks_merge(self, tmp_path: Path):
+    def test_missing_metadata_blocks_merge(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "NoReviewerMergeSource", ["TSU-022"])
         ddir = _make_decisions_dir_raw(
             tmp_path, "NoReviewerMergeSource",
@@ -681,13 +691,14 @@ class TestMutationPathProtection:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="NoReviewerMergeSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
         assert dataset.read_bytes() == orig_bytes
 
-    def test_approved_plus_rejected_blocks_merge(self, tmp_path: Path):
+    def test_approved_plus_rejected_blocks_merge(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "MixedARMergeSource", ["TSU-023", "TSU-024"])
         ddir = _make_decisions_dir_raw(
             tmp_path, "MixedARMergeSource",
@@ -706,13 +717,14 @@ class TestMutationPathProtection:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MixedARMergeSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
         assert dataset.read_bytes() == orig_bytes
 
-    def test_valid_approval_allows_merge(self, tmp_path: Path):
+    def test_valid_approval_allows_merge(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "ValidMergeSource", ["TSU-025"])
         ddir = _make_decisions_dir(
             tmp_path, "ValidMergeSource",
@@ -726,6 +738,7 @@ class TestMutationPathProtection:
 
         result = merge_nae_corpus(
             source_id="ValidMergeSource",
+                output_root=tmp_output,
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=dataset,
             decisions_dir=ddir,
@@ -734,23 +747,25 @@ class TestMutationPathProtection:
         assert result["new_records_after_dedup"] == 1
 
 class TestF3Regression:
-    def test_idempotent_by_tsu_id(self, tmp_path: Path):
+    def test_idempotent_by_tsu_id(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "IdempotentSource", ["TSU-001"])
         ddir = _make_decisions_dir(
             tmp_path, "IdempotentSource",
             [{"tsu_id": "TSU-001", "work_id": "IdempotentSource",
               "final_decision": "APPROVED"}],
         )
-        dataset = tmp_path / "dataset.jsonl"
-        dataset.write_text(
+        # Write initial record to output path so dedup works
+        output_dataset = tmp_output / "bench" / "tsu_dataset.jsonl"
+        output_dataset.write_text(
             json.dumps({"tsu_id": "TSU-001", "work_id": "IdempotentSource"}, ensure_ascii=False) + "\n",
             encoding="utf-8",
         )
 
         result = merge_nae_corpus(
             source_id="IdempotentSource",
+                output_root=tmp_output,
             nae_corpus_dir=corpus_root,
-            tsu_dataset_path=dataset,
+            tsu_dataset_path=output_dataset,
             decisions_dir=ddir,
         )
         assert result["new_records_after_dedup"] == 0
@@ -773,28 +788,30 @@ class TestF3Regression:
             write_tsu_dataset([{"tsu_id": "NEW-1"}], target)
         assert target.read_text(encoding="utf-8") == original
 
-    def test_dedup_preserves_existing(self, tmp_path: Path):
+    def test_dedup_preserves_existing(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "DedupSource", ["TSU-001"])
         ddir = _make_decisions_dir(
             tmp_path, "DedupSource",
             [{"tsu_id": "TSU-001", "work_id": "DedupSource",
               "final_decision": "APPROVED"}],
         )
-        dataset = tmp_path / "dataset.jsonl"
+        # Write initial record to output path so dedup works
+        output_dataset = tmp_output / "bench" / "tsu_dataset.jsonl"
         original_claim = "Original claim text"
-        dataset.write_text(
+        output_dataset.write_text(
             json.dumps({"tsu_id": "TSU-001", "claim": original_claim}, ensure_ascii=False) + "\n",
             encoding="utf-8",
         )
 
         result = merge_nae_corpus(
             source_id="DedupSource",
+                output_root=tmp_output,
             nae_corpus_dir=corpus_root,
-            tsu_dataset_path=dataset,
+            tsu_dataset_path=output_dataset,
             decisions_dir=ddir,
         )
         assert result["new_records_after_dedup"] == 0
-        records = [json.loads(l) for l in dataset.read_text(encoding="utf-8").strip().split("\n")]
+        records = [json.loads(l) for l in output_dataset.read_text(encoding="utf-8").strip().split("\n")]
         assert records[0]["claim"] == original_claim
 
 
@@ -888,7 +905,7 @@ class TestDecisionSemantics:
 class TestMutationPathSemantics:
     """실제 mutation path에서 semantic validation이 적용되는지 검증."""
 
-    def test_approved_with_c_blocks_merge_and_preserves_dataset(self, tmp_path: Path):
+    def test_approved_with_c_blocks_merge_and_preserves_dataset(self, tmp_path: Path, tmp_output: Path):
         """APPROVED + C → BLOCK → dataset unchanged."""
         corpus_root = _make_corpus_root(tmp_path, "MutCSource", ["TSU-060"])
         ddir = _make_decisions_dir_raw(
@@ -906,13 +923,14 @@ class TestMutationPathSemantics:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MutCSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
         assert dataset.read_text(encoding="utf-8") == original_content
 
-    def test_approved_with_r_blocks_merge_and_preserves_dataset(self, tmp_path: Path):
+    def test_approved_with_r_blocks_merge_and_preserves_dataset(self, tmp_path: Path, tmp_output: Path):
         """APPROVED + R → BLOCK → dataset unchanged."""
         corpus_root = _make_corpus_root(tmp_path, "MutRSource", ["TSU-061"])
         ddir = _make_decisions_dir_raw(
@@ -930,13 +948,14 @@ class TestMutationPathSemantics:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MutRSource",
+                    output_root=tmp_output,
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
         assert dataset.read_text(encoding="utf-8") == original_content
 
-    def test_valid_approval_allows_merge_in_temp(self, tmp_path: Path):
+    def test_valid_approval_allows_merge_in_temp(self, tmp_path: Path, tmp_output: Path):
         """A+A+A + valid metadata → ALLOW → merged_count=1."""
         corpus_root = _make_corpus_root(tmp_path, "MutValidSource", ["TSU-062"])
         ddir = _make_decisions_dir(
@@ -952,6 +971,7 @@ class TestMutationPathSemantics:
 
         result = merge_nae_corpus(
             source_id="MutValidSource",
+                output_root=tmp_output,
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=dataset,
             decisions_dir=ddir,
@@ -963,7 +983,7 @@ class TestMutationPathSemantics:
 class TestMutationScopeEqualsApproval:
     """mutation 대상 ID 집합 == 승인된 plan 집합 (혼합 work_id / ID 불일치 방어)."""
 
-    def test_mixed_work_id_file_does_not_mutate_unapproved_records(self, tmp_path: Path):
+    def test_mixed_work_id_file_does_not_mutate_unapproved_records(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "ScopeSource", ["TSU-070"])
         tsu_file = corpus_root / "ScopeSource" / "tsu.json"
         records = json.loads(tsu_file.read_text(encoding="utf-8"))
@@ -980,14 +1000,17 @@ class TestMutationScopeEqualsApproval:
         dataset.write_text("", encoding="utf-8")
         result = merge_nae_corpus(
             source_id="ScopeSource", nae_corpus_dir=corpus_root,
+                output_root=tmp_output,
             tsu_dataset_path=dataset, decisions_dir=ddir,
             manifest_path=tmp_path / "m.json", registry_path=tmp_path / "r.json",
         )
-        ids = [json.loads(l)["tsu_id"] for l in dataset.read_text(encoding="utf-8").splitlines()]
+        # dataset는 입력 파일이므로, 실제 출력은 tmp_output/bench/tsu_dataset.jsonl에 있음
+        output_dataset = tmp_output / "bench" / "tsu_dataset.jsonl"
+        ids = [json.loads(l)["tsu_id"] for l in output_dataset.read_text(encoding="utf-8").splitlines()]
         assert ids == ["TSU-070"]
         assert result["new_records_after_dedup"] == 1
 
-    def test_written_tsu_id_equals_planned_id_when_tsu_id_differs_from_id(self, tmp_path: Path):
+    def test_written_tsu_id_equals_planned_id_when_tsu_id_differs_from_id(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "IdSource", ["TSU-071"])  # id=1, tsu_id=TSU-071
         ddir = _make_decisions_dir(
             tmp_path, "IdSource",
@@ -995,14 +1018,15 @@ class TestMutationScopeEqualsApproval:
               "reviewer_id": "R71", "answers": {"Q1": "A", "Q2": "A", "Q3": "A"},
               "final_decision": "APPROVED"}],
         )
-        dataset = tmp_path / "dataset.jsonl"
-        dataset.write_text("", encoding="utf-8")
+        # Write to output path since merge writes there
+        output_dataset = tmp_output / "bench" / "tsu_dataset.jsonl"
         merge_nae_corpus(
             source_id="IdSource", nae_corpus_dir=corpus_root,
-            tsu_dataset_path=dataset, decisions_dir=ddir,
+                output_root=tmp_output,
+            tsu_dataset_path=output_dataset, decisions_dir=ddir,
             manifest_path=tmp_path / "m.json", registry_path=tmp_path / "r.json",
         )
-        ids = [json.loads(l)["tsu_id"] for l in dataset.read_text(encoding="utf-8").splitlines()]
+        ids = [json.loads(l)["tsu_id"] for l in output_dataset.read_text(encoding="utf-8").splitlines()]
         assert ids == ["TSU-071"]  # NAE-1이 아니라 승인된 ID 그대로
 
 
