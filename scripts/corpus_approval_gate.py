@@ -95,6 +95,74 @@ class CorpusMutationManifest:
 
 
 # ---------------------------------------------------------------------------
+# Decision semantics constants (aligned with decision_gate.py)
+# ---------------------------------------------------------------------------
+
+_JUDGMENT_ANSWER_CODES = frozenset({"Q1", "Q2", "Q3"})  # Q4는 판정에서 제외
+_VALID_ANSWER_VALUES = frozenset({"A", "R", "C"})
+
+
+def _validate_decision_semantics(entry: dict[str, Any]) -> tuple[bool, str]:
+    """entry의 answers가 decision_gate.py 의미론과 일치하는지 검증.
+
+    decision_gate.py의 HumanDecisionRecord.is_fully_approved / has_rejection /
+    needs_context와 동일한 논리를 사용한다:
+
+    - Q1-Q3 (judgment answers)가 모두 'A' → is_fully_approved=True
+    - Q1-Q3 중 하나라도 'R' → has_rejection=True
+    - Q1-Q3 중 하나라도 'C' → needs_context=True
+
+    final_decision='APPROVED'인 경우, 실제 answers가 승인 조건을 만족해야 한다.
+
+    Returns:
+        (is_valid, error_message) — is_valid=False이면 error_message에 원인 기재.
+    """
+    answers = entry.get("answers")
+    if not answers or not isinstance(answers, dict):
+        return False, "missing or invalid answers"
+
+    final_decision = entry.get("final_decision")
+
+    # APPROVED인 경우에만 semantic 검증 필요
+    if final_decision != "APPROVED":
+        return True, ""
+
+    # judgment answers (Q1-Q3)만 확인 — Q4는 판정에서 제외
+    judgment_answers = {k: v for k, v in answers.items() if k in _JUDGMENT_ANSWER_CODES}
+
+    # Case 4: 필수 answer 누락
+    missing_keys = _JUDGMENT_ANSWER_CODES - set(judgment_answers.keys())
+    if missing_keys:
+        return False, f"missing required judgment answers: {sorted(missing_keys)}"
+
+    # 모든 judgment answer가 유효한 값(A/R/C)인지 확인
+    for code, value in judgment_answers.items():
+        if value not in _VALID_ANSWER_VALUES:
+            return False, f"invalid answer {value!r} for {code} (allowed: A/R/C)"
+
+    # Case 1: C answer (needs_context)
+    needs_context = any(v == "C" for v in judgment_answers.values())
+    if needs_context:
+        c_keys = [k for k, v in judgment_answers.items() if v == "C"]
+        return False, f"needs_context — C answer found in {c_keys}"
+
+    # Case 2: R answer (has_rejection)
+    has_rejection = any(v == "R" for v in judgment_answers.values())
+    if has_rejection:
+        r_keys = [k for k, v in judgment_answers.items() if v == "R"]
+        return False, f"has_rejection — R answer found in {r_keys}"
+
+    # Case 3: APPROVED인데 answers가 전부 A가 아님 (이미 C/R 체크로 커버됨)
+    # 추가: A가 아닌 다른 값이 있는지 확인 (예: "X", "Y" 등)
+    non_a_keys = [k for k, v in judgment_answers.items() if v != "A"]
+    if non_a_keys:
+        return False, f"inconsistent answers — non-A values in {non_a_keys}"
+
+    # Case 5: APPROVED인데 answers가 전부 A인 경우 → 승인 조건 만족
+    return True, ""
+
+
+# ---------------------------------------------------------------------------
 # Core gate functions
 # ---------------------------------------------------------------------------
 
@@ -180,13 +248,20 @@ def verify_corpus_mutation_approval(
     approved_ids: list[str] = []
     rejected_ids: list[str] = []
     conditional_ids: list[str] = []
+    semantic_errors: list[tuple[str, str]] = []  # (tsu_id, error_msg)
 
     for entry in source_decisions:
         tsu_id = entry.get("tsu_id", "")
         final_decision = entry.get("final_decision")
 
         if final_decision == "APPROVED":
-            approved_ids.append(tsu_id)
+            # semantic validation — decision_gate.py 의미론과 일치해야 함
+            is_valid, error_msg = _validate_decision_semantics(entry)
+            if not is_valid:
+                semantic_errors.append((tsu_id, error_msg))
+                rejected_ids.append(tsu_id)
+            else:
+                approved_ids.append(tsu_id)
         elif final_decision == "REJECTED":
             rejected_ids.append(tsu_id)
         elif final_decision == "CONDITIONAL":
@@ -213,14 +288,24 @@ def verify_corpus_mutation_approval(
 
     # 전체 source가 APPROVED여야 mutation 허용
     if not approved_ids:
+        # semantic errors가 있으면 상세 정보 포함
+        semantic_detail = ""
+        if semantic_errors:
+            detail_parts = [f"{tsu}: {err}" for tsu, err in semantic_errors]
+            semantic_detail = f" (semantic: {'; '.join(detail_parts)})"
         return CorpusMutationApprovalResult(
             source_id=source_id,
             status=ApprovalStatus.NOT_APPROVED,
-            reason="No TSU records have final_decision=APPROVED for this source",
+            reason=f"No TSU records have final_decision=APPROVED for this source{semantic_detail}",
             rejected_tsu_ids=frozenset(rejected_ids),
         )
 
     if rejected_ids:
+        # semantic errors가 있으면 상세 정보 포함
+        semantic_detail = ""
+        if semantic_errors:
+            detail_parts = [f"{tsu}: {err}" for tsu, err in semantic_errors]
+            semantic_detail = f" (semantic: {'; '.join(detail_parts)})"
         return CorpusMutationApprovalResult(
             source_id=source_id,
             status=ApprovalStatus.NOT_APPROVED,
@@ -230,6 +315,7 @@ def verify_corpus_mutation_approval(
                 f"REJECTED TSU(s) found — mutation blocked: "
                 f"{len(rejected_ids)} REJECTED, {len(approved_ids)} APPROVED. "
                 "All TSUs must be APPROVED for mutation."
+                + semantic_detail
             ),
         )
 

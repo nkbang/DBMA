@@ -40,6 +40,8 @@ def _make_decisions_dir(tmp_path: Path, source_id: str, decisions: list[dict]) -
     새 테스트에서 명시적으로 누락된 metadata를 검증하려면
     이 helper 대신 직접 파일을 작성해야 한다.
     """
+    _REQUIRED_JUDGMENT_KEYS = frozenset({"Q1", "Q2", "Q3"})
+
     ddir = tmp_path / "decisions"
     ddir.mkdir(parents=True)
     enriched: list[dict] = []
@@ -51,6 +53,12 @@ def _make_decisions_dir(tmp_path: Path, source_id: str, decisions: list[dict]) -
             e["reviewer_id"] = f"R-{source_id}"
         if not e.get("answers"):
             e["answers"] = {"Q1": "A", "Q2": "A", "Q3": "A"}
+        else:
+            # missing Q1-Q3 keys도 보완 — semantic validation 통과용
+            for k in _REQUIRED_JUDGMENT_KEYS:
+                if k not in e["answers"]:
+                    e["answers"] = dict(e["answers"])  # 원본 불변성 유지
+                    e["answers"][k] = "A"
         enriched.append(e)
     file_data = {"decisions": enriched}
     (ddir / f"{source_id}_decisions.json").write_text(
@@ -576,7 +584,7 @@ class TestManifestReviewerId:
     """build_approval_manifest에서 missing reviewer_id → None."""
 
     def test_valid_approval_builds_manifest(self, tmp_path: Path):
-        ddir = _make_decisions_dir_raw(
+        ddir = _make_decisions_dir(
             tmp_path, "ValidSource",
             [
                 {"tsu_id": "TSU-011", "work_id": "ValidSource", "gate_id": "G10",
@@ -681,7 +689,7 @@ class TestMutationPathProtection:
 
     def test_valid_approval_allows_merge(self, tmp_path: Path):
         corpus_root = _make_corpus_root(tmp_path, "ValidMergeSource", ["TSU-025"])
-        ddir = _make_decisions_dir_raw(
+        ddir = _make_decisions_dir(
             tmp_path, "ValidMergeSource",
             [
                 {"tsu_id": "TSU-025", "work_id": "ValidMergeSource", "gate_id": "G23",
@@ -755,6 +763,168 @@ class TestF3Regression:
         assert result["merged_count"] == 0
         records = [json.loads(l) for l in dataset.read_text(encoding="utf-8").strip().split("\n")]
         assert records[0]["claim"] == original_claim
+
+
+# ---------------------------------------------------------------------------
+# V5 — Decision Semantics (new)
+# ---------------------------------------------------------------------------
+
+class TestDecisionSemantics:
+    """decision_gate.py 의미론과 corpus approval gate의 일치 검증."""
+
+    def test_approved_with_all_a_answers_allows(self, tmp_path: Path):
+        """APPROVED + Q1=A, Q2=A, Q3=A → ALLOW (positive baseline)."""
+        corpus_root = _make_corpus_root(tmp_path, "SemanticsAllowSource", ["TSU-050"])
+        ddir = _make_decisions_dir(
+            tmp_path, "SemanticsAllowSource",
+            [
+                {"tsu_id": "TSU-050", "work_id": "SemanticsAllowSource", "gate_id": "G50",
+                 "reviewer_id": "R50", "answers": {"Q1": "A", "Q2": "A", "Q3": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("SemanticsAllowSource", ddir)
+        assert result.approved is True
+        assert result.status == ApprovalStatus.APPROVED
+
+    def test_approved_with_needs_context_answer_blocks(self, tmp_path: Path):
+        """APPROVED + Q1=C → BLOCK (needs_context invariant)."""
+        corpus_root = _make_corpus_root(tmp_path, "SemanticsCSource", ["TSU-051"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "SemanticsCSource",
+            [
+                {"tsu_id": "TSU-051", "work_id": "SemanticsCSource", "gate_id": "G51",
+                 "reviewer_id": "R51", "answers": {"Q1": "C", "Q2": "A", "Q3": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("SemanticsCSource", ddir)
+        assert result.approved is False
+        assert result.status == ApprovalStatus.NOT_APPROVED
+        assert "needs_context" in result.reason or "C answer" in result.reason
+
+    def test_approved_with_rejection_answer_blocks(self, tmp_path: Path):
+        """APPROVED + Q1=R → BLOCK (has_rejection invariant)."""
+        corpus_root = _make_corpus_root(tmp_path, "SemanticsRSource", ["TSU-052"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "SemanticsRSource",
+            [
+                {"tsu_id": "TSU-052", "work_id": "SemanticsRSource", "gate_id": "G52",
+                 "reviewer_id": "R52", "answers": {"Q1": "R", "Q2": "A", "Q3": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("SemanticsRSource", ddir)
+        assert result.approved is False
+        assert result.status == ApprovalStatus.NOT_APPROVED
+        assert "has_rejection" in result.reason or "R answer" in result.reason
+
+    def test_approved_with_incomplete_answers_blocks(self, tmp_path: Path):
+        """APPROVED + Q1=A, Q2=A (Q3 누락) → BLOCK."""
+        corpus_root = _make_corpus_root(tmp_path, "SemanticsIncompleteSource", ["TSU-053"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "SemanticsIncompleteSource",
+            [
+                {"tsu_id": "TSU-053", "work_id": "SemanticsIncompleteSource", "gate_id": "G53",
+                 "reviewer_id": "R53", "answers": {"Q1": "A", "Q2": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("SemanticsIncompleteSource", ddir)
+        assert result.approved is False
+        assert result.status == ApprovalStatus.NOT_APPROVED
+        assert "missing required judgment answers" in result.reason
+
+    def test_approved_with_inconsistent_answer_final_decision_blocks(self, tmp_path: Path):
+        """APPROVED + Q1=X (invalid answer) → BLOCK."""
+        corpus_root = _make_corpus_root(tmp_path, "SemanticsInvalidSource", ["TSU-054"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "SemanticsInvalidSource",
+            [
+                {"tsu_id": "TSU-054", "work_id": "SemanticsInvalidSource", "gate_id": "G54",
+                 "reviewer_id": "R54", "answers": {"Q1": "X", "Q2": "A", "Q3": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        result = verify_corpus_mutation_approval("SemanticsInvalidSource", ddir)
+        assert result.approved is False
+        assert result.status == ApprovalStatus.NOT_APPROVED
+        assert "invalid answer" in result.reason
+
+
+class TestMutationPathSemantics:
+    """실제 mutation path에서 semantic validation이 적용되는지 검증."""
+
+    def test_approved_with_c_blocks_merge_and_preserves_dataset(self, tmp_path: Path):
+        """APPROVED + C → BLOCK → dataset unchanged."""
+        corpus_root = _make_corpus_root(tmp_path, "MutCSource", ["TSU-060"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "MutCSource",
+            [
+                {"tsu_id": "TSU-060", "work_id": "MutCSource", "gate_id": "G60",
+                 "reviewer_id": "R60", "answers": {"Q1": "C", "Q2": "A", "Q3": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        dataset = tmp_path / "dataset.jsonl"
+        original_content = json.dumps({"tsu_id": "TSU-060", "claim": "original claim"}, ensure_ascii=False) + "\n"
+        dataset.write_text(original_content, encoding="utf-8")
+
+        with pytest.raises(CorpusMutationBlockedError):
+            merge_nae_corpus(
+                source_id="MutCSource",
+                nae_corpus_dir=corpus_root,
+                tsu_dataset_path=dataset,
+                decisions_dir=ddir,
+            )
+        assert dataset.read_text(encoding="utf-8") == original_content
+
+    def test_approved_with_r_blocks_merge_and_preserves_dataset(self, tmp_path: Path):
+        """APPROVED + R → BLOCK → dataset unchanged."""
+        corpus_root = _make_corpus_root(tmp_path, "MutRSource", ["TSU-061"])
+        ddir = _make_decisions_dir_raw(
+            tmp_path, "MutRSource",
+            [
+                {"tsu_id": "TSU-061", "work_id": "MutRSource", "gate_id": "G61",
+                 "reviewer_id": "R61", "answers": {"Q1": "R", "Q2": "A", "Q3": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        dataset = tmp_path / "dataset.jsonl"
+        original_content = json.dumps({"tsu_id": "TSU-061", "claim": "original claim"}, ensure_ascii=False) + "\n"
+        dataset.write_text(original_content, encoding="utf-8")
+
+        with pytest.raises(CorpusMutationBlockedError):
+            merge_nae_corpus(
+                source_id="MutRSource",
+                nae_corpus_dir=corpus_root,
+                tsu_dataset_path=dataset,
+                decisions_dir=ddir,
+            )
+        assert dataset.read_text(encoding="utf-8") == original_content
+
+    def test_valid_approval_allows_merge_in_temp(self, tmp_path: Path):
+        """A+A+A + valid metadata → ALLOW → merged_count=1."""
+        corpus_root = _make_corpus_root(tmp_path, "MutValidSource", ["TSU-062"])
+        ddir = _make_decisions_dir(
+            tmp_path, "MutValidSource",
+            [
+                {"tsu_id": "TSU-062", "work_id": "MutValidSource", "gate_id": "G62",
+                 "reviewer_id": "R62", "answers": {"Q1": "A", "Q2": "A", "Q3": "A"},
+                 "final_decision": "APPROVED"},
+            ],
+        )
+        dataset = tmp_path / "dataset_valid.jsonl"
+        dataset.write_text("", encoding="utf-8")
+
+        result = merge_nae_corpus(
+            source_id="MutValidSource",
+            nae_corpus_dir=corpus_root,
+            tsu_dataset_path=dataset,
+            decisions_dir=ddir,
+        )
+        assert result["status"] == "completed"
+        assert result["merged_count"] == 1
 
 
 if __name__ == "__main__":
