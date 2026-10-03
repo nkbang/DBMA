@@ -120,11 +120,12 @@ class TestR2ProductionIdentity:
         assert candidate_norm.casefold().startswith(prod_norm.casefold() + os.sep)
 
     def test_no_config_returns_false(self, tmp_path: Path):
-        """No config → False."""
-        from scripts.merge_nae_corpus import _is_production_identity
+        """No config → CorpusMutationBlockedError (fail-closed)."""
+        from scripts.merge_nae_corpus import _is_production_identity, CorpusMutationBlockedError
 
-        result = _is_production_identity(tmp_data_root, tmp_path / "nonexistent.yaml")
-        assert result is False
+        with pytest.raises(CorpusMutationBlockedError) as exc_info:
+            _is_production_identity(tmp_data_root, tmp_path / "nonexistent.yaml")
+        assert "config" in str(exc_info.value).lower() or "not found" in str(exc_info.value).lower()
 
 
 # ---------------------------------------------------------------------------
@@ -238,11 +239,12 @@ class TestR4ConfigValidation:
         assert "does not exist" in str(exc_info.value).lower()
 
     def test_no_config_returns_none(self, tmp_path: Path):
-        """No config file → None."""
-        from scripts.merge_nae_corpus import _load_production_root
+        """No config file → CorpusMutationBlockedError (fail-closed)."""
+        from scripts.merge_nae_corpus import _load_production_root, CorpusMutationBlockedError
 
-        result = _load_production_root(tmp_path / "nonexistent.yaml")
-        assert result is None
+        with pytest.raises(CorpusMutationBlockedError) as exc_info:
+            _load_production_root(tmp_path / "nonexistent.yaml")
+        assert "config" in str(exc_info.value).lower() or "not found" in str(exc_info.value).lower()
 
 
 # ---------------------------------------------------------------------------

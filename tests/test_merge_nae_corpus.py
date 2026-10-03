@@ -91,7 +91,7 @@ def tmp_dirs(tmp_path: Path):
     registry_path = registry_dir / "documents.json"
     nae_corpus.mkdir(parents=True)
     output_dir.mkdir(parents=True)
-    (output_dir / "output" / "bench").mkdir(exist_ok=True)
+    (output_dir / "output" / "bench").mkdir(parents=True, exist_ok=True)
     registry_dir.mkdir(parents=True)
     registry = {"documents": {}}
     with open(registry_path, "w", encoding="utf-8") as f:
@@ -143,9 +143,6 @@ def test_case1_single_source_once(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-1']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     assert result["total_records"] == 1
     assert result["new_records_after_dedup"] == 1
@@ -169,9 +166,6 @@ def test_case2_same_source_twice(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-2']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     with open(tmp_dirs["tsu_dataset"], "r", encoding="utf-8") as f:
         lines1 = [json.loads(line) for line in f if line.strip()]
@@ -180,9 +174,6 @@ def test_case2_same_source_twice(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-2']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     with open(tmp_dirs["tsu_dataset"], "r", encoding="utf-8") as f:
         lines2 = [json.loads(line) for line in f if line.strip()]
@@ -214,9 +205,6 @@ def test_case3_preserve_unrelated(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-3']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     assert result["existing_records"] == 2
     assert result["total_records"] == 3
@@ -249,9 +237,6 @@ def test_case4_add_new_tsu(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-4', 'NAE-5']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     assert result["existing_records"] == 1
     assert result["new_records_after_dedup"] == 2
@@ -290,9 +275,6 @@ def test_case5_dedup_preserves_existing(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-5']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
 
     # Count should stay at 2 (no new record added due to dedup)
@@ -374,9 +356,6 @@ def test_case5b_atomic_write_failure_preserves_dataset(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-51']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-                tsu_dataset_path=tmp_dirs["tsu_dataset"],
-                manifest_path=tmp_dirs["manifest_path"],
-                registry_path=tmp_dirs["registry_path"],
             )
 
         # Verify: original dataset bytes are preserved (unchanged)
@@ -406,9 +385,6 @@ def test_case6_manifest_consistency(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-6']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     with open(tmp_dirs["manifest_path"], "r", encoding="utf-8") as f:
         manifest = json.load(f)
@@ -441,9 +417,6 @@ def test_case7_provenance_preservation(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_007", ['NAE-7']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     with open(tmp_dirs["tsu_dataset"], "r", encoding="utf-8") as f:
         lines = [json.loads(line) for line in f if line.strip()]
@@ -483,9 +456,6 @@ def test_case8_cross_run_idempotency(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_008", ['NAE-8', 'NAE-9']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     with open(tmp_dirs["tsu_dataset"], "r", encoding="utf-8") as f:
         lines1 = [json.loads(line) for line in f if line.strip()]
@@ -503,9 +473,6 @@ def test_case8_cross_run_idempotency(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_008", ['NAE-8', 'NAE-9']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
     with open(tmp_dirs["tsu_dataset"], "r", encoding="utf-8") as f:
         lines2 = [json.loads(line) for line in f if line.strip()]
@@ -549,9 +516,6 @@ def test_regression_empty_tsu_json(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001"),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
 
     # Empty corpus → skipped (no NAE records to merge)
@@ -576,9 +540,6 @@ def test_regression_document_id_nae_prefix(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-90']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
 
     # Check dataset record document_id
@@ -596,83 +557,95 @@ def test_regression_document_id_nae_prefix(tmp_dirs):
 
 
 def test_regression_default_args_no_typeerror(tmp_path: Path, monkeypatch):
-    """NEW-1 regression: 기본 인자로 merge_nae_corpus() 호출 시 TypeError 없이 실행.
+    """data_root 없이 merge_nae_corpus() 호출 시 CorpusMutationBlockedError 발생.
 
-    [SPRINT34] data_root 명시적 요구로 인해, 이제 data_root 없이 호출하면
+    [SPRINT34] data_root 명시적 요구로 인해, data_root 없이 호출하면
     CorpusMutationBlockedError가 발생한다. 이 테스트는 그 동작을 검증한다.
+
+    S1-9 이식: 6f311d1f 의 production 해시 불변 6건 단언을
+    tmp 모의 production sentinel 3개 파일(registry/dataset/manifest) 의
+    해시 불변 단언으로 교체 이식.
+
+    sentinel 3개가 호출에 연결되도록 함:
+      - mock_production 을 data_root 로 넘기는 호출 포함
+      - 대조 케이스: sentinel 파일을 직접 수정하면 단언이 실패함을 확인
     """
     import scripts.merge_nae_corpus as mod
     from scripts.corpus_approval_gate import CorpusMutationBlockedError
 
-    # 1. tmp 구조 생성: tmp/NAE/corpus/tsu/TestDoc_A/tsu.json
+    # corpus directory 생성
     test_corpus = tmp_path / "NAE" / "corpus" / "tsu" / "TestDoc_A"
     test_corpus.mkdir(parents=True)
     fixture = [_make_naes_record(id_=100, book="Book D", author="Author D")]
     with open(test_corpus / "tsu.json", "w", encoding="utf-8") as f:
         json.dump(fixture, f, ensure_ascii=False)
 
-    # 2. pytest chdir: 상대 경로 "NAE/corpus/tsu"가 tmp를 가리키도록 함
-    monkeypatch.chdir(tmp_path)
+    # --- tmp 모의 production sentinel 3개 파일 생성 ---
+    mock_prod = tmp_path / "mock_production"
+    mock_prod.mkdir(parents=True)
+    mock_bench = mock_prod / "output" / "bench"
+    mock_bench.mkdir(parents=True)
+    mock_registry_dir = mock_prod / "data" / "registry"
+    mock_registry_dir.mkdir(parents=True)
 
-    # 3. output 경로 상수들을 tmp로 monkeypatch
-    tmp_output = tmp_path / "output"
-    tmp_output.mkdir()
-    tmp_bench = tmp_output / "bench"
-    tmp_bench.mkdir()
-    tmp_registry_dir = tmp_output / "registry"
-    tmp_registry_dir.mkdir()
+    sentinel_dataset = mock_bench / "tsu_dataset.jsonl"
+    sentinel_manifest = mock_bench / "tsu_manifest.json"
+    sentinel_registry = mock_registry_dir / "documents.json"
 
-    # 기존 production artifact 해시 (변경 감지용)
-    prod_registry_path = mod.registry_path_for(mod.DEFAULT_OUTPUT_DIR)
-    prod_registry_hash_before = _file_hash(prod_registry_path) if os.path.exists(prod_registry_path) else None
-    prod_dataset_path = mod.DEFAULT_TSU_DATASET_PATH
-    prod_dataset_hash_before = _file_hash(prod_dataset_path) if os.path.exists(prod_dataset_path) else None
-    prod_manifest_path = mod.DEFAULT_TSU_MANIFEST_PATH
-    prod_manifest_hash_before = _file_hash(prod_manifest_path) if os.path.exists(prod_manifest_path) else None
+    # sentinel 파일에 초기 내용 작성
+    sentinel_dataset.write_text("initial_dataset_content", encoding="utf-8")
+    sentinel_manifest.write_text('{"tsu_count": 0}', encoding="utf-8")
+    sentinel_registry.write_text('{"documents": {}}', encoding="utf-8")
 
-    # monkeypatch output 경로 상수들
-    mod.DEFAULT_OUTPUT_DIR = str(tmp_output)
-    mod.DEFAULT_TSU_DATASET_PATH = str(tmp_bench / "tsu_dataset.jsonl")
-    mod.DEFAULT_TSU_MANIFEST_PATH = str(tmp_bench / "tsu_manifest.json")
-    original_registry_path_for = mod.registry_path_for
-    mod.registry_path_for = lambda output_dir=None: (
-        os.path.join(output_dir, "registry", "documents.json")
-        if output_dir
-        else os.path.join(str(tmp_output), "registry", "documents.json")
+    # --- 초기 해시 기록 ---
+    hash_before_dataset = _file_hash(str(sentinel_dataset))
+    hash_before_manifest = _file_hash(str(sentinel_manifest))
+    hash_before_registry = _file_hash(str(sentinel_registry))
+    sentinel_dataset_path = str(sentinel_dataset)
+    sentinel_manifest_path = str(sentinel_manifest)
+    sentinel_registry_path = str(sentinel_registry)
+
+    # --- (1) mock_production 을 data_root 로 넘기는 호출 (승인 없이 → 차단) ---
+    config_path = tmp_path / "config.yaml"
+    config_path.write_text(
+        f"merge-safety:\n  production_root: {mock_prod.resolve()}\n",
+        encoding="utf-8",
     )
 
-    try:
-        # data_root 없이 호출하면 CorpusMutationBlockedError 발생
-        with pytest.raises(CorpusMutationBlockedError) as exc_info:
-            mod.merge_nae_corpus(
-                source_id="WORK_001",
-                decisions_dir=_make_approved_decisions_dir(tmp_path, "WORK_001", ['NAE-100']),
-            )
-        assert "data_root" in str(exc_info.value).lower()
+    with pytest.raises(CorpusMutationBlockedError):
+        mod.merge_nae_corpus(
+            source_id="WORK_001",
+            data_root=mock_prod,
+            nae_corpus_dir=test_corpus.parent.parent,
+            decisions_dir=_make_approved_decisions_dir(tmp_path, "WORK_001", ['NAE-100']),
+            config_path=config_path,
+        )
 
-        # production dataset/manifest/registry가 전혀 변경되지 않음
-        if prod_registry_hash_before is not None:
-            assert _file_hash(prod_registry_path) == prod_registry_hash_before
-        if prod_dataset_hash_before is not None:
-            assert _file_hash(prod_dataset_path) == prod_dataset_hash_before
-        if prod_manifest_hash_before is not None:
-            assert _file_hash(prod_manifest_path) == prod_manifest_hash_before
-    finally:
-        # D. production 경로 상수 복원 및 artifact 변경 없음 확인
-        mod.DEFAULT_OUTPUT_DIR = "output"
-        mod.DEFAULT_TSU_DATASET_PATH = os.path.join("output", "bench", "tsu_dataset.jsonl")
-        mod.DEFAULT_TSU_MANIFEST_PATH = os.path.join("output", "bench", "tsu_manifest.json")
-        mod.registry_path_for = original_registry_path_for
+    # (1) 후 해시 비교 — sentinel 파일이 변경되지 않았어야 함
+    assert _file_hash(str(sentinel_dataset)) == hash_before_dataset,         "Mock production dataset was modified!"
+    assert _file_hash(str(sentinel_manifest)) == hash_before_manifest,       "Mock production manifest was modified!"
+    assert _file_hash(str(sentinel_registry)) == hash_before_registry,       "Mock production registry was modified!"
 
-        if prod_registry_hash_before is not None and os.path.exists(prod_registry_path):
-            assert prod_registry_hash_before == _file_hash(prod_registry_path), \
-                "Production registry was modified!"
-        if prod_dataset_hash_before is not None and os.path.exists(prod_dataset_path):
-            assert prod_dataset_hash_before == _file_hash(prod_dataset_path), \
-                "Production dataset was modified!"
-        if prod_manifest_hash_before is not None and os.path.exists(prod_manifest_path):
-            assert prod_manifest_hash_before == _file_hash(prod_manifest_path), \
-                "Production manifest was modified!"
+    # --- (2) data_root 없이 호출하면 CorpusMutationBlockedError 발생 ---
+    with pytest.raises(CorpusMutationBlockedError) as exc_info:
+        mod.merge_nae_corpus(
+            source_id="WORK_001",
+            nae_corpus_dir=test_corpus.parent.parent,
+            decisions_dir=_make_approved_decisions_dir(tmp_path, "WORK_001", ['NAE-100']),
+        )
+    assert "data_root" in str(exc_info.value).lower()
+
+    # (2) 후 해시 비교 — sentinel 파일이 여전히 변경되지 않았어야 함
+    assert _file_hash(str(sentinel_dataset)) == hash_before_dataset,         "Mock production dataset was modified!"
+    assert _file_hash(str(sentinel_manifest)) == hash_before_manifest,       "Mock production manifest was modified!"
+    assert _file_hash(str(sentinel_registry)) == hash_before_registry,       "Mock production registry was modified!"
+
+    # --- (3) 대조 케이스: sentinel 파일을 직접 수정하면 단언이 실패함을 확인 ---
+    # 이 단언은 반드시 실패해야 함 — 변이가 감지됨을 검증
+    sentinel_dataset.write_text("MUTATED_CONTENT", encoding="utf-8")
+    with pytest.raises(AssertionError):
+        assert _file_hash(str(sentinel_dataset)) == hash_before_dataset, \
+            "This should fail because we mutated the file!"
 
 
 def _file_hash(path: str) -> str:
@@ -697,9 +670,6 @@ def test_regression_registry_document_entry(tmp_dirs):
             data_root=tmp_dirs["data_root"],
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-91']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
-        tsu_dataset_path=tmp_dirs["tsu_dataset"],
-        manifest_path=tmp_dirs["manifest_path"],
-        registry_path=tmp_dirs["registry_path"],
     )
 
     with open(tmp_dirs["registry_path"], "r", encoding="utf-8") as f:

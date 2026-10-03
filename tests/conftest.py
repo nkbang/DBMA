@@ -77,3 +77,29 @@ def _file_hash(path: str) -> str:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+@pytest.fixture(autouse=True)
+def _monkeypatch_default_config(tmp_path):
+    """모든 테스트에서 merge_nae_corpus 의 기본 config 를 tmp config 로 우회.
+    
+    실제 production config.yaml 에는 placeholder production_root 가 있어
+    테스트 시 fail-closed 됩니다. 이를 방지하기 위해 tmp config 로 monkeypatch 합니다.
+    """
+    import scripts.merge_nae_corpus as mod
+    
+    # Create a tmp config with valid but non-matching production_root
+    fake_prod = tmp_path / "fake_nonmatching_prod"
+    fake_prod.mkdir(parents=True)  # Must exist for _load_production_root
+    config_content = f"merge-safety:\n  production_root: {fake_prod.resolve()}\n"
+    tmp_config = tmp_path / "config.yaml"
+    tmp_config.write_text(config_content, encoding="utf-8")
+    
+    original = mod._DEFAULT_CONFIG_PATH
+    mod._DEFAULT_CONFIG_PATH = tmp_config
+    
+    try:
+        yield
+    finally:
+        mod._DEFAULT_CONFIG_PATH = original
+

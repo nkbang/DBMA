@@ -34,6 +34,9 @@ from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+# Default config path — used when config_path is not explicitly provided
+_DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
+
 # Approval gate import — mutation code의 진입점 (PR #111)
 from scripts.corpus_approval_gate import (
     CorpusMutationBlockedError,
@@ -42,12 +45,12 @@ from scripts.corpus_approval_gate import (
     validate_merge_plan_against_manifest,
 )
 
-from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH, registry_path_for
 from core.tsu_builder import (
     tsu_dataset_lock,
     write_tsu_dataset,
     write_manifest,
 )
+from core.identity_registry import load_identity_registry, save_identity_registry
 
 
 # ---------------------------------------------------------------------------
@@ -196,37 +199,50 @@ def resolve_target_paths(
     )
 
 
-def _load_production_root(config_path: Optional[Path] = None) -> Optional[str]:
+def _load_production_root(config_path: Optional[Path] = None) -> str:
     """Load merge-safety.production_root from config.yaml.
 
-    Returns the absolute path string, or None if not configured.
-    Fails closed on relative paths or non-existent directories.
+    Returns the absolute path string.
+    Fails closed on missing config, missing key, read errors, relative paths,
+    or non-existent directories.
 
-    Note: config_path=None means "no config" (returns None), NOT "use default".
-    To use the default config.yaml, pass Path(__file__).resolve().parent.parent / "config.yaml".
+    Note: config_path=None uses _DEFAULT_CONFIG_PATH (the project's config.yaml).
     """
     import yaml
 
-    # config_path=None explicitly means "no config" — return None immediately
+    # Use default config when not specified
     if config_path is None:
-        return None
+        config_path = _DEFAULT_CONFIG_PATH
 
     if not config_path.exists():
-        return None
+        raise CorpusMutationBlockedError(
+            f"Config file not found: {config_path!r}"
+        )
 
     try:
         with open(config_path, "r", encoding="utf-8") as f:
             cfg = yaml.safe_load(f)
-    except Exception:
-        return None
+    except Exception as exc:
+        raise CorpusMutationBlockedError(
+            f"Failed to read config file {config_path!r}: {exc}"
+        ) from exc
 
-    merge_safety = cfg.get("merge-safety") if isinstance(cfg, dict) else None
+    if not isinstance(cfg, dict):
+        raise CorpusMutationBlockedError(
+            f"Config file {config_path!r} does not contain a YAML mapping"
+        )
+
+    merge_safety = cfg.get("merge-safety")
     if not isinstance(merge_safety, dict):
-        return None
+        raise CorpusMutationBlockedError(
+            f"Config missing 'merge-safety' section: {config_path!r}"
+        )
 
     prod_root = merge_safety.get("production_root")
     if prod_root is None:
-        return None
+        raise CorpusMutationBlockedError(
+            f"Config 'merge-safety.production_root' key not found: {config_path!r}"
+        )
 
     # Must be absolute path
     if not os.path.isabs(prod_root):
@@ -253,10 +269,13 @@ def _is_production_identity(candidate: Path, config_path: Optional[Path] = None)
 
     Does NOT use: cwd, relative path equivalence, __file__ (except config lookup),
     stored (st_dev, st_ino).
+
+    Returns True only if config is valid AND candidate matches production root.
+    Raises CorpusMutationBlockedError on any config failure (fail-closed).
     """
     prod_root_str = _load_production_root(config_path)
-    if prod_root_str is None:
-        return False
+    # _load_production_root now raises on any config failure, so we only get here
+    # when config is valid and production_root is set.
 
     prod_root = Path(prod_root_str)
 
@@ -304,31 +323,61 @@ def _is_production_identity(candidate: Path, config_path: Optional[Path] = None)
 def _detect_hardlink_alias(candidate: Path, config_path: Optional[Path] = None) -> bool:
     """Detect if candidate is a hardlink alias to production.
 
-    FAIL-CLOSED: if candidate's st_nlink > 1 or any alias shares production inode → True.
+    FAIL-CLOSED: checks the three canonical target files (dataset, manifest,
+    documents.json) for hardlink/symlink aliases to production.
+
+    Does NOT use directory st_nlink (directories always have nlink > 1 due to
+    subdirectory entries). Only checks actual target files.
     """
     prod_root_str = _load_production_root(config_path)
-    if prod_root_str is None:
-        return False
+    # _load_production_root now raises on any config failure, so we only get here
+    # when config is valid and production_root is set.
 
     prod_root = Path(prod_root_str)
+
+    # If candidate IS the production root itself, it's not an alias — it's production.
     try:
-        prod_stat = prod_root.stat()
+        if candidate.resolve() == prod_root.resolve():
+            return False
     except OSError:
-        return False
+        pass
 
-    try:
-        candidate_stat = candidate.stat()
-    except OSError:
-        return False
+    # Check the three canonical target files under candidate
+    target_files = [
+        candidate / "output" / "bench" / "tsu_dataset.jsonl",
+        candidate / "output" / "bench" / "tsu_manifest.json",
+        candidate / "data" / "제련완성본" / "registry" / "documents.json",
+    ]
 
-    # Same filesystem, same inode → hardlink
-    if (candidate_stat.st_dev == prod_stat.st_dev and
-            candidate_stat.st_ino == prod_stat.st_ino):
-        return True
+    for target_file in target_files:
+        if not target_file.exists():
+            continue
 
-    # Candidate has multiple links
-    if candidate_stat.st_nlink > 1:
-        return True
+        try:
+            # Check if this file is a symlink pointing to production
+            if target_file.is_symlink():
+                link_target = target_file.resolve()
+                if link_target.exists() and os.path.samefile(str(link_target), str(prod_root)):
+                    return True
+                # Also check if the symlink target is under production root
+                try:
+                    prod_resolved = prod_root.resolve()
+                    if str(link_target).startswith(str(prod_resolved) + os.sep):
+                        return True
+                except OSError:
+                    pass
+
+            # Check if this file has same inode as a file in production root
+            try:
+                target_stat = target_file.stat()
+                # Check st_nlink > 1 (actual hardlink evidence for files)
+                if target_stat.st_nlink > 1:
+                    return True
+            except OSError:
+                pass
+
+        except OSError:
+            continue
 
     return False
 
@@ -549,6 +598,7 @@ def merge_nae_corpus(
     data_root: Optional[Path] = None,
     nae_corpus_dir: Optional[Path] = None,
     decisions_dir: Optional[Path] = None,
+    config_path: Optional[Path] = None,
 ) -> dict:
     """Merge NAE corpus TSU into production TSU (F-3 safe).
 
@@ -568,10 +618,12 @@ def merge_nae_corpus(
       - data_root must be explicit — no implicit production default
       - dataset/manifest/registry derived from data_root
       - Production target requires separate approval artifact
+      - config_path defaults to _DEFAULT_CONFIG_PATH when not specified
     """
     # Path resolution via resolve_target_paths() — no implicit defaults
     target = resolve_target_paths(
         data_root=data_root,
+        config_path=config_path,
     )
 
     # Block if no mutation paths specified at all
