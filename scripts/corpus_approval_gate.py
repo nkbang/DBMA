@@ -169,9 +169,10 @@ def _validate_decision_semantics(entry: dict[str, Any]) -> tuple[bool, str]:
 def _load_decisions(decisions_dir: Path) -> list[dict[str, Any]]:
     """decisions_dir의 모든 .json 파일을 읽어 decisions 목록을 반환.
 
-    **기존 `decision_gate.py`의 `_validate_decision_entry()`를 재사용**하여
-    필수 metadata(gate_id/tsu_id/reviewer_id/answers) 검증한다.
-    validation 실패 시 해당 entry를 건너뛰지 않고 즉시 BLOCK한다.
+    필수 metadata(gate_id/tsu_id/reviewer_id/answers)를 이 함수 안에서 직접
+    검증한다 (`decision_gate.py`의 함수를 호출하지 않는 인라인 검증).
+    하나라도 누락되면 해당 entry를 건너뛰지 않고 빈 목록을 반환하여
+    caller가 전체를 BLOCK하도록 한다 (fail-closed).
     """
     if not decisions_dir.exists():
         return []
