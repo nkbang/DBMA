@@ -215,3 +215,8 @@ reset:
   # 기본 빈 목록. HQ가 명시적으로 채우고 --drop-qdrant 를 줘야 drop.
   # 운영 인덱스(nae_tsu_v1/nae_bible_v1/nae_ref_v1)는 예외 케이스 (ADR-033 §4.4).
   qdrant_collection_whitelist: []
+
+# ── Merge Safety (NAE-MERGE-PRODUCTION-IDENTITY-P3) ───────
+merge-safety:
+  # R4: Production root — absolute path only, fail-closed on missing/relative/non-existent
+  production_root: "/absolute/path/to/production/root"

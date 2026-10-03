@@ -156,21 +156,21 @@ def _make_production_target_approval(
 class TestT1PathOmission:
     """T1: Missing required paths should BLOCK."""
 
-    def test_no_output_root_and_no_paths(self, tmp_path: Path):
-        """output_root도 mutation path도 없으면 BLOCK."""
-        target = resolve_target_paths(output_root=None)
-        assert target.output_root is None
+    def test_no_data_root_and_no_paths(self, tmp_path: Path):
+        """data_root도 mutation path도 없으면 BLOCK."""
+        target = resolve_target_paths(data_root=None)
+        assert target.data_root is None
 
-    def test_no_output_root_with_single_path(self, tmp_path: Path):
-        """output_root 없이 단일 path만 제공해도 output_root는 None."""
+    def test_no_data_root_with_single_path(self, tmp_path: Path):
+        """data_root 없이 단일 path만 제공해도 data_root는 None."""
         dataset = tmp_path / "dataset.jsonl"
         dataset.write_text("", encoding="utf-8")
 
         target = resolve_target_paths(
-            output_root=None,
+            data_root=None,
             tsu_dataset_path=dataset,
         )
-        assert target.output_root is None
+        assert target.data_root is None
 
 
 # ---------------------------------------------------------------------------
@@ -186,11 +186,11 @@ class TestT2MixedPath:
         tmp_dataset.parent.mkdir(parents=True)
         tmp_dataset.write_text("", encoding="utf-8")
 
-        prod_registry = _PROD_OUTPUT / "registry" / "identity_registry.json"
+        prod_registry = _PROD_OUTPUT / "data" / "제련완성본" / "registry" / "documents.json"
 
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             resolve_target_paths(
-                output_root=None,
+                data_root=None,
                 tsu_dataset_path=tmp_dataset,
                 registry_path=prod_registry,
             )
@@ -206,11 +206,11 @@ class TestT2MixedPath:
         tmp_mf.parent.mkdir(parents=True)
         tmp_mf.write_text("", encoding="utf-8")
 
-        prod_registry = _PROD_OUTPUT / "registry" / "identity_registry.json"
+        prod_registry = _PROD_OUTPUT / "data" / "제련완성본" / "registry" / "documents.json"
 
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             resolve_target_paths(
-                output_root=None,
+                data_root=None,
                 tsu_dataset_path=tmp_ds,
                 manifest_path=tmp_mf,
                 registry_path=prod_registry,
@@ -223,12 +223,12 @@ class TestT2MixedPath:
 # ---------------------------------------------------------------------------
 
 class TestT3ProductionNoApproval:
-    """T3: output_root가 production이고 approval artifact가 없으면 BLOCK."""
+    """T3: data_root가 production이고 approval artifact가 없으면 BLOCK."""
 
     def test_production_output_without_approval(self, tmp_path: Path):
-        """production output_root + valid corpus approval but no production target approval → BLOCK."""
+        """production data_root + valid corpus approval but no production target approval → BLOCK."""
         prod_output = _PROD_OUTPUT
-        prod_dataset = prod_output / "bench" / "tsu_dataset.jsonl"
+        prod_dataset = prod_output / "output" / "bench" / "tsu_dataset.jsonl"
 
         # verify_production_target_approval should fail because no artifact exists
         valid, reason = verify_production_target_approval(
@@ -253,16 +253,16 @@ class TestT4PathBypass:
         # Create a real directory that we'll symlink to
         real_prod = tmp_path / "real_output"
         real_prod.mkdir(parents=True)
-        (real_prod / "bench").mkdir()
+        (real_prod / "output" / "bench").mkdir(parents=True)
 
         # Create symlink pointing to the real directory
         link_path = tmp_path / "link_to_prod"
         link_path.symlink_to(real_prod)
 
-        target = resolve_target_paths(output_root=link_path)
-        assert target.output_root == real_prod.resolve()
+        target = resolve_target_paths(data_root=link_path)
+        assert target.data_root == real_prod.resolve()
         # The key test: realpath-based detection should work
-        assert target.output_root == link_path.resolve()
+        assert target.data_root == link_path.resolve()
 
     def test_relative_path_resolution(self, tmp_path: Path):
         """relative path가 올바른 디렉토리를 가리키면 realpath로 해석."""
@@ -274,16 +274,16 @@ class TestT4PathBypass:
         subdir.mkdir()
 
         # Go up and back down — should resolve to the same realpath
-        target = resolve_target_paths(output_root=subdir)
-        assert target.output_root == subdir.resolve()
+        target = resolve_target_paths(data_root=subdir)
+        assert target.data_root == subdir.resolve()
 
     def test_absolute_path_consistency(self, tmp_path: Path):
-        """absolute path 제공 시 output_root가 정확히 설정됨."""
+        """absolute path 제공 시 data_root가 정확히 설정됨."""
         real_dir = tmp_path / "abs_output"
         real_dir.mkdir(parents=True)
 
-        target = resolve_target_paths(output_root=real_dir)
-        assert target.output_root == real_dir.resolve()
+        target = resolve_target_paths(data_root=real_dir)
+        assert target.data_root == real_dir.resolve()
 
 
 # ---------------------------------------------------------------------------
@@ -349,22 +349,22 @@ class TestT5DatasetSHAMismatch:
 # ---------------------------------------------------------------------------
 
 class TestT6ValidNonProduction:
-    """T6: tmp output_root + valid corpus approval → mutation gate 통과."""
+    """T6: tmp data_root + valid corpus approval → mutation gate 통과."""
 
     def test_valid_non_production_merge(self, tmp_path: Path):
-        """tmp output_root + valid corpus approval → merge 가능."""
+        """tmp data_root + valid corpus approval → merge 가능."""
         corpus_root = _make_corpus_dir(tmp_path, "TEST_SOURCE", ["TSU-001"])
         ddir = _make_approved_decisions_dir(tmp_path, "TEST_SOURCE", ["TSU-001"])
 
         tmp_output = tmp_path / "tmp_output"
         tmp_output.mkdir(parents=True)
-        tmp_dataset = tmp_output / "bench" / "tsu_dataset.jsonl"
+        tmp_dataset = tmp_output / "output" / "bench" / "tsu_dataset.jsonl"
         tmp_dataset.parent.mkdir(parents=True)
         tmp_dataset.write_text("", encoding="utf-8")
 
-        target = resolve_target_paths(output_root=tmp_output)
+        target = resolve_target_paths(data_root=tmp_output)
         assert target.is_production is False
-        assert target.output_root == tmp_output.resolve()
+        assert target.data_root == tmp_output.resolve()
 
         # Verify paths are derived correctly
         assert "tmp_output" in str(target.dataset_path)
@@ -377,7 +377,7 @@ class TestT6ValidNonProduction:
 # ---------------------------------------------------------------------------
 
 class TestT7ValidProductionApproval:
-    """T7: production output_root + valid corpus + valid target approval → gate 통과."""
+    """T7: production data_root + valid corpus + valid target approval → gate 통과."""
 
     def test_all_approvals_valid(self, tmp_path: Path):
         """production output + valid corpus approval + valid target approval → gate 통과."""
@@ -408,7 +408,7 @@ class TestT8SessionGuard:
         """이 테스트에서 production 파일을 변경하지 않았는지 확인."""
         prod_dataset = Path("output/bench/tsu_dataset.jsonl")
         prod_manifest = Path("output/bench/tsu_manifest.json")
-        prod_registry = Path("output/registry/identity_registry.json")
+        prod_registry = Path("output/registry/documents.json")
 
         hashes_before = {}
         for p in [prod_dataset, prod_manifest, prod_registry]:
@@ -425,31 +425,33 @@ class TestT8SessionGuard:
 
 
 # ---------------------------------------------------------------------------
-# Additional: resolve_target_paths explicit output_root tests
+# Additional: resolve_target_paths explicit data_root tests
 # ---------------------------------------------------------------------------
 
 class TestResolveTargetPaths:
     """resolve_target_paths()의 기본 동작 검증."""
 
-    def test_explicit_output_root_derives_all_paths(self, tmp_path: Path):
-        """output_root 제공 시 dataset/manifest/registry가 모두 그 아래에서 파생."""
+    def test_explicit_data_root_derives_all_paths(self, tmp_path: Path):
+        """data_root 제공 시 dataset/manifest/registry가 모두 그 아래에서 파생."""
         tmp_output = tmp_path / "my_output"
-        target = resolve_target_paths(output_root=tmp_output)
+        target = resolve_target_paths(data_root=tmp_output)
 
-        assert target.output_root == tmp_output.resolve()
+        assert target.data_root == tmp_output.resolve()
+        assert "output" in str(target.dataset_path)
         assert "bench" in str(target.dataset_path)
         assert "tsu_dataset.jsonl" in str(target.dataset_path)
         assert "tsu_manifest.json" in str(target.manifest_path)
+        assert "data" in str(target.registry_path)
         assert "registry" in str(target.registry_path)
-        assert "identity_registry.json" in str(target.registry_path)
+        assert "documents.json" in str(target.registry_path)
 
     def test_all_paths_share_same_root(self, tmp_path: Path):
         """모든 mutation path가 동일한 output root 아래에 있는지."""
         tmp_output = tmp_path / "my_output"
-        target = resolve_target_paths(output_root=tmp_output)
+        target = resolve_target_paths(data_root=tmp_output)
 
         for p in [target.dataset_path, target.manifest_path, target.registry_path]:
-            assert target.output_root in p.resolve().parents or p.resolve().parent.parent == target.output_root
+            assert target.data_root in p.resolve().parents or p.resolve().parent.parent == target.data_root
 
 
 if __name__ == "__main__":

@@ -14,8 +14,8 @@ Approval gate (PR #111):
   - CLI option cannot circumvent the gate
 
 Production path safety (NAE-MERGE-PRODUCTION-PATH-SAFETY-001):
-  - No implicit production default — output_root must be explicit
-  - dataset/manifest/registry must share the same output root
+  - No implicit production default — data_root must be explicit
+  - dataset/manifest/registry must share the same data root
   - Production target requires separate approval artifact
   - realpath-based production detection (no string comparison)
 """
@@ -43,13 +43,104 @@ from scripts.corpus_approval_gate import (
 )
 
 from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH, registry_path_for
-from core.identity_registry import load_identity_registry, save_identity_registry
 from core.tsu_builder import (
     tsu_dataset_lock,
     write_tsu_dataset,
     write_manifest,
 )
 
+
+# ---------------------------------------------------------------------------
+# Registry comparison allowlist (Rev.2 + Rev.3)
+# ---------------------------------------------------------------------------
+# ONLY these two fields are excluded from registry document comparison.
+# Every other field — including pipeline_state, last_processed_at,
+# ingest_status, chunk_count, corpus_membership, pipeline_flags, etc. —
+# is a comparison target (fail-closed).
+#
+# Rationale: reader usage in ui/pages/library.py:593-594,606 is for
+# screen display only; these fields still affect dataset inclusion/exclusion
+# and TSU record content via readers in hybrid_candidate_pipeline.py and
+# index_orchestrator.py.
+#
+# [Rev.3] Both single and double quotes are searched:
+#   git grep -nE "['\"]<field>['\"]" 6f311d1f -- core scripts ui NAE
+EXCLUDED_FROM_COMPARISON: frozenset[str] = frozenset({"excluded_at", "exclude_reason"})
+
+
+def compute_registry_preimage_hash(doc_entry: dict[str, object]) -> str:
+    """Compute SHA-256 pre-image hash of a registry document entry.
+
+    Uses ALL fields except those in EXCLUDED_FROM_COMPARISON.
+    This includes pipeline_flags sub-fields.
+
+    Returns hex digest string.
+    """
+    import json as _json
+
+    # Build a canonical representation excluding the allowlist fields
+    filtered: dict[str, object] = {}
+    for key, value in doc_entry.items():
+        if key in EXCLUDED_FROM_COMPARISON:
+            continue
+        # Deep-copy nested dicts (e.g., pipeline_flags)
+        if isinstance(value, dict):
+            filtered[key] = {k: v for k, v in value.items()}
+        elif isinstance(value, list):
+            filtered[key] = list(value)
+        else:
+            filtered[key] = value
+
+    canonical = _json.dumps(filtered, sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def compare_registry_entries(
+    existing: dict[str, object],
+    incoming: dict[str, object],
+) -> tuple[bool, list[str]]:
+    """Compare two registry document entries for equality.
+
+    Returns (is_equal, list_of_differences).
+    Fields in EXCLUDED_FROM_COMPARISON are always skipped.
+    All other fields are compared (fail-closed).
+
+    Nested dicts (pipeline_flags) and lists are compared element-wise.
+    """
+    differences: list[str] = []
+
+    all_keys = set(existing.keys()) | set(incoming.keys())
+    for key in sorted(all_keys):
+        if key in EXCLUDED_FROM_COMPARISON:
+            continue
+
+        has_existing = key in existing
+        has_incoming = key in incoming
+
+        if has_existing and not has_incoming:
+            differences.append(f"missing_in_incoming: {key}")
+            continue
+        if has_incoming and not has_existing:
+            differences.append(f"missing_in_existing: {key}")
+            continue
+
+        old_val = existing[key]
+        new_val = incoming[key]
+
+        if isinstance(old_val, dict) and isinstance(new_val, dict):
+            # Recurse into nested dicts (e.g., pipeline_flags)
+            sub_equal, sub_diffs = compare_registry_entries(old_val, new_val)
+            if not sub_equal:
+                for d in sub_diffs:
+                    differences.append(f"{key}.{d}")
+        elif isinstance(old_val, list) and isinstance(new_val, list):
+            if old_val != new_val:
+                differences.append(f"{key}: {old_val!r} != {new_val!r}")
+        else:
+            if old_val != new_val:
+                differences.append(f"{key}: {old_val!r} != {new_val!r}")
+
+    return (len(differences) == 0, differences)
 
 
 # ---------------------------------------------------------------------------
@@ -58,8 +149,8 @@ from core.tsu_builder import (
 
 @dataclass(frozen=True)
 class TargetPaths:
-    """Resolved mutation target paths — all derived from a single output_root."""
-    output_root: Path | None
+    """Resolved mutation target paths — all derived from a single data_root."""
+    data_root: Path | None
     dataset_path: Path
     manifest_path: Path
     registry_path: Path
@@ -67,76 +158,179 @@ class TargetPaths:
 
 
 def resolve_target_paths(
-    output_root: Optional[Path],
-    tsu_dataset_path: Optional[Path] = None,
-    manifest_path: Optional[Path] = None,
-    registry_path: Optional[Path] = None,
+    data_root: Optional[Path],
+    config_path: Optional[Path] = None,
 ) -> TargetPaths:
-    """Resolve mutation target paths from explicit output_root."""
-    if output_root is not None:
-        resolved = Path(output_root).resolve()
-        output_root_resolved = resolved
-    else:
-        output_root_resolved = None
+    """Resolve mutation target paths from explicit data_root."""
+    if data_root is not None:
+        resolved = Path(data_root).resolve()
 
-    ds_resolved = Path(tsu_dataset_path).resolve() if tsu_dataset_path is not None else None
-    mf_resolved = Path(manifest_path).resolve() if manifest_path is not None else None
-    rg_resolved = Path(registry_path).resolve() if registry_path is not None else None
+        # R3: hardlink detection — FAIL-CLOSED
+        if _detect_hardlink_alias(resolved, config_path):
+            raise CorpusMutationBlockedError(
+                f"Hardlink alias to production detected: {resolved}"
+            )
 
-    if output_root_resolved is not None:
-        bench_dir = output_root_resolved / "bench"
-        dataset_path = bench_dir / "tsu_dataset.jsonl"
-        manifest_path_resolved = bench_dir / "tsu_manifest.json"
-        registry_dir = output_root_resolved / "registry"
-        registry_path_resolved = registry_dir / "identity_registry.json"
-        is_production = _is_production_path(output_root_resolved)
+        # Canonical target paths (R1)
+        dataset_path = resolved / "output" / "bench" / "tsu_dataset.jsonl"
+        manifest_path_resolved = resolved / "output" / "bench" / "tsu_manifest.json"
+        registry_path_resolved = resolved / "data" / "제련완성본" / "registry" / "documents.json"
+
+        # R2: production identity check
+        is_production = _is_production_identity(resolved, config_path)
         return TargetPaths(
-            output_root=output_root_resolved,
+            data_root=resolved,
             dataset_path=dataset_path,
             manifest_path=manifest_path_resolved,
             registry_path=registry_path_resolved,
             is_production=is_production,
         )
 
-    paths_provided = [p for p in [ds_resolved, mf_resolved, rg_resolved] if p is not None]
-    if len(paths_provided) >= 2:
-        roots = set()
-        for p in paths_provided:
-            if "bench" in str(p):
-                roots.add(p.parent.parent)
-            elif "registry" in str(p):
-                roots.add(p.parent.parent)
-            else:
-                roots.add(p.parent)
-        if len(roots) > 1:
-            raise CorpusMutationBlockedError(
-                f"Mixed mutation paths detected — all paths must share the same output root. "
-                f"Roots: {sorted(str(r) for r in roots)}"
-            )
-        actual_root = next(iter(roots))
-        is_production = _is_production_path(actual_root)
-        return TargetPaths(
-            output_root=actual_root,
-            dataset_path=ds_resolved if ds_resolved else actual_root / "bench" / "tsu_dataset.jsonl",
-            manifest_path=mf_resolved if mf_resolved else actual_root / "bench" / "tsu_manifest.json",
-            registry_path=rg_resolved if rg_resolved else actual_root / "registry" / "identity_registry.json",
-            is_production=is_production,
-        )
-
-    prod_root = Path(DEFAULT_OUTPUT_DIR).resolve()
+    # No data_root provided — fail closed (no implicit defaults)
     return TargetPaths(
-        output_root=None,
-        dataset_path=Path(DEFAULT_TSU_DATASET_PATH),
-        manifest_path=Path(DEFAULT_TSU_MANIFEST_PATH),
-        registry_path=Path(registry_path_for(DEFAULT_OUTPUT_DIR)),
-        is_production=_is_production_path(prod_root),
+        data_root=None,
+        dataset_path=Path(""),
+        manifest_path=Path(""),
+        registry_path=Path(""),
+        is_production=False,
     )
 
 
-def _is_production_path(resolved_path: Path) -> bool:
-    """Check if a resolved path points to the production output directory."""
-    prod_root = Path(DEFAULT_OUTPUT_DIR).resolve()
-    return resolved_path == prod_root
+def _load_production_root(config_path: Optional[Path] = None) -> Optional[str]:
+    """Load merge-safety.production_root from config.yaml.
+
+    Returns the absolute path string, or None if not configured.
+    Fails closed on relative paths or non-existent directories.
+
+    Note: config_path=None means "no config" (returns None), NOT "use default".
+    To use the default config.yaml, pass Path(__file__).resolve().parent.parent / "config.yaml".
+    """
+    import yaml
+
+    # config_path=None explicitly means "no config" — return None immediately
+    if config_path is None:
+        return None
+
+    if not config_path.exists():
+        return None
+
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            cfg = yaml.safe_load(f)
+    except Exception:
+        return None
+
+    merge_safety = cfg.get("merge-safety") if isinstance(cfg, dict) else None
+    if not isinstance(merge_safety, dict):
+        return None
+
+    prod_root = merge_safety.get("production_root")
+    if prod_root is None:
+        return None
+
+    # Must be absolute path
+    if not os.path.isabs(prod_root):
+        raise CorpusMutationBlockedError(
+            f"merge-safety.production_root must be an absolute path, got: {prod_root!r}"
+        )
+
+    prod_path = Path(prod_root)
+    if not prod_path.is_dir():
+        raise CorpusMutationBlockedError(
+            f"merge-safety.production_root does not exist: {prod_root!r}"
+        )
+
+    return str(prod_path.resolve())
+
+
+def _is_production_identity(candidate: Path, config_path: Optional[Path] = None) -> bool:
+    """Determine if candidate is the production target.
+
+    Uses a single common function for all production checks:
+    - existing target: os.path.samefile based
+    - missing target: parent identity + lexical containment
+    - mixed definition: fail-closed (handled by caller)
+
+    Does NOT use: cwd, relative path equivalence, __file__ (except config lookup),
+    stored (st_dev, st_ino).
+    """
+    prod_root_str = _load_production_root(config_path)
+    if prod_root_str is None:
+        return False
+
+    prod_root = Path(prod_root_str)
+
+    # Resolve candidate to absolute
+    try:
+        candidate_resolved = candidate.resolve()
+    except (OSError, ValueError):
+        return False
+
+    # Case 1: candidate exists and is samefile as production root
+    if candidate_resolved.exists() and prod_root.exists():
+        try:
+            if os.path.samefile(str(candidate_resolved), str(prod_root)):
+                return True
+        except OSError:
+            pass
+
+    # Case 2: candidate doesn't exist — check parent identity + containment
+    if not candidate_resolved.exists():
+        # Check if the parent directory is production root
+        parent = candidate_resolved.parent
+        try:
+            parent_resolved = parent.resolve()
+            if parent_resolved.exists() and os.path.samefile(str(parent_resolved), str(prod_root)):
+                return True
+        except OSError:
+            pass
+
+        # Check lexical containment under production root (NFC + case normalized)
+        import unicodedata
+
+        candidate_norm = unicodedata.normalize("NFC", str(candidate_resolved))
+        prod_norm = unicodedata.normalize("NFC", str(prod_root))
+        candidate_lower = candidate_norm.casefold()
+        prod_lower = prod_norm.casefold()
+
+        if candidate_lower.startswith(prod_lower + os.sep):
+            return True
+
+    # Case 3: mixed definition — candidate resolves to production inode
+    # but data_root is not production root → fail-closed (handled by caller)
+    return False
+
+
+def _detect_hardlink_alias(candidate: Path, config_path: Optional[Path] = None) -> bool:
+    """Detect if candidate is a hardlink alias to production.
+
+    FAIL-CLOSED: if candidate's st_nlink > 1 or any alias shares production inode → True.
+    """
+    prod_root_str = _load_production_root(config_path)
+    if prod_root_str is None:
+        return False
+
+    prod_root = Path(prod_root_str)
+    try:
+        prod_stat = prod_root.stat()
+    except OSError:
+        return False
+
+    try:
+        candidate_stat = candidate.stat()
+    except OSError:
+        return False
+
+    # Same filesystem, same inode → hardlink
+    if (candidate_stat.st_dev == prod_stat.st_dev and
+            candidate_stat.st_ino == prod_stat.st_ino):
+        return True
+
+    # Candidate has multiple links
+    if candidate_stat.st_nlink > 1:
+        return True
+
+    return False
 
 
 def compute_dataset_sha256(dataset_path: Path) -> str:
@@ -352,11 +546,8 @@ def _validate_dataset(records: list[dict], dataset_path: Path) -> None:
 
 def merge_nae_corpus(
     source_id: Optional[str] = None,
-    output_root: Optional[Path] = None,
+    data_root: Optional[Path] = None,
     nae_corpus_dir: Optional[Path] = None,
-    tsu_dataset_path: Optional[Path] = None,
-    manifest_path: Optional[Path] = None,
-    registry_path: Optional[Path] = None,
     decisions_dir: Optional[Path] = None,
 ) -> dict:
     """Merge NAE corpus TSU into production TSU (F-3 safe).
@@ -374,23 +565,20 @@ def merge_nae_corpus(
       - Function-level enforcement: direct Python call also triggers gate
 
     Production path safety (NAE-MERGE-PRODUCTION-PATH-SAFETY-001):
-      - output_root must be explicit — no implicit production default
-      - dataset/manifest/registry derived from output_root
+      - data_root must be explicit — no implicit production default
+      - dataset/manifest/registry derived from data_root
       - Production target requires separate approval artifact
     """
     # Path resolution via resolve_target_paths() — no implicit defaults
     target = resolve_target_paths(
-        output_root=output_root,
-        tsu_dataset_path=tsu_dataset_path,
-        manifest_path=manifest_path,
-        registry_path=registry_path,
+        data_root=data_root,
     )
 
     # Block if no mutation paths specified at all
-    if target.output_root is None:
+    if target.data_root is None:
         raise CorpusMutationBlockedError(
-            "No output_root or mutation paths specified. "
-            "Provide explicit --output-root or tsu_dataset_path/manifest_path/registry_path."
+            "No data_root or mutation paths specified. "
+            "Provide explicit --data-root."
         )
 
     # Use resolved paths
@@ -404,11 +592,11 @@ def merge_nae_corpus(
 
     # Production target approval gate — before any mutation
     if target.is_production:
-        print(f"\nProduction target detected: {target.output_root}")
+        print(f"\nProduction target detected: {target.data_root}")
         valid, reason = verify_production_target_approval(
-            target_root=target.output_root,
+            target_root=target.data_root,
             source_id=source_id or "",
-            dataset_path=tsu_dataset_path,
+            dataset_path=target.dataset_path,
             decisions_dir=decisions_dir,
         )
         if not valid:
@@ -607,8 +795,8 @@ if __name__ == "__main__":
     )
     parser.add_argument("--source", required=True,
         help="Source ID to merge (e.g., Fuller_Complete_Works_Vol02)")
-    parser.add_argument("--output-root", required=True,
-        help="Explicit output root for dataset/manifest/registry mutation")
+    parser.add_argument("--data-root", required=True,
+        help="Explicit data root for dataset/manifest/registry mutation")
     parser.add_argument("--corpus-dir", default=None,
         help="NAE corpus TSU directory")
     parser.add_argument("--decisions-dir", default=None,
@@ -618,7 +806,7 @@ if __name__ == "__main__":
     try:
         result = merge_nae_corpus(
             source_id=args.source,
-            output_root=Path(args.output_root),
+            data_root=Path(args.data_root),
             nae_corpus_dir=Path(args.corpus_dir) if args.corpus_dir else None,
             decisions_dir=Path(args.decisions_dir) if args.decisions_dir else None,
         )
