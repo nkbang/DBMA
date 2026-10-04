@@ -28,7 +28,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -54,10 +54,450 @@ from core.identity_registry import load_identity_registry, save_identity_registr
 
 
 # ---------------------------------------------------------------------------
+# B2: Common identity building blocks (must be used by _is_production_identity
+#     and evaluate_approval_v2 — no duplicate NFC/casefold/samefile impl)
+# ---------------------------------------------------------------------------
+
+def _normalize_path_for_comparison(p: Path) -> str:
+    """Return an NFC-normalized, casefolded string of a path.
+
+    This is the single source of truth for path comparison normalization.
+    """
+    import unicodedata
+
+    return unicodedata.normalize("NFC", str(p)).casefold()
+
+
+def _paths_are_samefile(p1: Path, p2: Path) -> bool:
+    """Compare two *existing* paths using os.path.samefile with OSError guard.
+
+    Returns False when either path does not exist or samefile raises OSError.
+    """
+    try:
+        return p1.exists() and p2.exists() and os.path.samefile(str(p1), str(p2))
+    except OSError:
+        return False
+
+
+# ---------------------------------------------------------------------------
+# Approval v2 immutable validation boundary (S2-A)
+# ---------------------------------------------------------------------------
+from enum import Enum
+import re as _re_module
+
+
+class ApprovalState(str, Enum):
+    """Approval evaluation result state."""
+    VALID = "VALID"
+    REJECTED = "REJECTED"
+
+
+class ApprovalReasonCode(str, Enum):
+    """Reason codes for REJECTED approval evaluations."""
+    NOT_FOUND = "NOT_FOUND"
+    UNREADABLE = "UNREADABLE"
+    MALFORMED = "MALFORMED"
+    SCHEMA_VERSION = "SCHEMA_VERSION"
+    SOURCE_ID_UNSAFE = "SOURCE_ID_UNSAFE"
+    PATH_ESCAPE = "PATH_ESCAPE"
+    FIELD_MISSING = "FIELD_MISSING"
+    FIELD_TYPE = "FIELD_TYPE"
+    FIELD_FORMAT = "FIELD_FORMAT"
+    UNKNOWN_FIELD = "UNKNOWN_FIELD"
+    TARGET_MISMATCH = "TARGET_MISMATCH"
+    DECISION_NOT_APPROVED = "DECISION_NOT_APPROVED"
+    FUTURE_APPROVAL = "FUTURE_APPROVAL"
+    DATASET_SHA_MISMATCH = "DATASET_SHA_MISMATCH"
+    CONFIG_APPROVAL_DIR = "CONFIG_APPROVAL_DIR"
+
+
+# Module constant for scope value — used only with DATASET_SHA_MISMATCH
+FRESH_MERGE_PRECONDITION = "FRESH_MERGE_PRECONDITION"
+
+
+@dataclass(frozen=True)
+class ApprovalEvaluation:
+    """Immutable approval evaluation result (S2-A §3-8)."""
+    state: ApprovalState
+    reason_code: ApprovalReasonCode | None
+    source_id: str
+    approved_at: str | None = None
+    dataset_sha256_before: str | None = None
+    scope: Optional[str] = None
+
+
+# Required fields and their expected types for Approval v2
+_APPROVAL_V2_REQUIRED_FIELDS: frozenset[str] = frozenset({
+    "schema_version", "source_id", "target_paths_realpath",
+    "plan_hash", "reviewer_id", "gate_id", "dataset_sha256_before",
+    "final_decision", "approved_at",
+})
+
+_SOURCE_ID_PATTERN = _re_module.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]*$")
+
+
+def _load_approval_dir(config_path: Optional[Path] = None) -> str:
+    """Load approval_dir from config.yaml. Fail-closed on any config failure (S2-A §3-5)."""
+    import yaml
+
+    cfg = config_path or _DEFAULT_CONFIG_PATH
+    if not cfg.exists():
+        raise CorpusMutationBlockedError(f"Config file not found: {cfg}")
+    try:
+        with open(cfg, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+    except (yaml.YAMLError, OSError) as e:
+        raise CorpusMutationBlockedError(f"Failed to read config file {cfg}: {e}") from e
+
+    if not isinstance(data, dict):
+        raise CorpusMutationBlockedError(f"Config file {cfg} does not contain a mapping")
+
+    ms = data.get("merge-safety")
+    if not isinstance(ms, dict):
+        raise CorpusMutationBlockedError("merge-safety section missing in config")
+
+    approval_dir = ms.get("approval_dir")
+    if approval_dir is None:
+        raise CorpusMutationBlockedError("approval_dir key missing in merge-safety section")
+    if not isinstance(approval_dir, str):
+        raise CorpusMutationBlockedError(
+            f"approval_dir must be a string, got {type(approval_dir).__name__}"
+        )
+    if approval_dir == "":
+        raise CorpusMutationBlockedError("approval_dir is empty")
+    if not os.path.isabs(approval_dir):
+        raise CorpusMutationBlockedError(
+            f"approval_dir must be an absolute path, got relative: {approval_dir}"
+        )
+    if not os.path.exists(approval_dir):
+        raise CorpusMutationBlockedError(f"approval_dir does not exist: {approval_dir}")
+    if not os.path.isdir(approval_dir):
+        raise CorpusMutationBlockedError(f"approval_dir is not a directory: {approval_dir}")
+    if not os.access(approval_dir, os.R_OK):
+        raise CorpusMutationBlockedError(f"approval_dir is not readable: {approval_dir}")
+
+    return approval_dir
+
+
+def _validate_source_id(source_id: object) -> tuple[bool, ApprovalReasonCode]:
+    """Validate source_id safety (S2-A §3-4)."""
+    if not isinstance(source_id, str):
+        return False, ApprovalReasonCode.SOURCE_ID_UNSAFE
+    if source_id == "":
+        return False, ApprovalReasonCode.SOURCE_ID_UNSAFE
+    parts = source_id.split("/")
+    for part in parts:
+        if part == "..":
+            return False, ApprovalReasonCode.PATH_ESCAPE
+    if not _SOURCE_ID_PATTERN.match(source_id):
+        return False, ApprovalReasonCode.SOURCE_ID_UNSAFE
+    if source_id.startswith("."):
+        return False, ApprovalReasonCode.PATH_ESCAPE
+    return True, ApprovalReasonCode.SOURCE_ID_UNSAFE
+
+
+def _validate_target_paths(
+    approval_target_paths: list,
+    expected_paths: list,
+) -> tuple[bool, ApprovalReasonCode]:
+    """Validate target paths against expected TargetPaths (S2-A §3-6).
+
+    Uses the common identity building blocks (_normalize_path_for_comparison,
+    _paths_are_samefile) — no duplicate NFC/casefold/samefile implementation.
+    """
+    if not isinstance(approval_target_paths, list) or len(approval_target_paths) != 3:
+        return False, ApprovalReasonCode.FIELD_TYPE
+    if not isinstance(expected_paths, list) or len(expected_paths) != 3:
+        return False, ApprovalReasonCode.TARGET_MISMATCH
+
+    for approval_path_str, expected_path in zip(approval_target_paths, expected_paths):
+        if not isinstance(approval_path_str, str):
+            return False, ApprovalReasonCode.FIELD_TYPE
+        approval_p = Path(approval_path_str)
+        try:
+            approval_resolved = approval_p.resolve()
+        except (OSError, ValueError):
+            return False, ApprovalReasonCode.TARGET_MISMATCH
+        expected_resolved = Path(expected_path).resolve()
+
+        if _paths_are_samefile(approval_resolved, expected_resolved):
+            continue
+
+        # Fallback: NFC + casefold lexical comparison (for non-existing paths)
+        approval_norm = _normalize_path_for_comparison(approval_resolved)
+        expected_norm = _normalize_path_for_comparison(expected_resolved)
+        if approval_norm == expected_norm:
+            continue
+        return False, ApprovalReasonCode.TARGET_MISMATCH
+
+    return True, ApprovalReasonCode.TARGET_MISMATCH
+
+
+def evaluate_approval_v2(
+    approval_path: Path,
+    config_path: Optional[Path] = None,
+    expected_target_paths: Optional[list[str]] = None,
+    *,
+    dataset_sha256_current: str,
+    now: Optional[datetime] = None,
+) -> ApprovalEvaluation:
+    """Evaluate an Approval v2 artifact immutably (S2-A §3-8).
+
+    Does NOT modify the approval artifact. Returns an immutable ApprovalEvaluation.
+    """
+    if now is None:
+        now = datetime.now(timezone.utc)
+
+    if not approval_path.exists():
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.NOT_FOUND,
+            source_id="",
+        )
+
+    try:
+        raw = approval_path.read_text(encoding="utf-8")
+        data = json.loads(raw)
+    except (json.JSONDecodeError, OSError):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.MALFORMED,
+            source_id="",
+        )
+
+    if not isinstance(data, dict):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.MALFORMED,
+            source_id="",
+        )
+
+    sv = data.get("schema_version")
+    if not isinstance(sv, int) or sv != 2:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.SCHEMA_VERSION,
+            source_id=str(data.get("source_id", "")),
+        )
+    if "target_root_realpath" in data:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_MISSING,
+            source_id=str(data.get("source_id", "")),
+        )
+
+    source_id = data.get("source_id")
+    valid_sid, sid_reason = _validate_source_id(source_id)
+    if not valid_sid:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=sid_reason,
+            source_id=str(source_id) if isinstance(source_id, str) else "",
+        )
+
+    try:
+        approval_dir_str = _load_approval_dir(config_path)
+    except CorpusMutationBlockedError:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.CONFIG_APPROVAL_DIR,
+            source_id=source_id,
+        )
+
+    try:
+        approval_resolved = approval_path.resolve()
+        approval_dir_resolved = Path(approval_dir_str).resolve()
+        # Check if approval file is under approval_dir (containment)
+        # Uses common identity building blocks — no duplicate NFC/casefold impl
+        approval_parent_norm = _normalize_path_for_comparison(approval_resolved.parent)
+        dir_norm = _normalize_path_for_comparison(approval_dir_resolved)
+        approval_full_norm = _normalize_path_for_comparison(approval_resolved)
+        if not (
+            approval_parent_norm == dir_norm
+            or approval_full_norm.startswith(dir_norm + os.sep)
+            or approval_parent_norm.startswith(dir_norm + os.sep)
+        ):
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.PATH_ESCAPE,
+                source_id=source_id,
+            )
+    except OSError:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.PATH_ESCAPE,
+            source_id=source_id,
+        )
+
+    known_fields = _APPROVAL_V2_REQUIRED_FIELDS
+    for key in data:
+        if key not in known_fields:
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.UNKNOWN_FIELD,
+                source_id=source_id,
+            )
+
+    for field in _APPROVAL_V2_REQUIRED_FIELDS:
+        if field not in data:
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.FIELD_MISSING,
+                source_id=source_id,
+            )
+
+    # Type validation (S2-A §3-1)
+    schema_version = data["schema_version"]
+    if not isinstance(schema_version, int):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    target_paths = data["target_paths_realpath"]
+    if not isinstance(target_paths, list):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    plan_hash = data["plan_hash"]
+    if not isinstance(plan_hash, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    reviewer_id = data["reviewer_id"]
+    if not isinstance(reviewer_id, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    gate_id = data["gate_id"]
+    if not isinstance(gate_id, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    dataset_sha256_before = data["dataset_sha256_before"]
+    if not isinstance(dataset_sha256_before, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    final_decision = data["final_decision"]
+    if not isinstance(final_decision, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    approved_at_str = data["approved_at"]
+    if not isinstance(approved_at_str, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    # Format validation (S2-A §3-1)
+    if not isinstance(plan_hash, str) or not plan_hash.startswith("sha256:"):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+    hex_part = plan_hash[7:]
+    if len(hex_part) != 64 or not all(c in "0123456789abcdef" for c in hex_part):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+
+    if len(dataset_sha256_before) != 64 or not all(c in "0123456789abcdef" for c in dataset_sha256_before):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+
+    # approved_at: ISO-8601 parsing + future check (S2-A §3-9)
+    try:
+        approved_dt = datetime.fromisoformat(approved_at_str)
+    except (ValueError, TypeError):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+
+    if approved_dt.tzinfo is not None and now.tzinfo is None:
+        now = now.replace(tzinfo=approved_dt.tzinfo)
+    elif now.tzinfo is not None and approved_dt.tzinfo is None:
+        approved_dt = approved_dt.replace(tzinfo=now.tzinfo)
+
+    diff = approved_dt - now
+    if diff.total_seconds() > 300:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FUTURE_APPROVAL,
+            source_id=source_id,
+            approved_at=approved_at_str,
+        )
+
+    # final_decision must be exactly "APPROVED" (S2-A §3-7)
+    if final_decision != "APPROVED":
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.DECISION_NOT_APPROVED,
+            source_id=source_id,
+        )
+
+    # target_paths validation (S2-A §3-6)
+    if expected_target_paths is not None:
+        paths_valid, _ = _validate_target_paths(target_paths, expected_target_paths)
+        if not paths_valid:
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.TARGET_MISMATCH,
+                source_id=source_id,
+            )
+
+    # dataset_sha256_before validation (S2-A §3-10)
+    # scope="FRESH_MERGE_PRECONDITION" — 이 값은 recovery 자격의 단독 기준이 아니다
+    # (recovery invariant 는 S2-E 에서 확정)
+    if dataset_sha256_current != dataset_sha256_before:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.DATASET_SHA_MISMATCH,
+            source_id=source_id,
+            scope=FRESH_MERGE_PRECONDITION,
+        )
+
+    return ApprovalEvaluation(
+        state=ApprovalState.VALID,
+        reason_code=None,
+        source_id=source_id,
+        approved_at=approved_at_str,
+        dataset_sha256_before=dataset_sha256_before,
+    )
+
+
+# ---------------------------------------------------------------------------
 # Registry comparison allowlist (Rev.2 + Rev.3)
 # ---------------------------------------------------------------------------
-# ONLY these two fields are excluded from registry document comparison.
-# Every other field — including pipeline_state, last_processed_at,
 # ingest_status, chunk_count, corpus_membership, pipeline_flags, etc. —
 # is a comparison target (fail-closed).
 #
@@ -199,6 +639,57 @@ def resolve_target_paths(
     )
 
 
+# ---------------------------------------------------------------------------
+# B3: Thin connector between merge_nae_corpus() and evaluate_approval_v2
+# ---------------------------------------------------------------------------
+
+def _connect_approval_v2(
+    source_id: str,
+    target: TargetPaths,
+    config_path: Optional[Path],
+) -> ApprovalEvaluation:
+    """Thin connector: bridge merge_nae_corpus → evaluate_approval_v2.
+
+    Responsibilities (B3):
+      1. Read approval_dir from config and validate per S2-A §3-5 rules.
+      2. Validate source_id per S2-A §3-4 rules and build approval file path.
+      3. Pass expected target paths (dataset_path, manifest_path, registry_path)
+         to evaluate_approval_v2 along with the dataset path.
+    """
+    # (1) Read and validate approval_dir from config
+    approval_dir_str = _load_approval_dir(config_path)
+    approval_dir = Path(approval_dir_str).resolve()
+
+    # (2) Validate source_id (reuse _validate_source_id)
+    valid_sid, sid_reason = _validate_source_id(source_id)
+    if not valid_sid:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=sid_reason,
+            source_id=source_id,
+        )
+
+    # Build approval file path per S2-A §3-4 rules
+    approval_path = approval_dir / "production_targets" / f"{source_id}.json"
+
+    # (3) Expected target paths in order: dataset_path, manifest_path, registry_path
+    expected_paths = [
+        str(target.dataset_path),
+        str(target.manifest_path),
+        str(target.registry_path),
+    ]
+
+    # (4) Compute current dataset SHA-256 for FRESH_MERGE_PRECONDITION check
+    current_sha = compute_dataset_sha256(target.dataset_path)
+
+    return evaluate_approval_v2(
+        approval_path=approval_path,
+        config_path=config_path,
+        expected_target_paths=expected_paths,
+        dataset_sha256_current=current_sha,
+    )
+
+
 def _load_production_root(config_path: Optional[Path] = None) -> str:
     """Load merge-safety.production_root from config.yaml.
 
@@ -286,12 +777,8 @@ def _is_production_identity(candidate: Path, config_path: Optional[Path] = None)
         return False
 
     # Case 1: candidate exists and is samefile as production root
-    if candidate_resolved.exists() and prod_root.exists():
-        try:
-            if os.path.samefile(str(candidate_resolved), str(prod_root)):
-                return True
-        except OSError:
-            pass
+    if _paths_are_samefile(candidate_resolved, prod_root):
+        return True
 
     # Case 2: candidate doesn't exist — check parent identity + containment
     if not candidate_resolved.exists():
@@ -299,20 +786,15 @@ def _is_production_identity(candidate: Path, config_path: Optional[Path] = None)
         parent = candidate_resolved.parent
         try:
             parent_resolved = parent.resolve()
-            if parent_resolved.exists() and os.path.samefile(str(parent_resolved), str(prod_root)):
+            if parent_resolved.exists() and _paths_are_samefile(parent_resolved, prod_root):
                 return True
         except OSError:
             pass
 
-        # Check lexical containment under production root (NFC + case normalized)
-        import unicodedata
-
-        candidate_norm = unicodedata.normalize("NFC", str(candidate_resolved))
-        prod_norm = unicodedata.normalize("NFC", str(prod_root))
-        candidate_lower = candidate_norm.casefold()
-        prod_lower = prod_norm.casefold()
-
-        if candidate_lower.startswith(prod_lower + os.sep):
+        # Check lexical containment under production root (uses common helper)
+        candidate_norm = _normalize_path_for_comparison(candidate_resolved)
+        prod_norm = _normalize_path_for_comparison(prod_root)
+        if candidate_norm.startswith(prod_norm + os.sep):
             return True
 
     # Case 3: mixed definition — candidate resolves to production inode
@@ -402,13 +884,10 @@ def verify_production_target_approval(
 ) -> tuple[bool, str]:
     """Verify production target approval artifact exists and is valid.
 
-    Args:
-        target_root: The resolved output root path.
-        source_id: Source ID to look up.
-        dataset_path: Current dataset path for SHA comparison.
-        decisions_dir: Decisions directory (for context).
-        approval_dir: Explicit approval directory override (for testing).
-                      Defaults to NAE/review/human/production_targets/.
+    .. deprecated::
+        v1 — Do NOT call from merge_nae_corpus() path.
+        Use evaluate_approval_v2() via the thin connector function instead.
+        This function is retained for backward compatibility only.
     """
     if approval_dir is not None:
         approval_path = approval_dir / f"{source_id}.json"
@@ -642,20 +1121,19 @@ def merge_nae_corpus(
     nae_corpus_dir = Path(nae_corpus_dir or (Path("NAE") / "corpus" / "tsu"))
     decisions_dir = Path(decisions_dir or (Path("NAE") / "review" / "human" / "decisions"))
 
-    # Production target approval gate — before any mutation
+    # Production target approval gate — before any mutation (B3: use v2 connector)
     if target.is_production:
         print(f"\nProduction target detected: {target.data_root}")
-        valid, reason = verify_production_target_approval(
-            target_root=target.data_root,
+        eval_result = _connect_approval_v2(
             source_id=source_id or "",
-            dataset_path=target.dataset_path,
-            decisions_dir=decisions_dir,
+            target=target,
+            config_path=config_path,
         )
-        if not valid:
+        if eval_result.state != ApprovalState.VALID:
             raise CorpusMutationBlockedError(
-                f"Production target approval FAILED: {reason}"
+                f"Production target approval FAILED: {eval_result.reason_code}"
             )
-        print(f"  Production target approval PASSED: {reason}")
+        print(f"  Production target approval PASSED: VALID")
 
     # 0. TSU planning — planned_tsu_ids 생성 (approval gate용)
     planned_tsu_ids: set[str] = set()

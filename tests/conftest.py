@@ -88,10 +88,16 @@ def _monkeypatch_default_config(tmp_path):
     """
     import scripts.merge_nae_corpus as mod
     
-    # Create a tmp config with valid but non-matching production_root
+    # Create a tmp config with valid but non-matching production_root and approval_dir
     fake_prod = tmp_path / "fake_nonmatching_prod"
     fake_prod.mkdir(parents=True)  # Must exist for _load_production_root
-    config_content = f"merge-safety:\n  production_root: {fake_prod.resolve()}\n"
+    fake_approval = tmp_path / "fake_nonmatching_approval"
+    fake_approval.mkdir(parents=True)  # Must exist for approval_dir validation
+    config_content = (
+        f"merge-safety:\n"
+        f"  production_root: {fake_prod.resolve()}\n"
+        f"  approval_dir: {fake_approval.resolve()}\n"
+    )
     tmp_config = tmp_path / "config.yaml"
     tmp_config.write_text(config_content, encoding="utf-8")
     

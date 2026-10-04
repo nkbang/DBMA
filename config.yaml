@@ -220,3 +220,5 @@ reset:
 merge-safety:
   # R4: Production root — absolute path only, fail-closed on missing/relative/non-existent
   production_root: "/absolute/path/to/production/root"
+  # Approval v2 artifact directory — absolute path only, fail-closed on missing/relative/non-existent
+  approval_dir: "/absolute/path/to/approval/dir"
