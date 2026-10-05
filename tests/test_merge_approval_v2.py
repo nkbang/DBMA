@@ -1644,12 +1644,16 @@ class TestS2C1DatasetShaIntegration:
     """FIX-2C-1: 실제 merge_nae_corpus() 호출로 dataset_sha256_before 검증 테스트."""
 
     def test_sha_match_returns_completed(self, tmp_path: Path):
-        """FIX-2C-1(a): dataset sha 일치 → status == 'completed'."""
+        """FIX-2C-1(a): dataset sha 일치 -> status == 'completed'.
+
+        plan_hash는 더미가 아닌 테스트 내 독립 참조 구현으로 계산한 실제 값으로 교체.
+        레코드는 _transform_nae_record(...) 결과를 사용.
+        """
         import json
         from datetime import datetime, timezone
 
         import scripts.merge_nae_corpus as mod
-        from scripts.merge_nae_corpus import merge_nae_corpus, CorpusMutationBlockedError
+        from scripts.merge_nae_corpus import merge_nae_corpus, CorpusMutationBlockedError, _transform_nae_record
         from scripts.corpus_approval_gate import ApprovalStatus
 
         prod = tmp_path / "mock_prod"
@@ -1670,6 +1674,54 @@ class TestS2C1DatasetShaIntegration:
                 _sha.update(chunk)
         actual_sha = _sha.hexdigest()
 
+        # Independent reference implementation for plan_hash (never imports compute_plan_hash)
+        def _ref_canonical_json_bytes(obj):
+            try:
+                return json.dumps(
+                    obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False,
+                ).encode("utf-8")
+            except (TypeError, ValueError) as exc:
+                raise CorpusMutationBlockedError(
+                    f"plan_hash: value is not canonically serialisable: {exc}"
+                ) from exc
+
+        def _ref_record_content_sha256(record):
+            return _h.sha256(_ref_canonical_json_bytes(record)).hexdigest()
+
+        def _ref_compute_plan_hash(source_id, nae_records, target_paths):
+            if not isinstance(source_id, str):
+                raise CorpusMutationBlockedError("plan_hash: source_id must be a str")
+            if len(target_paths) != 3:
+                raise CorpusMutationBlockedError(
+                    f"plan_hash: exactly 3 targets required, got {len(target_paths)}"
+                )
+            rows = []
+            seen = set()
+            for rec in nae_records:
+                tsu_id = rec.get("tsu_id") if isinstance(rec, dict) else None
+                if not isinstance(tsu_id, str) or not tsu_id:
+                    raise CorpusMutationBlockedError("plan_hash: record without a valid str tsu_id")
+                if tsu_id in seen:
+                    raise CorpusMutationBlockedError(f"plan_hash: duplicate tsu_id {tsu_id!r}")
+                seen.add(tsu_id)
+                rows.append({"tsu_id": tsu_id, "content_sha256": _ref_record_content_sha256(rec)})
+            rows.sort(key=lambda r: r["tsu_id"])
+            payload = {
+                "v": 1,
+                "source_id": source_id,
+                "records": rows,
+                "targets": [str(Path(p).resolve()) for p in target_paths],
+            }
+            return "sha256:" + _h.sha256(_ref_canonical_json_bytes(payload)).hexdigest()
+
+        # Transform NAE record and compute real plan_hash
+        # doc_id matches merge_nae_corpus: f"nae_{item.name}" where item.name = "TSU-0010"
+        nae_rec = {"work_id": "TEST_SOURCE_SHA_MATCH", "tsu_id": "TSU-0010"}
+        doc_id = "nae_TSU-0010"
+        transformed = _transform_nae_record(nae_rec, doc_id)
+        target_paths = [ds, mf, rg]
+        approved_plan_hash = _ref_compute_plan_hash("TEST_SOURCE_SHA_MATCH", [transformed], target_paths)
+
         approval_dir = tmp_path / "approval_dir"
         approval_dir.mkdir()
         now_str = datetime.now(timezone.utc).isoformat()
@@ -1677,7 +1729,7 @@ class TestS2C1DatasetShaIntegration:
             "schema_version": 2,
             "source_id": "TEST_SOURCE_SHA_MATCH",
             "target_paths_realpath": [str(ds.resolve()), str(mf.resolve()), str(rg.resolve())],
-            "plan_hash": "sha256:" + "a" * 64,
+            "plan_hash": approved_plan_hash,
             "reviewer_id": "R-TEST",
             "gate_id": "G-TEST",
             "dataset_sha256_before": actual_sha,

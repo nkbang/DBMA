@@ -109,6 +109,8 @@ class ApprovalReasonCode(str, Enum):
     FUTURE_APPROVAL = "FUTURE_APPROVAL"
     DATASET_SHA_MISMATCH = "DATASET_SHA_MISMATCH"
     CONFIG_APPROVAL_DIR = "CONFIG_APPROVAL_DIR"
+    # S2-B: approved plan (approval.plan_hash) != actual merge plan (computed from nae_records + targets)
+    PLAN_HASH_MISMATCH = "PLAN_HASH_MISMATCH"
 
 
 # Module constant for scope value — used only with DATASET_SHA_MISMATCH
@@ -124,6 +126,94 @@ class ApprovalEvaluation:
     approved_at: str | None = None
     dataset_sha256_before: str | None = None
     scope: Optional[str] = None
+    # S2-B: the approved plan_hash from the artifact. Set ONLY when state == VALID;
+    # REJECTED results always carry None (a rejected approval is never a comparison basis).
+    plan_hash: Optional[str] = None
+
+
+# ---------------------------------------------------------------------------
+# S2-B: plan_hash — immutable binding of "what will be merged, and where"
+# ---------------------------------------------------------------------------
+
+# Version of the plan_hash payload layout. Bump when the payload definition changes
+# so that hashes of different algorithms can never be confused.
+PLAN_HASH_VERSION = 1
+
+
+def _canonical_json_bytes(obj: object) -> bytes:
+    """Single canonical JSON serialisation used for BOTH the per-record content hash
+    and the final plan hash (S2-B G-5).
+
+    sort_keys + compact separators + ensure_ascii=False + allow_nan=False, UTF-8.
+    No text normalisation (NFC etc.) is applied: content identity is exact.
+    Anything that cannot be serialised canonically (NaN/Infinity, non-JSON types,
+    non-str keys that cannot be sorted) fails closed.
+    """
+    try:
+        return json.dumps(
+            obj,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError) as exc:
+        raise CorpusMutationBlockedError(
+            f"plan_hash: value is not canonically serialisable: {exc}"
+        ) from exc
+
+
+def _record_content_sha256(record: dict) -> str:
+    """SHA-256 (lowercase hex, no prefix) of the canonical JSON of one transformed record."""
+    return hashlib.sha256(_canonical_json_bytes(record)).hexdigest()
+
+
+def compute_plan_hash(
+    source_id: str,
+    nae_records: list[dict],
+    target_paths: list[Path] | list[str],
+) -> str:
+    """Compute the plan_hash of a merge plan (S2-B).
+
+    Payload (canonical JSON):
+        {"v": 1,
+         "source_id": <source_id>,
+         "records": [{"tsu_id": ..., "content_sha256": ...}, ...]   # sorted by tsu_id
+         "targets": [dataset, manifest, registry]}                   # str(Path.resolve()), fixed order
+
+    Pure function (no file reads; Path.resolve() only normalises the given paths).
+    Not part of the hash: dataset SHA, timestamps, registry entries.
+
+    Fails closed (CorpusMutationBlockedError) on: non-str source_id, missing/non-str/
+    duplicate tsu_id, non-canonically-serialisable record content, or a target list
+    that is not exactly 3 entries.
+    """
+    if not isinstance(source_id, str):
+        raise CorpusMutationBlockedError("plan_hash: source_id must be a str")
+    if len(target_paths) != 3:
+        raise CorpusMutationBlockedError(
+            f"plan_hash: exactly 3 targets (dataset, manifest, registry) required, got {len(target_paths)}"
+        )
+
+    rows: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for rec in nae_records:
+        tsu_id = rec.get("tsu_id") if isinstance(rec, dict) else None
+        if not isinstance(tsu_id, str) or not tsu_id:
+            raise CorpusMutationBlockedError("plan_hash: record without a valid str tsu_id")
+        if tsu_id in seen:
+            raise CorpusMutationBlockedError(f"plan_hash: duplicate tsu_id {tsu_id!r}")
+        seen.add(tsu_id)
+        rows.append({"tsu_id": tsu_id, "content_sha256": _record_content_sha256(rec)})
+    rows.sort(key=lambda r: r["tsu_id"])
+
+    payload = {
+        "v": PLAN_HASH_VERSION,
+        "source_id": source_id,
+        "records": rows,
+        "targets": [str(Path(p).resolve()) for p in target_paths],
+    }
+    return "sha256:" + hashlib.sha256(_canonical_json_bytes(payload)).hexdigest()
 
 
 # Required fields and their expected types for Approval v2
@@ -492,6 +582,7 @@ def evaluate_approval_v2(
         source_id=source_id,
         approved_at=approved_at_str,
         dataset_sha256_before=dataset_sha256_before,
+        plan_hash=plan_hash,
     )
 
 
@@ -1236,6 +1327,27 @@ def merge_nae_corpus(
                 f"(extra={sorted(mutation_ids - planned_tsu_ids)[:5]}, "
                 f"missing={sorted(planned_tsu_ids - mutation_ids)[:5]})"
             )
+
+        # S2-B: approved plan == actual plan, or no write at all.
+        # Placed right after the mutation-set check, inside the existing tsu_dataset_lock and
+        # BEFORE any dataset/registry/manifest write. Order of reads/locks/writes is unchanged.
+        if target.is_production:
+            approved_plan_hash = eval_result.plan_hash
+            if approved_plan_hash is None:
+                raise CorpusMutationBlockedError(
+                    f"Corpus mutation BLOCKED: {ApprovalReasonCode.PLAN_HASH_MISMATCH.value} "
+                    "(VALID approval carries no plan_hash)"
+                )
+            actual_plan_hash = compute_plan_hash(
+                source_id or "",
+                nae_records,
+                [target.dataset_path, target.manifest_path, target.registry_path],
+            )
+            if actual_plan_hash != approved_plan_hash:
+                raise CorpusMutationBlockedError(
+                    f"Corpus mutation BLOCKED: {ApprovalReasonCode.PLAN_HASH_MISMATCH.value} "
+                    f"(approved={approved_plan_hash!r}, actual={actual_plan_hash!r})"
+                )
 
         # 4. Dedup by tsu_id (F-3 idempotency)
         existing_ids = {r["tsu_id"] for r in existing_records}
