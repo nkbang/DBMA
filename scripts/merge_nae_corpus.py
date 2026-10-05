@@ -1137,6 +1137,142 @@ def _transform_nae_record(nae_rec: dict, doc_id: str) -> dict:
     }
 
 
+# ---------------------------------------------------------------------------
+# E-0a — extracted module-level functions (pure / read-only unless noted)
+# ---------------------------------------------------------------------------
+
+def _collect_nae_candidates(
+    nae_corpus_dir: Path, source_id: str
+) -> tuple[list[dict], dict[Path, dict]]:
+    """Collect NAE corpus TSU records and document metadata.
+
+    Read-only: never writes to disk.  Raises FileNotFoundError for missing
+    directory (same message semantics as the original inline path).
+    """
+    if not nae_corpus_dir.exists():
+        raise FileNotFoundError(
+            f"NAE corpus directory not found: {nae_corpus_dir}"
+        )
+
+    nae_records: list[dict] = []
+    nae_docs_info: dict[Path, dict] = {}
+
+    for item in sorted(nae_corpus_dir.glob("*")):
+        if not item.is_dir():
+            continue
+        tsu_file = item / "tsu.json"
+        if not tsu_file.exists():
+            continue
+
+        # record-level source filter: work_id outside the approved scope is
+        # never merged
+        data = [
+            r for r in json.loads(tsu_file.read_text(encoding="utf-8"))
+            if r.get("work_id") == source_id
+        ]
+        if not data:
+            continue
+
+        doc_id = f"nae_{item.name}"
+        nae_docs_info[item] = {
+            "document_id": doc_id,
+            "title": data[0].get("book", ""),
+            "author": data[0].get("author", ""),
+            "record_count": len(data),
+        }
+
+        for nae_rec in data:
+            prod_rec = _transform_nae_record(nae_rec, doc_id)
+            nae_records.append(prod_rec)
+
+    return nae_records, nae_docs_info
+
+
+def _dedup_new_records(
+    nae_records: list[dict], existing_records: list[dict]
+) -> list[dict]:
+    """Deduplicate *nae_records* against *existing_records* by tsu_id.
+
+    Preserves order of first occurrence in *nae_records*.  Returns a new list;
+    both inputs are left unchanged.  KeyError on missing 'tsu_id' is preserved
+    from the original inline set-comprehension behaviour.
+    """
+    existing_ids = {r["tsu_id"] for r in existing_records}
+    return [rec for rec in nae_records if rec["tsu_id"] not in existing_ids]
+
+
+def _compose_candidate_dataset(
+    existing_records: list[dict], new_records: list[dict]
+) -> list[dict]:
+    """Return a new list: existing_records + new_records (order preserved).
+
+    Inputs are never mutated.
+    """
+    return existing_records + new_records
+
+
+def _new_registry_entry(
+    item: Path,
+    info: dict,
+    created_at: str,
+    last_processed_at: str,
+) -> dict:
+    """Build a registry document entry literal for a new NAE document.
+
+    Inputs are never mutated.  Returns a fresh dict with the same fields and
+    values as the original inline literal.
+    """
+    return {
+        "document_id": info["document_id"],
+        "source_file": f"{item.name}.jsonl",
+        "title": info["title"],
+        "author": info["author"],
+        "status": "processed",
+        "chunk_count": info["record_count"],
+        "language": "en",
+        "source_type": "nae_canonical",
+        "doc_type": "신학",
+        "ingest_status": "PROCESSED",
+        "pipeline_state": "INDEXED",
+        "created_at": created_at,
+        "last_processed_at": last_processed_at,
+        "last_content_hash": f"nae_{item.name}",
+        "corpus_membership": "default",
+        "pipeline_flags": {
+            "ingested": True,
+            "copied": True,
+            "extracted": True,
+            "cleaned": True,
+            "chunked": True,
+            "output_generated": True,
+            "verified": True,
+        },
+    }
+
+
+def _apply_new_documents(
+    registry: dict, nae_docs_info: dict[Path, dict]
+) -> list[str]:
+    """Add new document_ids to *registry["documents"]* in-place.
+
+    Only modifies the passed *registry* dict; existing entries are preserved
+    byte-for-byte.  Never writes to disk.  Returns the list of newly added
+    document_id strings (may be empty if all already exist).
+    """
+    added: list[str] = []
+    documents = registry["documents"]
+    for item, info in nae_docs_info.items():
+        doc_id = info["document_id"]
+        if doc_id not in documents:
+            documents[doc_id] = _new_registry_entry(
+                item, info,
+                created_at=datetime.now().isoformat(),
+                last_processed_at=datetime.now().isoformat(),
+            )
+            added.append(doc_id)
+    return added
+
+
 def _read_existing_dataset(dataset_path: Path) -> list[dict]:
     """Read existing TSU dataset, return list of records.
 
@@ -1509,13 +1645,66 @@ def _build_intent_payload(
     return payload
 
 
-def _fsync_directory_strict(directory: Path) -> None:
-    """fsync a directory and PROPAGATE any error (core's helper silently ignores directory fsync errors)."""
+# ---------------------------------------------------------------------------
+# E-0b — durability barrier
+# ---------------------------------------------------------------------------
+
+def _fsync_directory_impl(directory: Path) -> None:
+    """Low-level directory fsync.  Opens, fsyncs, closes (both success and
+    failure paths).  Propagates OSError unchanged."""
     fd = os.open(str(directory), os.O_RDONLY)
     try:
         os.fsync(fd)
     finally:
         os.close(fd)
+
+
+def _fsync_directory_strict(directory: Path) -> None:
+    """Thin wrapper around _fsync_directory_impl for intent-record calls.
+
+    Preserves the original contract (fsync a directory and PROPAGATE any error).
+    The actual fsync implementation lives in _fsync_directory_impl so that the
+    durability barrier (_ensure_durable) can call the core logic directly
+    without going through the intent-specific wrapper.
+    """
+    _fsync_directory_impl(directory)
+
+
+def _ensure_durable(path: Path) -> None:
+    """Durability barrier for *path* (file or directory).
+
+    1. Opens the file in read-only mode, calls os.fsync(fd), and closes the fd
+       on both success and failure paths.
+    2. Then fsyncs the parent directory via _fsync_directory_impl(strict=True).
+
+    Any OSError from either step is converted to
+    CorpusMutationBlockedError("Corpus mutation BLOCKED: durability barrier
+    failed for <path>: <cause>") and re-raised with ``from exc`` to preserve
+    the original cause.
+    """
+    exc_for_cause: Optional[BaseException] = None
+    try:
+        fd = os.open(str(path), os.O_RDONLY)
+        try:
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+    except OSError as exc:
+        exc_for_cause = exc
+        raise CorpusMutationBlockedError(
+            f"Corpus mutation BLOCKED: durability barrier failed for {path}: {exc}"
+        ) from exc
+
+    parent = Path(path).parent
+    try:
+        _fsync_directory_impl(parent)
+    except OSError as exc:
+        if exc_for_cause is None:
+            exc_for_cause = exc
+        raise CorpusMutationBlockedError(
+            f"Corpus mutation BLOCKED: durability barrier failed for {path}: {exc}"
+        ) from exc_for_cause
+
 
 
 def _write_intent_durable(path: Path, payload: dict) -> None:
@@ -1734,42 +1923,9 @@ def _merge_nae_corpus_locked(
         existing_records = _read_existing_dataset(tsu_dataset_path)
         print(f"  Found {len(existing_records)} existing records")
 
-        # 3. Read NAE corpus TSU records
+        # 3. Read NAE corpus TSU records (E-0a: extracted)
         print(f"\nScanning NAE corpus TSU at {nae_corpus_dir}...")
-        if not nae_corpus_dir.exists():
-            raise FileNotFoundError(
-                f"NAE corpus directory not found: {nae_corpus_dir}"
-            )
-
-        nae_records = []
-        nae_docs_info: dict[Path, dict] = {}
-
-        for item in sorted(nae_corpus_dir.glob("*")):
-            if not item.is_dir():
-                continue
-            tsu_file = item / "tsu.json"
-            if not tsu_file.exists():
-                continue
-
-            # 레코드 단위 source filter: 승인 범위 밖 work_id는 절대 병합하지 않는다
-            data = [
-                r for r in json.loads(tsu_file.read_text(encoding="utf-8"))
-                if r.get("work_id") == source_id
-            ]
-            if not data:
-                continue
-            doc_id = f"nae_{item.name}"
-            nae_docs_info[item] = {
-                "document_id": doc_id,
-                "title": data[0].get("book", ""),
-                "author": data[0].get("author", ""),
-                "record_count": len(data),
-            }
-
-            for nae_rec in data:
-                prod_rec = _transform_nae_record(nae_rec, doc_id)
-                nae_records.append(prod_rec)
-
+        nae_records, nae_docs_info = _collect_nae_candidates(nae_corpus_dir, source_id)
         print(f"  Read {len(nae_records)} NAE corpus records from {len(nae_docs_info)} documents")
 
         # 승인 범위 방어선: mutation 대상 ID 집합 == 승인된 planned 집합이어야 한다
@@ -1802,15 +1958,11 @@ def _merge_nae_corpus_locked(
                     f"(approved={approved_plan_hash!r}, actual={actual_plan_hash!r})"
                 )
 
-        # 4. Dedup by tsu_id (F-3 idempotency)
-        existing_ids = {r["tsu_id"] for r in existing_records}
-        new_records = [
-            rec for rec in nae_records
-            if rec["tsu_id"] not in existing_ids
-        ]
+        # 4. Dedup by tsu_id (F-3 idempotency, E-0a: extracted)
+        new_records = _dedup_new_records(nae_records, existing_records)
 
-        # 5. Compose candidate dataset
-        all_records = existing_records + new_records
+        # 5. Compose candidate dataset (E-0a: extracted)
+        all_records = _compose_candidate_dataset(existing_records, new_records)
 
         # 6. Validation before replace (F-3)
         print("\nValidating candidate dataset...")
@@ -1849,39 +2001,10 @@ def _merge_nae_corpus_locked(
             # a failed phase update raises: registry and manifest are then never written
             intent_payload = _advance_intent_phase(intent_path, intent_payload, IntentPhase.DATASET_WRITTEN)
 
-        # 8. Update registry (F-3: corpus_membership="default")
+        # 8. Update registry (F-3: corpus_membership="default", E-0a: extracted)
         print(f"\nUpdating registry at {registry_path}...")
         registry = load_identity_registry(registry_path)
-
-        for item, info in nae_docs_info.items():
-            doc_id = info["document_id"]
-            if doc_id not in registry["documents"]:
-                registry["documents"][doc_id] = {
-                    "document_id": doc_id,
-                    "source_file": f"{item.name}.jsonl",
-                    "title": info["title"],
-                    "author": info["author"],
-                    "status": "processed",
-                    "chunk_count": info["record_count"],
-                    "language": "en",
-                    "source_type": "nae_canonical",
-                    "doc_type": "신학",
-                    "ingest_status": "PROCESSED",
-                    "pipeline_state": "INDEXED",
-                    "created_at": datetime.now().isoformat(),
-                    "last_processed_at": datetime.now().isoformat(),
-                    "last_content_hash": f"nae_{item.name}",
-                    "corpus_membership": "default",
-                    "pipeline_flags": {
-                        "ingested": True,
-                        "copied": True,
-                        "extracted": True,
-                        "cleaned": True,
-                        "chunked": True,
-                        "output_generated": True,
-                        "verified": True,
-                    },
-                }
+        _apply_new_documents(registry, nae_docs_info)
 
         if not save_identity_registry(registry, str(registry_path)):
             # S2-D: save_identity_registry() reports failure by returning False; never advance the intent phase
@@ -1889,6 +2012,10 @@ def _merge_nae_corpus_locked(
                 f"Corpus mutation BLOCKED: registry write failed for {registry_path}"
             )
         print(f"  Updated registry with {len(nae_docs_info)} new documents")
+
+        # E-0b: durability barrier — after successful registry save, before phase advance
+        _ensure_durable(registry_path)
+
         if intent_payload is not None:
             # a failed phase update raises: the manifest is then never written
             intent_payload = _advance_intent_phase(intent_path, intent_payload, IntentPhase.REGISTRY_WRITTEN)
