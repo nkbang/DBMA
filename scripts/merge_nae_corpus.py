@@ -28,7 +28,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -129,6 +129,11 @@ class ApprovalEvaluation:
     # S2-B: the approved plan_hash from the artifact. Set ONLY when state == VALID;
     # REJECTED results always carry None (a rejected approval is never a comparison basis).
     plan_hash: Optional[str] = None
+    # S2-C: identity of the approval artifact that was actually validated. Set ONLY when
+    # state == VALID (sha256 of the very bytes that were decoded, parsed and validated, and the
+    # resolved path they were read from); REJECTED results always carry None.
+    artifact_sha256: Optional[str] = None
+    artifact_path: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -345,10 +350,15 @@ def evaluate_approval_v2(
             source_id="",
         )
 
+    # S2-C: read the artifact bytes exactly once. The same bytes are decoded, parsed, validated
+    # and hashed (artifact_sha256); the file is never re-read afterwards.
+    # Existing error mapping is preserved: OSError -> MALFORMED (UNREADABLE is not used here).
+    # A non-UTF-8 artifact is MALFORMED as well (previously UnicodeDecodeError escaped).
     try:
-        raw = approval_path.read_text(encoding="utf-8")
+        raw_bytes = approval_path.read_bytes()
+        raw = raw_bytes.decode("utf-8")
         data = json.loads(raw)
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError):
         return ApprovalEvaluation(
             state=ApprovalState.REJECTED,
             reason_code=ApprovalReasonCode.MALFORMED,
@@ -583,6 +593,8 @@ def evaluate_approval_v2(
         approved_at=approved_at_str,
         dataset_sha256_before=dataset_sha256_before,
         plan_hash=plan_hash,
+        artifact_sha256=hashlib.sha256(raw_bytes).hexdigest(),
+        artifact_path=str(Path(approval_path).resolve()),
     )
 
 
@@ -1163,6 +1175,414 @@ def _validate_dataset(records: list[dict], dataset_path: Path) -> None:
             raise ValueError(f"Unrelated TSU not preserved: {missing}")
 
 
+# ---------------------------------------------------------------------------
+# S2-C: write-ahead intent (schema v1)
+#
+# The intent records, BEFORE the first production write, what is about to be changed, under which
+# approval, and from which pre-state. It is ONE piece of pre-evidence for a later recovery stage
+# (S2-E); `phase` is only the last recorded progress state and is never, by itself, the basis of a
+# recovery decision. This module reads an existing intent only to decide whether a new merge must be
+# blocked; it contains no recovery / resume / rollback logic.
+# ---------------------------------------------------------------------------
+
+from core.tsu_builder import _atomic_write_text  # noqa: E402  (reused as-is; core is not modified)
+
+INTENT_VERSION = 1
+INTENT_FILENAME = "tsu_merge_intent.json"
+
+
+class IntentPhase(str, Enum):
+    """Last recorded progress of a production merge (diagnostic; not a recovery basis by itself)."""
+    INTENT_WRITTEN = "INTENT_WRITTEN"
+    DATASET_WRITTEN = "DATASET_WRITTEN"
+    REGISTRY_WRITTEN = "REGISTRY_WRITTEN"
+    COMMITTED = "COMMITTED"
+
+
+# The only legal phase transitions, each performed right after the corresponding data write.
+_INTENT_NEXT_PHASE: dict[IntentPhase, IntentPhase] = {
+    IntentPhase.INTENT_WRITTEN: IntentPhase.DATASET_WRITTEN,
+    IntentPhase.DATASET_WRITTEN: IntentPhase.REGISTRY_WRITTEN,
+    IntentPhase.REGISTRY_WRITTEN: IntentPhase.COMMITTED,
+}
+
+_INTENT_KEYS: frozenset[str] = frozenset({
+    "intent_version", "intent_id", "phase", "created_at", "source_id", "approval", "plan_hash",
+    "targets", "dataset_pre_image", "registry_pre_image", "mutation_plan", "intent_content_sha256",
+})
+_INTENT_APPROVAL_KEYS: frozenset[str] = frozenset({"path", "artifact_sha256", "plan_hash", "approved_at"})
+_INTENT_MUTATION_KEYS: frozenset[str] = frozenset(
+    {"planned_tsu_ids", "new_tsu_ids", "new_document_ids", "new_record_count"}
+)
+_HEX64_RE = _re_module.compile(r"^[0-9a-f]{64}$")
+_PLAN_HASH_RE = _re_module.compile(r"^sha256:[0-9a-f]{64}$")
+_UUID4_RE = _re_module.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+
+
+def _intent_blocked(message: str) -> CorpusMutationBlockedError:
+    return CorpusMutationBlockedError(f"Corpus mutation BLOCKED: intent: {message}")
+
+
+def _intent_checksum(payload: dict) -> str:
+    """SHA-256 (lowercase hex) of the canonical JSON of the payload without intent_content_sha256.
+    `phase` is part of the hashed payload, so every phase update recomputes it."""
+    body = {k: v for k, v in payload.items() if k != "intent_content_sha256"}
+    return hashlib.sha256(_canonical_json_bytes(body)).hexdigest()
+
+
+def _is_hex64(value: object) -> bool:
+    return isinstance(value, str) and _HEX64_RE.match(value) is not None
+
+
+def _check_sorted_unique_str_list(name: str, values: object) -> list[str]:
+    if not isinstance(values, list):
+        raise _intent_blocked(f"{name} must be a list")
+    previous: Optional[str] = None
+    for value in values:
+        if not isinstance(value, str) or not value:
+            raise _intent_blocked(f"{name} elements must be non-empty str")
+        if previous is not None and value <= previous:
+            raise _intent_blocked(f"{name} must be strictly ascending (sorted, unique) at {value!r}")
+        previous = value
+    return values
+
+
+def _validate_intent_payload(raw: bytes) -> dict:
+    """Parse and fully validate intent bytes (existing-intent check and self-check of a new intent).
+
+    Rejects (CorpusMutationBlockedError): non-UTF-8, invalid JSON, duplicate keys, NaN/Infinity,
+    non-object top level, unknown/missing keys, wrong types or formats (bool/float are not ints),
+    unsorted or duplicated lists, mutation_plan invariant violations, plan_hash disagreement and a
+    wrong intent_content_sha256. A correct checksum never excuses a wrong schema.
+    """
+    if not isinstance(raw, (bytes, bytearray)):
+        raise _intent_blocked("intent bytes required")
+    try:
+        text = bytes(raw).decode("utf-8")
+    except UnicodeDecodeError:
+        raise _intent_blocked("not valid UTF-8") from None
+
+    def _no_duplicate_keys(pairs: list[tuple[str, object]]) -> dict:
+        result: dict = {}
+        for key, value in pairs:
+            if key in result:
+                raise _intent_blocked(f"duplicate JSON key {key!r}")
+            result[key] = value
+        return result
+
+    def _no_constants(name: str) -> object:
+        raise _intent_blocked(f"unsupported JSON constant {name}")
+
+    try:
+        data = json.loads(text, object_pairs_hook=_no_duplicate_keys, parse_constant=_no_constants)
+    except CorpusMutationBlockedError:
+        raise
+    except ValueError:
+        raise _intent_blocked("invalid JSON") from None
+    if not isinstance(data, dict):
+        raise _intent_blocked("top level must be a JSON object")
+    if set(data) != _INTENT_KEYS:
+        raise _intent_blocked(
+            f"key set mismatch (extra={sorted(set(data) - _INTENT_KEYS)}, missing={sorted(_INTENT_KEYS - set(data))})"
+        )
+
+    if type(data["intent_version"]) is not int or data["intent_version"] != INTENT_VERSION:
+        raise _intent_blocked("intent_version must be the integer 1")
+    if not isinstance(data["intent_id"], str) or _UUID4_RE.match(data["intent_id"]) is None:
+        raise _intent_blocked("intent_id must be a lowercase uuid4")
+    if not isinstance(data["phase"], str) or data["phase"] not in {p.value for p in IntentPhase}:
+        raise _intent_blocked("phase is not a known IntentPhase")
+
+    created_at = data["created_at"]
+    if not isinstance(created_at, str):
+        raise _intent_blocked("created_at must be str")
+    try:
+        parsed_created = datetime.fromisoformat(created_at)
+    except ValueError:
+        raise _intent_blocked("created_at is not ISO-8601") from None
+    if parsed_created.utcoffset() != timedelta(0):
+        raise _intent_blocked("created_at must be UTC (+00:00)")
+
+    if not _validate_source_id(data["source_id"])[0]:
+        raise _intent_blocked("source_id violates the source_id safety rule")
+
+    approval = data["approval"]
+    if not isinstance(approval, dict) or set(approval) != _INTENT_APPROVAL_KEYS:
+        raise _intent_blocked("approval must be an object with exactly {path, artifact_sha256, plan_hash, approved_at}")
+    if not isinstance(approval["path"], str) or not os.path.isabs(approval["path"]):
+        raise _intent_blocked("approval.path must be an absolute path str")
+    if not _is_hex64(approval["artifact_sha256"]):
+        raise _intent_blocked("approval.artifact_sha256 must be lowercase hex64")
+    if not isinstance(approval["plan_hash"], str) or _PLAN_HASH_RE.match(approval["plan_hash"]) is None:
+        raise _intent_blocked("approval.plan_hash must be sha256:+hex64")
+    if not isinstance(approval["approved_at"], str):
+        raise _intent_blocked("approval.approved_at must be str")
+    if not isinstance(data["plan_hash"], str) or _PLAN_HASH_RE.match(data["plan_hash"]) is None:
+        raise _intent_blocked("plan_hash must be sha256:+hex64")
+    if data["plan_hash"] != approval["plan_hash"]:
+        raise _intent_blocked("plan_hash differs from approval.plan_hash")
+
+    targets = data["targets"]
+    if not isinstance(targets, list) or len(targets) != 3 or not all(
+        isinstance(t, str) and os.path.isabs(t) for t in targets
+    ):
+        raise _intent_blocked("targets must be 3 absolute path strings")
+
+    dataset_pre = data["dataset_pre_image"]
+    if not isinstance(dataset_pre, list):
+        raise _intent_blocked("dataset_pre_image must be a list")
+    previous_tsu: Optional[str] = None
+    pre_tsu_ids: set[str] = set()
+    for row in dataset_pre:
+        if not isinstance(row, list) or len(row) != 3:
+            raise _intent_blocked("dataset_pre_image rows must be [tsu_id, document_id, content_sha256]")
+        tsu_id, document_id, content_sha = row
+        if not isinstance(tsu_id, str) or not tsu_id or not isinstance(document_id, str) or not document_id:
+            raise _intent_blocked("dataset_pre_image tsu_id/document_id must be non-empty str")
+        if not _is_hex64(content_sha):
+            raise _intent_blocked("dataset_pre_image content_sha256 must be lowercase hex64")
+        if previous_tsu is not None and tsu_id <= previous_tsu:
+            raise _intent_blocked("dataset_pre_image must be strictly ascending by tsu_id (sorted, unique)")
+        previous_tsu = tsu_id
+        pre_tsu_ids.add(tsu_id)
+
+    registry_pre = data["registry_pre_image"]
+    if not isinstance(registry_pre, list):
+        raise _intent_blocked("registry_pre_image must be a list")
+    previous_doc: Optional[str] = None
+    pre_doc_ids: set[str] = set()
+    for row in registry_pre:
+        if not isinstance(row, list) or len(row) != 2:
+            raise _intent_blocked("registry_pre_image rows must be [document_id, entry_sha256]")
+        document_id, entry_sha = row
+        if not isinstance(document_id, str) or not document_id or not _is_hex64(entry_sha):
+            raise _intent_blocked("registry_pre_image row has an invalid document_id/entry_sha256")
+        if previous_doc is not None and document_id <= previous_doc:
+            raise _intent_blocked("registry_pre_image must be strictly ascending by document_id (sorted, unique)")
+        previous_doc = document_id
+        pre_doc_ids.add(document_id)
+
+    plan = data["mutation_plan"]
+    if not isinstance(plan, dict) or set(plan) != _INTENT_MUTATION_KEYS:
+        raise _intent_blocked("mutation_plan must have exactly {planned_tsu_ids, new_tsu_ids, new_document_ids, new_record_count}")
+    planned = _check_sorted_unique_str_list("mutation_plan.planned_tsu_ids", plan["planned_tsu_ids"])
+    new_ids = _check_sorted_unique_str_list("mutation_plan.new_tsu_ids", plan["new_tsu_ids"])
+    new_docs = _check_sorted_unique_str_list("mutation_plan.new_document_ids", plan["new_document_ids"])
+    if type(plan["new_record_count"]) is not int or plan["new_record_count"] != len(new_ids):
+        raise _intent_blocked("mutation_plan.new_record_count must be the integer len(new_tsu_ids)")
+    planned_set, new_set = set(planned), set(new_ids)
+    if not new_set <= planned_set:
+        raise _intent_blocked("mutation_plan invariant: new_tsu_ids must be a subset of planned_tsu_ids")
+    if new_set & pre_tsu_ids:
+        raise _intent_blocked("mutation_plan invariant: new_tsu_ids must not already exist in dataset_pre_image")
+    if not (planned_set - new_set) <= pre_tsu_ids:
+        raise _intent_blocked("mutation_plan invariant: planned ids that are not new must exist in dataset_pre_image")
+    if set(new_docs) & pre_doc_ids:
+        raise _intent_blocked("mutation_plan invariant: new_document_ids must not already exist in registry_pre_image")
+
+    checksum = data["intent_content_sha256"]
+    if not _is_hex64(checksum):
+        raise _intent_blocked("intent_content_sha256 must be lowercase hex64")
+    if checksum != _intent_checksum(data):
+        raise _intent_blocked("intent_content_sha256 mismatch")
+    return data
+
+
+def _build_dataset_pre_image(existing_records: list) -> list[list[str]]:
+    """[tsu_id, document_id, content_sha256] for EVERY existing dataset record, sorted by tsu_id.
+    A missing / non-str / duplicate tsu_id or a missing / non-str document_id is never collapsed
+    away: it blocks the merge."""
+    rows: list[list[str]] = []
+    seen: set[str] = set()
+    for index, record in enumerate(existing_records):
+        if not isinstance(record, dict):
+            raise _intent_blocked(f"existing dataset record #{index} is not an object")
+        tsu_id, document_id = record.get("tsu_id"), record.get("document_id")
+        if not isinstance(tsu_id, str) or not tsu_id:
+            raise _intent_blocked(f"existing dataset record #{index} has no valid str tsu_id")
+        if not isinstance(document_id, str) or not document_id:
+            raise _intent_blocked(f"existing dataset record {tsu_id!r} has no valid str document_id")
+        if tsu_id in seen:
+            raise _intent_blocked(f"existing dataset has duplicate tsu_id {tsu_id!r}")
+        seen.add(tsu_id)
+        rows.append([tsu_id, document_id, _record_content_sha256(record)])
+    rows.sort(key=lambda row: row[0])
+    return rows
+
+
+def _require_str_keys(value: object, where: str) -> None:
+    """Registry entries are plain JSON: every dict key (nested too) must be a str."""
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise _intent_blocked(f"{where}: non-str key {key!r}")
+            _require_str_keys(item, where)
+    elif isinstance(value, list):
+        for item in value:
+            _require_str_keys(item, where)
+
+
+def _build_registry_pre_image(registry: object) -> list[list[str]]:
+    """[document_id, entry_sha256] for every registry document. The entry fingerprint excludes only
+    EXCLUDED_FROM_COMPARISON fields and uses the S2-B canonical JSON (strict; failures block).
+    Strict replacement for the lenient compute_registry_preimage_hash, which is left untouched."""
+    documents = registry.get("documents") if isinstance(registry, dict) else None
+    if not isinstance(documents, dict):
+        raise _intent_blocked("registry has no 'documents' object")
+    rows: list[list[str]] = []
+    for document_id, entry in documents.items():
+        if not isinstance(document_id, str) or not document_id:
+            raise _intent_blocked(f"registry document_id must be a non-empty str: {document_id!r}")
+        if not isinstance(entry, dict):
+            raise _intent_blocked(f"registry entry {document_id!r} is not an object")
+        if "document_id" in entry and entry["document_id"] != document_id:
+            raise _intent_blocked(
+                f"registry entry document_id {entry['document_id']!r} differs from its key {document_id!r}"
+            )
+        _require_str_keys(entry, f"registry entry {document_id!r}")
+        fingerprint_body = {k: v for k, v in entry.items() if k not in EXCLUDED_FROM_COMPARISON}
+        rows.append([document_id, hashlib.sha256(_canonical_json_bytes(fingerprint_body)).hexdigest()])
+    rows.sort(key=lambda row: row[0])
+    return rows
+
+
+def _build_mutation_plan(
+    planned_tsu_ids: set[str],
+    new_records: list[dict],
+    registry_pre_image: list[list[str]],
+    nae_docs_info: dict,
+) -> dict:
+    """planned_tsu_ids = the approved plan BEFORE dedup; new_tsu_ids = ids that are actually appended."""
+    new_ids = [record["tsu_id"] for record in new_records]
+    if len(new_ids) != len(set(new_ids)):
+        raise _intent_blocked("new records contain a duplicate tsu_id")
+    registry_ids = {row[0] for row in registry_pre_image}
+    new_documents = sorted({info["document_id"] for info in nae_docs_info.values()} - registry_ids)
+    return {
+        "planned_tsu_ids": sorted(planned_tsu_ids),
+        "new_tsu_ids": sorted(new_ids),
+        "new_document_ids": new_documents,
+        "new_record_count": len(new_ids),
+    }
+
+
+def _build_intent_payload(
+    source_id: str,
+    approval: ApprovalEvaluation,
+    targets: list,
+    dataset_pre_image: list[list[str]],
+    registry_pre_image: list[list[str]],
+    mutation_plan: dict,
+) -> dict:
+    """Build the immutable fields, compute the checksum, then validate the COMPLETE payload.
+    (The validator requires the checksum, so it is never called before the checksum exists.)"""
+    if (
+        approval.state != ApprovalState.VALID
+        or approval.plan_hash is None
+        or approval.artifact_sha256 is None
+        or approval.artifact_path is None
+        or approval.approved_at is None
+    ):
+        raise _intent_blocked("a VALID approval with plan_hash and artifact identity is required")
+    import uuid as _uuid
+    payload: dict = {
+        "intent_version": INTENT_VERSION,
+        "intent_id": str(_uuid.uuid4()),
+        "phase": IntentPhase.INTENT_WRITTEN.value,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source_id": source_id,
+        "approval": {
+            "path": approval.artifact_path,
+            "artifact_sha256": approval.artifact_sha256,
+            "plan_hash": approval.plan_hash,
+            "approved_at": approval.approved_at,
+        },
+        "plan_hash": approval.plan_hash,
+        "targets": [str(Path(t).resolve()) for t in targets],
+        "dataset_pre_image": dataset_pre_image,
+        "registry_pre_image": registry_pre_image,
+        "mutation_plan": mutation_plan,
+    }
+    payload["intent_content_sha256"] = _intent_checksum(payload)
+    _validate_intent_payload(_canonical_json_bytes(payload))
+    return payload
+
+
+def _fsync_directory_strict(directory: Path) -> None:
+    """fsync a directory and PROPAGATE any error (core's helper silently ignores directory fsync errors)."""
+    fd = os.open(str(directory), os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def _write_intent_durable(path: Path, payload: dict) -> None:
+    """Durably write the intent: core's atomic writer (temp file + fsync + os.replace), then a strict
+    directory fsync whose error is NOT swallowed. Any failure -> CorpusMutationBlockedError.
+
+    Contract: a failure AFTER os.replace may leave the (complete) new intent file in place. The file is
+    never deleted or rolled back here; only the temporary file is cleaned up (by the core helper, before
+    the replace)."""
+    data = _canonical_json_bytes(payload)
+    try:
+        _atomic_write_text(Path(path), lambda handle: handle.write(data.decode("utf-8")))
+        _fsync_directory_strict(Path(path).parent)
+    except CorpusMutationBlockedError:
+        raise
+    except Exception as exc:
+        raise CorpusMutationBlockedError(f"Corpus mutation BLOCKED: intent durable write failed: {exc}") from exc
+
+
+def _advance_intent_phase(path: Path, payload: dict, new_phase: IntentPhase) -> dict:
+    """Return the next in-memory payload (only phase and intent_content_sha256 change) after durably
+    writing it. Never re-reads the file. A failure raises, which stops every later production write."""
+    current = IntentPhase(payload["phase"])
+    if _INTENT_NEXT_PHASE.get(current) != new_phase:
+        raise _intent_blocked(f"illegal phase transition {current.value} -> {new_phase.value}")
+    advanced = dict(payload)
+    advanced["phase"] = new_phase.value
+    advanced["intent_content_sha256"] = _intent_checksum(advanced)
+    _write_intent_durable(path, advanced)
+    return advanced
+
+
+def _intent_file_path(manifest_path: Path, dataset_path: Path) -> Path:
+    """tsu_merge_intent.json next to the manifest; its directory must be the dataset's directory too."""
+    if _normalize_path_for_comparison(Path(manifest_path).parent) != _normalize_path_for_comparison(
+        Path(dataset_path).parent
+    ):
+        raise _intent_blocked("manifest and dataset must share one directory for the intent file")
+    return Path(manifest_path).parent / INTENT_FILENAME
+
+
+def _same_target(recorded: str, current: object) -> bool:
+    recorded_path, current_path = Path(recorded), Path(str(current))
+    return _paths_are_samefile(recorded_path, current_path) or (
+        _normalize_path_for_comparison(recorded_path) == _normalize_path_for_comparison(current_path)
+    )
+
+
+def _check_existing_intent(intent_path: Path, current_targets: list) -> None:
+    """Block unless there is NO intent, or a fully valid COMMITTED intent for the same targets
+    (that one is replaced by the new intent). Never modifies the existing file.
+    This is a blocking decision only; nothing here resumes, repairs or rolls back anything."""
+    if not intent_path.exists() and not intent_path.is_symlink():
+        return
+    try:
+        raw = intent_path.read_bytes()
+    except OSError as exc:
+        raise _intent_blocked(f"existing intent cannot be read: {exc}") from exc
+    existing = _validate_intent_payload(raw)
+    if existing["phase"] != IntentPhase.COMMITTED.value:
+        raise _intent_blocked(
+            f"an incomplete intent exists (phase={existing['phase']}); recovery is required before a new merge"
+        )
+    for recorded, current in zip(existing["targets"], current_targets):
+        if not _same_target(recorded, current):
+            raise _intent_blocked("the existing COMMITTED intent belongs to different targets and is not replaced")
+
+
 def merge_nae_corpus(
     source_id: Optional[str] = None,
     data_root: Optional[Path] = None,
@@ -1364,10 +1784,37 @@ def merge_nae_corpus(
         _validate_dataset(all_records, tsu_dataset_path)
         print(f"  Validation passed: {len(all_records)} records, no duplicates")
 
+        # S2-C: write-ahead intent (production merges only; inside the existing tsu_dataset_lock).
+        # Everything is prepared in memory AFTER candidate validation and BEFORE the first production
+        # write, so a validation failure never leaves an intent behind:
+        #   (3) existing-intent check (blocks unless none / valid COMMITTED for the same targets)
+        #   (4) registry pre-image (read-only), dataset pre-image, mutation plan, checksum, self-validation
+        intent_path: Optional[Path] = None
+        intent_payload: Optional[dict] = None
+        if target.is_production:
+            intent_targets = [target.dataset_path, target.manifest_path, target.registry_path]
+            intent_path = _intent_file_path(manifest_path, tsu_dataset_path)
+            _check_existing_intent(intent_path, intent_targets)
+            registry_pre_image = _build_registry_pre_image(load_identity_registry(registry_path))
+            intent_payload = _build_intent_payload(
+                source_id or "",
+                eval_result,
+                intent_targets,
+                _build_dataset_pre_image(existing_records),
+                registry_pre_image,
+                _build_mutation_plan(planned_tsu_ids, new_records, registry_pre_image, nae_docs_info),
+            )
+
         # 7. Atomic write (F-3) — now inside lock
         print(f"\nWriting merged TSU to {tsu_dataset_path}...")
+        if intent_payload is not None:
+            # (5) first durable intent record (INTENT_WRITTEN) — before ANY production write
+            _write_intent_durable(intent_path, intent_payload)
         write_tsu_dataset(all_records, tsu_dataset_path)
         print(f"  Written {len(all_records)} records atomically")
+        if intent_payload is not None:
+            # a failed phase update raises: registry and manifest are then never written
+            intent_payload = _advance_intent_phase(intent_path, intent_payload, IntentPhase.DATASET_WRITTEN)
 
         # 8. Update registry (F-3: corpus_membership="default")
         print(f"\nUpdating registry at {registry_path}...")
@@ -1405,6 +1852,9 @@ def merge_nae_corpus(
 
         save_identity_registry(registry, str(registry_path))
         print(f"  Updated registry with {len(nae_docs_info)} new documents")
+        if intent_payload is not None:
+            # a failed phase update raises: the manifest is then never written
+            intent_payload = _advance_intent_phase(intent_path, intent_payload, IntentPhase.REGISTRY_WRITTEN)
 
         # 9. Update manifest via core.tsu_builder.write_manifest() (F-3)
         print(f"\nUpdating manifest at {manifest_path}...")
@@ -1416,6 +1866,9 @@ def merge_nae_corpus(
             dataset_path=tsu_dataset_path,
         )
         print(f"  Updated manifest (tsu_count={final_manifest['tsu_count']})")
+        if intent_payload is not None:
+            # COMMITTED: if this update fails the merge must NOT report success (raises)
+            intent_payload = _advance_intent_phase(intent_path, intent_payload, IntentPhase.COMMITTED)
 
     return {
         "status": "completed",
