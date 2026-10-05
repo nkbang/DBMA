@@ -23,6 +23,7 @@ Production path safety (NAE-MERGE-PRODUCTION-PATH-SAFETY-001):
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
 import os
@@ -50,7 +51,7 @@ from core.tsu_builder import (
     write_tsu_dataset,
     write_manifest,
 )
-from core.identity_registry import load_identity_registry, save_identity_registry
+from core.identity_registry import load_identity_registry, save_identity_registry, registry_lock
 
 
 # ---------------------------------------------------------------------------
@@ -1583,7 +1584,39 @@ def _check_existing_intent(intent_path: Path, current_targets: list) -> None:
             raise _intent_blocked("the existing COMMITTED intent belongs to different targets and is not replaced")
 
 
+@contextmanager
+def _merge_locks(registry_path, dataset_path):
+    """S2-D: hold registry_lock then tsu_dataset_lock (R -> T) for the whole merge.
+
+    R -> T is the order every other writer already uses (reconcile_pending, delete_raw_source).
+    registry_lock is NOT reentrant: it is acquired exactly once here and nothing the merge calls
+    takes it again. tsu_dataset_lock is reentrant, so the inner `with tsu_dataset_lock` below nests
+    harmlessly. Release is the reverse order (T, then R), also on exceptions."""
+    with registry_lock(str(registry_path)):
+        with tsu_dataset_lock(dataset_path):
+            yield
+
+
 def merge_nae_corpus(
+    source_id: Optional[str] = None,
+    data_root: Optional[Path] = None,
+    nae_corpus_dir: Optional[Path] = None,
+    decisions_dir: Optional[Path] = None,
+    config_path: Optional[Path] = None,
+) -> dict:
+    """Public entry point: resolve targets, take R -> T (S2-D), run the merge under both locks.
+
+    Everything that reads state (approval freshness, existing dataset, registry pre-image) and every
+    write happens while both locks are held. Path-safety errors from resolve_target_paths() are raised
+    before any lock is taken."""
+    target = resolve_target_paths(data_root=data_root, config_path=config_path)
+    if target.data_root is None:  # the locked body raises its own explicit error
+        return _merge_nae_corpus_locked(source_id, data_root, nae_corpus_dir, decisions_dir, config_path)
+    with _merge_locks(target.registry_path, target.dataset_path):
+        return _merge_nae_corpus_locked(source_id, data_root, nae_corpus_dir, decisions_dir, config_path)
+
+
+def _merge_nae_corpus_locked(
     source_id: Optional[str] = None,
     data_root: Optional[Path] = None,
     nae_corpus_dir: Optional[Path] = None,
@@ -1850,7 +1883,11 @@ def merge_nae_corpus(
                     },
                 }
 
-        save_identity_registry(registry, str(registry_path))
+        if not save_identity_registry(registry, str(registry_path)):
+            # S2-D: save_identity_registry() reports failure by returning False; never advance the intent phase
+            raise CorpusMutationBlockedError(
+                f"Corpus mutation BLOCKED: registry write failed for {registry_path}"
+            )
         print(f"  Updated registry with {len(nae_docs_info)} new documents")
         if intent_payload is not None:
             # a failed phase update raises: the manifest is then never written
