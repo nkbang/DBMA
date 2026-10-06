@@ -229,7 +229,283 @@ _APPROVAL_V2_REQUIRED_FIELDS: frozenset[str] = frozenset({
     "final_decision", "approved_at",
 })
 
+# ---------------------------------------------------------------------------
+# E-1a: _ValidatedApproval frozen dataclass
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class _ValidatedApproval:
+    source_id: str
+    approved_at: str
+    dataset_sha256_before: str
+    plan_hash: str
+    reviewer_id: str
+    gate_id: str
+    target_paths_realpath: tuple          # 검증된 리스트의 읽기 전용 사본
+    artifact_sha256: str                  # sha256(raw_bytes).hexdigest()
+    artifact_path: str                    # str(Path(approval_path).resolve())
+
+
 _SOURCE_ID_PATTERN = _re_module.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]*$")
+
+
+
+# ---------------------------------------------------------------------------
+# E-1a: _evaluate_approval_core — extracted validation core
+# ---------------------------------------------------------------------------
+
+def _evaluate_approval_core(
+    raw_bytes: bytes,
+    approval_path: Path,
+    config_path: Optional[Path],
+    expected_target_paths: Optional[list],
+    *,
+    now: datetime,
+) -> "ApprovalEvaluation | _ValidatedApproval":
+    """Extracted core of evaluate_approval_v2 — validation only.
+
+    Does NOT read the approval file, does NOT compare dataset_sha256_current,
+    and does NOT perform any writes.  Returns an ApprovalEvaluation (REJECTED)
+    at the first failure step, or a _ValidatedApproval on full pass.
+    """
+    # Decode + JSON parse → top-level object
+    try:
+        raw_str = raw_bytes.decode("utf-8")
+    except UnicodeDecodeError:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.MALFORMED,
+            source_id="",
+        )
+
+    try:
+        data = json.loads(raw_str)
+    except json.JSONDecodeError:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.MALFORMED,
+            source_id="",
+        )
+
+    if not isinstance(data, dict):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.MALFORMED,
+            source_id="",
+        )
+
+    # schema_version check (must be exactly 2)
+    schema_version = data.get("schema_version")
+    if not isinstance(schema_version, int) or schema_version != 2:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.SCHEMA_VERSION,
+            source_id=str(data.get("source_id", "")),
+        )
+
+    # Legacy field target_root_realpath (must not be present)
+    if "target_root_realpath" in data:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_MISSING,
+            source_id=str(data.get("source_id", "")),
+        )
+
+    # source_id rules
+    source_id = data.get("source_id")
+    valid_sid, sid_reason = _validate_source_id(source_id)
+    if not valid_sid:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=sid_reason,
+            source_id=source_id if isinstance(source_id, str) else "",
+        )
+
+    # config approval_dir → containment check
+    try:
+        approval_dir_str = _load_approval_dir(config_path)
+    except CorpusMutationBlockedError:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.CONFIG_APPROVAL_DIR,
+            source_id=source_id,
+        )
+
+    try:
+        approval_resolved = approval_path.resolve()
+        approval_dir_resolved = Path(approval_dir_str).resolve()
+        approval_parent_norm = _normalize_path_for_comparison(approval_resolved.parent)
+        dir_norm = _normalize_path_for_comparison(approval_dir_resolved)
+        approval_full_norm = _normalize_path_for_comparison(approval_resolved)
+        if not (
+            approval_parent_norm == dir_norm
+            or approval_full_norm.startswith(dir_norm + os.sep)
+            or approval_parent_norm.startswith(dir_norm + os.sep)
+        ):
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.PATH_ESCAPE,
+                source_id=source_id,
+            )
+    except OSError:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.PATH_ESCAPE,
+            source_id=source_id,
+        )
+
+    # Unknown fields
+    known_fields = _APPROVAL_V2_REQUIRED_FIELDS
+    for key in data:
+        if key not in known_fields:
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.UNKNOWN_FIELD,
+                source_id=source_id,
+            )
+
+    # Required fields presence
+    for field in _APPROVAL_V2_REQUIRED_FIELDS:
+        if field not in data:
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.FIELD_MISSING,
+                source_id=source_id,
+            )
+
+    # Type validation
+    target_paths = data["target_paths_realpath"]
+    if not isinstance(target_paths, list):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    plan_hash = data["plan_hash"]
+    if not isinstance(plan_hash, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    reviewer_id = data["reviewer_id"]
+    if not isinstance(reviewer_id, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    gate_id = data["gate_id"]
+    if not isinstance(gate_id, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    dataset_sha256_before = data["dataset_sha256_before"]
+    if not isinstance(dataset_sha256_before, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    final_decision = data["final_decision"]
+    if not isinstance(final_decision, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    approved_at_str = data["approved_at"]
+    if not isinstance(approved_at_str, str):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_TYPE,
+            source_id=source_id,
+        )
+
+    # Format validation
+    if not isinstance(plan_hash, str) or not plan_hash.startswith("sha256:"):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+    hex_part = plan_hash[7:]
+    if len(hex_part) != 64 or not all(c in "0123456789abcdef" for c in hex_part):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+
+    if len(dataset_sha256_before) != 64 or not all(c in "0123456789abcdef" for c in dataset_sha256_before):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+
+    # approved_at: ISO-8601 parsing + future check
+    try:
+        approved_dt = datetime.fromisoformat(approved_at_str)
+    except (ValueError, TypeError):
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FIELD_FORMAT,
+            source_id=source_id,
+        )
+
+    if approved_dt.tzinfo is not None and now.tzinfo is None:
+        now = now.replace(tzinfo=approved_dt.tzinfo)
+    elif now.tzinfo is not None and approved_dt.tzinfo is None:
+        approved_dt = approved_dt.replace(tzinfo=now.tzinfo)
+
+    diff = approved_dt - now
+    if diff.total_seconds() > 300:
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.FUTURE_APPROVAL,
+            source_id=source_id,
+            approved_at=approved_at_str,
+        )
+
+    # final_decision must be exactly "APPROVED"
+    if final_decision != "APPROVED":
+        return ApprovalEvaluation(
+            state=ApprovalState.REJECTED,
+            reason_code=ApprovalReasonCode.DECISION_NOT_APPROVED,
+            source_id=source_id,
+        )
+
+    # target_paths validation (only when expected_target_paths is provided)
+    if expected_target_paths is not None:
+        paths_valid, _ = _validate_target_paths(target_paths, expected_target_paths)
+        if not paths_valid:
+            return ApprovalEvaluation(
+                state=ApprovalState.REJECTED,
+                reason_code=ApprovalReasonCode.TARGET_MISMATCH,
+                source_id=source_id,
+            )
+
+    # All checks passed → _ValidatedApproval
+    return _ValidatedApproval(
+        source_id=source_id,
+        approved_at=approved_at_str,
+        dataset_sha256_before=dataset_sha256_before,
+        plan_hash=plan_hash,
+        reviewer_id=reviewer_id,
+        gate_id=gate_id,
+        target_paths_realpath=tuple(target_paths),
+        artifact_sha256=hashlib.sha256(raw_bytes).hexdigest(),
+        artifact_path=str(Path(approval_path).resolve()),
+    )
 
 
 def _load_approval_dir(config_path: Optional[Path] = None) -> str:
@@ -344,6 +620,7 @@ def evaluate_approval_v2(
     if now is None:
         now = datetime.now(timezone.utc)
 
+    # 1. existence check
     if not approval_path.exists():
         return ApprovalEvaluation(
             state=ApprovalState.REJECTED,
@@ -351,252 +628,45 @@ def evaluate_approval_v2(
             source_id="",
         )
 
-    # S2-C: read the artifact bytes exactly once. The same bytes are decoded, parsed, validated
-    # and hashed (artifact_sha256); the file is never re-read afterwards.
-    # Existing error mapping is preserved: OSError -> MALFORMED (UNREADABLE is not used here).
-    # A non-UTF-8 artifact is MALFORMED as well (previously UnicodeDecodeError escaped).
+    # 2. read exactly once
     try:
         raw_bytes = approval_path.read_bytes()
-        raw = raw_bytes.decode("utf-8")
-        data = json.loads(raw)
-    except (json.JSONDecodeError, UnicodeDecodeError, OSError):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.MALFORMED,
-            source_id="",
-        )
-
-    if not isinstance(data, dict):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.MALFORMED,
-            source_id="",
-        )
-
-    sv = data.get("schema_version")
-    if not isinstance(sv, int) or sv != 2:
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.SCHEMA_VERSION,
-            source_id=str(data.get("source_id", "")),
-        )
-    if "target_root_realpath" in data:
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_MISSING,
-            source_id=str(data.get("source_id", "")),
-        )
-
-    source_id = data.get("source_id")
-    valid_sid, sid_reason = _validate_source_id(source_id)
-    if not valid_sid:
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=sid_reason,
-            source_id=str(source_id) if isinstance(source_id, str) else "",
-        )
-
-    try:
-        approval_dir_str = _load_approval_dir(config_path)
-    except CorpusMutationBlockedError:
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.CONFIG_APPROVAL_DIR,
-            source_id=source_id,
-        )
-
-    try:
-        approval_resolved = approval_path.resolve()
-        approval_dir_resolved = Path(approval_dir_str).resolve()
-        # Check if approval file is under approval_dir (containment)
-        # Uses common identity building blocks — no duplicate NFC/casefold impl
-        approval_parent_norm = _normalize_path_for_comparison(approval_resolved.parent)
-        dir_norm = _normalize_path_for_comparison(approval_dir_resolved)
-        approval_full_norm = _normalize_path_for_comparison(approval_resolved)
-        if not (
-            approval_parent_norm == dir_norm
-            or approval_full_norm.startswith(dir_norm + os.sep)
-            or approval_parent_norm.startswith(dir_norm + os.sep)
-        ):
-            return ApprovalEvaluation(
-                state=ApprovalState.REJECTED,
-                reason_code=ApprovalReasonCode.PATH_ESCAPE,
-                source_id=source_id,
-            )
     except OSError:
         return ApprovalEvaluation(
             state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.PATH_ESCAPE,
-            source_id=source_id,
+            reason_code=ApprovalReasonCode.MALFORMED,
+            source_id="",
         )
 
-    known_fields = _APPROVAL_V2_REQUIRED_FIELDS
-    for key in data:
-        if key not in known_fields:
-            return ApprovalEvaluation(
-                state=ApprovalState.REJECTED,
-                reason_code=ApprovalReasonCode.UNKNOWN_FIELD,
-                source_id=source_id,
-            )
+    # 3. call core
+    result = _evaluate_approval_core(
+        raw_bytes, approval_path, config_path, expected_target_paths, now=now
+    )
 
-    for field in _APPROVAL_V2_REQUIRED_FIELDS:
-        if field not in data:
-            return ApprovalEvaluation(
-                state=ApprovalState.REJECTED,
-                reason_code=ApprovalReasonCode.FIELD_MISSING,
-                source_id=source_id,
-            )
+    if isinstance(result, ApprovalEvaluation):
+        return result
 
-    # Type validation (S2-A §3-1)
-    schema_version = data["schema_version"]
-    if not isinstance(schema_version, int):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    target_paths = data["target_paths_realpath"]
-    if not isinstance(target_paths, list):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    plan_hash = data["plan_hash"]
-    if not isinstance(plan_hash, str):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    reviewer_id = data["reviewer_id"]
-    if not isinstance(reviewer_id, str):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    gate_id = data["gate_id"]
-    if not isinstance(gate_id, str):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    dataset_sha256_before = data["dataset_sha256_before"]
-    if not isinstance(dataset_sha256_before, str):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    final_decision = data["final_decision"]
-    if not isinstance(final_decision, str):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    approved_at_str = data["approved_at"]
-    if not isinstance(approved_at_str, str):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_TYPE,
-            source_id=source_id,
-        )
-
-    # Format validation (S2-A §3-1)
-    if not isinstance(plan_hash, str) or not plan_hash.startswith("sha256:"):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_FORMAT,
-            source_id=source_id,
-        )
-    hex_part = plan_hash[7:]
-    if len(hex_part) != 64 or not all(c in "0123456789abcdef" for c in hex_part):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_FORMAT,
-            source_id=source_id,
-        )
-
-    if len(dataset_sha256_before) != 64 or not all(c in "0123456789abcdef" for c in dataset_sha256_before):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_FORMAT,
-            source_id=source_id,
-        )
-
-    # approved_at: ISO-8601 parsing + future check (S2-A §3-9)
-    try:
-        approved_dt = datetime.fromisoformat(approved_at_str)
-    except (ValueError, TypeError):
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FIELD_FORMAT,
-            source_id=source_id,
-        )
-
-    if approved_dt.tzinfo is not None and now.tzinfo is None:
-        now = now.replace(tzinfo=approved_dt.tzinfo)
-    elif now.tzinfo is not None and approved_dt.tzinfo is None:
-        approved_dt = approved_dt.replace(tzinfo=now.tzinfo)
-
-    diff = approved_dt - now
-    if diff.total_seconds() > 300:
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.FUTURE_APPROVAL,
-            source_id=source_id,
-            approved_at=approved_at_str,
-        )
-
-    # final_decision must be exactly "APPROVED" (S2-A §3-7)
-    if final_decision != "APPROVED":
-        return ApprovalEvaluation(
-            state=ApprovalState.REJECTED,
-            reason_code=ApprovalReasonCode.DECISION_NOT_APPROVED,
-            source_id=source_id,
-        )
-
-    # target_paths validation (S2-A §3-6)
-    if expected_target_paths is not None:
-        paths_valid, _ = _validate_target_paths(target_paths, expected_target_paths)
-        if not paths_valid:
-            return ApprovalEvaluation(
-                state=ApprovalState.REJECTED,
-                reason_code=ApprovalReasonCode.TARGET_MISMATCH,
-                source_id=source_id,
-            )
-
-    # dataset_sha256_before validation (S2-A §3-10)
-    # scope="FRESH_MERGE_PRECONDITION" — 이 값은 recovery 자격의 단독 기준이 아니다
-    # (recovery invariant 는 S2-E 에서 확정)
-    if dataset_sha256_current != dataset_sha256_before:
+    # 4. freshness check (only here, not in core)
+    if dataset_sha256_current != result.dataset_sha256_before:
         return ApprovalEvaluation(
             state=ApprovalState.REJECTED,
             reason_code=ApprovalReasonCode.DATASET_SHA_MISMATCH,
-            source_id=source_id,
+            source_id=result.source_id,
             scope=FRESH_MERGE_PRECONDITION,
         )
 
+    # 5. VALID
     return ApprovalEvaluation(
         state=ApprovalState.VALID,
         reason_code=None,
-        source_id=source_id,
-        approved_at=approved_at_str,
-        dataset_sha256_before=dataset_sha256_before,
-        plan_hash=plan_hash,
-        artifact_sha256=hashlib.sha256(raw_bytes).hexdigest(),
-        artifact_path=str(Path(approval_path).resolve()),
+        source_id=result.source_id,
+        approved_at=result.approved_at,
+        dataset_sha256_before=result.dataset_sha256_before,
+        plan_hash=result.plan_hash,
+        artifact_sha256=result.artifact_sha256,
+        artifact_path=result.artifact_path,
     )
+
 
 
 # ---------------------------------------------------------------------------
