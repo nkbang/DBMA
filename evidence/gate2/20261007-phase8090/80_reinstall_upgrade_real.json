@@ -1,0 +1,30 @@
+{
+  "phase": "80_reinstall_upgrade",
+  "status": "PASS",
+  "script": "scripts/gate2/80_reinstall_upgrade.sh",
+  "executed_by": "user (terminal), DRY_RUN=false",
+  "executed_at_utc_approx": "2026-10-07T23:52:59Z",
+  "source_head": "cb234fd779850f6f786c695861c5495dd0fd722f",
+  "isolated_dir": "/tmp/dbma-gate2-run-1791417179",
+  "persist_items_total": 8,
+  "preserved": 8,
+  "lost": 0,
+  "content_match": 8,
+  "content_mismatch": 0,
+  "items": [
+    "data/RAW",
+    "data/제련완성본",
+    "output",
+    "chroma_db",
+    "logs",
+    "config.yaml",
+    "data/chat_session_history.json",
+    "data/inbox/logos_export"
+  ],
+  "output_file": "80_real_output.txt",
+  "scope_limits": [
+    "스크립트가 install_nae_beta.command 132~159행 로직을 /tmp에서 시뮬레이션한 것이며 install_nae_beta.command 자체를 실행하지 않음",
+    "대상은 git archive HEAD에 마커를 시딩한 데이터이며 실제 사용자 데이터가 아님",
+    "~/내서재_베타(실제 설치 경로)는 이 기기에 존재하지 않아 접촉하지 않음"
+  ]
+}

@@ -1,0 +1,14 @@
+=== 90_uninstall.sh ===
+Dry run: true
+No target directory specified. Scanning for existing gate2 runs...
+Found existing runs:
+/tmp/dbma-gate2-run-1791416849
+
+--- Removing: /tmp/dbma-gate2-run-1791416849 ---
+[DRY-RUN] rm -rf /tmp/dbma-gate2-run-1791416849
+Removed: /tmp/dbma-gate2-run-1791416849
+
+Checking for orphan gate2 files...
+Found orphans:
+/tmp/dbma-gate2-run-1791416849
+=== Done ===

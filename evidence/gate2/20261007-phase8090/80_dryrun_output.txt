@@ -1,0 +1,40 @@
+=== 80_reinstall_upgrade.sh ===
+Isolated directory: /tmp/dbma-gate2-run-1791416849
+Isolated repo:      /tmp/dbma-gate2-run-1791416849/repo
+Fake HOME:          /tmp/dbma-gate2-run-1791416849/fakehome
+Dry run:            true
+[DRY-RUN] mkdir -p /tmp/dbma-gate2-run-1791416849/repo /tmp/dbma-gate2-run-1791416849/fakehome
+[DRY-RUN] git archive HEAD | tar -x -C /tmp/dbma-gate2-run-1791416849/repo
+
+--- Step 2: Seeding PERSIST_ITEMS with unique markers ---
+Seeded: 8/8 items, skipped: 0
+
+--- Step 3: Stash PERSIST_ITEMS (install_nae_beta.command:132-143) ---
+[DRY-RUN] rm -rf /tmp/dbma-gate2-run-1791416849/_persist
+[DRY-RUN] Stashing PERSIST_ITEMS from /tmp/dbma-gate2-run-1791416849/repo to /tmp/dbma-gate2-run-1791416849/_persist
+
+--- Step 4: Replace APP_DIR (install_nae_beta.command:145-146) ---
+[DRY-RUN] rm -rf /tmp/dbma-gate2-run-1791416849/repo
+[DRY-RUN] git archive HEAD | tar -x -C /tmp/dbma-gate2-run-1791416849  # fresh snapshot as NEW_APP_DIR
+
+--- Step 5: Restore PERSIST_ITEMS (install_nae_beta.command:148-157) ---
+[DRY-RUN] Restoring PERSIST_ITEMS from /tmp/dbma-gate2-run-1791416849/_persist to /tmp/dbma-gate2-run-1791416849/repo
+[DRY-RUN] rm -rf /tmp/dbma-gate2-run-1791416849/_persist
+
+--- Step 7: PERSIST_ITEMS verification (existence + content) ---
+  PRESERVED+MATCH: data/RAW (content verified)
+  PRESERVED+MATCH: data/제련완성본 (content verified)
+  PRESERVED+MATCH: output (content verified)
+  PRESERVED+MATCH: chroma_db (content verified)
+  PRESERVED+MATCH: logs (content verified)
+  PRESERVED+MATCH: config.yaml (content verified)
+  PRESERVED+MATCH: data/chat_session_history.json (content verified)
+  PRESERVED+MATCH: data/inbox/logos_export (content verified)
+
+PERSIST_ITEMS result: 8/8 preserved, 0 lost
+Content match:      8/8 matched, 0 mismatched
+
+[DRY-RUN] (Above is simulated -- no actual files exist)
+
+=== RESULT: PASS (all PERSIST_ITEMS preserved with correct content) ===
+=== Done ===
