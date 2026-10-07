@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-224149",
+  "phase": "gate2-complete-evidence",
+  "generated_at": "2026-10-07T23:43:13Z",
+  "baseline_commit": "a208a8e4d3c879fba495f77578679301ba0b8698",
+  "current_commit": "6f311d1f",
+  "current_commit_full": "6f311d1fd250fcc483b89b5b1ed0f51f18ee0994",
+  "current_branch": "fix/merge-production-path-safety",
+  "payload_count": 11,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-224149/00_pre_execution_snapshot.json",
+      "bytes": 3836,
+      "sha256": "e312aaa2c737ba609ce27b4a227182abb35df79d2c49e865d1098a0081d33fe9"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/00_pre_execution_snapshot.log",
+      "bytes": 2734,
+      "sha256": "c373cb377ddca1aad87a49b000dbb223d7a2c158dfd07d96561935c422233adc"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/00_provenance.json",
+      "bytes": 2501,
+      "sha256": "12cc40a3e25db663346b89c597f5377de9a071d2736d4a1de3d056aa45959cea"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/10_packaging_audit_independent.json",
+      "bytes": 637,
+      "sha256": "8f82d7fd872878ed201dff619a33a18a07ea8015bb4cd13487d51be39071b04d"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/30_package_integrity_independent.json",
+      "bytes": 867,
+      "sha256": "3f417b01a213f132af0f0685bde7ed0613329d2555d77f3d92288da23c73f460"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/50_runtime_smoke_independent.json",
+      "bytes": 384,
+      "sha256": "16de5d98a45d83154150f1ccc8b62c9c5cd925077e70a72422fb339b99323ba6"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/60_ui_pages_independent.json",
+      "bytes": 2097,
+      "sha256": "bdd4e4f65e41f0842cb42d9e6a957148c2c11d2c2c3db87bb17053aac701dca4"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/70_production_isolation_independent.json",
+      "bytes": 1930,
+      "sha256": "3d9c46c12ee5cbe9000814dd84449750d274c8559603ebe79a172cca007ca00b"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/80_reinstall_upgrade_dryrun.json",
+      "bytes": 727,
+      "sha256": "d0cda4f50f2299ae5fe144d3e0c4d79f8e4617bb6a00a5d4587c5462d22fa000"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/90_uninstall_dryrun.json",
+      "bytes": 576,
+      "sha256": "33317a2e3f184684dfc81a54fc09dec26285a02d1b7a6163fe1a616ee4a9ebd9"
+    },
+    {
+      "path": "evidence/gate2/20261007-224149/SUMMARY.md",
+      "bytes": 9344,
+      "sha256": "9743f6c796cf10ab9b7c95b82f2f22c323361e00014e328ad5021aa77f4ec87c"
+    }
+  ],
+  "phase_summary": {
+    "phase_0_pre_execution_snapshot": "PASS",
+    "phase_10_packaging_audit": "PASS",
+    "phase_30_package_integrity": "PASS",
+    "phase_50_runtime_smoke": "PASS",
+    "phase_60_ui_pages": "PASS",
+    "phase_70_production_isolation": "PASS",
+    "phase_80_reinstall_upgrade": "N/A — scripts not in working tree",
+    "phase_90_uninstall": "N/A — scripts not in working tree"
+  },
+  "legacy_manifest_record": {
+    "supersedes": "9891278a67fc371e61853388fb2d6ff41f079fbeec377dd7d7b99f23b5279740",
+    "note": "v1 manifest — no canonicalization, dictionary files schema. Not used for Gate determination."
+  },
+  "manifest_sha256": "6b88f0d0529612401ba37f6efb3cffecf28428cbff172c66b7180e8d1f2a8e3b"
+}

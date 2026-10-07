@@ -1,0 +1,47 @@
+{
+  "schema_version": "1",
+  "run_id": "20261007-224149",
+  "purpose": "Gate 2 evidence provenance — worktree state, snapshot reconstruction, and temporal observations",
+  "worktree_origin": {
+    "path": "/tmp/gate2-pre-snapshot",
+    "description": "Gate 2 pre-execution snapshot worktree (detached HEAD a208a8e4, clean)",
+    "status_at_snapshot_time": "detached HEAD at a208a8e4d3c879fba495f77578679301ba0b8698, clean working tree",
+    "snapshot_recorded_utc": "2026-10-07T22:41:49Z",
+    "snapshot_recorded_local_minus_0500": "2026-10-07 17:41:49"
+  },
+  "current_worktree_state": {
+    "path": "/Users/David/DBMA",
+    "exists": true,
+    "original_gate2_worktree_path": "/tmp/gate2-pre-snapshot",
+    "original_worktree_exists_now": false,
+    "original_worktree_reproducible": false,
+    "reproduction_note": "원 /tmp/gate2-pre-snapshot worktree는 이미 제거됨. detached HEAD·clean 상태는 현재 재현 불가.",
+    "current_branch": "fix/merge-production-path-safety",
+    "current_head_short": "6f311d1f",
+    "current_head_full": "6f311d1fd250fcc483b89b5b1ed0f51f18ee0994"
+  },
+  "pre_execution_snapshot_log": {
+    "file": "00_pre_execution_snapshot.json",
+    "note": "기존 snapshot JSON에서 재구성한 기록이며 수집 당시 원문 로그가 아님.",
+    "snapshot_json_started_at_utc": "2026-10-07T22:41:49Z",
+    "snapshot_json_finished_at_utc": "2026-10-07T22:41:50Z",
+    "filesystem_time_observed_local_minus_0500": "2026-10-07 17:44:50",
+    "time_discrepancy_note": "JSON 기록 시각(22:41:49Z = 17:41:49 -0500)과 파일시스템 시각(17:44:50 -0500) 사이에 약 3분 차이가 있음; 원인 미확정, 관측값 보존"
+  },
+  "baseline_commit": {
+    "short": "a208a8e4",
+    "full": "a208a8e4d3c879fba495f77578679301ba0b8698"
+  },
+  "current_commit": {
+    "short": "6f311d1f",
+    "full": "6f311d1fd250fcc483b89b5b1ed0f51f18ee0994"
+  },
+  "reproduction_procedure": [
+    "1. /tmp/gate2-pre-snapshot worktree는 이미 존재하지 않음",
+    "2. 원 snapshot detached HEAD·clean 상태는 현재 재현 불가",
+    "3. 00_pre_execution_snapshot.json은 기존 JSON을 참조하여 재구성",
+    "4. 파일시스템 시각은 현지 -0500 기준 17:44:50으로 관측"
+  ],
+  "recorded_at_utc": "2026-10-07T23:43:13Z",
+  "timestamp_correction": "이전 generated_at_utc=2026-10-07T22:55:00Z는 실제 기록 시각(파일 mtime 23:34Z 이후)과 달라 부정확했음; recorded_at_utc로 실측 재기록(CUE 교차검증 후 수정)"
+}
