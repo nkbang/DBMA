@@ -1,0 +1,92 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-phase8090",
+  "verified_at": "2026-10-07T23:54:01Z",
+  "manifest_path": "evidence/gate2/20261007-phase8090/manifest.json",
+  "verification_base": "/Users/David/DBMA",
+  "verification_source": "git archive of committed tree a5b0d4d99039b637cd42c61a2bdb5e4124bf4152",
+  "verification_command": "git archive <commit> evidence/gate2/20261007-phase8090 | tar -x -C <scratch>; python3 -I: recompute canonical sha256 (sort_keys, separators (',',':'), ensure_ascii=False, manifest_sha256 omitted) and per-payload bytes/sha256",
+  "listed_payload_count": 8,
+  "verified_count": 8,
+  "malformed_count": 0,
+  "missing_count": 0,
+  "mismatch_count": 0,
+  "duplicate_count": 0,
+  "canonical_manifest_sha256_expected": "5884e45f4ed764eeebfc606079fd39c74244984e3b5161de6da3b887fd65354b",
+  "canonical_manifest_sha256_actual": "5884e45f4ed764eeebfc606079fd39c74244984e3b5161de6da3b887fd65354b",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_reinstall_upgrade_real.json",
+      "expected_bytes": 1067,
+      "actual_bytes": 1067,
+      "expected_sha256": "1abca1e44c47718aa6d9c48a2bc1c3859d3c449554cdd7647271deb97ca66c91",
+      "actual_sha256": "1abca1e44c47718aa6d9c48a2bc1c3859d3c449554cdd7647271deb97ca66c91",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_uninstall_real.json",
+      "expected_bytes": 614,
+      "actual_bytes": 614,
+      "expected_sha256": "2f4bdb25b9c5735bd17a1c8e864200d51c4d35caea09492f5dd0ce14864381cf",
+      "actual_sha256": "2f4bdb25b9c5735bd17a1c8e864200d51c4d35caea09492f5dd0ce14864381cf",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_90_findings.json",
+      "expected_bytes": 1418,
+      "actual_bytes": 1418,
+      "expected_sha256": "254c68bc791f76ed6eb010612e9f17d60065fa85a09fef7905380746c7181f07",
+      "actual_sha256": "254c68bc791f76ed6eb010612e9f17d60065fa85a09fef7905380746c7181f07",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_real_output.txt",
+      "expected_bytes": 1616,
+      "actual_bytes": 1616,
+      "expected_sha256": "7e0494e795b6444067d265172314c502e39006e4ebc1aa795910a67c7916c875",
+      "actual_sha256": "7e0494e795b6444067d265172314c502e39006e4ebc1aa795910a67c7916c875",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_real_output.txt",
+      "expected_bytes": 241,
+      "actual_bytes": 241,
+      "expected_sha256": "b8c4d21902fcd1ef8937fac413236b7e2e8509437357a576dadd6c0d7ae20089",
+      "actual_sha256": "b8c4d21902fcd1ef8937fac413236b7e2e8509437357a576dadd6c0d7ae20089",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_dryrun_output.txt",
+      "expected_bytes": 1925,
+      "actual_bytes": 1925,
+      "expected_sha256": "21b0b223457f2fd18af8f057de0010d8e86abf94df803ce6b72c6584acd6f033",
+      "actual_sha256": "21b0b223457f2fd18af8f057de0010d8e86abf94df803ce6b72c6584acd6f033",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_dryrun_output.txt",
+      "expected_bytes": 390,
+      "actual_bytes": 390,
+      "expected_sha256": "357bb9289e561fe19c5c9ab2ac9d1c9744161a8c05ee65e297bca2212c294477",
+      "actual_sha256": "357bb9289e561fe19c5c9ab2ac9d1c9744161a8c05ee65e297bca2212c294477",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/SUMMARY.md",
+      "expected_bytes": 1071,
+      "actual_bytes": 1071,
+      "expected_sha256": "5a11935c09fdf3b6354c4f5a8d72258eb4081c5cda589d5bf8b2e3a0f209d2b9",
+      "actual_sha256": "5a11935c09fdf3b6354c4f5a8d72258eb4081c5cda589d5bf8b2e3a0f209d2b9",
+      "bytes_match": true,
+      "hash_match": true
+    }
+  ],
+  "pass": true
+}
