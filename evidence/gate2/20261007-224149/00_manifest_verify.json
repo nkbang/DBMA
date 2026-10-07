@@ -1,10 +1,11 @@
 {
   "schema_version": "2",
   "run_id": "20261007-224149",
-  "verified_at": "2026-10-07T23:43:13Z",
+  "verified_at": "2026-10-07T23:45:29Z",
   "manifest_path": "evidence/gate2/20261007-224149/manifest.json",
   "verification_base": "/Users/David/DBMA",
-  "verification_command": "python3 (read-only): recompute canonical JSON sha256 (sort_keys, separators (',',':'), ensure_ascii=False, manifest_sha256 omitted) and per-payload bytes/sha256 from files under evidence/gate2/20261007-224149/",
+  "verification_source": "git archive of committed tree c4f3c9a055f0867a7c84944ba3a9645523fe4490 (pushed to origin/fix/merge-production-path-safety)",
+  "verification_command": "git archive <commit> evidence/gate2/20261007-224149 | tar -x -C <scratch>; python3 -I: recompute canonical sha256 (sort_keys, separators (',',':'), ensure_ascii=False, manifest_sha256 omitted) and per-payload bytes/sha256 from extracted files",
   "listed_payload_count": 11,
   "verified_count": 11,
   "malformed_count": 0,
