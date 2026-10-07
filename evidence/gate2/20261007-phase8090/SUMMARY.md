@@ -11,6 +11,7 @@
 - 시딩 데이터는 git archive HEAD 기반 마커이며 실제 사용자 데이터가 아니다.
 - 실제 설치 경로 ~/내서재_베타는 이 기기에 없어 접촉하지 않았다.
 - 스크립트 결함 D1~D3은 80_90_findings.json에 기록(수정하지 않음).
+- 90_real_output.txt는 대화 기록에서 복원한 최초 출력이다(원본 캡처 파일은 재실행으로 덮어써짐). 재실행 출력은 90_rerun_idempotent_output.txt.
 - 실행 주체: 사용자 터미널(자동 분류기가 CUE의 non-dry-run 실행을 거부함).
 
 ## Payload

@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "run_id": "20261007-phase8090",
-  "generated_at": "2026-10-07T23:53:52Z",
+  "generated_at": "2026-10-07T23:58:13Z",
   "baseline_commit": "cb234fd779850f6f786c695861c5495dd0fd722f",
-  "payload_count": 8,
+  "payload_count": 9,
   "files": [
     {
       "path": "evidence/gate2/20261007-phase8090/80_reinstall_upgrade_real.json",
@@ -12,13 +12,13 @@
     },
     {
       "path": "evidence/gate2/20261007-phase8090/90_uninstall_real.json",
-      "bytes": 614,
-      "sha256": "2f4bdb25b9c5735bd17a1c8e864200d51c4d35caea09492f5dd0ce14864381cf"
+      "bytes": 914,
+      "sha256": "3647256ae34bc90e537cd2aef63160036f59a1b6553ff5ba72dc43176f0df323"
     },
     {
       "path": "evidence/gate2/20261007-phase8090/80_90_findings.json",
-      "bytes": 1418,
-      "sha256": "254c68bc791f76ed6eb010612e9f17d60065fa85a09fef7905380746c7181f07"
+      "bytes": 1856,
+      "sha256": "a7cf4695403e2a20d002f0b8ec477a414755f4e849e58d7da518cb2b5b855209"
     },
     {
       "path": "evidence/gate2/20261007-phase8090/80_real_output.txt",
@@ -27,8 +27,8 @@
     },
     {
       "path": "evidence/gate2/20261007-phase8090/90_real_output.txt",
-      "bytes": 241,
-      "sha256": "b8c4d21902fcd1ef8937fac413236b7e2e8509437357a576dadd6c0d7ae20089"
+      "bytes": 522,
+      "sha256": "c3015731d55fffeb5e989d946268859dfc5b444c913fb7672f43453e3c827fef"
     },
     {
       "path": "evidence/gate2/20261007-phase8090/80_dryrun_output.txt",
@@ -42,8 +42,13 @@
     },
     {
       "path": "evidence/gate2/20261007-phase8090/SUMMARY.md",
-      "bytes": 1071,
-      "sha256": "5a11935c09fdf3b6354c4f5a8d72258eb4081c5cda589d5bf8b2e3a0f209d2b9"
+      "bytes": 1252,
+      "sha256": "a89d8050068dc332e8b36fdc0ee7490919b0f1ef7c3224c346b056f73f12d824"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_rerun_idempotent_output.txt",
+      "bytes": 241,
+      "sha256": "b8c4d21902fcd1ef8937fac413236b7e2e8509437357a576dadd6c0d7ae20089"
     }
   ],
   "manifest_canonicalization": {
@@ -63,5 +68,5 @@
     "phase_90_uninstall": "PASS"
   },
   "related_run": "20261007-224149",
-  "manifest_sha256": "5884e45f4ed764eeebfc606079fd39c74244984e3b5161de6da3b887fd65354b"
+  "manifest_sha256": "9bdc929fefe9b479ba99d7a52951f8397cedb0e10bf675e0e6e9a2d83fa884b6"
 }

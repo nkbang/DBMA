@@ -1,8 +1,12 @@
+# 복원 기록: 아래는 사용자 터미널의 최초 실행(stdout) 출력을 대화 기록에서 옮긴 것이며,
+# tee 저장 파일(/tmp/p8090-out/90_real.txt)은 이후 재실행으로 덮어써져 원본 파일 캡처가 아님.
 === 90_uninstall.sh ===
 Dry run: false
 Target directory: /tmp/dbma-gate2-run-1791417179
-No isolated directory found at /tmp/dbma-gate2-run-1791417179 (nothing to remove)
+Removing isolated install directory...
+Removed: /tmp/dbma-gate2-run-1791417179
 
 Checking for orphan gate2 files...
 No orphan files found
 === Done ===
+zsh: no matches found: /tmp/dbma-gate2-run-*

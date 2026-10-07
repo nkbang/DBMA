@@ -32,5 +32,10 @@
       "finding": "인자 없이 실행하면 /tmp의 모든 dbma-gate2-run-*를 삭제(다른 세션 run 포함 가능); 명시 인자 사용 필수"
     }
   ],
-  "remediation": "스크립트 수정은 이번 범위 밖(별도 승인 필요); 현 단계는 기록만"
+  "remediation": "스크립트 수정은 이번 범위 밖(별도 승인 필요); 현 단계는 기록만",
+  "evidence_incident": {
+    "finding": "커밋 a293c374의 90_real_output.txt는 재실행 출력(nothing to remove)이 덮어써진 상태로 복사되어 최초 삭제 출력이 누락됨",
+    "cause": "사용자 재실행의 tee가 /tmp/p8090-out/90_real.txt를 덮어쓴 뒤 CUE가 복사",
+    "fix": "최초 출력을 대화 기록에서 복원(복원 표시 헤더 포함)하고 재실행 출력은 별도 파일로 보존"
+  }
 }
