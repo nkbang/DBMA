@@ -70,3 +70,13 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 
 - F1은 코드 수준에서 해소됨. 관련 17개 테스트 파일 202 passed.
 - **전체 판정은 아직 확정하지 않는다.** 남은 항목: (1) 설치 스크립트(`setup_beta_tester.command`) end-to-end 및 깨끗한 환경 평가(D4 비격리 포함), (2) `AppTest`가 첫 화면만 렌더링해 chat·research 이동·Smith·`nae_pd` 활성 경로 미시험, (3) D1~D3·D5 스크립트 결함. 판정 FAIL의 직접 사유(F1)는 해소되었으므로 위 (1)(2) 결과에 따라 PARTIAL_PASS 이상으로 재산정한다.
+
+## 부록 B — AppTest 확장 검증 (2026-10-07)
+
+- evidence: `evidence/gate2/20261007-apptest-ext/`, 수정 커밋 `f49ffeb3`
+- 범위: 사이드바 6개 페이지(+Research 연구/채팅 뷰) 렌더링, `nae_pd` 활성 상태에서 NAE 섹션 검색 클릭. `NAE/` 없는 `git archive` 트리와 `NAE/` 있는 트리(대조군)를 비교.
+- **추가 결함 F1-b 발견·수정**: `NAE/` 부재 + `nae_pd` enabled + 검색 클릭 시 `_execute_nae_retrieval`이 `UnboundLocalError`(except 절의 `NaePdModuleDisabledError` 미바인딩, §G fail-closed 위반). 대조군은 정상 → `NAE/` 부재에서만 발생. `ImportError`를 먼저 잡아 경고+빈 결과로 수정, 회귀 시험 추가(수정 전 1 failed).
+- 수정 후 결과: 6개 페이지 예외 없음, `nae_pd` 활성 검색은 경고 후 빈 결과. 관련 테스트 48 passed.
+- 무효 처리한 시도 2건(온보딩 미우회, 내부 키 대신 표시 라벨 사용)은 findings에 기록.
+- **한계**: Monitor(`NAE_ADMIN_MODE=1`)·설교 준비 내부 뷰·실제 질의 생성·Smith 활성 경로·실제 `streamlit run`·브라우저 상호작용 미시험. 설치 스크립트 end-to-end와 깨끗한 환경 평가는 여전히 미평가.
+- 판정: F1(F1-b 포함)은 해소. 전체 판정은 위 한계와 D1~D5가 남아 있어 아직 확정하지 않는다.

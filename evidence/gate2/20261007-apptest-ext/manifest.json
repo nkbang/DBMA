@@ -1,0 +1,56 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-apptest-ext",
+  "generated_at": "2026-10-08T00:28:00Z",
+  "baseline_commit": "f49ffeb3669d37ccad79094b085ca19b14f37cd2",
+  "payload_count": 6,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/apptest_harness.py",
+      "bytes": 2672,
+      "sha256": "93b6beda6129141ca231230a879272a767bb0283410797ee0fcabd54ef7a8e4c"
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/run1_noNAE_before_fix.json",
+      "bytes": 4319,
+      "sha256": "8977ebb498ef9eb4f3418ad4f54677d82cb80613b990e6187ecff0d4714ac491"
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/run2_withNAE_baseline.json",
+      "bytes": 4094,
+      "sha256": "5252e6754b5f0dc5fc58b3279a4cf1d5a48dfc3cc860486533e8363c9c58b6cf"
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/run3_noNAE_after_fix.json",
+      "bytes": 4310,
+      "sha256": "3ee7bb7e4053afa030d5cfd1406ab3a1b18cf74fa97cbc5268e66588bf20f565"
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/apptest_findings.json",
+      "bytes": 2481,
+      "sha256": "38e054ad0ae879d69667dd823f1c3593be7a13d4693b0cd8fcbe3cf52c807aa8"
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/SUMMARY.md",
+      "bytes": 495,
+      "sha256": "0286f1ed56aaa74cdedba9f44b1be441bccc3cc862bbf80b91ec781f16cac73c"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "apptest_extended": "PASS after fix (1 additional defect found and fixed)"
+  },
+  "related_run": "20261007-f1fix",
+  "manifest_sha256": "538b678956e8b68f253797aec7d7c64e19615d453ac8dd3470b0c371c05b43e1"
+}
