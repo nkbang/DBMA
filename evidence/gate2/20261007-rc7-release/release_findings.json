@@ -1,0 +1,43 @@
+{
+  "run_id": "20261007-rc7-release",
+  "executed_by": "CUE (사용자 승인 'Release 생성과 코퍼스 자산 재업로드 진행해')",
+  "release": {
+    "tag": "beta-v1.3.0-rc7",
+    "tag_commit": "d00950c95130368a594fa88076c3a4a4171d6d46",
+    "url": "https://github.com/nkbang/DBMA/releases/tag/beta-v1.3.0-rc7",
+    "title": "beta-v1.3.0-rc7 — rc6 핫픽스 (NAE 선택 모듈 임포트 수정)",
+    "draft": false,
+    "prerelease": false,
+    "latest": false,
+    "flags": "gh release create --verify-tag --latest=false (기존 태그 사용, Latest는 rc6 유지)",
+    "note": "API의 target_commitish='main'은 기본값 표기이며 release는 기존 태그 beta-v1.3.0-rc7(d00950c9)에 묶임. rc6 Release도 동일 표기"
+  },
+  "asset": {
+    "name": "nae_baseline_corpus.tar.gz",
+    "source": "rc6 Release 자산을 gh release download로 내려받아(scratch, 다운로드 시각 2026-10-08T01:47:15Z) 그대로 업로드",
+    "size": 49237046,
+    "sha256": "b4eea35caad9a6182782b659acee38e37545e4be134c2b517e2b2da9a8b29932",
+    "verification": [
+      "내려받은 파일 sha256 == GitHub가 기록한 rc6 자산 digest (b4eea35c…)",
+      "rc7 Release 자산 digest == rc6 자산 digest (동일 파일)",
+      "tar 내용: output/bench/tsu_dataset.jsonl 포함(설치기의 CORPUS_MARKER), 4 members"
+    ],
+    "installer_urls": "https://github.com/nkbang/DBMA/releases/download/beta-v1.3.0-rc{6,7}/nae_baseline_corpus.tar.gz 모두 HTTP 200, content-length 49237046 (HEAD 요청, 추가 다운로드 없음)"
+  },
+  "unchanged": {
+    "BETA_LATEST_TAG_on_dev": "beta-v1.3.0-rc6",
+    "rc6_tag_commit": "d16095e2",
+    "dev_tip": "c10fd2c3",
+    "latest_release": "beta-v1.3.0-rc6",
+    "note": "테스터 설치 경로는 변하지 않음"
+  },
+  "not_done": [
+    "dev 이식 PR",
+    "BETA_LATEST_TAG.txt PR",
+    "설치 end-to-end(트랙 C)"
+  ],
+  "limits": [
+    "코퍼스 번들 내용 자체의 정합성(130,401건 등)은 이번에 검증하지 않음 — rc6 자산과 바이트 동일함만 확인",
+    "Release 본문의 '기능 변경 없음' 서술은 rc6 대비 diff(3개 파일)로 뒷받침됨(20261007-t0-rc7-tarball)"
+  ]
+}

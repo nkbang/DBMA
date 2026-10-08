@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-rc7-release",
+  "generated_at": "2026-10-08T01:48:48Z",
+  "baseline_commit": "fca3e8e34a39c546de957cac860c1ce1e981c02d",
+  "payload_count": 9,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-rc7-release/asset_sha256.txt",
+      "bytes": 65,
+      "sha256": "e379dff58cefe81ead06167cb64717605820a92211e5ca60b7aba345f239a53c"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/asset_listing.txt",
+      "bytes": 286,
+      "sha256": "eb3281262553ec9695e4e50d27385859c717d14e8a99885b527a2e5b795d4685"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_notes_rc7.md",
+      "bytes": 1133,
+      "sha256": "79c755b83f085291257dfe81cf0a3d6edc2d95de81dd4254e541b6058e7a086e"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_rc7_api.json",
+      "bytes": 484,
+      "sha256": "4e8f6133b4e020f61d2230f79159c04133424cadd64ab430efc518f3b7143e91"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_rc6_api.json",
+      "bytes": 287,
+      "sha256": "f40f368ee5c58754f22ac157b920ee4fe2f464e3bc331d30b5fdd2f10a39359d"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_list_after.txt",
+      "bytes": 332,
+      "sha256": "1871372e5810cce94faba7e27d98568e4bc00faf989e2a93696ef0190dd78b80"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/installer_url_head_check.txt",
+      "bytes": 130,
+      "sha256": "61d7141af6f94f928e18da7a359af9555d46f6fde0cda0531151cd9c3f455c44"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_findings.json",
+      "bytes": 2183,
+      "sha256": "8757baf51b6b207f41309dc24baca0e03bb240c2426d725ffd630bbbfd3f03b6"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/SUMMARY.md",
+      "bytes": 458,
+      "sha256": "25a878bca9924b51e8f216653463cfa299dad2853ed14ab59703292f441fda9b"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "rc7_release": "CREATED, asset identical to rc6"
+  },
+  "related_run": "20261007-t0-rc7-tarball",
+  "manifest_sha256": "f6b9948ae8b47208488f536ec6fc08d82fa21080560a6789042743ef385974c0"
+}

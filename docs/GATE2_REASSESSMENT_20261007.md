@@ -166,3 +166,11 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - rc6 tarball 대비 차이는 의도한 3개 파일뿐: `ui/components/nae_public_section.py`, `ui/pages/chat.py`(수정), `tests/test_ui_imports_without_nae.py`(신규). 멤버 1,652 → 1,653.
 - **미확인/주의**: 설치 end-to-end는 미평가. rc7에는 GitHub Release와 코퍼스 자산이 없어 지금 `BETA_LATEST_TAG`를 바꾸면 새 설치자가 빈 서재로 시작한다 → Release+자산 재업로드 전까지 `BETA_LATEST_TAG`는 rc6 유지.
 - 남은 승인 항목: GitHub Release + rc6 코퍼스 자산(49MB) 재업로드 → `dev` 이식 PR → `BETA_LATEST_TAG.txt` PR.
+
+## 부록 L — rc7 GitHub Release 및 코퍼스 자산 (2026-10-07, HQ 승인)
+
+- evidence: `evidence/gate2/20261007-rc7-release/` — Release https://github.com/nkbang/DBMA/releases/tag/beta-v1.3.0-rc7 (태그 `d00950c9`, `--verify-tag --latest=false`, draft/prerelease 아님).
+- 자산 `nae_baseline_corpus.tar.gz`(49,237,046 bytes)는 **rc6 Release에서 내려받은 파일을 그대로 업로드**했다. 내려받은 파일의 sha256이 GitHub가 기록한 rc6 digest(`b4eea35c…`)와 일치했고, rc7 자산 digest도 같다. 설치기가 쓰는 URL(rc6·rc7) 모두 HTTP 200, 같은 크기(HEAD 요청). 설치기의 `CORPUS_MARKER`(`output/bench/tsu_dataset.jsonl`)가 번들에 포함된다.
+- **테스터 경로 불변**: `BETA_LATEST_TAG.txt`=rc6, Latest 표시=rc6, `dev` 끝 `c10fd2c3`.
+- 이로써 `BETA_LATEST_TAG`를 rc7로 바꿔도 새 설치자가 빈 서재로 시작하는 문제는 사라진다(코퍼스 번들 내용 자체의 정합성은 검증하지 않았고 rc6와 바이트 동일함만 확인).
+- 남은 승인 항목: `dev` 이식 PR → `BETA_LATEST_TAG.txt` PR(병합 시 테스터 전원에게 영향). 그 전에 설치 end-to-end(트랙 C) 평가를 권고.
