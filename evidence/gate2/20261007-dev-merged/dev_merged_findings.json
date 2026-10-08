@@ -1,0 +1,40 @@
+{
+  "run_id": "20261007-dev-merged",
+  "merge": {
+    "pr": 112,
+    "merged_by": "nkbang (사용자가 직접 병합)",
+    "method": "merge commit",
+    "merge_commit": "855470ddaf914d68053d0c57368365c954287c62",
+    "parents": [
+      "c10fd2c3 (dev 이전 끝)",
+      "7bfdfbb3 (이식 커밋)"
+    ],
+    "mergedAt": "2026-10-08T03:32:23Z",
+    "note": "이식 커밋 해시 7bfdfbb3이 dev 이력에 그대로 보존됨"
+  },
+  "verification": {
+    "target": "origin/dev/dbma-engine @ 855470dd, git archive (NAE/ 0개)",
+    "import_ui_app": "rc=0",
+    "tests_packaged": "임포트·인용 UI 시험 15 passed",
+    "apptest": "사이드바 페이지 + 연구/채팅 뷰 + nae_pd 켠 검색, 9 runs, 문제 0",
+    "remaining_NAE_imports_in_ui": "5곳 모두 함수 안 또는 try/except ImportError 안 (dev_conditional_NAE_imports.txt); 최상위 무조건 임포트 없음"
+  },
+  "unchanged": {
+    "BETA_LATEST_TAG_on_dev": "beta-v1.3.0-rc6",
+    "rc6_tag": "d16095e2",
+    "rc7_tag": "d00950c9",
+    "note": "병합은 테스터에게 가는 버전을 바꾸지 않음"
+  },
+  "corrections": [
+    "병합 전 안내에서 'chat.py의 한 줄이 grep ^(from|import) NAE에 나와야 한다'고 했으나 그 줄은 try 안에 들여쓰기돼 있어 해당 검색에 걸리지 않음 — 올바른 기대는 '출력 없음'",
+    "첫 들여쓰기 검색은 git grep -E의 \\s 미지원으로 빈 결과였고 [[:space:]]로 재확인"
+  ],
+  "not_done": [
+    "BETA_LATEST_TAG.txt → rc7 PR",
+    "설치 end-to-end (깨끗한 환경 트랙 C)"
+  ],
+  "limits": [
+    "임포트·AppTest 수준 검증, 설치 end-to-end 아님",
+    "dev 끝에는 rc6 이후 77+ 커밋이 있어 dev 기반 신규 태그는 별도 검증 필요(이번 검증은 NAE 선택성에 한정)"
+  ]
+}

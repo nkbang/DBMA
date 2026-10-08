@@ -1,0 +1,12 @@
+2026-10-07 19:09:14.671 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/p40/repo/ui/app.py", line 27, in <module>
+    from ui.pages.dashboard import render_dashboard_page
+  File "/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/p40/repo/ui/pages/__init__.py", line 7, in <module>
+    from ui.pages.research import render_research_page
+  File "/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/p40/repo/ui/pages/research.py", line 35, in <module>
+    from ui.components.nae_public_section import render_nae_public_section
+  File "/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/p40/repo/ui/components/nae_public_section.py", line 25, in <module>
+    from NAE.citation_disclosure import get_disclosure
+ModuleNotFoundError: No module named 'NAE'

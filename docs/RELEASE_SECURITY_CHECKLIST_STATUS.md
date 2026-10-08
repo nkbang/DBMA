@@ -1,7 +1,7 @@
 # 배포 전 보안 체크리스트 판정 — S1-3
 
-- 생성: 2026-09-17T22:08:10
-- 모드: 적용(--apply)
+- 생성: 2026-09-21T18:12:50
+- 모드: 판정만(dry-run)
 - 근거: `project_rag_security_pre_deploy.md`(2026-07-28) 5개 항목, `scripts/security_preflight.py`로 자동 판정
 
 | # | 항목 | 판정 | 근거 |

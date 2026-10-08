@@ -1,0 +1,49 @@
+{
+  "run_id": "20261007-hotfix-rc7-prep",
+  "recorded_at": "2026-10-08T01:37:01Z",
+  "branch": {
+    "name": "hotfix/rc7-nae-optional",
+    "commit": "d00950c95130368a594fa88076c3a4a4171d6d46",
+    "base": "beta-v1.3.0-rc6 (d16095e24593538f4cce2418eacc2618599828e3)",
+    "worktree": "/Users/David/DBMA/.claude/worktrees/hotfix-rc7-nae-optional",
+    "pushed": false,
+    "note": "로컬 전용. 증거가 참조하는 커밋은 푸시 전까지 원격에 없다. 푸시 시점의 해시가 바뀌면(재작성) 이 기록을 갱신해야 한다."
+  },
+  "changes": {
+    "files": [
+      "ui/components/nae_public_section.py (+10/-1)",
+      "ui/pages/chat.py (+8/-1)",
+      "tests/test_ui_imports_without_nae.py (신규 75줄)"
+    ],
+    "total": "3 files, +93/-2 vs rc6",
+    "diff": "hotfix_vs_rc6.diff",
+    "source_commits": "fix/merge-production-path-safety 3a10bb3b·f49ffeb3 의 ui/ 변경을 rc6 기준으로 이식 (gate2 스크립트·tests 외 파일은 가져오지 않음)"
+  },
+  "verification": {
+    "method": "커밋을 git archive로 풀어(NAE/ 0개, 1,645 members, NAE members 0) dbma311 python과 arch -arm64로 실행",
+    "import_ui_app": "rc=0",
+    "tests_with_NAE_worktree": "ui를 참조하는 32개 시험 파일 278 passed",
+    "tests_packaged_tree": "NAE 의존 시험 제외 11개 파일 73 passed",
+    "apptest": "rc6 사이드바 9개 페이지 + nae_pd 켠 검색 2건, 11 runs, 문제 0 (apptest_packaged.json)",
+    "control": "수정 없는 rc6 트리: import ui.app rc=1, AppTest 예외 'No module named NAE', 핵심 시험 13 failed / 2 passed (이전 evidence 20261007-rc6check, 20261007-hotfix 비교 시험)"
+  },
+  "process_notes": [
+    "커밋 시 -c core.hooksPath=/dev/null을 불필요하게 붙였다가 정정: 저장소에 훅이 없음을 확인하고 정상 경로로 amend (해시 a0a4e9d8 → d00950c9)",
+    "zsh에서 시험 파일 목록 변수가 단어 분리되지 않아 pytest 요약이 비었던 이전 시도를 ${=L}로 고쳐 재실행"
+  ],
+  "not_done": [
+    "원격 푸시 없음",
+    "태그(beta-v1.3.0-rc7) 생성 없음",
+    "GitHub Release / 코퍼스 자산 재업로드 없음",
+    "BETA_LATEST_TAG.txt 변경 없음",
+    "dev/dbma-engine 되돌려 적용(forward-port) 없음 — dev의 chat.py에서 한 군데 수동 충돌 예상",
+    "GitHub 실제 태그 tarball의 export-ignore 적용은 미확인(절차서 T0)"
+  ],
+  "next_requires_approval": [
+    "핫픽스 브랜치 푸시",
+    "태그 beta-v1.3.0-rc7 생성",
+    "GitHub Release 생성 및 rc6 코퍼스 자산(49MB) 재업로드",
+    "BETA_LATEST_TAG.txt → rc7 PR",
+    "dev/dbma-engine forward-port PR"
+  ]
+}

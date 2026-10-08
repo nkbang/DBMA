@@ -1,0 +1,64 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-scriptfix",
+  "verified_at": "2026-10-08T00:30:45Z",
+  "manifest_path": "evidence/gate2/20261007-scriptfix/manifest.json",
+  "verification_source": "git archive of committed tree 3c8d5c4fedea3de761848a2076f0fe7485af4a1a",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 6,
+  "verified_count": 6,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "cb6dfd798e41c7690b6a393b4087b8a02ff387771c1212792d5c956c471457a1",
+  "canonical_manifest_sha256_actual": "cb6dfd798e41c7690b6a393b4087b8a02ff387771c1212792d5c956c471457a1",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-scriptfix/95_after_fix.json",
+      "expected_bytes": 1171,
+      "actual_bytes": 1171,
+      "expected_sha256": "615198d6de3d16de921da9d0453525bf77a6c5db3725f7093dc73ced75dd0d54",
+      "actual_sha256": "615198d6de3d16de921da9d0453525bf77a6c5db3725f7093dc73ced75dd0d54",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/95_stdout.txt",
+      "expected_bytes": 257,
+      "actual_bytes": 257,
+      "expected_sha256": "f7351fa56d3cfa723cc1920d08462cd0262ab3fb14af2756811448c859e8fde0",
+      "actual_sha256": "f7351fa56d3cfa723cc1920d08462cd0262ab3fb14af2756811448c859e8fde0",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/90_noarg_after_fix.txt",
+      "expected_bytes": 131,
+      "actual_bytes": 131,
+      "expected_sha256": "fe4efd40a5eaa38c05629e56e96aa8cd035b19d77b1e1059567edc5055ab7493",
+      "actual_sha256": "fe4efd40a5eaa38c05629e56e96aa8cd035b19d77b1e1059567edc5055ab7493",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/80_dryrun_after_fix.txt",
+      "expected_bytes": 533,
+      "actual_bytes": 533,
+      "expected_sha256": "b28c1b5510b1ffbc1e9fe899b60f24be70fb501be8e3f77a946467e290ba5b47",
+      "actual_sha256": "b28c1b5510b1ffbc1e9fe899b60f24be70fb501be8e3f77a946467e290ba5b47",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/scriptfix_findings.json",
+      "expected_bytes": 2381,
+      "actual_bytes": 2381,
+      "expected_sha256": "37f0e225be51765164d2c6ee9ca1de9fc9d6cc6149ab44efacf322ae0277770c",
+      "actual_sha256": "37f0e225be51765164d2c6ee9ca1de9fc9d6cc6149ab44efacf322ae0277770c",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/SUMMARY.md",
+      "expected_bytes": 475,
+      "actual_bytes": 475,
+      "expected_sha256": "edeeed09f5647423f3e4a2389ebd71e9d13e4bc38ac27c24a4f6b51c77028810",
+      "actual_sha256": "edeeed09f5647423f3e4a2389ebd71e9d13e4bc38ac27c24a4f6b51c77028810",
+      "match": true
+    }
+  ],
+  "pass": true
+}

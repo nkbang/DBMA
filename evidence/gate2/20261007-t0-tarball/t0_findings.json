@@ -1,0 +1,36 @@
+{
+  "run_id": "20261007-t0-tarball",
+  "downloaded_at_utc": "2026-10-08T01:37:42Z",
+  "executed_by": "CUE (사용자 지시 '태그 tarball 다운로드 확인해'), 개발 Mac, 인증 없는 공개 URL",
+  "subject": {
+    "url": "https://github.com/nkbang/DBMA/archive/refs/tags/beta-v1.3.0-rc6.tar.gz",
+    "redirect": "https://codeload.github.com/nkbang/DBMA/tar.gz/refs/tags/beta-v1.3.0-rc6",
+    "http": 200,
+    "bytes": 4729447,
+    "sha256": "64bf1a0f6debba120f6c33aae2c71a199974e83b31d78eb61b959fb0c7010dff",
+    "stored": "scratchpad only (저장소에 tarball 미포함)"
+  },
+  "results": {
+    "members": 1652,
+    "NAE_members": 0,
+    "automation_members": 0,
+    "ui_files_present": true,
+    "BETA_LATEST_TAG_present": true,
+    "top_level_NAE_imports_in_tarball": [
+      "ui/components/nae_public_section.py:25",
+      "ui/pages/chat.py:47"
+    ],
+    "import_ui_app_on_extracted_tarball": "FAIL rc=1 — ModuleNotFoundError: No module named 'NAE' (dbma311 python, arch -arm64)"
+  },
+  "conclusion": "F1은 git archive 가설이 아니라 GitHub가 실제로 내려주는 rc6 태그 tarball에서 확정됨: export-ignore가 적용되어 NAE/가 없고, ui/가 NAE를 최상위 import해 앱 모듈 임포트가 실패한다. 설치기(install_nae_beta.command)가 받는 것이 바로 이 tarball이다.",
+  "local_vs_github_difference": {
+    "finding": "로컬 git archive(1,644 members)와 GitHub tarball(1,652 members)은 tests/nae/ 하위 8개 항목(디렉터리 3 + 테스트 파일 4 + tests/nae/)만 다름",
+    "cause": "이 Mac의 git은 core.ignorecase=true라 'NAE/ export-ignore'가 tests/nae/까지 대소문자 무시로 제외하고, GitHub(대소문자 구분)는 포함한다",
+    "impact": "앱 실행에는 영향 없음(tests/ 하위 파일). 단 로컬 git archive 기반 패키지 검증은 GitHub 실제 tarball과 바이트 단위로 같지 않다 — 이전 evidence의 'members' 수치는 로컬 기준임"
+  },
+  "limits": [
+    "tarball의 설치기 end-to-end(설치 스크립트 실행)는 하지 않음 — 임포트 수준 확인",
+    "다운로드 시각 기준의 rc6 태그 내용이며, 태그가 이동되면 재확인 필요(태그 커밋 d16095e2)",
+    "hotfix 브랜치/수정 후보는 이 tarball 검증과 무관(rc7 태그가 만들어진 뒤 같은 방법으로 재확인 필요)"
+  ]
+}

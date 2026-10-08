@@ -1,0 +1,64 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-apptest-ext",
+  "verified_at": "2026-10-08T00:28:00Z",
+  "manifest_path": "evidence/gate2/20261007-apptest-ext/manifest.json",
+  "verification_source": "git archive of committed tree 48b3fc3b7d38d98a92c5774bfb78cf6c1b2ffa6a",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 6,
+  "verified_count": 6,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "538b678956e8b68f253797aec7d7c64e19615d453ac8dd3470b0c371c05b43e1",
+  "canonical_manifest_sha256_actual": "538b678956e8b68f253797aec7d7c64e19615d453ac8dd3470b0c371c05b43e1",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/apptest_harness.py",
+      "expected_bytes": 2672,
+      "actual_bytes": 2672,
+      "expected_sha256": "93b6beda6129141ca231230a879272a767bb0283410797ee0fcabd54ef7a8e4c",
+      "actual_sha256": "93b6beda6129141ca231230a879272a767bb0283410797ee0fcabd54ef7a8e4c",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/run1_noNAE_before_fix.json",
+      "expected_bytes": 4319,
+      "actual_bytes": 4319,
+      "expected_sha256": "8977ebb498ef9eb4f3418ad4f54677d82cb80613b990e6187ecff0d4714ac491",
+      "actual_sha256": "8977ebb498ef9eb4f3418ad4f54677d82cb80613b990e6187ecff0d4714ac491",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/run2_withNAE_baseline.json",
+      "expected_bytes": 4094,
+      "actual_bytes": 4094,
+      "expected_sha256": "5252e6754b5f0dc5fc58b3279a4cf1d5a48dfc3cc860486533e8363c9c58b6cf",
+      "actual_sha256": "5252e6754b5f0dc5fc58b3279a4cf1d5a48dfc3cc860486533e8363c9c58b6cf",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/run3_noNAE_after_fix.json",
+      "expected_bytes": 4310,
+      "actual_bytes": 4310,
+      "expected_sha256": "3ee7bb7e4053afa030d5cfd1406ab3a1b18cf74fa97cbc5268e66588bf20f565",
+      "actual_sha256": "3ee7bb7e4053afa030d5cfd1406ab3a1b18cf74fa97cbc5268e66588bf20f565",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/apptest_findings.json",
+      "expected_bytes": 2481,
+      "actual_bytes": 2481,
+      "expected_sha256": "38e054ad0ae879d69667dd823f1c3593be7a13d4693b0cd8fcbe3cf52c807aa8",
+      "actual_sha256": "38e054ad0ae879d69667dd823f1c3593be7a13d4693b0cd8fcbe3cf52c807aa8",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-apptest-ext/SUMMARY.md",
+      "expected_bytes": 495,
+      "actual_bytes": 495,
+      "expected_sha256": "0286f1ed56aaa74cdedba9f44b1be441bccc3cc862bbf80b91ec781f16cac73c",
+      "actual_sha256": "0286f1ed56aaa74cdedba9f44b1be441bccc3cc862bbf80b91ec781f16cac73c",
+      "match": true
+    }
+  ],
+  "pass": true
+}

@@ -1,0 +1,24 @@
+id: pastor-conservative-researcher-v1
+role: senior_pastor
+context:
+  ministry: local_church
+  primary_tasks:
+    - bible_research
+    - theological_research
+    - sermon_preparation
+  research_behavior:
+    - starts_with_a_real_ministry_question
+    - checks_source_evidence
+    - asks_follow_up_questions
+    - corrects_the_system_when_needed
+    - stops_when_the_research_goal_is_satisfied
+constraints:
+  does_not_know_internal_architecture: true
+  does_not_access_internal_data: true
+  does_not_assess_pass_fail: true
+  does_not_invent_sources: true
+style:
+  language: Korean
+  tone: pastoral
+  questions_are_natural: true
+  avoids_engineering_terminology: true

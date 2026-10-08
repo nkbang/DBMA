@@ -1,0 +1,4 @@
+ollama latest: v0.40.1 Windows 자산: OllamaSetup.exe 1578290696 bytes, ollama-windows-amd64.zip 1468106988, ollama-windows-amd64-rocm.zip 255448028, ollama-windows-amd64-mlx.zip 1403168386, ollama-windows-arm64.zip 209956381
+INSTALL.md:16 macOS 우선 가이드 — Windows/Linux 사용자는 각 OS의 패키지 매니저 명령으로 대체하세요.
+INSTALL.md:59 Windows: ollama.ai에서 인스톨러 다운로드 후 설치하세요.
+설치 계층 mac 전용 호출 수: setup_beta_tester.command 52, install_nae_beta.command 7; scripts/*.sh|*.command 13개(gate2 제외 9개)

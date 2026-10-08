@@ -1,0 +1,49 @@
+{
+  "run_id": "20261007-dev-port",
+  "executed_by": "CUE (사용자 승인 'dev 이식 PR 진행해')",
+  "pr": {
+    "number": 112,
+    "url": "https://github.com/nkbang/DBMA/pull/112",
+    "base": "dev/dbma-engine",
+    "head": "port/nae-optional-to-dev",
+    "head_commit": "7bfdfbb32dbb7871b4db45f8147dd396fa10666b",
+    "state": "open",
+    "merged": false,
+    "ci_checks": "0건 (자동 검사 없음)",
+    "session_bound": true
+  },
+  "base": {
+    "dev_tip": "c10fd2c3",
+    "note": "이식 브랜치는 dev 끝에서 분기, 별도 워크트리 .claude/worktrees/port-nae-optional-to-dev"
+  },
+  "changes": {
+    "files": [
+      "ui/components/nae_public_section.py (+10/-1)",
+      "ui/pages/chat.py (+8/-1)",
+      "tests/test_ui_imports_without_nae.py (신규 75줄)"
+    ],
+    "total": "3 files, +93/-2 vs dev 끝",
+    "diff": "port_vs_dev_tip.diff",
+    "equivalence": "rc7 핫픽스(d00950c9)와 변경 줄이 동일함을 diff 비교로 확인(chat.py, nae_public_section.py, 시험 파일). chat.py는 dev의 추가 임포트 때문에 한 군데를 수동으로 옮김"
+  },
+  "verification": {
+    "packaged_tree": "git archive(NAE/ 0개): import ui.app rc=0 (수정 전 dev 끝은 rc=1: import_ui_app_dev_tip_before.txt)",
+    "tests_with_NAE": "ui 참조 시험 34개 파일 297 passed",
+    "tests_packaged": "임포트·인용 UI 시험 15 passed",
+    "apptest": "Dashboard/Library/Processing/Research 연구·채팅/설교 준비/도움말 + nae_pd 켠 검색 2건, 9 runs, 문제 0"
+  },
+  "effect_on_testers": "없음: BETA_LATEST_TAG.txt 미변경, 병합해도 테스터에게 가는 버전은 바뀌지 않음",
+  "not_done": [
+    "PR 병합 (요청 범위 아님)",
+    "BETA_LATEST_TAG.txt PR",
+    "설치 end-to-end"
+  ],
+  "limits": [
+    "임포트·AppTest 수준 검증",
+    "PR에 자동 CI가 없어 CI 근거는 없음 — 위 로컬 검증이 근거"
+  ],
+  "process_notes": [
+    "커밋은 훅 우회 없이 수행",
+    "첫 번째 시도 하네스(KEYS)는 dev 구성(6개 페이지)에 맞는 fix 브랜치용 하네스를 재사용"
+  ]
+}

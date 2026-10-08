@@ -1,0 +1,31 @@
+{
+  "run_id": "20261007-apptest-ext",
+  "fix_commit": "f49ffeb3669d37ccad79094b085ca19b14f37cd2",
+  "scope": "Streamlit AppTest로 사이드바 6개 페이지(+Research 연구/채팅 뷰) 렌더링, nae_pd 활성 상태에서 NAE 섹션 검색 클릭. 대상 트리: NAE/ 없는 git archive(S), NAE/ 있는 clone(W)",
+  "invalid_attempts": [
+    "1차(harness.py): 첫 화면이 온보딩이라 페이지 목록이 비어 결과 무효 — 폐기",
+    "2차: nav_page에 표시 라벨('연구·채팅')을 넣어 모든 실행이 홈 화면만 렌더링됨 — 폐기. 3차 하네스는 nav_page 값 일치(page_selected_ok)와 화면별 고유 위젯으로 실제 페이지 렌더링을 단언"
+  ],
+  "defect_found": {
+    "id": "F1-b",
+    "where": "ui/components/nae_public_section.py::_execute_nae_retrieval",
+    "symptom": "NAE/ 부재 + nae_pd enabled + 검색 클릭 → UnboundLocalError (except NaePdModuleDisabledError 이름 미바인딩), §G fail-closed 위반",
+    "evidence": "run1_noNAE_before_fix.json (Research 연구/채팅 모두 예외)",
+    "control": "run2_withNAE_baseline.json (NAE/ 있는 트리는 예외 없음 → NAE 부재에서만 발생)",
+    "fix": "except ImportError를 먼저 두고 경고+빈 결과 반환 (커밋 f49ffeb3)",
+    "regression_test": "tests/test_ui_imports_without_nae.py::test_nae_search_fails_closed_without_nae (수정 전 1 failed)"
+  },
+  "results_after_fix": {
+    "pages_nae_pd_disabled": "6개 페이지(Dashboard, Library, Processing, Research 연구·채팅, 설교 준비, 도움말) 예외 없음, 페이지 선택값 일치",
+    "nae_pd_enabled_search": "연구·채팅 두 뷰 모두 예외 없음, 경고 '공개 자료 모듈이 이 설치본에 포함되어 있지 않습니다. (빈 결과)'",
+    "tree_has_NAE": false
+  },
+  "regression_checked": "관련 테스트 48 passed (chat evidence hold, nae f6 wiring, citation ui, research lifecycle, ui imports without nae, nae module packaging)",
+  "limits": [
+    "Monitor 페이지는 NAE_ADMIN_MODE=1 전용이라 미시험",
+    "설교 준비 내부 뷰 전환, 실제 질의 생성(Ollama/Qdrant 호출), Smith 활성 경로는 미시험",
+    "NAE/ 있는 트리의 검색은 bridge_query를 mock으로 대체(실제 Qdrant 미조회)",
+    "AppTest는 서버 headless 렌더링이며 실제 브라우저 상호작용·streamlit run 기동은 미검증",
+    "설치 스크립트 end-to-end와 깨끗한 환경 평가는 여전히 미평가"
+  ]
+}

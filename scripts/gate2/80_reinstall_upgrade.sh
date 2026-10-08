@@ -44,6 +44,17 @@ else
     git archive HEAD | tar -x -C "${ISOLATED_REPO}"
 fi
 
+# -- DRY-RUN: nothing below is executed or verified --
+# (이전에는 Step 2 시딩이 DRY_RUN에서도 /tmp에 디렉터리를 만들고 마지막에
+#  검증 없이 'RESULT: PASS'를 출력했다 — Gate 2 재판정 D1.)
+if [ "${DRY_RUN}" = "true" ]; then
+    echo ""
+    echo "[DRY-RUN] Steps 2-7 (seed / stash / replace / restore / verify) skipped."
+    echo "=== RESULT: DRY-RUN (no verification performed) ==="
+    echo "=== Done ==="
+    exit 0
+fi
+
 # -- Step 2: Seed PERSIST_ITEMS with unique marker data --
 echo ""
 echo "--- Step 2: Seeding PERSIST_ITEMS with unique markers ---"

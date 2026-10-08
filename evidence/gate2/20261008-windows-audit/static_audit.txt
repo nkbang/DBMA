@@ -1,0 +1,19 @@
+# 정적 점검 (origin/dev/dbma-engine @ 855470dd, core ui dbma_ui.py, py 126개)
+POSIX 전용 API: 0건
+macOS 전용 호출(정규식 오탐 'Hebrew' 제외): 0건; subprocess 'open' 호출 0건
+하드코딩 절대경로: 1건 core/generation.py:231 /usr/share/dict/words (OSError 처리 → 빈 집합)
+텍스트 모드 open(): 64건 중 encoding 미지정 14건; read_text/write_text 29건 중 1건
+core/identity_registry.py:63:    with open(lock_path, "w") as f:
+core/query_enhancements.py:1096:    with open(output_dir / "PT_RESEARCH_006_BOOK_ALIAS_AUDIT.md", "w") as f:
+core/query_enhancements.py:1118:    with open(output_dir / "PT_RESEARCH_006_BOOK_DETECTION_IMPLEMENTATION.md", "w") as f:
+core/query_enhancements.py:1131:    with open(output_dir / "PT_RESEARCH_006_REFERENCE_IMPLEMENTATION.md", "w") as f:
+core/query_enhancements.py:1144:    with open(output_dir / "PT_RESEARCH_006_QUERY_NORMALIZATION_TEST.md", "w") as f:
+core/query_enhancements.py:1162:    with open(output_dir / "PT_RESEARCH_006_KOREAN_ROOT_CAUSE.md", "w") as f:
+core/query_enhancements.py:1179:    with open(output_dir / "PT_RESEARCH_006_NEGATIVE_QUERY_DESIGN.md", "w") as f:
+core/query_enhancements.py:1193:    with open(output_dir / "PT_RESEARCH_006_REGRESSION.md", "w") as f:
+core/query_enhancements.py:1208:    with open(output_dir / "PT_RESEARCH_006_PRODUCT_GATE.md", "w") as f:
+core/retrieval.py:770:                with open(cache_path, "r") as f:
+core/retrieval.py:791:            with open(cache_path, "w") as f:
+core/retrieval.py:827:                with open(f, "r") as fh:
+core/retrieval.py:2600:        with open(baseline_path, "r") as f:
+core/tsu_builder.py:534:            lock_file = open(lock_path, "w")

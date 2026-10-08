@@ -1,0 +1,5 @@
+ui/components/nae_public_section.py:115:        from NAE.citation_disclosure import get_disclosure
+ui/components/nae_public_section.py:164:        from NAE.retrieval_adapter import (
+ui/components/nae_public_section.py:169:        from NAE.answer_context import paragraph_evidence_enabled
+ui/pages/chat.py:49:    from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
+ui/pages/chat.py:385:        from NAE.reference_retrieval_adapter import search_reference

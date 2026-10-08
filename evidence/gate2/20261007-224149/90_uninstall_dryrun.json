@@ -1,0 +1,12 @@
+{
+  "script": "90_uninstall_dryrun_independent",
+  "timestamp": "2026-10-07T22:49:30Z",
+  "phase": "uninstall_cleanup",
+  "status": "N/A",
+  "note": "scripts/90_uninstall.sh does not exist in current working tree (fix/merge-production-path-safety). It existed in previous Gate 2 run (20260820) on a different branch.",
+  "checks": {
+    "script_90_exists": {"status": "NOT_FOUND", "path": "scripts/90_uninstall.sh"},
+    "dry_run_possible": false,
+    "reason": "No uninstall scripts in current branch - this is a merge/recovery branch, not an end-user packaging branch"
+  }
+}

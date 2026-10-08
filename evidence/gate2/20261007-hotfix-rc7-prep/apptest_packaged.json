@@ -1,0 +1,223 @@
+{
+  "label": "rc7_candidate",
+  "has_NAE": false,
+  "config_path": "/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/hf2/tree/config.yaml",
+  "runs": [
+    {
+      "page": "Dashboard",
+      "view": null,
+      "nae_pd": false,
+      "selected": "Dashboard",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [
+          "dashboard_search_query"
+        ],
+        "buttons": 8,
+        "tabs": 0,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "Library",
+      "view": null,
+      "nae_pd": false,
+      "selected": "Library",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [
+          "library_search"
+        ],
+        "buttons": 2,
+        "tabs": 0,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "Processing",
+      "view": null,
+      "nae_pd": false,
+      "selected": "Processing",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [
+          "processing_target_manual"
+        ],
+        "buttons": 3,
+        "tabs": 0,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "Research",
+      "view": null,
+      "nae_pd": false,
+      "selected": "Research",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [],
+        "buttons": 2,
+        "tabs": 0,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "AI에게 질문",
+      "view": null,
+      "nae_pd": false,
+      "selected": "AI에게 질문",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [],
+        "buttons": 2,
+        "tabs": 0,
+        "radios": [
+          "chat_scope_mode",
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "설교 연구",
+      "view": null,
+      "nae_pd": false,
+      "selected": "설교 연구",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [],
+        "buttons": 1,
+        "tabs": 2,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "설교문 작성",
+      "view": null,
+      "nae_pd": false,
+      "selected": "설교문 작성",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [],
+        "buttons": 68,
+        "tabs": 0,
+        "radios": [
+          "sermon_format_radio",
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "저장된 설교",
+      "view": null,
+      "nae_pd": false,
+      "selected": "저장된 설교",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [],
+        "buttons": 1,
+        "tabs": 0,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "도움말",
+      "view": null,
+      "nae_pd": false,
+      "selected": "도움말",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [],
+        "buttons": 8,
+        "tabs": 0,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": false
+    },
+    {
+      "page": "Research",
+      "view": null,
+      "nae_pd": true,
+      "selected": "Research",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [
+          "research_nae_research_query"
+        ],
+        "buttons": 2,
+        "tabs": 0,
+        "radios": [
+          "nav_page"
+        ]
+      },
+      "has_nae_section": true,
+      "search": {
+        "clicked": true,
+        "exceptions": [],
+        "warnings": [
+          "공개 자료 모듈이 이 설치본에 포함되어 있지 않습니다. (빈 결과)"
+        ],
+        "errors": []
+      }
+    },
+    {
+      "page": "AI에게 질문",
+      "view": null,
+      "nae_pd": true,
+      "selected": "AI에게 질문",
+      "page_selected_ok": true,
+      "exceptions": [],
+      "widgets": {
+        "text_inputs": [
+          "chat_nae_research_query"
+        ],
+        "buttons": 2,
+        "tabs": 0,
+        "radios": [
+          "chat_scope_mode",
+          "nav_page"
+        ]
+      },
+      "has_nae_section": true,
+      "search": {
+        "clicked": true,
+        "exceptions": [],
+        "warnings": [
+          "공개 자료 모듈이 이 설치본에 포함되어 있지 않습니다. (빈 결과)"
+        ],
+        "errors": []
+      }
+    }
+  ]
+}

@@ -146,16 +146,142 @@ def _contamination_retry_note(chars: list[str]) -> str:
     )
 
 
+# 오염 문자를 지운 자리에 남기는 표식. 한 글자당 하나를 넣어 "여기에 글자가
+# 있었다"는 사실이 눈에 보이게 한다.
+_CONTAMINATION_MARKER = "□"
+
+# 답변 수준(질의응답)에서 덧붙이는 고지. 개요·대지 확장 경로에는 붙이지 않는다
+# (파싱·조립 대상 텍스트에 안내 문구가 섞이면 산출물이 오염된다).
+_CONTAMINATION_NOTICE = (
+    "\n\n⚠️ 이 답변을 만드는 중 한국어가 아닌 문자가 반복적으로 섞여 나와"
+    " {count}자를 제거했습니다(제거한 자리는 {marker} 로 표시). 그 부분의 단어가"
+    " 불완전할 수 있으니 확인하고 쓰시고, 다시 생성하면 정상 출력될 수 있습니다."
+)
+
+
 def _sanitize_script_contamination(text: str) -> str:
-    """재시도(_MAX_LANGUAGE_RETRIES)를 다 써도 오염이 남을 때의 최종
-    방어선. 실측 결과(동일 프롬프트 3회 연속 실패, 매번 다른 문자로 오염)
-    재시도만으로는 특정 개념 주변의 오염을 신뢰성 있게 없앨 수 없다는 것이
-    확인됐다 — 문장을 일부 손상시키는 한이 있어도 사용자에게 비한글 문자가
-    그대로 노출되는 것보다는 낫다는 판단으로, 오염 문자를 제거한다(대체
-    번역은 하지 않음 — 없는 내용을 지어내지 않는다는 프로젝트 원칙과
-    동일하게, 무엇으로 바꿔야 할지 모르는 문자는 만들어내지 않고 삭제만
-    한다)."""
-    return _SCRIPT_CONTAMINATION_RE.sub("", text)
+    """재시도(_MAX_LANGUAGE_RETRIES)를 다 써도 오염이 남을 때의 최종 방어선.
+
+    실측 결과(동일 프롬프트 3회 연속 실패, 매번 다른 문자로 오염) 재시도만으로는
+    특정 개념 주변의 오염을 신뢰성 있게 없앨 수 없다. 대체 번역은 하지 않는다 —
+    없는 내용을 지어내지 않는다는 프로젝트 원칙과 같다.
+
+    [2026-09-26 변경] 종전에는 오염 문자를 **조용히 삭제**했다. 그 결과 남은
+    문장이 정상처럼 보이면서 단어가 망가졌다 — P0-5 재실행 24건 실측
+    (`docs/DBMA_P0_5_RERUN_20260926_SIGNALS_001.md`):
+
+        B2: "이미 하나님 앞에서 완전히로워졌기 때문에"   ← 義 삭제, "의로워졌기"가 깨짐
+        H1: "그 속에서 정와 사랑을 실현시키고자"          ← 義 삭제, "정의"가 "정"으로
+        E2: 같은 괄호 문구가 두 번 반복되며 문장 불성립
+
+    "의"(righteousness)처럼 핵심 신학 용어가 한 글자 삭제로 사라지는데, 독자는
+    그것을 오탈자로 읽고 넘어가거나 잘못 복원한다. 삭제 자체보다 **삭제를
+    감추는 것**이 문제다.
+
+    그래서 삭제 대신 한 글자당 표식({marker})을 남긴다 — 이 앱의 "없으면 없는
+    대로" 원칙을 문자 수준에 적용한 것이다. 없는 글자를 지어내지도, 없어진
+    사실을 감추지도 않는다.
+
+    유보로 전환하는 안도 검토했으나 기각했다 — 위 실측에서 소진 7건 중 실제로
+    못 읽을 수준은 E2 1건뿐이고 B2·H1·C2는 내용이 온전해, 전량 유보는 쓸 만한
+    답변을 버리는 과잉이다. 손상 정도로 분기하는 안은 검증되지 않은 임계값 위에
+    차단 로직을 얹는 형태라 `feedback_avoid_risky_uncertain_design`에 걸린다.
+    """
+    return _SCRIPT_CONTAMINATION_RE.sub(_CONTAMINATION_MARKER, text)
+
+
+def _contamination_notice(text: str) -> str:
+    """표식이 들어간 답변에 붙일 고지. 표식이 없으면 빈 문자열."""
+    count = text.count(_CONTAMINATION_MARKER)
+    if not count:
+        return ""
+    return _CONTAMINATION_NOTICE.format(count=count, marker=_CONTAMINATION_MARKER)
+
+
+# ============================================================
+# 라틴 문자 오염 탐지 (2026-09-26)
+# ============================================================
+#
+# _SCRIPT_CONTAMINATION_RE는 **문자 체계**로 판정하므로 라틴 알파벳을 전부
+# 면제한다 — 이 앱의 정상 출력에 "Charles Haddon Spurgeon", 영문 원문 인용,
+# 영문 서지가 들어가기 때문이다. 그래서 순수 라틴 알파벳으로 된 외국어 혼입은
+# 원리상 탐지되지 않았다(2026-09-23 관측: 독일어 `persönlich`,
+# 인도네시아어 `bahwa`).
+#
+# 판별 기준은 사전이 아니라 **근거 문맥**이다. 이 앱의 답변에 등장하는 라틴
+# 단어는 검색된 근거에서 와야 한다 — 근거에 없고 고유명사도 아닌 소문자 라틴
+# 단어는 모델이 끌어온 외국어일 가능성이 높다. 프로젝트의 근거 강제 원칙을
+# 문자 수준에 적용한 것이다.
+#
+# 실측 검증 (P0-5 24건 × 2회분, `docs/DBMA_P0_5_RERUN_20260926_SIGNALS_001.md`):
+#   재현율  2/2   — `bahwa`, `persönlich` 모두 탐지
+#   정밀도  오탐 0/107 라틴 토큰 (2026-09-26 실행분, 같은 문맥 기준)
+# 초안에서 영어 사전(`/usr/share/dict/words`)을 주 신호로 썼을 때는
+# `has`·`soldiers`·`Churches`(사전에 없는 굴절형)와 `Hiscox`·`Dagg`·`Dei`
+# (고유명사)가 오탐으로 나왔다 — 문맥 신호로 바꾸자 전부 사라졌다.
+#
+# **탐지 결과로 텍스트를 지우지 않는다.** 재시도를 유발하고, 소진 시 고지만
+# 덧붙인다. 단어 삭제는 글자 삭제보다 파괴적이고, 정밀도가 좋더라도 표본이
+# 작아(양성 2건) 검증되지 않은 판정 위에 제거 로직을 얹지 않는다는 원칙
+# (feedback_avoid_risky_uncertain_design)을 따른다.
+
+_LATIN_TOKEN_RE = re.compile(r"[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'\-]{2,}")
+
+# 있으면 추가 면제로만 쓴다(없어도 동작) — 배포 환경에 이 파일이 없을 수 있어
+# 필수 의존으로 두지 않는다. 문맥 신호가 주 판정이고 사전은 보조다.
+_ENGLISH_WORDS_PATH = "/usr/share/dict/words"
+_english_words_cache: Optional[set[str]] = None
+
+
+def _english_words() -> set[str]:
+    global _english_words_cache
+    if _english_words_cache is None:
+        try:
+            with open(_ENGLISH_WORDS_PATH, encoding="utf-8", errors="replace") as f:
+                _english_words_cache = {w.strip().lower() for w in f if w.strip()}
+        except OSError:
+            _english_words_cache = set()
+    return _english_words_cache
+
+
+def _detect_latin_contamination(text: str, context_block: str) -> list[str]:
+    """근거에 없는 소문자 라틴 단어를 등장 순서대로 중복 제거해 반환.
+
+    면제 규칙:
+      - 근거 문맥(또는 서지)에 등장하는 단어 — 인용이므로 정상
+      - 대문자로 시작하는 단어 — 고유명사(인명·문헌명)
+      - 영어 사전에 있는 단어 — 사전을 읽을 수 있을 때만 적용되는 보조 면제
+
+    `context_block`이 비어 있으면(근거 없는 생성 경로) 판정 근거가 없으므로
+    빈 리스트를 반환한다 — 추측으로 표시하지 않는다.
+    """
+    if not text or not context_block:
+        return []
+
+    allowed = {w.lower() for w in _LATIN_TOKEN_RE.findall(context_block)}
+    dictionary = _english_words()
+
+    seen: dict[str, None] = {}
+    for token in _LATIN_TOKEN_RE.findall(text):
+        if token[0].isupper():
+            continue
+        lowered = token.lower().strip("'-")
+        if lowered in allowed or lowered in dictionary:
+            continue
+        seen.setdefault(token, None)
+    return list(seen.keys())
+
+
+_LATIN_NOTICE = (
+    "\n\n⚠️ 이 답변에 근거 자료에 없는 외국어로 보이는 단어가 섞여 있습니다:"
+    " {words}. 해당 표현은 신뢰하지 말고, 다시 생성하면 정상 출력될 수 있습니다."
+)
+
+
+def _latin_notice(words: list[str]) -> str:
+    if not words:
+        return ""
+    return _LATIN_NOTICE.format(words=", ".join(f"“{w}”" for w in words[:6]))
 
 
 # ============================================================
@@ -369,11 +495,24 @@ class GenerationStream:
         # (clean이면 no-op). 스트리밍은 재시도 불가라 sanitize만 남긴다.
         if self._contamination_seen:
             logger.warning(
-                "[GenerationStream] 한국어 출력 오염 감지 → 제거"
+                "[GenerationStream] 한국어 출력 오염 감지 → 표식 처리"
                 " (스트리밍은 재시도 불가): %s",
                 self._contamination_seen,
             )
             answer = _sanitize_script_contamination(answer)
+            answer += _contamination_notice(answer)
+        # [2026-09-26] 라틴 오염 고지 — 채팅이 실제로 쓰는 경로가 여기다
+        # (ui/pages/chat.py:479/564가 generate_stream을 호출). 블로킹
+        # generate()에만 붙이면 사용자에게는 적용되지 않는다. 스트리밍은
+        # 재시도가 불가하므로 고지만 붙이고 단어는 그대로 남긴다.
+        latin = _detect_latin_contamination(
+            answer, self._response.llm_context_block or ""
+        )
+        if latin:
+            logger.warning(
+                "[GenerationStream] 근거에 없는 라틴 단어 감지 → 고지 부착: %s", latin
+            )
+            answer += _latin_notice(latin)
         claim_guard_result = _run_claim_guard(answer, self._response.top_k_results)
         return GenerationResult(
             question=self._response.question,
@@ -482,6 +621,8 @@ class GenerationService:
         try:
             prompt = base_prompt
             answer = ""
+            # 라틴 오염 판정의 기준이 되는 근거 문맥(모델에 실제로 준 것).
+            evidence_context = response.llm_context_block or ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
                     model=gen_model,
@@ -490,19 +631,29 @@ class GenerationService:
                 )
                 answer = result["response"]
                 contamination = _detect_script_contamination(answer)
-                if not contamination:
+                # [2026-09-26] 라틴 알파벳 외국어는 문자 체계 검사로 잡히지 않아
+                # 근거 문맥 기준으로 따로 판정한다(_detect_latin_contamination).
+                latin = _detect_latin_contamination(answer, evidence_context)
+                if not contamination and not latin:
                     break
                 logger.warning(
                     "[GenerationService.generate] 한국어 출력 오염 감지"
-                    " (시도 %d/%d): %s",
-                    attempt + 1, _MAX_LANGUAGE_RETRIES + 1, contamination,
+                    " (시도 %d/%d): 문자체계=%s 라틴=%s",
+                    attempt + 1, _MAX_LANGUAGE_RETRIES + 1, contamination, latin,
                 )
-                prompt = base_prompt + _contamination_retry_note(contamination)
+                prompt = base_prompt + _contamination_retry_note(contamination + latin)
             else:
                 logger.warning(
-                    "[GenerationService.generate] 재시도 소진 — 오염 문자 강제 제거"
+                    "[GenerationService.generate] 재시도 소진 — 오염 문자 표식 처리"
                 )
-                answer = _sanitize_script_contamination(answer)
+                if contamination:
+                    answer = _sanitize_script_contamination(answer)
+                    # 표식만으로는 독자가 원인을 모른다 — 답변 경로에서는 고지까지 붙인다.
+                    answer += _contamination_notice(answer)
+                # 라틴 오염은 **지우지 않는다** — 단어 삭제는 글자 삭제보다
+                # 파괴적이고, 판정 표본이 작아(양성 2건) 제거 로직을 얹지 않는다.
+                # 고지만 붙여 독자가 판단하게 한다.
+                answer += _latin_notice(_detect_latin_contamination(answer, evidence_context))
             error = None
         except Exception as e:
             logger.error(
@@ -768,7 +919,7 @@ class SermonDraftService:
                 # 2단계 검토가 있지만, 그 화면에 애초에 비한글 문자가 뜨는
                 # 것 자체를 막기 위해 여기서도 제거한다.
                 logger.warning(
-                    "[SermonDraftService.generate_outline] 재시도 소진 — 오염 문자 강제 제거"
+                    "[SermonDraftService.generate_outline] 재시도 소진 — 오염 문자 표식 처리"
                 )
                 raw = _sanitize_script_contamination(raw)
             outline = _parse_outline(raw)
@@ -847,7 +998,7 @@ class SermonDraftService:
                 # st.markdown()으로 바로 표시 — 수정 UI가 없다) 여기서
                 # 걸러내는 것이 개요 쪽보다 더 중요하다.
                 logger.warning(
-                    "[SermonDraftService.expand_point] 재시도 소진 — 오염 문자 강제 제거"
+                    "[SermonDraftService.expand_point] 재시도 소진 — 오염 문자 표식 처리"
                 )
                 text = _sanitize_script_contamination(text)
             claim_guard_result = _run_claim_guard(text, candidates)

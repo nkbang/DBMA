@@ -38,6 +38,7 @@ import streamlit as st
 
 from ui.pages._base import BasePage
 from core.config import DATA_DIR
+from core.query_translation_llm import corpus_language_notice
 from core.retrieval import QueryProcessor, RankedCandidate, Citation
 from core.generation import GenerationService
 from core.claim_guard import ClaimGuardResult, RiskLevel
@@ -46,7 +47,14 @@ from core.citation_verifier import issue_messages
 from ui.components.citation_card import render_citation_card
 from ui.components.display_quality import claim_guard_message, usable_heading_label
 from ui.components.nae_public_section import render_nae_public_section
-from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
+try:
+    from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
+except ImportError:  # NAE/는 opt-in 모듈 — 배포본(export-ignore)에는 없다. Smith 비활성.
+    def should_activate_smith(query):
+        return False
+
+    def rewrite_query_for_smith(query):
+        return None
 
 logger = logging.getLogger(__name__)
 
@@ -503,7 +511,10 @@ def generate_answer(
     # 막지 않고 호출부의 _is_low_confidence 캡션 경고에 맡긴다.
     if not response.top_k_results and not reference_results:
         logger.info("[generate_answer] no evidence for query=%r → hold", question[:50])
-        return (_NO_EVIDENCE_HOLD_TEXT, [])
+        # [2026-09-26] 서재가 영문뿐일 때 "근거 없음"을 "주제가 없음"으로
+        # 오해하지 않도록 원인을 덧붙인다(한국어 자료가 쌓이면 자동 소멸).
+        notice = corpus_language_notice(getattr(getattr(processor, "engine", None), "tsus", None))
+        return (_NO_EVIDENCE_HOLD_TEXT + notice, [])
 
     try:
         stream = generator.generate_stream(

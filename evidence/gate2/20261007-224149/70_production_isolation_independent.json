@@ -1,0 +1,52 @@
+{
+  "script": "70_production_isolation_independent",
+  "timestamp": "2026-10-07T22:48:00Z",
+  "all_pass": true,
+  "checks": {
+    "before_tsu_dataset_jsonl": {
+      "status": "PASS",
+      "sha256": "bd246f22def6a9f5f9c4df69b95ff1771b5d25c5abb0dca1a66c960490f4711a",
+      "size_bytes": 217134000
+    },
+    "tripwire_tsu_dataset_jsonl": {
+      "status": "PASS",
+      "sha256": "bd246f22def6a9f5f9c4df69b95ff1771b5d25c5abb0dca1a66c960490f4711a",
+      "note": "No mutation - isolation verified (read-only check)"
+    },
+    "before_tsu_manifest_json": {
+      "status": "PASS",
+      "sha256": "960b627a47d06fcc41988dffe942a1421835391bb3cd9202f6e84c143266d8e6",
+      "size_bytes": 503
+    },
+    "tripwire_tsu_manifest_json": {
+      "status": "PASS",
+      "sha256": "960b627a47d06fcc41988dffe942a1421835391bb3cd9202f6e84c143266d8e6",
+      "note": "No mutation - isolation verified (read-only check)"
+    },
+    "before_tsu_id_state_json": {
+      "status": "PASS",
+      "sha256": "413bba79707dbc3937075024e3f045556ee65dc22be66585056dc67d7fd4068c",
+      "size_bytes": 18
+    },
+    "tripwire_tsu_id_state_json": {
+      "status": "PASS",
+      "sha256": "413bba79707dbc3937075024e3f045556ee65dc22be66585056dc67d7fd4068c",
+      "note": "No mutation - isolation verified (read-only check)"
+    },
+    "before_documents_registry": {
+      "status": "PASS",
+      "sha256": "1ef76cd07dd9085c4032e02305a0232463e4ae7f9ff07df806a3e1841908fa29",
+      "size_bytes": 126512
+    },
+    "tripwire_documents_registry": {
+      "status": "PASS",
+      "sha256": "1ef76cd07dd9085c4032e02305a0232463e4ae7f9ff07df806a3e1841908fa29",
+      "note": "No mutation - isolation verified (read-only check)"
+    },
+    "qdrant_nae_tsu_v1": {
+      "status": "WARN",
+      "http_status": 7,
+      "note": "curl connect failed (exit code 7) - Qdrant not running at localhost:6333. Pre-execution snapshot showed green with 3891 points."
+    }
+  }
+}

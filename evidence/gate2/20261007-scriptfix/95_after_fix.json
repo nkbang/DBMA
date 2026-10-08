@@ -1,0 +1,45 @@
+{
+  "script": "95_evidence_verify.py",
+  "timestamp": "2026-10-08T00:30:20Z",
+  "all_pass": false,
+  "status": "VACUOUS",
+  "checks": {
+    "evidence_files_found": {
+      "status": "PASS",
+      "count": 7
+    },
+    "sha_check_10_packaging_audit.json": {
+      "status": "SKIP",
+      "reason": "No stdout_sha256 in evidence"
+    },
+    "sha_check_30_package_integrity.json": {
+      "status": "SKIP",
+      "reason": "No stdout_sha256 in evidence"
+    },
+    "sha_check_50_runtime_smoke.json": {
+      "status": "SKIP",
+      "reason": "No stdout_sha256 in evidence"
+    },
+    "sha_check_60_ui_pages.json": {
+      "status": "SKIP",
+      "reason": "No stdout_sha256 in evidence"
+    },
+    "sha_check_61_citation_ui.json": {
+      "status": "SKIP",
+      "reason": "No stdout_sha256 in evidence"
+    },
+    "sha_check_70_production_isolation.json": {
+      "status": "SKIP",
+      "reason": "No stdout_sha256 in evidence"
+    },
+    "sha_check_95_evidence_verify.json": {
+      "status": "SKIP",
+      "reason": "No stdout_sha256 in evidence"
+    },
+    "verification_coverage": {
+      "status": "VACUOUS",
+      "compared": 0,
+      "evidence_files": 7
+    }
+  }
+}

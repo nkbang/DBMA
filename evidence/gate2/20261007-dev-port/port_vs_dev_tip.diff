@@ -1,0 +1,137 @@
+diff --git a/tests/test_ui_imports_without_nae.py b/tests/test_ui_imports_without_nae.py
+new file mode 100644
+index 00000000..52218c56
+--- /dev/null
++++ b/tests/test_ui_imports_without_nae.py
+@@ -0,0 +1,75 @@
++"""NAE/ 없이도 UI가 임포트·기동되는지 검증한다 (Gate 2 결함 F1 회귀 방지).
++
++배경: .gitattributes의 `NAE/ export-ignore`로 NAE/는 배포본에 포함되지 않는다
++(opt-in nae_pd 모듈 전용). ui/ 코드가 NAE를 최상위에서 무조건 import하면 배포본에서
++`import ui.app`이 ModuleNotFoundError로 실패한다 (docs/GATE2_REASSESSMENT_20261007.md).
++
++격리 방법: 별도 인터프리터에서 sys.modules['NAE']=None으로 NAE 임포트를 차단한다
++(실제 파일은 건드리지 않는다).
++"""
++from __future__ import annotations
++
++import subprocess
++import sys
++from pathlib import Path
++
++import pytest
++
++REPO_ROOT = Path(__file__).resolve().parent.parent
++
++_BLOCK_NAE = "import sys; sys.modules['NAE'] = None\n"
++
++
++def _run(code: str) -> subprocess.CompletedProcess:
++    return subprocess.run(
++        [sys.executable, "-W", "ignore", "-c", _BLOCK_NAE + code],
++        cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=120,
++    )
++
++
++def test_block_is_effective():
++    """차단 장치 자체 검증 — NAE import가 실제로 실패해야 시험이 의미가 있다."""
++    proc = _run("import NAE")
++    assert proc.returncode != 0
++
++
++@pytest.mark.parametrize("module", ["ui.app", "ui.pages.chat", "ui.pages.research",
++                                    "ui.components.nae_public_section"])
++def test_ui_module_imports_without_nae(module):
++    proc = _run(f"import {module}")
++    assert proc.returncode == 0, proc.stderr[-800:]
++
++
++def test_smith_inactive_without_nae():
++    proc = _run(
++        "from ui.pages import chat\n"
++        "assert chat.should_activate_smith('anything') is False\n"
++        "assert chat.rewrite_query_for_smith('anything') is None\n"
++    )
++    assert proc.returncode == 0, proc.stderr[-800:]
++
++
++def test_no_toplevel_nae_import_in_ui():
++    """ui/ 아래 NAE 최상위(들여쓰기 없는) import는 try/except로 감싼 것 외에는 금지."""
++    offenders = []
++    for path in (REPO_ROOT / "ui").rglob("*.py"):
++        lines = path.read_text(encoding="utf-8").splitlines()
++        for i, line in enumerate(lines):
++            if line.startswith(("from NAE", "import NAE")):
++                prev = lines[i - 1].strip() if i else ""
++                if prev != "try:":
++                    offenders.append(f"{path.relative_to(REPO_ROOT)}:{i + 1}")
++    assert not offenders, offenders
++
++
++def test_nae_search_fails_closed_without_nae():
++    """nae_pd를 켠 채 NAE/가 없어도 검색이 예외 없이 빈 결과를 반환해야 한다 (§G fail-closed).
++
++    회귀: except 절의 NaePdModuleDisabledError가 import 실패로 바인딩되지 않아
++    UnboundLocalError가 나던 결함 (AppTest 확장 검증에서 발견).
++    """
++    proc = _run(
++        "from ui.components import nae_public_section as n\n"
++        "assert n._execute_nae_retrieval('로마서 3:23') == []\n"
++    )
++    assert proc.returncode == 0, proc.stderr[-800:]
+diff --git a/ui/components/nae_public_section.py b/ui/components/nae_public_section.py
+index 023eb4b8..6d7b92c1 100644
+--- a/ui/components/nae_public_section.py
++++ b/ui/components/nae_public_section.py
+@@ -22,7 +22,6 @@ from typing import Any
+ 
+ import streamlit as st
+ 
+-from NAE.citation_disclosure import get_disclosure
+ 
+ 
+ def render_nae_public_section(key_prefix: str) -> None:
+@@ -111,6 +110,9 @@ def _render_nae_paragraph_card(i: int, hit: dict) -> None:
+         if authority_class:
+             st.caption(f"자료 등급: {authority_class}")
+ 
++        # NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다 —
++        # nae_pd가 enabled인 경우에만 이 렌더 경로에 도달하므로 지연 import한다.
++        from NAE.citation_disclosure import get_disclosure
+         disclosure = get_disclosure(authority_class)
+         if disclosure:
+             st.warning(disclosure)  # ADR-030 Amendment A §6 — F6 UI 필수 노출
+@@ -170,6 +172,13 @@ def _execute_nae_retrieval(query: str) -> list[Any]:
+             return bridge_query_paragraphs(query, top_k=10, limit_check=True) or []
+         return bridge_query(query, top_k=10, limit_check=True) or []
+ 
++    except ImportError:
++        # NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다. import가 실패하면
++        # 아래 except의 NaePdModuleDisabledError 이름이 바인딩되지 않아 UnboundLocalError가
++        # 나므로, ImportError를 먼저 잡는다(§G fail-closed 유지).
++        st.warning("공개 자료 모듈이 이 설치본에 포함되어 있지 않습니다. (빈 결과)")
++        return []
++
+     except NaePdModuleDisabledError:
+         st.error("공개 자료 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")
+         return []
+diff --git a/ui/pages/chat.py b/ui/pages/chat.py
+index 6768e0f0..d0173beb 100644
+--- a/ui/pages/chat.py
++++ b/ui/pages/chat.py
+@@ -45,7 +45,14 @@ from core.claim_guard import ClaimGuardResult, RiskLevel
+ from ui.state.query_processor import get_shared_query_processor, record_query_latency
+ from ui.components.citation_card import render_citation_card
+ from ui.components.nae_public_section import render_nae_public_section
+-from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
++try:
++    from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
++except ImportError:  # NAE/는 opt-in 모듈 — 배포본(export-ignore)에는 없다. Smith 비활성.
++    def should_activate_smith(query):
++        return False
++
++    def rewrite_query_for_smith(query):
++        return None
+ from core.module_registry import is_enabled
+ from core.grounded_synthesis_executor import execute_synthesis
+ 

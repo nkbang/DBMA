@@ -25,17 +25,17 @@ st.set_page_config(
 from core.config import APP_VERSION, DEFAULT_GEN_MODEL, DEFAULT_TEMPERATURE, GEN_MODEL_OPTIONS
 from ui.theme.colors import THEME
 from ui.pages.dashboard import render_dashboard_page
-from ui.pages.library import render_library_page
+from ui.pages.library import render_library_hub_page
 from ui.pages.processing import render_processing_page
-from ui.pages.research import render_research_page
-from ui.pages.chat import render_chat_page
+from ui.pages.research import render_research_workspace_page
 from ui.pages.monitor import render_monitor_page
-from ui.pages.sermon_draft import render_sermon_draft_page
-from ui.pages.sermon_research import render_sermon_research_hub_page
-from ui.pages.sermon_review import render_sermon_review_page
+from ui.pages.sermon_research import render_sermon_workspace_page
 from ui.pages.onboarding import render_onboarding_page
 from ui.pages.help import render_help_page
 from core.user_prefs import has_dismissed_onboarding
+
+
+# 사이드바 브랜드 워드마크 "내서재" — 클릭 시 온보딩 페이지로 이동.
 
 
 def main() -> None:
@@ -45,8 +45,10 @@ def main() -> None:
     _apply_global_styles()
 
     # ── First-run Onboarding ───────────────────────────────────
-    # 기본값은 세션이 아니라 디스크에 남긴 완료 여부로 정한다 — 그래야
-    # 새로고침/재실행 후에도 한 번 닫은 온보딩이 되살아나지 않는다.
+    # 기본값은 세션이 아니라 서버 프로세스 메모리(core.user_prefs)에 남긴
+    # 완료 여부로 정한다 — 브라우저 새로고침엔 살아남지만(그래야 한 번
+    # 닫은 온보딩이 되살아나지 않는다), 앱(서버 프로세스)을 새로 열면
+    # 다시 초기화되어 온보딩이 뜬다.
     if st.session_state.get("show_onboarding", not has_dismissed_onboarding()):
         render_onboarding_page()
         return
@@ -231,20 +233,24 @@ def _render_sidebar() -> str:
         The selected page name.
     """
     with st.sidebar:
-        # 브랜드 워드마크 "내서재 / NAE" — 클릭하면 앱 내부 초기 랜딩
-        # 화면(대시보드/홈)으로 돌아간다. 예전에는 서버 프로세스에서
-        # webbrowser.open()으로 Stitch 목업 정적 파일(file:// 경로)을
-        # 별도 브라우저 탭으로 열었으나, 이는 실행 중인 앱과 무관한
-        # 죽은 목업일 뿐이라 사용자에게는 "홈으로 안 가고 엉뚱한 파일
-        # 경로가 열린다"는 버그로 보였다(2026-09-24 버그 리포트).
-        # 다른 quick-action 버튼들과 동일한 nav_page 전환 패턴으로 교체.
+        # 브랜드 워드마크 "내서재 / NAE" — 클릭하면 온보딩 페이지로 이동한다.
+        # 예전에는 서버 프로세스에서 webbrowser.open()으로 Stitch 목업
+        # 정적 파일(file:// 경로)을 별도 브라우저 탭으로 열었으나, 이는
+        # 실행 중인 앱과 무관한 죽은 목업일 뿐이라 "홈으로 안 가고 엉뚱한
+        # 파일 경로가 열린다"는 버그로 보였다(2026-09-24 버그 리포트) —
+        # 그 방식은 폐기됐다. 한동안 nav_page="Dashboard"로 대시보드에
+        # 보냈으나(PR #83), dismiss_onboarding()은 호출하지 않고
+        # show_onboarding=True만 세워 온보딩 화면으로 되돌리는 쪽으로 다시
+        # 바꿨다 — "본 적 있음" 기록(서버 프로세스 메모리에 영속)은 그대로
+        # 두고 이번 세션에서만 다시 보여준다. 온보딩 화면 안의 실제 액션
+        # (연구 시작하기 등)을 눌러야 다시 dismiss되고 앱으로 들어간다.
         #
         # st.button에 key를 주면 Streamlit이 감싸는 컨테이너에
         # `st-key-<key>` CSS 클래스를 붙여준다(1.58 button.py docstring에
         # 문서화된 안정 선택자). 그걸로 버튼 크롬을 걷어내 원래
         # .nae-sidebar-name 워드마크(28px/600)처럼 보이게 한다.
-        if st.button("내서재", key="sidebar_brand_link", help="홈으로 이동"):
-            st.session_state["nav_page"] = "Dashboard"
+        if st.button("내서재", key="sidebar_brand_link", help="온보딩 화면으로 돌아가기"):
+            st.session_state["show_onboarding"] = True
             st.rerun()
 
         st.markdown(
@@ -289,14 +295,26 @@ def _render_sidebar() -> str:
 
         pages = {
             "Dashboard": "홈",
-            "Library": "내 자료",
+            "Library": "내 서재",
             "Processing": "자료 등록",
-            "Research": "자료 찾기",
-            "AI에게 질문": "AI에게 질문",
-            "설교 연구": "연구하기",
-            "설교문 작성": "설교 준비",
-            "설교 리뷰": "설교 모음 정리",
+            "Research": "연구·채팅",
+            "설교 준비": "설교 준비",
         }
+        # [NAE Phase 1 화면 통합] "AI에게 질문"은 더 이상 별도 최상위
+        # 메뉴가 아니라 "Research"(연구·채팅) 화면 내부의 "연구"/"채팅"
+        # 뷰 전환(ui/pages/research.py::render_research_workspace_page)으로
+        # 통합됨.
+        # [NAE Phase 1 화면 통합] "설교 연구"(허브)와 "설교문 작성"은 더 이상
+        # 별도 최상위 메뉴가 아니라 "설교 준비" 화면 내부의 "연구"/"작성"
+        # 뷰 전환(ui/pages/sermon_research.py::render_sermon_workspace_page)
+        # 으로 통합됨.
+        # [2026-09-23 HQ 결정] "설교 리뷰"(설교 모음 정리)는 더 이상 별도
+        # 최상위 메뉴가 아니라 "Library"(내 서재) 화면 내부의 세 번째 탭
+        # (ui/pages/library.py::render_library_hub_page)으로 통합됨.
+        # [NAE Phase 1 화면 통합] "저장된 설교"는 더 이상 별도 최상위
+        # 메뉴가 아니라 "Library"(내 서재) 화면의 두 번째 탭으로 통합됨
+        # (NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2, ui/pages/library.py
+        # ::render_library_hub_page). 라우팅 dict도 함께 갱신.
         # [NAE-UPLOAD-AUTO] 자료 등록(업로드) 화면은 일반 사용자도 직접
         # 자료를 올릴 수 있어야 해서 항상 노출한다 — 이전에는 "일반
         # 사용자에게 불필요"하다는 가정으로 NAE_ADMIN_MODE 뒤에 숨겨져
@@ -405,13 +423,10 @@ def _render_page_content(page: str) -> None:
     """
     page_renderers = {
         "Dashboard": render_dashboard_page,
-        "Library": render_library_page,
+        "Library": render_library_hub_page,
         "Processing": render_processing_page,
-        "Research": render_research_page,
-        "AI에게 질문": render_chat_page,
-        "설교 연구": render_sermon_research_hub_page,
-        "설교문 작성": render_sermon_draft_page,
-        "설교 리뷰": render_sermon_review_page,
+        "Research": render_research_workspace_page,
+        "설교 준비": render_sermon_workspace_page,
         "Monitor": render_monitor_page,
         "도움말": render_help_page,
     }

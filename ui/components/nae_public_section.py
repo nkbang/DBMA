@@ -23,16 +23,26 @@ from typing import Any
 import streamlit as st
 
 from core.citation_verifier import issue_messages
-from NAE.citation_disclosure import get_disclosure
-from NAE.public_answer import (
-    NO_EVIDENCE_TEXT,
-    build_public_evidence_package,
-    indexed_sources,
-    public_disclosures,
-    scope_note,
-    select_evidence,
-)
 from ui.components.display_quality import claim_guard_message
+
+# NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다. chat.py/research.py가
+# 이 모듈을 import하므로, NAE가 없어도 import 자체는 성공해야 한다 — 없으면 None으로
+# 두고, 해당 경로(nae_pd enabled일 때만 도달)에서 fail-closed로 처리한다.
+try:
+    from NAE.citation_disclosure import get_disclosure
+    from NAE.public_answer import (
+        NO_EVIDENCE_TEXT,
+        build_public_evidence_package,
+        indexed_sources,
+        public_disclosures,
+        scope_note,
+        select_evidence,
+    )
+except ImportError:  # pragma: no cover - 배포본(NAE/ 제외)
+    get_disclosure = None
+    NO_EVIDENCE_TEXT = ""
+    build_public_evidence_package = indexed_sources = None
+    public_disclosures = scope_note = select_evidence = None
 
 
 def render_nae_public_section(key_prefix: str) -> None:
@@ -124,6 +134,8 @@ def _render_public_answer(key_prefix: str, question: str, results: list, answer_
     이 섹션 안에서 근거·인용·고지·경고를 따로 보여준다. 문단 근거(dict)가 없으면
     (구형 Citation 결과) 이 기능을 제공하지 않는다.
     """
+    if select_evidence is None:  # NAE/ 없는 배포본 — 공개 자료 답변 비활성(fail-closed)
+        return
     hits = [r for r in results if isinstance(r, dict)]
     if not select_evidence(hits):
         return
@@ -243,7 +255,7 @@ def _render_nae_paragraph_card(i: int, hit: dict) -> None:
         if authority_class:
             st.caption(f"자료 등급: {authority_class}")
 
-        disclosure = get_disclosure(
+        disclosure = None if get_disclosure is None else get_disclosure(
             authority_class,
             identifier=bib.get("identifier"),
             author=bib.get("author"),
@@ -306,6 +318,13 @@ def _execute_nae_retrieval(query: str) -> list[Any]:
         if paragraph_evidence_enabled():
             return bridge_query_paragraphs(query, top_k=10, limit_check=True) or []
         return bridge_query(query, top_k=10, limit_check=True) or []
+
+    except ImportError:
+        # NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다. import가 실패하면
+        # 아래 except의 NaePdModuleDisabledError 이름이 바인딩되지 않아 UnboundLocalError가
+        # 나므로, ImportError를 먼저 잡는다(§G fail-closed 유지).
+        st.warning("공개 자료 모듈이 이 설치본에 포함되어 있지 않습니다. (빈 결과)")
+        return []
 
     except NaePdModuleDisabledError:
         st.error("공개 자료 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")

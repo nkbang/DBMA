@@ -1,0 +1,13 @@
+{
+  "script": "80_reinstall_upgrade_dryrun_independent",
+  "timestamp": "2026-10-07T22:49:00Z",
+  "phase": "reinstall_upgrade",
+  "status": "N/A",
+  "note": "scripts/80_reinstall_upgrade.sh and install_nae_beta.command do not exist in current working tree (fix/merge-production-path-safety). They existed in previous Gate 2 run (20260820) on a different branch.",
+  "checks": {
+    "script_80_exists": {"status": "NOT_FOUND", "path": "scripts/80_reinstall_upgrade.sh"},
+    "install_nae_beta_command_exists": {"status": "NOT_FOUND", "path": "install_nae_beta.command"},
+    "dry_run_possible": false,
+    "reason": "No install scripts in current branch - this is a merge/recovery branch, not an end-user packaging branch"
+  }
+}

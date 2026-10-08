@@ -14,6 +14,8 @@ import streamlit as st
 from pathlib import Path
 
 from ui.pages._base import BasePage
+from ui.pages.sermon_library import render_sermon_library_page
+from ui.pages.sermon_review import render_sermon_review_page
 from ui.theme.colors import THEME
 from ui.components.tables import document_table, search_results_table
 from ui.state.store import StateStore
@@ -94,6 +96,23 @@ def _apply_library_styles() -> None:
         """,
         unsafe_allow_html=True,
     )
+
+
+def render_library_hub_page() -> None:
+    """[NAE Phase 1 화면 통합] "내 자료"(render_library_page)/"저장된
+    설교"(render_sermon_library_page)/"설교 모음 정리"
+    (render_sermon_review_page)를 하나의 사이드바 진입점 아래 탭으로
+    묶는다. 세 화면의 내부 렌더링/상태 로직은 변경하지 않는다 — 탭 전환
+    UI만 추가(NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2 화면3).
+    "설교 모음 정리"는 2026-09-23 HQ 결정으로 별도 최상위 메뉴에서
+    이 탭으로 통합됨(docs/NAE_UI_PHASE1_INTEGRATION_REPORT.md 참고)."""
+    tab_library, tab_sermons, tab_review = st.tabs(["내 자료", "저장된 설교", "설교 모음 정리"])
+    with tab_library:
+        render_library_page()
+    with tab_sermons:
+        render_sermon_library_page()
+    with tab_review:
+        render_sermon_review_page()
 
 
 def render_library_page() -> None:

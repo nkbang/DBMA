@@ -125,6 +125,11 @@ DEFAULT_SAMPLE_LIBRARY_PATH = sample_library_path_for(DEFAULT_OUTPUT_DIR)
 DEFAULT_LOGOS_INBOX_DIR = os.path.join(DATA_DIR, "inbox", "logos_export")
 DEFAULT_LOGOS_OUTPUT_DIR = os.path.join(DATA_DIR, "normalized", "logos")
 
+# [DBMA_SERMON_ARTIFACT_PIPELINE_DESIGN_v1.md §4, P1] 생성된 설교를 1급
+# 객체로 영속화하는 저장소. TSU/registry와 물리적으로 분리된 별도
+# 디렉터리 — 스키마도 독립적이다(C1-TASK-ORDER-069 RQ-2 GREEN 확인).
+DEFAULT_SERMON_ARTIFACT_DIR = os.path.join(DATA_DIR, "sermon_artifacts")
+
 # ── 확장자 ───────────────────────────────────────────────
 SUPPORTED_EXTENSIONS = {
     ".pdf",

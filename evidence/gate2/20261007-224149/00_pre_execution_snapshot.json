@@ -1,0 +1,99 @@
+{
+  "test": "gate2-pre-execution-snapshot",
+  "status": "PASS",
+  "command": "read-only evidence collection for Gate 2 BEFORE snapshot",
+  "started_at": "2026-10-07T22:41:49Z",
+  "finished_at": "2026-10-07T22:41:50Z",
+  "stdout_sha256": null,
+  "artifacts": [
+    "evidence/gate2/20261007-224149/00_pre_execution_snapshot.json"
+  ],
+  "head": "a208a8e4d3c879fba495f77578679301ba0b8698",
+  "git_status": {
+    "worktree_path": "/tmp/gate2-pre-snapshot",
+    "branch": "HEAD (detached)",
+    "clean": true,
+    "porcelain": ""
+  },
+  "execution_environment": {
+    "platform": "darwin",
+    "kernel": "Darwin Davidui-MacBookPro.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:19:08 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T6050 arm64",
+    "python_version": "Python 3.11.15 (dbma311 venv)",
+    "venv_path": "~/envs/dbma311"
+  },
+  "watch_targets": {
+    "core_retrieval_py": {
+      "path": "core/retrieval.py",
+      "sha256": "6b7bce252db371397dc2a6f1b43a42affa5110f89db3e0d9d90e1dff16cd5f81",
+      "expected_sha256": "6b7bce252db371397dc2a6f1b43a42affa5110f89db3e0d9d90e1dff16cd5f81",
+      "match": true
+    },
+    "pyproject_toml": {
+      "path": "pyproject.toml",
+      "sha256": "00c552744569395a876b014171453ae41760601d5a1e9c3c13ac699f817b3f9c",
+      "expected_sha256": "00c552744569395a876b014171453ae41760601d5a1e9c3c13ac699f817b3f9c",
+      "match": true
+    },
+    "tsu_dataset_jsonl": {
+      "path": "output/bench/tsu_dataset.jsonl",
+      "sha256": "bd246f22def6a9f5f9c4df69b95ff1771b5d25c5abb0dca1a66c960490f4711a",
+      "source": "production_working_tree"
+    },
+    "tsu_manifest_json": {
+      "path": "output/bench/tsu_manifest.json",
+      "sha256": "960b627a47d06fcc41988dffe942a1421835391bb3cd9202f6e84c143266d8e6",
+      "source": "production_working_tree"
+    },
+    "tsu_id_state_json": {
+      "path": "NAE/corpus/tsu/tsu_id_state.json",
+      "sha256": "413bba79707dbc3937075024e3f045556ee65dc22be66585056dc67d7fd4068c",
+      "source": "worktree"
+    },
+    "documents_json": {
+      "path": "data/제련완성본/registry/documents.json",
+      "sha256": "1ef76cd07dd9085c4032e02305a0232463e4ae7f9ff07df806a3e1841908fa29",
+      "source": "production_working_tree",
+      "config_key": "core.config.DEFAULT_REGISTRY_PATH"
+    },
+    "merge_nae_corpus_py": {
+      "path": "scripts/merge_nae_corpus.py",
+      "sha256": "dbd0d5e4a812d21a56bd4c68e73e8716683a56afff57c2771aba2d5a4b931d5a",
+      "expected_sha256_prefix": "dbd0d5e4...",
+      "match": true
+    },
+    "test_merge_approval_core_equivalence_py": {
+      "path": "tests/test_merge_approval_core_equivalence.py",
+      "sha256": "4f17fbc3ed1653d87da6b4efa292bbab06df9a2038745d8586af47a0befb19bc",
+      "expected_sha256_prefix": "26e1ee9a...",
+      "match": false,
+      "note": "Expected prefix 26e1ee9a matches modified version in DBMA-worktree-merge-recovery-e1a worktree; clean worktree at a208a8e4 has different content"
+    }
+  },
+  "qdrant": {
+    "nae_tsu_v1": {
+      "status": "green",
+      "points_count": 3891,
+      "indexed_vectors_count": 0,
+      "segments_count": 8,
+      "available": true
+    },
+    "dbma_qdrant": {
+      "exists": false,
+      "available": true,
+      "error": "Collection `dbma_qdrant` doesn't exist!"
+    }
+  },
+  "gate2_worktree": {
+    "path": "/tmp/gate2-pre-snapshot",
+    "head": "a208a8e4d3c879fba495f77578679301ba0b8698",
+    "clean": true,
+    "created": "2026-10-07T22:41:49Z"
+  },
+  "hard_stop_checks": {
+    "protected_file_retrieval_py": "PASS — hash matches expected",
+    "protected_file_pyproject_toml": "PASS — hash matches expected",
+    "clean_gate2_worktree": "PASS — detached HEAD at a208a8e4, no uncommitted changes",
+    "production_state_readable": "PASS — all files accessible",
+    "qdrant_queryable": "PASS — nae_tsu_v1 returned successfully"
+  }
+}

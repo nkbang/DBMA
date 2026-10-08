@@ -121,3 +121,29 @@ _JOHN_3_16 = [["john", "iii", "16"], ["john", "3", "16"]]
 ])
 def test_verse_phrase_match_kind(text, kind):
     assert verse_phrase_match_kind(text, _JOHN_3_16) == kind
+
+
+# ── 한 음절 용어는 낱말 시작에서만 매칭 ('정죄' ≠ '죄') ──────────────────────
+
+def test_single_syllable_term_not_matched_inside_longer_word():
+    from core.query_translation import translate_query_terms
+    # '정죄'(condemnation)의 '죄'를 sin으로 오역하지 않는다
+    assert translate_query_terms("정죄 없음") == []
+    assert translate_query_terms("정죄함이 없나니") == []
+
+
+def test_single_syllable_term_still_matches_at_word_start():
+    from core.query_translation import translate_query_terms
+    for q in ("죄 없음", "죄가 많다", "죄를 회개", "그리스도인의 죄"):
+        assert "sin" in translate_query_terms(q), q
+
+
+def test_sin_compounds_use_their_own_entries():
+    from core.query_translation import translate_query_terms
+    assert "atonement" in translate_query_terms("속죄")
+    assert "original" in translate_query_terms("원죄")
+
+
+def test_translation_version_bumped_for_boundary_change():
+    # 사전 매칭 규칙이 바뀌면 검색 캐시를 무효화해야 한다 (core/search_cache 캐시 키에 포함)
+    assert int(QUERY_TRANSLATION_VERSION) >= 4

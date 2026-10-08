@@ -1,0 +1,48 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-rc6check",
+  "verified_at": "2026-10-08T00:52:28Z",
+  "manifest_path": "evidence/gate2/20261007-rc6check/manifest.json",
+  "verification_source": "git archive of committed tree a9ef3051ed3177eb48acdbbf589607b28bf128a5",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 4,
+  "verified_count": 4,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "7ab6998be0c8aae3dc9459ee8925aa29cd1478af1d26931e8ce8f58dd072eccb",
+  "canonical_manifest_sha256_actual": "7ab6998be0c8aae3dc9459ee8925aa29cd1478af1d26931e8ce8f58dd072eccb",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-rc6check/rc6_import_ui_app.txt",
+      "expected_bytes": 1349,
+      "actual_bytes": 1349,
+      "expected_sha256": "821108d51bceb55420803aed45260f180aeecb5c01b7a9024eeb4949d86d208f",
+      "actual_sha256": "821108d51bceb55420803aed45260f180aeecb5c01b7a9024eeb4949d86d208f",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc6check/rc6_apptest.txt",
+      "expected_bytes": 46,
+      "actual_bytes": 46,
+      "expected_sha256": "c540e82945ec704f29bd3408c12fcb1d33f1a8ee75d96cf37221f4a4a4694bd3",
+      "actual_sha256": "c540e82945ec704f29bd3408c12fcb1d33f1a8ee75d96cf37221f4a4a4694bd3",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc6check/rc6_findings.json",
+      "expected_bytes": 1554,
+      "actual_bytes": 1554,
+      "expected_sha256": "e0640365a676a15a73c1e822ea1c06a75e5d793df0bd5ef26ed30cd7b43e0956",
+      "actual_sha256": "e0640365a676a15a73c1e822ea1c06a75e5d793df0bd5ef26ed30cd7b43e0956",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc6check/SUMMARY.md",
+      "expected_bytes": 495,
+      "actual_bytes": 495,
+      "expected_sha256": "87d73f55796c056918bb975f9224f8c6849f31ad600b77b7232821c9e9bec5d6",
+      "actual_sha256": "87d73f55796c056918bb975f9224f8c6849f31ad600b77b7232821c9e9bec5d6",
+      "match": true
+    }
+  ],
+  "pass": true
+}

@@ -1,0 +1,11 @@
+=== 80_reinstall_upgrade.sh ===
+Isolated directory: /tmp/dbma-gate2-run-1791419420
+Isolated repo:      /tmp/dbma-gate2-run-1791419420/repo
+Fake HOME:          /tmp/dbma-gate2-run-1791419420/fakehome
+Dry run:            true
+[DRY-RUN] mkdir -p /tmp/dbma-gate2-run-1791419420/repo /tmp/dbma-gate2-run-1791419420/fakehome
+[DRY-RUN] git archive HEAD | tar -x -C /tmp/dbma-gate2-run-1791419420/repo
+
+[DRY-RUN] Steps 2-7 (seed / stash / replace / restore / verify) skipped.
+=== RESULT: DRY-RUN (no verification performed) ===
+=== Done ===

@@ -1,0 +1,56 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-phase40",
+  "generated_at": "2026-10-08T00:10:09Z",
+  "baseline_commit": "41c82a51b11055f274165e0e81575734b764f691",
+  "payload_count": 6,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-phase40/pip_install_attempt1_x86clang.txt",
+      "bytes": 2335,
+      "sha256": "cc2fde5aa2607401c5ee2ea8efbec386eaa5b553499266d25ec7d1d33eb28ff9"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/hunspell_retry.txt",
+      "bytes": 113,
+      "sha256": "95c6cbc58abc300bfa52297317839bc87ac1f8aedab38a12f93a5d894e80cfbf"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/pip_install_attempt2.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/import_ui_app_attempt2.txt",
+      "bytes": 1349,
+      "sha256": "b6456b9f96b490730f51ff9b5c2a93628465e503b3e75caf644f85678278e80d"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/40_findings.json",
+      "bytes": 2817,
+      "sha256": "9c5752f87acbcc535987888d56b7bb5862a96597aa302819226d28607646a804"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/SUMMARY.md",
+      "bytes": 680,
+      "sha256": "867b48545c2511409ffb5c1442e35a662e77eb91072f052fac1c9074b05edda6"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "phase_40": "FAIL (isolated partial; full script not executed)"
+  },
+  "related_run": "20261007-phase6195",
+  "manifest_sha256": "888097fd39bd94c8070418f86e3d1b44357be124b908a8086aa1e07b2e37a5e3"
+}

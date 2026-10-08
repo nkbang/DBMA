@@ -1,0 +1,62 @@
+{
+  "run_id": "20261008-intel-prep",
+  "started_at_utc": "2026-10-08T19:49:30Z",
+  "executed_by": "CUE (사용자 지시 '다른 맥에서 실행하나 인텔맥 포함')",
+  "trigger": "사용자가 깨끗한 환경 평가에 Intel Mac이 포함된다고 알림 — 절차서가 Apple Silicon만 전제하고 있어 보강",
+  "method": "arm64 개발 Mac에서 pip install --dry-run --platform macosx_{10_13..14_0}_x86_64 --python-version 3.11 --abi cp311 --only-binary=:all: (의존성 해석만, 설치·실행 아님)",
+  "results": {
+    "x86_64_resolution": {
+      "ok": true,
+      "packages_in_requirements": 27,
+      "resolved_candidates": 204,
+      "versions": {
+        "torch": "2.2.2",
+        "torchvision": "0.17.2",
+        "numpy": "1.26.4",
+        "tantivy": "0.26.0",
+        "pymupdf": "1.28.2",
+        "docling": "2.73.1",
+        "easyocr": "1.7.2",
+        "sentence-transformers": "5.7.0",
+        "transformers": "4.57.6"
+      }
+    },
+    "arm64_comparison": {
+      "ok": true,
+      "versions": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "numpy": "1.26.4"
+      }
+    },
+    "kiwipiepy": "0.24.0 x86_64 wheel 존재(--no-deps 확인); kiwipiepy-model은 wheel이 없어 첫 시도가 --only-binary 제한과 충돌 → 시험 방법의 한계(Intel 문제 아님)로 분리",
+    "source_builds": "hunspell(C++ 확장), kiwipiepy-model(wheel 없음)"
+  },
+  "key_difference": "Intel x86_64는 torch 2.2.2 / torchvision 0.17.2(Intel Mac wheel 마지막)가 설치되고 arm64는 2.14.1 / 0.29.1 — 개발·시험은 후자 조합",
+  "ollama": {
+    "local_installed": "0.34.4, 앱·CLI 모두 x86_64+arm64 유니버설, Intel용 CPU 백엔드(.so) 포함, LSMinimumSystemVersion 14.0",
+    "latest_release": "v0.40.1 (아키텍처별 자산 없음)",
+    "unverified": "설치기가 내려받는 최신 zip의 아키텍처 구성은 내려받아 열어 보지 않음"
+  },
+  "script_assumption": "setup_beta_tester.command 93행 eval \"$(/opt/homebrew/bin/brew shellenv)\"는 Intel에 없는 경로(추정: set -e로 중단되지 않음 — 코드 추정이며 미실행)",
+  "deliverables": [
+    "docs/GATE2_CLEAN_ENV_EVALUATION_PROCEDURE.md §10 (Intel 전용 확인 항목 I0~I7, 판정 규칙, 한계)",
+    "scripts/gate2/clean_env_snapshot.sh: cpu_brand, proc_translated(Rosetta), hw_optional_arm64, brew_prefix, ollama_binary_archs, venv_torch 추가"
+  ],
+  "corrections": [
+    "첫 의존성 해석 실패(ResolutionImpossible)는 kiwipiepy_model의 sdist-only 때문이며 Intel 비호환이 아님 — 원인 분석 후 분리 재해석",
+    "'Ollama Intel 지원 불명'이라 쓰려던 초안을 로컬 설치본 검사 결과(유니버설)로 수정",
+    "자동 추출한 transformers 버전 5.7.0은 오류(정규식이 sentence-transformers-5.7.0의 일부를 잡음) — 원본 로그의 transformers-4.57.6으로 정정"
+  ],
+  "not_done": [
+    "Intel Mac에서의 실제 설치·실행",
+    "설치기가 받는 최신 Ollama zip의 아키텍처 확인",
+    "Homebrew 의존 패키지의 Intel bottle 가용성 확인",
+    "Intel 지원 여부 결정(HQ) 및 설치기의 아키텍처 사전 점검 추가"
+  ],
+  "limits": [
+    "의존성 해석 수준이며 Intel에서의 설치·실행 결과가 아님",
+    "torch 2.2.2 조합에서 앱 동작은 미시험",
+    "요구 사항 해석은 2026-10-08 시점의 PyPI 상태"
+  ]
+}

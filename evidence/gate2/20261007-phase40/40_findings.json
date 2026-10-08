@@ -1,0 +1,42 @@
+{
+  "run_id": "20261007-phase40",
+  "source_head": "41c82a51b11055f274165e0e81575734b764f691",
+  "status": "FAIL (isolated partial verification) — 전체 설치 스크립트는 미실행",
+  "not_executed": {
+    "script": "scripts/gate2/40_clean_install.sh → scripts/setup_beta_tester.command",
+    "reason": "스크립트가 /tmp에 격리되지 않음: HOME 덮어쓰기는 Homebrew·/Applications·/usr/local·실행 중 ollama·pkill(8520)에 효력 없음. 사용자 선택(격리 부분검증)에 따라 실제 실행 안 함"
+  },
+  "static_findings": [
+    "헤더 주석 'writes ONLY to /tmp'는 사실과 다름",
+    "brew install poppler(현재 미설치 → 전역 설치 발생)",
+    "/usr/local/Cellar/hunspell/1.6.2/include/hunspell, /usr/local/lib/libhunspell.dylib에 ln -sf (전역)",
+    "pkill -f 'streamlit run dbma_ui.py ... --server.port 8520' (실행 중인 실 프로세스 종료 가능)",
+    "nohup streamlit 기동 + 브라우저 open; 90은 이를 정리하지 않음(이전 GATE_RESULT 기록 참조)",
+    "서버 기동 실패해도 30초 대기 후 open·'완료' 알림을 출력(설치 성공 오보 가능)"
+  ],
+  "machine_state": {
+    "ollama": "/usr/local/bin/ollama, 서버 실행 중(11434), llama3.1:8b·bge-m3:latest 보유",
+    "brew": {
+      "poppler": false,
+      "tesseract": true,
+      "python311": true,
+      "hunspell": true
+    },
+    "note": "개발 기기라 '깨끗한 설치' 조건이 성립하지 않음"
+  },
+  "isolated_verification": {
+    "method": "git archive HEAD → scratch; python3.11 venv; HOME·PIP_CACHE_DIR를 scratch로 제한; 전역 변경 없음",
+    "attempt1": {
+      "result": "FAIL — hunspell wheel 빌드 실패(xcrun: clang++가 x86_64로 실행되어 libxcrun 로드 불가)",
+      "verdict": "측정 환경 오류(백그라운드 프로세스 아키텍처). 제품 결함으로 보지 않음",
+      "evidence": "pip_install_attempt1_x86clang.txt, hunspell_retry.txt(단독 재시도 rc=0)"
+    },
+    "attempt2": {
+      "pip_install_requirements": "PASS (rc=0, arch -arm64, 약 1분, 캐시는 scratch)",
+      "import_ui_app": "FAIL — ModuleNotFoundError: No module named 'NAE' (ui/components/nae_public_section.py:25)",
+      "evidence": "pip_install_attempt2.txt, import_ui_app_attempt2.txt"
+    }
+  },
+  "conclusion": "의존성 설치는 성공하나 배포 트리(NAE/ export-ignore)에서 앱 모듈 임포트가 실패하므로 설치 후 앱 기동 불가. Phase 61 결함과 동일 원인(교차 확인). install_nae_beta/setup_beta_tester 본 실행의 end-to-end 결과는 미확인.",
+  "caveat": "배포 형태가 git archive HEAD라는 전제. setup 스크립트가 NAE를 별도로 받는 경로는 코드상 확인되지 않음(grep: NAE 다운로드 없음 — 정적 확인 범위 한정)"
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-phase8090",
+  "verified_at": "2026-10-07T23:58:13Z",
+  "manifest_path": "evidence/gate2/20261007-phase8090/manifest.json",
+  "verification_base": "/Users/David/DBMA",
+  "verification_source": "git archive of committed tree 8072d05cc0e6536ce6977f74f4d7adec052f1400",
+  "verification_command": "git archive <commit> evidence/gate2/20261007-phase8090 | tar -x -C <scratch>; python3 -I: recompute canonical sha256 (sort_keys, separators (',',':'), ensure_ascii=False, manifest_sha256 omitted) and per-payload bytes/sha256",
+  "listed_payload_count": 9,
+  "verified_count": 9,
+  "malformed_count": 0,
+  "missing_count": 0,
+  "mismatch_count": 0,
+  "duplicate_count": 0,
+  "canonical_manifest_sha256_expected": "9bdc929fefe9b479ba99d7a52951f8397cedb0e10bf675e0e6e9a2d83fa884b6",
+  "canonical_manifest_sha256_actual": "9bdc929fefe9b479ba99d7a52951f8397cedb0e10bf675e0e6e9a2d83fa884b6",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_reinstall_upgrade_real.json",
+      "expected_bytes": 1067,
+      "actual_bytes": 1067,
+      "expected_sha256": "1abca1e44c47718aa6d9c48a2bc1c3859d3c449554cdd7647271deb97ca66c91",
+      "actual_sha256": "1abca1e44c47718aa6d9c48a2bc1c3859d3c449554cdd7647271deb97ca66c91",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_uninstall_real.json",
+      "expected_bytes": 914,
+      "actual_bytes": 914,
+      "expected_sha256": "3647256ae34bc90e537cd2aef63160036f59a1b6553ff5ba72dc43176f0df323",
+      "actual_sha256": "3647256ae34bc90e537cd2aef63160036f59a1b6553ff5ba72dc43176f0df323",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_90_findings.json",
+      "expected_bytes": 1856,
+      "actual_bytes": 1856,
+      "expected_sha256": "a7cf4695403e2a20d002f0b8ec477a414755f4e849e58d7da518cb2b5b855209",
+      "actual_sha256": "a7cf4695403e2a20d002f0b8ec477a414755f4e849e58d7da518cb2b5b855209",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_real_output.txt",
+      "expected_bytes": 1616,
+      "actual_bytes": 1616,
+      "expected_sha256": "7e0494e795b6444067d265172314c502e39006e4ebc1aa795910a67c7916c875",
+      "actual_sha256": "7e0494e795b6444067d265172314c502e39006e4ebc1aa795910a67c7916c875",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_real_output.txt",
+      "expected_bytes": 522,
+      "actual_bytes": 522,
+      "expected_sha256": "c3015731d55fffeb5e989d946268859dfc5b444c913fb7672f43453e3c827fef",
+      "actual_sha256": "c3015731d55fffeb5e989d946268859dfc5b444c913fb7672f43453e3c827fef",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/80_dryrun_output.txt",
+      "expected_bytes": 1925,
+      "actual_bytes": 1925,
+      "expected_sha256": "21b0b223457f2fd18af8f057de0010d8e86abf94df803ce6b72c6584acd6f033",
+      "actual_sha256": "21b0b223457f2fd18af8f057de0010d8e86abf94df803ce6b72c6584acd6f033",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_dryrun_output.txt",
+      "expected_bytes": 390,
+      "actual_bytes": 390,
+      "expected_sha256": "357bb9289e561fe19c5c9ab2ac9d1c9744161a8c05ee65e297bca2212c294477",
+      "actual_sha256": "357bb9289e561fe19c5c9ab2ac9d1c9744161a8c05ee65e297bca2212c294477",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/SUMMARY.md",
+      "expected_bytes": 1252,
+      "actual_bytes": 1252,
+      "expected_sha256": "a89d8050068dc332e8b36fdc0ee7490919b0f1ef7c3224c346b056f73f12d824",
+      "actual_sha256": "a89d8050068dc332e8b36fdc0ee7490919b0f1ef7c3224c346b056f73f12d824",
+      "bytes_match": true,
+      "hash_match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090/90_rerun_idempotent_output.txt",
+      "expected_bytes": 241,
+      "actual_bytes": 241,
+      "expected_sha256": "b8c4d21902fcd1ef8937fac413236b7e2e8509437357a576dadd6c0d7ae20089",
+      "actual_sha256": "b8c4d21902fcd1ef8937fac413236b7e2e8509437357a576dadd6c0d7ae20089",
+      "bytes_match": true,
+      "hash_match": true
+    }
+  ],
+  "pass": true
+}

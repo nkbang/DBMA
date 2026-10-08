@@ -1,0 +1,3 @@
+=== 90_uninstall.sh ===
+Dry run: false
+ERROR: target directory required. Usage: scripts/gate2/90_uninstall.sh <target_dir> | --all

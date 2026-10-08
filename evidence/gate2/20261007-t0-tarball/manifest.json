@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-t0-tarball",
+  "generated_at": "2026-10-08T01:38:43Z",
+  "baseline_commit": "ecb0772190c14b3295e96c4d9ea20072d89257df",
+  "payload_count": 7,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/T0_tarball_listing.txt",
+      "bytes": 102162,
+      "sha256": "7594217191984c3aef3e91fbf1528304136e64986cd8f22a9f3be0dfc32fd723"
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/curl_result.txt",
+      "bytes": 114,
+      "sha256": "76e2fcd0f7e33c9c0f9465129d5eb95c5261dcdcf25b95a9dd820fdcb4eeb8bc"
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/tarball_sha256.txt",
+      "bytes": 65,
+      "sha256": "85a5be4e6692213cb2bb9a9542684baee1c565303fbfc2f942a9e87a7b55fc91"
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/import_ui_app_actual_tarball.txt",
+      "bytes": 1417,
+      "sha256": "0c62f8001fb07e05feb3b3412fa84da14c7a7a2b072be513ed07613b551f2cfd"
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/local_git_archive_vs_github_tarball.diff",
+      "bytes": 277,
+      "sha256": "14c31d825af875e1343a06976a83c6256cf4a390fb4511f366f4054aaf7f00de"
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/t0_findings.json",
+      "bytes": 2359,
+      "sha256": "25d06bfb3a0c4b7a98a31179427a90c4ca867ddd345ee8a1ce47a000d3dbc540"
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/SUMMARY.md",
+      "bytes": 529,
+      "sha256": "72d3eb824ae252622c79b05520b6104ca72c7ee65df7985789e1ecf209826450"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "rc6_actual_tarball_import": "FAIL (confirmed)"
+  },
+  "related_run": "20261007-rc6check",
+  "manifest_sha256": "68bbf3bcf37e59f43c4a57b7743de023f4655133d616b59de3f0ec7fcc0ebffc"
+}

@@ -294,3 +294,165 @@ class TestIsolatedFixtureVerification:
         )
         evidence = adapter.adapt(candidate)
         assert evidence.corpus_type == CORPUS_PERSONAL
+
+
+class TestAD01RegisterDocumentDirectCall:
+    """register_document() 직접 호출 — PR-A #110의 3줄 변경 검증.
+
+    이 테스트들은 register_document()를 실제 호출하여
+    corpus_membership="default" 기본값이 실제로 기록되는지 검증한다.
+    기존 테스트는 tsu_adapter.mock 기반이므로 register_document()를
+    직접 호출하지 않았다.
+
+    절대 수정 금지: production code (identity_registry.py) 는 그대로 유지.
+    이 테스트들은 PR-A의 3줄을 제거하면 반드시 실패해야 한다.
+    """
+
+    @pytest.fixture
+    def _empty_reg(self, tmp_path):
+        """빈 registry를 tmp_path에 생성하고 path를 반환."""
+        reg_file = tmp_path / "documents.json"
+        reg_file.write_text(json.dumps({
+            "schema_version": "2.0",
+            "documents": {},
+            "_meta": {"total_documents": 0},
+        }, ensure_ascii=False), encoding="utf-8")
+        return reg_file
+
+    def _load_reg(self, reg_file):
+        from core.identity_registry import load_identity_registry
+        return load_identity_registry(str(reg_file))
+
+    # ------------------------------------------------------------------ Test A
+    def test_a_missing_membership_becomes_default(self, _empty_reg):
+        """Test A — default registration.
+
+        register_document()를 실제 호출한다. 입력 metadata에
+        corpus_membership이 없는 경우 record["corpus_membership"] == "default"
+        를 반드시 검증한다.
+        """
+        from core.identity_registry import register_document
+
+        registry = self._load_reg(_empty_reg)
+        doc_id = "test_a_doc_00001"
+        metadata = {
+            "document_id": doc_id,
+            "source_file": "test_a_source.txt",
+            "file_hash": "abc123def456",
+        }
+        record, is_new = register_document(registry, metadata)
+
+        assert is_new is True, "신규 문서여야 함"
+        assert record["document_id"] == doc_id
+        assert record["corpus_membership"] == "default", (
+            f"corpus_membership이 없으면 'default'여야 함 — 실제: {record['corpus_membership']!r}"
+        )
+
+    # ------------------------------------------------------------------ Test B
+    def test_b_explicit_personal_preserved(self, _empty_reg):
+        """Test B — personal registration.
+
+        입력 metadata에 corpus_membership="personal"을 전달하면
+        record["corpus_membership"] == "personal"이어야 한다.
+        """
+        from core.identity_registry import register_document
+
+        registry = self._load_reg(_empty_reg)
+        doc_id = "test_b_doc_00002"
+        metadata = {
+            "document_id": doc_id,
+            "source_file": "test_b_source.txt",
+            "file_hash": "xyz789ghi012",
+            "corpus_membership": "personal",
+        }
+        record, is_new = register_document(registry, metadata)
+
+        assert is_new is True
+        assert record["corpus_membership"] == "personal", (
+            f"explicit personal이어야 함 — 실제: {record['corpus_membership']!r}"
+        )
+
+    # ------------------------------------------------------------------ Test C
+    def test_c_exact_match_reegistration_preserves_personal(self, _empty_reg):
+        """Test C — exact-match 재등록 보존.
+
+        corpus_membership="personal"으로 등록한 동일 문서를 다시 등록한다.
+        두 번째 호출에서 기존 record의 corpus_membership이 "personal"로
+        유지되는지 검증한다. is_new=False도 확인한다.
+        """
+        from core.identity_registry import register_document
+
+        registry = self._load_reg(_empty_reg)
+        doc_id = "test_c_doc_00003"
+        first_metadata = {
+            "document_id": doc_id,
+            "source_file": "test_c_source_v1.txt",
+            "file_hash": "hash_c_first",
+            "corpus_membership": "personal",
+        }
+        record1, is_new1 = register_document(registry, first_metadata)
+
+        assert is_new1 is True
+        assert record1["document_id"] == doc_id
+        assert record1["corpus_membership"] == "personal"
+
+        # 두 번째 호출 — 동일한 doc_id로 재등록
+        second_metadata = {
+            "document_id": doc_id,
+            "source_file": "test_c_source_v2.txt",  # 다른 source_file
+            "file_hash": "hash_c_different",         # 다른 hash
+            "corpus_membership": "default",           # 다른 membership 시도
+        }
+        record2, is_new2 = register_document(registry, second_metadata)
+
+        assert is_new2 is False, (
+            "동일 doc_id이므로 is_new=False여야 함"
+        )
+        assert record2["corpus_membership"] == "personal", (
+            f"exact-match 재등록 시 기존 personal이 유지되어야 함 — 실제: {record2['corpus_membership']!r}"
+        )
+
+    # ------------------------------------------------------------------ Test D
+    def test_d_hash_match_reegistration_preserves_personal(self, _empty_reg):
+        """Test D — hash-match 재등록 보존.
+
+        동일한 file_hash로 다른 doc_id를 사용해 재등록하면
+        기존 corpus_membership이 덮어써지지 않아야 한다.
+        exact-match와 hash-match가 다른 코드 경로임을 독립적으로 검증한다.
+        """
+        from core.identity_registry import register_document
+
+        registry = self._load_reg(_empty_reg)
+        doc_id_d1 = "test_d_doc_00004a"
+        first_metadata = {
+            "document_id": doc_id_d1,
+            "source_file": "test_d_source_v1.txt",
+            "file_hash": "hash_d_shared",
+            "corpus_membership": "personal",
+        }
+        record1, is_new1 = register_document(registry, first_metadata)
+
+        assert is_new1 is True
+        assert record1["document_id"] == doc_id_d1
+        assert record1["corpus_membership"] == "personal"
+
+        # 두 번째 호출 — 다른 doc_id지만 동일한 file_hash
+        doc_id_d2 = "test_d_doc_00004b"
+        second_metadata = {
+            "document_id": doc_id_d2,
+            "source_file": "test_d_source_v2.txt",
+            "file_hash": "hash_d_shared",  # 동일한 hash
+            "corpus_membership": "default",  # 다른 membership 시도
+        }
+        record2, is_new2 = register_document(registry, second_metadata)
+
+        assert is_new2 is False, (
+            "동일 file_hash이므로 is_new=False여야 함"
+        )
+        assert record2["corpus_membership"] == "personal", (
+            f"hash-match 재등록 시 기존 personal이 유지되어야 함 — 실제: {record2['corpus_membership']!r}"
+        )
+        # record2는 첫 번째 record를 반환해야 함 (same object)
+        assert record2["document_id"] == doc_id_d1, (
+            "hash-match는 기존 record를 반환해야 함"
+        )

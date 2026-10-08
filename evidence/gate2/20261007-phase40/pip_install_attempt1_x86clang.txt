@@ -1,0 +1,20 @@
+  error: subprocess-exited-with-error
+  
+  × Building wheel for hunspell (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [7 lines of output]
+      running bdist_wheel
+      running build
+      running build_ext
+      building 'hunspell' extension
+      clang++ -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk -D_LINUX -I/usr/local/Cellar/hunspell/1.6.2/include/hunspell -I/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/p40/repo/.venv_beta/include -I/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/include/python3.11 -c hunspell.cpp -o build/temp.macosx-26.0-arm64-cpython-311/hunspell.o -Wall
+      xcrun: error: unable to load libxcrun (dlopen(/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib, 0x0005): tried: '/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib' (fat file, but missing compatible architecture (have 'arm64,arm64e', need 'x86_64')), '/System/Volumes/Preboot/Cryptexes/OS/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib' (no such file), '/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib' (fat file, but missing compatible architecture (have 'arm64,arm64e', need 'x86_64'))).
+      error: Command '['clang++', '-Wsign-compare', '-Wunreachable-code', '-fno-common', '-dynamic', '-DNDEBUG', '-g', '-fwrapv', '-O3', '-Wall', '-isysroot', '/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk', '-D_LINUX', '-I/usr/local/Cellar/hunspell/1.6.2/include/hunspell', '-I/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/p40/repo/.venv_beta/include', '-I/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/include/python3.11', '-c', 'hunspell.cpp', '-o', 'build/temp.macosx-26.0-arm64-cpython-311/hunspell.o', '-Wall']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for hunspell
+error: failed-wheel-build-for-install
+
+× Failed to build installable wheels for some pyproject.toml based projects
+╰─> hunspell

@@ -1,0 +1,30 @@
+{
+  "run_id": "20261007-phase8090-rerun",
+  "source_head": "dcd0b49de5ace419c0c791df480d09eb39a2634e",
+  "executed_by": "user (terminal), non-dry-run, 단일 실행",
+  "purpose": "스크립트 정비(D1·D2·D3·D5, 커밋 a187d734) 후 80·90 비-dry-run 재실행",
+  "phase_80": {
+    "status": "PASS",
+    "isolated_dir": "/tmp/dbma-gate2-run-1791419665",
+    "executed_at_utc_approx": "2026-10-08T00:34:25Z",
+    "persist_items": "8/8 preserved, 0 lost, content 8/8 matched",
+    "output": "80_real_output.txt"
+  },
+  "phase_90": {
+    "status": "PASS",
+    "invocation": "bash scripts/gate2/90_uninstall.sh <80이 출력한 디렉터리> (명시 인자 — 정비 후 필수)",
+    "removed": true,
+    "orphans_found": false,
+    "output": "90_real_output.txt"
+  },
+  "post_conditions": {
+    "tmp_leftovers": "없음 (ls: no matches found)",
+    "tracked_changes_in_live_repo": false
+  },
+  "evidence_quality": "두 출력 모두 tee로 저장된 원본 파일을 복사한 것(이전 run 20261007-phase8090의 90 출력은 대화 기록 복원본이었음 → 이번 run이 대체 근거)",
+  "limits": [
+    "80은 install_nae_beta.command 로직의 /tmp 시뮬레이션이며 실제 설치 스크립트 실행이 아님",
+    "시딩 데이터는 git archive HEAD + 마커이며 실제 사용자 데이터가 아님",
+    "90은 --all 모드의 비-dry-run 삭제를 실행하지 않음(시험으로만 검증)"
+  ]
+}

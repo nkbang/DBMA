@@ -1,0 +1,46 @@
+{
+  "script": "61_citation_ui.py",
+  "timestamp": "2026-10-08T00:20:21Z",
+  "all_pass": true,
+  "checks": {
+    "test_file": {
+      "status": "PASS",
+      "path": "/private/tmp/claude-501/-Users-David-DBMA--claude-worktrees-mlx-installation-guide-3d6938/df2286b4-9f6d-4b83-8fc0-2892426c28eb/scratchpad/recheck/repo/tests/test_citation_ui_surface.py"
+    },
+    "pytest_exit_code": {
+      "status": "PASS",
+      "code": 0
+    },
+    "pytest_summary": {
+      "passed": 7,
+      "failed": 0,
+      "errors": 0,
+      "total_tests": 7
+    },
+    "stdout_sample": [
+      "tests/test_citation_ui_surface.py::TestChatCitationSerialization::test_serialize_deserialize_citation_round_trip PASSED [ 71%]",
+      "tests/test_citation_ui_surface.py::TestChatCitationSerialization::test_serialize_deserialize_without_citations PASSED [ 85%]",
+      "tests/test_citation_ui_surface.py::TestIndexCorrespondence::test_citation_index_matches_candidate_index PASSED [100%]",
+      "",
+      "=============================== warnings summary ===============================",
+      "tests/test_citation_ui_surface.py::TestFormatCandidateCitationMerge::test_format_candidate_without_citation",
+      "tests/test_citation_ui_surface.py::TestFormatCandidateCitationMerge::test_format_candidate_without_citation",
+      "tests/test_citation_ui_surface.py::TestFormatCandidateCitationMerge::test_format_candidate_without_citation",
+      "  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute",
+      "",
+      "tests/test_citation_ui_surface.py::TestFormatCandidateCitationMerge::test_format_candidate_without_citation",
+      "tests/test_citation_ui_surface.py::TestFormatCandidateCitationMerge::test_format_candidate_without_citation",
+      "tests/test_citation_ui_surface.py::TestFormatCandidateCitationMerge::test_format_candidate_without_citation",
+      "  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute",
+      "",
+      "tests/test_citation_ui_surface.py::TestFormatCandidateCitationMerge::test_format_candidate_without_citation",
+      "  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type swigvarlink has no __module__ attribute",
+      "",
+      "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+      "======================== 7 passed, 7 warnings in 3.38s ========================="
+    ],
+    "stderr_sample": [
+      "sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute"
+    ]
+  }
+}

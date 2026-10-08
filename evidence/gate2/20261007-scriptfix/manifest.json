@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-scriptfix",
+  "generated_at": "2026-10-08T00:30:45Z",
+  "baseline_commit": "a187d7343b22b255cdf34e4055a1f48715f2cc00",
+  "payload_count": 6,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-scriptfix/95_after_fix.json",
+      "bytes": 1171,
+      "sha256": "615198d6de3d16de921da9d0453525bf77a6c5db3725f7093dc73ced75dd0d54"
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/95_stdout.txt",
+      "bytes": 257,
+      "sha256": "f7351fa56d3cfa723cc1920d08462cd0262ab3fb14af2756811448c859e8fde0"
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/90_noarg_after_fix.txt",
+      "bytes": 131,
+      "sha256": "fe4efd40a5eaa38c05629e56e96aa8cd035b19d77b1e1059567edc5055ab7493"
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/80_dryrun_after_fix.txt",
+      "bytes": 533,
+      "sha256": "b28c1b5510b1ffbc1e9fe899b60f24be70fb501be8e3f77a946467e290ba5b47"
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/scriptfix_findings.json",
+      "bytes": 2381,
+      "sha256": "37f0e225be51765164d2c6ee9ca1de9fc9d6cc6149ab44efacf322ae0277770c"
+    },
+    {
+      "path": "evidence/gate2/20261007-scriptfix/SUMMARY.md",
+      "bytes": 475,
+      "sha256": "edeeed09f5647423f3e4a2389ebd71e9d13e4bc38ac27c24a4f6b51c77028810"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "D1": "fixed",
+    "D2": "fixed",
+    "D3": "fixed",
+    "D5": "fixed (95 now VACUOUS)",
+    "D4": "not fixed"
+  },
+  "related_run": "20261007-apptest-ext",
+  "manifest_sha256": "cb6dfd798e41c7690b6a393b4087b8a02ff387771c1212792d5c956c471457a1"
+}

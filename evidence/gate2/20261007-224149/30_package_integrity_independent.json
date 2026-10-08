@@ -1,0 +1,41 @@
+{
+  "script": "30_package_integrity_independent",
+  "timestamp": "2026-10-07T22:45:30Z",
+  "all_pass": true,
+  "checks": {
+    "git_archive_created": {
+      "status": "PASS"
+    },
+    "total_members": 1737,
+    "excluded_NAE": {
+      "status": "PASS",
+      "match_count": 0,
+      "examples": []
+    },
+    "excluded_automation": {
+      "status": "PASS",
+      "match_count": 0,
+      "examples": []
+    },
+    "excluded_test_seal": {
+      "status": "PASS",
+      "match_count": 0,
+      "examples": []
+    },
+    "required_package_README_md": {
+      "status": "PASS"
+    },
+    "required_package_INSTALL_md": {
+      "status": "PASS"
+    },
+    "required_package_dbma_ui_py": {
+      "status": "PASS"
+    },
+    "required_package_core_retrieval_py": {
+      "status": "PASS"
+    },
+    "required_package_requirements_txt": {
+      "status": "PASS"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "na_correction": {
+    "superseded_run": "20261007-224149",
+    "superseded_files": [
+      "80_reinstall_upgrade_dryrun.json",
+      "90_uninstall_dryrun.json"
+    ],
+    "error": "'scripts not in working tree' 판정은 scripts/80_*.sh, scripts/90_*.sh 경로를 조회한 오류",
+    "actual_paths": [
+      "scripts/gate2/80_reinstall_upgrade.sh",
+      "scripts/gate2/90_uninstall.sh",
+      "scripts/install_nae_beta.command"
+    ],
+    "note": "이전 run의 파일은 동결 상태로 수정하지 않음; 본 run이 정정 기록임"
+  },
+  "script_defects": [
+    {
+      "id": "D1",
+      "script": "80_reinstall_upgrade.sh",
+      "finding": "DRY_RUN=true인데 Step 2 시딩이 /tmp/dbma-gate2-run-*를 실제 생성하고 'RESULT: PASS'를 출력(아무것도 검증하지 않은 PASS)",
+      "evidence": "80_dryrun_output.txt"
+    },
+    {
+      "id": "D2",
+      "script": "90_uninstall.sh",
+      "finding": "DRY_RUN=true인데 'Removed: <dir>'을 출력하나 실제로는 삭제하지 않음(출력 오해 소지)",
+      "evidence": "90_dryrun_output.txt"
+    },
+    {
+      "id": "D3",
+      "script": "90_uninstall.sh",
+      "finding": "인자 없이 실행하면 /tmp의 모든 dbma-gate2-run-*를 삭제(다른 세션 run 포함 가능); 명시 인자 사용 필수"
+    }
+  ],
+  "remediation": "스크립트 수정은 이번 범위 밖(별도 승인 필요); 현 단계는 기록만",
+  "evidence_incident": {
+    "finding": "커밋 a293c374의 90_real_output.txt는 재실행 출력(nothing to remove)이 덮어써진 상태로 복사되어 최초 삭제 출력이 누락됨",
+    "cause": "사용자 재실행의 tee가 /tmp/p8090-out/90_real.txt를 덮어쓴 뒤 CUE가 복사",
+    "fix": "최초 출력을 대화 기록에서 복원(복원 표시 헤더 포함)하고 재실행 출력은 별도 파일로 보존"
+  }
+}

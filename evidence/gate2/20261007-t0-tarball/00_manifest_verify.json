@@ -1,0 +1,72 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-t0-tarball",
+  "verified_at": "2026-10-08T01:38:43Z",
+  "manifest_path": "evidence/gate2/20261007-t0-tarball/manifest.json",
+  "verification_source": "git archive of committed tree 7a9bb7040dfcc1407bf8492436e44fb315df198b",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 7,
+  "verified_count": 7,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "68bbf3bcf37e59f43c4a57b7743de023f4655133d616b59de3f0ec7fcc0ebffc",
+  "canonical_manifest_sha256_actual": "68bbf3bcf37e59f43c4a57b7743de023f4655133d616b59de3f0ec7fcc0ebffc",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/T0_tarball_listing.txt",
+      "expected_bytes": 102162,
+      "actual_bytes": 102162,
+      "expected_sha256": "7594217191984c3aef3e91fbf1528304136e64986cd8f22a9f3be0dfc32fd723",
+      "actual_sha256": "7594217191984c3aef3e91fbf1528304136e64986cd8f22a9f3be0dfc32fd723",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/curl_result.txt",
+      "expected_bytes": 114,
+      "actual_bytes": 114,
+      "expected_sha256": "76e2fcd0f7e33c9c0f9465129d5eb95c5261dcdcf25b95a9dd820fdcb4eeb8bc",
+      "actual_sha256": "76e2fcd0f7e33c9c0f9465129d5eb95c5261dcdcf25b95a9dd820fdcb4eeb8bc",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/tarball_sha256.txt",
+      "expected_bytes": 65,
+      "actual_bytes": 65,
+      "expected_sha256": "85a5be4e6692213cb2bb9a9542684baee1c565303fbfc2f942a9e87a7b55fc91",
+      "actual_sha256": "85a5be4e6692213cb2bb9a9542684baee1c565303fbfc2f942a9e87a7b55fc91",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/import_ui_app_actual_tarball.txt",
+      "expected_bytes": 1417,
+      "actual_bytes": 1417,
+      "expected_sha256": "0c62f8001fb07e05feb3b3412fa84da14c7a7a2b072be513ed07613b551f2cfd",
+      "actual_sha256": "0c62f8001fb07e05feb3b3412fa84da14c7a7a2b072be513ed07613b551f2cfd",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/local_git_archive_vs_github_tarball.diff",
+      "expected_bytes": 277,
+      "actual_bytes": 277,
+      "expected_sha256": "14c31d825af875e1343a06976a83c6256cf4a390fb4511f366f4054aaf7f00de",
+      "actual_sha256": "14c31d825af875e1343a06976a83c6256cf4a390fb4511f366f4054aaf7f00de",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/t0_findings.json",
+      "expected_bytes": 2359,
+      "actual_bytes": 2359,
+      "expected_sha256": "25d06bfb3a0c4b7a98a31179427a90c4ca867ddd345ee8a1ce47a000d3dbc540",
+      "actual_sha256": "25d06bfb3a0c4b7a98a31179427a90c4ca867ddd345ee8a1ce47a000d3dbc540",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-tarball/SUMMARY.md",
+      "expected_bytes": 529,
+      "actual_bytes": 529,
+      "expected_sha256": "72d3eb824ae252622c79b05520b6104ca72c7ee65df7985789e1ecf209826450",
+      "actual_sha256": "72d3eb824ae252622c79b05520b6104ca72c7ee65df7985789e1ecf209826450",
+      "match": true
+    }
+  ],
+  "pass": true
+}

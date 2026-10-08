@@ -1,0 +1,72 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-dev-merged",
+  "verified_at": "2026-10-08T03:34:32Z",
+  "manifest_path": "evidence/gate2/20261007-dev-merged/manifest.json",
+  "verification_source": "git archive of committed tree 5238e3a6d6e466c26d30c9e02bf7e23badafa75d",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 7,
+  "verified_count": 7,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "749b8652c09d29ae0cce48c87d211cece546030437abea71f9f30dda070e5c9b",
+  "canonical_manifest_sha256_actual": "749b8652c09d29ae0cce48c87d211cece546030437abea71f9f30dda070e5c9b",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-dev-merged/pr112_final.json",
+      "expected_bytes": 308,
+      "actual_bytes": 308,
+      "expected_sha256": "c7d9a8120aa178edcc04b4654455e6dfd718b43154a34585f08e2db5e3b29b8e",
+      "actual_sha256": "c7d9a8120aa178edcc04b4654455e6dfd718b43154a34585f08e2db5e3b29b8e",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/dev_conditional_NAE_imports.txt",
+      "expected_bytes": 483,
+      "actual_bytes": 483,
+      "expected_sha256": "61000b26e6d899155c54c17a1c07ac9e22cc80027db6c0827e15f8661ed8450d",
+      "actual_sha256": "61000b26e6d899155c54c17a1c07ac9e22cc80027db6c0827e15f8661ed8450d",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/import_ui_app_dev_after_merge.txt",
+      "expected_bytes": 44,
+      "actual_bytes": 44,
+      "expected_sha256": "0b0f98ce09ca4d6876e993eca8f61167fe7734bbafcf39b07a76bdf8377af5bf",
+      "actual_sha256": "0b0f98ce09ca4d6876e993eca8f61167fe7734bbafcf39b07a76bdf8377af5bf",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/pytest_packaged.txt",
+      "expected_bytes": 32,
+      "actual_bytes": 32,
+      "expected_sha256": "732e3f48c83f9bcf955f3afc94dff478fbd2ec0cb8e0eaf6b8b93f550ec62ee0",
+      "actual_sha256": "732e3f48c83f9bcf955f3afc94dff478fbd2ec0cb8e0eaf6b8b93f550ec62ee0",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/apptest_packaged.json",
+      "expected_bytes": 4315,
+      "actual_bytes": 4315,
+      "expected_sha256": "48526c7724ec127129c48e343ef2667f524f30e10665c818ad402b66ee3a9de2",
+      "actual_sha256": "48526c7724ec127129c48e343ef2667f524f30e10665c818ad402b66ee3a9de2",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/dev_merged_findings.json",
+      "expected_bytes": 1795,
+      "actual_bytes": 1795,
+      "expected_sha256": "9cdf16e4d7a6598f0e53ba979dd064e43b6c5c20d2f1fea30cd3558d37e30ca1",
+      "actual_sha256": "9cdf16e4d7a6598f0e53ba979dd064e43b6c5c20d2f1fea30cd3558d37e30ca1",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/SUMMARY.md",
+      "expected_bytes": 514,
+      "actual_bytes": 514,
+      "expected_sha256": "5d2b39d67a8e35756f2df17a2cfb7846f34cdd400ad1ea580b005e443116d9a9",
+      "actual_sha256": "5d2b39d67a8e35756f2df17a2cfb7846f34cdd400ad1ea580b005e443116d9a9",
+      "match": true
+    }
+  ],
+  "pass": true
+}

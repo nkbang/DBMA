@@ -30,6 +30,7 @@ from dataclasses import asdict
 from core.candidate_generator import CandidateGenerator, CandidateRef, open_or_build_index
 from core.bible_index import BibleIndex
 from core.query_planner import QueryPlan, classify
+from core.query_translation_llm import contains_hangul, translate_to_english
 from core.rrf import reciprocal_rank_fusion
 from core.search_cache import SearchResultCache, make_cache_key
 from core.retrieval import (
@@ -79,23 +80,164 @@ def is_enabled() -> bool:
     return os.environ.get("USE_INVERTED_INDEX", "true").strip().lower() == "true"
 
 
+# 코퍼스의 한국어 비중이 이 값 미만이면, 사전(core/query_translation.py)이 영어 번역어를
+# 못 만든 한글 질의를 Stage-1 전에 LLM으로 번역한다. 배포 기준선 실측값은 0.00%
+# (119,595건 전량 영문)이고, 한국어 자료가 유의미하게 쌓이면(20% 이상) 이 번역은
+# 자동으로 멈춘다.
+_KOREAN_CORPUS_THRESHOLD = 0.20
+
+
 class HybridRetriever:
     """Stage 0 (Query Planner) -> Stage 1 (CandidateGenerator or Bible Index,
     depending on route) -> Stage 2 (reused scoring) -> ranked top-K. Mirrors
     RetrievalEngine.retrieve()'s STEP 3/4/5 scoring formula closely enough
     for direct A/B comparison, without importing or modifying RetrievalEngine
     itself.
+
+    [P1 최적화] tsu_by_id는 lazy-loaded: None이면 retriever가 교체됨.
     """
 
     def __init__(
         self,
         candidate_generator: CandidateGenerator,
-        tsu_by_id: dict[str, dict[str, Any]],
+        tsu_by_id: Optional[dict[str, dict[str, Any]]],
         bible_index: Optional[BibleIndex] = None,
     ) -> None:
         self.candidate_generator = candidate_generator
-        self.tsu_by_id = tsu_by_id
+        self.tsu_by_id = tsu_by_id  # None 가능 (lazy loading)
         self.bible_index = bible_index
+
+    def _corpus_korean_ratio(self) -> float:
+        """코퍼스에서 한국어 TSU가 차지하는 비율(1회 계산 후 캐시).
+
+        [P1 최적화] tsu_by_id가 None이면 lazy loading 전이므로 0.0 반환.
+        """
+        cached = getattr(self, "_ko_ratio", None)
+        if cached is not None:
+            return cached
+        if self.tsu_by_id is None:
+            # Lazy loading 전: 코퍼스 정보를 알 수 없음 — 영문 코퍼스 가정
+            self._ko_ratio = 0.0
+            return 0.0
+        total = len(self.tsu_by_id) or 1
+        ko = sum(1 for t in self.tsu_by_id.values() if (t.get("language") or "") == "ko")
+        cached = ko / total
+        self._ko_ratio = cached
+        return cached
+
+    def _should_translate_upfront(self, parsed_query: ParsedQuery) -> bool:
+        """한글 질의를 Stage-1 **전에** LLM으로 번역할지.
+
+        기본 번역은 core/query_translation.py의 사전(ParsedQuery.translated_terms,
+        LLM 호출 없음)이다. 사전이 영어 번역어를 **하나도** 못 만든 한글 질의만
+        여기서 LLM 번역을 받는다 — 그런 질의는 한국어 토큰이 영문 코퍼스의 **OCR
+        잡음**에 걸려 0건이 되지 않으므로 "0건일 때만 번역"하는 폴백으로는 영영
+        발동하지 않는다(실측: P0-5 유보 17건, 예: "우울증 목회 돌봄").
+        사전이 번역어를 만든 질의는 LLM을 부르지 않아 빠른 경로가 유지된다.
+        """
+        if not contains_hangul(parsed_query.original_query):
+            return False
+        if parsed_query.translated_terms:
+            return False
+        return self._corpus_korean_ratio() < _KOREAN_CORPUS_THRESHOLD
+
+    def _corpus_has_book_ids(self) -> bool:
+        """코퍼스에 book_id가 하나라도 있는지(1회 계산 후 캐시).
+
+        [P1 최적화] tsu_by_id가 None이면 lazy loading 전이므로 False 반환.
+        """
+        cached = getattr(self, "_has_book_ids", None)
+        if cached is not None:
+            return cached
+        if self.tsu_by_id is None:
+            # Lazy loading 전: 알 수 없으므로 False (book_id 필터 비활성화)
+            self._has_book_ids = False
+            return False
+        cached = any(
+            (t.get("verse_mapping") or {}).get("book_id")
+            for t in self.tsu_by_id.values()
+        )
+        self._has_book_ids = cached
+        return cached
+
+    def _query_parser(self) -> QueryParser:
+        """번역문 재파싱 전용. HybridQueryProcessor가 이미 parser를 갖지만
+        HybridRetriever는 독립적으로 쓰이기도 해서(테스트·A/B) 자체 보유한다."""
+        if getattr(self, "_parser_cached", None) is None:
+            self._parser_cached = QueryParser()
+        return self._parser_cached
+
+    def _generate_candidates(
+        self,
+        parsed_query: ParsedQuery,
+        candidate_k: int,
+        file_scope: Optional[list[str]],
+        telemetry_out: Optional[dict[str, Any]],
+        force_route: Optional[str] = None,
+    ) -> list[CandidateRef]:
+        """Stage 1 — route 분류 후 후보를 만든다. 번역 재시도가 같은 경로를
+        다시 타야 하므로 메서드로 분리했다(로직 변경 없음).
+
+        `force_route`: 번역 후 metadata→hybrid 강제 등 외부에서 라우트를
+        덮어쓸 때 사용 (None이면 자동 분류).
+        """
+        plan = classify(parsed_query.original_query, parsed_query)
+        if force_route is not None:
+            plan = QueryPlan(route=force_route, reason=f"forced by caller")
+        if telemetry_out is not None:
+            telemetry_out["route"] = plan.route
+        candidate_tsu_ids: Optional[list[str]] = None
+
+        if plan.route == "bible" and self.bible_index is not None:
+            seen: set[str] = set()
+            candidate_tsu_ids = []
+            for ref in parsed_query.scripture_refs:
+                for tsu_id in self.bible_index.lookup_scripture_ref(ref):
+                    if tsu_id not in seen:
+                        # [Bug fix] Respect file_scope the same way other routes do.
+                        if file_scope is not None and (
+                            self.tsu_by_id.get(tsu_id, {}).get("source_file") not in file_scope
+                        ):
+                            continue
+                        seen.add(tsu_id)
+                        candidate_tsu_ids.append(tsu_id)
+            # bm25_score has no meaning for a posting-list hit — every match
+            # is an equally exact reference match; Stage 2 (theological/
+            # passage score) differentiates within this set.
+            candidates = [
+                CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:candidate_k]
+            ]
+            # [2026-09-26] Bible Index가 비어 있으면 자유 텍스트 검색으로 내려간다.
+            # 실측: 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진 TSU가
+            # 0건(0.0%)이라 bible_posting 테이블이 0행이다. 구절 참조가 들어간
+            # 질의는 전부 이 route로 들어와 빈 포스팅 리스트를 받고 0건으로
+            # 끝났는데, 설교 준비에서 가장 흔한 질의 형태가 바로 그것이다.
+            # 포스팅 히트가 있으면 기존 동작이 그대로 유지되고(정확 참조 우선),
+            # 없을 때만 내려가므로 0건보다 나빠질 수 없다.
+            if not candidates:
+                if telemetry_out is not None:
+                    telemetry_out["route"] = "hybrid"
+                    telemetry_out["route_fallback_from"] = "bible"
+                candidates = self.candidate_generator.search(
+                    parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
+                    book_ids=None if self._corpus_has_book_ids() else [],
+                )
+        elif plan.route == "exact":
+            candidates = self.candidate_generator.search(
+                parsed_query, k=candidate_k, source_files=file_scope,
+                exact_phrase=plan.exact_phrase, with_snippets=False,
+            )
+        elif plan.route == "metadata":
+            candidates = self.candidate_generator.search(
+                parsed_query, k=candidate_k, source_files=file_scope,
+                fields=["title", "author"], with_snippets=False,
+            )
+        else:  # "greek" or "hybrid" — default free-text search, unchanged
+            candidates = self.candidate_generator.search(
+                parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
+                book_ids=None if self._corpus_has_book_ids() else [],
+            )
+        return candidates
 
     def _demote_index_pages(self, candidates: list[CandidateRef], candidate_k: int) -> list[CandidateRef]:
         """Keep Stage-1 order but put back-of-book index pages after every
@@ -138,60 +280,55 @@ class HybridRetriever:
         - greek/hybrid: CandidateGenerator's default free-text search,
           unchanged from before the Query Planner existed.
         """
+        # [P1 최적화] tsu_by_id가 None이면 lazy loading으로 교체
+        if self.tsu_by_id is None:
+            raise RuntimeError(
+                "HybridRetriever.tsu_by_id is None — call HybridQueryProcessor._ensure_retriever() first"
+            )
         # [2026-09-26] Over-fetch so back-of-book index pages can be pushed
         # behind real prose before the candidate_k cap (see
         # _demote_index_pages); Stage-2 scoring still sees candidate_k only.
         fetch_k = candidate_k * _INDEX_PAGE_OVERFETCH
-        plan = classify(parsed_query.original_query, parsed_query)
-        if telemetry_out is not None:
-            telemetry_out["route"] = plan.route
-        candidate_tsu_ids: Optional[list[str]] = None
 
-        if plan.route == "bible" and self.bible_index is not None:
-            seen: set[str] = set()
-            candidate_tsu_ids = []
-            for ref in parsed_query.scripture_refs:
-                for tsu_id in self.bible_index.lookup_scripture_ref(ref):
-                    if tsu_id not in seen:
-                        # [Bug fix] Respect file_scope the same way other routes do.
-                        if file_scope is not None and (
-                            self.tsu_by_id.get(tsu_id, {}).get("source_file") not in file_scope
-                        ):
-                            continue
-                        seen.add(tsu_id)
-                        candidate_tsu_ids.append(tsu_id)
-            # bm25_score has no meaning for a posting-list hit — every match
-            # is an equally exact reference match; Stage 2 (theological/
-            # passage score) differentiates within this set.
-            candidates = [
-                CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:fetch_k]
-            ]
-            # [2026-09-26] The Bible Index is built from verse_mapping, which is
-            # empty for every TSU whose source isn't a single-book commentary
-            # (measured: 0 posting rows on the 119,595-TSU corpus). An empty
-            # posting list is "no index coverage", not "no relevant text" —
-            # fall back to the default free-text search instead of returning 0.
-            if not candidates:
-                candidates = self.candidate_generator.search(
-                    parsed_query, k=fetch_k, source_files=file_scope, with_snippets=False,
-                )
+        # 사전이 번역어를 못 만든 한글 질의 → Stage-1 전에 LLM 번역(위 메서드 참고).
+        force_route = None
+        if self._should_translate_upfront(parsed_query):
+            translated = translate_to_english(parsed_query.original_query)
+            if translated:
+                parsed_query = self._query_parser().parse(translated)
+                # 번역된 질의의 route가 metadata면 hybrid로 강제 (content 검색 필요)
+                if classify(translated, parsed_query).route == "metadata":
+                    force_route = "hybrid"
                 if telemetry_out is not None:
-                    telemetry_out["route"] = "hybrid"
-                    telemetry_out["route_fallback_from"] = "bible"
-        elif plan.route == "exact":
-            candidates = self.candidate_generator.search(
-                parsed_query, k=fetch_k, source_files=file_scope,
-                exact_phrase=plan.exact_phrase, with_snippets=False,
-            )
-        elif plan.route == "metadata":
-            candidates = self.candidate_generator.search(
-                parsed_query, k=fetch_k, source_files=file_scope,
-                fields=["title", "author"], with_snippets=False,
-            )
-        else:  # "greek" or "hybrid" — default free-text search, unchanged
-            candidates = self.candidate_generator.search(
-                parsed_query, k=fetch_k, source_files=file_scope, with_snippets=False,
-            )
+                    telemetry_out["translation_used"] = True
+                    telemetry_out["translated_query"] = translated
+
+        candidates = self._generate_candidates(
+            parsed_query, fetch_k, file_scope, telemetry_out, force_route,
+        )
+
+        # [2026-09-26] 한국어 질의 ↔ 영문 코퍼스 불일치 구제 — 0건 폴백.
+        # 기본 경로는 core/query_translation.py의 사전 번역(ParsedQuery.
+        # translated_terms/phrases, LLM 호출 없음), 사전이 비는 질의는 위의 사전 LLM
+        # 번역이다. 그래도 Stage-1이 0건이면 LLM 번역으로 한 번 더 시도한다.
+        # 이미 후보를 찾은 질의는 건드리지 않으므로 빠른 경로의 지연이 늘지
+        # 않고, 번역 실패 시 원래의 0건이 유지될 뿐이라 순손실이 없다.
+        if not candidates and contains_hangul(parsed_query.original_query):
+            translated = translate_to_english(parsed_query.original_query)
+            if translated:
+                translated_pq = self._query_parser().parse(translated)
+                retried = self._generate_candidates(
+                    translated_pq, fetch_k, file_scope, telemetry_out
+                )
+                if retried:
+                    # Stage-2(신학·구절 점수)도 실제로 후보를 찾아낸 질의를
+                    # 기준으로 계산한다 — 한국어 원문으로 영문 청크를 채점하면
+                    # 후보는 번역문이 고르고 점수는 원문이 매기는 불일치가 된다.
+                    parsed_query = translated_pq
+                    candidates = retried
+                    if telemetry_out is not None:
+                        telemetry_out["translation_used"] = True
+                        telemetry_out["translated_query"] = translated
 
         candidates = self._demote_index_pages(candidates, candidate_k)
 
@@ -288,6 +425,51 @@ class _EngineCompat:
         return {book_id: len(files) for book_id, files in coverage.items()}
 
 
+class _EngineCompatLazy:
+    """[P1 최적화] tsu_by_id lazy loading용 engine wrapper.
+    HybridQueryProcessor를 감싸서 .tsus/.list_source_files/.book_coverage
+    표면을 제공한다 — 실제 데이터는 첫 접근 시 로드된다.
+    """
+
+    def __init__(self, hqp: "HybridQueryProcessor") -> None:
+        self._hqp = hqp
+
+    @property
+    def tsus(self) -> list[dict[str, Any]]:
+        return list(self._hqp.tsu_by_id.values())
+
+    def list_source_files(self, registry_path: Optional[str] = None) -> list[str]:
+        import os as _os
+        from core.config import DEFAULT_REGISTRY_PATH
+
+        registry_path = registry_path or DEFAULT_REGISTRY_PATH
+        valid_sources: set[str] = set()
+        if _os.path.exists(registry_path):
+            from core.identity_registry import load_identity_registry
+            registry = load_identity_registry(registry_path)
+            for doc in registry.get("documents", {}).values():
+                if (doc.get("ingest_status") == "PROCESSED"
+                        and doc.get("superseded_by") is None):
+                    sf = doc.get("source_file")
+                    if sf:
+                        valid_sources.add(sf)
+
+        result = {sf for t in self.tsus if (sf := t.get("source_file"))}
+        if _os.path.exists(registry_path):
+            result &= valid_sources
+        return sorted(result)
+
+    def book_coverage(self) -> dict[str, int]:
+        coverage: dict[str, set[str]] = {}
+        for t in self.tsus:
+            book_id = (t.get("verse_mapping") or {}).get("book_id")
+            source_file = t.get("source_file")
+            if not book_id or not source_file:
+                continue
+            coverage.setdefault(book_id, set()).add(source_file)
+        return {book_id: len(files) for book_id, files in coverage.items()}
+
+
 class HybridQueryProcessor:
     """Drop-in replacement for `core.retrieval.QueryProcessor`'s `.process()`
     interface — same signature, same `ResponsePackage` return type — routing
@@ -342,15 +524,17 @@ class HybridQueryProcessor:
         self.cache_ttl_seconds = cache_ttl_seconds
 
         generator = open_or_build_index(tsu_dataset_path, candidate_index_dir)
-        tsu_by_id = load_tsu_by_id(tsu_dataset_path)
+        # [P1 최적화] lazy loading: tsu_by_id는 첫 검색 시 로드 (초기화 2s → <0.1s)
+        self._tsu_dataset_path = tsu_dataset_path
+        self._tsu_by_id: Optional[dict[str, dict[str, Any]]] = None
         bible_path = Path(bible_index_path)
         # Build BibleIndex if file doesn't exist OR has 0 rows (empty/stale index).
         # A bare file check misses the case where the file was created but never populated.
         if not bible_path.exists() or _row_count(bible_path) == 0:
             build_bible_index(tsu_dataset_path, bible_index_path)
         bible_index = BibleIndex(bible_index_path)
-        self.retriever = HybridRetriever(generator, tsu_by_id, bible_index=bible_index)
-        self.engine = _EngineCompat(tsu_by_id)
+        self.retriever = HybridRetriever(generator, None, bible_index=bible_index)
+        self.engine = _EngineCompatLazy(self)
         self.telemetry = SearchTelemetry(telemetry_path)
         self.cache = SearchResultCache(cache_path)
 
@@ -358,6 +542,23 @@ class HybridQueryProcessor:
         self.context_assembler = ContextAssembler()
         self.citation_builder = CitationBuilder()
         self.response_formatter = ResponseFormatter()
+
+    @property
+    def tsu_by_id(self) -> dict[str, dict[str, Any]]:
+        """Lazy-loaded TSU dataset — loaded on first access."""
+        if self._tsu_by_id is None:
+            self._tsu_by_id = load_tsu_by_id(self._tsu_dataset_path)
+        return self._tsu_by_id
+
+    def _ensure_retriever(self) -> HybridRetriever:
+        """Ensure retriever has tsu_by_id (lazy-loaded)."""
+        if self.retriever.tsu_by_id is None:
+            self.retriever = HybridRetriever(
+                self.retriever.candidate_generator,
+                self.tsu_by_id,
+                bible_index=self.retriever.bible_index,
+            )
+        return self.retriever
 
     def _dataset_fingerprint(self) -> Optional[str]:
         """Same manifest.dataset_sha256 read ui/state/query_processor.py
@@ -385,6 +586,9 @@ class HybridQueryProcessor:
         file_scope: Optional[list[str]] = None,
     ) -> ResponsePackage:
         t_start = time.perf_counter()
+
+        # [P1 최적화] lazy loading된 tsu_by_id로 retriever 교체
+        self._ensure_retriever()
 
         fingerprint = self._dataset_fingerprint()
         cache_key = make_cache_key(query, k, file_scope, fingerprint)

@@ -1,0 +1,23 @@
+{
+  "run_id": "20261007-f1fix",
+  "fix_commit": "3a10bb3b46c0fb036632c64c8d2401b63c885f58",
+  "option": "B (임포트 게이팅)",
+  "changes": [
+    "ui/components/nae_public_section.py: get_disclosure 지연 import",
+    "ui/pages/chat.py: smith_activation import를 try/except ImportError로 감싸고 Smith 비활성 폴백",
+    "tests/test_ui_imports_without_nae.py 신규(NAE 차단 상태 임포트 회귀, 수정 전 6 failed·수정 후 통과)",
+    "scripts/gate2/30_package_integrity.py: 패키지 트리 import ui.app 검사 추가"
+  ],
+  "results": {
+    "phase_61_packaged_tree": "PASS — pytest 7 passed (수정 전 1 passed·6 failed)",
+    "phase_30_with_new_check": "PASS — 10개 검사 전부 PASS, packaged_import_ui_app PASS, members 1786",
+    "phase_40_isolated_partial": "import ui.app rc=0, AppTest 예외 없음 (수정 전 No module named 'NAE'); requirements 설치는 이전 run에서 PASS",
+    "related_tests": "관련 17개 테스트 파일 202 passed"
+  },
+  "method": "푸시된 커밋을 git archive(61, 40) / git clone --local(30)로 scratch에 풀어 실행; 추적 evidence 파일 미수정; 패키지 트리에 NAE/ 없음 확인",
+  "limits": [
+    "AppTest는 첫 화면만 렌더링; chat·research 페이지 이동·Smith 경로·nae_pd enabled 상태는 미시험",
+    "설치 스크립트(setup_beta_tester.command) end-to-end와 깨끗한 환경 검증은 여전히 미평가",
+    "30의 새 검사가 수정 전 코드에서 FAIL함을 해당 스크립트로 직접 재현하지는 않음(동일 조건 import ui.app의 수정 전 FAIL은 phase6195/phase40에서 확인)"
+  ]
+}

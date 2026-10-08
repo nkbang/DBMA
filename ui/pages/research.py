@@ -35,6 +35,7 @@ from ui.components.citation_card import render_citation_card
 from ui.components.nae_public_section import render_nae_public_section
 from ui.pages.chat import (
     generate_answer,
+    render_chat_page,
     _is_low_confidence,
     _render_low_confidence_warning,
     _NO_EVIDENCE_HOLD_TEXT,
@@ -161,6 +162,33 @@ def _apply_research_styles() -> None:
 
 # ── Main Render Function ───────────────────────────────────────
 
+def render_research_workspace_page() -> None:
+    """[NAE Phase 1 화면 통합] "Research"(연구)와 "AI에게 질문"(채팅)을
+    하나의 사이드바 진입점으로 묶는다. research.py는 이미 chat.py의
+    generate_answer 등을 직접 import해 강하게 결합돼 있고, 각 화면의
+    private 함수를 참조하는 기존 테스트(test_chat_*.py 5개,
+    test_research_*.py 3개)가 있어 로직 자체는 옮기지 않고 뷰 전환만
+    추가한다. st.tabs는 코드로 활성 탭을 바꿀 수 없어(Streamlit 제약),
+    Dashboard/온보딩의 "질문하기" 빠른 진입이 채팅 뷰로 바로 열리도록
+    ui/pages/sermon_research.py::render_sermon_workspace_page와 동일한
+    "session_state 키 + st.radio" 패턴(research_workspace_view)을 쓴다.
+    NAE_PASTOR_FEATURE_REALIGNMENT_REPORT_001.md §4.2 화면1 제안."""
+    if "research_workspace_view" not in st.session_state:
+        st.session_state["research_workspace_view"] = "연구"
+
+    view = st.radio(
+        "연구/채팅",
+        ["연구", "채팅"],
+        key="research_workspace_view",
+        horizontal=True,
+        label_visibility="collapsed",
+    )
+    if view == "연구":
+        render_research_page()
+    else:
+        render_chat_page()
+
+
 def render_research_page() -> None:
     """Render the DBMA Research Workspace page (Stitch style)."""
     _apply_research_styles()
@@ -278,6 +306,11 @@ def _render_search_interface() -> None:
             st.session_state["research_results"] = results
             st.session_state["search_status"] = status_msg
             st.session_state["research_response"] = response_obj  # For query analysis
+
+            # [ADR-035 §3.1] 옵트인 자동 수집 — 새로 검색이 실행된 이
+            # 시점에서만 호출해야 재검색 없이 화면이 리런될 때마다 중복
+            # 추가되지 않는다.
+            _maybe_auto_collect_for_sermon_research(results)
 
             # Always run AI answer path alongside search (UX-007 §4.1)
             try:
@@ -429,6 +462,26 @@ def _render_search_results_as_cards(results: list[dict]) -> None:
         _render_send_to_sermon_research_button(result, i)
 
 
+def _append_search_result_to_sermon_research(result: dict) -> None:
+    """전환 버퍼(sermon_research_selection)에 검색 결과 1건을 추가한다
+    (UX-007 §13 Tier B, §2.1). `_render_send_to_sermon_research_button`의
+    수동 클릭과 `_maybe_auto_collect_for_sermon_research`의 옵트인 자동
+    수집(ADR-035 §3.1)이 공유하는 append 로직. 이름이 비슷한
+    `_send_to_sermon_research(source_file, document_id, detail)`(문서
+    상세 패널 전용, 아래 별도 정의)와는 다른 함수 — 시그니처와 용도가
+    달라 이름을 분리했다."""
+    import datetime
+
+    st.session_state.setdefault("sermon_research_selection", [])
+    st.session_state["sermon_research_selection"].append({
+        "tsu_id": result.get("tsu_id", ""),
+        "document_id": result.get("document_id", ""),
+        "excerpt": result.get("snippet", ""),
+        "source_label": result.get("source", ""),
+        "added_at": datetime.datetime.now().isoformat(timespec="seconds"),
+    })
+
+
 def _render_send_to_sermon_research_button(result: dict, index: int) -> None:
     """UX-007 §13 설계(Tier B) — 검색 결과를 설교 연구 허브로 보낸다.
     §4.5: 클릭 시 화면은 그대로 유지(이동하지 않음). 전환 버퍼는
@@ -437,17 +490,23 @@ def _render_send_to_sermon_research_button(result: dict, index: int) -> None:
     tsu_id = result.get("tsu_id", "")
     btn_key = f"send_sermon_{index}_{abs(hash(tsu_id)) & 0xFFFFFFFF:x}"
     if st.button("설교 연구에 추가", key=btn_key, use_container_width=True):
-        import datetime
-
-        st.session_state.setdefault("sermon_research_selection", [])
-        st.session_state["sermon_research_selection"].append({
-            "tsu_id": tsu_id,
-            "document_id": result.get("document_id", ""),
-            "excerpt": result.get("snippet", ""),
-            "source_label": result.get("source", ""),
-            "added_at": datetime.datetime.now().isoformat(timespec="seconds"),
-        })
+        _append_search_result_to_sermon_research(result)
         st.toast("설교 연구에 추가되었습니다")
+
+
+# [ADR-035 §3.1 항목2] 옵트인 자동 수집 — 기본 꺼짐. 켠 사용자에 한해
+# 검색 실행 시 상위 결과를 수동 클릭 없이 sermon_research_selection에
+# 자동 반영한다. 기존 수동 버튼은 그대로 유지(옵트인이므로 회귀 없음).
+_AUTO_COLLECT_TOP_N = 3
+
+
+def _maybe_auto_collect_for_sermon_research(results: list[dict]) -> None:
+    if not st.session_state.get("sermon_research_auto_collect"):
+        return
+    for result in results[:_AUTO_COLLECT_TOP_N]:
+        _append_search_result_to_sermon_research(result)
+    if results:
+        st.toast(f"설교 연구에 상위 {min(len(results), _AUTO_COLLECT_TOP_N)}건 자동 반영됨")
 
 
 # ── Saved Sessions ─────────────────────────────────────────────
