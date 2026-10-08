@@ -270,6 +270,16 @@ def _render_document_collection() -> None:
     else:
         st.caption(f"총 {shown_total}개의 문서")
 
+    # ── 보기 방식: 유형별 그룹(접이식) / 페이지 목록 ──────────────────
+    # 문서가 한 페이지(20건)를 넘으면 그룹 보기를 기본으로 켠다(Accordance 폴더형).
+    if "library_group_by_type" not in st.session_state:
+        st.session_state["library_group_by_type"] = shown_total > _DEFAULT_PAGE_SIZE
+    st.toggle("유형별로 묶어 보기", key="library_group_by_type")
+
+    if st.session_state["library_group_by_type"]:
+        _render_grouped_documents(documents)
+        return
+
     # Reset page back to 1 when filters change (new results may have fewer pages)
     if "library_current_page" not in st.session_state:
         st.session_state["library_current_page"] = 1
@@ -277,10 +287,6 @@ def _render_document_collection() -> None:
     # ── Pagination ────────────────────────────────────────────
     page_size = _DEFAULT_PAGE_SIZE
     total_pages = max(1, (shown_total + page_size - 1) // page_size)
-
-    # Read current page from session state (default 1)
-    if "library_current_page" not in st.session_state:
-        st.session_state["library_current_page"] = 1
     current_page = st.session_state["library_current_page"]
 
     # Clamp page to valid range
@@ -1032,6 +1038,9 @@ def _clear_document_selection():
 # regardless of how many rows the current page holds.
 _LIST_HEIGHT_PX = 420
 
+# Rows shown per type group before "더 보기".
+_GROUP_PREVIEW = 10
+
 
 def _format_row_label(doc: dict) -> str:
     """One-line row label: ``PDF · title · size · date``."""
@@ -1040,23 +1049,39 @@ def _format_row_label(doc: dict) -> str:
     )
 
 
-def _render_document_rows(documents: list[dict]) -> None:
-    """Render documents as compact one-line rows in a fixed-height scroll box.
+def _group_by_type(documents: list[dict]) -> list[tuple[str, list[dict]]]:
+    """Group documents by file type; biggest group first, ties by name.
+
+    Order inside each group is preserved (it already follows the sort option).
+    """
+    groups: dict[str, list[dict]] = {}
+    for doc in documents:
+        groups.setdefault(str(doc.get("type", "?")), []).append(doc)
+    return sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+
+
+def _render_document_rows(
+    documents: list[dict], key_prefix: str = "lib_row_", boxed: bool = True
+) -> None:
+    """Render documents as compact one-line rows.
 
     The whole row is the selection button (no separate "선택" column), so the
     list stays short: ~34px per row instead of a ~120px card. Selection still
     goes through the on_click callback ``_select_document`` (DEFECT-PT-HUMAN-010
     Patch 3), which syncs StateStore + session state before the rerun.
+
+    ``boxed`` wraps the rows in a fixed-height scroll box; grouped mode passes
+    False because the outer container already scrolls.
     """
     selected_path = st.session_state.get("_library_selected_path")
 
-    with st.container(height=_LIST_HEIGHT_PX, border=True):
+    def _rows() -> None:
         for i, doc in enumerate(documents):
             is_selected = selected_path == doc.get("path")
             st.button(
                 _format_row_label(doc),
                 icon=":material/check:" if is_selected else None,
-                key=f"lib_row_{i}_{hash(doc.get('path', ''))}",
+                key=f"{key_prefix}{i}_{hash(doc.get('path', ''))}",
                 type="primary" if is_selected else "secondary",
                 use_container_width=True,
                 on_click=_select_document,
@@ -1068,6 +1093,42 @@ def _render_document_rows(documents: list[dict]) -> None:
                     doc.get("modified", "?"),
                 ),
             )
+
+    if boxed:
+        with st.container(height=_LIST_HEIGHT_PX, border=True):
+            _rows()
+    else:
+        _rows()
+
+
+def _render_grouped_documents(documents: list[dict]) -> None:
+    """Collapsible per-type groups (VS Code / Accordance folder style).
+
+    Each group shows its first ``_GROUP_PREVIEW`` rows with a "더 보기" toggle.
+    The first group and the group holding the selected document start open.
+    """
+    selected_path = st.session_state.get("_library_selected_path")
+
+    with st.container(height=_LIST_HEIGHT_PX, border=True):
+        for gi, (doc_type, docs) in enumerate(_group_by_type(documents)):
+            has_selected = any(d.get("path") == selected_path for d in docs)
+            with st.expander(
+                f"{doc_type} ({len(docs)})", expanded=(gi == 0 or has_selected)
+            ):
+                expand_key = f"lib_group_more_{doc_type}"
+                show_all = st.session_state.get(expand_key, False) or has_selected
+                visible = docs if show_all else docs[:_GROUP_PREVIEW]
+                _render_document_rows(
+                    visible, key_prefix=f"lib_row_{doc_type}_", boxed=False
+                )
+                if len(docs) > _GROUP_PREVIEW and not show_all:
+                    st.button(
+                        f"더 보기 ({len(docs) - _GROUP_PREVIEW})",
+                        key=f"lib_more_btn_{doc_type}",
+                        type="tertiary",
+                        on_click=st.session_state.__setitem__,
+                        args=(expand_key, True),
+                    )
 
 
 def _get_documents_list() -> list[dict]:
