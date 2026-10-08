@@ -54,3 +54,19 @@
 ## 재판정 조건
 
 F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크립트 본 실행) → 전체 판정 재산정. 그 전에는 PARTIAL_PASS로 되돌리지 않는다.
+
+---
+
+## 부록 A — F1 수정 후 재평가 (2026-10-07, 방안 B)
+
+- 수정 커밋 `3a10bb3b`: `ui/components/nae_public_section.py`·`ui/pages/chat.py`의 NAE 최상위 import 게이팅(NAE 부재 시 Smith 비활성), 회귀 시험 `tests/test_ui_imports_without_nae.py`(수정 전 6 failed), `gate2/30`에 패키지 트리 `import ui.app` 검사 추가.
+- evidence: `evidence/gate2/20261007-f1fix/`
+
+| Phase | 수정 전 | 수정 후 |
+|---|---|---|
+| 61 (배포 트리 pytest) | FAIL (1 passed / 6 failed) | **PASS (7/7)** |
+| 30 (+신규 import 검사) | PASS (결함 못 잡음) | **PASS** (`packaged_import_ui_app` PASS) |
+| 40 (격리 부분) | `import ui.app` FAIL | `import ui.app` PASS, `AppTest` 예외 없음 |
+
+- F1은 코드 수준에서 해소됨. 관련 17개 테스트 파일 202 passed.
+- **전체 판정은 아직 확정하지 않는다.** 남은 항목: (1) 설치 스크립트(`setup_beta_tester.command`) end-to-end 및 깨끗한 환경 평가(D4 비격리 포함), (2) `AppTest`가 첫 화면만 렌더링해 chat·research 이동·Smith·`nae_pd` 활성 경로 미시험, (3) D1~D3·D5 스크립트 결함. 판정 FAIL의 직접 사유(F1)는 해소되었으므로 위 (1)(2) 결과에 따라 PARTIAL_PASS 이상으로 재산정한다.

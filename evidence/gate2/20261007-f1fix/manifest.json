@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-f1fix",
+  "generated_at": "2026-10-08T00:21:11Z",
+  "baseline_commit": "3a10bb3b46c0fb036632c64c8d2401b63c885f58",
+  "payload_count": 7,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-f1fix/30_package_integrity_after_fix.json",
+      "bytes": 972,
+      "sha256": "e8e361faead951887a3760272b4dad45bd97a294de177bb9ecf524a6ef577867"
+    },
+    {
+      "path": "evidence/gate2/20261007-f1fix/61_citation_ui_after_fix.json",
+      "bytes": 2570,
+      "sha256": "e57ff98b689f346b10e1b27885632c73ca7d92f7542e0c1ea2b0113f5bab1003"
+    },
+    {
+      "path": "evidence/gate2/20261007-f1fix/30_stdout.txt",
+      "bytes": 249,
+      "sha256": "6a776a645ac8c2ee2aef3d82adaf77ac7d85d498161f661fd14a2491659c2f9c"
+    },
+    {
+      "path": "evidence/gate2/20261007-f1fix/61_stdout.txt",
+      "bytes": 220,
+      "sha256": "f50626fd15d85923e1d54d1a0db980674d69f5b469ecdef910871feb95c165ef"
+    },
+    {
+      "path": "evidence/gate2/20261007-f1fix/40_apptest_after_fix.txt",
+      "bytes": 23,
+      "sha256": "08fe3e4c9e55dd40725e8a627e44d981849899d21f0b063f8879ebb63cc57ee1"
+    },
+    {
+      "path": "evidence/gate2/20261007-f1fix/f1_fix_findings.json",
+      "bytes": 1633,
+      "sha256": "c31be4fea18871c5acba24c11be78384527b73aaf3d1378ac9f6273cdc0b2d27"
+    },
+    {
+      "path": "evidence/gate2/20261007-f1fix/SUMMARY.md",
+      "bytes": 487,
+      "sha256": "97a3a2b61c7b9ad0ba2dc736893bc76f4b701a1ceab9f4262ec3c304e6364c57"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "phase_61": "PASS (packaged tree)",
+    "phase_30": "PASS (+import check)",
+    "phase_40": "import PASS (isolated partial)"
+  },
+  "related_run": "20261007-phase40",
+  "manifest_sha256": "2cd2f4c2f235c7c79b2afb4172478d000ae764b6dc026511c736df07cdb90602"
+}
