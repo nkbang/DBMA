@@ -145,3 +145,9 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - **F1이 실제 릴리스 tarball에서 확정되었다**: 1,652 members 중 `NAE/` 0개(export-ignore 적용), `ui/components/nae_public_section.py:25`·`ui/pages/chat.py:47`의 NAE 최상위 import 존재, 압축 해제본에서 `import ui.app` → `ModuleNotFoundError: No module named 'NAE'`. 부록 F의 "GitHub 실제 tarball 미확인" 한계는 이로써 해소된다.
 - 로컬 `git archive`(1,644 members)와의 차이는 `tests/nae/` 하위 8개 항목뿐이다. 이 Mac의 `core.ignorecase=true`로 `NAE/ export-ignore`가 `tests/nae/`까지 제외하기 때문이며(GitHub는 대소문자 구분), 앱 실행에는 영향이 없다. 단 이전 evidence의 members 수치는 로컬 기준이다.
 - 한계: 임포트 수준 확인이며 설치 end-to-end가 아니다. 태그가 이동하면 재확인이 필요하다(태그 커밋 `d16095e2`).
+
+## 부록 I — rc7 핫픽스 브랜치 푸시 (2026-10-07, HQ 승인)
+
+- `hotfix/rc7-nae-optional`(`d00950c9`, 베이스 `beta-v1.3.0-rc6`)를 `origin`에 푸시했다(신규 브랜치, force 아님). 원격 끝 = 로컬 끝 확인.
+- 부록 G의 "미푸시" 기록은 이 푸시로 갱신된다. 이 푸시는 **테스터에게 영향을 주지 않는다**: 설치기는 `dev/dbma-engine`의 `BETA_LATEST_TAG.txt`(여전히 `beta-v1.3.0-rc6`)가 가리키는 태그만 내려받는다. `rc6` 태그·`dev` 끝(`c10fd2c3`) 불변, `rc7` 태그 없음, PR 없음.
+- 남은 승인 항목: 태그 `beta-v1.3.0-rc7` 생성 → GitHub Release와 rc6 코퍼스 자산 재업로드 → `dev` 이식 PR → 마지막으로 `BETA_LATEST_TAG.txt` PR(병합 시 테스터 전원에게 영향).
