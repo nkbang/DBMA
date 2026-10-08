@@ -60,3 +60,16 @@ def test_no_toplevel_nae_import_in_ui():
                 if prev != "try:":
                     offenders.append(f"{path.relative_to(REPO_ROOT)}:{i + 1}")
     assert not offenders, offenders
+
+
+def test_nae_search_fails_closed_without_nae():
+    """nae_pd를 켠 채 NAE/가 없어도 검색이 예외 없이 빈 결과를 반환해야 한다 (§G fail-closed).
+
+    회귀: except 절의 NaePdModuleDisabledError가 import 실패로 바인딩되지 않아
+    UnboundLocalError가 나던 결함 (AppTest 확장 검증에서 발견).
+    """
+    proc = _run(
+        "from ui.components import nae_public_section as n\n"
+        "assert n._execute_nae_retrieval('로마서 3:23') == []\n"
+    )
+    assert proc.returncode == 0, proc.stderr[-800:]

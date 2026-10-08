@@ -172,6 +172,13 @@ def _execute_nae_retrieval(query: str) -> list[Any]:
             return bridge_query_paragraphs(query, top_k=10, limit_check=True) or []
         return bridge_query(query, top_k=10, limit_check=True) or []
 
+    except ImportError:
+        # NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다. import가 실패하면
+        # 아래 except의 NaePdModuleDisabledError 이름이 바인딩되지 않아 UnboundLocalError가
+        # 나므로, ImportError를 먼저 잡는다(§G fail-closed 유지).
+        st.warning("공개 자료 모듈이 이 설치본에 포함되어 있지 않습니다. (빈 결과)")
+        return []
+
     except NaePdModuleDisabledError:
         st.error("공개 자료 모듈이 비활성화되었습니다. config.yaml에서 nae_pd.enabled: true로 설정하세요.")
         return []
