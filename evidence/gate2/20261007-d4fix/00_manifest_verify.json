@@ -1,0 +1,56 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-d4fix",
+  "verified_at": "2026-10-08T00:44:12Z",
+  "manifest_path": "evidence/gate2/20261007-d4fix/manifest.json",
+  "verification_source": "git archive of committed tree 56ea52a90ff43c5cea695cea2ef6ae424dc236c5",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 5,
+  "verified_count": 5,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "8011d4a40ff0d28ce6c80c9dcb0e80aa5af4aee426536ef115c649fef256f9b3",
+  "canonical_manifest_sha256_actual": "8011d4a40ff0d28ce6c80c9dcb0e80aa5af4aee426536ef115c649fef256f9b3",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-d4fix/40_attempt1_x86clang.txt",
+      "expected_bytes": 3125,
+      "actual_bytes": 3125,
+      "expected_sha256": "2ed4fa798acdd0fa299da63795d12792f2010c514337cc6291131851c8e1acd3",
+      "actual_sha256": "2ed4fa798acdd0fa299da63795d12792f2010c514337cc6291131851c8e1acd3",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/40_real_isolated.txt",
+      "expected_bytes": 1061,
+      "actual_bytes": 1061,
+      "expected_sha256": "1fff42190bfb50c167476654299839e30d10961853b0cfab4487302f4138ce60",
+      "actual_sha256": "1fff42190bfb50c167476654299839e30d10961853b0cfab4487302f4138ce60",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/40_installed_apptest.txt",
+      "expected_bytes": 117,
+      "actual_bytes": 117,
+      "expected_sha256": "ad023a05c8b02e9d331a0c4cc97a91f9276b06634c6cb8b3cbc650c282a2fd07",
+      "actual_sha256": "ad023a05c8b02e9d331a0c4cc97a91f9276b06634c6cb8b3cbc650c282a2fd07",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/d4_findings.json",
+      "expected_bytes": 3284,
+      "actual_bytes": 3284,
+      "expected_sha256": "ec83d66f4a8fbc5b646e5b056ac0d404db9a59079fcdd9d32a66d70105e9ebb2",
+      "actual_sha256": "ec83d66f4a8fbc5b646e5b056ac0d404db9a59079fcdd9d32a66d70105e9ebb2",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/SUMMARY.md",
+      "expected_bytes": 582,
+      "actual_bytes": 582,
+      "expected_sha256": "935f4eb51947c18fb2915afaf9ed5539fdbb11d269d00ec13eac4c50c5e086d0",
+      "actual_sha256": "935f4eb51947c18fb2915afaf9ed5539fdbb11d269d00ec13eac4c50c5e086d0",
+      "match": true
+    }
+  ],
+  "pass": true
+}
