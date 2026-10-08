@@ -63,39 +63,34 @@ def _apply_library_styles() -> None:
             border-radius: 999px !important;
             border-color: {THEME.BORDER_MEDIUM} !important;
         }}
-        .lib-badge {{
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: {THEME.BRAND_SECONDARY}22;
-            color: {THEME.BRAND_SECONDARY};
-        }}
-        .lib-badge.selected {{
-            background: {THEME.BRAND_PRIMARY};
-            color: #ffffff;
-        }}
-        .lib-card {{
+        /* 문서 컬렉션: 한 줄 밀집 행 (Finder/Zotero 방식) — 행 클릭 = 선택 */
+        [class*="st-key-lib_row_"] button {{
+            justify-content: flex-start;
+            min-height: 0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border-color: {THEME.BORDER_LIGHT};
             background: {THEME.BG_SURFACE};
-            border: 1px solid {THEME.BORDER_LIGHT};
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 16px;
+            text-align: left;
         }}
-        .lib-card.selected {{
-            border-color: {THEME.BRAND_PRIMARY};
+        [class*="st-key-lib_row_"] button {{
+            border-radius: 6px !important;
         }}
-        .lib-card .lib-title {{
-            font-weight: 600;
-            color: {THEME.TEXT_PRIMARY};
-            margin: 8px 0 4px;
+        [class*="st-key-lib_row_"] button > div,
+        [class*="st-key-lib_row_"] button [data-testid="stMarkdownContainer"] {{
+            width: 100%;
+            justify-content: flex-start !important;
         }}
-        .lib-card .lib-meta {{
-            font-size: 12px;
-            color: {THEME.TEXT_TERTIARY};
+        [class*="st-key-lib_row_"] button p {{
+            font-size: 13px;
+            width: 100%;
+            text-align: left !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }}
+        [class*="st-key-lib_row_"] {{
+            margin-bottom: -10px;
         }}
         </style>
         """,
@@ -294,6 +289,16 @@ def _render_document_collection() -> None:
     else:
         st.caption(f"총 {shown_total}개의 문서")
 
+    # ── 보기 방식: 유형별 그룹(접이식) / 페이지 목록 ──────────────────
+    # 문서가 한 페이지(20건)를 넘으면 그룹 보기를 기본으로 켠다(Accordance 폴더형).
+    if "library_group_by_type" not in st.session_state:
+        st.session_state["library_group_by_type"] = shown_total > _DEFAULT_PAGE_SIZE
+    st.toggle("유형별로 묶어 보기", key="library_group_by_type")
+
+    if st.session_state["library_group_by_type"]:
+        _render_grouped_documents(documents)
+        return
+
     # Reset page back to 1 when filters change (new results may have fewer pages)
     if "library_current_page" not in st.session_state:
         st.session_state["library_current_page"] = 1
@@ -301,10 +306,6 @@ def _render_document_collection() -> None:
     # ── Pagination ────────────────────────────────────────────
     page_size = _DEFAULT_PAGE_SIZE
     total_pages = max(1, (shown_total + page_size - 1) // page_size)
-
-    # Read current page from session state (default 1)
-    if "library_current_page" not in st.session_state:
-        st.session_state["library_current_page"] = 1
     current_page = st.session_state["library_current_page"]
 
     # Clamp page to valid range
@@ -1052,47 +1053,54 @@ def _clear_document_selection():
     # on_click callback: Streamlit reruns automatically on return (no st.rerun()).
 
 
-def _render_document_rows(documents: list[dict]) -> None:
-    """Render each document as a selectable row with a selection button.
-    
-    When the selection button is clicked, the on_click callback (_select_document)
-    updates StateStore + session state, then triggers st.rerun() for full-page sync.
-    
-    Fix (DEFECT-PT-HUMAN-010 Patch 3): Replaced Patch 2's flawed pending-selection approach
-    with explicit Streamlit callback mechanism. The `on_click` callback fires after the render
-    cycle completes, then st.rerun() forces a full page redraw where all visual elements
-    (gray highlight, button state, detail panel) are synchronized on the same pass.
-    """
-    store = StateStore()
+# Fixed height (px) of the scrollable document list — keeps the page short
+# regardless of how many rows the current page holds.
+_LIST_HEIGHT_PX = 420
 
-    for i, doc in enumerate(documents):
-        # Build a unique key for this document's selection button
-        btn_key = f"doc_select_{i}_{hash(doc.get('path', ''))}"
-        
-        cols = st.columns([5, 1])
-        with cols[0]:
-            # Compute is_selected from session state _library_selected_path (set by callback)
-            selected_path = st.session_state.get("_library_selected_path")
+# Rows shown per type group before "더 보기".
+_GROUP_PREVIEW = 10
+
+
+def _format_row_label(doc: dict) -> str:
+    """One-line row label: ``PDF · title · size · date``."""
+    return " · ".join(
+        str(doc.get(k, "?")) for k in ("type", "title", "size", "modified")
+    )
+
+
+def _group_by_type(documents: list[dict]) -> list[tuple[str, list[dict]]]:
+    """Group documents by file type; biggest group first, ties by name.
+
+    Order inside each group is preserved (it already follows the sort option).
+    """
+    groups: dict[str, list[dict]] = {}
+    for doc in documents:
+        groups.setdefault(str(doc.get("type", "?")), []).append(doc)
+    return sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+
+
+def _render_document_rows(
+    documents: list[dict], key_prefix: str = "lib_row_", boxed: bool = True
+) -> None:
+    """Render documents as compact one-line rows.
+
+    The whole row is the selection button (no separate "선택" column), so the
+    list stays short: ~34px per row instead of a ~120px card. Selection still
+    goes through the on_click callback ``_select_document`` (DEFECT-PT-HUMAN-010
+    Patch 3), which syncs StateStore + session state before the rerun.
+
+    ``boxed`` wraps the rows in a fixed-height scroll box; grouped mode passes
+    False because the outer container already scrolls.
+    """
+    selected_path = st.session_state.get("_library_selected_path")
+
+    def _rows() -> None:
+        for i, doc in enumerate(documents):
             is_selected = selected_path == doc.get("path")
-            card_class = "lib-card selected" if is_selected else "lib-card"
-            badge_class = "lib-badge selected" if is_selected else "lib-badge"
-            st.markdown(
-                f"""
-                <div class="{card_class}">
-                    <span class="{badge_class}">{doc.get('type', '?')}</span>
-                    <div class="lib-title">{doc.get('title', 'Unknown')}</div>
-                    <div class="lib-meta">{doc.get('size', '?')} · {doc.get('modified', '?')}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-        
-        with cols[1]:
-            sel_label = "선택됨" if is_selected else "선택"
             st.button(
-                sel_label,
+                _format_row_label(doc),
                 icon=":material/check:" if is_selected else None,
-                key=btn_key,
+                key=f"{key_prefix}{i}_{hash(doc.get('path', ''))}",
                 type="primary" if is_selected else "secondary",
                 use_container_width=True,
                 on_click=_select_document,
@@ -1104,6 +1112,42 @@ def _render_document_rows(documents: list[dict]) -> None:
                     doc.get("modified", "?"),
                 ),
             )
+
+    if boxed:
+        with st.container(height=_LIST_HEIGHT_PX, border=True):
+            _rows()
+    else:
+        _rows()
+
+
+def _render_grouped_documents(documents: list[dict]) -> None:
+    """Collapsible per-type groups (VS Code / Accordance folder style).
+
+    Each group shows its first ``_GROUP_PREVIEW`` rows with a "더 보기" toggle.
+    The first group and the group holding the selected document start open.
+    """
+    selected_path = st.session_state.get("_library_selected_path")
+
+    with st.container(height=_LIST_HEIGHT_PX, border=True):
+        for gi, (doc_type, docs) in enumerate(_group_by_type(documents)):
+            has_selected = any(d.get("path") == selected_path for d in docs)
+            with st.expander(
+                f"{doc_type} ({len(docs)})", expanded=(gi == 0 or has_selected)
+            ):
+                expand_key = f"lib_group_more_{doc_type}"
+                show_all = st.session_state.get(expand_key, False) or has_selected
+                visible = docs if show_all else docs[:_GROUP_PREVIEW]
+                _render_document_rows(
+                    visible, key_prefix=f"lib_row_{doc_type}_", boxed=False
+                )
+                if len(docs) > _GROUP_PREVIEW and not show_all:
+                    st.button(
+                        f"더 보기 ({len(docs) - _GROUP_PREVIEW})",
+                        key=f"lib_more_btn_{doc_type}",
+                        type="tertiary",
+                        on_click=st.session_state.__setitem__,
+                        args=(expand_key, True),
+                    )
 
 
 def _get_documents_list() -> list[dict]:

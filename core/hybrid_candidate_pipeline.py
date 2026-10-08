@@ -30,7 +30,7 @@ from dataclasses import asdict
 from core.candidate_generator import CandidateGenerator, CandidateRef, open_or_build_index
 from core.bible_index import BibleIndex
 from core.query_planner import QueryPlan, classify
-from core.query_translation import contains_hangul, translate_to_english
+from core.query_translation_llm import contains_hangul, translate_to_english
 from core.rrf import reciprocal_rank_fusion
 from core.search_cache import SearchResultCache, make_cache_key
 from core.retrieval import (
@@ -44,7 +44,29 @@ from core.retrieval import (
     ResponsePackage,
     compute_theological_score,
     compute_passage_match_score,
+    compute_content_quality_factor,
 )
+from core.index_page_detector import INDEX_PAGE_QUALITY_SCORE, is_index_page
+
+
+_INDEX_PAGE_OVERFETCH = 3
+
+
+def _quality_factor(tsu: dict[str, Any]) -> float:
+    """[2026-09-26] Same 0.7~1.0 multiplicative penalty RetrievalEngine
+    applies (compute_content_quality_factor) — HybridRetriever previously
+    ignored content_quality entirely. Back-of-book index pages, which the
+    stored noise classification often labels NORMAL_CONTENT, are detected
+    at query time and treated as DOWNWEIGHT (core/index_page_detector.py)."""
+    factor = (
+        compute_content_quality_factor(tsu)
+        if isinstance(tsu.get("content_quality"), dict) else 1.0
+    )
+    if is_index_page(tsu.get("content", "")):
+        factor = min(factor, compute_content_quality_factor(
+            {"content_quality": {"quality_score": INDEX_PAGE_QUALITY_SCORE}}
+        ))
+    return factor
 
 
 def is_enabled() -> bool:
@@ -58,9 +80,10 @@ def is_enabled() -> bool:
     return os.environ.get("USE_INVERTED_INDEX", "true").strip().lower() == "true"
 
 
-# 코퍼스의 한국어 비중이 이 값 미만이면 한글 질의를 Stage-1 전에 번역한다.
-# 배포 기준선 실측값은 0.00%(119,595건 전량 영문)이고, 한국어 자료가 유의미하게
-# 쌓이면(20% 이상) 번역 전처리는 자동으로 멈춘다.
+# 코퍼스의 한국어 비중이 이 값 미만이면, 사전(core/query_translation.py)이 영어 번역어를
+# 못 만든 한글 질의를 Stage-1 전에 LLM으로 번역한다. 배포 기준선 실측값은 0.00%
+# (119,595건 전량 영문)이고, 한국어 자료가 유의미하게 쌓이면(20% 이상) 이 번역은
+# 자동으로 멈춘다.
 _KOREAN_CORPUS_THRESHOLD = 0.20
 
 
@@ -93,8 +116,7 @@ class HybridRetriever:
         if cached is not None:
             return cached
         if self.tsu_by_id is None:
-            # Lazy loading 전: 코퍼스 정보를 알 수 없음
-            # 기본값 0.0 (영문 코퍼스 가정) → 번역이 항상 발동
+            # Lazy loading 전: 코퍼스 정보를 알 수 없음 — 영문 코퍼스 가정
             self._ko_ratio = 0.0
             return 0.0
         total = len(self.tsu_by_id) or 1
@@ -103,22 +125,19 @@ class HybridRetriever:
         self._ko_ratio = cached
         return cached
 
-    def _should_translate_upfront(self, query_text: str) -> bool:
-        """한국어 질의를 Stage-1 **전에** 번역할지.
+    def _should_translate_upfront(self, parsed_query: ParsedQuery) -> bool:
+        """한글 질의를 Stage-1 **전에** LLM으로 번역할지.
 
-        [2026-09-26 설계 정정] 처음에는 "Stage-1이 0건일 때만 번역"으로 좁혔다.
-        그 설계는 실패했다 — 한국어 토큰이 영문 코퍼스의 **OCR 잡음**에는
-        걸리기 때문에 0건이 되지 않고, 따라서 번역이 영원히 발동하지 않는다.
-        실측(P0-5 유보 17건): 구절 참조가 있는 5건이 번역 없이 후보를 얻었고
-        그 내용은 전부 잡음이었다(OCR 쓰레기·성구 색인 페이지·거울상 OCR).
-
-        그래서 발동 기준을 "결과가 비었는가"가 아니라 **"질의 언어와 코퍼스
-        언어가 어긋났는가"**로 바꾼다. 코퍼스에 한국어가 거의 없으면(현 배포
-        기준선은 정확히 0.00%) 한글 질의는 어휘 일치가 성립할 수 없으므로
-        번역이 필수 전처리다. 코퍼스에 한국어 자료가 쌓이면 이 조건이 저절로
-        거짓이 되어 번역이 멈춘다.
+        기본 번역은 core/query_translation.py의 사전(ParsedQuery.translated_terms,
+        LLM 호출 없음)이다. 사전이 영어 번역어를 **하나도** 못 만든 한글 질의만
+        여기서 LLM 번역을 받는다 — 그런 질의는 한국어 토큰이 영문 코퍼스의 **OCR
+        잡음**에 걸려 0건이 되지 않으므로 "0건일 때만 번역"하는 폴백으로는 영영
+        발동하지 않는다(실측: P0-5 유보 17건, 예: "우울증 목회 돌봄").
+        사전이 번역어를 만든 질의는 LLM을 부르지 않아 빠른 경로가 유지된다.
         """
-        if not contains_hangul(query_text):
+        if not contains_hangul(parsed_query.original_query):
+            return False
+        if parsed_query.translated_terms:
             return False
         return self._corpus_korean_ratio() < _KOREAN_CORPUS_THRESHOLD
 
@@ -197,7 +216,8 @@ class HybridRetriever:
             # 없을 때만 내려가므로 0건보다 나빠질 수 없다.
             if not candidates:
                 if telemetry_out is not None:
-                    telemetry_out["route"] = "bible->hybrid"
+                    telemetry_out["route"] = "hybrid"
+                    telemetry_out["route_fallback_from"] = "bible"
                 candidates = self.candidate_generator.search(
                     parsed_query, k=candidate_k, source_files=file_scope, with_snippets=False,
                     book_ids=None if self._corpus_has_book_ids() else [],
@@ -218,6 +238,18 @@ class HybridRetriever:
                 book_ids=None if self._corpus_has_book_ids() else [],
             )
         return candidates
+
+    def _demote_index_pages(self, candidates: list[CandidateRef], candidate_k: int) -> list[CandidateRef]:
+        """Keep Stage-1 order but put back-of-book index pages after every
+        other candidate, then cap at candidate_k. Index pages are only
+        backfill — never dropped outright when nothing else matched (same
+        "classifier, not a deleter" principle as content_quality)."""
+        prose: list[CandidateRef] = []
+        index_pages: list[CandidateRef] = []
+        for cand in candidates:
+            content = self.tsu_by_id.get(cand.tsu_id, {}).get("content", "")
+            (index_pages if is_index_page(content) else prose).append(cand)
+        return (prose + index_pages)[:candidate_k]
 
     def retrieve(
         self,
@@ -253,39 +285,40 @@ class HybridRetriever:
             raise RuntimeError(
                 "HybridRetriever.tsu_by_id is None — call HybridQueryProcessor._ensure_retriever() first"
             )
-        # [2026-09-26] 언어 불일치 전처리 — 결과가 빈 뒤가 아니라 **앞에서**
-        # 번역한다(위 _should_translate_upfront 주석의 실패 근거 참고).
-        translation_used = False
-        force_route = None  # [P1] 번역 여부와 관계없이 항상 정의됨
-        if self._should_translate_upfront(parsed_query.original_query):
+        # [2026-09-26] Over-fetch so back-of-book index pages can be pushed
+        # behind real prose before the candidate_k cap (see
+        # _demote_index_pages); Stage-2 scoring still sees candidate_k only.
+        fetch_k = candidate_k * _INDEX_PAGE_OVERFETCH
+
+        # 사전이 번역어를 못 만든 한글 질의 → Stage-1 전에 LLM 번역(위 메서드 참고).
+        force_route = None
+        if self._should_translate_upfront(parsed_query):
             translated = translate_to_english(parsed_query.original_query)
             if translated:
                 parsed_query = self._query_parser().parse(translated)
                 # 번역된 질의의 route가 metadata면 hybrid로 강제 (content 검색 필요)
-                plan_check = classify(translated, parsed_query)
-                if plan_check.route == "metadata":
+                if classify(translated, parsed_query).route == "metadata":
                     force_route = "hybrid"
                 if telemetry_out is not None:
                     telemetry_out["translation_used"] = True
                     telemetry_out["translated_query"] = translated
-                translation_used = True
 
         candidates = self._generate_candidates(
-            parsed_query, candidate_k, file_scope, telemetry_out, force_route,
+            parsed_query, fetch_k, file_scope, telemetry_out, force_route,
         )
 
-        # [2026-09-26] 한국어 질의 ↔ 영문 코퍼스 불일치 구제.
-        # Stage-1이 어휘 일치이므로 한국어 토큰은 영문 본문과 교집합이 0이고,
-        # 여기서 폴백이 없으면 그대로 0건으로 끝난다(실측: P0-5 유보 17건 중
-        # 16건이 이 경로). 이미 후보를 찾은 질의는 건드리지 않으므로 빠른 경로의
-        # 지연이 늘지 않는다 — 막다른 길에서만 번역을 시도한다.
-        # 번역 실패 시 원래의 0건이 유지될 뿐이라 순손실이 없다.
+        # [2026-09-26] 한국어 질의 ↔ 영문 코퍼스 불일치 구제 — 0건 폴백.
+        # 기본 경로는 core/query_translation.py의 사전 번역(ParsedQuery.
+        # translated_terms/phrases, LLM 호출 없음), 사전이 비는 질의는 위의 사전 LLM
+        # 번역이다. 그래도 Stage-1이 0건이면 LLM 번역으로 한 번 더 시도한다.
+        # 이미 후보를 찾은 질의는 건드리지 않으므로 빠른 경로의 지연이 늘지
+        # 않고, 번역 실패 시 원래의 0건이 유지될 뿐이라 순손실이 없다.
         if not candidates and contains_hangul(parsed_query.original_query):
             translated = translate_to_english(parsed_query.original_query)
             if translated:
                 translated_pq = self._query_parser().parse(translated)
                 retried = self._generate_candidates(
-                    translated_pq, candidate_k, file_scope, telemetry_out
+                    translated_pq, fetch_k, file_scope, telemetry_out
                 )
                 if retried:
                     # Stage-2(신학·구절 점수)도 실제로 후보를 찾아낸 질의를
@@ -296,6 +329,8 @@ class HybridRetriever:
                     if telemetry_out is not None:
                         telemetry_out["translation_used"] = True
                         telemetry_out["translated_query"] = translated
+
+        candidates = self._demote_index_pages(candidates, candidate_k)
 
         if telemetry_out is not None:
             telemetry_out["candidate_count"] = len(candidates)
@@ -340,7 +375,7 @@ class HybridRetriever:
                 bm25_score=bm25_score,
                 theological_score=theological_score,
                 passage_score=passage_score,
-                final_score=rrf_scores.get(tsu_id, 0.0),
+                final_score=rrf_scores.get(tsu_id, 0.0) * _quality_factor(tsu),
             ))
 
         ranked.sort(key=lambda r: (-r.final_score, r.tsu_id))

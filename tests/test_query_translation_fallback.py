@@ -19,7 +19,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-import core.query_translation as qt  # noqa: E402
+import core.query_translation_llm as qt  # noqa: E402
 from core.candidate_generator import CandidateRef  # noqa: E402
 from core.hybrid_candidate_pipeline import HybridRetriever  # noqa: E402
 from core.retrieval import QueryParser  # noqa: E402
@@ -143,7 +143,7 @@ def test_hangul_query_is_translated_before_stage1(monkeypatch):
     monkeypatch.setattr(hcp, "translate_to_english", lambda q: "Romans no condemnation")
 
     r, _ = _retriever(language="en")
-    pq = QueryParser().parse("정죄 없음에 대해 무엇을 말합니까?")
+    pq = QueryParser().parse("우울증 목회 돌봄에 대해 무엇을 말합니까?")  # 사전이 번역어를 못 만드는 질의
     telemetry: dict = {}
 
     out = r.retrieve(pq, k_output=5, telemetry_out=telemetry)
@@ -165,7 +165,7 @@ def test_noise_match_does_not_suppress_translation(monkeypatch):
     )
 
     r, _ = _retriever(language="en")
-    r.retrieve(QueryParser().parse("정죄 없음"), k_output=5, telemetry_out={})
+    r.retrieve(QueryParser().parse("우울증 목회 돌봄"), k_output=5, telemetry_out={})
 
     assert calls, "잡음 후보가 있다는 이유로 번역을 건너뛰면 안 된다"
 
@@ -224,3 +224,19 @@ def test_book_filter_skipped_when_corpus_has_no_book_ids(monkeypatch):
     r.retrieve(QueryParser().parse("로마서 8장 정죄 없음"), k_output=5, telemetry_out={})
 
     assert captured["book_ids"] == [], "book_id가 없는 코퍼스에서 필터를 얹으면 전건 탈락한다"
+
+
+def test_dictionary_covered_query_skips_upfront_llm(monkeypatch):
+    """계약 3 — 사전(core/query_translation.py)이 영어 번역어를 만든 질의는 LLM을
+    Stage-1 전에 부르지 않는다(지연 0 · 결정적 경로 유지)."""
+    import core.hybrid_candidate_pipeline as hcp
+    calls = []
+    monkeypatch.setattr(hcp, "translate_to_english", lambda q: (calls.append(q), "x")[1])
+
+    pq = QueryParser().parse("칭의와 성화의 관계")
+    assert pq.translated_terms  # 전제: 사전이 번역어를 만들었다
+
+    r, _ = _retriever(language="en")
+    r.retrieve(pq, k_output=5, telemetry_out={})
+
+    assert calls == [], "사전이 덮는 질의에 LLM 번역을 부르면 안 된다"

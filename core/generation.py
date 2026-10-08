@@ -46,6 +46,7 @@ from core.config import (
     DEFAULT_SERMON_NUM_PREDICT,
     DEFAULT_TEMPERATURE,
 )
+from core.citation_verifier import CitationCheckResult, verify_citations
 from core.claim_guard import ClaimGuard, ClaimGuardResult, RiskLevel, wrap_ranked_candidates
 from core.sermon.doctrine_vocabulary import DENOMINATION_PROFILE
 
@@ -410,6 +411,24 @@ def _run_claim_guard(
         )
 
 
+def _run_citation_check(
+    answer: str,
+    candidates: list[RankedCandidate],
+    citations: list[Citation] | None = None,
+) -> CitationCheckResult | None:
+    """답변의 `(출처: …)` 인용을 모델이 받은 근거와 대조한다(EUAT-001 Issue 4).
+
+    경고 전용이다 — 답변을 바꾸거나 막지 않는다. 검사 자체가 실패하면 None을
+    반환하고 답변은 그대로 쓴다(ClaimGuard와 같은 fault isolation)."""
+    try:
+        return verify_citations(answer, candidates, citations)
+    except Exception as e:  # noqa: BLE001
+        logger.warning(
+            "[GenerationService._run_citation_check] 인용 검증 실패 (답변은 계속 사용): %s", e
+        )
+        return None
+
+
 class GenerationStream:
     """Iterable of answer text chunks from a streaming Ollama call.
 
@@ -504,6 +523,9 @@ class GenerationStream:
             error=self._error,
             citations=self._response.citations,
             claim_guard_result=claim_guard_result,
+            citation_check=_run_citation_check(
+                answer, self._response.top_k_results, self._response.citations
+            ),
         )
 
 
@@ -518,6 +540,8 @@ class GenerationResult:
     error: Optional[str] = None
     citations: list[Citation] = field(default_factory=list)
     claim_guard_result: ClaimGuardResult | None = None
+    # 답변 속 "(출처: …)" 인용과 모델이 받은 근거의 대조 결과(경고 전용, None이면 미실행/실패)
+    citation_check: CitationCheckResult | None = None
 
 
 class GenerationService:
@@ -649,6 +673,9 @@ class GenerationService:
             error=error,
             citations=response.citations,
             claim_guard_result=claim_guard_result,
+            citation_check=_run_citation_check(
+                answer, response.top_k_results, response.citations
+            ),
         )
 
 

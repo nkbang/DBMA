@@ -16,6 +16,7 @@ query_text → embedding → NAE Qdrant search → Citation 리스트의
 from __future__ import annotations
 
 import logging
+import threading
 import time
 from typing import Any
 
@@ -32,6 +33,31 @@ _WARN_THRESHOLD_MS = 1_500  # warn threshold (milliseconds)
 
 class NaePdModuleDisabledError(RuntimeError):
     pass
+
+
+# ── fail-closed 사유 노출 (EUAT-001 Issue 2 / FU-005) ───────────────────
+# bridge_query_paragraphs()는 ADR-024 §G에 따라 Qdrant/Ollama 장애와 하드
+# 타임아웃을 모두 삼키고 빈 리스트를 반환한다. 그러면 호출자(UI)가 "자료가
+# 없어서 0건"과 "검색이 실패해서 0건"을 구분하지 못한다(bge-m3 콜드 로드로
+# 3초를 넘기면 사용자에게는 "결과 없음"으로 보였다). 반환값과 fail-closed 동작은
+# 그대로 두고, 직전 호출의 실패 사유만 스레드 로컬로 기록해 읽을 수 있게 한다.
+_failure_state = threading.local()
+
+
+def _set_failure(exc: BaseException | None) -> None:
+    if exc is None:
+        _failure_state.kind = None
+    elif isinstance(exc, TimeoutError) or "timeout" in type(exc).__name__.lower():
+        _failure_state.kind = "timeout"
+    else:
+        _failure_state.kind = "error"
+
+
+def last_retrieval_failure() -> str | None:
+    """직전 `bridge_query_paragraphs()` 호출이 fail-closed로 빈 결과를 낸
+    사유를 반환한다: "timeout" / "error" / None(정상 호출, 실패 아님).
+    같은 스레드에서 호출 직후에 읽어야 한다."""
+    return getattr(_failure_state, "kind", None)
 
 
 def _check_deadline(deadline: float) -> None:
@@ -390,6 +416,8 @@ def bridge_query_paragraphs(
     """
     from NAE.answer_context import paragraph_evidence_enabled
 
+    _set_failure(None)  # 이전 호출의 실패 사유가 남지 않도록 시작 시 초기화
+
     if limit_check and not module_registry.is_enabled("nae_pd"):
         raise NaePdModuleDisabledError(
             "nae_pd module is disabled — enable via `scripts/dbma_module.py enable nae_pd` first"
@@ -443,6 +471,7 @@ def bridge_query_paragraphs(
     except NaePdModuleDisabledError:
         raise
 
-    except Exception:  # Qdrant/Ollama 장애 — §G fail-closed
+    except Exception as exc:  # Qdrant/Ollama 장애 — §G fail-closed
         logger.exception("[bridge_query_paragraphs] NAE retrieval failed (fail-closed)")
+        _set_failure(exc)
         return []

@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 from ui.pages._base import BasePage
 from ui.theme.colors import THEME
 from core.retrieval import QueryProcessor
-from core.query_translation import corpus_language_notice
+from core.query_translation_llm import corpus_language_notice
 from core.generation import SermonDraftService, SermonOutline, SERMON_FORMATS
 from core.sermon.bible_books import BIBLE_BOOKS
 from core.sermon.doctrine_filter import check as doctrine_check

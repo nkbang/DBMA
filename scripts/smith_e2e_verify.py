@@ -81,7 +81,7 @@ def phase2_smith_retrieval():
     report.add("Phase 2: Smith Retrieval (direct)", "PASS" if all_pass else "FAIL", details)
 
 def phase3_e2e_pipeline():
-    from ui.pages.chat import generate_answer, _get_processor, _inject_smith_context
+    from ui.pages.chat import generate_answer, _get_processor, _inject_reference_context
     test_queries = [
         "Who was Aaron in the Bible?",
         "What does covenant mean in the Bible?",
@@ -97,7 +97,7 @@ def phase3_e2e_pipeline():
         has_answer = bool(answer and len(answer.strip()) > 10)
         processor = _get_processor()
         response = processor.process(query, query_id="e2e-test", k=5)
-        smith_results = _inject_smith_context(response, query)
+        smith_results = _inject_reference_context(response, query)
         smith_injected = len(smith_results) > 0
         context_block_len = len(response.llm_context_block or "")
         status = "PASS" if (has_answer and tsu_count > 0) else "FAIL"
@@ -115,7 +115,7 @@ def phase3_e2e_pipeline():
     report.add("Phase 3: E2E Pipeline (generate_answer)", "PASS" if all_pass else "FAIL", details)
 
 def phase4_context_injection():
-    from ui.pages.chat import _get_processor, _inject_smith_context
+    from ui.pages.chat import _get_processor, _inject_reference_context
     from core.generation import GenerationService
     test_queries = [
         "Who was Aaron in the Bible?",
@@ -126,7 +126,7 @@ def phase4_context_injection():
     for query in test_queries:
         processor = _get_processor()
         response = processor.process(query, query_id="ctx-test", k=5)
-        smith_results = _inject_smith_context(response, query)
+        smith_results = _inject_reference_context(response, query)
         generator = GenerationService()
         prompt, context_used = generator._build_prompt(response)
         has_smith_in_prompt = "Smith Bible Dictionary" in prompt if smith_results else True
@@ -144,7 +144,7 @@ def phase4_context_injection():
     report.add("Phase 4: Context Injection Verification", "PASS" if all_pass else "FAIL", details)
 
 def phase5_provenance():
-    from ui.pages.chat import _get_processor, _inject_smith_context
+    from ui.pages.chat import _get_processor, _inject_reference_context
     test_queries = [
         "Who was Aaron in the Bible?",
         "What does covenant mean in the Bible?",
@@ -154,7 +154,7 @@ def phase5_provenance():
     for query in test_queries:
         processor = _get_processor()
         response = processor.process(query, query_id="prov-test", k=5)
-        smith_results = _inject_smith_context(response, query)
+        smith_results = _inject_reference_context(response, query)
         tsu_citations = len(response.citations or [])
         smith_provenance = len(smith_results)
         status = "PASS" if (tsu_citations > 0) else "FAIL"
@@ -168,16 +168,16 @@ def phase5_provenance():
     report.add("Phase 5: Provenance Check", "PASS" if all_pass else "FAIL", details)
 
 def phase6_fault_isolation():
-    from ui.pages.chat import _get_processor, _inject_smith_context
+    from ui.pages.chat import _get_processor, _inject_reference_context
     from NAE import reference_retrieval_adapter
     original_search = reference_retrieval_adapter.search_reference
-    def failing_search(query, top_k=3):
+    def failing_search(query, top_k=3, collection_names=None):
         raise ConnectionError("Simulated Smith connection failure")
     reference_retrieval_adapter.search_reference = failing_search
     try:
         processor = _get_processor()
         response = processor.process("Who was Aaron in the Bible?", query_id="fault-test", k=5)
-        smith_results = _inject_smith_context(response, "Who was Aaron in the Bible?")
+        smith_results = _inject_reference_context(response, "Who was Aaron in the Bible?")
         tsu_count = len(response.top_k_results or [])
         tsu_citations = len(response.citations or [])
         smith_injected = len(smith_results)

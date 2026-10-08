@@ -58,12 +58,65 @@ HISTORICAL_WITNESS_DISCLOSURE = (
 )
 
 
-def get_disclosure(authority_class: str | None) -> str | None:
-    """Return the fixed disclosure text for a citation's authority_class, or
-    None when no disclosure applies (e.g. verified/curated sources)."""
-    if authority_class == "historical_witness":
+def _is_fuller_source(
+    source_id: str | None, identifier: str | None, author: str | None
+) -> bool:
+    """Andrew Fuller의 `historical_witness` 자료인지 결정론적으로 판별한다.
+
+    Amendment A §6의 고정 고지문(`HISTORICAL_WITNESS_DISCLOSURE`)은 Fuller
+    OCR 원본의 성격(페이지 번호 없음, 신뢰도 미교정, 성구 추출 누락)을 서술한다.
+    다른 소스(예: 페이지 번호가 있는 Dagg/Hiscox)에 그대로 붙이면 사실과 다른
+    저자·성격을 표시하게 된다(EUAT-001 Issue 5). 성(姓)만으로 판별하지 않는다 —
+    동성이인(예: Thomas Fuller)을 Fuller 고지로 오분류하지 않기 위해 소스 ID
+    접두사 / 코퍼스 identifier 접두사 / 저자 전체 이름만 본다.
+    """
+    if (source_id or "").upper().startswith("BAP-MISS-FULLER"):
+        return True
+    if (identifier or "").startswith("Fuller_Complete_Works"):
+        return True
+    return (author or "").strip().lower() == "andrew fuller"
+
+
+def _generic_historical_witness_disclosure(author: str | None, work: str | None) -> str:
+    """Fuller 이외의 `historical_witness` 소스용 고지 — 메타데이터에서만 만든다.
+
+    페이지 번호·신뢰도·성구 추출 상태 같은 소스별 성격은 Amendment A가 Fuller에
+    대해서만 정의했으므로, 여기서는 그런 주장을 하지 않는다(사실이 아닐 수
+    있다). 저자·문헌과 권한 등급 라벨만 결정론적으로 표시한다.
+    """
+    who = f"{author}, *{work}*" if author and work else (author or work or "이 자료")
+    who_en = f"{author}, *{work}*" if author and work else (author or work or "this source")
+    return (
+        f"**출처 고지 (KR)** — 이 근거는 {who}에서 가져온 원문 문단입니다. "
+        "권한 등급: 역사적 증언(historical_witness).\n\n"
+        f"**Provenance Notice (EN)** — This evidence is a passage from {who_en}. "
+        "Authority class: historical witness."
+    )
+
+
+def get_disclosure(
+    authority_class: str | None,
+    *,
+    source_id: str | None = None,
+    identifier: str | None = None,
+    author: str | None = None,
+    work: str | None = None,
+) -> str | None:
+    """Return the disclosure text for a citation's authority_class, or None
+    when no disclosure applies (e.g. verified/curated sources).
+
+    소스 정보(`source_id`/`identifier`/`author`/`work`)를 주지 않으면 종전과
+    동일하게 Fuller 고정 고지문을 반환한다(하위 호환). 소스 정보를 주면
+    Fuller에게만 Fuller 고정 고지문을, 그 외 `historical_witness` 소스에는
+    저자·문헌을 그대로 밝히는 일반 고지문을 반환한다.
+    """
+    if authority_class != "historical_witness":
+        return None
+    if source_id is None and identifier is None and author is None and work is None:
         return HISTORICAL_WITNESS_DISCLOSURE
-    return None
+    if _is_fuller_source(source_id, identifier, author):
+        return HISTORICAL_WITNESS_DISCLOSURE
+    return _generic_historical_witness_disclosure(author, work)
 
 
 # ─────────────────────────────────────────────────────────────────────────

@@ -22,6 +22,27 @@ from typing import Any
 
 import streamlit as st
 
+from core.citation_verifier import issue_messages
+from ui.components.display_quality import claim_guard_message
+
+# NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다. chat.py/research.py가
+# 이 모듈을 import하므로, NAE가 없어도 import 자체는 성공해야 한다 — 없으면 None으로
+# 두고, 해당 경로(nae_pd enabled일 때만 도달)에서 fail-closed로 처리한다.
+try:
+    from NAE.citation_disclosure import get_disclosure
+    from NAE.public_answer import (
+        NO_EVIDENCE_TEXT,
+        build_public_evidence_package,
+        indexed_sources,
+        public_disclosures,
+        scope_note,
+        select_evidence,
+    )
+except ImportError:  # pragma: no cover - 배포본(NAE/ 제외)
+    get_disclosure = None
+    NO_EVIDENCE_TEXT = ""
+    build_public_evidence_package = indexed_sources = None
+    public_disclosures = scope_note = select_evidence = None
 
 
 def render_nae_public_section(key_prefix: str) -> None:
@@ -47,6 +68,8 @@ def render_nae_public_section(key_prefix: str) -> None:
     query_key = f"{key_prefix}_nae_research_query"
     results_key = f"{key_prefix}_nae_research_results"
     status_key = f"{key_prefix}_nae_search_status"
+    failure_key = f"{key_prefix}_nae_search_failure"
+    answer_key = f"{key_prefix}_nae_public_answer"
 
     nae_query = st.text_input(
         "공개 자료 검색어",
@@ -62,10 +85,11 @@ def render_nae_public_section(key_prefix: str) -> None:
     with col1:
         if st.button("검색", type="primary", icon=":material/search:", use_container_width=True, key=f"{key_prefix}_nae_search_btn"):
             nae_results = _execute_nae_retrieval(nae_query)
+            failure = None if nae_results else _current_retrieval_failure()
+            st.session_state.pop(answer_key, None)  # 새 검색이면 이전 근거의 답변은 폐기
             st.session_state[results_key] = nae_results
-            st.session_state[status_key] = (
-                f"결과 {len(nae_results)}건" if nae_results else "결과 없음"
-            )
+            st.session_state[failure_key] = failure
+            st.session_state[status_key] = retrieval_status_text(len(nae_results), failure)
 
     nae_results = st.session_state.get(results_key)
     nae_status = st.session_state.get(status_key, "")
@@ -77,14 +101,135 @@ def render_nae_public_section(key_prefix: str) -> None:
         st.caption(nae_status)
 
     if not nae_results:
-        st.info("공개 자료에서 일치하는 결과가 없습니다.")
+        kind, message = empty_result_message(st.session_state.get(failure_key))
+        (st.warning if kind == "warning" else st.info)(message)
         return
+
+    _render_public_answer(key_prefix, nae_query, nae_results, answer_key)
 
     for i, item in enumerate(nae_results, 1):
         if isinstance(item, dict):
             _render_nae_paragraph_card(i, item)
         else:
             _render_nae_legacy_card(i, item)
+
+
+def _gen_overrides() -> dict:
+    """사이드바 설정(모델·온도)만 생성 서비스에 넘긴다 — chat.py와 같은 키를 읽는다
+    (ui.pages.chat이 이 모듈을 import하므로 반대 방향 import는 순환)."""
+    overrides: dict = {}
+    gen_model = st.session_state.get("settings_gen_model")
+    if gen_model:
+        overrides["gen_model"] = gen_model
+    temperature = st.session_state.get("settings_temperature")
+    if temperature is not None:
+        overrides["temperature"] = float(temperature)
+    return overrides
+
+
+def _render_public_answer(key_prefix: str, question: str, results: list, answer_key: str) -> None:
+    """ADR-036 방안 B(Proposed) — 이 패널이 가져온 문단 근거만으로 **별도** 답변을 만든다.
+
+    사용자가 버튼을 눌렀을 때만 생성한다(자동 실행 없음). 내 서재 답변과 병합하지 않고
+    이 섹션 안에서 근거·인용·고지·경고를 따로 보여준다. 문단 근거(dict)가 없으면
+    (구형 Citation 결과) 이 기능을 제공하지 않는다.
+    """
+    if select_evidence is None:  # NAE/ 없는 배포본 — 공개 자료 답변 비활성(fail-closed)
+        return
+    hits = [r for r in results if isinstance(r, dict)]
+    if not select_evidence(hits):
+        return
+
+    st.markdown("#### 공개 자료 근거 답변")
+    st.caption(
+        "검색된 공개 자료 문단에만 근거한 **별도 답변**입니다 — 내 서재 답변과 합쳐지지 않습니다. "
+        "생성에는 수 분이 걸릴 수 있습니다."
+    )
+    clicked = st.button("이 근거로 답변 생성", key=f"{key_prefix}_nae_public_answer_btn")
+
+    if clicked:
+        pkg = build_public_evidence_package(question, hits)
+        if pkg is None:  # 위 select_evidence 확인으로 도달하지 않지만 방어
+            st.session_state[answer_key] = {"hold": NO_EVIDENCE_TEXT}
+            st.info(NO_EVIDENCE_TEXT)
+            return
+        from core.generation import GenerationService
+
+        with st.spinner("공개 자료 근거로 답변을 만드는 중…"):
+            stream = GenerationService().generate_stream(pkg, **_gen_overrides())
+            st.write_stream(stream)
+            result = stream.to_result()
+        guard = getattr(result, "claim_guard_result", None)
+        flagged = bool(guard and (guard.absolute_claim_blocked or guard.scope_qualifier_required))
+        data = {
+            "question": question,
+            "error": getattr(result, "error", None),
+            "warnings": issue_messages(getattr(result, "citation_check", None)),
+            "claim": claim_guard_message(guard) if flagged else None,
+            "disclosures": public_disclosures(select_evidence(hits)),
+            "scope": scope_note(indexed_sources()),
+        }
+        st.session_state[answer_key] = {**data, "answer": result.answer}
+        _render_answer_extras(data)
+        return
+
+    stored = st.session_state.get(answer_key)
+    if stored:
+        if stored.get("hold"):
+            st.info(stored["hold"])
+            return
+        st.markdown(stored.get("answer", ""))
+        _render_answer_extras(stored)
+
+
+def _render_answer_extras(data: dict) -> None:
+    """답변 아래의 부가 표시: 인용 경고, 주장 검증, 소스별 고지, 검색 범위."""
+    warnings = data.get("warnings") or []
+    if warnings:
+        st.caption("⚠️ 출처 확인 필요 — 아래 인용은 이번에 검색된 근거로 확인되지 않았습니다.")
+        for w in warnings:
+            st.caption(f"· {w}")
+    if data.get("claim"):
+        st.caption(f"주장 검증: {data['claim']}")
+    for text in data.get("disclosures") or []:
+        st.warning(text)  # ADR-030 Amendment A §6 — 소스별 고지
+    if data.get("scope"):
+        st.caption(data["scope"])
+
+
+_FAILURE_TEXT = {
+    "timeout": "검색이 시간 초과되었습니다 (결과가 없다는 뜻이 아닙니다). 잠시 후 다시 시도해 주세요.",
+    "error": "검색 중 오류가 발생했습니다 (결과가 없다는 뜻이 아닙니다). 다시 시도해 주세요.",
+}
+
+
+def retrieval_status_text(count: int, failure: str | None) -> str:
+    """검색 상태 한 줄 — 0건이어도 "실패"와 "자료 없음"을 구분해 표시한다.
+
+    어댑터는 ADR-024 §G fail-closed로 장애/타임아웃을 빈 리스트로 삼키므로,
+    호출자가 어댑터의 실패 사유(`last_retrieval_failure`)를 함께 넘겨야 구분된다.
+    """
+    if count:
+        return f"결과 {count}건"
+    if failure:
+        return "검색 실패" if failure == "error" else "검색 시간 초과"
+    return "결과 없음"
+
+
+def empty_result_message(failure: str | None) -> tuple[str, str]:
+    """(종류, 문구) — 종류는 "warning"(검색 실패) 또는 "info"(정상 0건)."""
+    if failure:
+        return "warning", _FAILURE_TEXT.get(failure, _FAILURE_TEXT["error"])
+    return "info", "공개 자료에서 일치하는 결과가 없습니다."
+
+
+def _current_retrieval_failure() -> str | None:
+    try:
+        from NAE.retrieval_adapter import last_retrieval_failure
+
+        return last_retrieval_failure()
+    except Exception:  # noqa: BLE001 — 표시용 부가 정보, 실패해도 검색 결과에 영향 없음
+        return None
 
 
 def _render_nae_paragraph_card(i: int, hit: dict) -> None:
@@ -110,10 +255,12 @@ def _render_nae_paragraph_card(i: int, hit: dict) -> None:
         if authority_class:
             st.caption(f"자료 등급: {authority_class}")
 
-        # NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다 —
-        # nae_pd가 enabled인 경우에만 이 렌더 경로에 도달하므로 지연 import한다.
-        from NAE.citation_disclosure import get_disclosure
-        disclosure = get_disclosure(authority_class)
+        disclosure = None if get_disclosure is None else get_disclosure(
+            authority_class,
+            identifier=bib.get("identifier"),
+            author=bib.get("author"),
+            work=bib.get("work"),
+        )
         if disclosure:
             st.warning(disclosure)  # ADR-030 Amendment A §6 — F6 UI 필수 노출
 

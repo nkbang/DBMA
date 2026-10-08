@@ -25,6 +25,7 @@ from typing import Optional
 
 import tantivy
 
+from core.query_translation import verse_phrase_match_kind
 from core.retrieval import ParsedQuery, _tokenize
 
 # Text fields searched for BM25 candidate generation (semantic names used by
@@ -73,6 +74,9 @@ def _tokenize_for_index(text: str) -> str:
 # 한영 자료 기반)에서 실제로 관측됨. 커브드 쿼트(’, U+2019)는 문제없어
 # 제외 -- ASCII 아포스트로피만 Tantivy 문법에서 특별 취급된다.
 _TANTIVY_SPECIAL_CHARS_RE = re.compile(r"[+\-&|!(){}\[\]^\"~*?:\\']")
+
+# Score multiplier for exact verse-notation phrase matches (see search()).
+_VERSE_PHRASE_BOOST = 3.0
 
 # Metadata fields stored with the "raw" tokenizer so they support exact-match
 # term filtering (Stage 1 pre-filter — HQ principle: filters apply before
@@ -321,10 +325,16 @@ class CandidateGenerator:
             words = exact_phrase.strip().split()
             text_query = tantivy.Query.phrase_query(self._schema, "content", words)
         else:
+            # [2026-09-26] Append English translations of a Korean query
+            # (core/query_translation.py) — Tantivy's default OR-query then
+            # matches English body text too. Exact-phrase route untouched.
+            if parsed_query.translated_terms:
+                query_text = f"{query_text} {' '.join(parsed_query.translated_terms)}"
             # [Korean tokenization fix] query side must be segmented the same
             # way the index side was (_tokenize_for_index) or a particle-
             # bearing query token never matches its stemmed indexed form —
-            # symmetry, not just a query-side patch.
+            # symmetry, not just a query-side patch. Runs AFTER the translated
+            # terms are appended so they are segmented like the indexed text.
             indexed_search_fields = [_SEARCH_FIELD_MAP.get(f, f) for f in search_fields]
             tokenized_query_text = _tokenize_for_index(query_text) or query_text
             try:
@@ -342,6 +352,19 @@ class CandidateGenerator:
                 # are unaffected.
                 sanitized = _TANTIVY_SPECIAL_CHARS_RE.sub(" ", tokenized_query_text)
                 text_query = self._index.parse_query(sanitized, default_field_names=indexed_search_fields)
+            # [2026-09-26] Boost exact verse notation ("John iii. 16") from a
+            # translated Korean scripture ref — Should-only, so a chunk still
+            # needs to match either the term query or a phrase.
+            if parsed_query.translated_phrases and "content" in search_fields:
+                text_query = tantivy.Query.boolean_query(
+                    [(tantivy.Occur.Should, text_query)] + [
+                        (tantivy.Occur.Should, tantivy.Query.boost_query(
+                            tantivy.Query.phrase_query(self._schema, "content", words),
+                            _VERSE_PHRASE_BOOST,
+                        ))
+                        for words in parsed_query.translated_phrases
+                    ]
+                )
 
         effective_books = book_ids if book_ids is not None else parsed_query.detected_books
         subqueries = [(tantivy.Occur.Must, text_query)]
@@ -384,6 +407,21 @@ class CandidateGenerator:
             )
             result = searcher.search(fallback_query, k)
 
+        # [2026-09-26] book_id is document-level (core/tsu_builder.py: set only
+        # when the file itself is a single-book commentary), so for a corpus of
+        # sermon collections every TSU is "UNK" and a book filter auto-derived
+        # from the query ("로마서", "Romans") matched nothing — even the
+        # filter-only fallback above returned 0 (docs/NAE_BOOK_ID_FILTER_ZERO_
+        # RESULT_INVESTIGATION_001.md). When the filter came from the parser
+        # (caller didn't pass book_ids) and nothing matched, drop just the book
+        # filter and search again; the caller's source_files scope is kept.
+        if not result.hits and book_ids is None and parsed_query.detected_books:
+            return self.search(
+                parsed_query, k=k, book_ids=[], source_files=source_files,
+                with_snippets=with_snippets, snippet_max_chars=snippet_max_chars,
+                fields=fields, exact_phrase=exact_phrase,
+            )
+
         snippet_generator = None
         if with_snippets and result.hits:
             # [Korean tokenization fix] text_query now targets the *_search
@@ -423,6 +461,15 @@ class CandidateGenerator:
                     for r in snippet.highlighted()
                 ]
 
+            # [2026-09-26] Undo the phrase boost for chunks whose only verse
+            # match is a numbered book ("1 John iii. 16" for 요한복음 3장 16절)
+            # — Tantivy phrases can't exclude a preceding token. Heuristic:
+            # divide by the boost and sort those after the rest.
+            if parsed_query.translated_phrases and verse_phrase_match_kind(
+                _first(stored, "content") or "", parsed_query.translated_phrases
+            ) == "ordinal_only":
+                score = score / _VERSE_PHRASE_BOOST
+
             candidates.append(
                 CandidateRef(
                     tsu_id=_first(stored, "tsu_id"),
@@ -434,6 +481,8 @@ class CandidateGenerator:
                     highlight_ranges=highlight_ranges,
                 )
             )
+        if parsed_query.translated_phrases:
+            candidates.sort(key=lambda c: -c.bm25_score)
         return candidates
 
     def reindex_document(self, tsus: list[dict]) -> int:

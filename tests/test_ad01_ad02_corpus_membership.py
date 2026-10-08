@@ -7,6 +7,7 @@ AD-02: retrieval relevance + corpus role preservation (ranking 무변경)
 """
 
 import json
+import os
 from unittest import mock
 
 import pytest
