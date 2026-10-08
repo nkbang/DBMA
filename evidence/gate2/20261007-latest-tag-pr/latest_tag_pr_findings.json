@@ -1,0 +1,46 @@
+{
+  "run_id": "20261007-latest-tag-pr",
+  "executed_by": "CUE (사용자 지시 'BETA_LATEST_TAG PR 준비만 해 둬')",
+  "pr": {
+    "number": 113,
+    "url": "https://github.com/nkbang/DBMA/pull/113",
+    "base": "dev/dbma-engine",
+    "head": "release/latest-tag-rc7",
+    "head_commit": "974fa3660204f719b945f97372fba46f2345de06",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "auto_merge": false,
+    "ci_checks": "0건"
+  },
+  "change": {
+    "file": "BETA_LATEST_TAG.txt",
+    "from_": "beta-v1.3.0-rc6",
+    "to": "beta-v1.3.0-rc7",
+    "bytes": "'beta-v1.3.0-rc7\\n' 한 줄(기존과 같은 형식), 설치기 파싱(tr -d '[:space:]') 동치 확인",
+    "diff": "pr113.diff",
+    "format_precedent": "PR #69 (rc5→rc6)과 같은 한 줄 변경"
+  },
+  "safeguards": [
+    "draft PR + 제목에 [DRAFT — 병합 보류] 표기",
+    "본문 상단 경고와 미충족 체크리스트 2개(설치 end-to-end 평가, 병합 시점·공지 결정)",
+    "자동 병합 꺼짐"
+  ],
+  "state_after": {
+    "BETA_LATEST_TAG_on_dev": "beta-v1.3.0-rc6 (불변)",
+    "dev_tip": "855470dd (불변)",
+    "testers_affected": false
+  },
+  "merge_effects": {
+    "new_installs": "rc7 수신",
+    "existing_rc6_installs": "다음 실행 때 업데이트 대화상자, 승인 시 PERSIST_ITEMS 보존 후 rc7로 교체"
+  },
+  "rollback_caveat": "revert하면 manifest는 rc6으로 돌아가지만 이미 rc7로 업데이트한 설치자는 rc6(기동 불가 버전)으로의 '업데이트'를 제안받음 → 롤백은 깨끗하지 않으며 문제 시 rc8 핫픽스 태그 + 파일 갱신이 안전",
+  "not_done": [
+    "PR 병합(draft 해제 포함)",
+    "깨끗한 환경 트랙 C 평가"
+  ],
+  "limits": [
+    "임포트·AppTest·tarball 수준의 검증만 선행됨; 전체 설치 경로 미평가"
+  ]
+}

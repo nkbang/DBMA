@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-latest-tag-pr",
+  "generated_at": "2026-10-08T03:36:42Z",
+  "baseline_commit": "815b33bdd839b7feca451a5a11032257547c2fc3",
+  "payload_count": 5,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/pr113.json",
+      "bytes": 364,
+      "sha256": "d35de94978cd567778da7fc5af943f2232e00c56713f25a6cef1727609c3084d"
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/pr113.diff",
+      "bytes": 185,
+      "sha256": "308f40697bf536d224be0e7564c5dd42800619954e1ce479323b6bcdd2b02fd4"
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/pr_body.md",
+      "bytes": 2324,
+      "sha256": "a7774f7d60ef5cfe0a98fd6ed042ff1a10767101df617c399518bdbb3574b346"
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/latest_tag_pr_findings.json",
+      "bytes": 1840,
+      "sha256": "7936ef770aedb27c37254bdf18653819308e4fa40fa7240ce25cbba2b096cc0e"
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/SUMMARY.md",
+      "bytes": 544,
+      "sha256": "c4edeefc1637e83f022e07cbfe7d67e94478f4349b8b66468dcc53a2df54c7d9"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "latest_tag_pr_113": "PREPARED (draft, unmerged)"
+  },
+  "related_run": "20261007-dev-merged",
+  "manifest_sha256": "03404efc3a45d27d0db422ce84e79824475b794f814d68bdc55c1d1795a829a2"
+}

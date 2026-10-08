@@ -202,3 +202,12 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 | GitHub Release + 코퍼스 자산 | 완료 (Latest는 rc6 유지) |
 | `dev` 이식 PR #112 | **병합 완료** |
 | `BETA_LATEST_TAG.txt` → rc7 | **미수행 — 테스터 영향 단계** |
+
+## 부록 O — `BETA_LATEST_TAG` → rc7 PR #113 준비 (2026-10-08 UTC, 병합 보류)
+
+- PR https://github.com/nkbang/DBMA/pull/113 (`release/latest-tag-rc7` → `dev/dbma-engine`), **draft·미병합**. evidence: `evidence/gate2/20261007-latest-tag-pr/`.
+- 변경은 `BETA_LATEST_TAG.txt` 한 줄(`beta-v1.3.0-rc6` → `beta-v1.3.0-rc7`, #69와 같은 형식). 병합 방지 장치: draft, 제목 `[DRAFT — 병합 보류]`, 본문 경고, 미충족 체크리스트, 자동 병합 꺼짐.
+- **병합 효과**: 신규 설치자는 rc7을 받고 기존 rc6 설치자는 다음 실행 때 업데이트 대화상자를 받는다 → 테스터 전원에게 영향.
+- **병합 전 미충족**: 깨끗한 Mac/VM 설치 end-to-end 평가(트랙 C), 병합 시점·공지 결정.
+- **롤백 주의**: revert하면 이미 rc7로 업데이트한 설치자가 rc6(기동 불가)을 제안받는다 → 문제 시 rc8 핫픽스 태그 + 파일 갱신이 안전하다.
+- 현재 `BETA_LATEST_TAG`=rc6, `dev` 끝 `855470dd` 불변 → 테스터 영향 없음.
