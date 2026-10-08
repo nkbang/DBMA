@@ -1,0 +1,38 @@
+=== 40_clean_install.sh ===
+Isolated directory: /tmp/dbma-gate2-run-1791420012
+Isolated repo:      /tmp/dbma-gate2-run-1791420012/repo
+Fake HOME:          /tmp/dbma-gate2-run-1791420012/fakehome
+Dry run:            false
+Free port:          49598
+[시작] 설치를 시작합니다. 잠시만 기다려 주세요.
+[1/5 사양 확인] 메모리 128GB 확인 — llama3.1:8b 모델을 사용합니다.
+[2/5 준비 확인] 필요한 구성 요소를 확인하는 중...
+[3/5 모델 다운로드] AI 모델을 내려받는 중입니다 — 최초 1회, 네트워크 상태에 따라 수 분 소요됩니다.
+[3/5 완료] AI 모델 준비가 끝났습니다.
+[4/5 환경 준비] 실행 환경을 준비하는 중...
+[4/5 환경 준비] 맞춤법 사전 구성 요소를 준비하는 중...
+  error: subprocess-exited-with-error
+  
+  × Building wheel for hunspell (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [7 lines of output]
+      running bdist_wheel
+      running build
+      running build_ext
+      building 'hunspell' extension
+      clang++ -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk -D_LINUX -I/usr/local/Cellar/hunspell/1.6.2/include/hunspell -I/private/tmp/dbma-gate2-run-1791420012/repo/.venv_beta/include -I/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/include/python3.11 -c hunspell.cpp -o build/temp.macosx-26.0-arm64-cpython-311/hunspell.o -Wall
+      xcrun: error: unable to load libxcrun (dlopen(/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib, 0x0005): tried: '/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib' (fat file, but missing compatible architecture (have 'arm64,arm64e', need 'x86_64')), '/System/Volumes/Preboot/Cryptexes/OS/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib' (no such file), '/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib' (fat file, but missing compatible architecture (have 'arm64,arm64e', need 'x86_64'))).
+      error: Command '['clang++', '-Wsign-compare', '-Wunreachable-code', '-fno-common', '-dynamic', '-DNDEBUG', '-g', '-fwrapv', '-O3', '-Wall', '-isysroot', '/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk', '-D_LINUX', '-I/usr/local/Cellar/hunspell/1.6.2/include/hunspell', '-I/private/tmp/dbma-gate2-run-1791420012/repo/.venv_beta/include', '-I/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/include/python3.11', '-c', 'hunspell.cpp', '-o', 'build/temp.macosx-26.0-arm64-cpython-311/hunspell.o', '-Wall']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for hunspell
+error: failed-wheel-build-for-install
+
+× Failed to build installable wheels for some pyproject.toml based projects
+╰─> hunspell
+FATAL: 필요한 프로그램 구성 요소 설치에 실패했습니다.
+setup_beta_tester.command exit code: 1
+=== RESULT: FAIL (exit 1) ===
+Install directory: /tmp/dbma-gate2-run-1791420012/repo
+=== Done ===

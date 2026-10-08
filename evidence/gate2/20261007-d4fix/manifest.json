@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-d4fix",
+  "generated_at": "2026-10-08T00:44:12Z",
+  "baseline_commit": "aafd2dfb53a83f2a29cf090c33263a0b4222c846",
+  "payload_count": 5,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-d4fix/40_attempt1_x86clang.txt",
+      "bytes": 3125,
+      "sha256": "2ed4fa798acdd0fa299da63795d12792f2010c514337cc6291131851c8e1acd3"
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/40_real_isolated.txt",
+      "bytes": 1061,
+      "sha256": "1fff42190bfb50c167476654299839e30d10961853b0cfab4487302f4138ce60"
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/40_installed_apptest.txt",
+      "bytes": 117,
+      "sha256": "ad023a05c8b02e9d331a0c4cc97a91f9276b06634c6cb8b3cbc650c282a2fd07"
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/d4_findings.json",
+      "bytes": 3284,
+      "sha256": "ec83d66f4a8fbc5b646e5b056ac0d404db9a59079fcdd9d32a66d70105e9ebb2"
+    },
+    {
+      "path": "evidence/gate2/20261007-d4fix/SUMMARY.md",
+      "bytes": 582,
+      "sha256": "935f4eb51947c18fb2915afaf9ed5539fdbb11d269d00ec13eac4c50c5e086d0"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "phase_40_isolated": "PASS (arch -arm64)",
+    "global_install_steps": "NOT EVALUATED (not a clean machine)"
+  },
+  "related_run": "20261007-scriptfix",
+  "manifest_sha256": "8011d4a40ff0d28ce6c80c9dcb0e80aa5af4aee426536ef115c649fef256f9b3"
+}

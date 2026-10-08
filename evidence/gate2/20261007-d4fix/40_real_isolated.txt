@@ -1,0 +1,19 @@
+=== 40_clean_install.sh ===
+Isolated directory: /tmp/dbma-gate2-run-1791420089
+Isolated repo:      /tmp/dbma-gate2-run-1791420089/repo
+Fake HOME:          /tmp/dbma-gate2-run-1791420089/fakehome
+Dry run:            false
+Free port:          51291
+[시작] 설치를 시작합니다. 잠시만 기다려 주세요.
+[1/5 사양 확인] 메모리 128GB 확인 — llama3.1:8b 모델을 사용합니다.
+[2/5 준비 확인] 필요한 구성 요소를 확인하는 중...
+[3/5 모델 다운로드] AI 모델을 내려받는 중입니다 — 최초 1회, 네트워크 상태에 따라 수 분 소요됩니다.
+[3/5 완료] AI 모델 준비가 끝났습니다.
+[4/5 환경 준비] 실행 환경을 준비하는 중...
+[4/5 환경 준비] 맞춤법 사전 구성 요소를 준비하는 중...
+[5/5 실행] 내서재를 여는 중입니다...
+ISOLATED: 서버 응답 확인(포트 51291) 후 종료
+setup_beta_tester.command exit code: 0
+=== RESULT: PASS (isolated install + server start verified) ===
+Install directory: /tmp/dbma-gate2-run-1791420089/repo
+=== Done ===
