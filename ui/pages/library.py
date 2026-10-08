@@ -61,39 +61,24 @@ def _apply_library_styles() -> None:
             border-radius: 999px !important;
             border-color: {THEME.BORDER_MEDIUM} !important;
         }}
-        .lib-badge {{
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: {THEME.BRAND_SECONDARY}22;
-            color: {THEME.BRAND_SECONDARY};
-        }}
-        .lib-badge.selected {{
-            background: {THEME.BRAND_PRIMARY};
-            color: #ffffff;
-        }}
-        .lib-card {{
+        /* 문서 컬렉션: 한 줄 밀집 행 (Finder/Zotero 방식) — 행 클릭 = 선택 */
+        [class*="st-key-lib_row_"] button {{
+            justify-content: flex-start;
+            min-height: 0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border-color: {THEME.BORDER_LIGHT};
             background: {THEME.BG_SURFACE};
-            border: 1px solid {THEME.BORDER_LIGHT};
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 16px;
+            text-align: left;
         }}
-        .lib-card.selected {{
-            border-color: {THEME.BRAND_PRIMARY};
+        [class*="st-key-lib_row_"] button p {{
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }}
-        .lib-card .lib-title {{
-            font-weight: 600;
-            color: {THEME.TEXT_PRIMARY};
-            margin: 8px 0 4px;
-        }}
-        .lib-card .lib-meta {{
-            font-size: 12px;
-            color: {THEME.TEXT_TERTIARY};
+        [class*="st-key-lib_row_"] {{
+            margin-bottom: -10px;
         }}
         </style>
         """,
@@ -1033,47 +1018,35 @@ def _clear_document_selection():
     # on_click callback: Streamlit reruns automatically on return (no st.rerun()).
 
 
-def _render_document_rows(documents: list[dict]) -> None:
-    """Render each document as a selectable row with a selection button.
-    
-    When the selection button is clicked, the on_click callback (_select_document)
-    updates StateStore + session state, then triggers st.rerun() for full-page sync.
-    
-    Fix (DEFECT-PT-HUMAN-010 Patch 3): Replaced Patch 2's flawed pending-selection approach
-    with explicit Streamlit callback mechanism. The `on_click` callback fires after the render
-    cycle completes, then st.rerun() forces a full page redraw where all visual elements
-    (gray highlight, button state, detail panel) are synchronized on the same pass.
-    """
-    store = StateStore()
+# Fixed height (px) of the scrollable document list — keeps the page short
+# regardless of how many rows the current page holds.
+_LIST_HEIGHT_PX = 420
 
-    for i, doc in enumerate(documents):
-        # Build a unique key for this document's selection button
-        btn_key = f"doc_select_{i}_{hash(doc.get('path', ''))}"
-        
-        cols = st.columns([5, 1])
-        with cols[0]:
-            # Compute is_selected from session state _library_selected_path (set by callback)
-            selected_path = st.session_state.get("_library_selected_path")
+
+def _format_row_label(doc: dict) -> str:
+    """One-line row label: ``PDF · title · size · date``."""
+    return " · ".join(
+        str(doc.get(k, "?")) for k in ("type", "title", "size", "modified")
+    )
+
+
+def _render_document_rows(documents: list[dict]) -> None:
+    """Render documents as compact one-line rows in a fixed-height scroll box.
+
+    The whole row is the selection button (no separate "선택" column), so the
+    list stays short: ~34px per row instead of a ~120px card. Selection still
+    goes through the on_click callback ``_select_document`` (DEFECT-PT-HUMAN-010
+    Patch 3), which syncs StateStore + session state before the rerun.
+    """
+    selected_path = st.session_state.get("_library_selected_path")
+
+    with st.container(height=_LIST_HEIGHT_PX, border=True):
+        for i, doc in enumerate(documents):
             is_selected = selected_path == doc.get("path")
-            card_class = "lib-card selected" if is_selected else "lib-card"
-            badge_class = "lib-badge selected" if is_selected else "lib-badge"
-            st.markdown(
-                f"""
-                <div class="{card_class}">
-                    <span class="{badge_class}">{doc.get('type', '?')}</span>
-                    <div class="lib-title">{doc.get('title', 'Unknown')}</div>
-                    <div class="lib-meta">{doc.get('size', '?')} · {doc.get('modified', '?')}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-        
-        with cols[1]:
-            sel_label = "선택됨" if is_selected else "선택"
             st.button(
-                sel_label,
+                _format_row_label(doc),
                 icon=":material/check:" if is_selected else None,
-                key=btn_key,
+                key=f"lib_row_{i}_{hash(doc.get('path', ''))}",
                 type="primary" if is_selected else "secondary",
                 use_container_width=True,
                 on_click=_select_document,
