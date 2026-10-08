@@ -45,7 +45,14 @@ from core.claim_guard import ClaimGuardResult, RiskLevel
 from ui.state.query_processor import get_shared_query_processor, record_query_latency
 from ui.components.citation_card import render_citation_card
 from ui.components.nae_public_section import render_nae_public_section
-from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
+try:
+    from NAE.smith_activation import should_activate_smith, rewrite_query_for_smith
+except ImportError:  # NAE/는 opt-in 모듈 — 배포본(export-ignore)에는 없다. Smith 비활성.
+    def should_activate_smith(query):
+        return False
+
+    def rewrite_query_for_smith(query):
+        return None
 from core.module_registry import is_enabled
 from core.grounded_synthesis_executor import execute_synthesis
 
