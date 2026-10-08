@@ -1,0 +1,64 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-phase40",
+  "verified_at": "2026-10-08T00:10:09Z",
+  "manifest_path": "evidence/gate2/20261007-phase40/manifest.json",
+  "verification_source": "git archive of committed tree 8d25b30c19120a863339bcadfbcdeacc57be8c15",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 6,
+  "verified_count": 6,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "888097fd39bd94c8070418f86e3d1b44357be124b908a8086aa1e07b2e37a5e3",
+  "canonical_manifest_sha256_actual": "888097fd39bd94c8070418f86e3d1b44357be124b908a8086aa1e07b2e37a5e3",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-phase40/pip_install_attempt1_x86clang.txt",
+      "expected_bytes": 2335,
+      "actual_bytes": 2335,
+      "expected_sha256": "cc2fde5aa2607401c5ee2ea8efbec386eaa5b553499266d25ec7d1d33eb28ff9",
+      "actual_sha256": "cc2fde5aa2607401c5ee2ea8efbec386eaa5b553499266d25ec7d1d33eb28ff9",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/hunspell_retry.txt",
+      "expected_bytes": 113,
+      "actual_bytes": 113,
+      "expected_sha256": "95c6cbc58abc300bfa52297317839bc87ac1f8aedab38a12f93a5d894e80cfbf",
+      "actual_sha256": "95c6cbc58abc300bfa52297317839bc87ac1f8aedab38a12f93a5d894e80cfbf",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/pip_install_attempt2.txt",
+      "expected_bytes": 0,
+      "actual_bytes": 0,
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/import_ui_app_attempt2.txt",
+      "expected_bytes": 1349,
+      "actual_bytes": 1349,
+      "expected_sha256": "b6456b9f96b490730f51ff9b5c2a93628465e503b3e75caf644f85678278e80d",
+      "actual_sha256": "b6456b9f96b490730f51ff9b5c2a93628465e503b3e75caf644f85678278e80d",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/40_findings.json",
+      "expected_bytes": 2817,
+      "actual_bytes": 2817,
+      "expected_sha256": "9c5752f87acbcc535987888d56b7bb5862a96597aa302819226d28607646a804",
+      "actual_sha256": "9c5752f87acbcc535987888d56b7bb5862a96597aa302819226d28607646a804",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase40/SUMMARY.md",
+      "expected_bytes": 680,
+      "actual_bytes": 680,
+      "expected_sha256": "867b48545c2511409ffb5c1442e35a662e77eb91072f052fac1c9074b05edda6",
+      "actual_sha256": "867b48545c2511409ffb5c1442e35a662e77eb91072f052fac1c9074b05edda6",
+      "match": true
+    }
+  ],
+  "pass": true
+}
