@@ -138,3 +138,10 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - 검증: `NAE/` 없는 배포 트리에서 `import ui.app` rc=0, 시험 73 passed, AppTest 11 runs 문제 0; `NAE/` 있는 워크트리에서 `ui`를 참조하는 시험 278 passed. 대조군(수정 없는 rc6)은 임포트 실패.
 - **미수행(승인 필요)**: 브랜치 푸시, 태그 `beta-v1.3.0-rc7`, GitHub Release 및 rc6 코퍼스 자산(49MB) 재업로드(없으면 새 설치자는 빈 서재로 시작), `BETA_LATEST_TAG.txt` 갱신 PR, `dev/dbma-engine`로의 수정 이식 PR(`chat.py` 한 군데 수동 충돌 예상).
 - 한계: GitHub 실제 태그 tarball의 `export-ignore` 적용은 미확인(절차서 T0).
+
+## 부록 H — 실제 GitHub 태그 tarball 확인 (2026-10-07)
+
+- evidence: `evidence/gate2/20261007-t0-tarball/` — 공개 URL `https://github.com/nkbang/DBMA/archive/refs/tags/beta-v1.3.0-rc6.tar.gz`(HTTP 200, 4,729,447 bytes)를 내려받아 확인.
+- **F1이 실제 릴리스 tarball에서 확정되었다**: 1,652 members 중 `NAE/` 0개(export-ignore 적용), `ui/components/nae_public_section.py:25`·`ui/pages/chat.py:47`의 NAE 최상위 import 존재, 압축 해제본에서 `import ui.app` → `ModuleNotFoundError: No module named 'NAE'`. 부록 F의 "GitHub 실제 tarball 미확인" 한계는 이로써 해소된다.
+- 로컬 `git archive`(1,644 members)와의 차이는 `tests/nae/` 하위 8개 항목뿐이다. 이 Mac의 `core.ignorecase=true`로 `NAE/ export-ignore`가 `tests/nae/`까지 제외하기 때문이며(GitHub는 대소문자 구분), 앱 실행에는 영향이 없다. 단 이전 evidence의 members 수치는 로컬 기준이다.
+- 한계: 임포트 수준 확인이며 설치 end-to-end가 아니다. 태그가 이동하면 재확인이 필요하다(태그 커밋 `d16095e2`).

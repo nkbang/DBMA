@@ -9,7 +9,7 @@
 
 1. **지금 테스터가 받는 릴리스에도 F1 결함이 있다.** `install_nae_beta.command`는 현재 브랜치가 아니라 `origin/dev/dbma-engine`의 `BETA_LATEST_TAG.txt`(현재 `beta-v1.3.0-rc6`)가 가리키는 태그 tarball을 내려받는다. 그 태그를 `git archive`로 풀어 시험하면 `import ui.app`이 `No module named 'NAE'`로 실패하고 AppTest도 같은 예외를 낸다 (`NAE/ export-ignore` + `ui/` 최상위 NAE import). F1·F1-b 수정(`3a10bb3b`, `f49ffeb3`)과 설치 스크립트 정비(`aafd2dfb`)는 **아직 `dev/dbma-engine`에도, 어떤 태그에도 없다**.
 2. **설치기에는 다운로드 URL 오버라이드가 없다.** 그래서 후보(수정 포함) 빌드로 `install_nae_beta.command` 전체 경로를 평가하려면 새 태그와 `BETA_LATEST_TAG.txt` 갱신이 필요하다(승인 사항, §2).
-3. **GitHub 태그 tarball이 `export-ignore`를 따르는지는 실제로 확인하지 못했다.** 위 1번은 `git archive` 기준이다. §4 단계 T0에서 실제 다운로드로 확인한다.
+3. **GitHub 태그 tarball도 `export-ignore`를 따른다 — 2026-10-07 개발 Mac에서 실제 다운로드로 확인 완료**(`evidence/gate2/20261007-t0-tarball/`: `NAE/` 멤버 0, 압축 해제본 `import ui.app` 실패). 아래 T0 단계는 깨끗한 환경에서 같은 결과를 재확인하는 용도다.
 4. 이 평가는 **개발 Mac에서 하지 않는다.** 설치기는 `~/내서재_베타`, `/Applications`, `/usr/local`, Homebrew, 실행 중 Ollama를 건드린다.
 
 ## 1. 평가 트랙
@@ -180,6 +180,6 @@ bash clean_env_snapshot.sh after-install ~/gate2-clean-env
 
 ## 9. 한계
 
-- 이 절차는 GitHub 태그 tarball의 실제 내용을 T0에서만 확인한다(사전에 다운로드하지 않았다).
+- GitHub 태그 tarball의 내용은 개발 Mac에서 이미 확인했다(`20261007-t0-tarball`). 로컬 `git archive`는 GitHub tarball과 `tests/nae/`(테스트 파일 4개)만 다르다 — 이 Mac의 `core.ignorecase=true` 때문이며 앱 실행과 무관.
 - 메모리 등급별 평가는 환경 마련 여건에 따라 일부만 수행할 수 있으며, 수행하지 못한 등급은 판정표에 `미평가`로 남긴다.
 - 모델 응답 품질(groundedness 등)은 이 절차의 범위가 아니다(설교·신학 답변 품질 감사에서 다룸).
