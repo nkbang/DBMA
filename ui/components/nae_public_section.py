@@ -22,7 +22,6 @@ from typing import Any
 
 import streamlit as st
 
-from NAE.citation_disclosure import get_disclosure
 
 
 def render_nae_public_section(key_prefix: str) -> None:
@@ -111,6 +110,9 @@ def _render_nae_paragraph_card(i: int, hit: dict) -> None:
         if authority_class:
             st.caption(f"자료 등급: {authority_class}")
 
+        # NAE/는 opt-in 모듈이라 배포본(export-ignore)에는 없을 수 있다 —
+        # nae_pd가 enabled인 경우에만 이 렌더 경로에 도달하므로 지연 import한다.
+        from NAE.citation_disclosure import get_disclosure
         disclosure = get_disclosure(authority_class)
         if disclosure:
             st.warning(disclosure)  # ADR-030 Amendment A §6 — F6 UI 필수 노출

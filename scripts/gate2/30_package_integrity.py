@@ -4,6 +4,7 @@
 Uses `git archive HEAD` locally to verify:
   - NAE/, .automation/, test_seal_* are NOT in the archive (export-ignore)
   - README.md, INSTALL.md, dbma_ui.py, core/retrieval.py, requirements.txt ARE in the archive
+  - `import ui.app` succeeds inside the extracted package (NAE/ absent)
 
 Task Order: C1-TASK-ORDER-GATE2-ORCHESTRATOR-SCAFFOLDING.md §3 Phase A
 """
@@ -96,6 +97,32 @@ def main() -> dict:
                 all_pass = False
 
         results["total_members"] = len(member_names)
+
+        # Check the packaged tree actually imports (Gate 2 F1 회귀 방지):
+        # NAE/ is export-ignored, so ui/ must not hard-depend on it.
+        venv_python = Path.home() / "envs" / "dbma311" / "bin" / "python"
+        if not venv_python.exists():
+            results["packaged_import_ui_app"] = {
+                "status": "SKIP",
+                "reason": f"{venv_python} not found",
+            }
+        else:
+            with tarfile.open(archive_path, "r:gz") as tf:
+                tf.extractall(tmpdir, filter="data")
+            proc = subprocess.run(
+                [str(venv_python), "-W", "ignore", "-c", "import ui.app"],
+                cwd=str(Path(tmpdir) / "package"),
+                capture_output=True,
+                text=True,
+                timeout=120,
+            )
+            results["packaged_import_ui_app"] = {
+                "status": "PASS" if proc.returncode == 0 else "FAIL",
+                "returncode": proc.returncode,
+                "stderr_tail": proc.stderr.strip().splitlines()[-3:] if proc.returncode else [],
+            }
+            if proc.returncode != 0:
+                all_pass = False
 
     summary = {
         "script": "30_package_integrity.py",
