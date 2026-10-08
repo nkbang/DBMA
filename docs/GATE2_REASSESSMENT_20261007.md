@@ -151,3 +151,10 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - `hotfix/rc7-nae-optional`(`d00950c9`, 베이스 `beta-v1.3.0-rc6`)를 `origin`에 푸시했다(신규 브랜치, force 아님). 원격 끝 = 로컬 끝 확인.
 - 부록 G의 "미푸시" 기록은 이 푸시로 갱신된다. 이 푸시는 **테스터에게 영향을 주지 않는다**: 설치기는 `dev/dbma-engine`의 `BETA_LATEST_TAG.txt`(여전히 `beta-v1.3.0-rc6`)가 가리키는 태그만 내려받는다. `rc6` 태그·`dev` 끝(`c10fd2c3`) 불변, `rc7` 태그 없음, PR 없음.
 - 남은 승인 항목: 태그 `beta-v1.3.0-rc7` 생성 → GitHub Release와 rc6 코퍼스 자산 재업로드 → `dev` 이식 PR → 마지막으로 `BETA_LATEST_TAG.txt` PR(병합 시 테스터 전원에게 영향).
+
+## 부록 J — 태그 `beta-v1.3.0-rc7` 생성 (2026-10-07, HQ 승인)
+
+- 주석 태그 `beta-v1.3.0-rc7`(태그 객체 `52f2de12`)을 `hotfix/rc7-nae-optional`의 `d00950c9`에 만들어 푸시했다. rc6와 같은 형식(주석 태그, 작성자 David Bang). 태그만 푸시했고 GitHub Release는 만들지 않았다.
+- **테스터에게 영향 없음**: `BETA_LATEST_TAG.txt`(`dev/dbma-engine`)는 여전히 `beta-v1.3.0-rc6`. `rc6` 태그(`d16095e2`)·`dev` 끝(`c10fd2c3`) 불변. 설치기는 이 파일이 가리키는 태그만 받는다.
+- **미확인**: rc7의 실제 GitHub tarball(`export-ignore` 적용, `import ui.app` 성공)은 아직 내려받아 확인하지 않았다. Release 없이도 `archive/refs/tags/` URL은 동작하지만, 코퍼스 기본 서재는 같은 태그의 Release 자산이 없으면 받지 못해 **빈 서재로 시작**한다 — `BETA_LATEST_TAG`를 바꾸기 전에 Release와 자산을 먼저 만들어야 한다.
+- 남은 승인 항목: GitHub Release 생성 + rc6 코퍼스 자산(49MB) 재업로드 → rc7 tarball 재확인 → `dev` 이식 PR → `BETA_LATEST_TAG.txt` PR.
