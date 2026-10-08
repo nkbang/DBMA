@@ -1,0 +1,56 @@
+# Gate 2 최종 재판정 (2026-10-07)
+
+- 브랜치: `fix/merge-production-path-safety`
+- 판정: **FAIL** — 배포 트리(`git archive HEAD`)에서 앱 모듈 임포트 실패
+- 이전 상태: PARTIAL_PASS(run `20261007-224149`, Phase 80/90 N/A) → 본 문서가 대체. 이전 run 파일은 동결(수정 안 함).
+
+## Phase별 결과
+
+| Phase | 결과 | 근거 evidence (`evidence/gate2/`) | 비고 |
+|---|---|---|---|
+| 0 snapshot | PASS | `20261007-224149` | snapshot 로그는 JSON에서 재구성한 기록 |
+| 10 packaging audit | PASS | 동일 | |
+| 30 package integrity | PASS | 동일 | 필수 파일 존재만 확인, 임포트 결함 못 잡음 |
+| 50 runtime smoke | PASS (얕음) | 동일 | venv·`dbma_ui.py` 읽기만 확인, 결함 못 잡음 |
+| 60 UI pages | PASS | 동일 | 기대 9개 존재(디스크 12개) |
+| 70 production isolation | PASS | 동일 | 보호 파일 4개 변경 0 |
+| 80 reinstall/upgrade | PASS | `20261007-phase8090` | `install_nae_beta.command` 로직의 /tmp 시뮬레이션, 실제 설치 아님 |
+| 90 uninstall | PASS | 동일 | 최초 출력은 대화 기록 복원본 |
+| 61 citation UI | **FAIL** | `20261007-phase6195` | 배포 트리 pytest 1 passed / 6 failed (실제 체크아웃 7/7) |
+| 40 clean install | **FAIL (부분)** | `20261007-phase40` | requirements 설치 PASS, `import ui.app` FAIL. 설치 스크립트 본 실행은 미실행 |
+| 95 evidence verify | PASS이나 무의미 | `20261007-phase6195` | 대상 7건 전부 SKIP(`stdout_sha256` 없음), Gate 근거 제외 |
+
+## 판정 근거: 결함 F1
+
+- 현상: 배포 트리에서 `import ui.app` → `ModuleNotFoundError: No module named 'NAE'`
+- 원인: `.gitattributes`의 `NAE/ export-ignore`로 `NAE/`가 배포에서 제외되는데, `ui/components/nae_public_section.py:25`가 `NAE.citation_disclosure`를 무조건 임포트(`ui.pages` 임포트 체인).
+- 독립 확인 2건: Phase 61(pytest)과 Phase 40(클린 venv 설치 후 임포트).
+- 영향: 배포본에서 앱 기동 불가 가능성. 개발 체크아웃에서는 `NAE/`가 있어 재현되지 않음.
+- 전제/한계: 배포 형태가 `git archive HEAD`라는 전제(Phase 30과 동일). `setup_beta_tester.command`에 `NAE`를 별도로 받는 코드는 정적 확인 범위에서 없음. 설치 스크립트 end-to-end는 미평가.
+
+## 기타 발견 (판정 영향 없음, 수정 안 함)
+
+| ID | 대상 | 내용 |
+|---|---|---|
+| D1 | `80_reinstall_upgrade.sh` | dry-run에서도 /tmp 디렉터리 생성, 검증 없이 `RESULT: PASS` 출력 |
+| D2 | `90_uninstall.sh` | dry-run에서 "Removed:" 출력하나 삭제하지 않음 |
+| D3 | `90_uninstall.sh` | 인자 없이 실행하면 /tmp의 모든 `dbma-gate2-run-*` 삭제 |
+| D4 | `40_clean_install.sh` / `setup_beta_tester.command` | /tmp에 격리되지 않음: `brew install`, `/usr/local` 심볼릭 링크, 8520 포트 `pkill`, 서버 기동·브라우저 open. 헤더의 "writes ONLY to /tmp"는 사실과 다름. 기동 실패해도 "완료" 알림 |
+| D5 | `95_evidence_verify.py` | 검증 대상 0건이어도 `all_pass=true` |
+| D6 | 이전 run | Phase 80/90 "scripts not in working tree" 판정은 경로 조회 오류(실제 `scripts/gate2/`), `20261007-phase8090`에서 정정 |
+
+## 증거 신뢰도 주석
+
+- Phase 90 최초 삭제 출력은 tee 파일이 재실행으로 덮어써져 대화 기록에서 복원(`90_real_output.txt` 헤더에 명시). 재실행 출력은 `90_rerun_idempotent_output.txt`.
+- Phase 40 1차 시도의 `hunspell` 빌드 실패는 백그라운드 실행이 `clang++`를 x86_64로 띄운 측정 환경 오류이며 제품 결함이 아님(단독 재시도 성공, `arch -arm64` 2차 전체 설치 성공).
+- 각 run은 `manifest.json`(v2, canonical sha256)과 커밋본 기준 `00_manifest_verify.json`을 가진다. 커밋: `ba8921ac`→`c4f3c9a0`→`cb234fd7`(224149), `a293c374`→`e3f9f588`(phase8090), `41c82a51`(phase6195), `31de896f`(phase40).
+
+## 결정 필요 (HQ)
+
+1. **NAE 패키징 방침**: (a) `NAE/`를 배포에 포함(`export-ignore` 조정, 저장소의 약 93.5%로 비용 큼) 또는 (b) UI의 NAE 임포트를 게이팅해 `NAE/` 없이도 기동. 아키텍처 결정 사항.
+2. **스크립트 정비 범위**: D1~D5 수정 여부.
+3. **실제 clean-install 평가**: 깨끗한 Mac/VM에서 `setup_beta_tester.command` 본 실행. 개발 기기는 조건 불성립.
+
+## 재판정 조건
+
+F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크립트 본 실행) → 전체 판정 재산정. 그 전에는 PARTIAL_PASS로 되돌리지 않는다.
