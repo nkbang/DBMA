@@ -1,0 +1,56 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-latest-tag-pr",
+  "verified_at": "2026-10-08T03:36:42Z",
+  "manifest_path": "evidence/gate2/20261007-latest-tag-pr/manifest.json",
+  "verification_source": "git archive of committed tree cd1589e02c493b246adeb9ad5e3dd9102d97df0d",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 5,
+  "verified_count": 5,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "03404efc3a45d27d0db422ce84e79824475b794f814d68bdc55c1d1795a829a2",
+  "canonical_manifest_sha256_actual": "03404efc3a45d27d0db422ce84e79824475b794f814d68bdc55c1d1795a829a2",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/pr113.json",
+      "expected_bytes": 364,
+      "actual_bytes": 364,
+      "expected_sha256": "d35de94978cd567778da7fc5af943f2232e00c56713f25a6cef1727609c3084d",
+      "actual_sha256": "d35de94978cd567778da7fc5af943f2232e00c56713f25a6cef1727609c3084d",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/pr113.diff",
+      "expected_bytes": 185,
+      "actual_bytes": 185,
+      "expected_sha256": "308f40697bf536d224be0e7564c5dd42800619954e1ce479323b6bcdd2b02fd4",
+      "actual_sha256": "308f40697bf536d224be0e7564c5dd42800619954e1ce479323b6bcdd2b02fd4",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/pr_body.md",
+      "expected_bytes": 2324,
+      "actual_bytes": 2324,
+      "expected_sha256": "a7774f7d60ef5cfe0a98fd6ed042ff1a10767101df617c399518bdbb3574b346",
+      "actual_sha256": "a7774f7d60ef5cfe0a98fd6ed042ff1a10767101df617c399518bdbb3574b346",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/latest_tag_pr_findings.json",
+      "expected_bytes": 1840,
+      "actual_bytes": 1840,
+      "expected_sha256": "7936ef770aedb27c37254bdf18653819308e4fa40fa7240ce25cbba2b096cc0e",
+      "actual_sha256": "7936ef770aedb27c37254bdf18653819308e4fa40fa7240ce25cbba2b096cc0e",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-latest-tag-pr/SUMMARY.md",
+      "expected_bytes": 544,
+      "actual_bytes": 544,
+      "expected_sha256": "c4edeefc1637e83f022e07cbfe7d67e94478f4349b8b66468dcc53a2df54c7d9",
+      "actual_sha256": "c4edeefc1637e83f022e07cbfe7d67e94478f4349b8b66468dcc53a2df54c7d9",
+      "match": true
+    }
+  ],
+  "pass": true
+}
