@@ -182,3 +182,23 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - 검증: `NAE/` 없는 배포 트리에서 `import ui.app` rc=0(수정 전 `dev` 끝은 rc=1), `ui` 참조 시험 34개 파일 297 passed, AppTest 9 runs 문제 0.
 - **병합해도 테스터에게 가는 버전은 바뀌지 않는다**(`BETA_LATEST_TAG.txt` 미변경). 병합하지 않으면 `dev`에서 만드는 다음 태그에 결함이 재유입된다. 이 PR에는 자동 CI가 없어 근거는 위 로컬 검증이다.
 - 남은 승인 항목: PR 병합 결정, `BETA_LATEST_TAG.txt` → rc7 PR(병합 시 테스터 전원에게 영향; 그 전에 설치 end-to-end 평가 권고).
+
+## 부록 N — PR #112 병합 완료 (2026-10-08 UTC, 사용자 직접 병합)
+
+- PR #112가 merge commit `855470dd`로 `dev/dbma-engine`에 병합되었다(부모: `c10fd2c3`, 이식 커밋 `7bfdfbb3`). evidence: `evidence/gate2/20261007-dev-merged/`.
+- `dev` 끝을 `NAE/` 없는 `git archive`로 검증: `import ui.app` rc=0, 시험 15 passed, AppTest 9 runs 문제 0. `ui/`의 `NAE` 임포트 5곳은 모두 함수 안이거나 `try/except ImportError` 안이며 최상위 무조건 임포트는 없다 → `dev`에서 만드는 다음 태그에 F1이 재유입되지 않는다.
+- **테스터 영향 없음**: `BETA_LATEST_TAG.txt`=rc6 불변, rc6(`d16095e2`)·rc7(`d00950c9`) 태그 불변.
+- 정정: 병합 전 안내의 기대 출력("`chat.py`의 한 줄이 `^(from|import) NAE` 검색에 나온다")은 틀렸다 — 그 줄은 `try:` 안에 들여쓰기돼 있어 해당 검색에 걸리지 않으므로 올바른 기대는 "출력 없음"이다.
+- 한계: 임포트·AppTest 수준. `dev` 끝에는 rc6 이후 GS 등 미배포 작업이 있어, `dev` 기반 신규 태그는 별도 검증이 필요하다(이번 검증은 NAE 선택성에 한정).
+- 남은 항목: `BETA_LATEST_TAG.txt` → rc7 PR(병합 시 테스터 전원에게 영향; 그 전에 설치 end-to-end 평가 권고).
+
+### 방안 A 진행 요약
+
+| 단계 | 상태 |
+|---|---|
+| 핫픽스 브랜치 `hotfix/rc7-nae-optional` 준비·검증·푸시 | 완료 |
+| 태그 `beta-v1.3.0-rc7` | 완료 |
+| rc7 실제 tarball 확인 | 완료 (`import ui.app` PASS) |
+| GitHub Release + 코퍼스 자산 | 완료 (Latest는 rc6 유지) |
+| `dev` 이식 PR #112 | **병합 완료** |
+| `BETA_LATEST_TAG.txt` → rc7 | **미수행 — 테스터 영향 단계** |

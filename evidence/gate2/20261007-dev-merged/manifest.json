@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-dev-merged",
+  "generated_at": "2026-10-08T03:34:32Z",
+  "baseline_commit": "03f8c5505d393dd4d6d28d18c520f1037a7863c0",
+  "payload_count": 7,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-dev-merged/pr112_final.json",
+      "bytes": 308,
+      "sha256": "c7d9a8120aa178edcc04b4654455e6dfd718b43154a34585f08e2db5e3b29b8e"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/dev_conditional_NAE_imports.txt",
+      "bytes": 483,
+      "sha256": "61000b26e6d899155c54c17a1c07ac9e22cc80027db6c0827e15f8661ed8450d"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/import_ui_app_dev_after_merge.txt",
+      "bytes": 44,
+      "sha256": "0b0f98ce09ca4d6876e993eca8f61167fe7734bbafcf39b07a76bdf8377af5bf"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/pytest_packaged.txt",
+      "bytes": 32,
+      "sha256": "732e3f48c83f9bcf955f3afc94dff478fbd2ec0cb8e0eaf6b8b93f550ec62ee0"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/apptest_packaged.json",
+      "bytes": 4315,
+      "sha256": "48526c7724ec127129c48e343ef2667f524f30e10665c818ad402b66ee3a9de2"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/dev_merged_findings.json",
+      "bytes": 1795,
+      "sha256": "9cdf16e4d7a6598f0e53ba979dd064e43b6c5c20d2f1fea30cd3558d37e30ca1"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-merged/SUMMARY.md",
+      "bytes": 514,
+      "sha256": "5d2b39d67a8e35756f2df17a2cfb7846f34cdd400ad1ea580b005e443116d9a9"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "dev_tip_after_merge": "PASS (NAE-optional)"
+  },
+  "related_run": "20261007-dev-port",
+  "manifest_sha256": "749b8652c09d29ae0cce48c87d211cece546030437abea71f9f30dda070e5c9b"
+}
