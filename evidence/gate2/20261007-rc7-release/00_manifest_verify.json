@@ -1,0 +1,88 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-rc7-release",
+  "verified_at": "2026-10-08T01:48:48Z",
+  "manifest_path": "evidence/gate2/20261007-rc7-release/manifest.json",
+  "verification_source": "git archive of committed tree 2025290c8d293f3cebb70d73f5378043b14a99ba",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 9,
+  "verified_count": 9,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "f6b9948ae8b47208488f536ec6fc08d82fa21080560a6789042743ef385974c0",
+  "canonical_manifest_sha256_actual": "f6b9948ae8b47208488f536ec6fc08d82fa21080560a6789042743ef385974c0",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-rc7-release/asset_sha256.txt",
+      "expected_bytes": 65,
+      "actual_bytes": 65,
+      "expected_sha256": "e379dff58cefe81ead06167cb64717605820a92211e5ca60b7aba345f239a53c",
+      "actual_sha256": "e379dff58cefe81ead06167cb64717605820a92211e5ca60b7aba345f239a53c",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/asset_listing.txt",
+      "expected_bytes": 286,
+      "actual_bytes": 286,
+      "expected_sha256": "eb3281262553ec9695e4e50d27385859c717d14e8a99885b527a2e5b795d4685",
+      "actual_sha256": "eb3281262553ec9695e4e50d27385859c717d14e8a99885b527a2e5b795d4685",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_notes_rc7.md",
+      "expected_bytes": 1133,
+      "actual_bytes": 1133,
+      "expected_sha256": "79c755b83f085291257dfe81cf0a3d6edc2d95de81dd4254e541b6058e7a086e",
+      "actual_sha256": "79c755b83f085291257dfe81cf0a3d6edc2d95de81dd4254e541b6058e7a086e",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_rc7_api.json",
+      "expected_bytes": 484,
+      "actual_bytes": 484,
+      "expected_sha256": "4e8f6133b4e020f61d2230f79159c04133424cadd64ab430efc518f3b7143e91",
+      "actual_sha256": "4e8f6133b4e020f61d2230f79159c04133424cadd64ab430efc518f3b7143e91",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_rc6_api.json",
+      "expected_bytes": 287,
+      "actual_bytes": 287,
+      "expected_sha256": "f40f368ee5c58754f22ac157b920ee4fe2f464e3bc331d30b5fdd2f10a39359d",
+      "actual_sha256": "f40f368ee5c58754f22ac157b920ee4fe2f464e3bc331d30b5fdd2f10a39359d",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_list_after.txt",
+      "expected_bytes": 332,
+      "actual_bytes": 332,
+      "expected_sha256": "1871372e5810cce94faba7e27d98568e4bc00faf989e2a93696ef0190dd78b80",
+      "actual_sha256": "1871372e5810cce94faba7e27d98568e4bc00faf989e2a93696ef0190dd78b80",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/installer_url_head_check.txt",
+      "expected_bytes": 130,
+      "actual_bytes": 130,
+      "expected_sha256": "61d7141af6f94f928e18da7a359af9555d46f6fde0cda0531151cd9c3f455c44",
+      "actual_sha256": "61d7141af6f94f928e18da7a359af9555d46f6fde0cda0531151cd9c3f455c44",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/release_findings.json",
+      "expected_bytes": 2183,
+      "actual_bytes": 2183,
+      "expected_sha256": "8757baf51b6b207f41309dc24baca0e03bb240c2426d725ffd630bbbfd3f03b6",
+      "actual_sha256": "8757baf51b6b207f41309dc24baca0e03bb240c2426d725ffd630bbbfd3f03b6",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-rc7-release/SUMMARY.md",
+      "expected_bytes": 458,
+      "actual_bytes": 458,
+      "expected_sha256": "25a878bca9924b51e8f216653463cfa299dad2853ed14ab59703292f441fda9b",
+      "actual_sha256": "25a878bca9924b51e8f216653463cfa299dad2853ed14ab59703292f441fda9b",
+      "match": true
+    }
+  ],
+  "pass": true
+}
