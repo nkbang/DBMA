@@ -1,0 +1,64 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-hotfix-rc7-prep",
+  "verified_at": "2026-10-08T01:37:01Z",
+  "manifest_path": "evidence/gate2/20261007-hotfix-rc7-prep/manifest.json",
+  "verification_source": "git archive of committed tree 9897f431605e1e2366b7aba7f4eccbe5f69290d8",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 6,
+  "verified_count": 6,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "c3bc5aaa02cfdbd6ed1572a616ea48bb655f7c87e47e1a54eb47502614f0e374",
+  "canonical_manifest_sha256_actual": "c3bc5aaa02cfdbd6ed1572a616ea48bb655f7c87e47e1a54eb47502614f0e374",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/hotfix_vs_rc6.diff",
+      "expected_bytes": 5923,
+      "actual_bytes": 5923,
+      "expected_sha256": "ebd3d313b527ef4d1bccecdfd3a58cfcdb821eafc931cf2125f8eeed4f1dd5b0",
+      "actual_sha256": "ebd3d313b527ef4d1bccecdfd3a58cfcdb821eafc931cf2125f8eeed4f1dd5b0",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/apptest_packaged.json",
+      "expected_bytes": 4899,
+      "actual_bytes": 4899,
+      "expected_sha256": "c3f968d4cc301d999377319d1cd32d2c826c836c34540f092a0b78992aca77af",
+      "actual_sha256": "c3f968d4cc301d999377319d1cd32d2c826c836c34540f092a0b78992aca77af",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/pytest_packaged.txt",
+      "expected_bytes": 32,
+      "actual_bytes": 32,
+      "expected_sha256": "fbc6f5740823806e93fd65e456b4a8e3ff9c118fea089aa8b2075315a278916d",
+      "actual_sha256": "fbc6f5740823806e93fd65e456b4a8e3ff9c118fea089aa8b2075315a278916d",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/import_ui_app_packaged.txt",
+      "expected_bytes": 19,
+      "actual_bytes": 19,
+      "expected_sha256": "42a27240d4d98dc9fe6b0a23c2f38865ca31f4c31d79757f4d887499cc50aee5",
+      "actual_sha256": "42a27240d4d98dc9fe6b0a23c2f38865ca31f4c31d79757f4d887499cc50aee5",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/hotfix_prep_findings.json",
+      "expected_bytes": 2672,
+      "actual_bytes": 2672,
+      "expected_sha256": "071704ccdf111cd87295b3edbd007540ae7e19d00bce8d690e3bbfb566b26a97",
+      "actual_sha256": "071704ccdf111cd87295b3edbd007540ae7e19d00bce8d690e3bbfb566b26a97",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/SUMMARY.md",
+      "expected_bytes": 532,
+      "actual_bytes": 532,
+      "expected_sha256": "5985003f4c00cabce7c93d71206ea69e423ab68e7d9b82e8fcb36f09ddca2fd7",
+      "actual_sha256": "5985003f4c00cabce7c93d71206ea69e423ab68e7d9b82e8fcb36f09ddca2fd7",
+      "match": true
+    }
+  ],
+  "pass": true
+}
