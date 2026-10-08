@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-dev-port",
+  "generated_at": "2026-10-08T01:52:04Z",
+  "baseline_commit": "aee47fdc01b70112ab2a68fb568cd1e2fb7b8b2f",
+  "payload_count": 8,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-dev-port/port_vs_dev_tip.diff",
+      "bytes": 5992,
+      "sha256": "f54d1e33c2a14e92553ca5bc483ef04d0f315987d86288d1e4fa5f3f385ca476"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-port/apptest_packaged.json",
+      "bytes": 4311,
+      "sha256": "b9e6a562956c51aadf63ad7a05cbac8e7dd5a1a73426ae4c3859404f66b90507"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-port/pytest_packaged.txt",
+      "bytes": 32,
+      "sha256": "952e71b9c02e0a721b59ce1f174a5fb2cb676f8aa324304d592709e9a138a264"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-port/import_ui_app_after.txt",
+      "bytes": 19,
+      "sha256": "42a27240d4d98dc9fe6b0a23c2f38865ca31f4c31d79757f4d887499cc50aee5"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-port/import_ui_app_dev_tip_before.txt",
+      "bytes": 39,
+      "sha256": "d8f890e20665fa859c1ddbd74386ab8a6923afbe33e2d4c160c95812d6857999"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-port/pr_body.md",
+      "bytes": 1986,
+      "sha256": "ce3566f8e8104e416bec23e7b5c319f0218958c2c1c2aea668f90efb69bbf62b"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-port/dev_port_findings.json",
+      "bytes": 2094,
+      "sha256": "0101a2ee860888828efc1a18ac5373a12cb3377616571df97773ee7eedc59014"
+    },
+    {
+      "path": "evidence/gate2/20261007-dev-port/SUMMARY.md",
+      "bytes": 497,
+      "sha256": "772ca2ebb57ee6392af719104549efff75d7716f149a7aee16b745f7b7ffb8df"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "dev_port_pr_112": "OPEN, verified locally"
+  },
+  "related_run": "20261007-rc7-release",
+  "manifest_sha256": "78dd99cc553944f7b0dabf6171d82b0d6dc1093af30cc1a822914995375e194a"
+}

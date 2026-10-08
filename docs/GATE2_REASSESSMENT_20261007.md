@@ -174,3 +174,11 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - **테스터 경로 불변**: `BETA_LATEST_TAG.txt`=rc6, Latest 표시=rc6, `dev` 끝 `c10fd2c3`.
 - 이로써 `BETA_LATEST_TAG`를 rc7로 바꿔도 새 설치자가 빈 서재로 시작하는 문제는 사라진다(코퍼스 번들 내용 자체의 정합성은 검증하지 않았고 rc6와 바이트 동일함만 확인).
 - 남은 승인 항목: `dev` 이식 PR → `BETA_LATEST_TAG.txt` PR(병합 시 테스터 전원에게 영향). 그 전에 설치 end-to-end(트랙 C) 평가를 권고.
+
+## 부록 M — dev 이식 PR #112 (2026-10-07, HQ 승인)
+
+- PR https://github.com/nkbang/DBMA/pull/112 (`port/nae-optional-to-dev` → `dev/dbma-engine`), **열려 있음·미병합**. evidence: `evidence/gate2/20261007-dev-port/`.
+- rc7 핫픽스와 줄 단위로 동일한 변경(3개 파일, +93/-2). `dev`의 `chat.py`는 임포트가 더 추가돼 한 군데를 수동으로 옮겼다.
+- 검증: `NAE/` 없는 배포 트리에서 `import ui.app` rc=0(수정 전 `dev` 끝은 rc=1), `ui` 참조 시험 34개 파일 297 passed, AppTest 9 runs 문제 0.
+- **병합해도 테스터에게 가는 버전은 바뀌지 않는다**(`BETA_LATEST_TAG.txt` 미변경). 병합하지 않으면 `dev`에서 만드는 다음 태그에 결함이 재유입된다. 이 PR에는 자동 CI가 없어 근거는 위 로컬 검증이다.
+- 남은 승인 항목: PR 병합 결정, `BETA_LATEST_TAG.txt` → rc7 PR(병합 시 테스터 전원에게 영향; 그 전에 설치 end-to-end 평가 권고).
