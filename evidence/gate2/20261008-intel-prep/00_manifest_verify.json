@@ -1,0 +1,80 @@
+{
+  "schema_version": "2",
+  "run_id": "20261008-intel-prep",
+  "verified_at": "2026-10-08T19:53:06Z",
+  "manifest_path": "evidence/gate2/20261008-intel-prep/manifest.json",
+  "verification_source": "git archive of committed tree 53c01a255fe6662ae036ba2b52e4f66291a5c4d6",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 8,
+  "verified_count": 8,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "36758882cc8444257e47f55053c450945a6b5dce8da9785b15b7486508c3c03c",
+  "canonical_manifest_sha256_actual": "36758882cc8444257e47f55053c450945a6b5dce8da9785b15b7486508c3c03c",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261008-intel-prep/requirements_input_no_hunspell.txt",
+      "expected_bytes": 308,
+      "actual_bytes": 308,
+      "expected_sha256": "0f9f3bb62d4fea8c2a2ca16bcf16285ba91a456e7785a4ac307e429ea5d0495a",
+      "actual_sha256": "0f9f3bb62d4fea8c2a2ca16bcf16285ba91a456e7785a4ac307e429ea5d0495a",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/requirements_core_resolved.txt",
+      "expected_bytes": 298,
+      "actual_bytes": 298,
+      "expected_sha256": "74c570460b266dfd936102af434553cc3059515b5d3e2967c86ef824a9b2bfd5",
+      "actual_sha256": "74c570460b266dfd936102af434553cc3059515b5d3e2967c86ef824a9b2bfd5",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/pip_x86_dryrun_attempt1_kiwi_conflict.txt",
+      "expected_bytes": 116439,
+      "actual_bytes": 116439,
+      "expected_sha256": "e92837d8848eaa89a49819bab76c044f45b0df410864ffee65fa3a0892518e4a",
+      "actual_sha256": "e92837d8848eaa89a49819bab76c044f45b0df410864ffee65fa3a0892518e4a",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/pip_x86_dryrun_core.txt",
+      "expected_bytes": 110865,
+      "actual_bytes": 110865,
+      "expected_sha256": "30d091e9f78642ed0736d2c8eba627e1a1a1002a58db98ad650524f6a073a4f0",
+      "actual_sha256": "30d091e9f78642ed0736d2c8eba627e1a1a1002a58db98ad650524f6a073a4f0",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/pip_arm64_dryrun_core.txt",
+      "expected_bytes": 74284,
+      "actual_bytes": 74284,
+      "expected_sha256": "5e8d6c679ad7dd714932c7c80978bf1fa39e94df62e9c30a460efd5b67ddc456",
+      "actual_sha256": "5e8d6c679ad7dd714932c7c80978bf1fa39e94df62e9c30a460efd5b67ddc456",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/ollama_local_inspection.txt",
+      "expected_bytes": 237,
+      "actual_bytes": 237,
+      "expected_sha256": "c24e64f20e7335cf5b92601d77a7b1685db8ea5a5b5f966412a43eae7d21fc6f",
+      "actual_sha256": "c24e64f20e7335cf5b92601d77a7b1685db8ea5a5b5f966412a43eae7d21fc6f",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/intel_prep_findings.json",
+      "expected_bytes": 3425,
+      "actual_bytes": 3425,
+      "expected_sha256": "e18383cda2ceb5e9effe8eaa2306be1dbefe9d81e9f463d168a3ff598cb1a68b",
+      "actual_sha256": "e18383cda2ceb5e9effe8eaa2306be1dbefe9d81e9f463d168a3ff598cb1a68b",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/SUMMARY.md",
+      "expected_bytes": 746,
+      "actual_bytes": 746,
+      "expected_sha256": "8cebb08aab9f678c6dcaaf8a97e323287a78d3e5516fed095d2cbf3b734bf008",
+      "actual_sha256": "8cebb08aab9f678c6dcaaf8a97e323287a78d3e5516fed095d2cbf3b734bf008",
+      "match": true
+    }
+  ],
+  "pass": true
+}
