@@ -1,0 +1,48 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-phase8090-rerun",
+  "verified_at": "2026-10-08T00:35:27Z",
+  "manifest_path": "evidence/gate2/20261007-phase8090-rerun/manifest.json",
+  "verification_source": "git archive of committed tree 2447618434f2f4681f619f51965893fd37ed1046",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 4,
+  "verified_count": 4,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "12dc3874a7283451a3d537f84619251a0229720e446df6b938800a762c3869e7",
+  "canonical_manifest_sha256_actual": "12dc3874a7283451a3d537f84619251a0229720e446df6b938800a762c3869e7",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-phase8090-rerun/80_real_output.txt",
+      "expected_bytes": 1616,
+      "actual_bytes": 1616,
+      "expected_sha256": "4ef8172e73219e1405004ee8c55e4c9d34fba431a13c9e2697580402f47a3562",
+      "actual_sha256": "4ef8172e73219e1405004ee8c55e4c9d34fba431a13c9e2697580402f47a3562",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090-rerun/90_real_output.txt",
+      "expected_bytes": 238,
+      "actual_bytes": 238,
+      "expected_sha256": "847dcf102d5088122a66ca6d9bf24e5b9dbd83bcceda764f0664ab5393cedfb4",
+      "actual_sha256": "847dcf102d5088122a66ca6d9bf24e5b9dbd83bcceda764f0664ab5393cedfb4",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090-rerun/rerun_findings.json",
+      "expected_bytes": 1430,
+      "actual_bytes": 1430,
+      "expected_sha256": "894ccdbcc48748f8e14588bedc2e8ff5c66c8ff21706c5d02588593bd7d5fc8a",
+      "actual_sha256": "894ccdbcc48748f8e14588bedc2e8ff5c66c8ff21706c5d02588593bd7d5fc8a",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-phase8090-rerun/SUMMARY.md",
+      "expected_bytes": 454,
+      "actual_bytes": 454,
+      "expected_sha256": "a0d90c59893231e8f891fea7379330f59d517848519b752ca0ea1a9efc06b108",
+      "actual_sha256": "a0d90c59893231e8f891fea7379330f59d517848519b752ca0ea1a9efc06b108",
+      "match": true
+    }
+  ],
+  "pass": true
+}
