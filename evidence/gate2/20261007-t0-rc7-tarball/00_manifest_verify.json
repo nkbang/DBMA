@@ -1,0 +1,80 @@
+{
+  "schema_version": "2",
+  "run_id": "20261007-t0-rc7-tarball",
+  "verified_at": "2026-10-08T01:46:04Z",
+  "manifest_path": "evidence/gate2/20261007-t0-rc7-tarball/manifest.json",
+  "verification_source": "git archive of committed tree 84ec0b5973fcdaf0f8c961cfd213228a05816634",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 8,
+  "verified_count": 8,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "d64a91619640a0fdde7f98723132d934ca12f8635e06b98fad8ae1789659ff83",
+  "canonical_manifest_sha256_actual": "d64a91619640a0fdde7f98723132d934ca12f8635e06b98fad8ae1789659ff83",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/T0_rc7_tarball_listing.txt",
+      "expected_bytes": 102220,
+      "actual_bytes": 102220,
+      "expected_sha256": "42d64d2ea4d07d67a89d0c67cc0b9ab8af8a01279a18e4f2aab598f9d495e3ee",
+      "actual_sha256": "42d64d2ea4d07d67a89d0c67cc0b9ab8af8a01279a18e4f2aab598f9d495e3ee",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/curl_result.txt",
+      "expected_bytes": 114,
+      "actual_bytes": 114,
+      "expected_sha256": "5bc6370a35f5461ea83eb6fbedb5e0b2608e46dc5afc33ba6c321f584bea1cae",
+      "actual_sha256": "5bc6370a35f5461ea83eb6fbedb5e0b2608e46dc5afc33ba6c321f584bea1cae",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/tarball_sha256.txt",
+      "expected_bytes": 65,
+      "actual_bytes": 65,
+      "expected_sha256": "2330d6b7bb5484da01dabae2b6944becf0eade0481710393463c50213aee3485",
+      "actual_sha256": "2330d6b7bb5484da01dabae2b6944becf0eade0481710393463c50213aee3485",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/import_ui_app_rc7_tarball.txt",
+      "expected_bytes": 191,
+      "actual_bytes": 191,
+      "expected_sha256": "47db87352232e2ae4fc56846b1756be6216aa2d561dee8018b3c580636f447fb",
+      "actual_sha256": "47db87352232e2ae4fc56846b1756be6216aa2d561dee8018b3c580636f447fb",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/tarball_rc6_vs_rc7.diff",
+      "expected_bytes": 206,
+      "actual_bytes": 206,
+      "expected_sha256": "9a6afa902429b249f9e62c202b25ced07198f21287ad5a802169e994a387d9bc",
+      "actual_sha256": "9a6afa902429b249f9e62c202b25ced07198f21287ad5a802169e994a387d9bc",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/apptest_rc7_tarball.json",
+      "expected_bytes": 4924,
+      "actual_bytes": 4924,
+      "expected_sha256": "ad374563c2e84b553093b0431520b8ad81a2c33a143c135cc48a572e39e5bfa5",
+      "actual_sha256": "ad374563c2e84b553093b0431520b8ad81a2c33a143c135cc48a572e39e5bfa5",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/t0_rc7_findings.json",
+      "expected_bytes": 2162,
+      "actual_bytes": 2162,
+      "expected_sha256": "693cca5e8ad2213c9cefabc0581b3f71ea787b39708aafc1dd01a3650fb1c5d7",
+      "actual_sha256": "693cca5e8ad2213c9cefabc0581b3f71ea787b39708aafc1dd01a3650fb1c5d7",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261007-t0-rc7-tarball/SUMMARY.md",
+      "expected_bytes": 490,
+      "actual_bytes": 490,
+      "expected_sha256": "87f89dd67be6998a96beeb00586998b494ebdc76b372c4c9a188e55cf4fbdb96",
+      "actual_sha256": "87f89dd67be6998a96beeb00586998b494ebdc76b372c4c9a188e55cf4fbdb96",
+      "match": true
+    }
+  ],
+  "pass": true
+}
