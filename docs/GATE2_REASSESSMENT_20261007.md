@@ -221,3 +221,14 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - 설치 스크립트의 Apple Silicon 가정: `eval "$(/opt/homebrew/bin/brew shellenv)"`(코드 추정으로는 Intel에서 중단되지 않으나 **미실행**), 설치기는 시작 시 아키텍처·macOS 버전을 점검하지 않는다.
 - 정정: 첫 의존성 해석 실패는 `kiwipiepy_model`의 sdist-only 때문이며 Intel 비호환이 아니었다(분리 재해석). 자동 추출한 `transformers` 버전이 잘못되어 원본 로그의 `4.57.6`으로 바로잡았다.
 - 한계: 의존성 해석 수준이며 Intel에서 설치·실행한 결과가 아니다.
+
+## 부록 Q — Windows 지원 요구 접수 및 현황 점검 (2026-10-08)
+
+- 요구: "윈도우 머신에서도 동작해야 하는 버전을 배포해야 한다." 이는 Intel/Apple Silicon 논의와 달리 **새 플랫폼 추가**다. 이 부록은 설계·구현 착수가 아닌 **현황 점검**이다. evidence: `evidence/gate2/20261008-windows-audit/`.
+- **앱 코드는 이식성이 좋은 편**: `core`/`ui`/`dbma_ui.py`(py 126개)에서 POSIX 전용 API 0건, macOS 전용 호출 0건, 하드코딩 절대경로 1건(`/usr/share/dict/words`, `OSError` 시 빈 집합으로 degrade), 경로는 `Path`/`os.path`(140건) 사용.
+- **위험 1 — 인코딩**: 텍스트 모드 `open()` 64건 중 14건, `write_text` 1건이 `encoding` 미지정 → 한국어 Windows(cp949)에서 헬라어·히브리어를 쓰면 `UnicodeEncodeError`/깨짐 가능. 기계적으로 고칠 수 있다.
+- **위험 2 — 설치·배포 계층 전체가 macOS 전용**: `setup_beta_tester.command`(macOS 전용 호출 52곳), `install_nae_beta.command`(7곳), 셸 스크립트 13개. `INSTALL.md`는 "macOS 우선 가이드"이고 Windows는 Ollama 인스톨러 안내 한 줄. **Windows 설치기는 신규 작성**이 필요하다.
+- **위험 3 — 의존성**: Windows(win_amd64, cp311) wheel 기준 해석에서 `chromadb`를 뺀 26개 전부 성공(`torch 2.14.1` 등). `chromadb` 실패는 pip이 환경 마커를 호스트(macOS)로 평가해 `uvloop`(Windows wheel 없음)을 요구한 **시험 방법의 한계**이며, `uvloop`을 제외하면 해석된다 — 비호환 증거가 아니지만 실제 Windows 설치로 확정해야 한다. `hunspell`은 Windows 배포본이 없어 소스 빌드가 필요하다(앱은 지연 import + `ImportError` 보호가 있으나 UI 동작은 미확인). `poppler`·`tesseract` 같은 외부 바이너리도 별도 설치가 필요하다.
+- **Ollama**: v0.40.1에 `OllamaSetup.exe`(1.58GB), `windows-amd64`/`arm64` zip이 있어 Windows 지원은 공식 제공된다(앱과의 동작은 미시험).
+- 정정: 첫 정적 점검이 전부 0건이었던 것은 zsh에서 경로 목록 변수가 분리되지 않은 오류였고, `brew ` 정규식이 "Hebrew"를 오탐했다. 둘 다 고쳐서 재실행했다.
+- **한계**: Windows에서 실행한 결과가 전혀 없다. 결정 필요: 배포 형태(PowerShell 설치기 / 단일 설치 프로그램), 최소 사양, 코드서명(SmartScreen), 범위(전 기능/핵심), Windows on ARM 포함 여부, 평가 환경.

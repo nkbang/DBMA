@@ -1,0 +1,50 @@
+{
+  "run_id": "20261008-windows-audit",
+  "trigger": "사용자: '윈도우 머신에서도 동작해야 하는 버전을 배포해야 한다'",
+  "kind": "현황 점검(정적·의존성 해석). 구현·설계 착수 아님",
+  "code_portability": {
+    "files": "core/ui/dbma_ui.py의 py 126개 (origin/dev/dbma-engine)",
+    "posix_only_api": 0,
+    "macos_only_calls": 0,
+    "hardcoded_abs_paths": 1,
+    "path_style": "os.path.join/Path 140건 vs 문자열 결합 추정 0건",
+    "encoding_risk": "텍스트 open() 64건 중 14건, write_text 1건이 encoding 미지정 → 한국어 Windows(cp949)에서 헬라어·히브리어 기록 시 UnicodeEncodeError/깨짐 위험(기계적 수정 가능)",
+    "english_words_path": "/usr/share/dict/words는 OSError 시 빈 집합으로 degrade — Windows에서 기능 저하(영어 단어 판별) 가능, 실패는 아님"
+  },
+  "install_layer": {
+    "status": "전부 macOS 전용 — Windows 설치기 신규 필요",
+    "setup_beta_tester_mac_calls": 52,
+    "install_nae_beta_mac_calls": 7,
+    "shell_scripts": 13,
+    "docs": "INSTALL.md는 'macOS 우선 가이드', Windows는 Ollama 인스톨러 안내 한 줄뿐"
+  },
+  "dependencies": {
+    "method": "arm64 Mac에서 pip install --dry-run --platform win_amd64 --python-version 3.11 --only-binary=:all: (의존성 해석만)",
+    "resolved_without_chromadb": "26/26 해석 성공 (torch 2.14.1, torchvision 0.29.1, docling 2.135.0, transformers 5.19.0, tantivy 0.26.0, pymupdf 1.28.2, easyocr 1.7.2)",
+    "chromadb": "전체 해석은 실패하나 원인은 시험 방법의 한계: pip이 환경 마커를 호스트(darwin)로 평가해 uvicorn[standard]가 uvloop(Windows wheel 없음)을 요구. uvloop을 제외하고 chromadb 1.5.9·uvicorn·httptools·watchfiles·websockets를 해석하면 성공 → Windows 비호환 증거 아님, 단 실제 Windows 설치로 확정 필요",
+    "hunspell": "Windows 배포본(wheel) 없음 ('from versions: none') — 소스 빌드(MSVC + hunspell 라이브러리) 필요. 앱은 지연 import + ImportError 보호가 있으나 UI의 실제 동작(맞춤법 기능 비활성 vs 오류)은 미확인",
+    "kiwipiepy": "0.24.0 win_amd64 wheel 존재",
+    "external_binaries": "pdf2image(poppler)·pytesseract(tesseract)는 외부 실행 파일 필요 → Windows에서 별도 설치/번들 필요(이번에 미조사)"
+  },
+  "ollama": {
+    "windows_assets": "v0.40.1에 OllamaSetup.exe(1.58GB), windows-amd64/arm64 zip 존재 → Windows 지원은 공식 제공",
+    "note": "가용성 확인일 뿐 이 앱과의 동작은 미시험; 다운로드 크기 1.5GB급"
+  },
+  "unknowns": [
+    "Qdrant localhost:6333 의존이 필수인지(설치 스크립트는 Qdrant를 설치하지 않음) — 플랫폼 공통 이슈",
+    "Windows에서 실제 설치·실행 결과 전무",
+    "Windows on ARM 포함 여부",
+    "코드서명/SmartScreen·Defender 경고 대응",
+    "기존 시험·Gate 2 스크립트는 bash/POSIX 가정 — Windows용 평가 인프라 없음"
+  ],
+  "corrections": [
+    "첫 정적 점검이 전부 0건으로 나온 것은 zsh에서 경로 목록 변수가 분리되지 않아 검색 대상이 비었던 오류 — 배열로 고쳐 재실행",
+    "macOS 전용 호출 정규식이 'Hebrew'를 'brew '로 오탐 — 실제 0건",
+    "chromadb Windows 해석 실패를 Windows 비호환으로 단정하지 않고 마커 평가 한계로 분석"
+  ],
+  "limits": [
+    "정적 점검과 의존성 해석 수준 — Windows에서 실행한 것이 아님",
+    "의존성 해석은 2026-10-08 PyPI 시점",
+    "core/ui 밖(scripts, NAE 등)의 이식성은 점검하지 않음"
+  ]
+}
