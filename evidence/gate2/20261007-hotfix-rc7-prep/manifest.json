@@ -1,0 +1,56 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-hotfix-rc7-prep",
+  "generated_at": "2026-10-08T01:37:01Z",
+  "baseline_commit": "4be5223f2091d9ef30ac3feb0fec91a9ef5cd6c2",
+  "payload_count": 6,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/hotfix_vs_rc6.diff",
+      "bytes": 5923,
+      "sha256": "ebd3d313b527ef4d1bccecdfd3a58cfcdb821eafc931cf2125f8eeed4f1dd5b0"
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/apptest_packaged.json",
+      "bytes": 4899,
+      "sha256": "c3f968d4cc301d999377319d1cd32d2c826c836c34540f092a0b78992aca77af"
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/pytest_packaged.txt",
+      "bytes": 32,
+      "sha256": "fbc6f5740823806e93fd65e456b4a8e3ff9c118fea089aa8b2075315a278916d"
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/import_ui_app_packaged.txt",
+      "bytes": 19,
+      "sha256": "42a27240d4d98dc9fe6b0a23c2f38865ca31f4c31d79757f4d887499cc50aee5"
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/hotfix_prep_findings.json",
+      "bytes": 2672,
+      "sha256": "071704ccdf111cd87295b3edbd007540ae7e19d00bce8d690e3bbfb566b26a97"
+    },
+    {
+      "path": "evidence/gate2/20261007-hotfix-rc7-prep/SUMMARY.md",
+      "bytes": 532,
+      "sha256": "5985003f4c00cabce7c93d71206ea69e423ab68e7d9b82e8fcb36f09ddca2fd7"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "hotfix_branch_verification": "PASS (local, unpushed)"
+  },
+  "related_run": "20261007-rc6check",
+  "manifest_sha256": "c3bc5aaa02cfdbd6ed1572a616ea48bb655f7c87e47e1a54eb47502614f0e374"
+}

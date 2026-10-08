@@ -130,3 +130,11 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - **한계**: `git archive` 기준이며 GitHub 실제 태그 tarball이 `export-ignore`를 따르는지는 다운로드로 확인하지 않았다(깨끗한 환경 평가 절차서 T0).
 - **조치(승인 사항, 미수행)**: 핫픽스 후보 태그 생성, `dev/dbma-engine` 병합, `BETA_LATEST_TAG.txt` 조정은 HQ 승인 후에만 진행한다.
 - 깨끗한 환경 평가 절차서: `docs/GATE2_CLEAN_ENV_EVALUATION_PROCEDURE.md` (트랙 A는 이 결함의 릴리스 재현을 확정하는 평가다).
+
+## 부록 G — rc7 핫픽스 브랜치 준비 (2026-10-07, 로컬)
+
+- evidence: `evidence/gate2/20261007-hotfix-rc7-prep/`
+- 방안 A 채택: `hotfix/rc7-nae-optional`(베이스 `beta-v1.3.0-rc6`, 별도 워크트리 `.claude/worktrees/hotfix-rc7-nae-optional`), 로컬 전용·미푸시. 변경은 `ui/` 2개 파일 + 회귀 시험 1개(rc6 대비 +93/-2).
+- 검증: `NAE/` 없는 배포 트리에서 `import ui.app` rc=0, 시험 73 passed, AppTest 11 runs 문제 0; `NAE/` 있는 워크트리에서 `ui`를 참조하는 시험 278 passed. 대조군(수정 없는 rc6)은 임포트 실패.
+- **미수행(승인 필요)**: 브랜치 푸시, 태그 `beta-v1.3.0-rc7`, GitHub Release 및 rc6 코퍼스 자산(49MB) 재업로드(없으면 새 설치자는 빈 서재로 시작), `BETA_LATEST_TAG.txt` 갱신 PR, `dev/dbma-engine`로의 수정 이식 PR(`chat.py` 한 군데 수동 충돌 예상).
+- 한계: GitHub 실제 태그 tarball의 `export-ignore` 적용은 미확인(절차서 T0).
