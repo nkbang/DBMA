@@ -121,3 +121,12 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 | D4 | 해소(40 격리 모드 실제 실행 PASS) |
 | Phase 95 | VACUOUS (`stdout_sha256` 설계 필요) |
 | 깨끗한 환경 평가 | **미평가 — 유일한 큰 잔여 항목** |
+
+## 부록 F — 현 릴리스(`beta-v1.3.0-rc6`)에도 F1 존재 (2026-10-07)
+
+- evidence: `evidence/gate2/20261007-rc6check/`
+- `install_nae_beta.command`가 테스터에게 내려받게 하는 태그는 `origin/dev/dbma-engine`의 `BETA_LATEST_TAG.txt` = `beta-v1.3.0-rc6`이다. 이 태그를 `git archive`로 풀면 `ui/components/nae_public_section.py:25`와 `ui/pages/chat.py:47`에 NAE 최상위 import가 있고 `NAE/ export-ignore`가 적용되어 `import ui.app`·AppTest가 `No module named 'NAE'`로 실패한다.
+- F1·F1-b·D4 수정(`3a10bb3b`, `f49ffeb3`, `aafd2dfb`)은 `origin/dev/dbma-engine`에도 어떤 태그에도 없다. 현재 브랜치는 rc6보다 126 커밋 앞선다.
+- **한계**: `git archive` 기준이며 GitHub 실제 태그 tarball이 `export-ignore`를 따르는지는 다운로드로 확인하지 않았다(깨끗한 환경 평가 절차서 T0).
+- **조치(승인 사항, 미수행)**: 핫픽스 후보 태그 생성, `dev/dbma-engine` 병합, `BETA_LATEST_TAG.txt` 조정은 HQ 승인 후에만 진행한다.
+- 깨끗한 환경 평가 절차서: `docs/GATE2_CLEAN_ENV_EVALUATION_PROCEDURE.md` (트랙 A는 이 결함의 릴리스 재현을 확정하는 평가다).

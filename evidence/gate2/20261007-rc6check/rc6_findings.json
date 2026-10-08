@@ -1,0 +1,40 @@
+{
+  "run_id": "20261007-rc6check",
+  "recorded_at": "2026-10-08T00:52:28Z",
+  "subject": {
+    "tag": "beta-v1.3.0-rc6",
+    "tag_commit": "d16095e24593538f4cce2418eacc2618599828e3",
+    "BETA_LATEST_TAG_on_origin_dev_dbma_engine": "beta-v1.3.0-rc6",
+    "meaning": "install_nae_beta.command가 테스터에게 내려받게 하는 태그"
+  },
+  "static_findings": {
+    "top_level_NAE_imports": [
+      "ui/components/nae_public_section.py:25",
+      "ui/pages/chat.py:47"
+    ],
+    "gitattributes": "NAE/ export-ignore"
+  },
+  "empirical": {
+    "method": "git archive beta-v1.3.0-rc6 → scratch(NAE/ 없음 확인), requirements가 설치된 venv로 실행",
+    "import_ui_app": "FAIL rc=1 — ModuleNotFoundError: No module named 'NAE'",
+    "apptest": "예외: No module named 'NAE'",
+    "evidence": [
+      "rc6_import_ui_app.txt",
+      "rc6_apptest.txt"
+    ]
+  },
+  "fixes_not_in_release_line": {
+    "commits": [
+      "3a10bb3b(F1)",
+      "f49ffeb3(F1-b)",
+      "aafd2dfb(D4)"
+    ],
+    "in_origin_dev_dbma_engine": false,
+    "note": "현재 브랜치는 rc6보다 126 커밋 앞섬"
+  },
+  "limits": [
+    "git archive 기준이다. GitHub가 만드는 실제 태그 tarball이 export-ignore를 따르는지는 다운로드로 확인하지 않았다 (절차서 T0에서 확인)",
+    "설치기 end-to-end를 rc6로 실행한 것이 아니라 동일 트리의 임포트·AppTest 결과",
+    "이 발견에 대한 릴리스 조치(핫픽스 태그, BETA_LATEST_TAG 조정, 병합)는 승인 사항이며 수행하지 않았다"
+  ]
+}

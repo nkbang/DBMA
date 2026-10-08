@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-rc6check",
+  "generated_at": "2026-10-08T00:52:28Z",
+  "baseline_commit": "1244dcdb567463e2b1600f52b30d1f3b0e2f5a9d",
+  "payload_count": 4,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-rc6check/rc6_import_ui_app.txt",
+      "bytes": 1349,
+      "sha256": "821108d51bceb55420803aed45260f180aeecb5c01b7a9024eeb4949d86d208f"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc6check/rc6_apptest.txt",
+      "bytes": 46,
+      "sha256": "c540e82945ec704f29bd3408c12fcb1d33f1a8ee75d96cf37221f4a4a4694bd3"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc6check/rc6_findings.json",
+      "bytes": 1554,
+      "sha256": "e0640365a676a15a73c1e822ea1c06a75e5d793df0bd5ef26ed30cd7b43e0956"
+    },
+    {
+      "path": "evidence/gate2/20261007-rc6check/SUMMARY.md",
+      "bytes": 495,
+      "sha256": "87d73f55796c056918bb975f9224f8c6849f31ad600b77b7232821c9e9bec5d6"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "release_rc6_import": "FAIL (git archive basis)"
+  },
+  "related_run": "20261007-d4fix",
+  "manifest_sha256": "7ab6998be0c8aae3dc9459ee8925aa29cd1478af1d26931e8ce8f58dd072eccb"
+}
