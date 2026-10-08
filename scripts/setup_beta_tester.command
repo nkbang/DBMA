@@ -40,17 +40,41 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 cd "$(dirname "$0")/.."
 PROJECT_ROOT="$(pwd)"
 
+# [Gate 2 재판정 D4] NAE_SETUP_ISOLATED=1 — 격리 평가 모드(기본 꺼짐, 최종 사용자 동작은 그대로).
+# 켜면 이 Mac의 전역 상태를 바꾸는 단계(Homebrew/Ollama 설치, /Applications·/usr/local 쓰기,
+# ollama serve/pull, 실행 중 streamlit pkill, 브라우저 열기, 알림·대화상자)를 건너뛴다.
+# 필요한 구성 요소가 이미 없으면 설치하지 않고 종료 코드 3(PREREQ_MISSING)으로 알린다.
+# NAE_SETUP_PORT로 streamlit 포트를 바꿀 수 있다(기본 8520).
+ISOLATED="${NAE_SETUP_ISOLATED:-0}"
+
 notify() {
     # $1=제목 $2=본문
-    osascript -e "display notification \"$2\" with title \"내서재(NAE) 베타 설치\" subtitle \"$1\"" >/dev/null 2>&1 || true
+    if [ "$ISOLATED" != "1" ]; then
+        osascript -e "display notification \"$2\" with title \"내서재(NAE) 베타 설치\" subtitle \"$1\"" >/dev/null 2>&1 || true
+    fi
     echo "[$1] $2"
 }
 
 fatal() {
     # $1=사용자에게 보여줄 메시지 — 대화상자로 띄우고 종료
-    osascript -e "display dialog \"$1\" with title \"내서재(NAE) 베타 설치\" buttons {\"확인\"} default button \"확인\" with icon caution" >/dev/null 2>&1 || true
+    if [ "$ISOLATED" != "1" ]; then
+        osascript -e "display dialog \"$1\" with title \"내서재(NAE) 베타 설치\" buttons {\"확인\"} default button \"확인\" with icon caution" >/dev/null 2>&1 || true
+    fi
     echo "FATAL: $1"
     exit 1
+}
+
+# 격리 모드에서 전역 설치가 필요해지면(= 전제 조건 부재) 설치하지 않고 종료한다.
+prereq_missing() {
+    echo "PREREQ_MISSING: $1 (NAE_SETUP_ISOLATED=1 — 설치하지 않음)"
+    exit 3
+}
+
+brew_install() {
+    if [ "$ISOLATED" = "1" ]; then
+        prereq_missing "brew 패키지 $*"
+    fi
+    brew install "$@"
 }
 
 # [S5-1] Homebrew는 이게 실제로 호출될 때만(poppler/tesseract/python@3.11
@@ -59,6 +83,9 @@ fatal() {
 ensure_homebrew() {
     if command -v brew >/dev/null 2>&1; then
         return 0
+    fi
+    if [ "$ISOLATED" = "1" ]; then
+        prereq_missing "Homebrew"
     fi
     notify "준비 중" "Homebrew를 설치합니다 (몇 분 걸릴 수 있습니다)..."
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
@@ -70,6 +97,9 @@ ensure_homebrew() {
 # 실패하면(네트워크 문제, /Applications 쓰기 권한 없음 등) 1을 반환한다
 # — 실패는 fatal()로 바로 끝내지 않고 Homebrew 경로로 넘어간다.
 install_ollama_direct() {
+    if [ "$ISOLATED" = "1" ]; then
+        prereq_missing "Ollama"
+    fi
     local zip="/tmp/nae_ollama_install_$$.zip"
     notify "3/5 설치 중" "Ollama(AI 엔진)를 내려받는 중입니다..."
     if ! curl -fsSL --retry 3 --retry-delay 2 \
@@ -102,6 +132,11 @@ install_ollama_direct() {
 pull_model_with_retry() {
     local model="$1"
     local label="$2"
+    if [ "$ISOLATED" = "1" ]; then
+        ollama list 2>/dev/null | awk 'NR>1 {print $1}' | grep -qx "$model" \
+            || prereq_missing "Ollama 모델 ${model}"
+        return 0
+    fi
     local max_attempts=5
     local attempt=1
     while [ "$attempt" -le "$max_attempts" ]; do
@@ -139,11 +174,15 @@ if ! command -v ollama >/dev/null 2>&1; then
     if ! install_ollama_direct; then
         notify "2/5 설치 중" "직접 설치가 안 돼 다른 방법으로 설치합니다..."
         ensure_homebrew
-        brew install ollama || fatal "Ollama 설치에 실패했습니다."
+        brew_install ollama || fatal "Ollama 설치에 실패했습니다."
     fi
 fi
-(ollama serve >/dev/null 2>&1 &) 2>/dev/null || true
-sleep 2
+if [ "$ISOLATED" = "1" ]; then
+    ollama list >/dev/null 2>&1 || prereq_missing "실행 중인 Ollama 서버"
+else
+    (ollama serve >/dev/null 2>&1 &) 2>/dev/null || true
+    sleep 2
+fi
 
 # 스캔 PDF OCR(requirements.txt의 pdf2image/pytesseract)에 필요한 시스템
 # 바이너리 — 없어도 앱은 뜨지만 스캔 문서 처리 시 조용히 실패한다
@@ -153,12 +192,12 @@ sleep 2
 if ! command -v pdftoppm >/dev/null 2>&1; then
     notify "3/5 설치 중" "PDF 처리 구성 요소(poppler)를 설치합니다..."
     ensure_homebrew
-    brew install poppler || fatal "poppler 설치에 실패했습니다."
+    brew_install poppler || fatal "poppler 설치에 실패했습니다."
 fi
 if ! command -v tesseract >/dev/null 2>&1; then
     notify "3/5 설치 중" "OCR 구성 요소(tesseract)를 설치합니다..."
     ensure_homebrew
-    brew install tesseract || fatal "tesseract 설치에 실패했습니다."
+    brew_install tesseract || fatal "tesseract 설치에 실패했습니다."
 fi
 
 notify "3/5 모델 다운로드" "AI 모델을 내려받는 중입니다 — 최초 1회, 네트워크 상태에 따라 수 분 소요됩니다."
@@ -172,7 +211,7 @@ notify "3/5 완료" "AI 모델 준비가 끝났습니다."
 notify "4/5 환경 준비" "실행 환경을 준비하는 중..."
 if ! command -v python3.11 >/dev/null 2>&1; then
     ensure_homebrew
-    brew install python@3.11 || fatal "Python 설치에 실패했습니다."
+    brew_install python@3.11 || fatal "Python 설치에 실패했습니다."
 fi
 if [ ! -d "$PROJECT_ROOT/.venv_beta" ]; then
     python3.11 -m venv "$PROJECT_ROOT/.venv_beta"
@@ -190,14 +229,20 @@ pip install -q --upgrade pip
 notify "4/5 환경 준비" "맞춤법 사전 구성 요소를 준비하는 중..."
 ensure_homebrew
 if ! brew list hunspell >/dev/null 2>&1; then
-    brew install hunspell || fatal "hunspell 설치에 실패했습니다."
+    brew_install hunspell || fatal "hunspell 설치에 실패했습니다."
 fi
-mkdir -p /usr/local/Cellar/hunspell/1.6.2/include || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
-mkdir -p /usr/local/lib || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
-ln -sf "$(brew --prefix hunspell)/include/hunspell" \
-    /usr/local/Cellar/hunspell/1.6.2/include/hunspell
-ln -sf "$(brew --prefix hunspell)/lib/libhunspell-1.7.dylib" \
-    /usr/local/lib/libhunspell.dylib
+if [ "$ISOLATED" = "1" ]; then
+    # 격리 모드: /usr/local에 쓰지 않는다 — 이미 구성돼 있어야 한다.
+    [ -e /usr/local/Cellar/hunspell/1.6.2/include/hunspell ] && [ -e /usr/local/lib/libhunspell.dylib ] \
+        || prereq_missing "hunspell 빌드용 /usr/local 링크"
+else
+    mkdir -p /usr/local/Cellar/hunspell/1.6.2/include || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
+    mkdir -p /usr/local/lib || fatal "맞춤법 사전 구성 요소 준비에 실패했습니다 — /usr/local 쓰기 권한을 확인해 주세요."
+    ln -sf "$(brew --prefix hunspell)/include/hunspell" \
+        /usr/local/Cellar/hunspell/1.6.2/include/hunspell
+    ln -sf "$(brew --prefix hunspell)/lib/libhunspell-1.7.dylib" \
+        /usr/local/lib/libhunspell.dylib
+fi
 # [Gate 2 실측] hunspell(0.5.5)의 setup.py는 macOS에서 library_dirs를
 # 전혀 지정하지 않는다(include_dirs만 하드코딩) — 링커가 -lhunspell을
 # 찾으려면 기본 검색 경로에 있어야 한다. distutils는 이 케이스에서
@@ -234,7 +279,7 @@ PYEOF
 #      실행하면 설치 스크립트 자체가 서버 종료까지 끝나지 않으므로,
 #      반드시 백그라운드(&)로 띄우고 이 스크립트는 정상 종료해야 한다.
 notify "5/5 실행" "내서재를 여는 중입니다..."
-STREAMLIT_PORT=8520
+STREAMLIT_PORT="${NAE_SETUP_PORT:-8520}"
 
 # 이전 실행의 서버 프로세스가 여전히 살아있으면(사용자가 브라우저 창만
 # 닫고 백그라운드 프로세스는 안 끄는 게 보통이라 흔함) 이 포트를 계속
@@ -245,19 +290,42 @@ STREAMLIT_PORT=8520
 # (core/user_prefs.py가 dismiss 여부를 서버 프로세스 메모리에 남기므로,
 # 프로세스가 안 바뀌면 dismiss 상태도 그대로 남는다). 그래서 새로
 # 띄우기 전에 이 스크립트가 띄웠던 프로세스를 먼저 확실히 종료한다.
-pkill -f "streamlit run dbma_ui.py.*--server.port ${STREAMLIT_PORT}" 2>/dev/null || true
-sleep 1
+if [ "$ISOLATED" != "1" ]; then
+    pkill -f "streamlit run dbma_ui.py.*--server.port ${STREAMLIT_PORT}" 2>/dev/null || true
+    sleep 1
+fi
 
 nohup streamlit run dbma_ui.py --server.headless true --server.port "$STREAMLIT_PORT" \
     > "$PROJECT_ROOT/beta_app.log" 2>&1 &
+STREAMLIT_PID=$!
 disown
 
 # 서버가 뜰 때까지 잠깐 대기 후 브라우저로 연다 (최대 30초)
+SERVER_UP=0
 for i in $(seq 1 30); do
     if curl -fs "http://localhost:${STREAMLIT_PORT}" >/dev/null 2>&1; then
+        SERVER_UP=1
         break
     fi
     sleep 1
 done
+
+if [ "$ISOLATED" = "1" ]; then
+    # 격리 모드: 브라우저를 열지 않고, 이 스크립트가 띄운 서버만 종료한다.
+    kill "$STREAMLIT_PID" 2>/dev/null || true
+    if [ "$SERVER_UP" = "1" ]; then
+        echo "ISOLATED: 서버 응답 확인(포트 ${STREAMLIT_PORT}) 후 종료"
+        exit 0
+    fi
+    echo "ISOLATED: 서버가 30초 안에 응답하지 않음 (beta_app.log 확인)"
+    exit 1
+fi
+
+# [Gate 2 D4] 서버가 안 떠도 "완료"라고 알리던 동작을 바로잡는다 — 느린 첫 기동일 수 있어
+# 브라우저는 그대로 열되(기존 동작 유지), 안내 문구는 정직하게 구분한다.
 open "http://localhost:${STREAMLIT_PORT}"
-notify "완료" "내서재가 열렸습니다. 브라우저 창을 확인해 주세요."
+if [ "$SERVER_UP" = "1" ]; then
+    notify "완료" "내서재가 열렸습니다. 브라우저 창을 확인해 주세요."
+else
+    notify "시작 중" "내서재 서버가 아직 응답하지 않습니다. 잠시 뒤 브라우저를 새로고침해 주세요. 계속 안 열리면 beta_app.log를 알려 주세요."
+fi
