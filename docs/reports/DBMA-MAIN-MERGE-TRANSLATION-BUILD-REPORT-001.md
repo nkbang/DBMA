@@ -1,8 +1,8 @@
 ---
 title: Build Report — main → fix/merge-production-path-safety 병합 및 질의 번역 통합
 created: 2026-10-08
-status: 구현 완료 · 전체 회귀 통과 · 커밋됨 (번역 방식 (a)+B 승인: Rev. Bang, 2026-10-08)
-scope: core/query_translation.py, core/query_translation_llm.py, core/candidate_generator.py, core/hybrid_candidate_pipeline.py, ui/components/nae_public_section.py, tests/
+status: 구현 완료 · 전체 회귀 통과 · 실코퍼스 검증 완료 · 커밋됨 (번역 방식 (a)+B, 한 음절 경계 조건 승인: Rev. Bang, 2026-10-08)
+scope: core/query_translation.py (한 음절 경계 조건 포함), core/query_translation_llm.py, core/candidate_generator.py, core/hybrid_candidate_pipeline.py, ui/components/nae_public_section.py, tests/
 baseline: 브랜치 `e5908af9` / main `7d65f4ec` / merge-base `39026424`
 venv: `~/envs/dbma311`
 ---
@@ -77,18 +77,53 @@ OCR 잡음에 걸려 0건이 되지 않으면 0건 폴백은 영영 발동하지
 | 충돌 5개 해결 후 관련 테스트 (번역·폴백·book filter·NAE 공개 답변·AD01/02) | 95 passed |
 | 전체 회귀 (`tests`) | **3,688 passed, 21 skipped, 0 failed** (152초) |
 | 비교: `main` 전체 회귀 (`7d65f4ec`) | 3,513 passed, 21 skipped, 0 failed |
+| 경계 조건 수정 후 전체 회귀 | **3,693 passed, 21 skipped, 0 failed** (112초) |
 | 신규 계약 테스트 | 사전이 덮는 질의("칭의와 성화의 관계")는 Stage-1 전에 LLM을 부르지 않는다 |
 | NAE 부재 시뮬레이션 | `ui.components.nae_public_section` 임포트 성공, `get_disclosure`/`select_evidence`는 `None` |
 
 병합은 임시 worktree에서 수행·검증한 뒤 실제 브랜치에 빨리감기로 반영했다
 (반영 직전 메인 체크아웃의 추적 파일 변경 0 확인).
 
+## 실제 코퍼스 검증 (119,595 TSU, 복사본 사용·원본 무변경)
+
+`output/bench`의 복사본에 세 버전(before `e5908af9` / main `7d65f4ec` / after `5eb46624`)으로
+한국어 질의 8개를 실행했다(`top_k=5`, 새 캐시·텔레메트리). 상위 결과를 직접 읽고 판단했다.
+
+| 질의 | before | main | after | 판정 |
+|---|---|---|---|---|
+| 우울증 목회 돌봄 | 5건 | **0건** | 5건 | B가 main의 0건을 구제 |
+| 정죄 없음 | 롬 8:1 직접 구절 | 죄 일반론 | 죄 일반론 | **퇴보 발견** → 아래 수정 |
+| 로마서 8장 1절… | 권말 색인 3건 | 일반 설교 | 일반 설교 | 색인 페이지 사라짐 |
+| 요한복음 3장 16절 | 무관한 글 | 3:16 본문 2위 | 동일 | 구절 가중으로 개선 |
+| 나머지 3개 한글 + 영어 대조 | | | | 큰 차이 없음 / 영어 불변 |
+
+**퇴보의 원인.** 사전의 한 음절 항목 `죄`(sin)가 `정죄`(condemnation) 안에서 걸려
+`sin, sins`로 오역됐고, 번역어가 비지 않으니 사전-LLM 번역(B)이 발동하지 않아 롬 8:1
+직접 구절을 잃었다.
+
+## 후속 수정 — 한 음절 용어는 낱말 시작에서만 매칭 (커밋 `4d2219f4`)
+
+| 항목 | 내용 |
+|---|---|
+| 규칙 | 한 음절 용어는 **앞에 한글 음절이 없을 때만** 매칭 (`_WORD_START_ONLY_MAX_LEN = 1`) |
+| 영향 | 사전의 한 음절 항목은 `죄` 하나뿐. 조사는 용어 **뒤**에 붙으므로 `죄가`·`죄를`·`죄악`·`그리스도인의 죄`는 그대로 `sin`. 속죄·원죄는 별도 항목이 담당 |
+| 부작용(인지됨) | `자범죄`·`정죄`처럼 `죄`가 뒤에 붙는 합성어는 사전 번역이 비어 사전-LLM 번역(B)으로 넘어간다 |
+| 캐시 | `QUERY_TRANSLATION_VERSION` 3 → 4 (번역 결과가 바뀌므로 검색 캐시 무효화) |
+| 테스트 | `test_query_translation.py` +4, `test_query_translation_fallback.py` +1 (계약 4: 정죄 질의가 LLM 번역에 도달) |
+
+**수정 후 실코퍼스 재검증.** 같은 8개 질의: `정죄 없음`은 before와 **동일한 결과**로
+회복(롬 8:1 구절 2위, LLM 번역 `No condemnation`), `로마서 8장 1절…`은 롬 8:1 본문이 4위 → 3위,
+나머지 6개는 수정 전과 정확히 같다. 영어 질의 불변.
+
 ## 남은 위험
 
-- **사전 품질.** 사전이 일부만 덮는 질의(`saints`만)나 오역하는 질의(`정죄`→`sin`)는
-  B가 발동하지 않으므로 개선되지 않는다. B의 조건은 "번역어가 하나도 없음"이다.
-- **실제 코퍼스 검증 없음.** 모든 검증은 단위·통합 테스트다. 119,595건 코퍼스에서 위
-  질의들의 실제 검색 결과를 병합 전후로 비교하지는 않았다.
+- **사전 부분 커버.** 사전이 일부만 덮는 질의(예: `광야에서 길을 잃은 성도를 위한 위로` →
+  `saints`만)는 번역어가 비지 않아 B가 발동하지 않는다. B의 조건은 "번역어가 하나도 없음"이다.
+  `정죄` 유형의 한 음절 오탐은 위 수정으로 막았지만, 두 음절 이상 용어의 부분 문자열
+  오탐은 점검하지 않았다.
+- **검증 규모.** 실코퍼스 검증은 질의 8개·1회 실행이고 정답 레이블이 없다(관련성은
+  상위 3~4건을 읽고 판단). 점수가 0.045~0.049로 거의 평평해 순위 차이는 작다.
+  `요한복음 3장 16절`의 1위는 여전히 목차 페이지다(색인 페이지 강등이 못 잡음).
 - **Retrieval 변경.** Retrieval 계열 파일 3개(`candidate_generator`,
   `hybrid_candidate_pipeline`, `query_translation*`)를 건드렸다. 사용자 승인
   (2026-10-08, 방식 (a) → 보강 B)을 받아 수행했고 ADR 충돌은 없다.
@@ -100,8 +135,11 @@ OCR 잡음에 걸려 0건이 되지 않으면 0건 폴백은 영영 발동하지
 
 - [x] 충돌 5개 해결, 전체 회귀 통과
 - [x] 실제 브랜치 반영(빨리감기), Build Report
-- [ ] 실제 코퍼스로 한국어 질의 4종 병합 전후 비교
-- [ ] 사전 보강 여부 판단 (부분 커버·오역 질의)
+- [x] 실제 코퍼스로 한국어 질의 8종 병합 전후 비교
+- [x] 사전 오역 수정 (한 음절 경계 조건)
+- [ ] 사전 부분 커버 질의 대책 판단 (`saints`만 나오는 유형)
+- [ ] 두 음절 이상 용어의 부분 문자열 오탐 점검
+- [ ] 목차 페이지가 1위로 오는 경우(`요한복음 3장 16절`) 점검
 - [ ] `return dict` 테스트 3건을 `assert`로 정리
 
-진행률: 60%
+진행률: 80%
