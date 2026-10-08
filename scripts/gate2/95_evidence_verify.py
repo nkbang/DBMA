@@ -48,6 +48,7 @@ def main() -> dict:
         return summary
 
     results["evidence_files_found"] = {"status": "PASS", "count": len(evidence_files)}
+    checked = 0  # stdout_sha256 비교가 실제로 수행된 건수 (PASS/FAIL)
 
     for ev_file in evidence_files:
         try:
@@ -100,6 +101,7 @@ def main() -> dict:
             actual_stdout = proc.stdout + proc.stderr
             actual_hash = hashlib.sha256(actual_stdout.encode("utf-8")).hexdigest()
 
+            checked += 1
             if actual_hash == stored_hash:
                 results[f"sha_check_{ev_file.name}"] = {
                     "status": "PASS",
@@ -124,10 +126,22 @@ def main() -> dict:
                 "reason": str(exc),
             }
 
+    # 실제로 비교한 건이 0건이면 PASS가 아니다 (Gate 2 재판정 D5: 전부 SKIP이어도
+    # all_pass=true를 내던 결함). 종료 코드 2 = VACUOUS(검증 없음).
+    vacuous = all_pass and checked == 0
+    if vacuous:
+        all_pass = False
+    results["verification_coverage"] = {
+        "status": "VACUOUS" if vacuous else ("PASS" if all_pass else "FAIL"),
+        "compared": checked,
+        "evidence_files": len(evidence_files),
+    }
+
     summary = {
         "script": "95_evidence_verify.py",
         "timestamp": __import__("datetime").datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "all_pass": all_pass,
+        "status": "VACUOUS" if vacuous else ("PASS" if all_pass else "FAIL"),
         "checks": results,
     }
 
@@ -136,10 +150,11 @@ def main() -> dict:
     evidence_file = evidence_dir / "95_evidence_verify.json"
     evidence_file.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
 
-    print(f"Result: {'PASS' if all_pass else 'FAIL'}")
+    print(f"Result: {summary['status']} (compared {checked} of {len(evidence_files)} evidence files)")
     print(f"Evidence written to: {evidence_file}")
     return summary
 
 
 if __name__ == "__main__":
-    sys.exit(0 if main()["all_pass"] else 1)
+    _summary = main()
+    sys.exit(0 if _summary["all_pass"] else (2 if _summary.get("status") == "VACUOUS" else 1))

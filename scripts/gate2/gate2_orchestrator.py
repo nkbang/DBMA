@@ -38,6 +38,10 @@ PHASE_B_SCRIPTS = [
 ]
 
 
+# 스크립트별 추가 인자 — 90_uninstall.sh는 인자 없이 호출하면 거부한다(D3).
+SCRIPT_ARGS = {"90_uninstall.sh": ["--all"]}
+
+
 def run_script(script_path, cwd):
     result = {
         "script": script_path.name,
@@ -49,7 +53,7 @@ def run_script(script_path, cwd):
     try:
         if script_path.suffix == ".sh":
             proc = subprocess.run(
-                ["bash", str(script_path)],
+                ["bash", str(script_path), *SCRIPT_ARGS.get(script_path.name, [])],
                 cwd=str(cwd),
                 capture_output=True,
                 text=True,
