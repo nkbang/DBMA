@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "run_id": "20261007-phase6195",
+  "generated_at": "2026-10-08T00:03:47Z",
+  "baseline_commit": "e3f9f588d85b18f5896cc8bb818b9771d4446953",
+  "payload_count": 8,
+  "files": [
+    {
+      "path": "evidence/gate2/20261007-phase6195/61_citation_ui_packaged.json",
+      "bytes": 2695,
+      "sha256": "d433593f35015eec849975e6ac4102b120fbdd4ec14e27f26a4b3dcf4dbb5147"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase6195/95_evidence_verify_packaged.json",
+      "bytes": 1035,
+      "sha256": "7c3acc9ad090b264205b24411f9a60ac9570787ed5a395e0fe8d54d770462997"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase6195/61_packaged_stdout.txt",
+      "bytes": 218,
+      "sha256": "0ce8840407823f79a95728273cb4cca73ed6432c82bc9ff59143537bdbf5d74c"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase6195/95_packaged_stdout.txt",
+      "bytes": 222,
+      "sha256": "47f5703f6018f287aad113e1c1de59d8346eed5b3c886af5e706b6a91b4a201c"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase6195/61_realcheckout_pytest.txt",
+      "bytes": 1019,
+      "sha256": "3dd5a23e84b17256a6cce40fe4a9109e28264b7fe2e8507d83060413211630f9"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase6195/packaged_import_ui_app.txt",
+      "bytes": 1357,
+      "sha256": "e8c5f49b5b6e92bcf5c4fb961f247844c6b5adeea96005a22062cee51049b1a6"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase6195/61_95_findings.json",
+      "bytes": 1440,
+      "sha256": "d90ea44246c949853f4241ba70a7eb7227db8fdbce45110004b1354ce4bdd782"
+    },
+    {
+      "path": "evidence/gate2/20261007-phase6195/SUMMARY.md",
+      "bytes": 621,
+      "sha256": "7b3edcfeed209a24e58e947a88db1d2439a43f4537a64b33847773461b69a590"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "phase_61": "FAIL (packaged tree)",
+    "phase_95": "PASS (vacuous)"
+  },
+  "related_run": "20261007-224149",
+  "manifest_sha256": "80f08b5ac5c1b4413974723dba7d72113811a6867431e16080378adaca651d6b"
+}
