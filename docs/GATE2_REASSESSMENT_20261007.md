@@ -158,3 +158,11 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - **테스터에게 영향 없음**: `BETA_LATEST_TAG.txt`(`dev/dbma-engine`)는 여전히 `beta-v1.3.0-rc6`. `rc6` 태그(`d16095e2`)·`dev` 끝(`c10fd2c3`) 불변. 설치기는 이 파일이 가리키는 태그만 받는다.
 - **미확인**: rc7의 실제 GitHub tarball(`export-ignore` 적용, `import ui.app` 성공)은 아직 내려받아 확인하지 않았다. Release 없이도 `archive/refs/tags/` URL은 동작하지만, 코퍼스 기본 서재는 같은 태그의 Release 자산이 없으면 받지 못해 **빈 서재로 시작**한다 — `BETA_LATEST_TAG`를 바꾸기 전에 Release와 자산을 먼저 만들어야 한다.
 - 남은 승인 항목: GitHub Release 생성 + rc6 코퍼스 자산(49MB) 재업로드 → rc7 tarball 재확인 → `dev` 이식 PR → `BETA_LATEST_TAG.txt` PR.
+
+## 부록 K — rc7 실제 GitHub 태그 tarball 확인 (2026-10-07)
+
+- evidence: `evidence/gate2/20261007-t0-rc7-tarball/` — 공개 URL `https://github.com/nkbang/DBMA/archive/refs/tags/beta-v1.3.0-rc7.tar.gz`(HTTP 200, 4,731,016 bytes)를 내려받아 확인.
+- 멤버 1,653개 중 `NAE/` 0개. 압축 해제본에서 `import ui.app` **성공**(rc=0), 사이드바 9개 페이지 + `nae_pd` 켠 검색 AppTest 11 runs 문제 0, tarball 안의 시험 15 passed. rc6 tarball에서 실패하던 같은 검사가 통과한다(부록 H와 대조).
+- rc6 tarball 대비 차이는 의도한 3개 파일뿐: `ui/components/nae_public_section.py`, `ui/pages/chat.py`(수정), `tests/test_ui_imports_without_nae.py`(신규). 멤버 1,652 → 1,653.
+- **미확인/주의**: 설치 end-to-end는 미평가. rc7에는 GitHub Release와 코퍼스 자산이 없어 지금 `BETA_LATEST_TAG`를 바꾸면 새 설치자가 빈 서재로 시작한다 → Release+자산 재업로드 전까지 `BETA_LATEST_TAG`는 rc6 유지.
+- 남은 승인 항목: GitHub Release + rc6 코퍼스 자산(49MB) 재업로드 → `dev` 이식 PR → `BETA_LATEST_TAG.txt` PR.

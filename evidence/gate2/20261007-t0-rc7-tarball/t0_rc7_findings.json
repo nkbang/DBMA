@@ -1,0 +1,34 @@
+{
+  "run_id": "20261007-t0-rc7-tarball",
+  "downloaded_at_utc": "2026-10-08T01:44:53Z",
+  "executed_by": "CUE (사용자 지시 'rc7 tarball 다운로드 확인해'), 개발 Mac, 인증 없는 공개 URL",
+  "subject": {
+    "url": "https://github.com/nkbang/DBMA/archive/refs/tags/beta-v1.3.0-rc7.tar.gz",
+    "redirect": "https://codeload.github.com/nkbang/DBMA/tar.gz/refs/tags/beta-v1.3.0-rc7",
+    "http": 200,
+    "bytes": 4731016,
+    "sha256": "b032e596f13d96d97a26a7a692ab736596e4c1e622e05bc685b7a14eff13b72b",
+    "tag_commit": "d00950c95130368a594fa88076c3a4a4171d6d46",
+    "stored": "scratchpad only (저장소에 tarball 미포함)"
+  },
+  "results": {
+    "members": 1653,
+    "NAE_members": 0,
+    "automation_members": 0,
+    "ui_top_level_NAE_imports": "없음 (chat.py의 NAE import는 try/except ImportError 안)",
+    "import_ui_app_on_extracted_tarball": "PASS rc=0 (dbma311 python, arch -arm64)",
+    "apptest": "rc6 사이드바 9개 페이지 + nae_pd 켠 검색 2건, 11 runs, 문제 0; 검색은 '이 설치본에 포함되어 있지 않습니다' 경고 후 빈 결과",
+    "tests_in_tarball": "tests/test_ui_imports_without_nae.py + tests/test_citation_ui_surface.py: 15 passed",
+    "diff_vs_rc6_tarball": "의도한 3개 파일만 다름: ui/components/nae_public_section.py, ui/pages/chat.py (수정), tests/test_ui_imports_without_nae.py (신규); members 1652 → 1653 (tarball_rc6_vs_rc7.diff)"
+  },
+  "conclusion": "rc7 태그의 실제 GitHub tarball은 NAE/ 없이 기동하며(import ui.app 성공, 9개 페이지 AppTest 통과), rc6와의 차이는 의도한 핫픽스 3개 파일뿐이다. 태그 단계의 검증 완료.",
+  "not_verified": [
+    "설치 스크립트 end-to-end (깨끗한 환경 평가 트랙 C)",
+    "코퍼스 기본 서재: rc7에는 Release 자산이 없어 현재 설치기가 받으면 빈 서재로 시작 (Release+자산 재업로드 전까지 BETA_LATEST_TAG 변경 금지)",
+    "태그가 이동하면 재확인 필요 (태그 커밋 d00950c9)"
+  ],
+  "limits": [
+    "임포트·AppTest 수준 확인이며 설치 end-to-end 아님",
+    "tarball 파일은 저장소에 미포함"
+  ]
+}
