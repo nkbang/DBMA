@@ -240,3 +240,19 @@ def test_dictionary_covered_query_skips_upfront_llm(monkeypatch):
     r.retrieve(pq, k_output=5, telemetry_out={})
 
     assert calls == [], "사전이 덮는 질의에 LLM 번역을 부르면 안 된다"
+
+
+def test_condemnation_query_reaches_llm_translation(monkeypatch):
+    """계약 4 — '정죄'가 사전에서 sin으로 오역되지 않으므로(번역어 없음) 사전-LLM 번역이
+    발동한다. 실측: 오역 시 LLM 번역(No condemnation)이 막혀 롬 8:1 직접 구절을 잃었다."""
+    import core.hybrid_candidate_pipeline as hcp
+    calls = []
+    monkeypatch.setattr(hcp, "translate_to_english", lambda q: (calls.append(q), "No condemnation")[1])
+
+    pq = QueryParser().parse("정죄 없음")
+    assert pq.translated_terms == []  # 전제: 사전이 오역하지 않는다
+
+    r, _ = _retriever(language="en")
+    r.retrieve(pq, k_output=5, telemetry_out={})
+
+    assert calls == ["정죄 없음"]

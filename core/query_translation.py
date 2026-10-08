@@ -33,9 +33,16 @@ import re
 
 # 검색 캐시 키에 들어간다(core/search_cache.make_cache_key) — 사전을 바꾸면
 # 올려서 이전 번역으로 만든 캐시 결과가 재사용되지 않게 한다.
-QUERY_TRANSLATION_VERSION = "3"
+QUERY_TRANSLATION_VERSION = "4"
 
 _HANGUL_RE = re.compile(r"[가-힣]")
+
+# 이 길이 이하의 용어는 **낱말 시작**에서만 매칭한다. 한 음절은 더 긴 낱말 안에서 우연히
+# 걸리기 쉽다 — 실측: "정죄 없음"에서 '죄'(sin)가 '정죄'(condemnation) 속에서 걸려
+# `sin, sins`로 오역됐고, 번역어가 비지 않아 LLM 번역(`No condemnation`)이 발동하지
+# 않아 롬 8:1 직접 구절을 잃었다. 조사는 용어 **뒤**에 붙으므로("죄가", "죄를") 시작
+# 위치 조건은 정상 용례를 막지 않고, 속죄·원죄 같은 합성어는 별도 항목이 맡는다.
+_WORD_START_ONLY_MAX_LEN = 1
 
 # 한국어 용어 → 영어 검색어. 영어 쪽은 Tantivy 기본 토크나이저/BM25가
 # 어간 추출을 하지 않으므로 코퍼스에 흔한 굴절형을 함께 적는다.
@@ -271,7 +278,12 @@ def translate_query_terms(
         start = query.find(term)
         while start != -1:
             end = start + len(term)
-            if not any(s <= start and end <= e for s, e in claimed):
+            inside_word = (
+                len(term) <= _WORD_START_ONLY_MAX_LEN
+                and start > 0
+                and _HANGUL_RE.match(query[start - 1]) is not None
+            )
+            if not inside_word and not any(s <= start and end <= e for s, e in claimed):
                 claimed.append((start, end))
                 hits.append((start, term))
             start = query.find(term, end)
