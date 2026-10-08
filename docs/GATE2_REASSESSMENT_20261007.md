@@ -211,3 +211,13 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - **병합 전 미충족**: 깨끗한 Mac/VM 설치 end-to-end 평가(트랙 C), 병합 시점·공지 결정.
 - **롤백 주의**: revert하면 이미 rc7로 업데이트한 설치자가 rc6(기동 불가)을 제안받는다 → 문제 시 rc8 핫픽스 태그 + 파일 갱신이 안전하다.
 - 현재 `BETA_LATEST_TAG`=rc6, `dev` 끝 `855470dd` 불변 → 테스터 영향 없음.
+
+## 부록 P — 깨끗한 환경 평가에 Intel Mac 포함 (2026-10-08)
+
+- 사용자 확인: 깨끗한 환경 평가는 다른 Mac에서 하며 **Intel Mac을 포함**한다. 절차서에 §10(Intel 전용 확인 항목 I0~I7)을 추가하고 `clean_env_snapshot.sh`에 CPU·Rosetta·brew prefix·Ollama 바이너리 아키텍처·venv torch 버전 수집을 더했다. evidence: `evidence/gate2/20261008-intel-prep/`.
+- **저장소는 지원 아키텍처를 선언하지 않았고** 개발·시험은 모두 Apple Silicon이다. Intel 결과는 "지원 확인"이 아니라 "처음 측정"이다. 아키텍처별로 따로 판정하며 Intel 지원 여부는 HQ 결정 사항이다.
+- 사전 확인(arm64 Mac에서 `pip install --dry-run --platform macosx_*_x86_64`): `requirements.txt`는 x86_64 macOS(cp311)용으로 **해석 성공**(204개 후보). 단 Intel은 **`torch 2.2.2` / `torchvision 0.17.2`**(Intel Mac wheel 마지막)를 쓰고 Apple Silicon은 `2.14.1` / `0.29.1`이다 — 이 앱은 Intel 조합으로 시험된 적이 없다. `hunspell`·`kiwipiepy-model`은 소스 빌드가 필요하다.
+- Ollama: 이 Mac의 0.34.4는 앱·CLI가 `x86_64 arm64` 유니버설이고 최소 macOS 14.0이다. 설치기가 내려받는 최신 zip(v0.40.1)의 구성은 내려받아 열어 보지 않아 **미확인**이다.
+- 설치 스크립트의 Apple Silicon 가정: `eval "$(/opt/homebrew/bin/brew shellenv)"`(코드 추정으로는 Intel에서 중단되지 않으나 **미실행**), 설치기는 시작 시 아키텍처·macOS 버전을 점검하지 않는다.
+- 정정: 첫 의존성 해석 실패는 `kiwipiepy_model`의 sdist-only 때문이며 Intel 비호환이 아니었다(분리 재해석). 자동 추출한 `transformers` 버전이 잘못되어 원본 로그의 `4.57.6`으로 바로잡았다.
+- 한계: 의존성 해석 수준이며 Intel에서 설치·실행한 결과가 아니다.

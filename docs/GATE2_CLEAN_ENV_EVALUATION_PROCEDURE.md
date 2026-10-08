@@ -35,7 +35,7 @@
 
 | 항목 | 요건 |
 |---|---|
-| OS | macOS, **Apple Silicon**(arm64). 설치 스크립트가 `/opt/homebrew`를 전제 |
+| OS | macOS. **Apple Silicon(arm64)과 Intel(x86_64) 모두 평가 대상** — 아키텍처별로 독립 판정한다(§10). 설치 스크립트의 일부가 `/opt/homebrew`(Apple Silicon)를 전제한다 |
 | 형태 | **새 macOS VM**(UTM/Parallels/Tart 등) 또는 별도 Mac의 새 사용자 계정. VM이면 시작 직전 **스냅샷**을 만들어 둔다(롤백용) |
 | 메모리 | 모델 등급이 메모리로 결정된다: `<8GB` 설치 중단, `8~16GB` `llama3.2:3b`, `≥16GB` `llama3.1:8b`. **최소 두 등급(예: 8GB, 16GB+)**에서 평가 권고 |
 | 디스크 | 여유 **30GB 이상** (venv 수 GB + 모델 약 5~6GB + 임베딩 1.2GB) |
@@ -183,3 +183,43 @@ bash clean_env_snapshot.sh after-install ~/gate2-clean-env
 - GitHub 태그 tarball의 내용은 개발 Mac에서 이미 확인했다(`20261007-t0-tarball`). 로컬 `git archive`는 GitHub tarball과 `tests/nae/`(테스트 파일 4개)만 다르다 — 이 Mac의 `core.ignorecase=true` 때문이며 앱 실행과 무관.
 - 메모리 등급별 평가는 환경 마련 여건에 따라 일부만 수행할 수 있으며, 수행하지 못한 등급은 판정표에 `미평가`로 남긴다.
 - 모델 응답 품질(groundedness 등)은 이 절차의 범위가 아니다(설교·신학 답변 품질 감사에서 다룸).
+
+## 10. Intel Mac(x86_64) 추가 사항
+
+평가 환경에 Intel Mac이 포함된다. **저장소는 지원 아키텍처를 어디에도 선언하지 않았고**(`INSTALL.md`·`README.md`에 언급 없음) 개발·시험은 모두 Apple Silicon에서 했으므로, Intel 결과는 "지원 확인"이 아니라 "지원 여부를 처음 측정"하는 것이다. **Apple Silicon 결과와 섞어 판정하지 않고 아키텍처별로 따로 판정**한다.
+
+### 10.1 개발 Mac에서 미리 확인한 사실 (2026-10-08, `evidence/gate2/20261008-intel-prep/`)
+
+| 항목 | 확인 결과 | 의미 |
+|---|---|---|
+| `requirements.txt` 해석 (macOS x86_64, cp311, wheel만) | **성공**, 204개 패키지 (`hunspell`·`kiwipiepy` 제외 27개 기준). `kiwipiepy 0.24.0`의 x86_64 wheel 존재 | 설치 불가로 막힐 가능성은 낮지만 **해석 성공 ≠ 실행 성공** |
+| PyTorch | Intel은 `torch 2.2.2` / `torchvision 0.17.2`(Intel Mac wheel의 마지막), Apple Silicon은 `2.14.1` / `0.29.1` | 개발·시험은 후자. **Intel에서는 이 앱이 시험된 적 없는 PyTorch 조합**을 쓴다 |
+| 소스 빌드가 필요한 패키지 | `hunspell`(C++ 확장), `kiwipiepy-model`(wheel 없음) | Command Line Tools·brew `hunspell`이 필요. Intel에서 빌드 성공 여부는 미확인 |
+| 설치 스크립트의 Apple Silicon 가정 | `setup_beta_tester.command` 93행 `eval "$(/opt/homebrew/bin/brew shellenv)"` — Intel에는 그 경로가 없다. `set -e`는 이 `eval`을 중단시키지 않는 것으로 **코드상 추정**하며(빈 문자열 평가), 스크립트 PATH에 `/usr/local/bin`이 있어 brew는 잡힐 것으로 **추정** | 실제 동작은 미확인 — 설치 로그에서 확인 (I1) |
+| Ollama | 릴리스 자산은 `Ollama-darwin.zip`/`ollama-darwin.tgz` 하나씩이고 아키텍처별 자산이 없다(최신 `v0.40.1`). **이 Mac에 설치된 `Ollama.app` 0.34.4(2026-09-28 설치)의 앱·번들 CLI는 `x86_64 arm64` 유니버설**이고 `libggml-cpu-alderlake.so` 등 Intel용 CPU 백엔드 라이브러리가 들어 있으며 `LSMinimumSystemVersion`은 **14.0**이다 | Ollama 앱 자체는 Intel을 고려한 유니버설 빌드로 보인다. 단 **설치기가 지금 내려받는 최신 zip(v0.40.1)이 같은지는 내려받아 열어 보지 않아 미확인**이고, **macOS 14 미만 Intel Mac은 Ollama를 실행할 수 없을 가능성이 높다** (I3, I6) |
+
+### 10.2 Intel 전용 확인 항목
+
+| ID | 항목 | 방법 | 합격 기준 |
+|---|---|---|---|
+| I0 | 네이티브 Intel인지 | 스냅샷의 `arch: x86_64`, `proc_translated: 0`, `cpu_brand`가 Intel | Apple Silicon의 Rosetta 실행(`proc_translated: 1`)이면 **Intel 결과로 인정하지 않는다** |
+| I1 | Homebrew 경로 | 설치 로그(`I1_*.txt`)에서 `/opt/homebrew/bin/brew: No such file or directory` 유무, 이후 `brew` 단계 진행 | 오류 문구가 있어도 설치가 계속 진행되면 기록만, 중단되면 FAIL |
+| I2 | PyTorch 조합 | 설치 후 `~/내서재_베타/app/.venv_beta/bin/python -c "import torch,torchvision;print(torch.__version__,torchvision.__version__)"` | `2.2.2 0.17.2` 기록. 이어서 `import sentence_transformers, docling, easyocr`가 오류 없이 통과 |
+| I3 | 설치기가 받은 Ollama가 x86_64를 포함하는가 | 설치 후 `lipo -archs /Applications/Ollama.app/Contents/Resources/ollama`(스냅샷에 자동 기록); `ollama list` | `x86_64`를 포함하고 서버가 응답. **포함하지 않으면 FAIL(Intel 미지원)로 기록**하고 이후 단계는 BLOCKED. (개발 Mac의 0.34.4는 유니버설이므로 포함이 기대값이나, 설치기가 받는 최신 zip으로는 확인된 적 없다) |
+| I4 | hunspell 빌드 | `pip` 출력(`I1_*.txt`)에서 hunspell wheel 빌드 성공 여부 | 성공 (C7과 동일) |
+| I5 | 생성 속도 | V4 질문 1건의 응답 시간 측정 (Intel은 Ollama GPU 가속 없음 가능성) | **응답이 완료되면 PASS, 시간은 기록.** 앱의 타임아웃에 걸려 실패하면 FAIL |
+| I6 | macOS 버전 | 스냅샷의 `sw_vers` | 기록. **0.34.4 기준 Ollama는 macOS 14.0 이상을 요구**한다 → 14 미만이면 BLOCKED(미지원 OS)로 판정하고, 설치기가 이를 사용자에게 어떻게 알렸는지(일반 오류 메시지 여부)를 기록 |
+| I7 | 메모리 등급 | Intel Mac은 8~16GB가 흔하다 → `llama3.2:3b` 등급 | C15와 동일, 어느 등급이었는지 기록 |
+
+### 10.3 판정 규칙 보강
+
+- 아키텍처별 결과표를 따로 만든다: `Apple Silicon 16GB+`, `Apple Silicon 8GB대`(가능하면), `Intel`.
+- **Intel이 FAIL이어도 Apple Silicon 결과는 영향받지 않는다.** 다만 Intel 지원 여부는 **HQ 결정 사항**이다: (a) Intel 지원을 선언하고 결함을 고친다, (b) Intel 미지원을 문서에 명시하고 설치기가 시작 시 `uname -m`으로 안내하고 중단하게 한다. 이 선택은 CUE가 임의로 하지 않는다.
+- Intel에서 PASS여도 "torch 2.2.2 조합으로 V4 한 건이 통과"한 것이지 전 기능 검증이 아니다. 임베딩·청킹·검색·OCR 전반은 별도 범위다.
+- 설치기는 현재 아키텍처 검사를 하지 않는다. Intel에서 실패하면 사용자에게는 "설치에 실패했습니다" 같은 일반 메시지만 보일 수 있다 — 이 점도 관찰 항목으로 기록한다.
+
+### 10.4 한계
+
+- 위 "미리 확인한 사실"은 이 Mac(arm64)에서 `pip`의 의존성 해석(`--platform macosx_*_x86_64`, `--dry-run`)으로 얻은 것이며, **Intel에서 실제로 설치하거나 실행한 결과가 아니다.**
+- Homebrew가 Intel Mac에서 `python@3.11`·`hunspell`·`tesseract`·`poppler`를 bottle로 받을지 소스 빌드할지는 macOS 버전에 따라 다르며 미확인이다(소스 빌드면 설치 시간이 크게 늘 수 있다 — 소요 시간을 기록).
+

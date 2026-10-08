@@ -28,6 +28,9 @@ echo "recorded_at_local: $(date '+%F %T %z')"
 sect "system"
 echo "sw_vers: $(sw_vers -productVersion 2>/dev/null) ($(sw_vers -buildVersion 2>/dev/null))"
 echo "arch: $(uname -m)    kernel: $(uname -r)"
+echo "cpu_brand: $(sysctl -n machdep.cpu.brand_string 2>/dev/null || echo unknown)"
+echo "proc_translated: $(sysctl -n sysctl.proc_translated 2>/dev/null || echo n/a)  (1이면 Rosetta 번역 실행 — Intel 결과로 인정 불가)"
+echo "hw_optional_arm64: $(sysctl -n hw.optional.arm64 2>/dev/null || echo 0)  (1이면 Apple Silicon 하드웨어)"
 echo "memory_gb: $(( $(sysctl -n hw.memsize 2>/dev/null || echo 0) / 1024 / 1024 / 1024 ))"
 echo "user: $(id -un)    home: $HOME"
 echo "disk_free: $(df -h "$HOME" | awk 'NR==2 {print $4" free of "$2}')"
@@ -42,6 +45,12 @@ exists "libhunspell link" /usr/local/lib/libhunspell.dylib
 exists "hunspell include link" /usr/local/Cellar/hunspell/1.6.2/include/hunspell
 exists "Command Line Tools" /Library/Developer/CommandLineTools
 exists "~/내서재_베타" "$HOME/내서재_베타"
+sect "architecture-specific (Intel 평가용, 모두 읽기 전용)"
+if command -v brew >/dev/null 2>&1; then echo "brew_prefix: $(brew --prefix 2>/dev/null)"; else echo "brew_prefix: (brew 없음)"; fi
+OLL="/Applications/Ollama.app/Contents/Resources/ollama"
+if [ -x "$OLL" ]; then echo "ollama_binary_archs: $(lipo -archs "$OLL" 2>/dev/null || file "$OLL")"; else echo "ollama_binary_archs: (Ollama.app 없음)"; fi
+VPY="$HOME/내서재_베타/app/.venv_beta/bin/python"
+if [ -x "$VPY" ]; then echo "venv_torch: $("$VPY" -c 'import torch,torchvision;print(torch.__version__,torchvision.__version__)' 2>&1 | tail -1)"; else echo "venv_torch: (venv 없음)"; fi
 sect "installed version"
 if [ -f "$HOME/내서재_베타/.installed_tag" ]; then echo "installed_tag: $(cat "$HOME/내서재_베타/.installed_tag")"; else echo "installed_tag: (none)"; fi
 sect "brew packages (brew가 있을 때만)"

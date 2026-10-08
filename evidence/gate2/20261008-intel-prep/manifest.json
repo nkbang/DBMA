@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "run_id": "20261008-intel-prep",
+  "generated_at": "2026-10-08T19:52:50Z",
+  "baseline_commit": "aea7e5d7d738f11f0254c0af1dc063675dfdace4",
+  "payload_count": 8,
+  "files": [
+    {
+      "path": "evidence/gate2/20261008-intel-prep/requirements_input_no_hunspell.txt",
+      "bytes": 308,
+      "sha256": "0f9f3bb62d4fea8c2a2ca16bcf16285ba91a456e7785a4ac307e429ea5d0495a"
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/requirements_core_resolved.txt",
+      "bytes": 298,
+      "sha256": "74c570460b266dfd936102af434553cc3059515b5d3e2967c86ef824a9b2bfd5"
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/pip_x86_dryrun_attempt1_kiwi_conflict.txt",
+      "bytes": 116439,
+      "sha256": "e92837d8848eaa89a49819bab76c044f45b0df410864ffee65fa3a0892518e4a"
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/pip_x86_dryrun_core.txt",
+      "bytes": 110865,
+      "sha256": "30d091e9f78642ed0736d2c8eba627e1a1a1002a58db98ad650524f6a073a4f0"
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/pip_arm64_dryrun_core.txt",
+      "bytes": 74284,
+      "sha256": "5e8d6c679ad7dd714932c7c80978bf1fa39e94df62e9c30a460efd5b67ddc456"
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/ollama_local_inspection.txt",
+      "bytes": 237,
+      "sha256": "c24e64f20e7335cf5b92601d77a7b1685db8ea5a5b5f966412a43eae7d21fc6f"
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/intel_prep_findings.json",
+      "bytes": 3425,
+      "sha256": "e18383cda2ceb5e9effe8eaa2306be1dbefe9d81e9f463d168a3ff598cb1a68b"
+    },
+    {
+      "path": "evidence/gate2/20261008-intel-prep/SUMMARY.md",
+      "bytes": 746,
+      "sha256": "8cebb08aab9f678c6dcaaf8a97e323287a78d3e5516fed095d2cbf3b734bf008"
+    }
+  ],
+  "manifest_canonicalization": {
+    "encoding": "UTF-8",
+    "object_key_order": "lexicographic ascending",
+    "array_order": "preserved",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "trailing_newline": false,
+    "hash_input": "canonical manifest object with manifest_sha256 omitted"
+  },
+  "phase_summary": {
+    "intel_prep": "dependency resolution OK (torch 2.2.2), runtime unverified"
+  },
+  "related_run": "20261007-latest-tag-pr",
+  "manifest_sha256": "36758882cc8444257e47f55053c450945a6b5dce8da9785b15b7486508c3c03c"
+}
