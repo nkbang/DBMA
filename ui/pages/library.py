@@ -71,8 +71,18 @@ def _apply_library_styles() -> None:
             background: {THEME.BG_SURFACE};
             text-align: left;
         }}
+        [class*="st-key-lib_row_"] button {{
+            border-radius: 6px !important;
+        }}
+        [class*="st-key-lib_row_"] button > div,
+        [class*="st-key-lib_row_"] button [data-testid="stMarkdownContainer"] {{
+            width: 100%;
+            justify-content: flex-start !important;
+        }}
         [class*="st-key-lib_row_"] button p {{
             font-size: 13px;
+            width: 100%;
+            text-align: left !important;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
