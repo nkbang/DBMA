@@ -80,3 +80,18 @@ F1 해소 → Phase 61·40 재평가 → (깨끗한 환경에서 설치 스크�
 - 무효 처리한 시도 2건(온보딩 미우회, 내부 키 대신 표시 라벨 사용)은 findings에 기록.
 - **한계**: Monitor(`NAE_ADMIN_MODE=1`)·설교 준비 내부 뷰·실제 질의 생성·Smith 활성 경로·실제 `streamlit run`·브라우저 상호작용 미시험. 설치 스크립트 end-to-end와 깨끗한 환경 평가는 여전히 미평가.
 - 판정: F1(F1-b 포함)은 해소. 전체 판정은 위 한계와 D1~D5가 남아 있어 아직 확정하지 않는다.
+
+## 부록 C — 스크립트 정비 D1·D2·D3·D5 (2026-10-07)
+
+- evidence: `evidence/gate2/20261007-scriptfix/`, 수정 커밋 `a187d734`, 시험 `tests/test_gate2_scripts.py`(수정 전 7 failed → 9 passed)
+
+| ID | 상태 | 조치 |
+|---|---|---|
+| D1 | 해소 | 80 dry-run은 시딩·검증 생략, `RESULT: DRY-RUN (no verification performed)`, /tmp 미생성 |
+| D2 | 해소 | 90 dry-run은 `would remove`로 표기, 삭제 안 함 |
+| D3 | 해소 | 90은 인자 없으면 거부(exit 2), `--all` 명시 opt-in, 대상은 `/tmp/dbma-gate2-run-*`만 허용. 오케스트레이터가 `--all` 전달 |
+| D5 | 해소 | 95는 비교 0건이면 `VACUOUS`(exit 2, all_pass=false) |
+| D4 | **미수정** | 40/`setup_beta_tester.command` 비격리 — 설치 스크립트 정책 결정 필요 |
+
+- **동작 변경**: Phase 95는 현 evidence(`stdout_sha256` 없음)에서 PASS가 아니라 **VACUOUS**다. 오케스트레이터 Phase A에서는 RED가 된다. 95를 의미 있게 PASS시키려면 evidence에 `stdout_sha256`을 기록하는 설계가 필요하다(별도 결정).
+- **한계**: 80·90의 비-dry-run 실제 실행은 수정 후 재실행하지 않았다(사용자 터미널 필요). 오케스트레이터 전체 실행도 하지 않았다(40 포함 시 전역 변경).
