@@ -1,0 +1,80 @@
+{
+  "schema_version": "2",
+  "run_id": "20261008-windows-audit",
+  "verified_at": "2026-10-08T20:03:23Z",
+  "manifest_path": "evidence/gate2/20261008-windows-audit/manifest.json",
+  "verification_source": "git archive of committed tree d893c39087bb10491e956728fb0b5c3c703e0a6d",
+  "verification_command": "git archive <commit> <evidence dir> | tar -x; python3 -I recompute canonical sha256 + per-payload bytes/sha256",
+  "listed_payload_count": 8,
+  "verified_count": 8,
+  "mismatch_count": 0,
+  "canonical_manifest_sha256_expected": "8826954ed0d7aab4679c499b33b468070e49db370dc07c0ffe0fa7df300eb4f8",
+  "canonical_manifest_sha256_actual": "8826954ed0d7aab4679c499b33b468070e49db370dc07c0ffe0fa7df300eb4f8",
+  "entries": [
+    {
+      "path": "evidence/gate2/20261008-windows-audit/requirements_input.txt",
+      "expected_bytes": 298,
+      "actual_bytes": 298,
+      "expected_sha256": "74c570460b266dfd936102af434553cc3059515b5d3e2967c86ef824a9b2bfd5",
+      "actual_sha256": "74c570460b266dfd936102af434553cc3059515b5d3e2967c86ef824a9b2bfd5",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-windows-audit/pip_win_dryrun_attempt1_all.txt",
+      "expected_bytes": 131546,
+      "actual_bytes": 131546,
+      "expected_sha256": "1dab509571a78923d75c05766555ba2d6f591c01a6e30c7c7af6243ac2ea6de8",
+      "actual_sha256": "1dab509571a78923d75c05766555ba2d6f591c01a6e30c7c7af6243ac2ea6de8",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-windows-audit/pip_win_dryrun_without_chromadb.txt",
+      "expected_bytes": 63155,
+      "actual_bytes": 63155,
+      "expected_sha256": "7b25966220d6d54a908c0c610a099614e1602da39575805cd0cfc6ea2ef379cd",
+      "actual_sha256": "7b25966220d6d54a908c0c610a099614e1602da39575805cd0cfc6ea2ef379cd",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-windows-audit/pip_win_dryrun_chromadb_pinned_fail_uvloop_marker.txt",
+      "expected_bytes": 36825,
+      "actual_bytes": 36825,
+      "expected_sha256": "4a4be5e94e8cb9fb9b595321c5531d8a7d33180adb0aae6734e7f2a02bf90697",
+      "actual_sha256": "4a4be5e94e8cb9fb9b595321c5531d8a7d33180adb0aae6734e7f2a02bf90697",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-windows-audit/static_audit.txt",
+      "expected_bytes": 1702,
+      "actual_bytes": 1702,
+      "expected_sha256": "7a849b9afa008ee610dee555fe9cae956c117d38f5cb46dd324de5db8516d722",
+      "actual_sha256": "7a849b9afa008ee610dee555fe9cae956c117d38f5cb46dd324de5db8516d722",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-windows-audit/install_layer_and_ollama_windows.txt",
+      "expected_bytes": 584,
+      "actual_bytes": 584,
+      "expected_sha256": "a636b10f067a2d04de3c832a8c4cd00c13b7bb99b5576e7e1e6f7260c3a37869",
+      "actual_sha256": "a636b10f067a2d04de3c832a8c4cd00c13b7bb99b5576e7e1e6f7260c3a37869",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-windows-audit/windows_audit_findings.json",
+      "expected_bytes": 3680,
+      "actual_bytes": 3680,
+      "expected_sha256": "2698d596d9e3d679efd5b34fdaee7f1a940443f105882f54802596df2b808b49",
+      "actual_sha256": "2698d596d9e3d679efd5b34fdaee7f1a940443f105882f54802596df2b808b49",
+      "match": true
+    },
+    {
+      "path": "evidence/gate2/20261008-windows-audit/SUMMARY.md",
+      "expected_bytes": 765,
+      "actual_bytes": 765,
+      "expected_sha256": "86842543f92e59c74ba82b7bfb10876fd07e59a826cedc162a7aa7db2bb50975",
+      "actual_sha256": "86842543f92e59c74ba82b7bfb10876fd07e59a826cedc162a7aa7db2bb50975",
+      "match": true
+    }
+  ],
+  "pass": true
+}
