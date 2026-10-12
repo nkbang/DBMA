@@ -133,3 +133,11 @@ PR-1만으로도 Windows에서의 일시 실패 흡수, 손상 파일 보존, �
 - 같은 손상은 프로세스당 한 번만 ERROR 로그(`_log_once`). 보존 복사본은 최대 5개(`MAX_PRESERVED_COPIES`).
 - 호출부(PR-2)·다른 `os.replace` 지점(PR-3)은 이 PR 범위 밖. 기본값 `strict=False` 라 기존 호출부 동작은 불변.
 - 검증: 관련 테스트 25개 파일 207 passed, 신규 12개, `DBMA_IO_RETRY_ALL=1 STRESS_INJECT_FAILURE=1` 스트레스 PASS. Windows 실기 실행은 아직 없음.
+
+## PR-2 구현 메모 (호출부 이전)
+
+- 신규 `mutate_registry(path, mutator)`: 잠금 안에서 strict 읽기 → 수정 → strict 저장. mutator 가 None 이면 저장 생략. 화면 수정 4곳(library 3·dashboard 1)이 사용해 lost update 를 막는다.
+- strict 적용: `processing.py`(잠금 안 읽기), `index_orchestrator.delete_raw_source/restore_raw_source`, `raw_hygiene.cleanup_orphaned_document`.
+- 정책 결정(미결이던 항목): `reconcile_pending` 은 읽기 영구 실패 시 **그 주기를 건너뛰고** `failed` 에 `*registry*` 항목을 남긴다. 저장 실패 시 `reconciled=0` 으로 보고(다음 주기 재시도). `processing.py` 의 파이프라인 플래그 저장은 반환값으로 `_pipeline_flags_set` 설정.
+- UI: registry 오류는 `OSError`로 잡아 `st.error`로 표시(트레이스백 노출 방지). 파일 이동 후 registry 갱신이 실패하는 복구 경로는 그 사실을 사유에 명시.
+- 범위 밖(유지): `processing.py` 실패 처리부(예외 삼킴, 저장 실패는 PR-1 로그), scripts/ 7곳(별도).

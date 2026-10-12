@@ -30,6 +30,7 @@ from core.processing import build_converter, build_splitter, process_one_file
 from core.identity_registry import (
     load_identity_registry,
     save_identity_registry,
+    mutate_registry,
     find_by_source_file,
     get_supersession_chain,
     exclude_document,
@@ -548,28 +549,37 @@ def _render_metadata_edit_form(source_filename: str) -> None:
 
         if submitted:
             registry_path = _registry_path()
-            registry = load_identity_registry(str(registry_path))
-            target = registry.get("documents", {}).get(document_id)
-            if target is None:
-                st.error("저장 실패: registry에서 문서를 다시 찾지 못했습니다.")
-                return
-            target["title"] = new_title.strip() or None
-            target["author"] = new_author.strip() or None
             try:
-                target["chapter"] = int(chapter_str) if chapter_str.strip() else None
+                chapter_val = int(chapter_str) if chapter_str.strip() else None
             except ValueError:
                 st.error("장(chapter)은 숫자여야 합니다.")
                 return
             try:
-                target["page"] = int(page_str) if page_str.strip() else None
+                page_val = int(page_str) if page_str.strip() else None
             except ValueError:
                 st.error("페이지(page)는 숫자여야 합니다.")
                 return
-            if save_identity_registry(registry, str(registry_path)):
-                st.success("저장되었습니다.")
-                st.rerun()
-            else:
-                st.error("registry 저장에 실패했습니다.")
+
+            def _apply(registry):
+                target = registry.get("documents", {}).get(document_id)
+                if target is None:
+                    return None
+                target["title"] = new_title.strip() or None
+                target["author"] = new_author.strip() or None
+                target["chapter"] = chapter_val
+                target["page"] = page_val
+                return True
+
+            try:
+                changed = mutate_registry(str(registry_path), _apply)
+            except OSError as exc:
+                st.error(f"registry 저장에 실패했습니다: {exc}")
+                return
+            if changed is None:
+                st.error("저장 실패: registry에서 문서를 다시 찾지 못했습니다.")
+                return
+            st.success("저장되었습니다.")
+            st.rerun()
 
 
 def _render_exclude_section(source_filename: str) -> None:
@@ -595,11 +605,15 @@ def _render_exclude_section(source_filename: str) -> None:
             )
             if st.button("↩ 제외 해제", key=f"unexclude_btn_{document_id}", use_container_width=True):
                 registry_path = _registry_path()
-                registry = load_identity_registry(str(registry_path))
-                if unexclude_document(registry, document_id) is not None and save_identity_registry(registry, str(registry_path)):
+                try:
+                    done = mutate_registry(str(registry_path), lambda reg: unexclude_document(reg, document_id))
+                except OSError as exc:
+                    st.error(f"제외 해제에 실패했습니다: {exc}")
+                    done = False
+                if done:
                     st.success("제외가 해제되었습니다. 검색되게 하려면 재처리(재색인)가 필요합니다.")
                     st.rerun()
-                else:
+                elif done is None:
                     st.error("제외 해제에 실패했습니다.")
         else:
             st.caption("RAW 원본은 삭제되지 않습니다 — 정리된 자료만 삭제하고 향후 처리 대상에서 제외합니다.")
@@ -608,14 +622,18 @@ def _render_exclude_section(source_filename: str) -> None:
             if st.button("처리 제외", key=f"exclude_btn_{document_id}", disabled=not confirm, use_container_width=True):
                 cleanup = exclude_document_from_index(document_id, output_dir=DEFAULT_OUTPUT_DIR, execute=True)
                 registry_path = _registry_path()
-                registry = load_identity_registry(str(registry_path))
-                if exclude_document(registry, document_id, reason=reason) is not None and save_identity_registry(registry, str(registry_path)):
+                try:
+                    done = mutate_registry(str(registry_path), lambda reg: exclude_document(reg, document_id, reason=reason))
+                except OSError as exc:
+                    st.error(f"registry 저장에 실패했습니다: {exc}")
+                    done = False
+                if done:
                     st.success(
                         f"제외 처리되었습니다. 색인 데이터 {cleanup['purged_tsu_records']}건 제거, "
                         f"파일 {len(cleanup['moved_files'])}개를 {cleanup['backup_dir']}/로 이동했습니다."
                     )
                     st.rerun()
-                else:
+                elif done is None:
                     st.error("registry 저장에 실패했습니다.")
 
 
@@ -646,7 +664,11 @@ def _render_delete_section(source_filename: str) -> None:
             "자료 삭제", key=f"delete_btn_{source_filename}",
             disabled=not confirm, type="primary", use_container_width=True,
         ):
-            result = delete_raw_source(source_filename, reason=reason, execute=True)
+            try:
+                result = delete_raw_source(source_filename, reason=reason, execute=True)
+            except OSError as exc:
+                st.error(f"registry 접근에 실패해 삭제하지 못했습니다: {exc}")
+                return
             if not result["found"]:
                 st.error("원본 파일을 RAW에서 찾을 수 없습니다.")
             else:
@@ -834,12 +856,16 @@ def _render_duplicate_check_section() -> None:
                     st.caption(f["name"])
                 with c2:
                     if st.button("삭제", key=f"dup_del_{f['path']}", use_container_width=True):
-                        result = delete_raw_source(f["name"], reason="중복 파일 정리", execute=True)
+                        try:
+                            result = delete_raw_source(f["name"], reason="중복 파일 정리", execute=True)
+                        except OSError as exc:
+                            st.error(f"registry 접근에 실패해 삭제하지 못했습니다: {exc}")
+                            result = {"found": None}
                         if result["found"]:
                             st.success(f"'{f['name']}' 삭제됨.")
                             st.session_state.pop("_dup_check_groups", None)
                             st.rerun()
-                        else:
+                        elif result["found"] is not None:
                             st.error("삭제에 실패했습니다.")
 
 
@@ -894,7 +920,10 @@ def _render_trash_section() -> None:
                 st.caption(f"삭제일: {item['deleted_at']}")
             with c2:
                 if st.button("복구", key=f"restore_btn_{item['trash_path']}", use_container_width=True):
-                    result = restore_raw_source(item["trash_path"])
+                    try:
+                        result = restore_raw_source(item["trash_path"])
+                    except OSError as exc:
+                        result = {"restored": False, "reason": f"파일은 RAW로 옮겨졌으나 registry 갱신에 실패했습니다: {exc}"}
                     if result["restored"]:
                         note = " 검색되게 하려면 재처리(재색인)가 필요합니다." if result["document_id"] else ""
                         st.success(f"'{item['name']}'을(를) 복구했습니다.{note}")

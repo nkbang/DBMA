@@ -812,16 +812,22 @@ def _render_manual_labeler(docs: dict, untyped_ids: list[str]) -> None:
 def _save_doc_type(doc_id: str, doc_type: str) -> None:
     """Save doc_type to registry and persist."""
     from core.config import DEFAULT_REGISTRY_PATH
-    from core.identity_registry import load_identity_registry, save_identity_registry
+    from core.identity_registry import mutate_registry
 
-    registry = load_identity_registry(DEFAULT_REGISTRY_PATH)
-    if doc_id in registry.get("documents", {}):
+    def _apply(registry):
+        if doc_id not in registry.get("documents", {}):
+            return None
         registry["documents"][doc_id]["doc_type"] = doc_type
         registry["updated_at"] = __import__("datetime").datetime.now().isoformat(timespec="seconds")
-        if save_identity_registry(registry, DEFAULT_REGISTRY_PATH):
-            st.success(f"{doc_id[:8]}... → {doc_type} 저장 완료")
-            st.rerun()
-        else:
-            st.error("저장에 실패했습니다.")
+        return True
+
+    try:
+        found = mutate_registry(DEFAULT_REGISTRY_PATH, _apply)
+    except OSError as exc:
+        st.error(f"저장에 실패했습니다: {exc}")
+        return
+    if found:
+        st.success(f"{doc_id[:8]}... → {doc_type} 저장 완료")
+        st.rerun()
     else:
         st.error("문서를 찾을 수 없습니다.")
