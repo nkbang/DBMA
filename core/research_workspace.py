@@ -17,6 +17,7 @@ from __future__ import annotations
 import datetime
 import json
 import os
+from core.atomic_io import atomic_write_text
 import uuid
 from typing import Any, Dict, List, Optional
 
@@ -129,10 +130,7 @@ def add_query_result(
         sessions_data["sessions"] = sessions
         path = _sessions_path()
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        tmp_path = path + ".tmp"
-        with open(tmp_path, "w", encoding="utf-8") as f:
-            json.dump(sessions_data, f, indent=2, ensure_ascii=False)
-        os.replace(tmp_path, path)
+        atomic_write_text(path, json.dumps(sessions_data, indent=2, ensure_ascii=False))
         
         return True
     except Exception:

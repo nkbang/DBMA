@@ -141,3 +141,10 @@ PR-1만으로도 Windows에서의 일시 실패 흡수, 손상 파일 보존, �
 - 정책 결정(미결이던 항목): `reconcile_pending` 은 읽기 영구 실패 시 **그 주기를 건너뛰고** `failed` 에 `*registry*` 항목을 남긴다. 저장 실패 시 `reconciled=0` 으로 보고(다음 주기 재시도). `processing.py` 의 파이프라인 플래그 저장은 반환값으로 `_pipeline_flags_set` 설정.
 - UI: registry 오류는 `OSError`로 잡아 `st.error`로 표시(트레이스백 노출 방지). 파일 이동 후 registry 갱신이 실패하는 복구 경로는 그 사실을 사유에 명시.
 - 범위 밖(유지): `processing.py` 실패 처리부(예외 삼킴, 저장 실패는 PR-1 로그), scripts/ 7곳(별도).
+
+## PR-3 구현 메모 (나머지 쓰기 지점)
+
+- `atomic_io.atomic_write_text`(고유 tmp + `replace_with_retry`)로 `extraction_failures`, `reading_session`, `research_workspace`, `sermon_artifact`의 고정 `.tmp` 쓰기를 교체. 고정 tmp 이름의 동시 저장 충돌 제거, Windows 일시 실패 재시도. 기존의 예외 삼킴/전파 정책은 각 호출부 그대로.
+- `tsu_builder._atomic_write_text`: `os.replace`→`replace_with_retry`.
+- **Windows 실제 결함 수정**: `tsu_builder`가 디렉터리를 `os.open(..., O_RDONLY)`로 열어 fsync 했는데, Windows 에서는 디렉터리 열기가 PermissionError 라 데이터셋 저장이 *교체 후* 예외로 끝났다. `fsync_dir`이 Windows 에서는 건너뛰고, 열기 실패도 무시.
+- 범위 밖: `shutil.move` 3곳(`index_orchestrator`)은 교체가 아닌 이동이라 유지.

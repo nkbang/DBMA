@@ -33,6 +33,7 @@ import datetime
 import hashlib
 import json
 import os
+from core.atomic_io import replace_with_retry, fsync_dir
 import re
 import subprocess
 import tempfile
@@ -577,7 +578,7 @@ def _atomic_write_text(path: Path, write_body) -> None:
             write_body(f)
             f.flush()
             os.fsync(f.fileno())
-        os.replace(tmp_name, path)
+        replace_with_retry(tmp_name, path)
     except BaseException:
         try:
             os.unlink(tmp_name)
@@ -585,13 +586,8 @@ def _atomic_write_text(path: Path, write_body) -> None:
             pass
         raise
 
-    dir_fd = os.open(str(path.parent), os.O_RDONLY)
-    try:
-        os.fsync(dir_fd)
-    except OSError:
-        pass
-    finally:
-        os.close(dir_fd)
+    # Windows 는 디렉터리 os.open 이 PermissionError — fsync_dir 가 건너뛴다.
+    fsync_dir(str(path.parent))
 
 
 def write_tsu_dataset(records: list[dict[str, Any]], dataset_path: Path) -> None:
