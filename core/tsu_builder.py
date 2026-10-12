@@ -30,7 +30,6 @@ Design decisions (per SPRINT17-RG-5, 유지):
 from __future__ import annotations
 
 import datetime
-import fcntl
 import hashlib
 import json
 import os
@@ -44,6 +43,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from core.document_identity import generate_chunk_id
+from core.file_lock import file_lock
 from core.utils import make_safe_stem
 from core.retrieval import NAME_TO_BOOK_ID, QueryParser, ScriptureReference
 from core.canonical_constants import CANONICAL_MAX_CHAPTER
@@ -529,17 +529,12 @@ def tsu_dataset_lock(dataset_path: "os.PathLike[str] | str"):
     rlock.acquire()
     try:
         if held.get(key, 0) == 0:
-            lock_path = key + ".lock"
-            os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
-            lock_file = open(lock_path, "w", encoding="utf-8")
-            fcntl.flock(lock_file, fcntl.LOCK_EX)
-            held[key] = 1
-            try:
-                yield
-            finally:
-                del held[key]
-                fcntl.flock(lock_file, fcntl.LOCK_UN)
-                lock_file.close()
+            with file_lock(key + ".lock"):
+                held[key] = 1
+                try:
+                    yield
+                finally:
+                    del held[key]
         else:
             held[key] += 1
             try:

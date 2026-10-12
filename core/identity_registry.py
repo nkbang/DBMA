@@ -28,7 +28,6 @@ Usage:
 
 from __future__ import annotations
 
-import fcntl
 import json
 import os
 import datetime
@@ -37,6 +36,7 @@ from contextlib import contextmanager
 from typing import Optional, Dict, Tuple, Literal
 from core.document_identity import PROCESSING_VERSION
 from core.document_context import set_pipeline_state
+from core.file_lock import file_lock
 
 
 @contextmanager
@@ -54,18 +54,12 @@ def registry_lock(registry_path: str):
     that addition — no exception, no log line, since neither save call
     itself fails (confirmed 2026-08-23: 49 freshly-chunked documents
     vanished from the registry this way in one batch run). This advisory
-    OS file lock (flock on a sibling .lock file, not the registry file
+    OS file lock (core/file_lock.py on a sibling .lock file, not the registry file
     itself, so save_identity_registry()'s atomic os.replace() is
     undisturbed) makes each side's load+mutate+save critical section
     mutually exclusive."""
-    lock_path = registry_path + ".lock"
-    os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
-    with open(lock_path, "w", encoding="utf-8") as f:
-        fcntl.flock(f, fcntl.LOCK_EX)
-        try:
-            yield
-        finally:
-            fcntl.flock(f, fcntl.LOCK_UN)
+    with file_lock(registry_path + ".lock"):
+        yield
 
 
 def load_identity_registry(registry_path: str) -> dict:

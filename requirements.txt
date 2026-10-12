@@ -43,3 +43,7 @@ hunspell
 # 순수 wheel 배포(Cython 컴파일, 시스템 mecab/JVM 불필요) — Apple Silicon
 # 포함 어디서나 pip install만으로 설치된다.
 kiwipiepy
+
+# core/file_lock.py — fcntl(POSIX 전용)을 대체하는 크로스플랫폼 파일 잠금 (Windows 지원).
+# torch/huggingface_hub이 이미 요구하지만 직접 import하므로 명시한다. 3.12(최소 시험)와 4.x(최신) 둘 다 시험.
+filelock>=3.12,<5
