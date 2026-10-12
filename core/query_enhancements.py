@@ -1093,7 +1093,7 @@ if __name__ == "__main__":
     print("\nGenerating output files...")
     
     # Loop 2: Book Alias Audit
-    with open(output_dir / "PT_RESEARCH_006_BOOK_ALIAS_AUDIT.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_BOOK_ALIAS_AUDIT.md", "w", encoding="utf-8") as f:
         f.write(f"# PT-RESEARCH-006 — Loop 2: Book Alias System Audit\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")
         f.write("---\n\n")
@@ -1115,7 +1115,7 @@ if __name__ == "__main__":
         f.write("\n---\n**PT-RESEARCH-006 Loop 2 Complete**\n")
 
     # Loop 3: Book Detection Implementation
-    with open(output_dir / "PT_RESEARCH_006_BOOK_DETECTION_IMPLEMENTATION.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_BOOK_DETECTION_IMPLEMENTATION.md", "w", encoding="utf-8") as f:
         f.write(f"# PT-RESEARCH-006 — Loop 3: Book Detection Implementation\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")
         f.write("---\n\n")
@@ -1128,7 +1128,7 @@ if __name__ == "__main__":
         f.write("\n---\n**PT-RESEARCH-006 Loop 3 Complete**\n")
 
     # Loop 4: Reference Parser Implementation
-    with open(output_dir / "PT_RESEARCH_006_REFERENCE_IMPLEMENTATION.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_REFERENCE_IMPLEMENTATION.md", "w", encoding="utf-8") as f:
         f.write(f"# PT-RESEARCH-006 — Loop 4: Reference Parser Implementation\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")
         f.write("---\n\n")
@@ -1141,7 +1141,7 @@ if __name__ == "__main__":
         f.write("\n---\n**PT-RESEARCH-006 Loop 4 Complete**\n")
 
     # Loop 5: Query Normalization Test
-    with open(output_dir / "PT_RESEARCH_006_QUERY_NORMALIZATION_TEST.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_QUERY_NORMALIZATION_TEST.md", "w", encoding="utf-8") as f:
         f.write(f"# PT-RESEARCH-006 — Loop 5: Query Normalization Test\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")
         f.write("---\n\n")
@@ -1159,7 +1159,7 @@ if __name__ == "__main__":
         f.write("---\n**PT-RESEARCH-006 Loop 5 Complete**\n")
 
     # Loop 6: Korean Root Cause
-    with open(output_dir / "PT_RESEARCH_006_KOREAN_ROOT_CAUSE.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_KOREAN_ROOT_CAUSE.md", "w", encoding="utf-8") as f:
         f.write(f"# PT-RESEARCH-006 — Loop 6: Korean Query Root Cause Analysis\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")
         f.write("---\n\n")
@@ -1176,7 +1176,7 @@ if __name__ == "__main__":
         f.write("\n\n---\n**PT-RESEARCH-006 Loop 6 Complete**\n")
 
     # Loop 7: Negative Query Design
-    with open(output_dir / "PT_RESEARCH_006_NEGATIVE_QUERY_DESIGN.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_NEGATIVE_QUERY_DESIGN.md", "w", encoding="utf-8") as f:
         f.write(f"# PT-RESEARCH-006 — Loop 7: Negative Query Safety Design\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")
         f.write("---\n\n")
@@ -1190,7 +1190,7 @@ if __name__ == "__main__":
         f.write("\n---\n**PT-RESEARCH-006 Loop 7 Complete**\n")
 
     # Loop 8: Regression + Product Gate
-    with open(output_dir / "PT_RESEARCH_006_REGRESSION.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_REGRESSION.md", "w", encoding="utf-8") as f:
         lg = results["loop8_regression"]
         f.write(f"# PT-RESEARCH-006 — Loop 8: Regression Report\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")
@@ -1205,7 +1205,7 @@ if __name__ == "__main__":
         f.write("\n---\n**PT-RESEARCH-006 Loop 8 Complete**\n")
 
     # Product Gate
-    with open(output_dir / "PT_RESEARCH_006_PRODUCT_GATE.md", "w") as f:
+    with open(output_dir / "PT_RESEARCH_006_PRODUCT_GATE.md", "w", encoding="utf-8") as f:
         lg = results["loop8_regression"]
         f.write(f"# PT-RESEARCH-006 — Final Product Gate\n\n")
         f.write(f"**Date:** 2026-07-10\n\n")

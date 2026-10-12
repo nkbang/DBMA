@@ -60,7 +60,7 @@ def registry_lock(registry_path: str):
     mutually exclusive."""
     lock_path = registry_path + ".lock"
     os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
-    with open(lock_path, "w") as f:
+    with open(lock_path, "w", encoding="utf-8") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
         try:
             yield

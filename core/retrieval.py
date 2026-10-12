@@ -767,7 +767,7 @@ class EmbeddingCache:
 
         if cache_path.exists():
             try:
-                with open(cache_path, "r") as f:
+                with open(cache_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                 self._hit_count += 1
                 return data.get("vector")
@@ -788,7 +788,7 @@ class EmbeddingCache:
         """Insert a single embedding into cache."""
         try:
             cache_path = self.cache_dir / f"{hash_key}.json"
-            with open(cache_path, "w") as f:
+            with open(cache_path, "w", encoding="utf-8") as f:
                 json.dump({"text": text[:500], "vector": vector, "hash": hash_key}, f)
             return True
         except IOError:
@@ -824,7 +824,7 @@ class EmbeddingCache:
 
         for f in files:
             try:
-                with open(f, "r") as fh:
+                with open(f, "r", encoding="utf-8") as fh:
                     data = json.load(fh)
                     if "vector" not in data or "text" not in data:
                         invalid += 1
@@ -2597,7 +2597,7 @@ def compare_with_regression(
     """
     baseline = {"metrics": {}}
     if os.path.exists(baseline_path):
-        with open(baseline_path, "r") as f:
+        with open(baseline_path, "r", encoding="utf-8") as f:
             baseline = json.load(f)
 
     current_metrics = current_results.get("metrics", {})
