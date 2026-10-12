@@ -42,7 +42,6 @@ from scripts.corpus_approval_gate import (
     validate_merge_plan_against_manifest,
 )
 
-from core.config import DEFAULT_OUTPUT_DIR, DEFAULT_TSU_DATASET_PATH, DEFAULT_TSU_MANIFEST_PATH, registry_path_for
 from core.identity_registry import load_identity_registry, save_identity_registry
 from core.tsu_builder import (
     tsu_dataset_lock,
@@ -51,92 +50,89 @@ from core.tsu_builder import (
 )
 
 
+# ---------------------------------------------------------------------------
+# Production path safety constants (monkeypatchable for tests)
+# ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-# Production path safety infrastructure
-# ---------------------------------------------------------------------------
+_REPO_ROOT: Path = Path(__file__).resolve().parent.parent
+
+_PRODUCTION_DATASET_REALPATH: Path = _REPO_ROOT / "output" / "bench" / "tsu_dataset.jsonl"
+_PRODUCTION_MANIFEST_REALPATH: Path = _REPO_ROOT / "output" / "bench" / "tsu_manifest.json"
+_PRODUCTION_REGISTRY_REALPATH: Path = _REPO_ROOT / "data" / "제련완성본" / "registry" / "documents.json"
+
+_PRODUCTION_DIRS: tuple[Path, ...] = (
+    _REPO_ROOT / "output" / "bench",
+    _REPO_ROOT / "data" / "제련완성본" / "registry",
+)
+
 
 @dataclass(frozen=True)
-class TargetPaths:
-    """Resolved mutation target paths — all derived from a single output_root."""
-    output_root: Path | None
+class ResolvedPaths:
+    """Three individually-specified mutation target paths with production status."""
     dataset_path: Path
     manifest_path: Path
     registry_path: Path
-    is_production: bool
+    is_production: bool  # True if ANY of the three targets production
+    mixed_paths: bool = False  # True if some but not all are production
 
 
-def resolve_target_paths(
-    output_root: Optional[Path],
-    tsu_dataset_path: Optional[Path] = None,
-    manifest_path: Optional[Path] = None,
-    registry_path: Optional[Path] = None,
-) -> TargetPaths:
-    """Resolve mutation target paths from explicit output_root."""
-    if output_root is not None:
-        resolved = Path(output_root).resolve()
-        output_root_resolved = resolved
-    else:
-        output_root_resolved = None
+def _realpath(p: Path) -> Path:
+    """Resolve to absolute realpath (follows symlinks, .., etc.)."""
+    return p.resolve()
 
-    ds_resolved = Path(tsu_dataset_path).resolve() if tsu_dataset_path is not None else None
-    mf_resolved = Path(manifest_path).resolve() if manifest_path is not None else None
-    rg_resolved = Path(registry_path).resolve() if registry_path is not None else None
 
-    if output_root_resolved is not None:
-        bench_dir = output_root_resolved / "bench"
-        dataset_path = bench_dir / "tsu_dataset.jsonl"
-        manifest_path_resolved = bench_dir / "tsu_manifest.json"
-        registry_dir = output_root_resolved / "registry"
-        registry_path_resolved = registry_dir / "identity_registry.json"
-        is_production = _is_production_path(output_root_resolved)
-        return TargetPaths(
-            output_root=output_root_resolved,
-            dataset_path=dataset_path,
-            manifest_path=manifest_path_resolved,
-            registry_path=registry_path_resolved,
-            is_production=is_production,
+def _is_production_realpath(resolved: Path) -> bool:
+    """Check if resolved path equals one of the three production targets OR is under a production dir."""
+    for prod_target in (_PRODUCTION_DATASET_REALPATH, _PRODUCTION_MANIFEST_REALPATH, _PRODUCTION_REGISTRY_REALPATH):
+        if resolved == prod_target:
+            return True
+    for prod_dir in _PRODUCTION_DIRS:
+        try:
+            resolved.relative_to(prod_dir)
+            return True
+        except ValueError:
+            pass
+    return False
+
+
+def resolve_mutation_paths(
+    tsu_dataset_path: Path,
+    manifest_path: Path,
+    registry_path: Path,
+) -> ResolvedPaths:
+    """Resolve and validate three individually-specified mutation paths.
+
+    R1: All three are mandatory — no defaults, no output_root derivation.
+    R2: Production detection via realpath (cwd-independent).
+    R3: Mixed-path blocking — if some but not all point to production, BLOCK.
+    R5: No string heuristics ("bench" in str(p), etc.).
+    """
+    ds = _realpath(tsu_dataset_path)
+    mf = _realpath(manifest_path)
+    rg = _realpath(registry_path)
+
+    ds_prod = _is_production_realpath(ds)
+    mf_prod = _is_production_realpath(mf)
+    rg_prod = _is_production_realpath(rg)
+
+    any_prod = ds_prod or mf_prod or rg_prod
+    mixed = (ds_prod or mf_prod or rg_prod) and not (ds_prod and mf_prod and rg_prod)
+
+    if mixed:
+        raise CorpusMutationBlockedError(
+            f"Mixed mutation paths detected — some but not all point to production. "
+            f"dataset={'PROD' if ds_prod else 'tmp'}, "
+            f"manifest={'PROD' if mf_prod else 'tmp'}, "
+            f"registry={'PROD' if rg_prod else 'tmp'}"
         )
 
-    paths_provided = [p for p in [ds_resolved, mf_resolved, rg_resolved] if p is not None]
-    if len(paths_provided) >= 2:
-        roots = set()
-        for p in paths_provided:
-            if "bench" in str(p):
-                roots.add(p.parent.parent)
-            elif "registry" in str(p):
-                roots.add(p.parent.parent)
-            else:
-                roots.add(p.parent)
-        if len(roots) > 1:
-            raise CorpusMutationBlockedError(
-                f"Mixed mutation paths detected — all paths must share the same output root. "
-                f"Roots: {sorted(str(r) for r in roots)}"
-            )
-        actual_root = next(iter(roots))
-        is_production = _is_production_path(actual_root)
-        return TargetPaths(
-            output_root=actual_root,
-            dataset_path=ds_resolved if ds_resolved else actual_root / "bench" / "tsu_dataset.jsonl",
-            manifest_path=mf_resolved if mf_resolved else actual_root / "bench" / "tsu_manifest.json",
-            registry_path=rg_resolved if rg_resolved else actual_root / "registry" / "identity_registry.json",
-            is_production=is_production,
-        )
-
-    prod_root = Path(DEFAULT_OUTPUT_DIR).resolve()
-    return TargetPaths(
-        output_root=None,
-        dataset_path=Path(DEFAULT_TSU_DATASET_PATH),
-        manifest_path=Path(DEFAULT_TSU_MANIFEST_PATH),
-        registry_path=Path(registry_path_for(DEFAULT_OUTPUT_DIR)),
-        is_production=_is_production_path(prod_root),
+    return ResolvedPaths(
+        dataset_path=ds,
+        manifest_path=mf,
+        registry_path=rg,
+        is_production=any_prod,
+        mixed_paths=mixed,
     )
-
-
-def _is_production_path(resolved_path: Path) -> bool:
-    """Check if a resolved path points to the production output directory."""
-    prod_root = Path(DEFAULT_OUTPUT_DIR).resolve()
-    return resolved_path == prod_root
 
 
 def compute_dataset_sha256(dataset_path: Path) -> str:
@@ -151,7 +147,7 @@ def compute_dataset_sha256(dataset_path: Path) -> str:
 
 
 def verify_production_target_approval(
-    target_root: Path,
+    target_paths_realpath: list[str],
     source_id: str,
     dataset_path: Path,
     decisions_dir: Path,
@@ -159,13 +155,7 @@ def verify_production_target_approval(
 ) -> tuple[bool, str]:
     """Verify production target approval artifact exists and is valid.
 
-    Args:
-        target_root: The resolved output root path.
-        source_id: Source ID to look up.
-        dataset_path: Current dataset path for SHA comparison.
-        decisions_dir: Decisions directory (for context).
-        approval_dir: Explicit approval directory override (for testing).
-                      Defaults to NAE/review/human/production_targets/.
+    R4: Changed from target_root_realpath to target_paths_realpath (3 paths).
     """
     if approval_dir is not None:
         approval_path = approval_dir / f"{source_id}.json"
@@ -181,13 +171,13 @@ def verify_production_target_approval(
         return False, f"Failed to read production target approval: {e}"
 
     required_fields = [
-        "schema_version", "source_id", "target_root_realpath",
+        "schema_version", "source_id", "target_paths_realpath",
         "reviewer_id", "gate_id", "dataset_sha256_before",
         "final_decision", "approved_at",
     ]
-    for field in required_fields:
-        if field not in approval or not approval[field]:
-            return False, f"Missing required field in approval artifact: {field}"
+    for field_name in required_fields:
+        if field_name not in approval or not approval[field_name]:
+            return False, f"Missing required field in approval artifact: {field_name}"
 
     sv = approval["schema_version"]
     if not isinstance(sv, int) or sv < 1:
@@ -199,12 +189,16 @@ def verify_production_target_approval(
             f"current={source_id!r}"
         )
 
-    target_realpath = str(target_root.resolve())
-    if approval["target_root_realpath"] != target_realpath:
-        return False, (
-            f"target_root_realpath mismatch: approval={approval['target_root_realpath']!r}, "
-            f"current={target_realpath!r}"
-        )
+    # R4: target_paths_realpath check (was target_root_realpath)
+    approval_paths = approval["target_paths_realpath"]
+    if not isinstance(approval_paths, list) or len(approval_paths) != 3:
+        return False, f"target_paths_realpath must be a list of 3 strings"
+    for i, (app_path, cur_path) in enumerate(zip(approval_paths, target_paths_realpath)):
+        if app_path != cur_path:
+            return False, (
+                f"target_paths_realpath[{i}] mismatch: approval={app_path!r}, "
+                f"current={cur_path!r}"
+            )
 
     if approval["final_decision"] != "APPROVED":
         return False, f"final_decision is not APPROVED: {approval['final_decision']!r}"
@@ -352,12 +346,12 @@ def _validate_dataset(records: list[dict], dataset_path: Path) -> None:
 
 def merge_nae_corpus(
     source_id: Optional[str] = None,
-    output_root: Optional[Path] = None,
     nae_corpus_dir: Optional[Path] = None,
-    tsu_dataset_path: Optional[Path] = None,
-    manifest_path: Optional[Path] = None,
-    registry_path: Optional[Path] = None,
+    tsu_dataset_path: Path | None = None,
+    manifest_path: Path | None = None,
+    registry_path: Path | None = None,
     decisions_dir: Optional[Path] = None,
+    approval_dir: Optional[Path] = None,
 ) -> dict:
     """Merge NAE corpus TSU into production TSU (F-3 safe).
 
@@ -374,24 +368,30 @@ def merge_nae_corpus(
       - Function-level enforcement: direct Python call also triggers gate
 
     Production path safety (NAE-MERGE-PRODUCTION-PATH-SAFETY-001):
-      - output_root must be explicit — no implicit production default
-      - dataset/manifest/registry derived from output_root
-      - Production target requires separate approval artifact
+      - tsu_dataset_path, manifest_path, registry_path — 모두 필수 명시
+      - 개별 경로 각각 realpath 판정
+      - Production target requires separate approval artifact (target_paths_realpath)
     """
-    # Path resolution via resolve_target_paths() — no implicit defaults
-    target = resolve_target_paths(
-        output_root=output_root,
+    # R1: All three paths mandatory — no defaults, no output_root
+    if tsu_dataset_path is None or manifest_path is None or registry_path is None:
+        missing = []
+        if tsu_dataset_path is None:
+            missing.append("tsu_dataset_path")
+        if manifest_path is None:
+            missing.append("manifest_path")
+        if registry_path is None:
+            missing.append("registry_path")
+        raise CorpusMutationBlockedError(
+            f"Required mutation paths not specified: {', '.join(missing)}. "
+            "All three must be explicitly provided."
+        )
+
+    # R2/R3: Resolve and validate paths (realpath-based, mixed-path blocking)
+    target = resolve_mutation_paths(
         tsu_dataset_path=tsu_dataset_path,
         manifest_path=manifest_path,
         registry_path=registry_path,
     )
-
-    # Block if no mutation paths specified at all
-    if target.output_root is None:
-        raise CorpusMutationBlockedError(
-            "No output_root or mutation paths specified. "
-            "Provide explicit --output-root or tsu_dataset_path/manifest_path/registry_path."
-        )
 
     # Use resolved paths
     tsu_dataset_path = target.dataset_path
@@ -402,14 +402,16 @@ def merge_nae_corpus(
     nae_corpus_dir = Path(nae_corpus_dir or (Path("NAE") / "corpus" / "tsu"))
     decisions_dir = Path(decisions_dir or (Path("NAE") / "review" / "human" / "decisions"))
 
-    # Production target approval gate — before any mutation
+    # R6: Production target approval gate — before any mutation
     if target.is_production:
-        print(f"\nProduction target detected: {target.output_root}")
+        print(f"\nProduction target detected: dataset={target.dataset_path}")
+        tp_realpath = [str(target.dataset_path), str(target.manifest_path), str(target.registry_path)]
         valid, reason = verify_production_target_approval(
-            target_root=target.output_root,
+            target_paths_realpath=tp_realpath,
             source_id=source_id or "",
             dataset_path=tsu_dataset_path,
             decisions_dir=decisions_dir,
+            approval_dir=approval_dir,
         )
         if not valid:
             raise CorpusMutationBlockedError(
@@ -607,8 +609,12 @@ if __name__ == "__main__":
     )
     parser.add_argument("--source", required=True,
         help="Source ID to merge (e.g., Fuller_Complete_Works_Vol02)")
-    parser.add_argument("--output-root", required=True,
-        help="Explicit output root for dataset/manifest/registry mutation")
+    parser.add_argument("--dataset-path", required=True,
+        help="Absolute path to tsu_dataset.jsonl")
+    parser.add_argument("--manifest-path", required=True,
+        help="Absolute path to tsu_manifest.json")
+    parser.add_argument("--registry-path", required=True,
+        help="Absolute path to documents.json (identity registry)")
     parser.add_argument("--corpus-dir", default=None,
         help="NAE corpus TSU directory")
     parser.add_argument("--decisions-dir", default=None,
@@ -618,7 +624,9 @@ if __name__ == "__main__":
     try:
         result = merge_nae_corpus(
             source_id=args.source,
-            output_root=Path(args.output_root),
+            tsu_dataset_path=Path(args.dataset_path),
+            manifest_path=Path(args.manifest_path),
+            registry_path=Path(args.registry_path),
             nae_corpus_dir=Path(args.corpus_dir) if args.corpus_dir else None,
             decisions_dir=Path(args.decisions_dir) if args.decisions_dir else None,
         )

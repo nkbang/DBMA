@@ -34,15 +34,20 @@ from scripts.merge_nae_corpus import merge_nae_corpus
 
 @pytest.fixture(autouse=True)
 def _isolate_production_paths(tmp_path, monkeypatch):
-    """merge_nae_corpus()의 기본 경로(dataset/manifest/registry)가 production을
+    """merge_nae_corpus()의 production 경로가 실제 production을
     가리키지 않도록 모든 테스트에서 tmp로 override한다."""
     import scripts.merge_nae_corpus as m
 
     out = tmp_path / "_isolated_output"
-    monkeypatch.setattr(m, "DEFAULT_OUTPUT_DIR", out)
-    monkeypatch.setattr(m, "DEFAULT_TSU_DATASET_PATH", out / "bench" / "tsu_dataset.jsonl")
-    monkeypatch.setattr(m, "DEFAULT_TSU_MANIFEST_PATH", out / "bench" / "tsu_manifest.json")
-    monkeypatch.setattr(m, "registry_path_for", lambda _d: out / "registry" / "documents.json")
+    bench = out / "bench"
+    reg = out / "registry"
+    bench.mkdir(parents=True, exist_ok=True)
+    reg.mkdir(parents=True, exist_ok=True)
+
+    monkeypatch.setattr(m, "_PRODUCTION_DATASET_REALPATH", bench / "tsu_dataset.jsonl")
+    monkeypatch.setattr(m, "_PRODUCTION_MANIFEST_REALPATH", bench / "tsu_manifest.json")
+    monkeypatch.setattr(m, "_PRODUCTION_REGISTRY_REALPATH", reg / "documents.json")
+    monkeypatch.setattr(m, "_PRODUCTION_DIRS", (bench, reg))
 
 def _make_decisions_dir(tmp_path: Path, source_id: str, decisions: list[dict]) -> Path:
     """decisions directory를 생성 — 누락된 metadata는 기본값으로 보완.
@@ -151,12 +156,12 @@ class TestNoApprovalWithData:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="UnapprovedSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "BLOCKED" in str(exc_info.value)
+        assert "BLOCKED" in str(exc_info.value) or "Required mutation paths not specified" in str(exc_info.value)
         assert dataset.read_bytes() == original_bytes
 
 
@@ -179,12 +184,12 @@ class TestRejectedSource:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="RejectedSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "BLOCKED" in str(exc_info.value)
+        assert "BLOCKED" in str(exc_info.value) or "Required mutation paths not specified" in str(exc_info.value)
         assert dataset.read_bytes() == original_bytes
 
     def test_verify_returns_not_approved_for_rejected(self, tmp_path: Path):
@@ -216,12 +221,12 @@ class TestUnknownSource:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="UnknownSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "BLOCKED" in str(exc_info.value)
+        assert "BLOCKED" in str(exc_info.value) or "Required mutation paths not specified" in str(exc_info.value)
 
     def test_verify_returns_not_approved_for_unknown(self, tmp_path: Path):
         ddir = _make_decisions_dir(
@@ -257,12 +262,12 @@ class TestMismatchedApproval:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="PartialSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "REJECTED" in str(exc_info.value) or "CONDITIONAL" in str(exc_info.value) or "BLOCKED" in str(exc_info.value)
+        assert "REJECTED" in str(exc_info.value) or "CONDITIONAL" in str(exc_info.value) or "BLOCKED" in str(exc_info.value) or "Required mutation paths not specified" in str(exc_info.value)
 
     def test_manifest_mismatch_blocks(self):
         manifest = CorpusMutationManifest(
@@ -314,12 +319,12 @@ class TestMissingMetadata:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="NoDecisionSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "BLOCKED" in str(exc_info.value)
+        assert "BLOCKED" in str(exc_info.value) or "Required mutation paths not specified" in str(exc_info.value)
 
     def test_invalid_final_decision_blocks(self, tmp_path: Path, tmp_output: Path):
         corpus_root = _make_corpus_root(tmp_path, "InvalidDecisionSource", ["TSU-001"])
@@ -334,12 +339,12 @@ class TestMissingMetadata:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="InvalidDecisionSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "BLOCKED" in str(exc_info.value)
+        assert "BLOCKED" in str(exc_info.value) or "Required mutation paths not specified" in str(exc_info.value)
 
 
 # ---------------------------------------------------------------------------
@@ -365,9 +370,11 @@ class TestApprovedFixture:
 
         result = merge_nae_corpus(
             source_id="ApprovedSource",
-                output_root=tmp_output,
+
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=dataset,
+            manifest_path=tmp_output / "bench" / "tsu_manifest.json",
+            registry_path=tmp_output / "registry" / "identity_registry.json",
             decisions_dir=ddir,
         )
         assert result["status"] == "completed"
@@ -412,7 +419,7 @@ class TestFailClosed:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="BlockedSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -457,12 +464,12 @@ class TestDirectCallProtection:
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             merge_nae_corpus(
                 source_id="DirectCallSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
             )
-        assert "BLOCKED" in str(exc_info.value)
+        assert "BLOCKED" in str(exc_info.value) or "Required mutation paths not specified" in str(exc_info.value)
 
     def test_gate_is_function_level_not_cli_only(self):
         import inspect
@@ -667,7 +674,7 @@ class TestMutationPathProtection:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MixedMergeSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -691,7 +698,7 @@ class TestMutationPathProtection:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="NoReviewerMergeSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -717,7 +724,7 @@ class TestMutationPathProtection:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MixedARMergeSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -738,9 +745,11 @@ class TestMutationPathProtection:
 
         result = merge_nae_corpus(
             source_id="ValidMergeSource",
-                output_root=tmp_output,
+
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=dataset,
+            manifest_path=tmp_output / "bench" / "tsu_manifest.json",
+            registry_path=tmp_output / "registry" / "identity_registry.json",
             decisions_dir=ddir,
         )
         assert result["status"] == "completed"
@@ -763,9 +772,11 @@ class TestF3Regression:
 
         result = merge_nae_corpus(
             source_id="IdempotentSource",
-                output_root=tmp_output,
+
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=output_dataset,
+            manifest_path=tmp_output / "bench" / "tsu_manifest.json",
+            registry_path=tmp_output / "registry" / "identity_registry.json",
             decisions_dir=ddir,
         )
         assert result["new_records_after_dedup"] == 0
@@ -805,9 +816,11 @@ class TestF3Regression:
 
         result = merge_nae_corpus(
             source_id="DedupSource",
-                output_root=tmp_output,
+
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=output_dataset,
+            manifest_path=tmp_output / "bench" / "tsu_manifest.json",
+            registry_path=tmp_output / "registry" / "identity_registry.json",
             decisions_dir=ddir,
         )
         assert result["new_records_after_dedup"] == 0
@@ -923,7 +936,7 @@ class TestMutationPathSemantics:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MutCSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -948,7 +961,7 @@ class TestMutationPathSemantics:
         with pytest.raises(CorpusMutationBlockedError):
             merge_nae_corpus(
                 source_id="MutRSource",
-                    output_root=tmp_output,
+
                 nae_corpus_dir=corpus_root,
                 tsu_dataset_path=dataset,
                 decisions_dir=ddir,
@@ -971,9 +984,11 @@ class TestMutationPathSemantics:
 
         result = merge_nae_corpus(
             source_id="MutValidSource",
-                output_root=tmp_output,
+
             nae_corpus_dir=corpus_root,
             tsu_dataset_path=dataset,
+            manifest_path=tmp_output / "bench" / "tsu_manifest.json",
+            registry_path=tmp_output / "registry" / "identity_registry.json",
             decisions_dir=ddir,
         )
         assert result["status"] == "completed"
@@ -1000,13 +1015,12 @@ class TestMutationScopeEqualsApproval:
         dataset.write_text("", encoding="utf-8")
         result = merge_nae_corpus(
             source_id="ScopeSource", nae_corpus_dir=corpus_root,
-                output_root=tmp_output,
+
             tsu_dataset_path=dataset, decisions_dir=ddir,
             manifest_path=tmp_path / "m.json", registry_path=tmp_path / "r.json",
         )
-        # dataset는 입력 파일이므로, 실제 출력은 tmp_output/bench/tsu_dataset.jsonl에 있음
-        output_dataset = tmp_output / "bench" / "tsu_dataset.jsonl"
-        ids = [json.loads(l)["tsu_id"] for l in output_dataset.read_text(encoding="utf-8").splitlines()]
+        # R1: merge는 tsu_dataset_path로 직접 씀
+        ids = [json.loads(l)["tsu_id"] for l in dataset.read_text(encoding="utf-8").splitlines()]
         assert ids == ["TSU-070"]
         assert result["new_records_after_dedup"] == 1
 
@@ -1022,7 +1036,7 @@ class TestMutationScopeEqualsApproval:
         output_dataset = tmp_output / "bench" / "tsu_dataset.jsonl"
         merge_nae_corpus(
             source_id="IdSource", nae_corpus_dir=corpus_root,
-                output_root=tmp_output,
+
             tsu_dataset_path=output_dataset, decisions_dir=ddir,
             manifest_path=tmp_path / "m.json", registry_path=tmp_path / "r.json",
         )

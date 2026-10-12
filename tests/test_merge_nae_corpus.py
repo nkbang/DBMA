@@ -140,7 +140,7 @@ def test_case1_single_source_once(tmp_dirs):
         json.dump([rec], f, ensure_ascii=False)
     result = merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-1']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -166,7 +166,7 @@ def test_case2_same_source_twice(tmp_dirs):
         json.dump([rec], f, ensure_ascii=False)
     result1 = merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-2']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -177,7 +177,7 @@ def test_case2_same_source_twice(tmp_dirs):
         lines1 = [json.loads(line) for line in f if line.strip()]
     result2 = merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-2']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -211,7 +211,7 @@ def test_case3_preserve_unrelated(tmp_dirs):
         json.dump([rec], f, ensure_ascii=False)
     result = merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-3']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -246,7 +246,7 @@ def test_case4_add_new_tsu(tmp_dirs):
             json.dump([rec], f, ensure_ascii=False)
     result = merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-4', 'NAE-5']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -287,7 +287,7 @@ def test_case5_dedup_preserves_existing(tmp_dirs):
     # Execute — dedup should silently skip NAE-5 (already exists)
     result = merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-5']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -371,7 +371,7 @@ def test_case5b_atomic_write_failure_preserves_dataset(tmp_dirs):
         with pytest.raises(WriteFailure):
             merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-51']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
                 tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -403,7 +403,7 @@ def test_case6_manifest_consistency(tmp_dirs):
         json.dump([rec], f, ensure_ascii=False)
     merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-6']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -438,7 +438,7 @@ def test_case7_provenance_preservation(tmp_dirs):
         json.dump([rec], f, ensure_ascii=False)
     merge_nae_corpus(
         source_id="WORK_007",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_007", ['NAE-7']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -480,7 +480,7 @@ def test_case8_cross_run_idempotency(tmp_dirs):
         f.write(json.dumps(unrelated, ensure_ascii=False) + "\n")
     result1 = merge_nae_corpus(
         source_id="WORK_008",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_008", ['NAE-8', 'NAE-9']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -500,7 +500,7 @@ def test_case8_cross_run_idempotency(tmp_dirs):
     }
     result2 = merge_nae_corpus(
         source_id="WORK_008",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_008", ['NAE-8', 'NAE-9']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -546,7 +546,7 @@ def test_regression_empty_tsu_json(tmp_dirs):
     # Should not raise IndexError
     result = merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001"),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -573,7 +573,7 @@ def test_regression_document_id_nae_prefix(tmp_dirs):
 
     merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-90']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],
@@ -598,7 +598,7 @@ def test_regression_document_id_nae_prefix(tmp_dirs):
 def test_regression_default_args_no_typeerror(tmp_path: Path, monkeypatch):
     """NEW-1 regression: 기본 인자로 merge_nae_corpus() 호출 시 TypeError 없이 실행.
 
-    [SPRINT34] output_root 명시적 요구로 인해, 이제 output_root 없이 호출하면
+    [R1] tsu_dataset_path, manifest_path, registry_path 없이 호출하면
     CorpusMutationBlockedError가 발생한다. 이 테스트는 그 동작을 검증한다.
     """
     import scripts.merge_nae_corpus as mod
@@ -611,68 +611,47 @@ def test_regression_default_args_no_typeerror(tmp_path: Path, monkeypatch):
     with open(test_corpus / "tsu.json", "w", encoding="utf-8") as f:
         json.dump(fixture, f, ensure_ascii=False)
 
-    # 2. pytest chdir: 상대 경로 "NAE/corpus/tsu"가 tmp를 가리키도록 함
-    monkeypatch.chdir(tmp_path)
+    # 2. production 경로를 tmp로 monkeypatch (실제 production 접근 방지)
+    tmp_output = tmp_path / "_isolated_output"
+    bench = tmp_output / "bench"
+    reg = tmp_output / "registry"
+    bench.mkdir(parents=True, exist_ok=True)
+    reg.mkdir(parents=True, exist_ok=True)
 
-    # 3. output 경로 상수들을 tmp로 monkeypatch
-    tmp_output = tmp_path / "output"
-    tmp_output.mkdir()
-    tmp_bench = tmp_output / "bench"
-    tmp_bench.mkdir()
-    tmp_registry_dir = tmp_output / "registry"
-    tmp_registry_dir.mkdir()
+    prod_ds = mod._PRODUCTION_DATASET_REALPATH
+    prod_mf = mod._PRODUCTION_MANIFEST_REALPATH
+    prod_rg = mod._PRODUCTION_REGISTRY_REALPATH
+    prod_ds_hash = _file_hash(str(prod_ds)) if prod_ds.exists() else None
+    prod_mf_hash = _file_hash(str(prod_mf)) if prod_mf.exists() else None
+    prod_rg_hash = _file_hash(str(prod_rg)) if prod_rg.exists() else None
 
-    # 기존 production artifact 해시 (변경 감지용)
-    prod_registry_path = mod.registry_path_for(mod.DEFAULT_OUTPUT_DIR)
-    prod_registry_hash_before = _file_hash(prod_registry_path) if os.path.exists(prod_registry_path) else None
-    prod_dataset_path = mod.DEFAULT_TSU_DATASET_PATH
-    prod_dataset_hash_before = _file_hash(prod_dataset_path) if os.path.exists(prod_dataset_path) else None
-    prod_manifest_path = mod.DEFAULT_TSU_MANIFEST_PATH
-    prod_manifest_hash_before = _file_hash(prod_manifest_path) if os.path.exists(prod_manifest_path) else None
-
-    # monkeypatch output 경로 상수들
-    mod.DEFAULT_OUTPUT_DIR = str(tmp_output)
-    mod.DEFAULT_TSU_DATASET_PATH = str(tmp_bench / "tsu_dataset.jsonl")
-    mod.DEFAULT_TSU_MANIFEST_PATH = str(tmp_bench / "tsu_manifest.json")
-    original_registry_path_for = mod.registry_path_for
-    mod.registry_path_for = lambda output_dir=None: (
-        os.path.join(output_dir, "registry", "documents.json")
-        if output_dir
-        else os.path.join(str(tmp_output), "registry", "documents.json")
-    )
+    monkeypatch.setattr(mod, "_PRODUCTION_DATASET_REALPATH", bench / "tsu_dataset.jsonl")
+    monkeypatch.setattr(mod, "_PRODUCTION_MANIFEST_REALPATH", bench / "tsu_manifest.json")
+    monkeypatch.setattr(mod, "_PRODUCTION_REGISTRY_REALPATH", reg / "documents.json")
+    monkeypatch.setattr(mod, "_PRODUCTION_DIRS", (bench, reg))
 
     try:
-        # output_root 없이 호출하면 CorpusMutationBlockedError 발생
+        # 세 경로 없이 호출하면 CorpusMutationBlockedError 발생
         with pytest.raises(CorpusMutationBlockedError) as exc_info:
             mod.merge_nae_corpus(
                 source_id="WORK_001",
                 decisions_dir=_make_approved_decisions_dir(tmp_path, "WORK_001", ['NAE-100']),
             )
-        assert "output_root" in str(exc_info.value).lower()
+        assert "tsu_dataset_path" in str(exc_info.value) or "manifest_path" in str(exc_info.value)
 
         # production dataset/manifest/registry가 전혀 변경되지 않음
-        if prod_registry_hash_before is not None:
-            assert _file_hash(prod_registry_path) == prod_registry_hash_before
-        if prod_dataset_hash_before is not None:
-            assert _file_hash(prod_dataset_path) == prod_dataset_hash_before
-        if prod_manifest_hash_before is not None:
-            assert _file_hash(prod_manifest_path) == prod_manifest_hash_before
+        if prod_ds_hash is not None:
+            assert _file_hash(str(prod_ds)) == prod_ds_hash
+        if prod_mf_hash is not None:
+            assert _file_hash(str(prod_mf)) == prod_mf_hash
+        if prod_rg_hash is not None:
+            assert _file_hash(str(prod_rg)) == prod_rg_hash
     finally:
-        # D. production 경로 상수 복원 및 artifact 변경 없음 확인
-        mod.DEFAULT_OUTPUT_DIR = "output"
-        mod.DEFAULT_TSU_DATASET_PATH = os.path.join("output", "bench", "tsu_dataset.jsonl")
-        mod.DEFAULT_TSU_MANIFEST_PATH = os.path.join("output", "bench", "tsu_manifest.json")
-        mod.registry_path_for = original_registry_path_for
-
-        if prod_registry_hash_before is not None and os.path.exists(prod_registry_path):
-            assert prod_registry_hash_before == _file_hash(prod_registry_path), \
-                "Production registry was modified!"
-        if prod_dataset_hash_before is not None and os.path.exists(prod_dataset_path):
-            assert prod_dataset_hash_before == _file_hash(prod_dataset_path), \
-                "Production dataset was modified!"
-        if prod_manifest_hash_before is not None and os.path.exists(prod_manifest_path):
-            assert prod_manifest_hash_before == _file_hash(prod_manifest_path), \
-                "Production manifest was modified!"
+        # production 경로 상수 복원
+        monkeypatch.setattr(mod, "_PRODUCTION_DATASET_REALPATH", prod_ds)
+        monkeypatch.setattr(mod, "_PRODUCTION_MANIFEST_REALPATH", prod_mf)
+        monkeypatch.setattr(mod, "_PRODUCTION_REGISTRY_REALPATH", prod_rg)
+        monkeypatch.setattr(mod, "_PRODUCTION_DIRS", (prod_ds.parent.parent / "bench", prod_rg.parent.parent / "registry"))
 
 
 def _file_hash(path: str) -> str:
@@ -694,7 +673,7 @@ def test_regression_registry_document_entry(tmp_dirs):
 
     merge_nae_corpus(
         source_id="WORK_001",
-            output_root=tmp_dirs["output_root"],
+
         decisions_dir=_make_approved_decisions_dir(tmp_dirs["tmp_path"], "WORK_001", ['NAE-91']),
         nae_corpus_dir=tmp_dirs["nae_corpus"],
         tsu_dataset_path=tmp_dirs["tsu_dataset"],

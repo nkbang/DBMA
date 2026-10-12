@@ -66,3 +66,58 @@ def _file_hash(path: str) -> str:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+@pytest.fixture()
+def _isolate_production_paths(monkeypatch):
+    """Production paths를 tmp 트리로 isolate하여 end-to-end 테스트에서 실제 production 파일을 보호한다.
+
+    tmp/output/bench/{tsu_dataset.jsonl, tsu_manifest.json}
+    tmp/data/제련완성본/registry/documents.json
+    을 만들고 _PRODUCTION_*_REALPATH 및 _PRODUCTION_DIRS를 이 트리로 patch한다.
+    """
+    import tempfile
+    import scripts.merge_nae_corpus as mnc_mod
+
+    tmp_dir = Path(tempfile.mkdtemp())
+    # tmp/output/bench
+    bench_dir = tmp_dir / "output" / "bench"
+    bench_dir.mkdir(parents=True)
+    ds_path = bench_dir / "tsu_dataset.jsonl"
+    mf_path = bench_dir / "tsu_manifest.json"
+    ds_path.write_text("", encoding="utf-8")
+    mf_path.write_text("{}", encoding="utf-8")
+
+    # tmp/data/제련완성본/registry
+    prod_data_dir = tmp_dir / "data" / "제련완성본" / "registry"
+    prod_data_dir.mkdir(parents=True)
+    rg_path = prod_data_dir / "documents.json"
+    rg_path.write_text('{"documents": {}}', encoding="utf-8")
+
+    repo_root = tmp_dir
+    monkeypatch.setattr(mnc_mod, "_REPO_ROOT", repo_root)
+    monkeypatch.setattr(mnc_mod, "_PRODUCTION_DATASET_REALPATH", ds_path)
+    monkeypatch.setattr(mnc_mod, "_PRODUCTION_MANIFEST_REALPATH", mf_path)
+    monkeypatch.setattr(mnc_mod, "_PRODUCTION_REGISTRY_REALPATH", rg_path)
+    monkeypatch.setattr(
+        mnc_mod,
+        "_PRODUCTION_DIRS",
+        (
+            repo_root / "output" / "bench",
+            repo_root / "data" / "제련완성본" / "registry",
+        ),
+    )
+    # _realpath를 identity function으로 monkeypatch — macOS symlink(/var ↔ /private/var)로
+    # resolve()와 원본 경로가 불일치하는 문제를 방지한다.
+    monkeypatch.setattr(mnc_mod, "_realpath", lambda p: p)
+
+    yield {
+        "tmp_dir": tmp_dir,
+        "dataset_path": ds_path,
+        "manifest_path": mf_path,
+        "registry_path": rg_path,
+    }
+
+    # Cleanup
+    import shutil
+    shutil.rmtree(tmp_dir, ignore_errors=True)
