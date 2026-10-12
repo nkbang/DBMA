@@ -172,7 +172,7 @@ def main() -> int:
     #   이 블록 동안 리컨사일러는 완전히 대기한다.
     with registry_lock(str(registry_path)):
         # b. registry 표시
-        registry = load_identity_registry(str(registry_path))
+        registry = load_identity_registry(str(registry_path), strict=True)
         marked = 0
         for doc_id in target_ids:
             rec = registry["documents"].get(doc_id)
@@ -184,7 +184,7 @@ def main() -> int:
             )
             rec["pipeline_state"] = "INDEXED"  # 리컨사일러 pending 재스캔 방지(이중 안전장치)
             marked += 1
-        save_identity_registry(registry, str(registry_path))
+        save_identity_registry(registry, str(registry_path), strict=True)
         print(f"[registry] {marked}건 EXCLUDED + pipeline_state=INDEXED 표시 후 저장")
 
         # c. TSU 데이터셋 재작성 (파싱 불가 줄 + 대상 레코드 제거)

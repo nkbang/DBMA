@@ -50,7 +50,7 @@ def backfill(
         apply: True이면 실제 저장, False이면 dry-run (목록만 출력)
         reclassify: True이면 기존 값이 있어도 재분류해 달라진 것만 갱신한다
     """
-    registry = load_identity_registry(registry_path)
+    registry = load_identity_registry(registry_path, strict=True)
     changed = []
     skipped_no_md = []
 
@@ -99,7 +99,7 @@ def backfill(
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         bak_path = f"{registry_path}.{timestamp}.bak"
         shutil.copy2(registry_path, bak_path)
-        save_identity_registry(registry, registry_path)
+        save_identity_registry(registry, registry_path, strict=True)
         print(f"registry 저장 완료: {registry_path}")
         print(f"백업: {bak_path}")
     elif not apply:
