@@ -28,15 +28,91 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import json
+import logging
 import os
 import datetime
+import shutil
+import tempfile
 import unicodedata
 from contextlib import contextmanager
 from typing import Optional, Dict, Tuple, Literal
 from core.document_identity import PROCESSING_VERSION
 from core.document_context import set_pipeline_state
+from core.atomic_io import replace_with_retry, retry_io
 from core.file_lock import file_lock
+
+
+logger = logging.getLogger(__name__)
+
+
+class RegistryError(OSError):
+    """레지스트리 입출력 실패의 공통 부모. strict 모드에서만 올라온다.
+
+    OSError 의 하위 클래스라, `except OSError` 로 레지스트리 I/O 를 이미 다루던 곳은 의미가 유지된다.
+    """
+
+
+class RegistryReadError(RegistryError):
+    """재시도 후에도 레지스트리를 읽지 못했다."""
+
+
+class RegistryCorruptError(RegistryError):
+    """레지스트리 파일이 손상되었다(JSON/UTF-8 오류 또는 최상위가 객체가 아님)."""
+
+
+class RegistrySchemaError(RegistryError):
+    """schema_version 이 이 코드가 아는 값이 아니다(예: 더 새로운 버전이 쓴 파일)."""
+
+
+class RegistrySaveError(RegistryError):
+    """재시도 후에도 레지스트리를 저장하지 못했다."""
+
+
+# 손상·비호환 파일은 덮어쓰이기 전에 복사해 둔다. 종류별로 최근 N개만 남긴다(무한 증가 방지).
+MAX_PRESERVED_COPIES = 5
+# 같은 (경로, 종류, 내용 해시)의 ERROR 로그는 프로세스당 한 번만 남긴다(화면이 매번 읽어도 로그가 폭주하지 않게).
+_LOGGED_ONCE: set = set()
+
+
+def _log_once(key: tuple, message: str, *args) -> None:
+    if key in _LOGGED_ONCE:
+        logger.debug(message, *args)
+        return
+    _LOGGED_ONCE.add(key)
+    logger.error(message, *args)
+
+
+def _preserve_copy(path: str, kind: str) -> Optional[str]:
+    """손상/비호환 파일을 `<path>.<kind>-<sha256 앞 10자>`로 복사해 보존한다. 원본은 건드리지 않는다.
+
+    읽는 쪽이 원본 이름을 바꾸면 쓰는 쪽과 경합하므로 *복사*한다. 이름에 내용 해시가 들어가
+    같은 내용은 한 번만 만들어진다(멱등). 복사 실패는 읽기 자체를 막지 않는다.
+    """
+    try:
+        with open(path, "rb") as f:
+            digest = hashlib.sha256(f.read()).hexdigest()[:10]
+        dst = f"{path}.{kind}-{digest}"
+        if not os.path.exists(dst):
+            shutil.copy2(path, dst)
+            # 종류별 최근 N개만 유지
+            prefix = f"{os.path.basename(path)}.{kind.split('-')[0]}-"
+            siblings = [
+                os.path.join(os.path.dirname(path) or ".", n)
+                for n in os.listdir(os.path.dirname(path) or ".")
+                if n.startswith(prefix)
+            ]
+            siblings.sort(key=os.path.getmtime, reverse=True)
+            for old in siblings[MAX_PRESERVED_COPIES:]:
+                try:
+                    os.unlink(old)
+                except OSError:
+                    pass
+        return dst
+    except OSError as exc:
+        logger.error("registry %s 파일 보존 실패: %s: %r", kind, path, exc)
+        return None
 
 
 @contextmanager
@@ -62,32 +138,62 @@ def registry_lock(registry_path: str):
         yield
 
 
-def load_identity_registry(registry_path: str) -> dict:
+def _read_json(path: str):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_identity_registry(registry_path: str, *, strict: bool = False) -> dict:
     """Load registry from disk. Creates empty if not exists.
 
     Args:
         registry_path: Full path to documents.json
+        strict: False(기본, 호환) — 예전처럼 항상 유효한 dict 를 반환한다(never None, 기본 동작 불변).
+            다만 일시적 I/O 오류는 짧게 재시도하고, 손상·비호환 파일은 덮어쓰이기 *전에* 복사본을 보존하며,
+            모든 실패를 ERROR 로그로 남긴다(예전에는 조용히 빈 레지스트리가 되어 다음 저장이 원본을 지웠다).
+            True — 읽기→수정→저장(RMW) 호출자용. 영구 실패를 빈 레지스트리로 바꾸지 않고
+            RegistryReadError / RegistryCorruptError / RegistrySchemaError 를 올린다.
+            ("파일 없음"은 어느 쪽이든 새로 시작하는 정상 상황이라 빈 레지스트리를 돌려준다.)
 
     Returns:
-        Registry dictionary (always valid, never None)
+        Registry dictionary
     """
     if not os.path.exists(registry_path):
         return _empty_registry()
 
     try:
-        with open(registry_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        data = retry_io(lambda: _read_json(registry_path), what=f"load {registry_path}")
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        dst = _preserve_copy(registry_path, "corrupt")
+        _log_once(("corrupt", registry_path, dst), "registry 파일 손상(복사본: %s): %s: %r", dst, registry_path, exc)
+        if strict:
+            raise RegistryCorruptError(f"{registry_path}: {exc}") from exc
+        return _empty_registry()  # 호환: 기본 동작 불변 (단, 원본은 보존됨)
+    except OSError as exc:
+        logger.error("registry 읽기 실패: %s: %r", registry_path, exc)
+        if strict:
+            raise RegistryReadError(f"{registry_path}: {exc}") from exc
+        return _empty_registry()
 
-        sv = data.get("schema_version", "1.0")
-        if sv not in ("1.0", "2.0"):
-            return _empty_registry()  # Incompatible schema → start fresh
+    if not isinstance(data, dict):
+        dst = _preserve_copy(registry_path, "corrupt")
+        _log_once(("notdict", registry_path, dst), "registry 최상위가 객체가 아님(복사본: %s): %s", dst, registry_path)
+        if strict:
+            raise RegistryCorruptError(f"{registry_path}: 최상위 JSON 이 객체가 아니다({type(data).__name__})")
+        return _empty_registry()
 
-        # Migration needed for v1.0 → v2.0
-        migrate_registry_schema(data)
+    sv = data.get("schema_version", "1.0")
+    if sv not in ("1.0", "2.0"):
+        dst = _preserve_copy(registry_path, f"schema-{sv}")
+        _log_once(("schema", registry_path, sv), "registry 스키마 비호환(%s, 복사본: %s): %s", sv, dst, registry_path)
+        if strict:
+            raise RegistrySchemaError(f"{registry_path}: schema_version={sv}")
+        return _empty_registry()  # 호환: 기본 동작 불변 (단, 원본은 보존됨)
 
-        return data
-    except (json.JSONDecodeError, OSError):
-        return _empty_registry()  # Corruption → recover by rebuilding
+    # Migration needed for v1.0 → v2.0
+    migrate_registry_schema(data)
+
+    return data
 
 
 def _empty_registry() -> dict:
@@ -577,35 +683,59 @@ def update_pipeline_flags(
     return True
 
 
-def save_identity_registry(registry: dict, registry_path: str) -> bool:
+def save_identity_registry(registry: dict, registry_path: str, *, strict: bool = False) -> bool:
     """Save registry to disk atomically.
 
-    Uses .tmp + os.replace() for atomic swap on POSIX systems.
+    저장마다 *고유한* 임시 파일에 쓴 뒤 os.replace 로 교체한다. 예전에는 항상 `<path>.tmp` 를 써서,
+    registry_lock 밖에서 저장하는 화면 동작과 백그라운드 저장이 같은 임시 파일에 동시에 쓸 수 있었다.
+    Windows 에서 일시적으로 교체가 거부되면(PermissionError) 짧게 재시도한다.
 
     Args:
         registry: Registry dictionary to persist
         registry_path: Target file path
+        strict: False(기본, 호환) — 실패하면 False 를 반환한다(예전과 같음). 다만 실패는 이제 항상 ERROR 로그로 남는다.
+            True — 실패하면 RegistrySaveError 를 올린다.
 
     Returns:
         True on success, False on failure
     """
     tmp_path: Optional[str] = None
     try:
-        os.makedirs(os.path.dirname(registry_path), exist_ok=True)
+        directory = os.path.dirname(registry_path) or "."
+        os.makedirs(directory, exist_ok=True)
 
-        # Write to temp file first
-        tmp_path = registry_path + ".tmp"
-        with open(tmp_path, "w", encoding="utf-8") as f:
+        fd, tmp_path = tempfile.mkstemp(dir=directory, prefix=os.path.basename(registry_path) + ".", suffix=".tmp")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(registry, f, indent=2, ensure_ascii=False)
+        _match_existing_mode(tmp_path, registry_path)
 
-        # Atomic swap (POSIX guarantees this is indivisible)
-        os.replace(tmp_path, registry_path)
+        replace_with_retry(tmp_path, registry_path)
         return True
 
-    except (IOError, OSError):
+    except OSError as exc:
+        logger.error("registry 저장 실패: %s: %r", registry_path, exc)
         if tmp_path is not None:
             try:
                 os.unlink(tmp_path)
             except OSError:
                 pass
+        if strict:
+            raise RegistrySaveError(f"{registry_path}: {exc}") from exc
         return False
+
+
+def _match_existing_mode(tmp_path: str, registry_path: str) -> None:
+    """mkstemp 는 0600 으로 만든다. 교체 후 레지스트리 권한이 바뀌지 않도록 기존 파일의 권한을 따른다.
+
+    기존 파일이 없으면 일반 파일의 흔한 기본값 0644 로 맞춘다. Windows 에서는 chmod 가 읽기 전용 플래그만
+    바꾸므로 건드리지 않는다. 실패는 무시한다(권한 맞춤이 저장 자체를 막아서는 안 된다).
+    """
+    if os.name == "nt":
+        return
+    try:
+        if os.path.exists(registry_path):
+            shutil.copymode(registry_path, tmp_path)
+        else:
+            os.chmod(tmp_path, 0o644)
+    except OSError:
+        pass

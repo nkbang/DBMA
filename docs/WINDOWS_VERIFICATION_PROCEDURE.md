@@ -29,7 +29,7 @@
 
 `core/identity_registry.py`는 문서 레지스트리를 `.tmp`에 쓴 뒤 `os.replace`로 교체한다. macOS에서는 교체가 읽는 쪽에 원자적으로 보이지만 **Windows에서는 다른 곳이 그 파일을 열고 있으면 교체가 `PermissionError`로 실패**할 수 있다. 문제는 그 뒤 처리다.
 
-- `save_identity_registry`는 `OSError`(`PermissionError` 포함)를 **조용히 삼키고 `False`를 반환**한다. 호출 22곳 중 **반환값을 확인하는 곳은 5곳**이고, 백그라운드 인덱서(`index_orchestrator.py` 3곳)·`processing.py`·`raw_hygiene.py`는 무시한다 → 저장이 **소리 없이 사라질** 수 있다.
+- `save_identity_registry`는 `OSError`(`PermissionError` 포함)를 **조용히 삼키고 `False`를 반환**한다. 호출 18곳(실제 호출 지점, AST 기준) 중 **반환값을 확인하는 곳은 5곳**이고, 13곳은 무시한다(앱 코드 6곳·scripts 7곳; 앱 코드는 백그라운드 인덱서(`index_orchestrator.py` 3곳)·`processing.py`·`raw_hygiene.py`). 저장이 **소리 없이 사라질** 수 있다.
 - `load_identity_registry`는 `OSError`가 나면 **빈 레지스트리를 반환**한다("손상 → 재구성"). Windows에서 교체 순간에 읽기가 걸려 빈 레지스트리를 받고 그 위에 읽기→수정→저장이 이어지면 실제 레지스트리를 덮어쓸 수 있다.
 - `load_identity_registry` 호출은 실제 26곳이고, 같은 함수 안의 `with registry_lock(...)` 블록 안은 5곳, **밖은 21곳**이다(AST 분류: `ui/pages/library.py` 6, `core/index_orchestrator.py` 3, `ui/pages/dashboard.py` 3 등 — 화면 렌더링과 5초 주기 백그라운드 인덱서가 동시에 동작). 한계: 호출 지점의 *상위 함수*가 이미 잠금을 쥔 경우는 이 분류가 구분하지 못하므로 '밖 21곳'은 상한에 가까운 추정이다.
 
