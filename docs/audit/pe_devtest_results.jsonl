@@ -1,0 +1,4 @@
+{"task": "T1_bugfix", "provider": "ollama", "model": "qwen3.6:35b-DBMAcode-Cline", "seconds": 31.0, "format_ok": true, "pass": true, "existing_ok": true, "hidden_ok": true}
+{"task": "T2_feature", "provider": "ollama", "model": "qwen3.6:35b-DBMAcode-Cline", "seconds": 31.6, "format_ok": true, "pass": true, "existing_ok": true, "hidden_ok": true}
+{"task": "T3_tests", "provider": "ollama", "model": "qwen3.6:35b-DBMAcode-Cline", "seconds": 42.0, "format_ok": true, "pass": true, "original_pass": true, "mutants_killed": "4/4"}
+{"task": "T4_spec_change", "provider": "ollama", "model": "qwen3.6:35b-DBMAcode-Cline", "seconds": 39.8, "format_ok": true, "pass": true, "existing_ok": true, "hidden_ok": true}
