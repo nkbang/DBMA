@@ -531,7 +531,7 @@ def tsu_dataset_lock(dataset_path: "os.PathLike[str] | str"):
         if held.get(key, 0) == 0:
             lock_path = key + ".lock"
             os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
-            lock_file = open(lock_path, "w")
+            lock_file = open(lock_path, "w", encoding="utf-8")
             fcntl.flock(lock_file, fcntl.LOCK_EX)
             held[key] = 1
             try:
