@@ -1,6 +1,6 @@
 # Windows 검증 절차서
 
-- 작성: 2026-10-12 · 기준 코드: `dev/dbma-engine` (PR #116 인코딩 위생, PR #117 `fcntl` 대체가 병합된 `1b50181f` 이후)
+- 작성: 2026-10-12 · 기준 코드: `dev/dbma-engine` (PR #116 인코딩 위생, #117 `fcntl` 대체, **#119~#122 레지스트리 I/O 하드닝**이 병합된 `5ff885a0` 이후. 2026-10-12 갱신)
 - 실행 도구: `scripts/windows/verify_windows_readiness.py` (자동 점검 11개, 크로스플랫폼 파이썬)
 - 관련 문서: `docs/GATE2_CLEAN_ENV_EVALUATION_PROCEDURE.md`(macOS 설치기 평가), `docs/GATE2_REASSESSMENT_20261007.md`
 
@@ -20,12 +20,15 @@
 | 앱 기동 (`import ui.app`) | **해소로 추정, Windows 미검증** | `fcntl`(POSIX 전용) 직접 사용을 `core/file_lock.py`로 교체(#117). `fcntl` 등 POSIX 전용 모듈을 막은 macOS 모사에서 성공 |
 | 파일 잠금 | **macOS에서만 검증** | 기존 시험 7건 + 신규 8건 통과. Windows는 `filelock`의 `msvcrt.locking` 경로를 소스로 읽은 것이 근거 |
 | 텍스트 인코딩 | 위생 수정, **앱 일반 경로의 실제 장애는 없었음** | 미지정 14곳에 `encoding="utf-8"` 명시(#116), AST 회귀 시험. 한국어 로케일 재현: em dash·히브리어·폴리토닉 헬라어는 기본 인코딩에서 실패 |
-| **레지스트리 교체 경합** | **★ 미해소 · 가장 의심되는 위험** | 아래 §1.1 |
+| **레지스트리 교체 경합** | **★ 하드닝 적용(#119~#122), Windows 미검증 · 가장 의심되는 위험** | 아래 §1.1. 점검 `08`이 최종 판정 |
 | `hunspell`(맞춤법) | Windows용 wheel 없음 | 소스 빌드 필요. **없어도 안전**: 대체 엔진(no-op)으로 넘어가 맞춤법 검사만 꺼짐. 이 절차는 설치에서 제외한다 |
 | `tesseract`·`poppler` | 별도 설치 필요(선택) | 스캔 PDF OCR에만 필요 |
 | 설치기 | **없음** | 위 §0 |
 
-### 1.1 가장 중요한 미해소 위험: 레지스트리 교체 경합
+### 1.1 가장 중요한 위험: 레지스트리 교체 경합
+
+> **2026-10-12 갱신 — 아래 서술은 하드닝 *이전* 동작이다.** #119~#122(`5ff885a0`)로 다음이 적용됐다: 일시적 `PermissionError`(winerror 5/32/33) 재시도 `core/atomic_io.py`, 고유 임시 파일, 손상·비호환 파일은 덮어쓰기 전 복사본 보존, 잠금 안 경로와 `scripts/` 저장 호출 `strict=True`, 화면 수정을 `mutate_registry`(잠금 안)로 이동, 나머지 원자적 쓰기에 재시도 적용, `tsu_builder`의 Windows 디렉터리 fsync 결함 수정. macOS(모의 실패 주입 포함)에서는 점검 `08` PASS이나 **Windows 실기 결과는 없다.** 따라서 Windows에서 `08`이 기본 모드로 `PASS`여야 하며, `WARN`이면 하드닝이 불충분하다는 뜻이다.
+
 
 `core/identity_registry.py`는 문서 레지스트리를 `.tmp`에 쓴 뒤 `os.replace`로 교체한다. macOS에서는 교체가 읽는 쪽에 원자적으로 보이지만 **Windows에서는 다른 곳이 그 파일을 열고 있으면 교체가 `PermissionError`로 실패**할 수 있다. 문제는 그 뒤 처리다.
 
@@ -84,7 +87,7 @@ cd C:\dbma\DBMA
 git rev-parse HEAD
 ```
 
-`git rev-parse HEAD`가 `1b50181f…` 이거나 그 이후 커밋이어야 한다(`git merge-base --is-ancestor 1b50181f HEAD`가 성공). **`scripts\windows\verify_windows_readiness.py`가 없으면**: 이 도구가 아직 `dev`에 병합되지 않은 것이다. 파일을 따로 받아 같은 경로에 두면 된다.
+`git rev-parse HEAD`가 `5ff885a0…` 이거나 그 이후 커밋이어야 한다(`git merge-base --is-ancestor 5ff885a0 HEAD`가 성공). **`scripts\windows\verify_windows_readiness.py`가 없으면**: 이 도구가 아직 `dev`에 병합되지 않은 것이다. 파일을 따로 받아 같은 경로에 두면 된다.
 
 **P4. 가상환경** (활성화 스크립트를 쓰지 않는다 — 실행 정책 오류를 피하기 위해 항상 `venv`의 `python.exe`를 직접 호출한다)
 
@@ -141,10 +144,10 @@ C:\dbma\venv\Scripts\python.exe scripts\windows\verify_windows_readiness.py --ou
 | **05** | **`import ui.app`** | **성공** | **FAIL이면 #117의 목적이 Windows에서 달성되지 않은 것(최우선 결함)** |
 | 06 | 파일 잠금 | 스레드·프로세스 상호 배제, 예외 후 해제, 한글 경로 | FAIL: `filelock`/`msvcrt` 경로 결함 |
 | 07 | 인코딩 왕복 | 히브리어·폴리토닉 헬라어·한글·em dash 보존 | FAIL: 로케일 인코딩 결함이 앱 경로에 남아 있음 |
-| **08** | **레지스트리 교체 경합** | **저장 실패 0, 빈 읽기 0** | **WARN이면 §1.1의 위험이 실제로 관찰된 것 — 조치 필요** |
+| **08** | **레지스트리 교체 경합** | **저장 실패 0, 빈 읽기 0** | **WARN이면 §1.1의 위험이 하드닝 후에도 관찰된 것 — 조치 필요** |
 | 09 | Streamlit 기동 | `/_stcore/health` = ok | FAIL: 서버가 안 뜸 |
 | 10 | 6개 페이지 렌더링 | 예외 0, 페이지 선택값 일치 | FAIL: 화면 결함. WARN(선택값 불일치): 메뉴 키 변경 |
-| 11 | Windows 관련 시험 5개 파일 | 전부 통과 | FAIL: 시험이 Windows에서 실패 |
+| 11 | Windows 관련 시험 9개 파일(잠금·인코딩·임포트 + 레지스트리 하드닝 4개) | 전부 통과 | FAIL: 시험이 Windows에서 실패 |
 
 ### 4.2 수동 확인 (사람 눈)
 
@@ -209,7 +212,7 @@ C:\dbma\venv\Scripts\python.exe scripts\windows\verify_windows_readiness.py --ou
 
 | 관찰 | 후속 |
 |---|---|
-| `08` WARN | `save_identity_registry`에서 `os.replace`를 `PermissionError`에 대해 짧은 백오프로 재시도, 실패 시 예외를 전파하거나 호출자가 확인하도록 변경; `load_identity_registry`가 일시적 `OSError`와 "파일 없음/손상"을 구분해 **빈 레지스트리를 반환하지 않도록** 재설계; 잠금 밖의 읽기(약 21곳)가 같은 잠금을 쓰도록 검토. 별도 PR·승인 필요 |
+| `08` WARN | **하드닝(#119~#122) 적용 후에도 WARN**이므로 `logs\08_*`의 실패 유형을 확인한다: 재시도 상한(2초, `core/atomic_io.py` 초기값) 부족이면 상한·백오프 조정(백신 환경 가능성), 잠금 밖 읽기 경합이면 해당 호출부를 `mutate_registry`/`registry_lock`으로 이전. 별도 PR·승인 필요 |
 | `05` FAIL | 임포트 실패 지점을 확인(다른 POSIX 전용 모듈, 경로, 의존성 로드 순서) — 최우선 |
 | `02` FAIL | 실패 패키지의 Windows wheel 부재 여부 확인 → 대체 또는 선택 의존성화 |
 | 설치 장벽(빌드 도구 필요 등) | 배포 형태(설치기)의 설계에 반영 — 이 절차의 결과가 설치기 설계의 입력이 된다 |

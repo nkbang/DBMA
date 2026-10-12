@@ -440,7 +440,9 @@ print(json.dumps(out, ensure_ascii=False))
 @check("11_pytest_windows_set")
 def c_pytest_set():
     tests = ["tests/test_file_lock.py", "tests/test_registry_lock.py", "tests/test_tsu_dataset_lock.py",
-             "tests/test_explicit_text_encoding.py", "tests/test_ui_imports_without_nae.py"]
+             "tests/test_explicit_text_encoding.py", "tests/test_ui_imports_without_nae.py",
+             "tests/test_registry_io_hardening.py", "tests/test_registry_strict_callers.py",
+             "tests/test_atomic_write_helpers.py", "tests/test_scripts_registry_strict.py"]
     tests = [t for t in tests if (REPO / t).exists()]
     if not tests:
         return "SKIP", "대상 시험 파일 없음", ""
