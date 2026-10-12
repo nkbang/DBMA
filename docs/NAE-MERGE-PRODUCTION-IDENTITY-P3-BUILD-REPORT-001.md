@@ -83,7 +83,7 @@ All 113 tests pass. No regressions in existing test suite.
 
 ### A11: No implicit production default
 - **Result**: PASS (unchanged — verified by existing tests)
-- **Evidence**: `test_no_implicit_production_default(tmp_path)` in `test_merge_nae_corpus.py` — asserts `CorpusMutationBlockedError` when `output_root` omitted
+- **Evidence**: `test_no_implicit_production_default(tmp_path)` in `test_merge_nae_corpus.py` — asserts `CorpusMutationBlockedError` when `data_root` omitted
 
 ### A12: Dataset SHA mismatch detection
 - **Result**: PASS (unchanged — verified by existing tests)
@@ -91,7 +91,7 @@ All 113 tests pass. No regressions in existing test suite.
 
 ### A13: Path omission → BLOCK
 - **Result**: PASS (unchanged — verified by existing tests)
-- **Evidence**: `TestT1PathOmission::test_no_output_root_raises_error` in `test_merge_production_path_safety.py`
+- **Evidence**: `TestT1PathOmission::test_no_data_root_and_no_paths` in `test_merge_production_path_safety.py`
 
 ### A14: Mixed-path → BLOCK
 - **Result**: PASS (unchanged — verified by existing tests)
