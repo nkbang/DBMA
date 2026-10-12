@@ -18,6 +18,7 @@ from __future__ import annotations
 import datetime
 import json
 import os
+from core.atomic_io import atomic_write_text
 from typing import Optional
 
 from core.config import DEFAULT_OUTPUT_DIR
@@ -40,10 +41,7 @@ def save_last_read(document_id: str, title: str, source_label: str) -> None:
     }
     try:
         os.makedirs(_READING_DIR, exist_ok=True)
-        tmp_path = _LAST_POSITION_FILE + ".tmp"
-        with open(tmp_path, "w", encoding="utf-8") as f:
-            json.dump(record, f, ensure_ascii=False)
-        os.replace(tmp_path, _LAST_POSITION_FILE)
+        atomic_write_text(_LAST_POSITION_FILE, json.dumps(record, ensure_ascii=False))
     except OSError:
         pass
 

@@ -20,6 +20,7 @@ from __future__ import annotations
 import datetime
 import json
 import os
+from core.atomic_io import atomic_write_text
 from typing import Any
 
 
@@ -85,10 +86,7 @@ def record_extraction_failure(
 
         path = _failures_path(output_dir)
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        tmp_path = path + ".tmp"
-        with open(tmp_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        os.replace(tmp_path, path)
+        atomic_write_text(path, json.dumps(data, indent=2, ensure_ascii=False))
         return True
     except Exception:
         return False

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+from core.atomic_io import atomic_write_text
 import secrets
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
@@ -73,10 +74,7 @@ def save_sermon_artifact(
     os.makedirs(output_dir, exist_ok=True)
 
     path = _artifact_path(artifact.sermon_id, output_dir)
-    tmp_path = f"{path}.tmp"
-    with open(tmp_path, "w", encoding="utf-8") as f:
-        json.dump(artifact.to_dict(), f, ensure_ascii=False, indent=2)
-    os.replace(tmp_path, path)
+    atomic_write_text(path, json.dumps(artifact.to_dict(), ensure_ascii=False, indent=2))
 
     summary = {
         "sermon_id": artifact.sermon_id,
