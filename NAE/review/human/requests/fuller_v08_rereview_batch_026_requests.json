@@ -1,0 +1,83 @@
+{
+ "schema_version": "1.0.0",
+ "batch_id": "fuller_v08_rereview_batch_026",
+ "generated_by": "CUE-FU004-VOL08-REREVIEW-001",
+ "note": "ADR-030 Amendment C 일괄승인 Vol.08 재검수. tier P0=CUE 표본 R, P1=자동신호(CJK/스크립트/CUE 표본 C), P2=triage 플래그(파일럿 거부율 순), P3=무신호. 파일럿에서 이미 판정된 40건 제외.",
+ "requests": [
+  {
+   "gate_id": "GATE-TSU-0035388",
+   "tsu_id": "TSU-0035388",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Religious principles, their value to be estimated by their moral effects,",
+   "claim": "종교적 원칙의 가치는 그들의 도덕적 효과에 따라 평가되어야 한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 2654
+  },
+  {
+   "gate_id": "GATE-TSU-0035389",
+   "tsu_id": "TSU-0035389",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Salvation universal, the doctrine of, its injurious tendency, viii. 126.",
+   "claim": "보편적 구원 교리는 유해한 경향이 있다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 2663
+  },
+  {
+   "gate_id": "GATE-TSU-0035390",
+   "tsu_id": "TSU-0035390",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Scriptures, their inspiration, iv. 289 ; sublimity, iii. 132 — 134; simplicity, iii. 137 ; consistency, iv. 191 ; perfection, iv. 191; pungency, iv. 192 ; utility, iv. 193 ; neglect of them a heinous sin, vii. 99 ; their study a source of great enjoyment, vii. 101 ; a means of spiritual improvement, viii. 17; the manner in which they communicate truth, viii. 146; on reading them, viii. 336 ; on expounding them, iv. 253.",
+   "claim": "성경은 영감, 고상함, 단순함, 일관성, 완전함, 효과, 유용성 등의 특성을 가지고 있으며, 그 연구는 영적 향상을 위한 수단이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 2667
+  },
+  {
+   "gate_id": "GATE-TSU-0035391",
+   "tsu_id": "TSU-0035391",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Spirit, promise of the, grand encouragement in propagating the gospel, viii. 462.",
+   "claim": "성령의 약속은 복음을 전파하는 데 큰 격려가 된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 2678
+  },
+  {
+   "gate_id": "GATE-TSU-0035392",
+   "tsu_id": "TSU-0035392",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Truth divine, connexion of, i. 120. vii. 92 ; its importance, i. 332. vii. 85 ; by the belief of it men are saved, iv. 46 1 ; the only foundation of hap- piness, iv. 467 ; must be learned immediately from the Bible, vii. 91 : a means of sanctification, vii. 100 ; essay on it, iv. 455 — 478.",
+   "claim": "신학적 진리는 성경에서 바로 배워야 하며, 성화의 수단이 된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 2689
+  }
+ ]
+}

@@ -1,0 +1,3272 @@
+{
+ "schema_version": "1.0.0",
+ "batch_id": "fuller_v08_rereview_batch_007",
+ "generated_by": "CUE-FU004-VOL08-REREVIEW-001",
+ "note": "ADR-030 Amendment C 일괄승인 Vol.08 재검수. tier P0=CUE 표본 R, P1=자동신호(CJK/스크립트/CUE 표본 C), P2=triage 플래그(파일럿 거부율 순), P3=무신호. 파일럿에서 이미 판정된 40건 제외.",
+ "requests": [
+  {
+   "gate_id": "GATE-TSU-0032516",
+   "tsu_id": "TSU-0032516",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we understand it literally of the former, it would follow, that nothing ought to be given in public subscriptions or collections for the poor ; for in this, concealment, would be improper, if not impossible.",
+   "claim": "공개적인 자선 활동이나 헌금에서 은밀함을 유지하는 것이 불가능하거나 부적절할 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1074
+  },
+  {
+   "gate_id": "GATE-TSU-0032526",
+   "tsu_id": "TSU-0032526",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Eschatology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we give from ostentation, we have our reward : but if from love, and with an eye to the glory of God, that which has been done in secret, shall be rewarded openly.",
+   "claim": "하나님의 영광과 사랑을 위해 드리는 자는 공개적으로 상을 받지만, 외식으로 드리는 자는 이미 상을 받았다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1077
+  },
+  {
+   "gate_id": "GATE-TSU-0032540",
+   "tsu_id": "TSU-0032540",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we have no freedom in private prayer, but live nearly if not entirely in the neglect of it, and at the same time possess great zeal and fluency in our public exercises, we ought surely to sus- pect that things are far from being right between God and our souls.",
+   "claim": "개인 기도에 자유가 없고 그 pratique를 소홀히 하는데 반해 공적 예배에서 열정과 유창성을 보인다면, 하나님과 우리 영혼 사이에 문제가 있음을 의심해야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1080
+  },
+  {
+   "gate_id": "GATE-TSU-0032552",
+   "tsu_id": "TSU-0032552",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If he require importunity in prayer, it is not because he needs to be persuaded ; but that his favours may be known, accepted, and prized.",
+   "claim": "하나님은 기도에서 간절함을 요구하지만, 그것은 하나님이 설득을 필요로 하기 때문이 아니라, 그의 은혜가 알려지게 하고, 받아들여지게 그리고 소중하게 여겨지게 하기 위함이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1085
+  },
+  {
+   "gate_id": "GATE-TSU-0032557",
+   "tsu_id": "TSU-0032557",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If many who pray for an hour or longer, in public, and with tedious repetitions, were equally circuitous in the closet, whether we should commend their discre- tion or not, we might hope well of their sincerity.",
+   "claim": "공개적인 기도에서 길고 반복적인 기도를 하는 사람들은 사적인 기도에서도 같은 방식으로 기도하는지 의심스럽다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1086
+  },
+  {
+   "gate_id": "GATE-TSU-0032560",
+   "tsu_id": "TSU-0032560",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If in any thin<* we need divine instruction, it is in drawing near to God.",
+   "claim": "하나님께 다가갈 때는 특히 신적 지침이 필요하다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1092
+  },
+  {
+   "gate_id": "GATE-TSU-0032572",
+   "tsu_id": "TSU-0032572",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Election",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any sinner be now treated as a child of God, it is as an adopted alien, put among the children.",
+   "claim": "어느 한 죄인이 지금 하나님의 자녀로 대우받는다면, 그것은 입양된 외인으로 자녀들 중에 두어짐을 의미한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1093
+  },
+  {
+   "gate_id": "GATE-TSU-0032591",
+   "tsu_id": "TSU-0032591",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Were this the case, we must restrain prayer in our congregations, and in our families.",
+   "claim": "공동 기도는 모든 참석자가 믿는 자일 필요는 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1100
+  },
+  {
+   "gate_id": "GATE-TSU-0032593",
+   "tsu_id": "TSU-0032593",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If either prayer or praise were positive institutions, we might be under the necessity of refusing admission to some cha- racters, as is the case in other positive institutions ; but if they are immediately binding on all men, whatever be tbeir characters, any man has a right to be present.",
+   "claim": "예배의 구성 요소인 기도와 찬양은 모든 사람에게 즉시 적용되므로, 어떤 사람이라도 예배에 참여할 권리가 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1100
+  },
+  {
+   "gate_id": "GATE-TSU-0032594",
+   "tsu_id": "TSU-0032594",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If he can join in either, let him ; and if not, it is to himself only.",
+   "claim": "예배에 참여하는 것은 개인의 신앙이나 상태와 관계없이 누구나 할 수 있는 일이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1100
+  },
+  {
+   "gate_id": "GATE-TSU-0032632",
+   "tsu_id": "TSU-0032632",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If God gives us the latter, we may receive them with thank- fulness, only considering them as a trust committed to us; but are not at liberty to ask for them.",
+   "claim": "하나님께서 우리에게 풍족한 것을 주시면, 우리는 그것을 감사함으로 받을 수 있지만, 그것을 요구할 수는 없습니다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1110
+  },
+  {
+   "gate_id": "GATE-TSU-0032659",
+   "tsu_id": "TSU-0032659",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we had borne the full penalty due to sin in our own proper persons, all must allow there had been no place for forgiveness.",
+   "claim": "만약 우리가 우리 자신의 본질적인 존재 안에서 죄에 대한 전체 형벌을 지녔다면, 모든 사람이 용서가 없다는 것을 인정할 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1115
+  },
+  {
+   "gate_id": "GATE-TSU-0032672",
+   "tsu_id": "TSU-0032672",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If it were true that a believer might not persevere to the end, it would be equally true that he might never be glorified : and if it were possible for him to live in sin, and never repent of it, it would be equally possible that he would never be forgiven — but he that has promised that which is ultimate, has provided for every thing in- termediate.",
+   "claim": "하나님의 약속과 목적에 따라 믿는 자는 최후까지 견디며, 그 과정에서 회개와 용서를 받기 위해 예수 그리스도를 통해 계속 간구해야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1117
+  },
+  {
+   "gate_id": "GATE-TSU-0032688",
+   "tsu_id": "TSU-0032688",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If the scriptures warrant a measure, and Providence open the way, we may safely walk in it ; but woe to him that catcheth every oppor- tunity that offers, to aggrandize himself.",
+   "claim": "성경이 어떤 조치를 정당화하고 섭리가 그 길을 열어주면, 우리는 안전하게 그 길을 걸을 수 있지만, 기회를 이용하여 자신을 높이는 것은 재앙을 불러올 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1120
+  },
+  {
+   "gate_id": "GATE-TSU-0032716",
+   "tsu_id": "TSU-0032716",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Eschatology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we would place our treasure in a bank where no marauder cometh, it must be hid with Christ in",
+   "claim": "진정한 보장된 보물은 그리스도와 함께 숨겨진 곳에 있을 뿐이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1130
+  },
+  {
+   "gate_id": "GATE-TSU-0032724",
+   "tsu_id": "TSU-0032724",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Eschatology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, however our treasure be in heaven. we shall not be eager to lay up worldly wealth ; but rather to lay out that which God intrusts in our hands for promoting the good of his cause, and the well-being of mankind.",
+   "claim": "하늘에 보물이 있는 사람들은 세속적인 부를 쌓기보다는 하나님의 일을 위해 맡겨진 것을 사용하여 인류의 복지를 증진시키는 데 관심을 둘 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1133
+  },
+  {
+   "gate_id": "GATE-TSU-0032749",
+   "tsu_id": "TSU-0032749",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we judge not truth and error, good and evil, we cannot embrace the one, and avoid the other.",
+   "claim": "진리와 오류, 선과 악을 판단하지 않으면 하나는 받아들이고 다른 하나는 피할 수 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1144
+  },
+  {
+   "gate_id": "GATE-TSU-0032802",
+   "tsu_id": "TSU-0032802",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Were we daily to ask for all we want of him, seeking first the kingdom of God, and his righteousness, and relying upon his promise to add other things as he sees them to be best for us, we should have no inclination to covetousness or injustice.",
+   "claim": "신뢰와 의지의 결핍으로 인해 하나님을 의지하지 않고 세상을 향한 과도한 애착이 생겨나며, 이로 인해 탐욕과 부정의 행동이 나타난다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1165
+  },
+  {
+   "gate_id": "GATE-TSU-0032863",
+   "tsu_id": "TSU-0032863",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If the Father's wrath abide on all who believe not on the Son, the Son no less excludes from the kingdom of heaven all who obey not the Father.",
+   "claim": "아버지의 진노가 아들을 믿지 않는 모든 사람에게 남아 있다면, 아들도 아버지의 계명을 지키지 않는 모든 사람을 천국에서 배제한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1189
+  },
+  {
+   "gate_id": "GATE-TSU-0032918",
+   "tsu_id": "TSU-0032918",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If he had dealt with us on the mere footing of justice, we had a cup of wrath only ; but through his dear Son, it is mixed with mercy.",
+   "claim": "하나님의 심판은 정의에 따라 행해지지만, 그의 아들 통해 자비가 섞여 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1212
+  },
+  {
+   "gate_id": "GATE-TSU-0032943",
+   "tsu_id": "TSU-0032943",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If the whole of our days were covered with darkness, there would be but little of the exercise of love, and joy, and praise ; our spirits would contract a habit of gloominess and despondency ; and reli- gion itself would be reproached, as rendering us miserable.",
+   "claim": "인간의 삶에서 악이 선을 앞섬으로써 하나님의 지혜와 선하심이 나타나며, 만약 인간의 모든 날이 어둠으로 덮여 있다면 사랑과 기쁨과 찬양의 실천이 거의 없을 것이며, 영적인 기쁨이 상실되고 종교 자체가 비난을 받을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1220
+  },
+  {
+   "gate_id": "GATE-TSU-0032944",
+   "tsu_id": "TSU-0032944",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, on the other hand, we had uninterrupted prosperity, we should not enjoy it.",
+   "claim": "무정지의 번영은 우리에게 즐거움을 주지 못한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1220
+  },
+  {
+   "gate_id": "GATE-TSU-0032981",
+   "tsu_id": "TSU-0032981",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If such caution was necessary for the primitive Christians, unless we could depend on the floods of false doctrine having of late ages subsided, or on our having better securities against them than those who were cotemporary with the apostle, it must be necessary for us.",
+   "claim": "초기 기독교인에게 필요했던 경계심이 우리에게도 필요하다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1238
+  },
+  {
+   "gate_id": "GATE-TSU-0033014",
+   "tsu_id": "TSU-0033014",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If they write of God, it is with the profoundest reverence, as of Him who is blessed for ever ; if of his law, it is holy, just, and good ; if of sin, it is exceeding sinful; if of sinners, they are «*n- der the curse ; tf of Christ, as concerning the flesh, he was of the seed of David; but as concerning his original na- ture, the Son of God, ovr all, God blessed for ever ; if of sal- vation, it is of grace, through faith, and that not of ourselves, it is the gift of God.",
+   "claim": "성경의 저자들은 하나님의 성품, 정부, 그리고 복음과 관련된 모든 중요한 주제에 대해 하나님의 마음을 드러내는 글을 쓴다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1249
+  },
+  {
+   "gate_id": "GATE-TSU-0033038",
+   "tsu_id": "TSU-0033038",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you reply, 4 You should pray for such a desire,' you must mean, if you mean any thing, that I should ex- press my desire to God, that I may have a desire ; and I tell you that I have none to express !",
+   "claim": "죄인에게는 하나님께 정직한 마음을 소원하는 바람이 없기 때문에 기도할 수 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1259
+  },
+  {
+   "gate_id": "GATE-TSU-0033085",
+   "tsu_id": "TSU-0033085",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we doubt whether we stand in need of salvation, or overlook the atone- ment, or hope for an interest in it any otherwise than as unworthy, or rest in a mere speculative opinion, which has no effectual in- fluence on our spirit and conduct, we are at present unbelievers, and have every thing to learn.",
+   "claim": "구원에 대한 필요성, 대속의 중요성, 죄인에 대한 무조건적인 구원, 그리고 성화의 효능을 인식하지 못하거나 의심하는 사람은 현재 믿음이 없으며 모든 것을 다시 배워야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1287
+  },
+  {
+   "gate_id": "GATE-TSU-0033092",
+   "tsu_id": "TSU-0033092",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any of the New Testament writers could be supposed to dissent, it would be James, who wrote fully upon the necessity of good works ; but he was of the same faith, and only pleaded for showing it by his works.",
+   "claim": "야고보는 선행의 필요성을 강조했지만, 동일한 신앙을 가지고 있었고 선행을 통해 신앙을 보여야 한다고 주장했다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1289
+  },
+  {
+   "gate_id": "GATE-TSU-0033138",
+   "tsu_id": "TSU-0033138",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If it be objected, that inspiration rendered the judgment of the apostles infallible, and that therefore their conduct in this case is not a rule for us ; it may be replied, that if the apostles were infallible, the churches were not so, and the blame is laid on them for having neglected to exclude the characters in question.",
+   "claim": "사도들의 영감은 그들의 판단을 오류가 없게 만들었지만, 교회는 오류가 없지 않으므로 사도들의 행동이 우리에게 규칙이 되지 않는다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1312
+  },
+  {
+   "gate_id": "GATE-TSU-0033156",
+   "tsu_id": "TSU-0033156",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Trinity",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If there had been any ambi- guity in the term, it would have been very unfit to express the first article of the Christian faith.",
+   "claim": "기독교 신앙의 첫 번째 조항을 표현하기에는 그 용어가 모호하다면 매우 부적절할 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1321
+  },
+  {
+   "gate_id": "GATE-TSU-0033160",
+   "tsu_id": "TSU-0033160",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Trinity",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If this be the meaning of the term in the passage in question, I should think it will be al- lowed to be peculiar, and therefore that no general conclusion can be drawn from it, as to the meaning of the term in other passages.",
+   "claim": "만약 이 구절에서 '하나님의 아들'이라는 용어가 특수한 의미로 사용된다면, 이 용어의 일반적인 의미에 대한 일반적인 결론을 다른 구절에서 끌어올 수 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1325
+  },
+  {
+   "gate_id": "GATE-TSU-0033165",
+   "tsu_id": "TSU-0033165",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If it arose from his miraculous conception, it could not, for that reason, arise from his resurrection or exaltation ; and so, on the other hand, if it arose from resurrection or exaltation, it could not pro- ceed from his miraculous conception.",
+   "claim": "예수 그리스도의 아들됨은 그의 기적적인 잉태에서 비롯된 것이든, 그의 부활이나 높임에서 비롯된 것이든, 두 가지가 동시에 일어날 수는 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1325
+  },
+  {
+   "gate_id": "GATE-TSU-0033173",
+   "tsu_id": "TSU-0033173",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Trinity",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If this be applied to his divine person, or that eternal life lohich was with the Father, and was manifested to us, it is natural and proper ; it assigns his omniscience as qualify- ing him for making known the mind of God : but if he became the only-begotten of the Father by his miraculous conception, or by any other means, the beauty of the passage vanishes.",
+   "claim": "하나님의 아들로 지명된 예수 그리스도의 지위는 그의 신성한 본질과 하나님을 아는 모든 지식에 근거한다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1331
+  },
+  {
+   "gate_id": "GATE-TSU-0033305",
+   "tsu_id": "TSU-0033305",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If they gain but the corn, the wine, and the oil, it is enough for them ; but God's servants cannot be happy with mere temporal prosperity, if the interest of Christ do not prosper.",
+   "claim": "하나님의 종들은 그리스도의 관심이 번성하지 않는다면 단순한 세속적인 번영만으로는 행복할 수 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1396
+  },
+  {
+   "gate_id": "GATE-TSU-0033356",
+   "tsu_id": "TSU-0033356",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Trinity",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If Socinians would but modestly consider the weakness of the human understanding, they would not decide so peremptorily on the other hand concerning the unity of God, as that it must needs be personal, or not at all.",
+   "claim": "소시니안주의자들은 인간 이해력의 약점을 고려하여 하나님의 단일성에 대해 개인적이거나 아님을 결정하지 않아야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1436
+  },
+  {
+   "gate_id": "GATE-TSU-0033375",
+   "tsu_id": "TSU-0033375",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Trinity",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Suppose it were affirmed that it is possible for God to do evil, and yet that it is impossible he should do evil ; this would involve an apparent contradiction : and if the two branches of the proposition were to be understood in the same sense of possible and impossible, the contradiction would be real.",
+   "claim": "하나님의 본성에 대한 두 가지 진술, 즉 하나님이 악을 할 수 있다고 말할 때와 하나님이 악을 할 수 없다고 말할 때는 서로 다른 의미의 가능성과 불가능성을 의미한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1450
+  },
+  {
+   "gate_id": "GATE-TSU-0033422",
+   "tsu_id": "TSU-0033422",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If God required less than the real demerit of sin for an atone- ment, then there could be no satisfaction made to divine justice by such an atonement.",
+   "claim": "하나님의 정의는 속죄를 통해 실제로 죄에 대한 실질적인 벌을 요구한다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1474
+  },
+  {
+   "gate_id": "GATE-TSU-0033427",
+   "tsu_id": "TSU-0033427",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If sinners had received in their own persons the reward of their iniquity, justice would in that way have been satis- fied : and if the infinitely blessed God, tvhoseways are higher than our ways, and whose thoughts are higher tJian our thoughts, has devised an expedient for our salvation, though he may not confine himself to a literal conformity to those rules of justice which he has marked out for us, yet he will be certain not to depart from the spirit of them.",
+   "claim": "하나님의 정의는 죄에 대한 처벌을 통해 만족될 수 있으나, 하나님은 자신의 규칙을 문자적으로 따르지 않더라도 그 정신을 따를 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1476
+  },
+  {
+   "gate_id": "GATE-TSU-0033462",
+   "tsu_id": "TSU-0033462",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, indeed, a subscription to articles of faith were required without examina- tion, or enforced by civil penalties, it would be an unwarrantable imposition on the rights of conscience : but if an explicit agree- ment in what may be deemed fundamental principles be judged",
+   "claim": "기독교 교회에서 신앙고백이나 신조를 강요하는 것은 양심의 권리를 침해하는 일이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1491
+  },
+  {
+   "gate_id": "GATE-TSU-0033476",
+   "tsu_id": "TSU-0033476",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If Christ has given both doctrines and precepts, some of wbich are more immediately addressed to Christians in their social capacity, they must not only possess such a right, but are under obligation to exercise it.",
+   "claim": "그리스도께서 교리와 계명을 주셨기 때문에, 교회는 그리스도께서 주신 교리와 계명을 기준으로 회원의 자격을 판단하고 평가할 의무가 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1500
+  },
+  {
+   "gate_id": "GATE-TSU-0033477",
+   "tsu_id": "TSU-0033477",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If the righteous nation which keep the truth, be the only proper characters for entering into gospel fel- lowship, those who have the charge of their admission, are obliged to form a judgment on what is truth, and what is righteousness ; without whieh they must be wholly unqualified for their office.",
+   "claim": "교회 공동체에 들어오는 자는 진리와 의를 지키는 자여야 하며, 이를 평가하는 책임이 교회 지도자들에게 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1500
+  },
+  {
+   "gate_id": "GATE-TSU-0033478",
+   "tsu_id": "TSU-0033478",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If a Christian society have no right to judge what is truth, and to render an agreement with them in certain points a term of com- munion ; then neither have they a fight to judge what is right- eousness, nor to render an agreement in matters of practical right and wrong, a term of communion.",
+   "claim": "기독교 사회는 진리를 판단하고 특정 점에 대한 동의를 교제의 조건으로 삼을 권리가 없다면, 또한 그들은 의를 판단하고 실제적인 옳고 그름에 대한 동의를 교제의 조건으로 삼을 권리가 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1501
+  },
+  {
+   "gate_id": "GATE-TSU-0033483",
+   "tsu_id": "TSU-0033483",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If a re- ligious community agree to specify some leading principles which they consider as derived from the word of God, and judge the belief of them to be necessary in oHer to any persons becoming or continuing a member with them ; it does not follow that those principles should be equally understood, or that all their brethren must have the same degree of knowledge, nor yet that they should understand and believe nothing else.",
+   "claim": "교회의 신앙고백서에서 핵심 원리를 정의할 때, 모든 회원이 동일한 수준의 이해나 동일한 정도의 지식을 가지고 있는 것은 필수적이지 않다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1504
+  },
+  {
+   "gate_id": "GATE-TSU-0033491",
+   "tsu_id": "TSU-0033491",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If articles of faith be opposed to the authority of scripture, or substituted in the place of such authority, they become objec- tionable and injurious : but if they simply express the united judg- ment of those who voluntarily subscribe them, they are incapable «fany such kind of imputation.",
+   "claim": "성경의 권위에 반대되거나 성경의 권위를 대체하는 신앙 조항은 문제가 되고 해롭지만, 단순히 자발적으로 서명한 사람들의 통일된 판단을 표현한다면 그러한 비난에서 자유로울 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1508
+  },
+  {
+   "gate_id": "GATE-TSU-0033501",
+   "tsu_id": "TSU-0033501",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": null,
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If they did not attach a considerable degree of consequence to their own opinion, they would uot be so ready to suspect the danger of another's being elated by it.",
+   "claim": "자아도취의 위험을 우려하여 다른 사람의 칭찬을 제한하는 사람들은 실제로 자신의 의견에 대한 중요성을 과대평가하고 있음을 드러낸다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1512
+  },
+  {
+   "gate_id": "GATE-TSU-0033505",
+   "tsu_id": "TSU-0033505",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If they see another cov- etous of praise, they will commonly withhold it, and that for the good of the party.",
+   "claim": "선한 사람들은 다른 사람의 칭찬에 대한 갈망을 보아도 그것을 주지 않으며, 이는 해당 사람의 이익을 위해 vậy.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1518
+  },
+  {
+   "gate_id": "GATE-TSU-0033540",
+   "tsu_id": "TSU-0033540",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Had the sons of God kept themselves to them- selves, and preserved their purity, God, it may be supposed, would have spared the world for their sakes : but they mingled",
+   "claim": "하나님의 아들들이 자신들의 순수성을 유지했다면, 하나님은 아마도 그들을 위해 세상을 용서하셨을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1537
+  },
+  {
+   "gate_id": "GATE-TSU-0033560",
+   "tsu_id": "TSU-0033560",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If I yet pleased men, I should not be the servant of Christ Gal. J. 10.",
+   "claim": "만약 내가 아직도 사람들을 기쁘게 한다면, 나는 그리스도의 종이 될 수 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1546
+  },
+  {
+   "gate_id": "GATE-TSU-0033600",
+   "tsu_id": "TSU-0033600",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If Judah in the times of Ezekiel had been righteous, they had not gone into captivity for what was done in the times of Manasseb.",
+   "claim": "유다의 의로운 삶은 만세바의 잘못으로 인한 포로로 가지 않도록 했다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1575
+  },
+  {
+   "gate_id": "GATE-TSU-0033671",
+   "tsu_id": "TSU-0033671",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Had he answered in the affirmative, and had they believed him, he would have confirmed them in a gross falsehood.",
+   "claim": "요한 세례자는 엘리야가 아니므로 긍정적으로 대답했다면 유대인들의 오해를 더욱 강화시켰을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1622
+  },
+  {
+   "gate_id": "GATE-TSU-0033683",
+   "tsu_id": "TSU-0033683",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Had the murderers of our Lord been possessed of this, they would not, they could not, have crucified him.",
+   "claim": "주님의 살인자들이 성령의 지식을 소유하고 있었다면, 그들은 주님을 십자가에 못 박지 않았을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1629
+  },
+  {
+   "gate_id": "GATE-TSU-0033778",
+   "tsu_id": "TSU-0033778",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we were to substitute the term apostasy for sin, from the 6th to the 10th verse, the meaning would be clear. ' Whoso abideth in him, apostatizeth not : who- soever apostatizeth hath not seen him, neither known him. — He that is guilty of apostasy is of the devil : for the devil hath been an apostate from the beginning. — Whosoever is born of God doth not apostatize ; for his seed remaineth in him : and he cannot apostatize, because he is born of God.'",
+   "claim": "만약 우리가 6절부터 10절까지의 \"죄\"를 \"배신\"이라는 용어로 대체하면, 그 의미는 분명해질 것이다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1692
+  },
+  {
+   "gate_id": "GATE-TSU-0033807",
+   "tsu_id": "TSU-0033807",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If I read them instead of reading the scriptures, I may indeed derive some knowledge ; but my mind will not be stored with the best riches ; nor will the word dwell richly in me in all wisdom and spiritual understanding.",
+   "claim": "성경을 직접 읽고 연구하는 것이 다른 사람의 주석이나 해설을 읽는 것보다 더 풍부한 지식과 영적 이해를 얻는 데 도움이 된다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1707
+  },
+  {
+   "gate_id": "GATE-TSU-0033808",
+   "tsu_id": "TSU-0033808",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, on the other hand, I read the scrip- tures, and exercise my own mind on their meaning, only using the helps with which I am furnished, when I particularly need them, such knowledge will avail me more than any other : for having felt and laboured at the difficulty myself, what I obtain from others towards the solution of it, becomes more interesting and abiding, than if I had read it without any such previous efforts.",
+   "claim": "성경을 읽고 그 의미에 대해 개인적으로 노력하면, 다른 사람의 도움을 받았을 때 더 intéressing하고 영속적인 지식을 얻을 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1707
+  },
+  {
+   "gate_id": "GATE-TSU-0033836",
+   "tsu_id": "TSU-0033836",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": null,
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If it correspond with the feelings of a pious heart, and aid him in real- izing the sentiments, it will be quickly learnt, and sung with avidity.",
+   "claim": "신앙심이 깊은 사람의 감정과 생각을 도와주는 찬송가는 쉽게 익히고 열심히 부를 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1748
+  },
+  {
+   "gate_id": "GATE-TSU-0033901",
+   "tsu_id": "TSU-0033901",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we pursue things as primary, which ought to occupy only a sec- ondary or subordinate place in the system, we subvert the whole, and employ ourselves in doing what is worse than nothing.",
+   "claim": "우리는 중요하지 않은 것에 주목할 때 전체를 무너뜨리고, 아무 것도 하지 않는 것보다 더 나쁜 일을 하게 됩니다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1790
+  },
+  {
+   "gate_id": "GATE-TSU-0033918",
+   "tsu_id": "TSU-0033918",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we seek the honour of God, we shall find our own peace and comfort in it : but if we make light of him, he will make light of us, and leave us to pass our days in darkness and suspense.",
+   "claim": "하나님의 영광을 추구하면 개인의 평안과 위안을 찾을 수 있지만, 하나님을 경시하면 하나님도 우리를 경시하여 어둠과 불안 속에서 살게 될 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1795
+  },
+  {
+   "gate_id": "GATE-TSU-0033927",
+   "tsu_id": "TSU-0033927",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If I confine my remarks to the faults of these denominations, it is not because I consider them as greater sinners in this way than all others, but because I wish more especially to correct the evils of my own connexions.",
+   "claim": "저자는 자신의 교단의 잘못을 지적하는 데 주로 관심이 있지만, 그것이 다른 교단보다 더 큰 죄인이라고 생각하는 것은 아님을 밝힙니다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1799
+  },
+  {
+   "gate_id": "GATE-TSU-0033928",
+   "tsu_id": "TSU-0033928",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we wish to promote the dissenting interest, it must not be by ex- pending our principal zeal in endeavouring to make men dissenters, but in making dissenters and others, Christians.",
+   "claim": "진정한 기독교인으로 만드는 것이 중요하며, 단순히 이단으로 만드는 것보다 더 중요하다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1800
+  },
+  {
+   "gate_id": "GATE-TSU-0033932",
+   "tsu_id": "TSU-0033932",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we wish to see the Baptist denomination prosper, we must not expend our zeal so much in endeavouring to make men Baptists, as in labouring to make Baptists and others, Christians.",
+   "claim": "감리교단의 번영을 원한다면 사람들을 감리교도로 만드는 데 열정을 낭비하기보다는 감리교도와 다른 사람들을 모두 기독교인으로 만드는 데 노력을 해야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1803
+  },
+  {
+   "gate_id": "GATE-TSU-0033933",
+   "tsu_id": "TSU-0033933",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we lay out ourselves in the common cause of Christianity, the Lord will bless and increase us.",
+   "claim": "크리스천이 되도록 노력하는 것이 침례교단의 번영에 기여한다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1803
+  },
+  {
+   "gate_id": "GATE-TSU-0033970",
+   "tsu_id": "TSU-0033970",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If they planted churches, set them in order, and ordained elders over them, it was not because the same things would not have been valid if done without them, but because they would not have been done.",
+   "claim": "교회를 세우고, 교회를 정리하고, 장로들을 임명하는 일은 사도들이 하는 것이 아니면 무효가 된다는 것이 아니라, 다른 사람들이 할 수 있고, 하고자 하는 경우에는 유효하다는 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1820
+  },
+  {
+   "gate_id": "GATE-TSU-0033982",
+   "tsu_id": "TSU-0033982",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any one, indeed, had been so intent upon his part of the wall, as to be re- gardless of the rest, and careless about the work as a whole, it had been criminal : but while these were properly regarded, he might be allowed to be particularly attentive to his own special work, to which he was appointed.",
+   "claim": "개인은 전체를 고려하면서도 자신의 특별한 업무에 특히 주의를 기울일 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1827
+  },
+  {
+   "gate_id": "GATE-TSU-0033998",
+   "tsu_id": "TSU-0033998",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you indulge in theft, for instance, you would, with the same uncon- cern, commit adultery, robbery, or murder; provided you were tempted to such things, and could commit them with the hope of escaping punishment.",
+   "claim": "하나의 죄를 저지르는 것은 모든 죄를 저지르는 것과 동일하며, 하나님께 대한 거역은 하나의 죄나 여러 죄를 저지르는 것이 동일하다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1836
+  },
+  {
+   "gate_id": "GATE-TSU-0034033",
+   "tsu_id": "TSU-0034033",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Eschatology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you go thither, you in a manner take the kingdom of darkness by force.",
+   "claim": "지옥에 가면 어둠의 왕국을 강제로 차지하는 것과 같다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1850
+  },
+  {
+   "gate_id": "GATE-TSU-0034045",
+   "tsu_id": "TSU-0034045",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If this fountain be not healed, in vain will you go about to purify the streams.",
+   "claim": "내적인 본성의 부패가 치유되지 않으면 외적인 죄를 깨끗이 하는 것은 무의미하다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1853
+  },
+  {
+   "gate_id": "GATE-TSU-0034054",
+   "tsu_id": "TSU-0034054",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, reader, thou canst embrace this doctrine, it will heal thy malady.",
+   "claim": "이 교리는 독자의 질병을 치료할 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1856
+  },
+  {
+   "gate_id": "GATE-TSU-0034055",
+   "tsu_id": "TSU-0034055",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, from thine heart, thou canst receive salvation as of mere grace, through the redemption of Jesus Christ, it is thine own.",
+   "claim": "구원은 오직 은혜로 말미암아 예수 그리스도의 대속으로 받을 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1856
+  },
+  {
+   "gate_id": "GATE-TSU-0034056",
+   "tsu_id": "TSU-0034056",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If thou canst confess thy sins upon the head of this sacri- fice, God is faithful and just to forgive thy sins, and cleanse ther",
+   "claim": "하나님은 우리의 죄를 사하시고 우리를 깨끗하게 하신다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1856
+  },
+  {
+   "gate_id": "GATE-TSU-0034058",
+   "tsu_id": "TSU-0034058",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If thou canst be of his mind, make nothing of them in thy pleas and hopes for mercy, but every thing of Him in whom he is well-pleased, eternal life is before thee.",
+   "claim": "하나님의 아들을 통해 구원받기 위해서는 개인의 개혁이나 기도, 눈물을 이유로 삼지 말고 오직 하나님의 아들을 통해 구원받아야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1858
+  },
+  {
+   "gate_id": "GATE-TSU-0034117",
+   "tsu_id": "TSU-0034117",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If his enemies be assembled, it will also be there ; and u no untrusty brother be in company, will com- monly manifest itself to be then most in its element.",
+   "claim": "그리스도의 적들이 모여 있을 때, 그곳에도 나타나며 신뢰할 수 없는 형제가 함께 있을 때 가장 활발하게 활동한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1898
+  },
+  {
+   "gate_id": "GATE-TSU-0034119",
+   "tsu_id": "TSU-0034119",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, indeed, our differences consist merely in words ; or though they should be things, yet if they do not affect the first principles of the doctrine of Christ, considering the imperfections which attach to the best of men, a spirit of moderation or forbearance is here in character.",
+   "claim": "교리상의 차이점이 첫째로 그리스도의 교리와 관련이 없거나, 혹은 중요하지 않은 경우에는 관용과 온화한 태도가 필요하다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1900
+  },
+  {
+   "gate_id": "GATE-TSU-0034132",
+   "tsu_id": "TSU-0034132",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If an attachment, whether it be to one or the other, be the effect of impartial research, and a firm persuasion that they are the mind of God as revealed in his word, it is so far from indicating a bigoted, contracted, or illiberal mind, that it may arise from the contrary.",
+   "claim": "신앙의 확신과 하나님의 말씀에 대한 연구는 편견이 아닌 오히려 열린 마음에서 비롯될 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1904
+  },
+  {
+   "gate_id": "GATE-TSU-0034143",
+   "tsu_id": "TSU-0034143",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If they could be induced to believe him, they would doubtless think him a very liberal-minded man : but it is likely the govern- ment, and every friend to the public good, would think him an enemy to his country, and to the very parties whom by his glozing doctrine he had deceived.",
+   "claim": "잘못된 교리는 개인에게 유익하다고 여겨질 수 있지만 실제로는 국가와 개인에게 해로울 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1907
+  },
+  {
+   "gate_id": "GATE-TSU-0034147",
+   "tsu_id": "TSU-0034147",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Lord's Supper",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If one member of a Christian church be not accountable to another for what he be- lieves, an intidel, in demanding the Lord's supper from a Chris- tian minister as a qualification for office, demands no more than the other may conscientiously and scripturally comply with.",
+   "claim": "크리스천 교회 내에서 한 회원이 다른 회원에게 자신의 신앙을 책임지지 않는다면, 비신자도 성찬을 받을 수 있어야 하며, 이는 성경적으로 정당화될 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1910
+  },
+  {
+   "gate_id": "GATE-TSU-0034173",
+   "tsu_id": "TSU-0034173",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": null,
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If all were alike, it would be somewhat different : but the poor man is affected by the disparity between his condition and that of others.",
+   "claim": "가난한 사람의 고통은 다른 사람들의 풍부함과 비교했을 때 더욱 심해진다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1920
+  },
+  {
+   "gate_id": "GATE-TSU-0034174",
+   "tsu_id": "TSU-0034174",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If the fig-tree blossorn, it is not for him; there is no fruit on his vine, nor flock in his fold, nor herd in his stall.",
+   "claim": "물질적인 풍성함이 있더라도 그것이 실제로 누군가에게 혜택이나 기쁨을 주지 못할 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1920
+  },
+  {
+   "gate_id": "GATE-TSU-0034246",
+   "tsu_id": "TSU-0034246",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any man, or society of men, be guilty let them bear their burden ; but let them suffer as evil-doers, and not as Dissenters.",
+   "claim": "어떤 개인이나 사회가 잘못을 저질렀다면 그들은 그 잘못에 대한 책임을 지고 악행으로 인해 고통을 받아야 하며, 비국교도라는 이유로 고통을 받아서는 안 된다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1967
+  },
+  {
+   "gate_id": "GATE-TSU-0034267",
+   "tsu_id": "TSU-0034267",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any of you enter the ministry as furnishing you with a genteel post in society, you will be at best a drone, and had better be any thing than a preacher.",
+   "claim": "목회자가 사회적 지위를 얻기 위한 수단으로 목회를 하는 것은 바람직하지 않다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1983
+  },
+  {
+   "gate_id": "GATE-TSU-0034269",
+   "tsu_id": "TSU-0034269",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you cannot bear these, you had better let the ministry alone.",
+   "claim": "사역을 감당할 수 없는 고난이 있다면, 사역을 하지 않는 것이 낫다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1983
+  },
+  {
+   "gate_id": "GATE-TSU-0034270",
+   "tsu_id": "TSU-0034270",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you be good ministers of Jesus Christ, you will not only be afflicted in common with others, but the afflictions of others will become yours.",
+   "claim": "예수 그리스도의 좋은 사역자를 지향하는 자는 다른 사람들의 고난도 함께 감당하게 될 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1983
+  },
+  {
+   "gate_id": "GATE-TSU-0034284",
+   "tsu_id": "TSU-0034284",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you would make full proof of your ministry, first attend to personal religion.",
+   "claim": "목회를 충분히 증명하려면 먼저 개인의 종교를 주의해야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1987
+  },
+  {
+   "gate_id": "GATE-TSU-0034289",
+   "tsu_id": "TSU-0034289",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": null,
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If there be individuals of this description, let them be disregarded as ignorant, and let them be told that vicious characters are found among the uneducated, as well as the educated.",
+   "claim": "교육 수준과는 상관없이 악한 성품의 사람들이 존재한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1987
+  },
+  {
+   "gate_id": "GATE-TSU-0034293",
+   "tsu_id": "TSU-0034293",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If by prayer and a diligent application to study, you acquire such a habit of close thinking, as that on entering the work it shall be your delight to prosecute it, this is all that will be expected of you.",
+   "claim": "신학적 연구와 기도에 힘써 가까운 생각의 습관을 기르면, 사역에 임할 때 그 일을 추구하는 것이 기쁨이 될 것이라는 것",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 1994
+  },
+  {
+   "gate_id": "GATE-TSU-0034308",
+   "tsu_id": "TSU-0034308",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If on inquiry .they find he has been a bad character, they must give him up as to any change being effected in this life.",
+   "claim": "악한 인물은 이 생애에서 변화가 일어나지 않는다고 판단해야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2004
+  },
+  {
+   "gate_id": "GATE-TSU-0034329",
+   "tsu_id": "TSU-0034329",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If by the first, he might be supposed to conciliate them, and induce them to make interest for his being taken down from the cross, the last would have a contrary effect.",
+   "claim": "사형수는 자신의 진실한 고백과 의로운 말에 따라 행동했을 뿐만 아니라, 자신의 국가와 예수를 대하는 태도에 대해 비판적인 입장을 취했다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2014
+  },
+  {
+   "gate_id": "GATE-TSU-0034361",
+   "tsu_id": "TSU-0034361",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Had he been required to as- cend to heaven, or to descend into the deep for the blessing, it had been utterly out of reach.",
+   "claim": "복음을 얻기 위해 인간이 하늘에 올라가거나 깊은 곳으로 내려갈 필요는 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2023
+  },
+  {
+   "gate_id": "GATE-TSU-0034372",
+   "tsu_id": "TSU-0034372",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If in cases where men are buffeted for their faults, the most exemplary patience loses its glory and thank' •worthiness, much more where they are executed for their crimes.",
+   "claim": "죄로 인해 고난을 받는 경우에 대한 인내는 그 인내의 영광과 감사의 가치가 줄어든다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2028
+  },
+  {
+   "gate_id": "GATE-TSU-0034377",
+   "tsu_id": "TSU-0034377",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If his supposed peni- tence be attended with an eagerness to proclaim his own sincerity, and his certain expectation of future happiness, it should be strong- ly suspected ; and if, with a denial of what has been clearly proved against him, or a disposition to palliate or prevaricate, utterly discredited.",
+   "claim": "진정한 회개는 자신의 죄를 인정하고 고백하는 것이며, 자신의 죄를 부인하거나 변명하는 것은 의심스럽다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2032
+  },
+  {
+   "gate_id": "GATE-TSU-0034384",
+   "tsu_id": "TSU-0034384",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If only one in ten of those for whom hope is entertained in the hour of terror, should, on their lives being prolonged, prove truly religious characters, it is sufficient to encourage the utmost efforts for the conversion of such unhappy men, but not to justify our pro- nouncing on every one, who dies with apparent contrition, that he Is goae to heaven.",
+   "claim": "하나님의 은혜로 죽음의 순간에 회개하는 사람들 중 일부만이 진정한 신앙을 가지게 될 수 있지만, 이 사실은 우리가 모든 사람이 천국에 갈 것이라고 단정지을 수는 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2037
+  },
+  {
+   "gate_id": "GATE-TSU-0034388",
+   "tsu_id": "TSU-0034388",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If a few men excel in a community, such is the vanity of human nature, that the whole must arrogate to themselves the praise ; or if a few be guilty of impropriety, such is the invidiousness of party- zeal, that the whole must be censured on their account.",
+   "claim": "인간의 본성은 자만심이 강해 공동체 내 몇몇의 뛰어난 성과로 인해 전체가 칭찬을 독점하려는 경향이 있으며, 또한 당파적인 열성으로 인해 몇몇의 부적절한 행동으로 전체가 비난을 받는 경우가 많다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2042
+  },
+  {
+   "gate_id": "GATE-TSU-0034401",
+   "tsu_id": "TSU-0034401",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If I dissent, from antipathy to a particular clergyman, or for the sake of gratifying my own will, or to feed my own vanity, I am what this reviewer consider;; me — a sectarian; but if I dissent for the sake of obtaining liberty to follow what I verily believe to be the mind of Christ, I am not a sectarian in the ill sense of the term, nor in any sense except that in which Paul avowed himself to be one.",
+   "claim": "개인적인 이유나 이기적인 동기보다는 그리스도의 마음을 따르는 자유를 얻기 위해 이단을 떠나면, 나는 부정적인 의미에서 이단은 아니다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2050
+  },
+  {
+   "gate_id": "GATE-TSU-0034502",
+   "tsu_id": "TSU-0034502",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Should an enemy to your holy religion, after all, require of you a reason for the hope that is in you ; should he demand what grounds you have to conclude that the things you hope for have a real existence ; we trust you would not be at a loss for a reply.",
+   "claim": "성도들은 자신의 신앙에 대한 희망을 가진 이유를 설명할 수 있어야 한다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2096
+  },
+  {
+   "gate_id": "GATE-TSU-0034557",
+   "tsu_id": "TSU-0034557",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": null,
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any offer consolation, like Rachel on the loss of her children, he refusethto be comforted.",
+   "claim": "어떤 위로의 말도 거부하고 위로받기를 거부한다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2114
+  },
+  {
+   "gate_id": "GATE-TSU-0034651",
+   "tsu_id": "TSU-0034651",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Confession",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If it be a sin not to confess the Lord Jesus, through fear or shame, it is a still greater sin, after we have, confessed him to turn from the holy commandment.",
+   "claim": "주님을 고백하지 않거나 고백한 후 거룩한 계명을 거부하는 것은 큰 죄이다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2148
+  },
+  {
+   "gate_id": "GATE-TSU-0034655",
+   "tsu_id": "TSU-0034655",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Trinity",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we relinquish this doctrine, we virtually relinquish our baptism.",
+   "claim": "삼위일체 교리를 포기하면 사실상 세례를 포기하는 것과 같다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2151
+  },
+  {
+   "gate_id": "GATE-TSU-0034694",
+   "tsu_id": "TSU-0034694",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any think otherwise, and feel uneasy that they cannot act like other men, without drawing upon themselves the censures of mankind, it is a dark sign that their hearts are not right in the sight of God.",
+   "claim": "하나님 앞에서 마음이 올바르지 못한 사람들은 다른 사람들과 같이 행동할 수 없다는 생각에 불안을 느끼고 인간의 비난을 받을까 두려워한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2160
+  },
+  {
+   "gate_id": "GATE-TSU-0034698",
+   "tsu_id": "TSU-0034698",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Had the Christian church in all ages admitted none to baptism, from whomsoever descended, but those who professed to repent and believe the gospel, it is scarcely conceivable that any others would have been admitted to the Lord'* supper : and if so, a stream of corruption which has actually deluged it with antichristianism, would have been diverted at the spring-head.",
+   "claim": "만약 기독교 교회가 모든 시대에 회개와 복음을 믿는다고 고백하는 사람들만 세례에 참여시켰다면, 주의 만찬에 참여하는 사람들 중에 반기독교적인 사람들이 적었을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2164
+  },
+  {
+   "gate_id": "GATE-TSU-0034731",
+   "tsu_id": "TSU-0034731",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Baptism",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If it be of little or no account to bind ourselves to the Lord, in the may of his own prescribing ; to confess his name before men ; to avow our being dead to the world, and alive to him ; to preserve the church from being con- stitutionally corrupted, and yoked together with unbelievers ; to obey his commandments who saith, Repent, and be babtized every one of you ; and to follow his example who yielded obedience to this institute, saying, This it becometh us to fulfil all righteous- ness—then may this excuse be admitted.",
+   "claim": "세례는 주님께 자신을 바치는 것, 그의 이름을 사람들 앞에서 고백하는 것, 세상을 향한 죽음과 주님께 대한 삶을 선언하는 것, 교회를 부패로부터 보호하고 불신자와의 연합을 피하는 것, 주님의 계명을 따르는 것, 그리고 그의 예를 따르는 것이 중요하다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2174
+  },
+  {
+   "gate_id": "GATE-TSU-0034800",
+   "tsu_id": "TSU-0034800",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, in such circumstances, his brethren stand by him, he will disregard the slander of his enemies ; but if they be indifferent, it will be death to him.",
+   "claim": "목회자가 어려움에 직면했을 때, 그의 동료들이 그를 지지하면 그는 그의 적들의 중상모략을 무시할 수 있지만, 그의 동료들이 무관심하면 그것은 목회자에게 치명적일 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2208
+  },
+  {
+   "gate_id": "GATE-TSU-0034801",
+   "tsu_id": "TSU-0034801",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": null,
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Should such a conduct issue in his removal, it is no more than might be expected.",
+   "claim": "어떤 상황에서 특정 행동이 발생하여 결과가 나온다면, 그 결과는 예상된 바와 같다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2208
+  },
+  {
+   "gate_id": "GATE-TSU-0034808",
+   "tsu_id": "TSU-0034808",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Were we writing on ministerial defects, we should not scruple to acknow- ledge that much of the preaching of the present day is subject to the same censure : but in the present instance we must be allowed to suppose ourselves employed in teaching the good and the right way, and to solicit your assistance in the work* When the apos- tle tells the Hebrews that, considering the time, they ought to have been teachers, he does not mean that they ought all to have been ministers ; but able to instruct any inquirer in the great principles of the gospel.",
+   "claim": "오늘날의 많은 설교가 비판을 받을 수 있다는 사실을 인정해야 하며, 성도들은 복음의 주요 원칙을 가르칠 수 있어야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2211
+  },
+  {
+   "gate_id": "GATE-TSU-0034825",
+   "tsu_id": "TSU-0034825",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If he understood and believed the gos- pel way of salvation, he would know that God was willing to save any sinner who is willing to be saved by it.",
+   "claim": "구원받고자 하는 자는 하나님의 복음에 의한 구원 의지만 있으면 충분하다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2219
+  },
+  {
+   "gate_id": "GATE-TSU-0034827",
+   "tsu_id": "TSU-0034827",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If he have this, there is nothing in heaven or in earth in the way of his salvation.",
+   "claim": "진정한 회개와 하나님 앞에서의 겸손한 태도만이 구원에 필요한 전제조건이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2219
+  },
+  {
+   "gate_id": "GATE-TSU-0034839",
+   "tsu_id": "TSU-0034839",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you point the awakened sinner directly to the Saviour, after the manner of the New Testament, you will not be employed in assisting him to analyze the distresses of his mind, and administer- ing consolation to him from the hope that they may contain some of the ingredients of true conversion, or at least the signs that he will be converted.",
+   "claim": "구원의 주체의 존재를 깨달은 죄인에게 직접 그리스도를 가리키는 것은, 그의 마음의 고통을 분석하거나 참된 회심의 징조가 될 수 있는 희망을 제공하는 것보다 더 효과적이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2224
+  },
+  {
+   "gate_id": "GATE-TSU-0034850",
+   "tsu_id": "TSU-0034850",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, as heads of families, you were to inquire of your children and servants what they have heard and noticed on the Lord's day, you would often find occasion to second the impressions made by our labours.",
+   "claim": "가정의 어른들이 주일날에 자녀들과 하인들이 무엇을 들었고 주목했는지 물어보면, 우리의 노력에 의해 만들어진 인상을 자주 강화할 수 있는 기회를 찾을 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2228
+  },
+  {
+   "gate_id": "GATE-TSU-0034893",
+   "tsu_id": "TSU-0034893",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we do nothing without express precept or precedent, we must build no places for Christian worship, form no societies for visit- ing and relieving the afflicted poor, establish no school, endow no hospitals, nor contribute any thing towards them, nor any thing towards printing or circulating the Holy Scriptures.",
+   "claim": "기독교인들은 명백한 계명이나 전례 없이도 필요한 일들을 할 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2252
+  },
+  {
+   "gate_id": "GATE-TSU-0034902",
+   "tsu_id": "TSU-0034902",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If God be pub- licly worshipped, there must be a time for it; and that time requires to be devoted to him.",
+   "claim": "하나님을 공적으로 예배할 때, 그 예배를 위한 시간이 필요하며, 그 시간은 하나님께 바쳐져야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2252
+  },
+  {
+   "gate_id": "GATE-TSU-0034913",
+   "tsu_id": "TSU-0034913",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If God prosper our lawful undertakings, we must not only avoid all increase of property, but must retain no part of what we have.",
+   "claim": "하나님의 축복이 우리의 합법적인 사업에 있으면, 우리는 모든 재산의 증가를 피해야 하며, 우리가 가진 것을 일부라도 유지해서는 안 된다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2255
+  },
+  {
+   "gate_id": "GATE-TSU-0034922",
+   "tsu_id": "TSU-0034922",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we be taught of God to love one another, we shall find little difficulty in understanding and practising these precepts.",
+   "claim": "하나님으로부터 서로 사랑하도록 가르침을 받은 경우, 이러한 교훈을 이해하고 실천하는 데 어려움이 없을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2259
+  },
+  {
+   "gate_id": "GATE-TSU-0034929",
+   "tsu_id": "TSU-0034929",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we be not greatly mistaken, many fierce disputes which have divided Christians on the form, order, and government of the church of Christ, might, at least, have been considerably dimi- nished by a proper attention to this subject.",
+   "claim": "교회 정부와 질서에 대한 올바른 이해가 부족하여 기독교인들 사이에 격렬한 논쟁이 발생할 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2263
+  },
+  {
+   "gate_id": "GATE-TSU-0034943",
+   "tsu_id": "TSU-0034943",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we look for express precept or example, for the removal of a pastor from one situation to another, we shall find none.",
+   "claim": "성경에 따르면 목사의 이동에 대한 명시적인 교훈이나 예는 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2268
+  },
+  {
+   "gate_id": "GATE-TSU-0034981",
+   "tsu_id": "TSU-0034981",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If, therefore, we be obliged to wear any sign of the one or the other, in our religious assemblies, it requires to be re- versed,",
+   "claim": "우리의 종교 모임에서 어떤 신앙의 표시를 해야 한다면, 그것은 반드시 역전되어야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2283
+  },
+  {
+   "gate_id": "GATE-TSU-0034992",
+   "tsu_id": "TSU-0034992",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Baptism",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If the differ- ence between a professed believer and an unconscious infant, with respect to baptism, were no greater than this with respect to the supper, we would allow it to be lawful to baptize the latter, though neither express precept nor precedent be found for the practice.",
+   "claim": "세례와 성찬에 대한 차이점은 믿는 자와 무의식적인 영아의 차이점보다 더 크다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2287
+  },
+  {
+   "gate_id": "GATE-TSU-0035029",
+   "tsu_id": "TSU-0035029",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If God's work does but appear to us, and our posterity after us, we need not be dismayed at ths evils which afflict the e^rth.",
+   "claim": "하나님의 작품이 우리와 우리의 후손에게 나타나면, 우리는 이 땅에 닥친 재앙에 대해 낙심할 필요가 없다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2306
+  },
+  {
+   "gate_id": "GATE-TSU-0035060",
+   "tsu_id": "TSU-0035060",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we have not, it is because •we ask not ; or if we ask and receive not, it is because we ask amiss.",
+   "claim": "우리가 받지 못하는 것은 우리가 구하지 않기 때문이거나, 구했는데도 받지 못하는 것은 잘못된 방식으로 구했기 때문이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2319
+  },
+  {
+   "gate_id": "GATE-TSU-0035079",
+   "tsu_id": "TSU-0035079",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If we look at events only with respect to instruments, second causes, and political bearings, we shall be filled with vexation and disquietude, and shall come within the sweep of that awful threat- ening, Because they regard not the works of the Lord, nor the optraton of his hands, he will destroy them and not build them up.",
+   "claim": "하나님의 섭리와 그의 손의 역사에 주목하지 않고 단지 인간의 도구와 정치적 측면만 볼 때는 근심과 불안에 사로잡히게 되고, 하나님의 경고에 빠지게 된다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2326
+  },
+  {
+   "gate_id": "GATE-TSU-0035087",
+   "tsu_id": "TSU-0035087",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If thou afflict them in any wise, and they cry at all unto me, I will surely hear their cry. — And my wrath shall wax hot, and I will kill you with the sword : and your wives shall be widows, and your children fatherless.",
+   "claim": "하나님은 고아와 과부를 학대하는 자를 심판하실 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2331
+  },
+  {
+   "gate_id": "GATE-TSU-0035148",
+   "tsu_id": "TSU-0035148",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any of you have been deaf to the various calls of God during his life, yet hear this one which is addressed to you by his death !",
+   "claim": "하나님의 다양한 부름에 귀를 막았던 사람이라도 그분의 죽음으로 말미암아 이 부름을 들을 수 있어야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2374
+  },
+  {
+   "gate_id": "GATE-TSU-0035152",
+   "tsu_id": "TSU-0035152",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Had poor short-sighted mortals had their will, The great Redeemer had not bled, or died.",
+   "claim": "인간이 원하는 대로였다면, 큰 구원자가 피를 흘리거나 죽지 않았을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2388
+  },
+  {
+   "gate_id": "GATE-TSU-0035209",
+   "tsu_id": "TSU-0035209",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you are Christians, whether Paul, or Apollos, or Cephas, or the world, or life, or death, or things pre- sent, or things to come, all are yours.",
+   "claim": "그리스도인에게는 모든 것이 속한 것임",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2419
+  },
+  {
+   "gate_id": "GATE-TSU-0035221",
+   "tsu_id": "TSU-0035221",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you have Christ, you will never have lost your all.",
+   "claim": "그리스도를 가지면 모든 것을 잃은 것이 아님을 알 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2424
+  },
+  {
+   "gate_id": "GATE-TSU-0035263",
+   "tsu_id": "TSU-0035263",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any of these cases be yours, or nearly so, allow me to remind you that a time of affliction is a time when God calls you to a seri- ous inquiry into the state of your soul In the day of adversity consider.",
+   "claim": "고난의 시기는 하나님께서 영혼의 상태를 심각하게 조사하도록 부르는 시기이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2443
+  },
+  {
+   "gate_id": "GATE-TSU-0035268",
+   "tsu_id": "TSU-0035268",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If it lead you to the Saviour, you will be saved • but if not, it may be to you but the beginning of sorrows.",
+   "claim": "구원자에게로 인도한다면 구원받을 수 있지만 그렇지 않다면 고통의 시작일 수 있다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2445
+  },
+  {
+   "gate_id": "GATE-TSU-0035272",
+   "tsu_id": "TSU-0035272",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If Jesus came into the world on such an errand, he must be the Mes- siah foretold by the prophets, the Son of God, and the Saviour of men.",
+   "claim": "예수님이 세상에 오신 목적이 죄인을 구원하는 것이라면, 그는 반드시 선지자들이 예언한 메시아, 하나님의 아들, 그리고 인간의 구원자가 되어야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2446
+  },
+  {
+   "gate_id": "GATE-TSU-0035273",
+   "tsu_id": "TSU-0035273",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If he came into the world to save sinners, the world must have been in a lost and hopeless condition.",
+   "claim": "세상은 죄인들을 구원하기 위해 예수님이 오신 것임을 알 수 있고, 이는 세상의 구원받지 못한 채로 희망이 없는 상태였다는 것을 의미한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2446
+  },
+  {
+   "gate_id": "GATE-TSU-0035274",
+   "tsu_id": "TSU-0035274",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If any thing could have been done by man towards saving himself, it would doubtless have been left to him : God would not unnecessarily have inter- fered, especially to send his Son to be made a sacrifice for us.",
+   "claim": "만약 인간이 스스로를 구원할 수 있는 방법이 있었다면, 하나님은 불필요한 간섭을 하지 않았을 것이며, 특히 그의 아들을 우리를 위해 희생물로 보내지 않았을 것이다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2446
+  },
+  {
+   "gate_id": "GATE-TSU-0035286",
+   "tsu_id": "TSU-0035286",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If therefore our sins be lamented, and we have faith in Christ, however numerous or Tieinous they have been, we shall find mercy.",
+   "claim": "그리스도에 대한 믿음이 있고 죄를 슬퍼한다면, 그 죄가 아무리 많고 심각해도 자비를 받을 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2448
+  },
+  {
+   "gate_id": "GATE-TSU-0035291",
+   "tsu_id": "TSU-0035291",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If affliction has been the means of humbling you, and bringing you to a right mind, you have reason, not only to be reconciled to it, but to consider it among your greatest mercies.",
+   "claim": "고난은 사람을 겸손하게 하고 올바른 마음을 갖게 하며, 이는 큰 은혜로 여겨야 한다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2450
+  },
+  {
+   "gate_id": "GATE-TSU-0035296",
+   "tsu_id": "TSU-0035296",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you be full of self-righteous confidence, flattering yoursejf that your life has been good, and that you have nothing to fear, consider whether you be not in the very condition of those whom our Saviour describes as whole, and so needing no physician.",
+   "claim": "자아도취에 빠져 자신이 선한 삶을 살았다고 생각하고, 두려울 것이 없다고 믿는다면, 주님께서 완전한 사람으로 묘사하신 그 상태에 있는 것일 수 있다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2453
+  },
+  {
+   "gate_id": "GATE-TSU-0035310",
+   "tsu_id": "TSU-0035310",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If the faithful saying above referred to, be received, it will issue in your salvation ; if not, we can only deliver our own souls !",
+   "claim": "구원받기 위해서는 신앙의 진실한 말씀이 받아들여져야 한다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2456
+  },
+  {
+   "gate_id": "GATE-TSU-0035312",
+   "tsu_id": "TSU-0035312",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "If you abound in vows and promises as to your future life, it is rather a sign that you know but little of yourself, than of a real change for the better.",
+   "claim": "고난 중에 하는 서원과 약속이 많을수록 그것이 진정한 변화의 징조라기보다는 자아에 대한 이해가 부족함을 나타낸다.",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2457
+  },
+  {
+   "gate_id": "GATE-TSU-0035335",
+   "tsu_id": "TSU-0035335",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Had it not been for the illuminating influence of the Spirit of God, we should never have understood it ; not because of its abstruseness, but on account of the uncongeniality of our minds : and when we do understand and believe it, there is a continual tendency in us to get wrong, It might seem that when a person has once obtained a just view of the gospel, there is no danger of his losing it ; but it is not so.",
+   "claim": "인간의 마음은 신의 진리를 이해하는 데 어려움이 있어 성령의 계시가 필요하다",
+   "triage_flags": [
+    "conditional_hypothetical"
+   ],
+   "tier": "P2",
+   "est_reject_prior": 0.2,
+   "paragraph": 2467
+  },
+  {
+   "gate_id": "GATE-TSU-0030348",
+   "tsu_id": "TSU-0030348",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "A sense of the excellence of Christ, or of his worthiness of being loved, i9 of great importance in religion.",
+   "claim": "그리스도의 뛰어난 점이나 사랑받을 가치에 대한 인식은 종교에서 매우 중요하다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 131
+  },
+  {
+   "gate_id": "GATE-TSU-0030349",
+   "tsu_id": "TSU-0030349",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Without this, we can never truly love him, nor prize any thing which pertains to him.",
+   "claim": "그리스도의 뛰어난 가치 또는 사랑받을 가치에 대한 인식이 없으면 우리는 진정으로 그를 사랑할 수 없고, 그를 위한 어떤 것도 소중하게 여기지 못한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 131
+  },
+  {
+   "gate_id": "GATE-TSU-0030350",
+   "tsu_id": "TSU-0030350",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Destitute of this, we shall see his name degraded without indignation, and hear it exalted without delight.",
+   "claim": "하나님의 이름이 욕되거나 높임을 받을 때에 우리가 감정적으로 반응하지 않는 것은 하나님에 대한 적절한 사랑과 존중이 없기 때문이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 131
+  },
+  {
+   "gate_id": "GATE-TSU-0030351",
+   "tsu_id": "TSU-0030351",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Without this, we shall esteem his salvation itself no otherwise than a happy expedi- ent to escape eternal misery.",
+   "claim": "구원 자체를 영원한 고통에서 벗어나는 행복한 수단으로 여길 뿐이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 131
+  },
+  {
+   "gate_id": "GATE-TSU-0030352",
+   "tsu_id": "TSU-0030352",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "In short, without this, we shall be mere statues in Christianity, bring no glory to its Author, and enjoy none of its refined pleasures.",
+   "claim": "그리스도인으로서의 참된 삶은 단순한 형식이나 외형이 아니라, 참된 영적 생명과 활동을 통해 하나님께 영광을 돌리고 그리스도인의 정련된 기쁨을 즐기는 것임을 의미한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 131
+  },
+  {
+   "gate_id": "GATE-TSU-0030353",
+   "tsu_id": "TSU-0030353",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Indeed the sentence is awful Let him be accursed when the Lord cometh / It probably alludes to the Jewish excommunications, which they tell us were of three sorts, or degrees.",
+   "claim": "주님의 재림 때 저주받을 사람에 대한 선고는 유대인의 추방 형태 중 하나를 암시한다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 136
+  },
+  {
+   "gate_id": "GATE-TSU-0030354",
+   "tsu_id": "TSU-0030354",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "In the first, the offender was put out of the synagogue, or merely excommuni- cated; in the second, he was not only excommunicated, but ana- thematized, or cursed; in the third (which was only for the worst, and most incorrigible,) he was not only anathematized, but con- signed over to the judgment of the great day !",
+   "claim": "유대인의 추방에는 세 가지 종류나 정도가 있으며, 첫 번째는 회당에서 추방하는 것, 두 번째는 추방과 함께 저주를 받는 것, 세 번째는 가장 심각한 경우에 해당하며 대죄의 날에 심판을 받도록 넘겨지는 것",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 136
+  },
+  {
+   "gate_id": "GATE-TSU-0030355",
+   "tsu_id": "TSU-0030355",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Church Discipline",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The meaning of the word here seems to be, ' Let him be excommunicated from the presence of God, and all holy beings ; and ns he did not love the Lord Jesus Christ as a Saviour, let him fall before him as a Judge I' This sentence, however awful, is strictly equitable.",
+   "claim": "교회에서 추방된 자는 하나님의 임재와 모든 거룩한 존재 앞에서 추방되어야 하며, 주 예수 그리스도를 구원자로 사랑하지 않았으므로 심판자 앞에서 패하여야 한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 136
+  },
+  {
+   "gate_id": "GATE-TSU-0030356",
+   "tsu_id": "TSU-0030356",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "He that loves not the Lord Jesus Christ, must be an enemy to God, to virtue, and to all moral excellence. — Such a oneness is there between God as a Lawgiver, and Christ as a Saviour, that what is done to the one is done to the other.",
+   "claim": "예수 그리스도를 사랑하지 않는 사람은 하나님과 모든 도덕적 우수성의 적이 된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 137
+  },
+  {
+   "gate_id": "GATE-TSU-0030357",
+   "tsu_id": "TSU-0030357",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The Jews, in our Sav- iour's time, wished to be thought friends to God, while they were enemies to Christ ; but, If God zvere your Father, saith he, ye would love me.",
+   "claim": "예수 그리스도를 사랑하지 않는 사람은 하나님과 모든 도덕적 우수성의 적이 된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 137
+  },
+  {
+   "gate_id": "GATE-TSU-0030358",
+   "tsu_id": "TSU-0030358",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "And again, I know you, that ye have not the love of God in yOU — Jam come in my Father's name, and ye receive me not.",
+   "claim": "하나님의 이름으로 온 예수를 받지 않는 자는 하나님의 사랑을 지니고 있지 않다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 137
+  },
+  {
+   "gate_id": "GATE-TSU-0030359",
+   "tsu_id": "TSU-0030359",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The same thing is observable now, amonglhe Deists, who would be thought friends to the one Supreme Being, but enemies to Chris- tianity.",
+   "claim": "현재도 일신교도들 사이에서 하나님의 이름으로 오는 예수를 받아들이지 않는 현상이 관찰된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 137
+  },
+  {
+   "gate_id": "GATE-TSU-0030360",
+   "tsu_id": "TSU-0030360",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "And indeed this deistical spirit seems greatly to prevail in multitudes that are not professed Deists, especially among some in the higher ranks, who, though they can now and then assume so much fortitude, as to speak respectfully of the Supreme Being, yet would be ashamed that a word should be heard from their lips in de- fence of Christ or Christianity.",
+   "claim": "신자로 알려진 사람들 중에도 기독교에 대한 적개심을 보이는 이들이 존재한다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 137
+  },
+  {
+   "gate_id": "GATE-TSU-0030361",
+   "tsu_id": "TSU-0030361",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It were to be wished (oq, that none of those who sustain the character of Christian ministers had ever discovered the same spirit.",
+   "claim": "기독교 목사들이 기독교 정신을 보여주지 못하는 것이 바람직하지 않다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 137
+  },
+  {
+   "gate_id": "GATE-TSU-0030362",
+   "tsu_id": "TSU-0030362",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Trinity",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "But, whatever we may think here, and whatever character we may sustain, it will be found at last, that, whosoever denieth the Son, the same hath not the Father !",
+   "claim": "아들이 없으면 아버지도 없다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 137
+  },
+  {
+   "gate_id": "GATE-TSU-0030364",
+   "tsu_id": "TSU-0030364",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "When devils had cast off God's yoke as grievous, and practically declared him a tyrant ; and men had followed their example, judging it too mean a thing, it seems, for ever to be so kept under rule ; then the Son of God came down, and in the presence of these revolters, was subject to the very law which they had discarded.",
+   "claim": "하나님의 아들 예수 그리스도는 하나님의 법을 지키기 위해 세상에 오셨다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 139
+  },
+  {
+   "gate_id": "GATE-TSU-0030365",
+   "tsu_id": "TSU-0030365",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Though he was under no natural obligation to come under the law, yet, that he might show how worthy he thought it of being obeyed, and thus wipe off the foul reproach, he learned obedience.",
+   "claim": "그리스도는 법에 대한 복종을 배우셨으며, 법을 지키는 것이 가치있다고 생각하여 법에 복종하셨다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 139
+  },
+  {
+   "gate_id": "GATE-TSU-0030366",
+   "tsu_id": "TSU-0030366",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Yea, that it might be seen how easy a yoke it was, and thence the unreasonableness and wickedness of their revolt, he declared, whatever others might think, it was his meat to do the will of his Father!",
+   "claim": "그리스도는 하나님의 법을 지키는 것이 쉽고 기쁨임을 보여주기 위해 순종의 길을 걸으셨다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 139
+  },
+  {
+   "gate_id": "GATE-TSU-0030368",
+   "tsu_id": "TSU-0030368",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Again : If any man love not the Lord Jesus Christ, he can have no regard to the honour of Go^s justice being secured.",
+   "claim": "주 예수 그리스도를 사랑하지 않는 사람은 하나님의 정의가 확보되는 것에 대한 관심을 가질 수 없다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 140
+  },
+  {
+   "gate_id": "GATE-TSU-0030370",
+   "tsu_id": "TSU-0030370",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "To desire such a thing would be nothing less than desiring to depose the King of the universe ; for justice and judgment are the basis of his throne.",
+   "claim": "하나님의 정의를 존중한다면, 정의가 무너진 상태에서 구원이 이루어지는 것은 받아들일 수 없다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 140
+  },
+  {
+   "gate_id": "GATE-TSU-0030373",
+   "tsu_id": "TSU-0030373",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "With what joy of heart would he acquiesce in a plan wherein mercy and truth could meet together.",
+   "claim": "구원받은 자는 하나님의 사랑과 진리와의 조화에 기뻐한다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 140
+  },
+  {
+   "gate_id": "GATE-TSU-0030374",
+   "tsu_id": "TSU-0030374",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The more he loved God, the more he would love Him who out of love to equity invited the sword of vengeance to plunge itself in his heart, saying, Father, glorify thv name !",
+   "claim": "하나님을 더 사랑할수록, 하나님은 정의를 사랑하는 마음으로 복수와 심판의 검을 자아에게 내리게 하면서도, 아버지의 이름을 영광되게 하라고 말씀하시는 분을 더 사랑하게 된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 140
+  },
+  {
+   "gate_id": "GATE-TSU-0030375",
+   "tsu_id": "TSU-0030375",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "But if Christ and his way of salvation have no charms in our eyes ; if we would barely like to be justified, (that is, freed from condemnation,) but care not how 3",
+   "claim": "그리스도와 그의 구원 방식이 우리에게 매력적이지 않으면 우리가 정당화(즉, 유죄판결에서 해방)될 수 있지만 그 방법에는 관심이 없다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 140
+  },
+  {
+   "gate_id": "GATE-TSU-0030376",
+   "tsu_id": "TSU-0030376",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "and think, as to God being just therein, he must see to that ; is it not evident that we have no love to God, truth, or righteousness r",
+   "claim": "하나님은 정의로우신 분이시므로 그분은 우리가 하나님께 대한 사랑, 진리, 그리고 의를 향한 우리의 태도를 보실 것이라고 생각한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 142
+  },
+  {
+   "gate_id": "GATE-TSU-0030377",
+   "tsu_id": "TSU-0030377",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Further: If any man love not the Lord Jesus Christ, he gives proof that God's grand enemy being defeated and all his counsels turned into foolishness, affords him no pleasure ; and consequently he can be no friend of God, but an enemy.",
+   "claim": "주 예수 그리스도를 사랑하지 않는 사람은 하나님의 대적자를 패배시키고 그의 모든 계략을 어리석게 만드는 데 즐거움을 느끼지 못하며, 따라서 그는 하나님의 친구가 아니라 적이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 143
+  },
+  {
+   "gate_id": "GATE-TSU-0030378",
+   "tsu_id": "TSU-0030378",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Election",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It* we love our prince, we shall rejoice at his enemies being overthrown, and admire that noble commander, who, by hazarding his life in the high places of the field, should put them to confusion.",
+   "claim": "우리가 우리의 왕을 사랑한다면, 그의 적들이 패배하는 것을 기뻐하고, 그의 명령을 존경해야 한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 143
+  },
+  {
+   "gate_id": "GATE-TSU-0030380",
+   "tsu_id": "TSU-0030380",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Now, as the Lord Jesus Christ entered the field, and with his own arm spoiled principal- ities and powers, brake the serpent's head, routed his forces, and ruined his scheme ; if we love not him, whatever we may pretend, we must be enemies to God, and on the sidt of Satan.",
+   "claim": "주 예수 그리스도를 사랑하지 않는 사람은 하나님과 적대하며 사탄 편에 서 있는 것과 같다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 143
+  },
+  {
+   "gate_id": "GATE-TSU-0030381",
+   "tsu_id": "TSU-0030381",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "In short : If any man love not the Lord Jesus Christ, he must be an enemy to all moral excellence ; for of this he was a perfect model, both living and dying.",
+   "claim": "주 예수 그리스도를 사랑하지 않는 사람은 모든 도덕적 우수성을 향한 적이 될 수밖에 없다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 144
+  },
+  {
+   "gate_id": "GATE-TSU-0030382",
+   "tsu_id": "TSU-0030382",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "God himself hath borne witness of him, that he loved righteousness, and hated iniquity.",
+   "claim": "하나님은 예수 그리스도가 의를 사랑하고 불의를 미워한다는 것을 증거하셨다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 144
+  },
+  {
+   "gate_id": "GATE-TSU-0030383",
+   "tsu_id": "TSU-0030383",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "He lived to get forth the amiableness of the one, and died that God in him might show his abhorrence of the other.",
+   "claim": "그리스도는 의를 사랑하고 불의를 미워하는 하나님의 성품을 나타내기 위해 살았고 죽었다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 144
+  },
+  {
+   "gate_id": "GATE-TSU-0030384",
+   "tsu_id": "TSU-0030384",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "He lived and died that God's character in saving sinners might be untainted with moral turpitude.",
+   "claim": "그리스도는 하나님의 성품이 죄인을 구원하는 데 도덕적 부패와 관련되지 않도록 살고 죽으셨다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 144
+  },
+  {
+   "gate_id": "GATE-TSU-0030386",
+   "tsu_id": "TSU-0030386",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Perhaps we cannot form a better idea of him, than as an assemblage of all goodness, a being in whom all excellencies meet.",
+   "claim": "그리스도는 모든 선함의 총합이자 중심이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 144
+  },
+  {
+   "gate_id": "GATE-TSU-0030387",
+   "tsu_id": "TSU-0030387",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "To have no love to him, then, is to have no love to moral excellence, and so to be an enemy to all good.",
+   "claim": "하나님에 대한 사랑이 없다는 것은 도덕적 우수성에 대한 사랑이 없다는 것을 의미하며, 이는 모든 선에 대한 적개심을 의미한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 144
+  },
+  {
+   "gate_id": "GATE-TSU-0030388",
+   "tsu_id": "TSU-0030388",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Such a character surely deserves to be anathe- matized from God and all holy beings !",
+   "claim": "하나님과 모든 거룩한 존재로부터 저주를 받을 자격이 있는 것은 도덕적 우수성을 사랑하지 않는 것",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 144
+  },
+  {
+   "gate_id": "GATE-TSU-0030389",
+   "tsu_id": "TSU-0030389",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "He that loves not the Lord Jesus Christ, must be an enemy to mankind.",
+   "claim": "주 예수 그리스도를 사랑하지 않는 사람은 반드시 인류의 적이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 145
+  },
+  {
+   "gate_id": "GATE-TSU-0030391",
+   "tsu_id": "TSU-0030391",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It is answered, No, not in the full extent of that term.",
+   "claim": "인간성은 기독교의 주제가 아니면 충분한 의미를 가지지 않는다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 145
+  },
+  {
+   "gate_id": "GATE-TSU-0030392",
+   "tsu_id": "TSU-0030392",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Here is one of that character, for instance, draws a young man into his practices : he has no intention to bring him to the gallows, nor himself either ; and he may wish his health and prosperity, and pity and relieve him in distress.",
+   "claim": "악한 영향력은 의도적으로 타인의 이익을 해칠 수 있음에도 불구하고, 겉으로는 친절하고 도움을 줄 수 있다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 147
+  },
+  {
+   "gate_id": "GATE-TSU-0030394",
+   "tsu_id": "TSU-0030394",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The Lord Jesus Christ is the best friend to mankind that ever existed : if therefore any man bears true love to the souls of men and seeks their real welfare, it is impossible but that he should love the Lord Jesus Christ.",
+   "claim": "주 예수 그리스도는 인류에게 가장 좋은 친구이며, 누구든지 참으로 사람들의 영혼을 사랑하고 그들의 참된 복지를 추구한다면 주 예수 그리스도를 사랑하지 않을 수 없다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 148
+  },
+  {
+   "gate_id": "GATE-TSU-0030395",
+   "tsu_id": "TSU-0030395",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "We should deem him an enemy to mankind, who, if a skilful and generous physician came into our parts, and healed all gratis who applied to him, should endeavour to prejudice the minds of people against him.",
+   "claim": "주 예수 그리스도를 반대하는 사람은 인류의 적이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 148
+  },
+  {
+   "gate_id": "GATE-TSU-0030396",
+   "tsu_id": "TSU-0030396",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Providence",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "An enemy to Joseph, who was the saviour of Egypt and the adjacent countries, would have been deemed an enemy to mankind.",
+   "claim": "요셉을 적으로 대하는 사람은 인류의 적으로 간주될 것이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 148
+  },
+  {
+   "gate_id": "GATE-TSU-0030397",
+   "tsu_id": "TSU-0030397",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Christ has healed the tremendous breach between God and man, has rescued millions and millions from eternal ruin, and is still able and willing to save to the uttermost all them that come unto God by him.",
+   "claim": "그리스도는 하나님과 인간 사이의 큰 간격을 치료하시고, 수백만의 사람들을 영원한 파멸로부터 구원하시며, 아직도 그에게 오는 모든 사람을 최대한 구원할 수 있고 의지한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 148
+  },
+  {
+   "gate_id": "GATE-TSU-0030398",
+   "tsu_id": "TSU-0030398",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It' any man therefore love not the Lord Jesus Christ, surely he deserves, as an enemy to the public good, to be excommunicated from the society of the blessed.",
+   "claim": "주 예수 그리스도를 사랑하지 않는 자는 축복의 사회에서 추방되어 마땅하다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 148
+  },
+  {
+   "gate_id": "GATE-TSU-0030401",
+   "tsu_id": "TSU-0030401",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "This is a cause wherein the idea of neutrality is inadmissible and impossible.",
+   "claim": "중립의 개념은 이 경우에 받아들여지거나 가능하지 않다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 149
+  },
+  {
+   "gate_id": "GATE-TSU-0030402",
+   "tsu_id": "TSU-0030402",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "They that are not with him, are declared to be against him.",
+   "claim": "예수님과 함께하지 않는 자는 반대하는 자로 간주된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 149
+  },
+  {
+   "gate_id": "GATE-TSU-0030403",
+   "tsu_id": "TSU-0030403",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "He that loves not the Lord Jesus Christ, must be an enemy to himself. — To be an enemy to Christ, is to be guilty of the most awful kind of suicide.",
+   "claim": "예수 그리스도를 사랑하지 않는 사람은 자기 자신에게 적이 된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 150
+  },
+  {
+   "gate_id": "GATE-TSU-0030408",
+   "tsu_id": "TSU-0030408",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "For a man to rouse a lion would seem as if he was weary of his life : much more to provoke the Lion of the tribe of Judah.",
+   "claim": "하나님의 진노의 능력을 생각할 때, 하나님을 도발하는 것은 자살과 같다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 152
+  },
+  {
+   "gate_id": "GATE-TSU-0030411",
+   "tsu_id": "TSU-0030411",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Surely he that loves not God, ought to be accursed from God ; he that loves not mankind, ought to be banished, to take his lot among devils, as we should banish a murderer from the society of men ; and he that loves not himself, but seeks his own ruin, ought to find it.",
+   "claim": "하나님을 사랑하지 않는 자는 하나님으로부터 저주를 받아야 하며, 인류를 사랑하지 않는 자는 사탄과 함께 지내도록 추방되어야 하며, 자기를 사랑하지 않고 자아를 파괴하려는 자는 그 결과를 맛보아야 한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 153
+  },
+  {
+   "gate_id": "GATE-TSU-0030412",
+   "tsu_id": "TSU-0030412",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Upon the whole, if the foregoing thoughts be just, then that distinction has been made without ground, that sinners will not be punished for their not loving the Lord Jesus Christ, but only for the breach of God's law; as if the want of love to Christ was not a breach of the law.",
+   "claim": "죄인들이 그리스도에게 사랑을 하지 않는 것은 하나님의 법을 위반하는 것이며, 그리스도에게 사랑을 하지 않는 것은 다른 어떤 경우보다도 더 큰 법을 위반하는 것이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 154
+  },
+  {
+   "gate_id": "GATE-TSU-0030413",
+   "tsu_id": "TSU-0030413",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "So far from this, it is such a breach of jt as perhaps cannot be equalled by any other case whatever.",
+   "claim": "그리스도에게 대한 사랑의 부족은 법을 어긴 것으로 간주될 수 있다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 154
+  },
+  {
+   "gate_id": "GATE-TSU-0030414",
+   "tsu_id": "TSU-0030414",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Justification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It is at once a breach of the whole law, and that in the highest degree.",
+   "claim": "어떤 행동은 법의 전부를 최고의 정도로 위반한다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 154
+  },
+  {
+   "gate_id": "GATE-TSU-0030416",
+   "tsu_id": "TSU-0030416",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "These are the whole of what is included in that summary given of it by our Lord ; and these we have seen are all broken, and that in the highest degree, in the want of love to Christ.",
+   "claim": "그리스도에게 대한 사랑의 부족은 하나님과 이웃과 자기 자신에 대한 사랑을 포함한 율법의 모든 요구를 위반하는 것이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 154
+  },
+  {
+   "gate_id": "GATE-TSU-0030418",
+   "tsu_id": "TSU-0030418",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Soteriology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "God might justly have banished us from the abodes of the blessed.",
+   "claim": "하나님은 우리를 복된 곳에서 쫓아내실 수 있었다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 155
+  },
+  {
+   "gate_id": "GATE-TSU-0030420",
+   "tsu_id": "TSU-0030420",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It is a matter of complaint loo common, as well as too well founded, that the bulk of Christians in the present age are very deficient in spirituality, and come far short of the primitive Christians in a close walk with God.",
+   "claim": "현재 시대의 대부분의 기독교인들은 영성에 있어 부족하며, 초기 기독교인들이 하나님과 가까이 걸어가는 것에 비해 많이 뒤떨어져 있다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 159
+  },
+  {
+   "gate_id": "GATE-TSU-0030421",
+   "tsu_id": "TSU-0030421",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "We lament over our un- fruitfulness, our want of growth in grace and increasing conformity to Christ.",
+   "claim": "현대 기독교인들은 성령으로 말미암은 성장과 그리스도와의 닮음에서 부족하다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 159
+  },
+  {
+   "gate_id": "GATE-TSU-0030422",
+   "tsu_id": "TSU-0030422",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Complaints of this kind, if they arise from the integ- rity of our hearts, are necessary and proper ; but complaining alone will not effect a cure.",
+   "claim": "진정한 마음에서 나오는 성도들의 성장과 그리스도 닮음에 대한 불만은 필요하고 적절하지만, 불만만으로는 해결되지 않는다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 159
+  },
+  {
+   "gate_id": "GATE-TSU-0030424",
+   "tsu_id": "TSU-0030424",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "That which I shall insist upon in this paper is, The want of a proper regard to the word of God.",
+   "claim": "하나님의 말씀에 대한 적절한 고려의 부족",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 160
+  },
+  {
+   "gate_id": "GATE-TSU-0030425",
+   "tsu_id": "TSU-0030425",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It has been the pleasure of God to magnify his word more than all his name ; and if we are under the influence of a right spirit, we shall magnify it too.",
+   "claim": "하나님의 말씀을 높이는 것은 하나님의 이름을 높이는 것보다 더 중요하다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 160
+  },
+  {
+   "gate_id": "GATE-TSU-0030426",
+   "tsu_id": "TSU-0030426",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "It is by the knowledge of its sacred truths that we are freed from the slavery of sin, and our spirits sanctified.",
+   "claim": "성경의 신성한 진리를 통해 우리는 죄의 노예 상태에서 해방되고, 우리의 영은 성결된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 160
+  },
+  {
+   "gate_id": "GATE-TSU-0030427",
+   "tsu_id": "TSU-0030427",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Sanctification",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "it, as in a glass, we behold the glory of the Lord, and arc changed into the same image, from glory to glory, by the Spirit of God.",
+   "claim": "성도들은 성령의 역사로 말미암아 주님의 영광을 보며 그와 같은 형상으로 변화된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 162
+  },
+  {
+   "gate_id": "GATE-TSU-0030428",
+   "tsu_id": "TSU-0030428",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "In almost all the remarkable declensions in the church of Godr a neglect of the scriptures has been at the root.",
+   "claim": "교회에서 일어난 대부분의 퇴폐는 성경을 소홀히 한 데 그 근본이 있다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030429",
+   "tsu_id": "TSU-0030429",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "On (he contrary, in all the seasons of revival and reformation, the scrip- tures have been the grand means of their being brought about.",
+   "claim": "성경은 모든 부흥과 개혁의 주요 수단이다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030430",
+   "tsu_id": "TSU-0030430",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "During the long and wicked reign of Manasseh, the book of the law of the Lnrd was lost, was lost even in the temple ; and then it was that idolatry prevailed : when Josiah came to the throne, and \\ reformation was brought about, the lost book was found, read, and regarded.",
+   "claim": "성경은 부흥과 개혁의 주요 수단이다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030431",
+   "tsu_id": "TSU-0030431",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "During the captivity, the word of God seems to have been neglected.",
+   "claim": "포로기 동안에 하나님의 말씀은 간과되었다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030433",
+   "tsu_id": "TSU-0030433",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The sum of the account is this : Ezra and his companions stood upon a pulpit of wood, read the law, and gave the meaning; and the people understood the law, and wept bitterly, and entered into a covenant with their God.",
+   "claim": "에스라와 그의 동료들이 성막에서 율법을 읽고 설명하여 백성이 율법을 이해하고 울며 하나님과의 언약을 맺었다",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030434",
+   "tsu_id": "TSU-0030434",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "Religion was reduced to a low state at the time of our Lord's coming ; and one cause assigned for it was, that the Pharisees, by their traditions, had made void the lata of God.",
+   "claim": "예수님의 시대에는 종교가 낮은 상태에 있었고, 그 이유 중 하나는 바리새인들이 전통을 통해 하나님의 법을 무효화했었다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030435",
+   "tsu_id": "TSU-0030435",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "On the contrary, the glorious revival which then suc- ceeded, by the ministry of John the Baptist, Christ, and his apostles, was by means of 'their disseminating the true knowledge of God as revealed in the scriptures.",
+   "claim": "주님께서 오신 당시 종교는 낮은 상태에 있었고, 바티매인들의 전통이 하나님의 말씀을 무효화한 것이 그 원인 중 하나였으며, 요한계시자, 그리스도, 그리고 사도들의 사역을 통해 성경에 계시된 하나님의 진정한 지식을 전파함으로써 영광스러운 부흥이 일어났다고 말할 수 있다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030438",
+   "tsu_id": "TSU-0030438",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Scripture / Authority",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The original cause, as prophetically given us by the apostle himself, was this, Because they receiv- ed not the love of the truth, that they might be saved, God shall send them strong delusion, that they should believe a lie.",
+   "claim": "성경의 말씀을 받지 않음으로 인해 하나님은 강한 미혹을 보내시므로 거짓을 믿게 된다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  },
+  {
+   "gate_id": "GATE-TSU-0030439",
+   "tsu_id": "TSU-0030439",
+   "source_id": "BAP-MISS-FULLER-VOL08",
+   "work_id": "Fuller_Complete_Works_Vol08",
+   "edition_id": "Fuller_Complete_Works_Vol08",
+   "doctrine": "Ecclesiology",
+   "identifier": "Fuller_Complete_Works_Vol08",
+   "original_text": "The foundation of popery was laid in a disregard to the Bible, and an overweening attachment to traditions and unscriptural ceremonies.",
+   "claim": "로마 가톨릭의 기초는 성경을 무시하고 전통과 성경 외의 의식에 대한 과도한 애착에 놓여 있다.",
+   "triage_flags": [],
+   "tier": "P3",
+   "est_reject_prior": 0.19,
+   "paragraph": 163
+  }
+ ]
+}
