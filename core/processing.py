@@ -953,7 +953,8 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
         # only by document_id (a stable content hash), so reloading here
         # does not invalidate them.
         with registry_lock(registry_path):
-            _registry = load_identity_registry(registry_path)
+            # strict: 읽기 영구 실패를 빈 레지스트리로 바꾸면 그 위에 등록·저장해 기존 문서를 지운다.
+            _registry = load_identity_registry(registry_path, strict=True)
 
             # ── [PT-PROCESSING-012] Update content hash on success ──
             _hash_updated = update_content_hash(_registry, document_id, file_hash)
@@ -984,8 +985,7 @@ def process_one_file(file_info, converter, splitter, output_dir, chunk_size, chu
                      "verified": True},
                 )
                 if updated:
-                    save_identity_registry(_registry, registry_path)
-                    _pipeline_flags_set = True
+                    _pipeline_flags_set = save_identity_registry(_registry, registry_path)
 
         if persisted_ok:
             emit("identity_persist", f"Identity registered: {document_id[:16]}..." if is_new else "Identity synced to registry", 0.98)

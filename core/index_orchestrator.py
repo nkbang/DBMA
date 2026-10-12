@@ -32,6 +32,7 @@ from core.identity_registry import (
     load_identity_registry,
     save_identity_registry,
     registry_lock,
+    RegistryError,
     exclude_document,
     unexclude_document,
     find_by_source_file,
@@ -221,7 +222,12 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
     # fails). registry_lock() (see core/identity_registry.py) makes the
     # two critical sections mutually exclusive.
     with registry_lock(str(registry_path)):
-        registry = load_identity_registry(str(registry_path))
+        try:
+            registry = load_identity_registry(str(registry_path), strict=True)
+        except RegistryError as e:
+            # 읽기 영구 실패: 빈 레지스트리로 진행하지 않고 이번 주기를 건너뛴다(로그는 이미 ERROR).
+            return {"pending": 0, "reconciled": 0, "purged": 0,
+                    "failed": [{"document_id": "*registry*", "error": f"registry 읽기 실패: {e}"}]}
 
         # [버그 수정 2026-09-07] ingest_status == "EXCLUDED" 문서는 pending에서
         # 뺀다. 이전엔 pipeline_state == "PROCESSED"만 봐서, exclude_document()로
@@ -300,8 +306,10 @@ def reconcile_pending(output_dir: str = DEFAULT_OUTPUT_DIR) -> dict[str, Any]:
                                 bible_index.delete_document(doc_id)
                             bible_index.close()
 
-        if reconciled:
-            save_identity_registry(registry, str(registry_path))
+        if reconciled and not save_identity_registry(registry, str(registry_path)):
+            # 저장 안 됨 → pending 으로 남아 다음 주기에 재시도된다. 반영된 것처럼 보고하지 않는다.
+            failed.append({"document_id": "*registry*", "error": "registry 저장 실패 — 다음 주기에 재시도"})
+            reconciled = []
 
     return {"pending": len(pending), "reconciled": len(reconciled), "failed": failed, "purged": purged}
 
@@ -463,7 +471,7 @@ def delete_raw_source(
     document_id: Optional[str] = None
 
     with registry_lock(registry_path):
-        registry = load_identity_registry(registry_path)
+        registry = load_identity_registry(registry_path, strict=True)
         record = find_by_source_file(registry, source_filename)
         if record is not None:
             document_id = record["document_id"]
@@ -472,7 +480,7 @@ def delete_raw_source(
                 purged_tsu_records = cleanup["purged_tsu_records"]
                 moved_index_files = cleanup["moved_files"]
                 exclude_document(registry, document_id, reason=reason or "RAW 원본 삭제(휴지통 이동)")
-                save_identity_registry(registry, registry_path)
+                save_identity_registry(registry, registry_path, strict=True)
             else:
                 # dry-run: 실제로 삭제될 TSU 레코드 수만 미리 계산 —
                 # exclude_document_from_index(execute=False)는 파일은
@@ -561,11 +569,11 @@ def restore_raw_source(
     registry_path = registry_path_for(output_dir)
     document_id: Optional[str] = None
     with registry_lock(registry_path):
-        registry = load_identity_registry(registry_path)
+        registry = load_identity_registry(registry_path, strict=True)
         record = find_by_source_file(registry, dest.name)
         if record is not None and record.get("ingest_status") == "EXCLUDED":
             document_id = record["document_id"]
             unexclude_document(registry, document_id)
-            save_identity_registry(registry, registry_path)
+            save_identity_registry(registry, registry_path, strict=True)
 
     return {"restored": True, "raw_path": str(dest), "document_id": document_id, "reason": None}

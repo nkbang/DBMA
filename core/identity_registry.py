@@ -739,3 +739,18 @@ def _match_existing_mode(tmp_path: str, registry_path: str) -> None:
             os.chmod(tmp_path, 0o644)
     except OSError:
         pass
+
+
+def mutate_registry(registry_path: str, mutator):
+    """잠금 안에서 읽기→수정→저장을 한 번에 수행한다(lost update 방지, 실패는 예외).
+
+    mutator(registry) 가 None 을 반환하면 "변경 없음"으로 보고 저장하지 않는다(그대로 None 반환).
+    None 이 아니면 저장하고 그 값을 반환한다. 읽기/저장 실패는 strict 모드라 RegistryError(OSError) 로 올라온다.
+    """
+    with registry_lock(registry_path):
+        registry = load_identity_registry(registry_path, strict=True)
+        result = mutator(registry)
+        if result is None:
+            return None
+        save_identity_registry(registry, registry_path, strict=True)
+        return result

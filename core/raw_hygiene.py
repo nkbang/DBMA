@@ -236,7 +236,7 @@ def cleanup_orphaned_document(document_id: str, output_dir: str = DEFAULT_OUTPUT
     cleanup = exclude_document_from_index(document_id, output_dir=output_dir, execute=True)
     registry_path = registry_path_for(output_dir)
     with registry_lock(registry_path):
-        registry = load_identity_registry(registry_path)
+        registry = load_identity_registry(registry_path, strict=True)
         exclude_document(registry, document_id, reason="RAW 원본이 앱 밖에서 삭제됨 - 자동 감지")
-        save_identity_registry(registry, registry_path)
+        save_identity_registry(registry, registry_path, strict=True)
     return cleanup
