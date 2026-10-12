@@ -148,3 +148,10 @@ PR-1만으로도 Windows에서의 일시 실패 흡수, 손상 파일 보존, �
 - `tsu_builder._atomic_write_text`: `os.replace`→`replace_with_retry`.
 - **Windows 실제 결함 수정**: `tsu_builder`가 디렉터리를 `os.open(..., O_RDONLY)`로 열어 fsync 했는데, Windows 에서는 디렉터리 열기가 PermissionError 라 데이터셋 저장이 *교체 후* 예외로 끝났다. `fsync_dir`이 Windows 에서는 건너뛰고, 열기 실패도 무시.
 - 범위 밖: `shutil.move` 3곳(`index_orchestrator`)은 교체가 아닌 이동이라 유지.
+
+## PR-4 구현 메모 (scripts/ 저장 7곳)
+
+- 대상: `backfill_baseline_metadata`, `backfill_doc_type`, `backfill_document_metadata`, `cleanup_phantom_registry_entries`, `ingest_logos_export`, `ingest_nae_source`, `rebuild_tsu_manual`. 각 파일의 읽기(변경 경로)와 저장을 `strict=True`로.
+- 효과: 손상된 레지스트리를 빈 것으로 읽고 그 위에 저장해 덮어쓰는 일, 저장 실패 뒤 "저장 완료"를 출력하는 일이 없어지고 예외로 종료된다.
+- 한계: `ingest_*`·`backfill_*`는 읽기→(긴 작업)→저장 구간을 `registry_lock`으로 감싸지 않는다(기존과 동일). 앱이 떠 있을 때 동시 저장은 lost update 가능 — 오프라인 실행 전제. 필요하면 별도 작업.
+- 회귀: `tests/test_scripts_registry_strict.py`가 scripts/ 의 모든 `save_identity_registry` 호출이 `strict=True`인지 AST로 고정(점검 스크립트 제외).

@@ -221,7 +221,7 @@ def main() -> int:
     if not args.dry_run:
         output_dir.mkdir(parents=True, exist_ok=True)
 
-    registry = load_identity_registry(registry_path)
+    registry = load_identity_registry(registry_path, strict=True)
 
     logger.info("[ingest] started: manifest=%s entries=%d", manifest_path, len(entries))
 
@@ -240,7 +240,7 @@ def main() -> int:
             ingested += 1
 
     if not args.dry_run and ingested > 0:
-        save_identity_registry(registry, registry_path)
+        save_identity_registry(registry, registry_path, strict=True)
 
     logger.info(
         "[ingest] done: ingested=%d skipped=%d registry=%s%s",

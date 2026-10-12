@@ -63,10 +63,10 @@ def main():
         # 4. loser 문서 제거
         if to_remove:
             with registry_lock(str(REG_PATH)):
-                reg = load_identity_registry(str(REG_PATH))
+                reg = load_identity_registry(str(REG_PATH), strict=True)
                 for did in to_remove:
                     del reg['documents'][did]
-                save_identity_registry(reg, str(REG_PATH))
+                save_identity_registry(reg, str(REG_PATH), strict=True)
             print(f'\\\\n{len(to_remove)}개 문서 제거 완료')
         
         # 5. rebuild_tsu_index 실행

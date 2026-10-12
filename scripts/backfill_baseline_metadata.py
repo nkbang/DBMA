@@ -59,7 +59,7 @@ def _backup(path: str) -> str:
 
 
 def patch_registry(registry_path: str, updates: dict, apply: bool) -> int:
-    registry = load_identity_registry(registry_path)
+    registry = load_identity_registry(registry_path, strict=True)
     docs = registry.get("documents", registry) if isinstance(registry, dict) else registry
     changed = 0
     for doc_id, record in docs.items():
@@ -80,7 +80,7 @@ def patch_registry(registry_path: str, updates: dict, apply: bool) -> int:
     if apply and changed:
         backup = _backup(registry_path)
         print(f"  registry 백업: {backup}")
-        save_identity_registry(registry, registry_path)
+        save_identity_registry(registry, registry_path, strict=True)
     return changed
 
 

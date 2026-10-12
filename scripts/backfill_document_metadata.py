@@ -130,7 +130,7 @@ def main() -> None:
     registry_path = Path(registry_path_for(args.output_dir))
     raw_dir = Path(args.raw_dir)
 
-    registry = load_identity_registry(str(registry_path))
+    registry = load_identity_registry(str(registry_path), strict=True)
     changes = backfill(registry, raw_dir)
 
     print(f"{len(changes)} document(s) have fillable fields:")
@@ -144,7 +144,7 @@ def main() -> None:
 
     applied = apply_changes(registry, changes)
     if applied:
-        save_identity_registry(registry, str(registry_path))
+        save_identity_registry(registry, str(registry_path), strict=True)
     print(f"Applied {applied} field update(s) across {len(changes)} document(s). Registry saved: {str(registry_path)}")
 
 
