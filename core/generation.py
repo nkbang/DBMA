@@ -271,9 +271,63 @@ def _detect_latin_contamination(text: str, context_block: str) -> list[str]:
     return list(seen.keys())
 
 
+# ============================================================
+# 인명 표기 통일 (2026-10-14)
+# ============================================================
+#
+# 영문 코퍼스의 인명을 한국어 답변으로 옮길 때 모델이 음역을 매번 다르게 만든다.
+# P0-5 24건 재실행 3회분에서 Spurgeon 하나가 다섯 가지로 적혔다:
+#   스퍼전 · 스페전 · 스페어전 · 스펀지언 · 스페urgeon(한글+라틴 반쪽 음역)
+# 같은 인물이 답변마다 다른 사람처럼 보이고, 마지막 형태는 라틴 오염 탐지까지
+# 유발한다.
+#
+# **표준형은 스펄전**이다 — 이 저장소 문서가 가장 많이 쓰는 표기이며 한국어
+# 출판물의 통용 표기이기도 하다. 코드·설정에는 한국어 인명 표준이 따로 없어 이
+# 값을 정한 것이므로 틀리면 여기 한 곳만 고치면 된다.
+#
+# 범위를 일부러 좁혔다:
+#   - 관측된 변형만 치환한다. 목록에 없는 새 변형은 잡지 못한다 — 추측으로 패턴을
+#     넓히면 다른 단어를 건드릴 수 있고, 새 변형은 재실행에서 수집해 추가한다.
+#   - 다른 저자(Maclaren 등)는 관측된 변형이 없어 넣지 않았다. 표준 표기를 내가
+#     지어내지 않는다 — 필요하면 표기를 정한 뒤 이 표에 한 줄 추가한다.
+#   - 설교문 작성 경로(SermonDraftService)는 적용하지 않았다. 변형이 관측된 곳은
+#     질의응답 답변뿐이다.
+# 조용히 지우는 것이 아니라 알려진 오표기를 표준형으로 바로잡는 것이며, 치환이
+# 일어나면 로그로 남긴다.
+_AUTHOR_NAME_VARIANTS: dict[str, tuple[str, ...]] = {
+    "스펄전": ("스페urgeon", "스페어전", "스펀지언", "스페전", "스퍼전"),
+}
+
+
+def _normalize_author_names(text: str) -> str:
+    """알려진 인명 오표기를 표준형으로 바꾼다. 해당 없으면 그대로 돌려준다.
+
+    라틴 오염 탐지보다 **먼저** 실행해야 한다 — "스페urgeon"의 `urgeon`이 탐지에
+    걸려 불필요한 재시도나 고지를 일으키기 때문이다.
+    """
+    if not text:
+        return text
+    replaced = 0
+    for canonical, variants in _AUTHOR_NAME_VARIANTS.items():
+        # 긴 변형부터 치환해 다른 변형의 일부를 먼저 건드리지 않게 한다.
+        for variant in sorted(variants, key=len, reverse=True):
+            if variant in text:
+                replaced += text.count(variant)
+                text = text.replace(variant, canonical)
+    if replaced:
+        logger.info("[generation] 인명 표기 통일 %d건 → 표준형 적용", replaced)
+    return text
+
+
+# [2026-10-14] 문구 보정. 처음에는 "외국어로 보이는 단어"라고 안내했으나, 실전
+# 첫 탐지(P0-5 재실행 A1)가 외국어가 아니라 Spurgeon을 한글 "스페"+라틴
+# "urgeon"으로 반쪽만 음역한 깨진 인명이었다. 탐지 조건은 "근거 자료에 없는
+# 로마자 표기"이므로 안내도 그 사실만 말해야 정확하다 — 외국어 혼입과 깨진
+# 음역 둘 다 설명한다.
 _LATIN_NOTICE = (
-    "\n\n⚠️ 이 답변에 근거 자료에 없는 외국어로 보이는 단어가 섞여 있습니다:"
-    " {words}. 해당 표현은 신뢰하지 말고, 다시 생성하면 정상 출력될 수 있습니다."
+    "\n\n⚠️ 이 답변에 근거 자료에 없는 로마자 표기가 섞여 있습니다: {words}."
+    " 외국어 단어이거나 인명 표기가 깨진 것일 수 있으니 그대로 믿지 말고,"
+    " 다시 생성하면 정상 출력될 수 있습니다."
 )
 
 
@@ -472,6 +526,9 @@ class GenerationStream:
     def to_result(self) -> "GenerationResult":
         """Build the final GenerationResult. Call only after full iteration."""
         answer = "".join(self._answer_parts)
+        # 인명 표기 통일 — 조각 단위로 치환하면 이름이 조각 경계에서 갈릴 때 놓치므로
+        # 완성된 답변에서 한 번만 한다. 라틴 오염 탐지보다 먼저여야 한다.
+        answer = _normalize_author_names(answer)
         # 청크별로 이미 걸렀지만, 청크 경계에 걸친 문자를 대비해 한 번 더
         # (clean이면 no-op). 스트리밍은 재시도 불가라 sanitize만 남긴다.
         if self._contamination_seen:
@@ -605,7 +662,7 @@ class GenerationService:
                     prompt=prompt,
                     options=_gen_options(temperature),
                 )
-                answer = result["response"]
+                answer = _normalize_author_names(result["response"])
                 contamination = _detect_script_contamination(answer)
                 # [2026-09-26] 라틴 알파벳 외국어는 문자 체계 검사로 잡히지 않아
                 # 근거 문맥 기준으로 따로 판정한다(_detect_latin_contamination).

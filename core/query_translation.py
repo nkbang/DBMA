@@ -369,8 +369,11 @@ def contains_hangul(text: str) -> bool:
 
 
 def is_enabled() -> bool:
-    """`QUERY_TRANSLATION_FALLBACK=false`로 끌 수 있다. 기본 활성 —
-    끄면 한국어 질의가 다시 0건으로 돌아간다(현재 재현율 0%)."""
+    """`QUERY_TRANSLATION_FALLBACK=false`로 **LLM 번역 단계만** 끌 수 있다. 기본 활성.
+
+    끄면 사전 번역(translate_query_terms)만 남는다. 사전이 번역어를 만든 질의는
+    계속 검색되지만, 사전에 없는 용어로 된 한국어 질의는 영문 코퍼스에서 후보를
+    찾지 못한다 — 이 LLM 단계가 그 빈틈을 메우는 층이다."""
     return os.environ.get("QUERY_TRANSLATION_FALLBACK", "true").strip().lower() == "true"
 
 
@@ -405,8 +408,15 @@ def _clean(raw: str) -> Optional[str]:
 def translate_to_english(query: str) -> Optional[str]:
     """한국어 질의를 영어로 번역한다. 실패·비활성·불필요 시 None.
 
-    절대 예외를 올리지 않는다 — 이 함수는 이미 0건인 막다른 길에서만 호출되고,
-    실패하면 그 0건이 유지될 뿐이다. 검색 요청 전체를 깨뜨려서는 안 된다.
+    호출 시점은 core/hybrid_candidate_pipeline.py가 정한다 — 질의 언어와 코퍼스
+    언어가 어긋날 때 Stage-1 **전에**(`_should_translate_upfront`), 그리고 그래도
+    후보가 0건일 때 한 번 더 재시도로 호출된다. 처음 설계는 "0건일 때만"이었으나
+    한국어 토큰이 영문 코퍼스의 OCR 잡음에는 걸려 0건이 되지 않아 번역이 영원히
+    발동하지 않았기 때문에 앞단 호출을 기본으로 바꿨다
+    (docs/DBMA_KOREAN_QUERY_RETRIEVAL_FIX_REPORT_001.md §3).
+
+    절대 예외를 올리지 않는다 — 실패하면 번역 없이 원래 질의로 진행될 뿐이므로
+    검색 요청 전체를 깨뜨려서는 안 된다.
     """
     if not is_enabled():
         return None

@@ -555,6 +555,27 @@ def _run_grounded_synthesis(
         return None
 
 
+def _stream_and_finalize(stream):
+    """스트림을 실시간 표시하고, 완성본이 다르면 화면을 완성본으로 교체한다.
+
+    `st.write_stream`은 조각을 그대로 보여 주지만, 사용자에게 도달해야 하는 것은
+    `stream.to_result().answer`다. 둘은 다를 수 있다 — 완성된 답변에서만 가능한
+    처리(인명 표기 통일, 오염 문자 표식 고지, 라틴 오염 고지)가 `to_result()`에서
+    일어나기 때문이다. 교체하지 않으면 그 처리들은 대화 기록(chat_messages)에는
+    들어가도 **그 턴의 화면에는 보이지 않고**, 다음 화면 갱신 때 기록을 다시 그릴
+    때에야 나타난다. 고지가 사용자가 읽을 시점에 보이지 않으면 만든 의미가 없다.
+
+    같으면(대부분의 답변) 아무것도 다시 그리지 않으므로 깜박임이 없다.
+    """
+    live = st.empty()
+    with live.container():
+        streamed = st.write_stream(stream)
+    result = stream.to_result()
+    if isinstance(streamed, str) and result.answer != streamed:
+        live.markdown(result.answer)
+    return result
+
+
 def _handle_user_message(question: str) -> None:
     """Run one retrieval-generation round for a single question.
 
@@ -633,8 +654,7 @@ def _handle_user_message(question: str) -> None:
             conversation_history=conversation_history,
             **_settings_overrides(),
         )
-        st.write_stream(stream)
-        result = stream.to_result()
+        result = _stream_and_finalize(stream)
         claim_guard_result = getattr(result, "claim_guard_result", None)
         if low_confidence:
             _render_low_confidence_warning()
