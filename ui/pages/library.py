@@ -174,8 +174,11 @@ def _render_search_bar() -> None:
     with c2:
         sort_by = st.selectbox(
             "정렬 기준",
-            options=["name", "date", "size"],
+            options=["name", "type", "date", "size"],
+            format_func=lambda k: _SORT_LABELS.get(k, k),
             key="library_sort_by",
+            on_change=st.session_state.pop,
+            args=("library_sort_desc", None),
         )
 
 
@@ -288,6 +291,8 @@ def _render_document_collection() -> None:
         st.caption(f"\"{search_query}\" 검색 결과: {shown_total}개 문서 (총 {total_count}개 중)")
     else:
         st.caption(f"총 {shown_total}개의 문서")
+
+    _render_sort_header()
 
     # ── 보기 방식: 유형별 그룹(접이식) / 페이지 목록 ──────────────────
     # 문서가 한 페이지(20건)를 넘으면 그룹 보기를 기본으로 켠다(Accordance 폴더형).
@@ -1150,6 +1155,70 @@ def _render_grouped_documents(documents: list[dict]) -> None:
                     )
 
 
+# Sort keys → (label, default descending?, document field). Column-header
+# buttons toggle direction (Logos library style); the selectbox resets it.
+_SORT_LABELS = {"name": "제목", "type": "유형", "date": "날짜", "size": "크기"}
+_SORT_DEFAULT_DESC = {"name": False, "type": False, "date": True, "size": True}
+_SORT_FIELD = {
+    "name": lambda d: str(d.get("title", "")).lower(),
+    "type": lambda d: (str(d.get("type", "")), str(d.get("title", "")).lower()),
+    "date": lambda d: d.get("_mtime_epoch", 0),
+    "size": lambda d: d.get("_size_bytes", 0),
+}
+
+
+def _sort_documents(
+    documents: list[dict], sort_by: str, desc: "Optional[bool]" = None
+) -> list[dict]:
+    """Sort in place and return. ``desc=None`` → the key's default direction."""
+    if sort_by not in _SORT_FIELD:
+        sort_by = "name"
+    if desc is None:
+        desc = _SORT_DEFAULT_DESC[sort_by]
+    documents.sort(key=_SORT_FIELD[sort_by], reverse=desc)
+    return documents
+
+
+def _next_sort_state(
+    cur_by: str, cur_desc: "Optional[bool]", clicked: str
+) -> "tuple[str, bool]":
+    """Header click: same column flips direction, new column uses its default."""
+    if clicked == cur_by:
+        eff = _SORT_DEFAULT_DESC.get(cur_by, False) if cur_desc is None else cur_desc
+        return clicked, not eff
+    return clicked, _SORT_DEFAULT_DESC.get(clicked, False)
+
+
+def _apply_sort_click(clicked: str) -> None:
+    by, desc = _next_sort_state(
+        st.session_state.get("library_sort_by", "name"),
+        st.session_state.get("library_sort_desc"),
+        clicked,
+    )
+    st.session_state["library_sort_by"] = by
+    st.session_state["library_sort_desc"] = desc
+
+
+def _render_sort_header() -> None:
+    """Column-header sort bar: 유형 · 제목 · 크기 · 날짜 (matches row order)."""
+    cur = st.session_state.get("library_sort_by", "name")
+    cur_desc = st.session_state.get("library_sort_desc")
+    if cur_desc is None:
+        cur_desc = _SORT_DEFAULT_DESC.get(cur, False)
+    cols = st.columns(4)
+    for col, key in zip(cols, ("type", "name", "size", "date")):
+        arrow = (" ▼" if cur_desc else " ▲") if key == cur else ""
+        with col:
+            st.button(
+                f"{_SORT_LABELS[key]}{arrow}",
+                key=f"lib_sort_hdr_{key}",
+                type="primary" if key == cur else "tertiary",
+                use_container_width=True,
+                on_click=_apply_sort_click,
+                args=(key,),
+            )
+
+
 def _get_documents_list() -> list[dict]:
     """Get the list of source documents from the RAW directory.
 
@@ -1220,20 +1289,11 @@ def _get_documents_list() -> list[dict]:
             "_size_bytes": size_bytes,        # Internal: used for sorting
         })
 
-    # Apply sort order from session state (default: name)
-    sort_by = st.session_state.get("library_sort_by", "name")
-    
-    if sort_by == "date":
-        # Modification time descending (newest first)
-        documents.sort(key=lambda d: d.get("_mtime_epoch", 0), reverse=True)
-    elif sort_by == "size":
-        # File size descending (largest first)
-        documents.sort(key=lambda d: d.get("_size_bytes", 0), reverse=True)
-    else:
-        # name ascending (default)
-        documents.sort(key=lambda d: d.get("title", ""))
-
-    return documents
+    return _sort_documents(
+        documents,
+        st.session_state.get("library_sort_by", "name"),
+        st.session_state.get("library_sort_desc"),
+    )
 
 
 def _render_pagination_controls(
