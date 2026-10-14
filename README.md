@@ -31,7 +31,9 @@ Streamlit UI에서 다음 9개 페이지를 제공합니다:
 - **다양한 문서 형식 지원**: PDF, TXT, MD, DOCX, EPUB, HTML, RTF
 - **문서 청킹 및 최적화**: 문서를 적절한 크기로 분할하고 최적화된 청킹 전략 적용
 - **RAG 검색**: TSU dataset + in-memory 유사도 검색 (production authority)
-  - ChromaDB / Qdrant는 legacy corpus history로만 보존되며, 현재 검색 경로에서 쿼리되지 않음
+  - 핵심 검색(TSU)은 Qdrant 없이 동작한다. ChromaDB는 legacy corpus history로만 보존되며 쿼리되지 않음
+  - Qdrant(`nae_qdrant`, 포트 7333)는 채팅의 참조 검색(Smith 성경사전·침례교 주석 컬렉션)에만 사용된다.
+    꺼져 있으면 오류 없이 참조 컨텍스트만 빠지고 TSU 답변은 그대로 동작한다(무음 열화)
 - **Citation / Provenance 표시**: 검색 결과에 author, source_title, evidence_confidence 포함
 - **설교문 생성 및 리뷰**: LLM 기반 설교문 작성·검토 파이프라인
 - **다국어 지원**: 헬라어, 히브리어, 영어, 한국어, 라틴어
