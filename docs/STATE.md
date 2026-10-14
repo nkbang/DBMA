@@ -1,6 +1,46 @@
 # DBMA State
 
+**[2026-10-14 정정] 현재 코퍼스 기준 — 아래 2026-09-18 항목들의 84,766건 / 119개 출처는
+폐기된 옛 기준이다.**
+- **현재 실측**(`output/bench/tsu_dataset.jsonl`, 2026-10-14 직접 집계): **120,629건 /
+  70출처**, `book_id` 전량 None. registry 94문서(PROCESSED 77, EXCLUDED 17).
+  구성은 Spurgeon MTP 중심 영문 퍼블릭 도메인 설교 자료(한글 자료·주석서 거의 없음).
+- **기준선 변천**: 09-17~18 Track A 복원본 84,766건/119~125출처 → 09-23 HQ 결정(옵션 1,
+  아래 `[2026-09-23 HQ 결정]` 참고)으로 Track A **불채택**, Spurgeon 67종 130,401건이
+  확정 기준선 → 이후 현재 120,629건/70출처.
+- **130,401 → 120,629 (−9,772) 내역**(09-21 백업 `tsu_dataset.jsonl.backfill_backup_
+  20260921T153022Z`와 출처별 비교): Spurgeon MTP Vol10~13이 각 약 5,500건 → 약 2,600건
+  (다른 권과 같은 수준으로 정상화, 09-23 STATE가 "원인 미상 2배"로 남긴 구간),
+  Vol51~53은 약 2,000 → 약 2,350건(MTP 현대어판 교체 `be4ef90b` 영향 추정),
+  `Baptists and the Christian Tradition` +1,024건, 테스트 fixture 2건(+10건) 유입.
+  **Vol10~13 감소의 직접 원인(중복 정리 `8820adf9` vs MTP 교체)은 미확정** — 증거는
+  "현재 값이 형제 권들과 일치한다"까지.
+- **미해결**: `fixture_A_RPV06a…`, `fixture_B_RPV06b…`(테스트 자료)가 운영 TSU에 포함돼
+  있음 — 제거 여부 별도 확인 필요.
+- 아래 2026-09-18 항목 중 "84,766건" 서술(성능 실측·콘텐츠 제거 건수 등)은 **당시 시점의
+  기록**으로 남기되, 현재 코퍼스 규모·구성의 근거로 쓰지 말 것.
+
+**[2026-10-14 기록] F1 수정 두 경로(main ↔ rc7)의 관계 — CUE 교차검증, C1 재보고와 일치.**
+- (a) **내용 동일**: rc7의 F1 수정 `d00950c9`는 main의 `3a10bb3b`+`f49ffeb3`과 같은
+  `ui/` 2파일(`nae_public_section.py`, `chat.py`)에 같은 변경(get_disclosure 지연 임포트,
+  smith_activation try/except, 공개 검색 경로의 ImportError 선처리)을 담는다. 커밋 수·분할
+  차이만 있다. 회귀 테스트 `tests/test_ui_imports_without_nae.py`(75줄)도 rc7에 **있다**
+  (3a10bb3b 62줄 + f49ffeb3 13줄).
+- (b) **rc7에 없는 것 2가지**: ① `scripts/gate2/30_package_integrity.py`의 NAE 부재 임포트
+  점검(rc7 119줄 vs main 146줄, `3a10bb3b`의 +27줄) ② D4 설치 격리 모드(`aafd2dfb`,
+  rc7 `scripts`에 `NAE_SETUP_ISOLATED` 0건). 따라서 rc7 기준 설치 e2e(트랙 C)는 기본(전역)
+  모드로만 실행되며(`brew install`, `/usr/local` 링크, 8520 포트 `pkill`), 깨끗한 Mac/VM
+  에서만 허용한다. F1 재발 사전 확인은 압축 해제 후
+  `pytest tests/test_ui_imports_without_nae.py` 단독 실행으로 한다(부록 K 선례 15 passed).
+- (c) **주석**: `docs/GATE2_REASSESSMENT_20261007.md` 129행 "dev에도 어떤 태그에도 없다"는
+  2026-10-07 시점 기록이다. 이후 PR #112가 수정을 dev에 병합(`855470dd`, 이식 커밋
+  `7bfdfbb3`)했고, PR #113(`862a3c66`, 10-12)이 `BETA_LATEST_TAG`→rc7을 dev에 병합했다.
+  rc7 태그 `d00950c9`는 `hotfix/rc7-nae-optional`에만 있고 main에는 없다.
+- 한계: rc7 배포 트리 임포트 성공(실패 0건)은 임포트 수준 확인이다. 서버 기동·설치
+  스크립트 e2e는 미평가.
+
 **[2026-09-18 완료] 배포 게이트 점검 4건 + Retrieval 성능 이슈 발견·수정 (CUE).**
+(※ 코퍼스 수치는 2026-09-23 이후 폐기된 Track A 기준 — 위 2026-10-14 정정 참고)
 - **보안 체크리스트(S1-3)**: `scripts/security_preflight.py --apply` 재실행,
   R7 통과(4/5 적용, 1/5 부분충족·백로그). 보고서
   `docs/RELEASE_SECURITY_CHECKLIST_STATUS.md` 갱신.
