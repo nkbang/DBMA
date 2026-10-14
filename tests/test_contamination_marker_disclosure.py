@@ -180,7 +180,7 @@ def test_latin_contamination_discloses_without_deleting(monkeypatch):
     result = gen.GenerationService().generate(_RespWithContext())
 
     assert "bahwa" in result.answer, "라틴 오염 단어를 삭제하면 안 된다"
-    assert "외국어로 보이는 단어" in result.answer
+    assert "로마자 표기가 섞여 있습니다" in result.answer
 
 
 def test_streaming_path_also_discloses_latin(monkeypatch):
@@ -197,4 +197,4 @@ def test_streaming_path_also_discloses_latin(monkeypatch):
     answer = stream.to_result().answer
 
     assert "bahwa" in answer, "삭제하지 않는다"
-    assert "외국어로 보이는 단어" in answer
+    assert "로마자 표기가 섞여 있습니다" in answer
