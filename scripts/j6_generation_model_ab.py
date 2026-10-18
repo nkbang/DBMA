@@ -64,6 +64,18 @@ _MODELS = [
     "nae-gen-qwen36:ab",          # 후보 2 (qwen3.6:35b, MoE)
 ]
 
+# [J6 1차 실행에서 발견] qwen3 계열은 thinking 모델이라 num_predict(1024)가
+# 사고 과정에 전량 소진되면 response가 빈 문자열로 돌아온다(실측: thinking
+# 3,850자 / response 0자 / done_reason="length"). 1차 측정에서 두 후보의
+# 중위 답변 길이가 0자로 나온 원인이 이것이다 — 모델 품질이 아니라 호출
+# 방식의 문제이므로 그 수치는 무효다. 후보에는 think=False를 넘겨 다시
+# 측정한다. 현행 모델에는 아무것도 넘기지 않아 호출이 종전과 동일하다.
+_THINK_OFF_PREFIXES = ("nae-gen-qwen", "qwen")
+
+
+def _think_for(model: str) -> bool | None:
+    return False if model.startswith(_THINK_OFF_PREFIXES) else None
+
 
 class _ContaminationCounter(logging.Handler):
     """`core.generation`이 재시도를 유발할 때 남기는 경고를 센다."""
@@ -113,7 +125,9 @@ def main() -> int:
     # ── 2) 모델 바깥 루프 — 모델을 한 번 적재해 24건을 돌린다. ──
     out: dict[str, dict] = {}
     for model in models:
-        print(f"\n[J6] ===== {model} =====", flush=True)
+        think = _think_for(model)
+        print(f"\n[J6] ===== {model} ====="
+              f"{'  (think=False)' if think is False else ''}", flush=True)
         per_query = []
         for tag, question, response in responses:
             if not (response.top_k_results or []):
@@ -121,7 +135,9 @@ def main() -> int:
                 continue
             counter.reset()
             t0 = time.time()
-            result = generator.generate(response, gen_model=model)
+            result = generator.generate(
+                response, gen_model=model, think=_think_for(model)
+            )
             took = time.time() - t0
             answer = result.answer or ""
             ctx = response.llm_context_block or ""

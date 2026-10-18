@@ -21,6 +21,7 @@ except ImportError:
         _stub.embeddings = lambda *a, **k: {"embedding": []}
         sys.modules["ollama"] = _stub
 
+from core import generation
 from core.generation import GenerationService, _detect_script_contamination
 from core.retrieval import ParsedQuery, PerformanceMetrics, ResponsePackage
 
@@ -104,3 +105,60 @@ def test_thai_and_kana_also_marked(monkeypatch):
     result = stream.to_result()
     assert _detect_script_contamination(result.answer) == []
     assert result.answer.startswith("은혜 □가 □충만")
+
+
+class TestThinkPassthrough:
+    """[J6, 2026-10-18] thinking 모델 대응 — think 인자는 넘길 때만 전달한다.
+
+    생성 모델 후보로 올린 qwen3 계열은 thinking 모델이고, num_predict(1024)가
+    사고 과정에 전량 소진되면 `response`가 빈 문자열로 돌아온다(실측:
+    thinking 3,850자 / response 0자 / done_reason="length"). 이 경로는
+    `result["response"]`만 읽으므로 답변이 통째로 사라진다 — A/B 측정이
+    성립하지 않아 think 패스스루를 넣었다.
+
+    가장 중요한 불변식은 **생략 시 종전과 동일한 호출**이다. 현행 모델의
+    동작·측정값이 이 변경으로 흔들리면 안 된다.
+    """
+
+    def _response(self):
+        from core.retrieval import ParsedQuery, PerformanceMetrics, ResponsePackage
+
+        return ResponsePackage(
+            query_id="q", question="질문", candidates=[], top_k_results=[],
+            performance_metrics=PerformanceMetrics(),
+            parsed_query=ParsedQuery(original_query="질문", intent="theological"),
+            llm_context_block="자료 본문", citations=[],
+        )
+
+    def test_omitted_think_sends_no_think_kwarg(self, monkeypatch):
+        seen = {}
+
+        def fake_generate(**kwargs):
+            seen.update(kwargs)
+            return {"response": "답변입니다."}
+
+        monkeypatch.setattr(generation.ollama, "generate", fake_generate)
+        generation.GenerationService().generate(self._response())
+        assert "think" not in seen
+
+    def test_explicit_think_false_is_forwarded(self, monkeypatch):
+        seen = {}
+
+        def fake_generate(**kwargs):
+            seen.update(kwargs)
+            return {"response": "답변입니다."}
+
+        monkeypatch.setattr(generation.ollama, "generate", fake_generate)
+        generation.GenerationService().generate(self._response(), think=False)
+        assert seen.get("think") is False
+
+    def test_explicit_think_true_is_forwarded(self, monkeypatch):
+        seen = {}
+
+        def fake_generate(**kwargs):
+            seen.update(kwargs)
+            return {"response": "답변입니다."}
+
+        monkeypatch.setattr(generation.ollama, "generate", fake_generate)
+        generation.GenerationService().generate(self._response(), think=True)
+        assert seen.get("think") is True

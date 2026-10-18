@@ -668,6 +668,7 @@ class GenerationService:
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
         conversation_history: str = "",
+        think: Optional[bool] = None,
     ) -> GenerationResult:
         """Build a prompt from response.llm_context_block + response.question
         and call Ollama to synthesize an answer.
@@ -689,10 +690,28 @@ class GenerationService:
             # 라틴 오염 판정의 기준이 되는 근거 문맥(모델에 실제로 준 것).
             evidence_context = response.llm_context_block or ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
+                # [J6, 2026-10-18] think는 전달할 때만 넘긴다 — 생략하면
+                # 호출이 종전과 **바이트 단위로 동일**하므로 현행 모델
+                # (my-theology-bot-v2)의 동작·측정값이 바뀌지 않는다.
+                #
+                # 왜 필요한가: 생성 모델 후보로 올린 qwen3 계열은 thinking
+                # 모델이고, `num_predict`(1024)가 사고 과정에 전량 소진되면
+                # `response`가 **빈 문자열**로 돌아온다(실측:
+                # thinking 3,850자 / response 0자 / done_reason="length").
+                # 이 경로는 `result["response"]`만 읽으므로 답변이 통째로
+                # 사라진다 — 모델을 바꾸려면 thinking을 끄거나 토큰 예산을
+                # 따로 줘야 한다는 뜻이고, A/B 측정 자체가 이 옵션 없이는
+                # 성립하지 않는다.
+                #
+                # 주의: 실제로 모델을 전환한다면 스트리밍 경로
+                # (GenerationStream)와 SermonDraftService에도 같은 처리가
+                # 필요하다 — 이번 변경은 generate()에 한정한다.
+                think_kwargs = {} if think is None else {"think": think}
                 result = ollama.generate(
                     model=gen_model,
                     prompt=prompt,
                     options=_gen_options(temperature),
+                    **think_kwargs,
                 )
                 answer = _normalize_author_names(result["response"])
                 contamination = _detect_script_contamination(answer)
