@@ -30,6 +30,8 @@ from dataclasses import asdict
 
 from core.candidate_generator import CandidateGenerator, CandidateRef, open_or_build_index
 from core.bible_index import BibleIndex
+from core.config import CONTEXT_WINDOW_NEIGHBORS
+from core.neighbor_index import NeighborIndex
 from core.query_planner import QueryPlan, classify
 from core.query_translation import (
     contains_hangul,
@@ -408,6 +410,17 @@ class _EngineCompat:
 
     def __init__(self, tsu_by_id: dict[str, dict[str, Any]]) -> None:
         self.tsus = list(tsu_by_id.values())
+        # [J2, 2026-10-18] ADR-034 이웃 색인. 종전에는 이 경로에 색인이
+        # 없어서 문장 창 확장을 아예 호출할 수 없었다(아래 process() 주석
+        # 참고). core/neighbor_index.py를 RetrievalEngine과 공유한다.
+        self._neighbor_index = NeighborIndex(self.tsus)
+
+    def get_neighbor_context(
+        self, candidate_metadata: dict[str, Any], num_neighbors: int = 1
+    ) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
+        """[ADR-034] RetrievalEngine.get_neighbor_context()와 같은 표면·동작.
+        ContextAssembler.assemble(neighbor_lookup=...)에 그대로 넘긴다."""
+        return self._neighbor_index.neighbors(candidate_metadata, num_neighbors)
 
     def list_source_files(self, registry_path: Optional[str] = None) -> list[str]:
         import os as _os
@@ -557,7 +570,19 @@ class HybridQueryProcessor:
             )
             self.cache.set(cache_key, [asdict(c) for c in candidates], ttl_seconds=self.cache_ttl_seconds)
 
-        llm_context_block, scripture_contexts = self.context_assembler.assemble(candidates[:k], parsed_query)
+        # [J2, 2026-10-18] 종전에는 이웃 확장 인자 없이 호출했다. 그래서
+        # 2026-09-18 USE_INVERTED_INDEX 기본 true 전환 이후 프로덕션 질의가
+        # 전부 이 경로를 타면서 **Approved ADR-034의 문장 창 확장이 사실상
+        # 비활성**이었다 — 근거 블록이 고정폭 청크 그대로 나가 앞뒤가 문장
+        # 중간에서 끊겼다. 실측(2026-10-18, 한국어 질의 4건 19블록): 종결률
+        # 52.6%. QueryProcessor 경로(core/retrieval.py:2437)와 같은 인자를
+        # 넘겨 두 경로의 동작을 일치시킨다. 랭킹·스코어·citation 무변경.
+        llm_context_block, scripture_contexts = self.context_assembler.assemble(
+            candidates[:k],
+            parsed_query,
+            neighbor_lookup=self.engine.get_neighbor_context,
+            num_neighbors=CONTEXT_WINDOW_NEIGHBORS,
+        )
         citations = self.citation_builder.build_citations(candidates[:k])
 
         total_ms = (time.perf_counter() - t_start) * 1000

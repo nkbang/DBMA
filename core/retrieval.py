@@ -37,6 +37,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Optional
 
+from core.neighbor_index import NeighborIndex
 from core.paragraph_context import build_paragraph_body
 from core.query_translation import scripture_ref_phrases, translate_query_terms
 from core.config import (
@@ -1457,9 +1458,13 @@ class RetrievalEngine:
         # [ADR-034] Sentence-Window neighbor index — document_id별 chunk_id
         # 순서와 chunk_id→인덱스 매핑. TSU 스키마/파이프라인 변경 없이
         # 기존 document_id/chunk_id만으로 구축(로드 시 1회, O(N)).
-        self._chunk_id_to_idx: dict[str, int] = {}
-        self._doc_chunk_order: dict[str, list[str]] = {}
-        self._build_neighbor_index()
+        #
+        # [J2, 2026-10-18] 색인 구현은 core/neighbor_index.py로 옮겼다 —
+        # HybridQueryProcessor(USE_INVERTED_INDEX 기본 true 전환 이후의
+        # 프로덕션 경로)도 같은 색인을 써야 하는데 그쪽은 RetrievalEngine을
+        # 만들지 않아, 로직을 복제하는 대신 공용 모듈로 뽑았다. 동작·반환값은
+        # 무변경이다.
+        self._neighbor_index = NeighborIndex(self.tsus)
 
         # [SPRINT28-C] TF-IDF is a fallback-only path — retrieve() STEP 3
         # only reads self.vectors when the BGE-M3 embedding backend is
@@ -1532,23 +1537,6 @@ class RetrievalEngine:
                     except json.JSONDecodeError:
                         continue
 
-    def _build_neighbor_index(self) -> None:
-        """[ADR-034] Build document_id -> ordered chunk_id list and
-        chunk_id -> self.tsus index, once, from the existing document_id/
-        chunk_id fields already present on every TSU record
-        (core/tsu_builder.py assigns chunk_id = generate_chunk_id(document_id,
-        idx) and appends records in idx order). No TSU schema or pipeline
-        change required. Read-only w.r.t. self.tsus; safe to call once
-        right after _load_corpus()."""
-        for idx, tsu in enumerate(self.tsus):
-            chunk_id = tsu.get("chunk_id")
-            if not chunk_id:
-                continue
-            self._chunk_id_to_idx[chunk_id] = idx
-            document_id = tsu.get("document_id")
-            if document_id:
-                self._doc_chunk_order.setdefault(document_id, []).append(chunk_id)
-
     def get_neighbor_context(
         self, candidate_metadata: dict[str, Any], num_neighbors: int = 1
     ) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
@@ -1557,39 +1545,13 @@ class RetrievalEngine:
         candidate's chunk within the same document, in document order.
         Empty at document boundaries, single-chunk documents, or when the
         candidate's chunk_id/document_id is unrecognized — never raises
-        ("모르면 비워둔다"). Does not touch ranking, scoring, or self.tsus."""
-        document_id = candidate_metadata.get("document_id")
-        chunk_id = candidate_metadata.get("chunk_id")
-        if not document_id or not chunk_id or num_neighbors <= 0:
-            return [], []
-        order = self._doc_chunk_order.get(document_id)
-        if not order:
-            return [], []
-        try:
-            pos = order.index(chunk_id)
-        except ValueError:
-            return [], []
+        ("모르면 비워둔다"). Does not touch ranking, scoring, or self.tsus.
 
-        def _lookup(chunk_pos: int) -> Optional[tuple[str, str]]:
-            neighbor_id = order[chunk_pos]
-            neighbor_idx = self._chunk_id_to_idx.get(neighbor_id)
-            if neighbor_idx is None:
-                return None
-            return neighbor_id, self.tsus[neighbor_idx].get("content", "")
-
-        before = [
-            hit
-            for offset in range(num_neighbors, 0, -1)
-            if (npos := pos - offset) >= 0
-            and (hit := _lookup(npos)) is not None
-        ]
-        after = [
-            hit
-            for offset in range(1, num_neighbors + 1)
-            if (npos := pos + offset) < len(order)
-            and (hit := _lookup(npos)) is not None
-        ]
-        return before, after
+        [J2, 2026-10-18] 구현은 core/neighbor_index.py::NeighborIndex로
+        옮겼다(동작 무변경). 이 메서드는 그 표면을 그대로 유지한다 —
+        ContextAssembler.assemble(neighbor_lookup=...)과 기존 호출부·테스트가
+        이 이름에 의존한다."""
+        return self._neighbor_index.neighbors(candidate_metadata, num_neighbors)
 
     def _build_tfidf_index(self) -> None:
         """Build TF-IDF index from TSU corpus."""
