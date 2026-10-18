@@ -37,7 +37,21 @@ J0 기준선 고정·J3-b 구현 (CUE).**
   하다: 사용자는 1인이고 그의 교단이 곧 ADR-009 값이다. "개인의 신학" 축은
   프로파일 문자열이 아니라 **개인 자료 편입**(J5)으로 반영하는 것이 올바른
   설계다.
-- **다음 — HQ 결정 2건 대기**: ⓐ **J5 자료 편입**(한글 0%·전부 19세기 영문
+- **[J1-0 발견] 10-14 재빌드가 인용 메타데이터 백필을 덮어썼다 — ⑤ 하드
+  블로커**. PR #55/#60 사이드카 백필은 title/author/metadata_source를 registry와
+  TSU dataset에 in-place로 써넣는 후처리였고, 10-14 재빌드(`build_tsu_dataset.py`가
+  registry 기준 신규 생성)가 그 결과를 지웠다. 실측: 데이터셋 title 보유 **0건**
+  (`grep -c '"title": "'`), registry 67건 전부 title/author None·metadata_source
+  None, `data/RAW/*.meta.json` 사이드카 **0개**, baseline manifest에는 filename만.
+  09-26 신호 "인용 메타 공백 0/360"이 **360/360 공백으로 회귀**했다. 답은 나오지만
+  (_GROUNDING_DIRECTIVE §5가 출처 없으면 내용만 인용으로 폴백) 근거의 추적
+  가능성이 사라진다. **복구는 결정적으로 가능**: `~/NAE_CORPUS_RAW/raw/archive_org/
+  sermons/<dir>/original.pdf` 67종 전량 확인(67 디렉터리/67 PDF) → 사이드카 재생성
+  + 백필 재적용. 단 두 스크립트 모두 "Production Registry 대량 변경 + Corpus
+  Migration" 예외 규정이라 **승인 대기**. 재발 방지 설계(빌더가 사이드카 직접 읽기
+  vs 재빌드 후 백필 자동 재적용)도 승인 후 결정. → P0-5 재실행(J1)은 이 복구
+  **이후**에 해야 의미가 있다(지금 돌리면 거짓 회귀 신호).
+- **다음 — HQ 결정 3건 대기**: ⓐ **J5 자료 편입**(한글 0%·전부 19세기 영문
   설교집이라 ②⑤는 코드로 메울 수 없음. 선택지: 개인 서재 ingest / Track A
   복원(09-23 결정 번복) / 현행 유지). ⓑ **J2 문단 근거**(`core/retrieval.py`
   조립부 수정 = Retrieval Engine 예외목록, ADR-034 범위 내 판단).

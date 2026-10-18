@@ -97,7 +97,49 @@ adr_refs:
 각 단계는 **게이트**를 통과해야 다음으로 간다. 게이트는 주장이 아니라
 실측값이다.
 
-### J1 — 현 상태 품질 기준선 재확보 (승인 불필요, GPU 필요)
+### J1-0 — 인용 메타데이터 백필 복구 ⚠️ **승인 대기** (J1의 선결 조건)
+
+**2026-10-18 발견 — 10-14 재빌드가 백필 결과를 덮어썼다.**
+
+PR #55/#60의 사이드카 백필은 `title`/`author`/`metadata_source`를 registry와
+TSU dataset에 **in-place**로 써넣는 후처리였다(`scripts/backfill_baseline_
+metadata.py` 설계). 10-14 재빌드는 `scripts/build_tsu_dataset.py`가 registry
+기준으로 데이터셋을 **새로 생성**했으므로 그 후처리 결과가 사라졌다.
+
+실측 (2026-10-18):
+
+| 위치 | title 보유 |
+|---|---|
+| `output/bench/tsu_dataset.jsonl` (119,595건) | **0건** (`grep -c '"title": "'` = 0) |
+| `data/제련완성본/registry/documents.json` (67건) | **0건**, `metadata_source` 전부 None |
+| `data/RAW/*.meta.json` 사이드카 | **0개** (소실) |
+| `scripts/baseline_corpus_manifest.json` | filename/source_dir만, 메타데이터 없음 |
+
+**영향 — ⑤의 하드 블로커**: 인용 카드와 답변의 출처 표시가 전부 공백이 된다.
+09-26 신호 "인용 메타데이터 공백 **0/360**"이 다시 **360/360 공백**으로
+회귀한 상태다. `_GROUNDING_DIRECTIVE` §5가 "출처 표시가 없으면 위치를
+지어내지 말고 내용만 인용하라"로 폴백하므로 답은 나오지만, **근거의 추적
+가능성이 사라진다** — 목회자가 "누가 어디서 한 말인지" 확인할 수 없는 답은
+이 앱의 존재 이유에 반한다.
+
+**복구는 가능하고 결정적이다** (추정·날조 없음):
+`~/NAE_CORPUS_RAW/raw/archive_org/sermons/<dir>/original.pdf` **67종 전량
+확인됨**(67 디렉터리 / original.pdf 67개). Google Books·Internet Archive가
+PDF에 넣은 실제 title/author를 `pdfinfo`로 읽는다.
+
+1. `python3 scripts/generate_baseline_sidecars.py --apply` → 사이드카 재생성
+2. `python3 scripts/backfill_baseline_metadata.py --apply` → registry + TSU 반영
+3. 재발 방지: 재빌드가 백필을 날리지 않도록 ⓐ 빌더가 사이드카를 직접 읽게
+   하거나 ⓑ 재빌드 후 백필 자동 재적용. **설계는 승인 후 결정.**
+
+**승인 필요 사유**: 두 스크립트 모두 "Production Registry 대량 변경 + Corpus
+전체 Migration"에 해당(스크립트 docstring이 직접 명시). 기본 dry-run.
+
+**게이트 G1-0**: ⓐ dry-run 결과 육안 확인, ⓑ `--apply` 후 title 보유율
+≥ 90%(PDF에 메타데이터가 없는 건은 건너뛰므로 100%는 목표 아님),
+ⓒ 청크 본문·임베딩·건수(119,595) 무변경.
+
+### J1 — 현 상태 품질 기준선 재확보 (승인 불필요, GPU 필요, **J1-0 선결**)
 
 - **왜 먼저**: 09-26 신호는 ⓐ 다른 코퍼스 수치 시점, ⓑ 오염 필터 2건 착지
   **이전**이다. 지금 상태의 실측이 없으면 J2~J6의 개선을 입증할 수 없다.
@@ -218,7 +260,8 @@ adr_refs:
 
 ```text
 J0 기준선 ✅
-  ├─ J1 품질 기준선 재확보 (GPU)           ← 모든 입증의 기준점
+  ├─ J1-0 인용 메타 백필 복구 (승인) ⚠️  ← J1의 선결, ⑤ 하드 블로커
+  │    └─ J1 품질 기준선 재확보 (GPU)      ← 모든 입증의 기준점
   ├─ J2 ③ 문단 근거      (승인 필요)      ─┐
   ├─ J3 ② 교단·개인 신학 (즉시 가능)      ─┼→ J7 재채점 → 배포
   ├─ J4 ⑤-a 본문 질의    (측정 후 판단)   ─┤
@@ -236,7 +279,8 @@ J0 기준선 ✅
 | 단계 | 조건 | 상태 | 진행률 |
 |---|---|---|---:|
 | J0 | 전체 | ✅ 완료 | 100% |
-| J1 | ⑤ | 실행 가능(GPU 유휴 확인됨) | 0% |
+| J1-0 | ⑤ | ⚠️ **승인 대기** (10-14 재빌드가 백필 소실) | 0% |
+| J1 | ⑤ | J1-0 선결 대기 (GPU 유휴 확인됨) | 0% |
 | J2 | ③ | 승인 대기 | 0% |
 | J3-a | ② | ✅ CLOSED (ADR-009, 불필요) | — |
 | J3-b | ② | ✅ 구현·단위검증 완료 / J7 측정 대기 | 70% |
