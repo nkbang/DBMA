@@ -86,15 +86,23 @@ embedding:
 # 감지 분기가 필요(core/config.py:240 GEN_MODEL_OPTIONS 참고).
 ollama:
   default_embed_model: "bge-m3:latest"
-  default_gen_model: "my-theology-bot-v2:latest"
+  # [J6, 2026-10-18] v2 → v3. 차이는 SYSTEM 프롬프트 §4 하나다 — v2는 "설교
+  # 대지 … 실제적인 예화와 적용점을 균형 있게 제안하세요"로 지시해 HQ 절대
+  # 규칙(예화 생성 절대 금지, 2026-09-15)과 충돌했다. v3는 "자료에 실제로
+  # 적혀 있는 적용점만, 예화는 지어내지 말 것"으로 바꿨다. 정의는
+  # Modelfile.theology-gen에 있다(종전에는 Ollama 로컬 저장소에만 있었다).
+  # 베이스·양자화·파라미터는 v2와 동일(llama3.3:70b Q4_K_M, 레이어 재사용).
+  # 롤백: 이 값을 "my-theology-bot-v2:latest"로 되돌리면 된다(v2 보존됨).
+  default_gen_model: "my-theology-bot-v3:latest"
   embed_model_options:
     - "bge-m3:latest"
     - "nomic-embed-text"
     - "mxbai-embed-large"
   gen_model_options:
+    - "my-theology-bot-v3:latest"
+    - "my-theology-bot-v2:latest"   # 롤백용(SYSTEM §4 예화 지시 포함, 사용 비권장)
     - "llama3.1:8b"
     - "llama3.2:3b"
-    - "my-theology-bot-v2:latest"
     - "llama3:latest"
 
 # ── Progress Tracking Defaults ─────────────────────────
