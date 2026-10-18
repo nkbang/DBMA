@@ -37,6 +37,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Optional
 
+from core.paragraph_context import build_paragraph_body
 from core.query_translation import scripture_ref_phrases, translate_query_terms
 from core.config import (
     CONTEXT_WINDOW_NEIGHBORS,
@@ -2246,7 +2247,16 @@ class ContextAssembler:
                 before_text = [t for cid, t in before if cid not in in_block_chunk_ids]
                 after_text = [t for cid, t in after if cid not in in_block_chunk_ids]
                 if before_text or after_text:
-                    body = "\n".join([*before_text, content, *after_text])
+                    # [J2, 2026-10-18] 종전에는 "\n".join으로 그대로 이어
+                    # 붙였다. 그 결과 ⓐ 블록 앞뒤가 문장 중간에서 시작·끝나고
+                    # (코퍼스 청크의 31.1%가 중간 절단), ⓑ chunk_overlap=120
+                    # 때문에 경계에서 같은 문장이 두 번 보였다. 둘 다 제품
+                    # 조건 ③("완성된 문단")에 반한다.
+                    # core/paragraph_context.py가 이웃의 깨진 앞머리·꼬리만
+                    # 버리고 겹침을 한 번만 남긴다 — 매칭 청크 content는
+                    # 무변경이고, 랭킹·스코어·citation·임베딩에는 영향이 없다
+                    # (ADR-034가 정한 경계 그대로).
+                    body = build_paragraph_body(before_text, content, after_text)
 
             context_parts.append(
                 f"<context id=\"{tsu_id}\" score=\"{score:.4f}\">\n"

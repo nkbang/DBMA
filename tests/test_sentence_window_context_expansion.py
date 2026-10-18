@@ -214,3 +214,112 @@ def test_assemble_neighbor_expansion_does_not_affect_scores_or_metadata():
     assert cand.content == original_content
     assert cand.metadata == original_metadata
     assert cand.final_score == 0.789
+
+
+# ── [J2, 2026-10-18] 완성된 문단 경계 정리 ──────────────────────
+#
+# ADR-034의 이어붙이기만으로는 블록 앞뒤가 문장 중간에서 시작·끝났고
+# (프로덕션 청크의 31.1%가 중간 절단), chunk_overlap=120 때문에 경계에서
+# 같은 문장이 두 번 보였다. core/paragraph_context.py가 이웃의 깨진
+# 앞머리·꼬리만 버리고 겹침을 한 번만 남긴다.
+#
+# 실측(코퍼스 119,595건 중 3,000 표본, 이웃 1개씩):
+#   문장 종결률 69.1% → 99.5%,  문장 시작률 32.2% → 97.3%
+
+
+def test_block_starts_and_ends_at_sentence_boundaries(tmp_path):
+    records = _doc_records("doc1", [
+        "ment of the covenant. The promise was given to Abraham.",
+        "Justification is an act; sanctification is a work.",
+        "The Spirit applies it daily. Then it breaks off mid-sen",
+    ])
+    engine = _make_engine(tmp_path, records)
+    cand = _cand("doc1", "doc1_chunk_00001",
+                 "Justification is an act; sanctification is a work.")
+
+    block, _ = ContextAssembler().assemble(
+        [cand],
+        ParsedQuery(original_query="q", intent="unknown"),
+        neighbor_lookup=engine.get_neighbor_context,
+        num_neighbors=1,
+    )
+
+    body = block.split(">", 1)[1]  # <context …> 태그 다음부터
+    assert "ment of the covenant." not in body      # 깨진 앞머리 제거
+    assert "The promise was given to Abraham." in body
+    assert "Then it breaks off mid-sen" not in body  # 깨진 꼬리 제거
+    assert "The Spirit applies it daily." in body
+
+
+def test_matched_chunk_body_is_never_trimmed(tmp_path):
+    """검색이 찾아낸 근거는 한 글자도 깎지 않는다 — 깎으면 근거가 줄어든다."""
+    matched = "mid-sentence start of the matched chunk and it ends mid-sent"
+    records = _doc_records("doc1", ["Head sentence. broken", matched, "broken tail"])
+    engine = _make_engine(tmp_path, records)
+    cand = _cand("doc1", "doc1_chunk_00001", matched)
+
+    block, _ = ContextAssembler().assemble(
+        [cand],
+        ParsedQuery(original_query="q", intent="unknown"),
+        neighbor_lookup=engine.get_neighbor_context,
+        num_neighbors=1,
+    )
+    assert matched in block
+
+
+def test_overlap_between_neighbours_appears_once(tmp_path):
+    """chunk_overlap의 산물 — 같은 문장이 블록에 두 번 보이면 안 된다."""
+    shared = "This sentence lies in the overlap region of both chunks."
+    records = _doc_records("doc1", [
+        "Opening sentence. " + shared,
+        shared + " The matched chunk continues from there.",
+    ])
+    engine = _make_engine(tmp_path, records)
+    cand = _cand("doc1", "doc1_chunk_00001",
+                 shared + " The matched chunk continues from there.")
+
+    block, _ = ContextAssembler().assemble(
+        [cand],
+        ParsedQuery(original_query="q", intent="unknown"),
+        neighbor_lookup=engine.get_neighbor_context,
+        num_neighbors=1,
+    )
+    assert block.count(shared) == 1
+
+
+def test_candidates_are_not_mutated_by_assembly(tmp_path):
+    """ADR-034 불변식 — 랭킹·스코어·citation 산출에 영향이 없어야 한다.
+    조립은 블록 문자열만 만들고 후보 객체는 건드리지 않는다."""
+    records = _doc_records("doc1", ["Head. one", "two", "three tail"])
+    engine = _make_engine(tmp_path, records)
+    cand = _cand("doc1", "doc1_chunk_00001", "two")
+    before_content, before_score, before_meta = cand.content, cand.final_score, dict(cand.metadata)
+
+    ContextAssembler().assemble(
+        [cand],
+        ParsedQuery(original_query="q", intent="unknown"),
+        neighbor_lookup=engine.get_neighbor_context,
+        num_neighbors=1,
+    )
+
+    assert cand.content == before_content
+    assert cand.final_score == before_score
+    assert cand.metadata == before_meta
+
+
+def test_scripture_context_still_uses_the_matched_chunk_only(tmp_path):
+    """scripture_contexts는 확장 전 본문 기준이어야 한다(ADR-034 경계)."""
+    records = _doc_records("doc1", ["Head. before text", "matched text", "after text"])
+    engine = _make_engine(tmp_path, records)
+    cand = _cand("doc1", "doc1_chunk_00001", "matched text")
+
+    _, scripture = ContextAssembler().assemble(
+        [cand],
+        ParsedQuery(original_query="q", intent="unknown"),
+        neighbor_lookup=engine.get_neighbor_context,
+        num_neighbors=1,
+    )
+    assert len(scripture) == 1
+    assert "matched text" in scripture[0]
+    assert "before text" not in scripture[0]
+    assert "after text" not in scripture[0]
