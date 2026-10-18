@@ -243,10 +243,19 @@ class HybridRetriever:
                 CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:candidate_k]
             ]
             # [2026-09-26] Bible Index가 비어 있으면 자유 텍스트 검색으로 내려간다.
-            # 실측: 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진 TSU가
-            # 0건(0.0%)이라 bible_posting 테이블이 0행이다. 구절 참조가 들어간
-            # 질의는 전부 이 route로 들어와 빈 포스팅 리스트를 받고 0건으로
-            # 끝났는데, 설교 준비에서 가장 흔한 질의 형태가 바로 그것이다.
+            # 실측(당시): 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진
+            # TSU가 0건(0.0%)이라 bible_posting 테이블이 0행이었다. 구절 참조가
+            # 들어간 질의는 전부 이 route로 들어와 빈 포스팅 리스트를 받고
+            # 0건으로 끝났는데, 설교 준비에서 가장 흔한 질의 형태가 바로 그것이다.
+            #
+            # [J4, 2026-10-18 갱신] 지금은 0행이 아니다. J5로 편입한 한국어 자료
+            # 5종이 파일명에서 book_id를 받아(=「3. 마가복음.pdf」 → MRK) 1,995건
+            # 전량이 verse_mapping을 가졌고, bible_posting은 9,995행이 됐다.
+            # 그래서 "요한복음 3:16" 같은 질의는 실제로 이 route에서 book_id=JHN·
+            # chapter=3 청크만 정확히 돌려받는다. 반면 영문 설교집은 파일명이
+            # 책을 가리키지 않아(Spurgeon_MTP_Vol30.txt → UNK) 여전히 아래 폴백을
+            # 탄다. 두 경우가 코퍼스에 섞여 있으므로 이 폴백은 계속 필요하다
+            # (docs/NAE_ANSWER_QUALITY_J4_PASSAGE_QUERY_REPORT_001.md).
             # 포스팅 히트가 있으면 기존 동작이 그대로 유지되고(정확 참조 우선),
             # 없을 때만 내려가므로 0건보다 나빠질 수 없다.
             if not candidates:
