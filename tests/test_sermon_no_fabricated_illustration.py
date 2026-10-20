@@ -34,7 +34,11 @@ def captured_prompts(monkeypatch):
     """ollama.generate 로 실제 전달되는 프롬프트를 모은다."""
     prompts: list[str] = []
 
-    def fake_generate(model=None, prompt=None, options=None):
+    # [J6 전환, 2026-10-20] thinking 모델 대응으로 생성 호출이 think 인자를
+    # 함께 넘긴다. 가짜 함수가 그 인자를 못 받으면 TypeError가 나는데,
+    # 생성 경로는 예외를 삼켜 오류 문자열로 바꾸므로 테스트에는 '호출이
+    # 아예 없었던 것'처럼 보인다. **kwargs로 받아 넘긴다.
+    def fake_generate(model=None, prompt=None, options=None, **kwargs):
         prompts.append(prompt)
         # 개요 파서가 받아들이는 최소 형태 — 언어 오염 재시도를 유발하지 않는다.
         return {

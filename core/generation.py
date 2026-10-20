@@ -40,6 +40,7 @@ import ollama
 
 from core.retrieval import Citation, RankedCandidate, ResponsePackage
 from core.config import (
+    GEN_DISABLE_THINKING,
     DEFAULT_GEN_MODEL,
     DEFAULT_NUM_PREDICT,
     DEFAULT_REPEAT_PENALTY,
@@ -127,6 +128,27 @@ _SCRIPT_CONTAMINATION_RE = re.compile(
     r"ऀ-ॿ]"       # 데바나가리 문자
 )
 _MAX_LANGUAGE_RETRIES = 2
+
+
+def _think_kwargs(override: Optional[bool] = None) -> dict:
+    """ollama.generate()에 넘길 thinking 인자.
+
+    [J6 전환, 2026-10-20] qwen3 계열은 thinking 모델이라 `num_predict`가 사고
+    과정에 전량 소진되면 `response`가 빈 문자열로 돌아온다(실측: thinking
+    3,850자 / response 0자 / done_reason="length"). 이 파일의 생성 경로는
+    전부 `result["response"]`만 읽으므로 그대로 두면 답변이 통째로 사라진다.
+
+    생성 경로가 네 군데(스트리밍·단발 생성·설교 개요·대지 확장)라 각자
+    판정하면 한 곳을 빠뜨린다. 판정을 여기 하나로 모은다.
+
+    - `override`가 주어지면 그 값을 쓴다(A/B 측정 하네스가 모델별로 지정).
+    - 아니면 `config.yaml::ollama.disable_thinking`을 따른다.
+    - 끄지 않을 때는 **아무 인자도 넘기지 않는다** — 호출이 종전과 바이트
+      단위로 같아야 기존 모델의 동작·측정값이 흔들리지 않는다.
+    """
+    if override is not None:
+        return {"think": override}
+    return {"think": False} if GEN_DISABLE_THINKING else {}
 
 
 def _detect_script_contamination(text: str) -> list[str]:
@@ -527,11 +549,14 @@ class GenerationStream:
 
     def __iter__(self):
         try:
+            # [J6 전환] thinking을 끄지 않으면 qwen3 계열에서 청크의
+            # "response"가 계속 빈 문자열로 와 UI에 아무것도 찍히지 않는다.
             for chunk in ollama.generate(
                 model=self._gen_model,
                 prompt=self._prompt,
                 options=_gen_options(self._temperature),
                 stream=True,
+                **_think_kwargs(),
             ):
                 piece = chunk["response"]
                 if not piece:
@@ -706,7 +731,7 @@ class GenerationService:
                 # 주의: 실제로 모델을 전환한다면 스트리밍 경로
                 # (GenerationStream)와 SermonDraftService에도 같은 처리가
                 # 필요하다 — 이번 변경은 generate()에 한정한다.
-                think_kwargs = {} if think is None else {"think": think}
+                think_kwargs = _think_kwargs(think)
                 result = ollama.generate(
                     model=gen_model,
                     prompt=prompt,
@@ -981,7 +1006,8 @@ class SermonDraftService:
             raw = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
+                    model=gen_model, prompt=prompt,
+                    options=_sermon_gen_options(temperature), **_think_kwargs(),
                 )
                 raw = result["response"]
                 contamination = _detect_script_contamination(raw)
@@ -1060,7 +1086,8 @@ class SermonDraftService:
             text = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
+                    model=gen_model, prompt=prompt,
+                    options=_sermon_gen_options(temperature), **_think_kwargs(),
                 )
                 text = result["response"]
                 contamination = _detect_script_contamination(text)
