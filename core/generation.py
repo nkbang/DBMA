@@ -488,6 +488,50 @@ class GenerationStream:
             self._answer_parts = [err_piece]
             yield err_piece
 
+    @property
+    def contaminated(self) -> bool:
+        """스트리밍 중 비한글 오염 문자가 걸러졌는지(표식 처리 대상)."""
+        return bool(self._contamination_seen)
+
+    def regenerate_clean(self) -> Optional[str]:
+        """[2026-10-23] 오염된 스트림을 눈에 안 보이게 다시 생성해 깨끗한 답으로 바꾼다.
+
+        스트리밍은 이미 나간 토큰을 되돌릴 수 없어 표식(□)+고지로 끝났다. 하지만
+        스트림이 끝난 뒤라면 generate()와 같은 재시도(오염 문자 안내를 붙여
+        비스트리밍으로 최대 _MAX_LANGUAGE_RETRIES회)를 돌릴 수 있다 — 호출부가
+        화면의 답변을 이 결과로 교체한다. 성공하면 저장 답변도 교체하고 오염
+        기록을 지워 to_result()가 고지를 붙이지 않는다. 끝내 실패하면 None을
+        돌려주고 기존 표식 처리 결과를 그대로 둔다.
+        """
+        if not self._contamination_seen:
+            return None
+        evidence = self._response.llm_context_block or ""
+        chars = list(self._contamination_seen)
+        for attempt in range(_MAX_LANGUAGE_RETRIES):
+            try:
+                result = ollama.generate(
+                    model=self._gen_model,
+                    prompt=self._prompt + _contamination_retry_note(chars),
+                    options=_gen_options(self._temperature),
+                )
+                text = result["response"]
+            except Exception as e:
+                logger.error("[GenerationStream.regenerate_clean] Ollama 실패: %s", e)
+                return None
+            bad = _detect_script_contamination(text)
+            latin = _detect_latin_contamination(text, evidence)
+            if not bad and not latin:
+                self._answer_parts = [text]
+                self._contamination_seen = []
+                logger.info("[GenerationStream] 오염 재생성 성공 (시도 %d)", attempt + 1)
+                return text
+            chars = bad + latin
+            logger.warning(
+                "[GenerationStream.regenerate_clean] 재생성에도 오염 (시도 %d/%d): %s",
+                attempt + 1, _MAX_LANGUAGE_RETRIES, chars,
+            )
+        return None
+
     def to_result(self) -> "GenerationResult":
         """Build the final GenerationResult. Call only after full iteration."""
         answer = "".join(self._answer_parts)

@@ -683,7 +683,21 @@ def _handle_user_message(question: str) -> None:
             conversation_history=conversation_history,
             **_settings_overrides(),
         )
-        st.write_stream(stream)
+        # 라이브 스트리밍은 유지하되, 한국어가 아닌 문자가 섞였으면 끝난 뒤 조용히
+        # 다시 생성해 화면의 답을 깨끗한 것으로 교체한다(core/generation.py::
+        # GenerationStream.regenerate_clean — 실패하면 기존 표식 처리가 남는다).
+        placeholder = st.empty()
+        shown = ""
+        for piece in stream:
+            shown += piece
+            placeholder.markdown(shown + "▌")
+        placeholder.markdown(shown)
+        if stream.contaminated:
+            with st.spinner("한국어가 아닌 문자가 섞여 답변을 다시 만들고 있습니다…"):
+                clean = stream.regenerate_clean()
+            if clean:
+                placeholder.markdown(clean)
+                st.caption("답변에 섞인 외국 문자를 감지해 자동으로 다시 생성했습니다.")
         result = stream.to_result()
         _render_reference_notices(reference_results)
         claim_guard_result = getattr(result, "claim_guard_result", None)

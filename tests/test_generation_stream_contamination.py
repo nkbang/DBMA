@@ -104,3 +104,51 @@ def test_thai_and_kana_also_marked(monkeypatch):
     result = stream.to_result()
     assert _detect_script_contamination(result.answer) == []
     assert result.answer.startswith("은혜 □가 □충만")
+
+
+# ── regenerate_clean (2026-10-23) ───────────────────────────────────
+
+def _make_stream(monkeypatch, stream_pieces, regen_texts):
+    from core import generation as gen
+    from core.retrieval import ResponsePackage  # noqa: F401
+    calls = {"n": 0}
+
+    def fake_generate(model, prompt, options, stream=False):
+        if stream:
+            return iter([{"response": p} for p in stream_pieces])
+        text = regen_texts[min(calls["n"], len(regen_texts) - 1)]
+        calls["n"] += 1
+        return {"response": text}
+
+    monkeypatch.setattr(gen.ollama, "generate", fake_generate)
+
+    class _Resp:
+        llm_context_block = ""
+        top_k_results: list = []
+        citations = None
+        question = "q"
+
+    s = gen.GenerationStream(_Resp(), "m", 0.1, "prompt", False)
+    return s, calls
+
+
+def test_regenerate_clean_replaces_contaminated_answer(monkeypatch):
+    s, calls = _make_stream(monkeypatch, ["의로워", "졌다 人"], ["깨끗한 답변입니다."])
+    list(s)
+    assert s.contaminated
+    assert s.regenerate_clean() == "깨끗한 답변입니다."
+    assert not s.contaminated and calls["n"] == 1
+    assert "□" not in s.to_result().answer and s.to_result().answer.startswith("깨끗한")
+
+
+def test_regenerate_clean_gives_up_and_keeps_marker(monkeypatch):
+    s, calls = _make_stream(monkeypatch, ["가 人"], ["또 人 오염"])
+    list(s)
+    assert s.regenerate_clean() is None and calls["n"] == 2
+    assert "□" in s.to_result().answer
+
+
+def test_regenerate_clean_noop_when_clean(monkeypatch):
+    s, calls = _make_stream(monkeypatch, ["정상 답변"], ["x"])
+    list(s)
+    assert s.regenerate_clean() is None and calls["n"] == 0
