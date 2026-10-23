@@ -117,3 +117,46 @@ class TestProfileIsSingleSourced:
         ]
         assert src_line, "전통을 소개하는 문장을 찾지 못했다"
         assert DENOMINATION_PROFILE in src_line[0]
+
+
+class TestNoConformityVerdict:
+    """[J3-b, 2026-10-18] 교단 정합성 "판정"을 금지한다.
+
+    09-23 채점 실측(`docs/NAE_GOLD_QUERY_SET_P0_5_001_ANSWERS.md`)에서 이
+    지시문이 직접 만든 결함이 드러났다 — 구 §2("전통과 어떻게 다른지 함께
+    적어라")가 매 답변마다 정합성 판정을 요구하는 과제로 읽혔고, 그 판정의
+    근거는 자료 안에 없어 모델이 지어냈다:
+
+        C3  "Spurgeon은 개혁파 침례교 전통과 다른 견해" → 사실오류, FAIL
+        B2  꼬리 "…개혁파 침례교 전통과 일치합니다(Reformed Baptist, 1689…)"
+
+    전통은 자료를 **읽는 자리**이고 판정 대상이 아니다. 이 클래스는 그
+    경계가 지시문에 남아 있는지를 지킨다.
+    """
+
+    def test_no_trailing_conformity_declaration(self):
+        """B2·C3 꼬리 패턴 차단 — 일치/불일치 선언을 붙이지 않는다."""
+        assert "선언을 붙이지 마라" in generation._DENOMINATION_DIRECTIVE
+
+    def test_no_classifying_authors_into_or_out_of_the_tradition(self):
+        """C3 사실오류의 직접 차단막 — 자료가 말하지 않는 분류를 하지 않는다."""
+        d = generation._DENOMINATION_DIRECTIVE
+        assert "전통의 안이나 밖으로 분류하지도 마라" in d
+
+    def test_difference_must_be_verifiable_in_the_evidence(self):
+        """차이를 적는 것 자체는 유지하되(검열 금지), 근거를 자료로 되돌린다."""
+        d = generation._DENOMINATION_DIRECTIVE
+        assert "감추지 마라" in d  # 기존 원칙 불변
+        assert "자료 안에서 확인할 수 있을 때만" in d
+
+    def test_profile_text_must_not_be_echoed_into_the_answer(self):
+        """B2에서 프로파일 원문이 답변에 그대로 인쇄됐다 — 누출 차단."""
+        assert "그대로 옮겨 적지 마라" in generation._DENOMINATION_DIRECTIVE
+
+    def test_grounding_precedence_survives_this_change(self):
+        """J3-b가 ①(근거 강제) 우선순위를 건드리지 않았는지."""
+        prompt, _ = GenerationService._build_prompt(_response())
+        assert prompt.index(generation._GROUNDING_DIRECTIVE) < prompt.index(
+            generation._DENOMINATION_DIRECTIVE
+        )
+        assert "자료에 없는 내용을 보태지 마라" in generation._DENOMINATION_DIRECTIVE

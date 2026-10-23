@@ -13,6 +13,7 @@ core/generation.py::GenerationService, k=5, file_scope=None(전체 파일),
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -70,6 +71,18 @@ def _build_processor():
 
 
 def main() -> None:
+    # [J1, 2026-10-18] 출력 경로를 인자로 받는다. 종전에는 상대경로가
+    # 하드코딩돼 있어 CWD가 다른 체크아웃이면 그쪽 작업 트리의 tracked
+    # 파일을 덮어썼다 — 같은 저장소의 다른 세션과 충돌하는 지점이다.
+    # 기본값은 종전과 동일하므로 기존 호출은 그대로 동작한다.
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--out",
+        default="docs/NAE_GOLD_QUERY_SET_P0_5_RAW_ANSWERS_001.json",
+        help="원문 답변 JSON 출력 경로 (기본: docs/NAE_GOLD_QUERY_SET_P0_5_RAW_ANSWERS_001.json)",
+    )
+    args = parser.parse_args()
+
     processor = _build_processor()
     generator = GenerationService()
     results = []
@@ -122,7 +135,7 @@ def main() -> None:
             } if cg else None,
         })
 
-    out_path = "docs/NAE_GOLD_QUERY_SET_P0_5_RAW_ANSWERS_001.json"
+    out_path = args.out
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
     print(f"ALL DONE -> {out_path}", flush=True)

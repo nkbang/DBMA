@@ -255,6 +255,20 @@ DEFAULT_GEN_MODEL = _yaml_ollama.get("default_gen_model", "my-theology-bot-v2:la
 EMBED_MODEL_OPTIONS = _yaml_ollama.get("embed_model_options", ["bge-m3:latest", "nomic-embed-text", "mxbai-embed-large"])
 GEN_MODEL_OPTIONS = _yaml_ollama.get("gen_model_options", ["my-theology-bot-v2:latest", "llama3.1:8b", "llama3:latest"])
 
+# [J6 전환, 2026-10-20] thinking 모델 대응 스위치.
+#
+# 프로덕션 생성 모델이 qwen3 계열(my-theology-bot-v4)로 바뀌었다. 이 계열은
+# thinking 모델이라 `num_predict`가 사고 과정에 전량 소진되면 `response`가
+# **빈 문자열**로 돌아온다(실측: thinking 3,850자 / response 0자 /
+# done_reason="length"). core/generation.py의 생성 경로는 `result["response"]`만
+# 읽으므로 답변이 통째로 사라진다 — 모델을 바꾸면서 이 스위치를 켜지 않으면
+# 앱이 빈 답변을 낸다.
+#
+# 모델 이름으로 추측하지 않고 설정값으로 둔 이유: 이름 규칙은 모델이 바뀔
+# 때마다 어긋나고(`nae-gen-…`, `my-theology-bot-v4` 둘 다 qwen 기반이다),
+# 생성 경로가 4군데라 판정이 흩어지면 한 곳을 빠뜨린다. 한 줄로 켜고 끈다.
+GEN_DISABLE_THINKING = bool(_yaml_ollama.get("disable_thinking", False))
+
 # ── 진행률 기본값 ─────────────────────────────────────────
 _yaml_progress = CFG.get("progress_defaults", [])
 DEFAULT_PROGRESS = [

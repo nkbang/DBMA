@@ -40,6 +40,7 @@ import ollama
 
 from core.retrieval import Citation, RankedCandidate, ResponsePackage
 from core.config import (
+    GEN_DISABLE_THINKING,
     DEFAULT_GEN_MODEL,
     DEFAULT_NUM_PREDICT,
     DEFAULT_REPEAT_PENALTY,
@@ -127,6 +128,27 @@ _SCRIPT_CONTAMINATION_RE = re.compile(
     r"ऀ-ॿ]"       # 데바나가리 문자
 )
 _MAX_LANGUAGE_RETRIES = 2
+
+
+def _think_kwargs(override: Optional[bool] = None) -> dict:
+    """ollama.generate()에 넘길 thinking 인자.
+
+    [J6 전환, 2026-10-20] qwen3 계열은 thinking 모델이라 `num_predict`가 사고
+    과정에 전량 소진되면 `response`가 빈 문자열로 돌아온다(실측: thinking
+    3,850자 / response 0자 / done_reason="length"). 이 파일의 생성 경로는
+    전부 `result["response"]`만 읽으므로 그대로 두면 답변이 통째로 사라진다.
+
+    생성 경로가 네 군데(스트리밍·단발 생성·설교 개요·대지 확장)라 각자
+    판정하면 한 곳을 빠뜨린다. 판정을 여기 하나로 모은다.
+
+    - `override`가 주어지면 그 값을 쓴다(A/B 측정 하네스가 모델별로 지정).
+    - 아니면 `config.yaml::ollama.disable_thinking`을 따른다.
+    - 끄지 않을 때는 **아무 인자도 넘기지 않는다** — 호출이 종전과 바이트
+      단위로 같아야 기존 모델의 동작·측정값이 흔들리지 않는다.
+    """
+    if override is not None:
+        return {"think": override}
+    return {"think": False} if GEN_DISABLE_THINKING else {}
 
 
 def _detect_script_contamination(text: str) -> list[str]:
@@ -405,14 +427,46 @@ _GROUNDING_DIRECTIVE = """지시:
 # §4는 ADR-009 §Decision-4의 원칙("자동 차단 없음, 최종 신학적 판단
 # 권한은 목회자에게")을 프롬프트 수준에서 반복한 것이다 — 앱이 다른
 # 교단을 정죄하는 도구가 되어서는 안 된다.
+#
+# [2026-10-18, J3-b — 09-23 채점 실측] §2가 역효과를 냈다. "전통과 어떻게
+# 다른지 함께 적어라"가 모델에게 **매 답변마다 교단 정합성 판정을 내리라**는
+# 과제로 읽혔고, 그 판정의 근거는 자료 안에 없다(검색된 설교·주석은 자기
+# 견해가 1689 계열과 일치하는지를 논하지 않는다). 근거가 없으니 모델은
+# 지어냈다 — `docs/NAE_GOLD_QUERY_SET_P0_5_001_ANSWERS.md`:
+#
+#   C3: "Spurgeon은 개혁파 침례교 전통과 다른 견해" → **사실오류**.
+#       Spurgeon은 개혁파 침례교의 대표 신학자다. 사용자가 FLAG → **FAIL**로
+#       상향한 유일한 항목이고, 이 지시문이 직접 만든 결함이다.
+#   B2: 답변 꼬리에 "이러한 내용은 개혁파 침례교 전통과 일치합니다
+#       (Reformed Baptist, 1689 런던신앙고백 계열)" — 자료 근거 없는 정합성
+#       선언이면서, 프로파일 원문이 답변에 그대로 새어 나왔다.
+#   C3: 꼬리에 "개혁파 침례교 전통에서도 중요한 주제입니다" — 같은 패턴.
+#
+# 즉 ②(교단 관점)가 ①(근거 강제)을 침식하는 구조였다. §3이 "보태지 마라"로
+# 막으려 했지만, 모델에게 정합성 판정은 "보태는 것"이 아니라 "요구된 과제"로
+# 보였다 — 지시가 서로 밀어낸 것이다.
+#
+# 그래서 전통의 역할을 **읽는 자리**로만 한정한다. 전통은 관점이고,
+# 판정 대상이 아니다:
+#   - §2는 "자료 안에서 확인될 때만" 적게 좁혔다(판정의 근거를 자료로 되돌림).
+#   - §5는 꼬리 정합성 선언과 저자를 전통 안/밖으로 분류하는 행위를 금지한다
+#     — 자료가 말하지 않는 것이기 때문이다. C3 사실오류의 직접 차단막이다.
+#   - §6은 프로파일 문구 자체가 답변에 인쇄되는 누출을 막는다.
+# 삭제·차단 로직을 답변 텍스트에 얹지 않고 지시문 수준에서만 고친다 —
+# 검증되지 않은 임계값 위에 차단을 얹지 않는다는 원칙(feedback_avoid_
+# risky_uncertain_design)에 따른 것이고, 효과는 J7 재채점으로 측정한다.
 _DENOMINATION_DIRECTIVE = f"""신학 관점:
 1. 묻는 사람은 다음 전통에 서 있는 목회자다: {DENOMINATION_PROFILE}.
    자료를 이 전통 안에서 읽고 정리하라.
-2. 자료가 이 전통과 다른 견해를 담고 있으면 감추지 마라. 누구의 견해인지
-   밝히고, 전통과 어떻게 다른지 함께 적어라.
+2. 자료가 이 전통과 다른 견해를 담고 있으면 감추지 마라. 단 그 차이를
+   자료 안에서 확인할 수 있을 때만 적고, 누구의 견해인지 밝혀라.
 3. 전통에 맞추려고 자료에 없는 내용을 보태지 마라 — 위 "지시"가 이보다
    우선한다.
-4. 다른 교단을 정죄하지 마라. 최종 판단은 묻는 목회자에게 있다."""
+4. 다른 교단을 정죄하지 마라. 최종 판단은 묻는 목회자에게 있다.
+5. 답변 끝에 이 전통과 일치한다거나 다르다는 선언을 붙이지 마라. 자료의
+   저자를 전통의 안이나 밖으로 분류하지도 마라 — 자료가 말하지 않는
+   것이다.
+6. 위 전통 설명 문구를 답변에 그대로 옮겨 적지 마라."""
 
 
 _GROUNDING_DIRECTIVE_NO_CONTEXT = """지시:
@@ -495,11 +549,14 @@ class GenerationStream:
 
     def __iter__(self):
         try:
+            # [J6 전환] thinking을 끄지 않으면 qwen3 계열에서 청크의
+            # "response"가 계속 빈 문자열로 와 UI에 아무것도 찍히지 않는다.
             for chunk in ollama.generate(
                 model=self._gen_model,
                 prompt=self._prompt,
                 options=_gen_options(self._temperature),
                 stream=True,
+                **_think_kwargs(),
             ):
                 piece = chunk["response"]
                 if not piece:
@@ -636,6 +693,7 @@ class GenerationService:
         gen_model: str = DEFAULT_GEN_MODEL,
         temperature: float = DEFAULT_TEMPERATURE,
         conversation_history: str = "",
+        think: Optional[bool] = None,
     ) -> GenerationResult:
         """Build a prompt from response.llm_context_block + response.question
         and call Ollama to synthesize an answer.
@@ -657,10 +715,28 @@ class GenerationService:
             # 라틴 오염 판정의 기준이 되는 근거 문맥(모델에 실제로 준 것).
             evidence_context = response.llm_context_block or ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
+                # [J6, 2026-10-18] think는 전달할 때만 넘긴다 — 생략하면
+                # 호출이 종전과 **바이트 단위로 동일**하므로 현행 모델
+                # (my-theology-bot-v2)의 동작·측정값이 바뀌지 않는다.
+                #
+                # 왜 필요한가: 생성 모델 후보로 올린 qwen3 계열은 thinking
+                # 모델이고, `num_predict`(1024)가 사고 과정에 전량 소진되면
+                # `response`가 **빈 문자열**로 돌아온다(실측:
+                # thinking 3,850자 / response 0자 / done_reason="length").
+                # 이 경로는 `result["response"]`만 읽으므로 답변이 통째로
+                # 사라진다 — 모델을 바꾸려면 thinking을 끄거나 토큰 예산을
+                # 따로 줘야 한다는 뜻이고, A/B 측정 자체가 이 옵션 없이는
+                # 성립하지 않는다.
+                #
+                # 주의: 실제로 모델을 전환한다면 스트리밍 경로
+                # (GenerationStream)와 SermonDraftService에도 같은 처리가
+                # 필요하다 — 이번 변경은 generate()에 한정한다.
+                think_kwargs = _think_kwargs(think)
                 result = ollama.generate(
                     model=gen_model,
                     prompt=prompt,
                     options=_gen_options(temperature),
+                    **think_kwargs,
                 )
                 answer = _normalize_author_names(result["response"])
                 contamination = _detect_script_contamination(answer)
@@ -930,7 +1006,8 @@ class SermonDraftService:
             raw = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
+                    model=gen_model, prompt=prompt,
+                    options=_sermon_gen_options(temperature), **_think_kwargs(),
                 )
                 raw = result["response"]
                 contamination = _detect_script_contamination(raw)
@@ -1009,7 +1086,8 @@ class SermonDraftService:
             text = ""
             for attempt in range(_MAX_LANGUAGE_RETRIES + 1):
                 result = ollama.generate(
-                    model=gen_model, prompt=prompt, options=_sermon_gen_options(temperature)
+                    model=gen_model, prompt=prompt,
+                    options=_sermon_gen_options(temperature), **_think_kwargs(),
                 )
                 text = result["response"]
                 contamination = _detect_script_contamination(text)

@@ -209,3 +209,38 @@ class TestMetadataSourcePropagation:
         assert record["title"] == "테스트 문서 실제 제목"
         assert record["author"] == "홍길동"
         assert record["metadata_source"] == "sidecar"
+
+
+class TestScannerJobIdIsUntrustworthy:
+    """[J5, 2026-10-18] 스캐너·변환기 작업 ID를 내장 서지로 신뢰하면 안 된다.
+
+    실측: `data/RAW/"7. 사도행전1.pdf"`의 내장 Title이
+    `22C-6e-20161211183645`(= 2016-12-11 18:36:45)였는데 기존 휴리스틱
+    3개 조건에 전부 걸리지 않아 **신뢰 가능**으로 판정됐다(길이 21자,
+    숫자·하이픈 때문에 isalpha 아님, Title Case 아님). 그래서 사이드카에
+    넣어 둔 실제 서지를 제치고 그 값이 registry·TSU를 거쳐 인용 카드의
+    출처 제목으로 노출됐다(사도행전 I·II부 826 청크).
+
+    판정은 "8자리 이상 연속 숫자"와 "공백 없음"을 함께 본다 — 각각
+    단독으로는 실제 서지를 잡는다.
+    """
+
+    def test_scanner_job_id_is_rejected(self):
+        assert _is_untrustworthy_embedded_value("22C-6e-20161211183645") is True
+        assert _is_untrustworthy_embedded_value("22C-6e-20161211184858") is True
+        assert _is_untrustworthy_embedded_value("scan_20161211183645") is True
+
+    def test_real_title_with_a_year_is_kept(self):
+        """연도 4자리는 잡지 않는다 — 실제 베이스라인 코퍼스의 서지다."""
+        assert _is_untrustworthy_embedded_value(
+            "The Metropolitan Tabernacle Pulpit  1884: Vol 30"
+        ) is False
+
+    def test_korean_title_without_spaces_is_kept(self):
+        """공백 없음만으로는 신뢰 불가로 보지 않는다."""
+        assert _is_untrustworthy_embedded_value("로마서주석") is False
+        assert _is_untrustworthy_embedded_value("모든 사람을 위한 마가복음") is False
+
+    def test_long_digits_with_spaces_is_kept(self):
+        """띄어쓰기가 있으면 사람이 붙인 제목으로 본다."""
+        assert _is_untrustworthy_embedded_value("Report 20161211183645 Summary") is False

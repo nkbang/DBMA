@@ -30,6 +30,8 @@ from dataclasses import asdict
 
 from core.candidate_generator import CandidateGenerator, CandidateRef, open_or_build_index
 from core.bible_index import BibleIndex
+from core.config import CONTEXT_WINDOW_NEIGHBORS
+from core.neighbor_index import NeighborIndex
 from core.query_planner import QueryPlan, classify
 from core.query_translation import (
     contains_hangul,
@@ -241,10 +243,19 @@ class HybridRetriever:
                 CandidateRef(tsu_id=tid, bm25_score=1.0) for tid in candidate_tsu_ids[:candidate_k]
             ]
             # [2026-09-26] Bible Index가 비어 있으면 자유 텍스트 검색으로 내려간다.
-            # 실측: 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진 TSU가
-            # 0건(0.0%)이라 bible_posting 테이블이 0행이다. 구절 참조가 들어간
-            # 질의는 전부 이 route로 들어와 빈 포스팅 리스트를 받고 0건으로
-            # 끝났는데, 설교 준비에서 가장 흔한 질의 형태가 바로 그것이다.
+            # 실측(당시): 배포 기준선 코퍼스 119,595건 중 verse_mapping을 가진
+            # TSU가 0건(0.0%)이라 bible_posting 테이블이 0행이었다. 구절 참조가
+            # 들어간 질의는 전부 이 route로 들어와 빈 포스팅 리스트를 받고
+            # 0건으로 끝났는데, 설교 준비에서 가장 흔한 질의 형태가 바로 그것이다.
+            #
+            # [J4, 2026-10-18 갱신] 지금은 0행이 아니다. J5로 편입한 한국어 자료
+            # 5종이 파일명에서 book_id를 받아(=「3. 마가복음.pdf」 → MRK) 1,995건
+            # 전량이 verse_mapping을 가졌고, bible_posting은 9,995행이 됐다.
+            # 그래서 "요한복음 3:16" 같은 질의는 실제로 이 route에서 book_id=JHN·
+            # chapter=3 청크만 정확히 돌려받는다. 반면 영문 설교집은 파일명이
+            # 책을 가리키지 않아(Spurgeon_MTP_Vol30.txt → UNK) 여전히 아래 폴백을
+            # 탄다. 두 경우가 코퍼스에 섞여 있으므로 이 폴백은 계속 필요하다
+            # (docs/NAE_ANSWER_QUALITY_J4_PASSAGE_QUERY_REPORT_001.md).
             # 포스팅 히트가 있으면 기존 동작이 그대로 유지되고(정확 참조 우선),
             # 없을 때만 내려가므로 0건보다 나빠질 수 없다.
             if not candidates:
@@ -408,6 +419,17 @@ class _EngineCompat:
 
     def __init__(self, tsu_by_id: dict[str, dict[str, Any]]) -> None:
         self.tsus = list(tsu_by_id.values())
+        # [J2, 2026-10-18] ADR-034 이웃 색인. 종전에는 이 경로에 색인이
+        # 없어서 문장 창 확장을 아예 호출할 수 없었다(아래 process() 주석
+        # 참고). core/neighbor_index.py를 RetrievalEngine과 공유한다.
+        self._neighbor_index = NeighborIndex(self.tsus)
+
+    def get_neighbor_context(
+        self, candidate_metadata: dict[str, Any], num_neighbors: int = 1
+    ) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
+        """[ADR-034] RetrievalEngine.get_neighbor_context()와 같은 표면·동작.
+        ContextAssembler.assemble(neighbor_lookup=...)에 그대로 넘긴다."""
+        return self._neighbor_index.neighbors(candidate_metadata, num_neighbors)
 
     def list_source_files(self, registry_path: Optional[str] = None) -> list[str]:
         import os as _os
@@ -557,7 +579,19 @@ class HybridQueryProcessor:
             )
             self.cache.set(cache_key, [asdict(c) for c in candidates], ttl_seconds=self.cache_ttl_seconds)
 
-        llm_context_block, scripture_contexts = self.context_assembler.assemble(candidates[:k], parsed_query)
+        # [J2, 2026-10-18] 종전에는 이웃 확장 인자 없이 호출했다. 그래서
+        # 2026-09-18 USE_INVERTED_INDEX 기본 true 전환 이후 프로덕션 질의가
+        # 전부 이 경로를 타면서 **Approved ADR-034의 문장 창 확장이 사실상
+        # 비활성**이었다 — 근거 블록이 고정폭 청크 그대로 나가 앞뒤가 문장
+        # 중간에서 끊겼다. 실측(2026-10-18, 한국어 질의 4건 19블록): 종결률
+        # 52.6%. QueryProcessor 경로(core/retrieval.py:2437)와 같은 인자를
+        # 넘겨 두 경로의 동작을 일치시킨다. 랭킹·스코어·citation 무변경.
+        llm_context_block, scripture_contexts = self.context_assembler.assemble(
+            candidates[:k],
+            parsed_query,
+            neighbor_lookup=self.engine.get_neighbor_context,
+            num_neighbors=CONTEXT_WINDOW_NEIGHBORS,
+        )
         citations = self.citation_builder.build_citations(candidates[:k])
 
         total_ms = (time.perf_counter() - t_start) * 1000

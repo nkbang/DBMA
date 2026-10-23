@@ -425,6 +425,10 @@ _UNTRUSTWORTHY_EXACT = {
 # [D-3] 파일명 그대로가 title/author로 남은 경우 (예: "Microsoft Word - doc1.doc")
 _FILENAME_PATTERN = re.compile(r"^.*\.(docx?|pdf|rtf)$", re.I)
 
+# [J5] 스캐너·변환기 작업 ID의 타임스탬프(8자리 이상 연속 숫자).
+# 4~7자리는 보지 않는다 — 실제 서지의 연도("…Pulpit 1884: Vol 30")를 잡는다.
+_JOB_ID_PATTERN = re.compile(r"\d{8,}")
+
 
 def _is_untrustworthy_embedded_value(value: Optional[str]) -> bool:
     """[D-3] 내장 메타데이터 값이 "신뢰 불가"(=쓰레기)인지 판정한다.
@@ -445,6 +449,23 @@ def _is_untrustworthy_embedded_value(value: Optional[str]) -> bool:
     if lowered in _UNTRUSTWORTHY_EXACT:
         return True
     if _FILENAME_PATTERN.match(stripped):
+        return True
+    if _JOB_ID_PATTERN.search(stripped) and " " not in stripped:
+        # [J5, 2026-10-18 실측] 스캐너·변환기가 넣은 작업 ID.
+        # data/RAW/"7. 사도행전1.pdf"의 내장 Title이
+        # "22C-6e-20161211183645"(= 2016-12-11 18:36:45 타임스탬프)였는데
+        # 아래 휴리스틱 3개 조건 전부에 걸리지 않아(길이 21자, 숫자·하이픈
+        # 때문에 isalpha 아님, Title Case 아님) **신뢰 가능**으로 판정됐다.
+        # 그래서 사이드카에 넣어 둔 실제 서지("모든 사람을 위한 사도행전
+        # I부")를 제치고 그 쓰레기 값이 registry와 TSU를 거쳐 인용 카드의
+        # 출처 제목으로 노출됐다(사도행전 I·II부 826 청크).
+        #
+        # 판정은 두 조건을 **함께** 쓴다 — 8자리 이상 연속 숫자 + 공백 없음.
+        # 둘 중 하나만으로는 실제 서지를 잡는다: 연속 숫자만 보면
+        # "The Metropolitan Tabernacle Pulpit 1884: Vol 30"류가 위험하고
+        # (그래서 4~7자리는 보지 않는다), 공백 없음만 보면 "로마서주석"
+        # 같은 정상 제목이 걸린다. 사람이 붙인 제목에 8자리 연속 숫자가
+        # 있으면서 띄어쓰기가 하나도 없는 경우는 실측 코퍼스 72종에 없다.
         return True
 
     score = 0
