@@ -6,6 +6,7 @@ Document library browsing, search, and management interface.
 import json
 import logging
 import os
+import re
 import unicodedata
 from datetime import datetime
 from typing import Optional
@@ -52,7 +53,19 @@ from core.raw_hygiene import (
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
-from core.library_search import SearchHit, search_documents
+from core.library_search import (
+    SearchHit,
+    enrich_documents,
+    excerpt,
+    facet_counts,
+    passes_filters,
+    recent_searches,
+    record_search,
+    saved_searches,
+    search_documents,
+    start_background_warmup,
+    toggle_saved_search,
+)
 from ui.pages.dashboard import _render_library_summary, _render_doc_type_summary
 
 
@@ -152,30 +165,105 @@ def render_library_page() -> None:
     page.render_footer()
 
 
+_SEARCH_HELP = """
+**기본**: 단어를 여러 개 쓰면 모두 포함된 자료만 나옵니다.
+
+| 입력 | 의미 |
+|---|---|
+| `은혜 칭의` | 두 단어 모두 포함 |
+| `"십자가의 도"` | 정확히 이 구절 |
+| `-요한` | 이 단어가 있는 자료 제외 |
+| `롬 8:28` · `요 3:16` · `Romans viii. 28` | 성경 구절을 인용·강해한 위치 |
+| `author:스펄전` | 저자(영문 표기 변형 포함) |
+| `type:설교집` · `lang:ko` | 분류 · 언어 |
+
+한글로 검색해도 영어 자료에서 번역어(은혜→grace 등)로 찾아 줍니다.
+제목·저자·분류와 **본문 전체**를 함께 검색합니다.
+"""
+
+
+def _set_search_query(query: str) -> None:
+    st.session_state["library_search"] = query
+
+
+def _toggle_saved_query(query: str) -> None:
+    toggle_saved_search(query)
+
+
 def _render_search_bar() -> None:
-    """Render the global document search bar."""
+    """Render the global document search bar (제목·저자·본문·성경 구절 통합 검색)."""
     store = StateStore()
 
     query = st.text_input(
         "내 자료에서 찾기",
-        placeholder="제목·본문 검색 — 예: 은혜 \"십자가의 도\" -요한",
+        placeholder="제목·저자·본문 검색 — 예: 롬 8:28 · 은혜 \"십자가의 도\" · author:스펄전",
         key="library_search",
-        help=(
-            "제목·유형·경로·수정일과 처리된 본문을 함께 검색합니다. "
-            "여러 단어는 모두 포함, \"따옴표\"는 정확한 구절, -단어는 제외입니다."
-        ),
+        help="제목·저자·분류와 처리된 본문 전체를 검색합니다. 자세한 문법은 '검색 도움말'을 보세요.",
     )
     if query:
         store.set("library_search_query", query)
 
-     # Filter options
+    # 도움말 · 저장 · 최근/저장된 검색
+    h1, h2 = st.columns([1, 1])
+    with h1:
+        with st.popover("검색 도움말", icon=":material/help:", use_container_width=True):
+            st.markdown(_SEARCH_HELP)
+    with h2:
+        q = query.strip()
+        if q:
+            is_saved = q in saved_searches()
+            st.button(
+                "저장됨 — 해제" if is_saved else "이 검색 저장",
+                icon=":material/star:" if is_saved else ":material/star_border:",
+                key="library_save_query",
+                use_container_width=True,
+                on_click=_toggle_saved_query,
+                args=(q,),
+            )
+    if not query.strip():
+        saved, recent = saved_searches(), recent_searches()
+        chips = [("★ ", x) for x in saved] + [("", x) for x in recent if x not in saved]
+        if chips:
+            st.caption("저장·최근 검색")
+            cols = st.columns(min(4, len(chips[:8])))
+            for i, (prefix, text) in enumerate(chips[:8]):
+                with cols[i % len(cols)]:
+                    st.button(
+                        f"{prefix}{text}", key=f"library_chip_{i}",
+                        use_container_width=True,
+                        on_click=_set_search_query, args=(text,),
+                    )
+
+    # 필터: 저자 · 분류 · 언어 (registry 기반, 문서 수 표시)
+    facets = facet_counts(enrich_documents(_get_documents_list()))
+    f1, f2, f3 = st.columns(3)
+    with f1:
+        st.multiselect(
+            "저자", options=[k for k, _, _ in facets["author"]],
+            format_func=lambda k: next(f"{d} · {n}" for kk, d, n in facets["author"] if kk == k),
+            key="library_f_author", placeholder="전체",
+        )
+    with f2:
+        st.multiselect(
+            "분류", options=[k for k, _, _ in facets["category"]],
+            format_func=lambda k: next(f"{d} · {n}" for kk, d, n in facets["category"] if kk == k),
+            key="library_f_category", placeholder="전체",
+        )
+    with f3:
+        st.multiselect(
+            "언어", options=[k for k, _, _ in facets["language"]],
+            format_func=lambda k: next(f"{d} · {n}" for kk, d, n in facets["language"] if kk == k),
+            key="library_f_language", placeholder="전체",
+        )
+
+    # Filter options
     c1, c2 = st.columns(2)
     with c1:
-         file_type = st.selectbox(
-             "파일 유형",
-             options=["all", "pdf", "txt", "md", "docx", "epub", "html", "htm", "rtf"],
-             key="library_file_type",
-         )
+        file_type = st.selectbox(
+            "파일 유형",
+            options=["all", "pdf", "txt", "md", "docx", "epub", "html", "htm", "rtf"],
+            key="library_file_type",
+        )
     with c2:
         sort_by = st.selectbox(
             "정렬 기준",
@@ -270,15 +358,26 @@ def _render_document_collection() -> None:
     total_count = len(all_documents)
     shown_total_before_search = len(documents)
 
-    # ── Search Query Filtering (FAT-HUMAN-008 + PT-SEARCH-001 Unicode NFC fix) ──
-    # 2026-10-23: 메타데이터뿐 아니라 처리된 본문(.md)까지 검색하고 일치
-    # 구절 미리보기를 보여준다(core/library_search.py).
+    # ── 필터(저자·분류·언어) + 검색 ─────────────────────────────────────
+    # 2026-10-23: 제목·저자·본문·성경 구절을 함께 검색하고 한글 질의는 영어 본문까지
+    # 번역 검색한다(core/library_search.py). 본문 캐시는 백그라운드에서 예열한다.
+    start_background_warmup(all_documents)
+    infos = enrich_documents(documents)
+    info_by_path = {i.path: i for i in infos}
+    f_authors = st.session_state.get("library_f_author", [])
+    f_cats = st.session_state.get("library_f_category", [])
+    f_langs = st.session_state.get("library_f_language", [])
+    filters_active = bool(f_authors or f_cats or f_langs)
+    infos = [i for i in infos if passes_filters(i, f_authors, f_langs, f_cats)]
+    documents = [i.doc for i in infos]
+
     search_query = st.session_state.get("library_search", "").strip()
-    search_hits: dict[str, SearchHit] = {}
+    search_hits: list[SearchHit] = []
     if search_query:
-        hits = search_documents(documents, search_query)
-        search_hits = {h.doc.get("path", ""): h for h in hits}
-        documents = [d for d in documents if d.get("path", "") in search_hits]
+        search_hits = search_documents(documents, search_query, infos=infos)
+        hit_paths = {h.doc.get("path", "") for h in search_hits}
+        documents = [d for d in documents if d.get("path", "") in hit_paths]
+        st.session_state["_library_hit_index"] = {h.doc.get("path", ""): h for h in search_hits}
     else:
         documents = list(documents)  # shallow copy
 
@@ -287,14 +386,15 @@ def _render_document_collection() -> None:
     # Display count (showing X of Y)
     if file_type != "all" and search_query:
         st.caption(f"{shown_total}개 문서 표시 (유형 {file_type}, 검색 \"{search_query}\", 총 {total_count}개 중)")
-    elif file_type != "all":
+    elif file_type != "all" or filters_active:
         st.caption(f"{shown_total}개 문서 표시 (총 {total_count}개 중)")
     elif search_query:
         st.caption(f"\"{search_query}\" 검색 결과: {shown_total}개 문서 (총 {total_count}개 중)")
     else:
         st.caption(f"총 {shown_total}개의 문서")
 
-    _render_search_previews(search_hits)
+    if search_query:
+        _render_search_results(search_hits, search_query)
 
     _render_sort_header()
 
@@ -338,19 +438,105 @@ def _render_document_collection() -> None:
     _render_document_rows(paginated_docs)
 
 
-def _render_search_previews(search_hits: "dict[str, SearchHit]") -> None:
-    """본문에서 일치한 구절 미리보기 — 관련도 높은 문서 순, 최대 10건."""
-    previews = sorted(
-        (h for h in search_hits.values() if h.snippets),
-        key=lambda h: -h.score,
-    )[:10]
-    if not previews:
+_RESULT_CARDS = 15
+_MD_SPECIAL = re.compile(r"([\\`*_{}\[\]<>#$~|])")
+
+
+def _md_safe(text: str) -> str:
+    """OCR 본문이 마크다운·LaTeX로 해석되지 않게 이스케이프(검색어 강조 **만 유지)."""
+    marker = "\u0001"
+    text = text.replace("**", marker)
+    text = _MD_SPECIAL.sub(r"\\\1", text)
+    return text.replace(marker, "**")
+
+
+def _search_tips() -> None:
+    st.info(
+        "일치하는 자료가 없습니다.\n\n"
+        "- 단어를 줄이거나 철자를 확인해 보세요 (여러 단어는 모두 포함돼야 합니다).\n"
+        "- 성경 구절은 `롬 8:28`, `요 3:16` 형식으로 입력하세요.\n"
+        "- 위의 저자·분류·언어 필터를 해제해 보세요."
+    )
+
+
+@st.dialog("본문 보기", width="large")
+def _reader_dialog(path: str, idx: int) -> None:
+    """검색된 구절 위치에서 본문을 읽는다 — 이전/다음 일치로 이동."""
+    hit = st.session_state.get("_library_hit_index", {}).get(path)
+    if not hit or not hit.passages:
+        st.caption("본문 위치 정보를 찾지 못했습니다.")
         return
-    with st.expander(f"본문 일치 미리보기 ({len(previews)}건)", expanded=True):
-        for h in previews:
-            st.markdown(f"**{h.doc.get('title', '')}** · 본문 {h.content_hits}회 일치")
-            for snip in h.snippets:
-                st.caption(snip)
+    n = len(hit.passages)
+    key = f"_reader_idx_{path}"
+    if key not in st.session_state:
+        st.session_state[key] = min(idx, n - 1)
+    cur = st.session_state[key]
+    info = hit.info
+    st.markdown(f"**{info.title if info else hit.doc.get('title', '')}**")
+    if info:
+        st.caption(f"{info.author.display} · {info.language_label} · {info.category}")
+    b1, b2, b3 = st.columns([1, 3, 1])
+    with b1:
+        if st.button("이전", icon=":material/chevron_left:", disabled=cur <= 0,
+                     use_container_width=True, key=f"{key}_prev"):
+            st.session_state[key] = cur - 1
+            st.rerun(scope="fragment")
+    with b2:
+        st.caption(f"일치 {cur + 1}/{n} · {hit.passages[cur].location}")
+    with b3:
+        if st.button("다음", icon=":material/chevron_right:", disabled=cur >= n - 1,
+                     use_container_width=True, key=f"{key}_next"):
+            st.session_state[key] = cur + 1
+            st.rerun(scope="fragment")
+    text, _start, _end = excerpt(hit.doc, hit.passages[cur].offset, radius=2400, terms=hit.terms)
+    with st.container(height=420, border=True):
+        st.markdown(_md_safe(text) if text else "본문을 불러오지 못했습니다.")
+
+
+def _render_search_results(hits: "list[SearchHit]", query: str) -> None:
+    """관련도순 결과 카드 — 저자·언어·분류, 일치 구절과 위치, 본문 보기."""
+    if not hits:
+        _search_tips()
+        return
+    if st.session_state.get("_library_last_recorded") != query:
+        record_search(query)
+        st.session_state["_library_last_recorded"] = query
+
+    shown = hits[:_RESULT_CARDS]
+    with st.expander(f"검색 결과 · 관련도순 {len(hits)}건 (상위 {len(shown)}건 표시)", expanded=True):
+        for hi, h in enumerate(shown):
+            info = h.info
+            with st.container(border=True):
+                title = info.title if info else h.doc.get("title", "")
+                st.markdown(f"**{_md_safe(title)}**")
+                if info:
+                    flags = f" · :orange[OCR 품질 낮음]" if info.low_quality else ""
+                    st.caption(
+                        f"{info.author.display} · {info.language_label} · {info.category}"
+                        f" · 본문 {h.content_hits}회 일치{flags}"
+                    )
+                if h.via:
+                    st.caption(":blue[" + _md_safe("; ".join(h.via)) + "]")
+                for pi, p in enumerate(h.passages[:2]):
+                    c1, c2 = st.columns([8, 1])
+                    with c1:
+                        st.caption(f"📍 {_md_safe(p.location)}")
+                        st.markdown(_md_safe(p.snippet))
+                    with c2:
+                        if st.button("읽기", key=f"srch_read_{hi}_{pi}", use_container_width=True):
+                            _reader_dialog(h.doc.get("path", ""), pi)
+                if len(h.passages) > 2:
+                    with st.expander(f"구절 {len(h.passages) - 2}개 더"):
+                        for pi, p in enumerate(h.passages[2:], start=2):
+                            c1, c2 = st.columns([8, 1])
+                            with c1:
+                                st.caption(f"📍 {_md_safe(p.location)}")
+                                st.markdown(_md_safe(p.snippet))
+                            with c2:
+                                if st.button("읽기", key=f"srch_read_{hi}_{pi}", use_container_width=True):
+                                    _reader_dialog(h.doc.get("path", ""), pi)
+        if len(hits) > len(shown):
+            st.caption(f"나머지 {len(hits) - len(shown)}건은 아래 문서 목록에서 볼 수 있습니다. 저자·분류 필터로 좁혀 보세요.")
 
 
 def _render_document_detail_panel() -> None:
