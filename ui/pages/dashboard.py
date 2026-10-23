@@ -336,9 +336,13 @@ def _render_recent_materials() -> None:
             )
 
 
-def _render_library_summary() -> None:
+def _render_library_summary(compact: bool = False) -> None:
     """Collapsed "내 서재" summary — RAW/출력/지원형식/임베딩 세부는
-    개발자용 정보라 Monitor·Processing으로 이미 옮겨져 있다."""
+    개발자용 정보라 Monitor·Processing으로 이미 옮겨져 있다.
+
+    compact=True(내 자료 페이지, 2026-10-23 사용자 요청: 문서 개수가 너무
+    부각됨)면 큰 metric 카드 대신 한 줄 작은 캡션으로 같은 수치를 보여준다.
+    """
     # [버그 수정 2026-07-21] "보유 문서"(RAW 폴더 파일 수)와 "정리된
     # 자료"는 서로 다른 걸 재는 지표다 — 처리된 원본은 RAW에서 지워지는
     # 경우가 많아 RAW 카운트가 총 보유량을 반영하지 않는다(사용자 보고:
@@ -357,6 +361,14 @@ def _render_library_summary() -> None:
     # 처리 완료 상태). 처리 완료/미처리를 나눠서 보여준다.
     effective_docs = _get_effective_documents()
     raw_breakdown = _get_raw_processing_breakdown()
+
+    if compact:
+        st.caption(
+            f"보유 {raw_breakdown['total']}권 · 정리된 자료 {len(effective_docs)}개 · "
+            f"처리 완료 {raw_breakdown['processed']}권 · 미처리 {raw_breakdown['unprocessed']}권",
+            help="보유: 보관함에 남아있는 파일 수(처리 여부 무관). 정리된 자료: 검색·연구에 바로 쓸 수 있는 문서 수로, 아래 '유형별 문서'와 같은 기준입니다.",
+        )
+        return
 
     c1, c2 = st.columns(2)
     with c1:

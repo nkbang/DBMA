@@ -128,7 +128,7 @@ def render_library_page() -> None:
     _render_orphaned_documents_notice()
 
     # ── Pipeline Summary (from Dashboard) ──────────────────────
-    _render_library_summary()
+    _render_library_summary(compact=True)
     _render_doc_type_summary()
 
     # ── 중복 파일 자동 정리 (2026-10-23 사용자 요청: 화면에 드러내지 말고
