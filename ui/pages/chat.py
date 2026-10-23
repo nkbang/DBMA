@@ -359,6 +359,44 @@ def _format_reference_context(entries: list[dict], label: str) -> str:
     return "\n".join(lines)
 
 
+_REF_STORE_CHECK: tuple[float, bool] = (0.0, True)
+
+
+def _reference_store_reachable() -> bool:
+    """사전·주석 벡터 저장소(NAE Qdrant, 기본 localhost:7333)에 연결되는지 — 20초 캐시."""
+    global _REF_STORE_CHECK
+    now = time.monotonic()
+    if now - _REF_STORE_CHECK[0] < 20:
+        return _REF_STORE_CHECK[1]
+    import socket
+    from urllib.parse import urlparse
+    try:
+        from NAE.pipeline.reference import config as ref_config
+        u = urlparse(ref_config.QDRANT_URL)
+        with socket.create_connection((u.hostname, u.port or 6333), timeout=0.7):
+            ok = True
+    except ImportError:
+        ok = True      # NAE 없음 — 위에서 이미 비활성
+    except OSError:
+        ok = False
+    _REF_STORE_CHECK = (now, ok)
+    return ok
+
+
+def _render_reference_notices(reference_results: list[dict]) -> None:
+    """이번 답변에 반영한 사전·주석 항목, 또는 서버 불가 안내."""
+    if st.session_state.pop("_reference_unavailable", False):
+        st.caption(
+            ":orange[신학사전·주석 서버(Qdrant :7333)에 연결할 수 없어 이번 답변에는 "
+            "사전 자료가 반영되지 않았습니다. Docker에서 nae_qdrant 컨테이너를 실행해 주세요.]"
+        )
+    if reference_results:
+        with st.expander(f"참고한 사전·주석 ({len(reference_results)}건)", expanded=False):
+            for entry in reference_results:
+                text = str(entry.get("text", "")) if isinstance(entry, dict) else str(entry)
+                st.caption(text[:400].replace("\n", " "))
+
+
 def _inject_reference_context(
     response: "ResponsePackage",
     query: str,
@@ -390,6 +428,22 @@ def _inject_reference_context(
 
     # Rewrite query for better dictionary/commentary-style search
     search_query = rewrite_query_for_smith(query) or query
+    # [2026-10-23] 사전·주석은 영어 원문이다 — 한글 질의에 영어 번역어를 덧붙여
+    # 검색한다(실측: "성경에 나오는 용의 정체는"은 UNICORN/UNKNOWN GOD이 잡혔고,
+    # dragon을 덧붙이면 DRAGON/REVELATION 항목이 잡혔다).
+    try:
+        from core.query_translation import translate_query_terms
+        english = [t for t in translate_query_terms(query) if t not in ("bible", "scripture")]
+        if english:
+            search_query = f"{search_query} {' '.join(english)}"
+    except Exception:
+        logger.exception("[chat] reference query translation failed")
+
+    if not _reference_store_reachable():
+        # 조용히 빈 결과를 돌려주면 "사전을 참고하지 않았다"만 남아 원인을 알 수 없다.
+        st.session_state["_reference_unavailable"] = True
+        logger.warning("[chat] reference store unreachable — dictionary skipped")
+        return []
 
     # Search each reference collection separately, each with its own top_k
     # quota (fault-isolated per collection — never raises). A single merged
@@ -595,11 +649,16 @@ def _handle_user_message(question: str) -> None:
         _save_chat_history()
         return
 
+    # [2026-10-23] 채팅 탭에는 신학사전(Smith)·주석 참조가 연결돼 있지 않았다 —
+    # generate_answer()(연구 탭)만 호출했다. TSU 검색 뒤, 생성 앞에서 같은 방식으로
+    # 주입한다(보조 자료, 실패해도 TSU 경로 무영향).
+    reference_results = _inject_reference_context(response, question)
+
     # [PM 정렬 감사 P0-6] 검색이 근거를 하나도 반환하지 못하면 생성을 건너뛰고
     # 유보 문구를 보여준다. RetrievalEngine에는 relevance floor가 없어 0건은
     # 드물지만(코퍼스 비었거나 파일 스코프가 전부 제외한 경우 등), 그때 답을
     # 생성하면 오직 모델 내장 지식에서만 나오게 된다.
-    if not response.top_k_results:
+    if not response.top_k_results and not reference_results:
         logger.info("[chat] no evidence for query=%r → hold", question[:50])
         with st.chat_message("assistant"):
             st.markdown(_NO_EVIDENCE_HOLD_TEXT)
@@ -626,6 +685,7 @@ def _handle_user_message(question: str) -> None:
         )
         st.write_stream(stream)
         result = stream.to_result()
+        _render_reference_notices(reference_results)
         claim_guard_result = getattr(result, "claim_guard_result", None)
         if low_confidence:
             _render_low_confidence_warning()
