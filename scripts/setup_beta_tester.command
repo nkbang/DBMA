@@ -9,9 +9,13 @@
 # 로그를 읽을 거라 가정하지 않는다.
 #
 # 메모리 등급별 생성 모델(embedding은 등급 무관 bge-m3 고정 — 1.2GB, 부담 적음):
-#   8GB 미만   — 설치 중단 (최소 사양 미달 안내)
+#   8GB 미만    — 설치 중단 (최소 사양 미달 안내)
 #   8~16GB 미만 — llama3.2:3b (경량)
-#   16GB 이상   — llama3.1:8b (베타 기본, 2026-07-28 골든셋 재실측 groundedness 5.00/5)
+#   16~48GB 미만 — llama3.1:8b (2026-07-28 골든셋 재실측 groundedness 5.00/5)
+#   48GB 이상   — my-theology-bot-v4 (본 모델, Modelfile로 create)
+#                 단 디스크 여유 45GB 이상일 때만. 모자라면 llama3.1:8b로
+#                 내려가고 안내한다. 어느 단계든 실패하면 경량 모델로
+#                 폴백한다 — 답변 품질보다 "앱이 뜨는 것"이 먼저다.
 #
 # [2026-09-15, S1-4 재검증 경고] 위 두 모델의 groundedness는 2026-07-28
 # 골든셋 측정치인데, 2026-09-15 실측(질의 2건, docs/DBMA_S1_4_3B_QUALITY_
@@ -21,8 +25,18 @@
 # 배정을 아직 바꾸지 않는다. 큰 샘플로 재검증 전까지 이 등급표를 배포
 # 확정 근거로 인용하지 말 것.
 #
-# my-theology-bot-v2(llama3.3:70b)는 128GB급 하드웨어가 필요해 베타
-# 테스터 대상에서 제외한다(대부분 개인 목회자 Mac은 8~16GB대로 가정).
+# [2026-10-23 갱신] 위 "128GB급" 서술은 본 모델이 my-theology-bot-v2
+# (llama3.3:70b Q4_K_M, 42GB)이던 시절 기준이다. 현재 본 모델은
+# my-theology-bot-v4(qwen3.8:27b **Q8_0**, 27.3B / 디스크 29GB)여서 48GB급
+# Mac이면 돌아간다. 그래서 고사양 등급을 다시 열었다.
+#
+# 품질 차이가 큰 것이 이 등급을 되살린 이유다 — 대표 질의 24건 비교 채점에서
+# v4가 22건 선택됐고 llama 계열은 0건이었다(무차 2). 위 S1-4 경고와 같은
+# 방향이다. 사양이 되는 사용자에게까지 경량 모델을 주면 품질을 그냥 버린다.
+#
+# 48GB 기준 산정: 가중치 29GB + KV 캐시(num_ctx 32768) + 코퍼스 메모리 적재
+# + 임베딩 1.2GB + OS/앱 → 40GB대 초반. Apple Silicon 구성이 32→36→48이라
+# 32GB에서는 스왑이 심하고 48GB부터 여유가 있다.
 #
 # [2026-09-16, S5-1] Ollama는 더 이상 Homebrew를 거치지 않는다 — 공식
 # ollama.com/download/Ollama-darwin.zip(서명·공증된 앱 번들, Homebrew가
@@ -119,19 +133,58 @@ pull_model_with_retry() {
 
 notify "시작" "설치를 시작합니다. 잠시만 기다려 주세요."
 
-# ── 1) 메모리 확인 → 모델 등급 결정 ─────────────────────────
+# ── 1) 시스템 사양 확인 → 모델 등급 결정 ─────────────────────
+#
+# [2026-10-23] 고사양 등급을 추가했다. 종전에는 16GB 이상이면 모두
+# llama3.1:8b였는데, 그 근거 주석은 본 모델이 my-theology-bot-v2
+# (llama3.3:70b, 128GB급 필요)이던 시절 것이다. 현재 본 모델은
+# my-theology-bot-v4(qwen3.8:27b **Q8_0**, 27.3B)로 **디스크 29GB**라
+# 사양이 되는 Mac이면 충분히 돌아간다.
+#
+# 이 구분이 중요한 이유: 대표 질의 24건 비교 채점에서 v4가 22건,
+# llama 계열이 0건으로 선택됐다(무차 2). 같은 스크립트가 아래에 적어 둔
+# S1-4 경고 — llama3.1:8b/3.2:3b가 자료에 없는 내용을 모델 내장 지식으로
+# 채우는 경향 — 과도 방향이 맞는다. 사양이 되는 사용자에게까지 경량 모델을
+# 주면 답변 품질을 그냥 버리는 셈이다.
+#
+# 48GB 기준의 근거(실측 기반 산정):
+#   가중치 29GB + KV 캐시(num_ctx 32768) + 코퍼스 메모리 적재 + 임베딩
+#   모델 1.2GB + OS/앱 → 40GB대 초반. Apple Silicon 구성이 32→36→48로
+#   올라가므로 32GB에서는 스왑이 심해 실사용이 어렵고 48GB부터 여유가 있다.
+# 디스크 45GB: 모델 29GB + 베이스 캐시 + venv/의존성 + 코퍼스 여유.
 MEM_BYTES=$(sysctl -n hw.memsize)
 MEM_GB=$((MEM_BYTES / 1024 / 1024 / 1024))
+DISK_FREE_GB=$(df -g "$HOME" 2>/dev/null | awk 'NR==2 {print $4}')
+: "${DISK_FREE_GB:=0}"
+
+# GEN_MODELFILE이 비어 있지 않으면 pull이 아니라 Modelfile로 create한다.
+GEN_MODELFILE=""
+GEN_BASE_MODEL=""
 
 if [ "$MEM_GB" -lt 8 ]; then
     fatal "이 Mac(${MEM_GB}GB)은 최소 사양(8GB) 미만이라 베타를 실행할 수 없습니다. 문의: David"
 elif [ "$MEM_GB" -lt 16 ]; then
     GEN_MODEL="llama3.2:3b"
-else
+elif [ "$MEM_GB" -lt 48 ]; then
     GEN_MODEL="llama3.1:8b"
+elif [ ! -f "$PROJECT_ROOT/Modelfile.theology-gen-v4" ]; then
+    # 옛 소스 트리에는 Modelfile이 없다 — 조용히 경량 모델로 내려간다.
+    GEN_MODEL="llama3.1:8b"
+elif [ "$DISK_FREE_GB" -lt 45 ]; then
+    GEN_MODEL="llama3.1:8b"
+    notify "1/5 사양 확인" "메모리는 충분하지만 디스크 여유가 ${DISK_FREE_GB}GB라 가벼운 모델(${GEN_MODEL})을 사용합니다. 45GB 이상 확보 후 다시 실행하면 더 좋은 모델이 설치됩니다."
+else
+    GEN_MODEL="my-theology-bot-v4"
+    GEN_BASE_MODEL="qwen3.8:27b-q8_0"
+    GEN_MODELFILE="$PROJECT_ROOT/Modelfile.theology-gen-v4"
 fi
 EMBED_MODEL="bge-m3:latest"
-notify "1/5 사양 확인" "메모리 ${MEM_GB}GB 확인 — ${GEN_MODEL} 모델을 사용합니다."
+
+if [ -n "$GEN_MODELFILE" ]; then
+    notify "1/5 사양 확인" "메모리 ${MEM_GB}GB · 디스크 ${DISK_FREE_GB}GB 확인 — 답변 품질이 가장 좋은 ${GEN_MODEL} 모델을 설치합니다(약 29GB 다운로드, 시간이 걸립니다)."
+else
+    notify "1/5 사양 확인" "메모리 ${MEM_GB}GB 확인 — ${GEN_MODEL} 모델을 사용합니다."
+fi
 
 # ── 2) Ollama 확인/설치 (Homebrew 없이 우선 시도) + 모델 pull ────
 notify "2/5 준비 확인" "필요한 구성 요소를 확인하는 중..."
@@ -164,8 +217,24 @@ fi
 notify "3/5 모델 다운로드" "AI 모델을 내려받는 중입니다 — 최초 1회, 네트워크 상태에 따라 수 분 소요됩니다."
 pull_model_with_retry "$EMBED_MODEL" "임베딩 모델" \
     || fatal "임베딩 모델(${EMBED_MODEL}) 다운로드에 여러 번 실패했습니다. 인터넷 연결을 확인한 뒤 다시 실행해 주세요."
-pull_model_with_retry "$GEN_MODEL" "생성 모델" \
-    || fatal "생성 모델(${GEN_MODEL}) 다운로드에 여러 번 실패했습니다. 인터넷 연결을 확인한 뒤 다시 실행해 주세요."
+if [ -n "$GEN_MODELFILE" ]; then
+    # 고사양 등급 — 베이스를 받고 Modelfile로 본 모델을 만든다. 어느 단계든
+    # 실패하면 설치를 중단하지 않고 경량 모델로 내려간다: 답변 품질보다
+    # "앱이 뜨는 것"이 먼저다.
+    if pull_model_with_retry "$GEN_BASE_MODEL" "생성 모델(베이스)" \
+       && ollama create "$GEN_MODEL" -f "$GEN_MODELFILE" >/dev/null 2>&1; then
+        notify "3/5 모델 준비" "${GEN_MODEL} 모델을 만들었습니다."
+    else
+        notify "3/5 모델 준비" "고성능 모델 설치에 실패해 가벼운 모델로 전환합니다."
+        GEN_MODEL="llama3.1:8b"
+        GEN_MODELFILE=""
+        pull_model_with_retry "$GEN_MODEL" "생성 모델" \
+            || fatal "생성 모델(${GEN_MODEL}) 다운로드에 여러 번 실패했습니다. 인터넷 연결을 확인한 뒤 다시 실행해 주세요."
+    fi
+else
+    pull_model_with_retry "$GEN_MODEL" "생성 모델" \
+        || fatal "생성 모델(${GEN_MODEL}) 다운로드에 여러 번 실패했습니다. 인터넷 연결을 확인한 뒤 다시 실행해 주세요."
+fi
 notify "3/5 완료" "AI 모델 준비가 끝났습니다."
 
 # ── 4) Python 환경 ────────────────────────────────────────────
