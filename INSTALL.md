@@ -9,9 +9,14 @@
 | 항목 | 최소 | 권장 |
 |------|------|------|
 | Python | 3.11.x | 3.11.9 |
-| 디스크 | 5 GB | 10 GB+ |
-| RAM | 8 GB | 16 GB+ |
-| 인터넷 | 모델 다운로드 (~3 GB) | 필요 |
+| 디스크 | 40 GB | 60 GB+ |
+| RAM | 32 GB | 64 GB+ |
+| 인터넷 | 모델 다운로드 (~32 GB) | 필요 |
+
+> 디스크·RAM·다운로드량은 **답변 생성 모델**(아래 §4) 기준입니다. 기본 생성
+> 모델 `my-theology-bot-v4`는 베이스가 `qwen3.8:27b-q8_0`(약 30 GB)입니다.
+> 사양이 모자라면 §4의 "가벼운 대안"으로 바꿔 쓸 수 있습니다 — 답변 품질은
+> 떨어집니다.
 
 **macOS 우선 가이드** — Windows/Linux 사용자는 각 OS의 패키지 매니저 명령으로 대체하세요.
 
@@ -62,17 +67,55 @@ brew services start ollama
 
 ## 4. Ollama 모델 준비
 
-`config.yaml`에 정의된 모델을 pull합니다.
+### 4.1 임베딩 모델 (검색용)
 
 ```bash
-# 임베딩 모델 (검색용)
 ollama pull bge-m3:latest
+```
 
-# 생성 모델 (설교문 작성·채팅용)
+### 4.2 생성 모델 (질의응답·설교문 작성용)
+
+기본 생성 모델 `my-theology-bot-v4`는 **pull로 받을 수 없습니다** — 베이스
+모델에 신학 SYSTEM 프롬프트를 입힌 것이라 저장소의 Modelfile로 직접
+만들어야 합니다.
+
+```bash
+# 베이스 모델 (약 30 GB)
+ollama pull qwen3.8:27b-q8_0
+
+# 저장소 루트에서 실행 — config.yaml의 기본 생성 모델을 만든다
+ollama create my-theology-bot-v4 -f Modelfile.theology-gen-v4
+```
+
+확인:
+
+```bash
+ollama list | grep my-theology-bot-v4
+```
+
+> 이 단계를 건너뛰면 검색은 되지만 **답변 생성이 실패**합니다
+> (`config.yaml::ollama.default_gen_model`이 이 모델을 가리킵니다).
+
+**가벼운 대안** — 사양이 모자라면 `config.yaml`에서 생성 모델을 바꾸고
+해당 모델만 pull하세요. 답변의 신학적 깊이와 한국어 완성도는 떨어집니다.
+
+```yaml
+ollama:
+  default_gen_model: "llama3.1:8b"
+  disable_thinking: false     # qwen3 계열이 아니면 false
+```
+
+```bash
 ollama pull llama3.1:8b
 ```
 
-> **참고**: `config.yaml::ollama.gen_model_options`에서 사용 가능한 생성 모델 목록을 확인할 수 있습니다.
+> **중요**: `disable_thinking`은 qwen3 계열(thinking 모델) 전용 스위치입니다.
+> 켜 두지 않으면 생성 토큰이 사고 과정에 전부 쓰여 **답변이 빈 문자열**로
+> 나오고, 반대로 llama 계열에 켜면 불필요한 인자가 전달됩니다. 생성 모델을
+> 바꿀 때 이 값도 함께 맞추세요.
+
+> **참고**: `config.yaml::ollama.gen_model_options`에서 선택 가능한 생성 모델
+> 목록을 확인할 수 있습니다.
 
 ---
 
