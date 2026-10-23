@@ -18,7 +18,7 @@ def _patch(monkeypatch, *, reachable, daemon_up_after_open, docker="/bin/docker"
         return False
 
     monkeypatch.setattr(rs, "_run", fake_run)
-    monkeypatch.setattr(rs, "is_reachable", lambda timeout=0.7: state["reach"])
+    monkeypatch.setattr(rs, "_server_reachable", lambda timeout=0.7: state["reach"])
     monkeypatch.setattr(rs, "_docker_bin", lambda: docker)
     monkeypatch.setattr(rs, "_wait", lambda pred, seconds, step=3.0: pred())
     monkeypatch.setattr(rs.sys, "platform", "darwin")

@@ -13,6 +13,12 @@ CORPUS_ROOT = PROJECT_ROOT / "NAE" / "corpus"
 # Qdrant target — must match the same instance as TSU but a different collection
 QDRANT_URL = "http://localhost:7333"
 
+# [2026-10-23] 서버 없는 내장(로컬) 저장소 — Docker를 요구하지 않는 사용자용.
+# scripts/nae_reference_to_local.py가 위 서버의 참고 컬렉션을 이 폴더로 복사한다.
+# 폴더가 있고 완료 표식(READY)이 있으면 search_reference()가 서버 대신 이것을 쓴다.
+# NAE_REFERENCE_LOCAL_PATH 환경변수로 위치를 바꿀 수 있다. data/는 git 대상이 아니다.
+LOCAL_STORE_PATH = PROJECT_ROOT / "data" / "reference_qdrant"
+
 # Collection name (versioned per TSU_SCHEMA_VERSION convention)
 REFERENCE_COLLECTION_NAME = "nae_ref_v1"
 

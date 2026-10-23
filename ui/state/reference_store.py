@@ -46,7 +46,23 @@ def _endpoint() -> tuple[str, int]:
         return "localhost", 7333
 
 
+def local_store_ready() -> bool:
+    """Docker 없는 내장 저장소(NAE/reference_local_store)가 준비돼 있는지."""
+    try:
+        from NAE import reference_local_store
+        return reference_local_store.is_ready()
+    except ImportError:
+        return False
+
+
 def is_reachable(timeout: float = 0.7) -> bool:
+    """사전·주석을 검색할 수 있는 저장소가 있는지 — 내장 저장소 또는 서버."""
+    if local_store_ready():
+        return True
+    return _server_reachable(timeout)
+
+
+def _server_reachable(timeout: float = 0.7) -> bool:
     host, port = _endpoint()
     try:
         with socket.create_connection((host, port), timeout=timeout):
@@ -81,7 +97,7 @@ def _wait(predicate, seconds: float, step: float = 3.0) -> bool:
 
 
 def _recover() -> None:
-    if is_reachable():
+    if _server_reachable():
         return
     docker = _docker_bin()
     if not docker:
@@ -98,11 +114,11 @@ def _recover() -> None:
             log.error("[reference_store] Docker가 %ds 안에 준비되지 않음", _DAEMON_WAIT_S)
             return
     # restart 정책으로 이미 올라오는 중일 수 있어 먼저 잠깐 기다린다.
-    if _wait(is_reachable, 6, step=1.0):
+    if _wait(_server_reachable, 6, step=1.0):
         return
     log.warning("[reference_store] 컨테이너 %s 시작", CONTAINER_NAME)
     _run([docker, "start", CONTAINER_NAME], 30)
-    if _wait(is_reachable, _PORT_WAIT_S, step=1.0):
+    if _wait(_server_reachable, _PORT_WAIT_S, step=1.0):
         log.info("[reference_store] 사전 서버 복구 완료")
     else:
         log.error("[reference_store] 컨테이너를 시작했지만 포트에 연결되지 않음")
@@ -113,6 +129,17 @@ def ensure_async() -> None:
     global _thread
     with _lock:
         if _thread is not None and _thread.is_alive():
+            return
+        if local_store_ready():
+            # Docker 불필요 — 첫 질의가 느리지 않게 내장 저장소만 미리 연다(~2초).
+            def _warm() -> None:
+                try:
+                    from NAE import reference_local_store
+                    reference_local_store.get_local_client()
+                except Exception:
+                    log.exception("[reference_store] 내장 저장소 예열 실패")
+            _thread = threading.Thread(target=_warm, name="reference-local-warm", daemon=True)
+            _thread.start()
             return
         if is_reachable():
             return

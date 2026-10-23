@@ -113,19 +113,30 @@ def search_reference(
             return []
 
     # Search Qdrant with timeout — one or more collections, merged by score
+    # [2026-10-23] 내장(로컬) 저장소가 준비돼 있으면 Docker 서버 없이 그것을 쓴다
+    # (scripts/nae_reference_to_local.py). 로컬에 없는 컬렉션만 서버로 대체한다.
     from qdrant_client import QdrantClient
-    client = QdrantClient(url=ref_config.QDRANT_URL)
+    from NAE import reference_local_store as local_store
+    local = local_store.get_local_client()
+    server = None
 
     scored_points = []
     for name in names:
         try:
             t0 = time.monotonic()
-            results = client.query_points(
-                collection_name=name,
-                query=query_vector,
-                limit=top_k,
-                timeout=max(1, int(_QDRANT_TIMEOUT_S)),
-            )
+            if local is not None and local.collection_exists(name):
+                results = local.query_points(
+                    collection_name=name, query=query_vector, limit=top_k,
+                )
+            else:
+                if server is None:
+                    server = QdrantClient(url=ref_config.QDRANT_URL)
+                results = server.query_points(
+                    collection_name=name,
+                    query=query_vector,
+                    limit=top_k,
+                    timeout=max(1, int(_QDRANT_TIMEOUT_S)),
+                )
             elapsed_ms = (time.monotonic() - t0) * 1_000
             if elapsed_ms > _QDRANT_TIMEOUT_S * 800:
                 logger.warning("[search_reference] Qdrant search slow (%s): %.0fms", name, elapsed_ms)

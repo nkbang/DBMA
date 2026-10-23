@@ -197,6 +197,18 @@ NAE opt-in 모듈과 함께 사용할 경우에만 필요합니다. DBMA product
 docker run -d -p 7333:6333 --name nae_qdrant qdrant/qdrant
 ```
 
+**Docker 없이 쓰기(일반 사용자용)** — 신학사전·주석 검색은 서버 대신 내장 저장소(`data/reference_qdrant`,
+약 530MB)로 동작할 수 있습니다. 서버가 한 번 떠 있는 환경에서 변환해 두면 이후엔 Docker가 필요 없습니다.
+
+```bash
+python scripts/nae_reference_to_local.py           # 서버 → data/reference_qdrant 복사(약 40초)
+python scripts/nae_reference_to_local.py --check   # 로컬 저장소 상태 확인
+```
+
+폴더가 있으면 앱이 자동으로 그것을 우선 사용합니다(없을 때만 서버에 연결). 참고 코퍼스를 서버에
+새로 적재했다면 위 변환을 다시 실행해 복사본을 갱신하세요. 이미 만들어진 `data/reference_qdrant`
+폴더를 다른 컴퓨터의 같은 위치에 복사해도 됩니다.
+
 ---
 
 *End of INSTALL.md*
