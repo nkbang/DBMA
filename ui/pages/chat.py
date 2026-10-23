@@ -31,6 +31,7 @@ import dataclasses
 import json
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from typing import Optional
@@ -423,6 +424,7 @@ def _inject_reference_context(
     # [2026-10-23] 사전·주석은 영어 원문이다 — 한글 질의에 영어 번역어를 덧붙여
     # 검색한다(실측: "성경에 나오는 용의 정체는"은 UNICORN/UNKNOWN GOD이 잡혔고,
     # dragon을 덧붙이면 DRAGON/REVELATION 항목이 잡혔다).
+    english: list[str] = []
     try:
         from core.query_translation import translate_query_terms
         english = [t for t in translate_query_terms(query) if t not in ("bible", "scripture")]
@@ -430,6 +432,11 @@ def _inject_reference_context(
             search_query = f"{search_query} {' '.join(english)}"
     except Exception:
         logger.exception("[chat] reference query translation failed")
+    # 표제어·본문 단어 일치로 벡터 검색을 보강한다(어휘 검색 — adapter 참고).
+    # 한글 질의의 번역어 + 질의에 직접 쓴 영어 단어(4자 이상).
+    lexical = list(dict.fromkeys(
+        english + [w for w in re.findall(r"[a-z]{4,}", query.lower())]
+    ))
 
     if not _reference_store_reachable():
         # 조용히 빈 결과를 돌려주면 "사전을 참고하지 않았다"만 남아 원인을 알 수 없다.
@@ -451,10 +458,12 @@ def _inject_reference_context(
         from NAE.reference_retrieval_adapter import search_reference
         from NAE.pipeline.reference import config as ref_config
         smith_entries = search_reference(
-            search_query, top_k=2, collection_names=[ref_config.REFERENCE_COLLECTION_NAME],
+            search_query, top_k=3, collection_names=[ref_config.REFERENCE_COLLECTION_NAME],
+            lexical_terms=lexical or None,
         )
         commentary_entries = search_reference(
             search_query, top_k=2, collection_names=[ref_config.COMMENTARY_COLLECTION_NAME],
+            lexical_terms=lexical or None,
         )
     except Exception as e:
         logger.warning("[chat] Reference retrieval failed (TSU unaffected): %s", e)
@@ -483,7 +492,16 @@ def _inject_reference_context(
     hierarchy_notice = (
         "참고: 아래 <reference> 항목(들)은 보조 자료입니다. "
         "주요 근거는 위 신학 문헌(TSU) 및 성경 본문을 우선하고, "
-        "이 참고 자료가 그 해석을 대체하거나 덮어쓰지 않도록 하십시오."
+        "이 참고 자료가 그 해석을 대체하거나 덮어쓰지 않도록 하십시오.\n"
+        # [2026-10-23] 보조 자료를 "쓰지 말라"로 읽혀 질문과 직접 맞는 사전 항목(예: DRAGON —
+        # "계시록에서 옛 뱀, 마귀, 사탄에 쓰임")이 프롬프트에 있어도 모델이 "자료에서 찾기
+        # 어렵다"고만 답했다. 우선순위(TSU 우선·덮어쓰기 금지)는 그대로 두고, TSU가 질문에
+        # 직접 답하지 못할 때 보조 자료를 출처를 밝혀 쓰도록 명시한다.
+        "위 신학 문헌(TSU)이 질문에 직접 답하지 못하는데 아래 참고 자료에 질문과 직접 "
+        "관련된 항목이 있으면, 그 항목의 내용을 한국어로 옮겨 답하고 반드시 "
+        "\"Smith Bible Dictionary에 따르면\"처럼 출처를 밝히십시오. "
+        "참고 자료와 TSU가 충돌하면 TSU를 따르고 충돌 사실을 밝히십시오. "
+        "답변에서는 \"TSU\"라는 말 대신 \"등록된 신학 문헌\"이라고 쓰십시오."
     )
     reference_block = f"{hierarchy_notice}\n\n{reference_context}"
 

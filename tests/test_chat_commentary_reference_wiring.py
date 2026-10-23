@@ -34,7 +34,7 @@ class _FakeResponse:
         self.llm_context_block = ""
 
 
-def _fake_search_reference(query, top_k=3, collection_names=None):
+def _fake_search_reference(query, top_k=3, collection_names=None, lexical_terms=None):
     names = collection_names or [ref_config.REFERENCE_COLLECTION_NAME]
     if names == [ref_config.REFERENCE_COLLECTION_NAME]:
         return [{
@@ -81,7 +81,7 @@ def test_inject_reference_context_queries_both_collections(monkeypatch):
 
 
 def test_inject_reference_context_smith_only_still_works(monkeypatch):
-    def _smith_only(query, top_k=3, collection_names=None):
+    def _smith_only(query, top_k=3, collection_names=None, lexical_terms=None):
         if collection_names == [ref_config.COMMENTARY_COLLECTION_NAME]:
             return []
         return _fake_search_reference(query, top_k, [ref_config.REFERENCE_COLLECTION_NAME])

@@ -65,3 +65,40 @@ def test_locked_store_falls_back(local_dir, monkeypatch):
         assert store.get_local_client() is None
     finally:
         held.close()
+
+
+# ── 어휘 보강(하이브리드) 검색 ──────────────────────────────────────
+
+def _lex_store(d):
+    c = QdrantClient(path=str(d))
+    c.create_collection("nae_ref_v1", vectors_config=models.VectorParams(size=3, distance=models.Distance.COSINE))
+    pts = [
+        # 벡터는 질의와 가장 가깝지만 정답이 아닌 항목들
+        models.PointStruct(id=1, vector=[1, 0, 0], payload={"text": "[REVELATION OF ST. JOHN]\n\nA beast with seven heads.", "heading_context": "REVELATION OF ST. JOHN"}),
+        models.PointStruct(id=2, vector=[0.9, 0.1, 0], payload={"text": "[EGYPT]\n\nthe crocodile and monsters", "heading_context": "EGYPT"}),
+        # 정답 항목(표제어 DRAGON) — 벡터상으로는 멀다
+        models.PointStruct(id=3, vector=[0, 0, 1], payload={"text": "[316 DRAGON]\n\nIn the N.T. the dragon is the old serpent, the Devil and Satan.", "heading_context": "316 DRAGON"}),
+    ] + [
+        models.PointStruct(id=10 + i, vector=[0, 1, 0], payload={"text": f"[ENTRY {i}]\n\nrevelation of something {i}", "heading_context": f"ENTRY {i}"})
+        for i in range(30)
+    ]
+    c.upsert("nae_ref_v1", pts)
+    c.close()
+    (d / store.READY_MARKER).write_text("ok")
+
+
+def test_lexical_headword_entry_is_surfaced(local_dir, monkeypatch):
+    _lex_store(local_dir)
+    _no_server(monkeypatch, [1.0, 0.0, 0.0])
+    plain = adapter.search_reference("revelation dragon", top_k=2)
+    assert not any("DRAGON" in r["text"] for r in plain)          # 벡터만으로는 놓친다
+    hybrid = adapter.search_reference("revelation dragon", top_k=2, lexical_terms=["revelation", "dragon", "dragons"])
+    assert "DRAGON" in hybrid[0]["text"]                           # 표제어 항목이 맨 앞
+
+
+def test_lexical_terms_none_keeps_old_behavior(local_dir, monkeypatch):
+    _lex_store(local_dir)
+    _no_server(monkeypatch, [1.0, 0.0, 0.0])
+    a = adapter.search_reference("q", top_k=2)
+    b = adapter.search_reference("q", top_k=2, lexical_terms=None)
+    assert a == b
