@@ -31,6 +31,7 @@ import dataclasses
 import json
 import logging
 import os
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -562,12 +563,28 @@ def _handle_user_message(question: str) -> None:
     generator = _get_generation_service()
     file_scope, k = _current_scope()
 
-    try:
-        response = processor.process(question, query_id="chat-ui", k=k, file_scope=file_scope)
-        record_query_latency(response.performance_metrics.total_ms)
-    except Exception as e:
-        logger.exception("Chat: retrieval failed")
-        error_msg = "검색 중 문제가 있었습니다. 다시 시도해주세요."
+    # [2026-10-23] 한 번의 일시 오류(임베딩 서버가 큰 모델을 올리는 중 등)로 사용자가
+    # 바로 "문제가 있었습니다"를 보지 않도록 한 번 더 시도한다. 그래도 실패하면
+    # 원인 종류를 함께 알려 주고 전체 트레이스는 logs/dbma_ui.log에 남긴다.
+    response = None
+    failure: Optional[Exception] = None
+    for attempt in (1, 2):
+        try:
+            response = processor.process(question, query_id="chat-ui", k=k, file_scope=file_scope)
+            record_query_latency(response.performance_metrics.total_ms)
+            failure = None
+            break
+        except Exception as e:
+            failure = e
+            logger.exception("Chat: retrieval failed (attempt %d/2)", attempt)
+            if attempt == 1:
+                time.sleep(1.5)
+    if failure is not None:
+        e = failure
+        error_msg = (
+            "검색 중 문제가 있었습니다. 다시 시도해주세요. "
+            f"(원인: {type(e).__name__} — 자세한 내용은 logs/dbma_ui.log)"
+        )
         with st.chat_message("assistant"):
             st.markdown(error_msg)
         st.session_state["chat_messages"].append({

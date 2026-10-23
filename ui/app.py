@@ -38,8 +38,36 @@ from core.user_prefs import has_dismissed_onboarding
 # 사이드바 브랜드 워드마크 "내서재" — 클릭 시 온보딩 페이지로 이동.
 
 
+def _setup_file_logging() -> None:
+    """logs/dbma_ui.log에 경고 이상과 오류 트레이스를 남긴다(중복 설치 방지).
+
+    Streamlit을 띄운 터미널에만 찍히던 오류(예: 채팅 "검색 중 문제")를 나중에
+    확인할 수 있게 한다. 로그 파일을 못 만들면 조용히 건너뛴다.
+    """
+    import logging
+    from logging.handlers import RotatingFileHandler
+    from pathlib import Path
+
+    root = logging.getLogger()
+    if any(getattr(h, "_dbma_ui", False) for h in root.handlers):
+        return
+    try:
+        log_dir = Path(__file__).resolve().parent.parent / "logs"
+        log_dir.mkdir(exist_ok=True)
+        handler = RotatingFileHandler(
+            log_dir / "dbma_ui.log", maxBytes=1_000_000, backupCount=3, encoding="utf-8"
+        )
+    except OSError:
+        return
+    handler._dbma_ui = True  # type: ignore[attr-defined]
+    handler.setLevel(logging.WARNING)
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s"))
+    root.addHandler(handler)
+
+
 def main() -> None:
     """Main application entry point."""
+    _setup_file_logging()
 
     # ── Global Styles ──────────────────────────────────────────
     _apply_global_styles()

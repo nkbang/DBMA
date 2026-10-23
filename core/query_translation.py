@@ -33,7 +33,7 @@ import re
 
 # 검색 캐시 키에 들어간다(core/search_cache.make_cache_key) — 사전을 바꾸면
 # 올려서 이전 번역으로 만든 캐시 결과가 재사용되지 않게 한다.
-QUERY_TRANSLATION_VERSION = "4"
+QUERY_TRANSLATION_VERSION = "5"
 
 _HANGUL_RE = re.compile(r"[가-힣]")
 
@@ -43,6 +43,12 @@ _HANGUL_RE = re.compile(r"[가-힣]")
 # 않아 롬 8:1 직접 구절을 잃었다. 조사는 용어 **뒤**에 붙으므로("죄가", "죄를") 시작
 # 위치 조건은 정상 용례를 막지 않고, 속죄·원죄 같은 합성어는 별도 항목이 맡는다.
 _WORD_START_ONLY_MAX_LEN = 1
+
+# 한 음절 중 합성어가 매우 흔한 용어("용기·용서·용어", "뱀"은 드묾)는 낱말 시작이어도
+# 바로 뒤에 조사가 아닌 한글이 오면 번역하지 않는다 — "용기"(courage)가 dragon으로
+# 번역되는 것을 막는다. 조사가 붙은 "용의/용이/용을"은 정상 용례다.
+_NEXT_CHAR_GUARDED = {"용", "뱀"}
+_PARTICLES = set("의이가을를은는과와도에로만께")
 
 # 한국어 용어 → 영어 검색어. 영어 쪽은 Tantivy 기본 토크나이저/BM25가
 # 어간 추출을 하지 않으므로 코퍼스에 흔한 굴절형을 함께 적는다.
@@ -115,6 +121,14 @@ KO_EN_THEOLOGY_TERMS: dict[str, list[str]] = {
     "교만": ["pride"],
     "시험": ["temptation"],
     "사탄": ["satan"],
+    # [2026-10-23] "성경에 나오는 용의 정체는?"이 사전에 '용'이 없어 어떤 영어 용어도
+    # 못 만들었고, 일반어("bible")만 걸려 무관한 청크를 반환했다(채팅이 답 못 함).
+    "용": ["dragon", "dragons"],
+    "뱀": ["serpent", "serpents"],
+    "옛 뱀": ["old", "serpent"],
+    "짐승": ["beast"],
+    "리워야단": ["leviathan"],
+    "라합": ["rahab"],
     "마귀": ["devil"],
     # 교회론 · 성례
     "교회": ["church"],
@@ -283,6 +297,13 @@ def translate_query_terms(
                 and start > 0
                 and _HANGUL_RE.match(query[start - 1]) is not None
             )
+            if (
+                term in _NEXT_CHAR_GUARDED
+                and end < len(query)
+                and _HANGUL_RE.match(query[end]) is not None
+                and query[end] not in _PARTICLES
+            ):
+                inside_word = True
             if not inside_word and not any(s <= start and end <= e for s, e in claimed):
                 claimed.append((start, end))
                 hits.append((start, term))

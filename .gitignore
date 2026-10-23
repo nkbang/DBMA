@@ -64,6 +64,7 @@ cache/
 
 # Log files
 logs/*.jsonl
+logs/*.log*
 
 # Backup .git directories
 .git.bak.*/
