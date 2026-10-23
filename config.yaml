@@ -92,7 +92,7 @@ ollama:
   # 표식(지워진 글자) 35자 → 3자, 오염 이벤트 19 → 7, p90 141.0s → 69.4s,
   # 실답변 출처 표기 9/11 → 5/5. 유보 규율은 약해지지 않았다(현행이 유보한
   # 질의에 후보가 추가로 답한 것 0건). 정의는 Modelfile.theology-gen-v4.
-  # **v4는 thinking 모델이라 아래 disable_thinking: true가 반드시 함께 켜져야
+  # **v4는 thinking 모델이라 아래 thinking 스위치가 반드시 함께 켜져야
   # 한다** — 끄지 않으면 답변이 빈 문자열이 된다.
   # 롤백: 이 값을 "my-theology-bot-v3:latest"로 되돌린다(v3·v2 보존).
   #

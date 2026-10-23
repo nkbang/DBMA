@@ -212,20 +212,51 @@ export LIBRARY_PATH="/usr/local/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
 pip install -q -r "$PROJECT_ROOT/requirements.txt" || fatal "필요한 프로그램 구성 요소 설치에 실패했습니다."
 
 # ── 5) 이 Mac에 맞는 생성 모델을 config.yaml 기본값으로 반영 ──
+#
+# [2026-10-23] disable_thinking도 함께 맞춘다. 저장소 기본값은 개발 머신의
+# 생성 모델(my-theology-bot-v4 = qwen3 계열 thinking 모델)에 맞춰 true인데,
+# 베타 테스터는 여기서 고른 llama 계열을 쓴다. 지금은 think=False를 받아도
+# llama 쪽이 무해하게 무시하지만(실측), 그건 Ollama의 관용에 기대는 것이고
+# 설정이 모델과 어긋나 있는 상태 자체가 다음 사고의 씨앗이다. 모델을 바꾸는
+# 바로 이 자리에서 같이 맞춘다.
 python3 - "$GEN_MODEL" <<'PYEOF'
 import re
 import sys
 from pathlib import Path
 
 gen_model = sys.argv[1]
+# thinking 모델은 생성 토큰을 사고 과정에 전부 써버려 답변이 빈 문자열이
+# 된다 — 그 계열일 때만 끈다.
+needs_think_off = "qwen3" in gen_model or gen_model.startswith("my-theology-bot-v4")
+
 config_path = Path("config.yaml")
 text = config_path.read_text(encoding="utf-8")
+# [2026-10-23] 반드시 **줄 시작** 기준으로 찾는다. 주석에 "키: 값" 형태의
+# 설명이 들어 있으면 앞의 주석이 먼저 잡혀 실제 설정은 그대로 남는다
+# (실제로 이 함정을 밟았다 — config.yaml 주석의 "disable_thinking: true"가
+# 치환돼 설정값은 바뀌지 않았다).
 text = re.sub(
-    r'default_gen_model:\s*".*?"',
-    f'default_gen_model: "{gen_model}"',
+    r'^([ \t]*)default_gen_model:[ \t]*".*?"',
+    lambda m: f'{m.group(1)}default_gen_model: "{gen_model}"',
     text,
     count=1,
+    flags=re.M,
 )
+text, n = re.subn(
+    r'^([ \t]*)disable_thinking:[ \t]*(?:true|false)',
+    lambda m: f'{m.group(1)}disable_thinking: {"true" if needs_think_off else "false"}',
+    text,
+    count=1,
+    flags=re.M,
+)
+if n == 0:
+    # 키가 없는 옛 config이면 생성 모델 줄 뒤에 넣는다.
+    text = re.sub(
+        r'(default_gen_model:\s*".*?"\n)',
+        rf'\1  disable_thinking: {"true" if needs_think_off else "false"}\n',
+        text,
+        count=1,
+    )
 config_path.write_text(text, encoding="utf-8")
 PYEOF
 
