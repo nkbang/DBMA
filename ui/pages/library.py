@@ -66,7 +66,12 @@ from core.library_search import (
     start_background_warmup,
     toggle_saved_search,
 )
-from ui.pages.dashboard import _render_library_summary, _render_doc_type_summary
+from ui.pages.dashboard import (
+    _DOC_TYPE_ORDER,
+    _render_library_summary,
+    _render_doc_type_summary,
+    _save_doc_type,
+)
 
 
 def _apply_library_styles() -> None:
@@ -142,7 +147,7 @@ def render_library_page() -> None:
 
     # ── Pipeline Summary (from Dashboard) ──────────────────────
     _render_library_summary(compact=True)
-    _render_doc_type_summary()
+    _render_doc_type_summary(show_detail=False)
 
     # ── 중복 파일 자동 정리 (2026-10-23 사용자 요청: 화면에 드러내지 말고
     # 자체적으로 해결) ──────────────────────────────────────────────
@@ -152,12 +157,18 @@ def render_library_page() -> None:
     _render_search_bar()
 
     # ── Document Collection ────────────────────────────────────
-    page.render_section("문서 컬렉션", icon="")
-    _render_document_collection()
+    # 2026-10-23 사용자 요청: 기본은 감추고, 유형 카드를 누르거나 검색·필터를
+    # 쓸 때만 드러낸다. 목록이 안 보이는 동안 이전 선택의 상세가 남아 보이지
+    # 않게 상세 패널도 같이 감춘다.
+    if _collection_visible():
+        page.render_section("문서 컬렉션", icon="")
+        _render_document_collection()
 
-    # ── Document Detail Panel ──────────────────────────────────
-    page.render_section("문서 상세", icon="")
-    _render_document_detail_panel()
+        # ── Document Detail Panel ──────────────────────────────
+        page.render_section("문서 상세", icon="")
+        _render_document_detail_panel()
+    else:
+        st.caption("위의 유형(주석·설교 등)을 누르거나 검색·필터를 쓰면 문서 컬렉션이 나타납니다.")
 
     # ── 휴지통 (2026-08-24 사용자 요청: "휴지통이라면 복구도 가능해야 한다") ──
     _render_trash_section()
@@ -330,6 +341,23 @@ def _render_sample_library_section(sample_docs: list[dict]) -> None:
     st.divider()
 
 
+def _selected_type_filter() -> Optional[str]:
+    """유형 카드로 고른 registry 유형. '미처리'는 컬렉션이 아니라 처리 유도 화면이다."""
+    t = st.session_state.get("selected_doc_type")
+    return t if t and t != "미처리" else None
+
+
+def _collection_visible() -> bool:
+    return bool(
+        _selected_type_filter()
+        or st.session_state.get("library_search", "").strip()
+        or st.session_state.get("library_f_author")
+        or st.session_state.get("library_f_category")
+        or st.session_state.get("library_f_language")
+        or st.session_state.get("library_file_type", "all") != "all"
+    )
+
+
 def _render_document_collection() -> None:
     """Render the document collection table with single-click selection and pagination."""
     all_documents = _get_documents_list()
@@ -367,8 +395,12 @@ def _render_document_collection() -> None:
     f_authors = st.session_state.get("library_f_author", [])
     f_cats = st.session_state.get("library_f_category", [])
     f_langs = st.session_state.get("library_f_language", [])
-    filters_active = bool(f_authors or f_cats or f_langs)
+    type_filter = _selected_type_filter()
+    filters_active = bool(f_authors or f_cats or f_langs or type_filter)
     infos = [i for i in infos if passes_filters(i, f_authors, f_langs, f_cats)]
+    if type_filter:
+        infos = [i for i in infos if i.doc_type == type_filter]
+        st.caption(f"유형 '{type_filter}' 문서만 표시 중 — 같은 유형 카드를 다시 누르면 해제됩니다.")
     documents = [i.doc for i in infos]
 
     search_query = st.session_state.get("library_search", "").strip()
@@ -561,6 +593,8 @@ def _render_document_detail_panel() -> None:
         st.markdown(f"**경로:** {selected_doc.get('path', 'N/A')}")
         st.markdown(f"**수정일:** {selected_doc.get('modified', 'N/A')}")
 
+    _render_doc_type_editor(selected_doc.get("title", ""))
+
     # ── Registry Metadata Edit (SPRINT17-Phase5-C2 M2-b) ────────
     # Only shown once the selected raw file has been processed into a
     # registry record — matches by filename (source_file), same identifier
@@ -593,6 +627,24 @@ def _render_document_detail_panel() -> None:
         use_container_width=True,
         on_click=_clear_document_selection,
     )
+
+
+def _render_doc_type_editor(source_filename: str) -> None:
+    """문서 유형(주석·설교 등) 변경 — 예전엔 유형 카드 아래 목록에 있던 기능."""
+    doc_id, record = _find_registry_record(source_filename)
+    if not record:
+        return
+    current = record.get("doc_type", "")
+    options = list(_DOC_TYPE_ORDER)
+    chosen = st.selectbox(
+        "문서 유형 변경",
+        options=options,
+        index=options.index(current) if current in options else 0,
+        key=f"_detail_type_{doc_id}",
+    )
+    if chosen != current:
+        _save_doc_type(doc_id, chosen)
+        st.rerun()
 
 
 def _registry_path() -> Path:

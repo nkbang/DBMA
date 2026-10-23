@@ -582,7 +582,7 @@ _DOC_TYPE_UNITS = {
 }
 
 
-def _render_doc_type_summary() -> None:
+def _render_doc_type_summary(show_detail: bool = True) -> None:
     """Show doc_type distribution from registry and allow manual labeling.
 
     [버그 수정 2026-07-22] "정리된 자료" 카드와 동일한 _get_effective_documents()
@@ -597,6 +597,10 @@ def _render_doc_type_summary() -> None:
     붙일 자리 자체가 없음). 여기에 타입을 미리 지정하는 대신, 처리를
     유도한다 — 처리되면 guess_doc_type()이 자동으로 타입을 부여한다
     (사용자 결정, 2026-07-24: "처리하게 유도하자").
+
+    show_detail=False(내 자료 페이지, 2026-10-23 사용자 요청): 유형 카드는
+    선택만 토글하고, 해당 유형의 문서 목록은 호출한 페이지가 "문서 컬렉션"으로
+    보여준다(같은 목록이 두 번 나오지 않게). 선택된 카드는 강조한다.
     """
     docs = _get_effective_documents()
     unprocessed_files = _get_unprocessed_raw_files()
@@ -638,6 +642,7 @@ def _render_doc_type_summary() -> None:
                 f"{icon}\n**{doc_type}**\n{count}{unit}",
                 key=f"_type_card_{doc_type}",
                 use_container_width=True,
+                type="primary" if st.session_state["selected_doc_type"] == doc_type else "secondary",
             )
             if clicked:
                 # Toggle: click same type again → deselect
@@ -651,7 +656,7 @@ def _render_doc_type_summary() -> None:
     selected_type = st.session_state.get("selected_doc_type")
     if selected_type == "미처리":
         _render_unprocessed_detail(unprocessed_files)
-    elif selected_type:
+    elif selected_type and show_detail:
         _render_doc_type_detail(docs, selected_type, untyped_ids)
     else:
         # Show untyped documents section only when no type is selected

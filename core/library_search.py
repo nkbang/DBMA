@@ -72,6 +72,7 @@ class DocInfo:
     chunk_count: int
     noise_score: float
     source_file: str
+    doc_type: str = ""      # registry의 doc_type(주석/설교/사전… 사용자가 지정하는 유형)
 
     @property
     def path(self) -> str:
@@ -310,6 +311,7 @@ def enrich_documents(
             chunk_count=int(rec.get("chunk_count") or 0),
             noise_score=float(rec.get("noise_score") or 0.0),
             source_file=fname,
+            doc_type=rec.get("doc_type") or "",
         ))
     return infos
 
