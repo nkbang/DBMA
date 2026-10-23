@@ -4,6 +4,7 @@ Document library browsing, search, and management interface.
 """
 
 import json
+import logging
 import os
 import unicodedata
 from datetime import datetime
@@ -51,6 +52,7 @@ from core.raw_hygiene import (
 from core.extraction_failures import load_extraction_failures
 from core.chunking_optimizer import optimize_chunks
 from core.utils import make_safe_stem
+from core.library_search import SearchHit, search_documents
 from ui.pages.dashboard import _render_library_summary, _render_doc_type_summary
 
 
@@ -129,9 +131,9 @@ def render_library_page() -> None:
     _render_library_summary()
     _render_doc_type_summary()
 
-    # ── 중복 파일 검사 (2026-08-24 사용자 요청: "동일한 내용 듀플리케이트
-    # 파일은 하나로 정리해야 한다 — 워닝하고 삭제하도록 하라") ──────
-    _render_duplicate_check_section()
+    # ── 중복 파일 자동 정리 (2026-10-23 사용자 요청: 화면에 드러내지 말고
+    # 자체적으로 해결) ──────────────────────────────────────────────
+    _auto_resolve_duplicate_raw_files()
 
     # ── Search Bar ─────────────────────────────────────────────
     _render_search_bar()
@@ -156,9 +158,12 @@ def _render_search_bar() -> None:
 
     query = st.text_input(
         "내 자료에서 찾기",
-        placeholder="문서 제목, 메타데이터 또는 내용으로 검색...",
+        placeholder="제목·본문 검색 — 예: 은혜 \"십자가의 도\" -요한",
         key="library_search",
-        help="문서 이름, 타입, 메타데이터로 필터링합니다.",
+        help=(
+            "제목·유형·경로·수정일과 처리된 본문을 함께 검색합니다. "
+            "여러 단어는 모두 포함, \"따옴표\"는 정확한 구절, -단어는 제외입니다."
+        ),
     )
     if query:
         store.set("library_search_query", query)
@@ -266,17 +271,14 @@ def _render_document_collection() -> None:
     shown_total_before_search = len(documents)
 
     # ── Search Query Filtering (FAT-HUMAN-008 + PT-SEARCH-001 Unicode NFC fix) ──
+    # 2026-10-23: 메타데이터뿐 아니라 처리된 본문(.md)까지 검색하고 일치
+    # 구절 미리보기를 보여준다(core/library_search.py).
     search_query = st.session_state.get("library_search", "").strip()
+    search_hits: dict[str, SearchHit] = {}
     if search_query:
-        # Normalize query to NFC to match macOS NFD filenames consistently
-        query_normalized = unicodedata.normalize("NFC", search_query).lower()
-        documents = [
-            d for d in documents
-            if any(
-                query_normalized in unicodedata.normalize("NFC", str(d.get(k, ""))).lower()
-                for k in ("title", "type", "path", "modified")
-            )
-        ]
+        hits = search_documents(documents, search_query)
+        search_hits = {h.doc.get("path", ""): h for h in hits}
+        documents = [d for d in documents if d.get("path", "") in search_hits]
     else:
         documents = list(documents)  # shallow copy
 
@@ -291,6 +293,8 @@ def _render_document_collection() -> None:
         st.caption(f"\"{search_query}\" 검색 결과: {shown_total}개 문서 (총 {total_count}개 중)")
     else:
         st.caption(f"총 {shown_total}개의 문서")
+
+    _render_search_previews(search_hits)
 
     _render_sort_header()
 
@@ -332,6 +336,21 @@ def _render_document_collection() -> None:
 
     # Render document table with selection buttons
     _render_document_rows(paginated_docs)
+
+
+def _render_search_previews(search_hits: "dict[str, SearchHit]") -> None:
+    """본문에서 일치한 구절 미리보기 — 관련도 높은 문서 순, 최대 10건."""
+    previews = sorted(
+        (h for h in search_hits.values() if h.snippets),
+        key=lambda h: -h.score,
+    )[:10]
+    if not previews:
+        return
+    with st.expander(f"본문 일치 미리보기 ({len(previews)}건)", expanded=True):
+        for h in previews:
+            st.markdown(f"**{h.doc.get('title', '')}** · 본문 {h.content_hits}회 일치")
+            for snip in h.snippets:
+                st.caption(snip)
 
 
 def _render_document_detail_panel() -> None:
@@ -796,57 +815,52 @@ def _render_orphaned_documents_notice() -> None:
             st.rerun()
 
 
-def _render_duplicate_check_section() -> None:
-    """[2026-08-24 사용자 요청] "원본 폴더에 동일한 내용 듀플리케이트
-    파일은 하나로 정리해야 한다. 워닝하고 삭제하도록 하라."
+def _auto_resolve_duplicate_raw_files() -> None:
+    """[2026-10-23 사용자 요청] "홈 창에서 중복파일 검사는 자체적으로 해결하고
+    사용자에게 시키지 마라. 화면에 드러내지도 마라."
 
-    RAW 전체를 바이트 단위로 다시 읽어야 해서(core/raw_hygiene.py::
-    find_exact_duplicate_raw_files()) 페이지를 열 때마다 자동 실행하지
-    않고 버튼을 눌렀을 때만 검사한다 — 문서가 많아지면 매 렌더마다
-    수십 MB씩 다시 읽는 건 낭비. 삭제는 delete_raw_source()를 그대로
-    재사용해 RAW 원본 + 처리 파일/청크(.md, _chunks.txt,
-    _chunks_meta.json)까지 한 번에 정리한다("원본이 삭제되면 관련
-    처리 파일도 다 삭제"를 자동으로 만족).
+    예전 _render_duplicate_check_section()은 "지금 검사" 버튼과 그룹별 "삭제"
+    버튼을 사용자에게 보여줬다. 이제는 화면 출력 없이 조용히 처리한다:
+    바이트 단위로 동일한 파일 그룹마다 이름순 첫 파일만 남기고 나머지는
+    delete_raw_source()로 휴지통(backups/deleted_raw_.../, 복구 가능)에 옮긴다
+    — RAW 원본 + 처리 파일/청크 정리는 그 함수가 한 번에 처리한다.
+
+    RAW 전체를 다시 읽는 검사라 매 렌더마다 돌리지 않는다: (이름, 크기,
+    수정시각) 시그니처가 바뀌었을 때만 세션당 다시 검사한다. 파일명으로만
+    지울 대상을 지정할 수 있어서, 남길 파일과 이름이 같은(하위 폴더만 다른)
+    중복은 엉뚱한 파일을 지울 수 있으므로 건드리지 않는다.
+    실패해도 화면에 아무것도 띄우지 않고 로그만 남긴다.
     """
-    # 검사를 실행한 뒤에는 결과가 보이게 열어둔다 — expanded=False 고정이면
-    # "지금 검사" 버튼 클릭 자체가 rerun을 일으켜 expander가 다시 접히고
-    # 결과가 안 보이는 버그가 있었다(2026-08-24 실측).
-    with st.expander("중복 파일 검사", expanded="_dup_check_groups" in st.session_state):
-        st.caption(
-            "RAW 폴더 안에서 내용이 완전히 동일한 파일을 찾습니다(바이트 단위 비교, "
-            "재스캔본처럼 내용만 비슷한 경우는 잡히지 않습니다). 전체를 다시 읽어야 해서 "
-            "버튼을 눌렀을 때만 검사합니다."
-        )
-        if st.button("지금 검사", key="dup_check_btn"):
-            st.session_state["_dup_check_groups"] = find_exact_duplicate_raw_files()
-
-        groups = st.session_state.get("_dup_check_groups")
-        if groups is None:
+    try:
+        raw_root = Path(DEFAULT_RAW_DIR)
+        if not raw_root.exists():
             return
-        if not groups:
-            st.success("완전히 동일한 내용의 중복 파일이 없습니다.")
+        signature = hash(tuple(sorted(
+            (str(f), stat.st_size, stat.st_mtime_ns)
+            for f in raw_root.rglob("*")
+            if f.is_file() and not f.name.startswith(".")
+            for stat in (f.stat(),)
+        )))
+        if st.session_state.get("_dup_auto_signature") == signature:
             return
 
-        st.warning(
-            f"내용이 완전히 동일한 파일이 {len(groups)}그룹 있습니다. "
-            "하나만 남기고 나머지는 삭제(휴지통 이동)하는 걸 권장합니다."
-        )
-        for i, group in enumerate(groups):
-            size_kb = group["files"][0]["size"] / 1024
-            st.markdown(f"**그룹 {i + 1}** — {len(group['files'])}개, 각 {size_kb:.0f} KB (내용 동일)")
-            for f in group["files"]:
-                c1, c2 = st.columns([4, 1])
-                with c1:
-                    st.caption(f["name"])
-                with c2:
-                    if st.button("삭제", key=f"dup_del_{f['path']}", use_container_width=True):
-                        result = delete_raw_source(f["name"], reason="중복 파일 정리", execute=True)
-                        if result["found"]:
-                            st.success(f"'{f['name']}' 삭제됨.")
-                            st.session_state.pop("_dup_check_groups", None)
-                            st.rerun()
-                        else:
-                            st.error("삭제에 실패했습니다.")
+        for group in find_exact_duplicate_raw_files():
+            keep, *extras = group["files"]
+            for f in extras:
+                if f["name"] == keep["name"]:
+                    continue
+                delete_raw_source(f["name"], reason="중복 파일 자동 정리", execute=True)
+
+        # 정리 후 상태로 시그니처를 다시 계산해 저장 — 삭제 때문에 바뀐 목록으로
+        # 다음 렌더에서 불필요하게 재검사하지 않게 한다.
+        st.session_state["_dup_auto_signature"] = hash(tuple(sorted(
+            (str(f), stat.st_size, stat.st_mtime_ns)
+            for f in raw_root.rglob("*")
+            if f.is_file() and not f.name.startswith(".")
+            for stat in (f.stat(),)
+        )))
+    except Exception:
+        logging.getLogger(__name__).exception("중복 파일 자동 정리 실패")
 
 
 def _render_trash_section() -> None:
