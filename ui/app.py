@@ -68,6 +68,13 @@ def _setup_file_logging() -> None:
 def main() -> None:
     """Main application entry point."""
     _setup_file_logging()
+    # 사전 서버(Docker nae_qdrant)가 꺼져 있으면 백그라운드에서 살린다 — 즉시 반환.
+    try:
+        from ui.state.reference_store import ensure_async
+        ensure_async()
+    except Exception:
+        import logging
+        logging.getLogger(__name__).exception("사전 서버 자동 복구 시작 실패")
 
     # ── Global Styles ──────────────────────────────────────────
     _apply_global_styles()

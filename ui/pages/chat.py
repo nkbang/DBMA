@@ -359,37 +359,29 @@ def _format_reference_context(entries: list[dict], label: str) -> str:
     return "\n".join(lines)
 
 
-_REF_STORE_CHECK: tuple[float, bool] = (0.0, True)
-
-
 def _reference_store_reachable() -> bool:
-    """사전·주석 벡터 저장소(NAE Qdrant, 기본 localhost:7333)에 연결되는지 — 20초 캐시."""
-    global _REF_STORE_CHECK
-    now = time.monotonic()
-    if now - _REF_STORE_CHECK[0] < 20:
-        return _REF_STORE_CHECK[1]
-    import socket
-    from urllib.parse import urlparse
-    try:
-        from NAE.pipeline.reference import config as ref_config
-        u = urlparse(ref_config.QDRANT_URL)
-        with socket.create_connection((u.hostname, u.port or 6333), timeout=0.7):
-            ok = True
-    except ImportError:
-        ok = True      # NAE 없음 — 위에서 이미 비활성
-    except OSError:
-        ok = False
-    _REF_STORE_CHECK = (now, ok)
-    return ok
+    """사전·주석 벡터 저장소(NAE Qdrant)에 연결되는지. 안 되면 백그라운드 복구를 시작한다."""
+    from ui.state import reference_store
+    if reference_store.is_reachable():
+        return True
+    reference_store.ensure_async()
+    return False
 
 
 def _render_reference_notices(reference_results: list[dict]) -> None:
     """이번 답변에 반영한 사전·주석 항목, 또는 서버 불가 안내."""
     if st.session_state.pop("_reference_unavailable", False):
-        st.caption(
-            ":orange[신학사전·주석 서버(Qdrant :7333)에 연결할 수 없어 이번 답변에는 "
-            "사전 자료가 반영되지 않았습니다. Docker에서 nae_qdrant 컨테이너를 실행해 주세요.]"
-        )
+        from ui.state import reference_store
+        if reference_store.is_recovering():
+            st.caption(
+                ":orange[신학사전·주석 서버를 시작하는 중이라 이번 답변에는 사전 자료가 "
+                "반영되지 않았습니다. 1~2분 뒤 다시 질문하면 반영됩니다.]"
+            )
+        else:
+            st.caption(
+                ":orange[신학사전·주석 서버(Qdrant :7333)에 연결할 수 없어 이번 답변에는 "
+                "사전 자료가 반영되지 않았습니다. Docker의 nae_qdrant 컨테이너를 확인해 주세요.]"
+            )
     if reference_results:
         with st.expander(f"참고한 사전·주석 ({len(reference_results)}건)", expanded=False):
             for entry in reference_results:
