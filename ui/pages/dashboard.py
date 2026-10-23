@@ -38,7 +38,7 @@ def render_dashboard_page() -> None:
     _render_recent_materials()
 
     st.markdown(
-        f"<div style='font-size: 15px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 1.5rem 0 0.75rem;'>내 서재 요약</div>",
+        f"<div style='font-size: 15px; font-weight: 700; color: {THEME.TEXT_PRIMARY}; margin: 1.5rem 0 0.75rem;'>내 자료 요약</div>",
         unsafe_allow_html=True,
     )
     _render_library_summary()

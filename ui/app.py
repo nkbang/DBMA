@@ -295,7 +295,7 @@ def _render_sidebar() -> str:
 
         pages = {
             "Dashboard": "홈",
-            "Library": "내 서재",
+            "Library": "내 자료",
             "Processing": "자료 등록",
             "Research": "연구·채팅",
             "설교 준비": "설교 준비",

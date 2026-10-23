@@ -130,7 +130,7 @@ def _gen_overrides() -> dict:
 def _render_public_answer(key_prefix: str, question: str, results: list, answer_key: str) -> None:
     """ADR-036 방안 B(Proposed) — 이 패널이 가져온 문단 근거만으로 **별도** 답변을 만든다.
 
-    사용자가 버튼을 눌렀을 때만 생성한다(자동 실행 없음). 내 서재 답변과 병합하지 않고
+    사용자가 버튼을 눌렀을 때만 생성한다(자동 실행 없음). 내 자료 답변과 병합하지 않고
     이 섹션 안에서 근거·인용·고지·경고를 따로 보여준다. 문단 근거(dict)가 없으면
     (구형 Citation 결과) 이 기능을 제공하지 않는다.
     """
@@ -142,7 +142,7 @@ def _render_public_answer(key_prefix: str, question: str, results: list, answer_
 
     st.markdown("#### 공개 자료 근거 답변")
     st.caption(
-        "검색된 공개 자료 문단에만 근거한 **별도 답변**입니다 — 내 서재 답변과 합쳐지지 않습니다. "
+        "검색된 공개 자료 문단에만 근거한 **별도 답변**입니다 — 내 자료 답변과 합쳐지지 않습니다. "
         "생성에는 수 분이 걸릴 수 있습니다."
     )
     clicked = st.button("이 근거로 답변 생성", key=f"{key_prefix}_nae_public_answer_btn")
