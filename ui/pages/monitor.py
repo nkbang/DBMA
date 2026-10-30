@@ -277,7 +277,7 @@ def _render_performance_metrics() -> None:
         accuracy_value = "데이터 없음"
         accuracy_detail = "벤치마크 결과 파일 없음"
 
-    # 4. 인덱스 크기 — chroma_db 실측
+    # 4. 인덱스 크기 — TSU 데이터셋 + chroma_db 실측
     index_bytes = get_index_size_bytes()
     index_value = _format_size(index_bytes) if index_bytes > 0 else "데이터 없음"
 
@@ -285,7 +285,7 @@ def _render_performance_metrics() -> None:
         {"label": "평균 응답 시간", "value": avg_latency, "detail": latency_detail},
         {"label": "문서 처리 속도", "value": throughput_value, "detail": throughput_detail},
         {"label": "검색 정확도", "value": accuracy_value, "detail": accuracy_detail},
-        {"label": "인덱스 크기", "value": index_value, "detail": "chroma_db 실측"},
+        {"label": "인덱스 크기", "value": index_value, "detail": "TSU 데이터셋 실측"},
     ]
 
     c1, c2, c3, c4 = st.columns(4)

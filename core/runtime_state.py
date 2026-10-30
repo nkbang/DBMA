@@ -158,20 +158,23 @@ def _check_vector_index(base_dir: Path) -> bool:
 
 
 def get_index_size_bytes(base_dir: Optional[Path] = None) -> int:
-    """벡터 인덱스(ChromaDB persist directory) 실제 디스크 사용량.
+    """실제 인덱스 디스크 사용량 = TSU 데이터셋(JSONL) + (있다면) Chroma 디렉터리.
 
-    core.config.CHROMA_PERSIST_DIR(기본 "chroma_db")를 그대로 신뢰한다 —
-    Monitor 페이지의 "인덱스 크기" 카드가 하드코딩된 "156MB" 대신 이 값을
-    쓴다.
+    Chroma는 vector_db.primary=qdrant 전환 후 비어 있어 이것만 재면 항상 0이
+    된다. 실질 인덱스인 TSU 데이터셋 파일 크기를 함께 합산한다.
     """
-    from core.config import CHROMA_PERSIST_DIR
+    from core.config import CHROMA_PERSIST_DIR, DEFAULT_TSU_DATASET_PATH
 
     if base_dir is None:
         base_dir = Path.cwd()
+    total = 0
     index_dir = base_dir / CHROMA_PERSIST_DIR
-    if not index_dir.is_dir():
-        return 0
-    return sum(f.stat().st_size for f in index_dir.rglob("*") if f.is_file())
+    if index_dir.is_dir():
+        total += sum(f.stat().st_size for f in index_dir.rglob("*") if f.is_file())
+    tsu = base_dir / DEFAULT_TSU_DATASET_PATH
+    if tsu.is_file():
+        total += tsu.stat().st_size
+    return total
 
 
 def get_processing_throughput(
