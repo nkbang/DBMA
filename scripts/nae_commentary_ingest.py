@@ -66,7 +66,26 @@ _COMMENTARY_CANONICALS: dict[str, Path] = {
 # (see docs/BAPTIST_COMMENTARY_EMBEDDING_PLAN_v1.md).
 _COMMENTARY_SOURCE_IDS: dict[str, str] = {
     "Spurgeon_TreasuryOfDavid_Vol1": "BAP-COMM-SPURGEON-TDA-VOL01",
+    "Gill_ExpositionNT_Vol1": "BAP-COMM-GILL-ENT-VOL01",
+    "Broadus_CommentaryMatthew": "BAP-COMM-BROADUS-MATT-VOL01",
+    "Carroll_InterpretationEB_Vol2": "BAP-COMM-CARROLL-IEB-VOL02",
 }
+
+
+def resolve_source_id(identifier: str, override: str | None = None) -> str:
+    """identifier에 대응하는 source_id를 반환한다.
+
+    매핑에 없는 identifier를 빈 문자열로 조용히 넘기면 Qdrant 페이로드의
+    source_id가 비어 출처 추적이 끊긴다(2026-10-14 실측: nae_ref_commentary_v1
+    8,539건). 모르는 identifier는 --source-id로 명시하게 하고, 아니면 중단한다.
+    """
+    source_id = (override or _COMMENTARY_SOURCE_IDS.get(identifier, "")).strip()
+    if not source_id:
+        raise ValueError(
+            f"Unknown identifier '{identifier}': source_id를 알 수 없습니다. "
+            f"_COMMENTARY_SOURCE_IDS에 등록하거나 --source-id를 지정하세요."
+        )
+    return source_id
 
 
 def _warn_if_anchor_values_lack_diversity(canonical_path: Path) -> None:
@@ -109,6 +128,11 @@ def main() -> None:
         help="Override canonical.json path (for custom corpora)",
     )
     parser.add_argument(
+        "--source-id", default=None,
+        help="Override source_id (매핑에 없는 identifier용, "
+             "NAE/pipeline/registration/state/source_manifest.yaml 값 사용)",
+    )
+    parser.add_argument(
         "--chunker", choices=["heading", "verse_anchored"], default="heading",
         help="Chunking strategy. 'heading' (default, safe) groups by "
              "heading+prose like the Smith dictionary chunker. "
@@ -140,7 +164,11 @@ def main() -> None:
               f"NAE.pipeline.canonical 추출 단계가 선행되어야 합니다.", file=sys.stderr)
         sys.exit(1)
 
-    source_id = _COMMENTARY_SOURCE_IDS.get(args.identifier, "")
+    try:
+        source_id = resolve_source_id(args.identifier, args.source_id)
+    except ValueError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
 
     if args.chunker == "verse_anchored":
         _warn_if_anchor_values_lack_diversity(canonical_path)
