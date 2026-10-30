@@ -217,16 +217,6 @@ main > .stMarkdown {
 }
 
 /* ── Feature Cards ───────────────────────────────────────── */
-.nae-section-title {
-    text-align: center;
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: #6f6050;
-    text-transform: uppercase;
-    margin: 8px 0 20px;
-}
 .nae-features-section {
     padding: 96px 48px;
     background: #f5f3ee;
@@ -551,8 +541,6 @@ def render_onboarding_page() -> None:
     st.write("")
 
     # ── Feature Cards ────────────────────────────────────────
-    st.markdown('<div class="nae-section-title">내서재가 하는 일</div>', unsafe_allow_html=True)
-    
     st.markdown('<div class="nae-features-section">', unsafe_allow_html=True)
     cards = [
         ("auto_stories", "나의 서재", "모든 흩어진 자료를 하나의 지식 저장소로. PDF, 텍스트, 이미지 자료까지 스마트하게 관리합니다."),
