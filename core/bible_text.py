@@ -58,6 +58,8 @@ _DISPLAY_NAME_OVERRIDES: dict[str, str] = {
     "MRK": "마가복음",
     "LUK": "누가복음",
     "EZE": "에스겔",
+    "1TH": "데살로니가전서",
+    "2TH": "데살로니가후서",
 }
 
 # 정규 66권 순서 = BOOK_ID_TO_NAMES 삽입 순서(정경 순서로 정의돼 있음).

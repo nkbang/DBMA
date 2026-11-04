@@ -130,3 +130,9 @@ class TestHelpers:
     def test_korean_book_name_override(self):
         assert korean_book_name("SOL") == "아가"
         assert korean_book_name("PRO") == "잠언"
+
+    def test_thessalonians_display_name(self):
+        assert korean_book_name("1TH") == "데살로니가전서"
+        assert korean_book_name("2TH") == "데살로니가후서"
+        assert normalize_book_id("살전") == "1TH"
+        assert normalize_book_id("살후") == "2TH"
